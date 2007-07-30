@@ -16,7 +16,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       throw new Exception ("The method or operation is not implemented.");
     }
 
-    public IInvokeWith<TMinimal> GetTypesafeConstructorInvoker<TMinimal> (Type type)
+    public IFuncInvoker<TMinimal> GetTypesafeConstructorInvoker<TMinimal> (Type type)
     {
       throw new Exception ("The method or operation is not implemented.");
     }

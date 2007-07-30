@@ -53,7 +53,8 @@ public class SmartPageInfo
   private string _statusIsSubmittingMessage = string.Empty;
 
   private bool _isPreRendering = false;
-  private AutoInitHashtable _clientSideEventHandlers = new AutoInitHashtable (typeof (NameValueCollection));
+  private AutoInitDictionary<SmartPageEvents, NameValueCollection> _clientSideEventHandlers =
+      new AutoInitDictionary<SmartPageEvents, NameValueCollection>();
   private string _checkFormStateFunction;
   private Hashtable _trackedControls = new Hashtable();
   private StringCollection _trackedControlsByID = new StringCollection();
@@ -83,7 +84,7 @@ public class SmartPageInfo
     if (_isPreRendering)
       throw new InvalidOperationException ("RegisterClientSidePageEventHandler must not be called after the PreRender method of the System.Web.UI.Page has been invoked.");
 
-    NameValueCollection eventHandlers = (NameValueCollection) _clientSideEventHandlers[pageEvent];
+    NameValueCollection eventHandlers = _clientSideEventHandlers[pageEvent];
     eventHandlers[key] = function;
   }
 
@@ -413,7 +414,7 @@ public class SmartPageInfo
     script.Append ("\r\n");
     foreach (SmartPageEvents pageEvent in _clientSideEventHandlers.Keys)
     {
-      NameValueCollection eventHandlers = (NameValueCollection) _clientSideEventHandlers[pageEvent];
+      NameValueCollection eventHandlers = _clientSideEventHandlers[pageEvent];
 
       script.Append (eventHandlersByEventArray).Append (" = new Array(); \r\n");
 

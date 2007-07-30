@@ -245,7 +245,7 @@ namespace Rubicon.Utilities
           case TypeConverterType.SourceTypeConverter:
             return typeConverterResult.TypeConverter.ConvertTo (context, culture, value, destinationType);
           default:
-            Assertion.Assert (typeConverterResult.TypeConverterType == TypeConverterType.DestinationTypeConverter);
+            Assertion.IsTrue (typeConverterResult.TypeConverterType == TypeConverterType.DestinationTypeConverter);
             return typeConverterResult.TypeConverter.ConvertFrom (context, culture, value);
         }
       }

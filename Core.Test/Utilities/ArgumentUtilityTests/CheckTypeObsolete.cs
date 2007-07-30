@@ -14,17 +14,20 @@ namespace Rubicon.Core.UnitTests.Utilities.ArgumentUtilityTests
     {
       ArgumentUtility.CheckType ("arg", 13, typeof (string));
     }
+
     [Test]
     [ExpectedException (typeof (NotSupportedException))]
 		public void Fail_ValueType ()
     {
       ArgumentUtility.CheckType ("arg", (object) null, typeof (int));
     }
+
     [Test]
 		public void Succeed_ReferenceTypeNull ()
     {
       ArgumentUtility.CheckType ("arg", (object) null, typeof (string));
     }
+
     [Test]
 		public void Succeed_NotNull ()
     {

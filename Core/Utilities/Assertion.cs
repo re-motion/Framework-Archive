@@ -46,58 +46,113 @@ namespace Rubicon.Utilities
   /// </remarks>
   public static class Assertion
   {
-    private const string c_defaultMessage = "Assertion failed.";
+    private const string c_msgIsTrue = "Assertion failed: Expression evaluates to true.";
+    private const string c_msgIsFalse = "Assertion failed: Expression evaluates to false.";
+    private const string c_msgIsNull = "Assertion failed: Expression evaluates to a null reference.";
+    private const string c_msgIsNotNull = "Assertion failed: Expression does not evaluate to a null reference.";
 
     [Conditional ("DEBUG")]
     public static void DebugAssert (bool assertion, string message)
     {
-      Assert (assertion, message);
+      IsTrue (assertion, message);
     }
 
     [Conditional ("DEBUG")]
     public static void DebugAssert (bool assertion, string message, params object[] arguments)
     {
-      Assert (assertion, message, arguments);
+      IsTrue (assertion, message, arguments);
     }
 
     [Conditional ("DEBUG")]
     public static void DebugAssert (bool assertion)
     {
-      Assert (assertion);
+      IsTrue (assertion);
     }
 
     [Conditional ("TRACE")]
     public static void TraceAssert (bool assertion, string message)
     {
-      Assert (assertion, message);
+      IsTrue (assertion, message);
     }
 
     [Conditional ("TRACE")]
     public static void TraceAssert (bool assertion, string message, params object[] arguments)
     {
-      Assert (assertion, message, arguments);
+      IsTrue (assertion, message, arguments);
     }
 
     [Conditional ("TRACE")]
     public static void TraceAssert (bool assertion)
     {
-      Assert (assertion);
+      IsTrue (assertion);
     }
 
-    public static void Assert (bool assertion, string message)
+
+    public static void IsTrue (bool assertion, string message)
     {
       if (! assertion)
         throw new AssertionException (message);
     }
 
-    public static void Assert (bool assertion, string message, params object[] arguments)
+    public static void IsTrue (bool assertion, string message, params object[] arguments)
     {
-      Assert (assertion, string.Format (message, arguments));
+      IsTrue (assertion, string.Format (message, arguments));
     }
 
-    public static void Assert (bool assertion)
+    public static void IsTrue (bool assertion)
     {
-      Assert (assertion, c_defaultMessage);
+      IsTrue (assertion, c_msgIsFalse);
+    }
+
+    
+    public static void IsFalse (bool expression, string message)
+    {
+      if (expression)
+        throw new AssertionException (message);
+    }
+
+    public static void IsFalse (bool expression)
+    {
+      IsFalse (expression, c_msgIsTrue);
+    }
+
+    public static void IsFalse (bool expression, string message, params bool[] arguments)
+    {
+      IsFalse (expression, string.Format (message, arguments));
+    }
+
+
+    public static void IsNotNull (object obj, string message)
+    {
+      if (obj == null)
+        throw new AssertionException (message);
+    }
+
+    public static void IsNotNull (object obj)
+    {
+      IsNotNull (obj, c_msgIsNull);
+    }
+
+    public static void IsNotNull (object obj, string message, params object[] arguments)
+    {
+      IsNotNull (obj, string.Format (message, arguments));
+    }
+
+
+    public static void IsNull (object obj, string message)
+    {
+      if (obj != null)
+        throw new AssertionException (message);
+    }
+
+    public static void IsNull (object obj)
+    {
+      IsNull (obj, c_msgIsNotNull);
+    }
+
+    public static void IsNull (object obj, string message, params object[] arguments)
+    {
+      IsNull (obj, string.Format (message, arguments));
     }
   }
 }

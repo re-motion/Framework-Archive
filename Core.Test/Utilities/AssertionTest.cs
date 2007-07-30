@@ -10,16 +10,16 @@ namespace Rubicon.Core.UnitTests.Utilities
   public class AssertionTest
   {
     [Test]
-    public void TestAssertionHolds ()
+    public void TestIsTrueHolds ()
     {
-      Rubicon.Utilities.Assertion.Assert (true);
+      Rubicon.Utilities.Assertion.IsTrue (true);
     }
 
     [Test]
     [ExpectedException (typeof (Rubicon.Utilities.AssertionException))]
-    public void TestAssertionFails ()
+    public void TestIsTrueFails ()
     {
-      Rubicon.Utilities.Assertion.Assert (false);
+      Rubicon.Utilities.Assertion.IsTrue (false);
     }
   }
 }

@@ -26,7 +26,7 @@ namespace Rubicon.Mixins.CodeGeneration
 
     internal static CustomAttributeBuilder BuilderFromClassContext (int mixinIndex, ClassContext context)
     {
-      Assertion.Assert (s_attributeCtor != null);
+      Assertion.IsNotNull (s_attributeCtor);
 
       ConcreteMixinTypeAttribute attribute = FromClassContext (mixinIndex, context);
       CustomAttributeBuilder builder = new CustomAttributeBuilder (s_attributeCtor, new object[] { attribute.MixinIndex, attribute.BaseType,

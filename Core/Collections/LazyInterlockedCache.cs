@@ -18,7 +18,7 @@ namespace Rubicon.Collections
   /// </remarks>
   /// <typeparam name="TKey"> Type of the cache key. </typeparam>
   /// <typeparam name="TValue"> Type of the cache value. </typeparam>
-  [Obsolete ("Experimental code. Stability and performance advantages questionable. Use SimpleInterlockedCache for production code. Both implement ICache")] 
+  [Obsolete ("Experimental code. Stability and performance advantages questionable. Use InterlockedCache for production code. Both implement ICache")] 
   public class LazyInterlockedCache<TKey, TValue>: ICache<TKey, TValue>
   {
     private class ValueContainer
@@ -100,7 +100,8 @@ namespace Rubicon.Collections
         }
         catch
         {
-          _cache.Remove (key);
+          lock (_cache)
+            _cache.Remove (key);
           valueContainer.IsValid = false;
           throw;
         }

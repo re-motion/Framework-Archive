@@ -41,7 +41,40 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Rubicon.Core, Version=1.7.44.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\egoraWS\egoraFX\Rubicon.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Rubicon.Data.DomainObjects, Version=1.7.44.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\egoraWS\egoraFX\Rubicon.Data.DomainObjects.dll</HintPath>
+    </Reference>
+    <Reference Include="Rubicon.Data.DomainObjects.ObjectBinding, Version=1.7.44.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\egoraWS\egoraFX\Rubicon.Data.DomainObjects.ObjectBinding.dll</HintPath>
+    </Reference>
+    <Reference Include="Rubicon.Data.DomainObjects.ObjectBinding.Web, Version=1.7.44.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\egoraWS\egoraFX\Rubicon.Data.DomainObjects.ObjectBinding.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Rubicon.Data.DomainObjects.Web, Version=1.7.44.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\egoraWS\egoraFX\Rubicon.Data.DomainObjects.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Rubicon.ObjectBinding, Version=1.7.44.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\egoraWS\egoraFX\Rubicon.ObjectBinding.dll</HintPath>
+    </Reference>
+    <Reference Include="Rubicon.ObjectBinding.Web, Version=1.7.44.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\egoraWS\egoraFX\Rubicon.ObjectBinding.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Rubicon.Web, Version=1.7.44.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\egoraWS\egoraFX\Rubicon.Web.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Web" />
     <Reference Include="System.XML" />
   </ItemGroup>

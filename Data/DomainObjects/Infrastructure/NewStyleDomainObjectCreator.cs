@@ -28,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       return instance;
     }
 
-    public IInvokeWith<T> GetTypesafeConstructorInvoker<T> ()
+    public IFuncInvoker<T> GetTypesafeConstructorInvoker<T> ()
        where T : DomainObject
     {
       IDomainObjectFactory factory = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory;

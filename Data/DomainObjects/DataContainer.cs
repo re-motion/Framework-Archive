@@ -202,7 +202,7 @@ public class DataContainer
     {
       if (_domainObject == null)
       {
-        Assertion.Assert (!IsDiscarded, "DataContainers cannot be discarded when they don't have a DomainObject referende");
+        Assertion.IsFalse (IsDiscarded, "DataContainers cannot be discarded when they don't have a DomainObject referende");
         _domainObject = DomainObject.CreateWithDataContainer (this);
       }
 
@@ -398,7 +398,7 @@ public class DataContainer
   internal void SetDomainObject (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    Assertion.Assert (_domainObject == null || _domainObject == domainObject, "a DataContainer can only be associated with one DomainObject");
+    Assertion.IsTrue (_domainObject == null || _domainObject == domainObject, "a DataContainer can only be associated with one DomainObject");
     
     _domainObject = domainObject;
   }
@@ -493,14 +493,14 @@ public class DataContainer
 
   internal void AssumeSameState (DataContainer sourceContainer, bool overwriteStateType)
   {
-    Assertion.Assert (sourceContainer.ClassDefinition == ClassDefinition);
+    Assertion.IsTrue (sourceContainer.ClassDefinition == ClassDefinition);
 
     if (overwriteStateType)
       _state = sourceContainer._state;
     _timestamp = sourceContainer._timestamp;
     _isDiscarded = sourceContainer._isDiscarded;
     
-    Assertion.Assert (_domainObject == null || sourceContainer._domainObject == null || _domainObject == sourceContainer._domainObject,
+    Assertion.IsTrue (_domainObject == null || sourceContainer._domainObject == null || _domainObject == sourceContainer._domainObject,
         "State should only be copied between DataContainers referring to the same DomainObjects");
     _domainObject = sourceContainer._domainObject;
    

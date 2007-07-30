@@ -14,7 +14,14 @@ namespace Rubicon.Core.UnitTests.Utilities.ArgumentUtilityTests
 			ArgumentUtility.CheckType<string> ("arg", 13);
 		}
 
-		[Test]
+    [Test]
+    [ExpectedException (typeof (ArgumentNullException))]
+    public void Fail_ValueType ()
+    {
+      ArgumentUtility.CheckType<int> ("arg", (object) null);
+    }
+    
+    [Test]
 		public void Succeed_Null ()
 		{
 			string result = ArgumentUtility.CheckType<string> ("arg", null);

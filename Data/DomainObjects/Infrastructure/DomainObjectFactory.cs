@@ -72,7 +72,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="ArgumentNullException">The <paramref name="type"/> argument is null.</exception>
     /// <exception cref="ArgumentException"><paramref name="type"/> is not the same or a subtype of <typeparamref name="TMinimal"/> or
     /// <paramref name="type"/> wasn't created by this kind of factory.</exception>
-    public IInvokeWith<TMinimal> GetTypesafeConstructorInvoker<TMinimal> (Type type)
+    public IFuncInvoker<TMinimal> GetTypesafeConstructorInvoker<TMinimal> (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       return _generator.MakeTypesafeConstructorInvoker<TMinimal> (type);

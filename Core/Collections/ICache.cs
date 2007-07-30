@@ -13,3 +13,4 @@ namespace Rubicon.Collections
     void Clear();
   }
 }
+

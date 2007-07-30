@@ -135,7 +135,7 @@ namespace Rubicon.Utilities
       ArgumentUtility.CheckNotNull ("site", site);
 
       IDesignerHost designerHost = (IDesignerHost) site.GetService (typeof (IDesignerHost));
-      Assertion.Assert (designerHost != null, "No IDesignerHost found.");
+      Assertion.IsNotNull (designerHost, "No IDesignerHost found.");
       Type type = designerHost.GetType (TypeUtility.ParseAbbreviatedTypeName (abbreviatedTypeName));
       if (type == null && throwOnError)
         throw new TypeLoadException (string.Format ("Could not load type '{0}'.", TypeUtility.ParseAbbreviatedTypeName (abbreviatedTypeName)));

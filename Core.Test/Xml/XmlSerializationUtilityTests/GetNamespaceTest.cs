@@ -13,7 +13,7 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
   public class GetNamespaceTest
   {
     [Test]
-    public void Test_WithXmlTypeAttribute()
+    public void WithXmlTypeAttribute()
     {
       Type type = CreateType ("SampleType", CreateXmlTypeAttributeBuilder ("http://type-namespace"));
       Assert.AreEqual ("http://type-namespace", XmlSerializationUtility.GetNamespace (type));
@@ -22,14 +22,14 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot determine the xml namespace of type 'SampleType' because neither an "
         + "XmlTypeAttribute nor an XmlRootAttribute is used to define a namespace for the type.\r\nParameter name: type")]
-    public void Test_WithXmlTypeAttributeWithoutNamespace()
+    public void WithXmlTypeAttributeWithoutNamespace()
     {
       Type type = CreateType ("SampleType", CreateXmlTypeAttributeBuilder (null));
       XmlSerializationUtility.GetNamespace (type);
     }
 
     [Test]
-    public void Test_WithXmlRootAttribute()
+    public void WithXmlRootAttribute()
     {
       Type type = CreateType ("SampleType", CreateXmlRootAttributeBuilder ("http://root-namespace"));
       Assert.AreEqual ("http://root-namespace", XmlSerializationUtility.GetNamespace (type));
@@ -38,14 +38,14 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot determine the xml namespace of type 'SampleType' because neither an "
         + "XmlTypeAttribute nor an XmlRootAttribute is used to define a namespace for the type.\r\nParameter name: type")]
-    public void Test_WithXmlRootAttributeWithoutNamespace()
+    public void WithXmlRootAttributeWithoutNamespace()
     {
       Type type = CreateType ("SampleType", CreateXmlRootAttributeBuilder (null));
       XmlSerializationUtility.GetNamespace (type);
     }
 
     [Test]
-    public void Test_WithXmlRootAttributeWithTypeAlsoHavingAnXmlTypeAttribute()
+    public void WithXmlRootAttributeWithTypeAlsoHavingAnXmlTypeAttribute()
     {
       Type type = CreateType (
           "SampleType",
@@ -57,7 +57,7 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot determine the xml namespace of type 'SampleType' because no neither an XmlTypeAttribute"
         + " nor an XmlRootAttribute has been provided.\r\nParameter name: type")]
-    public void Test_WithoutXmlRootAttributeAndWithoutXmlTypeAttribute()
+    public void WithoutXmlRootAttributeAndWithoutXmlTypeAttribute()
     {
       Type type = CreateType ("SampleType");
       XmlSerializationUtility.GetNamespace (type);

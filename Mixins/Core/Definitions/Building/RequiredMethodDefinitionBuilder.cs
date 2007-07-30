@@ -86,7 +86,7 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private void ApplyForImplementedInterface (RequirementDefinitionBase requirement)
     {
-      Assertion.Assert (requirement.Type.IsInterface);
+      Assertion.IsTrue (requirement.Type.IsInterface);
       InterfaceMapping interfaceMapping = _baseClassDefinition.GetAdjustedInterfaceMap (requirement.Type);
       for (int i = 0; i < interfaceMapping.InterfaceMethods.Length; ++i)
       {
@@ -99,7 +99,7 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private void ApplyForIntroducedInterface (RequirementDefinitionBase requirement)
     {
-      Assertion.Assert (requirement.Type.IsInterface);
+      Assertion.IsTrue (requirement.Type.IsInterface);
       InterfaceIntroductionDefinition introduction = _baseClassDefinition.IntroducedInterfaces[requirement.Type];
       foreach (EventIntroductionDefinition eventIntroduction in introduction.IntroducedEvents)
       {
@@ -117,12 +117,12 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private void ApplyWithDuckTyping (RequirementDefinitionBase requirement)
     {
-      Assertion.Assert (requirement.Type.IsInterface);
+      Assertion.IsTrue (requirement.Type.IsInterface);
       SpecialMethods specialMethods = new SpecialMethods (requirement);
 
       foreach (MethodInfo interfaceMethod in requirement.Type.GetMethods())
       {
-        Assertion.Assert (!interfaceMethod.IsStatic);
+        Assertion.IsFalse (interfaceMethod.IsStatic);
         MethodDefinition implementingMethod = specialMethods.FindMethodUsingSpecials (requirement, interfaceMethod, specialMethods);
         if (implementingMethod == null)
           implementingMethod = FindMethod (requirement, interfaceMethod, _baseClassDefinition.Methods);
@@ -134,7 +134,7 @@ namespace Rubicon.Mixins.Definitions.Building
     {
       if (interfaceMethod != null)
       {
-        Assertion.Assert (implementingMethod != null);
+        Assertion.IsNotNull (implementingMethod);
         requirement.Methods.Add (new RequiredMethodDefinition (requirement, interfaceMethod, implementingMethod));
       }
     }

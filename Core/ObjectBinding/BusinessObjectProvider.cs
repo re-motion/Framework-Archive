@@ -22,7 +22,7 @@ namespace Rubicon.ObjectBinding
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("serviceType", serviceType, typeof (IBusinessObjectService));
 
       ICache<Type, IBusinessObjectService> serviceCache = ServiceCache;
-      Assertion.Assert (serviceCache != null, "The ServiceCache evaluated and returned null. It should return a null object instead.");
+      Assertion.IsNotNull (serviceCache, "The ServiceCache evaluated and returned null. It should return a null object instead.");
       IBusinessObjectService service;
       if (serviceCache.TryGetValue (serviceType, out service))
         return service;
@@ -44,7 +44,7 @@ namespace Rubicon.ObjectBinding
       ArgumentUtility.CheckNotNull ("service", service);
 
       ICache<Type, IBusinessObjectService> serviceCache = ServiceCache;
-      Assertion.Assert (serviceCache != null, "The ServiceCache evaluated and returned null. It should return a null object instead.");
+      Assertion.IsNotNull (serviceCache, "The ServiceCache evaluated and returned null. It should return a null object instead.");
       serviceCache.Add (serviceType, service);
     }
 

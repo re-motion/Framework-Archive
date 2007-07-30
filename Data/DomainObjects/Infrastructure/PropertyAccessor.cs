@@ -67,7 +67,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         case PropertyKind.RelatedObject:
           return RelatedObjectPropertyAccessorStrategy.Instance;
         default:
-          Assertion.Assert (kind == PropertyKind.RelatedObjectCollection);
+          Assertion.IsTrue (kind == PropertyKind.RelatedObjectCollection);
           return RelatedObjectCollectionPropertyAccessorStrategy.Instance;
       }
     }

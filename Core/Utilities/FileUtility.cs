@@ -4,6 +4,7 @@ using System.Threading;
 
 namespace Rubicon.Utilities
 {
+  // TODO: comment http://at-vie-svn.int.rubicon-it.com/wiki/pmwiki.php/KnowledgeBase/FileDeleteKannAsynchronSein
   public static class FileUtility
   {
     public static void DeleteOnDemandAndWaitForCompletion (string fileName)

@@ -313,9 +313,9 @@ public class DataManager
       newDiscardedContainer.SetDomainObject (discardedDataContainer.DomainObject);
       newDiscardedContainer.Delete ();
 
-      Assertion.Assert (IsDiscarded (newDiscardedContainer.ID),
+      Assertion.IsTrue (IsDiscarded (newDiscardedContainer.ID),
           "newDiscardedContainer.Delete must have inserted the DataContainer into the list of discarded objects");
-      Assertion.Assert (GetDiscardedDataContainer (newDiscardedContainer.ID) == newDiscardedContainer);
+      Assertion.IsTrue (GetDiscardedDataContainer (newDiscardedContainer.ID) == newDiscardedContainer);
     }
   }
 }

@@ -23,7 +23,7 @@ namespace Rubicon.Mixins.Definitions.Building
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("mixin", mixin);
 
-      Assertion.Assert (type != typeof (object), "This method will not be called for typeof (object).");
+      Assertion.IsTrue (type != typeof (object), "This method will not be called for typeof (object).");
 
       if (!type.IsInterface)
       {

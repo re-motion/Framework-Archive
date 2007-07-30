@@ -108,13 +108,13 @@
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
     <ProjectReference Include="..\Development\Core\Development.Core.csproj">
-      <Name>Development.Core</Name>
       <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Name>Development.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\SetTest.cs" />
+    <Compile Include="Collections\AutoInitDictionaryTest.cs" />
     <Compile Include="Configuration\ExtendedProviderBaseTest.cs" />
     <Compile Include="Configuration\FakeWellKnownProvider.cs" />
     <Compile Include="Configuration\IFakeProvider.cs" />
@@ -219,6 +219,7 @@
     <TestAssembly Include="Reflection\TestAssemblies\MarkedExeAssemblyInDynamicDirectory\AssemblyInfo.cs" />
     <Compile Include="Reflection\InheritanceHierarchyFilterTest.cs" />
     <TestAssembly Include="Reflection\TestAssemblies\MarkedAssemblyWithOtherFileNameInRelativeSearchPath\AssemblyInfo.cs" />
+    <Compile Include="Reflection\MethodCallerTest.cs" />
     <Compile Include="Reflection\TypesafeActivatorTest.cs" />
     <Compile Include="Text\CommandLine\CommandLineClassParserTest.cs">
       <SubType>Code</SubType>
@@ -247,10 +248,9 @@
     <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullOrItemsNull.cs" />
     <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullOrEmpty.cs" />
     <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullAndType.cs" />
-    <Compile Include="Utilities\ArgumentUtilityTests\CheckValueType.cs" />
-    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullAndValueType.cs" />
     <Compile Include="Utilities\ArgumentUtilityTests\CheckEnums.cs" />
     <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullOrEmptyOrItemsNull.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\CheckType2.cs" />
     <Compile Include="Utilities\ArrayUtilityTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -309,8 +309,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Xml\SchemaLoaderBaseTest.cs" />
-    <Compile Include="Xml\XmlSerializationUtilityTests\DeserializeUsingSchemaWithXmlTextReaderTest.cs" />
-    <Compile Include="Xml\XmlSerializationUtilityTests\DeserializeUsingSchemaWithXmlReaderTest.cs" />
+    <Compile Include="Xml\XmlSerializationUtilityTests\DeserializeUsingSchema.cs" />
     <Compile Include="Xml\XmlSerializationUtilityTests\GetNamespaceTest.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="Core.Test.build" />

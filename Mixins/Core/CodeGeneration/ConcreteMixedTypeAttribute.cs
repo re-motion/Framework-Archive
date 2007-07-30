@@ -43,7 +43,7 @@ namespace Rubicon.Mixins.CodeGeneration
 
     internal static CustomAttributeBuilder BuilderFromClassContext (ClassContext context)
     {
-      Assertion.Assert (s_attributeCtor != null);
+      Assertion.IsNotNull (s_attributeCtor);
 
       ConcreteMixedTypeAttribute attribute = FromClassContext (context);
       CustomAttributeBuilder builder = new CustomAttributeBuilder (s_attributeCtor,

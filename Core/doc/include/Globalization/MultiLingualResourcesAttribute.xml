@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?> 
-<Class>
+<?xml version="1.0" encoding="utf-8" ?>
+<MultiLingualResourcesAttribute>
   <GetResourceManager>
     <Common>
       <remarks>
@@ -46,4 +46,4 @@
       The <b>MultiLingualResourcesAttribute</b> instances associated with <paramref name="concreteType"/>.
     </param>
   </GetResourceNameAndType>
-</Class>
+</MultiLingualResourcesAttribute>

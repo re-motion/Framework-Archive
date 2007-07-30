@@ -300,10 +300,7 @@
       <SubType>Code</SubType>
     </Compile>
     <None Include="Properties\AssemblyInfoTemplate.cs" />
-    <None Include="Doc\Bugs and ToDos.xls" />
     <None Include="ObjectBinding.Web.build" />
-    <Content Include="Doc\BocList.txt" />
-    <Content Include="Doc\Business Object Controls Features.txt" />
     <Content Include="Doc\include\NamespaceDoc.xml" />
     <Content Include="Doc\include\UI\Controls\BocBooleanValue.xml" />
     <Content Include="Doc\include\UI\Controls\BocCheckBox.xml" />

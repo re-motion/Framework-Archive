@@ -29,7 +29,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     public void AddBaseCallToNextInChain (MethodDefinition methodDefinitionOnTarget)
     {
-      Assertion.Assert (methodDefinitionOnTarget.DeclaringClass == _baseClassConfiguration);
+      Assertion.IsTrue(methodDefinitionOnTarget.DeclaringClass == _baseClassConfiguration);
 
       for (int potentialDepth = 0; potentialDepth < _baseClassConfiguration.Mixins.Count; ++potentialDepth)
       {
@@ -41,7 +41,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private MethodDefinition GetNextInBaseChain (MethodDefinition methodDefinitionOnTarget, int potentialDepth)
     {
-      Assertion.Assert (methodDefinitionOnTarget.DeclaringClass == _baseClassConfiguration);
+      Assertion.IsTrue (methodDefinitionOnTarget.DeclaringClass == _baseClassConfiguration);
 
       for (int i = potentialDepth; i < _baseClassConfiguration.Mixins.Count; ++i)
         if (methodDefinitionOnTarget.Overrides.ContainsKey (_baseClassConfiguration.Mixins[i].Type))

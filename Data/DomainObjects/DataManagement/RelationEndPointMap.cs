@@ -700,7 +700,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
       newEndPoint.RegisterWithMap (this);
 
       int position = _relationEndPoints.Add (newEndPoint);
-      Assertion.Assert (position == i + startingPosition);
+      Assertion.IsTrue (position == i + startingPosition);
     }
   }
 

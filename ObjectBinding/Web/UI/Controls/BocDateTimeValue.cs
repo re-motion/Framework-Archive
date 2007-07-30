@@ -1117,7 +1117,7 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
   protected override object ValueImplementation
   {
     get { return Value; }
-    set { Value = ArgumentUtility.CheckValueType<DateTime> ("value", value); }
+    set { Value = ArgumentUtility.CheckType<DateTime> ("value", value); }
   }
 
   /// <summary> Gets or sets the string displayed in the <see cref="DateTextBox"/>. </summary>

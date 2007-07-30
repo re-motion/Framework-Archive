@@ -132,7 +132,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       LocalReference firstAttributeLocal = _emitter.LoadCustomAttribute (emitter.CodeBuilder, typeof (ConcreteMixedTypeAttribute), 0);
 
       MethodInfo getBaseClassDefinitionMethod = typeof (ConcreteMixedTypeAttribute).GetMethod ("GetBaseClassDefinition");
-      Assertion.Assert (getBaseClassDefinitionMethod != null);
+      Assertion.IsNotNull (getBaseClassDefinitionMethod);
       emitter.CodeBuilder.AddStatement (new AssignStatement (_configurationField,
           new VirtualMethodInvocationExpression (firstAttributeLocal, getBaseClassDefinitionMethod)));
 
@@ -237,8 +237,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private CustomEventEmitter ImplementIntroducedEvent (EventIntroductionDefinition eventIntro, Expression implementerExpression)
     {
-      Assertion.Assert (eventIntro.ImplementingMember.AddMethod != null);
-      Assertion.Assert (eventIntro.ImplementingMember.RemoveMethod != null);
+      Assertion.IsNotNull (eventIntro.ImplementingMember.AddMethod);
+      Assertion.IsNotNull (eventIntro.ImplementingMember.RemoveMethod);
 
       CustomEventEmitter eventEmitter = Emitter.CreateEventOverrideOrInterfaceImplementation (eventIntro.InterfaceMember);
       eventEmitter.AddMethod = ImplementIntroducedMethod (
@@ -269,7 +269,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementRequiredDuckMethod (RequiredMethodDefinition requiredMethod)
     {
-      Assertion.Assert (requiredMethod.ImplementingMethod.DeclaringClass == Configuration,
+      Assertion.IsTrue (requiredMethod.ImplementingMethod.DeclaringClass == Configuration,
         "Duck typing is only supported with members from the base type");
 
       CustomMethodEmitter methodImplementation = _emitter.CreateMethodOverrideOrInterfaceImplementation (requiredMethod.InterfaceMethod);
@@ -341,7 +341,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private MethodInfo ImplementBaseCallMethod (MethodInfo method)
     {
-      Assertion.Assert (ReflectionUtility.IsPublicOrProtected (method));
+      Assertion.IsTrue (ReflectionUtility.IsPublicOrProtected (method));
 
       MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
       CustomMethodEmitter baseCallMethod = new CustomMethodEmitter (Emitter.InnerEmitter, "__base__" + method.Name, attributes);

@@ -7,6 +7,7 @@ using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Context;
 using System.Reflection;
 using Rubicon.Mixins.Definitions.Building;
+using Rubicon.Reflection;
 
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
@@ -52,7 +53,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         return TypeFactory.GetConcreteType (targetType);
     }
 
-    public InvokeWithWrapper<T> CreateMixedObject<T> (params Type[] mixinTypes)
+    public FuncInvokerWrapper<T> CreateMixedObject<T> (params Type[] mixinTypes)
     {
       using (MixinConfiguration.ScopedExtend (typeof (T), mixinTypes))
         return ObjectFactory.Create<T>();

@@ -64,7 +64,7 @@ namespace Rubicon.Mixins.Definitions.Building
         else if (candidate.Name.EndsWith (interfaceMember.Name) && comparer.Equals (interfaceMember, (TMemberInfo) candidate.MemberInfo))
           weakCandidates.Add (candidate);
 
-      Assertion.Assert (strongCandidates.Count == 0 || strongCandidates.Count == 1, "If this throws, we have an oversight in the candidate algorithm.");
+      Assertion.IsTrue (strongCandidates.Count == 0 || strongCandidates.Count == 1, "If this throws, we have an oversight in the candidate algorithm.");
 
       if (strongCandidates.Count == 1)
         return strongCandidates[0];

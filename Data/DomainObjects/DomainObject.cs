@@ -29,15 +29,15 @@ public class DomainObject
   /// Returns an invocation object creating a new instance of a concrete domain object for the current <see cref="DomainObjects.ClientTransaction"/>.
   /// </summary>
   /// <typeparam name="T">The concrete type to be implemented by the object.</typeparam>
-  /// <returns>An <see cref="InvokeWith{T}"/> object used to create a new domain object instance.</returns>
+  /// <returns>An <see cref="FuncInvoker{T}"/> object used to create a new domain object instance.</returns>
   /// <remarks>
   /// <para>
-  /// This method's return value is an <see cref="InvokeWith{T}"/> object, which can be used to specify the required constructor and 
+  /// This method's return value is an <see cref="FuncInvoker{T}"/> object, which can be used to specify the required constructor and 
   /// pass it the necessary arguments in order to create a new domain object. Depending on the mapping being used by the object (and
   /// on whether <see cref="FactoryInstantiationScope"/> is being used), one of two methods of object creation is used: legacy or via factory.
   /// </para>
   /// <para>
-  /// Legacy objects are created by simply invoking the constructor matching the arguments passed to the <see cref="InvokeWith{T}"/>
+  /// Legacy objects are created by simply invoking the constructor matching the arguments passed to the <see cref="FuncInvoker{T}"/>
   /// object returned by this method.
   /// </para>
   /// <para>
@@ -54,7 +54,7 @@ public class DomainObject
   /// constructor (see Remarks section).
   /// </exception>
   /// <exception cref="Exception">Any exception thrown by the constructor is propagated to the caller.</exception>
-  protected static IInvokeWith<T> NewObject<T> () where T : DomainObject
+  protected static IFuncInvoker<T> NewObject<T> () where T : DomainObject
   {
     return GetCreator (typeof (T)).GetTypesafeConstructorInvoker<T>();
   }
@@ -522,7 +522,7 @@ public class DomainObject
     DataContainer dataContainer = transaction.DataManager.DataContainerMap[ID];
     if (dataContainer == null)
       dataContainer = transaction.LoadDataContainerForExistingObject (this);
-    Assertion.Assert (dataContainer != null);
+    Assertion.IsNotNull (dataContainer);
 
     return dataContainer;
   }

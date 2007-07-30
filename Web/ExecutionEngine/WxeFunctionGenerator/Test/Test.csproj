@@ -122,4 +122,8 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PreBuildEvent>cd $(ProjectDir)
+$(SolutionDir)\WxeFunctionGenerator\bin\$(ConfigurationName)\wxegen.exe *.aspx.cs Generated.cs /v-</PreBuildEvent>
+  </PropertyGroup>
 </Project>

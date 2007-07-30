@@ -49,7 +49,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       Type concreteType = ConcreteTypeBuilder.Current.GetConcreteType (_baseClassDefinition);
 
       _extensions = (object[]) info.GetValue ("__extensions", typeof (object[]));
-      Assertion.Assert (_extensions != null);
+      Assertion.IsNotNull (_extensions);
 
       _baseMemberValues = (object[]) info.GetValue ("__baseMemberValues", typeof (object[]));
 
@@ -60,7 +60,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         _deserializedObject = (IMixinTarget) FormatterServices.GetSafeUninitializedObject (concreteType);
       else
       {
-        Assertion.Assert (typeof (ISerializable).IsAssignableFrom (concreteType));
+        Assertion.IsTrue (typeof (ISerializable).IsAssignableFrom (concreteType));
         _deserializedObject = (IMixinTarget) Activator.CreateInstance (concreteType, new object[] {info, context});
       }
     }

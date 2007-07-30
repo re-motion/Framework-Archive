@@ -96,7 +96,7 @@ namespace Rubicon.Mixins.Utilities
         throw new ArgumentException (message, "mixinTargetInstance");
       }
 
-      Assertion.Assert (castTarget.FirstBaseCallProxy != null);
+      Assertion.IsNotNull (castTarget.FirstBaseCallProxy);
       Type baseCallProxyType = castTarget.FirstBaseCallProxy.GetType();
       return baseCallProxyType;
     }

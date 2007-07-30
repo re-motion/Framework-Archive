@@ -123,7 +123,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   internal override void AssumeSameState (RelationEndPoint source)
   {
-    Assertion.Assert (Definition == source.Definition);
+    Assertion.IsTrue (Definition == source.Definition);
 
     CollectionEndPoint sourceCollectionEndPoint = (CollectionEndPoint) source;
 

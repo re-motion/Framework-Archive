@@ -27,19 +27,14 @@ namespace Rubicon.Collections
 
     public bool Equals (Tuple<TA, TB> other)
     {
-      if (other == null)
-        return false;
-
-      return EqualityUtility.Equals (_a, other._a) 
+      return EqualityUtility.NotNullAndSameType (this, other)
+             && EqualityUtility.Equals (_a, other._a) 
              && EqualityUtility.Equals (_b, other._b);
     }
 
     public override bool Equals (object obj)
     {
-      Tuple<TA, TB> other = obj as Tuple<TA, TB>;
-      if (other == null)
-        return false;
-      return Equals (other);
+      return EqualityUtility.EqualsEquatable (this, obj);
     }
 
     public override int GetHashCode ()

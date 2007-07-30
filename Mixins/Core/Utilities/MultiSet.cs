@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Rubicon.Collections;
 
 namespace Rubicon.Mixins.Utilities
 {
@@ -38,7 +39,7 @@ namespace Rubicon.Mixins.Utilities
 
     public int GetItemCount (T item)
     {
-      return _items.GetValueCount (item);
+      return _items[item].Count;
     }
 
     public IEnumerable<T> GetUniqueItems()

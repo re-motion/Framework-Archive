@@ -28,7 +28,7 @@ public class UrlMappingSchemaTest
   }
 
   [Test]
-  [ExpectedException (typeof (XmlException))]
+  [ExpectedException (typeof (XmlSchemaValidationException))]
   public void LoadMappingWithEmptyPath()
   {
     UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithEmptyPath.xml");
@@ -42,7 +42,7 @@ public class UrlMappingSchemaTest
   }
 
   [Test]
-  [ExpectedException (typeof (XmlException))]
+  [ExpectedException (typeof (XmlSchemaValidationException))]
   public void LoadMappingWithEmptyFunctionType()
   {
     UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithEmptyFunctionType.xml");

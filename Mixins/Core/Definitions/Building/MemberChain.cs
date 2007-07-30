@@ -68,7 +68,7 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private bool IsOverridden (LinkedListNode<T> node)
     {
-      Assertion.Assert (node != null);
+      Assertion.IsNotNull (node);
       return node.Next != null && (ReflectionUtility.IsVirtualMember(node.Next.Value) && !ReflectionUtility.IsNewSlotMember (node.Next.Value));
     }
 

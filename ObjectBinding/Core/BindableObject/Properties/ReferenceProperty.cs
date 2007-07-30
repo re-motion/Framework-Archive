@@ -87,7 +87,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
       }
 
       ISearchAvailableObjectsService searchAvailableObjectsService = (ISearchAvailableObjectsService) BusinessObjectProvider.GetService (_searchServiceType);
-      Assertion.Assert (searchAvailableObjectsService != null, "The BusinessObjectProvider did not return a service for '{0}'.", _searchServiceType.FullName);
+      Assertion.IsNotNull (searchAvailableObjectsService, "The BusinessObjectProvider did not return a service for '{0}'.", _searchServiceType.FullName);
 
       return searchAvailableObjectsService.Search (referencingObject, this, searchStatement);
     }

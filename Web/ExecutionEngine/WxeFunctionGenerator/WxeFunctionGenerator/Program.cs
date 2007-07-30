@@ -1,21 +1,19 @@
 using System;
-using System.Reflection;
 using System.IO;
-using System.Collections.Generic;
 using System.Text;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Xml;
-using System.Xml.Serialization;
 using System.Xml.Schema;
+using System.Xml.Serialization;
 using Rubicon.Text.CommandLine;
 using Rubicon.Web.ExecutionEngine;
 using WxeFunctionGenerator.Schema;
 
 // for DeserializeUsingSchema only
-using Rubicon.Utilities;
 using Rubicon.Xml;
-using log4net;
+using XmlSchemaValidationException=System.Xml.Schema.XmlSchemaValidationException;
+using System.Collections.Generic;
 
 namespace WxeFunctionGenerator
 {
@@ -26,7 +24,7 @@ namespace WxeFunctionGenerator
 
   public class Arguments
   {
-		[CommandLineStringArgument(false,
+		[CommandLineStringArgument (false,
 				Description = "File name or file mask for the input file(s)",
 				Placeholder = "filemask")]
 		public string FileMask;
@@ -45,13 +43,17 @@ namespace WxeFunctionGenerator
         Placeholder = "{CSharp|VB}")]
     public Language Language = Language.CSharp;
 
-		[CommandLineStringArgument("lineprefix", true,
+		[CommandLineStringArgument ("lineprefix", true,
 				Description = "Line prefix for WxePageFunction elements (default is // for C#, ' for VB.NET")]
 		public string LinePrefix = null;
 
     [CommandLineFlagArgument ("verbose", false,
         Description = "Verbose error information (default is off)")]
     public bool Verbose;
+
+    [CommandLineStringArgument ("prjfile", true,
+        Description = "Visual Studio project file (csprj). If specified, the output file is only generated if any of the input files OR the project file is newer than the output file.")]
+    public string ProjectFile;
   }
 
   class Program
@@ -94,7 +96,7 @@ namespace WxeFunctionGenerator
 							arguments.LinePrefix = "'";
 						break;
           default:
-            throw new Exception ();
+            throw new Exception ("Unknown language " + arguments.Language);
         }
 
         // generate classes for each [WxePageFunction] class
@@ -106,16 +108,38 @@ namespace WxeFunctionGenerator
 						Path.GetFileName (fileMask), 
 						arguments.Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
 
-				char[] whitespace = new char[] {' ', '\t'};
+        bool outputUpToDate = false; 
+        FileInfo outputFile = new FileInfo (arguments.OutputFile);
+        if (arguments.ProjectFile != null)
+        {                
+          if (outputFile.Exists)
+            outputUpToDate = true;
+
+          FileInfo projectFile = new FileInfo (arguments.ProjectFile);
+          if (! projectFile.Exists)
+            throw new ApplicationException ("Project file " + arguments.ProjectFile + " not found.");
+
+          if (outputUpToDate && projectFile.LastWriteTimeUtc > outputFile.LastWriteTimeUtc)
+            outputUpToDate = false;
+        }
+
+        char[] whitespace = new char[] {' ', '\t'};
 				foreach (FileInfo file in files)
 				{
+          if (outputUpToDate  && file.LastWriteTimeUtc > outputFile.LastWriteTimeUtc)
+            outputUpToDate = false;
+
 					StreamReader reader = new StreamReader (file.FullName, true);
 					string line = reader.ReadLine();
 					int lineNumber = 1;
 					int firstLineNumber = -1;
 					StringBuilder xmlFragment = null;
-					while (line != null)
+          List<int> indents = null;         // beginning line position for each line
+          bool validationFailed = false;
+
+          while (line != null)
 					{
+					  string originalLine = line;
 						line = line.TrimStart (whitespace);
 						if (line.StartsWith (arguments.LinePrefix))
 						{
@@ -126,7 +150,10 @@ namespace WxeFunctionGenerator
 								{
 									xmlFragment = new StringBuilder (1000);
 									xmlFragment.AppendFormat ("<{0} xmlns=\"{1}\"", FunctionDeclaration.ElementName, FunctionDeclaration.SchemaUri);
-									xmlFragment.Append (line.TrimStart(whitespace).Substring (FunctionDeclaration.ElementName.Length + 1));
+								  line = line.TrimStart (whitespace).Substring (FunctionDeclaration.ElementName.Length + 1);
+									xmlFragment.Append (line);
+								  indents = new List<int>();
+								  indents.Add (originalLine.IndexOf (line));
 
 									firstLineNumber = lineNumber;
 								}
@@ -135,26 +162,43 @@ namespace WxeFunctionGenerator
 							{
 								xmlFragment.AppendLine ();
 								xmlFragment.Append (line);
+                indents.Add (originalLine.IndexOf (line));
 								if (line.TrimEnd (whitespace).EndsWith ("</" + FunctionDeclaration.ElementName + ">"))
 								{
 									// fragment complete, process it
 									StringReader stringReader = new StringReader (xmlFragment.ToString());
+
 									XmlSchemaSet schemas = new XmlSchemaSet ();
 									schemas.Add (FunctionDeclaration.SchemaUri, FunctionDeclaration.GetSchemaReader ());
+
 									XmlReaderSettings settings = new XmlReaderSettings ();
-									settings.LineNumberOffset = firstLineNumber - 1;
 									settings.Schemas = schemas;
 									settings.ValidationType = ValidationType.Schema;
-								  XmlReader xmlReader = XmlReader.Create (stringReader, settings);
-									FunctionDeclaration declaration = (FunctionDeclaration) XmlSerializationUtility.DeserializeUsingSchema (
-                      xmlReader, file.Name, 
-											typeof (FunctionDeclaration), "http://www.rubicon-it.com/commons/web/wxefunctiongenerator", settings);
+                  settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
 
-									// XmlTextReader xmlReader = new XmlTextReader (stringReader);
-									// XmlSerializer serializer = new XmlSerializer (typeof (FunctionDeclaration), FunctionDeclaration.SchemaUri);
-									// FunctionDeclaration declaration = (FunctionDeclaration) serializer.Deserialize(xmlReader);
+	                settings.ValidationEventHandler += delegate (object sender, ValidationEventArgs e)
+                      {
+                        XmlSchemaException schemaError = e.Exception;
+                        Uri uri = new Uri (schemaError.SourceUri);
+                        string path = uri.IsFile ? uri.LocalPath : schemaError.SourceUri;
+                        Console.Error.WriteLine ("{0}({1},{2}): {3} WG{4:0000}: {5}",
+                            path,
+                            schemaError.LineNumber + firstLineNumber - 1, 
+                            schemaError.LinePosition + indents[schemaError.LineNumber - 1],
+                            e.Severity.ToString ().ToLower (),
+                            1,
+                            schemaError.Message); 
+                        if (e.Severity == XmlSeverityType.Error)
+                          validationFailed = true;
+                      };
 
-									GenerateClass (unit, declaration);
+								  XmlReader xmlReader = XmlReader.Create (stringReader, settings, file.FullName);
+									XmlSerializer serializer = new XmlSerializer (typeof (FunctionDeclaration), FunctionDeclaration.SchemaUri);
+
+									FunctionDeclaration declaration = (FunctionDeclaration) serializer.Deserialize(xmlReader);
+
+                  if (! validationFailed)
+  									GenerateClass (unit, declaration);
 								}
 							}
 						}
@@ -164,12 +208,15 @@ namespace WxeFunctionGenerator
 				}
 
         // write generated code
-			  using (TextWriter writer = new StreamWriter (arguments.OutputFile, false, Encoding.Unicode))
+        if (! outputUpToDate)
         {
-          Console.WriteLine ("Writing classes to " + arguments.OutputFile);
-          CodeGeneratorOptions options = new CodeGeneratorOptions ();
-          ICodeGenerator generator = provider.CreateGenerator (arguments.OutputFile);
-			    generator.GenerateCodeFromCompileUnit (unit, writer, options);
+          using (TextWriter writer = new StreamWriter (arguments.OutputFile, false, Encoding.Unicode))
+          {
+            Console.WriteLine ("Writing classes to " + arguments.OutputFile);
+            CodeGeneratorOptions options = new CodeGeneratorOptions();
+            ICodeGenerator generator = provider.CreateGenerator (arguments.OutputFile);
+            generator.GenerateCodeFromCompileUnit (unit, writer, options);
+          }
         }
 
         return 0;

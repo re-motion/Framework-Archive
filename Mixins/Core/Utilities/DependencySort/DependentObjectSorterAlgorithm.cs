@@ -71,7 +71,7 @@ namespace Rubicon.Mixins.Utilities.DependencySort
       }
       else
       {
-        Assertion.Assert (rootCandidates.Count > 1);
+        Assertion.IsTrue (rootCandidates.Count > 1);
         return _analyzer.ResolveEqualRoots (rootCandidates);
       }
     }

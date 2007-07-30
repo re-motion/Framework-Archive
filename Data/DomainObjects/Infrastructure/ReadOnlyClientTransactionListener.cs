@@ -39,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public void SubTransactionCreated (ClientTransaction subTransaction)
     {
-      Assertion.Assert (_clientTransaction.IsReadOnly); // after a subtransaction has been created, the parent must be read-only
+      Assertion.IsTrue (_clientTransaction.IsReadOnly); // after a subtransaction has been created, the parent must be read-only
     }
 
     public void NewObjectCreating (Type type)
@@ -54,7 +54,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public void ObjectsLoaded (DomainObjectCollection domainObjects)
     {
-      Assertion.Assert (!_clientTransaction.IsReadOnly);
+      Assertion.IsFalse (_clientTransaction.IsReadOnly);
     }
 
     public void ObjectDeleting (DomainObject domainObject)
@@ -64,7 +64,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public void ObjectDeleted (DomainObject domainObject)
     {
-      Assertion.Assert (!_clientTransaction.IsReadOnly);
+      Assertion.IsFalse(_clientTransaction.IsReadOnly);
     }
 
     public void PropertyValueReading (DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
@@ -82,7 +82,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public void PropertyValueChanged (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
-      Assertion.Assert (!_clientTransaction.IsReadOnly);
+      Assertion.IsFalse (_clientTransaction.IsReadOnly);
     }
 
     public void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess)
@@ -104,7 +104,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public void RelationChanged (DomainObject domainObject, string propertyName)
     {
-      Assertion.Assert (!_clientTransaction.IsReadOnly);
+      Assertion.IsFalse (_clientTransaction.IsReadOnly);
     }
 
     public void FilterQueryResult (DomainObjectCollection queryResult, IQuery query)
@@ -118,7 +118,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public void TransactionCommitted (DomainObjectCollection domainObjects)
     {
-      Assertion.Assert (!_clientTransaction.IsReadOnly);
+      Assertion.IsFalse (_clientTransaction.IsReadOnly);
     }
 
     public void TransactionRollingBack (DomainObjectCollection domainObjects)
@@ -128,7 +128,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public void TransactionRolledBack (DomainObjectCollection domainObjects)
     {
-      Assertion.Assert (!_clientTransaction.IsReadOnly);
+      Assertion.IsFalse (_clientTransaction.IsReadOnly);
     }
 
     public void RelationEndPointMapRegistering (RelationEndPoint endPoint)
@@ -138,17 +138,17 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public void RelationEndPointMapUnregistering (RelationEndPointID endPointID)
     {
-      Assertion.Assert (!_clientTransaction.IsReadOnly);
+      Assertion.IsFalse (_clientTransaction.IsReadOnly);
     }
 
     public void RelationEndPointMapPerformingDelete (RelationEndPointID[] endPointIDs)
     {
-      Assertion.Assert (!_clientTransaction.IsReadOnly);
+      Assertion.IsFalse (_clientTransaction.IsReadOnly);
     }
 
     public void RelationEndPointMapCopyingFrom (RelationEndPointMap source)
     {
-      Assertion.Assert (!_clientTransaction.IsReadOnly);
+      Assertion.IsFalse (_clientTransaction.IsReadOnly);
     }
 
     public void RelationEndPointMapCopyingTo (RelationEndPointMap source)
@@ -157,12 +157,12 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public void DataManagerMarkingObjectDiscarded (ObjectID id)
     {
-      Assertion.Assert (!_clientTransaction.IsReadOnly);
+      Assertion.IsFalse (_clientTransaction.IsReadOnly);
     }
 
     public void DataManagerCopyingFrom (DataManager source)
     {
-      Assertion.Assert (!_clientTransaction.IsReadOnly);
+      Assertion.IsFalse (_clientTransaction.IsReadOnly);
     }
 
     public void DataManagerCopyingTo (DataManager destination)
@@ -171,17 +171,17 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public void DataContainerMapRegistering (DataContainer container)
     {
-      Assertion.Assert (!_clientTransaction.IsReadOnly);
+      Assertion.IsFalse (_clientTransaction.IsReadOnly);
     }
 
     public void DataContainerMapUnregistering (DataContainer container)
     {
-      Assertion.Assert (!_clientTransaction.IsReadOnly);
+      Assertion.IsFalse (_clientTransaction.IsReadOnly);
     }
 
     public void DataContainerMapCopyingFrom (DataContainerMap source)
     {
-      Assertion.Assert (!_clientTransaction.IsReadOnly);
+      Assertion.IsFalse (_clientTransaction.IsReadOnly);
     }
 
     public void DataContainerMapCopyingTo (DataContainerMap destination)

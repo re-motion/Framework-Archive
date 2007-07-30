@@ -65,7 +65,7 @@ namespace Rubicon.Mixins.Utilities
             propertyValues.Add (GetRealCustomAttributeArgumentValue (namedArgument.TypedValue));
             break;
           default:
-            Assertion.Assert (false);
+            Assertion.IsTrue (false);
             break;
         }
       }

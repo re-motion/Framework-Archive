@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Rubicon.Utilities;
+using Rubicon.Reflection;
 
 namespace Rubicon.Collections
 {
-
   /// <summary>
   ///   A hashtable that automatically creates new value objects when queried for a specific key.
   /// </summary>
@@ -35,10 +36,10 @@ namespace Rubicon.Collections
 
     private object CreateObject ()
     {
-      if (_valueType != null)
-        return Activator.CreateInstance (_valueType);
-      else
+      if (_createMethod != null)
         return _createMethod ();
+      else
+        return Activator.CreateInstance (_valueType);
     }
 
     public override object this[object key]

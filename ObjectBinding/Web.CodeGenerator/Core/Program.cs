@@ -81,8 +81,8 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 
 				if (arguments.UIGenConfiguration != null)
 				{
-					UiGenerator generator = new UiGenerator(new UiGenerator.OutputMethod(
-							System.Console.WriteLine),
+					UiGenerator generator = new UiGenerator(
+              new UiGenerator.OutputMethod(System.Console.WriteLine),
 							arguments.UIGenConfiguration,
               arguments.AssemblyDirectory);
 
@@ -99,6 +99,6 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 			}
 
 			return 0;
-		}
+		 }
 	}
 }

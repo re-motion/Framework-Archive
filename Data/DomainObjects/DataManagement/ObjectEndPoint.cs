@@ -103,7 +103,7 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
 
   internal override void AssumeSameState (RelationEndPoint source)
   {
-    Assertion.Assert (Definition == source.Definition);
+    Assertion.IsTrue (Definition == source.Definition);
 
     ObjectEndPoint sourceObjectEndPoint = (ObjectEndPoint)source;
 

@@ -52,7 +52,7 @@ public class CommandLineFlagArgument: CommandLineArgument
         break;
 
       default:
-        throw new ArgumentOutOfRangeException ("value", value, "Flag parameters support only + and - as arguments.");
+        throw new InvalidCommandLineArgumentValueException (this, "Flag parameters support only + and - as arguments.");
     }
 
     base.SetStringValue (value);

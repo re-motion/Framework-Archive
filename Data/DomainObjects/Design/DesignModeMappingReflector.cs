@@ -21,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.Design
       ArgumentUtility.CheckNotNull ("site", site);
 
       _typeDiscoveryService = (ITypeDiscoveryService) site.GetService (typeof (ITypeDiscoveryService));
-      Assertion.Assert (_typeDiscoveryService != null, "Look-up of 'ITypeDiscoveryService' via site.GetService(...) failed.");
+      Assertion.IsNotNull(_typeDiscoveryService, "Look-up of 'ITypeDiscoveryService' via site.GetService(...) failed.");
     }
 
     protected override Type[] GetDomainObjectTypes()

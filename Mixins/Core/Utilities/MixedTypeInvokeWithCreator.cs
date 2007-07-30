@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
+using Castle.DynamicProxy.Generators;
+using Rubicon.Collections;
 using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.Context;
 using Rubicon.Reflection;
@@ -10,12 +12,15 @@ using Rubicon.Text;
 
 namespace Rubicon.Mixins.Utilities
 {
+  using CacheKey = Tuple<Type, Type>; // target type, delegate type
+
   public static class MixedTypeInvokeWithCreator
   {
     private static ConstructorInfo s_scopeCtor = typeof (MixedTypeInstantiationScope).GetConstructor (new Type[] { typeof (object[]) });
     private static MethodInfo s_scopeDisposeMethod = typeof (MixedTypeInstantiationScope).GetMethod ("Dispose");
+    private static ICache<CacheKey, Delegate> s_delegateCache = new InterlockedCache<CacheKey, Delegate> ();
 
-    public static InvokeWithWrapper<T> CreateInvokeWithWrapper<T> (Type baseTypeOrInterface, params object[] mixinInstances)
+    public static FuncInvokerWrapper<T> CreateInvokeWithWrapper<T> (Type baseTypeOrInterface, params object[] mixinInstances)
     {
       Type typeToBeCreated = GetTypeToBeCreated (baseTypeOrInterface);
       Type concreteType;
@@ -28,24 +33,37 @@ namespace Rubicon.Mixins.Utilities
         throw new ArgumentException ("The given base type is invalid: " + ex.Message, "T");
       }
 
-      GetDelegateWith<T> constructionDelegateCreator = new CachedGetDelegateWith<T, Type> (
-          concreteType,
-          delegate (Type[] argumentTypes, Type delegateType)
+      return new FuncInvokerWrapper<T> (new FuncInvoker<object[], T> (
+          delegate (Type delegateType)
           {
-            Type[] realArgumentTypes = new Type[argumentTypes.Length - 1];
-            Array.Copy (argumentTypes, 1, realArgumentTypes, 0, realArgumentTypes.Length);
-
-            const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-            ConstructorInfo ctor = concreteType.GetConstructor (bindingFlags, null, CallingConventions.Any, realArgumentTypes, null);
-            if (ctor == null)
+            Delegate result;
+            CacheKey key = new CacheKey (concreteType, delegateType);
+            if (!s_delegateCache.TryGetValue (key, out result))
             {
-              string message = string.Format ("Type {0} does not contain a constructor with signature ({1}).", typeToBeCreated.FullName,
-                  SeparatedStringBuilder.Build (",", realArgumentTypes, delegate (Type t) { return t.FullName; }));
-              throw new MissingMethodException (message);
+              result = s_delegateCache.GetOrCreateValue (
+                  key,
+                  delegate
+                  {
+                    Type[] argumentTypes = ConstructorWrapper.GetParameterTypes (delegateType);
+                    Type[] realArgumentTypes = new Type[argumentTypes.Length - 1];
+                    Array.Copy (argumentTypes, 1, realArgumentTypes, 0, realArgumentTypes.Length);
+
+                    const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+                    ConstructorInfo ctor = concreteType.GetConstructor (bindingFlags, null, CallingConventions.Any, realArgumentTypes, null);
+                    if (ctor == null)
+                    {
+                      string message = string.Format (
+                          "Type {0} does not contain a constructor with signature ({1}).",
+                          typeToBeCreated.FullName,
+                          SeparatedStringBuilder.Build (",", realArgumentTypes, delegate (Type t) { return t.FullName; }));
+                      throw new MissingMethodException (message);
+                    }
+                    return CreateConstructionDelegateWithMixinInstances (ctor, delegateType);
+                  });
             }
-            return CreateConstructionDelegateWithMixinInstances (ctor, delegateType);
-          });
-      return new InvokeWithWrapper<T> (new InvokeWithBoundFirst<T, object[]> (constructionDelegateCreator, mixinInstances));
+            return result;
+          },
+          mixinInstances));
     }
 
     private static Type GetTypeToBeCreated (Type baseType)

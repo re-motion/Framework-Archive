@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Text;
 using System.Collections.Generic;
 
@@ -21,6 +22,28 @@ public class SeparatedStringBuilder
     return sb.ToString ();
   }
 
+  /// <summary>
+  /// Appends each item in the specified list.
+  /// </summary>
+  public static string Build<T> (string separator, IEnumerable<T> list)
+  {
+    SeparatedStringBuilder sb = new SeparatedStringBuilder (separator);
+    foreach (T item in list)
+      sb.Append (item);
+    return sb.ToString ();
+  }
+
+  /// <summary>
+  /// Appends each item in the specified list.
+  /// </summary>
+  public static string Build<T> (string separator, IEnumerable list)
+  {
+    SeparatedStringBuilder sb = new SeparatedStringBuilder (separator);
+    foreach (object obj in list)
+      sb.Append (obj);
+    return sb.ToString ();
+  }
+
   private string _separator;
   private StringBuilder _stringBuilder;
 
@@ -40,6 +63,12 @@ public class SeparatedStringBuilder
   {
     AppendSeparator();
     _stringBuilder.Append (s);
+  }
+
+  public void Append<T> (T arg)
+  {
+    AppendSeparator();
+    _stringBuilder.Append (arg.ToString());
   }
 
   public void AppendFormat (string format, params object[] args)

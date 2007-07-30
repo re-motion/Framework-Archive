@@ -167,7 +167,7 @@ public class DataContainerMap : IEnumerable
       DataContainer newContainer = source._dataContainers[i].Clone ();
       newContainer.SetClientTransaction (_clientTransaction);
       int position = _dataContainers.Add (newContainer);
-      Assertion.Assert (position == i + startingPosition);
+      Assertion.IsTrue (position == i + startingPosition);
     }
   }
 

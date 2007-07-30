@@ -50,7 +50,7 @@ namespace Rubicon.Data.DomainObjects
       {
         _disposed = true;
         --FactoryInstantiationScope.s_scopeCount;
-        Assertion.Assert (s_scopeCount >= 0);
+        Assertion.IsTrue (s_scopeCount >= 0);
       }
     }
 

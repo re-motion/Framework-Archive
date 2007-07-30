@@ -137,8 +137,8 @@ namespace Rubicon.Mixins
 
     internal void Initialize ([This] TThis @this, [Base] TBase @base, [Configuration] MixinDefinition configuration)
     {
-      Assertion.Assert (@this != null);
-      Assertion.Assert (@base != null);
+      Assertion.IsNotNull (@this);
+      Assertion.IsNotNull (@base);
       _base = @base;
       base.Initialize (@this, configuration);
     }
@@ -236,7 +236,7 @@ namespace Rubicon.Mixins
 
     internal void Initialize ([This] TThis @this, [Configuration] MixinDefinition configuration)
     {
-      Assertion.Assert (@this != null);
+      Assertion.IsNotNull (@this);
       _this = @this;
       _configuration = @configuration;
       OnInitialized();

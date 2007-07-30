@@ -28,7 +28,7 @@ namespace Rubicon.Mixins.Definitions.Building.DependencySorting
     {
       IEnumerator<MixinDefinition> equalRootsEnumerator = equalRoots.GetEnumerator();
       bool hasFirst = equalRootsEnumerator.MoveNext ();
-      Assertion.Assert (hasFirst);
+      Assertion.IsTrue (hasFirst);
       MixinDefinition first = equalRootsEnumerator.Current;
       string message = string.Format ("The following mixins are applied to the same base class {0} and require a clear base call ordering, but do not "
           + "provide enough dependency information: {1}.{2}Please add base call dependencies to the mixin definitions or adjust the mixin configuration "

@@ -10,20 +10,42 @@ namespace Rubicon.Core.UnitTests.Utilities.ArgumentUtilityTests
 	{
 		[Test]
 		[ExpectedException (typeof (ArgumentNullException))]
-		public void Fail_Null ()
+		public void Fail_Null_String ()
 		{
 			ArgumentUtility.CheckNotNullAndType ("arg", (object) null, typeof (string));
 		}
-		[Test]
+		
+    [Test]
 		[ExpectedException (typeof (ArgumentTypeException))]
-		public void Fail_Type ()
+		public void Fail_Type_String ()
 		{
 			ArgumentUtility.CheckNotNullAndType ("arg", 13, typeof (string));
 		}
-		[Test]
-		public void Succeed ()
-		{
-			ArgumentUtility.CheckNotNullAndType ("arg", "test", typeof (string));
-		}
+
+    [Test]
+    public void Succeed_String ()
+    {
+      ArgumentUtility.CheckNotNullAndType ("arg", "test", typeof (string));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentNullException))]
+    public void Fail_Null_Int ()
+    {
+      ArgumentUtility.CheckNotNullAndType ("arg", (object) null, typeof (int));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException))]
+    public void Fail_Type_Int ()
+    {
+      ArgumentUtility.CheckNotNullAndType ("arg", 13.0, typeof (int));
+    }
+
+    [Test]
+    public void Succeed_Int ()
+    {
+      ArgumentUtility.CheckNotNullAndType ("arg", 10, typeof (int));
+    }
 	}
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Reflection.Emit;
+using Rubicon.Collections;
 using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
@@ -13,6 +14,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins
 {
+
   /// <summary>
   /// Provides support for instantiating type which are combined with mixins.
   /// </summary>
@@ -36,7 +38,7 @@ namespace Rubicon.Mixins
     /// </summary>
     /// <typeparam name="T">The target type a mixed instance of which should be created.</typeparam>
     /// <returns>An object which can be used to instantiate a mixed type derived from <typeparamref name="T"/> and initialize the instance. Use the object's
-    /// <see cref="IInvokeWith{T}.With()"/> methods to actually create the mixed instance.</returns>
+    /// <see cref="IFuncInvoker{T}.With()"/> methods to actually create the mixed instance.</returns>
     /// <exception cref="ConfigurationException">The current mixin configuration for type <typeparamref name="T"/> contains severe problems that
     /// make generation of a <see cref="BaseClassDefinition"/> object impossible.</exception>
     /// <exception cref="ValidationException">The current mixin configuration for type <typeparamref name="T"/> violates at least one validation
@@ -54,7 +56,7 @@ namespace Rubicon.Mixins
     /// interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
     /// </remarks>
-    public static InvokeWithWrapper<T> Create<T> ()
+    public static FuncInvokerWrapper<T> Create<T> ()
     {
       return CreateWithMixinInstances<T>();
     }
@@ -64,7 +66,7 @@ namespace Rubicon.Mixins
     /// </summary>
     /// <param name="baseType">The target type a mixed instance of which should be created.</param>
     /// <returns>An object which can be used to instantiate a mixed type derived from <paramref name="baseType"/> and initialize the instance. Use the object's
-    /// <see cref="IInvokeWith{T}.With()"/> methods to actually create the mixed instance.</returns>
+    /// <see cref="IFuncInvoker{T}.With()"/> methods to actually create the mixed instance.</returns>
     /// <exception cref="ConfigurationException">The current mixin configuration for type <paramref name="baseType"/> contains severe problems that
     /// make generation of a <see cref="BaseClassDefinition"/> object impossible.</exception>
     /// <exception cref="ValidationException">The current mixin configuration for type <paramref name="baseType"/> violates at least one validation
@@ -83,7 +85,7 @@ namespace Rubicon.Mixins
     /// interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
     /// </remarks>
-    public static InvokeWithWrapper<object> Create (Type baseType)
+    public static FuncInvokerWrapper<object> Create (Type baseType)
     {
       ArgumentUtility.CheckNotNull ("baseType", baseType);
 
@@ -96,7 +98,7 @@ namespace Rubicon.Mixins
     /// <typeparam name="T">The target type a mixed instance of which should be created.</typeparam>
     /// <param name="mixinInstances">The pre-instantiated mixin instances to integrate into the mixed instance.</param>
     /// <returns>An object which can be used to instantiate a mixed type derived from <typeparamref name="T"/> and initialize the instance. Use the object's
-    /// <see cref="IInvokeWith{T}.With()"/> methods to actually create the mixed instance.</returns>
+    /// <see cref="IFuncInvoker{T}.With()"/> methods to actually create the mixed instance.</returns>
     /// <exception cref="ConfigurationException">The current mixin configuration for type <typeparamref name="T"/> contains severe problems that
     /// make generation of a <see cref="BaseClassDefinition"/> object impossible.</exception>
     /// <exception cref="ValidationException">The current mixin configuration for type <typeparamref name="T"/> violates at least one validation
@@ -129,7 +131,7 @@ namespace Rubicon.Mixins
     /// interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
     /// </remarks>
-    public static InvokeWithWrapper<T> CreateWithMixinInstances<T> (params object[] mixinInstances)
+    public static FuncInvokerWrapper<T> CreateWithMixinInstances<T> (params object[] mixinInstances)
     {
       return MixedTypeInvokeWithCreator.CreateInvokeWithWrapper<T> (typeof (T), mixinInstances);
     }
@@ -140,7 +142,7 @@ namespace Rubicon.Mixins
     /// <param name="baseType">The target type a mixed instance of which should be created.</param>
     /// <param name="mixinInstances">The pre-instantiated mixin instances to integrate into the mixed instance.</param>
     /// <returns>An object which can be used to instantiate a mixed type derived from <paramref name="baseType"/> and initialize the instance. Use the object's
-    /// <see cref="IInvokeWith{T}.With()"/> methods to actually create the mixed instance.</returns>
+    /// <see cref="IFuncInvoker{T}.With()"/> methods to actually create the mixed instance.</returns>
     /// <exception cref="ConfigurationException">The current mixin configuration for type <paramref name="baseType"/> contains severe problems that
     /// make generation of a <see cref="BaseClassDefinition"/> object impossible.</exception>
     /// <exception cref="ValidationException">The current mixin configuration for type <paramref name="baseType"/> violates at least one validation
@@ -174,9 +176,9 @@ namespace Rubicon.Mixins
     /// interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
     /// </remarks>
-    public static InvokeWithWrapper<object> CreateWithMixinInstances (Type baseType, params object[] mixinInstances)
+    public static FuncInvokerWrapper<object> CreateWithMixinInstances (Type baseType, params object[] mixinInstances)
     {
       return MixedTypeInvokeWithCreator.CreateInvokeWithWrapper<object> (baseType, mixinInstances);
     }
- }
+  }
 }

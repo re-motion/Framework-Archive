@@ -80,6 +80,26 @@ namespace Rubicon.Utilities
       return result;
     }
 
+    public static T[] Combine<T> (T[] array, T item)
+    {
+      ArgumentUtility.CheckNotNull ("array", array);
+      T[] result = new T[array.Length + 1];
+      for (int i = 0; i < array.Length; ++i)
+        result[i] = array[i];
+      result[array.Length] = item;
+      return result;
+    }
+
+    public static T[] Combine<T> (T item, T[] array)
+    {
+      ArgumentUtility.CheckNotNull ("array", array);
+      T[] result = new T[array.Length + 1];
+      result[0] = item;
+      for (int i = 0; i < array.Length; ++i)
+        result[i+1] = array[i];
+      return result;
+    }
+
     public static TResult[] Convert<TSource, TResult> (TSource[] array)
       where TResult: TSource 
     {

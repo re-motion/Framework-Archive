@@ -18,7 +18,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
     {
       Type resourceManagerType = typeof (ResourceManager);
       Stream stream = resourceManagerType.Assembly.GetManifestResourceStream (resourceManagerType, resourceID);
-      Assertion.Assert (stream != null, "Resource '{0}.{1}' was not found", resourceManagerType.Namespace, resourceID);
+      Assertion.IsNotNull (stream, "Resource '{0}.{1}' was not found", resourceManagerType.Namespace, resourceID);
 
       return stream;
     }

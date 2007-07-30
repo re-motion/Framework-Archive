@@ -393,7 +393,7 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   public void LoadUnboundValue<TEnum> (TEnum? value, bool interim)
     where TEnum : struct
   {
-    ArgumentUtility.CheckType ("value", value, typeof (Enum));
+    ArgumentUtility.CheckType<Enum> ("value", value);
     LoadValueInternal (value, interim);
   }
 
@@ -403,7 +403,7 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   public void LoadUnboundValue<TEnum> (TEnum value, bool interim)
     where TEnum : struct
   {
-    ArgumentUtility.CheckType ("value", value, typeof (Enum));
+    ArgumentUtility.CheckType<Enum> ("value", value);
     LoadValueInternal (value, interim);
   }
 

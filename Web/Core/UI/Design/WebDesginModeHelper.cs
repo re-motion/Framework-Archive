@@ -29,7 +29,7 @@ namespace Rubicon.Web.UI.Design
     private IWebApplication GetWebApplication()
     {
       IWebApplication webApplication = (IWebApplication) Site.GetService (typeof (IWebApplication));
-      Assertion.Assert (webApplication != null, "The 'IServiceProvider' failed to return an 'IWebApplication' service.");
+      Assertion.IsNotNull(webApplication, "The 'IServiceProvider' failed to return an 'IWebApplication' service.");
 
       return webApplication;
     }

@@ -37,7 +37,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
 
     private string ConvertFromGuidToString (object nativeValue)
     {
-      Guid? guid = ArgumentUtility.CheckValueType<Guid> ("nativeValue", nativeValue);
+      Guid? guid = ArgumentUtility.CheckType<Guid?> ("nativeValue", nativeValue);
       if (guid == null)
         return null;
       return guid.ToString();

@@ -7,6 +7,6 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   interface IDomainObjectCreator
   {
     DomainObject CreateWithDataContainer (DataContainer dataContainer);
-    IInvokeWith<T> GetTypesafeConstructorInvoker<T> () where T : DomainObject;
+    IFuncInvoker<T> GetTypesafeConstructorInvoker<T> () where T : DomainObject;
   }
 }

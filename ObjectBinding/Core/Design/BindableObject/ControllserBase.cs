@@ -17,7 +17,7 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
       Type type = GetType();
       string resourceID = EnumDescription.GetDescription (treeViewIcon);
       Stream stream = type.Assembly.GetManifestResourceStream (type, resourceID);
-      Assertion.Assert (stream != null, string.Format ("Resource '{0}' was not found in namespace '{1}'.", resourceID, type.Namespace));
+      Assertion.IsNotNull (stream, string.Format ("Resource '{0}' was not found in namespace '{1}'.", resourceID, type.Namespace));
       try
       {
         imageList.Images.Add (treeViewIcon.ToString (), Image.FromStream (stream));

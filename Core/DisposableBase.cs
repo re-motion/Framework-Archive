@@ -39,6 +39,12 @@ namespace Rubicon
       get { return _disposed; }
     }
 
+    protected void AssertNotDisposed ()
+    {
+      if (_disposed)
+        throw new InvalidOperationException ("Object disposed.");
+    }
+
     protected void Resurrect ()
     {
       if (_disposed)

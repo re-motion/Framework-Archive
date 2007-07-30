@@ -324,7 +324,7 @@ public abstract class ClientTransaction : ITransaction
 
     DoEnlistDomainObject (domainObject);
 
-    Assertion.Assert (dataContainer.DomainObject == domainObject, "DoEnlistDomainObject should throw an exception if this isn't the case");
+    Assertion.IsTrue(dataContainer.DomainObject == domainObject, "DoEnlistDomainObject should throw an exception if this isn't the case");
   }
 
   /// <summary>

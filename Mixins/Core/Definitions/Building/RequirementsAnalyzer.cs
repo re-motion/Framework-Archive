@@ -44,7 +44,7 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private IEnumerable<Type> GetFilteredGenericArguments (Type mixinBase)
     {
-      Assertion.Assert (!mixinBase.IsGenericTypeDefinition); // the mixinBase is always a specialization of Mixin<,> or Mixin<>
+      Assertion.IsFalse (mixinBase.IsGenericTypeDefinition); // the mixinBase is always a specialization of Mixin<,> or Mixin<>
 
       Type[] genericArguments = mixinBase.GetGenericArguments();
       Type[] originalGenericParameters = mixinBase.GetGenericTypeDefinition().GetGenericArguments();

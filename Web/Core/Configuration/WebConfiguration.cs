@@ -45,7 +45,7 @@ public class WebConfiguration: IConfigurationSectionHandler
             {
               s_current = (WebConfiguration) XmlSerializationUtility.DeserializeUsingSchema (
                   new XmlNodeReader (section),
-                  "web.config/configuration/" + ElementName,
+                  // "web.config/configuration/" + ElementName,  // TODO: context is no longer supported, verify that node has correct BaseURI
                   typeof (WebConfiguration),
                   SchemaUri, 
                   GetSchemaReader());

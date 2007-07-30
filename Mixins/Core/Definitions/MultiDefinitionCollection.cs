@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Rubicon.Mixins.Utilities;
 using Rubicon.Utilities;
+using Rubicon.Collections;
 
 namespace Rubicon.Mixins.Definitions
 {
@@ -49,7 +50,7 @@ namespace Rubicon.Mixins.Definitions
     public int GetItemCount (TKey key)
     {
       ArgumentUtility.CheckNotNull ("key", key);
-      return _items.GetValueCount (key);
+      return _items[key].Count;
     }
 
     public TValue GetFirstItem (TKey key)
@@ -58,7 +59,7 @@ namespace Rubicon.Mixins.Definitions
       if (GetItemCount (key) == 0)
         throw new ArgumentException ("There is no item with the given key.", "key");
       else
-        return _items.GetFirstValue (key);
+        return _items[key][0];
     }
   }
 

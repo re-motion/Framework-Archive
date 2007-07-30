@@ -24,7 +24,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       ArgumentUtility.CheckNotNull ("module", module);
       ArgumentUtility.CheckNotNull ("configuration", configuration);
 
-      Assertion.Assert (!configuration.Type.ContainsGenericParameters);
+      Assertion.IsFalse (configuration.Type.ContainsGenericParameters);
 
       _module = module;
       _configuration = configuration;
@@ -59,7 +59,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       LocalReference firstAttributeLocal = _emitter.LoadCustomAttribute (emitter.CodeBuilder, typeof (ConcreteMixinTypeAttribute), 0);
 
       MethodInfo getMixinDefinitionMethod = typeof (ConcreteMixinTypeAttribute).GetMethod ("GetMixinDefinition");
-      Assertion.Assert (getMixinDefinitionMethod != null);
+      Assertion.IsNotNull (getMixinDefinitionMethod);
 
       emitter.CodeBuilder.AddStatement (new AssignStatement (_configurationField, 
           new VirtualMethodInvocationExpression (firstAttributeLocal, getMixinDefinitionMethod)));

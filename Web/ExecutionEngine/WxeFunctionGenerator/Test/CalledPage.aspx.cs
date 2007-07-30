@@ -17,8 +17,7 @@ namespace Test
 	//[WxePageParameter (2, "output", typeof (string), WxeParameterDirection.Out, IsReturnValue = true)]
 
 	// <WxePageFunction pageType="Test.CalledPage" aspxFile="CalledPage.aspx">
-	//   <Parameter name="input" type="String" />
-	//   <Parameter name="out2" type="Int32" direction="Out" required="false" returnValue="true" />
+	//   <Parameter xname="input" type="String" />
 	//   <Parameter name="output" type="String" direction="Out" returnValue="true" />
 	// </WxePageFunction>
   public partial class CalledPage: WxePage

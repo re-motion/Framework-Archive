@@ -69,8 +69,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     public MethodInfo GetProxyMethodForOverriddenMethod (MethodDefinition method)
     {
-      Assertion.Assert (_overriddenMethodToImplementationMap.ContainsKey (method), "The method " + method.Name
-            + " must be registered with the BaseCallProxyGenerator.");
+      Assertion.IsTrue (_overriddenMethodToImplementationMap.ContainsKey (method), 
+          "The method " + method.Name + " must be registered with the BaseCallProxyGenerator.");
       return _overriddenMethodToImplementationMap[method];
     }
 
@@ -96,7 +96,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementBaseCallForOverridenMethodOnTarget (MethodDefinition methodDefinitionOnTarget)
     {
-      Assertion.Assert (methodDefinitionOnTarget.DeclaringClass == _baseClassConfiguration);
+      Assertion.IsTrue (methodDefinitionOnTarget.DeclaringClass == _baseClassConfiguration);
 
       MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
       CustomMethodEmitter methodOverride = new CustomMethodEmitter (_emitter.InnerEmitter, methodDefinitionOnTarget.FullName, attributes);
@@ -135,7 +135,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       {
         // a base call for this might already have been implemented as an overriden method, but we explicitly implement the call chains anyway: it's
         // slightly easier and better for performance
-        Assertion.Assert (!_baseClassConfiguration.Methods.ContainsKey (requiredMethod.InterfaceMethod));
+        Assertion.IsFalse (_baseClassConfiguration.Methods.ContainsKey (requiredMethod.InterfaceMethod));
         methodGenerator.AddBaseCallToNextInChain (requiredMethod.ImplementingMethod);
       }
     }
@@ -152,7 +152,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       {
         // a base call for this has already been implemented as an overriden method, but we explicitly implement the call chains anyway: it's
         // slightly easier and better for performance
-        Assertion.Assert (_overriddenMethodToImplementationMap.ContainsKey (requiredMethod.ImplementingMethod.Base));
+        Assertion.IsTrue (_overriddenMethodToImplementationMap.ContainsKey (requiredMethod.ImplementingMethod.Base));
         methodGenerator.AddBaseCallToNextInChain (requiredMethod.ImplementingMethod.Base);
       }
     }

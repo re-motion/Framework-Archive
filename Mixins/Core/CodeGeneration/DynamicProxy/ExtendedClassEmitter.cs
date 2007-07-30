@@ -39,7 +39,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     public CustomMethodEmitter CreateMethodOverrideOrInterfaceImplementation (MethodInfo baseOrInterfaceMethod)
     {
       ArgumentUtility.CheckNotNull ("baseOrInterfaceMethod", baseOrInterfaceMethod);
-      Assertion.Assert (baseOrInterfaceMethod.IsVirtual);
+      Assertion.IsTrue (baseOrInterfaceMethod.IsVirtual);
 
       MethodAttributes methodDefinitionAttributes = MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.NewSlot
           | MethodAttributes.Virtual | MethodAttributes.Final;
@@ -172,7 +172,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     public LocalReference LoadCustomAttribute (AbstractCodeBuilder codeBuilder, Type attributeType, int index)
     {
       MethodInfo getCustomAttributesMethod = typeof (Type).GetMethod ("GetCustomAttributes", new Type[] { typeof (Type), typeof (bool) }, null);
-      Assertion.Assert (getCustomAttributesMethod != null);
+      Assertion.IsNotNull (getCustomAttributesMethod);
 
       LocalReference typeLocal = codeBuilder.DeclareLocal (typeof (Type));
       codeBuilder.AddStatement (new AssignStatement (typeLocal, new TypeTokenExpression (InnerEmitter.TypeBuilder)));

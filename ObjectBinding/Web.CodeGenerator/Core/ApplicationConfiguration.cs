@@ -29,7 +29,6 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 		}
 
 		#region private "settings" fields
-		private string _mappingXml;
 		private string _templateRoot;
 		private string _targetRoot;
 		private string _projectNamespaceRoot;
@@ -39,10 +38,6 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 		#endregion
 
 		#region public read-only "settings" properties
-		public string MappingXml
-		{
-			get { return _mappingXml; }
-		}
 
     public string TemplateRoot
 		{
@@ -101,7 +96,6 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 
 			// <settings/>
 			XmlNode settingNode = applicationGeneratorElement.SelectSingleNode("settings");
-			_mappingXml = GetValue(settingNode, "mappingXml", string.Empty);
 			_templateRoot = GetValue(settingNode, "templateRoot", ".").TrimEnd('\\');
 			_targetRoot = GetValue(settingNode, "targetRoot", ".").TrimEnd('\\');
 			_projectNamespaceRoot = GetValue(settingNode, "projectNamespaceRoot", "ProjectNamespace");

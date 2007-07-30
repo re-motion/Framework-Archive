@@ -43,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
     /// <exception cref="ArgumentNullException">The <paramref name="concreteType"/> argument is null.</exception>
     /// <exception cref="ArgumentException"><paramref name="concreteType"/> is not the same or a subtype of <typeparamref name="TMinimal"/> or
     /// <paramref name="concreteType"/> wasn't created by this kind of factory.</exception>
-    IInvokeWith<TMinimal> MakeTypesafeConstructorInvoker<TMinimal> (Type concreteType);
+    IFuncInvoker<TMinimal> MakeTypesafeConstructorInvoker<TMinimal> (Type concreteType);
 
     /// <summary>
     /// Prepares an instance which has not been created by construction via <see cref="MakeTypesafeConstructorInvoker"/> for use.

@@ -77,8 +77,6 @@
       <Name>log4net</Name>
       <HintPath>..\prereq\Assemblies\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86" />
-    <Reference Include="PresentationFramework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -89,10 +87,10 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <Reference Include="UIAutomationProvider, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\AutoInitDictionary.cs" />
+    <Compile Include="Collections\MultiDictionary.cs" />
     <Compile Include="Collections\InterlockedCache.cs" />
     <Compile Include="Collections\Set.cs" />
     <Compile Include="Configuration\ConfigurationElementCollection.cs" />
@@ -283,11 +281,16 @@
     <Compile Include="PermanentGuidAttribute.cs" />
     <Compile Include="Reflection\AssemblyFinder.cs" />
     <Compile Include="Reflection\ConstructorWrapper.cs" />
-    <Compile Include="Reflection\IInvokeWith.cs" />
-    <Compile Include="Reflection\InvokeWithBoundFirst.cs" />
+    <Compile Include="Reflection\ProcInvoker.generated.cs" />
+    <Compile Include="Reflection\ProcInvoker.template.cs" />
+    <Compile Include="Reflection\FuncInvoker.generated.cs" />
+    <Compile Include="Reflection\DelegateCreator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Reflection\InvokerUtility.cs" />
+    <Compile Include="Reflection\FuncInvoker.template.cs" />
     <Compile Include="Reflection\EmitUtility.cs" />
-    <Compile Include="Reflection\GetDelegateWith.cs" />
-    <Compile Include="Reflection\InvokeWith.cs" />
+    <Compile Include="Reflection\MethodCaller.cs" />
     <Compile Include="Reflection\InheritanceHierarchyFilter.cs" />
     <Compile Include="Reflection\TypesafeActivator.cs" />
     <Compile Include="Security\AbstractRoleAttribute.cs" />
@@ -412,14 +415,15 @@
     <Content Include="doc\include\GettingStartedTemplate.html" />
     <Content Include="doc\include\Globalization\MultiLingualResourcesAttribute.xml" />
     <Content Include="doc\include\Globalization\ResourceManagerWrapper.xml" />
-    <Content Include="doc\include\include.xml" />
     <Content Include="doc\include\Logging\ILog.xml" />
     <Content Include="doc\include\Logging\Log4NetTraceListener.xml" />
     <Content Include="doc\include\MSDN.css" />
-    <Content Include="doc\include\MultiLingualResourcesAttribute.xml" />
     <Content Include="doc\include\NamespaceDoc.xml" />
     <Content Include="doc\include\NullableValueTypes\include.xml" />
-    <Content Include="doc\include\ResourceManagerWrapper.xml" />
+    <Content Include="doc\include\Reflection\TypesafeInvoker.xml" />
+    <Content Include="doc\include\Text\CommandLine\CommandLineParser.xml" />
+    <Content Include="doc\include\Utilities\EqualityUtility.xml" />
+    <Content Include="doc\include\Utilities\WorkContext.xml" />
     <Content Include="doc\WhatsNew_Rubicon.Core.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -427,8 +431,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>\development\tools\FuncGen\FuncGen\bin\Debug\FuncGen.exe $(ProjectDir)*.template.cs *.generated.cs /rec</PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>

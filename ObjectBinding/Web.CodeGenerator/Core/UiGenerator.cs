@@ -7,14 +7,19 @@
 // --------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Collections;
 using System.Reflection;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
+using Rubicon.Configuration;
+using Rubicon.Data.DomainObjects.Configuration;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Development;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.ObjectBinding;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Rubicon.Data.DomainObjects;
 
 namespace Rubicon.ObjectBinding.Web.CodeGenerator
 {
@@ -53,8 +58,39 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 			Placeholder.Postfix = _configuration.PlaceholderPostfix;
 
       AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler (CurrentDomain_AssemblyResolve);
-			MappingConfiguration.SetCurrent (XmlBasedMappingConfiguration.Create (_configuration.MappingXml, true));
-		}
+      InitializeConfiguration (assemblyDirectory);
+    }
+
+    protected virtual void InitializeConfiguration (string assemblyDirectory)
+    {
+      List<Assembly> assemblies = new List<Assembly>();
+      DirectoryInfo dir = new DirectoryInfo (assemblyDirectory);
+      foreach (FileInfo file in dir.GetFiles ("*.dll"))
+      {
+        Assembly asm = Assembly.LoadFile (file.FullName);
+        if (asm.GetCustomAttributes(typeof (ContainsMappingAttribute), false).Length > 0)
+          assemblies.Add (asm);
+      }
+      DomainObjectsConfiguration.SetCurrent (
+          new FakeDomainObjectsConfiguration (DomainObjectsConfiguration.Current.MappingLoader, GetPersistenceConfiguration ()));
+
+      MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector(assemblies.ToArray())));
+    }
+
+    protected PersistenceConfiguration GetPersistenceConfiguration ()
+    {
+      PersistenceConfiguration persistenceConfiguration = DomainObjectsConfiguration.Current.Storage;
+      if (persistenceConfiguration.StorageProviderDefinition == null)
+      {
+        ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = new ProviderCollection<StorageProviderDefinition> ();
+        RdbmsProviderDefinition providerDefinition = new RdbmsProviderDefinition ("Default", typeof (SqlProvider), "Initial Catalog=DatabaseName;");
+        storageProviderDefinitionCollection.Add (providerDefinition);
+
+        persistenceConfiguration = new PersistenceConfiguration (storageProviderDefinitionCollection, providerDefinition);
+      }
+
+      return persistenceConfiguration;
+    }
 
     public void Dispose()
     {
@@ -97,7 +133,7 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 
 			foreach (ClassDefinition classDefinition in MappingConfiguration.Current.ClassDefinitions)
 			{
-				if (! IgnoreClass(classDefinition))
+				if (! (IgnoreClass(classDefinition) || classDefinition.IsAbstract))
 				{
 					ClassInfo classInfo = new ClassInfo();
 

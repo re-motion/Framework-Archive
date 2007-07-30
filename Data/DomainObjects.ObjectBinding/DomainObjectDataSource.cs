@@ -39,7 +39,7 @@ public class DomainObjectDataSource : BusinessObjectDataSource
       if (Site != null && Site.DesignMode)
       {
         IDesignerHost designerHost = (IDesignerHost) Site.GetService (typeof (IDesignerHost));
-        Assertion.Assert (designerHost != null, "No IDesignerHost found.");
+        Assertion.IsNotNull (designerHost, "No IDesignerHost found.");
         return designerHost.GetType (_typeName);
       }
 

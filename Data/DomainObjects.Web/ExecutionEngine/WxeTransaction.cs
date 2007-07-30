@@ -71,7 +71,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
     {
       _scopeStack.Push (ClientTransactionScope.ActiveScope);
       ClientTransactionScope newScope = new ClientTransactionScope (transaction); // set new scope and store old one
-      Assertion.Assert (ClientTransactionScope.ActiveScope == newScope);
+      Assertion.IsTrue (ClientTransactionScope.ActiveScope == newScope);
     }
 
     /// <summary>
@@ -86,7 +86,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 
     protected override void SetPreviousCurrentTransaction (ClientTransaction previousTransaction)
     {
-      Assertion.Assert (_scopeStack.Count != 0, "RestorePreviousTransaction is never called more often than SetCurrentTransaction.");
+      Assertion.IsTrue (_scopeStack.Count != 0, "RestorePreviousTransaction is never called more often than SetCurrentTransaction.");
 
       if (ClientTransactionScope.ActiveScope == null)
         throw new InconsistentClientTransactionScopeException ("Somebody else has removed ClientTransactionScope.ActiveScope.");
@@ -96,7 +96,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
       if (ClientTransactionScope.ActiveScope != _scopeStack.Pop())
         throw new InconsistentClientTransactionScopeException ("ClientTransactionScope.ActiveScope does not contain the expected transaction scope.");
 
-      Assertion.Assert ((previousTransaction == null && !ClientTransactionScope.HasCurrentTransaction)
+      Assertion.IsTrue ((previousTransaction == null && !ClientTransactionScope.HasCurrentTransaction)
         || (previousTransaction != null && ClientTransactionScope.HasCurrentTransaction &&
             ClientTransactionScope.CurrentTransaction == previousTransaction));
     }

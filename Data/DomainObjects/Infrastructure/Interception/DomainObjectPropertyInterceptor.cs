@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       ArgumentUtility.CheckNotNull ("invocation", invocation);
 
       DomainObject target = invocation.InvocationTarget;
-      Assertion.Assert (target != null);
+      Assertion.IsNotNull(target);
 
       Assertion.DebugAssert (Selector.ShouldInterceptMethod (target.GetPublicDomainObjectType (), invocation.Method));
       Assertion.DebugAssert (ReflectionUtility.IsPropertyAccessor (invocation.Method));

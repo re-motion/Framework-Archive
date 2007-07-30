@@ -18,7 +18,7 @@ namespace Rubicon.Utilities
       return (obj == null) ? 0 : obj.GetHashCode ();
     }
 
-    /// <include file='doc\include\include.xml' path='Comments/EqualityUtility/GetRotatedHashCode/*' />
+    /// <include file='doc\include\Utilities\EqualityUtility.xml' path='EqualityUtility/GetRotatedHashCode/*' />
     public static int GetRotatedHashCode<A0, A1> (A0 a0, A1 a1)
     {
       int hc = SafeGetHashCode (a0);
@@ -27,7 +27,7 @@ namespace Rubicon.Utilities
       return hc;
     }
 
-    /// <include file='doc\include\include.xml' path='Comments/EqualityUtility/GetRotatedHashCode/*' />
+    /// <include file='doc\include\Utilities\EqualityUtility.xml' path='EqualityUtility/GetRotatedHashCode/*' />
     public static int GetRotatedHashCode<A0, A1, A2> (A0 a0, A1 a1, A2 a2)
     {
       int hc = SafeGetHashCode (a0);
@@ -38,7 +38,7 @@ namespace Rubicon.Utilities
       return hc;
     }
 
-    /// <include file='doc\include\include.xml' path='Comments/EqualityUtility/GetRotatedHashCode/*' />
+    /// <include file='doc\include\Utilities\EqualityUtility.xml' path='EqualityUtility/GetRotatedHashCode/*' />
     public static int GetRotatedHashCode<A0, A1, A2, A3> (A0 a0, A1 a1, A2 a2, A3 a3)
     {
       int hc = SafeGetHashCode (a0);
@@ -51,7 +51,7 @@ namespace Rubicon.Utilities
       return hc;
     }
 
-    /// <include file='doc\include\include.xml' path='Comments/EqualityUtility/GetRotatedHashCode/*' />
+    /// <include file='doc\include\Utilities\EqualityUtility.xml' path='EqualityUtility/GetRotatedHashCode/*' />
     public static int GetRotatedHashCode<A0, A1, A2, A3, A4> (A0 a0, A1 a1, A2 a2, A3 a3, A4 a4)
     {
       int hc = SafeGetHashCode (a0);
@@ -66,7 +66,7 @@ namespace Rubicon.Utilities
       return hc;
     }
 
-    /// <include file='doc\include\include.xml' path='Comments/EqualityUtility/GetRotatedHashCode/*' />
+    /// <include file='doc\include\Utilities\EqualityUtility.xml' path='EqualityUtility/GetRotatedHashCode/*' />
     public static int GetRotatedHashCode<A0, A1, A2, A3, A4, A5> (A0 a0, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5)
     {
       int hc = SafeGetHashCode (a0);
@@ -83,7 +83,7 @@ namespace Rubicon.Utilities
       return hc;
     }
 
-    /// <include file='doc\include\include.xml' path='Comments/EqualityUtility/GetRotatedHashCode/*' />
+    /// <include file='doc\include\Utilities\EqualityUtility.xml' path='EqualityUtility/GetRotatedHashCode/*' />
     public static int GetRotatedHashCode<A0, A1, A2, A3, A4, A5, A6> (A0 a0, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6)
     {
       int hc = SafeGetHashCode (a0);
@@ -102,7 +102,7 @@ namespace Rubicon.Utilities
       return hc;
     }
 
-    /// <include file='doc\include\include.xml' path='Comments/EqualityUtility/GetRotatedHashCode/*' />
+    /// <include file='doc\include\Utilities\EqualityUtility.xml' path='EqualityUtility/GetRotatedHashCode/*' />
     public static int GetRotatedHashCode (params object[] fields)
     {
       int hc = 0;
@@ -156,6 +156,38 @@ namespace Rubicon.Utilities
         return (b == null);
       else
         return a.Equals ((T) b);
+    }
+
+    /// <summary>
+    /// Returns whether an equatable object equals another object.
+    /// </summary>
+    public static bool EqualsEquatable<T> (T a, object b)
+      where T : class, IEquatable<T>
+    {
+      T other = b as T;
+      if (other != null)
+        return a.Equals (other);
+      else
+        return false;
+    }
+
+    /// <summary>
+    /// Returns whether an equatable value-type object equals another object.
+    /// </summary>
+    public static bool EqualsEquatableValue<T> (T a, object b)
+      where T : struct, IEquatable<T>
+    {
+      if (b is T) // ignore incorrect ReSharper warning
+        return a.Equals ((T) b);
+      else
+        return false;
+    }
+
+    public static bool NotNullAndSameType<T> (T a, T b)
+      where T: class, IEquatable<T>
+    {
+      ArgumentUtility.CheckNotNull ("a", a);
+      return (b != null) && a.GetType() == b.GetType();
     }
 
     /// <summary>

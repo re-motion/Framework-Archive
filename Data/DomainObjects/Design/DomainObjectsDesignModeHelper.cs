@@ -41,8 +41,8 @@ namespace Rubicon.Data.DomainObjects.Design
       Type mappingLoaderType = GetMappingLoaderType();
       DesignModeMappingLoaderAttribute designModeMappingLoaderAttribute = 
           AttributeUtility.GetCustomAttribute<DesignModeMappingLoaderAttribute> (mappingLoaderType, true);
-      Assertion.Assert (
-          designModeMappingLoaderAttribute != null, 
+      Assertion.IsNotNull(
+          designModeMappingLoaderAttribute, 
           "'{0}' does not have the '{1}' applied.", mappingLoaderType.FullName, typeof (DesignModeMappingLoaderAttribute).FullName);
 
       return designModeMappingLoaderAttribute.CreateInstance (_designModeHelper.Site);
@@ -51,14 +51,14 @@ namespace Rubicon.Data.DomainObjects.Design
     private Type GetMappingLoaderType()
     {
       IDomainObjectsConfiguration domainObjectsConfiguration = DomainObjectsConfiguration.Current;
-      Assertion.Assert (domainObjectsConfiguration != null, "DomainObjectsConfiguration.Current evaluated and returned null.");
+      Assertion.IsNotNull (domainObjectsConfiguration, "DomainObjectsConfiguration.Current evaluated and returned null.");
 
       MappingLoaderConfiguration mappingLoaderConfiguration = domainObjectsConfiguration.MappingLoader;
-      Assertion.Assert (mappingLoaderConfiguration != null, "DomainObjectsConfiguration.Current.MappingLoader evaluated and returned null.");
+      Assertion.IsNotNull (mappingLoaderConfiguration, "DomainObjectsConfiguration.Current.MappingLoader evaluated and returned null.");
       
       Type mappingLoaderType = mappingLoaderConfiguration.MappingLoaderType;
-      Assertion.Assert (mappingLoaderType != null, "DomainObjectsConfiguration.Current.MappingLoader.MappingLoaderType evaluated and returned null.");
-      
+      Assertion.IsNotNull (mappingLoaderType, "DomainObjectsConfiguration.Current.MappingLoader.MappingLoaderType evaluated and returned null.");
+
       return mappingLoaderType;
     }
   }

@@ -43,7 +43,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       Type type = mixinTarget.GetType ();
       Type baseCallProxyType = FindBaseCallProxyType (type);
-      Assertion.Assert (baseCallProxyType != null);
+      Assertion.IsNotNull (baseCallProxyType);
 
       object firstBaseCallProxy = InstantiateBaseCallProxy (baseCallProxyType, mixinTarget, 0);
       type.GetField ("__first").SetValue (mixinTarget, firstBaseCallProxy);
@@ -51,7 +51,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private static Type FindBaseCallProxyType (Type type)
     {
-      Assertion.Assert (type != null);
+      Assertion.IsNotNull (type);
       Type baseCallProxyType;
       do
       {
@@ -63,7 +63,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private static object InstantiateBaseCallProxy (Type baseCallProxyType, IMixinTarget targetInstance, int depth)
     {
-      Assertion.Assert (baseCallProxyType != null);
+      Assertion.IsNotNull (baseCallProxyType);
       return Activator.CreateInstance (baseCallProxyType, new object[] { targetInstance, depth });
     }
 
@@ -101,7 +101,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private static object InstantiateMixin (MixinDefinition mixinDefinition, IMixinTarget mixinTargetInstance)
     {
       Type mixinType = mixinDefinition.Type;
-      Assertion.Assert (!mixinType.ContainsGenericParameters);
+      Assertion.IsFalse (mixinType.ContainsGenericParameters);
 
       if (mixinDefinition.HasOverriddenMembers())
         mixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
@@ -129,7 +129,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private static void InitializeMixinInstances (object[] mixins, BaseClassDefinition configuration, IMixinTarget mixinTargetInstance)
     {
-      Assertion.Assert (mixins.Length == configuration.Mixins.Count);
+      Assertion.IsTrue (mixins.Length == configuration.Mixins.Count);
       for (int i = 0; i < mixins.Length; ++i)
         InitializeMixinInstance (configuration.Mixins[i], mixins[i], mixinTargetInstance);
     }
@@ -147,7 +147,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       MethodInfo initializationMethod = MixinReflector.GetInitializationMethod (mixinInstance.GetType ());
       if (initializationMethod != null)
       {
-        Assertion.Assert (!initializationMethod.ContainsGenericParameters);
+        Assertion.IsFalse (initializationMethod.ContainsGenericParameters);
 
         ParameterInfo[] methodArguments = initializationMethod.GetParameters ();
         object[] argumentValues = new object[methodArguments.Length];

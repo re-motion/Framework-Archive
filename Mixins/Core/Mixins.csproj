@@ -50,7 +50,6 @@
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\SameConditionExpression.cs" />
     <Compile Include="CodeGeneration\GuidNameProvider.cs" />
     <Compile Include="CodeGeneration\INameProvider.cs" />
-    <Compile Include="CodeGeneration\InvokeWithWrapper.cs" />
     <Compile Include="CodeGeneration\ConcreteMixedTypeAttribute.cs" />
     <Compile Include="CodeGeneration\NamespaceChangingNameProvider.cs" />
     <Compile Include="CompleteInterfaceAttribute.cs" />
@@ -132,7 +131,6 @@
     <Compile Include="Definitions\BaseDependencyDefinition.cs" />
     <Compile Include="Definitions\EventIntroductionDefinition.cs" />
     <Compile Include="Definitions\MultiDefinitionCollection.cs" />
-    <Compile Include="Utilities\MultiDictionary.cs" />
     <Compile Include="Definitions\PropertyIntroductionDefinition.cs" />
     <Compile Include="Definitions\DefinitionCollectionBase.cs" />
     <Compile Include="Definitions\IAttributableDefinition.cs" />

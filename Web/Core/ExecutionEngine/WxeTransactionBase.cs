@@ -268,7 +268,7 @@ namespace Rubicon.Web.ExecutionEngine
         finally
         {
           SetPreviousCurrentTransaction (previousTransaction);
-          Assertion.Assert (CurrentTransaction == previousTransaction);
+          Assertion.IsTrue (CurrentTransaction == previousTransaction);
         }
         _transaction.Release ();
         _transaction = null;
@@ -321,7 +321,7 @@ namespace Rubicon.Web.ExecutionEngine
         finally
         {
           SetPreviousCurrentTransaction (previousTransaction);
-          Assertion.Assert (CurrentTransaction == previousTransaction);
+          Assertion.IsTrue (CurrentTransaction == previousTransaction);
         }
         _transaction.Release ();
         _transaction = null;
@@ -362,12 +362,12 @@ namespace Rubicon.Web.ExecutionEngine
     /// <summary> Sets the backed up transaction as the old and new current transaction. </summary>
     protected void RestorePreviousCurrentTransaction ()
     {
-      Assertion.Assert (ExecutionStarted);
+      Assertion.IsTrue (ExecutionStarted);
 
       if (!_isPreviousCurrentTransactionRestored)
       {
         SetPreviousCurrentTransaction (_previousCurrentTransaction);
-        Assertion.Assert (_previousCurrentTransaction == CurrentTransaction);
+        Assertion.IsTrue (_previousCurrentTransaction == CurrentTransaction);
         _previousCurrentTransaction = null;
         _isPreviousCurrentTransactionRestored = true;
       }

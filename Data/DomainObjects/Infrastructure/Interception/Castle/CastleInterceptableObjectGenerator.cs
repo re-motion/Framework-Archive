@@ -4,19 +4,24 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using Castle.DynamicProxy;
+using Rubicon.Collections;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
 using CastleInterceptor = Castle.Core.Interceptor.IInterceptor;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle
 {
+  using CacheKey = Tuple<Type, Type>; // defining type, delegate type
+
   /// <summary>
   /// Marker interface indicating that a type was constructed by DynamicProxy.
   /// </summary>
   public interface IProxyMarker { } // must not be generic for current version of DP 2
 
-  class CastleInterceptableObjectGenerator<TTarget> : IInterceptableObjectGenerator<TTarget>
+  internal class CastleInterceptableObjectGenerator<TTarget> : IInterceptableObjectGenerator<TTarget>
   {
+    private static ICache<CacheKey, Delegate> s_delegateCache = new InterlockedCache<CacheKey, Delegate> ();
+
     private readonly Type[] _markerInterfaces = new Type[] { typeof (IProxyMarker) };
 
     private readonly ProxyGenerator _generator = new ProxyGenerator ();
@@ -68,37 +73,49 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle
       return typeof (IProxyMarker).IsAssignableFrom (type);
     }
 
-    public IInvokeWith<TMinimal> MakeTypesafeConstructorInvoker<TMinimal> (Type concreteType)
+    public IFuncInvoker<TMinimal> MakeTypesafeConstructorInvoker<TMinimal> (Type concreteType)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("concreteType", concreteType, typeof (TMinimal));
 
-      if (!WasCreatedByGenerator (concreteType))
-      {
-        string message = string.Format ("Type {0} is not an interceptable type created by this kind of generator.",
-          concreteType.FullName);
-        throw new ArgumentException (message);
-      }
-
-      BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-      GetDelegateWith<TMinimal> constructionDelegateCreator = new CachedGetDelegateWith<TMinimal,Type> (
-          concreteType,
-          delegate (Type[] argumentTypes, Type delegateType)
+      return new FuncInvoker<CastleInterceptor[], TMinimal> (
+          delegate (Type delegateType)
           {
-            try
+            CacheKey key = new CacheKey (concreteType, delegateType);
+            Delegate result;
+            if (! s_delegateCache.TryGetValue (key, out result))
             {
-              return ConstructorWrapper.CreateConstructorDelegate (concreteType, bindingFlags, null, CallingConventions.Any, argumentTypes, null, delegateType);
+              result = s_delegateCache.GetOrCreateValue (
+                  key,
+                  delegate
+                  {
+                    if (!WasCreatedByGenerator (concreteType))
+                    {
+                      string message = string.Format ("Type {0} is not an interceptable type created by this kind of generator.",
+                        concreteType.FullName);
+                      throw new ArgumentException (message);
+                    }
+
+                    Type[] argumentTypes = ConstructorWrapper.GetParameterTypes (delegateType);
+                    BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+                    try
+                    {
+                      return ConstructorWrapper.CreateDelegate (
+                          concreteType, delegateType, bindingFlags, null, CallingConventions.Any, argumentTypes, null);
+                    }
+                    catch (MissingMethodException ex)
+                    {
+                      Type[] realArgumentTypes = new Type[argumentTypes.Length - 1];
+                      Array.Copy (argumentTypes, 1, realArgumentTypes, 0, realArgumentTypes.Length);
+                      string message = string.Format ("Type {0} does not support the requested constructor with signature ({1}).",
+                          concreteType.BaseType.FullName, 
+                          ReflectionUtility.GetTypeListAsString (realArgumentTypes));
+                      throw new MissingMethodException (message, ex);
+                    }
+                  });
             }
-            catch (MissingMethodException ex)
-            {
-              Type[] realArgumentTypes = new Type[argumentTypes.Length - 1];
-              Array.Copy(argumentTypes, 1, realArgumentTypes, 0, realArgumentTypes.Length);
-              string message = string.Format ("Type {0} does not support the requested constructor with signature ({1}).",
-                concreteType.BaseType.FullName, ReflectionUtility.GetTypeListAsString (realArgumentTypes));
-              throw new MissingMethodException (message, ex);
-            }
-          });
-        
-      return new InvokeWithBoundFirst<TMinimal, CastleInterceptor[]> (constructionDelegateCreator, CreateInterceptorArray());
+            return result;
+          },
+          CreateInterceptorArray ());
     }
 
     private CastleInterceptor[] CreateInterceptorArray()
@@ -119,7 +136,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle
       }
 
       FieldInfo field = instanceType.GetField ("__interceptors");
-      Assertion.Assert (field != null, "DynamicProxy 2 __interceptors field must exist");
+      Assertion.IsNotNull(field, "DynamicProxy 2 __interceptors field must exist");
       field.SetValue (instance, CreateInterceptorArray());
     }
   }

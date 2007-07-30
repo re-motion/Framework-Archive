@@ -68,6 +68,14 @@ namespace Rubicon.Core.UnitTests.Text.CommandLine
       Arguments arguments = (Arguments) parser.Parse ("/m1+", true);
     }
 
+    [Test]
+    [ExpectedException (typeof (InvalidCommandLineArgumentNameException))]
+    public void TestFlagArgInvalidValue ()
+    {
+      CommandLineClassParser parser = new CommandLineClassParser (typeof (Arguments));
+      Arguments arguments = (Arguments) parser.Parse ("/b~", true);
+    }
+    
     [Test] 
     public void TestOptional ()
     {

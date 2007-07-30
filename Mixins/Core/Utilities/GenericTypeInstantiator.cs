@@ -26,7 +26,7 @@ namespace Rubicon.Mixins.Utilities
 
     private static Type MakeClosedType (Type typeDefinition)
     {
-      Assertion.Assert (typeDefinition.IsGenericTypeDefinition);
+      Assertion.IsTrue (typeDefinition.IsGenericTypeDefinition);
 
       List<Type> instantiations = new List<Type> ();
 
@@ -49,7 +49,7 @@ namespace Rubicon.Mixins.Utilities
       }
 
       Type closedType = typeDefinition.MakeGenericType (instantiations.ToArray ());
-      Assertion.Assert (!closedType.ContainsGenericParameters);
+      Assertion.IsFalse (closedType.ContainsGenericParameters);
       return closedType;
     }
 

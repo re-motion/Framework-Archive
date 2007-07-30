@@ -535,7 +535,7 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
   protected override object ValueImplementation
   {
     get { return Value; }
-    set { Value = ArgumentUtility.CheckValueType<bool> ("value", value); }
+    set { Value = ArgumentUtility.CheckType<bool> ("value", value); }
   }
 
   /// <summary> 

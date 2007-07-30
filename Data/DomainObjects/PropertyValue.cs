@@ -440,7 +440,7 @@ public class PropertyValue
 
   internal void AssumeSameState (PropertyValue source)
   {
-    Assertion.Assert (_definition == source._definition);
+    Assertion.IsTrue (_definition == source._definition);
 
     _value = source._value;
     _originalValue = source._originalValue;

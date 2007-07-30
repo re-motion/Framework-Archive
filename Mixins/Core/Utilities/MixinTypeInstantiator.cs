@@ -78,7 +78,7 @@ namespace Rubicon.Mixins.Utilities
 
     private void EnsureWellDefinedIntroductions (Type configuredType)
     {
-      Assertion.Assert (configuredType.ContainsGenericParameters);
+      Assertion.IsTrue (configuredType.ContainsGenericParameters);
 
       List<Type> introducedInterfaces = GetInterfacesBoundToThisParameter (configuredType);
       if (introducedInterfaces.Count > 0)

@@ -24,7 +24,7 @@ namespace Rubicon.Configuration
       MethodInfo getRuntimeObject = configuration.AppSettings.GetType ().GetMethod (
         "GetRuntimeObject",
         BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.ExactBinding);
-      Assertion.Assert (getRuntimeObject != null, "System.Configuration.AppSettingsSection.GetRuntimeObject() does not exist.");
+      Assertion.IsNotNull (getRuntimeObject, "System.Configuration.AppSettingsSection.GetRuntimeObject() does not exist.");
       _appSettings = (NameValueCollection) getRuntimeObject.Invoke (configuration.AppSettings, new object[0]) ?? new NameValueCollection();
     }
 

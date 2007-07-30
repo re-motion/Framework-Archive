@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -7,6 +8,61 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Xml
 {
+  [Serializable]
+  [Obsolete ("try to get to original exception")]
+  public class RubiconXmlSchemaValidationException: XmlException
+  {
+    private string _rawMessage;
+    private string _fileName;
+    //private int _lineNumber;
+    //private int _linePosition;
+
+    public RubiconXmlSchemaValidationException (string message, string fileName, int lineNumber, int linePosition, Exception innerException)
+        : base (message, innerException, lineNumber, linePosition)
+    {
+      _rawMessage = message;
+      _fileName = fileName;
+      //_lineNumber = lineNumber;
+      //_linePosition = linePosition;
+    }
+
+    protected RubiconXmlSchemaValidationException (SerializationInfo info, StreamingContext context)
+      : base (info, context)
+    {
+      _rawMessage = info.GetString ("_rawMessage");
+      _fileName = info.GetString ("_fileName");
+      //_lineNumber = info.GetInt32 ("_lineNumber");
+      //_linePosition = info.GetInt32 ("_linePosition");
+    }
+
+    public override void GetObjectData (SerializationInfo info, StreamingContext context)
+    {
+      info.AddValue ("_rawMessage", _rawMessage);
+      info.AddValue ("_fileName", _fileName);
+      //info.AddValue ("_lineNumber", _lineNumber);
+      //info.AddValue ("_linePosition", _linePosition);
+    }
+
+    public string RawMessage
+    {
+      get { return _rawMessage; }
+    }
+
+    public string FileName
+    {
+      get { return _fileName; }
+    }
+
+    //public int LineNumber
+    //{
+    //  get { return _lineNumber; }
+    //}
+
+    //public int LinePosition
+    //{
+    //  get { return _linePosition; }
+    //}    
+  }
   /// <summary>
   /// Use this class to easily serialize and deserialize objects to or from XML.
   /// </summary>
@@ -14,51 +70,54 @@ namespace Rubicon.Xml
   {
     private static readonly ILog s_log = LogManager.GetLogger (typeof (XmlSerializationUtility));
 
-    public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, string defaultNamespace, XmlReaderSettings settings)
+    public static object DeserializeUsingSchema (XmlReader reader, Type type, string defaultNamespace, XmlReaderSettings settings)
     {
       ArgumentUtility.CheckNotNull ("reader", reader);
-      ArgumentUtility.CheckNotNullOrEmpty ("context", context);
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("settings", settings);
 
-      XmlSchemaValidationHandler validationHandler = new XmlSchemaValidationHandler (context);
+      XmlSchemaValidationHandler validationHandler = new XmlSchemaValidationHandler (true);
       settings.ValidationEventHandler += validationHandler.Handler;
       settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
 
       XmlReader innerReader = XmlReader.Create (reader, settings);
+      XmlSerializer serializer = new XmlSerializer (type, defaultNamespace);
 
       try
       {
-        XmlSerializer serializer = new XmlSerializer (type, defaultNamespace);
-        object result = serializer.Deserialize (innerReader);
-
-        validationHandler.EnsureNoErrors();
-
-        return result;
+        return serializer.Deserialize (innerReader);
       }
       catch (InvalidOperationException e)
       {
-        Exception actualException = e;
-        while (actualException.InnerException != null)
-          actualException = actualException.InnerException;
+        // unwrap an inner XmlSchemaValidationException 
+        XmlSchemaValidationException schemaException = e.InnerException as XmlSchemaValidationException;
+        if (schemaException != null)
+          throw schemaException;
 
-        string errorMessage = string.Format (
-            "Error reading '{0}'. The value of {1} '{2}' could not be parsed: {3}",
-            context,
-            innerReader.NodeType.ToString().ToLower(),
-            innerReader.Name,
-            actualException.Message);
-        s_log.Error (errorMessage, actualException);
-            
+        // wrap any other InvalidOperationException in an XmlException with line info
         IXmlLineInfo lineInfo = (IXmlLineInfo) innerReader;
         if (lineInfo != null)
+        {
+          string errorMessage = string.Format (
+              "Error reading {0} ({1},{2}): {3}",
+              innerReader.BaseURI,
+              lineInfo.LineNumber,
+              lineInfo.LinePosition,
+              e.Message);
           throw new XmlException (errorMessage, e, lineInfo.LineNumber, lineInfo.LinePosition);
+        }
         else
+        {
+          string errorMessage = string.Format (
+              "Error reading {0}: {1}",
+              innerReader.BaseURI,
+              e.Message); 
           throw new XmlException (errorMessage, e);
+        }
       }
     }
 
-    public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, string defaultNamespace, XmlSchemaSet schemas)
+    public static object DeserializeUsingSchema (XmlReader reader, Type type, string defaultNamespace, XmlSchemaSet schemas)
     {
       ArgumentUtility.CheckNotNull ("reader", reader);
 
@@ -66,24 +125,50 @@ namespace Rubicon.Xml
       settings.Schemas = schemas;
       settings.ValidationType = ValidationType.Schema;
 
-      return DeserializeUsingSchema (reader, context, type, defaultNamespace, settings);
+      return DeserializeUsingSchema (reader, type, defaultNamespace, settings);
     }
 
-    public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, XmlSchemaSet schemas)
+    public static object DeserializeUsingSchema (XmlReader reader, Type type, XmlSchemaSet schemas)
     {
-      return DeserializeUsingSchema (reader, context, type, GetNamespace (type), schemas);
+      return DeserializeUsingSchema (reader, type, GetNamespace (type), schemas);
     }
 
-    public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, string schemaUri, XmlReader schemaReader)
+    public static object DeserializeUsingSchema (XmlReader reader, Type type, string schemaUri, XmlReader schemaReader)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("schemaUri", schemaUri);
       ArgumentUtility.CheckNotNull ("schemaReader", schemaReader);
 
       XmlSchemaSet schemas = new XmlSchemaSet();
       schemas.Add (schemaUri, schemaReader);
-      return DeserializeUsingSchema (reader, context, type, GetNamespace (type), schemas);
+      return DeserializeUsingSchema (reader, type, GetNamespace (type), schemas);
     }
 
+    #region obsolete overloads with context argument
+    [Obsolete ("Argument 'context' is no longer supported. Specify BaseURL for XmlReader instead.", true)]
+    public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, string defaultNamespace, XmlReaderSettings settings)
+    {
+      throw new NotSupportedException ();
+    }
+
+    [Obsolete ("Argument 'context' is no longer supported. Specify BaseURL for XmlReader instead.", true)]
+    public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, string defaultNamespace, XmlSchemaSet schemas)
+    {
+      throw new NotSupportedException ();
+    }
+
+    [Obsolete ("Argument 'context' is no longer supported. Specify BaseURL for XmlReader instead.", true)]
+    public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, XmlSchemaSet schemas)
+    {
+      throw new NotSupportedException ();
+    }
+
+    [Obsolete ("Argument 'context' is no longer supported. Specify BaseURL for XmlReader instead.", true)]
+    public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, string schemaUri, XmlReader schemaReader)
+    {
+      throw new NotSupportedException ();
+    }
+    #endregion
+    
     /// <summary>
     /// Get the Namespace from a type's <see cref="XmlRootAttribute"/> (preferred) or <see cref="XmlTypeAttribute"/>.
     /// </summary>
