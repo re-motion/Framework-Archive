@@ -18,9 +18,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   public class ExtensionClientTransactionListener : IClientTransactionListener
   {
     private ClientTransactionExtensionCollection _extensions;
+    private ClientTransaction _clientTransaction;
 
-    public ExtensionClientTransactionListener (ClientTransactionExtensionCollection extensions)
+    public ExtensionClientTransactionListener (ClientTransaction clientTransaction, ClientTransactionExtensionCollection extensions)
     {
+      _clientTransaction = clientTransaction;
       _extensions = extensions;
     }
 
@@ -39,97 +41,97 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public void NewObjectCreating (Type type)
     {
-      _extensions.NewObjectCreating (type);
+      _extensions.NewObjectCreating (_clientTransaction, type);
     }
 
     public void ObjectLoading (ObjectID id)
     {
-      _extensions.ObjectLoading (id);
+      _extensions.ObjectLoading (_clientTransaction, id);
     }
 
     public void ObjectsLoaded (DomainObjectCollection domainObjects)
     {
-      _extensions.ObjectsLoaded (domainObjects);
+      _extensions.ObjectsLoaded (_clientTransaction, domainObjects);
     }
 
     public void ObjectDeleting (DomainObject domainObject)
     {
-      _extensions.ObjectDeleting (domainObject);
+      _extensions.ObjectDeleting (_clientTransaction, domainObject);
     }
 
     public void ObjectDeleted (DomainObject domainObject)
     {
-      _extensions.ObjectDeleted (domainObject);
+      _extensions.ObjectDeleted (_clientTransaction, domainObject);
     }
 
     public void PropertyValueReading (DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
     {
-      _extensions.PropertyValueReading (dataContainer, propertyValue, valueAccess);
+      _extensions.PropertyValueReading (_clientTransaction, dataContainer, propertyValue, valueAccess);
     }
 
     public void PropertyValueRead (DataContainer dataContainer, PropertyValue propertyValue, object value, ValueAccess valueAccess)
     {
-      _extensions.PropertyValueRead (dataContainer, propertyValue, value, valueAccess);
+      _extensions.PropertyValueRead (_clientTransaction, dataContainer, propertyValue, value, valueAccess);
     }
 
     public void PropertyValueChanging (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
-      _extensions.PropertyValueChanging (dataContainer, propertyValue, oldValue, newValue);
+      _extensions.PropertyValueChanging (_clientTransaction, dataContainer, propertyValue, oldValue, newValue);
     }
 
     public void PropertyValueChanged (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
-      _extensions.PropertyValueChanged (dataContainer, propertyValue, oldValue, newValue);
+      _extensions.PropertyValueChanged (_clientTransaction, dataContainer, propertyValue, oldValue, newValue);
     }
 
     public void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess)
     {
-      _extensions.RelationReading (domainObject, propertyName, valueAccess);
+      _extensions.RelationReading (_clientTransaction, domainObject, propertyName, valueAccess);
     }
 
     public void RelationRead (DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess)
     {
-      _extensions.RelationRead (domainObject, propertyName, relatedObject, valueAccess);
+      _extensions.RelationRead (_clientTransaction, domainObject, propertyName, relatedObject, valueAccess);
     }
 
     public void RelationRead (DomainObject domainObject, string propertyName, DomainObjectCollection relatedObjects, ValueAccess valueAccess)
     {
-      _extensions.RelationRead (domainObject, propertyName, relatedObjects, valueAccess);
+      _extensions.RelationRead (_clientTransaction, domainObject, propertyName, relatedObjects, valueAccess);
     }
 
     public void RelationChanging (DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)
     {
-      _extensions.RelationChanging (domainObject, propertyName, oldRelatedObject, newRelatedObject);
+      _extensions.RelationChanging (_clientTransaction, domainObject, propertyName, oldRelatedObject, newRelatedObject);
     }
 
     public void RelationChanged (DomainObject domainObject, string propertyName)
     {
-      _extensions.RelationChanged (domainObject, propertyName);
+      _extensions.RelationChanged (_clientTransaction, domainObject, propertyName);
     }
 
     public void FilterQueryResult (DomainObjectCollection queryResult, IQuery query)
     {
-      _extensions.FilterQueryResult (queryResult, query);
+      _extensions.FilterQueryResult (_clientTransaction, queryResult, query);
     }
 
     public void TransactionCommitting (DomainObjectCollection domainObjects)
     {
-      _extensions.Committing (domainObjects);
+      _extensions.Committing (_clientTransaction, domainObjects);
     }
 
     public void TransactionCommitted (DomainObjectCollection domainObjects)
     {
-      _extensions.Committed (domainObjects);
+      _extensions.Committed (_clientTransaction, domainObjects);
     }
 
     public void TransactionRollingBack (DomainObjectCollection domainObjects)
     {
-      _extensions.RollingBack (domainObjects);
+      _extensions.RollingBack (_clientTransaction, domainObjects);
     }
 
     public void TransactionRolledBack (DomainObjectCollection domainObjects)
     {
-      _extensions.RolledBack (domainObjects);
+      _extensions.RolledBack (_clientTransaction, domainObjects);
     }
 
     public void RelationEndPointMapRegistering (RelationEndPoint endPoint)

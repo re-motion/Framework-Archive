@@ -37,7 +37,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, GeneralAccessTypes.Delete, true);
       _testHelper.ReplayAll ();
 
-      _extension.ObjectDeleting (securableObject);
+      _extension.ObjectDeleting (_testHelper.Transaction, securableObject);
 
       _testHelper.VerifyAll ();
     }
@@ -52,7 +52,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, GeneralAccessTypes.Delete, false);
       _testHelper.ReplayAll ();
 
-      _extension.ObjectDeleting (securableObject);
+      _extension.ObjectDeleting (_testHelper.Transaction, securableObject);
     }
 
     [Test]
@@ -65,7 +65,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
 
       using (new SecurityFreeSection ())
       {
-        _extension.ObjectDeleting (securableObject);
+        _extension.ObjectDeleting (_testHelper.Transaction, securableObject);
       }
 
       _testHelper.VerifyAll ();
@@ -79,7 +79,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.AddExtension (_extension);
       _testHelper.ReplayAll ();
 
-      _extension.ObjectDeleting (nonSecurableObject);
+      _extension.ObjectDeleting (_testHelper.Transaction, nonSecurableObject);
 
       _testHelper.VerifyAll ();
     }
@@ -99,7 +99,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, GeneralAccessTypes.Delete, hasAccess);
       _testHelper.ReplayAll ();
 
-      _extension.ObjectDeleting (securableObject);
+      _extension.ObjectDeleting (_testHelper.Transaction, securableObject);
 
       _testHelper.VerifyAll ();
     }
@@ -125,7 +125,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.AddExtension (_extension);
       _testHelper.ReplayAll ();
 
-      _extension.ObjectDeleting (securableObject);
+      _extension.ObjectDeleting (_testHelper.Transaction, securableObject);
 
       _testHelper.VerifyAll ();
     }

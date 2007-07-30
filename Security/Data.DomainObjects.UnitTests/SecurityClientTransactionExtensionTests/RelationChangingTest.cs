@@ -2,6 +2,7 @@ using System;
 using System.Security.Principal;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactionExtensionTests
@@ -37,7 +38,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, true);
       _testHelper.ReplayAll ();
 
-      _extension.RelationChanging (securableObject, "Parent", null, null);
+      _extension.RelationChanging (new RootClientTransaction (), securableObject, "Parent", null, null);
 
       _testHelper.VerifyAll ();
     }
@@ -52,7 +53,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, false);
       _testHelper.ReplayAll ();
 
-      _extension.RelationChanging (securableObject, "Parent", null, null);
+      _extension.RelationChanging (new RootClientTransaction (), securableObject, "Parent", null, null);
     }
 
     [Test]
@@ -64,7 +65,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
 
       using (new SecurityFreeSection ())
       {
-        _extension.RelationChanging (securableObject, "Parent", null, null);
+        _extension.RelationChanging (new RootClientTransaction (), securableObject, "Parent", null, null);
       }
 
       _testHelper.VerifyAll ();
@@ -77,7 +78,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.AddExtension (_extension);
       _testHelper.ReplayAll ();
 
-      _extension.RelationChanging (nonSecurableObject, "Parent", null, null);
+      _extension.RelationChanging (new RootClientTransaction (), nonSecurableObject, "Parent", null, null);
 
       _testHelper.VerifyAll ();
     }
@@ -98,7 +99,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, hasAccess);
       _testHelper.ReplayAll ();
 
-      _extension.RelationChanging (securableObject, "Parent", null, null);
+      _extension.RelationChanging (new RootClientTransaction (), securableObject, "Parent", null, null);
 
       _testHelper.VerifyAll ();
     }

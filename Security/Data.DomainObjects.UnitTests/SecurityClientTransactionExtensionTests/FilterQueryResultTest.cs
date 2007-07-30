@@ -2,6 +2,7 @@ using System;
 using System.Security.Principal;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -40,7 +41,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (allowedObject, GeneralAccessTypes.Find, true);
       _testHelper.ReplayAll ();
 
-      _extension.FilterQueryResult (collection, query);
+      _extension.FilterQueryResult (new RootClientTransaction(), collection, query);
 
       _testHelper.VerifyAll ();
       Assert.AreEqual (1, collection.Count);
@@ -56,7 +57,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.AddExtension (_extension);
       _testHelper.ReplayAll ();
 
-      _extension.FilterQueryResult (collection, query);
+      _extension.FilterQueryResult (new RootClientTransaction(), collection, query);
 
       _testHelper.VerifyAll ();
       Assert.AreEqual (0, collection.Count);
@@ -73,7 +74,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (deniedObject, GeneralAccessTypes.Find, false);
       _testHelper.ReplayAll ();
 
-      _extension.FilterQueryResult (collection, query);
+      _extension.FilterQueryResult (new RootClientTransaction (), collection, query);
 
       _testHelper.VerifyAll ();
       Assert.AreEqual (0, collection.Count);
@@ -93,7 +94,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (deniedObject, GeneralAccessTypes.Find, false);
       _testHelper.ReplayAll ();
 
-      _extension.FilterQueryResult (collection, query);
+      _extension.FilterQueryResult (new RootClientTransaction (), collection, query);
 
       _testHelper.VerifyAll ();
       Assert.AreEqual (1, collection.Count);
@@ -110,7 +111,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.AddExtension (_extension);
       _testHelper.ReplayAll ();
 
-      _extension.FilterQueryResult (collection, query);
+      _extension.FilterQueryResult (new RootClientTransaction (), collection, query);
 
       _testHelper.VerifyAll ();
       Assert.AreEqual (1, collection.Count);
@@ -131,7 +132,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
 
       using (new SecurityFreeSection ())
       {
-        _extension.FilterQueryResult (collection, query);
+        _extension.FilterQueryResult (new RootClientTransaction (), collection, query);
       }
 
       _testHelper.VerifyAll ();
@@ -156,7 +157,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, GeneralAccessTypes.Find, hasAccess);
       _testHelper.ReplayAll ();
 
-      _extension.FilterQueryResult (collection, query);
+      _extension.FilterQueryResult (new RootClientTransaction (), collection, query);
 
       _testHelper.VerifyAll ();
     }

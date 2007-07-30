@@ -29,6 +29,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       get { return (DataContainer) PrivateInvoke.InvokeNonPublicMethod (this, "GetDataContainer"); }
     }
 
+    public DataContainer GetInternalDataContainerForTransaction(ClientTransaction transaction)
+    {
+      return (DataContainer) PrivateInvoke.InvokeNonPublicMethod (this, "GetDataContainerForTransaction", transaction);
+    }
+
     public new DomainObject GetRelatedObject (string propertyName)
     {
       return base.GetRelatedObject (propertyName);

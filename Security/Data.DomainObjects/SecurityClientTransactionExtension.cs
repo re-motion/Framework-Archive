@@ -26,58 +26,58 @@ namespace Rubicon.Security.Data.DomainObjects
 
     #region IClientTransactionExtension Implementation
 
-    void IClientTransactionExtension.ObjectLoading (ObjectID id)
+    void IClientTransactionExtension.ObjectLoading (ClientTransaction clientTransaction, ObjectID id)
     {
     }
 
 
-    void IClientTransactionExtension.ObjectsLoaded (DomainObjectCollection loadedDomainObjects)
+    void IClientTransactionExtension.ObjectsLoaded (ClientTransaction clientTransaction, DomainObjectCollection loadedDomainObjects)
     {
     }
 
-    void IClientTransactionExtension.ObjectDeleted (DomainObject domainObject)
+    void IClientTransactionExtension.ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject)
     {
     }
 
-    void IClientTransactionExtension.PropertyValueRead (DataContainer dataContainer, PropertyValue propertyValue, object value, ValueAccess valueAccess)
+    void IClientTransactionExtension.PropertyValueRead (ClientTransaction clientTransaction, DataContainer dataContainer, PropertyValue propertyValue, object value, ValueAccess valueAccess)
     {
     }
 
-    void IClientTransactionExtension.PropertyValueChanged (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
+    void IClientTransactionExtension.PropertyValueChanged (ClientTransaction clientTransaction, DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
     }
 
-    void IClientTransactionExtension.RelationRead (DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess)
+    void IClientTransactionExtension.RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess)
     {
     }
 
-    void IClientTransactionExtension.RelationRead (DomainObject domainObject, string propertyName, DomainObjectCollection relatedObjects, ValueAccess valueAccess)
+    void IClientTransactionExtension.RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName, DomainObjectCollection relatedObjects, ValueAccess valueAccess)
     {
     }
 
-    void IClientTransactionExtension.RelationChanged (DomainObject domainObject, string propertyName)
+    void IClientTransactionExtension.RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName)
     {
     }
 
-    void IClientTransactionExtension.Committing (DomainObjectCollection changedDomainObjects)
+    void IClientTransactionExtension.Committing (ClientTransaction clientTransaction, DomainObjectCollection changedDomainObjects)
     {
     }
 
-    void IClientTransactionExtension.Committed (DomainObjectCollection changedDomainObjects)
+    void IClientTransactionExtension.Committed (ClientTransaction clientTransaction, DomainObjectCollection changedDomainObjects)
     {
     }
 
-    void IClientTransactionExtension.RollingBack (DomainObjectCollection changedDomainObjects)
+    void IClientTransactionExtension.RollingBack (ClientTransaction clientTransaction, DomainObjectCollection changedDomainObjects)
     {
     }
 
-    void IClientTransactionExtension.RolledBack (DomainObjectCollection changedDomainObjects)
+    void IClientTransactionExtension.RolledBack (ClientTransaction clientTransaction, DomainObjectCollection changedDomainObjects)
     {
     }
 
     #endregion
 
-    public virtual void FilterQueryResult (DomainObjectCollection queryResult, IQuery query)
+    public virtual void FilterQueryResult (ClientTransaction clientTransaction, DomainObjectCollection queryResult, IQuery query)
     {
       ArgumentUtility.CheckNotNull ("queryResult", queryResult);
 
@@ -110,7 +110,7 @@ namespace Rubicon.Security.Data.DomainObjects
       }
     }
 
-    public virtual void NewObjectCreating (Type type)
+    public virtual void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
@@ -135,7 +135,7 @@ namespace Rubicon.Security.Data.DomainObjects
       }
     }
 
-    public virtual void ObjectDeleting (DomainObject domainObject)
+    public virtual void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
@@ -164,7 +164,7 @@ namespace Rubicon.Security.Data.DomainObjects
       }
     }
 
-    public virtual void PropertyValueReading (DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
+    public virtual void PropertyValueReading (ClientTransaction clientTransaction, DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
     {
       ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
       ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
@@ -172,7 +172,7 @@ namespace Rubicon.Security.Data.DomainObjects
       PropertyReading (dataContainer.DomainObject, propertyValue.Name);
     }
 
-    public virtual void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess)
+    public virtual void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName, ValueAccess valueAccess)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -204,7 +204,7 @@ namespace Rubicon.Security.Data.DomainObjects
       }
     }
 
-    public virtual void PropertyValueChanging (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
+    public virtual void PropertyValueChanging (ClientTransaction clientTransaction, DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
       ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
       ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
@@ -212,7 +212,7 @@ namespace Rubicon.Security.Data.DomainObjects
       PropertyChanging (dataContainer.DomainObject, propertyValue.Name);
     }
 
-    public virtual void RelationChanging (DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public virtual void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
       ArgumentUtility.CheckNotNull ("propertyName", propertyName);

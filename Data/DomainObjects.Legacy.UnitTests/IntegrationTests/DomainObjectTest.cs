@@ -86,15 +86,15 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
       {
         //1
         //newCeo1.Company = newCustomer1;
-        extension.RelationChanging (newCeo1, "Company", null, newCustomer1);
-        extension.RelationChanging (newCustomer1, "Ceo", null, newCeo1);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newCeo1, "Company", null, newCustomer1);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newCustomer1, "Ceo", null, newCeo1);
 
         newCeo1EventReceiver.RelationChanging (newCeo1, "Company", null, newCustomer1);
 
         newCustomer1EventReceiver.RelationChanging (newCustomer1, "Ceo", null, newCeo1);
 
-        extension.RelationChanged (newCeo1, "Company");
-        extension.RelationChanged (newCustomer1, "Ceo");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newCeo1, "Company");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newCustomer1, "Ceo");
 
         newCeo1EventReceiver.RelationChanged (newCeo1, "Company");
 
@@ -103,9 +103,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //2
         //newCeo2.Company = newCustomer1;
-        extension.RelationChanging (newCeo2, "Company", null, newCustomer1);
-        extension.RelationChanging (newCustomer1, "Ceo", newCeo1, newCeo2);
-        extension.RelationChanging (newCeo1, "Company", newCustomer1, null);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newCeo2, "Company", null, newCustomer1);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newCustomer1, "Ceo", newCeo1, newCeo2);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newCeo1, "Company", newCustomer1, null);
 
         newCeo2EventReceiver.RelationChanging (newCeo2, "Company", null, newCustomer1);
 
@@ -113,9 +113,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         newCeo1EventReceiver.RelationChanging (newCeo1, "Company", newCustomer1, null);
 
-        extension.RelationChanged (newCeo2, "Company");
-        extension.RelationChanged (newCustomer1, "Ceo");
-        extension.RelationChanged (newCeo1, "Company");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newCeo2, "Company");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newCustomer1, "Ceo");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newCeo1, "Company");
 
         newCeo2EventReceiver.RelationChanged (newCeo2, "Company");
 
@@ -126,15 +126,15 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //3
         //newCeo1.Company = newCustomer2;
-        extension.RelationChanging (newCeo1, "Company", null, newCustomer2);
-        extension.RelationChanging (newCustomer2, "Ceo", null, newCeo1);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newCeo1, "Company", null, newCustomer2);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newCustomer2, "Ceo", null, newCeo1);
 
         newCeo1EventReceiver.RelationChanging (newCeo1, "Company", null, newCustomer2);
 
         newCustomer2EventReceiver.RelationChanging (newCustomer2, "Ceo", null, newCeo1);
 
-        extension.RelationChanged (newCeo1, "Company");
-        extension.RelationChanged (newCustomer2, "Ceo");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newCeo1, "Company");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newCustomer2, "Ceo");
 
         newCeo1EventReceiver.RelationChanged (newCeo1, "Company");
 
@@ -143,15 +143,15 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //4
         //newCeo1.Company = null;
-        extension.RelationChanging (newCeo1, "Company", newCustomer2, null);
-        extension.RelationChanging (newCustomer2, "Ceo", newCeo1, null);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newCeo1, "Company", newCustomer2, null);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newCustomer2, "Ceo", newCeo1, null);
 
         newCeo1EventReceiver.RelationChanging (newCeo1, "Company", newCustomer2, null);
 
         newCustomer2EventReceiver.RelationChanging (newCustomer2, "Ceo", newCeo1, null);
 
-        extension.RelationChanged (newCeo1, "Company");
-        extension.RelationChanged (newCustomer2, "Ceo");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newCeo1, "Company");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newCustomer2, "Ceo");
 
         newCeo1EventReceiver.RelationChanged (newCeo1, "Company");
 
@@ -160,12 +160,17 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //5
         //newCustomer1.Orders.Add (newOrder1);
-        extension.RelationReading (newCustomer1, "Orders", ValueAccess.Current);
-        extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Mocks_Is.Same (newCustomer1), Mocks_Is.Equal ("Orders"), Mocks_Property.Value ("Count", 0), Mocks_Is.Equal (ValueAccess.Current));
+        extension.RelationReading (ClientTransactionScope.CurrentTransaction, newCustomer1, "Orders", ValueAccess.Current);
+        extension.RelationRead (null, null, null, (DomainObjectCollection) null, ValueAccess.Current);
+        LastCall.Constraints (
+            Mocks_Is.Same (ClientTransactionScope.CurrentTransaction),
+            Mocks_Is.Same (newCustomer1),
+            Mocks_Is.Equal ("Orders"),
+            Mocks_Property.Value ("Count", 0),
+            Mocks_Is.Equal (ValueAccess.Current));
 
-        extension.RelationChanging (newOrder1, "Customer", null, newCustomer1);
-        extension.RelationChanging (newCustomer1, "Orders", null, newOrder1);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrder1, "Customer", null, newCustomer1);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newCustomer1, "Orders", null, newOrder1);
 
         newOrder1EventReceiver.RelationChanging (newOrder1, "Customer", null, newCustomer1);
 
@@ -173,8 +178,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         newCustomer1EventReceiver.RelationChanging (newCustomer1, "Orders", null, newOrder1);
 
-        extension.RelationChanged (newOrder1, "Customer");
-        extension.RelationChanged (newCustomer1, "Orders");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrder1, "Customer");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newCustomer1, "Orders");
 
         newOrder1EventReceiver.RelationChanged (newOrder1, "Customer");
 
@@ -185,12 +190,17 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //6
         //newCustomer1.Orders.Add (newOrder2);
-        extension.RelationReading (newCustomer1, "Orders", ValueAccess.Current);
-        extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Mocks_Is.Same (newCustomer1), Mocks_Is.Equal ("Orders"), Mocks_Property.Value ("Count", 1) & Mocks_List.IsIn (newOrder1), Mocks_Is.Equal (ValueAccess.Current));
+        extension.RelationReading (ClientTransactionScope.CurrentTransaction, newCustomer1, "Orders", ValueAccess.Current);
+        extension.RelationRead (null, null, null, (DomainObjectCollection) null, ValueAccess.Current);
+        LastCall.Constraints (
+            Mocks_Is.Same (ClientTransactionScope.CurrentTransaction),
+            Mocks_Is.Same (newCustomer1),
+            Mocks_Is.Equal ("Orders"),
+            Mocks_Property.Value ("Count", 1) & Mocks_List.IsIn (newOrder1),
+            Mocks_Is.Equal (ValueAccess.Current));
 
-        extension.RelationChanging (newOrder2, "Customer", null, newCustomer1);
-        extension.RelationChanging (newCustomer1, "Orders", null, newOrder2);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrder2, "Customer", null, newCustomer1);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newCustomer1, "Orders", null, newOrder2);
 
         newOrder2EventReceiver.RelationChanging (newOrder2, "Customer", null, newCustomer1);
 
@@ -198,8 +208,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         newCustomer1EventReceiver.RelationChanging (newCustomer1, "Orders", null, newOrder2);
 
-        extension.RelationChanged (newOrder2, "Customer");
-        extension.RelationChanged (newCustomer1, "Orders");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrder2, "Customer");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newCustomer1, "Orders");
 
         newOrder2EventReceiver.RelationChanged (newOrder2, "Customer");
 
@@ -210,20 +220,25 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //7
         //newCustomer1.Orders.Remove (newOrder2);
-        extension.RelationReading (newCustomer1, "Orders", ValueAccess.Current);
-        extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Mocks_Is.Same (newCustomer1), Mocks_Is.Equal ("Orders"), Mocks_Property.Value ("Count", 2) & Mocks_List.IsIn (newOrder1) & Mocks_List.IsIn (newOrder2), Mocks_Is.Equal (ValueAccess.Current));
+        extension.RelationReading (ClientTransactionScope.CurrentTransaction, newCustomer1, "Orders", ValueAccess.Current);
+        extension.RelationRead (null, null, null, (DomainObjectCollection) null, ValueAccess.Current);
+        LastCall.Constraints (
+            Mocks_Is.Same (ClientTransactionScope.CurrentTransaction),
+            Mocks_Is.Same (newCustomer1),
+            Mocks_Is.Equal ("Orders"),
+            Mocks_Property.Value ("Count", 2) & Mocks_List.IsIn (newOrder1) & Mocks_List.IsIn (newOrder2),
+            Mocks_Is.Equal (ValueAccess.Current));
 
-        extension.RelationChanging (newOrder2, "Customer", newCustomer1, null);
-        extension.RelationChanging (newCustomer1, "Orders", newOrder2, null);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrder2, "Customer", newCustomer1, null);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newCustomer1, "Orders", newOrder2, null);
 
         newOrder2EventReceiver.RelationChanging (newOrder2, "Customer", newCustomer1, null);
 
         newCustomer1OrdersEventReceiver.Removing (newCustomer1Orders, newOrder2);
         newCustomer1EventReceiver.RelationChanging (newCustomer1, "Orders", newOrder2, null);
 
-        extension.RelationChanged (newOrder2, "Customer");
-        extension.RelationChanged (newCustomer1, "Orders");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrder2, "Customer");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newCustomer1, "Orders");
 
         newOrder2EventReceiver.RelationChanged (newOrder2, "Customer");
         newCustomer1OrdersEventReceiver.Removed (newCustomer1Orders, newOrder2);
@@ -232,15 +247,15 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //8
         //newOrderItem1.Order = newOrder1;
-        extension.RelationChanging (newOrderItem1, "Order", null, newOrder1);
-        extension.RelationChanging (newOrder1, "OrderItems", null, newOrderItem1);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrderItem1, "Order", null, newOrder1);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrder1, "OrderItems", null, newOrderItem1);
 
         newOrderItem1EventReceiver.RelationChanging (newOrderItem1, "Order", null, newOrder1);
         newOrder1OrderItemsEventReceiver.Adding (newOrder1OrderItems, newOrderItem1);
         newOrder1EventReceiver.RelationChanging (newOrder1, "OrderItems", null, newOrderItem1);
 
-        extension.RelationChanged (newOrderItem1, "Order");
-        extension.RelationChanged (newOrder1, "OrderItems");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrderItem1, "Order");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrder1, "OrderItems");
 
         newOrderItem1EventReceiver.RelationChanged (newOrderItem1, "Order");
         newOrder1OrderItemsEventReceiver.Added (newOrder1OrderItems, newOrderItem1);
@@ -249,15 +264,15 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //9
         //newOrderItem2.Order = newOrder1;
-        extension.RelationChanging (newOrderItem2, "Order", null, newOrder1);
-        extension.RelationChanging (newOrder1, "OrderItems", null, newOrderItem2);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrderItem2, "Order", null, newOrder1);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrder1, "OrderItems", null, newOrderItem2);
 
         newOrderItem2EventReceiver.RelationChanging (newOrderItem2, "Order", null, newOrder1);
         newOrder1OrderItemsEventReceiver.Adding (newOrder1OrderItems, newOrderItem2);
         newOrder1EventReceiver.RelationChanging (newOrder1, "OrderItems", null, newOrderItem2);
 
-        extension.RelationChanged (newOrderItem2, "Order");
-        extension.RelationChanged (newOrder1, "OrderItems");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrderItem2, "Order");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrder1, "OrderItems");
 
         newOrderItem2EventReceiver.RelationChanged (newOrderItem2, "Order");
         newOrder1OrderItemsEventReceiver.Added (newOrder1OrderItems, newOrderItem2);
@@ -267,15 +282,15 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //10
         //newOrderItem1.Order = null;
-        extension.RelationChanging (newOrderItem1, "Order", newOrder1, null);
-        extension.RelationChanging (newOrder1, "OrderItems", newOrderItem1, null);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrderItem1, "Order", newOrder1, null);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrder1, "OrderItems", newOrderItem1, null);
 
         newOrderItem1EventReceiver.RelationChanging (newOrderItem1, "Order", newOrder1, null);
         newOrder1OrderItemsEventReceiver.Removing (newOrder1OrderItems, newOrderItem1);
         newOrder1EventReceiver.RelationChanging (newOrder1, "OrderItems", newOrderItem1, null);
 
-        extension.RelationChanged (newOrderItem1, "Order");
-        extension.RelationChanged (newOrder1, "OrderItems");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrderItem1, "Order");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrder1, "OrderItems");
 
         newOrderItem1EventReceiver.RelationChanged (newOrderItem1, "Order");
         newOrder1OrderItemsEventReceiver.Removed (newOrder1OrderItems, newOrderItem1);
@@ -284,15 +299,15 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //11
         //newOrderItem1.Order = newOrder2;
-        extension.RelationChanging (newOrderItem1, "Order", null, newOrder2);
-        extension.RelationChanging (newOrder2, "OrderItems", null, newOrderItem1);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrderItem1, "Order", null, newOrder2);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrder2, "OrderItems", null, newOrderItem1);
 
         newOrderItem1EventReceiver.RelationChanging (newOrderItem1, "Order", null, newOrder2);
         newOrder2OrderItemsEventReceiver.Adding (newOrder2OrderItems, newOrderItem1);
         newOrder2EventReceiver.RelationChanging (newOrder2, "OrderItems", null, newOrderItem1);
 
-        extension.RelationChanged (newOrderItem1, "Order");
-        extension.RelationChanged (newOrder2, "OrderItems");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrderItem1, "Order");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrder2, "OrderItems");
 
         newOrderItem1EventReceiver.RelationChanged (newOrderItem1, "Order");
         newOrder2OrderItemsEventReceiver.Added (newOrder2OrderItems, newOrderItem1);
@@ -301,15 +316,15 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //12
         //newOrder1.Official = official2;
-        extension.RelationChanging (newOrder1, "Official", null, official2);
-        extension.RelationChanging (official2, "Orders", null, newOrder1);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrder1, "Official", null, official2);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, official2, "Orders", null, newOrder1);
 
         newOrder1EventReceiver.RelationChanging (newOrder1, "Official", null, official2);
         official2OrdersEventReceiver.Adding (official2Orders, newOrder1);
         official2EventReceiver.RelationChanging (official2, "Orders", null, newOrder1);
 
-        extension.RelationChanged (newOrder1, "Official");
-        extension.RelationChanged (official2, "Orders");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrder1, "Official");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, official2, "Orders");
 
         newOrder1EventReceiver.RelationChanged (newOrder1, "Official");
         official2OrdersEventReceiver.Added (official2Orders, newOrder1);
@@ -319,19 +334,32 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
         //13
         //OrderTicket newOrderTicket1 = new OrderTicket (newOrder1);
 
-        extension.NewObjectCreating (typeof (OrderTicket));
+        extension.NewObjectCreating (ClientTransactionScope.CurrentTransaction, typeof (OrderTicket));
 
-        extension.RelationChanging (null, null, null, null);
-        LastCall.Constraints (Mocks_Is.TypeOf<OrderTicket> (), Mocks_Is.Equal ("Order"), Mocks_Is.Null (), Mocks_Is.Same (newOrder1));
-        extension.RelationChanging (null, null, null, null);
-        LastCall.Constraints (Mocks_Is.Same (newOrder1), Mocks_Is.Equal ("OrderTicket"), Mocks_Is.Null (), Mocks_Is.TypeOf<OrderTicket> ());
+        extension.RelationChanging (null, null, null, null, null);
+        LastCall.Constraints (
+            Mocks_Is.Same (ClientTransactionScope.CurrentTransaction),
+            Mocks_Is.TypeOf<OrderTicket>(),
+            Mocks_Is.Equal ("Order"),
+            Mocks_Is.Null(),
+            Mocks_Is.Same (newOrder1));
+        extension.RelationChanging (null, null, null, null, null);
+        LastCall.Constraints (
+            Mocks_Is.Same (ClientTransactionScope.CurrentTransaction),
+            Mocks_Is.Same (newOrder1),
+            Mocks_Is.Equal ("OrderTicket"),
+            Mocks_Is.Null(),
+            Mocks_Is.TypeOf<OrderTicket>());
 
         newOrder1EventReceiver.RelationChanging (null, null);
-        LastCall.Constraints (Mocks_Is.Same (newOrder1), Mocks_Property.Value ("PropertyName", "OrderTicket") & Mocks_Property.Value ("OldRelatedObject", null) & Mocks_Property.ValueConstraint ("NewRelatedObject", Mocks_Is.TypeOf<OrderTicket> ()));
+        LastCall.Constraints (
+            Mocks_Is.Same (newOrder1),
+            Mocks_Property.Value ("PropertyName", "OrderTicket") & Mocks_Property.Value ("OldRelatedObject", null)
+            & Mocks_Property.ValueConstraint ("NewRelatedObject", Mocks_Is.TypeOf<OrderTicket>()));
 
-        extension.RelationChanged (null, null);
-        LastCall.Constraints (Mocks_Is.TypeOf<OrderTicket> (), Mocks_Is.Equal ("Order"));
-        extension.RelationChanged (newOrder1, "OrderTicket");
+        extension.RelationChanged (null, null, null);
+        LastCall.Constraints (Mocks_Is.Same (ClientTransactionScope.CurrentTransaction), Mocks_Is.TypeOf<OrderTicket>(), Mocks_Is.Equal ("Order"));
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrder1, "OrderTicket");
 
         newOrder1EventReceiver.RelationChanged (newOrder1, "OrderTicket");
       }
@@ -379,17 +407,17 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
       {
         //14
         //newOrderTicket1.Order = newOrder2;
-        extension.RelationChanging (newOrderTicket1, "Order", newOrder1, newOrder2);
-        extension.RelationChanging (newOrder1, "OrderTicket", newOrderTicket1, null);
-        extension.RelationChanging (newOrder2, "OrderTicket", null, newOrderTicket1);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrderTicket1, "Order", newOrder1, newOrder2);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrder1, "OrderTicket", newOrderTicket1, null);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrder2, "OrderTicket", null, newOrderTicket1);
 
         newOrderTicket1EventReceiver.RelationChanging (newOrderTicket1, "Order", newOrder1, newOrder2);
         newOrder1EventReceiver.RelationChanging (newOrder1, "OrderTicket", newOrderTicket1, null);
         newOrder2EventReceiver.RelationChanging (newOrder2, "OrderTicket", null, newOrderTicket1);
 
-        extension.RelationChanged (newOrderTicket1, "Order");
-        extension.RelationChanged (newOrder1, "OrderTicket");
-        extension.RelationChanged (newOrder2, "OrderTicket");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrderTicket1, "Order");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrder1, "OrderTicket");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrder2, "OrderTicket");
 
         newOrderTicket1EventReceiver.RelationChanged (newOrderTicket1, "Order");
         newOrder1EventReceiver.RelationChanged (newOrder1, "OrderTicket");
@@ -398,15 +426,15 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //15a
         //newOrder2.Customer = newCustomer1;
-        extension.RelationChanging (newOrder2, "Customer", null, newCustomer1);
-        extension.RelationChanging (newCustomer1, "Orders", null, newOrder2);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrder2, "Customer", null, newCustomer1);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newCustomer1, "Orders", null, newOrder2);
 
         newOrder2EventReceiver.RelationChanging (newOrder2, "Customer", null, newCustomer1);
         newCustomer1OrdersEventReceiver.Adding (newCustomer1Orders, newOrder2);
         newCustomer1EventReceiver.RelationChanging (newCustomer1, "Orders", null, newOrder2);
 
-        extension.RelationChanged (newOrder2, "Customer");
-        extension.RelationChanged (newCustomer1, "Orders");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrder2, "Customer");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newCustomer1, "Orders");
 
         newOrder2EventReceiver.RelationChanged (newOrder2, "Customer");
         newCustomer1OrdersEventReceiver.Added (newCustomer1Orders, newOrder2);
@@ -415,9 +443,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //15b
         //newOrder2.Customer = newCustomer2;
-        extension.RelationChanging (newOrder2, "Customer", newCustomer1, newCustomer2);
-        extension.RelationChanging (newCustomer2, "Orders", null, newOrder2);
-        extension.RelationChanging (newCustomer1, "Orders", newOrder2, null);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrder2, "Customer", newCustomer1, newCustomer2);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newCustomer2, "Orders", null, newOrder2);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newCustomer1, "Orders", newOrder2, null);
 
         newOrder2EventReceiver.RelationChanging (newOrder2, "Customer", newCustomer1, newCustomer2);
         newCustomer2OrdersEventReceiver.Adding (newCustomer2Orders, newOrder2);
@@ -425,9 +453,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
         newCustomer1OrdersEventReceiver.Removing (newCustomer1Orders, newOrder2);
         newCustomer1EventReceiver.RelationChanging (newCustomer1, "Orders", newOrder2, null);
 
-        extension.RelationChanged (newOrder2, "Customer");
-        extension.RelationChanged (newCustomer2, "Orders");
-        extension.RelationChanged (newCustomer1, "Orders");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrder2, "Customer");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newCustomer2, "Orders");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newCustomer1, "Orders");
 
         newOrder2EventReceiver.RelationChanged (newOrder2, "Customer");
         newCustomer2OrdersEventReceiver.Added (newCustomer2Orders, newOrder2);
@@ -438,13 +466,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //16
         //newOrder2.Delete ();
-        extension.ObjectDeleting (newOrder2);
+        extension.ObjectDeleting (ClientTransactionScope.CurrentTransaction, newOrder2);
 
         using (mockRepository.Unordered ())
         {
-          extension.RelationChanging (newCustomer2, "Orders", newOrder2, null);
-          extension.RelationChanging (newOrderTicket1, "Order", newOrder2, null);
-          extension.RelationChanging (newOrderItem1, "Order", newOrder2, null);
+          extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newCustomer2, "Orders", newOrder2, null);
+          extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrderTicket1, "Order", newOrder2, null);
+          extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrderItem1, "Order", newOrder2, null);
         }
 
         newOrder2EventReceiver.Deleting (null, null);
@@ -460,12 +488,12 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         using (mockRepository.Unordered ())
         {
-          extension.RelationChanged (newCustomer2, "Orders");
-          extension.RelationChanged (newOrderTicket1, "Order");
-          extension.RelationChanged (newOrderItem1, "Order");
+          extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newCustomer2, "Orders");
+          extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrderTicket1, "Order");
+          extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrderItem1, "Order");
         }
 
-        extension.ObjectDeleted (newOrder2);
+        extension.ObjectDeleted (ClientTransactionScope.CurrentTransaction, newOrder2);
 
         using (mockRepository.Unordered ())
         {
@@ -480,14 +508,14 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //17
         //newOrderTicket1.Order = newOrder1;
-        extension.RelationChanging (newOrderTicket1, "Order", null, newOrder1);
-        extension.RelationChanging (newOrder1, "OrderTicket", null, newOrderTicket1);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrderTicket1, "Order", null, newOrder1);
+        extension.RelationChanging (ClientTransactionScope.CurrentTransaction, newOrder1, "OrderTicket", null, newOrderTicket1);
 
         newOrderTicket1EventReceiver.RelationChanging (newOrderTicket1, "Order", null, newOrder1);
         newOrder1EventReceiver.RelationChanging (newOrder1, "OrderTicket", null, newOrderTicket1);
 
-        extension.RelationChanged (newOrderTicket1, "Order");
-        extension.RelationChanged (newOrder1, "OrderTicket");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrderTicket1, "Order");
+        extension.RelationChanged (ClientTransactionScope.CurrentTransaction, newOrder1, "OrderTicket");
 
         newOrderTicket1EventReceiver.RelationChanged (newOrderTicket1, "Order");
         newOrder1EventReceiver.RelationChanged (newOrder1, "OrderTicket");
@@ -496,12 +524,12 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
         //cleanup for commit
         //18
         //newCustomer2.Delete ();
-        extension.ObjectDeleting (newCustomer2);
+        extension.ObjectDeleting (ClientTransactionScope.CurrentTransaction, newCustomer2);
 
         newCustomer2EventReceiver.Deleting (null, null);
         LastCall.Constraints (Mocks_Is.Same (newCustomer2), Mocks_Is.NotNull ());
 
-        extension.ObjectDeleted (newCustomer2);
+        extension.ObjectDeleted (ClientTransactionScope.CurrentTransaction, newCustomer2);
         
         newCustomer2EventReceiver.Deleted (null, null);
         LastCall.Constraints (Mocks_Is.Same (newCustomer2), Mocks_Is.NotNull ());
@@ -509,12 +537,12 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //19
         //newCeo1.Delete ();
-        extension.ObjectDeleting (newCeo1);
+        extension.ObjectDeleting (ClientTransactionScope.CurrentTransaction, newCeo1);
 
         newCeo1EventReceiver.Deleting (null, null);
         LastCall.Constraints (Mocks_Is.Same (newCeo1), Mocks_Is.NotNull ());
 
-        extension.ObjectDeleted (newCeo1);
+        extension.ObjectDeleted (ClientTransactionScope.CurrentTransaction, newCeo1);
 
         newCeo1EventReceiver.Deleted (null, null);
         LastCall.Constraints (Mocks_Is.Same (newCeo1), Mocks_Is.NotNull ());
@@ -522,12 +550,12 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
         //20
         //newOrderItem1.Delete ();
-        extension.ObjectDeleting (newOrderItem1);
+        extension.ObjectDeleting (ClientTransactionScope.CurrentTransaction, newOrderItem1);
 
         newOrderItem1EventReceiver.Deleting (null, null);
         LastCall.Constraints (Mocks_Is.Same (newOrderItem1), Mocks_Is.NotNull ());
 
-        extension.ObjectDeleted (newOrderItem1);
+        extension.ObjectDeleted (ClientTransactionScope.CurrentTransaction, newOrderItem1);
 
         newOrderItem1EventReceiver.Deleted (null, null);
         LastCall.Constraints (Mocks_Is.Same (newOrderItem1), Mocks_Is.NotNull ());
@@ -555,8 +583,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
           newOrderTicket1EventReceiver.Committing (null, null);
           LastCall.Constraints (Mocks_Is.Same (newOrderTicket1), Mocks_Is.NotNull ());
         }
-        extension.Committing (null);
-        LastCall.Constraints (new ContainsConstraint (newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 ));
+        extension.Committing (null, null);
+        LastCall.Constraints (
+            Mocks_Is.Same (ClientTransactionScope.CurrentTransaction),
+            new ContainsConstraint (newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1));
 
         using (mockRepository.Unordered ())
         {
@@ -578,8 +608,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
           newOrderTicket1EventReceiver.Committed (null, null);
           LastCall.Constraints (Mocks_Is.Same (newOrderTicket1), Mocks_Is.NotNull ());
         }
-        extension.Committed (null);
-        LastCall.Constraints (Mocks_Property.Value ("Count", 6) & new ContainsConstraint (newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1));
+        extension.Committed (null, null);
+        LastCall.Constraints (
+            Mocks_Is.Same (ClientTransactionScope.CurrentTransaction),
+            Mocks_Property.Value ("Count", 6) & new ContainsConstraint (newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1));
       }
 
       mockRepository.ReplayAll ();

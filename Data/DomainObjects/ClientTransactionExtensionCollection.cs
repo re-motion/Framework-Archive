@@ -9,7 +9,7 @@ namespace Rubicon.Data.DomainObjects
   /// A collection of <see cref="IClientTransactionExtension"/>s.
   /// </summary>
   [Serializable]
-  public class ClientTransactionExtensionCollection : CommonCollection
+  public class ClientTransactionExtensionCollection : CommonCollection, IClientTransactionExtension
   {
     // types
 
@@ -119,116 +119,116 @@ namespace Rubicon.Data.DomainObjects
     #region Notification methods
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void NewObjectCreating (Type type)
+    public void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.NewObjectCreating (type);
+        extension.NewObjectCreating (clientTransaction, type);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void ObjectLoading (ObjectID id)
+    public void ObjectLoading (ClientTransaction clientTransaction, ObjectID id)
     {
       ArgumentUtility.CheckNotNull ("id", id);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.ObjectLoading (id);
+        extension.ObjectLoading (clientTransaction, id);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void ObjectsLoaded (DomainObjectCollection loadedDomainObjects)
+    public void ObjectsLoaded (ClientTransaction clientTransaction, DomainObjectCollection loadedDomainObjects)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("loadedDomainObjects", loadedDomainObjects);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.ObjectsLoaded (loadedDomainObjects);
+        extension.ObjectsLoaded (clientTransaction, loadedDomainObjects);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void ObjectDeleting (DomainObject domainObject)
+    public void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.ObjectDeleting (domainObject);
+        extension.ObjectDeleting (clientTransaction, domainObject);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void ObjectDeleted (DomainObject domainObject)
+    public void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.ObjectDeleted (domainObject);
+        extension.ObjectDeleted (clientTransaction, domainObject);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void PropertyValueReading (DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
+    public void PropertyValueReading (ClientTransaction clientTransaction, DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
     {
       ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
       ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
       ArgumentUtility.CheckValidEnumValue ("valueAccess", valueAccess);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.PropertyValueReading (dataContainer, propertyValue, valueAccess);
+        extension.PropertyValueReading (clientTransaction, dataContainer, propertyValue, valueAccess);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void PropertyValueRead (DataContainer dataContainer, PropertyValue propertyValue, object value, ValueAccess valueAccess)
+    public void PropertyValueRead (ClientTransaction clientTransaction, DataContainer dataContainer, PropertyValue propertyValue, object value, ValueAccess valueAccess)
     {
       ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
       ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
       ArgumentUtility.CheckValidEnumValue ("valueAccess", valueAccess);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.PropertyValueRead (dataContainer, propertyValue, value, valueAccess);
+        extension.PropertyValueRead (clientTransaction, dataContainer, propertyValue, value, valueAccess);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void PropertyValueChanging (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
+    public void PropertyValueChanging (ClientTransaction clientTransaction, DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
       ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
       ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.PropertyValueChanging (dataContainer, propertyValue, oldValue, newValue);
+        extension.PropertyValueChanging (clientTransaction, dataContainer, propertyValue, oldValue, newValue);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void PropertyValueChanged (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
+    public void PropertyValueChanged (ClientTransaction clientTransaction, DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
       ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
       ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.PropertyValueChanged (dataContainer, propertyValue, oldValue, newValue);
+        extension.PropertyValueChanged (clientTransaction, dataContainer, propertyValue, oldValue, newValue);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess)
-    {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-      ArgumentUtility.CheckValidEnumValue ("valueAccess", valueAccess);
-
-      foreach (IClientTransactionExtension extension in this)
-        extension.RelationReading (domainObject, propertyName, valueAccess);
-    }
-
-    [EditorBrowsable (EditorBrowsableState.Never)]
-    public void RelationRead (DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess)
+    public void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName, ValueAccess valueAccess)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
       ArgumentUtility.CheckValidEnumValue ("valueAccess", valueAccess);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.RelationRead (domainObject, propertyName, relatedObject, valueAccess);
+        extension.RelationReading (clientTransaction, domainObject, propertyName, valueAccess);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void RelationRead (DomainObject domainObject, string propertyName, DomainObjectCollection relatedObjects, ValueAccess valueAccess)
+    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess)
+    {
+      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+      ArgumentUtility.CheckValidEnumValue ("valueAccess", valueAccess);
+
+      foreach (IClientTransactionExtension extension in this)
+        extension.RelationRead (clientTransaction, domainObject, propertyName, relatedObject, valueAccess);
+    }
+
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName, DomainObjectCollection relatedObjects, ValueAccess valueAccess)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -236,73 +236,73 @@ namespace Rubicon.Data.DomainObjects
       ArgumentUtility.CheckValidEnumValue ("valueAccess", valueAccess);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.RelationRead (domainObject, propertyName, relatedObjects, valueAccess);
+        extension.RelationRead (clientTransaction, domainObject, propertyName, relatedObjects, valueAccess);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void RelationChanging (DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.RelationChanging (domainObject, propertyName, oldRelatedObject, newRelatedObject);
+        extension.RelationChanging (clientTransaction, domainObject, propertyName, oldRelatedObject, newRelatedObject);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void RelationChanged (DomainObject domainObject, string propertyName)
+    public void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.RelationChanged (domainObject, propertyName);
+        extension.RelationChanged (clientTransaction, domainObject, propertyName);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void FilterQueryResult (DomainObjectCollection queryResult, IQuery query)
+    public void FilterQueryResult (ClientTransaction clientTransaction, DomainObjectCollection queryResult, IQuery query)
     {
       ArgumentUtility.CheckNotNull ("queryResult", query);
       ArgumentUtility.CheckNotNull ("queryResult", query);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.FilterQueryResult (queryResult, query);
+        extension.FilterQueryResult (clientTransaction, queryResult, query);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void Committing (DomainObjectCollection changedDomainObjects)
+    public void Committing (ClientTransaction clientTransaction, DomainObjectCollection changedDomainObjects)
     {
       ArgumentUtility.CheckNotNull ("changedDomainObjects", changedDomainObjects);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.Committing (changedDomainObjects);
+        extension.Committing (clientTransaction, changedDomainObjects);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void Committed (DomainObjectCollection changedDomainObjects)
+    public void Committed (ClientTransaction clientTransaction, DomainObjectCollection changedDomainObjects)
     {
       ArgumentUtility.CheckNotNull ("changedDomainObjects", changedDomainObjects);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.Committed (changedDomainObjects);
+        extension.Committed (clientTransaction, changedDomainObjects);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void RollingBack (DomainObjectCollection changedDomainObjects)
+    public void RollingBack (ClientTransaction clientTransaction, DomainObjectCollection changedDomainObjects)
     {
       ArgumentUtility.CheckNotNull ("changedDomainObjects", changedDomainObjects);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.RollingBack (changedDomainObjects);
+        extension.RollingBack (clientTransaction, changedDomainObjects);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void RolledBack (DomainObjectCollection changedDomainObjects)
+    public void RolledBack (ClientTransaction clientTransaction, DomainObjectCollection changedDomainObjects)
     {
       ArgumentUtility.CheckNotNull ("changedDomainObjects", changedDomainObjects);
 
       foreach (IClientTransactionExtension extension in this)
-        extension.RolledBack (changedDomainObjects);
+        extension.RolledBack (clientTransaction, changedDomainObjects);
     }
 
     #endregion

@@ -103,7 +103,7 @@ public abstract class ClientTransaction : ITransaction
 
     _listeners.AddListener (new LoggingClientTransactionListener ());
     _listeners.AddListener (new ReadOnlyClientTransactionListener (this));
-    _listeners.AddListener (new ExtensionClientTransactionListener (_extensions));
+    _listeners.AddListener (new ExtensionClientTransactionListener (this, _extensions));
 
     _applicationData = applicationData;
     _dataManager = new DataManager (this);

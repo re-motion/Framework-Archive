@@ -1,11 +1,12 @@
 using System;
+using Rubicon.Data.DomainObjects.Queries;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Transaction
 {
   [Serializable]
   public class ClientTransactionExtensionWithQueryFiltering : IClientTransactionExtension
   {
-    public virtual void NewObjectCreating (Type type)
+    public virtual void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
     }
 
@@ -13,77 +14,77 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Transaction
     {
     }
 
-    public virtual void ObjectLoading (ObjectID id)
+    public virtual void ObjectLoading (ClientTransaction clientTransaction, ObjectID id)
     {
     }
 
-    public virtual void ObjectsLoaded (DomainObjectCollection loadedDomainObjects)
+    public virtual void ObjectsLoaded (ClientTransaction clientTransaction, DomainObjectCollection loadedDomainObjects)
     {
     }
 
-    public virtual void ObjectDeleting (DomainObject domainObject)
+    public virtual void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
     {
     }
 
-    public virtual void ObjectDeleted (DomainObject domainObject)
+    public virtual void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject)
     {
     }
 
-    public virtual void PropertyValueReading (DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
+    public virtual void PropertyValueReading (ClientTransaction clientTransaction, DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
     {
     }
 
-    public virtual void PropertyValueRead (DataContainer dataContainer, PropertyValue propertyValue, object value, ValueAccess valueAccess)
+    public virtual void PropertyValueRead (ClientTransaction clientTransaction, DataContainer dataContainer, PropertyValue propertyValue, object value, ValueAccess valueAccess)
     {
     }
 
-    public virtual void PropertyValueChanging (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
+    public virtual void PropertyValueChanging (ClientTransaction clientTransaction, DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
     }
 
-    public virtual void PropertyValueChanged (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
+    public virtual void PropertyValueChanged (ClientTransaction clientTransaction, DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
     }
 
-    public virtual void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess)
+    public virtual void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName, ValueAccess valueAccess)
     {
     }
 
-    public virtual void RelationRead (DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess)
+    public virtual void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess)
     {
     }
 
-    public virtual void RelationRead (DomainObject domainObject, string propertyName, DomainObjectCollection relatedObjects, ValueAccess valueAccess)
+    public virtual void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName, DomainObjectCollection relatedObjects, ValueAccess valueAccess)
     {
     }
 
-    public virtual void RelationChanging (DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public virtual void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)
     {
     }
 
-    public virtual void RelationChanged (DomainObject domainObject, string propertyName)
+    public virtual void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName)
     {
     }
 
-    public virtual void FilterQueryResult (DomainObjectCollection queryResult, Rubicon.Data.DomainObjects.Queries.IQuery query)
+    public virtual void FilterQueryResult (ClientTransaction clientTransaction, DomainObjectCollection queryResult, IQuery query)
     {
       if (queryResult.Count >0)
         queryResult.Remove (queryResult[0]);
     }
 
-    public virtual void Committing (DomainObjectCollection changedDomainObjects)
+    public virtual void Committing (ClientTransaction clientTransaction, DomainObjectCollection changedDomainObjects)
     {
     }
 
-    public virtual void Committed (DomainObjectCollection changedDomainObjects)
+    public virtual void Committed (ClientTransaction clientTransaction, DomainObjectCollection changedDomainObjects)
     {
     }
 
-    public virtual void RollingBack (DomainObjectCollection changedDomainObjects)
+    public virtual void RollingBack (ClientTransaction clientTransaction, DomainObjectCollection changedDomainObjects)
     {
     }
 
-    public virtual void RolledBack (DomainObjectCollection changedDomainObjects)
+    public virtual void RolledBack (ClientTransaction clientTransaction, DomainObjectCollection changedDomainObjects)
     {
     }
   }

@@ -35,7 +35,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess (typeof (SecurableObject), GeneralAccessTypes.Create, true);
       _testHelper.ReplayAll ();
 
-      _extension.NewObjectCreating (typeof (SecurableObject));
+      _extension.NewObjectCreating (_testHelper.Transaction, typeof (SecurableObject));
 
       _testHelper.VerifyAll ();
     }
@@ -48,7 +48,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess (typeof (SecurableObject), GeneralAccessTypes.Create, false);
       _testHelper.ReplayAll ();
 
-      _extension.NewObjectCreating (typeof (SecurableObject));
+      _extension.NewObjectCreating (_testHelper.Transaction, typeof (SecurableObject));
     }
 
     [Test]
@@ -59,7 +59,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
 
       using (new SecurityFreeSection ())
       {
-        _extension.NewObjectCreating (typeof (SecurableObject));
+        _extension.NewObjectCreating (_testHelper.Transaction, typeof (SecurableObject));
       }
 
       _testHelper.VerifyAll ();
@@ -71,7 +71,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.AddExtension (_extension);
       _testHelper.ReplayAll ();
 
-      _extension.NewObjectCreating (typeof (NonSecurableObject));
+      _extension.NewObjectCreating (_testHelper.Transaction, typeof (NonSecurableObject));
 
       _testHelper.VerifyAll ();
     }
@@ -89,7 +89,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess (typeof (SecurableObject), GeneralAccessTypes.Create, hasAccess);
       _testHelper.ReplayAll ();
 
-      _extension.NewObjectCreating (typeof (SecurableObject));
+      _extension.NewObjectCreating (_testHelper.Transaction, typeof (SecurableObject));
 
       _testHelper.VerifyAll ();
     }

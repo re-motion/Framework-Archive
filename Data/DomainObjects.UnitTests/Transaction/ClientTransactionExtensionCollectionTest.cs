@@ -116,13 +116,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (_mockRepository.Ordered ())
       {
-        _extension1.PropertyValueChanging (_dataContainer, _propertyValue, 0, 1);
-        _extension2.PropertyValueChanging (_dataContainer, _propertyValue, 0, 1);
+        _extension1.PropertyValueChanging (ClientTransactionMock, _dataContainer, _propertyValue, 0, 1);
+        _extension2.PropertyValueChanging (ClientTransactionMock, _dataContainer, _propertyValue, 0, 1);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.PropertyValueChanging (_dataContainer, _propertyValue, 0, 1);
+      _collectionWithExtensions.PropertyValueChanging (ClientTransactionMock, _dataContainer, _propertyValue, 0, 1);
 
       _mockRepository.VerifyAll ();
     }
@@ -132,13 +132,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (_mockRepository.Ordered ())
       {
-        _extension1.PropertyValueChanged (_dataContainer, _propertyValue, 0, 1);
-        _extension2.PropertyValueChanged (_dataContainer, _propertyValue, 0, 1);
+        _extension1.PropertyValueChanged (ClientTransactionMock, _dataContainer, _propertyValue, 0, 1);
+        _extension2.PropertyValueChanged (ClientTransactionMock, _dataContainer, _propertyValue, 0, 1);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.PropertyValueChanged (_dataContainer, _propertyValue, 0, 1);
+      _collectionWithExtensions.PropertyValueChanged (ClientTransactionMock, _dataContainer, _propertyValue, 0, 1);
 
       _mockRepository.VerifyAll ();
     }
@@ -148,13 +148,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (_mockRepository.Ordered ())
       {
-        _extension1.PropertyValueReading (_dataContainer, _propertyValue, ValueAccess.Original);
-        _extension2.PropertyValueReading (_dataContainer, _propertyValue, ValueAccess.Original);
+        _extension1.PropertyValueReading (ClientTransactionMock, _dataContainer, _propertyValue, ValueAccess.Original);
+        _extension2.PropertyValueReading (ClientTransactionMock, _dataContainer, _propertyValue, ValueAccess.Original);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.PropertyValueReading (_dataContainer, _propertyValue, ValueAccess.Original);
+      _collectionWithExtensions.PropertyValueReading (ClientTransactionMock, _dataContainer, _propertyValue, ValueAccess.Original);
 
       _mockRepository.VerifyAll ();
     }
@@ -164,13 +164,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (_mockRepository.Ordered ())
       {
-        _extension1.PropertyValueRead (_dataContainer, _propertyValue, 0, ValueAccess.Original);
-        _extension2.PropertyValueRead (_dataContainer, _propertyValue, 0, ValueAccess.Original);
+        _extension1.PropertyValueRead (ClientTransactionMock, _dataContainer, _propertyValue, 0, ValueAccess.Original);
+        _extension2.PropertyValueRead (ClientTransactionMock, _dataContainer, _propertyValue, 0, ValueAccess.Original);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.PropertyValueRead (_dataContainer, _propertyValue, 0, ValueAccess.Original);
+      _collectionWithExtensions.PropertyValueRead (ClientTransactionMock, _dataContainer, _propertyValue, 0, ValueAccess.Original);
 
       _mockRepository.VerifyAll ();
     }
@@ -186,13 +186,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
-        _extension1.RelationChanging (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber", orderTicket, newOrderTicket);
-        _extension2.RelationChanging (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber", orderTicket, newOrderTicket);
+        _extension1.RelationChanging (ClientTransactionMock, _order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber", orderTicket, newOrderTicket);
+        _extension2.RelationChanging (ClientTransactionMock, _order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber", orderTicket, newOrderTicket);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.RelationChanging (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber", orderTicket, newOrderTicket);
+      _collectionWithExtensions.RelationChanging (ClientTransactionMock, _order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber", orderTicket, newOrderTicket);
 
       _mockRepository.VerifyAll ();
     }
@@ -202,13 +202,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (_mockRepository.Ordered ())
       {
-        _extension1.RelationChanged (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
-        _extension2.RelationChanged (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
+        _extension1.RelationChanged (ClientTransactionMock, _order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
+        _extension2.RelationChanged (ClientTransactionMock, _order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.RelationChanged (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
+      _collectionWithExtensions.RelationChanged (ClientTransactionMock, _order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
 
       _mockRepository.VerifyAll ();
     }
@@ -218,13 +218,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (_mockRepository.Ordered ())
       {
-        _extension1.NewObjectCreating (typeof(Order));
-        _extension2.NewObjectCreating (typeof (Order));
+        _extension1.NewObjectCreating (ClientTransactionMock, typeof(Order));
+        _extension2.NewObjectCreating (ClientTransactionMock, typeof (Order));
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.NewObjectCreating (typeof (Order));
+      _collectionWithExtensions.NewObjectCreating (ClientTransactionMock, typeof (Order));
 
       _mockRepository.VerifyAll ();
     }
@@ -234,13 +234,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (_mockRepository.Ordered ())
       {
-        _extension1.ObjectDeleting (_order);
-        _extension2.ObjectDeleting (_order);
+        _extension1.ObjectDeleting (ClientTransactionMock, _order);
+        _extension2.ObjectDeleting (ClientTransactionMock, _order);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.ObjectDeleting (_order);
+      _collectionWithExtensions.ObjectDeleting (ClientTransactionMock, _order);
 
       _mockRepository.VerifyAll ();
     }
@@ -250,13 +250,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (_mockRepository.Ordered ())
       {
-        _extension1.ObjectDeleted (_order);
-        _extension2.ObjectDeleted (_order);
+        _extension1.ObjectDeleted (ClientTransactionMock, _order);
+        _extension2.ObjectDeleted (ClientTransactionMock, _order);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.ObjectDeleted (_order);
+      _collectionWithExtensions.ObjectDeleted (ClientTransactionMock, _order);
 
       _mockRepository.VerifyAll ();
     }
@@ -267,13 +267,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       DomainObjectCollection domainObjectCollection = new DomainObjectCollection ();
       using (_mockRepository.Ordered ())
       {
-        _extension1.Committing (domainObjectCollection);
-        _extension2.Committing (domainObjectCollection);
+        _extension1.Committing (ClientTransactionMock, domainObjectCollection);
+        _extension2.Committing (ClientTransactionMock, domainObjectCollection);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.Committing (domainObjectCollection);
+      _collectionWithExtensions.Committing (ClientTransactionMock, domainObjectCollection);
 
       _mockRepository.VerifyAll ();
     }
@@ -284,13 +284,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       DomainObjectCollection domainObjectCollection = new DomainObjectCollection ();
       using (_mockRepository.Ordered ())
       {
-        _extension1.Committed (domainObjectCollection);
-        _extension2.Committed (domainObjectCollection);
+        _extension1.Committed (ClientTransactionMock, domainObjectCollection);
+        _extension2.Committed (ClientTransactionMock, domainObjectCollection);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.Committed (domainObjectCollection);
+      _collectionWithExtensions.Committed (ClientTransactionMock, domainObjectCollection);
 
       _mockRepository.VerifyAll ();
     }
@@ -301,13 +301,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       DomainObjectCollection domainObjectCollection = new DomainObjectCollection ();
       using (_mockRepository.Ordered ())
       {
-        _extension1.RollingBack (domainObjectCollection);
-        _extension2.RollingBack (domainObjectCollection);
+        _extension1.RollingBack (ClientTransactionMock, domainObjectCollection);
+        _extension2.RollingBack (ClientTransactionMock, domainObjectCollection);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.RollingBack (domainObjectCollection);
+      _collectionWithExtensions.RollingBack (ClientTransactionMock, domainObjectCollection);
 
       _mockRepository.VerifyAll ();
     }
@@ -318,13 +318,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       DomainObjectCollection domainObjectCollection = new DomainObjectCollection ();
       using (_mockRepository.Ordered ())
       {
-        _extension1.RolledBack (domainObjectCollection);
-        _extension2.RolledBack (domainObjectCollection);
+        _extension1.RolledBack (ClientTransactionMock, domainObjectCollection);
+        _extension2.RolledBack (ClientTransactionMock, domainObjectCollection);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.RolledBack (domainObjectCollection);
+      _collectionWithExtensions.RolledBack (ClientTransactionMock, domainObjectCollection);
 
       _mockRepository.VerifyAll ();
     }
@@ -337,13 +337,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
-        _extension1.ObjectsLoaded (loadedDomainObjects);
-        _extension2.ObjectsLoaded (loadedDomainObjects);
+        _extension1.ObjectsLoaded (ClientTransactionMock, loadedDomainObjects);
+        _extension2.ObjectsLoaded (ClientTransactionMock, loadedDomainObjects);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.ObjectsLoaded (loadedDomainObjects);
+      _collectionWithExtensions.ObjectsLoaded (ClientTransactionMock, loadedDomainObjects);
 
       _mockRepository.VerifyAll ();
     }
@@ -353,13 +353,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (_mockRepository.Ordered ())
       {
-        _extension1.ObjectLoading (_order.ID);
-        _extension2.ObjectLoading (_order.ID);
+        _extension1.ObjectLoading (ClientTransactionMock, _order.ID);
+        _extension2.ObjectLoading (ClientTransactionMock, _order.ID);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.ObjectLoading (_order.ID);
+      _collectionWithExtensions.ObjectLoading (ClientTransactionMock, _order.ID);
 
       _mockRepository.VerifyAll ();
     }
@@ -372,13 +372,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
-        _extension1.FilterQueryResult (domainObjects, query);
-        _extension2.FilterQueryResult (domainObjects, query);
+        _extension1.FilterQueryResult (ClientTransactionMock, domainObjects, query);
+        _extension2.FilterQueryResult (ClientTransactionMock, domainObjects, query);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.FilterQueryResult (domainObjects, query);
+      _collectionWithExtensions.FilterQueryResult (ClientTransactionMock, domainObjects, query);
 
       _mockRepository.VerifyAll ();
     }
@@ -388,13 +388,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (_mockRepository.Ordered ())
       {
-        _extension1.RelationReading (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", ValueAccess.Current);
-        _extension2.RelationReading (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", ValueAccess.Current);
+        _extension1.RelationReading (ClientTransactionMock, _order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", ValueAccess.Current);
+        _extension2.RelationReading (ClientTransactionMock, _order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", ValueAccess.Current);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.RelationReading (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", ValueAccess.Current);
+      _collectionWithExtensions.RelationReading (ClientTransactionMock, _order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", ValueAccess.Current);
 
       _mockRepository.VerifyAll ();
     }
@@ -406,13 +406,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
-        _extension1.RelationRead (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", orderTicket, ValueAccess.Original);
-        _extension2.RelationRead (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", orderTicket, ValueAccess.Original);
+        _extension1.RelationRead (ClientTransactionMock, _order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", orderTicket, ValueAccess.Original);
+        _extension2.RelationRead (ClientTransactionMock, _order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", orderTicket, ValueAccess.Original);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.RelationRead (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", orderTicket, ValueAccess.Original);
+      _collectionWithExtensions.RelationRead (ClientTransactionMock, _order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", orderTicket, ValueAccess.Original);
 
       _mockRepository.VerifyAll ();
     }
@@ -424,13 +424,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
-        _extension1.RelationRead (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", orderItems, ValueAccess.Original);
-        _extension2.RelationRead (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", orderItems, ValueAccess.Original);
+        _extension1.RelationRead (ClientTransactionMock, _order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", orderItems, ValueAccess.Original);
+        _extension2.RelationRead (ClientTransactionMock, _order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", orderItems, ValueAccess.Original);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.RelationRead (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", orderItems, ValueAccess.Original);
+      _collectionWithExtensions.RelationRead (ClientTransactionMock, _order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", orderItems, ValueAccess.Original);
 
       _mockRepository.VerifyAll ();
     }
