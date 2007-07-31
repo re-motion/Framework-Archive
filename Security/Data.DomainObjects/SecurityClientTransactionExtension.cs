@@ -110,6 +110,14 @@ namespace Rubicon.Security.Data.DomainObjects
       }
     }
 
+    public void SubTransactionCreating (ClientTransaction parentClientTransaction)
+    {
+    }
+
+    public void SubTransactionCreated (ClientTransaction parentClientTransaction, ClientTransaction subTransaction)
+    {
+    }
+
     public virtual void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);

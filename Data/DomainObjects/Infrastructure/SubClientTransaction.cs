@@ -52,8 +52,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull ("parentTransaction", parentTransaction);
 
-      parentTransaction.TransactionEventSink.SubTransactionCreating ();
-      parentTransaction.IsReadOnly = true;
+      parentTransaction.NotifyOfSubTransactionCreating ();
+      Assertion.IsTrue (parentTransaction.IsReadOnly);
       _parentTransaction = parentTransaction;
 
       DataManager.CopyFrom (_parentTransaction.DataManager);
@@ -61,7 +61,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       // StateType.Unchanged, unless the object deleted, in which case it will be discarded), and set the original values to the current values
       DataManager.Commit ();
 
-      parentTransaction.TransactionEventSink.SubTransactionCreated (this);
+      parentTransaction.NotifyOfSubTransactionCreated (this);
       _isDiscarded = false;
     }
 

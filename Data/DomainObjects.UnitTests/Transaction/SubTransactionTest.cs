@@ -579,5 +579,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         }
       }
     }
+
+    [Test]
+    public void SubTransactionCreatingEvent ()
+    {
+      ClientTransaction subTransactionFromEvent = null;
+
+      ClientTransactionMock.SubTransactionCreated += delegate (object sender, SubTransactionCreatedEventArgs args)
+      {
+        Assert.AreSame (ClientTransactionMock, sender);
+        Assert.IsNotNull (args.SubTransaction);
+        subTransactionFromEvent = args.SubTransaction;
+      };
+
+      Assert.IsNull (subTransactionFromEvent);
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
+      Assert.IsNotNull (subTransactionFromEvent);
+      Assert.AreSame (subTransaction, subTransactionFromEvent);
+    }
   }
 }

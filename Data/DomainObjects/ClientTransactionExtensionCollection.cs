@@ -119,6 +119,25 @@ namespace Rubicon.Data.DomainObjects
     #region Notification methods
 
     [EditorBrowsable (EditorBrowsableState.Never)]
+    public void SubTransactionCreating (ClientTransaction parentClientTransaction)
+    {
+      ArgumentUtility.CheckNotNull ("parentClientTransaction", parentClientTransaction);
+
+      foreach (IClientTransactionExtension extension in this)
+        extension.SubTransactionCreating (parentClientTransaction);
+    }
+
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    public void SubTransactionCreated (ClientTransaction parentClientTransaction, ClientTransaction subTransaction)
+    {
+      ArgumentUtility.CheckNotNull ("parentClientTransaction", parentClientTransaction);
+      ArgumentUtility.CheckNotNull ("subTransaction", subTransaction);
+
+      foreach (IClientTransactionExtension extension in this)
+        extension.SubTransactionCreated (parentClientTransaction, subTransaction);
+    }
+
+    [EditorBrowsable (EditorBrowsableState.Never)]
     public void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);

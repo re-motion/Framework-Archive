@@ -52,6 +52,12 @@ public abstract class ClientTransaction : ITransaction
   // member fields
 
   /// <summary>
+  /// Occurs when the <b>ClientTransaction</b> has created a subtransaction.
+  /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
+  public event SubTransactionCreatedEventHandler SubTransactionCreated;
+
+  /// <summary>
   /// Occurs after the <b>ClientTransaction</b> has loaded a new object.
   /// </summary>
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
@@ -746,6 +752,36 @@ public abstract class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
     dataContainer.SetClientTransaction (this);
+  }
+
+  protected internal void NotifyOfSubTransactionCreating ()
+  {
+    OnSubTransactionCreating ();
+    IsReadOnly = true;
+  }
+
+  private void OnSubTransactionCreating ()
+  {
+    using (EnterSideEffectFreeScope ())
+    {
+      TransactionEventSink.SubTransactionCreating();
+    }
+  }
+
+  protected internal void NotifyOfSubTransactionCreated (SubClientTransaction subTransaction)
+  {
+    OnSubTransactionCreated (new SubTransactionCreatedEventArgs (subTransaction));
+  }
+
+  protected virtual void OnSubTransactionCreated (SubTransactionCreatedEventArgs args)
+  {
+    using (EnterSideEffectFreeScope ())
+    {
+      TransactionEventSink.SubTransactionCreated (args.SubTransaction);
+
+      if (SubTransactionCreated != null)
+        SubTransactionCreated (this, args);
+    }
   }
 
   /// <summary>

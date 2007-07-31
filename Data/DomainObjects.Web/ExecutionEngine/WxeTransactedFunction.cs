@@ -45,15 +45,15 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 
     /// <summary> Gets the underlying <see cref="ClientTransaction"/> owned by this 
     /// <see cref="WxeTransactedFunctionBase{TTransaction}"/>.</summary>
-    public new ClientTransaction OwnTransaction
+    public new ClientTransaction MyTransaction
     {
       get { return base.MyTransaction; }
     }
 
     /// <summary> Gets the underlying <see cref="ClientTransaction"/> used when this <see cref="WxeTransactedFunctionBase{TTransaction}"/>
-    /// is executed. This is either <see cref="OwnTransaction"/> or, when this function does not have an own transaction, the
-    /// <see cref="ExecutionTransaction"/> of this function's parent function.</summary>
-    public new ClientTransaction ExecutionTransaction
+    /// is executed. This is either <see cref="MyTransaction"/> or, when this function does not have an own transaction, the
+    /// <see cref="Transaction"/> of this function's parent function.</summary>
+    public new ClientTransaction Transaction
     {
       get { return base.Transaction; }
     }
@@ -114,6 +114,10 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
       get { return true; }
     }
 
+    /// <summary> 
+    ///   Called after the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.Transaction"/> has been created.
+    /// </summary>
+    /// <param name="transaction">The transaction that has been created.</param>
     protected override void OnTransactionCreated (ClientTransaction transaction)
     {
       Assertion.IsNotNull (transaction);
@@ -121,6 +125,10 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
       base.OnTransactionCreated (transaction);
     }
 
+    /// <summary>
+    /// Executes the current function.
+    /// </summary>
+    /// <param name="context">The execution context.</param>
     public override void Execute (WxeContext context)
     {
       base.Execute (context);

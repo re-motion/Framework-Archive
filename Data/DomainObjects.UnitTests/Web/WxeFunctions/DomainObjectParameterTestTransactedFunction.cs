@@ -44,7 +44,7 @@ public class DomainObjectParameterTestTransactedFunction : WxeTransactedFunction
 
   private void Step1 ()
   {
-    Assert.IsTrue (ExecutionTransaction == null || ExecutionTransaction == ClientTransactionScope.CurrentTransaction);
+    Assert.IsTrue (Transaction == null || Transaction == ClientTransactionScope.CurrentTransaction);
     Assert.IsTrue (InParameter.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
 
     OutParameter = ClassWithAllDataTypes.GetObject (new DomainObjectIDs().ClassWithAllDataTypes1);

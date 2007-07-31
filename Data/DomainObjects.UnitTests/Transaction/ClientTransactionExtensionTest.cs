@@ -1400,5 +1400,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.VerifyAll();
     }
+
+    [Test]
+    public void SubTransactions ()
+    {
+      using (_mockRepository.Ordered ())
+      {
+        _extension.SubTransactionCreating (_newTransaction);
+        _extension.SubTransactionCreated (null, null);
+        LastCall.Constraints (Mocks_Is.Same (_newTransaction), Mocks_Property.Value ("ParentTransaction", _newTransaction));
+      }
+
+      _mockRepository.ReplayAll ();
+
+      using (_newTransaction.EnterScope ())
+      {
+        ClientTransactionScope.CurrentTransaction.CreateSubTransaction ();
+      }
+    }
   }
 }

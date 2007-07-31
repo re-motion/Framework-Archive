@@ -19,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web.WxeFunctions
 
     private void FirstStep ()
     {
-      Assert.AreSame (OwnTransaction, ClientTransactionScope.CurrentTransaction);
+      Assert.AreSame (MyTransaction, ClientTransactionScope.CurrentTransaction);
 
       DomainObjectParameterTestTransactedFunction childFunction = (DomainObjectParameterTestTransactedFunction) ChildFunction;
       ClassWithAllDataTypes inParameter = ClassWithAllDataTypes.GetObject (new DomainObjectIDs().ClassWithAllDataTypes2);

@@ -9,7 +9,22 @@ namespace Rubicon.Data.DomainObjects
   public interface IClientTransactionExtension
   {
     /// <summary>
-    /// This method is invoked, when a new <see cref="DomainObject"/> is created, but not registered yet. 
+    /// This method is invoked when a subtransaction of <paramref name="parentClientTransaction"/> is about to be created.
+    /// </summary>
+    /// <param name="parentClientTransaction">The <see cref="ClientTransaction"/> instance for which the event is raised.</param>
+    /// <note type="implementnotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
+    void SubTransactionCreating (ClientTransaction parentClientTransaction);
+
+    /// <summary>
+    /// This method is invoked when a subtransaction of <paramref name="parentClientTransaction"/> has been created.
+    /// </summary>
+    /// <param name="parentClientTransaction">The <see cref="ClientTransaction"/> instance for which the event is raised.</param>
+    /// <param name="subTransaction">The subtransaction created by <paramref name="parentClientTransaction"/>.</param>
+    /// <note type="implementnotes">The implementation of this method must not throw an exception.</note>
+    void SubTransactionCreated (ClientTransaction parentClientTransaction, ClientTransaction subTransaction);
+
+    /// <summary>
+    /// This method is invoked when a new <see cref="DomainObject"/> is created, but not registered yet. 
     /// The operation may be cancelled at this point.
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> instance for which the event is raised.</param>
@@ -18,7 +33,7 @@ namespace Rubicon.Data.DomainObjects
     void NewObjectCreating (ClientTransaction clientTransaction, Type type);
 
     /// <summary>
-    /// This method is invoked, when a <see cref="DomainObject"/> is about to be loaded, after its <see cref="DataContainer"/> has been created
+    /// This method is invoked when a <see cref="DomainObject"/> is about to be loaded, after its <see cref="DataContainer"/> has been created
     /// but before the <see cref="DataContainer"/> is associated with the <see cref="ClientTransaction"/>.
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> instance for which the event is raised.</param>
@@ -27,7 +42,7 @@ namespace Rubicon.Data.DomainObjects
     void ObjectLoading (ClientTransaction clientTransaction, ObjectID id);
 
     /// <summary>
-    /// This method is invoked, when one or multiple <see cref="DomainObject"/>s were loaded. 
+    /// This method is invoked when one or multiple <see cref="DomainObject"/>s were loaded. 
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> instance for which the event is raised.</param>
     /// <param name="loadedDomainObjects">A collection of all <see cref="DomainObject"/>s that were loaded.</param>
@@ -97,7 +112,7 @@ namespace Rubicon.Data.DomainObjects
     void PropertyValueReading (ClientTransaction clientTransaction, DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess);
 
     /// <summary>
-    /// This method is invoked, when a value of <paramref name="dataContainer"/> was read. 
+    /// This method is invoked when a value of <paramref name="dataContainer"/> was read. 
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> instance for which the event is raised.</param>
     /// <param name="dataContainer">
@@ -173,7 +188,7 @@ namespace Rubicon.Data.DomainObjects
     void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName, ValueAccess valueAccess);
 
     /// <summary>
-    /// This method is invoked, when a relation property with cardinality <see cref="Mapping.CardinalityType.One"/> was read. 
+    /// This method is invoked when a relation property with cardinality <see cref="Mapping.CardinalityType.One"/> was read. 
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> instance for which the event is raised.</param>
     /// <param name="domainObject">The <see cref="DomainObject"/> whose relation property was read.</param>
@@ -192,7 +207,7 @@ namespace Rubicon.Data.DomainObjects
     void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess);
 
     /// <summary>
-    /// This method is invoked, when a relation property with cardinality <see cref="Mapping.CardinalityType.Many"/> was read. 
+    /// This method is invoked when a relation property with cardinality <see cref="Mapping.CardinalityType.Many"/> was read. 
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> instance for which the event is raised.</param>
     /// <param name="domainObject">The <see cref="DomainObject"/> whose relation property was read.</param>

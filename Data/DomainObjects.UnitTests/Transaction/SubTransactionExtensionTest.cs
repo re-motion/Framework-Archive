@@ -18,7 +18,7 @@ using Rubicon.Data.DomainObjects.Infrastructure;
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
   [TestFixture]
-  public class SubClientTransactionExtensionTest : ClientTransactionBaseTest
+  public class SubTransactionExtensionTest : ClientTransactionBaseTest
   {
     private MockRepository _mockRepository;
     private IClientTransactionExtension _extension;
@@ -1337,6 +1337,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClientTransactionScope.CurrentTransaction.Rollback ();
 
       _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void SubTransactions ()
+    {
+      using (_mockRepository.Ordered ())
+      {
+        _extension.SubTransactionCreating (_subTransaction);
+        _extension.SubTransactionCreated (null, null);
+        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Property.Value ("ParentTransaction", _subTransaction));
+      }
+
+      _mockRepository.ReplayAll ();
+
+      _subTransaction.CreateSubTransaction ();
     }
   }
 }

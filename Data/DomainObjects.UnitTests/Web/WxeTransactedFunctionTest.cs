@@ -14,6 +14,7 @@ using Rubicon.Web.UnitTests.ExecutionEngine;
 namespace Rubicon.Data.DomainObjects.UnitTests.Web
 {
   [TestFixture]
+  [CLSCompliant (false)]
   public class WxeTransactedFunctionTest : WxeFunctionBaseTest
   {
     [Test]

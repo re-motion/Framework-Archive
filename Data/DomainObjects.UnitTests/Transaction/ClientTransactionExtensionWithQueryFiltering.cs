@@ -6,6 +6,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
   [Serializable]
   public class ClientTransactionExtensionWithQueryFiltering : IClientTransactionExtension
   {
+    public void SubTransactionCreating (ClientTransaction parentClientTransaction)
+    {
+    }
+
+    public void SubTransactionCreated (ClientTransaction parentClientTransaction, ClientTransaction subTransaction)
+    {
+    }
+
     public virtual void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
     }

@@ -84,6 +84,11 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
       return ClientTransaction.NewTransaction();
     }
 
+    /// <summary>
+    /// Resets the current <see cref="ClientTransaction"/> to the transaction previously replaced via
+    /// <see cref="SetCurrentTransaction"/>.
+    /// </summary>
+    /// <param name="previousTransaction">The transaction previously replaced by <see cref="SetCurrentTransaction"/>.</param>
     protected override void SetPreviousCurrentTransaction (ClientTransaction previousTransaction)
     {
       Assertion.IsTrue (_scopeStack.Count != 0, "RestorePreviousTransaction is never called more often than SetCurrentTransaction.");
