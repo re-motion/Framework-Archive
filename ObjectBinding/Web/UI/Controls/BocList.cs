@@ -1568,23 +1568,42 @@ public class BocList:
     //  Two columns
     writer.RenderBeginTag (HtmlTextWriterTag.Colgroup);
 
+    bool isTextXml = false;
+    bool isTextXhtml = false;
+
+    if (!IsDesignMode)
+    {
+      isTextXml = ControlHelper.IsResponseTextXml (Context);
+      isTextXhtml = ControlHelper.IsResponseTextXHtml (Context);
+    }
+
     //  Left: list block
     writer.WriteBeginTag ("col"); //  Required because RenderBeginTag(); RenderEndTag();
-    writer.Write (">");           //  writes empty tags, which is not valid for col in HTML 4.01
+    if (isTextXml || isTextXhtml)
+      writer.Write (" />");
+    else
+      writer.Write (">");           //  writes empty tags, which is not valid for col in HTML 4.01
 
-    //  Right: menu block
-    writer.WriteBeginTag ("col");
-    writer.Write (" style=\"");
-    string menuBlockWidth = c_defaultMenuBlockWidth;
-    if (! _menuBlockWidth.IsEmpty)
-      menuBlockWidth = _menuBlockWidth.ToString();
-    writer.WriteStyleAttribute ("width", menuBlockWidth);
-    string menuBlockOffset = c_defaultMenuBlockOffset;
-    if (! _menuBlockOffset.IsEmpty)
-      menuBlockOffset = _menuBlockOffset.ToString();
-    writer.WriteStyleAttribute ("padding-left", menuBlockOffset);
-    writer.Write ("\"");
-    writer.Write (">");
+    if (HasMenuBlock)
+    {
+      //  Right: menu block
+      writer.WriteBeginTag ("col");
+      writer.Write (" style=\"");
+      string menuBlockWidth = c_defaultMenuBlockWidth;
+      if (!_menuBlockWidth.IsEmpty)
+        menuBlockWidth = _menuBlockWidth.ToString ();
+      writer.WriteStyleAttribute ("width", menuBlockWidth);
+      string menuBlockOffset = c_defaultMenuBlockOffset;
+      if (!_menuBlockOffset.IsEmpty)
+        menuBlockOffset = _menuBlockOffset.ToString ();
+      writer.WriteStyleAttribute ("padding-left", menuBlockOffset);
+      writer.Write ("\"");
+      
+      if (isTextXml || isTextXhtml)
+        writer.Write (" />");
+      else
+        writer.Write (">");
+    }
 
     writer.RenderEndTag();  //  End ColGroup
 
@@ -2247,13 +2266,25 @@ public class BocList:
 
     writer.RenderBeginTag (HtmlTextWriterTag.Colgroup);
 
+    bool isTextXml = false;
+    bool isTextXhtml = false;
+
+    if (!IsDesignMode)
+    {
+      isTextXml = ControlHelper.IsResponseTextXml (Context);
+      isTextXhtml = ControlHelper.IsResponseTextXHtml (Context);
+    }
+
     if (IsIndexEnabled)
     {
       writer.WriteBeginTag ("col");
       writer.Write (" style=\"");
       writer.WriteStyleAttribute ("width", "1.6em");
       writer.Write ("\"");
-      writer.Write (">");
+      if (isTextXml || isTextXhtml)
+        writer.Write (" />");
+      else
+        writer.Write (">");
     }
 
     if (IsSelectionEnabled)
@@ -2262,7 +2293,10 @@ public class BocList:
       writer.Write (" style=\"");
       writer.WriteStyleAttribute ("width", "1.6em");
       writer.Write ("\"");
-      writer.Write (">");
+      if (isTextXml || isTextXhtml)
+        writer.Write (" />");
+      else
+        writer.Write (">");
     }
 
     //bool isFirstColumnUndefinedWidth = true;
@@ -2290,7 +2324,10 @@ public class BocList:
         writer.WriteStyleAttribute ("width", width);
         writer.Write ("\"");
       }
-      writer.Write (">");
+      if (isTextXml || isTextXhtml)
+        writer.Write (" />");
+      else
+        writer.Write (">");
     }
     
     //  Design-mode and empty table

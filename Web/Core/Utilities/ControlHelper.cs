@@ -245,6 +245,18 @@ namespace Rubicon.Web.Utilities
       //  protected PageStatePersister System.Web.UI.Page.PageStatePersister
       return (PageStatePersister) typeof (Page).InvokeMember ("PageStatePersister", bindingFlags, null, target, new object[0]);
     }
+
+    public static bool IsResponseTextXml (HttpContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      return context.Response.ContentType.Equals ("TEXT/XML", StringComparison.OrdinalIgnoreCase);
+    }
+
+    public static bool IsResponseTextXHtml (HttpContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      return context.Response.ContentType.Equals ("TEXT/XHTML", StringComparison.OrdinalIgnoreCase);
+    }
   }
 
 }
