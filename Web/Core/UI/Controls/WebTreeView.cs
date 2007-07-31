@@ -414,7 +414,10 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
     }
 
     ResolveNodeIcons();
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassRoot);
+    writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin child nodes
     RenderNodes (writer, _nodes, true);
+    writer.RenderEndTag ();
     if (ControlHelper.IsDesignMode (this, Context) && _nodes.Count == 0)
       RenderDesignModeContents (writer);
   }
@@ -428,7 +431,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
       bool isFirstNode = i == 0;
       bool isLastNode = i + 1 == nodes.Count;
 
-      writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin node block
+      writer.RenderBeginTag (HtmlTextWriterTag.Li); // Begin node block
 
       bool hasExpander =   ! isTopLevel 
                         || isTopLevel && _enableTopLevelExpander;
@@ -539,7 +542,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeChildrenNoLines);  
     else
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeChildren);  
-    writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin child nodes
+    writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin child nodes
 
     RenderNodes (writer, node.Children, false);
 
@@ -907,6 +910,13 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
   protected virtual string CssClassTopLevelNodeChildren
   {
     get { return "treeViewTopLevelNodeChildren"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/>'s root element. </summary>
+  /// <remarks> Class: <c>treeViewRoot</c> </remarks>
+  protected virtual string CssClassRoot
+  {
+    get { return "treeViewRoot"; }
   }
   #endregion
 }

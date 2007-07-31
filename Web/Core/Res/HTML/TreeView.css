@@ -3,23 +3,37 @@ div.treeViewNode
 {
 }
 
-/* Applied to the top level node's children area if the expandre is hidden for the top level nodes. */
-div.treeViewTopLevelNodeChildren
+ul.treeViewRoot
 {
+  margin: 0;  
+  padding: 0;
+  list-style: none;
+}
+
+/* Applied to the top level node's children area if the expandre is hidden for the top level nodes. */
+ul.treeViewTopLevelNodeChildren
+{
+  margin: 0;  
+  padding: 0;
+  list-style: none;
 }
 
 /* Applied to the node's children area. */
-div.treeViewNodeChildren
+ul.treeViewNodeChildren
 {
   background-image: url(../Image/TreeViewI.gif);
   background-repeat: repeat-y;  
-  padding-left: 19px;
+  margin: 0;  
+  padding: 0 0 0 19px;
+  list-style: none;
 }
 
 /* Applied to the node's children area if the nodes should not be connected by lines. */
-div.treeViewNodeChildrenNoLines
+ul.treeViewNodeChildrenNoLines
 {
-  padding-left: 19px;
+  margin: 0;  
+  padding: 0;
+  list-style: none;
 }
 
 /* Applied to the node's head. */

@@ -1,3 +1,13 @@
+1.7.47
+======
+- Rubicon.Web.UI.Controls.WebTreeView
+  Layout wird nun durch Listen-Elemente anstatt durch DIV-Elemente erzeugt.
+  Anpassungen im CSS:
+    neue Klasse: ul.treeViewRoot
+    div.treeViewTopLevelNodeChildren -> ul.treeViewTopLevelNodeChildren
+    div.treeViewNodeChildren  -> ul.treeViewNodeChildren
+    div.treeViewNodeChildrenNoLines -> ul.treeViewNodeChildrenNoLines
+  
 1.7.46
 ======
 - Rubicon.Web.UI.Controls.LengthValidator
