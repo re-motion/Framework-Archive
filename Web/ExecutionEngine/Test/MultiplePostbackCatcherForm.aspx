@@ -2,19 +2,19 @@
 <%@ Page language="c#" Codebehind="MultiplePostbackCatcherForm.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.PageTransition.MultiplePostbackCatcherForm" smartNavigation="False"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
-  <head>
+  <head id="Head1" runat="server">
     <title>ClientForm</title>
-<meta content="Microsoft Visual Studio .NET 7.1" name=GENERATOR>
-<meta content=C# name=CODE_LANGUAGE>
-<meta content=JavaScript name=vs_defaultClientScript>
-<meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema><rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
 <script language=javascript>
+  function ChangeAutoPostbackListSelection()
+  {
+    document.Form.AutoPostbackList.fireEvent ('onChange','');
+  } 
 </script>
 <style type="text/css">
   TD.first { BACKGROUND-COLOR: lightgrey }
   </style>
 </head>
-<body MS_POSITIONING="FlowLayout">
+<body>
 <form id=Form method=post runat="server">
 <table style="WIDTH: 100%; HEIGHT: 100%">
   <tr>
@@ -351,7 +351,13 @@
 <a href="#" onclick="alert('script in onclick'); return false;">Javascript Link: Href="#", OnClick=Script</a><br/>
 <a href="javascript:alert('script in href');">Javascript Link: Href="javascript:..."</a><br>
 <a href="mpc.wxe?Parameter=Garbage;">Hyperlink</a><br>
-</td></tr></table>
+<input type="text" onkeyup="ChangeAutoPostbackListSelection(); return false;" />
+<input type="button" value="Select value" onclick="ChangeAutoPostbackListSelection();  return false;" />
+      <asp:DropDownList ID="AutoPostbackList" runat="server" AutoPostBack="True" EnableViewState="false">
+        <asp:ListItem Value="1" Text="1" Selected="True" />
+        <asp:ListItem Value="2" Text="2" />
+        <asp:ListItem Value="3" Text="3" />
+      </asp:DropDownList></td></tr></table>
 </form>
   </body>
 </html>
