@@ -189,8 +189,8 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls.Infrastructure.BocList
       _actualEvents.Add (FormatChangesSavingEventMessage (e.ListIndex, e.BusinessObject));
     }
 
-    protected object CreateViewState (
-        object baseViewState,
+    protected object CreateControlState (
+        object baseControlState,
         bool isListEditModeActive,
         NaInt32 editableRowIndex,
         bool isEditNewRow,
@@ -198,7 +198,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls.Infrastructure.BocList
     {
       object[] values = new object[5];
 
-      values[0] = baseViewState;
+      values[0] = baseControlState;
       values[1] = isListEditModeActive;
       values[2] = editableRowIndex;
       values[3] = isEditNewRow;

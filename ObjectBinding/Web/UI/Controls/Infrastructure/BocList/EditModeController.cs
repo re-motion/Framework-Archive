@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using Rubicon.Globalization;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList
 {
@@ -585,18 +586,27 @@ public class EditModeController : PlaceHolder
     }
   }
 
+  protected override void OnInit (EventArgs e)
+  {
+    base.OnInit (e);
 
-  protected override void LoadViewState(object savedState)
+    if (!ControlHelper.IsDesignMode (this))
+    {
+      Page.RegisterRequiresControlState (this);
+    }
+  }
+
+  protected override void LoadControlState (object savedState)
   {
     if (savedState == null)
     {
-      base.LoadViewState (null);
+      base.LoadControlState (null);
     }
     else
     {
       object[] values = (object[]) savedState;
-      
-      base.LoadViewState (values[0]);
+
+      base.LoadControlState (values[0]);
       _isListEditModeActive = (bool) values[1];
       _editableRowIndex = (NaInt32) values[2];
       _isEditNewRow = (bool) values[3];
@@ -604,11 +614,11 @@ public class EditModeController : PlaceHolder
     }
   }
 
-  protected override object SaveViewState()
+  protected override object SaveControlState()
   {
     object[] values = new object[5];
 
-    values[0] = base.SaveViewState();
+    values[0] = base.SaveControlState ();
     values[1] = _isListEditModeActive;
     values[2] = _editableRowIndex;
     values[3] = _isEditNewRow;

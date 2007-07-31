@@ -5,6 +5,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using Rubicon.Web.Configuration;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI
 {
@@ -539,18 +540,26 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     get { return IsSmartFocusingEnabled; }
   }
 
+  protected override void OnInit (EventArgs e)
+  {
+    base.OnInit (e);
+    if (!ControlHelper.IsDesignMode (this, Context))
+    {
+      RegisterRequiresControlState (this);
+    }
+  }
 
-  protected override void LoadViewState(object savedState)
+  protected override void LoadControlState(object savedState)
   {
     object[] values = (object[]) savedState;
-    base.LoadViewState (values[0]);
+    base.LoadControlState (values[0]);
     _isDirty = (bool)  values[1];
   }
 
-  protected override object SaveViewState()
+  protected override object SaveControlState()
   {
     object[] values = new object[2];
-    values[0] = base.SaveViewState();
+    values[0] = base.SaveControlState();
     values[1] = _isDirty;
     return values;
   }

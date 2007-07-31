@@ -265,18 +265,18 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
       }
     }
 
-    protected override void LoadViewState (object savedState)
+    protected override void LoadControlState (object savedState)
     {
       object[] values = (object[]) savedState;
-      base.LoadViewState (values[0]);
+      base.LoadControlState (values[0]);
       _isDirty = (bool) values[1];
       _hasBeenRenderedInPreviousLifecycle = (bool) values[2];
     }
 
-    protected override object SaveViewState ()
+    protected override object SaveControlState ()
     {
       object[] values = new object[3];
-      values[0] = base.SaveViewState();
+      values[0] = base.SaveControlState ();
       values[1] = _isDirty;
       values[2] = _isRenderedInCurrentLifecycle;
       return values;

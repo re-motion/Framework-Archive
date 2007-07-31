@@ -71,9 +71,9 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
 
   private string _undefinedItemText = string.Empty;
 
-  /// <summary> State field for special behaviour during load view state. </summary>
+  /// <summary> State field for special behaviour during load control state. </summary>
   /// <remarks> Used by <see cref="RefreshEnumListSelectedValue"/>. </remarks>
-  private bool _isExecutingLoadViewState;
+  private bool _isExecutingLSaveControlState;
   bool _isEnumListRefreshed = false;
 
   private string _errorMessage;
@@ -105,7 +105,8 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
       ReadOnly = NaBoolean.True;
     }
     _listControl.ID = ID + "_Boc_ListControl";
-    _listControl.EnableViewState = true;
+    _listControl.EnableViewState = false;
+    ((IStateManager) _listControl.Items).TrackViewState();
     Controls.Add (_listControl);
 
     _label.ID = ID + "_Boc_Label";
@@ -118,7 +119,7 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   {
     base.OnInit (e);
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
-    if (! IsDesignMode)
+    if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
   }
 
@@ -347,27 +348,31 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     }
   }
 
-  protected override void LoadViewState (object savedState)
+  protected override void LoadControlState (object savedState)
   {
-    _isExecutingLoadViewState = true;
+    _isExecutingLSaveControlState = true;
 
     object[] values = (object[]) savedState;
 
-    base.LoadViewState (values[0]);
+    base.LoadControlState (values[0]);
     _value = values[1];
     if (values[2] != null)
       _internalValue = (string) values[2];
+    ((IStateManager) _listControl.Items).LoadViewState (values[3]);
+    _listControl.SelectedIndex = (int) values[4];
 
-    _isExecutingLoadViewState = false;
+    _isExecutingLSaveControlState = false;
   }
 
-  protected override object SaveViewState()
+  protected override object SaveControlState ()
   {
-    object[] values = new object[3];
+    object[] values = new object[5];
 
-    values[0] = base.SaveViewState();
+    values[0] = base.SaveControlState ();
     values[1] = _value;
     values[2] = _internalValue;
+    values[3] = ((IStateManager) _listControl.Items).SaveViewState();
+    values[4] = _listControl.SelectedIndex;
 
     return values;
   }
@@ -563,7 +568,7 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     {
       EnsureChildControls();
 
-      bool hasPropertyAfterInitializion = ! _isExecutingLoadViewState && Property != null;
+      bool hasPropertyAfterInitializion = ! _isExecutingLSaveControlState && Property != null;
 
       string itemWithIdentifierToRemove = null;
       if (_oldInternalValue == null && IsRequired)

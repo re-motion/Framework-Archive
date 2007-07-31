@@ -176,6 +176,10 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
       base.OnInit (e);
       EnsureChildControls ();
       _binding.EnsureDataSource ();
+      if (!IsDesignMode)
+      {
+        Page.RegisterRequiresControlState (this);
+      }
     }
 
     /// <value> 
@@ -368,8 +372,8 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets a flag whether the control already existed in the previous page life cycle. </summary>
     /// <remarks> 
-    ///   This property utilizes the <see cref="LoadViewState"/> method for determining a post back. It therefor requires the control to use the 
-    ///   view state. In addition, the property is only useful after the load view state phase of the page life cycle.
+    ///   This property utilizes the <see cref="LoadControlState"/> method for determining a post back. 
+    /// It is therefor only useful after the load control state phase of the page life cycle.
     /// </remarks>
     /// <value> <see langword="true"/> if the control has been on the page in the previous life cycle. </value>
     protected bool ControlExistedInPreviousRequest
@@ -377,9 +381,9 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
       get { return _controlExistedInPreviousRequest; }
     }
 
-    protected override void LoadViewState (object savedState)
+    protected override void LoadControlState (object savedState)
     {
-      base.LoadViewState (savedState);
+      base.LoadControlState (savedState);
       _controlExistedInPreviousRequest = true;
     }
 

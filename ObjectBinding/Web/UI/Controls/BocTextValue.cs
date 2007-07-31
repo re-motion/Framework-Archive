@@ -103,7 +103,7 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     base.OnInit (e);
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
 
-    if (! IsDesignMode)
+    if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
   }
 
@@ -344,10 +344,10 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     }
   }
 
-  protected override void LoadViewState(object savedState)
+  protected override void LoadControlState (object savedState)
   {
     object[] values = (object[]) savedState;
-    base.LoadViewState (values[0]);
+    base.LoadControlState (values[0]);
     _text = (string) values[1];
     _valueType = (BocTextValueType) values[2];
     _actualValueType = (BocTextValueType) values[3];
@@ -355,10 +355,10 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     _textBox.Text = _text;
   }
 
-  protected override object SaveViewState()
+  protected override object SaveControlState ()
   {
     object[] values = new object[4];
-    values[0] = base.SaveViewState();
+    values[0] = base.SaveControlState ();
     values[1] = _text;
     values[2] = _valueType;
     values[3] = _actualValueType;

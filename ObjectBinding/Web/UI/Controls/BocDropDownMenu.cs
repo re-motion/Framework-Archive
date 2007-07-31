@@ -42,8 +42,8 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
-    if (! IsDesignMode)
-      InitializeMenusItems();
+    if (!IsDesignMode)
+      InitializeMenusItems ();
   }
 
   protected override void CreateChildControls()

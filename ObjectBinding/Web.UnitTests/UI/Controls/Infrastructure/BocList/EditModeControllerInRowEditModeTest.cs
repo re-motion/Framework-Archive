@@ -572,8 +572,8 @@ public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
   public void EnsureEditModeRestored ()
   {
     Assert.IsFalse (Controller.IsRowEditModeActive);
-    ControllerInvoker.LoadViewState (
-        CreateViewState (null, false, 2, false, new EditableRowIDProvider (Controller.ID + "_Row{0}")));
+    ControllerInvoker.LoadControlState (
+        CreateControlState (null, false, 2, false, new EditableRowIDProvider (Controller.ID + "_Row{0}")));
     Assert.IsTrue (Controller.IsRowEditModeActive);
     
     Controller.EnsureEditModeRestored (Columns);
@@ -586,8 +586,8 @@ public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
   public void EnsureEditModeRestoredWithInvalidRowIndex ()
   {
     Assert.IsFalse (Controller.IsRowEditModeActive);
-    ControllerInvoker.LoadViewState (
-        CreateViewState (null, false, 6, false, new EditableRowIDProvider (Controller.ID + "_Row{0}")));
+    ControllerInvoker.LoadControlState (
+        CreateControlState (null, false, 6, false, new EditableRowIDProvider (Controller.ID + "_Row{0}")));
     Assert.IsTrue (Controller.IsRowEditModeActive);
  
     Controller.EnsureEditModeRestored (Columns);
@@ -599,8 +599,8 @@ public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
   public void EnsureEditModeRestoredWithValueNull ()
   {
     Assert.IsFalse (Controller.IsRowEditModeActive);
-    ControllerInvoker.LoadViewState (
-        CreateViewState (null, false, 6, false, new EditableRowIDProvider (Controller.ID + "_Row{0}")));
+    ControllerInvoker.LoadControlState (
+        CreateControlState (null, false, 6, false, new EditableRowIDProvider (Controller.ID + "_Row{0}")));
     Assert.IsTrue (Controller.IsRowEditModeActive);
     Controller.OwnerControl.LoadUnboundValue (null, false);
 
@@ -809,21 +809,21 @@ public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
 
 
   [Test]
-  public void SaveAndLoadViewState ()
+  public void SaveAndLoadControlState ()
   {
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
     Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
 
-    object viewState = ControllerInvoker.SaveViewState();
+    object viewState = ControllerInvoker.SaveControlState();
     Assert.IsNotNull (viewState);
 
     Controller.EndRowEditMode (false, Columns);
     Assert.IsFalse (Controller.IsRowEditModeActive);
     Assert.IsTrue (Controller.EditableRowIndex.IsNull);
 
-    ControllerInvoker.LoadViewState (viewState);
+    ControllerInvoker.LoadControlState (viewState);
     Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
   }

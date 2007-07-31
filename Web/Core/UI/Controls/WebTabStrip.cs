@@ -72,11 +72,15 @@ public class WebTabStrip :
   {
   }
 
-  protected override void OnInit(EventArgs e)
+  protected override void OnInit (EventArgs e)
   {
     base.OnInit (e);
-    if (! ControlHelper.IsDesignMode (this, Context))
+
+    if (!ControlHelper.IsDesignMode (this, Context))
+    {
+      Page.RegisterRequiresControlState (this);
       Page.RegisterRequiresPostBack (this);
+    }
   }
 
   bool IPostBackDataHandler.LoadPostData (string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
@@ -153,21 +157,21 @@ public class WebTabStrip :
     _isRestoringTabs = false;
   }
 
-  protected override void LoadViewState(object savedState)
+  protected override void LoadControlState (object savedState)
   {
     if (savedState != null)
     {
       object[] values = (object[]) savedState;
-      base.LoadViewState(values[0]);
+      base.LoadControlState(values[0]);
       _tabsControlState = values[1];
       _selectedItemID = (string) values[2];
     }
   }
 
-  protected override object SaveViewState()
+  protected override object SaveControlState ()
   {
     object[] values = new object[3];
-    values[0] = base.SaveViewState();
+    values[0] = base.SaveControlState();
     values[1] = SaveTabsControlState (_tabs);
     values[2] = _selectedItemID;
     return values;

@@ -32,7 +32,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
   /// <summary> The <see cref="IBusinessObject"/> displayed by the <see cref="BocTreeView"/>. </summary>
   private IList _value = null;
   private bool _enableTreeNodeCaching = true;
-  private Pair[] _nodesViewState;
+  private Pair[] _nodesControlState;
   private bool _isRebuildRequired = false;
 
   // construction and destruction
@@ -50,7 +50,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
     _treeView.SelectionChanged += new WebTreeNodeEventHandler(TreeView_SelectionChanged);
     _treeView.SetEvaluateTreeNodeDelegate (new EvaluateWebTreeNode (EvaluateTreeNode));
     _treeView.SetInitializeRootTreeNodesDelegate (new InitializeRootWebTreeNodes (InitializeRootWebTreeNodes));
-    _treeView.EnableTreeNodeViewState = ! _enableTreeNodeCaching;
+    _treeView.EnableTreeNodeControlState = ! _enableTreeNodeCaching;
     Controls.Add (_treeView);
   }
 
@@ -176,7 +176,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
       if (_isRebuildRequired)
         RebuildTreeNodes();
       else
-        LoadNodesViewStateRecursive (_nodesViewState, _treeView.Nodes);
+        LoadNodesControlStateRecursive (_nodesControlState, _treeView.Nodes);
     }
   }
 
@@ -213,15 +213,15 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
     _treeView.Nodes.Clear();
     CreateRootTreeNodes();
-    ApplyNodesViewStateRecursive (_nodesViewState, _treeView.Nodes);
+    ApplyNodesControlStateRecursive (_nodesControlState, _treeView.Nodes);
   }
 
-  private void ApplyNodesViewStateRecursive (Pair[] nodesViewState, WebTreeNodeCollection nodes)
+  private void ApplyNodesControlStateRecursive (Pair[] nodesState, WebTreeNodeCollection nodes)
   {
-    for (int i = 0; i < nodesViewState.Length; i++)
+    for (int i = 0; i < nodesState.Length; i++)
     {
-      Pair nodeViewState = nodesViewState[i];
-      object[] values = (object[]) nodeViewState.First;
+      Pair nodeState = nodesState[i];
+      object[] values = (object[]) nodeState.First;
       string itemID = (string) values[0];
       WebTreeNode node = nodes.Find (itemID);
       if (node != null)
@@ -239,7 +239,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
           if (node.Children.Count == 0)
             node.IsExpanded = false;
         }
-        ApplyNodesViewStateRecursive ((Pair[]) nodeViewState.Second, node.Children);
+        ApplyNodesControlStateRecursive ((Pair[]) nodeState.Second, node.Children);
       }
     }
   }
@@ -415,37 +415,33 @@ public class BocTreeView: BusinessObjectBoundWebControl
     ValueImplementation = value;
   }
 
-  /// <summary> Calls the parent's <c>LoadViewState</c> method and restores this control's specific data. </summary>
-  /// <param name="savedState"> An <see cref="Object"/> that represents the control state to be restored. </param>
-  protected override void LoadViewState(object savedState)
+  protected override void LoadControlState (object savedState)
   {
     object[] values = (object[]) savedState;
-    
-    base.LoadViewState (values[0]);
+
+    base.LoadControlState (values[0]);
     if (_enableTreeNodeCaching)
-      _nodesViewState = (Pair[]) values[1];
+      _nodesControlState = (Pair[]) values[1];
   }
 
-  /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
-  /// <returns> Returns the server control's current view state. </returns>
-  protected override object SaveViewState()
+  protected override object SaveControlState ()
   {
     object[] values = new object[2];
 
-    values[0] = base.SaveViewState();
+    values[0] = base.SaveControlState ();
     if (_enableTreeNodeCaching)
-      values[1] = SaveNodesViewStateRecursive (_treeView.Nodes);
+      values[1] = SaveNodesStateRecursive (_treeView.Nodes);
 
     return values;
   }
 
   /// <summary> Loads the settings of the <paramref name="nodes"/> from <paramref name="viewState"/>. </summary>
-  private void LoadNodesViewStateRecursive (Pair[] nodesViewState, WebTreeNodeCollection nodes)
+  private void LoadNodesControlStateRecursive (Pair[] nodesState, WebTreeNodeCollection nodes)
   {
-    for (int i = 0; i < nodesViewState.Length; i++)
+    for (int i = 0; i < nodesState.Length; i++)
     {
-      Pair nodeViewState = nodesViewState[i];
-      object[] values = (object[]) nodeViewState.First;
+      Pair nodeState = nodesState[i];
+      object[] values = (object[]) nodeState.First;
       string itemID = (string) values[0];
       bool isExpanded = (bool) values[1];
       bool isEvaluated = (bool) values[2];
@@ -472,18 +468,18 @@ public class BocTreeView: BusinessObjectBoundWebControl
         node.IsSelected = true;
       nodes.Add (node);
 
-      LoadNodesViewStateRecursive ((Pair[]) nodeViewState.Second, node.Children);
+      LoadNodesControlStateRecursive ((Pair[]) nodeState.Second, node.Children);
     }
   }
 
-  /// <summary> Saves the settings of the  <paramref name="nodes"/> and returns this view state </summary>
-  private Pair[] SaveNodesViewStateRecursive (WebTreeNodeCollection nodes)
+  /// <summary> Saves the settings of the  <paramref name="nodes"/> and returns this control state </summary>
+  private Pair[] SaveNodesStateRecursive (WebTreeNodeCollection nodes)
   {
-    Pair[] nodesViewState = new Pair[nodes.Count];
+    Pair[] nodesState = new Pair[nodes.Count];
     for (int i = 0; i < nodes.Count; i++)
     {
       WebTreeNode node = (WebTreeNode) nodes[i];    
-      Pair nodeViewState = new Pair();
+      Pair nodeState = new Pair();
       object[] values = new object[9];
       values[0] = node.ItemID;
       values[1] = node.IsExpanded;
@@ -501,11 +497,11 @@ public class BocTreeView: BusinessObjectBoundWebControl
       {
         values[8] = false;
       }
-      nodeViewState.First = values;
-      nodeViewState.Second = SaveNodesViewStateRecursive (node.Children);
-      nodesViewState[i] = nodeViewState;
+      nodeState.First = values;
+      nodeState.Second = SaveNodesStateRecursive (node.Children);
+      nodesState[i] = nodeState;
     }
-    return nodesViewState;
+    return nodesState;
   }
 
   public override bool SupportsProperty (IBusinessObjectProperty property)
@@ -683,7 +679,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
     set
     { 
       _enableTreeNodeCaching = value; 
-      _treeView.EnableTreeNodeViewState = ! value;
+      _treeView.EnableTreeNodeControlState = ! value;
     }
   }
 

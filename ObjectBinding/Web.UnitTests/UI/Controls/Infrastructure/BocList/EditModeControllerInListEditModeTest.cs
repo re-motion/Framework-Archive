@@ -370,7 +370,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     provider.ExcludeID (string.Format (idFormat, 5));
 
     Assert.IsFalse (Controller.IsListEditModeActive);
-    ControllerInvoker.LoadViewState (CreateViewState (null, true, NaInt32.Null, false, provider));
+    ControllerInvoker.LoadControlState (CreateControlState (null, true, NaInt32.Null, false, provider));
     Assert.IsTrue (Controller.IsListEditModeActive);
     
     Controller.EnsureEditModeRestored (Columns);
@@ -636,31 +636,31 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
 
 
   [Test]
-  public void SaveAndLoadViewState ()
+  public void SaveAndLoadControlState ()
   {
     Invoker.InitRecursive();
     Controller.SwitchListIntoEditMode (Columns, Columns);
     Assert.IsTrue (Controller.IsListEditModeActive);
 
-    object viewState = ControllerInvoker.SaveViewState();
+    object viewState = ControllerInvoker.SaveControlState();
     Assert.IsNotNull (viewState);
 
     Controller.EndListEditMode (false, Columns);
     Assert.IsFalse (Controller.IsListEditModeActive);
 
-    ControllerInvoker.LoadViewState (viewState);
+    ControllerInvoker.LoadControlState (viewState);
     Assert.IsTrue (Controller.IsListEditModeActive);
   }
 
   [Test]
-  public void SaveAndLoadViewStateAfterRemovingSingleRow ()
+  public void SaveAndLoadControlStateAfterRemovingSingleRow ()
   {
     Invoker.InitRecursive();
     Controller.SwitchListIntoEditMode (Columns, Columns);
     Controller.RemoveRow (Values[2]);
     Assert.IsTrue (Controller.IsListEditModeActive);
 
-    object viewState = ControllerInvoker.SaveViewState();
+    object viewState = ControllerInvoker.SaveControlState();
     Assert.IsNotNull (viewState);
     Assert.IsTrue (viewState is Object[]);
     object[] values = (object[]) viewState;
@@ -674,19 +674,19 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Controller.EndListEditMode (false, Columns);
     Assert.IsFalse (Controller.IsListEditModeActive);
 
-    ControllerInvoker.LoadViewState (viewState);
+    ControllerInvoker.LoadControlState (viewState);
     Assert.IsTrue (Controller.IsListEditModeActive);
   }
 
   [Test]
-  public void SaveAndLoadViewStateAfterRemovingMultipleRow ()
+  public void SaveAndLoadControlStateAfterRemovingMultipleRow ()
   {
     Invoker.InitRecursive();
     Controller.SwitchListIntoEditMode (Columns, Columns);
     Controller.RemoveRows (new IBusinessObject[] {Values[2], Values[3]});
     Assert.IsTrue (Controller.IsListEditModeActive);
 
-    object viewState = ControllerInvoker.SaveViewState();
+    object viewState = ControllerInvoker.SaveControlState();
     Assert.IsNotNull (viewState);
     Assert.IsTrue (viewState is Object[]);
     object[] values = (object[]) viewState;
@@ -700,7 +700,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Controller.EndListEditMode (false, Columns);
     Assert.IsFalse (Controller.IsListEditModeActive);
 
-    ControllerInvoker.LoadViewState (viewState);
+    ControllerInvoker.LoadControlState (viewState);
     Assert.IsTrue (Controller.IsListEditModeActive);
   }
 }

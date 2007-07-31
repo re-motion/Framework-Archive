@@ -145,8 +145,8 @@ public class BocReferenceValue:
 
     if (!IsDesignMode)
     {
-      InitializeMenusItems();
       Page.RegisterRequiresPostBack (this);
+      InitializeMenusItems();
     }
   }
 
@@ -161,7 +161,8 @@ public class BocReferenceValue:
     Controls.Add (_icon);
 
     _dropDownList.ID = ID + "_Boc_DropDownList";
-    _dropDownList.EnableViewState = true;
+    _dropDownList.EnableViewState = false;
+    ((IStateManager) _dropDownList.Items).TrackViewState ();
     Controls.Add (_dropDownList);
 
     _label.ID = ID + "_Boc_Label";
@@ -872,26 +873,28 @@ public class BocReferenceValue:
     }
     return isCommandEnabled;
   }
-  
-  protected override void LoadViewState (object savedState)
+
+  protected override void LoadControlState (object savedState)
   {
     object[] values = (object[]) savedState;
 
-    base.LoadViewState (values[0]);
+    base.LoadControlState (values[0]);
     if (values[1] != null)    
       InternalValue = (string) values[1];
     _displayName = (string) values[2];
-
-    //  Drop down list has enabled view state, selected value must not be restored
+    ((IStateManager) _dropDownList.Items).LoadViewState (values[3]);
+    _dropDownList.SelectedIndex = (int) values[4];
   }
 
-  protected override object SaveViewState()
+  protected override object SaveControlState ()
   {
-    object[] values = new object[3];
+    object[] values = new object[5];
 
-    values[0] = base.SaveViewState();
+    values[0] = base.SaveControlState ();
     values[1] = _internalValue;
     values[2] = _displayName;
+    values[3] = ((IStateManager) _dropDownList.Items).SaveViewState ();
+    values[4] = _dropDownList.SelectedIndex;
 
     return values;
   }

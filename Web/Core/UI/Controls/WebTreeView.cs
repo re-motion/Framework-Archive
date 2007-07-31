@@ -74,15 +74,15 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
 
   /// <summary> The nodes in this tree view. </summary>
   private WebTreeNodeCollection _nodes;
-  private Triplet[] _nodesViewState;
-  private bool _isLoadViewStateCompleted = false;
+  private Triplet[] _nodesControlState;
+  private bool _isLoadControlStateCompleted = false;
   private bool _enableTopLevelExpander = true;
   private bool _enableLookAheadEvaluation = false;
 
   private bool _enableScrollBars = false;
   private bool _enableWordWrap = false;
   private bool _showLines = true;
-  private bool _enableTreeNodeViewState = true;
+  private bool _enableTreeNodeControlState = true;
   private bool _hasTreeNodesCreated = false;
   private WebTreeNode _selectedNode = null;
 
@@ -225,8 +225,8 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
     if (_initializeRootTreeNodes != null) 
       _initializeRootTreeNodes();
 
-    if (_nodesViewState != null)
-      LoadNodesViewStateRecursive (_nodesViewState, _nodes);
+    if (_nodesControlState != null)
+      LoadNodesControlStateRecursive (_nodesControlState, _nodes);
 
     if (_nodes.Count == 0)
       _hasTreeNodesCreated = false;
@@ -254,49 +254,49 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
-    if (Page != null && ! Page.IsPostBack)
-      _isLoadViewStateCompleted = true;
+    if (!ControlHelper.IsDesignMode (this, Context))
+    {
+      Page.RegisterRequiresControlState (this);
+    }
+    if (Page != null && !Page.IsPostBack)
+      _isLoadControlStateCompleted = true;
   }
 
-  /// <summary> Calls the parent's <c>LoadViewState</c> method and restores this control's specific data. </summary>
-  /// <param name="savedState"> An <see cref="Object"/> that represents the control state to be restored. </param>
-  protected override void LoadViewState(object savedState)
+  protected override void LoadControlState(object savedState)
   {
     object[] values = (object[]) savedState;
     
-    base.LoadViewState (values[0]);
-    if (_enableTreeNodeViewState)
-      _nodesViewState = (Triplet[]) values[1];
+    base.LoadControlState (values[0]);
+    if (_enableTreeNodeControlState)
+      _nodesControlState = (Triplet[]) values[1];
     else
-      _nodesViewState = null;
+      _nodesControlState = null;
 
-    _isLoadViewStateCompleted = true;
+    _isLoadControlStateCompleted = true;
   }
 
-  /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
-  /// <returns> Returns the server control's current view state. </returns>
-  protected override object SaveViewState()
+  protected override object SaveControlState()
   {
     object[] values = new object[2];
 
-    values[0] = base.SaveViewState();
-    if (_enableTreeNodeViewState)
-      values[1] = SaveNodesViewStateRecursive (_nodes);
+    values[0] = base.SaveControlState();
+    if (_enableTreeNodeControlState)
+      values[1] = SaveNodesControlStateRecursive (_nodes);
 
     return values;
   }
 
-  /// <summary> Loads the settings of the <paramref name="nodes"/> from <paramref name="nodesViewState"/>. </summary>
-  private void LoadNodesViewStateRecursive (Triplet[] nodesViewState, WebTreeNodeCollection nodes)
+  /// <summary> Loads the settings of the <paramref name="nodes"/> from <paramref name="nodesState"/>. </summary>
+  private void LoadNodesControlStateRecursive (Triplet[] nodesState, WebTreeNodeCollection nodes)
   {
-    for (int i = 0; i < nodesViewState.Length; i++)
+    for (int i = 0; i < nodesState.Length; i++)
     {
-      Triplet nodeViewState = (Triplet) nodesViewState[i];
-      string nodeID = (string) nodeViewState.First;
+      Triplet nodeState = (Triplet) nodesState[i];
+      string nodeID = (string) nodeState.First;
       WebTreeNode node = nodes.Find (nodeID);
       if (node != null)
       {
-        object[] values = (object[]) nodeViewState.Second;
+        object[] values = (object[]) nodeState.Second;
         node.IsExpanded = (bool) values[0];
         if (! node.IsEvaluated)
         {
@@ -307,30 +307,30 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
         bool isSelected = (bool) values[2];
         if (isSelected)
           node.IsSelected = true;
-        LoadNodesViewStateRecursive ((Triplet[]) nodeViewState.Third, node.Children);
+        LoadNodesControlStateRecursive ((Triplet[]) nodeState.Third, node.Children);
       }
     }
   }
 
   /// <summary> Saves the settings of the  <paramref name="nodes"/> and returns this view state </summary>
-  private Triplet[] SaveNodesViewStateRecursive (WebTreeNodeCollection nodes)
+  private Triplet[] SaveNodesControlStateRecursive (WebTreeNodeCollection nodes)
   {
     EnsureTreeNodesCreated();
-    Triplet[] nodesViewState = new Triplet[nodes.Count];
+    Triplet[] nodesState = new Triplet[nodes.Count];
     for (int i = 0; i < nodes.Count; i++)
     {
       WebTreeNode node = nodes[i];    
-      Triplet nodeViewState = new Triplet();
-      nodeViewState.First = node.ItemID;
+      Triplet nodeControlState = new Triplet();
+      nodeControlState.First = node.ItemID;
       object[] values = new object[3];
       values[0] = node.IsExpanded;
       values[1] = node.IsEvaluated;
       values[2] = node.IsSelected;
-      nodeViewState.Second = values;
-      nodeViewState.Third = SaveNodesViewStateRecursive (node.Children);
-      nodesViewState[i] = nodeViewState;
+      nodeControlState.Second = values;
+      nodeControlState.Third = SaveNodesControlStateRecursive (node.Children);
+      nodesState[i] = nodeControlState;
     }
-    return nodesViewState;
+    return nodesState;
   }
 
 
@@ -751,7 +751,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
   {
     get
     {
-      if (_isLoadViewStateCompleted)
+      if (_isLoadControlStateCompleted)
         EnsureTreeNodesCreated();
       return _nodes; 
     }
@@ -826,10 +826,10 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
   /// </remarks>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
-  public bool EnableTreeNodeViewState
+  public bool EnableTreeNodeControlState
   {
-    get { return _enableTreeNodeViewState; }
-    set { _enableTreeNodeViewState = value; }
+    get { return _enableTreeNodeControlState; }
+    set { _enableTreeNodeControlState = value; }
   }
 
   /// <summary> Occurs when a node is clicked. </summary>
@@ -857,7 +857,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
   {
     get 
     { 
-      if (_isLoadViewStateCompleted)
+      if (_isLoadControlStateCompleted)
         EnsureTreeNodesCreated();
       return _selectedNode; 
     }

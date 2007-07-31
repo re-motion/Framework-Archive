@@ -98,7 +98,7 @@ public class BocMultilineTextValue: BusinessObjectBoundEditableWebControl, IPost
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
-    if (! IsDesignMode)
+    if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
   }
 
@@ -333,21 +333,21 @@ public class BocMultilineTextValue: BusinessObjectBoundEditableWebControl, IPost
     }
   }
 
-  protected override void LoadViewState (object savedState)
+  protected override void LoadControlState (object savedState)
   {
     object[] values = (object[]) savedState;
 
-    base.LoadViewState (values[0]);
+    base.LoadControlState (values[0]);
     _internalValue = (string) values[1];
 
     _textBox.Text = Text;
   }
 
-  protected override object SaveViewState()
+  protected override object SaveControlState ()
   {
     object[] values = new object[2];
 
-    values[0] = base.SaveViewState();
+    values[0] = base.SaveControlState ();
     values[1] = _internalValue;
 
     return values;

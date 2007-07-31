@@ -9,20 +9,6 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls.Infrastructure.BocList
 [TestFixture]
 public class EditModeControllerWithoutEditModeTest : EditModeControllerTestBase
 {
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  // construction and disposing
-
-  public EditModeControllerWithoutEditModeTest ()
-  {
-  }
-
-  // methods and properties
-
   [Test]
   public void Initialize ()
   {
@@ -83,21 +69,21 @@ public class EditModeControllerWithoutEditModeTest : EditModeControllerTestBase
   }
 
   [Test]
-  public void SaveAndLoadViewState ()
+  public void SaveAndLoadControlState ()
   {
     Invoker.InitRecursive();
 
-    object viewState = ControllerInvoker.SaveViewState();
+    object viewState = ControllerInvoker.SaveControlState();
     Assert.IsNotNull (viewState);
-    ControllerInvoker.LoadViewState (viewState);
+    ControllerInvoker.LoadControlState (viewState);
   }
 
   [Test]
-  public void LoadViewStateWithNull ()
+  public void LoadControlStateWithNull ()
   {
     Invoker.InitRecursive();
 
-    ControllerInvoker.LoadViewState (null);
+    ControllerInvoker.LoadControlState (null);
 
     Assert.IsFalse (Controller.IsRowEditModeActive);
     Assert.IsFalse (Controller.IsListEditModeActive);

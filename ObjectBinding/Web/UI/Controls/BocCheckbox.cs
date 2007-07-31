@@ -110,7 +110,7 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
-    if (! IsDesignMode)
+    if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
   }
 
@@ -389,22 +389,22 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
     }
   }
 
-  protected override void LoadViewState (object savedState)
+  protected override void LoadControlState (object savedState)
   {
     object[] values = (object[]) savedState;
 
-    base.LoadViewState (values[0]);
+    base.LoadControlState (values[0]);
     _value = (bool) values[1];
     _isActive = (bool) values[2];
 
     _checkBox.Checked = _value;
   }
 
-  protected override object SaveViewState()
+  protected override object SaveControlState ()
   {
     object[] values = new object[3];
 
-    values[0] = base.SaveViewState();
+    values[0] = base.SaveControlState ();
     values[1] = _value;
     values[2] = _isActive;
 

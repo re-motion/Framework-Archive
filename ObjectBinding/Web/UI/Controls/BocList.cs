@@ -528,8 +528,8 @@ public class BocList:
 
     if (!IsDesignMode)
     {
-      InitializeMenusItems();
       Page.RegisterRequiresPostBack (this);
+      InitializeMenusItems();
     }
  }
 
@@ -3203,13 +3203,11 @@ public class BocList:
   }
 
 
-  /// <summary> Calls the parent's <c>LoadViewState</c> method and restores this control's specific data. </summary>
-  /// <param name="savedState"> An <see cref="Object"/> that represents the control state to be restored. </param>
-  protected override void LoadViewState(object savedState)
+  protected override void LoadControlState (object savedState)
   {
     object[] values = (object[]) savedState;
-    
-    base.LoadViewState (values[0]);
+
+    base.LoadControlState (values[0]);
     _selectedViewIndex = (NaInt32) values[1];
     _availableViewsListSelectedValue = (string) values[2];
     _currentRow = (int) values[3];
@@ -3217,13 +3215,11 @@ public class BocList:
     _selectorControlCheckedState = (Hashtable) values[5];
   }
 
-  /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
-  /// <returns> Returns the server control's current view state. </returns>
-  protected override object SaveViewState()
+  protected override object SaveControlState ()
   {
     object[] values = new object[6];
 
-    values[0] = base.SaveViewState();
+    values[0] = base.SaveControlState ();
     values[1] = _selectedViewIndex;
     values[2] = _availableViewsListSelectedValue;
     values[3] = _currentRow;

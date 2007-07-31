@@ -111,7 +111,10 @@ namespace Rubicon.Web.UI.Controls
       base.OnInit (e);
       EnsureChildControls ();
 
-      Page.RegisterRequiresControlState (this);
+      if (!ControlHelper.IsDesignMode (this))
+      {
+        Page.RegisterRequiresControlState (this);
+      }
     }
 
     protected override void LoadViewState (object savedState)

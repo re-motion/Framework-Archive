@@ -147,7 +147,7 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
   {
     base.OnInit (e);
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
-    if (! IsDesignMode)
+    if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
   }
 
@@ -518,11 +518,11 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
     }
   }
 
-  protected override void LoadViewState(object savedState)
+  protected override void LoadControlState (object savedState)
   {
     object[] values = (object[]) savedState;
-    
-    base.LoadViewState (values[0]);
+
+    base.LoadControlState (values[0]);
 
     if ( values[1] != null)
       _internalDateValue = (string) values[1];
@@ -538,11 +538,11 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
     _timeTextBox.Text = _internalTimeValue;
   }
 
-  protected override object SaveViewState()
+  protected override object SaveControlState ()
   {
     object[] values = new object[8];
 
-    values[0] = base.SaveViewState();
+    values[0] = base.SaveControlState ();
     values[1] = _internalDateValue;
     values[2] = _internalTimeValue;
     values[3] = _valueType;

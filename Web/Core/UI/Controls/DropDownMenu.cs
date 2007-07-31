@@ -68,11 +68,11 @@ namespace Rubicon.Web.UI.Controls
       }
 
       if (index >= _menuItems.Count)
-        throw new ArgumentOutOfRangeException ("Index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed menu items.'");
+        throw new ArgumentOutOfRangeException (eventArgument, "Index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed menu items.'");
 
       WebMenuItem item = _menuItems[index];
       if (item.Command == null)
-        throw new ArgumentOutOfRangeException ("The DropDownMenu '" + ID + "' does not have a command associated with menu item " + index + ".");
+        throw new ArgumentOutOfRangeException (eventArgument, "The DropDownMenu '" + ID + "' does not have a command associated with menu item " + index + ".");
 
       switch (item.Command.Type)
       {
