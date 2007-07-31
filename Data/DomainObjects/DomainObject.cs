@@ -453,22 +453,25 @@ public class DomainObject
   /// <summary>
   /// Gets the current state of the <see cref="DomainObject"/> in the <see cref="ClientTransactionScope.CurrentTransaction"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public StateType State
   {
     get
     {
-      CheckIfObjectIsDiscarded ();
-      DataContainer dataContainer = GetDataContainer ();
-      if (dataContainer.State == StateType.Unchanged)
+      if (IsDiscarded)
+        return StateType.Discarded;
+      else
       {
-        if (ClientTransactionScope.CurrentTransaction.HasRelationChanged (this))
-          return StateType.Changed;
-        else
-          return StateType.Unchanged;
-      }
+        DataContainer dataContainer = GetDataContainer();
+        if (dataContainer.State == StateType.Unchanged)
+        {
+          if (ClientTransactionScope.CurrentTransaction.HasRelationChanged (this))
+            return StateType.Changed;
+          else
+            return StateType.Unchanged;
+        }
 
-      return dataContainer.State;
+        return dataContainer.State;
+      }
     }
   }
 

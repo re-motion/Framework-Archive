@@ -54,11 +54,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDiscardedException))]
     public void DomainObjectState ()
     {
       _newOrder.Delete ();
       StateType state = _newOrder.State;
+      Assert.AreEqual (StateType.Discarded, state);
     }
 
     [Test]
@@ -198,11 +198,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDiscardedException))]
     public void DataContainerState ()
     {
       _newOrder.Delete ();
       StateType state = _newOrderContainer.State;
+      Assert.AreEqual (StateType.Discarded, state);
     }
 
     [Test]

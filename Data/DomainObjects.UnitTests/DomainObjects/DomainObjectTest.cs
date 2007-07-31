@@ -246,6 +246,30 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    public void DiscardedStateType ()
+    {
+      ClassWithAllDataTypes newObject = ClassWithAllDataTypes.NewObject ();
+      DataContainer newObjectDataContainer = newObject.InternalDataContainer;
+      ClassWithAllDataTypes loadedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+      DataContainer loadedObjectDataContainer = newObject.InternalDataContainer;
+
+      newObject.Delete ();
+
+      Assert.IsTrue (newObject.IsDiscarded);
+      Assert.AreEqual (StateType.Discarded, newObject.State);
+      Assert.IsTrue (newObjectDataContainer.IsDiscarded);
+      Assert.AreEqual (StateType.Discarded, newObjectDataContainer.State);
+
+      loadedObject.Delete ();
+      ClientTransactionMock.Commit ();
+
+      Assert.IsTrue (loadedObject.IsDiscarded);
+      Assert.AreEqual (StateType.Discarded, loadedObject.State);
+      Assert.IsTrue (loadedObjectDataContainer.IsDiscarded);
+      Assert.AreEqual (StateType.Discarded, loadedObjectDataContainer.State);
+    }
+
+    [Test]
     public void PrivateConstructor ()
     {
       OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);

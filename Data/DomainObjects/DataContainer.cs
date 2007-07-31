@@ -269,16 +269,14 @@ public class DataContainer
   public StateType State
   {
     get 
-    { 
-      CheckDiscarded ();
-
-      if (_state == DataContainerStateType.Existing)
+    {
+      if (_isDiscarded)
+        return StateType.Discarded;
+      else  if (_state == DataContainerStateType.Existing)
         return GetStateForPropertyValues ();
-
-      if (_state == DataContainerStateType.New) 
+      else if (_state == DataContainerStateType.New) 
         return StateType.New;
-      
-      return StateType.Deleted;
+      else return StateType.Deleted;
     }
   }
 

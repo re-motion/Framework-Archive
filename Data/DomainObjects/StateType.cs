@@ -22,6 +22,10 @@ public enum StateType
   /// <summary>
   /// The <see cref="DomainObject"/> has been deleted.
   /// </summary>
-  Deleted = 3
+  Deleted = 3,
+  /// <summary>
+  /// The <see cref="DomainObject"/> does not exist any longer.
+  /// </summary>
+  Discarded = 4
 }
 }
