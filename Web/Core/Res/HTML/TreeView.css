@@ -32,7 +32,7 @@ ul.treeViewNodeChildren
 ul.treeViewNodeChildrenNoLines
 {
   margin: 0;  
-  padding: 0;
+  padding: 0 0 0 19px;
   list-style: none;
 }
 
