@@ -1427,7 +1427,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
       //  If ControlsColumn cell contains controls: single row constellation
       bool hasOneDataRow =   isDataRow
-                          && rows[i].Cells[_controlsColumn].Controls.Count > 0;
+                          && HasContents (rows[i].Cells[_controlsColumn]);
 
       //  If it is not a single row constellation
       //  and the table still has another row left
@@ -1502,6 +1502,24 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     return (FormGridRow[])formGridRows.ToArray(typeof(FormGridRow));
+  }
+
+  private bool HasContents (HtmlTableCell cell)
+  {
+    if (cell.Controls.Count == 0)
+      return false;
+    
+    if (cell.Controls.Count > 1)
+      return true;
+
+    LiteralControl literalControl = cell.Controls[0] as LiteralControl;
+    if (literalControl == null)
+      return true;
+
+    if (literalControl.Text.Trim ().Length > 0)
+      return true;
+
+    return false;
   }
 
   private void PrepareValidationForFormGrid (FormGrid formGrid)
@@ -2317,7 +2335,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
 
     //  Already has labels
-    if (dataRow.LabelsCell.Controls.Count > 0)
+    if (HasContents (dataRow.LabelsCell))
       return;
 
     for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
@@ -2363,8 +2381,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
       label.ID = newID;
 
       //  Add seperator if already a control in the cell
-      
-      if (dataRow.LabelsCell.Controls.Count > 0)
+
+      if (HasContents (dataRow.LabelsCell))
       {
         LiteralControl seperator = new LiteralControl(", ");
 
