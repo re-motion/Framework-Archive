@@ -207,6 +207,7 @@
     <Compile Include="UI\Controls\BocTreeView.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Controls\BocTreeViewMenuItemProvider.cs" />
     <Compile Include="UI\Controls\BusinessObjectBinding.cs">
       <SubType>Code</SubType>
     </Compile>

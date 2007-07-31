@@ -1,168 +1,161 @@
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Web;
-using System.Web.SessionState;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 using Rubicon.ObjectBinding;
-
 using Rubicon.ObjectBinding.Sample;
-using Rubicon.Web.UI.Controls;
 using Rubicon.ObjectBinding.Web.UI.Controls;
+using Rubicon.Web.UI.Controls;
 
 namespace OBWTest
 {
-public class SingleTestTreeView : SingleBocTestBasePage
-{
-  protected System.Web.UI.WebControls.Label TreeViewLabel;
-  protected System.Web.UI.WebControls.Button PostBackButton;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-  protected Rubicon.Web.UI.Controls.WebTreeView WebTreeView;
-  protected PersonTreeView PersonTreeView;
-  protected System.Web.UI.WebControls.Button RefreshPesonTreeViewButton;
-  protected System.Web.UI.WebControls.Button Button1;
-  protected System.Web.UI.WebControls.Button Node101Button;
-  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  public class SingleTestTreeView : SingleBocTestBasePage
+  {
+    protected System.Web.UI.WebControls.Label TreeViewLabel;
+    protected System.Web.UI.WebControls.Button PostBackButton;
+    protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+    protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+    protected Rubicon.Web.UI.Controls.WebTreeView WebTreeView;
+    protected PersonTreeView PersonTreeView;
+    protected PersonTreeView PersonTreeViewWithMenus;
+    protected System.Web.UI.WebControls.Button RefreshPesonTreeViewButton;
+    protected System.Web.UI.WebControls.Button Node332Button;
+    protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
-  private void Page_Load(object sender, System.EventArgs e)
-	{
-    Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
-    Person person = Person.GetObject (personID);
-
-    CurrentObject.BusinessObject = (IBusinessObject) person;
-    
-
-    this.DataBind();
-
-    if (person.Children == null)
+    private void Page_Load (object sender, System.EventArgs e)
     {
-      person.Children = null;
-      XmlReflectionBusinessObjectStorageProvider.Current.Reset();
+      Guid personID = new Guid (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+      Person person = Person.GetObject (personID);
+
+      CurrentObject.BusinessObject = (IBusinessObject) person;
+
+
+      DataBind();
+
+      if (person.Children == null)
+      {
+        person.Children = null;
+        ((Global) Context.ApplicationInstance).XmlReflectionBusinessObjectStorageProvider.Reset();
+      }
+      CurrentObject.LoadValues (IsPostBack);
+      BocTreeNode node = PersonTreeView.SelectedNode;
     }
-    CurrentObject.LoadValues (IsPostBack);
-    BocTreeNode node = PersonTreeView.SelectedNode;
+
+    protected override void OnPreRender (EventArgs e)
+    {
+      BocTreeNode node = PersonTreeView.SelectedNode;
+      base.OnPreRender (e);
+    }
+
+    protected override void OnInit (EventArgs e)
+    {
+      InitializeComponent();
+      base.OnInit (e);
+
+      WebTreeNodeCollection nodes;
+
+      nodes = WebTreeView.Nodes;
+      nodes.Add (
+          new WebTreeNode ("node0", "Node 0", "Hello", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Job.gif", "Icon", "ToolTip", Unit.Pixel (16), Unit.Pixel (16))));
+      nodes.Add (new WebTreeNode ("node1", "Node 1"));
+      nodes.Add (new WebTreeNode ("node2", "Node 2"));
+      nodes.Add (new WebTreeNode ("node3", "Node 3"));
+      nodes.Add (new WebTreeNode ("node4", "Node 4"));
+
+      nodes = ((WebTreeNode) WebTreeView.Nodes[0]).Children;
+      nodes.Add (new WebTreeNode ("node00", "Node 0-0", "Images/Rubicon.ObjectBinding.Sample.Job.gif"));
+      nodes.Add (new WebTreeNode ("node01", "Node 0-1"));
+      nodes.Add (new WebTreeNode ("node02", "Node 0-2"));
+      nodes.Add (new WebTreeNode ("node03", "Node 0-3"));
+      ((WebTreeNode) WebTreeView.Nodes[0]).IsEvaluated = true;
+
+      nodes = ((WebTreeNode) ((WebTreeNode) WebTreeView.Nodes[0]).Children[0]).Children;
+      nodes.Add (new WebTreeNode ("node000", "Node 0-0-0"));
+      nodes.Add (new WebTreeNode ("node001", "Node 0-0-1", "Hello", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Job.gif")));
+      nodes.Add (
+          new WebTreeNode ("node002", "Node 0-0-2", "Hello", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Job.gif", "Icon", null, Unit.Pixel (16), Unit.Pixel (16))));
+      nodes.Add (new WebTreeNode ("node003", "Node 0-0-3", "Images/Rubicon.ObjectBinding.Sample.Job.gif"));
+      ((WebTreeNode) ((WebTreeNode) WebTreeView.Nodes[0]).Children[0]).IsEvaluated = true;
+
+      nodes = ((WebTreeNode) WebTreeView.Nodes[3]).Children;
+      nodes.Add (new WebTreeNode ("node30", "Node 3-0"));
+      nodes.Add (new WebTreeNode ("node31", "Node 3-1"));
+      nodes.Add (new WebTreeNode ("node32", "Node 3-2"));
+      nodes.Add (new WebTreeNode ("node33", "Node 3-3"));
+      ((WebTreeNode) WebTreeView.Nodes[3]).IsEvaluated = true;
+
+      nodes = ((WebTreeNode) ((WebTreeNode) WebTreeView.Nodes[3]).Children[3]).Children;
+      nodes.Add (new WebTreeNode ("node330", "Node 3-3-0"));
+      nodes.Add (new WebTreeNode ("node331", "Node 3-3-1"));
+      nodes.Add (new WebTreeNode ("node332", "Node 3-3-2"));
+      nodes.Add (new WebTreeNode ("node333", "Node 3-3-3"));
+      ((WebTreeNode) ((WebTreeNode) WebTreeView.Nodes[3]).Children[3]).IsEvaluated = true;
+
+      nodes = ((WebTreeNode) WebTreeView.Nodes[2]).Children;
+      nodes.Add (new WebTreeNode ("node20", "Node 2-0"));
+      nodes.Add (new WebTreeNode ("node21", "Node 2-1"));
+      nodes.Add (new WebTreeNode ("node22", "Node 2-2"));
+      nodes.Add (new WebTreeNode ("node23", "Node 2-3"));
+      ((WebTreeNode) WebTreeView.Nodes[2]).IsEvaluated = true;
+
+      nodes = ((WebTreeNode) WebTreeView.Nodes[4]).Children;
+      nodes.Add (new WebTreeNode ("node40", "Node 4-0"));
+      nodes.Add (new WebTreeNode ("node41", "Node 4-1"));
+      nodes.Add (new WebTreeNode ("node42", "Node 4-2"));
+      nodes.Add (new WebTreeNode ("node43", "Node 4-3"));
+      ((WebTreeNode) WebTreeView.Nodes[4]).IsEvaluated = true;
+
+      WebTreeView.SetEvaluateTreeNodeDelegate (new EvaluateWebTreeNode (EvaluateTreeNode));
+
+      WebTreeView.MenuItemProvider = new TestWebTreeViewMenuItemProvider();
+      PersonTreeViewWithMenus.MenuItemProvider = new TestBocTreeViewMenuItemProvider();
+    }
+
+    private void EvaluateTreeNode (WebTreeNode node)
+    {
+      node.IsEvaluated = true;
+    }
+
+    /// <summary>
+    /// Required method for Designer support - do not modify
+    /// the contents of this method with the code editor.
+    /// </summary>
+    private void InitializeComponent ()
+    {
+      PersonTreeView.Click += new Rubicon.ObjectBinding.Web.UI.Controls.BocTreeNodeClickEventHandler (PersonTreeView_Click);
+      PersonTreeView.SelectionChanged += new Rubicon.ObjectBinding.Web.UI.Controls.BocTreeNodeEventHandler (PersonTreeView_SelectionChanged);
+      RefreshPesonTreeViewButton.Click += new System.EventHandler (RefreshPesonTreeViewButton_Click);
+      WebTreeView.Click += new Rubicon.Web.UI.Controls.WebTreeNodeClickEventHandler (TreeView_Click);
+      Node332Button.Click += new System.EventHandler (Node332Button_Click);
+      Load += new System.EventHandler (Page_Load);
+    }
+
+    private void TreeView_Click (object sender, Rubicon.Web.UI.Controls.WebTreeNodeClickEventArgs e)
+    {
+      TreeViewLabel.Text = "Node = " + e.Node.Text;
+    }
+
+    private void PersonTreeView_Click (object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocTreeNodeClickEventArgs e)
+    {
+      TreeViewLabel.Text = "Node = " + e.Node.Text;
+    }
+
+    private void RefreshPesonTreeViewButton_Click (object sender, System.EventArgs e)
+    {
+      PersonTreeView.RefreshTreeNodes();
+    }
+
+    private void PersonTreeView_SelectionChanged (object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocTreeNodeEventArgs e)
+    {
+    }
+
+    private void Node332Button_Click (object sender, System.EventArgs e)
+    {
+      WebTreeNode node3 = (WebTreeNode) WebTreeView.Nodes[3];
+      node3.EvaluateExpand();
+      WebTreeNode node33 = (WebTreeNode) node3.Children[3];
+      node33.EvaluateExpand();
+      WebTreeNode node332 = (WebTreeNode) node33.Children[2];
+      node332.EvaluateExpand();
+      node332.IsSelected = true;
+    }
   }
-
-  protected override void OnPreRender(EventArgs e)
-  {
-    BocTreeNode node = PersonTreeView.SelectedNode;
-    base.OnPreRender (e);
-  }
-
-	override protected void OnInit(EventArgs e)
-	{
-		InitializeComponent();
-		base.OnInit(e);
-
-    WebTreeNodeCollection nodes;
-
-    nodes = WebTreeView.Nodes;
-    nodes.Add (new WebTreeNode ("node0", "Node 0", "Hello", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Job.gif", "Icon", "ToolTip", Unit.Pixel (16), Unit.Pixel (16))));
-    nodes.Add (new WebTreeNode ("node1", "Node 1"));
-    nodes.Add (new WebTreeNode ("node2", "Node 2"));
-    nodes.Add (new WebTreeNode ("node3", "Node 3"));
-    nodes.Add (new WebTreeNode ("node4", "Node 4"));
-
-    nodes = ((WebTreeNode) WebTreeView.Nodes[0]).Children;
-    nodes.Add (new WebTreeNode ("node00", "Node 0-0", "Images/Rubicon.ObjectBinding.Sample.Job.gif"));
-    nodes.Add (new WebTreeNode ("node01", "Node 0-1"));
-    nodes.Add (new WebTreeNode ("node02", "Node 0-2"));
-    nodes.Add (new WebTreeNode ("node03", "Node 0-3"));
-    ((WebTreeNode) WebTreeView.Nodes[0]).IsEvaluated = true;
-
-    nodes = ((WebTreeNode) ((WebTreeNode) WebTreeView.Nodes[0]).Children[0]).Children;
-    nodes.Add (new WebTreeNode ("node000", "Node 0-0-0"));
-    nodes.Add (new WebTreeNode ("node001", "Node 0-0-1", "Hello", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Job.gif")));
-    nodes.Add (new WebTreeNode ("node002", "Node 0-0-2", "Hello", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Job.gif", "Icon", null, Unit.Pixel (16), Unit.Pixel (16))));
-    nodes.Add (new WebTreeNode ("node003", "Node 0-0-3", "Images/Rubicon.ObjectBinding.Sample.Job.gif"));
-    ((WebTreeNode) ((WebTreeNode) WebTreeView.Nodes[0]).Children[0]).IsEvaluated = true;
-
-    nodes = ((WebTreeNode) WebTreeView.Nodes[3]).Children;
-    nodes.Add (new WebTreeNode ("node30", "Node 3-0"));
-    nodes.Add (new WebTreeNode ("node31", "Node 3-1"));
-    nodes.Add (new WebTreeNode ("node32", "Node 3-2"));
-    nodes.Add (new WebTreeNode ("node33", "Node 3-3"));
-    ((WebTreeNode) WebTreeView.Nodes[3]).IsEvaluated = true;
-
-    nodes = ((WebTreeNode) ((WebTreeNode) WebTreeView.Nodes[3]).Children[3]).Children;
-    nodes.Add (new WebTreeNode ("node330", "Node 3-3-0"));
-    nodes.Add (new WebTreeNode ("node331", "Node 3-3-1"));
-    nodes.Add (new WebTreeNode ("node332", "Node 3-3-2"));
-    nodes.Add (new WebTreeNode ("node333", "Node 3-3-3"));
-    ((WebTreeNode) ((WebTreeNode) WebTreeView.Nodes[3]).Children[3]).IsEvaluated = true;
-
-    nodes = ((WebTreeNode) WebTreeView.Nodes[2]).Children;
-    nodes.Add (new WebTreeNode ("node20", "Node 2-0"));
-    nodes.Add (new WebTreeNode ("node21", "Node 2-1"));
-    nodes.Add (new WebTreeNode ("node22", "Node 2-2"));
-    nodes.Add (new WebTreeNode ("node23", "Node 2-3"));
-    ((WebTreeNode) WebTreeView.Nodes[2]).IsEvaluated = true;
-
-    nodes = ((WebTreeNode) WebTreeView.Nodes[4]).Children;
-    nodes.Add (new WebTreeNode ("node40", "Node 4-0"));
-    nodes.Add (new WebTreeNode ("node41", "Node 4-1"));
-    nodes.Add (new WebTreeNode ("node42", "Node 4-2"));
-    nodes.Add (new WebTreeNode ("node43", "Node 4-3"));
-    ((WebTreeNode) WebTreeView.Nodes[4]).IsEvaluated = true;
-
-    WebTreeView.SetEvaluateTreeNodeDelegate (new EvaluateWebTreeNode (EvaluateTreeNode));
-	}
-	
-  private void EvaluateTreeNode (WebTreeNode node)
-  {
-    node.IsEvaluated = true;
-  }
-
-	/// <summary>
-	/// Required method for Designer support - do not modify
-	/// the contents of this method with the code editor.
-	/// </summary>
-	private void InitializeComponent()
-	{    
-    this.PersonTreeView.Click += new Rubicon.ObjectBinding.Web.UI.Controls.BocTreeNodeClickEventHandler(this.PersonTreeView_Click);
-    this.PersonTreeView.SelectionChanged += new Rubicon.ObjectBinding.Web.UI.Controls.BocTreeNodeEventHandler(this.PersonTreeView_SelectionChanged);
-    this.RefreshPesonTreeViewButton.Click += new System.EventHandler(this.RefreshPesonTreeViewButton_Click);
-    this.WebTreeView.Click += new Rubicon.Web.UI.Controls.WebTreeNodeClickEventHandler(this.TreeView_Click);
-    this.Node101Button.Click += new System.EventHandler(this.Node101Button_Click);
-    this.Load += new System.EventHandler(this.Page_Load);
-
-  }
-
-  private void TreeView_Click(object sender, Rubicon.Web.UI.Controls.WebTreeNodeClickEventArgs e)
-  {
-    TreeViewLabel.Text = "Node = " + e.Node.Text;
-  }
-
-  private void PersonTreeView_Click(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocTreeNodeClickEventArgs e)
-  {
-    TreeViewLabel.Text = "Node = " + e.Node.Text;
-  }
-
-  private void RefreshPesonTreeViewButton_Click(object sender, System.EventArgs e)
-  {
-    PersonTreeView.RefreshTreeNodes();
-  }
-
-  private void PersonTreeView_SelectionChanged(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocTreeNodeEventArgs e)
-  {
-  
-  }
-
-  private void Node101Button_Click(object sender, System.EventArgs e)
-  {
-    WebTreeNode node0 = (WebTreeNode)PersonTreeView.Nodes[0];
-    node0.EvaluateExpand();
-    WebTreeNode node01 = (WebTreeNode)node0.Children[1];
-    node01.EvaluateExpand();
-    WebTreeNode node010 = (WebTreeNode)node01.Children[0];
-    node010.EvaluateExpand();
-    node010.IsSelected = true;
-  }
-}
-
 }

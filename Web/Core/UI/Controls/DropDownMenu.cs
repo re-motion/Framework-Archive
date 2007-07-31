@@ -272,6 +272,11 @@ namespace Rubicon.Web.UI.Controls
       get { return HtmlTextWriterTag.Span; }
     }
 
+    protected override void AddAttributesToRender (HtmlTextWriter writer)
+    {
+      this.Style.Add ("display", "inline-block");
+      base.AddAttributesToRender (writer);
+    }
 
     protected override void RenderContents (HtmlTextWriter writer)
     {
@@ -283,8 +288,7 @@ namespace Rubicon.Web.UI.Controls
       writer.AddStyleAttribute ("position", "relative");
       if (Enabled)
       {
-        string getSelectionCount = (StringUtility.IsNullOrEmpty (_getSelectionCount) ? "null" : _getSelectionCount);
-        string script = "DropDownMenu_OnClick (this, '" + ClientID + "', " + getSelectionCount + ");";
+        string script = GetOpenDropDownMenuEventReference (null);
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
       }
       writer.AddAttribute ("id", ClientID + "_MenuDiv");
@@ -293,6 +297,15 @@ namespace Rubicon.Web.UI.Controls
       RenderHead (writer);
 
       writer.RenderEndTag (); // End Menu-Div
+    }
+
+    public string GetOpenDropDownMenuEventReference (string eventReference)
+    {
+      if (string.IsNullOrEmpty (eventReference))
+        eventReference = "null";
+
+      string getSelectionCount = (StringUtility.IsNullOrEmpty (_getSelectionCount) ? "null" : _getSelectionCount);
+      return "DropDownMenu_OnClick (this, '" + ClientID + "', " + getSelectionCount + ", " + eventReference + ");";
     }
 
     private void RenderHead (HtmlTextWriter writer)

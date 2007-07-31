@@ -52,7 +52,7 @@ function DropDownMenu_ItemInfo (id, category, text, icon, iconDisabled, required
   this.Target = target;
 }
 
-function DropDownMenu_OnClick (context, menuID, getSelectionCount)
+function DropDownMenu_OnClick (context, menuID, getSelectionCount, evt)
 {
   var id = context.id + '_PopUp';
   if (context != _dropDownMenu_currentMenu)
@@ -63,7 +63,7 @@ function DropDownMenu_OnClick (context, menuID, getSelectionCount)
   }
   else
   {
-    _dropDownMenu_currentPopUp = DropDownMenu_OpenPopUp (id, menuID, context, getSelectionCount);
+    _dropDownMenu_currentPopUp = DropDownMenu_OpenPopUp (id, menuID, context, getSelectionCount, evt);
 	  _dropDownMenu_currentMenu = context;
   }
 }
@@ -72,7 +72,7 @@ function DropDownMenu_SetSelectionCount (count)
 {
 }
 
-function DropDownMenu_OpenPopUp (id, menuID, context, getSelectionCount)
+function DropDownMenu_OpenPopUp (id, menuID, context, getSelectionCount, evt)
 {
   var itemInfos = _dropDownMenu_menuInfos[menuID].ItemInfos;
   var selectionCount = -1;
@@ -154,22 +154,21 @@ function DropDownMenu_OpenPopUp (id, menuID, context, getSelectionCount)
 	popUpBody.onmouseup = PopupMouseUp;
 	popUpBody.onmouseover = PopupMouseOver;
 	popUpBody.onmouseleave = PopupMouseLeave;
+	
+	var left = 0;
+	if (evt != null)
+	  left = evt.clientX;
+	else
+	  left = context.offsetWidth - popUpWidth;
 
-	var parentLeft = 0;
-	var currentNode;
-	for (currentNode = context; 
-	     currentNode != null && currentNode != window.document.body; 
-	     currentNode = currentNode.offsetParent)
-  {
-		parentLeft += currentNode.offsetLeft - currentNode.scrollLeft;
-	}
-	if (currentNode != null)
-	  parentLeft += currentNode.clientLeft - currentNode.scrollLeft;
-	parentLeft += window.screenLeft;
-	var parentWidth = (context != null) ? context.offsetWidth : 0;
-	var left = parentWidth - popUpWidth;
-	var top = context.offsetHeight - 1; 
-	popUpWindow.show(left, top, popUpWidth, popUpHeight, context);
+	var top = 0;
+	if (evt != null)
+	  top = evt.clientY;
+	else
+	  top = context.offsetHeight - 1; 
+	
+	var parentElement = (evt != null) ? document.body : context;
+	popUpWindow.show(left, top, popUpWidth, popUpHeight, parentElement);
 
 	_oContents = _dropDownMenu_currentPopUp;
   _oRoot = _oContents;
