@@ -18,6 +18,7 @@ namespace Rubicon.Web.UI.Controls
 /// <summary> Transforms one or more tables into form grids. </summary>
 /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/Class/*' />
 //  TODO: HTMLEncode
+[NonVisualControl]
 [ToolboxItemFilter("System.Web.UI")]
 [Designer (typeof (FormGridManagerDesigner))]
 public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupportsPostLoadControl
