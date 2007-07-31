@@ -223,14 +223,14 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       mediumNullFunction.Add (innerFunction);
       innerFunction.InitiateCreateTransaction ();
 
-      Assert.AreSame (outerTransaction.Transaction, outerFunction.OwnTransaction);
-      Assert.AreSame (outerTransaction.Transaction, outerFunction.ExecutionTransaction);
+      Assert.AreSame (outerTransaction.Transaction, outerFunction.MyTransaction);
+      Assert.AreSame (outerTransaction.Transaction, outerFunction.Transaction);
 
-      Assert.IsNull (mediumNullFunction.OwnTransaction);
-      Assert.AreSame (outerTransaction.Transaction, mediumNullFunction.ExecutionTransaction);
+      Assert.IsNull (mediumNullFunction.MyTransaction);
+      Assert.AreSame (outerTransaction.Transaction, mediumNullFunction.Transaction);
 
-      Assert.AreSame (innerTransaction.Transaction, innerFunction.OwnTransaction);
-      Assert.AreSame (innerTransaction.Transaction, innerFunction.ExecutionTransaction);
+      Assert.AreSame (innerTransaction.Transaction, innerFunction.MyTransaction);
+      Assert.AreSame (innerTransaction.Transaction, innerFunction.Transaction);
     }
 
     [Test]
@@ -239,8 +239,8 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       WxeTransactedFunctionMock outerFunction = new WxeTransactedFunctionMock (null);
       outerFunction.InitiateCreateTransaction ();
 
-      Assert.IsNull (outerFunction.OwnTransaction);
-      Assert.IsNull (outerFunction.ExecutionTransaction);
+      Assert.IsNull (outerFunction.MyTransaction);
+      Assert.IsNull (outerFunction.Transaction);
     }
   }
 }

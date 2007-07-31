@@ -1,8 +1,10 @@
 USE master
 
 IF EXISTS (SELECT * FROM sysdatabases WHERE name = 'TestDomainLegacy')
+BEGIN
   ALTER DATABASE TestDomainLegacy SET SINGLE_USER WITH ROLLBACK IMMEDIATE
   DROP DATABASE TestDomainLegacy
+END
 GO
   
 CREATE DATABASE TestDomainLegacy

@@ -18,6 +18,23 @@ public delegate void WxeMethodWithContext (WxeContext context);
 [Serializable]
 public class WxeMethodStep: WxeStep
 {
+  private static WxeStepList GetTargetFromDelegate (Delegate method)
+  {
+    WxeStepList target = method.Target as WxeStepList;
+    if (target == null)
+      throw new ArgumentException ("The delegate's target must be a non-null WxeStepList.", "method");
+    else
+      return target;
+  }
+
+  private static MethodInfo GetMethodFromDelegate (Delegate method)
+  {
+    if (method.GetInvocationList ().Length != 1)
+      throw new ArgumentException ("The delegate must contain a single method.", "method");
+    else
+      return method.Method;
+  }
+
   /// <summary> The <see cref="WxeStepList"/> containing the <b>Method</b> executed by this <b>WxeMethodStep</b>. </summary>
   private WxeStepList _target;
   /// <summary> The name of the method executed by this <b>WxeMethodStep</b>. </summary>
@@ -57,30 +74,17 @@ public class WxeMethodStep: WxeStep
   }
 
   public WxeMethodStep (Proc method)
-      : this (GetTargetFromDelegate (ArgumentUtility.CheckNotNull ("method", method)), GetMethodFromDelegate (ArgumentUtility.CheckNotNull ("method", method)))
+      : this (
+          GetTargetFromDelegate (ArgumentUtility.CheckNotNull ("method", method)),
+          GetMethodFromDelegate (ArgumentUtility.CheckNotNull ("method", method)))
   {
   }
 
   public WxeMethodStep (Proc<WxeContext> method)
-    : this (GetTargetFromDelegate (ArgumentUtility.CheckNotNull ("method", method)), GetMethodFromDelegate (ArgumentUtility.CheckNotNull ("method", method)))
+      : this (
+          GetTargetFromDelegate (ArgumentUtility.CheckNotNull ("method", method)),
+          GetMethodFromDelegate (ArgumentUtility.CheckNotNull ("method", method)))
   {
-  }
-
-  private static WxeStepList GetTargetFromDelegate (Delegate method)
-  {
-    WxeStepList target = method.Target as WxeStepList;
-    if (target == null)
-      throw new ArgumentException ("The delegate's target must be a non-null WxeStepList.", "method");
-    else
-      return target;
-  }
-
-  private static MethodInfo GetMethodFromDelegate (Delegate method)
-  {
-    if (method.GetInvocationList().Length != 1)
-      throw new ArgumentException ("The delegate must contain a single method.", "method");
-    else
-      return method.Method;
   }
 
   //  public WxeMethodStep (WxeMethod method)

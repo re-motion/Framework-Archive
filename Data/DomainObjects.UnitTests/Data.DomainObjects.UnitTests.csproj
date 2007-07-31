@@ -825,6 +825,7 @@
     <Compile Include="Transaction\ClientTransactionScopeTest.cs" />
     <Compile Include="Transaction\CompoundClientTransactionListenerTest.cs" />
     <Compile Include="Transaction\ClientTransactionStateTransitionBaseTest.cs" />
+    <Compile Include="Transaction\SubClientTransactionExtensionTest.cs" />
     <Compile Include="Transaction\SubTransactionCommitDataTest.cs" />
     <Compile Include="Transaction\SubTransactionCommitStateTransitionTest.cs" />
     <Compile Include="Transaction\InvalidatedSubTransactionListenerTest.cs" />

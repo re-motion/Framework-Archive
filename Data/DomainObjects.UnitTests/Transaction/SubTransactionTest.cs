@@ -252,7 +252,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void ParentCanReloadRelatedObjectCollectionLoadedInSubTransactionAndGetTheSameReference ()
+    public void ParentCanReloadRelatedObjectCollectionLoadedInSubTransactionAndGetTheSameReferences ()
     {
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
       Order order;
@@ -433,7 +433,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void SubTransactionHasSameRelatedObjectCollectionAsParent ()
+    public void SubTransactionHasRelatedObjectCollectionEquivalentToParent ()
     {
       Order loadedOrder = Order.GetObject (DomainObjectIDs.Order1);
       ObjectList<OrderItem> loadedItems = loadedOrder.OrderItems;
@@ -453,7 +453,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       Order newOrder = Order.NewObject ();
       OrderItem newItem3 = OrderItem.NewObject();
-      newItem3.Product = "FooBar, the energy bar with the extra Foo";
+      newItem3.Product = "FooBar, the energy bar with extra Foo";
       newOrder.OrderItems.Add (newItem3);
 
       using (ClientTransactionMock.CreateSubTransaction().EnterScope())
@@ -475,8 +475,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
         Assert.AreEqual (1, newOrder.OrderItems.Count);
         Assert.AreSame (newItem3, newOrder.OrderItems[0]);
-        Assert.AreEqual ("FooBar, the energy bar with the extra Foo", newOrder.OrderItems[0].Product);
+        Assert.AreEqual ("FooBar, the energy bar with extra Foo", newOrder.OrderItems[0].Product);
         Assert.AreSame (newOrder, newItem3.Order);
+      }
+    }
+
+    [Test]
+    public void SubTransactionCanGetRelatedObjectCollectionEvenWhenObjectsHaveBeenDiscarded ()
+    {
+      Order loadedOrder = Order.GetObject (DomainObjectIDs.Order1);
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        OrderItem orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
+        orderItem1.Delete();
+        ClientTransactionScope.CurrentTransaction.Commit();
+        Assert.IsTrue (orderItem1.IsDiscarded);
+        
+        ObjectList<OrderItem> orderItems = loadedOrder.OrderItems;
+        Assert.AreEqual (1, orderItems.Count);
+        Assert.AreEqual (DomainObjectIDs.OrderItem2, orderItems[0].ID);
       }
     }
 

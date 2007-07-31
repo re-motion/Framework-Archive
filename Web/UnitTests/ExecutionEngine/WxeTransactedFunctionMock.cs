@@ -23,14 +23,14 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       return _storedWxeTransaction;
     }
 
-    public new ITransaction OwnTransaction
+    public new ITransaction MyTransaction
     {
-      get { return base.OwnTransaction; }
+      get { return base.MyTransaction; }
     }
 
-    public new ITransaction ExecutionTransaction
+    public new ITransaction Transaction
     {
-      get { return base.ExecutionTransaction; }
+      get { return base.Transaction; }
     }
 
     public void InitiateCreateTransaction ()

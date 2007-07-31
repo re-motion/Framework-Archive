@@ -47,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
     /// <see cref="WxeTransactedFunctionBase{TTransaction}"/>.</summary>
     public new ClientTransaction OwnTransaction
     {
-      get { return base.OwnTransaction; }
+      get { return base.MyTransaction; }
     }
 
     /// <summary> Gets the underlying <see cref="ClientTransaction"/> used when this <see cref="WxeTransactedFunctionBase{TTransaction}"/>
@@ -55,7 +55,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
     /// <see cref="ExecutionTransaction"/> of this function's parent function.</summary>
     public new ClientTransaction ExecutionTransaction
     {
-      get { return base.ExecutionTransaction; }
+      get { return base.Transaction; }
     }
 
     /// <summary>

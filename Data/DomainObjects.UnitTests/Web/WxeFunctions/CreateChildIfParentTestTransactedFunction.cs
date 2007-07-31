@@ -29,7 +29,7 @@ public class CreateChildIfParentTestTransactedFunction : WxeTransactedFunction
 
   private void Step1 ()
   {
-    ITransaction parentTransaction = (ITransaction) PrivateInvoke.GetNonPublicProperty (ParentFunction, "OwnTransaction");
+    ITransaction parentTransaction = (ITransaction) PrivateInvoke.GetNonPublicProperty (ParentFunction, "MyTransaction");
     Assert.AreNotSame (parentTransaction, ClientTransactionScope.CurrentTransaction);
     Assert.AreSame (parentTransaction, ClientTransactionScope.CurrentTransaction.ParentTransaction);
   }
