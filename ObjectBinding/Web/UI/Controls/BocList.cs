@@ -3621,6 +3621,9 @@ public class BocList:
   /// <summary> Creates the controls for the custom columns in the <paramref name="columns"/> array. </summary>
   private void CreateCustomColumnControls (BocColumnDefinition[] columns)
   {
+    _customColumns = null;
+    _customColumnsPlaceHolder.Controls.Clear ();
+    
     if (IsDesignMode)
       return;
     if (IsEmptyList)
@@ -3631,7 +3634,6 @@ public class BocList:
     CalculateCurrentPage (false);
 
     _customColumns = new Hashtable ();
-    _customColumnsPlaceHolder.Controls.Clear();
 
     int firstRow = 0;
     int totalRowCount = Value.Count;
