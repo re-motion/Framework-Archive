@@ -24,12 +24,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     {
       get
       {
-        return Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.String"]
-            .GetValue<string>();
+        return CurrentProperty.GetValue<string> (); // CurrentProperty used on purpose here - tests whether shadowed properties work correctly
       }
       set
       {
-        Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.String"].SetValue (value);
+        CurrentProperty.SetValue (value); // CurrentProperty used on purpose here - tests whether shadowed properties work correctly
       }
     }
 

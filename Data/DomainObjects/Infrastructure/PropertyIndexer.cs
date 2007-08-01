@@ -53,50 +53,144 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       }
     }
 
-		/// <summary>
-		/// Gets the number of properties defined by the domain object. This corresponds to the number of <see cref="PropertyAccessor"/> objects
-		/// indexable by this structure and enumerated by <see cref="GetEnumerator"/>.
-		/// </summary>
-		/// <value>The number of properties defined by the domain object.</value>
-  	public int Count
-  	{
-			get
-			{
-				ClassDefinition classDefinition = _domainObject.ID.ClassDefinition;
-				IRelationEndPointDefinition[] endPointDefinitions = classDefinition.GetRelationEndPointDefinitions ();
-				int count = classDefinition.GetPropertyDefinitions ().Count;
-				foreach (IRelationEndPointDefinition endPointDefinition in endPointDefinitions)
-				{
-					if (endPointDefinition.IsVirtual)
-						++count;
-				}
-				return count;
-			}
-  	}
+    /// <summary>
+    /// Selects the property of the domain object with the given short name and declaring type.
+    /// </summary>
+    /// <param name="shortPropertyName">The short name of the property to be accessed.</param>
+    /// <param name="domainObjectType">The type declaring the property.</param>
+    /// <returns>A <see cref="PropertyAccessor"/> instance encapsulating the requested property.</returns>
+    /// <exception cref="ArgumentNullException">One or more of the parameters passed to this indexer are null.</exception>
+    /// <exception cref="ArgumentException">
+    /// The <paramref name="shortPropertyName"/> parameter does not denote a valid mapping property declared on the <paramref name="domainObjectType"/>.
+    /// </exception>
+    public PropertyAccessor this[Type domainObjectType, string shortPropertyName]
+    {
+      get
+      {
+        ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);
+        ArgumentUtility.CheckNotNull ("shortPropertyName", shortPropertyName);
 
-  	public IEnumerator<PropertyAccessor> GetEnumerator ()
-  	{
-			ClassDefinition classDefinition = _domainObject.ID.ClassDefinition;
+        return this[GetIdentifierFromTypeAndShortName(domainObjectType, shortPropertyName)];
+      }
+    }
 
-  		foreach (PropertyDefinition propertyDefinition in classDefinition.GetPropertyDefinitions())
-  			yield return this[propertyDefinition.PropertyName];
+    private string GetIdentifierFromTypeAndShortName (Type domainObjectType, string shortPropertyName)
+    {
+      return domainObjectType.FullName + "." + shortPropertyName;
+    }
 
-			foreach (IRelationEndPointDefinition endPointDefinition in classDefinition.GetRelationEndPointDefinitions ())
-			{
-				if (endPointDefinition.IsVirtual)
-					yield return this[endPointDefinition.PropertyName];
-			}
-  	}
+    /// <summary>
+    /// Gets the number of properties defined by the domain object. This corresponds to the number of <see cref="PropertyAccessor"/> objects
+    /// indexable by this structure and enumerated by <see cref="GetEnumerator"/>.
+    /// </summary>
+    /// <value>The number of properties defined by the domain object.</value>
+    public int Count
+    {
+      get
+      {
+        ClassDefinition classDefinition = _domainObject.ID.ClassDefinition;
+        IRelationEndPointDefinition[] endPointDefinitions = classDefinition.GetRelationEndPointDefinitions ();
+        int count = classDefinition.GetPropertyDefinitions ().Count;
+        foreach (IRelationEndPointDefinition endPointDefinition in endPointDefinitions)
+        {
+          if (endPointDefinition.IsVirtual)
+            ++count;
+        }
+        return count;
+      }
+    }
 
-  	IEnumerator IEnumerable.GetEnumerator ()
-  	{
-			return GetEnumerator ();
-  	}
+    public IEnumerator<PropertyAccessor> GetEnumerator ()
+    {
+      ClassDefinition classDefinition = _domainObject.ID.ClassDefinition;
 
-  	public bool Contains (string propertyIdentifier)
-  	{
-			ClassDefinition classDefinition = _domainObject.ID.ClassDefinition;
-			return PropertyAccessor.IsValidProperty (classDefinition, propertyIdentifier);
-  	}
+      foreach (PropertyDefinition propertyDefinition in classDefinition.GetPropertyDefinitions())
+        yield return this[propertyDefinition.PropertyName];
+
+      foreach (IRelationEndPointDefinition endPointDefinition in classDefinition.GetRelationEndPointDefinitions ())
+      {
+        if (endPointDefinition.IsVirtual)
+          yield return this[endPointDefinition.PropertyName];
+      }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator ()
+    {
+      return GetEnumerator ();
+    }
+
+    /// <summary>
+    /// Determines whether the domain object contains a property with the specified identifier.
+    /// </summary>
+    /// <param name="propertyIdentifier">The long property identifier to check for.</param>
+    /// <returns>
+    /// True if the domain object contains a property named as specified by <paramref name="propertyIdentifier"/>; otherwise, false.
+    /// </returns>
+    public bool Contains (string propertyIdentifier)
+    {
+      ClassDefinition classDefinition = _domainObject.ID.ClassDefinition;
+      return PropertyAccessor.IsValidProperty (classDefinition, propertyIdentifier);
+    }
+
+
+    /// <summary>
+    /// Determines whether the domain object contains a property with the specified short name and declaring type.
+    /// </summary>
+    /// <param name="domainObjectType">The type declaring the property with the given <paramref name="shortPropertyName"/>.</param>
+    /// <param name="shortPropertyName">The short property name to check for.</param>
+    /// <returns>
+    /// True if the domain object contains a property named as specified by <paramref name="shortPropertyName"/> declared on
+    /// <paramref name="domainObjectType"/>; otherwise, false.
+    /// </returns>
+    public bool Contains (Type domainObjectType, string shortPropertyName)
+    {
+      return Contains (GetIdentifierFromTypeAndShortName (domainObjectType, shortPropertyName));
+    }
+
+    /// <summary>
+    /// Finds a property with the specified short name, starting its search at a given declaring type upwards the inheritance hierarchy.
+    /// </summary>
+    /// <param name="typeToStartSearch">The type to start searching from.</param>
+    /// <param name="shortPropertyName">The short name of the property to find.</param>
+    /// <returns>A <see cref="PropertyAccessor"/> encapsulating the first property with the given <paramref name="shortPropertyName"/>
+    /// found when traversing upwards through the inheritance hierarchy, starting from <paramref name="typeToStartSearch"/>.</returns>
+    /// <exception cref="ArgumentNullException">One or more of the arguments passed to this method are <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentException">No matching property could be found.</exception>
+    public PropertyAccessor Find (Type typeToStartSearch, string shortPropertyName)
+    {
+      ArgumentUtility.CheckNotNull ("typeToStartSearch", typeToStartSearch);
+      ArgumentUtility.CheckNotNull ("shortPropertyName", shortPropertyName);
+
+      Type currentType = typeToStartSearch;
+      while (currentType != null && !Contains (currentType, shortPropertyName))
+        currentType = currentType.BaseType;
+
+      if (currentType != null)
+        return this[currentType, shortPropertyName];
+      else
+        throw new ArgumentException (string.Format ("The domain object type {0} does not have or inherit a mapping property with the short name '{1}'.",
+            typeToStartSearch.FullName, shortPropertyName), "shortPropertyName");
+    }
+
+    /// <summary>
+    /// Finds a property with the specified short name, starting its search at the type of the given <see cref="DomainObject"/> argument.
+    /// </summary>
+    /// <typeparam name="TDomainObject">The type to start searching from.</param>
+    /// <param name="thisDomainObject">The domain object parameter used for inference of type <typeparamref name="TDomainObject"/>.</param>
+    /// <param name="shortPropertyName">The short name of the property to find.</param>
+    /// <returns>A <see cref="PropertyAccessor"/> encapsulating the first property with the given <paramref name="shortPropertyName"/>
+    /// found when traversing upwards through the inheritance hierarchy, starting from <typeparamref name="TDomainObject"/>.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="shortPropertyName"/>parameter is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentException">No matching property could be found.</exception>
+    /// <remarks>
+    /// This method exists as a convenience overload of <see cref="Find(Type, string)"/>. Instead of needing to specify a lengthy <c>typeof(...)</c>
+    /// expression, this method can usually infer the type to search from the <c>this</c> parameter passed as the first argument.
+    /// </remarks>
+    public PropertyAccessor Find<TDomainObject> (TDomainObject thisDomainObject, string shortPropertyName)
+        where TDomainObject : DomainObject
+    {
+      ArgumentUtility.CheckNotNull ("shortPropertyName", shortPropertyName);
+      return Find (typeof (TDomainObject), shortPropertyName);
+    }
   }
 }

@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 using Rubicon.Development.UnitTesting;
 using System.Reflection;
 
@@ -595,6 +596,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Customer customer = Customer.NewObject ();
       Assert.AreEqual (typeof (Customer), customer.InternalDataContainer.DomainObjectType);
+    }
+
+    [Test]
+    [Ignore ("TODO: Should work when shadowed properties are correctly intercepted")]
+    public void MultiplePropertiesWithSameShortName ()
+    {
+      DerivedClassWithMixedProperties derivedClass =
+          (DerivedClassWithMixedProperties) DomainObject.NewObject (typeof (DerivedClassWithMixedProperties));
+      ClassWithMixedProperties baseClass = (ClassWithMixedProperties) derivedClass;
+
+      derivedClass.String = "Derived";
+      baseClass.String = "Base";
+      
+      Assert.AreEqual ("Derived", derivedClass.String);
+      Assert.AreEqual ("Base", derivedClass.String);
+
+      baseClass.String = "NewBase";
+      derivedClass.String = "NewDerived";
+      
+      Assert.AreEqual ("NewDerived", derivedClass.String);
+      Assert.AreEqual ("NewBase", derivedClass.String);
     }
   }
 }
