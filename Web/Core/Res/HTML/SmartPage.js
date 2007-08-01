@@ -337,6 +337,25 @@ function SmartPage_Context (
     _hasUnloaded = true;
     _isSubmitting = false;
     _isAborting = false;
+    
+    _theForm = null;
+    _activeElement = null;
+    _smartScrollingField = null;
+    _smartFocusField = null;
+ 
+    _loadHandler = null;
+    _beforeUnloadHandler = null;
+    _unloadHandler = null;
+    _scrollHandler = null;
+    _resizeHandler = null;
+    _formSubmitHandler = null;
+    _formClickHandler = null;
+    _doPostBackHandler = null;
+    _fireDefaultButtonHandler = null;
+    _valueChangedHandler = null;
+    _elementFocusHandler = null; 
+    _elementBlurHandler = null;
+    
   };
 
   // Override for the ASP.NET __doPostBack method.
