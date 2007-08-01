@@ -10,6 +10,7 @@ using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UnitTests.AspNetFramework;
 using Rubicon.Web.UnitTests.ExecutionEngine;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Web
 {
@@ -330,6 +331,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
           throw;
         }
       }
+    }
+
+    [Test]
+    public void Serialization ()
+    {
+      SerializationTestTransactedFunction function = new SerializationTestTransactedFunction ();
+      function.Execute (Context);
+      Assert.IsTrue (function.FirstStepExecuted);
+      Assert.IsTrue (function.SecondStepExecuted);
+
+      SerializationTestTransactedFunction deserializedFunction = (SerializationTestTransactedFunction) Serializer.Deserialize (function.SerializedSelf);
+      Assert.IsTrue (deserializedFunction.FirstStepExecuted);
+      Assert.IsFalse (deserializedFunction.SecondStepExecuted);
+
+      deserializedFunction.Execute (Context);
+
+      Assert.IsTrue (deserializedFunction.FirstStepExecuted);
+      Assert.IsTrue (deserializedFunction.SecondStepExecuted);
     }
   }
 }

@@ -13,7 +13,8 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
   [Serializable]
   public class WxeTransaction : WxeTransactionBase<ClientTransaction>
   {
-    private Stack<ClientTransactionScope> _scopeStack = new Stack<ClientTransactionScope>();
+    [NonSerialized]
+    private Stack<ClientTransactionScope> _scopeStack;
 
     /// <summary>Creates a new instance with an empty step list and autoCommit enabled that uses the existing transaction, if one exists.</summary>
     public WxeTransaction ()
@@ -63,13 +64,23 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
       }
     }
 
+    private Stack<ClientTransactionScope> ScopeStack
+    {
+      get
+      {
+        if (_scopeStack == null)
+          _scopeStack = new Stack<ClientTransactionScope>();
+        return _scopeStack;
+      }
+    }
+
     /// <summary>
     /// Sets a new current transaction.
     /// </summary>
     /// <param name="transaction">The new transaction.</param>
     protected override void SetCurrentTransaction (ClientTransaction transaction)
     {
-      _scopeStack.Push (ClientTransactionScope.ActiveScope);
+      ScopeStack.Push (ClientTransactionScope.ActiveScope);
       ClientTransactionScope newScope = new ClientTransactionScope (transaction); // set new scope and store old one
       Assertion.IsTrue (ClientTransactionScope.ActiveScope == newScope);
     }
@@ -91,14 +102,14 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
     /// <param name="previousTransaction">The transaction previously replaced by <see cref="SetCurrentTransaction"/>.</param>
     protected override void SetPreviousCurrentTransaction (ClientTransaction previousTransaction)
     {
-      Assertion.IsTrue (_scopeStack.Count != 0, "RestorePreviousTransaction is never called more often than SetCurrentTransaction.");
+      Assertion.IsTrue (ScopeStack.Count != 0, "RestorePreviousTransaction is never called more often than SetCurrentTransaction.");
 
       if (ClientTransactionScope.ActiveScope == null)
         throw new InconsistentClientTransactionScopeException ("Somebody else has removed ClientTransactionScope.ActiveScope.");
       else
         ClientTransactionScope.ActiveScope.Leave();
 
-      if (ClientTransactionScope.ActiveScope != _scopeStack.Pop())
+      if (ClientTransactionScope.ActiveScope != ScopeStack.Pop())
         throw new InconsistentClientTransactionScopeException ("ClientTransactionScope.ActiveScope does not contain the expected transaction scope.");
 
       Assertion.IsTrue ((previousTransaction == null && !ClientTransactionScope.HasCurrentTransaction)
