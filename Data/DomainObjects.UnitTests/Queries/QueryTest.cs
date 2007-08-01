@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Queries
     {
       QueryParameterCollection parameters = new QueryParameterCollection ();
 
-      QueryDefinition definition = QueryFactory.CreateOrderQueryDefinition ();
+      QueryDefinition definition = QueryFactory.CreateOrderQueryWithCustomCollectionType ();
       Query query = new Query (definition, parameters);
 
       Assert.AreSame (definition, query.Definition);

@@ -6,14 +6,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 {
   public static class QueryFactory
   {
-    public static QueryDefinition CreateOrderQueryDefinition()
+    public static QueryDefinition CreateOrderQueryWithCustomCollectionType()
     {
       return new QueryDefinition (
-          "OrderQuery",
+          "OrderQueryWithCustomCollectionType",
           "TestDomain",
           "select [Order].* from [Order] inner join [Company] where [Company].[ID] = @customerID order by [OrderNo] asc;",
           QueryType.Collection,
           typeof (OrderCollection));
+    }
+
+    public static QueryDefinition CreateOrderQueryDefinitionWithObjectListOfOrder ()
+    {
+      return new QueryDefinition (
+          "OrderQueryWithObjectListOfOrder",
+          "TestDomain",
+          "select [Order].* from [Order] inner join [Company] where [Company].[ID] = @customerID order by [OrderNo] asc;",
+          QueryType.Collection,
+          typeof (ObjectList<Order>));
     }
 
     public static QueryDefinition CreateCustomerTypeQueryDefinition()

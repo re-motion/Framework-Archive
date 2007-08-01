@@ -136,7 +136,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
           new object[]
               {
                   new DomainObjectCollection(),
-                  new Query (QueryFactory.CreateOrderQueryDefinition())
+                  new Query (QueryFactory.CreateOrderQueryWithCustomCollectionType())
               });
 
       CheckNotification (

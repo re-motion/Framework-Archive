@@ -58,8 +58,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
       {
         QueryConfiguration.SetCurrent (new QueryConfiguration (@"QueriesForLoaderTest.xml"));
 
-        Assert.AreEqual (3, QueryConfiguration.Current.QueryDefinitions.Count);
-        Assert.IsNotNull (QueryConfiguration.Current.QueryDefinitions["OrderQuery"]);
+        Assert.AreEqual (4, QueryConfiguration.Current.QueryDefinitions.Count);
+        Assert.IsNotNull (QueryConfiguration.Current.QueryDefinitions["OrderQueryWithCustomCollectionType"]);
       }
       finally
       {
@@ -91,7 +91,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
     {
       QueryDefinitionCollection queries = new QueryDefinitionCollection ();
 
-      queries.Add (QueryFactory.CreateOrderQueryDefinition ());
+      queries.Add (QueryFactory.CreateOrderQueryWithCustomCollectionType ());
+      queries.Add (QueryFactory.CreateOrderQueryDefinitionWithObjectListOfOrder ());
       queries.Add (QueryFactory.CreateCustomerTypeQueryDefinition ());
       queries.Add (QueryFactory.CreateOrderSumQueryDefinition ());
 
