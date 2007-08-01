@@ -383,5 +383,35 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsTrue (dataContainer.IsDiscarded);
       Assert.AreSame (order, dataContainer.DomainObject);
     }
+
+    [Test]
+    public void MarkAsChanged ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      DataContainer dataContainer = order.InternalDataContainer;
+      Assert.AreEqual(StateType.Unchanged, dataContainer.State);
+      dataContainer.MarkAsChanged ();
+      Assert.AreEqual (StateType.Changed, dataContainer.State);
+
+      ClientTransactionMock.Rollback ();
+      Assert.AreEqual (StateType.Unchanged, dataContainer.State);
+
+      SetDatabaseModifyable ();
+
+      dataContainer.MarkAsChanged ();
+      Assert.AreEqual (StateType.Changed, dataContainer.State);
+      
+      ClientTransactionMock.Commit ();
+      Assert.AreEqual (StateType.Unchanged, dataContainer.State);
+
+      DataContainer clone = dataContainer.Clone ();
+      Assert.AreEqual (StateType.Unchanged, clone.State);
+
+      dataContainer.MarkAsChanged();
+      Assert.AreEqual (StateType.Changed, dataContainer.State);
+
+      clone = dataContainer.Clone ();
+      Assert.AreEqual (StateType.Changed, clone.State);
+    }
   }
 }

@@ -271,6 +271,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    public void MarkAsChanged ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Assert.AreEqual (StateType.Unchanged, order.State);
+      order.MarkAsChanged ();
+      Assert.AreEqual (StateType.Changed, order.State);
+
+      ClientTransactionMock.Rollback ();
+      Assert.AreEqual (StateType.Unchanged, order.State);
+
+      SetDatabaseModifyable ();
+
+      order.MarkAsChanged ();
+      Assert.AreEqual (StateType.Changed, order.State);
+
+      ClientTransactionMock.Commit ();
+      Assert.AreEqual (StateType.Unchanged, order.State);
+    }
+
+    [Test]
     public void PrivateConstructor ()
     {
       OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);

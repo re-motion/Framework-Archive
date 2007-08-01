@@ -476,6 +476,19 @@ public class DomainObject
   }
 
   /// <summary>
+  /// Marks the <see cref="DomainObject"/> as changed. If the object's previous <see cref="State"/> was <see cref="StateType.Unchanged"/>, it
+  /// will be <see cref="StateType.Changed"/> after this method has been called.
+  /// </summary>
+  public void MarkAsChanged ()
+  {
+    CheckIfObjectIsDiscarded ();
+
+    DataContainer dataContainer = GetDataContainer ();
+    dataContainer.MarkAsChanged ();
+  }
+
+
+  /// <summary>
   /// Gets a value indicating the discarded status of the object.
   /// </summary>
   /// <remarks>

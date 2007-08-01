@@ -88,7 +88,8 @@ public class DataContainer
   private ClassDefinition _classDefinition;
   private RelationEndPointID[] _relationEndPointIDs = null;
   private bool _isDiscarded = false;
-  
+  private bool _hasBeenMarkedChanged = false;
+
   // construction and disposing
 
   private DataContainer (ObjectID id) : this (id, null)
@@ -273,11 +274,16 @@ public class DataContainer
       if (_isDiscarded)
         return StateType.Discarded;
       else  if (_state == DataContainerStateType.Existing)
-        return GetStateForPropertyValues ();
+        return GetStateForExistingDataContainer ();
       else if (_state == DataContainerStateType.New) 
         return StateType.New;
       else return StateType.Deleted;
     }
+  }
+
+  public void MarkAsChanged ()
+  {
+    _hasBeenMarkedChanged = true;
   }
 
   /// <summary>
@@ -365,6 +371,8 @@ public class DataContainer
 
   internal void Commit ()
   {
+    _hasBeenMarkedChanged = false;
+
     if (_state == DataContainerStateType.Deleted)
     {
       Discard ();
@@ -380,6 +388,8 @@ public class DataContainer
 
   internal void Rollback ()
   {
+    _hasBeenMarkedChanged = false;
+
     if (_state == DataContainerStateType.New)
     {
       Discard ();
@@ -445,15 +455,20 @@ public class DataContainer
       _clientTransaction.TransactionEventSink.PropertyValueRead (this, propertyValue, value, valueAccess);
   }
 
-  private StateType GetStateForPropertyValues ()
+  private StateType GetStateForExistingDataContainer ()
   {
-    foreach (PropertyValue propertyValue in _propertyValues)
+    if (_hasBeenMarkedChanged)
+      return StateType.Changed;
+    else
     {
-      if (propertyValue.HasChanged)
-        return StateType.Changed;
-    }
+      foreach (PropertyValue propertyValue in _propertyValues)
+      {
+        if (propertyValue.HasChanged)
+          return StateType.Changed;
+      }
 
-    return StateType.Unchanged;
+      return StateType.Unchanged;
+    }
   }
 
   private void Discard ()
@@ -497,6 +512,7 @@ public class DataContainer
       _state = sourceContainer._state;
     _timestamp = sourceContainer._timestamp;
     _isDiscarded = sourceContainer._isDiscarded;
+    _hasBeenMarkedChanged = sourceContainer._hasBeenMarkedChanged;
     
     Assertion.IsTrue (_domainObject == null || sourceContainer._domainObject == null || _domainObject == sourceContainer._domainObject,
         "State should only be copied between DataContainers referring to the same DomainObjects");
