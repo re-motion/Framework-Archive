@@ -1,8 +1,8 @@
 <%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Page language="c#" Codebehind="MultiplePostbackCatcherForm.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.PageTransition.MultiplePostbackCatcherForm" smartNavigation="False"%>
+<%@ Page language="c#" Codebehind="MultiplePostbackCatcherForm.aspx.cs" AutoEventWireup="True" Inherits="Rubicon.PageTransition.MultiplePostbackCatcherForm" smartNavigation="False"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
-  <head id="Head1" runat="server">
+  <head id="Head" runat="server">
     <title>ClientForm</title>
 <script language=javascript>
   function ChangeAutoPostbackListSelection()
@@ -16,6 +16,8 @@
 </head>
 <body>
 <form id=Form method=post runat="server">
+Test-Result: <asp:Label ID="TestResultLabel" runat="server" Text="###" EnableViewState="false" />
+<asp:Table ID="TestMatrix" runat="server"></asp:Table>
 <table style="WIDTH: 100%; HEIGHT: 100%">
   <tr>
     <td style="VERTICAL-ALIGN: top">
