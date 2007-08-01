@@ -287,7 +287,7 @@ public class IconInfoConverter: ExpandableObjectConverter
             serializedValue.Append (icon.Width.ToString()).Append ("\0");
             serializedValue.Append (icon.Height.ToString()).Append ("\0");
             serializedValue.Append (icon.AlternateText).Append ("\0");
-            serializedValue.Append (icon.ToolTip).Append ("\0");
+            serializedValue.Append (icon.ToolTip);
             return serializedValue.ToString();
           }
           else
