@@ -228,7 +228,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClientTransactionMock.Commit ();
 
       Assert.IsTrue (customerEventReceiver.HasCommittingEventBeenCalled);
-      Assert.IsFalse (customerEventReceiver.HasCommittedEventBeenCalled);
+      Assert.IsTrue (customerEventReceiver.HasCommittedEventBeenCalled);
 
       Assert.AreEqual (1, clientTransactionEventReceiver.CommittingDomainObjects.Count);
       Assert.AreEqual (1, clientTransactionEventReceiver.CommittedDomainObjects.Count);
@@ -236,8 +236,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       DomainObjectCollection committingDomainObjects = (DomainObjectCollection) clientTransactionEventReceiver.CommittingDomainObjects[0];
       DomainObjectCollection committedDomainObjects = (DomainObjectCollection) clientTransactionEventReceiver.CommittedDomainObjects[0];
 
-      Assert.AreEqual (0, committingDomainObjects.Count);
-      Assert.AreEqual (0, committedDomainObjects.Count);
+      Assert.AreEqual (1, committingDomainObjects.Count);
+      Assert.AreEqual (1, committedDomainObjects.Count);
     }
 
     private void Customer_CommittingForModifyOtherObjectInDomainObjectCommitting (object sender, EventArgs e)
@@ -269,7 +269,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
     private void Customer_CommittingForCommittedEventForObjectChangedBackToOriginal (object sender, EventArgs e)
     {
-			_customer.Name = _customer.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].GetOriginalValue<string>();
+      _customer.Name = _customer.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].GetOriginalValue<string>();
     }
   }
 }

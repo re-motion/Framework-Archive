@@ -287,9 +287,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (StateType.Changed, _newCustomer.State);
 
       _order.Customer = _oldCustomer;
-      Assert.AreEqual (StateType.Unchanged, _order.State);
-      Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
-      Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
+      Assert.AreEqual (StateType.Changed, _order.State);
+      Assert.AreEqual (StateType.Changed, _oldCustomer.State);
+      Assert.AreEqual (StateType.Changed, _newCustomer.State);
     }
 
     [Test]

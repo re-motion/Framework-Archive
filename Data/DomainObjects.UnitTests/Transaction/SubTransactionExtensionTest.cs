@@ -615,9 +615,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void PropertySetToSameValue ()
     {
       int orderNumber = _order1.OrderNumber;
+      DataContainer order1DC = _order1.GetInternalDataContainerForTransaction (_subTransaction);
 
       _mockRepository.BackToRecord (_extension);
-      // Note: No method call on the extension is expected.
+
+      _extension.PropertyValueChanging (_subTransaction, order1DC,
+            order1DC.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"],
+            orderNumber,
+            orderNumber);
+      _extension.PropertyValueChanged (_subTransaction, order1DC,
+          order1DC.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"],
+          orderNumber,
+          orderNumber);
+
       _mockRepository.ReplayAll ();
 
       _order1.OrderNumber = orderNumber;

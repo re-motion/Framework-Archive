@@ -68,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsTrue (_endPoint.HasChanged);
 
       _endPoint.OppositeObjectID = _oppositeObjectID;
-      Assert.IsFalse (_endPoint.HasChanged);
+      Assert.IsTrue (_endPoint.HasChanged);
     }
 
     [Test]
@@ -93,6 +93,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       _endPoint.OppositeObjectID = null;
 
+      Assert.IsTrue (_endPoint.HasChanged);
+    }
+
+    [Test]
+    public void HasChangedWithSameValueSet ()
+    {
+      Assert.IsFalse (_endPoint.HasChanged);
+      _endPoint.OppositeObjectID = _oppositeObjectID;
+      Assert.IsTrue (_endPoint.HasChanged);
+    }
+
+    [Test]
+    public void HasChangedWithPerformRelationChange ()
+    {
+      Assert.IsFalse (_endPoint.HasChanged);
+      _endPoint.PerformRelationChange (new NullObjectEndPoint(_endPoint.OppositeEndPointDefinition));
       Assert.IsTrue (_endPoint.HasChanged);
     }
 

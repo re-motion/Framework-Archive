@@ -27,6 +27,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   private DomainObjectCollection _originalOppositeDomainObjects;
   private DomainObjectCollection _oppositeDomainObjects;
+  private bool _hasChanged;
 
   [NonSerialized]
   private CollectionEndPointChangeAgent _changeAgent;
@@ -104,10 +105,12 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     _originalOppositeDomainObjects = originalOppositeDomainObjects;
     _oppositeDomainObjects = oppositeDomainObjects;
     _oppositeDomainObjects.ChangeDelegate = this;
+    _hasChanged = false;
   }
 
   protected CollectionEndPoint (IRelationEndPointDefinition definition) : base (definition)
   {
+    _hasChanged = false;
   }
 
   // methods and properties
@@ -130,6 +133,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     _oppositeDomainObjects = sourceCollectionEndPoint._oppositeDomainObjects.Clone();
     _oppositeDomainObjects.ChangeDelegate = this;
     _originalOppositeDomainObjects = sourceCollectionEndPoint._originalOppositeDomainObjects.Clone();
+    _hasChanged = sourceCollectionEndPoint._hasChanged;
   }
 
   internal override void RegisterWithMap (RelationEndPointMap map)
@@ -140,18 +144,24 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   public override void Commit ()
   {
     if (HasChanged)
+    {
       _originalOppositeDomainObjects.Commit (_oppositeDomainObjects);
+      _hasChanged = false;
+    }
   }
 
   public override void Rollback ()
   {
     if (HasChanged)
+    {
       _oppositeDomainObjects.Rollback (_originalOppositeDomainObjects);
+      _hasChanged = false;
+    }
   }
 
   public override bool HasChanged
   {
-    get { return !DomainObjectCollection.Compare (_oppositeDomainObjects, _originalOppositeDomainObjects, true); } 
+    get { return _hasChanged; } 
   }
 
   public override void CheckMandatory ()
@@ -214,11 +224,13 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new InvalidOperationException ("BeginRelationChange must be called before PerformRelationChange.");
 
     _changeAgent.PerformRelationChange ();
+    _hasChanged = true;
   }
 
   public override void PerformDelete ()
   {
     _oppositeDomainObjects.PerformDelete ();
+    _hasChanged = true;
   }
 
   public override void EndRelationChange ()
@@ -262,6 +274,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new DataManagementException ("Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.");
 
     _changeDelegate.PerformInsert (this, domainObject, index);
+    _hasChanged = true;
   }
 
   void ICollectionChangeDelegate.PerformReplace (DomainObjectCollection collection, DomainObject domainObject, int index)
@@ -270,6 +283,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new DataManagementException ("Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.");
 
     _changeDelegate.PerformReplace (this, domainObject, index);
+    _hasChanged = true;
   }
 
   void ICollectionChangeDelegate.PerformRemove (DomainObjectCollection collection, DomainObject domainObject)
@@ -278,6 +292,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new DataManagementException ("Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.");
 
     _changeDelegate.PerformRemove (this, domainObject);
+    _hasChanged = true;
   }
 
   #endregion

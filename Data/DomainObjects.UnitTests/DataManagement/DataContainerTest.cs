@@ -196,7 +196,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (42, container.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
 
       container["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 1;
-      Assert.AreEqual (StateType.Unchanged, container.State);
+      Assert.AreEqual (StateType.Changed, container.State);
       Assert.AreEqual (1, container.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
     }
 

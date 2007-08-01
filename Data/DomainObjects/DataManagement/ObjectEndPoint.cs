@@ -16,6 +16,7 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
   private ObjectID _originalOppositeObjectID;
   private ObjectID _oppositeObjectID;
   private IEndPoint _newEndPoint;
+  private bool _hasChanged;
 
   // construction and disposing
 
@@ -86,10 +87,12 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
   {
     _oppositeObjectID = oppositeObjectID;
     _originalOppositeObjectID = originalOppositeObjectID;
+    _hasChanged = false;
   }
 
   protected ObjectEndPoint (IRelationEndPointDefinition definition) : base (definition)
   {
+    _hasChanged = false;
   }
 
   // methods and properties
@@ -109,6 +112,7 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
 
     _oppositeObjectID = sourceObjectEndPoint._oppositeObjectID;
     _originalOppositeObjectID = sourceObjectEndPoint._originalOppositeObjectID;
+    _hasChanged = sourceObjectEndPoint._hasChanged;
   }
 
   internal override void RegisterWithMap (RelationEndPointMap map)
@@ -119,26 +123,26 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
   public override void Commit ()
   {
     if (HasChanged)
+    {
       _originalOppositeObjectID = _oppositeObjectID;
+      _hasChanged = false;
+    }
   }
 
   public override void Rollback ()
   {
     if (HasChanged)
+    {
       _oppositeObjectID = _originalOppositeObjectID;
+      _hasChanged = false;
+    }
   }
 
   public override bool HasChanged 
   {
     get
     {
-      if (_oppositeObjectID == null && _originalOppositeObjectID == null) 
-        return false;
-
-      if (_oppositeObjectID == null) 
-        return true;
-
-      return !_oppositeObjectID.Equals (_originalOppositeObjectID);
+      return _hasChanged;
     }
   }
 
@@ -174,7 +178,7 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
   {
     ArgumentUtility.CheckNotNull ("endPoint", endPoint);
 
-    _oppositeObjectID = endPoint.ObjectID;
+    OppositeObjectID = endPoint.ObjectID;
 
     if (!IsVirtual)
     {
@@ -206,7 +210,11 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
   public ObjectID OppositeObjectID
   {
     get { return _oppositeObjectID; }
-    set { _oppositeObjectID = value; }
+    set
+    {
+      _oppositeObjectID = value;
+      _hasChanged = true;
+    }
   }
 }
 }

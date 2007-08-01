@@ -96,6 +96,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    public void HasChangedTrueEvenIfSameElements ()
+    {
+      Assert.IsFalse (_customerEndPoint.HasChanged);
+      _customerEndPoint.OppositeDomainObjects.Add (Order.NewObject ());
+      Assert.IsTrue (_customerEndPoint.HasChanged);
+      _customerEndPoint.OppositeDomainObjects.RemoveAt (_customerEndPoint.OppositeDomainObjects.Count - 1);
+      Assert.IsTrue (_customerEndPoint.HasChanged);
+    }
+
+    [Test]
     public void OriginalOppositeDomainObjectsType ()
     {
       Assert.AreEqual (typeof (OrderCollection), _customerEndPoint.OriginalOppositeDomainObjects.GetType ());

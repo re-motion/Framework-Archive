@@ -39,11 +39,12 @@ public class PropertyValue
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event ValueChangeEventHandler Changed;
 
-  private PropertyDefinition _definition;
+  private readonly PropertyDefinition _definition;
+  private readonly ArrayList _accessObservers;
   private object _value;
   private object _originalValue;
-  private bool _isDiscarded = false;
-  private ArrayList _accessObservers;
+  private bool _isDiscarded;
+  private bool _hasChanged;
 
   // construction and disposing
 
@@ -79,6 +80,8 @@ public class PropertyValue
     _definition = definition;
     _value = value;
     _originalValue = originalValue;
+    _hasChanged = false;
+    _isDiscarded = false;
     _accessObservers = new ArrayList ();
   }
 
@@ -147,16 +150,14 @@ public class PropertyValue
       CheckDiscarded ();
       CheckForRelationProperty ();
 
-      if (AreValuesDifferent (_value, value))
-      {
-        CheckValue (value, _definition);
-        BeginValueSet (value);
+      CheckValue (value, _definition);
+      BeginValueSet (value);
 
-        object oldValue = _value;
-        _value = value;
+      object oldValue = _value;
+      _value = value;
+      _hasChanged = true;
 
-        EndValueSet (oldValue);
-      }
+      EndValueSet (oldValue);
     }
   }
 
@@ -214,7 +215,7 @@ public class PropertyValue
     get 
     {
       CheckDiscarded ();
-      return AreValuesDifferent (_value, _originalValue); 
+      return _hasChanged;
     }
   }
 
@@ -251,7 +252,7 @@ public class PropertyValue
   public override int GetHashCode()
   {
     CheckDiscarded ();
-    return _definition.PropertyName.GetHashCode () ^ _value.GetHashCode () ^ _originalValue.GetHashCode ();
+    return EqualityUtility.GetRotatedHashCode (_definition.PropertyName, _value, _originalValue, HasChanged);
   }
 
   /// <summary>
@@ -302,22 +303,26 @@ public class PropertyValue
   internal void Commit ()
   {
     if (HasChanged)
+    {
       _originalValue = _value;
+      _hasChanged = false;
+    }
   }
 
   internal void Rollback ()
   {
     if (HasChanged)
+    {
       _value = _originalValue;
+      _hasChanged = false;
+    }
   }
 
   internal void SetRelationValue (ObjectID id)
   {
-    if (AreValuesDifferent (_value, id))
-    {
-      CheckValue (id, _definition);
-      _value = id;
-    }
+    CheckValue (id, _definition);
+    _value = id;
+    _hasChanged = true;
   }
 
   internal void Discard ()
@@ -371,15 +376,6 @@ public class PropertyValue
     }
   }
 
-  private bool AreValuesDifferent (object value1, object value2)
-  {
-    if (value1 == null && value2 != null) return true;
-    if (value1 != null && value2 == null) return true;
-    if (value1 == null && value2 == null) return false;
-    
-    return !value1.Equals (value2);
-  }
-
   private void BeginValueGet (ValueAccess valueAccess)
   {
     foreach (PropertyValueCollection accessObserver in _accessObservers)
@@ -427,11 +423,6 @@ public class PropertyValue
       throw new InvalidOperationException (string.Format ("The relation property '{0}' cannot be set directly.", _definition.PropertyName));
   }
 
-  private ArgumentException CreateArgumentException (string message, params object[] args)
-  {
-    return new ArgumentException (string.Format (message, args));
-  }
-
   private void CheckDiscarded ()
   {
     if (_isDiscarded)
@@ -445,6 +436,7 @@ public class PropertyValue
     _value = source._value;
     _originalValue = source._originalValue;
     _isDiscarded = source._isDiscarded;
+    _hasChanged = source._hasChanged;
   }
 }
 }

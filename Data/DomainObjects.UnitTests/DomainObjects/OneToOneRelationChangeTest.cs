@@ -395,7 +395,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (StateType.Changed, _order.State);
 
       _order.OrderTicket = _oldOrderTicket;
-      Assert.AreEqual (StateType.Unchanged, _order.State);
+      Assert.AreEqual (StateType.Changed, _order.State);
     }
 
     [Test]
