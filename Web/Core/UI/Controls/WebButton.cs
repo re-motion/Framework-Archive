@@ -23,13 +23,10 @@ namespace Rubicon.Web.UI.Controls
     private static readonly object s_clickEvent = new object ();
 
     private IconInfo _icon;
-#if NET11
-  private bool _useSubmitBehavior = true;
-#else
     PostBackOptions _options;
-#endif
 
-    private bool _useLegacyButton = false;
+    private bool _useLegacyButton;
+    private bool _isDefaultButton;
 
     private ISecurableObject _securableObject;
     private MissingPermissionBehavior _missingPermissionBehavior = MissingPermissionBehavior.Invisible;
@@ -69,6 +66,9 @@ namespace Rubicon.Web.UI.Controls
 
       IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
       LoadResources (resourceManager);
+
+      if (_isDefaultButton && string.IsNullOrEmpty (Page.Form.DefaultButton))
+        Page.Form.DefaultButton = UniqueID;
     }
 
     protected override void AddAttributesToRender (HtmlTextWriter writer)
@@ -95,11 +95,7 @@ namespace Rubicon.Web.UI.Controls
         Text = text;
       }
 
-#if NET11
-    AddAttributesToRender_net11 (writer);
-#else
       AddAttributesToRender_net20 (writer);
-#endif
 
       Text = tempText;
 
@@ -107,50 +103,6 @@ namespace Rubicon.Web.UI.Controls
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBase);
     }
 
-#if NET11
-  /// <summary> Method to be executed when compiled for .net 1.1. </summary>
-  private void AddAttributesToRender_net11 (HtmlTextWriter writer)
-  {
-    if (Page != null)
-      Page.VerifyRenderingInServerForm(this);
-
-    if (! IsUseSubmitBehaviorEnabled) // System.Web.UI.WebControls.Button already adds a type=submit
-      writer.AddAttribute(HtmlTextWriterAttribute.Type, "button");
-
-    if (Page != null)
-    {
-      string onClick = string.Empty;
-      if (CausesValidation && Page.Validators.Count > 0)
-      {
-        const string clientValidation = "if (typeof(Page_ClientValidate) == 'function') Page_ClientValidate(); ";
-        onClick += clientValidation;
-        if (Attributes.Count > 0)
-        {
-          string baseOnClick = Attributes["onclick"];
-          if (baseOnClick != null)
-          {
-            onClick += baseOnClick;
-            Attributes.Remove("onclick");
-          }
-        }
-      }
-      onClick += "this.disabled = (typeof (Page_IsValid) == 'undefined' || Page_IsValid == null || Page_IsValid == true);";
-      string postBackEventReference = Page.GetPostBackEventReference (this);
-      if (CausesValidation)
-        onClick += " if (typeof (Page_IsValid) == 'undefined' || Page_IsValid == null || Page_IsValid == true) " + postBackEventReference + "; ";
-      else
-        onClick += postBackEventReference + "; ";
-      onClick += "return false;";
-      writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
-    }
-    bool causesValidationTemp = CausesValidation;
-    CausesValidation = false;
-    base.AddAttributesToRender (writer);
-    CausesValidation = causesValidationTemp;
-  }
-#endif
-
-#if ! NET11
     /// <summary> Method to be executed when compiled for .net 2.0. </summary>
     private void AddAttributesToRender_net20 (HtmlTextWriter writer)
     {
@@ -221,7 +173,6 @@ namespace Rubicon.Web.UI.Controls
       else
         return _options;
     }
-#endif
 
     protected override HtmlTextWriterTag TagKey
     {
@@ -242,11 +193,6 @@ namespace Rubicon.Web.UI.Controls
       {
         if (!_useLegacyButton)
           WcagHelper.Instance.HandleError (1, this, "UseLegacyButton");
-#if NET11
-      if (! _useSubmitBehavior)
-        WcagHelper.Instance.HandleError (1, this, "UseSubmitBehavior");
-#endif
-
       }
     }
 
@@ -300,23 +246,6 @@ namespace Rubicon.Web.UI.Controls
       set { _icon = value; }
     }
 
-#if NET11
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category("Behavior")]
-  [DefaultValue(true)]
-  [Description ("Indicates whether the button renders as a submit button.")]
-  public virtual bool UseSubmitBehavior
-  {
-    get { return _useSubmitBehavior; }
-    set { _useSubmitBehavior = value; }
-  } 
-
-  protected bool IsUseSubmitBehaviorEnabled
-  {
-    get { return WcagHelper.Instance.IsWaiConformanceLevelARequired() || _useSubmitBehavior;}
-  }
-#endif
-
     /// <summary> Loads the resources into the control's properties. </summary>
     protected virtual void LoadResources (IResourceManager resourceManager)
     {
@@ -362,6 +291,14 @@ namespace Rubicon.Web.UI.Controls
     protected bool IsLegacyButtonEnabled
     {
       get { return WcagHelper.Instance.IsWaiConformanceLevelARequired () || _useLegacyButton; }
+    }
+
+    [Category ("Behavior")]
+    [DefaultValue (false)]
+    public bool IsDefaultButton
+    {
+      get { return _isDefaultButton; }
+      set { _isDefaultButton = value; }
     }
 
     private string EnsureEndWithSemiColon (string value)

@@ -84,6 +84,8 @@ function SmartPage_Context (
   var _cacheStateHasSubmitted = 'hasSubmitted';
   var _cacheStateHasLoaded = 'hasLoaded';
 
+  var _defaultButtonFired = false;
+  
   this.Init = function()
   {
     _theForm = window.document.forms[theFormID];
@@ -122,11 +124,10 @@ function SmartPage_Context (
     _aspnetFormOnSubmit = _theForm.onsubmit;
 	  _theForm.onsubmit = function() { return SmartPage_Context.Instance.OnFormSubmit(); };
     _theForm.onclick = function (evt) { return SmartPage_Context.Instance.OnFormClick (evt); };
-    if (__doPostBack != null)
+    if (!TypeUtility.IsUndefined (window.__doPostBack))
     {
-	    _aspnetDoPostBack = __doPostBack;
-	    __doPostBack = 
-	        function (eventTarget, eventArg) { SmartPage_Context.Instance.DoPostBack (eventTarget, eventArg); };
+	    _aspnetDoPostBack = window.__doPostBack;
+	    window.__doPostBack = function (eventTarget, eventArg) { SmartPage_Context.Instance.DoPostBack (eventTarget, eventArg); };
 	  }
   };
 
@@ -139,6 +140,9 @@ function SmartPage_Context (
       SetDataChangedEventHandlers (_theForm);
     if (! _isMsIE)
   	  SetFocusEventHandlers (window.document.body);
+	  
+    if (!TypeUtility.IsUndefined (window.WebForm_FireDefaultButton))
+      window.WebForm_FireDefaultButton = function (evt, target) { return SmartPage_Context.Instance.FireDefaultButton (evt, target); };
   };
 
   // Attached the OnValueChanged event handler to all form data elements listed in _trackedIDs.
@@ -202,10 +206,12 @@ function SmartPage_Context (
   //  Gets the element that caused the current event.
   this.GetActiveElement = function()
   {
-    if (TypeUtility.IsUndefined (window.document.activeElement))
+    if (_activeElement != null)
       return _activeElement;
-    else
+    else if (!TypeUtility.IsUndefined (window.document.activeElement))
       return window.document.activeElement;
+    else
+      return null;
   };
 
   //  Sets the element that caused the current event.
@@ -464,6 +470,29 @@ function SmartPage_Context (
     }
   };
 
+  this.FireDefaultButton = function (evt, defaultButtonID)
+  {
+    var sourceElement = GetEventSource (evt);
+    var e = TypeUtility.IsUndefined (evt) ? window.event : evt;
+    
+    if (!_defaultButtonFired && e.keyCode == 13 && !(sourceElement != null && sourceElement.tagName.toLowerCase() == "textarea"))
+    {
+      var defaultButton = document.getElementById (defaultButtonID);
+
+      if (defaultButton != null && !TypeUtility.IsUndefined (defaultButton.click))
+      {
+        _defaultButtonFired = true;
+        defaultButton.focus ();
+        defaultButton.click ();
+        e.cancelBubble = true;
+        if (!TypeUtility.IsUndefined (e.stopPropagation)) 
+          e.stopPropagation ();
+        return false;
+      }
+    }
+    return true;
+  }
+  
   // Event handler for Window.OnScroll.
   this.OnScroll = function()
   {

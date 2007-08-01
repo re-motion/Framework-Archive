@@ -297,13 +297,13 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   
     StringBuilder initScript = new StringBuilder (500);
 
-    initScript.Append ("WxePage_Context.Instance = new WxePage_Context (\r\n");
-    initScript.Append ("    ").Append (isCacheDetectionEnabled).Append (",\r\n");
-    initScript.Append ("    ").Append (refreshIntervall).Append (",\r\n");
-    initScript.Append ("    ").Append (refreshPath).Append (",\r\n");
-    initScript.Append ("    ").Append (abortPath).Append (",\r\n");
-    initScript.Append ("    ").Append (statusIsAbortingMessage).Append (",\r\n");
-    initScript.Append ("    ").Append (statusIsCachedMessage).Append (");");
+    initScript.AppendLine ("WxePage_Context.Instance = new WxePage_Context (");
+    initScript.AppendLine ("    ").Append (isCacheDetectionEnabled).AppendLine (",");
+    initScript.AppendLine ("    ").Append (refreshIntervall).AppendLine (",");
+    initScript.AppendLine ("    ").Append (refreshPath).AppendLine (",");
+    initScript.AppendLine ("    ").Append (abortPath).AppendLine (",");
+    initScript.AppendLine ("    ").Append (statusIsAbortingMessage).AppendLine (",");
+    initScript.AppendLine ("    ").Append (statusIsCachedMessage).AppendLine (");");
 
     ScriptUtility.RegisterClientScriptBlock ((Page)_page, "wxeInitialize", initScript.ToString());
   }
