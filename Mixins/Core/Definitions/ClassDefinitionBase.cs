@@ -106,14 +106,18 @@ namespace Rubicon.Mixins.Definitions
       }
     }
 
-    public abstract void Accept (IDefinitionVisitor visitor);
-
-    protected void AcceptForChildren (IDefinitionVisitor visitor)
+    public void Accept (IDefinitionVisitor visitor)
     {
+      ArgumentUtility.CheckNotNull ("visitor", visitor);
+
+      ChildSpecificAccept (visitor);
+
       Methods.Accept (visitor);
       Properties.Accept (visitor);
       Events.Accept (visitor);
       CustomAttributes.Accept (visitor);
     }
+
+    protected abstract void ChildSpecificAccept (IDefinitionVisitor visitor);
   }
 }

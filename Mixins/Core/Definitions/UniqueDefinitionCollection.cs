@@ -8,7 +8,7 @@ namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   [DebuggerDisplay ("Count = {Count}")]
-  public class UniqueDefinitionCollection<TKey, TValue> : DefinitionCollectionBase<TKey, TValue>, IDefinitionItemCollection<TKey, TValue>
+  public class UniqueDefinitionCollection<TKey, TValue> : DefinitionCollectionBase<TKey, TValue>, IDefinitionCollection<TKey, TValue>
       where TValue : IVisitableDefinition
   {
     private Dictionary<TKey, TValue> _items = new Dictionary<TKey, TValue> ();

@@ -10,10 +10,10 @@ namespace Rubicon.Mixins.Definitions.Building
 {
   public class MemberDefinitionBuilder
   {
-    private ClassDefinitionBase _classDefinition;
-    private Predicate<MethodInfo> _methodFilter;
-    private Set<MethodInfo> _specialMethods = new Set<MethodInfo> ();
-    private BindingFlags _bindingFlags;
+    private readonly ClassDefinitionBase _classDefinition;
+    private readonly Predicate<MethodInfo> _methodFilter;
+    private readonly Set<MethodInfo> _specialMethods = new Set<MethodInfo> ();
+    private readonly BindingFlags _bindingFlags;
 
     public MemberDefinitionBuilder (ClassDefinitionBase classDefinition, Predicate<MethodInfo> methodFilter, BindingFlags bindingFlags)
     {
@@ -39,7 +39,7 @@ namespace Rubicon.Mixins.Definitions.Building
     private IEnumerable<T> CleanupMembers<T> (IEnumerable<T> members, IEqualityComparer<T> comparer) where T : MemberInfo
     {
       MultiSet<T> memberSet = new MultiSet<T>(comparer);
-      memberSet.AddRange (members);
+      memberSet.AddRange (members); // collect duplicates
       Set<T> result = new Set<T>();
       
       foreach (T member in members)

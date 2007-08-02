@@ -86,7 +86,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
           if (method.Overrides[0].DeclaringClass != Configuration.BaseClass)
             throw new NotSupportedException ("The code generator only supports mixin methods to be overridden by the mixin's base class.");
 
-          CustomMethodEmitter methodOverride = _emitter.CreateMethodOverrideOrInterfaceImplementation (method.MethodInfo);
+          CustomMethodEmitter methodOverride = _emitter.CreateMethodOverride (method.MethodInfo);
           LocalReference castTargetLocal = methodOverride.InnerEmitter.CodeBuilder.DeclareLocal (Configuration.BaseClass.Type);
           methodOverride.InnerEmitter.CodeBuilder.AddStatement (
               new AssignStatement (

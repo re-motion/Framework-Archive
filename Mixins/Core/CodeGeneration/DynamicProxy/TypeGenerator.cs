@@ -70,9 +70,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       ImplementIntroducedInterfaces ();
       ImplementRequiredDuckMethods ();
       ImplementOverrides();
+      ImplementAttributes (configuration, _emitter);
 
       AddMixedTypeAttribute ();
-      ReplicateClassAttributes ();
       AddDebuggerAttributes();
     }
 
@@ -161,21 +161,21 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       Assertion.DebugAssert (Array.IndexOf (TypeBuilder.GetInterfaces(), typeof (IMixinTarget)) != 0);
 
       CustomPropertyEmitter configurationProperty =
-          Emitter.CreatePropertyOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetProperty ("Configuration"));
+          Emitter.CreateInterfacePropertyImplementation (typeof (IMixinTarget).GetProperty ("Configuration"));
       configurationProperty.GetMethod =
-          Emitter.CreateMethodOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetMethod ("get_Configuration")).InnerEmitter;
+          Emitter.CreateInterfaceMethodImplementation (typeof (IMixinTarget).GetMethod ("get_Configuration")).InnerEmitter;
       configurationProperty.ImplementPropertyWithField (_configurationField);
 
       CustomPropertyEmitter mixinsProperty =
-          Emitter.CreatePropertyOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetProperty ("Mixins"));
+          Emitter.CreateInterfacePropertyImplementation (typeof (IMixinTarget).GetProperty ("Mixins"));
       mixinsProperty.GetMethod =
-          Emitter.CreateMethodOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetMethod ("get_Mixins")).InnerEmitter;
+          Emitter.CreateInterfaceMethodImplementation (typeof (IMixinTarget).GetMethod ("get_Mixins")).InnerEmitter;
       mixinsProperty.ImplementPropertyWithField (_extensionsField);
 
       CustomPropertyEmitter firstProperty =
-          Emitter.CreatePropertyOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetProperty ("FirstBaseCallProxy"));
+          Emitter.CreateInterfacePropertyImplementation (typeof (IMixinTarget).GetProperty ("FirstBaseCallProxy"));
       firstProperty.GetMethod =
-          Emitter.CreateMethodOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetMethod ("get_FirstBaseCallProxy")).InnerEmitter;
+          Emitter.CreateInterfaceMethodImplementation (typeof (IMixinTarget).GetMethod ("get_FirstBaseCallProxy")).InnerEmitter;
       firstProperty.ImplementPropertyWithField (_firstField);
     }
 
@@ -203,7 +203,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         MethodDefinition implementingMember,
         MethodInfo interfaceMember)
     {
-      CustomMethodEmitter customMethodEmitter = Emitter.CreateMethodOverrideOrInterfaceImplementation (interfaceMember);
+      CustomMethodEmitter customMethodEmitter = Emitter.CreateInterfaceMethodImplementation (interfaceMember);
 
       LocalReference localImplementer = Emitter.AddMakeReferenceOfExpressionStatements (
           customMethodEmitter,
@@ -211,13 +211,13 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
           implementerExpression);
       customMethodEmitter.ImplementMethodByDelegation (localImplementer, interfaceMember);
 
-      ReplicateAttributes (implementingMember.CustomAttributes, customMethodEmitter);
+      ReplicateAttributes (implementingMember, customMethodEmitter);
       return customMethodEmitter;
     }
 
     private CustomPropertyEmitter ImplementIntroducedProperty (Expression implementerExpression, PropertyIntroductionDefinition property)
     {
-      CustomPropertyEmitter propertyEmitter = Emitter.CreatePropertyOverrideOrInterfaceImplementation (property.InterfaceMember);
+      CustomPropertyEmitter propertyEmitter = Emitter.CreateInterfacePropertyImplementation (property.InterfaceMember);
 
       if (property.IntroducesGetMethod)
         propertyEmitter.GetMethod = ImplementIntroducedMethod (
@@ -231,7 +231,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
             property.ImplementingMember.SetMethod,
             property.InterfaceMember.GetSetMethod()).InnerEmitter;
 
-      ReplicateAttributes (property.ImplementingMember.CustomAttributes, propertyEmitter);
+      ReplicateAttributes (property.ImplementingMember, propertyEmitter);
       return propertyEmitter;
     }
 
@@ -240,7 +240,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       Assertion.IsNotNull (eventIntro.ImplementingMember.AddMethod);
       Assertion.IsNotNull (eventIntro.ImplementingMember.RemoveMethod);
 
-      CustomEventEmitter eventEmitter = Emitter.CreateEventOverrideOrInterfaceImplementation (eventIntro.InterfaceMember);
+      CustomEventEmitter eventEmitter = Emitter.CreateInterfaceEventImplementation (eventIntro.InterfaceMember);
       eventEmitter.AddMethod = ImplementIntroducedMethod (
           implementerExpression,
           eventIntro.ImplementingMember.AddMethod,
@@ -250,7 +250,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
           eventIntro.ImplementingMember.RemoveMethod,
           eventIntro.InterfaceMember.GetRemoveMethod()).InnerEmitter;
 
-      ReplicateAttributes (eventIntro.ImplementingMember.CustomAttributes, eventEmitter);
+      ReplicateAttributes (eventIntro.ImplementingMember, eventEmitter);
       return eventEmitter;
     }
 
@@ -272,38 +272,83 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       Assertion.IsTrue (requiredMethod.ImplementingMethod.DeclaringClass == Configuration,
         "Duck typing is only supported with members from the base type");
 
-      CustomMethodEmitter methodImplementation = _emitter.CreateMethodOverrideOrInterfaceImplementation (requiredMethod.InterfaceMethod);
+      CustomMethodEmitter methodImplementation = _emitter.CreateInterfaceMethodImplementation (requiredMethod.InterfaceMethod);
       methodImplementation.ImplementMethodByDelegation (SelfReference.Self, requiredMethod.ImplementingMethod.MethodInfo);
     }
 
     private void ImplementOverrides ()
     {
-      foreach (MethodDefinition method in _configuration.GetAllMethods())
+      foreach (MemberDefinition member in _configuration.GetAllMembers())
       {
-        if (method.Overrides.Count > 0)
-          ImplementOverride (method);
+        if (member.Overrides.Count > 0)
+        {
+          IAttributableEmitter emitter = ImplementOverride (member);
+          ImplementAttributes (member, emitter);
+        }
       }
     }
 
-    private CustomMethodEmitter ImplementOverride (MethodDefinition method)
+    private IAttributableEmitter ImplementOverride (MemberDefinition member)
+    {
+      MethodDefinition method = member as MethodDefinition;
+      if (method != null)
+        return ImplementMethodOverride (method);
+
+      PropertyDefinition property = member as PropertyDefinition;
+      if (property != null)
+        return ImplementPropertyOverride (property);
+
+      EventDefinition eventDefinition = member as EventDefinition;
+      Assertion.IsNotNull (eventDefinition, "Only methods, properties, and events can be overridden.");
+      return ImplementEventOverride (eventDefinition);
+    }
+
+    private CustomMethodEmitter ImplementMethodOverride (MethodDefinition method)
     {
       MethodInfo proxyMethod = _baseCallGenerator.GetProxyMethodForOverriddenMethod (method);
-      CustomMethodEmitter methodOverride = Emitter.CreateMethodOverrideOrInterfaceImplementation (method.MethodInfo);
+      CustomMethodEmitter methodOverride = Emitter.CreateMethodOverride (method.MethodInfo);
       methodOverride.ImplementMethodByDelegation (_firstField, proxyMethod);
       return methodOverride;
     }
 
-    private void ReplicateAttributes (IEnumerable<AttributeDefinition> attributes, IAttributableEmitter target)
+    private CustomPropertyEmitter ImplementPropertyOverride (PropertyDefinition property)
     {
-      foreach (AttributeDefinition attribute in attributes)
-        AttributeReplicator.ReplicateAttribute (target, attribute.Data);
+      CustomPropertyEmitter propertyOverride = Emitter.CreatePropertyOverride (property.PropertyInfo);
+      if (property.GetMethod != null && property.GetMethod.Overrides.Count > 0)
+        propertyOverride.GetMethod = ImplementMethodOverride (property.GetMethod).InnerEmitter;
+      if (property.SetMethod != null && property.SetMethod.Overrides.Count > 0)
+        propertyOverride.SetMethod = ImplementMethodOverride (property.SetMethod).InnerEmitter;
+      return propertyOverride;
     }
 
-    private void ReplicateClassAttributes ()
+    private CustomEventEmitter ImplementEventOverride (EventDefinition eventDefinition)
     {
-      ReplicateAttributes (_configuration.CustomAttributes, Emitter);
-      foreach (MixinDefinition mixin in _configuration.Mixins)
-        ReplicateAttributes (mixin.CustomAttributes, Emitter);
+      CustomEventEmitter eventOverride = Emitter.CreateEventOverride (eventDefinition.EventInfo);
+      if (eventDefinition.AddMethod.Overrides.Count > 0)
+        eventOverride.AddMethod = ImplementMethodOverride (eventDefinition.AddMethod).InnerEmitter;
+      if (eventDefinition.RemoveMethod.Overrides.Count > 0)
+        eventOverride.RemoveMethod = ImplementMethodOverride (eventDefinition.RemoveMethod).InnerEmitter;
+      return eventOverride;
+    }
+
+    private void ImplementAttributes (IAttributeIntroductionTargetDefinition targetConfiguration, IAttributableEmitter targetEmitter)
+    {
+      // Replicate base attributes which are not inherited
+      foreach (AttributeDefinition attribute in targetConfiguration.CustomAttributes)
+      {
+        if (!AttributeUtility.IsAttributeInherited (attribute.AttributeType))
+          AttributeReplicator.ReplicateAttribute (targetEmitter, attribute.Data);
+      }
+
+      // Replicate introduced attributes
+      foreach (AttributeIntroductionDefinition attribute in targetConfiguration.IntroducedAttributes)
+        AttributeReplicator.ReplicateAttribute (targetEmitter, attribute.Attribute.Data);
+    }
+
+    private void ReplicateAttributes (IAttributableDefinition source, IAttributableEmitter targetEmitter)
+    {
+      foreach (AttributeDefinition attribute in source.CustomAttributes)
+        AttributeReplicator.ReplicateAttribute (targetEmitter, attribute.Data);
     }
 
     private void AddDebuggerAttributes ()

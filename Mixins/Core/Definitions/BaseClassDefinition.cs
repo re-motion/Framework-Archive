@@ -10,7 +10,7 @@ namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   [DebuggerDisplay ("{Type}")]
-  public class BaseClassDefinition : ClassDefinitionBase, IVisitableDefinition
+  public class BaseClassDefinition : ClassDefinitionBase, IAttributeIntroductionTargetDefinition
   {
     public readonly UniqueDefinitionCollection<Type, MixinDefinition> Mixins =
         new UniqueDefinitionCollection<Type, MixinDefinition> (delegate (MixinDefinition m) { return m.Type; });
@@ -20,9 +20,12 @@ namespace Rubicon.Mixins.Definitions
         new UniqueDefinitionCollection<Type, RequiredBaseCallTypeDefinition> (delegate (RequiredBaseCallTypeDefinition t) { return t.Type; });
     public readonly UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> IntroducedInterfaces =
         new UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
+    
+    private readonly MultiDefinitionCollection<Type, AttributeIntroductionDefinition> _introducedAttributes =
+        new MultiDefinitionCollection<Type, AttributeIntroductionDefinition> (delegate (AttributeIntroductionDefinition a) { return a.AttributeType; });
 
-    private MixinTypeInstantiator _mixinTypeInstantiator;
-    private ClassContext _configurationContext;
+    private readonly MixinTypeInstantiator _mixinTypeInstantiator;
+    private readonly ClassContext _configurationContext;
 
     public BaseClassDefinition (ClassContext configurationContext)
         : base (configurationContext.Type)
@@ -36,6 +39,11 @@ namespace Rubicon.Mixins.Definitions
     public ClassContext ConfigurationContext
     {
       get { return _configurationContext; }
+    }
+
+    public MultiDefinitionCollection<Type, AttributeIntroductionDefinition> IntroducedAttributes
+    {
+      get { return _introducedAttributes; }
     }
 
     internal MixinTypeInstantiator MixinTypeInstantiator
@@ -53,17 +61,16 @@ namespace Rubicon.Mixins.Definitions
       get { return null; }
     }
 
-    public override void Accept (IDefinitionVisitor visitor)
+    protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
       ArgumentUtility.CheckNotNull ("visitor", visitor);
 
       visitor.Visit (this);
       
-      base.AcceptForChildren (visitor);
-      
       Mixins.Accept (visitor);
       RequiredFaceTypes.Accept (visitor);
       RequiredBaseCallTypes.Accept (visitor);
+      IntroducedAttributes.Accept (visitor);
     }
 
     public bool HasMixinWithConfiguredType(Type configuredType)

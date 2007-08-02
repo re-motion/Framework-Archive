@@ -11,13 +11,21 @@ namespace Rubicon.Mixins.Definitions.Building
   {
     private static PropertySignatureEqualityComparer s_propertyComparer = new PropertySignatureEqualityComparer ();
     private static EventSignatureEqualityComparer s_eventComparer = new EventSignatureEqualityComparer ();
-    private static MethodSignatureEqualityComparer s_methodComparer = new MethodSignatureEqualityComparer ();
 
     private readonly MixinDefinition _mixin;
 
     public InterfaceIntroductionBuilder (MixinDefinition mixin)
     {
       _mixin = mixin;
+    }
+
+    public void Apply ()
+    {
+      foreach (Type implementedInterface in _mixin.ImplementedInterfaces)
+      {
+        if (!implementedInterface.Equals (typeof (System.Runtime.Serialization.ISerializable)))
+          Apply (implementedInterface);
+      }
     }
 
     public void Apply (Type implementedInterface)

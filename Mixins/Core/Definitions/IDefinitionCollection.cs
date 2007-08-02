@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Rubicon.Mixins.Definitions
 {
-  public interface IDefinitionItemCollection<TKey, TValue> : IEnumerable<TValue>
+  public interface IDefinitionCollection<TKey, TValue> : IEnumerable<TValue>
   {
     TValue[] ToArray ();
     int Count { get; }

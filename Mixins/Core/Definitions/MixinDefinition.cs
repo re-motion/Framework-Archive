@@ -17,7 +17,7 @@ namespace Rubicon.Mixins.Definitions
     public readonly UniqueDefinitionCollection<Type, BaseDependencyDefinition> BaseDependencies =
         new UniqueDefinitionCollection<Type, BaseDependencyDefinition> (delegate (BaseDependencyDefinition d) { return d.RequiredType.Type; });
 
-    private BaseClassDefinition _baseClass;
+    private readonly BaseClassDefinition _baseClass;
     private int _mixinIndex;
 
 
@@ -63,13 +63,11 @@ namespace Rubicon.Mixins.Definitions
       internal set { _mixinIndex = value; }
     }
 
-    public override void Accept (IDefinitionVisitor visitor)
+    protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
       ArgumentUtility.CheckNotNull ("visitor", visitor);
 
       visitor.Visit (this);
-
-      base.AcceptForChildren (visitor);
 
       InterfaceIntroductions.Accept (visitor);
       ThisDependencies.Accept (visitor);

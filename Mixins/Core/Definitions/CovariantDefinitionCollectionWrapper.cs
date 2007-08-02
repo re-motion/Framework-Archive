@@ -8,13 +8,13 @@ namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   [DebuggerDisplay ("Count = {Count}")]
-  public class CovariantDefinitionItemCollectionWrapper<TKey, TValue, TValueBase> : IDefinitionItemCollection<TKey, TValueBase>
+  public class CovariantDefinitionCollectionWrapper<TKey, TValue, TValueBase> : IDefinitionCollection<TKey, TValueBase>
       where TValue : class, TValueBase
       where TValueBase : IVisitableDefinition
   {
     private UniqueDefinitionCollection<TKey, TValue> _items;
 
-    public CovariantDefinitionItemCollectionWrapper(UniqueDefinitionCollection<TKey, TValue> items)
+    public CovariantDefinitionCollectionWrapper(UniqueDefinitionCollection<TKey, TValue> items)
     {
       _items = items;
     }

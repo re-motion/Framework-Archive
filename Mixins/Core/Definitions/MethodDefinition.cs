@@ -46,9 +46,9 @@ namespace Rubicon.Mixins.Definitions
       set { BaseAsMember = value; }
     }
 
-    protected override IDefinitionItemCollection<Type, MemberDefinition> GetInternalOverridesWrapper()
+    protected override IDefinitionCollection<Type, MemberDefinition> GetInternalOverridesWrapper()
     {
-      return new CovariantDefinitionItemCollectionWrapper<Type, MethodDefinition, MemberDefinition>(Overrides);
+      return new CovariantDefinitionCollectionWrapper<Type, MethodDefinition, MemberDefinition>(Overrides);
     }
 
     protected override bool IsSignatureCompatibleWith (MemberDefinition overrider)
@@ -86,11 +86,10 @@ namespace Rubicon.Mixins.Definitions
       Overrides.Add (method);
     }
 
-    public override void Accept (IDefinitionVisitor visitor)
+    protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
       ArgumentUtility.CheckNotNull ("visitor", visitor);
       visitor.Visit (this);
-      base.AcceptForChildren (visitor);
     }
   }
 }

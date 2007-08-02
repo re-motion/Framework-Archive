@@ -8,15 +8,17 @@ namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   [DebuggerDisplay ("{MemberInfo}, DeclaringClass = {DeclaringClass.Type}")]
-  public abstract class MemberDefinition : IVisitableDefinition, IAttributableDefinition
+  public abstract class MemberDefinition : IAttributeIntroductionTargetDefinition
   {
-    private MemberInfo _memberInfo;
-    private ClassDefinitionBase _declaringClass;
+    private readonly MemberInfo _memberInfo;
+    private readonly ClassDefinitionBase _declaringClass;
 
-    private MultiDefinitionCollection<Type, AttributeDefinition> _customAttributes =
+    private readonly MultiDefinitionCollection<Type, AttributeDefinition> _customAttributes =
         new MultiDefinitionCollection<Type, AttributeDefinition> (delegate (AttributeDefinition a) { return a.AttributeType; });
+    private readonly MultiDefinitionCollection<Type, AttributeIntroductionDefinition> _introducedAttributes =
+    new MultiDefinitionCollection<Type, AttributeIntroductionDefinition> (delegate (AttributeIntroductionDefinition a) { return a.AttributeType; });
 
-    private IDefinitionItemCollection<Type, MemberDefinition> _internalOverridesWrapper = null;
+    private IDefinitionCollection<Type, MemberDefinition> _internalOverridesWrapper = null;
 
     public MemberDefinition (MemberInfo memberInfo, ClassDefinitionBase declaringClass)
     {
@@ -79,7 +81,7 @@ namespace Rubicon.Mixins.Definitions
       get { return _customAttributes; }
     }
 
-    public IDefinitionItemCollection<Type, MemberDefinition> Overrides
+    public IDefinitionCollection<Type, MemberDefinition> Overrides
     {
       get
       {
@@ -91,7 +93,12 @@ namespace Rubicon.Mixins.Definitions
       }
     }
 
-    protected abstract IDefinitionItemCollection<Type, MemberDefinition> GetInternalOverridesWrapper();
+    public MultiDefinitionCollection<Type, AttributeIntroductionDefinition> IntroducedAttributes
+    {
+      get { return _introducedAttributes; }
+    }
+
+    protected abstract IDefinitionCollection<Type, MemberDefinition> GetInternalOverridesWrapper();
 
     public virtual bool CanBeOverriddenBy (MemberDefinition overrider)
     {
@@ -103,11 +110,15 @@ namespace Rubicon.Mixins.Definitions
 
     protected abstract bool IsSignatureCompatibleWith (MemberDefinition overrider);
 
-    public abstract void Accept (IDefinitionVisitor visitor);
-
-    protected void AcceptForChildren (IDefinitionVisitor visitor)
+    public void Accept (IDefinitionVisitor visitor)
     {
+      ArgumentUtility.CheckNotNull ("visitor", visitor);
+      ChildSpecificAccept (visitor);
+
       _customAttributes.Accept (visitor);
+      _introducedAttributes.Accept (visitor);
     }
+
+    protected abstract void ChildSpecificAccept (IDefinitionVisitor visitor);
   }
 }

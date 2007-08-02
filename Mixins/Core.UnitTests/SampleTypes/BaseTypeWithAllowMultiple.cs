@@ -1,4 +1,4 @@
-namespace Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes
+namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
   [Multi]
   public class BaseTypeWithAllowMultiple

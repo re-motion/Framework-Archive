@@ -168,6 +168,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         AttributeDefinition a8 = im3.ImplementingMember.CustomAttributes.GetFirstItem (typeof (BT1M1Attribute));
         Assert.IsTrue (visitedDefinitions.ContainsKey (a8));
 
+        AttributeIntroductionDefinition ai1 = bt1.IntroducedAttributes.GetFirstItem (typeof (BT1M1Attribute));
+        Assert.IsTrue (visitedDefinitions.ContainsKey (ai1));
+        AttributeIntroductionDefinition ai2 = m1.IntroducedAttributes.GetFirstItem (typeof (BT1M1Attribute));
+        Assert.IsTrue (visitedDefinitions.ContainsKey (ai2));
+
         RequiredBaseCallTypeDefinition bc1 = bt3.RequiredBaseCallTypes[typeof (IBaseType34)];
         Assert.IsTrue (visitedDefinitions.ContainsKey (bc1));
         RequiredMethodDefinition bcm1 = bc1.Methods[typeof (IBaseType34).GetMethod ("IfcMethod")];
@@ -462,22 +467,39 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void FailsTwiceIfDuplicateAttributeAddedByMixin ()
+    public void SucceedsIfBaseClassWinsWhenDefiningAttributes ()
     {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinAddingBT1Attribute));
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1),
+          typeof (MixinAddingBT1Attribute));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultAttributeRules.AllowMultipleRequired", log));
-      Assert.AreEqual (2, log.GetNumberOfFailures());
+      Assert.AreEqual (0, log.GetNumberOfFailures ());
+      Assert.AreEqual (0, log.GetNumberOfWarnings ());
+      Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
+    }
+
+    [Test]
+    public void FailsTwiceIfDuplicateAttributeAddedByMixin ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType2), typeof (MixinAddingBT1Attribute),
+           typeof (MixinAddingBT1Attribute2));
+      DefaultValidationLog log = Validator.Validate (definition);
+
+      Assert.IsTrue (HasFailure (
+          "Rubicon.Mixins.Validation.Rules.DefaultAttributeIntroductionRules.AllowMultipleRequiredIfAttributeIntroducedMultipleTimes", log));
+      Assert.AreEqual (2, log.GetNumberOfFailures ());
     }
 
     [Test]
     public void FailsTwiceIfDuplicateAttributeAddedByMixinToMember ()
     {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinAddingBT1AttributeToMember));
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassWithVirtualMethod),
+          typeof (MixinAddingBT1AttributeToMember), typeof (MixinAddingBT1AttributeToMember2));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultAttributeRules.AllowMultipleRequired", log));
+      Assert.IsTrue (
+          HasFailure (
+              "Rubicon.Mixins.Validation.Rules.DefaultAttributeIntroductionRules.AllowMultipleRequiredIfAttributeIntroducedMultipleTimes", log));
       Assert.AreEqual (2, log.GetNumberOfFailures());
     }
 

@@ -1,6 +1,6 @@
 using Rubicon.Mixins.UnitTests.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes
+namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
   public class MixinAddingBT1AttributeToMember
   {
@@ -10,5 +10,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes
     {
       return "";
     }
+  }
+
+  public class MixinAddingBT1AttributeToMember2 : MixinAddingBT1AttributeToMember
+  {
   }
 }

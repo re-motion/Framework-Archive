@@ -279,7 +279,8 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (MixinWithPropsEventAtts)).With ();
 
-      Assert.IsTrue (bt1.GetType ().IsDefined (typeof (BT1Attribute), false));
+      Assert.IsFalse (bt1.GetType ().IsDefined (typeof (BT1Attribute), false));
+      Assert.IsTrue (bt1.GetType ().IsDefined (typeof (BT1Attribute), true), "Attribute is inherited");
       Assert.IsTrue (bt1.GetType ().IsDefined (typeof (ReplicatableAttribute), false));
 
       ReplicatableAttribute[] atts = (ReplicatableAttribute[]) bt1.GetType().GetCustomAttributes (typeof (ReplicatableAttribute), false);
@@ -318,6 +319,10 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (BT1Mixin1)).With();
       
       Assert.AreEqual ("BT1Mixin1.VirtualMethod", bt1.VirtualMethod ());
+      Assert.IsNotNull (bt1.GetType().GetMethod ("VirtualMethod",BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+          "overridden member is public and has the same name");
+      Assert.AreEqual (typeof (BaseType1), bt1.GetType ()
+          .GetMethod ("VirtualMethod", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).GetBaseDefinition().DeclaringType);
     }
 
     [Test]
@@ -331,6 +336,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       bt1.VirtualProperty = "FooBar";
       Assert.AreEqual ("BaseType1.BackingField", bt1.VirtualProperty);
       Assert.AreEqual ("FooBar", Mixin.Get<BT1Mixin1> (bt1).BackingField);
+
+      Assert.IsNotNull (bt1.GetType ().GetProperty ("VirtualProperty", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+          "overridden member is public and has the same name");
 
       bt1 = CreateMixedObject<BaseType1> (typeof (BT1Mixin2)).With ();
 
@@ -353,6 +361,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.IsFalse (Mixin.Get<BT1Mixin1> (bt1).VirtualEventRemoveCalled);
       bt1.VirtualEvent -= eventHandler;
       Assert.IsTrue (Mixin.Get<BT1Mixin1> (bt1).VirtualEventRemoveCalled);
+
+      Assert.IsNotNull (bt1.GetType ().GetEvent ("VirtualEvent", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+          "overridden member is public and has the same name");
     }
 
 
@@ -659,6 +670,46 @@ namespace Rubicon.Mixins.UnitTests.Mixins
           + "MixinOverridingInheritedMethod.ProtectedInternalInheritedMethod-BaseClassWithInheritedMethod.ProtectedInternalInheritedMethod-"
           + "MixinOverridingInheritedMethod.PublicInheritedMethod-BaseClassWithInheritedMethod.PublicInheritedMethod",
           cwim.InvokeInheritedMethods ());
+    }
+
+    [Test]
+    public void IntroducedAttributes ()
+    {
+      Type concreteType = TypeFactory.GetConcreteType (typeof (BaseType1));
+      Assert.AreEqual (1, concreteType.GetCustomAttributes (typeof (BT1Attribute), true).Length);
+      Assert.AreEqual (1, concreteType.GetCustomAttributes (typeof (BT1M1Attribute), true).Length);
+
+      MethodInfo bt1VirtualMethod = concreteType.GetMethod ("VirtualMethod", Type.EmptyTypes);
+      Assert.AreEqual (1, bt1VirtualMethod.GetCustomAttributes (typeof (BT1M1Attribute), true).Length);
+
+      PropertyInfo bt1VirtualProperty = concreteType.GetProperty ("VirtualProperty",
+          BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+      Assert.AreEqual (1, bt1VirtualProperty.GetCustomAttributes (typeof (BT1M1Attribute), true).Length);
+
+      EventInfo bt1VirtualEvent = concreteType.GetEvent ("VirtualEvent");
+      Assert.AreEqual (1, bt1VirtualEvent.GetCustomAttributes (typeof (BT1M1Attribute), true).Length);
+    }
+
+    [Test]
+    public void IntroducedMultiAttributes ()
+    {
+      Type concreteType = CreateMixedType (
+          typeof (BaseTypeWithAllowMultiple),
+          typeof (MixinAddingAllowMultipleToClassAndMember),
+          typeof (MixinAddingAllowMultipleToClassAndMember2));
+
+      Assert.AreEqual (3, concreteType.GetCustomAttributes (typeof (MultiAttribute), true).Length);
+      Assert.AreEqual (3, concreteType.GetMethod ("Foo").GetCustomAttributes (typeof (MultiAttribute), true).Length);
+    }
+
+    [Test]
+    public void IntroducedAttributesBaseClassWins ()
+    {
+      Type concreteType = CreateMixedType (typeof (BaseType1), typeof (MixinAddingBT1Attribute));
+      Assert.AreEqual (1, concreteType.GetCustomAttributes (typeof (BT1Attribute), true).Length);
+
+      concreteType = CreateMixedType (typeof (BaseType1), typeof (MixinAddingBT1AttributeToMember));
+      Assert.AreEqual (1, concreteType.GetMethod ("VirtualMethod", Type.EmptyTypes).GetCustomAttributes (typeof (BT1Attribute), true).Length);
     }
   }
 }

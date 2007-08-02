@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.Mixins;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Utilities;
 using Rubicon.Collections;
+using Rubicon.Mixins.Context;
 using Rubicon.Utilities;
 using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 
@@ -12,9 +10,10 @@ namespace Rubicon.Mixins.Definitions.Building
 {
   public class MixinDefinitionBuilder
   {
-    private BaseClassDefinition _baseClass;
-    private RequirementsAnalyzer _faceRequirementsAnalyzer; 
-    private RequirementsAnalyzer _baseRequirementsAnalyzer;
+    private readonly BaseClassDefinition _baseClass;
+    private readonly RequirementsAnalyzer _faceRequirementsAnalyzer; 
+    private readonly RequirementsAnalyzer _baseRequirementsAnalyzer;
+    private readonly AttributeIntroductionBuilder _attributeIntroductionBuilder;
 
     public MixinDefinitionBuilder (BaseClassDefinition baseClass)
     {
@@ -22,6 +21,7 @@ namespace Rubicon.Mixins.Definitions.Building
       _baseClass = baseClass;
       _faceRequirementsAnalyzer = new RequirementsAnalyzer (baseClass, typeof (ThisAttribute));
       _baseRequirementsAnalyzer = new RequirementsAnalyzer (baseClass, typeof (BaseAttribute));
+      _attributeIntroductionBuilder = new AttributeIntroductionBuilder (_baseClass);
     }
 
     public BaseClassDefinition BaseClass
@@ -45,6 +45,8 @@ namespace Rubicon.Mixins.Definitions.Building
       AttributeDefinitionBuilder attributesBuilder = new AttributeDefinitionBuilder (mixin);
       attributesBuilder.Apply (CustomAttributeData.GetCustomAttributes (mixin.Type));
 
+      _attributeIntroductionBuilder.Apply (mixin);
+
       AnalyzeInterfaceIntroductions (mixin);
       AnalyzeOverrides (mixin);
 
@@ -59,12 +61,7 @@ namespace Rubicon.Mixins.Definitions.Building
     private void AnalyzeInterfaceIntroductions (MixinDefinition mixin)
     {
       InterfaceIntroductionBuilder introductionBuilder = new InterfaceIntroductionBuilder (mixin);
-
-      foreach (Type implementedInterface in mixin.ImplementedInterfaces)
-      {
-        if (!implementedInterface.Equals (typeof (System.Runtime.Serialization.ISerializable)))
-          introductionBuilder.Apply (implementedInterface);
-      }
+      introductionBuilder.Apply ();
     }
 
     private void AnalyzeOverrides (MixinDefinition mixin)
@@ -80,8 +77,10 @@ namespace Rubicon.Mixins.Definitions.Building
       OverridesAnalyzer<EventDefinition> eventAnalyzer = new OverridesAnalyzer<EventDefinition> (delegate { return _baseClass.Events; });
       foreach (Tuple<EventDefinition, EventDefinition> eventOverride in eventAnalyzer.Analyze (mixin.Events))
         InitializeOverride (eventOverride.A, eventOverride.B);
+
+      AnalyzeMemberAttributeIntroductions (mixin);
     }
-    
+
     private void InitializeOverride (MemberDefinition overrider, MemberDefinition baseMember)
     {
       overrider.BaseAsMember = baseMember;
@@ -92,6 +91,18 @@ namespace Rubicon.Mixins.Definitions.Building
         throw new ConfigurationException (message);
       }
       baseMember.AddOverride (overrider);
+    }
+
+    private void AnalyzeMemberAttributeIntroductions (MixinDefinition mixin)
+    {
+      foreach (MemberDefinition mixinMember in mixin.GetAllMembers ())
+      {
+        if (mixinMember.BaseAsMember != null)
+        {
+          AttributeIntroductionBuilder introductionBuilder = new AttributeIntroductionBuilder (mixinMember.BaseAsMember);
+          introductionBuilder.Apply (mixinMember);
+        }
+      }
     }
 
     private void AnalyzeDependencies (MixinDefinition mixin, IEnumerable<Type> additionalDependencies)

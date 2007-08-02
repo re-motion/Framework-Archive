@@ -36,18 +36,36 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       get { return InnerEmitter.TypeBuilder; }
     }
 
-    public CustomMethodEmitter CreateMethodOverrideOrInterfaceImplementation (MethodInfo baseOrInterfaceMethod)
+    public CustomMethodEmitter CreateMethodOverride (MethodInfo baseMethod)
+    {
+      return CreateMethodOverrideOrInterfaceImplementation (baseMethod, true);
+    }
+
+    public CustomMethodEmitter CreateInterfaceMethodImplementation (MethodInfo interfaceMethod)
+    {
+      return CreateMethodOverrideOrInterfaceImplementation (interfaceMethod, false);
+    }
+
+    private CustomMethodEmitter CreateMethodOverrideOrInterfaceImplementation (MethodInfo baseOrInterfaceMethod, bool keepNameAndVisibility)
     {
       ArgumentUtility.CheckNotNull ("baseOrInterfaceMethod", baseOrInterfaceMethod);
       Assertion.IsTrue (baseOrInterfaceMethod.IsVirtual);
 
-      MethodAttributes methodDefinitionAttributes = MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.NewSlot
-          | MethodAttributes.Virtual | MethodAttributes.Final;
+      MethodAttributes methodDefinitionAttributes = MethodAttributes.HideBySig | MethodAttributes.Virtual | MethodAttributes.Final;
+      if (keepNameAndVisibility)
+        methodDefinitionAttributes |= (baseOrInterfaceMethod.Attributes & MethodAttributes.MemberAccessMask) | MethodAttributes.ReuseSlot;
+      else
+        methodDefinitionAttributes |= MethodAttributes.Private | MethodAttributes.NewSlot;
+
       if (baseOrInterfaceMethod.IsSpecialName)
       {
         methodDefinitionAttributes |= MethodAttributes.SpecialName;
       }
-      string methodName = string.Format ("{0}.{1}", baseOrInterfaceMethod.DeclaringType.FullName, baseOrInterfaceMethod.Name);
+      string methodName;
+      if (keepNameAndVisibility)
+        methodName = baseOrInterfaceMethod.Name;
+      else
+        methodName = string.Format ("{0}.{1}", baseOrInterfaceMethod.DeclaringType.FullName, baseOrInterfaceMethod.Name);
       CustomMethodEmitter methodDefinition = new CustomMethodEmitter (InnerEmitter, methodName, methodDefinitionAttributes);
       methodDefinition.CopyParametersAndReturnTypeFrom (baseOrInterfaceMethod);
 
@@ -57,11 +75,27 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     }
 
     // does not create the property's methods
-    public CustomPropertyEmitter CreatePropertyOverrideOrInterfaceImplementation (PropertyInfo baseOrInterfaceProperty)
+    public CustomPropertyEmitter CreatePropertyOverride (PropertyInfo baseProperty)
+    {
+      return CreatePropertyOverrideOrInterfaceImplementation (baseProperty, true);
+    }
+
+    // does not create the property's methods
+    public CustomPropertyEmitter CreateInterfacePropertyImplementation (PropertyInfo interfaceProperty)
+    {
+      return CreatePropertyOverrideOrInterfaceImplementation (interfaceProperty, false);
+    }
+
+    // does not create the property's methods
+    private CustomPropertyEmitter CreatePropertyOverrideOrInterfaceImplementation (PropertyInfo baseOrInterfaceProperty, bool keepName)
     {
       ArgumentUtility.CheckNotNull ("baseOrInterfaceProperty", baseOrInterfaceProperty);
 
-      string propertyName = string.Format ("{0}.{1}", baseOrInterfaceProperty.DeclaringType.FullName, baseOrInterfaceProperty.Name);
+      string propertyName;
+      if (keepName)
+        propertyName = baseOrInterfaceProperty.Name;
+      else 
+        propertyName = string.Format ("{0}.{1}", baseOrInterfaceProperty.DeclaringType.FullName, baseOrInterfaceProperty.Name);
       Type[] indexParameterTypes =
           Array.ConvertAll<ParameterInfo, Type> (baseOrInterfaceProperty.GetIndexParameters(), delegate (ParameterInfo p) { return p.ParameterType; });
 
@@ -72,11 +106,27 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     }
 
     // does not create the event's methods
-    public CustomEventEmitter CreateEventOverrideOrInterfaceImplementation (EventInfo baseOrInterfaceEvent)
+    public CustomEventEmitter CreateEventOverride (EventInfo baseEvent)
+    {
+      return CreateEventOverrideOrInterfaceImplementation (baseEvent, true);
+    }
+
+    // does not create the event's methods
+    public CustomEventEmitter CreateInterfaceEventImplementation (EventInfo interfaceEvent)
+    {
+      return CreateEventOverrideOrInterfaceImplementation (interfaceEvent, false);
+    }
+
+    // does not create the event's methods
+    private CustomEventEmitter CreateEventOverrideOrInterfaceImplementation (EventInfo baseOrInterfaceEvent, bool keepName)
     {
       ArgumentUtility.CheckNotNull ("baseOrInterfaceEvent", baseOrInterfaceEvent);
 
-      string eventName = string.Format ("{0}.{1}", baseOrInterfaceEvent.DeclaringType.FullName, baseOrInterfaceEvent.Name);
+      string eventName;
+      if (keepName)
+        eventName = baseOrInterfaceEvent.Name;
+      else
+        eventName = string.Format ("{0}.{1}", baseOrInterfaceEvent.DeclaringType.FullName, baseOrInterfaceEvent.Name);
       CustomEventEmitter newEvent = new CustomEventEmitter (InnerEmitter, eventName, EventAttributes.None, baseOrInterfaceEvent.EventHandlerType);
       return newEvent;
     }
@@ -129,7 +179,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
       MethodInfo getObjectDataMethod =
           typeof (ISerializable).GetMethod ("GetObjectData", new Type[] {typeof (SerializationInfo), typeof (StreamingContext)});
-      MethodEmitter newMethod = CreateMethodOverrideOrInterfaceImplementation (getObjectDataMethod).InnerEmitter;
+      MethodEmitter newMethod = CreateInterfaceMethodImplementation (getObjectDataMethod).InnerEmitter;
 
       MethodInvocationExpression delegatingMethodInvocation = delegatingMethodInvocationGetter(newMethod, baseIsISerializable);
       if (delegatingMethodInvocation != null)

@@ -93,6 +93,27 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.IsFalse (bt1.CustomAttributes.ContainsKey (typeof (SerializableAttribute)));
     }
 
+    [Test]
+    public void ExtendsAttributeIsIgnored ()
+    {
+      MixinDefinition bt1m1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins[typeof (BT1Mixin1)];
+      Assert.IsFalse (bt1m1.CustomAttributes.ContainsKey (typeof (ExtendsAttribute)));
+    }
+
+    [Test]
+    public void UsesAttributeIsIgnored ()
+    {
+      BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
+      Assert.IsFalse (bt1.CustomAttributes.ContainsKey (typeof (UsesAttribute)));
+    }
+
+    [Test]
+    public void OverrideAttributeIsIgnored ()
+    {
+      MixinDefinition bt1m1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins[typeof (BT1Mixin1)];
+      Assert.IsFalse (bt1m1.Methods[typeof (BT1Mixin1).GetMethod("VirtualMethod")].CustomAttributes.ContainsKey (typeof (OverrideAttribute)));
+    }
+
     class InternalStuffAttribute : Attribute { }
 
     [InternalStuff]

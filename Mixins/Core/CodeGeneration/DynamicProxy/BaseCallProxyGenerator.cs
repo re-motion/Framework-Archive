@@ -127,7 +127,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     // If overridden, delegate to next in chain, else simply delegate to "this" field
     private void ImplementBaseCallForRequirementOnTarget (RequiredMethodDefinition requiredMethod)
     {
-      CustomMethodEmitter methodImplementation = _emitter.CreateMethodOverrideOrInterfaceImplementation (requiredMethod.InterfaceMethod);
+      CustomMethodEmitter methodImplementation = _emitter.CreateInterfaceMethodImplementation (requiredMethod.InterfaceMethod);
       BaseCallMethodGenerator methodGenerator = new BaseCallMethodGenerator (methodImplementation, this);
       if (requiredMethod.ImplementingMethod.Overrides.Count == 0) // this is not an overridden method, call method directly on _this
         methodGenerator.AddBaseCallToTarget (requiredMethod.ImplementingMethod);
@@ -144,7 +144,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     // If an overridde, delegate to next in chain, else simply delegate to the extension implementing it field
     private void ImplementBaseCallForRequirementOnMixin (RequiredMethodDefinition requiredMethod)
     {
-      CustomMethodEmitter methodImplementation = _emitter.CreateMethodOverrideOrInterfaceImplementation (requiredMethod.InterfaceMethod);
+      CustomMethodEmitter methodImplementation = _emitter.CreateInterfaceMethodImplementation (requiredMethod.InterfaceMethod);
       BaseCallMethodGenerator methodGenerator = new BaseCallMethodGenerator (methodImplementation, this);
       if (requiredMethod.ImplementingMethod.Base == null) // this is not an override, call method directly on extension
         methodGenerator.AddBaseCallToTarget (requiredMethod.ImplementingMethod);

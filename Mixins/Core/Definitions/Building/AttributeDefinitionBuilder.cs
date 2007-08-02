@@ -20,9 +20,14 @@ namespace Rubicon.Mixins.Definitions.Building
       foreach (CustomAttributeData attributeData in attributes)
       {
         Type attributeType = attributeData.Constructor.DeclaringType;
-        if (attributeType.IsVisible && !typeof (SerializableAttribute).Equals (attributeType))
+        if (attributeType.IsVisible && !IsIgnoredAttributeType (attributeType))
           _attributableDefinition.CustomAttributes.Add (new AttributeDefinition (_attributableDefinition, attributeData));
       }
+    }
+
+    private bool IsIgnoredAttributeType (Type type)
+    {
+      return type == typeof (SerializableAttribute) || type.Assembly.Equals (typeof (Mixin).Assembly);
     }
   }
 }

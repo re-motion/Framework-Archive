@@ -21,5 +21,6 @@ namespace Rubicon.Mixins.Definitions
     void Visit (ThisDependencyDefinition thisDependency);
     void Visit (BaseDependencyDefinition baseDependency);
     void Visit (AttributeDefinition attribute);
+    void Visit (AttributeIntroductionDefinition attributeIntroduction);
   }
 }

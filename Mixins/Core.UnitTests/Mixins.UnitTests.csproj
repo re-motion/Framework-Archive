@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\AttributeIntroductionDefinitionBuilderTests.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\ClassWithVirtualMethod.cs" />
     <Compile Include="SampleTypes\ClassFulfillingAllMemberRequirementsExplicitly.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\ClassLookingLikeBaseType3.cs" />
     <Compile Include="SampleTypes\BaseTypeWithDuckFaceMixin.cs" />
@@ -128,7 +130,7 @@
     <Compile Include="Utilities\Serialization\SafeReflectionSerializationTests.cs" />
     <Compile Include="Utilities\SignatureEqualityComparerTests.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\AbstractMixinWithoutBase.cs" />
-    <Compile Include="Configuration\ValidationSampleTypes\BaseTypeWithAllowMultiple.cs" />
+    <Compile Include="SampleTypes\BaseTypeWithAllowMultiple.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\BaseWithGetterOnly.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\ClassAndMixinWithFinalOverride.cs" />
     <Compile Include="Mixins\ConcreteTypeBuilderTests.cs" />
@@ -144,9 +146,9 @@
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithClassThisDependency.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\InternalNester.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\DoubleImplementer.cs" />
-    <Compile Include="Configuration\ValidationSampleTypes\MixinAddingAllowMultipleToClassAndMember.cs" />
-    <Compile Include="Configuration\ValidationSampleTypes\MixinAddingBT1Attribute.cs" />
-    <Compile Include="Configuration\ValidationSampleTypes\MixinAddingBT1AttributeToMember.cs" />
+    <Compile Include="SampleTypes\MixinAddingAllowMultipleToClassAndMember.cs" />
+    <Compile Include="SampleTypes\MixinAddingBT1Attribute.cs" />
+    <Compile Include="SampleTypes\MixinAddingBT1AttributeToMember.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinImplementingIMixinTarget.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinOverridingSetterOnly.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithNonVirtualMethodToBeOverridden.cs" />
@@ -158,7 +160,7 @@
     <Compile Include="SampleTypes\ClassOverridingMixinMethodWrongSig.cs" />
     <Compile Include="SampleTypes\MixinWithClassBase.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinsWithUnsatisfiedEmptyDependencies.cs" />
-    <Compile Include="Configuration\ValidationSampleTypes\MultiAttribute.cs" />
+    <Compile Include="SampleTypes\MultiAttribute.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\PublicNester.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\ThrowingRuleSet.cs" />
     <Compile Include="Configuration\MixinDefinitionBuilderTests.cs" />

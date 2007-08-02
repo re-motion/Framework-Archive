@@ -104,25 +104,20 @@ namespace Rubicon.Mixins.Definitions
         SetMethod.AddOverride (overrider.SetMethod);
     }
 
-    public override void Accept (IDefinitionVisitor visitor)
+    protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
       ArgumentUtility.CheckNotNull ("visitor", visitor);
       visitor.Visit (this);
-      base.AcceptForChildren (visitor);
 
       if (GetMethod != null)
-      {
         GetMethod.Accept (visitor);
-      }
       if (SetMethod != null)
-      {
         SetMethod.Accept (visitor);
-      }
     }
 
-    protected override IDefinitionItemCollection<Type, MemberDefinition> GetInternalOverridesWrapper ()
+    protected override IDefinitionCollection<Type, MemberDefinition> GetInternalOverridesWrapper ()
     {
-      return new CovariantDefinitionItemCollectionWrapper<Type, PropertyDefinition, MemberDefinition> (Overrides);
+      return new CovariantDefinitionCollectionWrapper<Type, PropertyDefinition, MemberDefinition> (Overrides);
     }
   }
 }

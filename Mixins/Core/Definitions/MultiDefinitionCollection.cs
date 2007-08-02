@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Rubicon.Mixins.Utilities;
 using Rubicon.Utilities;
 using Rubicon.Collections;
 
 namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
-  [DebuggerDisplay ("Count = {_items.Count}")]
+  [DebuggerDisplay ("Count = {Count}")]
   public class MultiDefinitionCollection<TKey, TValue> : DefinitionCollectionBase<TKey, TValue>
       where TValue : IVisitableDefinition
   {
@@ -18,6 +17,7 @@ namespace Rubicon.Mixins.Definitions
         : base (keyMaker, null)
     {
     }
+
 
     public override bool ContainsKey (TKey key)
     {
@@ -61,7 +61,10 @@ namespace Rubicon.Mixins.Definitions
       else
         return _items[key][0];
     }
-  }
 
-  // TODO: replace with Rubicon.Core.Collections.MultiDictionary when available
+    public IEnumerable<TKey> Keys
+    {
+      get { return _items.Keys; }
+    }
+  }
 }
