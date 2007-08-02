@@ -15,6 +15,8 @@ namespace Rubicon.PageTransition
 
     public TestControlGenerator (Page page)
     {
+      ArgumentUtility.CheckNotNull ("page", page);
+
       _page = page;
     }
 
@@ -35,6 +37,33 @@ namespace Rubicon.PageTransition
       yield return CreateAnchorWithLabelAndJavascriptInHref (prefix);
       yield return CreateAnchorWithBoldAndJavascriptInOnClick (prefix);
       yield return CreateAnchorWithBoldAndJavascriptInHref (prefix);
+      yield return CreateAnchorWithNonPostBackJavascriptInOnClick (prefix);
+      yield return CreateAnchorWithNonPostBackJavascriptInHref (prefix);
+    }
+
+    public bool IsAlertHyperLink (Control control)
+    {
+      if (control is HyperLink)
+      {
+        HyperLink hyperLink = (HyperLink) control;
+        if (hyperLink.NavigateUrl == "#" && hyperLink.Attributes["onclick"].Contains ("alert"))
+          return true;
+        if (hyperLink.NavigateUrl.Contains ("alert"))
+          return true;
+      }
+
+      return false;
+    }
+
+    public bool IsEnabled (Control control)
+    {
+      if (control is WebControl && ((WebControl) control).Enabled)
+        return true;
+
+      if (control is HtmlControl && string.IsNullOrEmpty (((HtmlControl) control).Attributes["disabled"]))
+        return true;
+
+      return false;
     }
 
     private void OnClick (object sender, EventArgs e)
@@ -90,7 +119,7 @@ namespace Rubicon.PageTransition
     
     private Control CreateAnchorWithTextAndJavascriptInOnClick (string prefix)
     {
-      HyperLink hyperLink = CreateAnchorWithJavascriptInOnClick (prefix, "AnchorWithTextAndJavascriptInOnClick");
+      HyperLink hyperLink = CreateAnchorWithPostBackJavascriptInOnClick (prefix, "AnchorWithTextAndJavascriptInOnClick");
       hyperLink.Text = "OnClick";
 
       return hyperLink;
@@ -98,7 +127,7 @@ namespace Rubicon.PageTransition
 
     private Control CreateAnchorWithTextAndJavascriptInHref (string prefix)
     {
-      LinkButton linkButton = CreateAnchorWithJavascriptInHref (prefix, "AnchorWithTextAndJavascriptInHref");
+      LinkButton linkButton = CreateAnchorWithPostBackJavascriptInHref (prefix, "AnchorWithTextAndJavascriptInHref");
       linkButton.Text = "Href";
 
       return linkButton;
@@ -106,7 +135,7 @@ namespace Rubicon.PageTransition
 
     private Control CreateAnchorWithImageAndJavascriptInOnClick (string prefix)
     {
-      HyperLink hyperLink = CreateAnchorWithJavascriptInOnClick (prefix, "AnchorWithImageAndJavascriptInOnClick");
+      HyperLink hyperLink = CreateAnchorWithPostBackJavascriptInOnClick (prefix, "AnchorWithImageAndJavascriptInOnClick");
       hyperLink.Controls.Add (CreateImage (hyperLink.ID, "OnClick"));
 
       return hyperLink;
@@ -114,7 +143,7 @@ namespace Rubicon.PageTransition
 
     private Control CreateAnchorWithImageAndJavascriptInHref (string prefix)
     {
-      LinkButton linkButton = CreateAnchorWithJavascriptInHref (prefix, "AnchorWithImageAndJavascriptInHref");
+      LinkButton linkButton = CreateAnchorWithPostBackJavascriptInHref (prefix, "AnchorWithImageAndJavascriptInHref");
       linkButton.Controls.Add (CreateImage (linkButton.ID, "Href"));
 
       return linkButton;
@@ -122,7 +151,7 @@ namespace Rubicon.PageTransition
 
     private Control CreateAnchorWithSpanAndJavascriptInOnClick (string prefix)
     {
-      HyperLink hyperLink = CreateAnchorWithJavascriptInOnClick (prefix, "AnchorWithSpanAndJavascriptInOnClick");
+      HyperLink hyperLink = CreateAnchorWithPostBackJavascriptInOnClick (prefix, "AnchorWithSpanAndJavascriptInOnClick");
       hyperLink.Controls.Add (CreateHtmlGenericControl (hyperLink.ID, "OnClick", "span"));
 
       return hyperLink;
@@ -130,7 +159,7 @@ namespace Rubicon.PageTransition
 
     private Control CreateAnchorWithSpanAndJavascriptInHref (string prefix)
     {
-      LinkButton linkButton = CreateAnchorWithJavascriptInHref (prefix, "AnchorWithSpanAndJavascriptInHref");
+      LinkButton linkButton = CreateAnchorWithPostBackJavascriptInHref (prefix, "AnchorWithSpanAndJavascriptInHref");
       linkButton.Controls.Add (CreateHtmlGenericControl (linkButton.ID, "Href", "span"));
 
       return linkButton;
@@ -138,7 +167,7 @@ namespace Rubicon.PageTransition
 
     private Control CreateAnchorWithLabelAndJavascriptInOnClick (string prefix)
     {
-      HyperLink hyperLink = CreateAnchorWithJavascriptInOnClick (prefix, "AnchorWithLabelAndJavascriptInOnClick");
+      HyperLink hyperLink = CreateAnchorWithPostBackJavascriptInOnClick (prefix, "AnchorWithLabelAndJavascriptInOnClick");
       hyperLink.Controls.Add (CreateHtmlGenericControl (hyperLink.ID, "OnClick", "label"));
 
       return hyperLink;
@@ -146,15 +175,18 @@ namespace Rubicon.PageTransition
 
     private Control CreateAnchorWithLabelAndJavascriptInHref (string prefix)
     {
-      LinkButton linkButton = CreateAnchorWithJavascriptInHref (prefix, "AnchorWithLabelAndJavascriptInHref");
-      linkButton.Controls.Add (CreateHtmlGenericControl (linkButton.ID, "Href", "label"));
+      LinkButton linkButton = CreateAnchorWithPostBackJavascriptInHref (prefix, "AnchorWithLabelAndJavascriptInHref");
+      HtmlGenericControl control = CreateHtmlGenericControl (linkButton.ID, "Href", "label");
+      control.Attributes["title"] = "Anchor with Label does not work in IE";
+      linkButton.Controls.Add (control);
+      linkButton.Enabled = _page.Request.Browser.Browser != "IE";
 
       return linkButton;
     }
 
     private Control CreateAnchorWithBoldAndJavascriptInOnClick (string prefix)
     {
-      HyperLink hyperLink = CreateAnchorWithJavascriptInOnClick (prefix, "AnchorWithBoldAndJavascriptInOnClick");
+      HyperLink hyperLink = CreateAnchorWithPostBackJavascriptInOnClick (prefix, "AnchorWithBoldAndJavascriptInOnClick");
       hyperLink.Controls.Add (CreateHtmlGenericControl (hyperLink.ID, "OnClick", "b"));
 
       return hyperLink;
@@ -162,13 +194,34 @@ namespace Rubicon.PageTransition
 
     private Control CreateAnchorWithBoldAndJavascriptInHref (string prefix)
     {
-      LinkButton linkButton = CreateAnchorWithJavascriptInHref (prefix, "AnchorWithBoldAndJavascriptInHref");
+      LinkButton linkButton = CreateAnchorWithPostBackJavascriptInHref (prefix, "AnchorWithBoldAndJavascriptInHref");
       linkButton.Controls.Add (CreateHtmlGenericControl (linkButton.ID, "Href", "b"));
 
       return linkButton;
     }
 
-    private Control CreateImage (string prefix, string text)
+    private Control CreateAnchorWithNonPostBackJavascriptInOnClick (string prefix)
+    {
+      HyperLink hyperLink = new HyperLink ();
+      hyperLink.ID = CreateTestMatrixControlID (prefix, "AnchorWithNonPostBackJavascriptInOnClick");
+      hyperLink.Text = "OnClick";
+      hyperLink.NavigateUrl = "#";
+      hyperLink.Attributes["onclick"] = "window.alert ('javascript in onclick handler')";
+
+      return hyperLink;
+    }
+
+    private Control CreateAnchorWithNonPostBackJavascriptInHref (string prefix)
+    {
+      HyperLink hyperLink = new HyperLink ();
+      hyperLink.ID = CreateTestMatrixControlID (prefix, "AnchorWithNonPostBackJavascriptInHref");
+      hyperLink.Text = "Href";
+      hyperLink.NavigateUrl = "javascript:window.alert ('javascript in onclick handler')";
+
+      return hyperLink;
+    }
+
+    private Image CreateImage (string prefix, string text)
     {
       Image image = new Image ();
       image.ID = CreateTestMatrixControlID (prefix, "Inner");
@@ -177,7 +230,7 @@ namespace Rubicon.PageTransition
       return image;
     }
 
-    private Control CreateHtmlGenericControl (string prefix, string text, string tag)
+    private HtmlGenericControl CreateHtmlGenericControl (string prefix, string text, string tag)
     {
       HtmlGenericControl span = new HtmlGenericControl (tag);
       span.ID = CreateTestMatrixControlID (prefix, "Inner");
@@ -186,7 +239,7 @@ namespace Rubicon.PageTransition
       return span;
     }
 
-    private HyperLink CreateAnchorWithJavascriptInOnClick (string prefix, string id)
+    private HyperLink CreateAnchorWithPostBackJavascriptInOnClick (string prefix, string id)
     {
       HyperLink hyperLink = new HyperLink();
       hyperLink.ID = CreateTestMatrixControlID (prefix, id);
@@ -196,7 +249,7 @@ namespace Rubicon.PageTransition
       return hyperLink;
     }
 
-    private LinkButton CreateAnchorWithJavascriptInHref (string prefix, string id)
+    private LinkButton CreateAnchorWithPostBackJavascriptInHref (string prefix, string id)
     {
       LinkButton linkButton = new LinkButton();
       linkButton.ID = CreateTestMatrixControlID (prefix, id);

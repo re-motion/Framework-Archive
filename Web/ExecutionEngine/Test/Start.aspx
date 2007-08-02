@@ -3,12 +3,8 @@
 <html>
   <head>
     <title>Start</title>
-    <meta name="GENERATOR" Content="Microsoft Visual Studio .NET 7.1">
-    <meta name="CODE_LANGUAGE" Content="C#">
-    <meta name="vs_defaultClientScript" content="JavaScript">
-    <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
   </head>
-  <body MS_POSITIONING="FlowLayout">
+  <body>
     <form id="Form1" method="post" runat="server">
       <p>
         <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.PageTransition.SampleWxeFunction,Rubicon.PageTransition">
@@ -24,7 +20,10 @@
         <a href="session.wxe?ReadOnly=True">session.wxe?ReadOnly=True</a>
       </p>
       <p>
-        <a href="mpc.wxe">Multiple Postback Catcher Test</a>
+        <a href="MultiplePostbackCatcherForm.aspx">Multiple Postback Catcher Tests</a>
+      </p>
+      <p>
+        <a href="../../Selenium/Core/TestRunner.html?test=../../ExecutionEngine/Test/TestSuite.aspx">Rubicon.Web.Tests</a>
       </p>
       <p>
         <a href="redirected.wxe">redirected.wxe</a>

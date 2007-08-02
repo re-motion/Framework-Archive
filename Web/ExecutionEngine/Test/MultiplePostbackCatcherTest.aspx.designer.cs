@@ -12,21 +12,12 @@ namespace Rubicon.PageTransition {
     
     
     /// <summary>
-    /// MultiplePostbackCatcherForm class.
+    /// MultiplePostbackCatcherTest class.
     /// </summary>
     /// <remarks>
     /// Auto-generated class.
     /// </remarks>
-    public partial class MultiplePostbackCatcherForm {
-        
-        /// <summary>
-        /// Head control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlHead Head;
+    public partial class MultiplePostbackCatcherTest {
         
         /// <summary>
         /// HtmlHeadContents control.
@@ -47,30 +38,12 @@ namespace Rubicon.PageTransition {
         protected global::System.Web.UI.HtmlControls.HtmlForm Form;
         
         /// <summary>
-        /// TestResultLabel control.
+        /// TestTable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label TestResultLabel;
-        
-        /// <summary>
-        /// TestMatrix control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Table TestMatrix;
-        
-        /// <summary>
-        /// AutoPostbackList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList AutoPostbackList;
+        protected global::System.Web.UI.WebControls.Table TestTable;
     }
 }

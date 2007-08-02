@@ -106,16 +106,23 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestSuite.aspx.cs">
+      <DependentUpon>TestSuite.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestSuite.aspx.designer.cs">
+      <DependentUpon>TestSuite.aspx</DependentUpon>
+    </Compile>
     <Compile Include="IDEventArgs.cs" />
     <Compile Include="MultiplePostbackCatcherForm.aspx.designer.cs">
       <DependentUpon>MultiplePostbackCatcherForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="MultiplePostbackCatcherTests.aspx.cs">
+    <Compile Include="MultiplePostbackCatcherTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
-      <DependentUpon>MultiplePostbackCatcherTests.aspx</DependentUpon>
+      <DependentUpon>MultiplePostbackCatcherTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="MultiplePostbackCatcherTests.aspx.designer.cs">
-      <DependentUpon>MultiplePostbackCatcherTests.aspx</DependentUpon>
+    <Compile Include="MultiplePostbackCatcherTest.aspx.designer.cs">
+      <DependentUpon>MultiplePostbackCatcherTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -164,13 +171,14 @@
       <DependentUpon>WebForm1.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Content Include="TestSuite.aspx" />
     <Content Include="Global.asax">
       <SubType>Component</SubType>
     </Content>
     <Content Include="MultiplePostbackCatcherForm.aspx">
       <SubType>Form</SubType>
     </Content>
-    <Content Include="MultiplePostbackCatcherTests.aspx" />
+    <Content Include="MultiplePostbackCatcherTest.aspx" />
     <Content Include="ProfilingForm.aspx">
       <SubType>Form</SubType>
     </Content>

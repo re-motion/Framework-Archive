@@ -1,32 +1,15 @@
 using System;
-using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
 
 namespace Rubicon.PageTransition
 {
   public partial class MultiplePostbackCatcherForm : SmartPage, IPostBackEventHandler
   {
     private TestControlGenerator _testControlGenerator;
-
-    protected override void OnLoad (EventArgs e)
-    {
-      base.OnLoad (e);
-      Assertion.IsFalse (WcagHelper.Instance.IsWaiConformanceLevelARequired());
-    }
-
-    protected override void OnPreRender (EventArgs e)
-    {
-      base.OnPreRender (e);
-      Rubicon.Web.UI.HtmlHeadAppender.Current.RegisterStylesheetLink (
-          "style",
-          Rubicon.Web.ResourceUrlResolver.GetResourceUrl (this, typeof (WxePage), Rubicon.Web.ResourceType.Html, "Style.css"));
-    }
+    private int _serverDelay = 2000;
 
     protected override void OnInit (EventArgs e)
     {
@@ -34,7 +17,23 @@ namespace Rubicon.PageTransition
       CreateTestMatrix();
     }
 
-    
+    protected override void OnLoad (EventArgs e)
+    {
+      base.OnLoad (e);
+      Assertion.IsFalse (WcagHelper.Instance.IsWaiConformanceLevelARequired());
+      string serverDelayString = Request.QueryString["ServerDelay"];
+      if (serverDelayString != null)
+        _serverDelay = int.Parse (serverDelayString);
+    }
+
+    protected override void OnPreRender (EventArgs e)
+    {
+      base.OnPreRender (e);
+      Rubicon.Web.UI.HtmlHeadAppender.Current.RegisterStylesheetLink (
+          "style",
+          Rubicon.Web.ResourceUrlResolver.GetResourceUrl (this, typeof (SmartPage), Rubicon.Web.ResourceType.Html, "Style.css"));
+    }
+
     private void CreateTestMatrix ()
     {
       _testControlGenerator = new TestControlGenerator (this);
@@ -50,13 +49,13 @@ namespace Rubicon.PageTransition
 
     void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
     {
-      SetTestResultLabelText(eventArgument);
+      SetTestResultLabelText (eventArgument);
     }
 
     private void SetTestResultLabelText (string eventArgument)
     {
       TestResultLabel.Text = eventArgument;
-      System.Threading.Thread.Sleep (500);
+      System.Threading.Thread.Sleep (_serverDelay);
     }
 
     private TableRow CreateTestMatrixRow (Control initialControl)
@@ -64,7 +63,7 @@ namespace Rubicon.PageTransition
       TableRow row = new TableRow();
       row.Cells.Add (CreateTestMatrixCell (initialControl));
       foreach (Control followUpControl in _testControlGenerator.GetTestControls (initialControl.ID))
-        row.Cells.Add (CreateTestMatrixCell (followUpControl)); 
+        row.Cells.Add (CreateTestMatrixCell (followUpControl));
 
       return row;
     }

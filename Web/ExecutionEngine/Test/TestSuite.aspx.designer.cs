@@ -12,12 +12,21 @@ namespace Rubicon.PageTransition {
     
     
     /// <summary>
-    /// MultiplePostbackCatcherTests class.
+    /// TestSuite class.
     /// </summary>
     /// <remarks>
     /// Auto-generated class.
     /// </remarks>
-    public partial class MultiplePostbackCatcherTests {
+    public partial class TestSuite {
+        
+        /// <summary>
+        /// HtmlHeadContents control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
         
         /// <summary>
         /// Form control.
@@ -29,12 +38,12 @@ namespace Rubicon.PageTransition {
         protected global::System.Web.UI.HtmlControls.HtmlForm Form;
         
         /// <summary>
-        /// TestFixture control.
+        /// TestSuiteTable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Table TestFixture;
+        protected global::System.Web.UI.WebControls.Table TestSuiteTable;
     }
 }
