@@ -479,6 +479,9 @@ public class DomainObject
   /// Marks the <see cref="DomainObject"/> as changed. If the object's previous <see cref="State"/> was <see cref="StateType.Unchanged"/>, it
   /// will be <see cref="StateType.Changed"/> after this method has been called.
   /// </summary>
+  /// <exception cref="InvalidOperationException">This object is not in state <see cref="StateType.Changed"/> or <see cref="StateType.Unchanged"/>.
+  /// New or deleted objects cannot be marked as changed.</exception>
+  /// <exception cref="ObjectDiscardedException">The object has already been discarded.</exception>
   public void MarkAsChanged ()
   {
     CheckIfObjectIsDiscarded ();

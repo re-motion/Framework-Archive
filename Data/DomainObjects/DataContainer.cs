@@ -281,6 +281,13 @@ public class DataContainer
     }
   }
 
+  /// <summary>
+  /// Marks an existing <see cref="DataContainer"/> as changed. <see cref="State"/> will return <see cref="StateType.Changed"/> after this method
+  /// has been called.
+  /// </summary>
+  /// <exception cref="InvalidOperationException">This <see cref="DataContainer"/> is not in state <see cref="DataContainerStateType.Existing"/>.
+  /// New or deleted objects cannot be marked as changed.</exception>
+  /// <exception cref="ObjectDiscardedException">The object has already been discarded.</exception>
   public void MarkAsChanged ()
   {
     CheckDiscarded ();
