@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
 {
   [TestFixture]
-  public class GetCustomAttributesFromMemberInfo
+  public class GetCustomAttributesFromMemberInfoTest
   {
     private PropertyInfo _basePropertyWithSingleAttribute;
     private PropertyInfo _derivedPropertyWithSingleAttribute;

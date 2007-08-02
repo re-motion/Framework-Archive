@@ -76,5 +76,30 @@ namespace Rubicon.Utilities
             string.Format ("The attribute type must be assignable to System.Attribute or an interface.\r\nParameter name: {0}", parameterName));
       }
     }
+
+    public static bool IsAttributeInherited (Type attributeType)
+    {
+      AttributeUsageAttribute usage = GetAttributeUsage (attributeType);
+      return usage != null ? usage.Inherited : true;
+    }
+
+    public static bool IsAttributeAllowMultiple (Type attributeType)
+    {
+      AttributeUsageAttribute usage = GetAttributeUsage (attributeType);
+      return usage != null ? usage.AllowMultiple : false;
+    }
+
+    public static AttributeUsageAttribute GetAttributeUsage (Type attributeType)
+    {
+      AttributeUsageAttribute[] usage =
+          (AttributeUsageAttribute[]) attributeType.GetCustomAttributes (typeof (AttributeUsageAttribute), true);
+      if (usage.Length == 0)
+        return null;
+      else
+      {
+        Assertion.IsTrue (usage.Length == 1, "AllowMultiple == false");
+        return usage[0];
+      }
+    }
   }
 }

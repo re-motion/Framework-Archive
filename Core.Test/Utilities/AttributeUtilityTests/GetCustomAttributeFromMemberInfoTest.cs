@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
 {
   [TestFixture]
-  public class IsDefinedFromMemberInfo
+  public class GetCustomAttributeFromMemberInfoTest
   {
     private PropertyInfo _basePropertyWithSingleAttribute;
     private PropertyInfo _derivedPropertyWithSingleAttribute;
@@ -23,37 +23,45 @@ namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void Test_FromBaseWithAttribute ()
     {
-      Assert.IsTrue (AttributeUtility.IsDefined (_basePropertyWithSingleAttribute, typeof (InheritedAttribute), true));
+      InheritedAttribute attribute =
+          (InheritedAttribute) AttributeUtility.GetCustomAttribute (_basePropertyWithSingleAttribute, typeof (InheritedAttribute), true);
+      Assert.IsNotNull (attribute);
     }
 
     [Test]
     public void TestGeneric_FromBaseWithAttribute ()
     {
-      Assert.IsTrue (AttributeUtility.IsDefined<InheritedAttribute> (_basePropertyWithSingleAttribute, true));
+      InheritedAttribute attribute = AttributeUtility.GetCustomAttribute<InheritedAttribute> (_basePropertyWithSingleAttribute, true);
+      Assert.IsNotNull (attribute);
     }
 
     [Test]
+    [ExpectedException (typeof (AmbiguousMatchException), ExpectedMessage = "Multiple custom attributes of the same type found.")]
     public void Test_FromOverrideWithAttribute_ExpectAmbigousMatch ()
     {
-      Assert.IsTrue (AttributeUtility.IsDefined (_derivedPropertyWithMultipleAttribute, typeof (MultipleAttribute), true));
+      AttributeUtility.GetCustomAttribute (_derivedPropertyWithMultipleAttribute, typeof (MultipleAttribute), true);
     }
 
     [Test]
     public void Test_FromBaseWithInterface ()
     {
-      Assert.IsTrue (AttributeUtility.IsDefined (_basePropertyWithSingleAttribute, typeof (ICustomAttribute), true));
+      ICustomAttribute attribute = 
+          (ICustomAttribute) AttributeUtility.GetCustomAttribute (_basePropertyWithSingleAttribute, typeof (ICustomAttribute), true);
+      Assert.IsNotNull (attribute);
     }
 
     [Test]
     public void TestGeneric_FromBaseWithInterface ()
     {
-      Assert.IsTrue (AttributeUtility.IsDefined<ICustomAttribute> (_basePropertyWithSingleAttribute, true));
+      ICustomAttribute attribute = AttributeUtility.GetCustomAttribute<ICustomAttribute> (_basePropertyWithSingleAttribute, true);
+      Assert.IsNotNull (attribute);
     }
 
     [Test]
+    [ExpectedException (typeof (AmbiguousMatchException), ExpectedMessage = "Multiple custom attributes of the same type found.")]
     public void Test_FromOverrideWithInterface_ExpectAmbigousMatch ()
     {
-      Assert.IsTrue (AttributeUtility.IsDefined (_derivedPropertyWithMultipleAttribute, typeof (ICustomAttribute), true));
+      AttributeUtility.GetCustomAttribute (_derivedPropertyWithMultipleAttribute, typeof (ICustomAttribute), true);
     }
 
     [Test]
@@ -61,7 +69,7 @@ namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
         "The attribute type must be assignable to System.Attribute or an interface.\r\nParameter name: T")]
     public void TestGeneric_FromBaseWithInvalidType ()
     {
-      AttributeUtility.IsDefined<object> (_basePropertyWithSingleAttribute, true);
+      AttributeUtility.GetCustomAttribute<object> (_basePropertyWithSingleAttribute, true);
     }
 
     [Test]
@@ -69,31 +77,31 @@ namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
         "The attribute type must be assignable to System.Attribute or an interface.\r\nParameter name: attributeType")]
     public void Test_FromBaseWithInvalidType ()
     {
-      AttributeUtility.IsDefined (_basePropertyWithSingleAttribute, typeof (object), true);
+      AttributeUtility.GetCustomAttribute (_basePropertyWithSingleAttribute, typeof (object), true);
     }
 
     [Test]
     public void Test_FromOverrideWithAttribute ()
     {
-      Assert.IsTrue (AttributeUtility.IsDefined (_derivedPropertyWithSingleAttribute, typeof (InheritedAttribute), true));
+      Assert.IsNotNull (AttributeUtility.GetCustomAttribute (_derivedPropertyWithSingleAttribute, typeof (InheritedAttribute), true));
     }
 
     [Test]
     public void Test_FromOverrideWithInterface ()
     {
-      Assert.IsTrue (AttributeUtility.IsDefined (_derivedPropertyWithSingleAttribute, typeof (ICustomAttribute), true));
+      Assert.IsNotNull (AttributeUtility.GetCustomAttribute (_derivedPropertyWithSingleAttribute, typeof (ICustomAttribute), true));
     }
 
     [Test]
     public void Test_FromOverrideWithAttributeAndWithoutInherited ()
     {
-      Assert.IsFalse (AttributeUtility.IsDefined (_derivedPropertyWithSingleAttribute, typeof (InheritedAttribute), false));
+      Assert.IsNull (AttributeUtility.GetCustomAttribute (_derivedPropertyWithSingleAttribute, typeof (InheritedAttribute), false));
     }
 
     [Test]
     public void Test_FromOverrideWithInterfaceAndWithoutInherited ()
     {
-      Assert.IsFalse (AttributeUtility.IsDefined (_derivedPropertyWithSingleAttribute, typeof (ICustomAttribute), false));
+      Assert.IsNull (AttributeUtility.GetCustomAttribute (_derivedPropertyWithSingleAttribute, typeof (ICustomAttribute), false));
     }
   }
 }

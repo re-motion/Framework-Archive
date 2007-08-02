@@ -255,11 +255,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\AssertionTest.cs" />
-    <Compile Include="Utilities\AttributeUtilityTests\IsDefinedFromMemberInfo.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\AttributeUsageTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\NotInheritedNotMultipleAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\ImplicitUsageAttribute.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\IsDefinedFromMemberInfoTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\MultipleAttribute.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\DerivedSampleClass.cs" />
-    <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributeFromMemberInfo.cs" />
-    <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesFromMemberInfo.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributeFromMemberInfoTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesFromMemberInfoTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\ICustomAttribute.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\InheritedAttribute.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\SampleClass.cs" />
