@@ -191,5 +191,19 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       MixinReflector.GetBaseCallProxyType (new object());
     }
+
+    [Test]
+    public void GetMixinConfigurationFromConcreteType ()
+    {
+      Type bt1Type = TypeFactory.GetConcreteType (typeof (BaseType1));
+      Assert.AreEqual (TypeFactory.GetActiveConfiguration (typeof (BaseType1)).ConfigurationContext,
+          Mixin.GetMixinConfigurationFromConcreteType (bt1Type));
+    }
+
+    [Test]
+    public void GetMixinConfigurationFromConcreteTypeNullWhenNoMixedType ()
+    {
+      Assert.IsNull (Mixin.GetMixinConfigurationFromConcreteType (typeof (object)));
+    }
   }
 }

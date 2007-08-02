@@ -1,8 +1,10 @@
 using System;
 using System.Diagnostics;
+using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Utilities;
 using Rubicon.Mixins.Utilities;
 using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Mixins
 {
@@ -47,6 +49,25 @@ namespace Rubicon.Mixins
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
       ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
       return MixinReflector.Get (mixinType, mixinTarget);
+    }
+
+    /// <summary>
+    /// Returns the <see cref="ClassContext"/> that was used as the mixin configuration when the given concrete mixed <paramref name="type"/>
+    /// was created by the <see cref="TypeFactory"/>.
+    /// </summary>
+    /// <param name="type">The type whose mixin configuration is to be retrieved.</param>
+    /// <returns>The <see cref="ClassContext"/> used when the given concrete mixed <paramref name="type"/> was created, or <see langword="null"/>
+    /// if <paramref name="type"/> is no mixed type.</returns>
+    public static ClassContext GetMixinConfigurationFromConcreteType (Type type)
+    {
+      ConcreteMixedTypeAttribute[] attributes = (ConcreteMixedTypeAttribute[])type.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false);
+      if (attributes.Length == 0)
+        return null;
+      else
+      {
+        Assertion.IsTrue (attributes.Length == 1, "AllowMultiple == false");
+        return attributes[0].GetClassContext();
+      }
     }
   }
 
