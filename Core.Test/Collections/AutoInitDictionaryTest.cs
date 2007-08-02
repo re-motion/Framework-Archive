@@ -34,5 +34,17 @@ namespace Rubicon.Core.UnitTests.Collections
       o = _dictionary["b"];
       Assert.AreEqual (2, _dictionary.Count);
     }
+
+    [Test]
+    public void CountWithSameValues ()
+    {
+      _dictionary.Add ("key", "value1");
+      _dictionary.Add ("key", "value2");
+      _dictionary.Add ("key2", "value3");
+      Assert.AreEqual (2, _dictionary.Count);
+      Assert.AreEqual (2, _dictionary.KeyCount);
+      Assert.AreEqual (3, _dictionary.CountValues());
+
+    }
   }
 }

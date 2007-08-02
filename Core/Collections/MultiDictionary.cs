@@ -21,6 +21,19 @@ namespace Rubicon.Collections
     {
     }
 
+    public int KeyCount
+    {
+      get { return base.Count; }
+    }
+
+    public int CountValues()
+    {
+      int count = 0;
+      foreach (TKey key in Keys)
+        count += this[key].Count;
+      return count;
+    }
+
     /// <summary>
     /// Adds a value to the key's value list.
     /// </summary>
