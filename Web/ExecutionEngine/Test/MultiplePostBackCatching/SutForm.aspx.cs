@@ -2,11 +2,12 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Utilities;
+using Rubicon.Web.Test.MultiplePostBackCatching;
 using Rubicon.Web.UI;
 
-namespace Rubicon.PageTransition
+namespace Rubicon.Web.Test.MultiplePostBackCatching
 {
-  public partial class MultiplePostbackCatcherForm : SmartPage, IPostBackEventHandler
+  public partial class SutForm : SmartPage, IPostBackEventHandler
   {
     private TestControlGenerator _testControlGenerator;
     private int _serverDelay = 2000;

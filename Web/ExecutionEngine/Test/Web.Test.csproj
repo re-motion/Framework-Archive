@@ -10,7 +10,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>Rubicon.PageTransition</AssemblyName>
+    <AssemblyName>Rubicon.Web.Test</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -19,7 +19,7 @@
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.PageTransition</RootNamespace>
+    <RootNamespace>Rubicon.Web.Test</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -113,16 +113,16 @@
     <Compile Include="TestSuite.aspx.designer.cs">
       <DependentUpon>TestSuite.aspx</DependentUpon>
     </Compile>
-    <Compile Include="IDEventArgs.cs" />
-    <Compile Include="MultiplePostbackCatcherForm.aspx.designer.cs">
-      <DependentUpon>MultiplePostbackCatcherForm.aspx</DependentUpon>
+    <Compile Include="MultiplePostBackCatching\IDEventArgs.cs" />
+    <Compile Include="MultiplePostBackCatching\SutForm.aspx.designer.cs">
+      <DependentUpon>SutForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="MultiplePostbackCatcherTest.aspx.cs">
+    <Compile Include="MultiplePostBackCatching\TestForm.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
-      <DependentUpon>MultiplePostbackCatcherTest.aspx</DependentUpon>
+      <DependentUpon>TestForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="MultiplePostbackCatcherTest.aspx.designer.cs">
-      <DependentUpon>MultiplePostbackCatcherTest.aspx</DependentUpon>
+    <Compile Include="MultiplePostBackCatching\TestForm.aspx.designer.cs">
+      <DependentUpon>TestForm.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -131,43 +131,40 @@
       <DependentUpon>Global.asax</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MultiplePostbackCatcherForm.aspx.cs">
-      <DependentUpon>MultiplePostbackCatcherForm.aspx</DependentUpon>
+    <Compile Include="MultiplePostBackCatching\SutForm.aspx.cs">
+      <DependentUpon>SutForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="MultiplePostbackCatcherWxeFunction.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ProfilingForm.aspx.cs">
+    <Compile Include="ExecutionEngine\ProfilingForm.aspx.cs">
       <DependentUpon>ProfilingForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ProfilingWxeFunction.cs">
+    <Compile Include="ExecutionEngine\ProfilingWxeFunction.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="RedirectedWxeFunction.cs">
+    <Compile Include="ExecutionEngine\RedirectedWxeFunction.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SampleWxeFunction.cs">
+    <Compile Include="ExecutionEngine\SampleWxeFunction.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SessionForm.aspx.cs">
+    <Compile Include="ExecutionEngine\SessionForm.aspx.cs">
       <DependentUpon>SessionForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="SessionWxeFunction.cs">
+    <Compile Include="ExecutionEngine\SessionWxeFunction.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Start.aspx.cs">
       <DependentUpon>Start.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="TestControlGenerator.cs" />
-    <Compile Include="UserControl1.ascx.cs">
+    <Compile Include="MultiplePostBackCatching\TestControlGenerator.cs" />
+    <Compile Include="ExecutionEngine\UserControl1.ascx.cs">
       <DependentUpon>UserControl1.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WebForm1.aspx.cs">
+    <Compile Include="ExecutionEngine\WebForm1.aspx.cs">
       <DependentUpon>WebForm1.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -175,26 +172,26 @@
     <Content Include="Global.asax">
       <SubType>Component</SubType>
     </Content>
-    <Content Include="MultiplePostbackCatcherForm.aspx">
+    <Content Include="MultiplePostBackCatching\SutForm.aspx">
       <SubType>Form</SubType>
     </Content>
-    <Content Include="MultiplePostbackCatcherTest.aspx" />
-    <Content Include="ProfilingForm.aspx">
+    <Content Include="MultiplePostBackCatching\TestForm.aspx" />
+    <Content Include="ExecutionEngine\ProfilingForm.aspx">
       <SubType>Form</SubType>
     </Content>
-    <Content Include="SessionForm.aspx">
+    <Content Include="ExecutionEngine\SessionForm.aspx">
       <SubType>Form</SubType>
     </Content>
     <Content Include="Start.aspx">
       <SubType>Form</SubType>
     </Content>
     <Content Include="UrlMapping.xml" />
-    <Content Include="UserControl1.ascx">
+    <Content Include="ExecutionEngine\UserControl1.ascx">
       <SubType>UserControl</SubType>
     </Content>
     <Content Include="UtilitiesTest.htm" />
     <Content Include="Web.config" />
-    <Content Include="WebForm1.aspx">
+    <Content Include="ExecutionEngine\WebForm1.aspx">
       <SubType>Form</SubType>
     </Content>
   </ItemGroup>

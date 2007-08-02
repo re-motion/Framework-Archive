@@ -1,4 +1,4 @@
-<%@ Page language="c#" Codebehind="MultiplePostbackCatcherForm.aspx.cs" AutoEventWireup="True" Inherits="Rubicon.PageTransition.MultiplePostbackCatcherForm" smartNavigation="False"%>
+<%@ Page language="c#" Codebehind="SutForm.aspx.cs" AutoEventWireup="True" Inherits="Rubicon.Web.Test.MultiplePostBackCatching.SutForm" smartNavigation="False"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head id="Head" runat="server">

@@ -8,9 +8,10 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+using Rubicon.Web.Test.MultiplePostBackCatching;
 using Rubicon.Web.UI;
 
-namespace Rubicon.PageTransition
+namespace Rubicon.Web.Test
 {
   public partial class TestSuite : SmartPage
   {
@@ -46,7 +47,7 @@ namespace Rubicon.PageTransition
         if (_testControlGenerator.IsEnabled (initialControl) && !_testControlGenerator.IsAlertHyperLink (initialControl))
         {
           TestSuiteTable.Rows.Add (
-              CreateTest (initialControl.ID, ResolveUrl ("MultiplePostbackCatcherTest.aspx?Test=" + initialControl.ID)));
+              CreateTest (initialControl.ID, ResolveUrl ("~/MultiplePostbackCatching/TestForm.aspx?Test=" + initialControl.ID)));
         }
       }
     }

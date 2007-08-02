@@ -10,18 +10,18 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Globalization;
 using System.Collections.Specialized;
-using Rubicon.PageTransition;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.Test.ExecutionEngine;
 using Rubicon.Web.Utilities;
 using Rubicon.Utilities;
 
-namespace Rubicon.PageTransition
+namespace Rubicon.Web.Test.ExecutionEngine
 {
-	/// <summary>
-	/// Summary description for WebForm1.
-	/// </summary>
-	public class WebForm1: WxePage
-	{
+  /// <summary>
+  /// Summary description for WebForm1.
+  /// </summary>
+  public class WebForm1: WxePage
+  {
     protected System.Web.UI.WebControls.TextBox TextBox1;
     protected System.Web.UI.WebControls.Button Stay;
     protected System.Web.UI.WebControls.Button Next;
@@ -43,24 +43,24 @@ namespace Rubicon.PageTransition
     protected System.Web.UI.WebControls.Calendar Calendar1;
 
     public readonly WxeParameterDeclaration[] PageParameters = {
-          new WxeParameterDeclaration ("text", true, WxeParameterDirection.InOut, typeof (string)),
-          new WxeParameterDeclaration ("invocations", false, WxeParameterDirection.Out, typeof (int))
-        };
+        new WxeParameterDeclaration ("text", true, WxeParameterDirection.InOut, typeof (string)),
+        new WxeParameterDeclaration ("invocations", false, WxeParameterDirection.Out, typeof (int))
+    };
 
     private ISampleFunctionVariables Function
     {
       get { return (ISampleFunctionVariables) CurrentFunction; }
     }
 
-		private void Page_Load (object sender, System.EventArgs e)
-		{
+    private void Page_Load (object sender, System.EventArgs e)
+    {
 
       System.Text.StringBuilder sb = new System.Text.StringBuilder();
       for (WxeStep step = CurrentStep; step != null; step = step.ParentStep)
         sb.AppendFormat ("{0}<br>", step.ToString());      
       StackLabel.Text = sb.ToString();
 
-			Var1Label.Text = Function.Var1;
+      Var1Label.Text = Function.Var1;
       Var2Label.Text = Function.Var2;
       IsPostBackCheck.Checked = IsPostBack;
 
@@ -68,24 +68,24 @@ namespace Rubicon.PageTransition
       {
         Calendar1.SelectedDate = DateTime.Now.Date;
       }
-		}
+    }
 
-		#region Web Form Designer generated code
-		override protected void OnInit(EventArgs e)
-		{
-			//
-			// CODEGEN: This call is required by the ASP.NET Web Form Designer.
-			//
-			InitializeComponent();
-			base.OnInit(e);
-		}
+    #region Web Form Designer generated code
+    override protected void OnInit(EventArgs e)
+    {
+      //
+      // CODEGEN: This call is required by the ASP.NET Web Form Designer.
+      //
+      InitializeComponent();
+      base.OnInit(e);
+    }
 		
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{    
+    /// <summary>
+    /// Required method for Designer support - do not modify
+    /// the contents of this method with the code editor.
+    /// </summary>
+    private void InitializeComponent()
+    {    
       this.ThrowText.Click += new System.EventHandler(this.ThrowText_Click);
       this.Stay.Click += new System.EventHandler(this.Stay_Click);
       this.Next.Click += new System.EventHandler(this.Next_Click);
@@ -98,7 +98,7 @@ namespace Rubicon.PageTransition
       this.Load += new System.EventHandler(this.Page_Load);
 
     }
-		#endregion
+    #endregion
 
     private void Stay_Click (object sender, System.EventArgs e)
     {
@@ -108,8 +108,8 @@ namespace Rubicon.PageTransition
     private void Next_Click (object sender, System.EventArgs e)
     {
       ExecuteNextStep ();
-//      WxeFunction currentFunction = ((WxeFunction) Session["CurrentFunction"]);
-//      currentFunction.ExecutingStep.ExecuteNextStep (Context);
+      //      WxeFunction currentFunction = ((WxeFunction) Session["CurrentFunction"]);
+      //      currentFunction.ExecutingStep.ExecuteNextStep (Context);
     }
 
     private void Sub_Click (object sender, System.EventArgs e)
@@ -176,12 +176,12 @@ namespace Rubicon.PageTransition
     public class SubFunction: WxeFunction, ISampleFunctionVariables
     {
       public SubFunction (string var1, string var2)
-        : base (var1, var2)
+          : base (var1, var2)
       {
       }
 
       public SubFunction (params object[] args)
-        : base (args)
+          : base (args)
       {
       }
 
@@ -213,5 +213,5 @@ namespace Rubicon.PageTransition
         Var1 += " SubFunction " + counter.ToString();
       }
     }
-	}
+  }
 }

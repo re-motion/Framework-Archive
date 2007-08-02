@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MultiplePostbackCatcherTest.aspx.cs" Inherits="Rubicon.PageTransition.MultiplePostbackCatcherTest" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TestForm.aspx.cs" Inherits="Rubicon.Web.Test.MultiplePostBackCatching.TestForm" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 

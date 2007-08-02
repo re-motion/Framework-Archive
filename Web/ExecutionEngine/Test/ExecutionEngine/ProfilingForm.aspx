@@ -1,4 +1,4 @@
-<%@ Page language="c#" Codebehind="ProfilingForm.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.PageTransition.ProfilingForm" %>
+<%@ Page language="c#" Codebehind="ProfilingForm.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.Web.Test.ExecutionEngine.ProfilingForm" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" > 
 
 <html>

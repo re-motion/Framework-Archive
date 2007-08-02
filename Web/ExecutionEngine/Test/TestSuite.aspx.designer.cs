@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.PageTransition {
+namespace Rubicon.Web.Test {
     
     
     /// <summary>

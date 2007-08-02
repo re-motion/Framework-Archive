@@ -6,9 +6,9 @@ using System.Web.UI.WebControls;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 
-namespace Rubicon.PageTransition
+namespace Rubicon.Web.Test.MultiplePostBackCatching
 {
-  public partial class MultiplePostbackCatcherTest : SmartPage
+  public partial class TestForm : SmartPage
   {
     private TestControlGenerator _testControlGenerator;
     private const string c_allTests = "All";
@@ -40,7 +40,7 @@ namespace Rubicon.PageTransition
     {
       _testControlGenerator = new TestControlGenerator (this);
 
-      TestTable.Rows.Add (Expect ("open", ResolveUrl ("MultiplePostbackCatcherForm.aspx?ServerDelay=150"), null));
+      TestTable.Rows.Add (Expect ("open", ResolveUrl ("SutForm.aspx?ServerDelay=150"), null));
 
       foreach (Control control in _testControlGenerator.GetTestControls (null))
         TestTable.Rows.AddRange (ExpectControlAttributes (control));

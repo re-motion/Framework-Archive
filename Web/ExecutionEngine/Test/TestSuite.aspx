@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TestSuite.aspx.cs" Inherits="Rubicon.PageTransition.TestSuite" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TestSuite.aspx.cs" Inherits="Rubicon.Web.Test.TestSuite" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 

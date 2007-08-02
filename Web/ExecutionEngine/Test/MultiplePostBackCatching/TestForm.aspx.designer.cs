@@ -8,16 +8,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.PageTransition {
+namespace Rubicon.Web.Test.MultiplePostBackCatching {
     
     
     /// <summary>
-    /// MultiplePostbackCatcherTest class.
+    /// TestForm class.
     /// </summary>
     /// <remarks>
     /// Auto-generated class.
     /// </remarks>
-    public partial class MultiplePostbackCatcherTest {
+    public partial class TestForm {
         
         /// <summary>
         /// HtmlHeadContents control.

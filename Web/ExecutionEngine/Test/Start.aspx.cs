@@ -11,7 +11,7 @@ using System.Web.UI.HtmlControls;
 using System.Xml.Serialization;
 using System.IO;
 using System.Text;
-namespace Rubicon.PageTransition
+namespace Rubicon.Web.Test
 {
 	/// <summary>
 	/// Summary description for Start.

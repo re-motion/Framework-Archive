@@ -1,6 +1,6 @@
 <%@ Register TagPrefix="uc1" TagName="UserControl1" Src="UserControl1.ascx" %>
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Page language="c#" Codebehind="WebForm1.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.PageTransition.WebForm1" %>
+<%@ Page language="c#" Codebehind="WebForm1.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.Web.Test.ExecutionEngine.WebForm1" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
   <HEAD>

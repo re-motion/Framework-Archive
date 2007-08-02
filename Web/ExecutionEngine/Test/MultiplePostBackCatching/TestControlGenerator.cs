@@ -4,9 +4,10 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Rubicon.Utilities;
+using Rubicon.Web.Test.MultiplePostBackCatching;
 using Rubicon.Web.UI.Controls;
 
-namespace Rubicon.PageTransition
+namespace Rubicon.Web.Test.MultiplePostBackCatching
 {
   public class TestControlGenerator
   {

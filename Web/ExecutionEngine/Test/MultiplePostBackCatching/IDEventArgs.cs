@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.PageTransition
+namespace Rubicon.Web.Test.MultiplePostBackCatching
 {
   public class IDEventArgs : EventArgs
   {
