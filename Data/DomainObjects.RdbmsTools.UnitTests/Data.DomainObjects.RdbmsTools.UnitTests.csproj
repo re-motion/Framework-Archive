@@ -38,6 +38,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SchemaGeneration\SqlServer\ConstraintBuilderTest.cs" />
@@ -51,6 +53,7 @@
     <Compile Include="SchemaGeneration\TableBuilderBaseTest.cs" />
     <Compile Include="SetupFixture.cs" />
     <Compile Include="TestDomain\Address.cs" />
+    <Compile Include="TestDomain\ClassWithoutProperties.cs" />
     <Compile Include="TestDomain\ClassWithRelations.cs" />
     <Compile Include="TestDomain\ConcreteClass.cs" />
     <Compile Include="TestDomain\AbstractWithoutConcreteClass.cs" />

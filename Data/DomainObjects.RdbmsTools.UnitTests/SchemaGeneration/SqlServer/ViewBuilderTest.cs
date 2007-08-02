@@ -122,6 +122,22 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
     }
 
     [Test]
+    public void AddViewWithClassWithoutProperties ()
+    {
+      _viewBuilder.AddView (ClassWithoutProperties);
+
+      string expectedScript =
+          "CREATE VIEW [dbo].[ClassWithoutPropertiesView] ([ID], [ClassID], [Timestamp])\r\n"
+          + "  WITH SCHEMABINDING AS\r\n"
+          + "  SELECT [ID], [ClassID], [Timestamp]\r\n"
+          + "    FROM [dbo].[TableWithoutProperties]\r\n"
+          + "    WHERE [ClassID] IN ('ClassWithoutProperties')\r\n"
+          + "  WITH CHECK OPTION\r\n";
+
+      Assert.AreEqual (expectedScript, _viewBuilder.GetCreateViewScript ());
+    }
+
+    [Test]
     public void AddViewWithAbstractWithoutConcreteTable ()
     {
       _viewBuilder.AddView (AbstractWithoutConcreteClass);

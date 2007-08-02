@@ -144,8 +144,8 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
       _constraintBuilder.AddConstraint (ClassWithRelations);
 
       string expectedScript =
-          "ALTER TABLE [dbo].[ClassWithRelations] ADD\r\n"
-          + "  CONSTRAINT [FK_ClassWithRelations_DerivedClassID] FOREIGN KEY ([DerivedClassID]) REFERENCES [dbo].[ConcreteClass] ([ID])\r\n";
+          "ALTER TABLE [dbo].[TableWithRelations] ADD\r\n"
+          + "  CONSTRAINT [FK_TableWithRelations_DerivedClassID] FOREIGN KEY ([DerivedClassID]) REFERENCES [dbo].[ConcreteClass] ([ID])\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript());
     }
@@ -213,7 +213,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
           + "SET @statement = ''\r\n"
           + "SELECT @statement = @statement + 'ALTER TABLE [dbo].[' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' \r\n"
           + "    FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id \r\n"
-          + "    WHERE fk.xtype = 'F' AND t.name IN ('ClassWithRelations')\r\n"
+          + "    WHERE fk.xtype = 'F' AND t.name IN ('TableWithRelations')\r\n"
           + "    ORDER BY t.name, fk.name\r\n"
           + "exec sp_executesql @statement\r\n";
 
@@ -231,7 +231,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
           + "SET @statement = ''\r\n"
           + "SELECT @statement = @statement + 'ALTER TABLE [dbo].[' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' \r\n"
           + "    FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id \r\n"
-          + "    WHERE fk.xtype = 'F' AND t.name IN ('ClassWithRelations', 'ConcreteClass')\r\n"
+          + "    WHERE fk.xtype = 'F' AND t.name IN ('TableWithRelations', 'ConcreteClass')\r\n"
           + "    ORDER BY t.name, fk.name\r\n"
           + "exec sp_executesql @statement\r\n";
 

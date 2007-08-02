@@ -34,9 +34,9 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer
       ArgumentUtility.CheckNotNull ("createViewStringBuilder", createViewStringBuilder);
 
       createViewStringBuilder.AppendFormat (
-          "CREATE VIEW [{0}].[{1}] ([ID], [ClassID], [Timestamp], {2})\r\n"
+          "CREATE VIEW [{0}].[{1}] ([ID], [ClassID], [Timestamp]{2})\r\n"
           + "  WITH SCHEMABINDING AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], {2}\r\n"
+          + "  SELECT [ID], [ClassID], [Timestamp]{2}\r\n"
           + "    FROM [{0}].[{3}]\r\n"
           + "    WHERE [ClassID] IN ({4})\r\n"
           + "  WITH CHECK OPTION\r\n",
@@ -60,7 +60,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer
       string classIDListForWhereClause = GetClassIDList (GetClassDefinitionsForWhereClause (classDefinition));
 
       createViewStringBuilder.AppendFormat (
-          "CREATE VIEW [{0}].[{1}] ([ID], [ClassID], [Timestamp], {2})\r\n"
+          "CREATE VIEW [{0}].[{1}] ([ID], [ClassID], [Timestamp]{2})\r\n"
           + "  WITH SCHEMABINDING AS\r\n",
           FileBuilder.DefaultSchema,
           GetViewName (classDefinition),
@@ -73,7 +73,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer
           createViewStringBuilder.AppendFormat ("  UNION ALL\r\n");
 
         createViewStringBuilder.AppendFormat (
-            "  SELECT [ID], [ClassID], [Timestamp], {0}\r\n"
+            "  SELECT [ID], [ClassID], [Timestamp]{0}\r\n"
             + "    FROM [{1}].[{2}]\r\n"
             + "    WHERE [ClassID] IN ({3})\r\n",
             GetColumnListForUnionSelect (tableRootClass, allPropertyDefinitions),
@@ -105,19 +105,16 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer
 
       foreach (PropertyDefinition propertyDefinition in allPropertyDefinitions)
       {
-        if (stringBuilder.Length != 0)
-          stringBuilder.Append (", ");
-
         if (IsPartOfInheritanceBranch (classDefinitionForUnionSelect, propertyDefinition.ClassDefinition))
         {
-          stringBuilder.AppendFormat ("[{0}]", propertyDefinition.StorageSpecificName);
+          stringBuilder.AppendFormat (", [{0}]", propertyDefinition.StorageSpecificName);
 
           if (TableBuilder.HasClassIDColumn (propertyDefinition))
             stringBuilder.AppendFormat (", [{0}]", RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName));
         }
         else
         {
-          stringBuilder.Append ("null");
+          stringBuilder.Append (", null");
 
           if (TableBuilder.HasClassIDColumn (propertyDefinition))
             stringBuilder.Append (", null");
@@ -131,10 +128,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer
       StringBuilder stringBuilder = new StringBuilder();
       foreach (PropertyDefinition propertyDefinition in propertyDefinitions)
       {
-        if (stringBuilder.Length != 0)
-          stringBuilder.Append (", ");
-
-        stringBuilder.AppendFormat ("[{0}]", propertyDefinition.StorageSpecificName);
+        stringBuilder.AppendFormat (", [{0}]", propertyDefinition.StorageSpecificName);
 
         if (TableBuilder.HasClassIDColumn (propertyDefinition))
           stringBuilder.AppendFormat (", [{0}]", RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName));

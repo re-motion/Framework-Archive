@@ -249,6 +249,25 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
     }
 
     [Test]
+    public void AddToCreateTableScriptWithClassWithoutProperties ()
+    {
+      string expectedStatement =
+          "CREATE TABLE [dbo].[TableWithoutProperties]\r\n"
+          + "(\r\n"
+          + "  [ID] uniqueidentifier NOT NULL,\r\n"
+          + "  [ClassID] varchar (100) NOT NULL,\r\n"
+          + "  [Timestamp] rowversion NOT NULL,\r\n\r\n"
+          + "  -- ClassWithoutProperties columns\r\n\r\n"
+          + "  CONSTRAINT [PK_TableWithoutProperties] PRIMARY KEY CLUSTERED ([ID])\r\n"
+          + ")\r\n";
+      StringBuilder stringBuilder = new StringBuilder ();
+
+      _tableBuilder.AddToCreateTableScript (ClassWithoutProperties, stringBuilder);
+
+      Assert.AreEqual (expectedStatement, stringBuilder.ToString ());
+    }
+
+    [Test]
     public void AddToDropTableScript ()
     {
       string expectedScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Customer' AND TABLE_SCHEMA = 'dbo')\r\n"

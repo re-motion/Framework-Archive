@@ -21,6 +21,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests
     private ClassDefinition _derivedOfDerivedClass;
     private ClassDefinition _ceoClass;
     private ClassDefinition _classWithRelations;
+    private ClassDefinition _classWithoutProperties;
 
     [TestFixtureSetUp]
     public virtual void TextFixtureSetUp ()
@@ -42,6 +43,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests
       _derivedOfDerivedClass = MappingConfiguration.ClassDefinitions.GetMandatory (typeof (DerivedOfDerivedClass));
       _ceoClass = MappingConfiguration.ClassDefinitions.GetMandatory (typeof (Ceo));
       _classWithRelations = MappingConfiguration.ClassDefinitions.GetMandatory (typeof (ClassWithRelations));
+      _classWithoutProperties = MappingConfiguration.ClassDefinitions.GetMandatory (typeof (ClassWithoutProperties));
     }
 
     [TearDown]
@@ -117,6 +119,11 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests
     protected ClassDefinition ClassWithRelations
     {
       get { return _classWithRelations; }
+    }
+
+    protected ClassDefinition ClassWithoutProperties
+    {
+      get { return _classWithoutProperties; }
     }
   }
 }

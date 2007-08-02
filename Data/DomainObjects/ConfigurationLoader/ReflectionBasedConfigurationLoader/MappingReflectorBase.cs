@@ -59,7 +59,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
       Array.Sort (
           domainObjectTypes,
-          delegate (Type left, Type right) { return string.Compare (left.FullName, right.FullName, StringComparison.Ordinal); });
+          delegate (Type left, Type right) { return string.Compare (left.FullName, right.FullName, StringComparison.OrdinalIgnoreCase); });
 
       return domainObjectTypes;
     }

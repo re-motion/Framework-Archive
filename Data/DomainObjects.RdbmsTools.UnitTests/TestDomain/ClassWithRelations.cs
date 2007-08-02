@@ -2,7 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
 {
-  [DBTable]
+  [DBTable ("TableWithRelations")]
   [FirstStorageGroupAttribute]
   [Instantiable]
   public abstract class ClassWithRelations : DomainObject
