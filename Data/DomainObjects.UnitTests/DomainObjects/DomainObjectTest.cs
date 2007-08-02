@@ -291,6 +291,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Only existing DomainObjects can be marked as changed.")]
+    public void MarkAsChangedThrowsWhenNew ()
+    {
+      Order order = Order.NewObject ();
+      order.MarkAsChanged ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Only existing DomainObjects can be marked as changed.")]
+    public void MarkAsChangedThrowsWhenDeleted ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      order.Delete ();
+      order.MarkAsChanged ();
+    }
+
+    [Test]
     public void PrivateConstructor ()
     {
       OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);

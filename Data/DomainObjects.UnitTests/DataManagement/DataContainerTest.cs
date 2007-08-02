@@ -413,5 +413,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       clone = dataContainer.Clone ();
       Assert.AreEqual (StateType.Changed, clone.State);
     }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Only existing DataContainers can be marked as changed.")]
+    public void MarkAsChangedThrowsWhenNew ()
+    {
+      Order order = Order.NewObject ();
+      DataContainer dataContainer = order.InternalDataContainer;
+      dataContainer.MarkAsChanged ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Only existing DataContainers can be marked as changed.")]
+    public void MarkAsChangedThrowsWhenDeleted ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      order.Delete ();
+      DataContainer dataContainer = order.InternalDataContainer;
+      dataContainer.MarkAsChanged ();
+    }
   }
 }

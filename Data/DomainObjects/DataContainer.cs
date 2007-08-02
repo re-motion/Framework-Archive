@@ -283,6 +283,9 @@ public class DataContainer
 
   public void MarkAsChanged ()
   {
+    CheckDiscarded ();
+    if (_state != DataContainerStateType.Existing)
+      throw new InvalidOperationException ("Only existing DataContainers can be marked as changed.");
     _hasBeenMarkedChanged = true;
   }
 

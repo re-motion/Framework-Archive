@@ -484,7 +484,14 @@ public class DomainObject
     CheckIfObjectIsDiscarded ();
 
     DataContainer dataContainer = GetDataContainer ();
-    dataContainer.MarkAsChanged ();
+    try
+    {
+      dataContainer.MarkAsChanged ();
+    }
+    catch (InvalidOperationException ex)
+    {
+      throw new InvalidOperationException ("Only existing DomainObjects can be marked as changed.", ex);
+    }
   }
 
 
