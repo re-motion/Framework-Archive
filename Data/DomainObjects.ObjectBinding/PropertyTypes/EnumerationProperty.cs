@@ -101,7 +101,8 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
     /// </param>
     public IEnumerationValueInfo GetValueInfoByValue (object value, IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      if (value == null)
+        return null;
 
       string valueString = value.ToString ();
 
@@ -117,7 +118,8 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 
     public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("identifier", identifier);
+      if (identifier == null)
+        return null;
 
       object value = Enum.Parse (PropertyType, identifier, false);
       return GetValueInfoByValue (value, businessObject);
