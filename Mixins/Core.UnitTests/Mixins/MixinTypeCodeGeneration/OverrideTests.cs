@@ -60,5 +60,20 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
           + "ClassOverridingInheritedMixinMethod.PublicInheritedMethod",
           mixin.InvokeInheritedMethods ());
     }
+
+    [Test]
+    [Ignore ("TODO: FS - Non-public overriders")]
+    public void ClassWithProtectedOverrider ()
+    {
+      ClassOverridingMixinMembersProtected com = CreateMixedObject<ClassOverridingMixinMembersProtected> (typeof (MixinWithAbstractMembers)).With ();
+      IMixinWithAbstractMembers comAsIAbstractMixin = com as IMixinWithAbstractMembers;
+
+      Assert.IsNotNull (comAsIAbstractMixin);
+      Assert.AreEqual ("MixinWithAbstractMembers.ImplementedMethod-ClassOverridingMixinMembersProtected.AbstractMethod-25",
+          comAsIAbstractMixin.ImplementedMethod ());
+      Assert.AreEqual ("MixinWithAbstractMembers.ImplementedProperty-ClassOverridingMixinMembersProtected.AbstractProperty",
+          comAsIAbstractMixin.ImplementedProperty ());
+      Assert.AreEqual ("MixinWithAbstractMembers.ImplementedEvent", comAsIAbstractMixin.ImplementedEvent ());
+    }
   }
 }

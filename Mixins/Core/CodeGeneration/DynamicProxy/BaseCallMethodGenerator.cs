@@ -74,18 +74,27 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       else
       {
         MixinDefinition mixin = (MixinDefinition) target.DeclaringClass;
-        Reference mixinReference = GetMixinReference (mixin);
+        MethodInfo baseCallMethod = GetMixinMethodToCall (target.MethodInfo);
+        Reference mixinReference = GetMixinReference (mixin, baseCallMethod.DeclaringType);
 
-        return new ReturnStatement (new VirtualMethodInvocationExpression (mixinReference, target.MethodInfo, argExpressions));
+        return new ReturnStatement (new VirtualMethodInvocationExpression (mixinReference, baseCallMethod, argExpressions));
       }
     }
 
-    private Reference GetMixinReference (MixinDefinition mixin)
+    private MethodInfo GetMixinMethodToCall (MethodInfo targetMethod)
+    {
+      if (targetMethod.IsPublic)
+        return targetMethod;
+      else
+        throw new NotImplementedException ("Non-public overriders are not implemented: " + targetMethod.DeclaringType + "." + targetMethod.Name);
+    }
+
+    private Reference GetMixinReference (MixinDefinition mixin, Type concreteMixinType)
     {
       Reference extensionsReference = new IndirectFieldReference (_thisField, _surroundingType.ExtensionsField);
-      Expression mixinExpression = new CastClassExpression (mixin.Type, 
+      Expression mixinExpression = new CastClassExpression (concreteMixinType, 
         new LoadArrayElementExpression (mixin.MixinIndex, extensionsReference, typeof (object)));
-      return new ExpressionReference (mixin.Type, mixinExpression, _methodEmitter.InnerEmitter);
+      return new ExpressionReference (concreteMixinType, mixinExpression, _methodEmitter.InnerEmitter);
     }
   }
 }

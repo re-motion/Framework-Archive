@@ -50,5 +50,13 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
       add { VirtualEvent += value; }
       remove { VirtualEvent -= value; }
     }
+
+    internal Delegate[] GetVirtualEventInvocationList ()
+    {
+      if (VirtualEvent != null)
+        return VirtualEvent.GetInvocationList ();
+      else
+        return null;
+    }
   }
 }

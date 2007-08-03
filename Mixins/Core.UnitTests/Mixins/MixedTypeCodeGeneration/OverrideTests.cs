@@ -174,5 +174,18 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
           + "MixinOverridingInheritedMethod.PublicInheritedMethod-BaseClassWithInheritedMethod.PublicInheritedMethod",
           cwim.InvokeInheritedMethods ());
     }
+
+    [Test]
+    [Ignore ("TODO: FS - Non-public overriders")]
+    public void MixinWithProtectedOverrider ()
+    {
+      BaseType1 obj = CreateMixedObject<BaseType1> (typeof (MixinWithProtectedOverrider)).With();
+      Assert.AreEqual ("MixinWithProtectedOverrider.VirtualMethod-BaseType1.VirtualMethod", obj.VirtualMethod ());
+      Assert.AreEqual ("MixinWithProtectedOverrider.VirtualProperty-BaseType1.VirtualProperty", obj.VirtualProperty);
+
+      Assert.AreEqual (null, obj.GetVirtualEventInvocationList());
+      obj.VirtualEvent += delegate { };
+      Assert.AreEqual (2, obj.GetVirtualEventInvocationList ().Length);
+    }
   }
 }

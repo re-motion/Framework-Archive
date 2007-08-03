@@ -61,6 +61,7 @@
     <Compile Include="Configuration\ValidationSampleTypes\ClassLookingLikeBaseType3.cs" />
     <Compile Include="SampleTypes\BaseTypeWithDuckFaceMixin.cs" />
     <Compile Include="SampleTypes\ClassOverridingInheritedMixinMethod.cs" />
+    <Compile Include="SampleTypes\ClassOverridingMixinMembersProtected.cs" />
     <Compile Include="SampleTypes\MixinOverridingInheritedMethod.cs" />
     <Compile Include="SampleTypes\MixinRequiringAllMembersBase.cs" />
     <Compile Include="SampleTypes\DuckFaceMixin.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="SampleTypes\MixinRequiringAllMembersFace.cs" />
     <Compile Include="SampleTypes\MixinWithClassFaceImplementingInternalInterface.cs" />
     <Compile Include="SampleTypes\MixinWithIndirectRequirements.cs" />
+    <Compile Include="SampleTypes\MixinWithProtectedOverrider.cs" />
     <Compile Include="SampleTypes\MixinWithThisRequirementWithStaticMethod.cs" />
     <Compile Include="SampleTypes\MixinWithSingleAbstractMethod.cs" />
     <Compile Include="SampleTypes\DuckBaseMixin.cs" />

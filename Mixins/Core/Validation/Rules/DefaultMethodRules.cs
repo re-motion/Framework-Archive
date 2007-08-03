@@ -4,6 +4,7 @@ using System.Reflection;
 using Rubicon.Mixins.Utilities;
 using Rubicon.Mixins.Validation;
 using Rubicon.Mixins.CodeGeneration;
+using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Validation.Rules
 {
@@ -16,7 +17,7 @@ namespace Rubicon.Mixins.Validation.Rules
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (AbstractMethodMustBeOverridden));
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (NoCircularOverrides));
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase));
-      visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (OverridingMethodMustBePublic));
+      visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (OverridingMethodMustBePublicOrProtected));
     }
 
     private void OverriddenMethodMustBeVirtual (DelegateValidationRule<MethodDefinition>.Args args)
@@ -49,9 +50,10 @@ namespace Rubicon.Mixins.Validation.Rules
           || MixinReflector.GetMixinBaseType (args.Definition.DeclaringClass.Type) != null, args.Log, args.Self);
     }
 
-    private void OverridingMethodMustBePublic (DelegateValidationRule<MethodDefinition>.Args args)
+    private void OverridingMethodMustBePublicOrProtected (DelegateValidationRule<MethodDefinition>.Args args)
     {
-      SingleMust (args.Definition.Base == null || args.Definition.MethodInfo.IsPublic, args.Log, args.Self);
+      Assertion.IsTrue (args.Definition.Base == null || args.Definition.MethodInfo.IsPublic || args.Definition.MethodInfo.IsFamily 
+          || args.Definition.MethodInfo.IsFamilyOrAssembly, "Private and internal methods are ignored by the mixin engine");
     }
   }
 }

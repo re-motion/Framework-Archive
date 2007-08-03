@@ -87,15 +87,30 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
             throw new NotSupportedException ("The code generator only supports mixin methods to be overridden by the mixin's base class.");
 
           CustomMethodEmitter methodOverride = _emitter.CreateMethodOverride (method.MethodInfo);
-          LocalReference castTargetLocal = methodOverride.InnerEmitter.CodeBuilder.DeclareLocal (Configuration.BaseClass.Type);
-          methodOverride.InnerEmitter.CodeBuilder.AddStatement (
-              new AssignStatement (
-                  castTargetLocal,
-                  new CastClassExpression (Configuration.BaseClass.Type, targetReference.ToExpression())));
-
-          methodOverride.ImplementMethodByDelegation (castTargetLocal, method.Overrides[0].MethodInfo);
+          MethodInfo overrider = method.Overrides[0].MethodInfo;
+          MethodInfo methodToCall = GetOverriderMethodToCall (overrider);
+          AddCallToOverrider (methodOverride, targetReference, methodToCall);
         }
       }
+    }
+
+    private MethodInfo GetOverriderMethodToCall (MethodInfo overrider)
+    {
+      if (overrider.IsPublic)
+        return overrider;
+      else
+        throw new NotImplementedException ("Non-public overriders are not implemented: " + overrider.DeclaringType.FullName + "." + overrider.Name);
+    }
+
+    private void AddCallToOverrider (CustomMethodEmitter methodOverride, Reference targetReference, MethodInfo targetMethod)
+    {
+      LocalReference castTargetLocal = methodOverride.InnerEmitter.CodeBuilder.DeclareLocal (targetMethod.DeclaringType);
+      methodOverride.InnerEmitter.CodeBuilder.AddStatement (
+          new AssignStatement (
+              castTargetLocal,
+              new CastClassExpression (Configuration.BaseClass.Type, targetReference.ToExpression())));
+
+      methodOverride.ImplementMethodByDelegation (castTargetLocal, targetMethod);
     }
 
     public TypeBuilder TypeBuilder

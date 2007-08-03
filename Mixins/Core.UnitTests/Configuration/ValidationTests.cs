@@ -46,6 +46,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       return false;
     }
 
+    private void AssertSuccess (IValidationLog log)
+    {
+      Assert.AreEqual (0, log.GetNumberOfFailures ());
+      Assert.AreEqual (0, log.GetNumberOfWarnings ());
+      Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
+    }
+
     [Test]
     public void ValidationVisitsSomething ()
     {
@@ -75,9 +82,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     public void AllIsValid ()
     {
       IValidationLog log = MixinConfiguration.ActiveContext.Validate ();
-      Assert.AreEqual (0, log.GetNumberOfFailures());
-      Assert.AreEqual (0, log.GetNumberOfWarnings());
-      Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions());
+      AssertSuccess (log);
     }
 
     [Test]
@@ -334,9 +339,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
           definition.Mixins[typeof (MixinWithUnsatisfiedEmptyThisDependency)].
               ThisDependencies[typeof (IEmptyInterface)]);
 
-      Assert.AreEqual (0, log.GetNumberOfFailures ());
-      Assert.AreEqual (0, log.GetNumberOfWarnings ());
-      Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
+      AssertSuccess (log);
     }
 
     [Test]
@@ -357,12 +360,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       DefaultValidationLog log = Validator.Validate (
           definition.Mixins[typeof (MixinWithCircularThisDependency1)]);
 
-      Assert.AreEqual (0, log.GetNumberOfFailures());
-      Assert.AreEqual (0, log.GetNumberOfWarnings ());
-      Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
+      AssertSuccess (log);
     }
-
-
 
     [Test]
     public void SucceedsIfDuckThisDependency ()
@@ -370,10 +369,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassFulfillingAllMemberRequirementsDuck),
           typeof (MixinRequiringAllMembersFace));
       DefaultValidationLog log = Validator.Validate (definition);
-      
-      Assert.AreEqual (0, log.GetNumberOfFailures ());
-      Assert.AreEqual (0, log.GetNumberOfWarnings ());
-      Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
+
+      AssertSuccess (log);
     }
 
     [Test]
@@ -383,9 +380,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
           typeof (MixinRequiringAllMembersBase));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.AreEqual (0, log.GetNumberOfFailures ());
-      Assert.AreEqual (0, log.GetNumberOfWarnings ());
-      Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
+      AssertSuccess (log);
     }
 
     [Test]
@@ -394,8 +389,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin4), typeof (BT3Mixin7Face));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.AreEqual (0, log.GetNumberOfFailures());
-      Assert.AreEqual (0, log.GetNumberOfWarnings());
+      AssertSuccess (log);
     }
 
     [Test]
@@ -404,8 +398,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin4), typeof (BT3Mixin7Base));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.AreEqual (0, log.GetNumberOfFailures());
-      Assert.AreEqual (0, log.GetNumberOfWarnings());
+      AssertSuccess (log);
     }
 
     [Test]
@@ -414,9 +407,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (object), typeof (MixinWithUnsatisfiedEmptyAggregateThisDependency));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.AreEqual (0, log.GetNumberOfFailures ());
-      Assert.AreEqual (0, log.GetNumberOfWarnings ());
-      Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
+      AssertSuccess (log);
     }
 
     [Test]
@@ -451,9 +442,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
             typeof (ClassFulfillingAllMemberRequirementsExplicitly), typeof (MixinRequiringAllMembersFace));
         DefaultValidationLog log = Validator.Validate (definition);
 
-        Assert.AreEqual (0, log.GetNumberOfFailures ());
-        Assert.AreEqual (0, log.GetNumberOfWarnings ());
-        Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
+        AssertSuccess (log);
       }
     }
 
@@ -473,9 +462,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
           typeof (MixinAddingBT1Attribute));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.AreEqual (0, log.GetNumberOfFailures ());
-      Assert.AreEqual (0, log.GetNumberOfWarnings ());
-      Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
+      AssertSuccess(log);
     }
 
     [Test]
@@ -510,8 +497,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
           UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseTypeWithAllowMultiple), typeof (MixinAddingAllowMultipleToClassAndMember));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.AreEqual (0, log.GetNumberOfFailures());
-      Assert.AreEqual (0, log.GetNumberOfWarnings());
+      AssertSuccess (log);
     }
 
     [Test]
@@ -529,8 +515,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (PublicNester.PublicNested));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.AreEqual (0, log.GetNumberOfFailures());
-      Assert.AreEqual (0, log.GetNumberOfWarnings());
+      AssertSuccess (log);
     }
 
     [Test]
@@ -596,8 +581,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
           typeof (MixinOverridingClassMethod));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.AreEqual (0, log.GetNumberOfFailures());
-      Assert.AreEqual (0, log.GetNumberOfWarnings());
+      AssertSuccess (log);
     }
 
     [Test]
@@ -619,36 +603,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void FailsIfOverridingMethodIsNotPublic ()
+    public void SucceedsIfOverridingMembersAreProtected ()
     {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassWithNonPublicOverrider),
-          typeof (MixinWithAbstractMembers));
-      DefaultValidationLog log = Validator.Validate (definition.Methods[typeof (ClassWithNonPublicOverrider).GetMethod ("AbstractMethod",
-          BindingFlags.NonPublic | BindingFlags.Instance)]);
+      BaseClassDefinition definition =
+          UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithProtectedOverrider));
+      DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.OverridingMethodMustBePublic", log));
-    }
-
-    [Test]
-    public void FailsIfOverridingPropertyIsNotPublic ()
-    {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassWithNonPublicOverrider),
-          typeof (MixinWithAbstractMembers));
-      DefaultValidationLog log = Validator.Validate (definition.Properties[typeof (ClassWithNonPublicOverrider).GetProperty ("AbstractProperty",
-          BindingFlags.NonPublic | BindingFlags.Instance)]);
-
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.OverridingMethodMustBePublic", log));
-    }
-
-    [Test]
-    public void FailsIfOverridingEventIsNotPublic ()
-    {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassWithNonPublicOverrider),
-          typeof (MixinWithAbstractMembers));
-      DefaultValidationLog log = Validator.Validate (definition.Events[typeof (ClassWithNonPublicOverrider).GetEvent ("AbstractEvent",
-          BindingFlags.NonPublic | BindingFlags.Instance)]);
-
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.OverridingMethodMustBePublic", log));
+      AssertSuccess (log);
     }
 
     [Test]
@@ -679,8 +640,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
           typeof (MixinWithPrivateCtorAndVirtualMethod));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.AreEqual (0, log.GetNumberOfFailures ());
-      Assert.AreEqual (0, log.GetNumberOfWarnings ());
+      AssertSuccess (log);
     }
 
     [Test]
