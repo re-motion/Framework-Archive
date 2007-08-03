@@ -46,6 +46,17 @@
   <ItemGroup>
     <Compile Include="Configuration\AttributeIntroductionDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\ClassWithVirtualMethod.cs" />
+    <Compile Include="Mixins\BaseCallProxyCodeGeneration\BaseCallTests.cs" />
+    <Compile Include="Mixins\BaseCallProxyCodeGeneration\InstantiationTests.cs" />
+    <Compile Include="Mixins\MixedTypeCodeGeneration\AttributeTests.cs" />
+    <Compile Include="Mixins\MixedTypeCodeGeneration\DependencyTests.cs" />
+    <Compile Include="Mixins\MixedTypeCodeGeneration\DuckRequirementTests.cs" />
+    <Compile Include="Mixins\MixedTypeCodeGeneration\GenericsTests.cs" />
+    <Compile Include="Mixins\MixedTypeCodeGeneration\InstantiationTests.cs" />
+    <Compile Include="Mixins\MixedTypeCodeGeneration\IntroductionTests.cs" />
+    <Compile Include="Mixins\MixedTypeCodeGeneration\OverrideTests.cs" />
+    <Compile Include="Mixins\MixedTypeCodeGeneration\TypeFeatureTests.cs" />
+    <Compile Include="Mixins\MixinTypeCodeGeneration\TypeFeatureTests.cs" />
     <Compile Include="SampleTypes\ClassFulfillingAllMemberRequirementsExplicitly.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\ClassLookingLikeBaseType3.cs" />
     <Compile Include="SampleTypes\BaseTypeWithDuckFaceMixin.cs" />
@@ -77,7 +88,7 @@
     <Compile Include="Mixins\ConcreteMixedTypeAttributeTests.cs" />
     <Compile Include="Mixins\ConcreteMixinTypeAttributeTests.cs" />
     <Compile Include="Mixins\MixedTypeInstantiationScopeTests.cs" />
-    <Compile Include="Mixins\MixinTypeCodeGenerationTests.cs" />
+    <Compile Include="Mixins\MixinTypeCodeGeneration\OverrideTests.cs" />
     <Compile Include="Mixins\ModuleManagerTests.cs" />
     <Compile Include="Mixins\NamespaceChangingNameProviderTests.cs" />
     <Compile Include="Mixins\ObjectFactoryTests.cs" />
@@ -166,8 +177,7 @@
     <Compile Include="Configuration\MixinDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\ClassContextTests.cs" />
     <Compile Include="Mixins\CheckPEVerify.cs" />
-    <Compile Include="Mixins\MixedTypeCodeGenerationTests.cs" />
-    <Compile Include="Mixins\BaseCallProxyCodeGenerationTests.cs" />
+    <Compile Include="Mixins\BaseCallProxyCodeGeneration\TypeFeatureTests.cs" />
     <Compile Include="Mixins\MixinReflectionTests.cs" />
     <Compile Include="Mixins\MixinTestBase.cs" />
     <Compile Include="Mixins\SerializationTests.cs" />

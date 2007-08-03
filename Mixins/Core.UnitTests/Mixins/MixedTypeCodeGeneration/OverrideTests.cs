@@ -1,0 +1,178 @@
+using System;
+using System.Reflection;
+using NUnit.Framework;
+using Rubicon.Mixins.UnitTests.SampleTypes;
+
+namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
+{
+  [TestFixture]
+  public class OverrideTests : MixinTestBase
+  {
+    [Test]
+    public void OverrideClassMethods ()
+    {
+      BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (BT1Mixin1)).With ();
+
+      Assert.AreEqual ("BT1Mixin1.VirtualMethod", bt1.VirtualMethod ());
+      Assert.IsNotNull (bt1.GetType ().GetMethod ("VirtualMethod", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+          "overridden member is public and has the same name");
+      Assert.AreEqual (typeof (BaseType1), bt1.GetType ()
+          .GetMethod ("VirtualMethod", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).GetBaseDefinition ().DeclaringType);
+    }
+
+    [Test]
+    public void OverrideClassProperties ()
+    {
+      BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (BT1Mixin1)).With ();
+
+      Assert.AreEqual ("BaseType1.BackingField", bt1.VirtualProperty);
+      Assert.AreNotEqual ("FooBar", Mixin.Get<BT1Mixin1> (bt1).BackingField);
+
+      bt1.VirtualProperty = "FooBar";
+      Assert.AreEqual ("BaseType1.BackingField", bt1.VirtualProperty);
+      Assert.AreEqual ("FooBar", Mixin.Get<BT1Mixin1> (bt1).BackingField);
+
+      Assert.IsNotNull (bt1.GetType ().GetProperty ("VirtualProperty", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+          "overridden member is public and has the same name");
+
+      bt1 = CreateMixedObject<BaseType1> (typeof (BT1Mixin2)).With ();
+
+      Assert.AreEqual ("Mixin2ForBT1.VirtualProperty", bt1.VirtualProperty);
+      bt1.VirtualProperty = "Foobar";
+      Assert.AreEqual ("Mixin2ForBT1.VirtualProperty", bt1.VirtualProperty);
+    }
+
+    [Test]
+    public void OverrideClassEvents ()
+    {
+      BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (BT1Mixin1)).With ();
+
+      EventHandler eventHandler = delegate { };
+
+      Assert.IsFalse (Mixin.Get<BT1Mixin1> (bt1).VirtualEventAddCalled);
+      bt1.VirtualEvent += eventHandler;
+      Assert.IsTrue (Mixin.Get<BT1Mixin1> (bt1).VirtualEventAddCalled);
+
+      Assert.IsFalse (Mixin.Get<BT1Mixin1> (bt1).VirtualEventRemoveCalled);
+      bt1.VirtualEvent -= eventHandler;
+      Assert.IsTrue (Mixin.Get<BT1Mixin1> (bt1).VirtualEventRemoveCalled);
+
+      Assert.IsNotNull (bt1.GetType ().GetEvent ("VirtualEvent", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+          "overridden member is public and has the same name");
+    }
+
+    class Foo1
+    { }
+
+    class Foo2
+    { }
+
+    [CompleteInterface (typeof (Foo1))]
+    [CompleteInterface (typeof (Foo2))]
+    [IgnoreForMixinConfiguration]
+    interface IMultiFace
+    {
+    }
+
+    [Test]
+    public void OverrideWithCompleteBaseInterface ()
+    {
+      BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin7Base), typeof (BT3Mixin4)).With ();
+      Assert.AreEqual ("BT3Mixin7Base.IfcMethod-BT3Mixin4.Foo-BaseType3.IfcMethod-BaseType3.IfcMethod2", bt3.IfcMethod ());
+    }
+
+    [Test]
+    public void TestMultipleOverridesSmall ()
+    {
+      BaseType7 bt7 = ObjectFactory.Create<BaseType7> ().With ();
+      Assert.AreEqual ("BT7Mixin0.One(5)-BT7Mixin2.One(5)"
+          + "-BT7Mixin3.One(5)-BT7Mixin1.BT7Mixin1Specific"
+              + "-BaseType7.Three"
+              + "-BT7Mixin2.Three"
+            + "-BaseType7.Three-BT7Mixin1.One(5)-BaseType7.One(5)"
+          + "-BT7Mixin3.One(5)-BT7Mixin1.BT7Mixin1Specific"
+              + "-BaseType7.Three"
+              + "-BT7Mixin2.Three"
+            + "-BaseType7.Three-BT7Mixin1.One(5)-BaseType7.One(5)"
+          + "-BaseType7.Two-BT7Mixin2.Two",
+          bt7.One (5));
+
+      Assert.AreEqual ("BT7Mixin0.One(foo)-BT7Mixin2.One(foo)"
+          + "-BT7Mixin3.One(foo)-BT7Mixin1.BT7Mixin1Specific"
+              + "-BaseType7.Three"
+              + "-BT7Mixin2.Three"
+            + "-BaseType7.Three-BT7Mixin1.One(foo)-BaseType7.One(foo)"
+          + "-BT7Mixin3.One(foo)-BT7Mixin1.BT7Mixin1Specific"
+              + "-BaseType7.Three"
+              + "-BT7Mixin2.Three"
+            + "-BaseType7.Three-BT7Mixin1.One(foo)-BaseType7.One(foo)"
+          + "-BaseType7.Two-BT7Mixin2.Two",
+          bt7.One ("foo"));
+
+      Assert.AreEqual ("BT7Mixin2.Two", bt7.Two ());
+      Assert.AreEqual ("BT7Mixin2.Three-BaseType7.Three", bt7.Three ());
+      Assert.AreEqual ("BT7Mixin2.Four-BaseType7.Four-BT7Mixin9.Five-BaseType7.Five-BaseType7.NotOverridden", bt7.Four ());
+      Assert.AreEqual ("BT7Mixin9.Five-BaseType7.Five", bt7.Five ());
+    }
+
+    [Test]
+    public void TestMultipleOverridesGrand ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (BaseType7), typeof (BT7Mixin0), typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3), typeof (BT7Mixin4), typeof (BT7Mixin5), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin8), typeof (BT7Mixin9), typeof (BT7Mixin10)))
+      {
+        MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin0)).AddExplicitDependency (
+            typeof (IBT7Mixin7));
+        MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin7)).AddExplicitDependency (
+            typeof (IBT7Mixin4));
+        MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin4)).AddExplicitDependency (
+            typeof (IBT7Mixin6));
+        MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin6)).AddExplicitDependency (
+            typeof (IBT7Mixin2));
+        MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin9)).AddExplicitDependency (
+            typeof (IBT7Mixin8));
+
+        BaseType7 bt7 = ObjectFactory.Create<BaseType7> ().With ();
+        Assert.AreEqual ("BT7Mixin0.One(7)-BT7Mixin4.One(7)-BT7Mixin6.One(7)-BT7Mixin2.One(7)"
+            + "-BT7Mixin3.One(7)-BT7Mixin1.BT7Mixin1Specific"
+                + "-BaseType7.Three"
+                + "-BT7Mixin2.Three-BaseType7.Three"
+              + "-BT7Mixin1.One(7)-BaseType7.One(7)"
+            + "-BT7Mixin3.One(7)-BT7Mixin1.BT7Mixin1Specific"
+                + "-BaseType7.Three"
+                + "-BT7Mixin2.Three-BaseType7.Three"
+              + "-BT7Mixin1.One(7)-BaseType7.One(7)"
+            + "-BaseType7.Two"
+            + "-BT7Mixin2.Two",
+            bt7.One (7));
+
+        Assert.AreEqual ("BT7Mixin0.One(bar)-BT7Mixin4.One(bar)-BT7Mixin6.One(bar)-BT7Mixin2.One(bar)"
+            + "-BT7Mixin3.One(bar)-BT7Mixin1.BT7Mixin1Specific"
+                + "-BaseType7.Three"
+                + "-BT7Mixin2.Three-BaseType7.Three"
+              + "-BT7Mixin1.One(bar)-BaseType7.One(bar)"
+            + "-BT7Mixin3.One(bar)-BT7Mixin1.BT7Mixin1Specific"
+                + "-BaseType7.Three"
+                + "-BT7Mixin2.Three-BaseType7.Three"
+              + "-BT7Mixin1.One(bar)-BaseType7.One(bar)"
+            + "-BaseType7.Two"
+            + "-BT7Mixin2.Two",
+            bt7.One ("bar"));
+
+        Assert.AreEqual ("BT7Mixin2.Two", bt7.Two ());
+        Assert.AreEqual ("BT7Mixin2.Three-BaseType7.Three", bt7.Three ());
+        Assert.AreEqual ("BT7Mixin2.Four-BaseType7.Four-BT7Mixin9.Five-BT7Mixin8.Five-BaseType7.Five-BaseType7.NotOverridden", bt7.Four ());
+        Assert.AreEqual ("BT7Mixin9.Five-BT7Mixin8.Five-BaseType7.Five", bt7.Five ());
+      }
+    }
+
+    [Test]
+    public void MixinOverridingInheritedClassMethod ()
+    {
+      ClassWithInheritedMethod cwim = ObjectFactory.Create<ClassWithInheritedMethod> ().With ();
+      Assert.AreEqual ("MixinOverridingInheritedMethod.ProtectedInheritedMethod-BaseClassWithInheritedMethod.ProtectedInheritedMethod-"
+          + "MixinOverridingInheritedMethod.ProtectedInternalInheritedMethod-BaseClassWithInheritedMethod.ProtectedInternalInheritedMethod-"
+          + "MixinOverridingInheritedMethod.PublicInheritedMethod-BaseClassWithInheritedMethod.PublicInheritedMethod",
+          cwim.InvokeInheritedMethods ());
+    }
+  }
+}

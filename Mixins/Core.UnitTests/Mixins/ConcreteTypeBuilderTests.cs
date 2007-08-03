@@ -101,6 +101,13 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
+    public void DefaultNameProviderIsGuid ()
+    {
+      Assert.AreSame (GuidNameProvider.Instance, ConcreteTypeBuilder.Current.TypeNameProvider);
+      Assert.AreSame (GuidNameProvider.Instance, ConcreteTypeBuilder.Current.MixinTypeNameProvider);
+    }
+
+    [Test]
     public void CanSaveAndResetScope ()
     {
       MockRepository repository = new MockRepository();
