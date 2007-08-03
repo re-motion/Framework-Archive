@@ -12,12 +12,12 @@ namespace Rubicon.Web.Test {
     
     
     /// <summary>
-    /// TestSuite class.
+    /// TestSuiteForm class.
     /// </summary>
     /// <remarks>
     /// Auto-generated class.
     /// </remarks>
-    public partial class TestSuite {
+    public partial class TestSuiteForm {
         
         /// <summary>
         /// HtmlHeadContents control.

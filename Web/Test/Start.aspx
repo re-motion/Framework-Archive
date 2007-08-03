@@ -23,7 +23,7 @@
         <a href="MultiplePostbackCatching/SutForm.aspx">Multiple Postback Catcher Tests</a>
       </p>
       <p>
-        <a href="../../Selenium/Core/TestRunner.html?test=../../ExecutionEngine/Test/TestSuite.aspx">Rubicon.Web.Tests</a>
+        <a href="../Selenium/Core/TestRunner.html?test=../../Test/TestSuiteForm.aspx">Rubicon.Web.Tests</a>
       </p>
       <p>
         <a href="redirected.wxe">redirected.wxe</a>

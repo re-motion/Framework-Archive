@@ -8,7 +8,7 @@
 </head>
 <body>
     <form id="Form" runat="server">
-    <asp:Table ID="TestTable" runat="server"/>
+    <asp:Table ID="TestTable" runat="server" EnableViewState="false"/>
     </form>
 </body>
 </html>

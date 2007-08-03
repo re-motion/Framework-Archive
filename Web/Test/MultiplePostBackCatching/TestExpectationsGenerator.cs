@@ -1,58 +1,62 @@
-using System;
 using System.Collections.Generic;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Rubicon.Web.UI;
+using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.Test.MultiplePostBackCatching
 {
-  public partial class TestForm : SmartPage
+  public class TestExpectationsGenerator
   {
+    public const string AllTests = "All";
+    public const string TestCaseParameter = "TestCase";
+
+    public static string GetTestCaseUrlParameter (TestForm testPage)
+    {
+      return testPage.Request.QueryString[TestExpectationsGenerator.TestCaseParameter];
+    }
+
+    public static void GenerateExpectations (TestForm testPage, TableRowCollection rows, string sutPage)
+    {
+      TestExpectationsGenerator testExpectationsGenerator = new TestExpectationsGenerator (testPage, sutPage);
+      rows.AddRange (testExpectationsGenerator.CreateExpectations (TestExpectationsGenerator.GetTestCaseUrlParameter (testPage)));
+    }
+
+    private readonly Page _testPage;
     private TestControlGenerator _testControlGenerator;
-    private const string c_allTests = "All";
+    private readonly string _sutPage;
 
-    protected override void OnInit (EventArgs e)
+    public TestExpectationsGenerator (Page testPage, string sutPage)
     {
-      base.OnInit (e);
-      EnableViewState = false;
+      ArgumentUtility.CheckNotNull ("testPage", testPage);
+      ArgumentUtility.CheckNotNullOrEmpty ("sutPage", sutPage);
+
+      _testPage = testPage;
+      _sutPage = sutPage;
     }
 
-    protected override void OnLoad (EventArgs e)
+    public TableRow[] CreateExpectations (string testCase)
     {
-      base.OnLoad (e);
+      testCase = testCase ?? AllTests;
+      _testControlGenerator = new TestControlGenerator (_testPage, new PostBackEventHandler());
 
-      string testFixture = Request.QueryString["Test"];
-      CreateTests (testFixture ?? c_allTests);
-      HtmlHeadAppender.Current.SetTitle (testFixture ?? "All Multiple Postback Catcher Tests");
-    }
-
-    protected override void OnPreRender (EventArgs e)
-    {
-      base.OnPreRender (e);
-      Rubicon.Web.UI.HtmlHeadAppender.Current.RegisterStylesheetLink (
-          "style",
-          Rubicon.Web.ResourceUrlResolver.GetResourceUrl (this, typeof (SmartPage), Rubicon.Web.ResourceType.Html, "Style.css"));
-    }
-
-    private void CreateTests (string testFixture)
-    {
-      _testControlGenerator = new TestControlGenerator (this);
-
-      TestTable.Rows.Add (Expect ("open", ResolveUrl ("SutForm.aspx?ServerDelay=150"), null));
+      List<TableRow> rows = new List<TableRow>();
+      rows.Add (Expect ("open", UrlUtility.AddParameter (_testPage.ResolveUrl (_sutPage), SutGenerator.ServerDelayParameter, "150"), null));
 
       foreach (Control control in _testControlGenerator.GetTestControls (null))
-        TestTable.Rows.AddRange (ExpectControlAttributes (control));
+        rows.AddRange (ExpectControlAttributes (control));
 
       foreach (Control initialControl in _testControlGenerator.GetTestControls (null))
       {
-        if (testFixture == c_allTests || testFixture == initialControl.ID)
+        if (testCase == AllTests || testCase == initialControl.ID)
         {
           foreach (Control followUpControl in _testControlGenerator.GetTestControls (initialControl.ID))
-            TestTable.Rows.AddRange (ExpectPostbackForControl (initialControl, followUpControl));
+            rows.AddRange (ExpectPostbackForControl (initialControl, followUpControl));
         }
       }
+
+      return rows.ToArray();
     }
 
     private TableRow[] ExpectPostbackForControl (Control initialControl, Control followUpControl)
@@ -73,7 +77,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
           rows.Add (Expect ("waitForVisible", "SmartPageStatusIsSubmittingMessage", null));
         }
         rows.Add (Expect ("waitForPageToLoad", "500", null));
-        rows.Add (Expect ("assertText", "TestResultLabel", initialControl.ID));
+        rows.Add (Expect ("assertValue", SutGenerator.LastClickFieldID, initialControl.ID));
       }
       return rows.ToArray();
     }

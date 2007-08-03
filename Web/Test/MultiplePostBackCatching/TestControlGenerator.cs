@@ -13,12 +13,15 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
   {
     public event EventHandler<IDEventArgs> Click;
     private readonly Page _page;
+    private readonly PostBackEventHandler _postBackEventHandler;
 
-    public TestControlGenerator (Page page)
+    public TestControlGenerator (Page page, PostBackEventHandler postBackEventHandler)
     {
       ArgumentUtility.CheckNotNull ("page", page);
+      ArgumentUtility.CheckNotNull ("postBackEventHandler", postBackEventHandler);
 
       _page = page;
+      _postBackEventHandler = postBackEventHandler;
     }
 
     public IEnumerable GetTestControls (string prefix)
@@ -77,7 +80,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
     private Control CreateInputControlWithSubmitBehavior (string prefix)
     {
       Button button = new Button();
-      button.ID = CreateTestMatrixControlID (prefix, "InputSubmit");
+      button.ID = CreateID (prefix, "InputSubmit");
       button.Text = "Submit";
       button.UseSubmitBehavior = true;
       button.Click += OnClick;
@@ -88,7 +91,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
     private Control CreateInputControlWithButtonBehavior (string prefix)
     {
       Button button = new Button();
-      button.ID = CreateTestMatrixControlID (prefix, "InputButton");
+      button.ID = CreateID (prefix, "InputButton");
       button.Text = "Button";
       button.UseSubmitBehavior = false;
       button.Click += OnClick;
@@ -99,7 +102,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
     private Control CreateButtonControlWithSubmitBehavior (string prefix)
     {
       WebButton button = new WebButton();
-      button.ID = CreateTestMatrixControlID (prefix, "ButtonSubmit");
+      button.ID = CreateID (prefix, "ButtonSubmit");
       button.Text = "Submit";
       button.UseSubmitBehavior = true;
       button.Click += OnClick;
@@ -110,7 +113,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
     private Control CreateButtonControlWithButtonBehavior (string prefix)
     {
       WebButton button = new WebButton();
-      button.ID = CreateTestMatrixControlID (prefix, "ButtonButton");
+      button.ID = CreateID (prefix, "ButtonButton");
       button.Text = "Button";
       button.UseSubmitBehavior = false;
       button.Click += OnClick;
@@ -204,7 +207,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
     private Control CreateAnchorWithNonPostBackJavascriptInOnClick (string prefix)
     {
       HyperLink hyperLink = new HyperLink ();
-      hyperLink.ID = CreateTestMatrixControlID (prefix, "AnchorWithNonPostBackJavascriptInOnClick");
+      hyperLink.ID = CreateID (prefix, "AnchorWithNonPostBackJavascriptInOnClick");
       hyperLink.Text = "OnClick";
       hyperLink.NavigateUrl = "#";
       hyperLink.Attributes["onclick"] = "window.alert ('javascript in onclick handler')";
@@ -215,7 +218,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
     private Control CreateAnchorWithNonPostBackJavascriptInHref (string prefix)
     {
       HyperLink hyperLink = new HyperLink ();
-      hyperLink.ID = CreateTestMatrixControlID (prefix, "AnchorWithNonPostBackJavascriptInHref");
+      hyperLink.ID = CreateID (prefix, "AnchorWithNonPostBackJavascriptInHref");
       hyperLink.Text = "Href";
       hyperLink.NavigateUrl = "javascript:window.alert ('javascript in onclick handler')";
 
@@ -225,7 +228,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
     private Image CreateImage (string prefix, string text)
     {
       Image image = new Image ();
-      image.ID = CreateTestMatrixControlID (prefix, "Inner");
+      image.ID = CreateID (prefix, "Inner");
       image.AlternateText = text;
 
       return image;
@@ -234,7 +237,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
     private HtmlGenericControl CreateHtmlGenericControl (string prefix, string text, string tag)
     {
       HtmlGenericControl span = new HtmlGenericControl (tag);
-      span.ID = CreateTestMatrixControlID (prefix, "Inner");
+      span.ID = CreateID (prefix, "Inner");
       span.InnerText = text;
 
       return span;
@@ -243,9 +246,9 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
     private HyperLink CreateAnchorWithPostBackJavascriptInOnClick (string prefix, string id)
     {
       HyperLink hyperLink = new HyperLink();
-      hyperLink.ID = CreateTestMatrixControlID (prefix, id);
+      hyperLink.ID = CreateID (prefix, id);
       hyperLink.NavigateUrl = "#";
-      hyperLink.Attributes["onclick"] = _page.ClientScript.GetPostBackEventReference (_page, hyperLink.ID);
+      hyperLink.Attributes["onclick"] = _page.ClientScript.GetPostBackEventReference (_postBackEventHandler, hyperLink.ID);
 
       return hyperLink;
     }
@@ -253,13 +256,13 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
     private LinkButton CreateAnchorWithPostBackJavascriptInHref (string prefix, string id)
     {
       LinkButton linkButton = new LinkButton();
-      linkButton.ID = CreateTestMatrixControlID (prefix, id);
+      linkButton.ID = CreateID (prefix, id);
       linkButton.Click += OnClick;
 
       return linkButton;
     }
 
-    private string CreateTestMatrixControlID (string prefix, string id)
+    private string CreateID (string prefix, string id)
     {
       return (string.IsNullOrEmpty (prefix) ? string.Empty : StringUtility.NullToEmpty (prefix) + "_") + id;
     }

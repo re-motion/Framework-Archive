@@ -16,8 +16,7 @@
 </head>
 <body>
 <form id=Form method=post runat="server">
-Test-Result: <asp:Label ID="TestResultLabel" runat="server" Text="###" EnableViewState="false" />
-<asp:Table ID="TestMatrix" runat="server"></asp:Table>
+<asp:PlaceHolder ID="SutPlaceHolder" runat="server" />
 <table style="WIDTH: 100%; HEIGHT: 100%">
   <tr>
     <td style="VERTICAL-ALIGN: top">

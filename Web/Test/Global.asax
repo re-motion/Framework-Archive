@@ -1,1 +1,1 @@
-<%@ Application Codebehind="Global.asax.cs" Inherits="PageTransition.Global" %>
+<%@ Application Codebehind="Global.asax.cs" Inherits="Rubicon.Web.Test.Global" %>

@@ -94,24 +94,31 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\..\..\Core\Core.csproj">
+    <ProjectReference Include="..\..\Core\Core.csproj">
       <Name>Core</Name>
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\..\Core\Web.csproj">
+    <ProjectReference Include="..\Core\Web.csproj">
       <Name>Web</Name>
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TestSuite.aspx.cs">
-      <DependentUpon>TestSuite.aspx</DependentUpon>
+    <Compile Include="MultiplePostBackCatching\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="TestSuite.aspx.designer.cs">
-      <DependentUpon>TestSuite.aspx</DependentUpon>
+    <Compile Include="MultiplePostBackCatching\PostBackEventHandler.cs" />
+    <Compile Include="MultiplePostBackCatching\SutGenerator.cs" />
+    <Compile Include="MultiplePostBackCatching\TestExpectationsGenerator.cs" />
+    <Compile Include="MultiplePostBackCatching\TestSuiteGenerator.cs" />
+    <Compile Include="TestSuiteForm.aspx.cs">
+      <DependentUpon>TestSuiteForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestSuiteForm.aspx.designer.cs">
+      <DependentUpon>TestSuiteForm.aspx</DependentUpon>
     </Compile>
     <Compile Include="MultiplePostBackCatching\IDEventArgs.cs" />
     <Compile Include="MultiplePostBackCatching\SutForm.aspx.designer.cs">
@@ -168,7 +175,7 @@
       <DependentUpon>WebForm1.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Content Include="TestSuite.aspx" />
+    <Content Include="TestSuiteForm.aspx" />
     <Content Include="Global.asax">
       <SubType>Component</SubType>
     </Content>
@@ -213,7 +220,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/dev/libraries/commons/trunk/web/ExecutionEngine/Test</IISUrl>
+          <IISUrl>http://localhost/dev/libraries/commons/trunk/web/Test</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
         </WebProjectProperties>
       </FlavorProperties>
