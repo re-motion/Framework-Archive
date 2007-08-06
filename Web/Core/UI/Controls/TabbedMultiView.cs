@@ -254,6 +254,13 @@ namespace Rubicon.Web.UI.Controls
     {
       base.OnInit (e);
       _isInitialized = true;
+
+      string key = typeof (TabbedMultiView).FullName + "_Style";
+      if (!HtmlHeadAppender.Current.IsRegistered (key))
+      {
+        string styleSheetUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (TabbedMultiView), ResourceType.Html, "TabbedMultiView.css");
+        HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
+      }
     }
 
     protected override void OnLoad (EventArgs e)
@@ -359,15 +366,6 @@ namespace Rubicon.Web.UI.Controls
 
     protected override void OnPreRender (EventArgs e)
     {
-      string key = typeof (TabbedMultiView).FullName + "_Style";
-      string styleSheetUrl = null;
-      if (!HtmlHeadAppender.Current.IsRegistered (key))
-      {
-        styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
-            this, Context, typeof (TabbedMultiView), ResourceType.Html, "TabbedMultiView.css");
-        HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
-      }
-
       if (Views.Count == 0)
         Views.Add (_placeHolderTabView);
 

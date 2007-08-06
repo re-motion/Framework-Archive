@@ -275,8 +275,7 @@ public sealed class HtmlHeadAppender
     string key = typeof (HtmlHeadContents).FullName + "_Utilities";
     if (! IsRegistered (key))
     {
-      string href = 
-          ResourceUrlResolver.GetResourceUrl (control, typeof (HtmlHeadContents), ResourceType.Html, "Utilities.js");
+      string href = ResourceUrlResolver.GetResourceUrl (control, typeof (HtmlHeadContents), ResourceType.Html, "Utilities.js");
       RegisterJavaScriptInclude (key, href);
     }
   }

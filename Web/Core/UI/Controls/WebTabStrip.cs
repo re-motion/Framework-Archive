@@ -81,6 +81,13 @@ public class WebTabStrip :
       Page.RegisterRequiresControlState (this);
       Page.RegisterRequiresPostBack (this);
     }
+
+    string key = typeof (WebTabStrip).FullName + "_Style";
+    if (!HtmlHeadAppender.Current.IsRegistered (key))
+    {
+      string styleSheetUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTabStrip), ResourceType.Html, "TabStrip.css");
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
+    }
   }
 
   bool IPostBackDataHandler.LoadPostData (string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
@@ -192,15 +199,6 @@ public class WebTabStrip :
   
   protected override void OnPreRender(EventArgs e)
   {
-    string key = typeof (WebTabStrip).FullName + "_Style";
-    string styleSheetUrl = null;
-    if (! HtmlHeadAppender.Current.IsRegistered (key))
-    {
-      styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (WebTabStrip), ResourceType.Html, "TabStrip.css");
-      HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
-    }
-
     EnsureTabsRestored();
     
     base.OnPreRender (e);

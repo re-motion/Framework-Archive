@@ -119,36 +119,34 @@ namespace Rubicon.Web.UI.Controls
       }
     }
 
+    protected override void OnInit (EventArgs e)
+    {
+      base.OnInit (e);
+
+      string key = typeof (DropDownMenu).FullName + "_Script";
+      if (!HtmlHeadAppender.Current.IsRegistered (key))
+      {
+        string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (DropDownMenu), ResourceType.Html, "DropDownMenu.js");
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url);
+      }
+
+      key = typeof (DropDownMenu).FullName + "_Style";
+      if (!HtmlHeadAppender.Current.IsRegistered (key))
+      {
+        string styleSheetUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (DropDownMenu), ResourceType.Html, "DropDownMenu.css");
+        HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
+      }
+    }
+
     protected override void OnPreRender (EventArgs e)
     {
       base.OnPreRender (e);
 
-      string key = typeof (DropDownMenu).FullName + "_Style";
-      string styleSheetUrl = null;
-      if (!HtmlHeadAppender.Current.IsRegistered (key))
-      {
-        styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
-            this, Context, typeof (DropDownMenu), ResourceType.Html, "DropDownMenu.css");
-        HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
-      }
-
-      key = typeof (DropDownMenu).FullName + "_Script";
-      if (!HtmlHeadAppender.Current.IsRegistered (key))
-      {
-        string url = ResourceUrlResolver.GetResourceUrl (
-            this, Context, typeof (DropDownMenu), ResourceType.Html, "DropDownMenu.js");
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url);
-      }
-
       //  Startup script initalizing the global values of the script.
-      key = typeof (DropDownMenu).FullName + "_Startup";
+      string key = typeof (DropDownMenu).FullName + "_Startup";
       if (!Page.ClientScript.IsStartupScriptRegistered (key))
       {
-        if (styleSheetUrl == null)
-        {
-          styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
-              this, Context, typeof (DropDownMenu), ResourceType.Html, "DropDownMenu.css");
-        }
+        string styleSheetUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (DropDownMenu), ResourceType.Html, "DropDownMenu.css");
         string script = string.Format ("DropDownMenu_InitializeGlobals ('{0}');", styleSheetUrl);
         ScriptUtility.RegisterStartupScriptBlock (Page, key, script);
       }

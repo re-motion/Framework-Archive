@@ -103,6 +103,19 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       _page.RegisterHiddenField (WxePageInfo.PageTokenID, CurrentStep.PageToken);
 
     _wxeForm.LoadPostData += new EventHandler(Form_LoadPostData);
+
+    if (!ControlHelper.IsDesignMode (_page))
+    {
+      string url = ResourceUrlResolver.GetResourceUrl ((Page) _page, typeof (WxePageInfo), ResourceType.Html, c_scriptFileUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, url);
+
+      url = ResourceUrlResolver.GetResourceUrl ((Page) _page, typeof (WxePageInfo), ResourceType.Html, c_styleFileUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
+
+      //      url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_styleFileUrlForIE);
+      //      HtmlHeadAppender.Current.RegisterStylesheetLingForInternetExplorerOnly
+      //          (s_styleFileKeyForIE, url, HtmlHeadAppender.Priority.Library);
+    }
   }
 
   
@@ -218,19 +231,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         + "  __doPostBack (control, argument); \r\n"
         + "}");
 
-    string url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_scriptFileUrl);
-    HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, url);
     HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude ((Page) _page);
-
-    if (! ControlHelper.IsDesignMode (page))
-    {
-      url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_styleFileUrl);
-      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
-
-//      url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_styleFileUrlForIE);
-//      HtmlHeadAppender.Current.RegisterStylesheetLingForInternetExplorerOnly
-//          (s_styleFileKeyForIE, url, HtmlHeadAppender.Priority.Library);
-    }
   
     RegisterWxeInitializationScript(); 
     SetCacheSettings();

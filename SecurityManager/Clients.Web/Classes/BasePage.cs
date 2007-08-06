@@ -58,12 +58,12 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
           // if cultureInfo contains a invalid value we just ignore it
         }
       }
+
+      RegisterStyleSheets ();
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      RegisterStyleSheets ();
-
       ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
 
       if (!IsPostBack && InitialFocusControl != null)

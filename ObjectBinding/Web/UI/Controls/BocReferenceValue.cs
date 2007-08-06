@@ -148,6 +148,20 @@ public class BocReferenceValue:
       Page.RegisterRequiresPostBack (this);
       InitializeMenusItems();
     }
+
+    if (!HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
+    {
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_scriptFileUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
+    }
+
+    if (!HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
+    {
+      string url = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_styleFileUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
+    }
   }
 
   /// <remarks>
@@ -514,25 +528,11 @@ public class BocReferenceValue:
   {
     EnsureChildControls();
     base.OnPreRender (e);
-    
-    if (! HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
-    {
-      string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_scriptFileUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
-    }
 
     if (!IsDesignMode && !Page.ClientScript.IsStartupScriptRegistered (s_startUpScriptKey))
     {
       const string script = "BocReferenceValue_InitializeGlobals ('" + c_nullIdentifier + "');";
       ScriptUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
-    }
-
-    if (! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
-    {
-      string url = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_styleFileUrl);
-      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
     }
 
     LoadResources (GetResourceManager());

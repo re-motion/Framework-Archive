@@ -71,6 +71,12 @@ namespace Rubicon.Web.UI.Controls
         ((ISmartNavigablePage) Page).RegisterNavigationControl (this);
       }
       LoadSelection ();
+
+      if (!HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
+      {
+        string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (TabbedMenu), ResourceType.Html, c_styleFileUrl);
+        HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
+      }
     }
 
     /// <summary> Overrides the <see cref="Control.CreateChildControls"/> method. </summary>
@@ -123,14 +129,6 @@ namespace Rubicon.Web.UI.Controls
       EnsureSubMenuTabStripPopulated ();
 
       base.OnPreRender (e);
-
-      string url = null;
-      if (!HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
-      {
-        url = ResourceUrlResolver.GetResourceUrl (
-            this, Context, typeof (TabbedMenu), ResourceType.Html, c_styleFileUrl);
-        HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
-      }
       SaveSelection ();
 
       IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this, true);

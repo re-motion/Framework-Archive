@@ -112,6 +112,12 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
     base.OnInit (e);
     if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
+
+    if (!HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
+    {
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocCheckBox), ResourceType.Html, c_scriptFileUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
+    }
   }
 
   /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
@@ -230,13 +236,6 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
 
     if (_hasClientScript && IsDescriptionEnabled)
     {
-      if (! HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
-      {
-        string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-            this, Context, typeof (BocCheckBox), ResourceType.Html, c_scriptFileUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
-      }
-
       if (Enabled)
       {
         if (!Page.ClientScript.IsStartupScriptRegistered (s_startUpScriptKey))

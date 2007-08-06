@@ -7,21 +7,12 @@ namespace Rubicon.SecurityManager.Clients.Web.UI
 {
   public partial class SecurityManagerMasterPage : MasterPage
   {
-    // types
-
-    // static members and constants
     private const string c_contentViewStyleFileUrl = "ContentViewStyle.css";
     private const string c_contentViewStyleFileKey = "SecurityManagerContentViewStyle";
 
-    // member fields
-
-    // construction and disposing
-
-    // methods and properties
-
-    protected override void OnPreRender (EventArgs e)
+    protected override void OnInit (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnInit (e);
 
       if (!HtmlHeadAppender.Current.IsRegistered (c_contentViewStyleFileKey))
       {
@@ -29,7 +20,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI
             this, typeof (SecurityManagerMasterPage), ResourceType.Html, c_contentViewStyleFileUrl);
         HtmlHeadAppender.Current.RegisterStylesheetLink (c_contentViewStyleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
       }
-
     }
   }
 }

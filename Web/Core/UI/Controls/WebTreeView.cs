@@ -303,6 +303,13 @@ namespace Rubicon.Web.UI.Controls
       }
       if (Page != null && !Page.IsPostBack)
         _isLoadControlStateCompleted = true;
+
+      string key = typeof (WebTreeView).FullName + "_Style";
+      if (!HtmlHeadAppender.Current.IsRegistered (key))
+      {
+        string styleSheetUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Html, "TreeView.css");
+        HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
+      }
     }
 
     protected override void LoadControlState (object savedState)
@@ -432,14 +439,6 @@ namespace Rubicon.Web.UI.Controls
     /// <summary> Overrides the parent control's <c>OnPreRender</c> method. </summary>
     protected override void OnPreRender (EventArgs e)
     {
-      string key = typeof (WebTreeView).FullName + "_Style";
-      string styleSheetUrl = null;
-      if (!HtmlHeadAppender.Current.IsRegistered (key))
-      {
-        styleSheetUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Html, "TreeView.css");
-        HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
-      }
-
       EnsureTreeNodesCreated();
 
       base.OnPreRender (e);

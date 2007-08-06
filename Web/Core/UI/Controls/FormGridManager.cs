@@ -1209,23 +1209,18 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     base.OnInit (e);
 
     NamingContainer.Load += new EventHandler(NamingContainer_Load);
-    NamingContainer.PreRender += new EventHandler(NamingContainer_PreRender);
+
+    string key = typeof (FormGridManager).FullName + "_Style";
+    if (!HtmlHeadAppender.Current.IsRegistered (key))
+    {
+      string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (FormGridManager), ResourceType.Html, "FormGrid.css");
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, url, HtmlHeadAppender.Priority.Library);
+    }
   }
 
   private void NamingContainer_Load (object sender, EventArgs e)
   {
     EnsureFormGridListPopulated();
-  }
-
-  private void NamingContainer_PreRender (object sender, EventArgs e)
-  {
-    string key = typeof (FormGridManager).FullName + "_Style";
-    if (! HtmlHeadAppender.Current.IsRegistered (key))
-    {
-      string url = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (FormGridManager), ResourceType.Html, "FormGrid.css");
-      HtmlHeadAppender.Current.RegisterStylesheetLink (key, url, HtmlHeadAppender.Priority.Library);
-    }
   }
 
   /// <summary>

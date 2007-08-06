@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.NullableValueTypes;
+using Rubicon.Utilities;
 using Rubicon.Web;
 using Rubicon.Web.UI;
 using Rubicon.Web.Utilities;
@@ -356,16 +357,21 @@ public class TextBoxStyle: SingleRowTextBoxStyle
         && ! CheckClientSideMaxLength.IsFalse
         && ! ControlHelper.IsDesignMode ((Control) textBox)) 
     {
-      if (! HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
-      {
-        string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-            textBox, null, typeof (TextBoxStyle), ResourceType.Html, c_scriptFileUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
-      }
+      RegisterJavaScriptInclude (textBox.Page);
       textBox.Attributes.Add ("onkeydown", "return TextBoxStyle_OnKeyDown (this, " + MaxLength.Value + ");");
     }
 
     textBox.TextMode = _textMode;
+  }
+
+  public void RegisterJavaScriptInclude (Page page)
+  {
+    ArgumentUtility.CheckNotNull ("page", page);
+    if (!HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
+    {
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (page, null, typeof (TextBoxStyle), ResourceType.Html, c_scriptFileUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
+    }
   }
 
   public override void CopyFrom (Style s)

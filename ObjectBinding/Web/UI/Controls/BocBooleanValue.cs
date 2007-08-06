@@ -124,6 +124,12 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
     base.OnInit (e);
     if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
+
+    if (!HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
+    {
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocBooleanValue), ResourceType.Html, c_scriptFileUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
+    }
   }
 
   /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
@@ -236,13 +242,6 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
     if (_hasClientScript && ! isReadOnly)
     {
       string script;
-
-      if (! HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
-      {
-        string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-            this, Context, typeof (BocBooleanValue), ResourceType.Html, c_scriptFileUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
-      }
 
       if (Enabled)
       {

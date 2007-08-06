@@ -277,6 +277,19 @@ namespace Rubicon.Web.UI
         if (! hasHeadContents)
           ((Page) _page).Header.Controls.AddAt (0, new HtmlHeadContents());
       }
+
+      if (!ControlHelper.IsDesignMode (_page, HttpContext.Current))
+      {
+        string url = ResourceUrlResolver.GetResourceUrl ((Page) _page, typeof (SmartPageInfo), ResourceType.Html, c_smartNavigationScriptFileUrl);
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_smartNavigationScriptKey, url);
+
+        HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude ((Page) _page);
+        url = ResourceUrlResolver.GetResourceUrl ((Page) _page, typeof (SmartPageInfo), ResourceType.Html, c_scriptFileUrl);
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, url);
+
+        url = ResourceUrlResolver.GetResourceUrl ((Page) _page, typeof (SmartPageInfo), ResourceType.Html, c_styleFileUrl);
+        HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
+      }
     }
 
     public void OnPreRenderComplete ()
@@ -290,18 +303,6 @@ namespace Rubicon.Web.UI
     private void PreRenderSmartPage ()
     {
       _page.RegisterHiddenField (SmartPageInfo.CacheDetectionID, null);
-
-      HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude ((Page) _page);
-      string url = ResourceUrlResolver.GetResourceUrl (
-          (Page) _page, typeof (SmartPageInfo), ResourceType.Html, c_scriptFileUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, url);
-
-      if (! ControlHelper.IsDesignMode (_page, HttpContext.Current))
-      {
-        url = ResourceUrlResolver.GetResourceUrl (
-            (Page) _page, typeof (SmartPageInfo), ResourceType.Html, c_styleFileUrl);
-        HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
-      }
 
       RegisterSmartPageInitializationScript();
     }
@@ -504,13 +505,6 @@ namespace Rubicon.Web.UI
 
       NameValueCollection postBackCollection = _page.GetPostBackCollection();
       Page page = (Page) _page;
-
-      if (smartNavigablePage.IsSmartScrollingEnabled || smartNavigablePage.IsSmartFocusingEnabled)
-      {
-        string url = ResourceUrlResolver.GetResourceUrl (
-            page, typeof (SmartPageInfo), ResourceType.Html, c_smartNavigationScriptFileUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_smartNavigationScriptKey, url);
-      }
 
       if (smartNavigablePage.IsSmartScrollingEnabled)
       {

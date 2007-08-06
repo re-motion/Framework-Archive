@@ -532,7 +532,19 @@ public class BocList:
       Page.RegisterRequiresPostBack (this);
       InitializeMenusItems();
     }
- }
+
+    if (!HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
+    {
+      string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Html, c_styleFileUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
+    }
+
+    if (!HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
+    {
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Html, c_scriptFileUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
+    }
+  }
 
   protected override void OnLoad(EventArgs e)
   {
@@ -1255,14 +1267,6 @@ public class BocList:
 
     if (_hasClientScript)
     {
-      //  Include script file
-      if (! HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
-      {
-        string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-            this, Context, typeof (BocList), ResourceType.Html, c_scriptFileUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
-      }
-
       //  Startup script initalizing the global values of the script.
       if (! Page.ClientScript.IsStartupScriptRegistered (s_startUpScriptKey))
       {
@@ -1272,13 +1276,6 @@ public class BocList:
             CssClassDataRowSelected);
         ScriptUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
       }
-    }
-
-    if (! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
-    {
-      string url = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (BocList), ResourceType.Html, c_styleFileUrl);
-      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
     }
 
     // Must be executed before CalculateCurrentPage

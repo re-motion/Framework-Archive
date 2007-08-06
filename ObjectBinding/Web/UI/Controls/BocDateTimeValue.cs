@@ -149,6 +149,12 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
+
+    if (!HtmlHeadAppender.Current.IsRegistered (s_datePickerScriptFileKey))
+    {
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptFileUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_datePickerScriptFileKey, scriptUrl);
+    }
   }
 
   /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
@@ -724,15 +730,6 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
   private void PreRenderEditModeValueDatePicker()
   {
     DetermineClientScriptLevel();
-    if (_hasClientScript && Enabled)
-    {
-      if (! HtmlHeadAppender.Current.IsRegistered (s_datePickerScriptFileKey))
-      {
-        string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-            this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptFileUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_datePickerScriptFileKey, scriptUrl);
-      }
-    }
 
     //  TODO: BocDateTimeValue: When creating a DatePickerButton, move this block into the button
     //  and remove RenderContents.

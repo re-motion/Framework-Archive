@@ -73,7 +73,15 @@ public class DatePickerPage : Page
     Page.ClientScript.GetPostBackEventReference (this, "");
 
     base.OnInit(e);
-	}
+
+    string key = typeof (DatePickerPage).FullName + "_Script";
+    if (!HtmlHeadAppender.Current.IsRegistered (key))
+    {
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
+    }
+  }
 
   protected override void OnLoad(EventArgs e)
   {
@@ -105,19 +113,6 @@ public class DatePickerPage : Page
     DateValueField.Value = string.Empty;
 
     base.OnLoad (e);
-  }
-
-  protected override void OnPreRender(EventArgs e)
-  {
-    string key = typeof (DatePickerPage).FullName + "_Script";
-    if (! HtmlHeadAppender.Current.IsRegistered (key))
-    {
-      string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl);
-    }
-
-    base.OnPreRender (e);
   }
 
   private void Calendar_SelectionChanged(object sender, EventArgs e)
