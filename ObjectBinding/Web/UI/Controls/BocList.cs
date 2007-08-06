@@ -18,6 +18,7 @@ using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.Utilities;
+using System.Collections.Generic;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
@@ -1305,7 +1306,8 @@ public class BocList:
     if (!IsDesignMode)
     {
       PreRenderMenuItems();
-      
+      PreRenderListMenuItems (ClientID + "_Boc_ListMenu");
+
       EnsureRowMenusInitialized();
       PreRenderRowMenusItems();
       
@@ -1313,6 +1315,7 @@ public class BocList:
       InitCustomColumns();
       LoadCustomColumns();
       PreRenderCustomColumns();
+      PreRenderListItemCommands ();
     }
   }
 
@@ -1855,10 +1858,10 @@ public class BocList:
     {
 
       WebMenuItem currentItem = groupedListMenuItems[idxItems];
+      // HACK: Required since ListMenuItems are not added to a ListMenu's WebMenuItemCollection.
+      currentItem.OwnerControl = this;
       if (! currentItem.EvaluateVisible())
         continue;
-      // HACK: Required since ListManuItems are not added to a ListMenu's WebMenuItemCollection.
-      currentItem.OwnerControl = this;
 
       bool isLastItem = idxItems == groupedListMenuItems.Length - 1;
       bool isFirstCategoryItem = isFirstItem || groupedListMenuItems[idxItems - 1].Category != currentItem.Category;
@@ -1884,11 +1887,19 @@ public class BocList:
         isFirstItem = false;
     }
     writer.RenderEndTag();
+  }
+
+  private void PreRenderListMenuItems (string menuID)
+  {
+    if (!_hasClientScript)
+      return;
+
+    WebMenuItem[] groupedListMenuItems = _listMenuItems.GroupMenuItems (false);
 
     string key = UniqueID + "_ListMenuItems";
-    if (! Page.ClientScript.IsStartupScriptRegistered (key))
+    if (!Page.ClientScript.IsStartupScriptRegistered (key))
     {
-      StringBuilder script = new StringBuilder();
+      StringBuilder script = new StringBuilder ();
       script.AppendFormat ("BocList_AddMenuInfo (document.getElementById ('{0}'), \r\n\t", ClientID);
       script.AppendFormat ("new ContentMenu_MenuInfo ('{0}', new Array (\r\n", menuID);
       bool isFirstItemInGroup = true;
@@ -1896,7 +1907,9 @@ public class BocList:
       for (int idxItems = 0; idxItems < groupedListMenuItems.Length; idxItems++)
       {
         WebMenuItem currentItem = groupedListMenuItems[idxItems];
-        if (! currentItem.EvaluateVisible())
+        // HACK: Required since ListMenuItems are not added to a ListMenu's WebMenuItemCollection.
+        currentItem.OwnerControl = this;
+        if (!currentItem.EvaluateVisible ())
           continue;
 
         if (isFirstItemInGroup)
@@ -1912,7 +1925,7 @@ public class BocList:
       script.AppendFormat (
           "BocList_UpdateListMenu ( document.getElementById ('{0}'), document.getElementById ('{1}'));",
           ClientID, menuID);
-      ScriptUtility.RegisterStartupScriptBlock (Page, key, script.ToString());
+      ScriptUtility.RegisterStartupScriptBlock (Page, key, script.ToString ());
     }
   }
 
@@ -1940,6 +1953,15 @@ public class BocList:
           href = Page.ClientScript.GetPostBackClientHyperlink (this, argument) + ";";
           href = ScriptUtility.EscapeClientScript (href);
           href = "'" + href + "'";
+
+          if (menuItem.Command.Type == CommandType.Event && menuItem.Command.EventCommand.RequiresSynchronousPostBack)
+          {
+            ISmartPage smartPage = Page as ISmartPage;
+            if (smartPage == null)
+              throw new InvalidOperationException ("Command.EventCommand.RequiresSynchronousPostBack is only allowed on pages implementing ISmartPage.");
+
+            smartPage.RegisterCommandForSynchronousPostBack (this, argument);
+          }
         }
         else if (menuItem.Command.Type == CommandType.Href)
         {
@@ -3135,13 +3157,18 @@ public class BocList:
       if (businessObjectWithIdentity != null)
         objectID = businessObjectWithIdentity.UniqueIdentifier;
 
-      string argument = c_eventListItemCommandPrefix + columnIndex + "," + originalRowIndex;
+      string argument = GetListItemCommandArgument (columnIndex, originalRowIndex);
       string postBackEvent = Page.ClientScript.GetPostBackEventReference (this, argument) + ";";
       string onClick = _hasClientScript ? c_onCommandClickScript : string.Empty;
       command.RenderBegin (writer, postBackEvent, onClick, originalRowIndex, objectID, businessObject as ISecurableObject);
     }
 
     return isCommandEnabled;
+  }
+
+  private string GetListItemCommandArgument (int columnIndex, int originalRowIndex)
+  {
+    return c_eventListItemCommandPrefix + columnIndex + "," + originalRowIndex;
   }
 
   private void RenderEndTagDataCellCommand (HtmlTextWriter writer, BocCommandEnabledColumnDefinition column)
@@ -3636,6 +3663,52 @@ public class BocList:
         return false;
       }
       return true;
+    }
+  }
+
+  private void PreRenderListItemCommands ()
+  {
+    if (IsDesignMode)
+      return;
+    if (IsEmptyList)
+      return;
+
+    int firstRow = 0;
+    int totalRowCount = Value.Count;
+    int rowCountWithOffset = totalRowCount;
+
+    if (IsPagingEnabled)
+    {      
+      firstRow = _currentPage * _pageSize.Value;
+      rowCountWithOffset = firstRow + _pageSize.Value;
+      //  Check row count on last page
+      rowCountWithOffset = (rowCountWithOffset < Value.Count) ? rowCountWithOffset : Value.Count;
+    }
+
+    ISmartPage smartPage = Page as ISmartPage;
+
+    BocColumnDefinition[] columns = EnsureColumnsGot (false);
+    BocListRow[] rows = EnsureGotIndexedRowsSorted();
+
+    for (int idxAbsoluteRows = firstRow, idxRelativeRows = 0; 
+        idxAbsoluteRows < rowCountWithOffset; 
+        idxAbsoluteRows++, idxRelativeRows++)
+    {
+      BocListRow row = rows[idxAbsoluteRows];
+
+      for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
+      {   
+        BocCommandEnabledColumnDefinition commandColumn = columns[idxColumns] as BocCommandEnabledColumnDefinition;
+        if (commandColumn != null 
+            && commandColumn.Command != null 
+            && commandColumn.Command.Type == CommandType.Event 
+            && commandColumn.Command.EventCommand.RequiresSynchronousPostBack)
+        {
+          if (smartPage == null)
+            throw new InvalidOperationException ("Command.EventCommand.RequiresSynchronousPostBack is only allowed on pages implementing ISmartPage.");
+          smartPage.RegisterCommandForSynchronousPostBack (this, GetListItemCommandArgument (idxColumns, row.Index));      
+        }
+      }
     }
   }
 

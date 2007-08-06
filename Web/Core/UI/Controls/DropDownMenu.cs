@@ -189,6 +189,7 @@ namespace Rubicon.Web.UI.Controls
           else
             script.AppendFormat (",\r\n");
           AppendMenuItem (script, menuItem, _menuItems.IndexOf (menuItem));
+
         }
         script.Append (" )"); // Close Array
         script.Append (" )"); // Close new MenuInfo
@@ -221,6 +222,15 @@ namespace Rubicon.Web.UI.Controls
             href = Page.ClientScript.GetPostBackClientHyperlink (this, argument);
             href = ScriptUtility.EscapeClientScript (href);
             href = "'" + href + "'";
+
+            if (menuItem.Command.Type == CommandType.Event && menuItem.Command.EventCommand.RequiresSynchronousPostBack)
+            {
+              ISmartPage smartPage = Page as ISmartPage;
+              if (smartPage == null)
+                throw new InvalidOperationException ("Command.EventCommand.RequiresSynchronousPostBack is only allowed on pages implementing ISmartPage.");
+
+              smartPage.RegisterCommandForSynchronousPostBack (this, argument);
+            }
           }
           else if (menuItem.Command.Type == CommandType.Href)
           {

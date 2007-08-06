@@ -551,6 +551,17 @@ public class BocReferenceValue:
       PreRenderReadOnlyValue();
     else
       PreRenderEditModeValue();
+
+    if (Command != null
+        && Command.Type == CommandType.Event
+        && Command.EventCommand.RequiresSynchronousPostBack)
+    {
+      ISmartPage smartPage = Page as ISmartPage;
+      if (smartPage == null)
+        throw new InvalidOperationException ("BocReferenceValue.Command.EventCommand.RequiresSynchronousPostBack is only allowed on pages implementing ISmartPage.");
+
+      smartPage.RegisterCommandForSynchronousPostBack (this, null);
+    }
   }
 
   /// <summary> Gets a <see cref="HtmlTextWriterTag.Div"/> as the <see cref="WebControl.TagKey"/>. </summary>

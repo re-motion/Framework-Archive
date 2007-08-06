@@ -30,6 +30,7 @@ namespace Rubicon.Web.UI.Controls
 
     private ISecurableObject _securableObject;
     private MissingPermissionBehavior _missingPermissionBehavior = MissingPermissionBehavior.Invisible;
+    private bool _requiresSynchronousPostBack;
 
     public WebButton ()
     {
@@ -69,6 +70,13 @@ namespace Rubicon.Web.UI.Controls
 
       if (_isDefaultButton && string.IsNullOrEmpty (Page.Form.DefaultButton))
         Page.Form.DefaultButton = UniqueID;
+
+      if (_requiresSynchronousPostBack)
+      {
+        ScriptManager scriptManager = ScriptManager.GetCurrent (Page);
+        if (scriptManager != null)
+          scriptManager.RegisterPostBackControl (this);
+      }
     }
 
     protected override void AddAttributesToRender (HtmlTextWriter writer)
@@ -180,8 +188,10 @@ namespace Rubicon.Web.UI.Controls
       {
         if (IsLegacyButtonEnabled)
           return HtmlTextWriterTag.Input;
-        else
-          return HtmlTextWriterTag.Button;
+        //For new styles
+        //if (ControlHelper.IsDesignMode (this))
+        //  return HtmlTextWriterTag.Button;
+        return HtmlTextWriterTag.Button;
       }
     }
 
@@ -202,6 +212,14 @@ namespace Rubicon.Web.UI.Controls
 
       if (IsLegacyButtonEnabled)
         return;
+
+      //For new styles
+      //if (ControlHelper.IsDesignMode (this))
+      //  return;
+
+      //For new styles
+      //writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassAnchorBody);
+      //writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       string text = StringUtility.NullToEmpty (Text);
       text = SmartLabel.FormatLabelText (text, true);
@@ -410,6 +428,16 @@ namespace Rubicon.Web.UI.Controls
     {
       get { return _missingPermissionBehavior; }
       set { _missingPermissionBehavior = value; }
+    }
+
+    [PersistenceMode (PersistenceMode.Attribute)]
+    [Category ("Behavior")]
+    [Description ("True to require a synchronous postback within Ajax Update Panels.")]
+    [DefaultValue (false)]
+    public bool RequiresSynchronousPostBack
+    {
+      get { return _requiresSynchronousPostBack; }
+      set { _requiresSynchronousPostBack = value; }
     }
 
     #region protected virtual string CssClass...

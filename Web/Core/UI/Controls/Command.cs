@@ -22,9 +22,9 @@ namespace Rubicon.Web.UI.Controls
   [TypeConverter (typeof (ExpandableObjectConverter))]
   public class Command : IControlItem
   {
-    //[TypeConverter (typeof (ExpandableObjectConverter))]
-    //public class EventCommandInfo
-    //{
+    [TypeConverter (typeof (ExpandableObjectConverter))]
+    public class EventCommandInfo
+    {
     //  EventPermissionProvider; //None, EventHandler, Properties
     //  public class Permission
     //  {
@@ -32,7 +32,36 @@ namespace Rubicon.Web.UI.Controls
     //    Method;
     //    AccessTypes;
     //  }
-    //}
+
+      private bool _requiresSynchronousPostBack;
+
+      public EventCommandInfo ()
+      {
+      }
+
+      [PersistenceMode (PersistenceMode.Attribute)]
+      [Category ("Behavior")]
+      [Description ("True to require a synchronous postback within Ajax Update Panels.")]
+      [DefaultValue (false)]
+      [NotifyParentProperty (true)]
+      public bool RequiresSynchronousPostBack
+      {
+        get { return _requiresSynchronousPostBack; }
+        set { _requiresSynchronousPostBack = value; }
+      }
+
+      /// <summary> Returns a string representation of this <see cref="EventCommandInfo"/>. </summary>
+      /// <returns> A <see cref="string"/>. </returns>
+      public override string ToString ()
+      {
+        StringBuilder stringBuilder = new StringBuilder (50);
+
+        if (_requiresSynchronousPostBack)
+          return "Synchronous Postback required";
+        else
+          return string.Empty;
+      }
+    }
 
     /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
     [TypeConverter (typeof (ExpandableObjectConverter))]
@@ -47,7 +76,7 @@ namespace Rubicon.Web.UI.Controls
       }
 
       /// <summary> Returns a string representation of this <see cref="HrefCommandInfo"/>. </summary>
-      /// <remarks> Foramt: Href, Target </remarks>
+      /// <remarks> Format: Href, Target </remarks>
       /// <returns> A <see cref="string"/>. </returns>
       public override string ToString ()
       {
@@ -139,7 +168,7 @@ namespace Rubicon.Web.UI.Controls
       /// <summary>
       ///   Returns a string representation of this <see cref="WxeFunctionCommandInfo"/>.
       /// </summary>
-      /// <remarks> Foramt: Href, Target </remarks>
+      /// <remarks> Format: Href, Target </remarks>
       /// <returns> A <see cref="string"/>. </returns>
       public override string ToString ()
       {
@@ -302,8 +331,9 @@ namespace Rubicon.Web.UI.Controls
 
     private string _toolTip = string.Empty;
     private CommandType _type;
-    private CommandType _defaultType = CommandType.None;
+    private readonly CommandType _defaultType = CommandType.None;
     private CommandShow _show = CommandShow.Always;
+    private EventCommandInfo _eventCommand = new EventCommandInfo ();
     private HrefCommandInfo _hrefCommand = new HrefCommandInfo ();
     private WxeFunctionCommandInfo _wxeFunctionCommand = new WxeFunctionCommandInfo ();
     //private ScriptCommandInfo _scriptCommand = null;
@@ -736,6 +766,25 @@ namespace Rubicon.Web.UI.Controls
     {
       get { return _show; }
       set { _show = value; }
+    }
+
+    /// <summary>
+    ///   The <see cref="EventCommandInfo"/> used when rendering the command as an event.
+    /// </summary>
+    /// <remarks> 
+    ///   Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.Event"/>.
+    /// </remarks>
+    /// <value> A <see cref="EventCommandInfo"/> object. </value>
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+    [PersistenceMode (PersistenceMode.Attribute)]
+    [Category ("Behavior")]
+    [Description ("The properties of the event. Interpreted if Type is set to Event.")]
+    [DefaultValue ((string) null)]
+    [NotifyParentProperty (true)]
+    public virtual EventCommandInfo EventCommand
+    {
+      get { return _eventCommand; }
+      set { _eventCommand = value; }
     }
 
     /// <summary>

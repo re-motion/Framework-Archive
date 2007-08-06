@@ -21,6 +21,9 @@ namespace Rubicon.Web.Test.UpdatePanelTests
       AsyncPostBackOutsideUpdatePanelLinkButton.Click += HandlePostBack;
       SyncPostBackInsideUpdatePanelLinkButton.Click += HandlePostBack;
       SyncPostBackOutsideUpdatePanelLinkButton.Click += HandlePostBack;
+      AsyncPostBackInsideUpdatePanelWebButton.Click += HandlePostBack;
+      SyncPostBackInsideUpdatePanelWebButton.Click += HandlePostBack;
+      DropDownMenuInsideUpdatePanel.EventCommandClick += HandlePostBack;
 
       _postBackEventHandler = new PostBackEventHandler ();
       _postBackEventHandler.ID = "PostBackEventHandler";

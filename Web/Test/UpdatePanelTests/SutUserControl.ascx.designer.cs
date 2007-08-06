@@ -101,6 +101,33 @@ namespace Rubicon.Web.Test.UpdatePanelTests {
         protected global::System.Web.UI.WebControls.HyperLink SyncCommandInsideUpdatePanelHyperLink;
         
         /// <summary>
+        /// AsyncPostBackInsideUpdatePanelWebButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Rubicon.Web.UI.Controls.WebButton AsyncPostBackInsideUpdatePanelWebButton;
+        
+        /// <summary>
+        /// SyncPostBackInsideUpdatePanelWebButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Rubicon.Web.UI.Controls.WebButton SyncPostBackInsideUpdatePanelWebButton;
+        
+        /// <summary>
+        /// DropDownMenuInsideUpdatePanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Rubicon.Web.UI.Controls.DropDownMenu DropDownMenuInsideUpdatePanel;
+        
+        /// <summary>
         /// PostBackCountOutsideUpdatePanelLabel control.
         /// </summary>
         /// <remarks>
