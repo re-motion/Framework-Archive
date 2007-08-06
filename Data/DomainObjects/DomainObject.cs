@@ -1,9 +1,7 @@
 using System;
 using System.Reflection;
-using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Infrastructure;

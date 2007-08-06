@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Rubicon.Collections;
 using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Utilities;
@@ -15,18 +16,22 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
   internal class MixinTypeGenerator : IMixinTypeGenerator
   {
     private ModuleManager _module;
+    private readonly TypeGenerator _targetGenerator;
     private MixinDefinition _configuration;
     private ExtendedClassEmitter _emitter;
     private FieldReference _configurationField;
 
-    public MixinTypeGenerator (ModuleManager module, MixinDefinition configuration, INameProvider nameProvider)
+    public MixinTypeGenerator (ModuleManager module, TypeGenerator targetGenerator, MixinDefinition configuration, INameProvider nameProvider)
     {
       ArgumentUtility.CheckNotNull ("module", module);
+      ArgumentUtility.CheckNotNull ("targetGenerator", targetGenerator);
       ArgumentUtility.CheckNotNull ("configuration", configuration);
+      ArgumentUtility.CheckNotNull ("nameProvider", nameProvider);
 
       Assertion.IsFalse (configuration.Type.ContainsGenericParameters);
 
       _module = module;
+      _targetGenerator = targetGenerator;
       _configuration = configuration;
 
       bool isSerializable = configuration.Type.IsSerializable || typeof (ISerializable).IsAssignableFrom(configuration.Type);
@@ -87,19 +92,19 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
             throw new NotSupportedException ("The code generator only supports mixin methods to be overridden by the mixin's base class.");
 
           CustomMethodEmitter methodOverride = _emitter.CreateMethodOverride (method.MethodInfo);
-          MethodInfo overrider = method.Overrides[0].MethodInfo;
+          MethodDefinition overrider = method.Overrides[0];
           MethodInfo methodToCall = GetOverriderMethodToCall (overrider);
           AddCallToOverrider (methodOverride, targetReference, methodToCall);
         }
       }
     }
 
-    private MethodInfo GetOverriderMethodToCall (MethodInfo overrider)
+    private MethodInfo GetOverriderMethodToCall (MethodDefinition overrider)
     {
-      if (overrider.IsPublic)
-        return overrider;
+      if (overrider.MethodInfo.IsPublic)
+        return overrider.MethodInfo;
       else
-        throw new NotImplementedException ("Non-public overriders are not implemented: " + overrider.DeclaringType.FullName + "." + overrider.Name);
+        return _targetGenerator.GetPublicMethodWrapper (overrider);
     }
 
     private void AddCallToOverrider (CustomMethodEmitter methodOverride, Reference targetReference, MethodInfo targetMethod)
@@ -108,7 +113,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       methodOverride.InnerEmitter.CodeBuilder.AddStatement (
           new AssignStatement (
               castTargetLocal,
-              new CastClassExpression (Configuration.BaseClass.Type, targetReference.ToExpression())));
+              new CastClassExpression (targetMethod.DeclaringType, targetReference.ToExpression())));
 
       methodOverride.ImplementMethodByDelegation (castTargetLocal, targetMethod);
     }
@@ -154,6 +159,15 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
                 new ReferenceExpression (_configurationField),
                 new ReferenceExpression (new ConstReference (!baseIsISerializable)));
           });
+    }
+
+    public MethodInfo GetPublicMethodWrapper (MethodDefinition methodToBeWrapped)
+    {
+      ArgumentUtility.CheckNotNull ("methodToBeWrapped", methodToBeWrapped);
+      if (methodToBeWrapped.DeclaringClass != Configuration)
+        throw new ArgumentException ("Only methods from class " + Configuration.FullName + " can be wrapped.");
+
+      return Emitter.GetPublicMethodWrapper (methodToBeWrapped.MethodInfo);
     }
   }
 }

@@ -75,10 +75,18 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       {
         foreach (object mixinInstance in mixinInstances)
         {
-          MixinDefinition mixinDefinition = configuration.Mixins[mixinInstance.GetType()];
+          ArgumentUtility.CheckNotNull ("mixinInstances", mixinInstance);
+          MixinDefinition mixinDefinition = GetMixinDefinitionFromMixinInstance(mixinInstance, configuration);
           if (mixinDefinition == null)
           {
             string message = string.Format ("The supplied mixin of type {0} is not valid in the current configuration.", mixinInstance.GetType());
+            throw new ArgumentException (message, "mixinInstances");
+          }
+          else if (TypeGenerator.NeedsDerivedMixinType (mixinDefinition) && !ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition).IsInstanceOfType (mixinInstance))
+          {
+            string message = string.Format ("The mixin {0} applied to base type {1} needs to have a subclass generated at runtime. It is therefore "
+                + "not possible to use the given object of type {2} as a mixin instance.", mixinDefinition.FullName, configuration.FullName,
+                mixinInstance.GetType().Name);
             throw new ArgumentException (message, "mixinInstances");
           }
           else
@@ -88,22 +96,37 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       return extensions;
     }
 
+    private static MixinDefinition GetMixinDefinitionFromMixinInstance (object mixinInstance, BaseClassDefinition baseClassDefinition)
+    {
+      Type mixinType = mixinInstance.GetType();
+      ConcreteMixinTypeAttribute[] mixinTypeAttributes =
+          (ConcreteMixinTypeAttribute[]) mixinType.GetCustomAttributes (typeof (ConcreteMixinTypeAttribute), false);
+          
+      if (mixinTypeAttributes.Length > 0)
+      {
+        Assertion.IsTrue (mixinTypeAttributes.Length == 1, "AllowMultiple == false");
+        return mixinTypeAttributes[0].GetMixinDefinition();
+      }
+      else
+        return baseClassDefinition.Mixins[mixinType];
+    }
+
     private static void FillUpExtensionsWithNewMixinInstances (
         object[] extensions, BaseClassDefinition configuration, IMixinTarget targetInstance)
     {
       foreach (MixinDefinition mixinDefinition in configuration.Mixins)
       {
         if (extensions[mixinDefinition.MixinIndex] == null)
-          extensions[mixinDefinition.MixinIndex] = InstantiateMixin (mixinDefinition, targetInstance);
+          extensions[mixinDefinition.MixinIndex] = InstantiateMixin (mixinDefinition);
       }
     }
 
-    private static object InstantiateMixin (MixinDefinition mixinDefinition, IMixinTarget mixinTargetInstance)
+    private static object InstantiateMixin (MixinDefinition mixinDefinition)
     {
       Type mixinType = mixinDefinition.Type;
       Assertion.IsFalse (mixinType.ContainsGenericParameters);
 
-      if (mixinDefinition.HasOverriddenMembers())
+      if (TypeGenerator.NeedsDerivedMixinType (mixinDefinition))
         mixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
 
       object mixinInstance;

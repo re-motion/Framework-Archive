@@ -125,7 +125,12 @@ namespace Rubicon.Mixins.CodeGeneration
           {
             lock (_scopeLockObject)
             {
-              ITypeGenerator generator = Scope.CreateTypeGenerator ((BaseClassDefinition) classConfiguration, _typeNameProvider);
+              ITypeGenerator generator = Scope.CreateTypeGenerator ((BaseClassDefinition) classConfiguration, _typeNameProvider,
+                _mixinTypeNameProvider);
+
+              foreach (Tuple<MixinDefinition, Type> finishedMixinTypes in generator.GetBuiltMixinTypes ())
+                _typeCache.Add (finishedMixinTypes.A, finishedMixinTypes.B);
+
               Type finishedType = generator.GetBuiltType();
               return finishedType;
             }
@@ -142,17 +147,17 @@ namespace Rubicon.Mixins.CodeGeneration
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);
 
-      return _typeCache.GetOrCreateValue (
-          configuration,
-          delegate (ClassDefinitionBase classConfiguration)
-          {
-            lock (_scopeLockObject)
-            {
-              IMixinTypeGenerator generator = Scope.CreateMixinTypeGenerator ((MixinDefinition) classConfiguration, _mixinTypeNameProvider);
-              Type finishedType = generator.GetBuiltType();
-              return finishedType;
-            }
-          });
+      GetConcreteType (configuration.BaseClass); // ensure base type was created
+      Type type;
+      _typeCache.TryGetValue (configuration, out type);
+      if (type == null)
+      {
+        string message = string.Format ("No concrete mixin type is required for the given configuration (mixin {0} and target class {1}).",
+            configuration.FullName, configuration.BaseClass.FullName);
+        throw new ArgumentException (message, "configuration");
+      }
+      else
+        return type;
     }
 
     /// <summary>

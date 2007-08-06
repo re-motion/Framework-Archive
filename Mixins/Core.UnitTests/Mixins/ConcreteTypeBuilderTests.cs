@@ -323,10 +323,10 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
         using (repository.Ordered ())
         {
-          Expect.Call (moduleManagerMock.CreateTypeGenerator (innerClassDefinition, GuidNameProvider.Instance))
-              .Return (realScope.CreateTypeGenerator (innerClassDefinition, GuidNameProvider.Instance));
-          Expect.Call (moduleManagerMock.CreateMixinTypeGenerator (innerMixinDefinition, GuidNameProvider.Instance))
-              .Return (realScope.CreateMixinTypeGenerator (innerMixinDefinition, GuidNameProvider.Instance));
+          Expect.Call (moduleManagerMock.CreateTypeGenerator (innerClassDefinition, GuidNameProvider.Instance, GuidNameProvider.Instance))
+              .Return (realScope.CreateTypeGenerator (innerClassDefinition, GuidNameProvider.Instance, GuidNameProvider.Instance));
+          Expect.Call (moduleManagerMock.CreateTypeGenerator (innerMixinDefinition.BaseClass, GuidNameProvider.Instance, GuidNameProvider.Instance))
+              .Return (realScope.CreateTypeGenerator (innerMixinDefinition.BaseClass, GuidNameProvider.Instance, GuidNameProvider.Instance));
         }
 
         repository.ReplayAll ();
@@ -344,6 +344,47 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         
         repository.VerifyAll ();
       });
+    }
+
+    public class BaseOverridingMixinMember
+    {
+      [Override]
+      protected void Foo ()
+      {
+      }
+    }
+
+    public class MixinWithOverridableMember : Mixin<object>
+    {
+      protected virtual void Foo ()
+      {
+      }
+    }
+
+    [Test]
+    public void GetConcreteMixinTypeBeforeGetConcreteTypeWorks ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (BaseOverridingMixinMember), typeof (MixinWithOverridableMember)))
+      {
+        Type t = ConcreteTypeBuilder.Current.GetConcreteMixinType (TypeFactory.GetActiveConfiguration (typeof (BaseOverridingMixinMember)).Mixins[0]);
+        Assert.IsNotNull (t);
+        Assert.IsTrue (typeof (MixinWithOverridableMember).IsAssignableFrom (t));
+
+        BaseOverridingMixinMember instance = ObjectFactory.Create<BaseOverridingMixinMember> ().With ();
+        Assert.AreSame (t, Mixin.Get<MixinWithOverridableMember> (instance).GetType ());
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "No concrete mixin type is required for the given configuration "
+        + "(mixin Rubicon.Mixins.UnitTests.Mixins.ConcreteTypeBuilderTests+MixinWithOverridableMember and target class System.Object).",
+        MatchType = MessageMatch.Contains)]
+    public void GetConcreteMixinTypeThrowsIfNoMixinTypeGenerated ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinWithOverridableMember)))
+      {
+        ConcreteTypeBuilder.Current.GetConcreteMixinType (TypeFactory.GetActiveConfiguration (typeof (object)).Mixins[0]);
+      }
     }
   }
 }

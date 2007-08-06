@@ -16,10 +16,10 @@ namespace Rubicon.Mixins.Definitions
     public readonly UniqueDefinitionCollection<EventInfo, EventDefinition> Events =
         new UniqueDefinitionCollection<EventInfo, EventDefinition> (delegate (EventDefinition p) { return p.EventInfo; });
 
-    private MultiDefinitionCollection<Type, AttributeDefinition> _customAttributes =
+    private readonly MultiDefinitionCollection<Type, AttributeDefinition> _customAttributes =
         new MultiDefinitionCollection<Type, AttributeDefinition> (delegate (AttributeDefinition a) { return a.AttributeType; });
 
-    private Type _type;
+    private readonly Type _type;
 
     public ClassDefinitionBase (Type type)
     {
@@ -119,5 +119,30 @@ namespace Rubicon.Mixins.Definitions
     }
 
     protected abstract void ChildSpecificAccept (IDefinitionVisitor visitor);
+
+    public bool HasOverriddenMembers ()
+    {
+      foreach (MemberDefinition member in GetAllMembers ())
+      {
+        if (member.Overrides.Count > 0)
+          return true;
+      }
+      return false;
+    }
+
+    public bool HasProtectedOverriders ()
+    {
+      foreach (MethodDefinition method in GetAllMethods())
+      {
+        if (method.Base != null && (method.MethodInfo.IsFamily || method.MethodInfo.IsFamilyOrAssembly))
+          return true;
+      }
+      return false;
+    }
+
+    public override string ToString ()
+    {
+      return FullName;
+    }
   }
 }

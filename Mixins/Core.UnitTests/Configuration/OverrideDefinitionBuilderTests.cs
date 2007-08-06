@@ -22,7 +22,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         MixinDefinition mixin2 = baseClass.Mixins[typeof (BT1Mixin2)];
 
         Assert.IsFalse (mixin1.HasOverriddenMembers());
-        Assert.IsFalse (mixin2.HasOverriddenMembers());
+        Assert.IsFalse (mixin2.HasOverriddenMembers ());
+        Assert.IsTrue (baseClass.HasOverriddenMembers ());
 
         MethodInfo baseMethod1 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[0]);
         MethodInfo baseMethod2 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[] {typeof (string)});

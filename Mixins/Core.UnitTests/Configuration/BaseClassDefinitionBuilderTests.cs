@@ -112,5 +112,35 @@ namespace Rubicon.Mixins.UnitTests.Configuration
               MemberInfo);
       
     }
+
+    [Test]
+    public void HasOverriddenMembersTrue ()
+    {
+      BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      Assert.IsTrue (bt1.HasOverriddenMembers ());
+    }
+
+    [Test]
+    public void HasOverriddenMembersFalse ()
+    {
+      BaseClassDefinition bt1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMembersProtected),
+          typeof (MixinWithAbstractMembers));
+      Assert.IsFalse (bt1.HasOverriddenMembers ());
+    }
+
+    [Test]
+    public void HasProtectedOverridersTrue ()
+    {
+      BaseClassDefinition bt1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMembersProtected),
+          typeof (MixinWithAbstractMembers));
+      Assert.IsTrue (bt1.HasProtectedOverriders ());
+    }
+
+    [Test]
+    public void HasProtectedOverridersFalse ()
+    {
+      BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      Assert.IsFalse (bt1.HasProtectedOverriders ());
+    }
   }
 }

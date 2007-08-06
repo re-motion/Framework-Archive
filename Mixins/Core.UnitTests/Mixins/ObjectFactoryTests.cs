@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using NUnit.Framework;
+using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes;
 using Rubicon.Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.CodeGeneration;
 
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
@@ -66,11 +68,8 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         MatchType = MessageMatch.Regex)]
     public void ThrowsOnWrongMixinInstances ()
     {
-      using (MixinConfiguration.ScopedExtend (Assembly.GetExecutingAssembly ()))
-      {
-        BT2Mixin1 m1 = new BT2Mixin1 ();
-        ObjectFactory.CreateWithMixinInstances<BaseType3> (m1).With ();
-      }
+      BT2Mixin1 m1 = new BT2Mixin1 ();
+      ObjectFactory.CreateWithMixinInstances<BaseType3> (m1).With ();
     }
 
     [Test]
@@ -78,10 +77,45 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         MatchType = MessageMatch.Regex)]
     public void ThrowsOnWrongMixinInstancesWithType ()
     {
-      using (MixinConfiguration.ScopedExtend (Assembly.GetExecutingAssembly ()))
+      BT2Mixin1 m1 = new BT2Mixin1 ();
+      ObjectFactory.CreateWithMixinInstances (typeof (BaseType3), m1).With ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The mixin Rubicon.Mixins.UnitTests.SampleTypes.MixinWithProtectedOverrider "
+        + "applied to base type Rubicon.Mixins.UnitTests.SampleTypes.BaseType1 needs to have a subclass generated at runtime. It is therefore not "
+        + "possible to use the given object of type MixinWithProtectedOverrider as a mixin instance.", MatchType = MessageMatch.Contains)]
+    public void ThrowsOnBaseMixinInstanceWhenGeneratedTypeIsNeeded ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (MixinWithProtectedOverrider)))
       {
-        BT2Mixin1 m1 = new BT2Mixin1 ();
-        ObjectFactory.CreateWithMixinInstances (typeof (BaseType3), m1).With ();
+        BaseType1 bt1 = ObjectFactory.CreateWithMixinInstances<BaseType1> (new MixinWithProtectedOverrider ()).With();
+        bt1.VirtualMethod ();
+      }
+    }
+
+    [Test]
+    public void AcceptsInstanceOfGeneratedMixinType1 ()
+    {
+      BaseClassDefinition configuration = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers));
+      Type generatedMixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (configuration.Mixins[typeof (MixinWithAbstractMembers)]);
+      object mixinInstance = Activator.CreateInstance (generatedMixinType);
+
+      ClassOverridingMixinMembers classInstance = ObjectFactory.CreateWithMixinInstances<ClassOverridingMixinMembers> (mixinInstance).With ();
+      Assert.AreSame (mixinInstance, Mixin.Get<MixinWithAbstractMembers> (classInstance));
+    }
+
+    [Test]
+    public void AcceptsInstanceOfGeneratedMixinType2 ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (MixinWithProtectedOverrider)))
+      {
+        BaseClassDefinition configuration = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        Type mixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (configuration.Mixins[0]);
+        object mixinInstance = Activator.CreateInstance (mixinType);
+        BaseType1 bt1 = ObjectFactory.CreateWithMixinInstances<BaseType1> (mixinInstance).With ();
+        bt1.VirtualMethod ();
+        Assert.AreSame (mixinInstance, Mixin.Get<MixinWithProtectedOverrider> (bt1));
       }
     }
 

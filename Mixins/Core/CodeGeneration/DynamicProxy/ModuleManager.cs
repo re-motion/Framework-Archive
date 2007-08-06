@@ -19,20 +19,13 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private ModuleScope _scope;
 
-    public ITypeGenerator CreateTypeGenerator (BaseClassDefinition configuration, INameProvider nameProvider)
+    public ITypeGenerator CreateTypeGenerator (BaseClassDefinition configuration, INameProvider nameProvider, INameProvider mixinNameProvider)
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);
       ArgumentUtility.CheckNotNull ("nameProvider", nameProvider);
+      ArgumentUtility.CheckNotNull ("mixinNameProvider", mixinNameProvider);
 
-      return new TypeGenerator (this, configuration, nameProvider);
-    }
-
-    public IMixinTypeGenerator CreateMixinTypeGenerator (MixinDefinition configuration, INameProvider nameProvider)
-    {
-      ArgumentUtility.CheckNotNull ("configuration", configuration);
-      ArgumentUtility.CheckNotNull ("nameProvider", nameProvider);
-
-      return new MixinTypeGenerator (this, configuration, nameProvider);
+      return new TypeGenerator (this, configuration, nameProvider, mixinNameProvider);
     }
 
     public string SignedAssemblyName

@@ -26,15 +26,14 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private BaseClassDefinition _configuration;
     private ExtendedClassEmitter _emitter;
     private BaseCallProxyGenerator _baseCallGenerator;
-    
-    private Dictionary<MixinDefinition, MixinTypeGenerator> _mixinTypeGenerators; // TODO: get from concretetypebuilder for those mixins where necessary, use for basecallproxy
 
     private FieldReference _configurationField;
     private FieldReference _extensionsField;
     private FieldReference _firstField;
     private Dictionary<MethodInfo, MethodInfo> _baseCallMethods = new Dictionary<MethodInfo, MethodInfo>();
+    private MixinTypeGenerator[] _mixinTypeGenerators;
 
-    public TypeGenerator (ModuleManager module, BaseClassDefinition configuration, INameProvider nameProvider)
+    public TypeGenerator (ModuleManager module, BaseClassDefinition configuration, INameProvider nameProvider, INameProvider mixinNameProvider)
     {
       ArgumentUtility.CheckNotNull ("module", module);
       ArgumentUtility.CheckNotNull ("configuration", configuration);
@@ -53,12 +52,12 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       _configurationField = _emitter.InnerEmitter.CreateStaticField ("__configuration", typeof (BaseClassDefinition));
       _extensionsField = _emitter.InnerEmitter.CreateField ("__extensions", typeof (object[]), true);
 
-      _baseCallGenerator = new BaseCallProxyGenerator (this, classEmitter);
+      _mixinTypeGenerators = CreateMixinTypeGenerators (mixinNameProvider);
+      _baseCallGenerator = new BaseCallProxyGenerator (this, classEmitter, _mixinTypeGenerators);
 
       _firstField = _emitter.InnerEmitter.CreateField ("__first", _baseCallGenerator.TypeBuilder, true);
 
-      Statement initializationStatement = new ExpressionStatement (new MethodInvocationExpression (null,
-          s_concreteTypeInitializationMethod,
+      Statement initializationStatement = new ExpressionStatement (new MethodInvocationExpression (null, s_concreteTypeInitializationMethod,
           new CastClassExpression (typeof (IMixinTarget), SelfReference.Self.ToExpression ())));
 
       _emitter.ReplicateBaseTypeConstructors (initializationStatement);
@@ -71,11 +70,30 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       ImplementIMixinTarget();
       ImplementIntroducedInterfaces ();
       ImplementRequiredDuckMethods ();
-      ImplementOverrides();
       ImplementAttributes (configuration, _emitter);
 
       AddMixedTypeAttribute ();
       AddDebuggerAttributes();
+
+      ImplementOverrides ();
+    }
+
+    private MixinTypeGenerator[] CreateMixinTypeGenerators (INameProvider mixinNameProvider)
+    {
+      MixinTypeGenerator[] mixinTypeGenerators = new MixinTypeGenerator[Configuration.Mixins.Count];
+      for (int i = 0; i < mixinTypeGenerators.Length; ++i)
+      {
+        MixinDefinition mixinConfiguration = Configuration.Mixins[i];
+        if (NeedsDerivedMixinType (mixinConfiguration))
+          mixinTypeGenerators[i] = new MixinTypeGenerator (_module, this, mixinConfiguration, mixinNameProvider);
+      }
+      return mixinTypeGenerators;
+    }
+
+    public static bool NeedsDerivedMixinType (MixinDefinition configuration)
+    {
+      ArgumentUtility.CheckNotNull ("configuration", configuration);
+      return configuration.HasOverriddenMembers () || configuration.HasProtectedOverriders ();
     }
 
     private List<Type> GetInterfacesToImplement (bool isSerializable)
@@ -120,6 +138,15 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       Type builtType = Emitter.InnerEmitter.BuildType();
       return builtType;
+    }
+
+    public IEnumerable<Tuple<MixinDefinition, Type>> GetBuiltMixinTypes ()
+    {
+      foreach (MixinTypeGenerator mixinTypeGenerator in _mixinTypeGenerators)
+      {
+        if (mixinTypeGenerator != null)
+          yield return new Tuple<MixinDefinition, Type> (mixinTypeGenerator.Configuration, mixinTypeGenerator.GetBuiltType());
+      }
     }
 
     internal FieldInfo ExtensionsField
@@ -376,20 +403,20 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       Emitter.AddCustomAttribute (attributeBuilder);
     }
 
-    public MethodInfo GetBaseCallMethodFor (MethodInfo method)
+    public MethodInfo GetBaseCallMethod (MethodInfo overriddenMethod)
     {
-      ArgumentUtility.CheckNotNull ("method", method);
-      if (!method.DeclaringType.IsAssignableFrom (TypeBuilder.BaseType))
+      ArgumentUtility.CheckNotNull ("method", overriddenMethod);
+      if (!overriddenMethod.DeclaringType.IsAssignableFrom (TypeBuilder.BaseType))
       {
         string message = string.Format (
             "Cannot create base call method for a method defined on a different type than the base type: {0}.{1}.",
-            method.DeclaringType.FullName,
-            method.Name);
-        throw new ArgumentException (message, "method");
+            overriddenMethod.DeclaringType.FullName,
+            overriddenMethod.Name);
+        throw new ArgumentException (message, "overriddenMethod");
       }
-      if (!_baseCallMethods.ContainsKey (method))
-        _baseCallMethods.Add (method, ImplementBaseCallMethod (method));
-      return _baseCallMethods[method];
+      if (!_baseCallMethods.ContainsKey (overriddenMethod))
+        _baseCallMethods.Add (overriddenMethod, ImplementBaseCallMethod (overriddenMethod));
+      return _baseCallMethods[overriddenMethod];
     }
 
     private MethodInfo ImplementBaseCallMethod (MethodInfo method)
@@ -401,6 +428,15 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       baseCallMethod.CopyParametersAndReturnTypeFrom (method);
       baseCallMethod.ImplementMethodByBaseCall (method);
       return baseCallMethod.MethodBuilder;
+    }
+
+    public MethodInfo GetPublicMethodWrapper (MethodDefinition methodToBeWrapped)
+    {
+      ArgumentUtility.CheckNotNull ("methodToBeWrapped", methodToBeWrapped);
+      if (methodToBeWrapped.DeclaringClass != Configuration)
+        throw new ArgumentException ("Only methods from class " + Configuration.FullName + " can be wrapped.");
+
+      return Emitter.GetPublicMethodWrapper (methodToBeWrapped.MethodInfo);
     }
   }
 }

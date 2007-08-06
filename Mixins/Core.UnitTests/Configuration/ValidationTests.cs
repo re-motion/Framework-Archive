@@ -607,6 +607,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       BaseClassDefinition definition =
           UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithProtectedOverrider));
+      Assert.IsTrue (definition.Mixins[0].HasProtectedOverriders());
       DefaultValidationLog log = Validator.Validate (definition);
 
       AssertSuccess (log);

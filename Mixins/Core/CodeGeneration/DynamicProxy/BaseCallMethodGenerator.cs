@@ -10,17 +10,21 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
   internal class BaseCallMethodGenerator
   {
     private CustomMethodEmitter _methodEmitter;
+    private readonly MixinTypeGenerator[] _mixinTypeGenerators;
     private BaseClassDefinition _baseClassConfiguration;
     private FieldReference _depthField;
     private FieldReference _thisField;
     private TypeGenerator _surroundingType;
 
-    public BaseCallMethodGenerator (CustomMethodEmitter methodEmitter, BaseCallProxyGenerator baseCallProxyGenerator)
+    public BaseCallMethodGenerator (CustomMethodEmitter methodEmitter, BaseCallProxyGenerator baseCallProxyGenerator,
+        MixinTypeGenerator[] mixinTypeGenerators)
     {
       ArgumentUtility.CheckNotNull ("methodEmitter", methodEmitter);
       ArgumentUtility.CheckNotNull ("baseCallProxyGenerator", baseCallProxyGenerator);
+      ArgumentUtility.CheckNotNull ("mixinTypeGenerators", mixinTypeGenerators);
 
       _methodEmitter = methodEmitter;
+      _mixinTypeGenerators = mixinTypeGenerators;
       _thisField = baseCallProxyGenerator.ThisField;
       _depthField = baseCallProxyGenerator.DepthField;
       _surroundingType = baseCallProxyGenerator.SurroundingType;
@@ -68,25 +72,28 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       Expression[] argExpressions = Array.ConvertAll<ArgumentReference, Expression> (args, delegate (ArgumentReference a) { return a.ToExpression (); });
       if (target.DeclaringClass == _baseClassConfiguration)
       {
-        MethodInfo baseCallMethod = _surroundingType.GetBaseCallMethodFor (target.MethodInfo);
+        MethodInfo baseCallMethod = _surroundingType.GetBaseCallMethod (target.MethodInfo);
         return new ReturnStatement (new VirtualMethodInvocationExpression (_thisField, baseCallMethod, argExpressions));
       }
       else
       {
         MixinDefinition mixin = (MixinDefinition) target.DeclaringClass;
-        MethodInfo baseCallMethod = GetMixinMethodToCall (target.MethodInfo);
+        MethodInfo baseCallMethod = GetMixinMethodToCall (mixin.MixinIndex, target);
         Reference mixinReference = GetMixinReference (mixin, baseCallMethod.DeclaringType);
 
         return new ReturnStatement (new VirtualMethodInvocationExpression (mixinReference, baseCallMethod, argExpressions));
       }
     }
 
-    private MethodInfo GetMixinMethodToCall (MethodInfo targetMethod)
+    private MethodInfo GetMixinMethodToCall (int mixinIndex, MethodDefinition mixinMethod)
     {
-      if (targetMethod.IsPublic)
-        return targetMethod;
+      if (mixinMethod.MethodInfo.IsPublic)
+        return mixinMethod.MethodInfo;
       else
-        throw new NotImplementedException ("Non-public overriders are not implemented: " + targetMethod.DeclaringType + "." + targetMethod.Name);
+      {
+        Assertion.IsNotNull (_mixinTypeGenerators[mixinIndex]);
+        return _mixinTypeGenerators[mixinIndex].GetPublicMethodWrapper (mixinMethod);
+      }
     }
 
     private Reference GetMixinReference (MixinDefinition mixin, Type concreteMixinType)

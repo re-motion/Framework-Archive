@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Rubicon.Collections;
 using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 using Rubicon;
 using Rubicon.Utilities;
@@ -15,6 +16,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
   internal class ExtendedClassEmitter : IAttributableEmitter
   {
     private AbstractTypeEmitter _innerEmitter;
+    private Cache<MethodInfo, MethodBuilder> _publicMethodWrappers = new Cache<MethodInfo, MethodBuilder> ();
+
 
     public ExtendedClassEmitter (AbstractTypeEmitter innerEmitter)
     {
@@ -240,6 +243,22 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       codeBuilder.AddStatement (new AssignStatement (singleAttributeLocal,
           new LoadArrayElementExpression (new ConstReference (index), attributesLocal, attributeType)));
       return singleAttributeLocal;
+    }
+
+    public MethodInfo GetPublicMethodWrapper (MethodInfo methodToBeWrapped)
+    {
+      ArgumentUtility.CheckNotNull ("methodToBeWrapped", methodToBeWrapped);
+
+      return _publicMethodWrappers.GetOrCreateValue (methodToBeWrapped, delegate (MethodInfo method)
+      {
+        MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
+        CustomMethodEmitter wrapper = new CustomMethodEmitter (InnerEmitter, "__wrap__" + methodToBeWrapped.Name, attributes);
+        wrapper.CopyParametersAndReturnTypeFrom (methodToBeWrapped);
+        wrapper.ImplementMethodByDelegation (SelfReference.Self, methodToBeWrapped);
+        return wrapper.MethodBuilder;
+      });
+
+      
     }
   }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reflection;
 using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions
@@ -40,16 +39,6 @@ namespace Rubicon.Mixins.Definitions
         if (member.BaseAsMember != null)
           yield return member;
       }
-    }
-
-    public bool HasOverriddenMembers ()
-    {
-      foreach (MemberDefinition member in GetAllMembers ())
-      {
-        if (member.Overrides.Count > 0)
-          return true;
-      }
-      return false;
     }
 
     public override IVisitableDefinition Parent

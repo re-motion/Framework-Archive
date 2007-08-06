@@ -7,8 +7,7 @@ namespace Rubicon.Mixins.CodeGeneration
 {
   public interface IModuleManager
   {
-    ITypeGenerator CreateTypeGenerator (BaseClassDefinition configuration, INameProvider nameProvider);
-    IMixinTypeGenerator CreateMixinTypeGenerator (MixinDefinition configuration, INameProvider nameProvider);
+    ITypeGenerator CreateTypeGenerator (BaseClassDefinition configuration, INameProvider nameProvider, INameProvider mixinNameProvider);
 
     string SignedAssemblyName { get; set; }
     string UnsignedAssemblyName { get; set; }

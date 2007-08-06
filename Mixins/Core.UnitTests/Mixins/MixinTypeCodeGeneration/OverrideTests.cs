@@ -62,7 +62,6 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
     }
 
     [Test]
-    [Ignore ("TODO: FS - Non-public overriders")]
     public void ClassWithProtectedOverrider ()
     {
       ClassOverridingMixinMembersProtected com = CreateMixedObject<ClassOverridingMixinMembersProtected> (typeof (MixinWithAbstractMembers)).With ();

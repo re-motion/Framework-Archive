@@ -172,12 +172,11 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     }
 
     [Test]
-    [Ignore ("TODO: FS - Non-public overriders")]
     public void MixinWithProtectedOverrider ()
     {
       BaseType1 obj = CreateMixedObject<BaseType1> (typeof (MixinWithProtectedOverrider)).With();
       Assert.AreEqual ("MixinWithProtectedOverrider.VirtualMethod-BaseType1.VirtualMethod", obj.VirtualMethod ());
-      Assert.AreEqual ("MixinWithProtectedOverrider.VirtualProperty-BaseType1.VirtualProperty", obj.VirtualProperty);
+      Assert.AreEqual ("MixinWithProtectedOverrider.VirtualProperty-BaseType1.BackingField", obj.VirtualProperty);
 
       Assert.AreEqual (null, obj.GetVirtualEventInvocationList());
       obj.VirtualEvent += delegate { };

@@ -166,5 +166,36 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.IsTrue (mt.RequiredBaseCallTypes.ContainsKey (typeof (IMixinTargetWithExplicitDependencies)));
       Assert.IsTrue (mt.Mixins[typeof (MixinWithDependency)].BaseDependencies.ContainsKey (typeof (IMixinTargetWithExplicitDependencies)));
     }
+
+    [Test]
+    public void HasOverriddenMembersTrue ()
+    {
+      BaseClassDefinition definition =
+          UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMembers), typeof (MixinWithAbstractMembers));
+      Assert.IsTrue (definition.Mixins[0].HasOverriddenMembers ());
+    }
+
+    [Test]
+    public void HasOverriddenMembersFalse ()
+    {
+      BaseClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      Assert.IsFalse (definition.Mixins[0].HasOverriddenMembers ());
+    }
+
+    [Test]
+    public void HasProtectedOverridersTrue ()
+    {
+      BaseClassDefinition bt1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithProtectedOverrider));
+      Assert.IsFalse (bt1.HasProtectedOverriders ());
+      Assert.IsTrue (bt1.Mixins[0].HasProtectedOverriders ());
+    }
+
+    [Test]
+    public void HasProtectedOverridersFalse ()
+    {
+      BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      Assert.IsFalse (bt1.HasProtectedOverriders ());
+      Assert.IsFalse (bt1.Mixins[0].HasProtectedOverriders ());
+    }
   }
 }
