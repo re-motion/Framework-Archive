@@ -70,6 +70,14 @@ namespace Rubicon.Web.UI.Controls
         get { return (TabbedMultiView) base.Parent; }
       }
 
+      protected override void OnActiveViewChanged (EventArgs e)
+      {
+        base.OnActiveViewChanged (e);
+
+        ISmartNavigablePage smartNavigablePage = Page as ISmartNavigablePage;
+        if (smartNavigablePage != null)
+          smartNavigablePage.DiscardSmartNavigationData ();
+      }
 
 #if NET11
     protected override void LoadViewState(object savedState)
@@ -165,9 +173,6 @@ namespace Rubicon.Web.UI.Controls
         base.OnSelectionChanged ();
 
         TabbedMultiView multiView = ((TabbedMultiView) OwnerControl);
-        ISmartNavigablePage smartNavigablePage = multiView.Page as ISmartNavigablePage;
-        if (smartNavigablePage != null)
-          smartNavigablePage.DiscardSmartNavigationData ();
         TabView view = null;
         //  Cannot use FindControl without a Naming Container. Only during initialization phase of aspx.
         if (multiView.NamingContainer != null)
