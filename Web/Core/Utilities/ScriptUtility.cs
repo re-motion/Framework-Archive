@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Web.Utilities
 {
   /// <summary> Utility class for client-side scripts. </summary>
-  public class ScriptUtility
+  public static class ScriptUtility
   {
     /// <summary> Escapes special characters (e.g. <c>\n</c>) in the passed string. </summary>
     /// <param name="input"> The unescaped string. Must not be <see langword="null"/>. </param>
@@ -105,12 +105,7 @@ namespace Rubicon.Web.Utilities
       ArgumentUtility.CheckNotNull ("key", key);
       ArgumentUtility.CheckNotNull ("javascript", javascript);
 
-      string script =
-          "<script type=\"text/javascript\">\r\n<!--\r\n" +
-          javascript +
-          "\r\n//-->\r\n</script>";
-
-      page.ClientScript.RegisterClientScriptBlock (typeof (Page), key, script);
+      ScriptManager.RegisterClientScriptBlock (page, typeof (Page), key, javascript, true);
     }
 
     /// <summary>
@@ -133,16 +128,7 @@ namespace Rubicon.Web.Utilities
       ArgumentUtility.CheckNotNull ("key", key);
       ArgumentUtility.CheckNotNull ("javascript", javascript);
 
-      string script =
-          "<script type=\"text/javascript\">\r\n<!--\r\n" +
-          javascript +
-          "\r\n//-->\r\n</script>";
-
-      page.ClientScript.RegisterStartupScript (typeof (Page), key, script);
-    }
-
-    private ScriptUtility ()
-    {
+      ScriptManager.RegisterStartupScript (page, typeof (Page), key, javascript, true);
     }
   }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Web.UI;
 using Rubicon.Web.UI;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.Web.Test.UpdatePanelTests
 {
@@ -41,6 +42,11 @@ namespace Rubicon.Web.Test.UpdatePanelTests
       base.OnLoad (e);
 
       UpdateStatus (null);
+
+      WebMenuItem menuItem = new WebMenuItem ();
+      menuItem.ItemID = "Item" + PostBackCount;
+      menuItem.Text = "Item " + PostBackCount;
+      DropDownMenuInsideUpdatePanel.MenuItems.Add (menuItem);
     }
 
     protected int PostBackCount
