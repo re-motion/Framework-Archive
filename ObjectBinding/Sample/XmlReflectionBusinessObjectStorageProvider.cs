@@ -28,7 +28,7 @@ namespace Rubicon.ObjectBinding.Sample
 
     private readonly string _rootPath;
     private Hashtable _identityMap = new Hashtable();
-    private readonly InterlockedCache<Type, XmlSerializer> _attributeOverridesCache = new InterlockedCache<Type, XmlSerializer> ();
+    private readonly InterlockedCache<Type, XmlSerializer> _attributeOverridesCache = new InterlockedCache<Type, XmlSerializer>();
 
     public XmlReflectionBusinessObjectStorageProvider (string rootPath)
     {
@@ -65,7 +65,7 @@ namespace Rubicon.ObjectBinding.Sample
         return null;
 
       Type concreteType = GetConcreteType (type);
-      XmlSerializer serializer = GetXmlSerializer(concreteType);
+      XmlSerializer serializer = GetXmlSerializer (concreteType);
       using (FileStream stream = new FileStream (fileName, FileMode.Open, FileAccess.Read))
       {
         obj = (BindableXmlObject) serializer.Deserialize (stream);
@@ -116,7 +116,7 @@ namespace Rubicon.ObjectBinding.Sample
 
       string fileName = Path.Combine (typeDir, obj.ID.ToString());
 
-      Type concreteType = obj.GetType ();
+      Type concreteType = obj.GetType();
       XmlSerializer serializer = GetXmlSerializer (concreteType);
       using (FileStream stream = new FileStream (fileName, FileMode.Create, FileAccess.Write))
       {
@@ -177,7 +177,15 @@ namespace Rubicon.ObjectBinding.Sample
     {
       return _attributeOverridesCache.GetOrCreateValue (
           concreteType,
-          delegate (Type type) { return new XmlSerializer (type,CreateAttributeOverrides (type)); });
+          delegate (Type type)
+          {
+            return new XmlSerializer (
+                type,
+                CreateAttributeOverrides (type),
+                new Type[0],
+                AttributeUtility.GetCustomAttribute<XmlRootAttribute> (type, true),
+                null);
+          });
     }
 
     private XmlAttributeOverrides CreateAttributeOverrides (Type concreteType)
