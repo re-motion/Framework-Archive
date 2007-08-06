@@ -223,12 +223,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void FailsIfAbstractBaseClass ()
+    public void SucceedsIfAbstractBaseClass ()
     {
       BaseClassDefinition bc = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (MixinWithAbstractMembers));
       DefaultValidationLog log = Validator.Validate (bc);
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultBaseClassRules.BaseClassMustNotBeAbstract", log));
-      Assert.AreEqual (0, log.GetNumberOfWarnings ());
+      AssertSuccess (log);
     }
 
     [Test]
@@ -561,7 +560,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithAbstractMembers));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.AbstractMethodMustBeOverridden", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.AbstractMixinMethodMustBeOverridden", log));
     }
 
     [Test]

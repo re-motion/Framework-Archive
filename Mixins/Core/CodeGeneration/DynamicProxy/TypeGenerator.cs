@@ -41,6 +41,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       _module = module;
       _configuration = configuration;
 
+      if (_configuration.IsAbstract)
+        throw new NotImplementedException ("Abstract base types are not supported yet.");
+
       bool isSerializable = configuration.Type.IsSerializable || typeof (ISerializable).IsAssignableFrom (configuration.Type);
 
       string typeName = nameProvider.GetNewTypeName (configuration);

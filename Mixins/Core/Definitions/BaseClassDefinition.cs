@@ -104,5 +104,10 @@ namespace Rubicon.Mixins.Definitions
         foreach (EventDefinition eventDefinition in mixin.Events)
           yield return eventDefinition;
     }
+
+    public bool IsAbstract
+    {
+      get { return Type.IsAbstract; }
+    }
   }
 }

@@ -142,5 +142,19 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
       Assert.IsFalse (bt1.HasProtectedOverriders ());
     }
+
+    [Test]
+    public void IsAbstractTrue ()
+    {
+      BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (AbstractBaseType));
+      Assert.IsTrue (bt1.IsAbstract);
+    }
+
+    [Test]
+    public void IsAbstractFalse ()
+    {
+      BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      Assert.IsFalse (bt1.IsAbstract);
+    }
   }
 }

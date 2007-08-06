@@ -6,6 +6,7 @@ using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.SampleTypes;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
 {
@@ -144,6 +145,19 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
       Assert.AreEqual ("Foo", generatedType.FullName);
 
       repository.VerifyAll ();
+    }
+
+    [Test]
+    [Ignore ("TODO: FS - abstract base types")]
+    public void AbstractBaseTypesLeadToAbstractConcreteTypes ()
+    {
+      Type concreteType = TypeFactory.GetConcreteType (typeof (AbstractBaseType));
+      Assert.IsNotNull (concreteType);
+      Assert.IsTrue (concreteType.IsAbstract);
+      MethodInfo[] abstractMethods = Array.FindAll (concreteType.GetMethods (), delegate (MethodInfo method) { return method.IsAbstract; });
+      string[] abstractMethodNames = Array.ConvertAll<MethodInfo, string> (abstractMethods, delegate (MethodInfo method) { return method.Name; });
+      Assert.That (abstractMethodNames, Is.EquivalentTo (new string[] { "VirtualMethod", "get_VirtualProperty", "set_VirtualProperty",
+          "add_VirtualEvent", "remove_VirtualEvent" }));
     }
   }
 }

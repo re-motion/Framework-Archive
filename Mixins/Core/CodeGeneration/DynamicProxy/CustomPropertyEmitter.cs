@@ -18,9 +18,11 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     public CustomPropertyEmitter (
         AbstractTypeEmitter parentTypeEmitter, string name, PropertyAttributes attributes, bool hasThis, Type propertyType, Type[] indexParameters)
     {
-      CallingConventions callingConvention = hasThis ? CallingConventions.HasThis : CallingConventions.Standard;
-      builder = parentTypeEmitter.TypeBuilder.DefineProperty (name, attributes, callingConvention, propertyType, null, null, indexParameters,
-          null, null);
+      // TODO: As soon as the overload below is publicly available, use it
+      // CallingConventions callingConvention = hasThis ? CallingConventions.HasThis : CallingConventions.Standard;
+      // builder = parentTypeEmitter.TypeBuilder.DefineProperty (name, attributes, callingConvention, propertyType, null, null, indexParameters,
+      //    null, null);
+      builder = parentTypeEmitter.TypeBuilder.DefineProperty (name, attributes, propertyType, indexParameters);
     }
 
     public MethodEmitter GetMethod

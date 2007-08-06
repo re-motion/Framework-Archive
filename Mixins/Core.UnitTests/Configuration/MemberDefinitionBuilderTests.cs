@@ -302,5 +302,19 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.IsTrue (baseClass.Methods.ContainsKey (typeof (BaseClassWithInheritedMethod).GetMethod ("ProtectedInternalInheritedMethod",
           BindingFlags.Instance | BindingFlags.NonPublic)));
     }
+
+    [Test]
+    public void IsAbstractTrue ()
+    {
+      BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (AbstractBaseType));
+      Assert.IsTrue (bt1.Methods[typeof (AbstractBaseType).GetMethod ("VirtualMethod")].IsAbstract);
+    }
+
+    [Test]
+    public void IsAbstractFalse ()
+    {
+      BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      Assert.IsFalse (bt1.Methods[typeof (BaseType1).GetMethod ("VirtualMethod", Type.EmptyTypes)].IsAbstract);
+    }
   }
 }

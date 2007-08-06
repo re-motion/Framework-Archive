@@ -58,6 +58,7 @@
     <Compile Include="Mixins\MixedTypeCodeGeneration\OverrideTests.cs" />
     <Compile Include="Mixins\MixedTypeCodeGeneration\TypeFeatureTests.cs" />
     <Compile Include="Mixins\MixinTypeCodeGeneration\TypeFeatureTests.cs" />
+    <Compile Include="SampleTypes\AbstractBaseType.cs" />
     <Compile Include="SampleTypes\ClassFulfillingAllMemberRequirementsExplicitly.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\ClassLookingLikeBaseType3.cs" />
     <Compile Include="SampleTypes\BaseTypeWithDuckFaceMixin.cs" />

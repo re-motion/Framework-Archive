@@ -23,9 +23,7 @@ namespace Rubicon.Mixins.Definitions
 
     public MethodInfo MethodInfo
     {
-      get {
-        return (MethodInfo) MemberInfo;
-      }
+      get { return (MethodInfo) MemberInfo; }
     }
 
     public override MemberDefinition BaseAsMember
@@ -44,6 +42,11 @@ namespace Rubicon.Mixins.Definitions
     {
       get { return _base; }
       set { BaseAsMember = value; }
+    }
+
+    public bool IsAbstract
+    {
+      get { return MethodInfo.IsAbstract; }
     }
 
     protected override IDefinitionCollection<Type, MemberDefinition> GetInternalOverridesWrapper()
