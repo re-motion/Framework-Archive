@@ -90,7 +90,7 @@
     </Reference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
-      <Name>Core</Name>
+      <Name>Core %28Core\Core%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Development.Core.csproj">
       <Name>Development.Core</Name>

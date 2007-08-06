@@ -40,7 +40,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
-      <Name>Core</Name>
+      <Name>Core %28Core\Core%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects.RdbmsTools\Data.DomainObjects.RdbmsTools.csproj">
       <Project>{C5E0C110-5BC5-4E30-B3CF-4C6012FEE1EF}</Project>
@@ -48,7 +48,7 @@
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
-      <Name>Data.DomainObjects</Name>
+      <Name>Data.DomainObjects %28Data.DomainObjects\Data.DomainObjects%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -92,7 +92,7 @@
       <Name>System.XML</Name>
     </Reference>
     <ProjectReference Include="..\..\Core\Core.csproj">
-      <Name>Core</Name>
+      <Name>Core %28Core\Core%29</Name>
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
@@ -101,7 +101,7 @@
       <Name>Development.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.csproj">
-      <Name>ObjectBinding</Name>
+      <Name>ObjectBinding %28ObjectBinding\ObjectBinding%29</Name>
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
@@ -115,7 +115,7 @@
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
-      <Name>Data.DomainObjects</Name>
+      <Name>Data.DomainObjects %28Data.DomainObjects\Data.DomainObjects%29</Name>
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
