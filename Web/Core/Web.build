@@ -31,11 +31,10 @@
         <include name="${build.outputdir}/Rubicon.Core.dll" />
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Configuration.dll"/>
-        <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="System.Design.dll"/>
         <include asis="true" name="System.Drawing.dll"/>
         <include asis="true" name="System.Web.dll"/>
-        <include asis="true" name="System.Web.Extensions.dll"/>
+        <include name="${build.outputdir}/System.Web.Extensions.dll"/>
         <include asis="true" name="System.Windows.Forms.dll"/>
         <include asis="true" name="System.Xml.dll"/>
       </references>

@@ -77,7 +77,6 @@
       <Name>System</Name>
     </Reference>
     <Reference Include="System.configuration" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Design">
       <Name>system.design</Name>
     </Reference>
