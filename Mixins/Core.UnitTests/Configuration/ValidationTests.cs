@@ -240,6 +240,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
+    public void FailsIfOverriddenBaseMethodAbstract ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (AbstractBaseType), typeof (BT1Mixin1));
+      DefaultValidationLog log = Validator.Validate (definition);
+
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.AbstractBaseClassMethodMustNotBeOverridden", log));
+    }
+
+    [Test]
     public void FailsIfOverriddenMethodFinal ()
     {
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassWithFinalMethod), typeof (MixinForFinalMethod));

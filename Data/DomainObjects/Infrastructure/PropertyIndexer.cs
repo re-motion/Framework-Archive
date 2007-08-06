@@ -175,7 +175,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <summary>
     /// Finds a property with the specified short name, starting its search at the type of the given <see cref="DomainObject"/> argument.
     /// </summary>
-    /// <typeparam name="TDomainObject">The type to start searching from.</param>
+    /// <typeparam name="TDomainObject">The type to start searching from.</typeparam>
     /// <param name="thisDomainObject">The domain object parameter used for inference of type <typeparamref name="TDomainObject"/>.</param>
     /// <param name="shortPropertyName">The short name of the property to find.</param>
     /// <returns>A <see cref="PropertyAccessor"/> encapsulating the first property with the given <paramref name="shortPropertyName"/>

@@ -41,15 +41,17 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       _module = module;
       _configuration = configuration;
 
-      if (_configuration.IsAbstract)
-        throw new NotImplementedException ("Abstract base types are not supported yet.");
-
       bool isSerializable = configuration.Type.IsSerializable || typeof (ISerializable).IsAssignableFrom (configuration.Type);
 
       string typeName = nameProvider.GetNewTypeName (configuration);
 
       List<Type> interfaces = GetInterfacesToImplement(isSerializable);
-      ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces.ToArray(), isSerializable);
+
+      TypeAttributes flags = TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable;
+      if (_configuration.IsAbstract)
+        flags |= TypeAttributes.Abstract;
+
+      ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces.ToArray(), flags);
       _emitter = new ExtendedClassEmitter (classEmitter);
 
       _configurationField = _emitter.InnerEmitter.CreateStaticField ("__configuration", typeof (BaseClassDefinition));

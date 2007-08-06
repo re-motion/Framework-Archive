@@ -40,7 +40,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
       Type[] interfaces = isSerializable ? new Type[] {typeof (ISerializable)} : new Type[0];
 
-      ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces, isSerializable);
+      ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces);
       _emitter = new ExtendedClassEmitter (classEmitter);
 
       _configurationField = classEmitter.CreateStaticField ("__configuration", typeof (MixinDefinition));

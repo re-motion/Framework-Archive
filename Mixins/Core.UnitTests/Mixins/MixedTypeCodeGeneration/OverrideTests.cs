@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Reflection.Emit;
 using NUnit.Framework;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 

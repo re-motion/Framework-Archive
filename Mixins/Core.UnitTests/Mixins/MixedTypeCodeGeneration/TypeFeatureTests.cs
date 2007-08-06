@@ -148,10 +148,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     }
 
     [Test]
-    [Ignore ("TODO: FS - abstract base types")]
     public void AbstractBaseTypesLeadToAbstractConcreteTypes ()
     {
-      Type concreteType = TypeFactory.GetConcreteType (typeof (AbstractBaseType));
+      Type concreteType = CreateMixedType (typeof (AbstractBaseType), typeof (MixinOverridingClassMethod));
       Assert.IsNotNull (concreteType);
       Assert.IsTrue (concreteType.IsAbstract);
       MethodInfo[] abstractMethods = Array.FindAll (concreteType.GetMethods (), delegate (MethodInfo method) { return method.IsAbstract; });
