@@ -607,6 +607,8 @@ public class BocList:
     for (int i = 0; i < postCollection.Count; i++)
     {
       string key = postCollection.Keys[i];
+      if (string.IsNullOrEmpty (key))
+        continue;
 
       bool isDataRowSelectorControl = key.StartsWith (dataRowSelectorControlFilter);
       bool isTitleRowSelectorControl = (key == titleRowSelectorControlFilter);
