@@ -32,13 +32,9 @@ public class HtmlHeadContents : Control
   protected override void RenderChildren(HtmlTextWriter writer)
   {
     bool isTextXml = false;
-    bool isTextXhtml = false;
 
     if (!ControlHelper.IsDesignMode (this))
-    {
-      isTextXml = ControlHelper.IsResponseTextXml (Context);
-      isTextXhtml = ControlHelper.IsResponseTextXHtml (Context);
-    }
+      isTextXml = ControlHelper.IsXmlConformResponseTextRequired (Context);
 
     foreach (Control control in Controls)
     {
@@ -51,7 +47,7 @@ public class HtmlHeadContents : Control
           writer.WriteBeginTag ("link");
           foreach (string attributeKey in genericControl.Attributes.Keys)
             writer.WriteAttribute (attributeKey, genericControl.Attributes[attributeKey]);
-          if (isTextXml || isTextXhtml)
+          if (isTextXml)
             writer.WriteLineNoTabs (" />");
           else
             writer.WriteLineNoTabs (">");

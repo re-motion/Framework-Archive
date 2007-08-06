@@ -1569,17 +1569,13 @@ public class BocList:
     writer.RenderBeginTag (HtmlTextWriterTag.Colgroup);
 
     bool isTextXml = false;
-    bool isTextXhtml = false;
 
     if (!IsDesignMode)
-    {
-      isTextXml = ControlHelper.IsResponseTextXml (Context);
-      isTextXhtml = ControlHelper.IsResponseTextXHtml (Context);
-    }
+      isTextXml = ControlHelper.IsXmlConformResponseTextRequired (Context);
 
     //  Left: list block
     writer.WriteBeginTag ("col"); //  Required because RenderBeginTag(); RenderEndTag();
-    if (isTextXml || isTextXhtml)
+    if (isTextXml)
       writer.Write (" />");
     else
       writer.Write (">");           //  writes empty tags, which is not valid for col in HTML 4.01
@@ -1599,7 +1595,7 @@ public class BocList:
       writer.WriteStyleAttribute ("padding-left", menuBlockOffset);
       writer.Write ("\"");
       
-      if (isTextXml || isTextXhtml)
+      if (isTextXml)
         writer.Write (" />");
       else
         writer.Write (">");
@@ -2267,13 +2263,9 @@ public class BocList:
     writer.RenderBeginTag (HtmlTextWriterTag.Colgroup);
 
     bool isTextXml = false;
-    bool isTextXhtml = false;
 
     if (!IsDesignMode)
-    {
-      isTextXml = ControlHelper.IsResponseTextXml (Context);
-      isTextXhtml = ControlHelper.IsResponseTextXHtml (Context);
-    }
+      isTextXml = ControlHelper.IsXmlConformResponseTextRequired (Context);
 
     if (IsIndexEnabled)
     {
@@ -2281,7 +2273,7 @@ public class BocList:
       writer.Write (" style=\"");
       writer.WriteStyleAttribute ("width", "1.6em");
       writer.Write ("\"");
-      if (isTextXml || isTextXhtml)
+      if (isTextXml)
         writer.Write (" />");
       else
         writer.Write (">");
@@ -2293,7 +2285,7 @@ public class BocList:
       writer.Write (" style=\"");
       writer.WriteStyleAttribute ("width", "1.6em");
       writer.Write ("\"");
-      if (isTextXml || isTextXhtml)
+      if (isTextXml)
         writer.Write (" />");
       else
         writer.Write (">");
@@ -2324,7 +2316,7 @@ public class BocList:
         writer.WriteStyleAttribute ("width", width);
         writer.Write ("\"");
       }
-      if (isTextXml || isTextXhtml)
+      if (isTextXml)
         writer.Write (" />");
       else
         writer.Write (">");

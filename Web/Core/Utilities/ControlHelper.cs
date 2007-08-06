@@ -3,6 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Reflection;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Utilities;
@@ -256,6 +257,19 @@ namespace Rubicon.Web.Utilities
     {
       ArgumentUtility.CheckNotNull ("context", context);
       return context.Response.ContentType.Equals ("TEXT/XHTML", StringComparison.OrdinalIgnoreCase);
+    }
+
+    public static bool IsXmlConformResponseTextRequired (HttpContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      XhtmlConformanceSection xhtmlConformanceSection = (XhtmlConformanceSection) WebConfigurationManager.GetSection ("system.web/xhtmlConformance");
+      Assertion.IsNotNull (xhtmlConformanceSection, "Config section 'system.web/xhtmlConformance' was not found.");
+
+      if (xhtmlConformanceSection.Mode != XhtmlConformanceMode.Legacy)
+        return true;
+
+      return IsResponseTextXml (context) || IsResponseTextXHtml (context);
     }
   }
 
