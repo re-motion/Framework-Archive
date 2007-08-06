@@ -467,16 +467,15 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   }
 
 
-    /// <remarks> Invokes <see cref="WxePageInfo.PreRender"/> before calling the base-implementation. </remarks>
-  protected override void OnPreRender (EventArgs e)
+  /// <remarks> Invokes <see cref="WxePageInfo.OnPreRenderComplete"/> before calling the base-implementation. </remarks>
+  protected override void OnPreRenderComplete (EventArgs e)
   {
-    // wxeInfo.PreRender() must be called before base.OnPreRender (EventArgs)
-    // Base-Implementation uses SmartPageInfo, which registers for the PreRender event.
-    _wxePageInfo.PreRender();
+    // wxeInfo.OnPreRenderComplete() must be called before base.OnPreRenderComplete (EventArgs)
+    // Base-Implementation uses SmartPageInfo, which also overrides OnPreRenderComplete 
+    _wxePageInfo.OnPreRenderComplete ();
 
-    base.OnPreRender (e);
+    base.OnPreRenderComplete (e);
   }
-
   
   /// <summary> Gets the <see cref="WxePageStep"/> that called this <see cref="WxePage"/>. </summary>
   [Browsable (false)]

@@ -192,7 +192,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
   }
 
-  public void PreRender ()
+  public void OnPreRenderComplete ()
   {
     WxeContext wxeContext = WxeContext.Current;
     Page page = (Page) _page;
