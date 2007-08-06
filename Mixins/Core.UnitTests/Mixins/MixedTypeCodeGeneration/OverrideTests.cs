@@ -14,10 +14,8 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
       BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (BT1Mixin1)).With ();
 
       Assert.AreEqual ("BT1Mixin1.VirtualMethod", bt1.VirtualMethod ());
-      Assert.IsNotNull (bt1.GetType ().GetMethod ("VirtualMethod", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
-          "overridden member is public and has the same name");
-      Assert.AreEqual (typeof (BaseType1), bt1.GetType ()
-          .GetMethod ("VirtualMethod", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).GetBaseDefinition ().DeclaringType);
+      Assert.IsNotNull (bt1.GetType ().GetMethod ("VirtualMethod", Type.EmptyTypes), "overridden member is public and has the same name");
+      Assert.AreEqual (typeof (BaseType1), bt1.GetType ().GetMethod ("VirtualMethod", Type.EmptyTypes).GetBaseDefinition ().DeclaringType);
     }
 
     [Test]
@@ -32,8 +30,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
       Assert.AreEqual ("BaseType1.BackingField", bt1.VirtualProperty);
       Assert.AreEqual ("FooBar", Mixin.Get<BT1Mixin1> (bt1).BackingField);
 
-      Assert.IsNotNull (bt1.GetType ().GetProperty ("VirtualProperty", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
-          "overridden member is public and has the same name");
+      Assert.IsNotNull (bt1.GetType ().GetProperty ("VirtualProperty"), "overridden member is public and has the same name");
 
       bt1 = CreateMixedObject<BaseType1> (typeof (BT1Mixin2)).With ();
 
@@ -57,8 +54,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
       bt1.VirtualEvent -= eventHandler;
       Assert.IsTrue (Mixin.Get<BT1Mixin1> (bt1).VirtualEventRemoveCalled);
 
-      Assert.IsNotNull (bt1.GetType ().GetEvent ("VirtualEvent", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
-          "overridden member is public and has the same name");
+      Assert.IsNotNull (bt1.GetType ().GetEvent ("VirtualEvent"), "overridden member is public and has the same name");
     }
 
     class Foo1

@@ -99,8 +99,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       Type[] indexParameterTypes =
           Array.ConvertAll<ParameterInfo, Type> (baseOrInterfaceProperty.GetIndexParameters(), delegate (ParameterInfo p) { return p.ParameterType; });
 
-      CustomPropertyEmitter newProperty = new CustomPropertyEmitter (InnerEmitter, propertyName, PropertyAttributes.None, baseOrInterfaceProperty.PropertyType,
-        indexParameterTypes);
+      CustomPropertyEmitter newProperty = new CustomPropertyEmitter (InnerEmitter, propertyName, PropertyAttributes.None,
+          true, baseOrInterfaceProperty.PropertyType, indexParameterTypes);
 
       return newProperty;
     }

@@ -26,6 +26,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private BaseClassDefinition _configuration;
     private ExtendedClassEmitter _emitter;
     private BaseCallProxyGenerator _baseCallGenerator;
+    
+    private Dictionary<MixinDefinition, MixinTypeGenerator> _mixinTypeGenerators; // TODO: get from concretetypebuilder for those mixins where necessary, use for basecallproxy
 
     private FieldReference _configurationField;
     private FieldReference _extensionsField;
@@ -333,16 +335,22 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementAttributes (IAttributeIntroductionTargetDefinition targetConfiguration, IAttributableEmitter targetEmitter)
     {
-      // Replicate base attributes which are not inherited
       foreach (AttributeDefinition attribute in targetConfiguration.CustomAttributes)
       {
-        if (!AttributeUtility.IsAttributeInherited (attribute.AttributeType))
+        // only replicate those attributes from the base which are not inherited anyway
+        if (!CanInheritAttributesFromBase (targetConfiguration) || !AttributeUtility.IsAttributeInherited (attribute.AttributeType))
           AttributeReplicator.ReplicateAttribute (targetEmitter, attribute.Data);
       }
 
       // Replicate introduced attributes
       foreach (AttributeIntroductionDefinition attribute in targetConfiguration.IntroducedAttributes)
         AttributeReplicator.ReplicateAttribute (targetEmitter, attribute.Attribute.Data);
+    }
+
+    private bool CanInheritAttributesFromBase (IAttributeIntroductionTargetDefinition configuration)
+    {
+      // only methods and base classes can supply attributes for inheritance
+      return configuration is BaseClassDefinition || configuration is MethodDefinition;
     }
 
     private void ReplicateAttributes (IAttributableDefinition source, IAttributableEmitter targetEmitter)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 
 namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
@@ -156,6 +157,146 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
 
       concreteType = CreateMixedType (typeof (BaseType1), typeof (MixinAddingBT1AttributeToMember));
       Assert.AreEqual (1, concreteType.GetMethod ("VirtualMethod", Type.EmptyTypes).GetCustomAttributes (typeof (BT1Attribute), true).Length);
+    }
+
+    [AttributeUsage (AttributeTargets.All, AllowMultiple = true, Inherited = true)]
+    public class MultiInheritedAttribute : Attribute { }
+
+    [AttributeUsage (AttributeTargets.All, AllowMultiple = true, Inherited = false)]
+    public class MultiNonInheritedAttribute : Attribute { }
+
+    [AttributeUsage (AttributeTargets.All, AllowMultiple = false, Inherited = true)]
+    public class NonMultiInheritedAttribute : Attribute { }
+
+    [AttributeUsage (AttributeTargets.All, AllowMultiple = false, Inherited = false)]
+    public class NonMultiNonInheritedAttribute : Attribute { }
+
+    [MultiInherited, MultiNonInherited, NonMultiInherited, NonMultiNonInherited]
+    public class MixinWithAttributes
+    {
+      [Override]
+      [MultiInherited, MultiNonInherited, NonMultiInherited, NonMultiNonInherited]
+      public virtual void Method ()
+      {
+      }
+
+      [Override]
+      [MultiInherited, MultiNonInherited, NonMultiInherited, NonMultiNonInherited]
+      public virtual int Property
+      {
+        get { return 0; }
+      }
+
+      [Override]
+      [MultiInherited, MultiNonInherited, NonMultiInherited, NonMultiNonInherited]
+      public virtual event EventHandler Event;
+    }
+
+    [MultiInherited, MultiNonInherited, NonMultiInherited, NonMultiNonInherited]
+    public class TargetWithAttributes
+    {
+      [MultiInherited, MultiNonInherited, NonMultiInherited, NonMultiNonInherited]
+      public virtual void Method ()
+      {
+      }
+
+      [MultiInherited, MultiNonInherited, NonMultiInherited, NonMultiNonInherited]
+      public virtual int Property
+      {
+        get { return 0; }
+      }
+
+      [MultiInherited, MultiNonInherited, NonMultiInherited, NonMultiNonInherited]
+      public virtual event EventHandler Event;
+    }
+
+    public class TargetWithoutAttributes
+    {
+      public virtual void Method ()
+      {
+      }
+
+      public virtual int Property
+      {
+        get { return 0; }
+      }
+
+      public virtual event EventHandler Event;
+    }
+
+    private object[] GetRelevantAttributes (ICustomAttributeProvider source, bool inherit)
+    {
+      object[] attributes = source.GetCustomAttributes (true);
+      return Array.FindAll (attributes, delegate (object o)
+      {
+        return
+            o is MultiInheritedAttribute || o is MultiNonInheritedAttribute || o is NonMultiInheritedAttribute || o is NonMultiNonInheritedAttribute;
+      });
+    }
+
+    [Test]
+    public void AttributesOnMixedTypesBehaveLikeOnDerivedTypes ()
+    {
+      object[] attributes = GetRelevantAttributes (CreateMixedType (typeof (TargetWithoutAttributes), typeof (MixinWithAttributes)), true);
+      Assert.AreEqual (2, attributes.Length);
+      Assert.That (
+          attributes, Is.EquivalentTo (new object[] {new MultiInheritedAttribute(), new NonMultiInheritedAttribute()}));
+
+      attributes = GetRelevantAttributes (CreateMixedType (typeof (TargetWithAttributes), typeof (MixinWithAttributes)), true);
+      Assert.AreEqual (5, attributes.Length);
+
+      Assert.That (attributes, Is.EquivalentTo (new object[] { new MultiInheritedAttribute (), new MultiInheritedAttribute(),
+            new NonMultiNonInheritedAttribute (), new MultiNonInheritedAttribute(), new NonMultiInheritedAttribute() }));
+    }
+
+    [Test]
+    public void AttributesOnDerivedMethodsBehaveLikeOnDerivedTypes ()
+    {
+      object[] attributes =
+          GetRelevantAttributes (CreateMixedType (typeof (TargetWithoutAttributes), typeof (MixinWithAttributes)).GetMethod ("Method"), true);
+      Assert.AreEqual (2, attributes.Length);
+      Assert.That (
+          attributes, Is.EquivalentTo (new object[] { new MultiInheritedAttribute (), new NonMultiInheritedAttribute () }));
+
+      attributes =
+          GetRelevantAttributes (CreateMixedType (typeof (TargetWithAttributes), typeof (MixinWithAttributes)).GetMethod ("Method"), true);
+      Assert.AreEqual (5, attributes.Length);
+
+      Assert.That (attributes, Is.EquivalentTo (new object[] { new MultiInheritedAttribute (), new MultiInheritedAttribute(),
+            new NonMultiNonInheritedAttribute (), new MultiNonInheritedAttribute(), new NonMultiInheritedAttribute() }));
+    }
+    [Test]
+    public void AttributesOnDerivedPropertiesBehaveLikeMethods ()
+    {
+      object[] attributes =
+          GetRelevantAttributes (CreateMixedType (typeof (TargetWithoutAttributes), typeof (MixinWithAttributes)).GetProperty ("Property"), true);
+      Assert.AreEqual (2, attributes.Length);
+      Assert.That (
+          attributes, Is.EquivalentTo (new object[] { new MultiInheritedAttribute (), new NonMultiInheritedAttribute () }));
+
+      attributes =
+          GetRelevantAttributes (CreateMixedType (typeof (TargetWithAttributes), typeof (MixinWithAttributes)).GetProperty ("Property"), true);
+      Assert.AreEqual (5, attributes.Length);
+
+      Assert.That (attributes, Is.EquivalentTo (new object[] { new MultiInheritedAttribute (), new MultiInheritedAttribute(),
+            new NonMultiNonInheritedAttribute (), new MultiNonInheritedAttribute(), new NonMultiInheritedAttribute() }));
+    }
+
+    [Test]
+    public void AttributesOnDerivedEventsBehaveLikeMethods ()
+    {
+      object[] attributes =
+          GetRelevantAttributes (CreateMixedType (typeof (TargetWithoutAttributes), typeof (MixinWithAttributes)).GetEvent ("Event"), true);
+      Assert.AreEqual (2, attributes.Length);
+      Assert.That (
+          attributes, Is.EquivalentTo (new object[] { new MultiInheritedAttribute (), new NonMultiInheritedAttribute () }));
+
+      attributes =
+          GetRelevantAttributes (CreateMixedType (typeof (TargetWithAttributes), typeof (MixinWithAttributes)).GetEvent ("Event"), true);
+      Assert.AreEqual (5, attributes.Length);
+
+      Assert.That (attributes, Is.EquivalentTo (new object[] { new MultiInheritedAttribute (), new MultiInheritedAttribute(),
+            new NonMultiNonInheritedAttribute (), new MultiNonInheritedAttribute(), new NonMultiInheritedAttribute() }));
     }
   }
 }

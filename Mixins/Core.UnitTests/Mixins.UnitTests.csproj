@@ -48,6 +48,7 @@
     <Compile Include="Configuration\ValidationSampleTypes\ClassWithVirtualMethod.cs" />
     <Compile Include="Mixins\BaseCallProxyCodeGeneration\BaseCallTests.cs" />
     <Compile Include="Mixins\BaseCallProxyCodeGeneration\InstantiationTests.cs" />
+    <Compile Include="Mixins\MixedTypeCodeGeneration\AttributeSpike.cs" />
     <Compile Include="Mixins\MixedTypeCodeGeneration\AttributeTests.cs" />
     <Compile Include="Mixins\MixedTypeCodeGeneration\DependencyTests.cs" />
     <Compile Include="Mixins\MixedTypeCodeGeneration\DuckRequirementTests.cs" />
