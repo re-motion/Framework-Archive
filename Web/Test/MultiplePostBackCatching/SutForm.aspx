@@ -1,10 +1,10 @@
 <%@ Page language="c#" Codebehind="SutForm.aspx.cs" AutoEventWireup="True" Inherits="Rubicon.Web.Test.MultiplePostBackCatching.SutForm" smartNavigation="False"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head id="Head" runat="server">
     <title>MultiplePostbackCatcherForm</title>
     <rubicon:HtmlHeadContents ID="HtmlHeadContents" runat="server" />
-<script language=javascript>
+<script type="text/javascript">
   function ChangeAutoPostbackListSelection()
   {
     document.Form.AutoPostbackList.fireEvent ('onChange','');
@@ -20,7 +20,7 @@
 <table style="WIDTH: 100%; HEIGHT: 100%">
   <tr>
     <td style="VERTICAL-ALIGN: top">
-<a href="mpc.wxe?Parameter=Garbage;">Hyperlink</a><br>
+<a href="mpc.wxe?Parameter=Garbage;">Hyperlink</a><br/>
 <input type="text" onkeyup="ChangeAutoPostbackListSelection(); return false;" />
 <input type="button" value="Select value" onclick="ChangeAutoPostbackListSelection();  return false;" />
       <asp:DropDownList ID="AutoPostbackList" runat="server" AutoPostBack="True" EnableViewState="false">

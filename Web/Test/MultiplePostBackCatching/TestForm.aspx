@@ -1,14 +1,13 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TestForm.aspx.cs" Inherits="Rubicon.Web.Test.MultiplePostBackCatching.TestForm" %>
+<%@ Page Language="C#" AutoEventWireup="true" Codebehind="TestForm.aspx.cs" Inherits="Rubicon.Web.Test.MultiplePostBackCatching.TestForm" %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
-
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<rubicon:HtmlHeadContents ID="HtmlHeadContents" runat="server" />
+  <rubicon:HtmlHeadContents ID="HtmlHeadContents" runat="server" />
 </head>
-<body>
-    <form id="Form" runat="server">
-    <asp:Table ID="TestTable" runat="server" EnableViewState="false"/>
-    </form>
+<body style="overflow: visible;">
+  <form id="Form" runat="server">
+    <asp:Table ID="TestTable" runat="server" EnableViewState="false" />
+  </form>
 </body>
 </html>

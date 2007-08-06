@@ -116,6 +116,8 @@ public interface ISmartPage: IPage
   /// </summary>
   string CheckFormStateFunction { get; set; }
 
+  void RegisterCommandForSynchronousPostBack (Control control, string eventArguments);
+
   /// <summary> Gets or sets the <see cref="HtmlForm"/> of the ASP.NET page. </summary>
   [EditorBrowsable (EditorBrowsableState.Never)]
   HtmlForm HtmlForm { get; set; }
@@ -202,6 +204,11 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   public void RegisterControlForClientSideDirtyStateTracking (string clientID)
   {
     _smartPageInfo.RegisterControlForDirtyStateTracking (clientID);
+  }
+
+  public void RegisterCommandForSynchronousPostBack (Control control, string eventArguments)
+  {
+    _smartPageInfo.RegisterCommandForSynchronousPostBack (control, eventArguments);
   }
 
   #endregion
@@ -562,6 +569,12 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     values[0] = base.SaveControlState();
     values[1] = _isDirty;
     return values;
+  }
+
+  protected override void OnPreRenderComplete (EventArgs e)
+  {
+    _smartPageInfo.OnPreRenderComplete ();
+    base.OnPreRenderComplete (e);
   }
 }
 

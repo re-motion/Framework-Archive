@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Web.Test.MultiplePostBackCatching
+namespace Rubicon.Web.Test
 {
   public class IDEventArgs : EventArgs
   {

@@ -1,7 +1,7 @@
 using System;
 using System.Web.UI;
 
-namespace Rubicon.Web.Test.MultiplePostBackCatching
+namespace Rubicon.Web.Test
 {
   public class PostBackEventHandler : Control, IPostBackEventHandler
   {

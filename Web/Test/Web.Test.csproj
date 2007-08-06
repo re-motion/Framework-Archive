@@ -91,6 +91,10 @@
     <Reference Include="System.Web">
       <Name>System.Web</Name>
     </Reference>
+    <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\WINDOWS\assembly\GAC_MSIL\System.Web.Extensions\1.0.61025.0__31bf3856ad364e35\System.Web.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
@@ -106,10 +110,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MultiplePostBackCatching\BasePage.cs">
+    <Compile Include="BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="MultiplePostBackCatching\PostBackEventHandler.cs" />
+    <Compile Include="PostBackEventHandler.cs" />
     <Compile Include="MultiplePostBackCatching\SutGenerator.cs" />
     <Compile Include="MultiplePostBackCatching\TestExpectationsGenerator.cs" />
     <Compile Include="MultiplePostBackCatching\TestSuiteGenerator.cs" />
@@ -120,7 +124,7 @@
     <Compile Include="TestSuiteForm.aspx.designer.cs">
       <DependentUpon>TestSuiteForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="MultiplePostBackCatching\IDEventArgs.cs" />
+    <Compile Include="IDEventArgs.cs" />
     <Compile Include="MultiplePostBackCatching\SutForm.aspx.designer.cs">
       <DependentUpon>SutForm.aspx</DependentUpon>
     </Compile>
@@ -175,6 +179,20 @@
       <DependentUpon>WebForm1.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="UpdatePanelTests\SutForm.aspx.cs">
+      <DependentUpon>SutForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UpdatePanelTests\SutForm.aspx.designer.cs">
+      <DependentUpon>SutForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UpdatePanelTests\SutUserControl.ascx.cs">
+      <DependentUpon>SutUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UpdatePanelTests\SutUserControl.ascx.designer.cs">
+      <DependentUpon>SutUserControl.ascx</DependentUpon>
+    </Compile>
     <Content Include="TestSuiteForm.aspx" />
     <Content Include="Global.asax">
       <SubType>Component</SubType>
@@ -192,6 +210,8 @@
     <Content Include="Start.aspx">
       <SubType>Form</SubType>
     </Content>
+    <Content Include="UpdatePanelTests\SutForm.aspx" />
+    <Content Include="UpdatePanelTests\SutUserControl.ascx" />
     <Content Include="UrlMapping.xml" />
     <Content Include="ExecutionEngine\UserControl1.ascx">
       <SubType>UserControl</SubType>
@@ -204,6 +224,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="res\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

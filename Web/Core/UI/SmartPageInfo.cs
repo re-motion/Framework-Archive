@@ -12,6 +12,7 @@ using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.Utilities;
+using System.Collections.Generic;
 
 namespace Rubicon.Web.UI
 {
@@ -51,7 +52,7 @@ namespace Rubicon.Web.UI
     private string _abortMessage;
     private string _statusIsSubmittingMessage = string.Empty;
 
-    private bool _isPreRendering = false;
+    private bool _isPreRenderComplete = false;
 
     private AutoInitDictionary<SmartPageEvents, NameValueCollection> _clientSideEventHandlers =
         new AutoInitDictionary<SmartPageEvents, NameValueCollection>();
@@ -60,6 +61,7 @@ namespace Rubicon.Web.UI
     private Hashtable _trackedControls = new Hashtable();
     private StringCollection _trackedControlsByID = new StringCollection();
     private Hashtable _navigationControls = new Hashtable();
+    private List<Tuple<Control, string>> _synchronousPostBackCommands = new List<Tuple<Control, string>> ();
 
     private ResourceManagerSet _cachedResourceManager;
 
@@ -71,7 +73,6 @@ namespace Rubicon.Web.UI
       ArgumentUtility.CheckNotNullAndType<Page> ("page", page);
       _page = page;
       _page.Init += new EventHandler (Page_Init);
-      _page.PreRender += new EventHandler (Page_PreRender);
     }
 
     /// <summary> Implements <see cref="ISmartPage.RegisterClientSidePageEventHandler">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>
@@ -82,9 +83,8 @@ namespace Rubicon.Web.UI
       if (! System.Text.RegularExpressions.Regex.IsMatch (function, @"^([a-zA-Z_][a-zA-Z0-9_]*)$"))
         throw new ArgumentException ("Invalid function name: '" + function + "'.", "function");
 
-      if (_isPreRendering)
-        throw new InvalidOperationException (
-            "RegisterClientSidePageEventHandler must not be called after the PreRender method of the System.Web.UI.Page has been invoked.");
+      if (_isPreRenderComplete)
+        throw new InvalidOperationException ("RegisterClientSidePageEventHandler must not be called after the PreRenderComplete method of the System.Web.UI.Page has been invoked.");
 
       NameValueCollection eventHandlers = _clientSideEventHandlers[pageEvent];
       eventHandlers[key] = function;
@@ -95,6 +95,10 @@ namespace Rubicon.Web.UI
     public void RegisterControlForDirtyStateTracking (IEditableControl control)
     {
       ArgumentUtility.CheckNotNull ("control", control);
+
+      if (_isPreRenderComplete)
+        throw new InvalidOperationException ("RegisterControlForDirtyStateTracking must not be called after the PreRenderComplete method of the System.Web.UI.Page has been invoked.");
+
       _trackedControls[control] = control;
     }
 
@@ -102,6 +106,10 @@ namespace Rubicon.Web.UI
     public void RegisterControlForDirtyStateTracking (string clientID)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("clientID", clientID);
+
+      if (_isPreRenderComplete)
+        throw new InvalidOperationException ("RegisterControlForDirtyStateTracking must not be called after the PreRenderComplete method of the System.Web.UI.Page has been invoked.");
+
       if (! _trackedControlsByID.Contains (clientID))
         _trackedControlsByID.Add (clientID);
     }
@@ -124,6 +132,17 @@ namespace Rubicon.Web.UI
       set { _checkFormStateFunction = StringUtility.EmptyToNull (value); }
     }
 
+    public void RegisterCommandForSynchronousPostBack (Control control, string eventArguments)
+    {
+      ArgumentUtility.CheckNotNull ("control", control);
+
+      if (_isPreRenderComplete)
+        throw new InvalidOperationException ("RegisterCommandForSynchronousPostBack must not be called after the PreRenderComplete method of the System.Web.UI.Page has been invoked.");
+
+      Tuple<Control, string> command = new Tuple<Control, string> (control, StringUtility.NullToEmpty (eventArguments));
+      if (!_synchronousPostBackCommands.Contains (command))
+        _synchronousPostBackCommands.Add (command);
+    }
 
     /// <summary> Find the <see cref="IResourceManager"/> for this SmartPageInfo. </summary>
     protected virtual IResourceManager GetResourceManager ()
@@ -260,12 +279,12 @@ namespace Rubicon.Web.UI
       }
     }
 
-    private void Page_PreRender (object sender, EventArgs e)
+    public void OnPreRenderComplete ()
     {
       PreRenderSmartPage();
       PreRenderSmartNavigation();
 
-      _isPreRendering = true;
+      _isPreRenderComplete = true;
     }
 
     private void PreRenderSmartPage ()
@@ -313,12 +332,10 @@ namespace Rubicon.Web.UI
 
       StringBuilder initScript = new StringBuilder (500);
 
-      const string eventHandlersArray = "_smartPage_eventHandlers";
-      initScript.Append ("var ").Append (eventHandlersArray).AppendLine (" = new Array();");
-      FormatPopulateEventHandlersArrayClientScript (initScript, eventHandlersArray);
-      initScript.AppendLine();
+      initScript.AppendLine ("function SmartPage_Initialize ()");
+      initScript.AppendLine ("{");
 
-      const string trackedControlsArray = "_smartPage_trackedControls";
+      const string trackedControlsArray = "trackedControls";
       initScript.Append ("var ").Append (trackedControlsArray).AppendLine (" = new Array();");
       if (_page.IsDirtyStateTrackingEnabled)
       {
@@ -330,6 +347,19 @@ namespace Rubicon.Web.UI
       }
       initScript.AppendLine();
 
+      const string synchronousPostBackCommandsArray = "synchronousPostBackCommands";
+      initScript.Append ("  var ").Append (synchronousPostBackCommandsArray).AppendLine (" = new Array();");
+      FormatPopulateSynchronousPostBackCommandsArrayClientScript (initScript, synchronousPostBackCommandsArray);
+      initScript.AppendLine ();
+
+      initScript.AppendLine ("  if (SmartPage_Context.Instance == null)");
+      initScript.AppendLine ("  {");
+
+      const string eventHandlersArray = "eventHandlers";
+      initScript.Append ("    var ").Append (eventHandlersArray).AppendLine (" = new Array();");
+      FormatPopulateEventHandlersArrayClientScript (initScript, eventHandlersArray);
+      initScript.AppendLine ();
+
       initScript.AppendLine ("SmartPage_Context.Instance = new SmartPage_Context (");
       initScript.Append ("    '").Append (_page.HtmlForm.ClientID).AppendLine ("',");
       initScript.Append ("    ").Append (isDirtyStateTrackingEnabled).AppendLine (",");
@@ -339,17 +369,25 @@ namespace Rubicon.Web.UI
       initScript.Append ("    ").Append (smartScrollingFieldID).AppendLine (",");
       initScript.Append ("    ").Append (smartFocusFieldID).AppendLine (",");
       initScript.Append ("    ").Append (checkFormStateFunction).AppendLine (",");
-      initScript.Append ("    ").Append (eventHandlersArray).AppendLine (",");
-      initScript.Append ("    ").Append (trackedControlsArray).AppendLine (");");
+      initScript.Append ("        ").Append (eventHandlersArray).AppendLine (");");
 
+      initScript.AppendLine ("  }");
       initScript.AppendLine();
-      initScript.Append (eventHandlersArray).AppendLine (" = null;");
-      initScript.Append (trackedControlsArray).AppendLine (" = null;");
-      initScript.Append ("delete ").Append (eventHandlersArray).AppendLine (";");
-      initScript.Append ("delete ").Append (trackedControlsArray).Append (";");
+
+      initScript.Append ("  SmartPage_Context.Instance.set_TrackedIDs (").Append (trackedControlsArray).AppendLine (");");
+      initScript.Append ("  SmartPage_Context.Instance.set_SynchronousPostBackCommands (").Append (synchronousPostBackCommandsArray).AppendLine (");");
+      initScript.AppendLine ("}");
+      initScript.AppendLine ();
+      initScript.AppendLine ("SmartPage_Initialize ();");
+      initScript.AppendLine ();
 
       ScriptUtility.RegisterClientScriptBlock ((Page) _page, "smartPageInitialize", initScript.ToString());
-      ScriptUtility.RegisterStartupScriptBlock ((Page) _page, "smartPageStartUp", "SmartPage_OnStartUp();");
+
+      string isAsynchronous = "false";
+      ScriptManager scriptManager = ScriptManager.GetCurrent ((Page) _page);
+      if (scriptManager != null && scriptManager.IsInAsyncPostBack)
+        isAsynchronous = "true";
+      ScriptUtility.RegisterStartupScriptBlock ((Page) _page, "smartPageStartUp", "SmartPage_OnStartUp (" + isAsynchronous + ");");
 
       // Ensure the __doPostBack function on the rendered page
       _page.GetPostBackEventReference ((Page) _page);
@@ -391,6 +429,34 @@ namespace Rubicon.Web.UI
       return statusIsSubmittingMessage;
     }
 
+    private void FormatPopulateEventHandlersArrayClientScript (StringBuilder script, string eventHandlersArray)
+    {
+      const string eventHandlersByEventArray = "eventHandlersByEvent";
+
+      foreach (SmartPageEvents pageEvent in _clientSideEventHandlers.Keys)
+      {
+        NameValueCollection eventHandlers = (NameValueCollection) _clientSideEventHandlers[pageEvent];
+
+        script.Append ("    ");
+        script.Append (eventHandlersByEventArray).AppendLine (" = new Array();");
+
+        for (int i = 0; i < eventHandlers.Keys.Count; i++)
+        {
+          // IE 5.0.1 does not understand push
+          script.Append ("    ");
+          script.Append (eventHandlersByEventArray).Append ("[").Append (eventHandlersByEventArray).Append (".length] = '");
+          script.Append (eventHandlers.Get (i));
+          script.AppendLine ("';");
+        }
+
+        script.Append ("    ");
+        script.Append (eventHandlersArray).Append ("['");
+        script.Append (pageEvent.ToString ().ToLower ());
+        script.Append ("'] = ").Append (eventHandlersByEventArray).AppendLine (";");
+        script.AppendLine ();
+      }
+    }
+
     private void FormatPopulateTrackedControlsArrayClientScript (StringBuilder script, string trackedControlsArray)
     {
       foreach (IEditableControl control in _trackedControls.Values)
@@ -401,9 +467,10 @@ namespace Rubicon.Web.UI
           for (int i = 0; i < trackedIDs.Length; i++)
           {
             // IE 5.0.1 does not understand push
+            script.Append ("  ");
             script.Append (trackedControlsArray).Append ("[").Append (trackedControlsArray).Append (".length] = '");
             script.Append (trackedIDs[i]);
-            script.Append ("'; \r\n");
+            script.AppendLine ("';");
           }
         }
       }
@@ -411,40 +478,23 @@ namespace Rubicon.Web.UI
       foreach (string trackedID in _trackedControlsByID)
       {
         // IE 5.0.1 does not understand push
+        script.Append ("  ");
         script.Append (trackedControlsArray).Append ("[").Append (trackedControlsArray).Append (".length] = '");
         script.Append (trackedID);
-        script.Append ("'; \r\n");
+        script.AppendLine ("';");
       }
     }
 
-    private void FormatPopulateEventHandlersArrayClientScript (StringBuilder script, string eventHandlersArray)
+    private void FormatPopulateSynchronousPostBackCommandsArrayClientScript (StringBuilder script, string array)
     {
-      const string eventHandlersByEventArray = "_smartPage_eventHandlersByEvent";
-
-      script.Append ("var ").Append (eventHandlersByEventArray).Append (" = null; \r\n");
-      script.Append ("\r\n");
-      foreach (SmartPageEvents pageEvent in _clientSideEventHandlers.Keys)
+      foreach (Tuple<Control, string> command in _synchronousPostBackCommands)
       {
-        NameValueCollection eventHandlers = _clientSideEventHandlers[pageEvent];
-
-        script.Append (eventHandlersByEventArray).Append (" = new Array(); \r\n");
-
-        for (int i = 0; i < eventHandlers.Keys.Count; i++)
-        {
-          // IE 5.0.1 does not understand push
-          script.Append (eventHandlersByEventArray).Append ("[").Append (eventHandlersByEventArray).Append (".length] = '");
-          script.Append (eventHandlers.Get (i));
-          script.Append ("'; \r\n");
+        script.Append ("  ");
+        script.Append (array).Append ("[").Append (array).Append (".length] = '");
+        script.Append (command.A.ClientID + "|" + command.B);
+        script.AppendLine ("';");
         }
-
-        script.Append (eventHandlersArray).Append ("['");
-        script.Append (pageEvent.ToString().ToLower());
-        script.Append ("'] = ").Append (eventHandlersByEventArray).Append ("; \r\n");
-        script.Append ("\r\n");
       }
-      script.Append (eventHandlersByEventArray).Append (" = null; \r\n");
-      script.Append ("delete ").Append (eventHandlersByEventArray).Append ("; \r\n");
-    }
 
     private void PreRenderSmartNavigation ()
     {

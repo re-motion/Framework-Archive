@@ -4,7 +4,6 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Rubicon.Utilities;
-using Rubicon.Web.Test.MultiplePostBackCatching;
 using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.Web.Test.MultiplePostBackCatching
@@ -248,7 +247,11 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
       HyperLink hyperLink = new HyperLink();
       hyperLink.ID = CreateID (prefix, id);
       hyperLink.NavigateUrl = "#";
-      hyperLink.Attributes["onclick"] = _page.ClientScript.GetPostBackEventReference (_postBackEventHandler, hyperLink.ID);
+      hyperLink.Attributes["onclick"] = string.Empty;
+      hyperLink.PreRender += delegate 
+      {
+        hyperLink.Attributes["onclick"] = _page.ClientScript.GetPostBackEventReference (_postBackEventHandler, hyperLink.ID) + ";";
+      };
 
       return hyperLink;
     }
