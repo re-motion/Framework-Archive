@@ -10,12 +10,9 @@
     document.Form.AutoPostbackList.fireEvent ('onChange','');
   } 
 </script>
-<style type="text/css">
-  TD.first { BACKGROUND-COLOR: lightgrey }
-  </style>
 </head>
 <body>
-<form id=Form method=post runat="server">
+<form id="Form" runat="server">
 <asp:PlaceHolder ID="SutPlaceHolder" runat="server" />
 <table style="WIDTH: 100%; HEIGHT: 100%">
   <tr>

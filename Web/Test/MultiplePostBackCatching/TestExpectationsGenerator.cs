@@ -12,12 +12,12 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
     public const string AllTests = "All";
     public const string TestCaseParameter = "TestCase";
 
-    public static string GetTestCaseUrlParameter (TestForm testPage)
+    public static string GetTestCaseUrlParameter (Page testPage)
     {
       return testPage.Request.QueryString[TestExpectationsGenerator.TestCaseParameter];
     }
 
-    public static void GenerateExpectations (TestForm testPage, TableRowCollection rows, string sutPage)
+    public static void GenerateExpectations (Page testPage, TableRowCollection rows, string sutPage)
     {
       TestExpectationsGenerator testExpectationsGenerator = new TestExpectationsGenerator (testPage, sutPage);
       rows.AddRange (testExpectationsGenerator.CreateExpectations (TestExpectationsGenerator.GetTestCaseUrlParameter (testPage)));

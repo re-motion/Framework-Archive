@@ -302,7 +302,7 @@ namespace Rubicon.Web.UI
 
     private void PreRenderSmartPage ()
     {
-      _page.RegisterHiddenField (SmartPageInfo.CacheDetectionID, null);
+      ScriptManager.RegisterHiddenField ((Page) _page, SmartPageInfo.CacheDetectionID, null);
 
       RegisterSmartPageInitializationScript();
     }
@@ -511,7 +511,7 @@ namespace Rubicon.Web.UI
         string smartScrollingValue = null;
         if (postBackCollection != null && ! _isSmartNavigationDataDisacarded)
           smartScrollingValue = postBackCollection[c_smartScrollingID];
-        page.ClientScript.RegisterHiddenField (c_smartScrollingID, smartScrollingValue);
+        ScriptManager.RegisterHiddenField (page, c_smartScrollingID, smartScrollingValue);
       }
 
       if (smartNavigablePage.IsSmartFocusingEnabled)
@@ -521,7 +521,7 @@ namespace Rubicon.Web.UI
           smartFocusValue = postBackCollection[c_smartFocusID];
         if (! StringUtility.IsNullOrEmpty (_smartFocusID))
           smartFocusValue = _smartFocusID;
-        page.ClientScript.RegisterHiddenField (c_smartFocusID, smartFocusValue);
+        ScriptManager.RegisterHiddenField (page, c_smartFocusID, smartFocusValue);
       }
     }
 

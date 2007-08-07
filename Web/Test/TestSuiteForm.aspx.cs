@@ -9,7 +9,8 @@ namespace Rubicon.Web.Test
     {
       base.OnLoad (e);
 
-      TestSuiteGenerator.GenerateTestCases (this, TestSuiteTable.Rows, "~/MultiplePostbackCatching/TestForm.aspx");
+      TestSuiteGenerator.GenerateTestCases (this, TestSuiteTable.Rows, "~/MultiplePostbackCatching/TestForm.aspx", "Standard");
+      TestSuiteGenerator.GenerateTestCases (this, TestSuiteTable.Rows, "~/MultiplePostbackCatching/UpdatePanelTestForm.aspx", "UpdatePanel");
     }
   }
 }

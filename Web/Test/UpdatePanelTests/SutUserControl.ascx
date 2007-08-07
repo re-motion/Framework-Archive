@@ -25,12 +25,12 @@
         <MenuItems>
           <rubicon:WebMenuItem ItemID="EventWithSyncPostBack" Text="Event With Sync PostBack">
             <PersistedCommand>
-              <rubicon:Command Type="Event" EventCommand-RequiresSynchronousPostBack="true" />
+              <rubicon:Command Type="Event" EventCommand-RequiresSynchronousPostBack="True" />
             </PersistedCommand>
           </rubicon:WebMenuItem>
           <rubicon:WebMenuItem ItemID="EventWithAsyncPostBack" Text="Event With Async PostBack">
             <PersistedCommand>
-              <rubicon:Command Type="Event" EventCommand-RequiresSynchronousPostBack="false" />
+              <rubicon:Command Type="Event" />
             </PersistedCommand>
           </rubicon:WebMenuItem>
         </MenuItems>

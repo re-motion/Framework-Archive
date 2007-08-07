@@ -113,6 +113,20 @@
     <Compile Include="BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="MultiplePostBackCatching\UpdatePanelTestForm.aspx.cs">
+      <DependentUpon>UpdatePanelTestForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\UpdatePanelTestForm.aspx.designer.cs">
+      <DependentUpon>UpdatePanelTestForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\UpdatePanelSutForm.aspx.cs">
+      <DependentUpon>UpdatePanelSutForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\UpdatePanelSutForm.aspx.designer.cs">
+      <DependentUpon>UpdatePanelSutForm.aspx</DependentUpon>
+    </Compile>
     <Compile Include="PostBackEventHandler.cs" />
     <Compile Include="MultiplePostBackCatching\SutGenerator.cs" />
     <Compile Include="MultiplePostBackCatching\TestExpectationsGenerator.cs" />
@@ -186,6 +200,7 @@
     <Compile Include="UpdatePanelTests\SutForm.aspx.designer.cs">
       <DependentUpon>SutForm.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UpdatePanelTests\SutFunction.cs" />
     <Compile Include="UpdatePanelTests\SutUserControl.ascx.cs">
       <DependentUpon>SutUserControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -193,6 +208,10 @@
     <Compile Include="UpdatePanelTests\SutUserControl.ascx.designer.cs">
       <DependentUpon>SutUserControl.ascx</DependentUpon>
     </Compile>
+    <Content Include="MultiplePostBackCatching\UpdatePanelTestForm.aspx" />
+    <Content Include="MultiplePostBackCatching\UpdatePanelSutForm.aspx">
+      <SubType>Form</SubType>
+    </Content>
     <Content Include="TestSuiteForm.aspx" />
     <Content Include="Global.asax">
       <SubType>Component</SubType>

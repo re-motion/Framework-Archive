@@ -100,7 +100,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
 
     if (_page.CurrentStep != null)
-      _page.RegisterHiddenField (WxePageInfo.PageTokenID, CurrentStep.PageToken);
+      ScriptManager.RegisterHiddenField ((Page)_page, WxePageInfo.PageTokenID, CurrentStep.PageToken);
 
     _wxeForm.LoadPostData += new EventHandler(Form_LoadPostData);
 
@@ -210,10 +210,10 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     WxeContext wxeContext = WxeContext.Current;
     Page page = (Page) _page;
 
-    page.ClientScript.RegisterHiddenField (WxeHandler.Parameters.WxeFunctionToken, wxeContext.FunctionToken);
-    page.ClientScript.RegisterHiddenField (WxePageInfo.ReturningTokenID, null);
+    ScriptManager.RegisterHiddenField (page, WxeHandler.Parameters.WxeFunctionToken, wxeContext.FunctionToken);
+    ScriptManager.RegisterHiddenField (page, WxePageInfo.ReturningTokenID, null);
     int nextPostBackID = wxeContext.PostBackID + 1;
-    page.ClientScript.RegisterHiddenField (WxePageInfo.PostBackSequenceNumberID, nextPostBackID.ToString ());
+    ScriptManager.RegisterHiddenField (page, WxePageInfo.PostBackSequenceNumberID, nextPostBackID.ToString ());
 
     string key = "wxeDoSubmit";
     ScriptUtility.RegisterClientScriptBlock (page, key,

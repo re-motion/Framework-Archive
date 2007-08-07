@@ -9,10 +9,10 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
 {
   public class TestSuiteGenerator
   {
-    public static void GenerateTestCases (Page testSuitePage, TableRowCollection rows, string testPage)
+    public static void GenerateTestCases (Page testSuitePage, TableRowCollection rows, string testPage, string testPrefix)
     {
       TestSuiteGenerator testSuiteGenerator = new TestSuiteGenerator (testSuitePage, testPage);
-      rows.AddRange (testSuiteGenerator.CreateTestCases ("Standard"));
+      rows.AddRange (testSuiteGenerator.CreateTestCases (testPrefix));
     }
     
     private readonly Page _testSuitePage;

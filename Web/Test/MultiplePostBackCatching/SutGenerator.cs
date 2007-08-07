@@ -21,7 +21,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
       return 2000;
     }
 
-    public static void GenerateSut (SutForm sutPage, ControlCollection controls)
+    public static void GenerateSut (Page sutPage, ControlCollection controls)
     {
       SutGenerator sutGenerator = new SutGenerator (sutPage);
       foreach (Control control in sutGenerator.CreateSut ())
@@ -75,7 +75,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
     private void HandlePostBack (object sender, IDEventArgs e)
     {
       _label.Text = "Test Result: " + e.ID;
-      _sutPage.ClientScript.RegisterHiddenField (LastClickFieldID, e.ID);
+      ScriptManager.RegisterHiddenField (_sutPage, LastClickFieldID, e.ID);
       System.Threading.Thread.Sleep (_serverDelay);
     }
 

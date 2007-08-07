@@ -23,7 +23,7 @@
         <a href="MultiplePostbackCatching/SutForm.aspx">Multiple Postback Catcher Tests</a>
       </p>
       <p>
-        <a href="UpdatePanelTests/SutForm.aspx">UpdatePanel SUT</a>
+        <a href="UpdatePanelTests/Sut.wxe">UpdatePanel SUT</a>
       </p>
       <p>
         <a href="../Selenium/Core/TestRunner.html?test=../../Test/TestSuiteForm.aspx">Rubicon.Web.Tests</a>
