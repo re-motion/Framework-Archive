@@ -161,7 +161,8 @@ namespace Rubicon.Web.ExecutionEngine
     {
       if (!ControlHelper.IsDesignMode (this))
       {
-        if (!Rubicon.Web.UI.HtmlHeadAppender.Current.HasAppended)
+        ScriptManager scriptManager = ScriptManager.GetCurrent (Page);
+        if (!Rubicon.Web.UI.HtmlHeadAppender.Current.HasAppended && (scriptManager == null || !scriptManager.IsInAsyncPostBack))
         {
           throw new WxeException ("The Rubicon.Web.UI.Controls.HtmlHeadContents control is missing on the page. Please add this control to the 'head' section of the document or specify the runat=server attribute for the 'head' section to allow for an automatically generated HtmlHeadContents control.");
         }
