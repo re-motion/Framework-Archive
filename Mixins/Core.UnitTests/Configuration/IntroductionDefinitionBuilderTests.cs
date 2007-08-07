@@ -32,16 +32,16 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
       {
-        BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
-        MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
+        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        MixinDefinition mixin1 = targetClass.Mixins[typeof (BT1Mixin1)];
 
         Assert.IsTrue (mixin1.InterfaceIntroductions.ContainsKey (typeof (IBT1Mixin1)));
         InterfaceIntroductionDefinition introducedInterface = mixin1.InterfaceIntroductions[typeof (IBT1Mixin1)];
         Assert.AreSame (mixin1, introducedInterface.Parent);
         Assert.AreSame (mixin1, introducedInterface.Implementer);
-        Assert.IsTrue (baseClass.IntroducedInterfaces.ContainsKey (typeof (IBT1Mixin1)));
-        Assert.AreSame (baseClass.IntroducedInterfaces[typeof (IBT1Mixin1)], introducedInterface);
-        Assert.AreSame (baseClass, introducedInterface.BaseClass);
+        Assert.IsTrue (targetClass.IntroducedInterfaces.ContainsKey (typeof (IBT1Mixin1)));
+        Assert.AreSame (targetClass.IntroducedInterfaces[typeof (IBT1Mixin1)], introducedInterface);
+        Assert.AreSame (targetClass, introducedInterface.TargetClass);
       }
     }
 
@@ -76,7 +76,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend(typeof (BaseType1), typeof (DerivedIntroducer)))
       {
-        BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IIntroducedDerived)));
         Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IIntroducedBase)));
 
@@ -130,7 +130,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend(typeof (BaseType1), typeof (ExplicitDerivedIntroducer)))
       {
-        BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IIntroducedDerived)));
         Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IIntroducedBase)));
 
@@ -163,8 +163,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
       {
-        BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
-        MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
+        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        MixinDefinition mixin1 = targetClass.Mixins[typeof (BT1Mixin1)];
         InterfaceIntroductionDefinition introducedInterface = mixin1.InterfaceIntroductions[typeof (IBT1Mixin1)];
 
         Assert.IsTrue (introducedInterface.IntroducedMethods.ContainsKey (typeof (IBT1Mixin1).GetMethod ("IntroducedMethod")));
@@ -196,7 +196,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend(typeof (BaseType1), typeof (MixinWithExplicitImplementation)))
       {
-        BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IExplicit)));
 
         MethodInfo explicitMethod = typeof (MixinWithExplicitImplementation).GetMethod (
@@ -251,11 +251,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void InterfaceImplementedByBaseClassCannotBeIntroduced ()
+    public void InterfaceImplementedByTargetClassCannotBeIntroduced ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (ClassImplementingSimpleInterface), typeof (MixinImplementingSimpleInterface)))
       {
-        BaseClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassImplementingSimpleInterface));
+        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassImplementingSimpleInterface));
         Assert.IsTrue (definition.ImplementedInterfaces.Contains (typeof (ISimpleInterface)));
         Assert.IsFalse (definition.IntroducedInterfaces.ContainsKey (typeof (ISimpleInterface)));
         Assert.IsTrue (definition.Mixins[typeof (MixinImplementingSimpleInterface)].SuppressedInterfaceIntroductions.ContainsKey (
@@ -268,7 +268,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinSuppressingSimpleInterface)))
       {
-        BaseClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (object));
+        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (object));
         Assert.IsFalse (definition.ImplementedInterfaces.Contains (typeof (ISimpleInterface)));
         Assert.IsFalse (definition.IntroducedInterfaces.ContainsKey (typeof (ISimpleInterface)));
         Assert.IsTrue (definition.Mixins[typeof (MixinSuppressingSimpleInterface)].SuppressedInterfaceIntroductions.ContainsKey (
@@ -281,7 +281,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinSuppressingSimpleInterface)))
       {
-        BaseClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (object));
+        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (object));
         SuppressedInterfaceIntroductionDefinition suppressedDefinition =
             definition.Mixins[typeof (MixinSuppressingSimpleInterface)].SuppressedInterfaceIntroductions[typeof (ISimpleInterface)];
         Assert.IsTrue (suppressedDefinition.IsExplicitlySuppressed);
@@ -296,7 +296,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend (typeof (ClassImplementingSimpleInterface), typeof (MixinImplementingSimpleInterface)))
       {
-        BaseClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassImplementingSimpleInterface));
+        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassImplementingSimpleInterface));
         SuppressedInterfaceIntroductionDefinition suppressedDefinition =
             definition.Mixins[typeof (MixinImplementingSimpleInterface)].SuppressedInterfaceIntroductions[typeof (ISimpleInterface)];
         Assert.IsFalse (suppressedDefinition.IsExplicitlySuppressed);

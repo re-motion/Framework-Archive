@@ -317,7 +317,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         IModuleManager realScope = ConcreteTypeBuilder.Current.Scope;
         ConcreteTypeBuilder.Current.Scope = moduleManagerMock;
 
-        BaseClassDefinition innerClassDefinition = TypeFactory.GetActiveConfiguration (typeof (BaseType2));
+        TargetClassDefinition innerClassDefinition = TypeFactory.GetActiveConfiguration (typeof (BaseType2));
         MixinDefinition innerMixinDefinition =
           TypeFactory.GetActiveConfiguration (typeof (ClassOverridingSingleMixinMethod)).Mixins[typeof (MixinWithSingleAbstractMethod)];
 
@@ -325,8 +325,8 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         {
           Expect.Call (moduleManagerMock.CreateTypeGenerator (innerClassDefinition, GuidNameProvider.Instance, GuidNameProvider.Instance))
               .Return (realScope.CreateTypeGenerator (innerClassDefinition, GuidNameProvider.Instance, GuidNameProvider.Instance));
-          Expect.Call (moduleManagerMock.CreateTypeGenerator (innerMixinDefinition.BaseClass, GuidNameProvider.Instance, GuidNameProvider.Instance))
-              .Return (realScope.CreateTypeGenerator (innerMixinDefinition.BaseClass, GuidNameProvider.Instance, GuidNameProvider.Instance));
+          Expect.Call (moduleManagerMock.CreateTypeGenerator (innerMixinDefinition.TargetClass, GuidNameProvider.Instance, GuidNameProvider.Instance))
+              .Return (realScope.CreateTypeGenerator (innerMixinDefinition.TargetClass, GuidNameProvider.Instance, GuidNameProvider.Instance));
         }
 
         repository.ReplayAll ();

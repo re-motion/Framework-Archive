@@ -22,8 +22,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       info.SetType (typeof (MixinSerializationHelper));
 
-      ClassContext targetClassContext = configuration.BaseClass.ConfigurationContext;
-      info.AddValue ("__configuration.BaseClass.ConfigurationContext", targetClassContext);
+      ClassContext targetClassContext = configuration.TargetClass.ConfigurationContext;
+      info.AddValue ("__configuration.TargetClass.ConfigurationContext", targetClassContext);
       info.AddValue ("__configuration.MixinIndex", configuration.MixinIndex);
 
       object[] baseMemberValues;
@@ -44,8 +44,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     public MixinSerializationHelper (SerializationInfo info, StreamingContext context)
     {
-      ClassContext targetClassContext = (ClassContext) info.GetValue ("__configuration.BaseClass.ConfigurationContext", typeof (ClassContext));
-      BaseClassDefinition targetClassDefinition = BaseClassDefinitionCache.Current.GetBaseClassDefinition (targetClassContext);
+      ClassContext targetClassContext = (ClassContext) info.GetValue ("__configuration.TargetClass.ConfigurationContext", typeof (ClassContext));
+      TargetClassDefinition targetClassDefinition = TargetClassDefinitionCache.Current.GetTargetClassDefinition (targetClassContext);
 
       int mixinIndex = info.GetInt32 ("__configuration.MixinIndex");
       _mixinDefinition = targetClassDefinition.Mixins[mixinIndex];

@@ -130,13 +130,13 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
-    public void GetBaseClassDefinition ()
+    public void GetTargetClassDefinition ()
     {
       ClassContext context = MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType3));
-      BaseClassDefinition referenceDefinition = BaseClassDefinitionCache.Current.GetBaseClassDefinition (context);
+      TargetClassDefinition referenceDefinition = TargetClassDefinitionCache.Current.GetTargetClassDefinition (context);
 
       ConcreteMixedTypeAttribute attribute = ConcreteMixedTypeAttribute.FromClassContext (context);
-      BaseClassDefinition definition = attribute.GetBaseClassDefinition ();
+      TargetClassDefinition definition = attribute.GetTargetClassDefinition ();
       Assert.AreSame (referenceDefinition, definition);
     }
   }

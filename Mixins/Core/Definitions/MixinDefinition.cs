@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
-  [DebuggerDisplay ("{Type}, BaseClass = {BaseClass.Type}")]
+  [DebuggerDisplay ("{Type}, TargetClass = {TargetClass.Type}")]
   public class MixinDefinition : ClassDefinitionBase, IVisitableDefinition
   {
     public readonly UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> InterfaceIntroductions =
@@ -19,20 +19,20 @@ namespace Rubicon.Mixins.Definitions
     public readonly UniqueDefinitionCollection<Type, BaseDependencyDefinition> BaseDependencies =
         new UniqueDefinitionCollection<Type, BaseDependencyDefinition> (delegate (BaseDependencyDefinition d) { return d.RequiredType.Type; });
 
-    private readonly BaseClassDefinition _baseClass;
+    private readonly TargetClassDefinition _targetClass;
     private int _mixinIndex;
 
 
-    public MixinDefinition (Type type, BaseClassDefinition baseClass)
+    public MixinDefinition (Type type, TargetClassDefinition targetClass)
         : base (type)
     {
-      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
-      _baseClass = baseClass;
+      ArgumentUtility.CheckNotNull ("targetClass", targetClass);
+      _targetClass = targetClass;
     }
 
-    public BaseClassDefinition BaseClass
+    public TargetClassDefinition TargetClass
     {
-      get { return _baseClass; }
+      get { return _targetClass; }
     }
 
     public IEnumerable<MemberDefinition> GetAllOverrides()
@@ -46,7 +46,7 @@ namespace Rubicon.Mixins.Definitions
 
     public override IVisitableDefinition Parent
     {
-      get { return BaseClass; }
+      get { return TargetClass; }
     }
 
     public int MixinIndex

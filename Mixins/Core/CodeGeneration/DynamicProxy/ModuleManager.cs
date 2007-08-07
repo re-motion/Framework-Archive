@@ -19,7 +19,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private ModuleScope _scope;
 
-    public ITypeGenerator CreateTypeGenerator (BaseClassDefinition configuration, INameProvider nameProvider, INameProvider mixinNameProvider)
+    public ITypeGenerator CreateTypeGenerator (TargetClassDefinition configuration, INameProvider nameProvider, INameProvider mixinNameProvider)
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);
       ArgumentUtility.CheckNotNull ("nameProvider", nameProvider);

@@ -17,9 +17,9 @@ namespace Rubicon.Mixins.CodeGeneration
         typeof (ConcreteMixinTypeAttribute).GetConstructor (
             new Type[] {typeof (int), typeof (Type), typeof (Type[]), typeof (Type[]), typeof (Type[])});
 
-    public static ConcreteMixinTypeAttribute FromClassContext (int mixinIndex, ClassContext baseClassContext)
+    public static ConcreteMixinTypeAttribute FromClassContext (int mixinIndex, ClassContext targetClassContext)
     {
-      ConcreteMixedTypeAttribute baseAttribute = ConcreteMixedTypeAttribute.FromClassContext (baseClassContext);
+      ConcreteMixedTypeAttribute baseAttribute = ConcreteMixedTypeAttribute.FromClassContext (targetClassContext);
       return new ConcreteMixinTypeAttribute (mixinIndex, baseAttribute.BaseType, baseAttribute.MixinTypes, baseAttribute.CompleteInterfaces,
           baseAttribute.ExplicitDependenciesPerMixin);
     }
@@ -49,7 +49,7 @@ namespace Rubicon.Mixins.CodeGeneration
 
     public MixinDefinition GetMixinDefinition ()
     {
-      return GetBaseClassDefinition ().Mixins[MixinIndex];
+      return GetTargetClassDefinition ().Mixins[MixinIndex];
     }
   }
 }

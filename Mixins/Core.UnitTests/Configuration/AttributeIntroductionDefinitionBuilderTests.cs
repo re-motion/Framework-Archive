@@ -14,7 +14,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void MixinsIntroduceAttributes ()
     {
-      BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
       Assert.AreEqual (2, bt1.CustomAttributes.Count);
       Assert.IsTrue (bt1.CustomAttributes.ContainsKey (typeof (BT1Attribute)));
       Assert.IsTrue (bt1.CustomAttributes.ContainsKey (typeof (DefaultMemberAttribute)));
@@ -36,7 +36,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void MixinsIntroduceAttributesToMembers ()
     {
-      BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
       MethodDefinition member = bt1.Methods[typeof (BaseType1).GetMethod ("VirtualMethod", Type.EmptyTypes)];
       Assert.AreEqual (1, member.CustomAttributes.Count);
       Assert.AreEqual (1, member.IntroducedAttributes.Count);
@@ -55,7 +55,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void MultipleAttributes ()
     {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (
+      TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (
           typeof (BaseTypeWithAllowMultiple), typeof (MixinAddingAllowMultipleToClassAndMember), typeof (MixinAddingAllowMultipleToClassAndMember2));
       Assert.AreEqual (2, definition.IntroducedAttributes.GetItemCount (typeof (MultiAttribute)));
       Assert.AreEqual (1, definition.CustomAttributes.GetItemCount (typeof (MultiAttribute)));
@@ -64,7 +64,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void MultipleAttributesOnMembers ()
     {
-      BaseClassDefinition bt1 =
+      TargetClassDefinition bt1 =
           UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseTypeWithAllowMultiple),
           typeof (MixinAddingAllowMultipleToClassAndMember), typeof (MixinAddingAllowMultipleToClassAndMember2));
       MethodDefinition member = bt1.Methods[typeof (BaseTypeWithAllowMultiple).GetMethod ("Foo")];
@@ -103,22 +103,22 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void NonInheritedAttributesAreNotIntroduced ()
     {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (
+      TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (
           typeof (BaseType1), typeof (MixinAddingNonInheritedAttribute));
       Assert.AreEqual (0, definition.IntroducedAttributes.GetItemCount (typeof (NonInheritedAttribute)));
     }
 
     [Test]
-    public void WithNonMultipleInheritedAttributesTheBaseClassWins ()
+    public void WithNonMultipleInheritedAttributesTheTargetClassWins ()
     {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (
+      TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (
           typeof (BaseType1), typeof (MixinAddingBT1Attribute));
       Assert.AreEqual (0, definition.IntroducedAttributes.GetItemCount (typeof (BT1Attribute)));
       Assert.AreEqual (1, definition.CustomAttributes.GetItemCount (typeof (BT1Attribute)));
     }
 
     [Test]
-    public void WithNonMultipleInheritedAttributesOnMemberTheBaseClassWins ()
+    public void WithNonMultipleInheritedAttributesOnMemberTheTargetClassWins ()
     {
       MethodDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (
           typeof (BaseType1), typeof (MixinAddingBT1AttributeToMember)).Methods[typeof (BaseType1).GetMethod ("VirtualMethod", Type.EmptyTypes)];

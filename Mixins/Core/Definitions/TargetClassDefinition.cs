@@ -9,7 +9,7 @@ namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   [DebuggerDisplay ("{Type}")]
-  public class BaseClassDefinition : ClassDefinitionBase, IAttributeIntroductionTargetDefinition
+  public class TargetClassDefinition : ClassDefinitionBase, IAttributeIntroductionTargetDefinition
   {
     public readonly UniqueDefinitionCollection<Type, MixinDefinition> Mixins =
         new UniqueDefinitionCollection<Type, MixinDefinition> (delegate (MixinDefinition m) { return m.Type; });
@@ -26,7 +26,7 @@ namespace Rubicon.Mixins.Definitions
     private readonly MixinTypeInstantiator _mixinTypeInstantiator;
     private readonly ClassContext _configurationContext;
 
-    public BaseClassDefinition (ClassContext configurationContext)
+    public TargetClassDefinition (ClassContext configurationContext)
         : base (configurationContext.Type)
     {
       ArgumentUtility.CheckNotNull ("configurationContext", configurationContext);

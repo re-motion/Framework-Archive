@@ -2,7 +2,7 @@ using System;
 
 namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
-  public class GenericBaseClass<T>
+  public class GenericTargetClass<T>
   {
     public virtual T VirtualMethod ()
     {

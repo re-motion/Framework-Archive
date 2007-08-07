@@ -97,7 +97,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void AcceptsInstanceOfGeneratedMixinType1 ()
     {
-      BaseClassDefinition configuration = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers));
+      TargetClassDefinition configuration = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers));
       Type generatedMixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (configuration.Mixins[typeof (MixinWithAbstractMembers)]);
       object mixinInstance = Activator.CreateInstance (generatedMixinType);
 
@@ -110,7 +110,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (MixinWithProtectedOverrider)))
       {
-        BaseClassDefinition configuration = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        TargetClassDefinition configuration = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         Type mixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (configuration.Mixins[0]);
         object mixinInstance = Activator.CreateInstance (mixinType);
         BaseType1 bt1 = ObjectFactory.CreateWithMixinInstances<BaseType1> (mixinInstance).With ();

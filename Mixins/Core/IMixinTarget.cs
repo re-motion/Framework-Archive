@@ -11,8 +11,8 @@ namespace Rubicon.Mixins
     /// <summary>
     /// Gets the mixin target's configuration data.
     /// </summary>
-    /// <value>A <see cref="BaseClassDefinition"/> object holding the configuration data used to create the mixin target.</value>
-    BaseClassDefinition Configuration { get; }
+    /// <value>A <see cref="TargetClassDefinition"/> object holding the configuration data used to create the mixin target.</value>
+    TargetClassDefinition Configuration { get; }
 
     /// <summary>
     /// Gets the mixins associated with the mixed object.

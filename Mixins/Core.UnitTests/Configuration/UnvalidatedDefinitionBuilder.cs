@@ -9,10 +9,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 {
   public static class UnvalidatedDefinitionBuilder
   {
-    public static BaseClassDefinition BuildUnvalidatedDefinition (Type baseType, params Type[] mixinTypes)
+    public static TargetClassDefinition BuildUnvalidatedDefinition (Type baseType, params Type[] mixinTypes)
     {
       ClassContext context = new ClassContext (baseType, mixinTypes);
-      BaseClassDefinitionBuilder builder = new BaseClassDefinitionBuilder();
+      TargetClassDefinitionBuilder builder = new TargetClassDefinitionBuilder();
       return builder.Build (context);
     }
   }

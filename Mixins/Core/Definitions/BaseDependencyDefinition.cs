@@ -23,7 +23,7 @@ namespace Rubicon.Mixins.Definitions
       // check for duck interface
       if (implementer == null && !RequiredType.IsEmptyInterface)
       {
-        implementer = Depender.BaseClass; // duck interface
+        implementer = Depender.TargetClass; // duck interface
       }
       return implementer;
     }

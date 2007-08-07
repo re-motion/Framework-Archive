@@ -9,7 +9,7 @@ using System.Reflection;
 namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
-  [DebuggerDisplay ("{Type}, BaseClass = {BaseClass.Type}")]
+  [DebuggerDisplay ("{Type}, TargetClass = {TargetClass.Type}")]
   public abstract class RequirementDefinitionBase : IVisitableDefinition
   {
     public readonly UniqueDefinitionCollection<DependencyDefinitionBase, DependencyDefinitionBase> RequiringDependencies =
@@ -18,21 +18,21 @@ namespace Rubicon.Mixins.Definitions
     public readonly UniqueDefinitionCollection<MethodInfo, RequiredMethodDefinition> Methods =
         new UniqueDefinitionCollection<MethodInfo, RequiredMethodDefinition> (delegate (RequiredMethodDefinition m) { return m.InterfaceMethod; });
 
-    private BaseClassDefinition _baseClass;
-    private Type _type;
+    private readonly TargetClassDefinition _targetClass;
+    private readonly Type _type;
 
-    public RequirementDefinitionBase(BaseClassDefinition baseClass, Type type)
+    public RequirementDefinitionBase(TargetClassDefinition targetClass, Type type)
     {
-      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
+      ArgumentUtility.CheckNotNull ("targetClass", targetClass);
       ArgumentUtility.CheckNotNull ("type", type);
 
-      _baseClass = baseClass;
+      _targetClass = targetClass;
       _type = type;
     }
 
-    public BaseClassDefinition BaseClass
+    public TargetClassDefinition TargetClass
     {
-      get { return _baseClass; }
+      get { return _targetClass; }
     }
 
     public Type Type
@@ -47,7 +47,7 @@ namespace Rubicon.Mixins.Definitions
 
     public IVisitableDefinition Parent
     {
-      get { return BaseClass; }
+      get { return TargetClass; }
     }
 
     public bool IsEmptyInterface

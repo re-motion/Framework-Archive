@@ -11,16 +11,16 @@ using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 
 namespace Rubicon.Mixins.Definitions.Building
 {
-  public class BaseClassDefinitionBuilder
+  public class TargetClassDefinitionBuilder
   {
     private DependentObjectSorter<MixinDefinition> _sorter = new DependentObjectSorter<MixinDefinition> (new MixinDependencyAnalyzer());
     private DependentMixinGrouper _grouper = new DependentMixinGrouper();
 
-    public BaseClassDefinitionBuilder ()
+    public TargetClassDefinitionBuilder ()
     {
     }
 
-    public BaseClassDefinition Build (ClassContext classContext)
+    public TargetClassDefinition Build (ClassContext classContext)
     {
       ArgumentUtility.CheckNotNull ("classContext", classContext);
 
@@ -32,7 +32,7 @@ namespace Rubicon.Mixins.Definitions.Building
         throw new ConfigurationException (message);
       }
 
-      BaseClassDefinition classDefinition = new BaseClassDefinition (classContext);
+      TargetClassDefinition classDefinition = new TargetClassDefinition (classContext);
 
       const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
       MemberDefinitionBuilder membersBuilder = new MemberDefinitionBuilder(classDefinition, IsVisibleToInheritorsOrExplicitInterfaceImpl,
@@ -51,13 +51,13 @@ namespace Rubicon.Mixins.Definitions.Building
       return classDefinition;
     }
 
-    private void ApplyExplicitFaceInterfaces (BaseClassDefinition classDefinition, ClassContext classContext)
+    private void ApplyExplicitFaceInterfaces (TargetClassDefinition classDefinition, ClassContext classContext)
     {
       foreach (Type faceInterface in classContext.CompleteInterfaces)
         classDefinition.RequiredFaceTypes.Add (new RequiredFaceTypeDefinition (classDefinition, faceInterface));
     }
 
-    private void ApplyMixins (BaseClassDefinition classDefinition, ClassContext classContext)
+    private void ApplyMixins (TargetClassDefinition classDefinition, ClassContext classContext)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("classContext", classContext);
@@ -113,7 +113,7 @@ namespace Rubicon.Mixins.Definitions.Building
       return result;
     }
 
-    private void ApplyMethodRequirements (BaseClassDefinition classDefinition)
+    private void ApplyMethodRequirements (TargetClassDefinition classDefinition)
     {
       RequiredMethodDefinitionBuilder methodRequirementBuilder = new RequiredMethodDefinitionBuilder (classDefinition);
       foreach (RequirementDefinitionBase requirement in classDefinition.RequiredFaceTypes)
@@ -123,7 +123,7 @@ namespace Rubicon.Mixins.Definitions.Building
         methodRequirementBuilder.Apply (requirement);
     }
 
-    private void ApplyOverrides (BaseClassDefinition definition)
+    private void ApplyOverrides (TargetClassDefinition definition)
     {
       OverridesAnalyzer<MethodDefinition> methodAnalyzer = new OverridesAnalyzer<MethodDefinition> (definition.GetAllMixinMethods);
       foreach (Tuple<MethodDefinition, MethodDefinition> methodOverride in methodAnalyzer.Analyze (definition.Methods))

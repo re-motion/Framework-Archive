@@ -10,10 +10,10 @@ namespace Rubicon.Mixins.Validation.Rules
     public override void Install (ValidatingVisitor visitor)
     {
       visitor.SuppressedInterfaceIntroductionRules.Add (
-          new DelegateValidationRule<SuppressedInterfaceIntroductionDefinition> (InterfaceIsShadowedByBaseClass));
+          new DelegateValidationRule<SuppressedInterfaceIntroductionDefinition> (InterfaceIsShadowedByTargetClass));
     }
 
-    private void InterfaceIsShadowedByBaseClass (DelegateValidationRule<SuppressedInterfaceIntroductionDefinition>.Args args)
+    private void InterfaceIsShadowedByTargetClass (DelegateValidationRule<SuppressedInterfaceIntroductionDefinition>.Args args)
     {
       SingleShould (!args.Definition.IsShadowed, args.Log, args.Self);
     }

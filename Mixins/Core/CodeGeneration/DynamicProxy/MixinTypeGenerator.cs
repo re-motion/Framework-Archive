@@ -75,7 +75,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private void AddMixinTypeAttribute ()
     {
       CustomAttributeBuilder attributeBuilder = ConcreteMixinTypeAttribute.BuilderFromClassContext (Configuration.MixinIndex,
-          Configuration.BaseClass.ConfigurationContext);
+          Configuration.TargetClass.ConfigurationContext);
       Emitter.AddCustomAttribute (attributeBuilder);
     }
 
@@ -88,7 +88,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
           throw new NotSupportedException ("The code generator does not support mixin methods with more than one override.");
         else if (method.Overrides.Count == 1)
         {
-          if (method.Overrides[0].DeclaringClass != Configuration.BaseClass)
+          if (method.Overrides[0].DeclaringClass != Configuration.TargetClass)
             throw new NotSupportedException ("The code generator only supports mixin methods to be overridden by the mixin's base class.");
 
           CustomMethodEmitter methodOverride = _emitter.CreateMethodOverride (method.MethodInfo);

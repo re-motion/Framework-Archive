@@ -48,7 +48,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void CreateTypeGenerator ()
     {
-      BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
 
       ITypeGenerator generator = _moduleManager.CreateTypeGenerator (bt1, GuidNameProvider.Instance, GuidNameProvider.Instance);
       Assert.IsNotNull (generator);

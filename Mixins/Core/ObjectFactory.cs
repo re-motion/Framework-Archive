@@ -40,7 +40,7 @@ namespace Rubicon.Mixins
     /// <returns>An object which can be used to instantiate a mixed type derived from <typeparamref name="T"/> and initialize the instance. Use the object's
     /// <see cref="IFuncInvoker{T}.With()"/> methods to actually create the mixed instance.</returns>
     /// <exception cref="ConfigurationException">The current mixin configuration for type <typeparamref name="T"/> contains severe problems that
-    /// make generation of a <see cref="BaseClassDefinition"/> object impossible.</exception>
+    /// make generation of a <see cref="TargetClassDefinition"/> object impossible.</exception>
     /// <exception cref="ValidationException">The current mixin configuration for type <typeparamref name="T"/> violates at least one validation
     /// rule, which makes code generation impossible.</exception>
     /// <exception cref="ArgumentException">The base type <typeparamref name="T"/> is an interface and it cannot be determined which class
@@ -68,7 +68,7 @@ namespace Rubicon.Mixins
     /// <returns>An object which can be used to instantiate a mixed type derived from <paramref name="baseType"/> and initialize the instance. Use the object's
     /// <see cref="IFuncInvoker{T}.With()"/> methods to actually create the mixed instance.</returns>
     /// <exception cref="ConfigurationException">The current mixin configuration for type <paramref name="baseType"/> contains severe problems that
-    /// make generation of a <see cref="BaseClassDefinition"/> object impossible.</exception>
+    /// make generation of a <see cref="TargetClassDefinition"/> object impossible.</exception>
     /// <exception cref="ValidationException">The current mixin configuration for type <paramref name="baseType"/> violates at least one validation
     /// rule, which makes code generation impossible.</exception>
     /// <exception cref="ArgumentNullException">The <paramref name="baseType"/> parameter is <see langword="null"/>.</exception>
@@ -100,7 +100,7 @@ namespace Rubicon.Mixins
     /// <returns>An object which can be used to instantiate a mixed type derived from <typeparamref name="T"/> and initialize the instance. Use the object's
     /// <see cref="IFuncInvoker{T}.With()"/> methods to actually create the mixed instance.</returns>
     /// <exception cref="ConfigurationException">The current mixin configuration for type <typeparamref name="T"/> contains severe problems that
-    /// make generation of a <see cref="BaseClassDefinition"/> object impossible.</exception>
+    /// make generation of a <see cref="TargetClassDefinition"/> object impossible.</exception>
     /// <exception cref="ValidationException">The current mixin configuration for type <typeparamref name="T"/> violates at least one validation
     /// rule, which makes code generation impossible.</exception>
     /// <exception cref="ArgumentException">
@@ -144,7 +144,7 @@ namespace Rubicon.Mixins
     /// <returns>An object which can be used to instantiate a mixed type derived from <paramref name="baseType"/> and initialize the instance. Use the object's
     /// <see cref="IFuncInvoker{T}.With()"/> methods to actually create the mixed instance.</returns>
     /// <exception cref="ConfigurationException">The current mixin configuration for type <paramref name="baseType"/> contains severe problems that
-    /// make generation of a <see cref="BaseClassDefinition"/> object impossible.</exception>
+    /// make generation of a <see cref="TargetClassDefinition"/> object impossible.</exception>
     /// <exception cref="ValidationException">The current mixin configuration for type <paramref name="baseType"/> violates at least one validation
     /// rule, which makes code generation impossible.</exception>
     /// <exception cref="ArgumentNullException">The <paramref name="baseType"/> parameter is <see langword="null"/>.</exception>

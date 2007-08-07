@@ -5,7 +5,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes
 {
   public class MixinImplementingIMixinTarget : IMixinTarget
   {
-    public BaseClassDefinition Configuration
+    public TargetClassDefinition Configuration
     {
       get { throw new NotImplementedException (); }
     }

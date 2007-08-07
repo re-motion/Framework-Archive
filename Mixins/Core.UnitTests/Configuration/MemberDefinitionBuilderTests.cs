@@ -17,32 +17,32 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
       {
-        BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
 
         MethodInfo baseMethod1 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[0]);
         MethodInfo baseMethod2 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[] {typeof (string)});
         MethodInfo mixinMethod1 = typeof (BT1Mixin1).GetMethod ("VirtualMethod", new Type[0]);
 
-        Assert.IsTrue (baseClass.Methods.ContainsKey (baseMethod1));
-        Assert.IsFalse (baseClass.Methods.ContainsKey (mixinMethod1));
+        Assert.IsTrue (targetClass.Methods.ContainsKey (baseMethod1));
+        Assert.IsFalse (targetClass.Methods.ContainsKey (mixinMethod1));
 
-        MemberDefinition member = baseClass.Methods[baseMethod1];
+        MemberDefinition member = targetClass.Methods[baseMethod1];
 
-        Assert.IsTrue (new List<MemberDefinition> (baseClass.GetAllMembers()).Contains (member));
-        Assert.IsFalse (new List<MemberDefinition> (baseClass.Mixins[typeof (BT1Mixin1)].GetAllMembers()).Contains (member));
+        Assert.IsTrue (new List<MemberDefinition> (targetClass.GetAllMembers()).Contains (member));
+        Assert.IsFalse (new List<MemberDefinition> (targetClass.Mixins[typeof (BT1Mixin1)].GetAllMembers()).Contains (member));
 
         Assert.AreEqual ("VirtualMethod", member.Name);
         Assert.AreEqual (typeof (BaseType1).FullName + ".VirtualMethod", member.FullName);
         Assert.IsTrue (member.IsMethod);
         Assert.IsFalse (member.IsProperty);
         Assert.IsFalse (member.IsEvent);
-        Assert.AreSame (baseClass, member.DeclaringClass);
-        Assert.AreSame (baseClass, member.Parent);
+        Assert.AreSame (targetClass, member.DeclaringClass);
+        Assert.AreSame (targetClass, member.Parent);
 
-        Assert.IsTrue (baseClass.Methods.ContainsKey (baseMethod2));
-        Assert.AreNotSame (member, baseClass.Methods[baseMethod2]);
+        Assert.IsTrue (targetClass.Methods.ContainsKey (baseMethod2));
+        Assert.AreNotSame (member, targetClass.Methods[baseMethod2]);
 
-        MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
+        MixinDefinition mixin1 = targetClass.Mixins[typeof (BT1Mixin1)];
 
         Assert.IsFalse (mixin1.Methods.ContainsKey (baseMethod1));
         Assert.IsTrue (mixin1.Methods.ContainsKey (mixinMethod1));
@@ -64,47 +64,47 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
       {
-        BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
 
         PropertyInfo baseProperty = typeof (BaseType1).GetProperty ("VirtualProperty");
         PropertyInfo indexedProperty1 = typeof (BaseType1).GetProperty ("Item", new Type[] {typeof (int)});
         PropertyInfo indexedProperty2 = typeof (BaseType1).GetProperty ("Item", new Type[] {typeof (string)});
         PropertyInfo mixinProperty = typeof (BT1Mixin1).GetProperty ("VirtualProperty", new Type[0]);
 
-        Assert.IsTrue (baseClass.Properties.ContainsKey (baseProperty));
-        Assert.IsTrue (baseClass.Properties.ContainsKey (indexedProperty1));
-        Assert.IsTrue (baseClass.Properties.ContainsKey (indexedProperty2));
-        Assert.IsFalse (baseClass.Properties.ContainsKey (mixinProperty));
+        Assert.IsTrue (targetClass.Properties.ContainsKey (baseProperty));
+        Assert.IsTrue (targetClass.Properties.ContainsKey (indexedProperty1));
+        Assert.IsTrue (targetClass.Properties.ContainsKey (indexedProperty2));
+        Assert.IsFalse (targetClass.Properties.ContainsKey (mixinProperty));
 
-        PropertyDefinition member = baseClass.Properties[baseProperty];
+        PropertyDefinition member = targetClass.Properties[baseProperty];
 
-        Assert.IsTrue (new List<MemberDefinition> (baseClass.GetAllMembers()).Contains (member));
-        Assert.IsFalse (new List<MemberDefinition> (baseClass.Mixins[typeof (BT1Mixin1)].GetAllMembers()).Contains (member));
+        Assert.IsTrue (new List<MemberDefinition> (targetClass.GetAllMembers()).Contains (member));
+        Assert.IsFalse (new List<MemberDefinition> (targetClass.Mixins[typeof (BT1Mixin1)].GetAllMembers()).Contains (member));
 
         Assert.AreEqual ("VirtualProperty", member.Name);
         Assert.AreEqual (typeof (BaseType1).FullName + ".VirtualProperty", member.FullName);
         Assert.IsTrue (member.IsProperty);
         Assert.IsFalse (member.IsMethod);
         Assert.IsFalse (member.IsEvent);
-        Assert.AreSame (baseClass, member.DeclaringClass);
+        Assert.AreSame (targetClass, member.DeclaringClass);
         Assert.IsNotNull (member.GetMethod);
         Assert.IsNotNull (member.SetMethod);
 
-        Assert.IsFalse (baseClass.Methods.ContainsKey (member.GetMethod.MethodInfo));
-        Assert.IsFalse (baseClass.Methods.ContainsKey (member.SetMethod.MethodInfo));
+        Assert.IsFalse (targetClass.Methods.ContainsKey (member.GetMethod.MethodInfo));
+        Assert.IsFalse (targetClass.Methods.ContainsKey (member.SetMethod.MethodInfo));
 
-        member = baseClass.Properties[indexedProperty1];
-        Assert.AreNotSame (member, baseClass.Properties[indexedProperty2]);
+        member = targetClass.Properties[indexedProperty1];
+        Assert.AreNotSame (member, targetClass.Properties[indexedProperty2]);
 
         Assert.IsNotNull (member.GetMethod);
         Assert.IsNull (member.SetMethod);
 
-        member = baseClass.Properties[indexedProperty2];
+        member = targetClass.Properties[indexedProperty2];
 
         Assert.IsNull (member.GetMethod);
         Assert.IsNotNull (member.SetMethod);
 
-        MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
+        MixinDefinition mixin1 = targetClass.Mixins[typeof (BT1Mixin1)];
 
         Assert.IsFalse (mixin1.Properties.ContainsKey (baseProperty));
         Assert.IsTrue (mixin1.Properties.ContainsKey (mixinProperty));
@@ -130,38 +130,38 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
       {
-        BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
 
         EventInfo baseEvent1 = typeof (BaseType1).GetEvent ("VirtualEvent");
         EventInfo baseEvent2 = typeof (BaseType1).GetEvent ("ExplicitEvent");
         EventInfo mixinEvent = typeof (BT1Mixin1).GetEvent ("VirtualEvent");
 
-        Assert.IsTrue (baseClass.Events.ContainsKey (baseEvent1));
-        Assert.IsTrue (baseClass.Events.ContainsKey (baseEvent2));
-        Assert.IsFalse (baseClass.Events.ContainsKey (mixinEvent));
+        Assert.IsTrue (targetClass.Events.ContainsKey (baseEvent1));
+        Assert.IsTrue (targetClass.Events.ContainsKey (baseEvent2));
+        Assert.IsFalse (targetClass.Events.ContainsKey (mixinEvent));
 
-        EventDefinition member = baseClass.Events[baseEvent1];
+        EventDefinition member = targetClass.Events[baseEvent1];
 
-        Assert.IsTrue (new List<MemberDefinition> (baseClass.GetAllMembers()).Contains (member));
-        Assert.IsFalse (new List<MemberDefinition> (baseClass.Mixins[typeof (BT1Mixin1)].GetAllMembers()).Contains (member));
+        Assert.IsTrue (new List<MemberDefinition> (targetClass.GetAllMembers()).Contains (member));
+        Assert.IsFalse (new List<MemberDefinition> (targetClass.Mixins[typeof (BT1Mixin1)].GetAllMembers()).Contains (member));
 
         Assert.AreEqual ("VirtualEvent", member.Name);
         Assert.AreEqual (typeof (BaseType1).FullName + ".VirtualEvent", member.FullName);
         Assert.IsTrue (member.IsEvent);
         Assert.IsFalse (member.IsMethod);
         Assert.IsFalse (member.IsProperty);
-        Assert.AreSame (baseClass, member.DeclaringClass);
+        Assert.AreSame (targetClass, member.DeclaringClass);
         Assert.IsNotNull (member.AddMethod);
         Assert.IsNotNull (member.RemoveMethod);
 
-        Assert.IsFalse (baseClass.Methods.ContainsKey (member.AddMethod.MethodInfo));
-        Assert.IsFalse (baseClass.Methods.ContainsKey (member.RemoveMethod.MethodInfo));
+        Assert.IsFalse (targetClass.Methods.ContainsKey (member.AddMethod.MethodInfo));
+        Assert.IsFalse (targetClass.Methods.ContainsKey (member.RemoveMethod.MethodInfo));
 
-        member = baseClass.Events[baseEvent2];
+        member = targetClass.Events[baseEvent2];
         Assert.IsNotNull (member.AddMethod);
         Assert.IsNotNull (member.RemoveMethod);
 
-        MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
+        MixinDefinition mixin1 = targetClass.Mixins[typeof (BT1Mixin1)];
 
         Assert.IsFalse (mixin1.Events.ContainsKey (baseEvent1));
         Assert.IsTrue (mixin1.Events.ContainsKey (mixinEvent));
@@ -260,7 +260,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void ShadowedMembersExplicitlyRetrievedButOverriddenNot()
     {
-      BaseClassDefinition d = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ExtraExtraDerived));
+      TargetClassDefinition d = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ExtraExtraDerived));
       BindingFlags bf = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
       Assert.IsTrue (d.Methods.ContainsKey (typeof (ExtraExtraDerived).GetMethod ("Method", bf)));
@@ -298,22 +298,22 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void ProtectedInternalMembers ()
     {
-      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithInheritedMethod));
-      Assert.IsTrue (baseClass.Methods.ContainsKey (typeof (BaseClassWithInheritedMethod).GetMethod ("ProtectedInternalInheritedMethod",
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithInheritedMethod));
+      Assert.IsTrue (targetClass.Methods.ContainsKey (typeof (BaseClassWithInheritedMethod).GetMethod ("ProtectedInternalInheritedMethod",
           BindingFlags.Instance | BindingFlags.NonPublic)));
     }
 
     [Test]
     public void IsAbstractTrue ()
     {
-      BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (AbstractBaseType));
+      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (AbstractBaseType));
       Assert.IsTrue (bt1.Methods[typeof (AbstractBaseType).GetMethod ("VirtualMethod")].IsAbstract);
     }
 
     [Test]
     public void IsAbstractFalse ()
     {
-      BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
       Assert.IsFalse (bt1.Methods[typeof (BaseType1).GetMethod ("VirtualMethod", Type.EmptyTypes)].IsAbstract);
     }
   }

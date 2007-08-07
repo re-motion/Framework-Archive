@@ -29,7 +29,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
           Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
           Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
           Assert.AreSame (
-              BaseClassDefinitionCache.Current.GetBaseClassDefinition (new ClassContext (typeof (BaseType1))),
+              TargetClassDefinitionCache.Current.GetTargetClassDefinition (new ClassContext (typeof (BaseType1))),
               TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
           Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
           Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
@@ -42,11 +42,11 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
             Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
             Assert.AreSame (
-                BaseClassDefinitionCache.Current.GetBaseClassDefinition (new ClassContext (typeof (BaseType1))),
+                TargetClassDefinitionCache.Current.GetTargetClassDefinition (new ClassContext (typeof (BaseType1))),
                 TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
             Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
             Assert.AreSame (
-                BaseClassDefinitionCache.Current.GetBaseClassDefinition (new ClassContext (typeof (BaseType2))),
+                TargetClassDefinitionCache.Current.GetTargetClassDefinition (new ClassContext (typeof (BaseType2))),
                 TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
           }
         }
@@ -60,7 +60,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void GetActiveConfigurationWithGenericTypes ()
     {
-      BaseClassDefinition def = TypeFactory.GetActiveConfiguration (typeof (GenericTypeWithMixin<int>));
+      TargetClassDefinition def = TypeFactory.GetActiveConfiguration (typeof (GenericTypeWithMixin<int>));
       Assert.AreEqual (typeof (GenericTypeWithMixin<int>), def.Type);
       Assert.IsTrue (def.Mixins.ContainsKey (typeof (NullMixin)));
     }
@@ -73,8 +73,8 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.IsTrue (typeof (IMixinTarget).IsAssignableFrom (t));
 
       // Check caching for definitions generated for types without mixin configuration
-      BaseClassDefinition d1 = TypeFactory.GetActiveConfiguration (typeof (object));
-      BaseClassDefinition d2 = TypeFactory.GetActiveConfiguration (typeof (object));
+      TargetClassDefinition d1 = TypeFactory.GetActiveConfiguration (typeof (object));
+      TargetClassDefinition d2 = TypeFactory.GetActiveConfiguration (typeof (object));
       Assert.AreSame (d1, d2);
     }
   }

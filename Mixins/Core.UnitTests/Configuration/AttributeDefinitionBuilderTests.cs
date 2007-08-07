@@ -34,14 +34,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void Attributes ()
     {
-      BaseClassDefinition baseClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassWithLotsaAttributes),
+      TargetClassDefinition targetClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassWithLotsaAttributes),
           typeof (ClassWithLotsaAttributes));
-      MixinDefinition mixin = baseClass.Mixins[typeof (ClassWithLotsaAttributes)];
+      MixinDefinition mixin = targetClass.Mixins[typeof (ClassWithLotsaAttributes)];
 
-      CheckAttributes (baseClass);
+      CheckAttributes (targetClass);
       CheckAttributes (mixin);
 
-      CheckAttributes (baseClass.Methods[typeof (ClassWithLotsaAttributes).GetMethod ("Foo")]);
+      CheckAttributes (targetClass.Methods[typeof (ClassWithLotsaAttributes).GetMethod ("Foo")]);
       CheckAttributes (mixin.Methods[typeof (ClassWithLotsaAttributes).GetMethod ("Foo")]);
     }
 
@@ -89,7 +89,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void SerializableAttributeIsIgnored ()
     {
-      BaseClassDefinition bt1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1));
+      TargetClassDefinition bt1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1));
       Assert.IsFalse (bt1.CustomAttributes.ContainsKey (typeof (SerializableAttribute)));
     }
 
@@ -103,7 +103,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void UsesAttributeIsIgnored ()
     {
-      BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
+      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
       Assert.IsFalse (bt1.CustomAttributes.ContainsKey (typeof (UsesAttribute)));
     }
 

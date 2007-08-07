@@ -23,7 +23,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         typeof (GeneratedClassInstanceInitializer).GetMethod ("InitializeMixinTarget", new Type[] { typeof (IMixinTarget) });
 
     private ModuleManager _module;
-    private BaseClassDefinition _configuration;
+    private TargetClassDefinition _configuration;
     private ExtendedClassEmitter _emitter;
     private BaseCallProxyGenerator _baseCallGenerator;
 
@@ -33,7 +33,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private Dictionary<MethodInfo, MethodInfo> _baseCallMethods = new Dictionary<MethodInfo, MethodInfo>();
     private MixinTypeGenerator[] _mixinTypeGenerators;
 
-    public TypeGenerator (ModuleManager module, BaseClassDefinition configuration, INameProvider nameProvider, INameProvider mixinNameProvider)
+    public TypeGenerator (ModuleManager module, TargetClassDefinition configuration, INameProvider nameProvider, INameProvider mixinNameProvider)
     {
       ArgumentUtility.CheckNotNull ("module", module);
       ArgumentUtility.CheckNotNull ("configuration", configuration);
@@ -54,7 +54,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces.ToArray(), flags);
       _emitter = new ExtendedClassEmitter (classEmitter);
 
-      _configurationField = _emitter.InnerEmitter.CreateStaticField ("__configuration", typeof (BaseClassDefinition));
+      _configurationField = _emitter.InnerEmitter.CreateStaticField ("__configuration", typeof (TargetClassDefinition));
       _extensionsField = _emitter.InnerEmitter.CreateField ("__extensions", typeof (object[]), true);
 
       _mixinTypeGenerators = CreateMixinTypeGenerators (mixinNameProvider);
@@ -134,7 +134,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       get { return _emitter; }
     }
 
-    public BaseClassDefinition Configuration
+    public TargetClassDefinition Configuration
     {
       get { return _configuration; }
     }
@@ -165,10 +165,10 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
       LocalReference firstAttributeLocal = _emitter.LoadCustomAttribute (emitter.CodeBuilder, typeof (ConcreteMixedTypeAttribute), 0);
 
-      MethodInfo getBaseClassDefinitionMethod = typeof (ConcreteMixedTypeAttribute).GetMethod ("GetBaseClassDefinition");
-      Assertion.IsNotNull (getBaseClassDefinitionMethod);
+      MethodInfo getTargetClassDefinitionMethod = typeof (ConcreteMixedTypeAttribute).GetMethod ("GetTargetClassDefinition");
+      Assertion.IsNotNull (getTargetClassDefinitionMethod);
       emitter.CodeBuilder.AddStatement (new AssignStatement (_configurationField,
-          new VirtualMethodInvocationExpression (firstAttributeLocal, getBaseClassDefinitionMethod)));
+          new VirtualMethodInvocationExpression (firstAttributeLocal, getTargetClassDefinitionMethod)));
 
       emitter.CodeBuilder.AddStatement (new ReturnStatement ());
     }
@@ -382,7 +382,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private bool CanInheritAttributesFromBase (IAttributeIntroductionTargetDefinition configuration)
     {
       // only methods and base classes can supply attributes for inheritance
-      return configuration is BaseClassDefinition || configuration is MethodDefinition;
+      return configuration is TargetClassDefinition || configuration is MethodDefinition;
     }
 
     private void ReplicateAttributes (IAttributableDefinition source, IAttributableEmitter targetEmitter)

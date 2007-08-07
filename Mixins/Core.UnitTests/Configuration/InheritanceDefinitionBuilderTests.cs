@@ -14,7 +14,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void InheritedIntroducedInterfaces ()
     {
-      BaseClassDefinition bt1 =
+      TargetClassDefinition bt1 =
           UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinIntroducingInheritedInterface));
       Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IMixinIII1)));
       Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IMixinIII2)));
@@ -25,7 +25,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void InheritedFaceDependencies ()
     {
-      BaseClassDefinition bt1 =
+      TargetClassDefinition bt1 =
           UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinFaceDependingOnInheritedInterface),
           typeof (MixinIntroducingInheritedInterface));
       Assert.IsTrue (bt1.RequiredFaceTypes.ContainsKey (typeof (IMixinIII1)));
@@ -43,7 +43,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void InheritedBaseDependencies ()
     {
-      BaseClassDefinition bt1 =
+      TargetClassDefinition bt1 =
           UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (
               typeof (BaseType1),
               typeof (MixinBaseDependingOnInheritedInterface),

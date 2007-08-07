@@ -38,7 +38,7 @@ namespace Rubicon.Mixins
     /// <returns>A concrete, instantiable, mixed type for the given <paramref name="targetType"/>.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="targetType"/> parameter is <see langword="null"/>.</exception>
     /// <exception cref="ConfigurationException">The current mixin configuration for the <paramref name="targetType"/> contains severe problems that
-    /// make generation of a <see cref="BaseClassDefinition"/> object impossible.</exception>
+    /// make generation of a <see cref="TargetClassDefinition"/> object impossible.</exception>
     /// <exception cref="ValidationException">The current mixin configuration for the <paramref name="targetType"/> violates at least one validation
     /// rule, which makes code generation impossible. </exception>
     /// <remarks>
@@ -62,7 +62,7 @@ namespace Rubicon.Mixins
     public static Type GetConcreteType (Type targetType)
     {
       ArgumentUtility.CheckNotNull ("targetType", targetType);
-      BaseClassDefinition configuration = GetActiveConfiguration (targetType);
+      TargetClassDefinition configuration = GetActiveConfiguration (targetType);
       if (configuration == null)
         return targetType;
       else
@@ -70,26 +70,26 @@ namespace Rubicon.Mixins
     }
 
     /// <summary>
-    /// Returns a non-null <see cref="BaseClassDefinition"/> for the a given target type.
+    /// Returns a non-null <see cref="TargetClassDefinition"/> for the a given target type.
     /// </summary>
     /// <param name="targetType">Base type for which an analyzed mixin configuration should be returned.</param>
-    /// <returns>A non-null <see cref="BaseClassDefinition"/> for the a given target type.</returns>
+    /// <returns>A non-null <see cref="TargetClassDefinition"/> for the a given target type.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="targetType"/> parameter is <see langword="null"/>.</exception>
     /// <exception cref="ConfigurationException">The current mixin configuration for the <paramref name="targetType"/> contains severe problems that
-    /// make generation of a <see cref="BaseClassDefinition"/> object impossible.</exception>
+    /// make generation of a <see cref="TargetClassDefinition"/> object impossible.</exception>
     /// <exception cref="ValidationException">The current mixin configuration for the <paramref name="targetType"/> violates at least one validation
     /// rule, which would make code generation impossible. </exception>
     /// <remarks>
     /// <para>
     /// Use this to retrieve a cached analyzed mixin configuration object for the given target type. The cache is actually maintained by
-    /// <see cref="BaseClassDefinitionCache"/>, but this is the public API that should be used instead of directly accessing the cache.
+    /// <see cref="TargetClassDefinitionCache"/>, but this is the public API that should be used instead of directly accessing the cache.
     /// </para>
     /// <para>
-    /// Note that this method creates an empty but valid <see cref="BaseClassDefinition"/> for types that do not have a mixin configuration in
+    /// Note that this method creates an empty but valid <see cref="TargetClassDefinition"/> for types that do not have a mixin configuration in
     /// <see cref="MixinConfiguration.ActiveContext"/>.
     /// </para>
     /// </remarks>
-    public static BaseClassDefinition GetActiveConfiguration (Type targetType)
+    public static TargetClassDefinition GetActiveConfiguration (Type targetType)
     {
       ArgumentUtility.CheckNotNull ("targetType", targetType);
       
@@ -97,27 +97,27 @@ namespace Rubicon.Mixins
     }
 
     /// <summary>
-    /// Returns a non-null <see cref="BaseClassDefinition"/> for the a given target type.
+    /// Returns a non-null <see cref="TargetClassDefinition"/> for the a given target type.
     /// </summary>
     /// <param name="targetType">Base type for which an analyzed mixin configuration should be returned.</param>
     /// <param name="applicationContext">The <see cref="ApplicationContext"/> to use.</param>
-    /// <returns>A non-null <see cref="BaseClassDefinition"/> for the a given target type.</returns>
+    /// <returns>A non-null <see cref="TargetClassDefinition"/> for the a given target type.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="targetType"/> parameter is <see langword="null"/>.</exception>
     /// <exception cref="ConfigurationException">The current mixin configuration for the <paramref name="targetType"/> contains severe problems that
-    /// make generation of a <see cref="BaseClassDefinition"/> object impossible.</exception>
+    /// make generation of a <see cref="TargetClassDefinition"/> object impossible.</exception>
     /// <exception cref="ValidationException">The current mixin configuration for the <paramref name="targetType"/> violates at least one validation
     /// rule, which would make code generation impossible. </exception>
     /// <remarks>
     /// <para>
     /// Use this to retrieve a cached analyzed mixin configuration object for the given target type. The cache is actually maintained by
-    /// <see cref="BaseClassDefinitionCache"/>, but this is the public API that should be used instead of directly accessing the cache.
+    /// <see cref="TargetClassDefinitionCache"/>, but this is the public API that should be used instead of directly accessing the cache.
     /// </para>
     /// <para>
-    /// Note that this method creates an empty but valid <see cref="BaseClassDefinition"/> for types that do not have a mixin configuration in
+    /// Note that this method creates an empty but valid <see cref="TargetClassDefinition"/> for types that do not have a mixin configuration in
     /// <paramref name="applicationContext"/>.
     /// </para>
     /// </remarks>
-    public static BaseClassDefinition GetConfiguration (Type targetType, ApplicationContext applicationContext)
+    public static TargetClassDefinition GetConfiguration (Type targetType, ApplicationContext applicationContext)
     {
       ArgumentUtility.CheckNotNull ("targetType", targetType);
       ArgumentUtility.CheckNotNull ("applicationContext", applicationContext);
@@ -135,7 +135,7 @@ namespace Rubicon.Mixins
       if (targetType.IsGenericType)
         context = context.SpecializeWithTypeArguments (targetType.GetGenericArguments ());
 
-      return BaseClassDefinitionCache.Current.GetBaseClassDefinition (context);
+      return TargetClassDefinitionCache.Current.GetTargetClassDefinition (context);
     }
   }
 }

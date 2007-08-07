@@ -39,7 +39,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         IMixinTarget mixinTarget = bt1 as IMixinTarget;
         Assert.IsNotNull (mixinTarget);
 
-        BaseClassDefinition configuration = mixinTarget.Configuration;
+        TargetClassDefinition configuration = mixinTarget.Configuration;
         Assert.IsNotNull (configuration);
 
         Assert.AreSame (TypeFactory.GetActiveConfiguration (typeof (BaseType1)), configuration);

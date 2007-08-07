@@ -7,15 +7,15 @@ namespace Rubicon.Mixins.Definitions.Building
 {
   public class RequirementsAnalyzer
   {
-    private Type _filterAttribute;
-    private BaseClassDefinition _baseClass;
+    private readonly Type _filterAttribute;
+    private readonly TargetClassDefinition _targetClass;
 
-    public RequirementsAnalyzer (BaseClassDefinition baseClass, Type filterAttribute)
+    public RequirementsAnalyzer (TargetClassDefinition targetClass, Type filterAttribute)
     {
-      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
+      ArgumentUtility.CheckNotNull ("targetClass", targetClass);
       ArgumentUtility.CheckNotNull ("filterAttribute", filterAttribute);
 
-      _baseClass = baseClass;
+      _targetClass = targetClass;
       _filterAttribute = filterAttribute;
     }
 
@@ -30,7 +30,7 @@ namespace Rubicon.Mixins.Definitions.Building
       {
         if (mixinBase.Equals (mixin.Type))
         {
-          string message = string.Format ("The Mixin classes cannot be directly applied to a base class ({0}) as a mixin.", _baseClass.FullName);
+          string message = string.Format ("The Mixin classes cannot be directly applied to a target class ({0}) as mixins.", _targetClass.FullName);
           throw new ConfigurationException (message);
         }
 

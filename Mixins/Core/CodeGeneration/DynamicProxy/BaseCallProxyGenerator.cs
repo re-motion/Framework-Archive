@@ -14,7 +14,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private readonly TypeGenerator _surroundingType;
     private readonly MixinTypeGenerator[] _mixinTypeGenerators;
     private readonly ExtendedClassEmitter _emitter;
-    private readonly BaseClassDefinition _baseClassConfiguration;
+    private readonly TargetClassDefinition _targetClassConfiguration;
     private FieldReference _depthField;
     private FieldReference _thisField;
     private Dictionary<MethodDefinition, MethodInfo> _overriddenMethodToImplementationMap = new Dictionary<MethodDefinition, MethodInfo>();
@@ -27,10 +27,10 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
       _surroundingType = surroundingType;
       _mixinTypeGenerators = mixinTypeGenerators;
-      _baseClassConfiguration = surroundingType.Configuration;
+      _targetClassConfiguration = surroundingType.Configuration;
 
       List<Type> interfaces = new List<Type> ();
-      foreach (RequiredBaseCallTypeDefinition requiredType in _baseClassConfiguration.RequiredBaseCallTypes)
+      foreach (RequiredBaseCallTypeDefinition requiredType in _targetClassConfiguration.RequiredBaseCallTypes)
         interfaces.Add (requiredType.Type);
 
       _emitter = new ExtendedClassEmitter (
@@ -89,7 +89,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementBaseCallsForOverriddenMethodsOnTarget ()
     {
-      foreach (MethodDefinition method in _baseClassConfiguration.GetAllMethods())
+      foreach (MethodDefinition method in _targetClassConfiguration.GetAllMethods())
       {
         if (method.Overrides.Count > 0)
           ImplementBaseCallForOverridenMethodOnTarget (method);
@@ -98,7 +98,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementBaseCallForOverridenMethodOnTarget (MethodDefinition methodDefinitionOnTarget)
     {
-      Assertion.IsTrue (methodDefinitionOnTarget.DeclaringClass == _baseClassConfiguration);
+      Assertion.IsTrue (methodDefinitionOnTarget.DeclaringClass == _targetClassConfiguration);
 
       MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
       CustomMethodEmitter methodOverride = new CustomMethodEmitter (_emitter.InnerEmitter, methodDefinitionOnTarget.FullName, attributes);
@@ -112,14 +112,14 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementBaseCallsForRequirements ()
     {
-      foreach (RequiredBaseCallTypeDefinition requiredType in _baseClassConfiguration.RequiredBaseCallTypes)
+      foreach (RequiredBaseCallTypeDefinition requiredType in _targetClassConfiguration.RequiredBaseCallTypes)
         foreach (RequiredMethodDefinition requiredMethod in requiredType.Methods)
           ImplementBaseCallForRequirement (requiredMethod);
     }
 
     private void ImplementBaseCallForRequirement (RequiredMethodDefinition requiredMethod)
     {
-      if (requiredMethod.ImplementingMethod.DeclaringClass == _baseClassConfiguration)
+      if (requiredMethod.ImplementingMethod.DeclaringClass == _targetClassConfiguration)
         ImplementBaseCallForRequirementOnTarget (requiredMethod);
       else
         ImplementBaseCallForRequirementOnMixin (requiredMethod);
@@ -137,7 +137,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       {
         // a base call for this might already have been implemented as an overriden method, but we explicitly implement the call chains anyway: it's
         // slightly easier and better for performance
-        Assertion.IsFalse (_baseClassConfiguration.Methods.ContainsKey (requiredMethod.InterfaceMethod));
+        Assertion.IsFalse (_targetClassConfiguration.Methods.ContainsKey (requiredMethod.InterfaceMethod));
         methodGenerator.AddBaseCallToNextInChain (requiredMethod.ImplementingMethod);
       }
     }

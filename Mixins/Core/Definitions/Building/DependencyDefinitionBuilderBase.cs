@@ -14,9 +14,9 @@ namespace Rubicon.Mixins.Definitions.Building
       _mixin = mixin;
     }
 
-    protected abstract RequirementDefinitionBase GetRequirement (Type type, BaseClassDefinition baseClass);
+    protected abstract RequirementDefinitionBase GetRequirement (Type type, TargetClassDefinition targetClass);
     protected abstract RequirementDefinitionBase CreateRequirement (Type type, MixinDefinition mixin);
-    protected abstract void AddRequirement (RequirementDefinitionBase requirement, BaseClassDefinition baseClass);
+    protected abstract void AddRequirement (RequirementDefinitionBase requirement, TargetClassDefinition targetClass);
     protected abstract DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, MixinDefinition mixin, DependencyDefinitionBase aggregator);
     protected abstract void AddDependency (MixinDefinition mixin, DependencyDefinitionBase dependency);
 
@@ -38,11 +38,11 @@ namespace Rubicon.Mixins.Definitions.Building
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      RequirementDefinitionBase requirement = GetRequirement (type, _mixin.BaseClass);
+      RequirementDefinitionBase requirement = GetRequirement (type, _mixin.TargetClass);
       if (requirement == null)
       {
         requirement = CreateRequirement (type, _mixin);
-        AddRequirement(requirement, _mixin.BaseClass);
+        AddRequirement(requirement, _mixin.TargetClass);
       }
       DependencyDefinitionBase dependency = CreateDependency (requirement, _mixin, aggregator);
       requirement.RequiringDependencies.Add (dependency);

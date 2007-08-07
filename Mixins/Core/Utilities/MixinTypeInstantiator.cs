@@ -8,13 +8,13 @@ namespace Rubicon.Mixins.Utilities
   [Serializable]
   public class MixinTypeInstantiator
   {
-    private Type _baseClass;
+    private Type _targetClass;
 
-    public MixinTypeInstantiator(Type baseClass)
+    public MixinTypeInstantiator(Type targetClass)
     {
-      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
+      ArgumentUtility.CheckNotNull ("targetClass", targetClass);
 
-      _baseClass = baseClass;
+      _targetClass = targetClass;
     }
 
     public Type GetConcreteMixinType (Type configuredMixinType)
@@ -38,7 +38,7 @@ namespace Rubicon.Mixins.Utilities
         {
           Type suggestion = null;
           if (ReflectionUtility.IsGenericParameterAssociatedWithAttribute (genericArgument, typeof (ThisAttribute)))
-            suggestion = _baseClass;
+            suggestion = _targetClass;
 
           Type instantiation;
           try
@@ -87,7 +87,7 @@ namespace Rubicon.Mixins.Utilities
         {
           foreach (Type constraint in thisArgument.GetGenericParameterConstraints ())
           {
-            if (!constraint.IsAssignableFrom (_baseClass))
+            if (!constraint.IsAssignableFrom (_targetClass))
             {
               string message = string.Format ("The generic interface {0} introduced by mixin {1} is bound to the mixin's This parameter. "
                 + "That's is not allowed because the This parameter's value cannot be predicted as a result of the constraints being used. "

@@ -115,7 +115,7 @@ namespace Rubicon.Mixins.CodeGeneration
     /// <param name="configuration">The configuration object for the target class.</param>
     /// <returns>A concrete type with all mixins from <paramref name="configuration"/> mixed in.</returns>
     /// <remarks>This is mostly for internal reasons, users should use <see cref="TypeFactory.GetConcreteType"/> instead.</remarks>
-    public Type GetConcreteType (BaseClassDefinition configuration)
+    public Type GetConcreteType (TargetClassDefinition configuration)
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);
 
@@ -125,7 +125,7 @@ namespace Rubicon.Mixins.CodeGeneration
           {
             lock (_scopeLockObject)
             {
-              ITypeGenerator generator = Scope.CreateTypeGenerator ((BaseClassDefinition) classConfiguration, _typeNameProvider,
+              ITypeGenerator generator = Scope.CreateTypeGenerator ((TargetClassDefinition) classConfiguration, _typeNameProvider,
                 _mixinTypeNameProvider);
 
               foreach (Tuple<MixinDefinition, Type> finishedMixinTypes in generator.GetBuiltMixinTypes ())
@@ -147,13 +147,13 @@ namespace Rubicon.Mixins.CodeGeneration
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);
 
-      GetConcreteType (configuration.BaseClass); // ensure base type was created
+      GetConcreteType (configuration.TargetClass); // ensure base type was created
       Type type;
       _typeCache.TryGetValue (configuration, out type);
       if (type == null)
       {
         string message = string.Format ("No concrete mixin type is required for the given configuration (mixin {0} and target class {1}).",
-            configuration.FullName, configuration.BaseClass.FullName);
+            configuration.FullName, configuration.TargetClass.FullName);
         throw new ArgumentException (message, "configuration");
       }
       else
@@ -197,8 +197,8 @@ namespace Rubicon.Mixins.CodeGeneration
       {
         foreach (ConcreteMixedTypeAttribute typeDescriptor in type.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false))
         {
-          BaseClassDefinition baseClassDefinition = typeDescriptor.GetBaseClassDefinition ();
-          _typeCache.GetOrCreateValue (baseClassDefinition, delegate { return type; });
+          TargetClassDefinition targetClassDefinition = typeDescriptor.GetTargetClassDefinition ();
+          _typeCache.GetOrCreateValue (targetClassDefinition, delegate { return type; });
         }
 
         foreach (ConcreteMixinTypeAttribute typeDescriptor in type.GetCustomAttributes (typeof (ConcreteMixinTypeAttribute), false))

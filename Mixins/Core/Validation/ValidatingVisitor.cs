@@ -9,7 +9,7 @@ namespace Rubicon.Mixins.Validation
   {
     private readonly IValidationLog _validationLog;
 
-    private readonly List<IValidationRule<BaseClassDefinition>> _baseClassRules = new List<IValidationRule<BaseClassDefinition>> ();
+    private readonly List<IValidationRule<TargetClassDefinition>> _targetClassRules = new List<IValidationRule<TargetClassDefinition>> ();
     private readonly List<IValidationRule<MixinDefinition>> _mixinRules = new List<IValidationRule<MixinDefinition>> ();
     private readonly List<IValidationRule<InterfaceIntroductionDefinition>> _interfaceIntroductionRules = new List<IValidationRule<InterfaceIntroductionDefinition>> ();
     private readonly IList<IValidationRule<SuppressedInterfaceIntroductionDefinition>> _suppressedInterfaceIntroductionRules = new List<IValidationRule<SuppressedInterfaceIntroductionDefinition>> ();
@@ -33,9 +33,9 @@ namespace Rubicon.Mixins.Validation
       _validationLog = validationLog;
     }
 
-    public IList<IValidationRule<BaseClassDefinition>> BaseClassRules
+    public IList<IValidationRule<TargetClassDefinition>> TargetClassRules
     {
-      get { return _baseClassRules; }
+      get { return _targetClassRules; }
     }
 
     public IList<IValidationRule<MixinDefinition>> MixinRules
@@ -118,10 +118,10 @@ namespace Rubicon.Mixins.Validation
       get { return _attributeIntroductionRules; }
     }
 
-    public void Visit (BaseClassDefinition baseClass)
+    public void Visit (TargetClassDefinition targetClass)
     {
-      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
-      CheckRules (_baseClassRules, baseClass);
+      ArgumentUtility.CheckNotNull ("targetClass", targetClass);
+      CheckRules (_targetClassRules, targetClass);
     }
 
     public void Visit (MixinDefinition mixin)

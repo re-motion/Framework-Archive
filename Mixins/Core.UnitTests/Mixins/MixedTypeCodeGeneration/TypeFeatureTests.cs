@@ -112,11 +112,11 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     }
 
     [Test]
-    public void MixedTypeAttributeCanBeUsedToGetBaseClassDefinition ()
+    public void MixedTypeAttributeCanBeUsedToGetTargetClassDefinition ()
     {
       Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
       ConcreteMixedTypeAttribute[] attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false);
-      BaseClassDefinition definition = attributes[0].GetBaseClassDefinition ();
+      TargetClassDefinition definition = attributes[0].GetTargetClassDefinition ();
       Assert.AreSame (definition, TypeFactory.GetActiveConfiguration (typeof (BaseType3)));
     }
 
@@ -134,7 +134,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
       INameProvider nameProviderMock = repository.CreateMock<INameProvider> ();
       ConcreteTypeBuilder.Current.TypeNameProvider = nameProviderMock;
 
-      BaseClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
 
       Expect.Call (nameProviderMock.GetNewTypeName (definition)).Return ("Foo");
 

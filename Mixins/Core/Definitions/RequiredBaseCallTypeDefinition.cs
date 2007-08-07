@@ -9,8 +9,8 @@ namespace Rubicon.Mixins.Definitions
   [Serializable]
   public class RequiredBaseCallTypeDefinition : RequirementDefinitionBase
   {
-    public RequiredBaseCallTypeDefinition (BaseClassDefinition baseClass, Type type)
-        : base(baseClass, type)
+    public RequiredBaseCallTypeDefinition (TargetClassDefinition targetClass, Type type)
+        : base(targetClass, type)
     {
     }
 

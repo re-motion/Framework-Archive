@@ -9,7 +9,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes
   {
     public void Install (ValidatingVisitor visitor)
     {
-      visitor.BaseClassRules.Add (new DelegateValidationRule<BaseClassDefinition> (delegate { throw new InvalidOperationException (); }));
+      visitor.TargetClassRules.Add (new DelegateValidationRule<TargetClassDefinition> (delegate { throw new InvalidOperationException (); }));
     }
   }
 }

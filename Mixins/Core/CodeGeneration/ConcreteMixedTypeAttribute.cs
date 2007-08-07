@@ -108,9 +108,9 @@ namespace Rubicon.Mixins.CodeGeneration
       return context;
     }
 
-    public BaseClassDefinition GetBaseClassDefinition ()
+    public TargetClassDefinition GetTargetClassDefinition ()
     {
-      return BaseClassDefinitionCache.Current.GetBaseClassDefinition (GetClassContext ());
+      return TargetClassDefinitionCache.Current.GetTargetClassDefinition (GetClassContext ());
     }
   }
 

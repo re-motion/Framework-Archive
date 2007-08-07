@@ -49,27 +49,27 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void RequiredFaceMethodsInterfaceImplementedOnBase ()
     {
-      BaseClassDefinition baseClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirements));
-      MixinDefinition mixin = baseClassDefinition.Mixins[typeof (MixinRequiringAllMembersFace)];
+      TargetClassDefinition TargetClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirements));
+      MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersFace)];
       Assert.IsNotNull (mixin);
 
       RequiredFaceTypeDefinition requirement = mixin.ThisDependencies[typeof (IMixinRequiringAllMembersRequirements)].RequiredType;
       Assert.IsNotNull (requirement);
 
-      CheckRequiredMethods(requirement, baseClassDefinition, "");
+      CheckRequiredMethods(requirement, TargetClassDefinition, "");
     }
 
     [Test]
     public void RequiredBaseCallMethodsInterfaceImplementedOnBase ()
     {
-      BaseClassDefinition baseClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirements));
-      MixinDefinition mixin = baseClassDefinition.Mixins[typeof (MixinRequiringAllMembersBase)];
+      TargetClassDefinition TargetClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirements));
+      MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersBase)];
       Assert.IsNotNull (mixin);
 
       RequiredBaseCallTypeDefinition requirement = mixin.BaseDependencies[typeof (IMixinRequiringAllMembersRequirements)].RequiredType;
       Assert.IsNotNull (requirement);
 
-      CheckRequiredMethods (requirement, baseClassDefinition, "");
+      CheckRequiredMethods (requirement, TargetClassDefinition, "");
     }
 
     [Test]
@@ -78,11 +78,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       using (MixinConfiguration.ScopedExtend (typeof (ClassFulfillingNoMemberRequirements), typeof (MixinRequiringAllMembersFace),
           typeof (MixinFulfillingAllMemberRequirements)))
       {
-        BaseClassDefinition baseClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingNoMemberRequirements));
-        MixinDefinition mixin = baseClassDefinition.Mixins[typeof (MixinRequiringAllMembersFace)];
+        TargetClassDefinition TargetClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingNoMemberRequirements));
+        MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersFace)];
         Assert.IsNotNull (mixin);
 
-        MixinDefinition implementingMixin = baseClassDefinition.Mixins[typeof (MixinFulfillingAllMemberRequirements)];
+        MixinDefinition implementingMixin = TargetClassDefinition.Mixins[typeof (MixinFulfillingAllMemberRequirements)];
         Assert.IsNotNull (implementingMixin);
 
         RequiredFaceTypeDefinition requirement = mixin.ThisDependencies[typeof (IMixinRequiringAllMembersRequirements)].RequiredType;
@@ -98,11 +98,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       using (MixinConfiguration.ScopedExtend (typeof (ClassFulfillingNoMemberRequirements), typeof (MixinRequiringAllMembersBase),
           typeof (MixinFulfillingAllMemberRequirements)))
       {
-        BaseClassDefinition baseClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingNoMemberRequirements));
-        MixinDefinition mixin = baseClassDefinition.Mixins[typeof (MixinRequiringAllMembersBase)];
+        TargetClassDefinition TargetClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingNoMemberRequirements));
+        MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersBase)];
         Assert.IsNotNull (mixin);
 
-        MixinDefinition implementingMixin = baseClassDefinition.Mixins[typeof (MixinFulfillingAllMemberRequirements)];
+        MixinDefinition implementingMixin = TargetClassDefinition.Mixins[typeof (MixinFulfillingAllMemberRequirements)];
         Assert.IsNotNull (implementingMixin);
 
         RequiredBaseCallTypeDefinition requirement = mixin.BaseDependencies[typeof (IMixinRequiringAllMembersRequirements)].RequiredType;
@@ -115,27 +115,27 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void RequiredFaceMethodsDuckImplementedOnBase ()
     {
-      BaseClassDefinition baseClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirementsDuck));
-      MixinDefinition mixin = baseClassDefinition.Mixins[typeof (MixinRequiringAllMembersFace)];
+      TargetClassDefinition TargetClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirementsDuck));
+      MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersFace)];
       Assert.IsNotNull (mixin);
 
       RequiredFaceTypeDefinition requirement = mixin.ThisDependencies[typeof (IMixinRequiringAllMembersRequirements)].RequiredType;
       Assert.IsNotNull (requirement);
 
-      CheckRequiredMethods (requirement, baseClassDefinition, "");
+      CheckRequiredMethods (requirement, TargetClassDefinition, "");
     }
 
     [Test]
     public void RequiredBaseCallMethodsDuckImplementedOnBase ()
     {
-      BaseClassDefinition baseClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirementsDuck));
-      MixinDefinition mixin = baseClassDefinition.Mixins[typeof (MixinRequiringAllMembersBase)];
+      TargetClassDefinition TargetClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirementsDuck));
+      MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersBase)];
       Assert.IsNotNull (mixin);
 
       RequiredBaseCallTypeDefinition requirement = mixin.BaseDependencies[typeof (IMixinRequiringAllMembersRequirements)].RequiredType;
       Assert.IsNotNull (requirement);
 
-      CheckRequiredMethods (requirement, baseClassDefinition, "");
+      CheckRequiredMethods (requirement, TargetClassDefinition, "");
     }
 
     public class MixinRequiringSingleMethod : Mixin<MixinRequiringSingleMethod.IRequirement>
@@ -280,7 +280,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend (typeof (ClassFulfillingProtectedly), typeof (MixinRequiringAllMembersFace)))
       {
-        BaseClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingProtectedly));
+        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingProtectedly));
         RequiredFaceTypeDefinition requirement = definition.RequiredFaceTypes[typeof (IMixinRequiringAllMembersRequirements)];
 
         CheckRequiredMethods (requirement, definition, "");
@@ -292,7 +292,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend (typeof (ClassFulfillingAllMemberRequirementsExplicitly), typeof (MixinRequiringAllMembersFace)))
       {
-        BaseClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirementsExplicitly));
+        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirementsExplicitly));
         RequiredFaceTypeDefinition requirement = definition.RequiredFaceTypes[typeof (IMixinRequiringAllMembersRequirements)];
 
         CheckRequiredMethods (requirement, definition, typeof (IMixinRequiringAllMembersRequirements).FullName + ".");
@@ -302,8 +302,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void NoRequiredMethodsWhenFaceRequirementIsClass ()
     {
-      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithStaticMethod));
-      RequiredFaceTypeDefinition requirement = baseClass.RequiredFaceTypes[typeof (ClassWithStaticMethod)];
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithStaticMethod));
+      RequiredFaceTypeDefinition requirement = targetClass.RequiredFaceTypes[typeof (ClassWithStaticMethod)];
       Assert.AreEqual (0, requirement.Methods.Count);
     }
   }

@@ -132,20 +132,20 @@ namespace Rubicon.Mixins.Utilities
         return true;
       
       Type declaringType = genericParameter.DeclaringType;
-      Type baseClass = declaringType.BaseType;
+      Type baseType = declaringType.BaseType;
 
-      if (!baseClass.IsGenericType)
+      if (!baseType.IsGenericType)
         return false;
 
-      Type baseClassDefinition = baseClass.GetGenericTypeDefinition();
-      Type[] baseClassGenericParameters = baseClassDefinition.GetGenericArguments();
+      Type baseTypeDefinition = baseType.GetGenericTypeDefinition();
+      Type[] baseTypeGenericParameters = baseTypeDefinition.GetGenericArguments();
 
-      Type[] genericArguments = baseClass.GetGenericArguments();
+      Type[] genericArguments = baseType.GetGenericArguments();
       for (int i = 0; i < genericArguments.Length; i++)
       {
         Type baseGenericArgument = genericArguments[i];
         if (baseGenericArgument.Equals (genericParameter))
-          return baseClassGenericParameters[i].IsDefined (attributeType, false);
+          return baseTypeGenericParameters[i].IsDefined (attributeType, false);
       }
       return false;
     }

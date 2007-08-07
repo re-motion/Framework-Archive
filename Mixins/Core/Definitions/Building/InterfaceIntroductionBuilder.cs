@@ -34,7 +34,7 @@ namespace Rubicon.Mixins.Definitions.Building
       {
         if (_suppressedInterfaces.Contains (implementedInterface))
           ApplySuppressed (implementedInterface, true);
-        else if (_mixin.BaseClass.ImplementedInterfaces.Contains (implementedInterface))
+        else if (_mixin.TargetClass.ImplementedInterfaces.Contains (implementedInterface))
           ApplySuppressed (implementedInterface, false);
         else
           Apply (implementedInterface);
@@ -43,13 +43,13 @@ namespace Rubicon.Mixins.Definitions.Building
 
     public void Apply (Type implementedInterface)
     {
-      if (_mixin.BaseClass.IntroducedInterfaces.ContainsKey (implementedInterface))
+      if (_mixin.TargetClass.IntroducedInterfaces.ContainsKey (implementedInterface))
       {
-        MixinDefinition otherIntroducer = _mixin.BaseClass.IntroducedInterfaces[implementedInterface].Implementer;
+        MixinDefinition otherIntroducer = _mixin.TargetClass.IntroducedInterfaces[implementedInterface].Implementer;
         string message = string.Format (
             "Two mixins introduce the same interface {0} to base class {1}: {2} and {3}.",
             implementedInterface.FullName,
-            _mixin.BaseClass.FullName,
+            _mixin.TargetClass.FullName,
             otherIntroducer.FullName,
             _mixin.FullName);
         throw new ConfigurationException (message);
@@ -57,7 +57,7 @@ namespace Rubicon.Mixins.Definitions.Building
 
       InterfaceIntroductionDefinition introducedInterface = new InterfaceIntroductionDefinition (implementedInterface, _mixin);
       _mixin.InterfaceIntroductions.Add (introducedInterface);
-      _mixin.BaseClass.IntroducedInterfaces.Add (introducedInterface);
+      _mixin.TargetClass.IntroducedInterfaces.Add (introducedInterface);
 
       AnalyzeIntroducedMembers (introducedInterface);
     }

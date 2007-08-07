@@ -10,23 +10,23 @@ namespace Rubicon.Mixins.Definitions.Building
 {
   public class MixinDefinitionBuilder
   {
-    private readonly BaseClassDefinition _baseClass;
+    private readonly TargetClassDefinition _targetClass;
     private readonly RequirementsAnalyzer _faceRequirementsAnalyzer; 
     private readonly RequirementsAnalyzer _baseRequirementsAnalyzer;
     private readonly AttributeIntroductionBuilder _attributeIntroductionBuilder;
 
-    public MixinDefinitionBuilder (BaseClassDefinition baseClass)
+    public MixinDefinitionBuilder (TargetClassDefinition targetClass)
     {
-      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
-      _baseClass = baseClass;
-      _faceRequirementsAnalyzer = new RequirementsAnalyzer (baseClass, typeof (ThisAttribute));
-      _baseRequirementsAnalyzer = new RequirementsAnalyzer (baseClass, typeof (BaseAttribute));
-      _attributeIntroductionBuilder = new AttributeIntroductionBuilder (_baseClass);
+      ArgumentUtility.CheckNotNull ("targetClass", targetClass);
+      _targetClass = targetClass;
+      _faceRequirementsAnalyzer = new RequirementsAnalyzer (targetClass, typeof (ThisAttribute));
+      _baseRequirementsAnalyzer = new RequirementsAnalyzer (targetClass, typeof (BaseAttribute));
+      _attributeIntroductionBuilder = new AttributeIntroductionBuilder (_targetClass);
     }
 
-    public BaseClassDefinition BaseClass
+    public TargetClassDefinition TargetClass
     {
-      get { return _baseClass; }
+      get { return _targetClass; }
     }
 
     public void Apply (MixinContext mixinContext, int index)
@@ -34,9 +34,9 @@ namespace Rubicon.Mixins.Definitions.Building
       ArgumentUtility.CheckNotNull ("mixinContext", mixinContext);
       ArgumentUtility.CheckNotNull ("index", index);
 
-      Type mixinType = BaseClass.MixinTypeInstantiator.GetConcreteMixinType (mixinContext.MixinType);
-      MixinDefinition mixin = new MixinDefinition (mixinType, BaseClass);
-      BaseClass.Mixins.Add (mixin);
+      Type mixinType = TargetClass.MixinTypeInstantiator.GetConcreteMixinType (mixinContext.MixinType);
+      MixinDefinition mixin = new MixinDefinition (mixinType, TargetClass);
+      TargetClass.Mixins.Add (mixin);
 
       const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
       MemberDefinitionBuilder membersBuilder = new MemberDefinitionBuilder (mixin, IsVisibleToInheritorsOrExplicitInterfaceImpl, bindingFlags);
@@ -66,15 +66,15 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private void AnalyzeOverrides (MixinDefinition mixin)
     {
-      OverridesAnalyzer<MethodDefinition> methodAnalyzer = new OverridesAnalyzer<MethodDefinition> (delegate { return _baseClass.Methods; });
+      OverridesAnalyzer<MethodDefinition> methodAnalyzer = new OverridesAnalyzer<MethodDefinition> (delegate { return _targetClass.Methods; });
       foreach (Tuple<MethodDefinition, MethodDefinition> methodOverride in methodAnalyzer.Analyze (mixin.Methods))
         InitializeOverride (methodOverride.A, methodOverride.B);
 
-      OverridesAnalyzer<PropertyDefinition> propertyAnalyzer = new OverridesAnalyzer<PropertyDefinition> (delegate { return _baseClass.Properties; });
+      OverridesAnalyzer<PropertyDefinition> propertyAnalyzer = new OverridesAnalyzer<PropertyDefinition> (delegate { return _targetClass.Properties; });
       foreach (Tuple<PropertyDefinition, PropertyDefinition> propertyOverride in propertyAnalyzer.Analyze (mixin.Properties))
         InitializeOverride (propertyOverride.A, propertyOverride.B);
 
-      OverridesAnalyzer<EventDefinition> eventAnalyzer = new OverridesAnalyzer<EventDefinition> (delegate { return _baseClass.Events; });
+      OverridesAnalyzer<EventDefinition> eventAnalyzer = new OverridesAnalyzer<EventDefinition> (delegate { return _targetClass.Events; });
       foreach (Tuple<EventDefinition, EventDefinition> eventOverride in eventAnalyzer.Analyze (mixin.Events))
         InitializeOverride (eventOverride.A, eventOverride.B);
 

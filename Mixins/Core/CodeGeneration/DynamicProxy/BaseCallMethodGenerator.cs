@@ -11,7 +11,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
   {
     private CustomMethodEmitter _methodEmitter;
     private readonly MixinTypeGenerator[] _mixinTypeGenerators;
-    private BaseClassDefinition _baseClassConfiguration;
+    private TargetClassDefinition _targetClassConfiguration;
     private FieldReference _depthField;
     private FieldReference _thisField;
     private TypeGenerator _surroundingType;
@@ -28,14 +28,14 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       _thisField = baseCallProxyGenerator.ThisField;
       _depthField = baseCallProxyGenerator.DepthField;
       _surroundingType = baseCallProxyGenerator.SurroundingType;
-      _baseClassConfiguration = _surroundingType.Configuration;
+      _targetClassConfiguration = _surroundingType.Configuration;
     }
 
     public void AddBaseCallToNextInChain (MethodDefinition methodDefinitionOnTarget)
     {
-      Assertion.IsTrue(methodDefinitionOnTarget.DeclaringClass == _baseClassConfiguration);
+      Assertion.IsTrue(methodDefinitionOnTarget.DeclaringClass == _targetClassConfiguration);
 
-      for (int potentialDepth = 0; potentialDepth < _baseClassConfiguration.Mixins.Count; ++potentialDepth)
+      for (int potentialDepth = 0; potentialDepth < _targetClassConfiguration.Mixins.Count; ++potentialDepth)
       {
         MethodDefinition nextInChain = GetNextInBaseChain (methodDefinitionOnTarget, potentialDepth);
         AddBaseCallToTargetIfDepthMatches (nextInChain, potentialDepth);
@@ -45,11 +45,11 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private MethodDefinition GetNextInBaseChain (MethodDefinition methodDefinitionOnTarget, int potentialDepth)
     {
-      Assertion.IsTrue (methodDefinitionOnTarget.DeclaringClass == _baseClassConfiguration);
+      Assertion.IsTrue (methodDefinitionOnTarget.DeclaringClass == _targetClassConfiguration);
 
-      for (int i = potentialDepth; i < _baseClassConfiguration.Mixins.Count; ++i)
-        if (methodDefinitionOnTarget.Overrides.ContainsKey (_baseClassConfiguration.Mixins[i].Type))
-          return methodDefinitionOnTarget.Overrides[_baseClassConfiguration.Mixins[i].Type];
+      for (int i = potentialDepth; i < _targetClassConfiguration.Mixins.Count; ++i)
+        if (methodDefinitionOnTarget.Overrides.ContainsKey (_targetClassConfiguration.Mixins[i].Type))
+          return methodDefinitionOnTarget.Overrides[_targetClassConfiguration.Mixins[i].Type];
       return methodDefinitionOnTarget;
     }
 
@@ -70,7 +70,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private Statement CreateBaseCallStatement (MethodDefinition target, ArgumentReference[] args)
     {
       Expression[] argExpressions = Array.ConvertAll<ArgumentReference, Expression> (args, delegate (ArgumentReference a) { return a.ToExpression (); });
-      if (target.DeclaringClass == _baseClassConfiguration)
+      if (target.DeclaringClass == _targetClassConfiguration)
       {
         MethodInfo baseCallMethod = _surroundingType.GetBaseCallMethod (target.MethodInfo);
         return new ReturnStatement (new VirtualMethodInvocationExpression (_thisField, baseCallMethod, argExpressions));

@@ -15,7 +15,7 @@ namespace Rubicon.Mixins.Validation.Rules
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (OverriddenMethodMustBeVirtual));
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (OverriddenMethodMustNotBeFinal));
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (AbstractMixinMethodMustBeOverridden));
-      visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (AbstractBaseClassMethodMustNotBeOverridden));
+      visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (AbstractTargetClassMethodMustNotBeOverridden));
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (NoCircularOverrides));
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase));
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (OverridingMethodMustBePublicOrProtected));
@@ -31,9 +31,9 @@ namespace Rubicon.Mixins.Validation.Rules
       SingleMust (args.Definition.Overrides.Count > 0 ? !args.Definition.MethodInfo.IsFinal : true, args.Log, args.Self);
     }
 
-    private void AbstractBaseClassMethodMustNotBeOverridden (DelegateValidationRule<MethodDefinition>.Args args)
+    private void AbstractTargetClassMethodMustNotBeOverridden (DelegateValidationRule<MethodDefinition>.Args args)
     {
-      SingleMust (!(args.Definition.DeclaringClass is BaseClassDefinition) || !args.Definition.MethodInfo.IsAbstract
+      SingleMust (!(args.Definition.DeclaringClass is TargetClassDefinition) || !args.Definition.MethodInfo.IsAbstract
           || args.Definition.Overrides.Count == 0, args.Log, args.Self);
     }
 

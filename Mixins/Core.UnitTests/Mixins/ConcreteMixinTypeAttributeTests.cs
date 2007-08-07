@@ -91,7 +91,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void GetMixinDefinition ()
     {
       ClassContext context = MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType3));
-      MixinDefinition referenceDefinition = BaseClassDefinitionCache.Current.GetBaseClassDefinition (context).Mixins[0];
+      MixinDefinition referenceDefinition = TargetClassDefinitionCache.Current.GetTargetClassDefinition (context).Mixins[0];
 
       ConcreteMixinTypeAttribute attribute = ConcreteMixinTypeAttribute.FromClassContext (0, context);
       MixinDefinition definition = attribute.GetMixinDefinition ();

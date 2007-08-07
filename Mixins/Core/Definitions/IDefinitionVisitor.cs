@@ -6,7 +6,7 @@ namespace Rubicon.Mixins.Definitions
 {
   public interface IDefinitionVisitor
   {
-    void Visit (BaseClassDefinition baseClass);
+    void Visit (TargetClassDefinition targetClass);
     void Visit (MixinDefinition mixin);
     void Visit (InterfaceIntroductionDefinition interfaceIntroduction);
     void Visit (SuppressedInterfaceIntroductionDefinition definition);

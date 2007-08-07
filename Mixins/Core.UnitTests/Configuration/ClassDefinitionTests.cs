@@ -28,7 +28,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void InterfaceMapAdjustedCorrectly ()
     {
-      BaseClassDefinition def = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (Derived));
+      TargetClassDefinition def = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (Derived));
       Assert.IsFalse (def.Methods.ContainsKey (typeof (Derived).GetMethod ("Foo")));
       Assert.IsTrue (def.Methods.ContainsKey (typeof (Base).GetMethod ("Foo")));
 
@@ -39,7 +39,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void GetAllMethods ()
     {
-      BaseClassDefinition def = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1));
+      TargetClassDefinition def = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1));
       List<string> methodNames = new List<MethodDefinition> (def.GetAllMethods ()).ConvertAll<string> (
           delegate (MethodDefinition d) { return d.Name; });
 

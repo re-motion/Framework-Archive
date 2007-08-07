@@ -166,8 +166,8 @@ namespace Rubicon.Mixins.Context
     /// <value>True if this instance is frozen; otherwise, false.</value>
     /// <remarks>A <see cref="ClassContext"/> can be frozen by calling its <see cref="Freeze"/> method. Frozen contexts can be inspected,
     /// but they cannot be changed (e.g. by adding or modifying mixins or complete interfaces). <see cref="ClassContext">ClassContexts</see> are
-    /// automatically frozen when a <see cref="BaseClassDefinition"/> is built from them via the <see cref="BaseClassDefinitionBuilder"/> or
-    /// <see cref="BaseClassDefinitionCache"/> classes.</remarks>
+    /// automatically frozen when a <see cref="TargetClassDefinition"/> is built from them via the <see cref="TargetClassDefinitionBuilder"/> or
+    /// <see cref="TargetClassDefinitionCache"/> classes.</remarks>
     public bool IsFrozen
     {
       get
@@ -185,8 +185,8 @@ namespace Rubicon.Mixins.Context
     /// </summary>
     /// <remarks>A <see cref="ClassContext"/> can be frozen by calling its <see cref="Freeze"/> method. Frozen contexts can be inspected,
     /// but they cannot be changed (e.g. by adding or modifying mixins or complete interfaces). <see cref="ClassContext">ClassContexts</see> are
-    /// automatically frozen when a <see cref="BaseClassDefinition"/> is built from them via the <see cref="BaseClassDefinitionBuilder"/> or
-    /// <see cref="BaseClassDefinitionCache"/> classes.</remarks>
+    /// automatically frozen when a <see cref="TargetClassDefinition"/> is built from them via the <see cref="TargetClassDefinitionBuilder"/> or
+    /// <see cref="TargetClassDefinitionCache"/> classes.</remarks>
     public void Freeze ()
     {
       lock (_lockObject)

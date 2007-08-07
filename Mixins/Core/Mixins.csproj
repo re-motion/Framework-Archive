@@ -56,7 +56,7 @@
     <Compile Include="ContainsMixinInfoAttribute.cs" />
     <Compile Include="Context\MixinContext.cs" />
     <Compile Include="Definitions\AttributeIntroductionDefinition.cs" />
-    <Compile Include="Definitions\BaseClassDefinitionCache.cs" />
+    <Compile Include="Definitions\TargetClassDefinitionCache.cs" />
     <Compile Include="Definitions\Building\AttributeIntroductionBuilder.cs" />
     <Compile Include="Definitions\Building\DependencySorting\MixinDependencyAnalyzer.cs" />
     <Compile Include="Definitions\Building\DependencySorting\DependentMixinGrouper.cs" />
@@ -120,8 +120,8 @@
     <Compile Include="TypeFactory.cs" />
     <Compile Include="Utilities\Singleton\IInstanceCreator.cs" />
     <Compile Include="Definitions\AttributeDefinition.cs" />
-    <Compile Include="Definitions\BaseClassDefinition.cs" />
-    <Compile Include="Definitions\Building\BaseClassDefinitionBuilder.cs" />
+    <Compile Include="Definitions\TargetClassDefinition.cs" />
+    <Compile Include="Definitions\Building\TargetClassDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\AttributeDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\MemberDefinitionBuilder.cs" />
     <Compile Include="ConfigurationException.cs" />
@@ -190,7 +190,7 @@
     <Compile Include="Validation\Rules\DefaultBaseDependencyRules.cs" />
     <Compile Include="Validation\Rules\DefaultInterfaceIntroductionRules.cs" />
     <Compile Include="Validation\Rules\DefaultMethodRules.cs" />
-    <Compile Include="Validation\Rules\DefaultBaseClassRules.cs" />
+    <Compile Include="Validation\Rules\DefaultTargetClassRules.cs" />
     <Compile Include="Validation\Rules\DefaultMixinRules.cs" />
     <Compile Include="Validation\Rules\DefaultRequiredBaseCallTypeRules.cs" />
     <Compile Include="Validation\Rules\DefaultRequiredFaceTypeRules.cs" />

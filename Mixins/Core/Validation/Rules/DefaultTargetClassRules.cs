@@ -6,26 +6,26 @@ using System.Reflection;
 
 namespace Rubicon.Mixins.Validation.Rules
 {
-  public class DefaultBaseClassRules : RuleSetBase
+  public class DefaultTargetClassRules : RuleSetBase
   {
     public override void Install (ValidatingVisitor visitor)
     {
-      visitor.BaseClassRules.Add (new DelegateValidationRule<BaseClassDefinition> (BaseClassMustNotBeSealed));
-      visitor.BaseClassRules.Add (new DelegateValidationRule<BaseClassDefinition> (BaseClassMustNotBeAnInterface));
-      visitor.BaseClassRules.Add (new DelegateValidationRule<BaseClassDefinition> (BaseClassMustHavePublicOrProtectedCtor));
+      visitor.TargetClassRules.Add (new DelegateValidationRule<TargetClassDefinition> (TargetClassMustNotBeSealed));
+      visitor.TargetClassRules.Add (new DelegateValidationRule<TargetClassDefinition> (TargetClassMustNotBeAnInterface));
+      visitor.TargetClassRules.Add (new DelegateValidationRule<TargetClassDefinition> (TargetClassMustHavePublicOrProtectedCtor));
     }
 
-    private void BaseClassMustNotBeSealed (DelegateValidationRule<BaseClassDefinition>.Args args)
+    private void TargetClassMustNotBeSealed (DelegateValidationRule<TargetClassDefinition>.Args args)
     {
       SingleMust(!args.Definition.Type.IsSealed, args.Log, args.Self);
     }
 
-    private void BaseClassMustNotBeAnInterface (DelegateValidationRule<BaseClassDefinition>.Args args)
+    private void TargetClassMustNotBeAnInterface (DelegateValidationRule<TargetClassDefinition>.Args args)
     {
       SingleMust (!args.Definition.Type.IsInterface, args.Log, args.Self);
     }
 
-    private void BaseClassMustHavePublicOrProtectedCtor (DelegateValidationRule<BaseClassDefinition>.Args args)
+    private void TargetClassMustHavePublicOrProtectedCtor (DelegateValidationRule<TargetClassDefinition>.Args args)
     {
       ConstructorInfo[] ctors = args.Definition.Type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
       ConstructorInfo[] publicOrProtectedCtors = Array.FindAll (ctors,

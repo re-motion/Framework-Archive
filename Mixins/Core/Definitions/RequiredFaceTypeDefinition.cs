@@ -6,8 +6,8 @@ namespace Rubicon.Mixins.Definitions
   [Serializable]
   public class RequiredFaceTypeDefinition : RequirementDefinitionBase
   {
-    public RequiredFaceTypeDefinition (BaseClassDefinition baseClass, Type type)
-      : base (baseClass, type)
+    public RequiredFaceTypeDefinition (TargetClassDefinition targetClass, Type type)
+      : base (targetClass, type)
     {
     }
 

@@ -48,9 +48,9 @@ namespace Rubicon.Mixins.Definitions
       get { return Implementer; }
     }
 
-    public BaseClassDefinition BaseClass
+    public TargetClassDefinition TargetClass
     {
-      get { return Implementer.BaseClass; }
+      get { return Implementer.TargetClass; }
     }
 
     public void Accept (IDefinitionVisitor visitor)

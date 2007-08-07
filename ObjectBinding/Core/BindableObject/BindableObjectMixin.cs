@@ -234,7 +234,7 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     private void InitializeBindableObjectClass ()
     {
-      _bindableObjectClass = BindableObjectProvider.Current.GetBindableObjectClass (Configuration.BaseClass.Type);
+      _bindableObjectClass = BindableObjectProvider.Current.GetBindableObjectClass (Configuration.TargetClass.Type);
     }
   }
 }

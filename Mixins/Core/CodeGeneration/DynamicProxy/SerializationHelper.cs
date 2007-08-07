@@ -17,7 +17,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     // Always remember: the whole configuration must be serialized as one single, flat object (or SerializationInfo), we cannot rely on any
     // nested objects to be deserialized in the right order
     public static void GetObjectDataForGeneratedTypes (SerializationInfo info, StreamingContext context, object concreteObject,
-        BaseClassDefinition configuration, object[] extensions, bool serializeBaseMembers)
+        TargetClassDefinition configuration, object[] extensions, bool serializeBaseMembers)
     {
       info.SetType (typeof (SerializationHelper));
 
@@ -36,17 +36,17 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       info.AddValue ("__baseMemberValues", baseMemberValues);
     }
 
-    private IMixinTarget _deserializedObject;
-    private object[] _extensions;
-    private object[] _baseMemberValues;
-    private BaseClassDefinition _baseClassDefinition;
+    private readonly IMixinTarget _deserializedObject;
+    private readonly object[] _extensions;
+    private readonly object[] _baseMemberValues;
+    private readonly TargetClassDefinition _targetClassDefinition;
 
     public SerializationHelper (SerializationInfo info, StreamingContext context)
     {
       ClassContext configurationContext = (ClassContext) info.GetValue ("__configuration.ConfigurationContext", typeof (ClassContext));
-      _baseClassDefinition = BaseClassDefinitionCache.Current.GetBaseClassDefinition (configurationContext);
+      _targetClassDefinition = TargetClassDefinitionCache.Current.GetTargetClassDefinition (configurationContext);
 
-      Type concreteType = ConcreteTypeBuilder.Current.GetConcreteType (_baseClassDefinition);
+      Type concreteType = ConcreteTypeBuilder.Current.GetConcreteType (_targetClassDefinition);
 
       _extensions = (object[]) info.GetValue ("__extensions", typeof (object[]));
       Assertion.IsNotNull (_extensions);

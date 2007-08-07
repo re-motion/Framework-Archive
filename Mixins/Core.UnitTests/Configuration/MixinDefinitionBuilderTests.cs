@@ -19,31 +19,31 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
-        BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
-        Assert.IsNull (baseClass.Parent);
-        Assert.AreEqual ("BaseType1", baseClass.Name);
+        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        Assert.IsNull (targetClass.Parent);
+        Assert.AreEqual ("BaseType1", targetClass.Name);
 
-        Assert.IsTrue (baseClass.Mixins.ContainsKey (typeof (BT1Mixin1)));
-        Assert.IsTrue (baseClass.Mixins.ContainsKey (typeof (BT1Mixin2)));
-        Assert.AreSame (baseClass, baseClass.Mixins[typeof (BT1Mixin1)].Parent);
+        Assert.IsTrue (targetClass.Mixins.ContainsKey (typeof (BT1Mixin1)));
+        Assert.IsTrue (targetClass.Mixins.ContainsKey (typeof (BT1Mixin2)));
+        Assert.AreSame (targetClass, targetClass.Mixins[typeof (BT1Mixin1)].Parent);
       }
     }
 
     [Test]
     public void MixinAppliedToInterface()
     {
-      BaseClassDefinition baseClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (IBaseType2), typeof (BT2Mixin1));
-      Assert.IsTrue (baseClass.IsInterface);
+      TargetClassDefinition targetClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (IBaseType2), typeof (BT2Mixin1));
+      Assert.IsTrue (targetClass.IsInterface);
 
       MethodInfo method = typeof (IBaseType2).GetMethod ("IfcMethod");
       Assert.IsNotNull (method);
 
-      MemberDefinition member = baseClass.Methods[method];
+      MemberDefinition member = targetClass.Methods[method];
       Assert.IsNotNull (member);
 
-      MixinDefinition mixin = baseClass.Mixins[typeof (BT2Mixin1)];
+      MixinDefinition mixin = targetClass.Mixins[typeof (BT2Mixin1)];
       Assert.IsNotNull (mixin);
-      Assert.AreSame (baseClass, mixin.BaseClass);
+      Assert.AreSame (targetClass, mixin.TargetClass);
     }
 
     [Test]
@@ -51,7 +51,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
-        BaseClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
+        TargetClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
         for (int i = 0; i < bt3.Mixins.Count; ++i)
           Assert.AreEqual (i, bt3.Mixins[i].MixinIndex);
       }
@@ -62,7 +62,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
-        BaseClassDefinition overrider = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers));
+        TargetClassDefinition overrider = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers));
         MixinDefinition mixin = overrider.Mixins[typeof (MixinWithAbstractMembers)];
         Assert.IsNotNull (mixin);
         Assert.IsTrue (mixin.HasOverriddenMembers());
@@ -80,7 +80,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void NotOverriddenAbstractMixinMethodSucceeds()
     {
-      BaseClassDefinition bt1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithAbstractMembers));
+      TargetClassDefinition bt1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithAbstractMembers));
       MixinDefinition mixin = bt1.Mixins[typeof (MixinWithAbstractMembers)];
       MethodDefinition method = mixin.Methods[typeof (MixinWithAbstractMembers).GetMethod ("AbstractMethod", BindingFlags.Instance | BindingFlags.NonPublic)];
       Assert.AreEqual (0, method.Overrides.Count);
@@ -136,7 +136,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void GenericInterfaceArgumentIsBaseTypeWhenPossible()
     {
-      BaseClassDefinition def = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1),
+      TargetClassDefinition def = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1),
           typeof (MixinIntroducingGenericInterfaceWithTargetAsThisType<>));
       Assert.IsTrue (def.IntroducedInterfaces.ContainsKey (typeof (IEquatable<BaseType1>)));
     }
@@ -144,7 +144,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void ExplicitBaseCallDependenciesCorrectlyCopied ()
     {
-      BaseClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
+      TargetClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
       Assert.IsTrue (bt3.RequiredBaseCallTypes.ContainsKey (typeof (IBaseType32)));
       Assert.IsTrue (bt3.Mixins[typeof (BT3Mixin5)].BaseDependencies.ContainsKey (typeof (IBaseType32)));
     }
@@ -162,7 +162,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void DuplicateExplicitDependenciesDontMatter ()
     {
-      BaseClassDefinition mt = TypeFactory.GetActiveConfiguration (typeof (MixinTargetWithExplicitDependencies));
+      TargetClassDefinition mt = TypeFactory.GetActiveConfiguration (typeof (MixinTargetWithExplicitDependencies));
       Assert.IsTrue (mt.RequiredBaseCallTypes.ContainsKey (typeof (IMixinTargetWithExplicitDependencies)));
       Assert.IsTrue (mt.Mixins[typeof (MixinWithDependency)].BaseDependencies.ContainsKey (typeof (IMixinTargetWithExplicitDependencies)));
     }
@@ -170,7 +170,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void HasOverriddenMembersTrue ()
     {
-      BaseClassDefinition definition =
+      TargetClassDefinition definition =
           UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMembers), typeof (MixinWithAbstractMembers));
       Assert.IsTrue (definition.Mixins[0].HasOverriddenMembers ());
     }
@@ -178,14 +178,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void HasOverriddenMembersFalse ()
     {
-      BaseClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
       Assert.IsFalse (definition.Mixins[0].HasOverriddenMembers ());
     }
 
     [Test]
     public void HasProtectedOverridersTrue ()
     {
-      BaseClassDefinition bt1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithProtectedOverrider));
+      TargetClassDefinition bt1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithProtectedOverrider));
       Assert.IsFalse (bt1.HasProtectedOverriders ());
       Assert.IsTrue (bt1.Mixins[0].HasProtectedOverriders ());
     }
@@ -193,7 +193,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void HasProtectedOverridersFalse ()
     {
-      BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
       Assert.IsFalse (bt1.HasProtectedOverriders ());
       Assert.IsFalse (bt1.Mixins[0].HasProtectedOverriders ());
     }

@@ -44,13 +44,13 @@ namespace Rubicon.Mixins.Definitions.Building
       public MethodDefinition FindMethodUsingSpecials (RequirementDefinitionBase requirement, MethodInfo interfaceMethod, SpecialMethods specialMethods)
       {
         if (specialMethods.PropertyGetters.ContainsKey (interfaceMethod))
-          return FindProperty (requirement, specialMethods.PropertyGetters[interfaceMethod], requirement.BaseClass.Properties).GetMethod;
+          return FindProperty (requirement, specialMethods.PropertyGetters[interfaceMethod], requirement.TargetClass.Properties).GetMethod;
         else if (specialMethods.PropertySetters.ContainsKey (interfaceMethod))
-          return FindProperty (requirement, specialMethods.PropertySetters[interfaceMethod], requirement.BaseClass.Properties).SetMethod;
+          return FindProperty (requirement, specialMethods.PropertySetters[interfaceMethod], requirement.TargetClass.Properties).SetMethod;
         else if (specialMethods.EventAdders.ContainsKey (interfaceMethod))
-          return FindEvent (requirement, specialMethods.EventAdders[interfaceMethod], requirement.BaseClass.Events).AddMethod;
+          return FindEvent (requirement, specialMethods.EventAdders[interfaceMethod], requirement.TargetClass.Events).AddMethod;
         else if (specialMethods.EventRemovers.ContainsKey (interfaceMethod))
-          return FindEvent (requirement, specialMethods.EventRemovers[interfaceMethod], requirement.BaseClass.Events).RemoveMethod;
+          return FindEvent (requirement, specialMethods.EventRemovers[interfaceMethod], requirement.TargetClass.Events).RemoveMethod;
         else
           return null;
       }
@@ -59,16 +59,16 @@ namespace Rubicon.Mixins.Definitions.Building
     private readonly static PropertyNameAndSignatureEqualityComparer s_propertyComparer = new PropertyNameAndSignatureEqualityComparer ();
     private readonly static EventNameAndSignatureEqualityComparer s_eventComparer = new EventNameAndSignatureEqualityComparer ();
 
-    private readonly BaseClassDefinition _baseClassDefinition;
+    private readonly TargetClassDefinition _targetClassDefinition;
     private readonly Dictionary<MethodInfo, MethodDefinition> _baseMethods;
 
-    public RequiredMethodDefinitionBuilder (BaseClassDefinition baseClassDefinition)
+    public RequiredMethodDefinitionBuilder (TargetClassDefinition targetClassDefinition)
     {
       _baseMethods = new Dictionary<MethodInfo, MethodDefinition> ();
-      foreach (MethodDefinition methodDefinition in baseClassDefinition.GetAllMethods ())
+      foreach (MethodDefinition methodDefinition in targetClassDefinition.GetAllMethods ())
         _baseMethods.Add (methodDefinition.MethodInfo, methodDefinition);
 
-      _baseClassDefinition = baseClassDefinition;
+      _targetClassDefinition = targetClassDefinition;
     }
 
     public void Apply (RequirementDefinitionBase requirement)
@@ -76,9 +76,9 @@ namespace Rubicon.Mixins.Definitions.Building
       if (requirement.IsEmptyInterface || !requirement.Type.IsInterface)
         return;
 
-      if (requirement.BaseClass.ImplementedInterfaces.Contains (requirement.Type))
+      if (requirement.TargetClass.ImplementedInterfaces.Contains (requirement.Type))
         ApplyForImplementedInterface (requirement);
-      else if (requirement.BaseClass.IntroducedInterfaces.ContainsKey (requirement.Type))
+      else if (requirement.TargetClass.IntroducedInterfaces.ContainsKey (requirement.Type))
         ApplyForIntroducedInterface (requirement);
       else
         ApplyWithDuckTyping (requirement);
@@ -87,7 +87,7 @@ namespace Rubicon.Mixins.Definitions.Building
     private void ApplyForImplementedInterface (RequirementDefinitionBase requirement)
     {
       Assertion.IsTrue (requirement.Type.IsInterface);
-      InterfaceMapping interfaceMapping = _baseClassDefinition.GetAdjustedInterfaceMap (requirement.Type);
+      InterfaceMapping interfaceMapping = _targetClassDefinition.GetAdjustedInterfaceMap (requirement.Type);
       for (int i = 0; i < interfaceMapping.InterfaceMethods.Length; ++i)
       {
         MethodInfo interfaceMethod = interfaceMapping.InterfaceMethods[i];
@@ -100,7 +100,7 @@ namespace Rubicon.Mixins.Definitions.Building
     private void ApplyForIntroducedInterface (RequirementDefinitionBase requirement)
     {
       Assertion.IsTrue (requirement.Type.IsInterface);
-      InterfaceIntroductionDefinition introduction = _baseClassDefinition.IntroducedInterfaces[requirement.Type];
+      InterfaceIntroductionDefinition introduction = _targetClassDefinition.IntroducedInterfaces[requirement.Type];
       foreach (EventIntroductionDefinition eventIntroduction in introduction.IntroducedEvents)
       {
         AddRequiredMethod (requirement, eventIntroduction.InterfaceMember.GetAddMethod (), eventIntroduction.ImplementingMember.AddMethod);
@@ -125,7 +125,7 @@ namespace Rubicon.Mixins.Definitions.Building
         Assertion.IsFalse (interfaceMethod.IsStatic);
         MethodDefinition implementingMethod = specialMethods.FindMethodUsingSpecials (requirement, interfaceMethod, specialMethods);
         if (implementingMethod == null)
-          implementingMethod = FindMethod (requirement, interfaceMethod, _baseClassDefinition.Methods);
+          implementingMethod = FindMethod (requirement, interfaceMethod, _targetClassDefinition.Methods);
         AddRequiredMethod (requirement, interfaceMethod, implementingMethod);
       }
     }
@@ -183,7 +183,7 @@ namespace Rubicon.Mixins.Definitions.Building
           + "found on the base class.",
           requirement.Type.Name,
           dependenciesString,
-          requirement.BaseClass.FullName,
+          requirement.TargetClass.FullName,
           memberString);
       throw new ConfigurationException (message);
     }

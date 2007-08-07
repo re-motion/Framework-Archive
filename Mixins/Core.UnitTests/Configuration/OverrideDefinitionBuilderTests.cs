@@ -17,19 +17,19 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
-        BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
-        MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
-        MixinDefinition mixin2 = baseClass.Mixins[typeof (BT1Mixin2)];
+        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        MixinDefinition mixin1 = targetClass.Mixins[typeof (BT1Mixin1)];
+        MixinDefinition mixin2 = targetClass.Mixins[typeof (BT1Mixin2)];
 
         Assert.IsFalse (mixin1.HasOverriddenMembers());
         Assert.IsFalse (mixin2.HasOverriddenMembers ());
-        Assert.IsTrue (baseClass.HasOverriddenMembers ());
+        Assert.IsTrue (targetClass.HasOverriddenMembers ());
 
         MethodInfo baseMethod1 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[0]);
         MethodInfo baseMethod2 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[] {typeof (string)});
         MethodInfo mixinMethod1 = typeof (BT1Mixin1).GetMethod ("VirtualMethod", new Type[0]);
 
-        MethodDefinition overridden = baseClass.Methods[baseMethod1];
+        MethodDefinition overridden = targetClass.Methods[baseMethod1];
 
         Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin1)));
         MethodDefinition overrider = overridden.Overrides[typeof (BT1Mixin1)];
@@ -38,7 +38,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.IsNotNull (overrider.Base);
         Assert.AreSame (overridden, overrider.Base);
 
-        MethodDefinition notOverridden = baseClass.Methods[baseMethod2];
+        MethodDefinition notOverridden = targetClass.Methods[baseMethod2];
         Assert.AreEqual (0, notOverridden.Overrides.Count);
 
         Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin2)));
@@ -54,15 +54,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
-        BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
-        MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
-        MixinDefinition mixin2 = baseClass.Mixins[typeof (BT1Mixin2)];
+        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        MixinDefinition mixin1 = targetClass.Mixins[typeof (BT1Mixin1)];
+        MixinDefinition mixin2 = targetClass.Mixins[typeof (BT1Mixin2)];
 
         PropertyInfo baseProperty1 = typeof (BaseType1).GetProperty ("VirtualProperty");
         PropertyInfo baseProperty2 = typeof (BaseType1).GetProperty ("Item", new Type[] {typeof (string)});
         PropertyInfo mixinProperty1 = typeof (BT1Mixin1).GetProperty ("VirtualProperty");
 
-        PropertyDefinition overridden = baseClass.Properties[baseProperty1];
+        PropertyDefinition overridden = targetClass.Properties[baseProperty1];
 
         Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin1)));
 
@@ -73,7 +73,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.AreSame (overridden, overrider.Base);
         Assert.AreSame (overridden.SetMethod, overrider.SetMethod.Base);
 
-        PropertyDefinition notOverridden = baseClass.Properties[baseProperty2];
+        PropertyDefinition notOverridden = targetClass.Properties[baseProperty2];
         Assert.AreEqual (0, notOverridden.Overrides.Count);
 
         Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin2)));
@@ -90,15 +90,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend (Assembly.GetExecutingAssembly ()))
       {
-        BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
-        MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
-        MixinDefinition mixin2 = baseClass.Mixins[typeof (BT1Mixin2)];
+        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        MixinDefinition mixin1 = targetClass.Mixins[typeof (BT1Mixin1)];
+        MixinDefinition mixin2 = targetClass.Mixins[typeof (BT1Mixin2)];
 
         EventInfo baseEvent1 = typeof (BaseType1).GetEvent ("VirtualEvent");
         EventInfo baseEvent2 = typeof (BaseType1).GetEvent ("ExplicitEvent");
         EventInfo mixinEvent1 = typeof (BT1Mixin1).GetEvent ("VirtualEvent");
 
-        EventDefinition overridden = baseClass.Events[baseEvent1];
+        EventDefinition overridden = targetClass.Events[baseEvent1];
 
         Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin1)));
 
@@ -110,7 +110,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.AreSame (overridden.RemoveMethod, overrider.RemoveMethod.Base);
         Assert.AreSame (overridden.AddMethod, overrider.AddMethod.Base);
 
-        EventDefinition notOverridden = baseClass.Events[baseEvent2];
+        EventDefinition notOverridden = targetClass.Events[baseEvent2];
         Assert.AreEqual (0, notOverridden.Overrides.Count);
 
         Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin2)));
@@ -126,17 +126,17 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void OverrideNonVirtualMethod ()
     {
-      BaseClassDefinition baseClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType4), typeof (BT4Mixin1));
-      MixinDefinition mixin = baseClass.Mixins[typeof (BT4Mixin1)];
+      TargetClassDefinition targetClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType4), typeof (BT4Mixin1));
+      MixinDefinition mixin = targetClass.Mixins[typeof (BT4Mixin1)];
       Assert.IsNotNull (mixin);
 
       MethodDefinition overrider = mixin.Methods[typeof (BT4Mixin1).GetMethod ("NonVirtualMethod")];
       Assert.IsNotNull (overrider);
       Assert.IsNotNull (overrider.Base);
 
-      Assert.AreSame (baseClass, overrider.Base.DeclaringClass);
+      Assert.AreSame (targetClass, overrider.Base.DeclaringClass);
 
-      List<MethodDefinition> overrides = new List<MethodDefinition> (baseClass.Methods[typeof (BaseType4).GetMethod ("NonVirtualMethod")].Overrides);
+      List<MethodDefinition> overrides = new List<MethodDefinition> (targetClass.Methods[typeof (BaseType4).GetMethod ("NonVirtualMethod")].Overrides);
       Assert.AreEqual (1, overrides.Count);
       Assert.AreSame (overrider, overrides[0]);
     }
@@ -144,17 +144,17 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void OverrideNonVirtualProperty ()
     {
-      BaseClassDefinition baseClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType4), typeof (BT4Mixin1));
-      MixinDefinition mixin = baseClass.Mixins[typeof (BT4Mixin1)];
+      TargetClassDefinition targetClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType4), typeof (BT4Mixin1));
+      MixinDefinition mixin = targetClass.Mixins[typeof (BT4Mixin1)];
       Assert.IsNotNull (mixin);
 
       PropertyDefinition overrider = mixin.Properties[typeof (BT4Mixin1).GetProperty ("NonVirtualProperty")];
       Assert.IsNotNull (overrider);
       Assert.IsNotNull (overrider.Base);
 
-      Assert.AreSame (baseClass, overrider.Base.DeclaringClass);
+      Assert.AreSame (targetClass, overrider.Base.DeclaringClass);
 
-      List<PropertyDefinition> overrides = new List<PropertyDefinition> (baseClass.Properties[typeof (BaseType4).GetProperty ("NonVirtualProperty")].Overrides);
+      List<PropertyDefinition> overrides = new List<PropertyDefinition> (targetClass.Properties[typeof (BaseType4).GetProperty ("NonVirtualProperty")].Overrides);
       Assert.AreEqual (1, overrides.Count);
       Assert.AreSame (overrider, overrides[0]);
     }
@@ -162,17 +162,17 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void OverrideNonVirtualEvent ()
     {
-      BaseClassDefinition baseClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType4), typeof (BT4Mixin1));
-      MixinDefinition mixin = baseClass.Mixins[typeof (BT4Mixin1)];
+      TargetClassDefinition targetClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType4), typeof (BT4Mixin1));
+      MixinDefinition mixin = targetClass.Mixins[typeof (BT4Mixin1)];
       Assert.IsNotNull (mixin);
 
       EventDefinition overrider = mixin.Events[typeof (BT4Mixin1).GetEvent ("NonVirtualEvent")];
       Assert.IsNotNull (overrider);
       Assert.IsNotNull (overrider.Base);
 
-      Assert.AreSame (baseClass, overrider.Base.DeclaringClass);
+      Assert.AreSame (targetClass, overrider.Base.DeclaringClass);
 
-      List<EventDefinition> overrides = new List<EventDefinition> (baseClass.Events[typeof (BaseType4).GetEvent ("NonVirtualEvent")].Overrides);
+      List<EventDefinition> overrides = new List<EventDefinition> (targetClass.Events[typeof (BaseType4).GetEvent ("NonVirtualEvent")].Overrides);
       Assert.AreEqual (1, overrides.Count);
       Assert.AreSame (overrider, overrides[0]);
     }
@@ -214,50 +214,50 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void OverridingProtectedInheritedClassMethod ()
     {
-      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithInheritedMethod));
-      MethodDefinition inheritedMethod = baseClass.Methods[typeof (BaseClassWithInheritedMethod).GetMethod ("ProtectedInheritedMethod",
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithInheritedMethod));
+      MethodDefinition inheritedMethod = targetClass.Methods[typeof (BaseClassWithInheritedMethod).GetMethod ("ProtectedInheritedMethod",
           BindingFlags.NonPublic | BindingFlags.Instance)];
       Assert.IsNotNull (inheritedMethod);
       Assert.AreEqual (1, inheritedMethod.Overrides.Count);
       Assert.AreSame (
-          baseClass.Mixins[typeof (MixinOverridingInheritedMethod)].Methods[typeof (MixinOverridingInheritedMethod).GetMethod ("ProtectedInheritedMethod")],
+          targetClass.Mixins[typeof (MixinOverridingInheritedMethod)].Methods[typeof (MixinOverridingInheritedMethod).GetMethod ("ProtectedInheritedMethod")],
           inheritedMethod.Overrides[0]);
     }
 
     [Test]
     public void OverridingProtectedInternalInheritedClassMethod ()
     {
-      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithInheritedMethod));
-      MethodDefinition inheritedMethod = baseClass.Methods[typeof (BaseClassWithInheritedMethod).GetMethod ("ProtectedInternalInheritedMethod",
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithInheritedMethod));
+      MethodDefinition inheritedMethod = targetClass.Methods[typeof (BaseClassWithInheritedMethod).GetMethod ("ProtectedInternalInheritedMethod",
           BindingFlags.NonPublic | BindingFlags.Instance)];
       Assert.IsNotNull (inheritedMethod);
       Assert.AreEqual (1, inheritedMethod.Overrides.Count);
       Assert.AreSame (
-          baseClass.Mixins[typeof (MixinOverridingInheritedMethod)].Methods[typeof (MixinOverridingInheritedMethod).GetMethod ("ProtectedInternalInheritedMethod")],
+          targetClass.Mixins[typeof (MixinOverridingInheritedMethod)].Methods[typeof (MixinOverridingInheritedMethod).GetMethod ("ProtectedInternalInheritedMethod")],
           inheritedMethod.Overrides[0]);
     }
 
     [Test]
     public void OverridingPublicInheritedClassMethod ()
     {
-      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithInheritedMethod));
-      MethodDefinition inheritedMethod = baseClass.Methods[typeof (BaseClassWithInheritedMethod).GetMethod ("PublicInheritedMethod")];
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithInheritedMethod));
+      MethodDefinition inheritedMethod = targetClass.Methods[typeof (BaseClassWithInheritedMethod).GetMethod ("PublicInheritedMethod")];
       Assert.IsNotNull (inheritedMethod);
       Assert.AreEqual (1, inheritedMethod.Overrides.Count);
       Assert.AreSame (
-          baseClass.Mixins[typeof (MixinOverridingInheritedMethod)].Methods[typeof (MixinOverridingInheritedMethod).GetMethod ("PublicInheritedMethod")],
+          targetClass.Mixins[typeof (MixinOverridingInheritedMethod)].Methods[typeof (MixinOverridingInheritedMethod).GetMethod ("PublicInheritedMethod")],
           inheritedMethod.Overrides[0]);
     }
 
     [Test]
     public void OverridingProtectedInheritedMixinMethod ()
     {
-      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingInheritedMixinMethod));
-      MethodDefinition inheritedMethod = baseClass.Methods[typeof (ClassOverridingInheritedMixinMethod).GetMethod ("ProtectedInheritedMethod")];
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingInheritedMixinMethod));
+      MethodDefinition inheritedMethod = targetClass.Methods[typeof (ClassOverridingInheritedMixinMethod).GetMethod ("ProtectedInheritedMethod")];
       Assert.IsNotNull (inheritedMethod);
       Assert.IsNotNull (inheritedMethod.Base);
       Assert.AreSame (
-          baseClass.Mixins[typeof (MixinWithInheritedMethod)].Methods[
+          targetClass.Mixins[typeof (MixinWithInheritedMethod)].Methods[
               typeof (BaseMixinWithInheritedMethod).GetMethod ("ProtectedInheritedMethod", BindingFlags.NonPublic | BindingFlags.Instance)],
           inheritedMethod.Base);
     }
@@ -265,12 +265,12 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void OverridingProtectedInternelInheritedMixinMethod ()
     {
-      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingInheritedMixinMethod));
-      MethodDefinition inheritedMethod = baseClass.Methods[typeof (ClassOverridingInheritedMixinMethod).GetMethod ("ProtectedInternalInheritedMethod")];
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingInheritedMixinMethod));
+      MethodDefinition inheritedMethod = targetClass.Methods[typeof (ClassOverridingInheritedMixinMethod).GetMethod ("ProtectedInternalInheritedMethod")];
       Assert.IsNotNull (inheritedMethod);
       Assert.IsNotNull (inheritedMethod.Base);
       Assert.AreSame (
-          baseClass.Mixins[typeof (MixinWithInheritedMethod)].Methods[
+          targetClass.Mixins[typeof (MixinWithInheritedMethod)].Methods[
               typeof (BaseMixinWithInheritedMethod).GetMethod ("ProtectedInternalInheritedMethod", BindingFlags.NonPublic | BindingFlags.Instance)],
           inheritedMethod.Base);
     }
@@ -278,12 +278,12 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void OverridingPublicInheritedMixinMethod ()
     {
-      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingInheritedMixinMethod));
-      MethodDefinition inheritedMethod = baseClass.Methods[typeof (ClassOverridingInheritedMixinMethod).GetMethod ("PublicInheritedMethod")];
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingInheritedMixinMethod));
+      MethodDefinition inheritedMethod = targetClass.Methods[typeof (ClassOverridingInheritedMixinMethod).GetMethod ("PublicInheritedMethod")];
       Assert.IsNotNull (inheritedMethod);
       Assert.IsNotNull (inheritedMethod.Base);
       Assert.AreSame (
-          baseClass.Mixins[typeof (MixinWithInheritedMethod)].Methods[typeof (BaseMixinWithInheritedMethod).GetMethod ("PublicInheritedMethod")],
+          targetClass.Mixins[typeof (MixinWithInheritedMethod)].Methods[typeof (BaseMixinWithInheritedMethod).GetMethod ("PublicInheritedMethod")],
           inheritedMethod.Base);
     }
   }

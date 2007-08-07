@@ -19,7 +19,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty ("Property");
       EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
 
-      BaseClassDefinition def1 =
+      TargetClassDefinition def1 =
           UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),typeof (BaseWithOverrideAttributes));
       MixinDefinition mix1 = def1.Mixins[typeof (BaseWithOverrideAttributes)];
       Assert.IsNotNull (mix1);
@@ -41,7 +41,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty ("Property");
       EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
 
-      BaseClassDefinition def1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
+      TargetClassDefinition def1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
           typeof (DerivedWithoutOverrideAttributes));
       MixinDefinition mix1 = def1.Mixins[typeof (DerivedWithoutOverrideAttributes)];
       Assert.IsNotNull (mix1);
@@ -60,7 +60,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Mixin .* overrides method .* twice", MatchType = MessageMatch.Regex)]
     public void DerivedWithNewAdditionalOverrides ()
     {
-      BaseClassDefinition def1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
+      TargetClassDefinition def1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
           typeof (DerivedNewWithAdditionalOverrideAttributes));
     }
 
@@ -71,7 +71,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty ("Property");
       EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
 
-      BaseClassDefinition def1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
+      TargetClassDefinition def1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
           typeof (BaseWithoutOverrideAttributes));
       MixinDefinition mix1 = def1.Mixins[typeof (BaseWithoutOverrideAttributes)];
       Assert.IsNotNull (mix1);
@@ -88,7 +88,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty ("Property");
       EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
 
-      BaseClassDefinition def1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
+      TargetClassDefinition def1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
           typeof (DerivedNewWithOverrideAttributes));
       MixinDefinition mix1 = def1.Mixins[typeof (DerivedNewWithOverrideAttributes)];
       Assert.IsNotNull (mix1);
@@ -108,7 +108,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty ("Property");
       EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
 
-      BaseClassDefinition def1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
+      TargetClassDefinition def1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
           typeof (DerivedNewWithoutOverrideAttributes));
       MixinDefinition mix1 = def1.Mixins[typeof (DerivedNewWithoutOverrideAttributes)];
       Assert.IsNotNull (mix1);

@@ -80,12 +80,12 @@ namespace Rubicon.Mixins.Definitions
 
     public virtual ClassDefinitionBase GetImplementer()
     {
-      if (RequiredType.Type.IsAssignableFrom (_depender.BaseClass.Type))
-        return _depender.BaseClass;
-      else if (_depender.BaseClass.IntroducedInterfaces.ContainsKey (RequiredType.Type))
-        return _depender.BaseClass.IntroducedInterfaces[RequiredType.Type].Implementer;
+      if (RequiredType.Type.IsAssignableFrom (_depender.TargetClass.Type))
+        return _depender.TargetClass;
+      else if (_depender.TargetClass.IntroducedInterfaces.ContainsKey (RequiredType.Type))
+        return _depender.TargetClass.IntroducedInterfaces[RequiredType.Type].Implementer;
       else if (!RequiredType.IsEmptyInterface) // duck interface
-        return _depender.BaseClass; 
+        return _depender.TargetClass; 
       else
         return null; // empty interface that is neither introduced nor implemented
     }

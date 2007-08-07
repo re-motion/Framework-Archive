@@ -150,7 +150,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     }
 
     [Test]
-    public void IntroducedAttributesBaseClassWins ()
+    public void IntroducedAttributesTargetClassWins ()
     {
       Type concreteType = CreateMixedType (typeof (BaseType1), typeof (MixinAddingBT1Attribute));
       Assert.AreEqual (1, concreteType.GetCustomAttributes (typeof (BT1Attribute), true).Length);

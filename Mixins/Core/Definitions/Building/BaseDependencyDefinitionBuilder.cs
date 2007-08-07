@@ -10,12 +10,12 @@ namespace Rubicon.Mixins.Definitions.Building
     {
     }
 
-    protected override RequirementDefinitionBase GetRequirement (Type type, BaseClassDefinition baseClass)
+    protected override RequirementDefinitionBase GetRequirement (Type type, TargetClassDefinition targetClass)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
+      ArgumentUtility.CheckNotNull ("targetClass", targetClass);
 
-      return baseClass.RequiredBaseCallTypes[type];
+      return targetClass.RequiredBaseCallTypes[type];
     }
 
     protected override RequirementDefinitionBase CreateRequirement (Type type, MixinDefinition mixin)
@@ -28,19 +28,19 @@ namespace Rubicon.Mixins.Definitions.Building
       if (!type.IsInterface)
       {
         string message = string.Format ("Base call dependencies must be interfaces (or System.Object), but mixin {0} (on class {1} has a dependency "
-            + "on a class: {2}.", mixin.FullName, mixin.BaseClass.FullName, type.FullName);
+            + "on a class: {2}.", mixin.FullName, mixin.TargetClass.FullName, type.FullName);
         throw new ConfigurationException (message);
       }
 
-      return new RequiredBaseCallTypeDefinition (mixin.BaseClass, type);
+      return new RequiredBaseCallTypeDefinition (mixin.TargetClass, type);
     }
 
-    protected override void AddRequirement (RequirementDefinitionBase requirement, BaseClassDefinition baseClass)
+    protected override void AddRequirement (RequirementDefinitionBase requirement, TargetClassDefinition targetClass)
     {
       ArgumentUtility.CheckNotNull ("requirement", requirement);
-      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
+      ArgumentUtility.CheckNotNull ("targetClass", targetClass);
 
-      baseClass.RequiredBaseCallTypes.Add ((RequiredBaseCallTypeDefinition) requirement);
+      targetClass.RequiredBaseCallTypes.Add ((RequiredBaseCallTypeDefinition) requirement);
     }
 
     protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, MixinDefinition mixin,

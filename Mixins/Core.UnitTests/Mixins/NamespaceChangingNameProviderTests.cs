@@ -14,7 +14,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       INameProvider nameProvider = NamespaceChangingNameProvider.Instance;
 
-      BaseClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
       string newName = nameProvider.GetNewTypeName (definition);
 
       Assert.AreEqual (typeof (BaseType1).Namespace + ".MixedTypes.BaseType1", newName);
@@ -25,11 +25,11 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       INameProvider nameProvider = NamespaceChangingNameProvider.Instance;
 
-      BaseClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (GenericBaseClass<int>));
+      TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (GenericTargetClass<int>));
       string newName = nameProvider.GetNewTypeName (definition);
 
-      Assert.AreEqual (typeof (GenericBaseClass<int>).Namespace +
-          ".MixedTypes.GenericBaseClass`1{System_Int32/mscorlib/Version=2_0_0_0/Culture=neutral/PublicKeyToken=b77a5c561934e089}",
+      Assert.AreEqual (typeof (GenericTargetClass<int>).Namespace +
+          ".MixedTypes.GenericTargetClass`1{System_Int32/mscorlib/Version=2_0_0_0/Culture=neutral/PublicKeyToken=b77a5c561934e089}",
           newName);
     }
 
