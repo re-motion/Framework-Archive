@@ -106,7 +106,15 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
 
-    _textBoxStyle.RegisterJavaScriptInclude (Page);
+    RegisterHtmlHeadContents (Context);
+  }
+
+  public override void RegisterHtmlHeadContents (HttpContext context)
+  {
+ 	  base.RegisterHtmlHeadContents(context);
+  
+    EnsureChildControls();
+    _textBoxStyle.RegisterJavaScriptInclude (_textBox, context);
   }
 
   /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>

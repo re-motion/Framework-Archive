@@ -149,10 +149,16 @@ public class BocReferenceValue:
       InitializeMenusItems();
     }
 
+    RegisterHtmlHeadContents(Context);
+  }
+
+  public override void RegisterHtmlHeadContents (HttpContext context)
+  {
+    base.RegisterHtmlHeadContents (context);
+
     if (!HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
     {
-      string scriptUrl = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (BocReferenceValue), ResourceType.Html, c_scriptFileUrl);
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (this, context, typeof (BocReferenceValue), ResourceType.Html, c_scriptFileUrl);
       HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
     }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Web;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList
@@ -6,19 +7,9 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList
 
 public class EditableRowControlFactory
 {
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  // construction and disposing
-
   public EditableRowControlFactory ()
   {
   }
-
-  // methods and properties
 
   public virtual IBusinessObjectBoundEditableWebControl Create (BocSimpleColumnDefinition column, int columnIndex)
   {
@@ -34,6 +25,27 @@ public class EditableRowControlFactory
     }
 
     return control;
+  }
+
+  public virtual void RegisterHtmlHeadContents (HttpContext context)
+  {
+    BocBooleanValue bocBooleanValue = new BocBooleanValue();
+    bocBooleanValue.RegisterHtmlHeadContents (context);
+
+    BocDateTimeValue bocDateTimeValue = new BocDateTimeValue();
+    bocDateTimeValue.RegisterHtmlHeadContents (context);
+
+    BocEnumValue bocEnumValue = new BocEnumValue();
+    bocEnumValue.RegisterHtmlHeadContents (context);
+
+    BocMultilineTextValue bocMultilineTextValue = new BocMultilineTextValue ();
+    bocMultilineTextValue.RegisterHtmlHeadContents (context);
+
+    BocReferenceValue bocReferenceValue = new BocReferenceValue();
+    bocReferenceValue.RegisterHtmlHeadContents (context);
+
+    BocTextValue bocTextValue = new BocTextValue();
+    bocTextValue.RegisterHtmlHeadContents (context);
   }
 }
 

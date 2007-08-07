@@ -1,6 +1,8 @@
 using System;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Rubicon.Web.UI;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -57,6 +59,9 @@ public interface ISmartControl: IControl
 
   /// <summary> Gets the text to be written into the label for this control. </summary>
   string DisplayName { get; }
+
+  /// <summary>Regsiteres stylesheet and script files with the <see cref="HtmlHeadAppender"/>.</summary>
+  void RegisterHtmlHeadContents (HttpContext context);
 }
 
 }

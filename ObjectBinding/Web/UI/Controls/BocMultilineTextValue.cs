@@ -101,7 +101,14 @@ public class BocMultilineTextValue: BusinessObjectBoundEditableWebControl, IPost
     if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
 
-    _textBoxStyle.RegisterJavaScriptInclude (Page);
+    RegisterHtmlHeadContents (Context);
+  }
+
+  public override void RegisterHtmlHeadContents (HttpContext context)
+  {
+    base.RegisterHtmlHeadContents (context);
+
+    _textBoxStyle.RegisterJavaScriptInclude (_textBox, context);
   }
 
   /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Globalization;
@@ -533,17 +534,26 @@ public class BocList:
       InitializeMenusItems();
     }
 
+    RegisterHtmlHeadContents (Context);
+  }
+
+  public override void RegisterHtmlHeadContents (HttpContext context)
+  {
+    base.RegisterHtmlHeadContents (context);
+
     if (!HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
     {
-      string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Html, c_styleFileUrl);
+      string url = ResourceUrlResolver.GetResourceUrl (this, context, typeof (BocList), ResourceType.Html, c_styleFileUrl);
       HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
     }
 
     if (!HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
     {
-      string scriptUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Html, c_scriptFileUrl);
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (this, context, typeof (BocList), ResourceType.Html, c_scriptFileUrl);
       HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
     }
+
+    _editModeControlFactory.RegisterHtmlHeadContents (context);
   }
 
   protected override void OnLoad(EventArgs e)

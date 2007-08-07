@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -508,5 +509,8 @@ namespace Rubicon.ObjectBinding.Sample
       base.Render (writer);
     }
 
+    void ISmartControl.RegisterHtmlHeadContents (HttpContext context)
+    {
+    }
   }
 }

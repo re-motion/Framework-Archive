@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Globalization;
@@ -150,9 +151,16 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
     if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
 
+    RegisterHtmlHeadContents (Context);
+  }
+
+  public override void RegisterHtmlHeadContents (HttpContext context)
+  {
+    base.RegisterHtmlHeadContents (context);
+
     if (!HtmlHeadAppender.Current.IsRegistered (s_datePickerScriptFileKey))
     {
-      string scriptUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptFileUrl);
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (this, context, typeof (DatePickerPage), ResourceType.Html, c_datePickerScriptFileUrl);
       HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_datePickerScriptFileKey, scriptUrl);
     }
   }

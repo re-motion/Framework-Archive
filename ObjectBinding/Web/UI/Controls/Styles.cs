@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.NullableValueTypes;
@@ -357,19 +358,19 @@ public class TextBoxStyle: SingleRowTextBoxStyle
         && ! CheckClientSideMaxLength.IsFalse
         && ! ControlHelper.IsDesignMode ((Control) textBox)) 
     {
-      RegisterJavaScriptInclude (textBox.Page);
+      RegisterJavaScriptInclude (textBox, HttpContext.Current);
       textBox.Attributes.Add ("onkeydown", "return TextBoxStyle_OnKeyDown (this, " + MaxLength.Value + ");");
     }
 
     textBox.TextMode = _textMode;
   }
 
-  public void RegisterJavaScriptInclude (Page page)
+  public void RegisterJavaScriptInclude (Control control, HttpContext context)
   {
-    ArgumentUtility.CheckNotNull ("page", page);
+    ArgumentUtility.CheckNotNull ("control", control);
     if (!HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
     {
-      string scriptUrl = ResourceUrlResolver.GetResourceUrl (page, null, typeof (TextBoxStyle), ResourceType.Html, c_scriptFileUrl);
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (control, context, typeof (TextBoxStyle), ResourceType.Html, c_scriptFileUrl);
       HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
     }
   }

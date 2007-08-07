@@ -61,6 +61,10 @@ public class FormGridLabel: Label, ISmartControl
     get { return base.Text; }
   }
 
+  void ISmartControl.RegisterHtmlHeadContents (HttpContext context)
+  {
+  }
+
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     string associatedControlID = AssociatedControlID;

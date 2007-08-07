@@ -301,6 +301,10 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
       get { return (Property != null) ? Property.DisplayName : null; }
     }
 
+    void ISmartControl.RegisterHtmlHeadContents (HttpContext context)
+    {
+    }
+
     string ISmartControl.HelpUrl
     {
       get { return null; }

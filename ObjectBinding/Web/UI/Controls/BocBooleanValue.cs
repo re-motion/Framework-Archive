@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Globalization;
@@ -125,9 +126,16 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
     if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
 
+    RegisterHtmlHeadContents (Context);
+  }
+
+  public override void RegisterHtmlHeadContents (HttpContext context)
+  {
+    base.RegisterHtmlHeadContents (context);
+
     if (!HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
     {
-      string scriptUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocBooleanValue), ResourceType.Html, c_scriptFileUrl);
+      string scriptUrl = ResourceUrlResolver.GetResourceUrl (this, context, typeof (BocBooleanValue), ResourceType.Html, c_scriptFileUrl);
       HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
     }
   }

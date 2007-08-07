@@ -1,12 +1,14 @@
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Globalization;
 using Rubicon.ObjectBinding.Design;
 using Rubicon.ObjectBinding.Web.UI.Design;
 using Rubicon.Utilities;
+using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.Utilities;
@@ -325,6 +327,11 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     public virtual string DisplayName
     {
       get { return (Property != null) ? Property.DisplayName : null; }
+    }
+
+    /// <summary>Regsiteres stylesheet and script files with the <see cref="HtmlHeadAppender"/>.</summary>
+    public virtual void RegisterHtmlHeadContents (HttpContext context)
+    {
     }
 
     /// <summary> Specifies the relative URL to the help text for this control. </summary>

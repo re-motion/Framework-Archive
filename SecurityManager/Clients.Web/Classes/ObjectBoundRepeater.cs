@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.NullableValueTypes;
@@ -510,6 +511,9 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
       base.Render (writer);
     }
 
+    void ISmartControl.RegisterHtmlHeadContents (HttpContext context)
+    {
+    }
   }
 
 }
