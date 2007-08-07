@@ -859,6 +859,54 @@ namespace Rubicon.Web.UI.Controls
         ToolTip = resourceManager.GetString (key);
     }
 
+    public void RegisterForSynchronousPostBack (Control control, string argument, string commandID)
+    {
+      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNullOrEmpty ("commandID", commandID);
+
+      ScriptManager scriptManager = ScriptManager.GetCurrent (control.Page);
+      if (scriptManager != null)
+      {
+        bool hasUpdatePanelAsParent = false;
+        for (Control current = control; current != null && !(current is Page); current = current.Parent)
+        {
+          if (current is UpdatePanel)
+          {
+            hasUpdatePanelAsParent = true;
+            break;
+          }
+        }
+
+        if (hasUpdatePanelAsParent)
+        {
+          if (Type == CommandType.Event && EventCommand.RequiresSynchronousPostBack)
+          {
+            ISmartPage smartPage = control.Page as ISmartPage;
+            if (smartPage == null)
+            {
+              throw new InvalidOperationException (
+                  string.Format (
+                      "{0}: EventCommands with RequiresSynchronousPostBack set to true are only supported on pages implementing ISmartPage when used within an UpdatePanel.",
+                      commandID));
+            }
+            smartPage.RegisterCommandForSynchronousPostBack (control, argument);
+          }
+          else if (Type == CommandType.WxeFunction)
+          {
+            ISmartPage smartPage = control.Page as ISmartPage;
+            if (smartPage == null)
+            {
+              throw new InvalidOperationException (
+                  string.Format (
+                      "{0}: WxeCommands are only supported on pages implementing ISmartPage when used within an UpdatePanel.",
+                      commandID));
+            }
+            smartPage.RegisterCommandForSynchronousPostBack (control, argument);
+          }
+        }          
+      }
+    }
+
     public virtual bool HasAccess (ISecurableObject securableObject)
     {
       switch (_type)

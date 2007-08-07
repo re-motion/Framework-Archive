@@ -28,7 +28,6 @@
       <asp:UpdatePanel ID="StackUpdatePanel" runat="server">
         <contenttemplate>
           <asp:Literal ID="Stack" runat="server" />
-          <asp:Button runat="server" ID="stackbutton"/>
         </contenttemplate>
       </asp:UpdatePanel>
     </div>

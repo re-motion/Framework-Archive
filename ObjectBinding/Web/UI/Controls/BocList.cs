@@ -1951,14 +1951,7 @@ public class BocList:
           href = ScriptUtility.EscapeClientScript (href);
           href = "'" + href + "'";
 
-          if (menuItem.Command.Type == CommandType.Event && menuItem.Command.EventCommand.RequiresSynchronousPostBack)
-          {
-            ISmartPage smartPage = Page as ISmartPage;
-            if (smartPage == null)
-              throw new InvalidOperationException ("Command.EventCommand.RequiresSynchronousPostBack is only allowed on pages implementing ISmartPage.");
-
-            smartPage.RegisterCommandForSynchronousPostBack (this, argument);
-          }
+          menuItem.Command.RegisterForSynchronousPostBack (this, argument, string.Format ("BocList '{0}', ListMenuItem '{1}'", ID, menuItem.ItemID));
         }
         else if (menuItem.Command.Type == CommandType.Href)
         {
@@ -3696,14 +3689,12 @@ public class BocList:
       for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
       {   
         BocCommandEnabledColumnDefinition commandColumn = columns[idxColumns] as BocCommandEnabledColumnDefinition;
-        if (commandColumn != null 
-            && commandColumn.Command != null 
-            && commandColumn.Command.Type == CommandType.Event 
-            && commandColumn.Command.EventCommand.RequiresSynchronousPostBack)
+        if (commandColumn != null  && commandColumn.Command != null)
         {
-          if (smartPage == null)
-            throw new InvalidOperationException ("Command.EventCommand.RequiresSynchronousPostBack is only allowed on pages implementing ISmartPage.");
-          smartPage.RegisterCommandForSynchronousPostBack (this, GetListItemCommandArgument (idxColumns, row.Index));      
+          commandColumn.Command.RegisterForSynchronousPostBack (
+              this, 
+              GetListItemCommandArgument (idxColumns, row.Index),  
+              string.Format ("BocList '{0}', Column '{1}'", ID, commandColumn.ItemID));
         }
       }
     }

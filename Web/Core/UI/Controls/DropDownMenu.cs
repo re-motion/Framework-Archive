@@ -221,14 +221,7 @@ namespace Rubicon.Web.UI.Controls
             href = ScriptUtility.EscapeClientScript (href);
             href = "'" + href + "'";
 
-            if (menuItem.Command.Type == CommandType.Event && menuItem.Command.EventCommand.RequiresSynchronousPostBack)
-            {
-              ISmartPage smartPage = Page as ISmartPage;
-              if (smartPage == null)
-                throw new InvalidOperationException ("Command.EventCommand.RequiresSynchronousPostBack is only allowed on pages implementing ISmartPage.");
-
-              smartPage.RegisterCommandForSynchronousPostBack (this, argument);
-            }
+            menuItem.Command.RegisterForSynchronousPostBack (this, argument, string.Format ("DropDownMenu '{0}', MenuItem '{1}'", ID, menuItem.ItemID));
           }
           else if (menuItem.Command.Type == CommandType.Href)
           {

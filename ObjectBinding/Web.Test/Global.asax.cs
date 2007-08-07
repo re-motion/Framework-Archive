@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.Sample;
+using Rubicon.ObjectBinding.Web;
 using Rubicon.Web.Configuration;
 
 namespace OBWTest
@@ -44,6 +45,7 @@ namespace OBWTest
       XmlReflectionBusinessObjectStorageProvider.SetCurrent (provider);
       BindableObjectProvider.Current.AddService (typeof (XmlReflectionBusinessObjectStorageProvider), provider);
       BindableObjectProvider.Current.AddService (typeof (BindableXmlObjectSearchService), new BindableXmlObjectSearchService());
+      BindableObjectProvider.Current.AddService (typeof (IBusinessObjectWebUIService), new ReflectionBusinessObjectWebUIService ());
     }
 
     protected void Session_Start (Object sender, EventArgs e)
