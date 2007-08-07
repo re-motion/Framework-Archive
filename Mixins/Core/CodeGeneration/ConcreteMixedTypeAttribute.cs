@@ -47,11 +47,11 @@ namespace Rubicon.Mixins.CodeGeneration
 
       ConcreteMixedTypeAttribute attribute = FromClassContext (context);
       CustomAttributeBuilder builder = new CustomAttributeBuilder (s_attributeCtor,
-          new object[] { attribute.BaseType, attribute.MixinTypes, attribute.CompleteInterfaces, attribute.ExplicitDependenciesPerMixin });
+          new object[] { attribute.TargetType, attribute.MixinTypes, attribute.CompleteInterfaces, attribute.ExplicitDependenciesPerMixin });
       return builder;
     }
 
-    private readonly Type _baseType;
+    private readonly Type _targetType;
     private readonly Type[] _mixinTypes;
     private readonly Type[] _completeInterfaces;
     private readonly Type[] _explicitDependenciesPerMixin;
@@ -63,15 +63,15 @@ namespace Rubicon.Mixins.CodeGeneration
       ArgumentUtility.CheckNotNull ("completeInterfaces", completeInterfaces);
       ArgumentUtility.CheckNotNull ("explicitDependenciesPerMixin", explicitDependenciesPerMixin);
 
-      _baseType = baseType;
+      _targetType = baseType;
       _mixinTypes = mixinTypes;
       _completeInterfaces = completeInterfaces;
       _explicitDependenciesPerMixin = explicitDependenciesPerMixin;
     }
 
-    public Type BaseType
+    public Type TargetType
     {
-      get { return _baseType; }
+      get { return _targetType; }
     }
 
     public Type[] MixinTypes
@@ -91,7 +91,7 @@ namespace Rubicon.Mixins.CodeGeneration
 
     public ClassContext GetClassContext ()
     {
-      ClassContext context = new ClassContext (BaseType, MixinTypes);
+      ClassContext context = new ClassContext (TargetType, MixinTypes);
       foreach (Type completeInterface in CompleteInterfaces)
         context.AddCompleteInterface (completeInterface);
 
@@ -104,6 +104,12 @@ namespace Rubicon.Mixins.CodeGeneration
           currentMixin = type;
         else
           context.GetOrAddMixinContext (currentMixin).AddExplicitDependency (type);
+      }
+
+      if (TargetType.IsGenericType)
+      {
+        Assertion.IsTrue (context.Type.IsGenericTypeDefinition);
+        context = context.SpecializeWithTypeArguments (TargetType.GetGenericArguments ());
       }
       return context;
     }

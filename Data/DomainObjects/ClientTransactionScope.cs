@@ -79,8 +79,9 @@ namespace Rubicon.Data.DomainObjects
 
     private const string c_callContextScopeKey = "Rubicon.Data.DomainObjects.ClientTransactionScope.ActiveScope";
 
-    private ClientTransactionScope _previousScope;
-    private ClientTransaction _scopedTransaction;
+    private readonly ClientTransactionScope _previousScope;
+    private readonly ClientTransaction _scopedTransaction;
+
     private bool _hasBeenLeft = false;
     private bool _autoEnlistDomainObjects = false;
     private AutoRollbackBehavior _autoRollbackBehavior;

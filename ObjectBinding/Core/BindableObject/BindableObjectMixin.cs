@@ -29,7 +29,7 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     internal static bool HasMixin (Type targetType, Type mixinType, ApplicationContext applicationContext)
     {
-      if (applicationContext.ContainsClassContext (targetType.IsGenericType ? targetType.GetGenericTypeDefinition() : targetType))
+      if (applicationContext.ContainsClassContext (targetType))
       {
         foreach (MixinDefinition mixin in TypeFactory.GetConfiguration (targetType, applicationContext).Mixins)
         {
@@ -50,7 +50,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
       ConcreteMixedTypeAttribute[] attributes = AttributeUtility.GetCustomAttributes<ConcreteMixedTypeAttribute> (concreteType, false);
       if (attributes.Length > 0)
-        return HasMixin (attributes[0].BaseType, mixinType, applicationContext);
+        return HasMixin (attributes[0].TargetType, mixinType, applicationContext);
 
       return false;
     }

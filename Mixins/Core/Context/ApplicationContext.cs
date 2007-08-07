@@ -75,14 +75,44 @@ namespace Rubicon.Mixins.Context
     }
 
     /// <summary>
-    /// Retrives the class context for a given <see cref="Type"/>.
+    /// Retrives the class context for a given <see cref="System.Type"/>, scanning the inheritance hierarchy if no context exists exactly for that
+    /// type.
     /// </summary>
-    /// <param name="type">The <see cref="Type"/> to retrieve a class context for.</param>
-    /// <returns>The <see cref="ClassContext"/> stored by the <see cref="ApplicationContext"/> for the given <see cref="Type"/>, or
-    /// <see langword="null"/> if no such context exists.</returns>
+    /// <param name="type">The <see cref="System.Type"/> to retrieve a class context for.</param>
+    /// <returns>The <see cref="ClassContext"/> stored by the <see cref="ApplicationContext"/> for the given <see cref="Type"/>, or a copy of the
+    /// context of its base type (with an adjusted <see cref="Type"/> member), or <see langword="null"/> if no such context has been registered for
+    /// the type hierarchy.</returns>
     public ClassContext GetClassContext (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
+
+      ClassContext thisContext = GetClassContextNonRecursive (type);
+      Type currentType = type.BaseType;
+
+      while (thisContext == null && currentType != null)
+      {
+        thisContext = GetClassContextNonRecursive (currentType);
+        if (thisContext != null)
+          thisContext = thisContext.CloneForSpecificType (type);
+
+        currentType = currentType.BaseType;
+      }
+
+      return thisContext;
+    }
+
+    /// <summary>
+    /// Retrives the class context for exactly the given <see cref="System.Type"/>.
+    /// </summary>
+    /// <param name="type">The <see cref="System.Type"/> to retrieve a class context for.</param>
+    /// <returns>The <see cref="ClassContext"/> stored by the <see cref="ApplicationContext"/> for the given <see cref="Type"/>,
+    /// or <see langword="null"/> if no such context has been registered.</returns>
+    public ClassContext GetClassContextNonRecursive (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      if (type.IsGenericType && !type.IsGenericTypeDefinition)
+        type = type.GetGenericTypeDefinition ();
+
       return ContainsClassContext (type) ? _classContexts[type] : null;
     }
 
@@ -95,6 +125,9 @@ namespace Rubicon.Mixins.Context
     public bool ContainsClassContext (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
+      if (type.IsGenericType && !type.IsGenericTypeDefinition)
+        type = type.GetGenericTypeDefinition ();
+
       return _classContexts.ContainsKey (type);
     }
 
@@ -106,9 +139,13 @@ namespace Rubicon.Mixins.Context
     public ClassContext GetOrAddClassContext (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      if (!ContainsClassContext (type))
-        AddClassContext (new ClassContext (type));
-      return GetClassContext (type);
+      ClassContext classContext = GetClassContextNonRecursive (type);
+      if (classContext == null)
+      {
+        classContext = new ClassContext (type);
+        AddClassContext (classContext);
+      }
+      return classContext;
     }
 
     /// <summary>
@@ -119,7 +156,7 @@ namespace Rubicon.Mixins.Context
     public bool RemoveClassContext (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      ClassContext context = GetClassContext (type);
+      ClassContext context = GetClassContextNonRecursive (type);
       if (context != null)
       {
         List<Type> interfacesToRemove = new List<Type>();
@@ -130,8 +167,11 @@ namespace Rubicon.Mixins.Context
         }
         foreach (Type interfaceToRemove in interfacesToRemove)
           _registeredInterfaces.Remove (interfaceToRemove);
+
+        return _classContexts.Remove (context.Type);
       }
-      return _classContexts.Remove (type);
+      else
+        return false;
     }
 
     /// <summary>
@@ -244,13 +284,14 @@ namespace Rubicon.Mixins.Context
       ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
       ArgumentUtility.CheckNotNull ("associatedClassType", associatedClassType);
 
-      if (!ContainsClassContext (associatedClassType))
+      ClassContext context = GetClassContextNonRecursive (associatedClassType);
+      if (context == null)
       {
         string message = string.Format ("There is no class context for the given type {0}.", associatedClassType.FullName);
         throw new ArgumentException (message, "associatedClassType");
       }
       else
-        RegisterInterface (interfaceType, GetClassContext (associatedClassType));
+        RegisterInterface (interfaceType, context);
     }
 
 

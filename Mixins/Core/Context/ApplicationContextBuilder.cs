@@ -220,7 +220,7 @@ namespace Rubicon.Mixins.Context
 
       private void AnalyzeInheritedMixins (Type targetType, Type baseType)
       {
-        ClassContext baseTypeContext = _builtContext.GetClassContext (baseType);
+        ClassContext baseTypeContext = _builtContext.GetClassContextNonRecursive (baseType);
         if (baseTypeContext != null)
         {
           foreach (MixinContext baseMixinContext in baseTypeContext.Mixins)

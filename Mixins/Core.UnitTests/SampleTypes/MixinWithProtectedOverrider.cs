@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
@@ -12,8 +10,6 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
       string VirtualProperty { get; }
       event EventHandler VirtualEvent;
     }
-
-    private EventHandler _eventBackingField;
 
     [Override]
     protected string VirtualMethod ()

@@ -35,6 +35,7 @@
         <include asis="true" name="${build.outputdir}/Castle.Core.dll"/>
         <include asis="true" name="${build.outputdir}/Castle.DynamicProxy.dll"/>
         <include asis="true" name="${build.outputdir}/Rubicon.Core.dll"/>
+        <include asis="true" name="${build.outputdir}/Rubicon.Mixins.dll"/>
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="System.Xml.dll"/>

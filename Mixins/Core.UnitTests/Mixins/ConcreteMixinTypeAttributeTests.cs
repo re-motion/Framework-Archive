@@ -26,7 +26,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
       Assert.AreEqual (3, attribute.MixinIndex);
 
-      Assert.AreEqual (typeof (ConcreteMixinTypeAttributeTests), attribute.BaseType);
+      Assert.AreEqual (typeof (ConcreteMixinTypeAttributeTests), attribute.TargetType);
       
       Assert.AreEqual (3, attribute.MixinTypes.Length);
       Assert.AreEqual (typeof (string), attribute.MixinTypes[0]);
@@ -52,7 +52,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       ConcreteMixinTypeAttribute attribute = ConcreteMixinTypeAttribute.FromClassContext (7, simpleContext);
 
       Assert.AreEqual (7, attribute.MixinIndex);
-      Assert.AreEqual (typeof (object), attribute.BaseType);
+      Assert.AreEqual (typeof (object), attribute.TargetType);
       Assert.AreEqual (1, attribute.MixinTypes.Length);
       Assert.AreEqual (typeof (string), attribute.MixinTypes[0]);
       Assert.AreEqual (0, attribute.CompleteInterfaces.Length);
@@ -71,7 +71,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
       Assert.AreEqual (5, attribute.MixinIndex);
 
-      Assert.AreEqual (typeof (int), attribute.BaseType);
+      Assert.AreEqual (typeof (int), attribute.TargetType);
       Assert.AreEqual (2, attribute.MixinTypes.Length);
       Assert.AreEqual (typeof (string), attribute.MixinTypes[0]);
       Assert.AreEqual (typeof (double), attribute.MixinTypes[1]);

@@ -20,7 +20,7 @@ namespace Rubicon.Mixins.CodeGeneration
     public static ConcreteMixinTypeAttribute FromClassContext (int mixinIndex, ClassContext targetClassContext)
     {
       ConcreteMixedTypeAttribute baseAttribute = ConcreteMixedTypeAttribute.FromClassContext (targetClassContext);
-      return new ConcreteMixinTypeAttribute (mixinIndex, baseAttribute.BaseType, baseAttribute.MixinTypes, baseAttribute.CompleteInterfaces,
+      return new ConcreteMixinTypeAttribute (mixinIndex, baseAttribute.TargetType, baseAttribute.MixinTypes, baseAttribute.CompleteInterfaces,
           baseAttribute.ExplicitDependenciesPerMixin);
     }
 
@@ -29,12 +29,12 @@ namespace Rubicon.Mixins.CodeGeneration
       Assertion.IsNotNull (s_attributeCtor);
 
       ConcreteMixinTypeAttribute attribute = FromClassContext (mixinIndex, context);
-      CustomAttributeBuilder builder = new CustomAttributeBuilder (s_attributeCtor, new object[] { attribute.MixinIndex, attribute.BaseType,
+      CustomAttributeBuilder builder = new CustomAttributeBuilder (s_attributeCtor, new object[] { attribute.MixinIndex, attribute.TargetType,
           attribute.MixinTypes, attribute.CompleteInterfaces, attribute.ExplicitDependenciesPerMixin });
       return builder;
     }
 
-    private int _mixinIndex;
+    private readonly int _mixinIndex;
 
     public ConcreteMixinTypeAttribute (int mixinIndex, Type baseType, Type[] mixinTypes, Type[] completeInterfaces, Type[] explicitDependenciesPerMixin)
         : base (baseType, mixinTypes, completeInterfaces, explicitDependenciesPerMixin)

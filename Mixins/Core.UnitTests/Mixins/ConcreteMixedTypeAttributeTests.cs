@@ -24,7 +24,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       ConcreteMixedTypeAttribute attribute = ((ConcreteMixedTypeAttribute[]) typeof (TestType).GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false))[0];
 
-      Assert.AreEqual (typeof (ConcreteMixedTypeAttributeTests), attribute.BaseType);
+      Assert.AreEqual (typeof (ConcreteMixedTypeAttributeTests), attribute.TargetType);
       
       Assert.AreEqual (3, attribute.MixinTypes.Length);
       Assert.AreEqual (typeof (string), attribute.MixinTypes[0]);
@@ -49,7 +49,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       ClassContext simpleContext = new ClassContext (typeof (object), typeof (string));
       ConcreteMixedTypeAttribute attribute = ConcreteMixedTypeAttribute.FromClassContext (simpleContext);
 
-      Assert.AreEqual (typeof (object), attribute.BaseType);
+      Assert.AreEqual (typeof (object), attribute.TargetType);
       Assert.AreEqual (1, attribute.MixinTypes.Length);
       Assert.AreEqual (typeof (string), attribute.MixinTypes[0]);
       Assert.AreEqual (0, attribute.CompleteInterfaces.Length);
@@ -66,7 +66,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
       ConcreteMixedTypeAttribute attribute = ConcreteMixedTypeAttribute.FromClassContext (context);
 
-      Assert.AreEqual (typeof (int), attribute.BaseType);
+      Assert.AreEqual (typeof (int), attribute.TargetType);
       Assert.AreEqual (2, attribute.MixinTypes.Length);
       Assert.AreEqual (typeof (string), attribute.MixinTypes[0]);
       Assert.AreEqual (typeof (double), attribute.MixinTypes[1]);
@@ -138,6 +138,20 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       ConcreteMixedTypeAttribute attribute = ConcreteMixedTypeAttribute.FromClassContext (context);
       TargetClassDefinition definition = attribute.GetTargetClassDefinition ();
       Assert.AreSame (referenceDefinition, definition);
+    }
+
+    [Test]
+    public void AttributeWithGenericType ()
+    {
+      ClassContext context = new ClassContext (typeof (List<>)).SpecializeWithTypeArguments (new Type[] {typeof (int)});
+      Assert.AreEqual (typeof (List<int>), context.Type);
+      ConcreteMixedTypeAttribute attribute = ConcreteMixedTypeAttribute.FromClassContext (context);
+      Assert.AreEqual (typeof (List<int>), attribute.TargetType);
+      ClassContext context2 = attribute.GetClassContext ();
+      Assert.AreEqual (typeof (List<int>), context2.Type);
+
+      TargetClassDefinition definition = attribute.GetTargetClassDefinition ();
+      Assert.AreEqual (typeof (List<int>), definition.Type);
     }
   }
 }

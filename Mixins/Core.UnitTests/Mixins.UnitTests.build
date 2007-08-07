@@ -7,6 +7,10 @@
           output="${build.test.outputdir}/${project.output}.${project.extension}"
           debug="${build.debug}"
           define="${build.csc.define}">
+      <nowarn>
+        <!-- unused member warning -->
+        <warning number="0067"/>
+      </nowarn>
       <sources failonempty="true">
         <include name="**/*.cs"/>
         <exclude name="Properties/AssemblyInfoTemplate.cs" />   

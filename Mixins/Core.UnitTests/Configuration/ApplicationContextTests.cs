@@ -324,5 +324,58 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         }
       }
     }
+
+    [Test]
+    public void GetContextWorksRecursively ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (NullMixin)))
+      {
+        ClassContext context = MixinConfiguration.ActiveContext.GetClassContext (typeof (string));
+        Assert.IsNotNull (context);
+        Assert.AreEqual (typeof (string), context.Type);
+        Assert.IsTrue (context.ContainsMixin (typeof (NullMixin)));
+      }
+    }
+
+    [Test]
+    public void GetContextNonRecursive ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (NullMixin)))
+      {
+        ClassContext context = MixinConfiguration.ActiveContext.GetClassContextNonRecursive (typeof (string));
+        Assert.IsNull (context);
+      }
+    }
+
+    [Test]
+    public void GenericTypesTransparentlyConvertedToTypeDefinitions ()
+    {
+      ApplicationContext context = new ApplicationContext ();
+      context.AddClassContext (new ClassContext (typeof (List<int>)));
+      Assert.IsTrue (context.ContainsClassContext (typeof (List<int>)));
+      Assert.IsTrue (context.ContainsClassContext (typeof (List<>)));
+
+      try
+      {
+        context.AddClassContext (new ClassContext (typeof (List<string>)));
+        Assert.Fail ("Expected InvalidOperationException");
+      }
+      catch (InvalidOperationException) { }
+
+      Assert.AreEqual (1, context.ClassContextCount);
+      context.AddOrReplaceClassContext (new ClassContext (typeof (List<double>)));
+      Assert.AreEqual (1, context.ClassContextCount);
+
+      ClassContext classContext1 = context.GetClassContext (typeof (List<int>));
+      ClassContext classContext2 = context.GetClassContextNonRecursive (typeof (List<>));
+      Assert.AreSame (classContext1, classContext2);
+
+      ClassContext classContext3 = context.GetOrAddClassContext (typeof (List<List<int>>));
+      Assert.AreSame (classContext1, classContext3);
+
+      Assert.IsTrue (context.RemoveClassContext (typeof (List<bool>)));
+      Assert.AreEqual (0, context.ClassContextCount);
+      Assert.IsFalse (context.RemoveClassContext (typeof (List<bool>)));
+    }
   }
 }

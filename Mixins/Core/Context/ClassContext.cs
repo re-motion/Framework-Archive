@@ -32,9 +32,16 @@ namespace Rubicon.Mixins.Context
     /// </summary>
     /// <param name="type">The mixin target type to be represented by this context.</param>
     /// <exception cref="ArgumentNullException">The <paramref name="type"/> parameter is <see langword="null"/>.</exception>
-    public ClassContext (Type type)
+    public ClassContext (Type type) : this (type, true)
+    {
+    }
+
+    private ClassContext (Type type, bool forceGenericTypeDefinition)
     {
       ArgumentUtility.CheckNotNull ("type", type);
+
+      if (forceGenericTypeDefinition && type.IsGenericType && !type.IsGenericTypeDefinition)
+        type = type.GetGenericTypeDefinition ();
 
       _type = type;
       _mixins = new Dictionary<Type, MixinContext>();
@@ -311,7 +318,6 @@ namespace Rubicon.Mixins.Context
     /// Adds the given type to this <see cref="ClassContext"/> as a complete interface.
     /// </summary>
     /// <param name="interfaceType">Type to add as a complete interface.</param>
-
     public void AddCompleteInterface (Type interfaceType)
     {
       ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
@@ -396,17 +402,27 @@ namespace Rubicon.Mixins.Context
     /// <returns>A new <see cref="ClassContext"/> holding equivalent configuration data as this <see cref="ClassContext"/> does.</returns>
     public ClassContext Clone ()
     {
+      ClassContext newInstance = CloneForSpecificType (Type, false);
+      Assertion.DebugAssert (newInstance.Equals (this));
+      return newInstance;
+    }
+
+    internal ClassContext CloneForSpecificType (Type type)
+    {
+      return CloneForSpecificType (type, true);
+    }
+
+    private ClassContext CloneForSpecificType (Type type, bool forceGenericTypeDefinition)
+    {
       lock (_lockObject)
       {
-        ClassContext newInstance = new ClassContext (Type);
+        ClassContext newInstance = new ClassContext (type, forceGenericTypeDefinition);
 
         foreach (MixinContext mixinContext in Mixins)
           mixinContext.CloneAndAddTo (newInstance);
 
         foreach (Type completeInterface in CompleteInterfaces)
           newInstance.AddCompleteInterface (completeInterface);
-
-        Assertion.DebugAssert (newInstance.Equals (this));
 
         return newInstance;
       }
@@ -452,7 +468,7 @@ namespace Rubicon.Mixins.Context
       
       lock (_lockObject)
       {
-        ClassContext newInstance = new ClassContext (Type.MakeGenericType (genericArguments));
+        ClassContext newInstance = new ClassContext (Type.MakeGenericType (genericArguments), false);
 
         foreach (MixinContext mixinContext in Mixins)
           mixinContext.CloneAndAddTo (newInstance);

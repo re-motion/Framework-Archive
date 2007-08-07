@@ -122,18 +122,15 @@ namespace Rubicon.Mixins
       ArgumentUtility.CheckNotNull ("targetType", targetType);
       ArgumentUtility.CheckNotNull ("applicationContext", applicationContext);
 
-      Type typeToLookup;
-      if (targetType.IsGenericType)
-        typeToLookup = targetType.GetGenericTypeDefinition ();
-      else
-        typeToLookup = targetType;
-
-      ClassContext context = applicationContext.GetClassContext (typeToLookup);
+      ClassContext context = applicationContext.GetClassContext (targetType);
       if (context == null)
-        context = new ClassContext (typeToLookup);
+        context = new ClassContext (targetType);
 
       if (targetType.IsGenericType)
-        context = context.SpecializeWithTypeArguments (targetType.GetGenericArguments ());
+      {
+        Assertion.IsTrue (context.Type.IsGenericTypeDefinition);
+        context = context.SpecializeWithTypeArguments (targetType.GetGenericArguments());
+      }
 
       return TargetClassDefinitionCache.Current.GetTargetClassDefinition (context);
     }

@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Mixins;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
@@ -44,9 +45,16 @@ public abstract class ClientTransaction : ITransaction
 
   // static members and constants
 
+  /// <summary>
+  /// Creates a new root <see cref="ClientTransaction"/>, specificalle a <see cref="RootClientTransaction"/>.
+  /// </summary>
+  /// <returns>A new root <see cref="ClientTransaction"/> instance.</returns>
+  /// <remarks>The object returned by this method can be extended with <b>Mixins</b> by configuring the <see cref="MixinConfiguration.ActiveContext"/>
+  /// to include a mixin for type <see cref="RootClientTransaction"/>. Declaratively, this can be achieved by attaching an
+  /// <see cref="ExtendsAttribute"/> instance for <see cref="ClientTransaction"/> or <see cref="RootClientTransaction"/> to a mixin class.</remarks>
   public static ClientTransaction NewTransaction ()
   {
-    return new RootClientTransaction ();
+    return ObjectFactory.Create<RootClientTransaction>().With();
   }
 
   // member fields
@@ -347,7 +355,7 @@ public abstract class ClientTransaction : ITransaction
   /// </summary>
   public ClientTransaction CreateSubTransaction ()
   {
-    ClientTransaction subTransaction = new SubClientTransaction (this);
+    ClientTransaction subTransaction = ObjectFactory.Create<SubClientTransaction> ().With (this);
     return subTransaction;
   }
 
