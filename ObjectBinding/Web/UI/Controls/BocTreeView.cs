@@ -734,6 +734,11 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
       }
     }
 
+    public void SetTreeNodeRenderMethodDelegate (WebTreeNodeRenderMethod treeNodeRenderMethod)
+    {
+      _treeView.SetTreeNodeRenderMethodDelegate (treeNodeRenderMethod);
+    }
+
     //  public void EnsureTreeNodesCreated()
     //  {
     //    _treeView.EnsureTreeNodesCreated();
