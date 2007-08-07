@@ -128,6 +128,29 @@ namespace Rubicon.Web.UI.Controls
     {
       EnsureSubMenuTabStripPopulated ();
 
+      foreach (MenuTab menuTab in Tabs)
+      {
+        if (menuTab.Command != null && menuTab.Command.Type == CommandType.Event)
+        {
+          menuTab.Command.RegisterForSynchronousPostBack (
+              _mainMenuTabStrip, menuTab.ItemID, string.Format ("TabbedMenu '{0}', MenuTab '{1}'", ID, menuTab.ItemID));
+        }
+      }
+
+      if (SelectedMainMenuTab != null)
+      {
+        foreach (MenuTab menuTab in SelectedMainMenuTab.SubMenuTabs)
+        {
+          if (menuTab.Command != null && menuTab.Command.Type == CommandType.Event)
+          {
+            menuTab.Command.RegisterForSynchronousPostBack (
+                _subMenuTabStrip, 
+                menuTab.ItemID, 
+                string.Format ("TabbedMenu '{0}', MainMenuTab '{1}', SubMenuTab '{2}'", ID, SelectedMainMenuTab.ItemID, menuTab.ItemID));
+          }
+        }
+      }
+
       base.OnPreRender (e);
       SaveSelection ();
 
