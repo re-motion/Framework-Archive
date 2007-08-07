@@ -64,5 +64,21 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
         Assert.That (allMethodNames, List.Not.Contains ("Rubicon.Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.get_Prop2"));
       }
     }
+
+    [Test]
+    public void ExplicitlySuppressedInterfaceIntroduction ()
+    {
+      object o = CreateMixedObject<object> (typeof (MixinSuppressingSimpleInterface)).With();
+      Assert.IsFalse (o is ISimpleInterface);
+      Assert.IsTrue (Mixin.Get<MixinSuppressingSimpleInterface> (o) is ISimpleInterface);
+    }
+
+    [Test]
+    public void ImplicitlySuppressedInterfaceIntroduction ()
+    {
+      ClassImplementingSimpleInterface o = CreateMixedObject<ClassImplementingSimpleInterface> (typeof (MixinImplementingSimpleInterface)).With();
+      Assert.IsTrue (o is ISimpleInterface);
+      Assert.AreEqual ("ClassImplementingSimpleInterface.Method", o.Method ());
+    }
   }
 }

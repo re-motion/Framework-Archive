@@ -295,12 +295,12 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void WarnsIfIntroducedInterfaceAlreadyImplemented ()
+    public void WarnsIfIntroducedInterfaceIsShadowed ()
     {
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType2), typeof (DoubleImplementer));
-      DefaultValidationLog log = Validator.Validate (definition.Mixins[typeof (DoubleImplementer)].InterfaceIntroductions[typeof (IBaseType2)]);
+      DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasWarning ("Rubicon.Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.InterfaceWillShadowBaseClassInterface", log));
+      Assert.IsTrue (HasWarning ("Rubicon.Mixins.Validation.Rules.DefaultSuppressedInterfaceIntroductionRules.InterfaceIsShadowedByBaseClass", log));
     }
 
     [Test]

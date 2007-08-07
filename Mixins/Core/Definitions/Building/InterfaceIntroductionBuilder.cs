@@ -13,17 +13,30 @@ namespace Rubicon.Mixins.Definitions.Building
     private static EventSignatureEqualityComparer s_eventComparer = new EventSignatureEqualityComparer ();
 
     private readonly MixinDefinition _mixin;
+    private readonly Set<Type> _suppressedInterfaces;
 
     public InterfaceIntroductionBuilder (MixinDefinition mixin)
     {
       _mixin = mixin;
+      _suppressedInterfaces = new Set<Type> (typeof (System.Runtime.Serialization.ISerializable));
+      AnalyzeSuppressedInterfaces ();
+    }
+
+    private void AnalyzeSuppressedInterfaces ()
+    {
+      foreach (NotIntroducedAttribute notIntroducedAttribute in _mixin.Type.GetCustomAttributes (typeof (NotIntroducedAttribute), true))
+        _suppressedInterfaces.Add (notIntroducedAttribute.SuppressedInterface);
     }
 
     public void Apply ()
     {
       foreach (Type implementedInterface in _mixin.ImplementedInterfaces)
       {
-        if (!implementedInterface.Equals (typeof (System.Runtime.Serialization.ISerializable)))
+        if (_suppressedInterfaces.Contains (implementedInterface))
+          ApplySuppressed (implementedInterface, true);
+        else if (_mixin.BaseClass.ImplementedInterfaces.Contains (implementedInterface))
+          ApplySuppressed (implementedInterface, false);
+        else
           Apply (implementedInterface);
       }
     }
@@ -49,22 +62,32 @@ namespace Rubicon.Mixins.Definitions.Building
       AnalyzeIntroducedMembers (introducedInterface);
     }
 
-    private void AnalyzeIntroducedMembers (InterfaceIntroductionDefinition introducedInterface)
+    public void ApplySuppressed (Type implementedInterface, bool explicitSuppression)
     {
-      Set<MethodInfo> specialMethods = new Set<MethodInfo> ();
-
-      AnalyzeProperties(introducedInterface, specialMethods);
-      AnalyzeEvents(introducedInterface, specialMethods);
-      AnalyzeMethods(introducedInterface, specialMethods);
+      SuppressedInterfaceIntroductionDefinition introducedInterface =
+          new SuppressedInterfaceIntroductionDefinition (implementedInterface, _mixin, explicitSuppression);
+      _mixin.SuppressedInterfaceIntroductions.Add (introducedInterface);
     }
 
-    private TDefinition FindImplementer<TDefinition, TMemberInfo> (TMemberInfo interfaceMember, IEnumerable<TDefinition> candidates,
-    IEqualityComparer<TMemberInfo> comparer)
-      where TDefinition : MemberDefinition
-      where TMemberInfo : MemberInfo
+
+    private void AnalyzeIntroducedMembers (InterfaceIntroductionDefinition introducedInterface)
     {
-      List<TDefinition> strongCandidates = new List<TDefinition> ();
-      List<TDefinition> weakCandidates = new List<TDefinition> ();
+      Set<MethodInfo> specialMethods = new Set<MethodInfo>();
+
+      AnalyzeProperties (introducedInterface, specialMethods);
+      AnalyzeEvents (introducedInterface, specialMethods);
+      AnalyzeMethods (introducedInterface, specialMethods);
+    }
+
+    private TDefinition FindImplementer<TDefinition, TMemberInfo> (
+        TMemberInfo interfaceMember,
+        IEnumerable<TDefinition> candidates,
+        IEqualityComparer<TMemberInfo> comparer)
+        where TDefinition: MemberDefinition
+        where TMemberInfo: MemberInfo
+    {
+      List<TDefinition> strongCandidates = new List<TDefinition>();
+      List<TDefinition> weakCandidates = new List<TDefinition>();
 
       foreach (TDefinition candidate in candidates)
         if (interfaceMember.Name == candidate.Name && comparer.Equals (interfaceMember, (TMemberInfo) candidate.MemberInfo))
@@ -72,7 +95,8 @@ namespace Rubicon.Mixins.Definitions.Building
         else if (candidate.Name.EndsWith (interfaceMember.Name) && comparer.Equals (interfaceMember, (TMemberInfo) candidate.MemberInfo))
           weakCandidates.Add (candidate);
 
-      Assertion.IsTrue (strongCandidates.Count == 0 || strongCandidates.Count == 1, "If this throws, we have an oversight in the candidate algorithm.");
+      Assertion.IsTrue (
+          strongCandidates.Count == 0 || strongCandidates.Count == 1, "If this throws, we have an oversight in the candidate algorithm.");
 
       if (strongCandidates.Count == 1)
         return strongCandidates[0];
@@ -91,9 +115,9 @@ namespace Rubicon.Mixins.Definitions.Building
       }
     }
 
-    private void AnalyzeProperties(InterfaceIntroductionDefinition introducedInterface, Set<MethodInfo> specialMethods)
+    private void AnalyzeProperties (InterfaceIntroductionDefinition introducedInterface, Set<MethodInfo> specialMethods)
     {
-      foreach (PropertyInfo interfaceProperty in introducedInterface.Type.GetProperties ())
+      foreach (PropertyInfo interfaceProperty in introducedInterface.Type.GetProperties())
       {
         PropertyDefinition implementer = FindImplementer (interfaceProperty, _mixin.Properties, s_propertyComparer);
         CheckMemberImplementationFound (implementer, interfaceProperty);
@@ -111,7 +135,7 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private void AnalyzeEvents (InterfaceIntroductionDefinition introducedInterface, Set<MethodInfo> specialMethods)
     {
-      foreach (EventInfo interfaceEvent in introducedInterface.Type.GetEvents ())
+      foreach (EventInfo interfaceEvent in introducedInterface.Type.GetEvents())
       {
         EventDefinition implementer = FindImplementer (interfaceEvent, _mixin.Events, s_eventComparer);
         CheckMemberImplementationFound (implementer, interfaceEvent);
@@ -124,7 +148,7 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private void AnalyzeMethods (InterfaceIntroductionDefinition introducedInterface, Set<MethodInfo> specialMethods)
     {
-      InterfaceMapping mapping = _mixin.GetAdjustedInterfaceMap(introducedInterface.Type);
+      InterfaceMapping mapping = _mixin.GetAdjustedInterfaceMap (introducedInterface.Type);
       for (int i = 0; i < mapping.InterfaceMethods.Length; ++i)
       {
         MethodInfo interfaceMethod = mapping.InterfaceMethods[i];
@@ -142,8 +166,11 @@ namespace Rubicon.Mixins.Definitions.Building
     {
       if (implementation == null)
       {
-        string message = string.Format ("An implementation for interface member {0}.{1} could not be found in mixin {2}.",
-            interfaceMember.DeclaringType.FullName, interfaceMember.Name, _mixin.FullName);
+        string message = string.Format (
+            "An implementation for interface member {0}.{1} could not be found in mixin {2}.",
+            interfaceMember.DeclaringType.FullName,
+            interfaceMember.Name,
+            _mixin.FullName);
         throw new ConfigurationException (message);
       }
     }

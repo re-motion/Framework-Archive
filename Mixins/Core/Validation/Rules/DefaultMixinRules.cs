@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Rubicon.Collections;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Utilities;
 using Rubicon.Mixins.Validation;

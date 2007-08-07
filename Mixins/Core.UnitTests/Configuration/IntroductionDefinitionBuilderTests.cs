@@ -249,5 +249,61 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         TypeFactory.GetActiveConfiguration (typeof (BaseType1));
       }
     }
+
+    [Test]
+    public void InterfaceImplementedByBaseClassCannotBeIntroduced ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (ClassImplementingSimpleInterface), typeof (MixinImplementingSimpleInterface)))
+      {
+        BaseClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassImplementingSimpleInterface));
+        Assert.IsTrue (definition.ImplementedInterfaces.Contains (typeof (ISimpleInterface)));
+        Assert.IsFalse (definition.IntroducedInterfaces.ContainsKey (typeof (ISimpleInterface)));
+        Assert.IsTrue (definition.Mixins[typeof (MixinImplementingSimpleInterface)].SuppressedInterfaceIntroductions.ContainsKey (
+            typeof (ISimpleInterface)));
+      }
+    }
+
+    [Test]
+    public void SuppressedInterfacedIsNotIntroduced ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinSuppressingSimpleInterface)))
+      {
+        BaseClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (object));
+        Assert.IsFalse (definition.ImplementedInterfaces.Contains (typeof (ISimpleInterface)));
+        Assert.IsFalse (definition.IntroducedInterfaces.ContainsKey (typeof (ISimpleInterface)));
+        Assert.IsTrue (definition.Mixins[typeof (MixinSuppressingSimpleInterface)].SuppressedInterfaceIntroductions.ContainsKey (
+            typeof (ISimpleInterface)));
+      }
+    }
+
+    [Test]
+    public void ExplicitlySuppressedInterfaceIntroduction ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinSuppressingSimpleInterface)))
+      {
+        BaseClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (object));
+        SuppressedInterfaceIntroductionDefinition suppressedDefinition =
+            definition.Mixins[typeof (MixinSuppressingSimpleInterface)].SuppressedInterfaceIntroductions[typeof (ISimpleInterface)];
+        Assert.IsTrue (suppressedDefinition.IsExplicitlySuppressed);
+        Assert.IsFalse (suppressedDefinition.IsShadowed);
+        Assert.AreSame (typeof (ISimpleInterface), suppressedDefinition.Type);
+        Assert.AreSame (definition.Mixins[typeof (MixinSuppressingSimpleInterface)], suppressedDefinition.Parent);
+      }
+    }
+
+    [Test]
+    public void ImplicitlySuppressedInterfaceIntroduction ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (ClassImplementingSimpleInterface), typeof (MixinImplementingSimpleInterface)))
+      {
+        BaseClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassImplementingSimpleInterface));
+        SuppressedInterfaceIntroductionDefinition suppressedDefinition =
+            definition.Mixins[typeof (MixinImplementingSimpleInterface)].SuppressedInterfaceIntroductions[typeof (ISimpleInterface)];
+        Assert.IsFalse (suppressedDefinition.IsExplicitlySuppressed);
+        Assert.IsTrue (suppressedDefinition.IsShadowed);
+        Assert.AreSame (typeof (ISimpleInterface), suppressedDefinition.Type);
+        Assert.AreSame (definition.Mixins[typeof (MixinImplementingSimpleInterface)], suppressedDefinition.Parent);
+      }
+    }
   }
 }

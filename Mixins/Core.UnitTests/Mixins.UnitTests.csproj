@@ -62,11 +62,14 @@
     <Compile Include="SampleTypes\ClassFulfillingAllMemberRequirementsExplicitly.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\ClassLookingLikeBaseType3.cs" />
     <Compile Include="SampleTypes\BaseTypeWithDuckFaceMixin.cs" />
+    <Compile Include="SampleTypes\ClassImplementingSimpleInterface.cs" />
     <Compile Include="SampleTypes\ClassOverridingInheritedMixinMethod.cs" />
     <Compile Include="SampleTypes\ClassOverridingMixinMembersProtected.cs" />
+    <Compile Include="SampleTypes\MixinImplementingSimpleInterface.cs" />
     <Compile Include="SampleTypes\MixinOverridingInheritedMethod.cs" />
     <Compile Include="SampleTypes\MixinRequiringAllMembersBase.cs" />
     <Compile Include="SampleTypes\DuckFaceMixin.cs" />
+    <Compile Include="SampleTypes\MixinSuppressingSimpleInterface.cs" />
     <Compile Include="SampleTypes\MixinsWithCircularDependencies.cs" />
     <Compile Include="SampleTypes\ClassFulfillingAllMemberRequirementsDuck.cs" />
     <Compile Include="SampleTypes\ClassFulfillingNoMemberRequirements.cs" />
@@ -119,6 +122,7 @@
     <Compile Include="SampleTypes\MixinWithThisRequirementWithStaticMethod.cs" />
     <Compile Include="SampleTypes\MixinWithSingleAbstractMethod.cs" />
     <Compile Include="SampleTypes\DuckBaseMixin.cs" />
+    <Compile Include="SampleTypes\ISimpleInterface.cs" />
     <Compile Include="Utilities\DependencySortTest.cs" />
     <Compile Include="Configuration\InheritanceDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\IntroductionDefinitionBuilderTests.cs" />

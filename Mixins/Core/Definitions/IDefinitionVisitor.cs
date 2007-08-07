@@ -9,6 +9,7 @@ namespace Rubicon.Mixins.Definitions
     void Visit (BaseClassDefinition baseClass);
     void Visit (MixinDefinition mixin);
     void Visit (InterfaceIntroductionDefinition interfaceIntroduction);
+    void Visit (SuppressedInterfaceIntroductionDefinition definition);
     void Visit (MethodIntroductionDefinition methodIntroduction);
     void Visit (PropertyIntroductionDefinition propertyIntroduction);
     void Visit (EventIntroductionDefinition eventIntroduction);

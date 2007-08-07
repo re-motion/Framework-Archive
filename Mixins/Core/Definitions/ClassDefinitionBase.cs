@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Rubicon.Collections;
 using Rubicon.Utilities;
 using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 
@@ -20,6 +21,7 @@ namespace Rubicon.Mixins.Definitions
         new MultiDefinitionCollection<Type, AttributeDefinition> (delegate (AttributeDefinition a) { return a.AttributeType; });
 
     private readonly Type _type;
+    private readonly Set<Type> _implementedInterfaces;
 
     public ClassDefinitionBase (Type type)
     {
@@ -27,6 +29,7 @@ namespace Rubicon.Mixins.Definitions
       if (type.ContainsGenericParameters)
         throw new ArgumentException (string.Format ("The type {0} contains generic parameters, which is not allowed.", type.FullName), "type");
       _type = type;
+      _implementedInterfaces = new Set<Type> (_type.GetInterfaces());
     }
 
     public Type Type
@@ -68,9 +71,9 @@ namespace Rubicon.Mixins.Definitions
 
     public abstract IVisitableDefinition Parent { get; }
 
-    public IList<Type> ImplementedInterfaces
+    public Set<Type> ImplementedInterfaces
     {
-      get { return Type.GetInterfaces(); }
+      get { return _implementedInterfaces; }
     }
 
     public MultiDefinitionCollection<Type, AttributeDefinition> CustomAttributes

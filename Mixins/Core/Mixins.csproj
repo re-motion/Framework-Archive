@@ -63,6 +63,7 @@
     <Compile Include="Definitions\Building\RequiredMethodDefinitionBuilder.cs" />
     <Compile Include="Definitions\IAttributeIntroductionTargetDefinition.cs" />
     <Compile Include="Definitions\RequiredMethodDefinition.cs" />
+    <Compile Include="Definitions\SuppressedInterfaceIntroductionDefinition.cs" />
     <Compile Include="IgnoreForMixinConfigurationAttribute.cs" />
     <Compile Include="MixedTypeInstantiationScope.cs" />
     <Compile Include="MixinConfiguration.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Definitions\IDefinitionCollection.cs" />
     <Compile Include="Definitions\CovariantDefinitionCollectionWrapper.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
+    <Compile Include="NotIntroducedAttribute.cs" />
     <Compile Include="UsesAttribute.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\AttributeReplicator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\PropertyReference.cs" />
@@ -167,6 +169,7 @@
     <Compile Include="Utilities\MethodSignatureEqualityComparer.cs" />
     <Compile Include="Utilities\UncastableEnumerableWrapper.cs" />
     <Compile Include="Validation\ConsoleDumper.cs" />
+    <Compile Include="Validation\Rules\DefaultSuppressedInterfaceIntroductionRules.cs" />
     <Compile Include="Validation\Rules\DefaultAttributeIntroductionRules.cs" />
     <Compile Include="Validation\Rules\DefaultRequiredMethodRules.cs" />
     <Compile Include="Validation\ValidationException.cs" />

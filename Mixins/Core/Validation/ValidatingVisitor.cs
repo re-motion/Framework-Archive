@@ -12,6 +12,7 @@ namespace Rubicon.Mixins.Validation
     private readonly List<IValidationRule<BaseClassDefinition>> _baseClassRules = new List<IValidationRule<BaseClassDefinition>> ();
     private readonly List<IValidationRule<MixinDefinition>> _mixinRules = new List<IValidationRule<MixinDefinition>> ();
     private readonly List<IValidationRule<InterfaceIntroductionDefinition>> _interfaceIntroductionRules = new List<IValidationRule<InterfaceIntroductionDefinition>> ();
+    private readonly IList<IValidationRule<SuppressedInterfaceIntroductionDefinition>> _suppressedInterfaceIntroductionRules = new List<IValidationRule<SuppressedInterfaceIntroductionDefinition>> ();
     private readonly List<IValidationRule<MethodIntroductionDefinition>> _methodIntroductionRules = new List<IValidationRule<MethodIntroductionDefinition>> ();
     private readonly List<IValidationRule<PropertyIntroductionDefinition>> _propertyIntroductionRules = new List<IValidationRule<PropertyIntroductionDefinition>> ();
     private readonly List<IValidationRule<EventIntroductionDefinition>> _eventIntroductionRules = new List<IValidationRule<EventIntroductionDefinition>> ();
@@ -45,6 +46,11 @@ namespace Rubicon.Mixins.Validation
     public IList<IValidationRule<InterfaceIntroductionDefinition>> InterfaceIntroductionRules
     {
       get { return _interfaceIntroductionRules; }
+    }
+
+    public IList<IValidationRule<SuppressedInterfaceIntroductionDefinition>> SuppressedInterfaceIntroductionRules
+    {
+      get { return _suppressedInterfaceIntroductionRules; }
     }
 
     public IList<IValidationRule<MethodIntroductionDefinition>> MethodIntroductionRules
@@ -112,7 +118,6 @@ namespace Rubicon.Mixins.Validation
       get { return _attributeIntroductionRules; }
     }
 
-
     public void Visit (BaseClassDefinition baseClass)
     {
       ArgumentUtility.CheckNotNull ("baseClass", baseClass);
@@ -129,6 +134,12 @@ namespace Rubicon.Mixins.Validation
     {
       ArgumentUtility.CheckNotNull ("interfaceIntroduction", interfaceIntroduction);
       CheckRules (_interfaceIntroductionRules, interfaceIntroduction);
+    }
+
+    public void Visit (SuppressedInterfaceIntroductionDefinition suppressedInterfaceIntroduction)
+    {
+      ArgumentUtility.CheckNotNull ("suppressedInterfaceIntroduction", suppressedInterfaceIntroduction);
+      CheckRules (_suppressedInterfaceIntroductionRules, suppressedInterfaceIntroduction);
     }
 
     public void Visit (MethodIntroductionDefinition methodIntroduction)
