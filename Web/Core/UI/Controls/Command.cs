@@ -891,7 +891,7 @@ namespace Rubicon.Web.UI.Controls
             }
             smartPage.RegisterCommandForSynchronousPostBack (control, argument);
           }
-          else if (Type == CommandType.WxeFunction)
+          else if (Type == CommandType.WxeFunction && StringUtility.IsNullOrEmpty (WxeFunctionCommand.Target))
           {
             ISmartPage smartPage = control.Page as ISmartPage;
             if (smartPage == null)
