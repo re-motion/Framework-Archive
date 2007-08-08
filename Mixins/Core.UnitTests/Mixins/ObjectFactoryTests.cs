@@ -268,5 +268,45 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         ObjectFactory.CreateWithMixinInstances<object> ().With ();
       }
     }
+
+    [Test]
+    public void GenerationPolicyOnlyIfNecessary ()
+    {
+      object o = ObjectFactory.Create (typeof (object), GenerationPolicy.GenerateOnlyIfConfigured).With();
+      Assert.AreEqual (typeof (object), o.GetType ());
+
+      o = ObjectFactory.Create<object> (GenerationPolicy.GenerateOnlyIfConfigured).With ();
+      Assert.AreEqual (typeof (object), o.GetType ());
+    }
+
+    [Test]
+    public void GenerationPolicyForce ()
+    {
+      object o = ObjectFactory.Create (typeof (object), GenerationPolicy.ForceGeneration).With ();
+      Assert.AreNotEqual (typeof (object), o.GetType ());
+      Assert.AreEqual (typeof (object), o.GetType ().BaseType);
+
+      o = ObjectFactory.Create<object> (GenerationPolicy.ForceGeneration).With ();
+      Assert.AreNotEqual (typeof (object), o.GetType ());
+      Assert.AreEqual (typeof (object), o.GetType ().BaseType);
+    }
+
+    [Test]
+    public void DefaultPolicyIsOnlyIfNecessary ()
+    {
+      object o = ObjectFactory.Create (typeof (object)).With ();
+      Assert.AreEqual (typeof (object), o.GetType ());
+
+      o = ObjectFactory.Create<object> ().With ();
+      Assert.AreEqual (typeof (object), o.GetType ());
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "There is no mixin configuration for type System.Object, so no mixin instances "
+        + "must be specified.", MatchType = MessageMatch.Regex)]
+    public void ThrowsOnMixinInstancesWhenNoGeneration ()
+    {
+      ObjectFactory.CreateWithMixinInstances (typeof (object), new object()).With ();
+    }
   }
 }

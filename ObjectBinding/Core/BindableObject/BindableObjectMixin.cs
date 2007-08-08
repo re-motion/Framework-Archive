@@ -27,18 +27,13 @@ namespace Rubicon.ObjectBinding.BindableObject
       return HasMixin (targetType, typeof (BindableObjectMixin), applicationContext);
     }
 
+    // Note: will not work for generic mixin types
     internal static bool HasMixin (Type targetType, Type mixinType, ApplicationContext applicationContext)
     {
-      if (applicationContext.ContainsClassContext (targetType))
-      {
-        foreach (MixinDefinition mixin in TypeFactory.GetConfiguration (targetType, applicationContext).Mixins)
-        {
-          if (mixinType.IsAssignableFrom (mixin.Type))
-            return true;
-        }
-      }
-      return false;
+      ClassContext mixinConfiguration = applicationContext.GetClassContext (targetType);
+      return mixinConfiguration != null && mixinConfiguration.ContainsAssignableMixin (mixinType);
     }
+
 
     internal static bool IncludesMixin (Type concreteType)
     {
@@ -46,13 +41,11 @@ namespace Rubicon.ObjectBinding.BindableObject
       return IncludesMixin (concreteType, typeof (BindableObjectMixin), MixinConfiguration.ActiveContext);
     }
 
+    // Note: will not work for generic mixin types
     internal static bool IncludesMixin (Type concreteType, Type mixinType, ApplicationContext applicationContext)
     {
-      ConcreteMixedTypeAttribute[] attributes = AttributeUtility.GetCustomAttributes<ConcreteMixedTypeAttribute> (concreteType, false);
-      if (attributes.Length > 0)
-        return HasMixin (attributes[0].TargetType, mixinType, applicationContext);
-
-      return false;
+      ClassContext mixinConfiguration = Mixin.GetMixinConfigurationFromConcreteType (concreteType);
+      return mixinConfiguration != null && mixinConfiguration.ContainsAssignableMixin (mixinType);
     }
 
     [NonSerialized]

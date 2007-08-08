@@ -76,7 +76,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.IsFalse (_moduleManager.HasSignedAssembly);
       Assert.IsFalse (_moduleManager.HasAssemblies);
 
-      TypeFactory.GetConcreteType (typeof (List<int>)); // type from signed assembly
+      TypeFactory.GetConcreteType (typeof (List<int>), GenerationPolicy.ForceGeneration); // type from signed assembly
 
       Assert.IsFalse (_moduleManager.HasUnsignedAssembly);
       Assert.IsTrue (_moduleManager.HasSignedAssembly);
@@ -86,8 +86,8 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void SaveAssemblies ()
     {
-      TypeFactory.GetConcreteType (typeof (BaseType1));
-      TypeFactory.GetConcreteType (typeof (List<int>));
+      TypeFactory.GetConcreteType (typeof (BaseType1), GenerationPolicy.ForceGeneration);
+      TypeFactory.GetConcreteType (typeof (List<int>), GenerationPolicy.ForceGeneration);
 
       Assert.IsFalse (File.Exists (c_signedAssemblyFileName));
       Assert.IsFalse (File.Exists (c_unsignedAssemblyFileName));
@@ -139,7 +139,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       _moduleManager.SignedModulePath = path;
       File.Delete (path);
 
-      TypeFactory.GetConcreteType (typeof (List<int>));
+      TypeFactory.GetConcreteType (typeof (List<int>), GenerationPolicy.ForceGeneration);
 
       Assert.IsFalse (File.Exists (path));
       string[] actualPaths = _moduleManager.SaveAssemblies ();
@@ -191,7 +191,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void SavedSignedAssemblyHasStrongName ()
     {
-      TypeFactory.GetConcreteType (typeof (List<int>));
+      TypeFactory.GetConcreteType (typeof (List<int>), GenerationPolicy.ForceGeneration);
 
       _moduleManager.SaveAssemblies ();
       AssemblyName assemblyName = AssemblyName.GetAssemblyName (c_signedAssemblyFileName);
@@ -225,7 +225,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void SavedSignedAssemblyHasMixinAssemblyName ()
     {
-      TypeFactory.GetConcreteType (typeof (List<int>));
+      TypeFactory.GetConcreteType (typeof (List<int>), GenerationPolicy.ForceGeneration);
 
       _moduleManager.SaveAssemblies ();
       AssemblyName assemblyName = AssemblyName.GetAssemblyName (c_signedAssemblyFileName);
@@ -258,7 +258,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void SavedSignedAssemblyContainsGeneratedType ()
     {
-      Type concreteType = TypeFactory.GetConcreteType (typeof (List<int>));
+      Type concreteType = TypeFactory.GetConcreteType (typeof (List<int>), GenerationPolicy.ForceGeneration);
       _moduleManager.SaveAssemblies ();
 
       CheckForTypeInAssembly (concreteType.FullName, AssemblyName.GetAssemblyName (c_signedAssemblyFileName));

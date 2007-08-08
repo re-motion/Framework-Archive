@@ -16,54 +16,59 @@ namespace Rubicon.Mixins.Utilities
 
   public static class MixedTypeInvokeWithCreator
   {
-    private static ConstructorInfo s_scopeCtor = typeof (MixedTypeInstantiationScope).GetConstructor (new Type[] { typeof (object[]) });
-    private static MethodInfo s_scopeDisposeMethod = typeof (MixedTypeInstantiationScope).GetMethod ("Dispose");
-    private static ICache<CacheKey, Delegate> s_delegateCache = new InterlockedCache<CacheKey, Delegate> ();
+    private static readonly ConstructorInfo s_scopeCtor = typeof (MixedTypeInstantiationScope).GetConstructor (new Type[] { typeof (object[]) });
+    private static readonly MethodInfo s_scopeDisposeMethod = typeof (MixedTypeInstantiationScope).GetMethod ("Dispose");
+    private static readonly ICache<CacheKey, Delegate> s_delegateCache = new InterlockedCache<CacheKey, Delegate> ();
 
-    public static FuncInvokerWrapper<T> CreateInvokeWithWrapper<T> (Type baseTypeOrInterface, params object[] mixinInstances)
+    public static FuncInvokerWrapper<T> CreateInvokeWithWrapper<T> (Type baseTypeOrInterface, GenerationPolicy generationPolicy, params object[] mixinInstances)
     {
       Type typeToBeCreated = GetTypeToBeCreated (baseTypeOrInterface);
       Type concreteType;
       try
       {
-        concreteType = TypeFactory.GetConcreteType (typeToBeCreated);
+        concreteType = TypeFactory.GetConcreteType (typeToBeCreated, generationPolicy);
       }
       catch (ArgumentException ex)
       {
-        throw new ArgumentException ("The given base type is invalid: " + ex.Message, "T");
+        throw new ArgumentException ("The given base type is invalid: " + ex.Message, "baseTypeOrInterface");
       }
 
-      return new FuncInvokerWrapper<T> (new FuncInvoker<object[], T> (
-          delegate (Type delegateType)
-          {
-            Delegate result;
-            CacheKey key = new CacheKey (concreteType, delegateType);
-            if (!s_delegateCache.TryGetValue (key, out result))
-            {
-              result = s_delegateCache.GetOrCreateValue (
-                  key,
-                  delegate
-                  {
-                    Type[] argumentTypes = ConstructorWrapper.GetParameterTypes (delegateType);
-                    Type[] realArgumentTypes = new Type[argumentTypes.Length - 1];
-                    Array.Copy (argumentTypes, 1, realArgumentTypes, 0, realArgumentTypes.Length);
+      if (!typeof (IMixinTarget).IsAssignableFrom (concreteType) && mixinInstances.Length > 0)
+        throw new ArgumentException (string.Format ("There is no mixin configuration for type {0}, so no mixin instances must be specified.",
+            baseTypeOrInterface.FullName), "mixinInstances");
 
-                    const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-                    ConstructorInfo ctor = concreteType.GetConstructor (bindingFlags, null, CallingConventions.Any, realArgumentTypes, null);
-                    if (ctor == null)
-                    {
-                      string message = string.Format (
-                          "Type {0} does not contain a constructor with signature ({1}).",
-                          typeToBeCreated.FullName,
-                          SeparatedStringBuilder.Build (",", realArgumentTypes, delegate (Type t) { return t.FullName; }));
-                      throw new MissingMethodException (message);
-                    }
-                    return CreateConstructionDelegateWithMixinInstances (ctor, delegateType);
-                  });
-            }
-            return result;
-          },
-          mixinInstances));
+      return new FuncInvokerWrapper<T> (
+          new FuncInvoker<object[], T> (
+              delegate (Type delegateType)
+              {
+                Delegate result;
+                CacheKey key = new CacheKey (concreteType, delegateType);
+                if (!s_delegateCache.TryGetValue (key, out result))
+                {
+                  result = s_delegateCache.GetOrCreateValue (
+                      key,
+                      delegate
+                      {
+                        Type[] argumentTypes = ConstructorWrapper.GetParameterTypes (delegateType);
+                        Type[] realArgumentTypes = new Type[argumentTypes.Length - 1];
+                        Array.Copy (argumentTypes, 1, realArgumentTypes, 0, realArgumentTypes.Length);
+
+                        const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+                        ConstructorInfo ctor = concreteType.GetConstructor (bindingFlags, null, CallingConventions.Any, realArgumentTypes, null);
+                        if (ctor == null)
+                        {
+                          string message = string.Format (
+                              "Type {0} does not contain a constructor with signature ({1}).",
+                              typeToBeCreated.FullName,
+                              SeparatedStringBuilder.Build (",", realArgumentTypes, delegate (Type t) { return t.FullName; }));
+                          throw new MissingMethodException (message);
+                        }
+                        return CreateConstructionDelegateWithMixinInstances (ctor, delegateType);
+                      });
+                }
+                return result;
+              },
+              mixinInstances));
     }
 
     private static Type GetTypeToBeCreated (Type baseType)
@@ -74,8 +79,10 @@ namespace Rubicon.Mixins.Utilities
         ClassContext registeredContext = MixinConfiguration.ActiveContext.ResolveInterface (baseType);
         if (registeredContext == null)
         {
-          string message = string.Format ("The interface {0} has not been registered in the current configuration, no instances of the "
-                                          + "type can be created.", baseType.FullName);
+          string message = string.Format (
+              "The interface {0} has not been registered in the current configuration, no instances of the "
+              + "type can be created.",
+              baseType.FullName);
           throw new ArgumentException (message);
         }
         targetType = registeredContext.Type;
@@ -87,7 +94,7 @@ namespace Rubicon.Mixins.Utilities
 
     private static Delegate CreateConstructionDelegateWithMixinInstances (ConstructorInfo ctor, Type delegateType)
     {
-      ParameterInfo[] parameters = ctor.GetParameters ();
+      ParameterInfo[] parameters = ctor.GetParameters();
       Type[] parameterTypes = new Type[parameters.Length + 1];
       parameterTypes[0] = typeof (object[]); // mixin instances
       for (int i = 0; i < parameters.Length; ++i)
@@ -96,8 +103,8 @@ namespace Rubicon.Mixins.Utilities
       Type type = ctor.DeclaringType;
       DynamicMethod method = new DynamicMethod ("ConstructorWrapperWithMixinInstances", type, parameterTypes, type);
 
-      ILGenerator ilgen = method.GetILGenerator ();
-      Label endOfMethod = ilgen.DefineLabel ();
+      ILGenerator ilgen = method.GetILGenerator();
+      Label endOfMethod = ilgen.DefineLabel();
 
       LocalBuilder newInstanceLocal = ilgen.DeclareLocal (type);
       LocalBuilder scopeLocal = ilgen.DeclareLocal (type);
@@ -108,7 +115,7 @@ namespace Rubicon.Mixins.Utilities
       ilgen.Emit (OpCodes.Newobj, s_scopeCtor); // open up scope
       ilgen.Emit (OpCodes.Stloc, scopeLocal); // store scope for later
 
-      ilgen.BeginExceptionBlock (); // try
+      ilgen.BeginExceptionBlock(); // try
 
       for (int i = 1; i < parameterTypes.Length; ++i) // load ctor arguments
         ilgen.Emit (OpCodes.Ldarg, i);
@@ -117,13 +124,13 @@ namespace Rubicon.Mixins.Utilities
       ilgen.Emit (OpCodes.Stloc, newInstanceLocal); // store for later
       ilgen.Emit (OpCodes.Leave, endOfMethod); // goto end of method (including execution of finally)
 
-      ilgen.BeginFinallyBlock (); // finally
+      ilgen.BeginFinallyBlock(); // finally
 
       ilgen.Emit (OpCodes.Ldloc, scopeLocal); // reload scope
       ilgen.Emit (OpCodes.Callvirt, s_scopeDisposeMethod); // dispose of scope
       ilgen.Emit (OpCodes.Endfinally); // end finally
 
-      ilgen.EndExceptionBlock (); // end of exception block
+      ilgen.EndExceptionBlock(); // end of exception block
 
       ilgen.MarkLabel (endOfMethod); // end of method is here
 
@@ -132,6 +139,5 @@ namespace Rubicon.Mixins.Utilities
 
       return method.CreateDelegate (delegateType);
     }
- 
   }
 }

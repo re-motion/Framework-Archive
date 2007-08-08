@@ -19,8 +19,8 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       {
         Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
         Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
-        Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
-        Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
+        Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
+        Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
         Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
         Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
 
@@ -31,7 +31,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
           Assert.AreSame (
               TargetClassDefinitionCache.Current.GetTargetClassDefinition (new ClassContext (typeof (BaseType1))),
               TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
-          Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
+          Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
           Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
           Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
 
@@ -66,16 +66,55 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
-    public void DefinitionGeneratedEvenIfNoConfig()
+    public void NoDefinitionGeneratedIfNoConfigByDefault()
     {
       Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
-      Type t = TypeFactory.GetConcreteType (typeof (object));
-      Assert.IsTrue (typeof (IMixinTarget).IsAssignableFrom (t));
+      Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (object)));
+    }
 
-      // Check caching for definitions generated for types without mixin configuration
-      TargetClassDefinition d1 = TypeFactory.GetActiveConfiguration (typeof (object));
-      TargetClassDefinition d2 = TypeFactory.GetActiveConfiguration (typeof (object));
+
+    [Test]
+    public void DefinitionGeneratedIfNoConfigViaPolicy ()
+    {
+      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
+      TargetClassDefinition configuration = TypeFactory.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
+      Assert.IsNotNull (configuration);
+      Assert.AreEqual (typeof (object), configuration.Type);
+    }
+
+    [Test]
+    public void ForcedDefinitionsAreCached ()
+    {
+      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
+      TargetClassDefinition d1 = TypeFactory.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
+      TargetClassDefinition d2 = TypeFactory.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
       Assert.AreSame (d1, d2);
+    }
+
+    [Test]
+    public void ForcedGenerationIsNotPersistent ()
+    {
+      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
+      TargetClassDefinition d1 = TypeFactory.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
+      TargetClassDefinition d2 = TypeFactory.GetActiveConfiguration (typeof (object), GenerationPolicy.GenerateOnlyIfConfigured);
+      Assert.IsNotNull (d1);
+      Assert.IsNull (d2);
+    }
+
+    [Test]
+    public void NoTypeGeneratedIfNoConfigByDefault ()
+    {
+      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
+      Assert.AreSame (typeof (object), TypeFactory.GetConcreteType (typeof (object)));
+    }
+
+    [Test]
+    public void TypeGeneratedIfNoConfigViaPolicy ()
+    {
+      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
+      Type concreteType = TypeFactory.GetConcreteType (typeof (object), GenerationPolicy.ForceGeneration);
+      Assert.AreNotSame (typeof (object), concreteType);
+      Assert.AreSame (typeof (object), concreteType.BaseType);
     }
   }
 }

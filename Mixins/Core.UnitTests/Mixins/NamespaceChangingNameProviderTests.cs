@@ -25,7 +25,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       INameProvider nameProvider = NamespaceChangingNameProvider.Instance;
 
-      TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (GenericTargetClass<int>));
+      TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (GenericTargetClass<int>), GenerationPolicy.ForceGeneration);
       string newName = nameProvider.GetNewTypeName (definition);
 
       Assert.AreEqual (typeof (GenericTargetClass<int>).Namespace +

@@ -152,26 +152,26 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void CanContinueToGenerateTypesAfterSaving ()
     {
       ConcreteTypeBuilder builder = new ConcreteTypeBuilder ();
-      Assert.IsNotNull (builder.GetConcreteType (TypeFactory.GetActiveConfiguration (typeof (BaseType1))));
-      Assert.IsNotNull (builder.GetConcreteType (TypeFactory.GetActiveConfiguration (typeof (BaseType2))));
+      Assert.IsNotNull (builder.GetConcreteType (TypeFactory.GetActiveConfiguration (typeof (BaseType1), GenerationPolicy.ForceGeneration)));
+      Assert.IsNotNull (builder.GetConcreteType (TypeFactory.GetActiveConfiguration (typeof (BaseType2), GenerationPolicy.ForceGeneration)));
       builder.SaveAndResetDynamicScope ();
-      Assert.IsNotNull (builder.GetConcreteType (TypeFactory.GetActiveConfiguration (typeof (BaseType3))));
+      Assert.IsNotNull (builder.GetConcreteType (TypeFactory.GetActiveConfiguration (typeof (BaseType3), GenerationPolicy.ForceGeneration)));
     }
 
     [Test]
     public void SavingGeneratingCachingIntegration ()
     {
-      Type concreteType1 = TypeFactory.GetConcreteType (typeof (BaseType1));
+      Type concreteType1 = TypeFactory.GetConcreteType (typeof (BaseType1), GenerationPolicy.ForceGeneration);
       string[] paths = ConcreteTypeBuilder.Current.SaveAndResetDynamicScope ();
       Assert.IsNotEmpty (paths);
-      Type concreteType2 = TypeFactory.GetConcreteType (typeof (BaseType2));
+      Type concreteType2 = TypeFactory.GetConcreteType (typeof (BaseType2), GenerationPolicy.ForceGeneration);
       paths = ConcreteTypeBuilder.Current.SaveAndResetDynamicScope ();
       Assert.IsNotEmpty (paths);
-      Type concreteType3 = TypeFactory.GetConcreteType (typeof (BaseType3));
+      Type concreteType3 = TypeFactory.GetConcreteType (typeof (BaseType3), GenerationPolicy.ForceGeneration);
 
-      Assert.AreSame (concreteType1, TypeFactory.GetConcreteType (typeof (BaseType1)));
-      Assert.AreSame (concreteType2, TypeFactory.GetConcreteType (typeof (BaseType2)));
-      Assert.AreSame (concreteType3, TypeFactory.GetConcreteType (typeof (BaseType3)));
+      Assert.AreSame (concreteType1, TypeFactory.GetConcreteType (typeof (BaseType1), GenerationPolicy.ForceGeneration));
+      Assert.AreSame (concreteType2, TypeFactory.GetConcreteType (typeof (BaseType2), GenerationPolicy.ForceGeneration));
+      Assert.AreSame (concreteType3, TypeFactory.GetConcreteType (typeof (BaseType3), GenerationPolicy.ForceGeneration));
     }
 
     [Test]
@@ -317,7 +317,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         IModuleManager realScope = ConcreteTypeBuilder.Current.Scope;
         ConcreteTypeBuilder.Current.Scope = moduleManagerMock;
 
-        TargetClassDefinition innerClassDefinition = TypeFactory.GetActiveConfiguration (typeof (BaseType2));
+        TargetClassDefinition innerClassDefinition = TypeFactory.GetActiveConfiguration (typeof (BaseType2), GenerationPolicy.ForceGeneration);
         MixinDefinition innerMixinDefinition =
           TypeFactory.GetActiveConfiguration (typeof (ClassOverridingSingleMixinMethod)).Mixins[typeof (MixinWithSingleAbstractMethod)];
 
@@ -332,7 +332,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         repository.ReplayAll ();
 
         // causes CreateTypeGenerator
-        TypeFactory.GetConcreteType (typeof (BaseType2));
+        TypeFactory.GetConcreteType (typeof (BaseType2), GenerationPolicy.ForceGeneration);
         // causes CreateMixinTypeGenerator
         ConcreteTypeBuilder.Current.GetConcreteMixinType (innerMixinDefinition);
 

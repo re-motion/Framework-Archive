@@ -64,7 +64,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void TargetClassHasExplicitInterfaceMembers ()
     {
-      TargetClassDefinition cweii = TypeFactory.GetActiveConfiguration (typeof (ClassWithExplicitInterfaceImplementation));
+      TargetClassDefinition cweii = TypeFactory.GetActiveConfiguration (typeof (ClassWithExplicitInterfaceImplementation),
+          GenerationPolicy.ForceGeneration);
       Assert.AreEqual (7, cweii.Methods.Count);
       Assert.AreEqual (1, cweii.Properties.Count);
       Assert.AreEqual (1, cweii.Events.Count);
@@ -146,7 +147,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void IsAbstractTrue ()
     {
-      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (AbstractBaseType));
+      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (AbstractBaseType), GenerationPolicy.ForceGeneration);
       Assert.IsTrue (bt1.IsAbstract);
     }
 

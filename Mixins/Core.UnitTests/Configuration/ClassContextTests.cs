@@ -572,5 +572,27 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.AreNotEqual (typeof (List<int>), context.Type);
       Assert.AreEqual (typeof (List<>), context.Type);
     }
+
+    [Test]
+    public void ContainsAssignableMixin ()
+    {
+      ClassContext context = new ClassContext (typeof (object));
+      context.AddMixin (typeof (IList<int>));
+
+      Assert.IsTrue (context.ContainsMixin (typeof (IList<int>)));
+      Assert.IsTrue (context.ContainsAssignableMixin (typeof (IList<int>)));
+
+      Assert.IsFalse (context.ContainsMixin (typeof (ICollection<int>)));
+      Assert.IsTrue (context.ContainsAssignableMixin (typeof (ICollection<int>)));
+
+      Assert.IsFalse (context.ContainsMixin (typeof (object)));
+      Assert.IsTrue (context.ContainsAssignableMixin (typeof (object)));
+
+      Assert.IsFalse (context.ContainsMixin (typeof (List<int>)));
+      Assert.IsFalse (context.ContainsAssignableMixin (typeof (List<int>)));
+
+      Assert.IsFalse (context.ContainsMixin (typeof (IList<>)));
+      Assert.IsFalse (context.ContainsAssignableMixin (typeof (List<>)));
+    }
   }
 }

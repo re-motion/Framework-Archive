@@ -674,10 +674,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       IValidationLog sourceLog = new DefaultValidationLog ();
       Exception exception = new Exception ();
 
-      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
-      TargetClassDefinition bt2 = TypeFactory.GetActiveConfiguration (typeof (BaseType2));
-      TargetClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
-      TargetClassDefinition bt4 = TypeFactory.GetActiveConfiguration (typeof (BaseType4));
+      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1), GenerationPolicy.ForceGeneration);
+      TargetClassDefinition bt2 = TypeFactory.GetActiveConfiguration (typeof (BaseType2), GenerationPolicy.ForceGeneration);
+      TargetClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3), GenerationPolicy.ForceGeneration);
+      TargetClassDefinition bt4 = TypeFactory.GetActiveConfiguration (typeof (BaseType4), GenerationPolicy.ForceGeneration);
 
       sourceLog.ValidationStartsFor (bt1);
       sourceLog.Succeed (new DelegateValidationRule<TargetClassDefinition> (delegate { }, "Success", "Success"));

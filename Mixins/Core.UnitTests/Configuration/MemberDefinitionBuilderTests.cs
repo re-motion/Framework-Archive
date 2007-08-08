@@ -306,7 +306,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void IsAbstractTrue ()
     {
-      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (AbstractBaseType));
+      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (AbstractBaseType), GenerationPolicy.ForceGeneration);
       Assert.IsTrue (bt1.Methods[typeof (AbstractBaseType).GetMethod ("VirtualMethod")].IsAbstract);
     }
 

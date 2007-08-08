@@ -213,7 +213,7 @@ namespace Rubicon.Mixins.Context
     /// </summary>
     /// <param name="mixinType">The mixin type to check for.</param>
     /// <returns>
-    /// True if the specified mixin type contains mixin; otherwise, false.
+    /// True if the <see cref="ClassContext"/> contains the given mixin type; otherwise, false.
     /// </returns>
     /// <exception cref="ArgumentNullException">The <paramref name="mixinType"/> parameter is <see langword="null"/>.</exception>
     public bool ContainsMixin (Type mixinType)
@@ -222,6 +222,28 @@ namespace Rubicon.Mixins.Context
       lock (_lockObject)
       {
         return _mixins.ContainsKey (mixinType);
+      }
+    }
+
+    /// <summary>
+    /// Determines whether this <see cref="ClassContext"/> contains a mixin type assignable to the specified type.
+    /// </summary>
+    /// <param name="baseMixinType">The mixin type to check for.</param>
+    /// <returns>
+    /// True if the <see cref="ClassContext"/> contains a type assignable to the specified type; otherwise, false.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="baseMixinType"/> parameter is <see langword="null"/>.</exception>
+    public bool ContainsAssignableMixin (Type baseMixinType)
+    {
+      ArgumentUtility.CheckNotNull ("baseMixinType", baseMixinType);
+      lock (_lockObject)
+      {
+        foreach (MixinContext mixin in Mixins)
+        {
+          if (baseMixinType.IsAssignableFrom (mixin.MixinType))
+            return true;
+        }
+        return false;
       }
     }
 

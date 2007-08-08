@@ -64,6 +64,7 @@
     <Compile Include="Definitions\IAttributeIntroductionTargetDefinition.cs" />
     <Compile Include="Definitions\RequiredMethodDefinition.cs" />
     <Compile Include="Definitions\SuppressedInterfaceIntroductionDefinition.cs" />
+    <Compile Include="GenerationForceKind.cs" />
     <Compile Include="IgnoreForMixinConfigurationAttribute.cs" />
     <Compile Include="MixedTypeInstantiationScope.cs" />
     <Compile Include="MixinConfiguration.cs" />
