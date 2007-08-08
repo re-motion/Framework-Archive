@@ -29,10 +29,10 @@
         <a href="UpdatePanelTests/Sut.wxe">UpdatePanel SUT</a>
       </p>
       <p>
-        <a href="../Selenium/Core/TestRunner.html?test=../../Test/MultiplePostbackCatching/TestSuiteForm.aspx">Rubicon.Web.Tests.MultiplePostBackCatching</a>
+        <a href="../../../../../tools/Selenium/trunk/Core/TestRunner.html?test=../../../../libraries/Commons/trunk/Web/Test/MultiplePostbackCatching/TestSuiteForm.aspx">Rubicon.Web.Tests.MultiplePostBackCatching</a>
       </p>
       <p>
-        <a href="../Selenium/Core/TestRunner.html?test=../../Test/MultiplePostbackCatching/UpdatePanelTestSuiteForm.aspx">Rubicon.Web.Tests.MultiplePostBackCatching for UpdatePanel</a>
+        <a href="../../../../../tools/Selenium/trunk/Core/TestRunner.html?test=../../../../libraries/Commons/trunk/Web/Test/MultiplePostbackCatching/UpdatePanelTestSuiteForm.aspx">Rubicon.Web.Tests.MultiplePostBackCatching for UpdatePanel</a>
       </p>
       <p>
         <a href="redirected.wxe">redirected.wxe</a>
