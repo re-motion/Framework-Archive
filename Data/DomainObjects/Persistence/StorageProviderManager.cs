@@ -1,6 +1,7 @@
 using System;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Mixins;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence
@@ -71,8 +72,9 @@ public class StorageProviderManager : IDisposable
       StorageProviderDefinition providerDefinition = 
           DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory (storageProviderID);
 
+      Type concreteStorageProviderType = TypeFactory.GetConcreteType (providerDefinition.StorageProviderType);
       StorageProvider provider = (StorageProvider) ReflectionUtility.CreateObject (
-          providerDefinition.StorageProviderType, providerDefinition);
+          concreteStorageProviderType, providerDefinition);
 
       _storageProviders.Add (provider);
 

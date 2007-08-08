@@ -198,6 +198,8 @@
     <Compile Include="DomainObjects\ConstructionTest.cs" />
     <Compile Include="DomainObjects\InterceptorsTest.cs" />
     <Compile Include="Factories\BaseConfiguration.cs" />
+    <Compile Include="Persistence\MixedStorageProviderTest.cs" />
+    <Compile Include="Persistence\StorageProviderWithFixedGuidMixin.cs" />
     <Compile Include="Persistence\Rdbms\UpdateCommandBuilderTest.cs" />
     <Compile Include="Persistence\Rdbms\InsertCommandBuilderTest.cs" />
     <Compile Include="Persistence\Rdbms\QueryCommandBuilderTest.cs" />
