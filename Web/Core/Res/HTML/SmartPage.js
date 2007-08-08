@@ -533,13 +533,10 @@ function SmartPage_Context (
   // Event handler for Form.OnClick.
   this.OnFormClick = function (evt)
   {
-    var eventSource = this.GetEventTarget ();
-    if (eventSource == null)
-    {
-      eventSource = GetEventSource (evt);
-      this.SetActiveElement (eventSource);
-      eventSource = GetFocusableElement (eventSource);
-    }
+    var eventSource = eventSource = GetEventSource (evt);
+    this.SetActiveElement (eventSource);
+    eventSource = GetFocusableElement (eventSource);
+
     var eventSourceID = (eventSource != null) ? eventSource.id : null;
     
     if (this.CheckIsAsyncPostback (eventSource) && this.IsSynchronousPostBackRequired (eventSourceID, _theForm.__EVENTARGUMENT.value))

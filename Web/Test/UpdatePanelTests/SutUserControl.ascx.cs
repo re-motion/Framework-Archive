@@ -31,10 +31,17 @@ namespace Rubicon.Web.Test.UpdatePanelTests
       _postBackEventHandler.PostBack += HandlePostBack;
       Controls.Add (_postBackEventHandler);
 
+      string asyncPostBackCommandInsideUpdatePanelID = "AsyncPostBackCommandInsideUpdatePanel";
+      ((ISmartPage) Page).RegisterCommandForSynchronousPostBack (_postBackEventHandler, asyncPostBackCommandInsideUpdatePanelID);
+      AsyncCommandInsideUpdatePanelHyperLink.NavigateUrl = "#";
+      AsyncCommandInsideUpdatePanelHyperLink.Attributes["onclick"] =
+          Page.ClientScript.GetPostBackEventReference (_postBackEventHandler, asyncPostBackCommandInsideUpdatePanelID);
+
       string syncPostBackCommandInsideUpdatePanelID = "SyncPostBackCommandInsideUpdatePanel";
       ((ISmartPage) Page).RegisterCommandForSynchronousPostBack (_postBackEventHandler, syncPostBackCommandInsideUpdatePanelID);
-      SyncCommandInsideUpdatePanelHyperLink.NavigateUrl =
-          Page.ClientScript.GetPostBackClientHyperlink (_postBackEventHandler, syncPostBackCommandInsideUpdatePanelID);
+      SyncCommandInsideUpdatePanelHyperLink.NavigateUrl = "#";
+      SyncCommandInsideUpdatePanelHyperLink.Attributes["onclick"] =
+          Page.ClientScript.GetPostBackEventReference (_postBackEventHandler, syncPostBackCommandInsideUpdatePanelID);
     }
 
     protected override void OnLoad (EventArgs e)

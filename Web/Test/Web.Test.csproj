@@ -110,7 +110,24 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasePage.cs">
+    <Compile Include="MultiplePostBackCatching\TestSuiteForm.aspx.cs">
+      <DependentUpon>TestSuiteForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\TestSuiteForm.aspx.designer.cs">
+      <DependentUpon>TestSuiteForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\UpdatePanelTestSuiteForm.aspx.cs">
+      <DependentUpon>UpdatePanelTestSuiteForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MultiplePostBackCatching\UpdatePanelTestSuiteForm.aspx.designer.cs">
+      <DependentUpon>UpdatePanelTestSuiteForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TestBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SutBasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="MultiplePostBackCatching\UpdatePanelTestForm.aspx.cs">
@@ -131,20 +148,13 @@
     <Compile Include="MultiplePostBackCatching\SutGenerator.cs" />
     <Compile Include="MultiplePostBackCatching\TestExpectationsGenerator.cs" />
     <Compile Include="MultiplePostBackCatching\TestSuiteGenerator.cs" />
-    <Compile Include="TestSuiteForm.aspx.cs">
-      <DependentUpon>TestSuiteForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="TestSuiteForm.aspx.designer.cs">
-      <DependentUpon>TestSuiteForm.aspx</DependentUpon>
-    </Compile>
     <Compile Include="IDEventArgs.cs" />
     <Compile Include="MultiplePostBackCatching\SutForm.aspx.designer.cs">
       <DependentUpon>SutForm.aspx</DependentUpon>
     </Compile>
     <Compile Include="MultiplePostBackCatching\TestForm.aspx.cs">
-      <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>TestForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="MultiplePostBackCatching\TestForm.aspx.designer.cs">
       <DependentUpon>TestForm.aspx</DependentUpon>
@@ -208,11 +218,12 @@
     <Compile Include="UpdatePanelTests\SutUserControl.ascx.designer.cs">
       <DependentUpon>SutUserControl.ascx</DependentUpon>
     </Compile>
+    <Content Include="MultiplePostBackCatching\TestSuiteForm.aspx" />
+    <Content Include="MultiplePostBackCatching\UpdatePanelTestSuiteForm.aspx" />
     <Content Include="MultiplePostBackCatching\UpdatePanelTestForm.aspx" />
     <Content Include="MultiplePostBackCatching\UpdatePanelSutForm.aspx">
       <SubType>Form</SubType>
     </Content>
-    <Content Include="TestSuiteForm.aspx" />
     <Content Include="Global.asax">
       <SubType>Component</SubType>
     </Content>

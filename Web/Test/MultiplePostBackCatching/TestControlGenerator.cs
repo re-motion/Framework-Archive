@@ -248,7 +248,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
       hyperLink.ID = CreateID (prefix, id);
       hyperLink.NavigateUrl = "#";
       hyperLink.Attributes["onclick"] = string.Empty;
-      hyperLink.PreRender += delegate 
+      hyperLink.PreRender += delegate
       {
         hyperLink.Attributes["onclick"] = _page.ClientScript.GetPostBackEventReference (_postBackEventHandler, hyperLink.ID) + ";";
       };

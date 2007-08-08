@@ -3,7 +3,7 @@ using Rubicon.Web.UI;
 
 namespace Rubicon.Web.Test.MultiplePostBackCatching
 {
-  public partial class UpdatePanelTestForm : BasePage
+  public partial class UpdatePanelTestForm : TestBasePage
   {
     protected override void OnLoad (EventArgs e)
     {

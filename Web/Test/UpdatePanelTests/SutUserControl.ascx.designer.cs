@@ -92,6 +92,15 @@ namespace Rubicon.Web.Test.UpdatePanelTests {
         protected global::System.Web.UI.WebControls.LinkButton SyncPostBackInsideUpdatePanelLinkButton;
         
         /// <summary>
+        /// AsyncCommandInsideUpdatePanelHyperLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink AsyncCommandInsideUpdatePanelHyperLink;
+        
+        /// <summary>
         /// SyncCommandInsideUpdatePanelHyperLink control.
         /// </summary>
         /// <remarks>

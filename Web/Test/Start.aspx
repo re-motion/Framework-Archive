@@ -23,10 +23,16 @@
         <a href="MultiplePostbackCatching/SutForm.aspx">Multiple Postback Catcher Tests</a>
       </p>
       <p>
+        <a href="MultiplePostbackCatching/UpdatePanelSutForm.aspx">Multiple Postback Catcher Tests for Update Panel</a>
+      </p>
+      <p>
         <a href="UpdatePanelTests/Sut.wxe">UpdatePanel SUT</a>
       </p>
       <p>
-        <a href="../Selenium/Core/TestRunner.html?test=../../Test/TestSuiteForm.aspx">Rubicon.Web.Tests</a>
+        <a href="../Selenium/Core/TestRunner.html?test=../../Test/MultiplePostbackCatching/TestSuiteForm.aspx">Rubicon.Web.Tests.MultiplePostBackCatching</a>
+      </p>
+      <p>
+        <a href="../Selenium/Core/TestRunner.html?test=../../Test/MultiplePostbackCatching/UpdatePanelTestSuiteForm.aspx">Rubicon.Web.Tests.MultiplePostBackCatching for UpdatePanel</a>
       </p>
       <p>
         <a href="redirected.wxe">redirected.wxe</a>

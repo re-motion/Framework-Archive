@@ -42,7 +42,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
       _testControlGenerator = new TestControlGenerator (_testPage, new PostBackEventHandler());
 
       List<TableRow> rows = new List<TableRow>();
-      rows.Add (Expect ("open", UrlUtility.AddParameter (_testPage.ResolveUrl (_sutPage), SutGenerator.ServerDelayParameter, "150"), null));
+      rows.Add (Expect ("open", UrlUtility.AddParameter (_testPage.ResolveUrl (_sutPage), SutGenerator.ServerDelayParameter, "250"), null));
 
       foreach (Control control in _testControlGenerator.GetTestControls (null))
         rows.AddRange (ExpectControlAttributes (control));
@@ -66,18 +66,21 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
       if (_testControlGenerator.IsEnabled (initialControl) && _testControlGenerator.IsEnabled (followUpControl))
       {
         rows.Add (ExpectControlClick (initialControl));
+        if (_testControlGenerator.IsAlertHyperLink (initialControl))
+          rows.Add (Expect ("waitForAlert", "*", null));
         rows.Add (ExpectControlClick (followUpControl));
         if (_testControlGenerator.IsAlertHyperLink (followUpControl))
-        {
           rows.Add (Expect ("waitForAlert", "*", null));
+        if (_testControlGenerator.IsAlertHyperLink (initialControl) || _testControlGenerator.IsAlertHyperLink (followUpControl))
           rows.Add (Expect ("assertElementNotPresent", "SmartPageStatusIsSubmittingMessage", null));
-        }
-        else
-        {
+        if (!_testControlGenerator.IsAlertHyperLink (initialControl) && !_testControlGenerator.IsAlertHyperLink (followUpControl))
           rows.Add (Expect ("waitForVisible", "SmartPageStatusIsSubmittingMessage", null));
-        }
-        rows.Add (Expect ("waitForPageToLoad", "500", null));
-        rows.Add (Expect ("assertValue", SutGenerator.LastClickFieldID, initialControl.ID));
+        if (!_testControlGenerator.IsAlertHyperLink (initialControl) || !_testControlGenerator.IsAlertHyperLink (followUpControl))
+          rows.Add (Expect ("waitForPageToLoad", "1000", null));
+        if (!_testControlGenerator.IsAlertHyperLink (initialControl)  && _testControlGenerator.IsAlertHyperLink (followUpControl))
+          rows.Add (Expect ("assertValue", SutGenerator.LastClickFieldID, initialControl.ID));
+        if (_testControlGenerator.IsAlertHyperLink (initialControl) && !_testControlGenerator.IsAlertHyperLink (followUpControl))
+          rows.Add (Expect ("assertValue", SutGenerator.LastClickFieldID, followUpControl.ID));
       }
       return rows.ToArray();
     }

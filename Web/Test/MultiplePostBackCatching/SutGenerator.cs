@@ -57,6 +57,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
       controls.Add (_label);
 
       _postBackEventHandler = new PostBackEventHandler();
+      _postBackEventHandler.ID = "PostBackEventHandler";
       _postBackEventHandler.PostBack += HandlePostBack;
       controls.Add (_postBackEventHandler);
 
@@ -66,7 +67,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
       _testControlGenerator = new TestControlGenerator (_sutPage, _postBackEventHandler);
       _testControlGenerator.Click += HandlePostBack;
       foreach (Control initialControl in _testControlGenerator.GetTestControls (null))
-        sutTable.Rows.Add (CreateRow (initialControl));
+          sutTable.Rows.Add (CreateRow (initialControl));
       controls.Add (sutTable);
 
       return controls.ToArray();
@@ -85,7 +86,6 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
       row.Cells.Add (CreateCell (initialControl));
       foreach (Control followUpControl in _testControlGenerator.GetTestControls (initialControl.ID))
         row.Cells.Add (CreateCell (followUpControl));
-
       return row;
     }
 

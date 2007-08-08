@@ -34,7 +34,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching
 
       foreach (Control initialControl in testControlGenerator.GetTestControls (null))
       {
-        if (testControlGenerator.IsEnabled (initialControl) && !testControlGenerator.IsAlertHyperLink (initialControl))
+        if (testControlGenerator.IsEnabled (initialControl))
         {
           rows.Add (
               CreateTest (

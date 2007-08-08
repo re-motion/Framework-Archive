@@ -2,7 +2,7 @@ using System;
 
 namespace Rubicon.Web.Test.MultiplePostBackCatching
 {
-  public partial class UpdatePanelSutForm : BasePage
+  public partial class UpdatePanelSutForm : SutBasePage
   {
     protected override void OnInit (EventArgs e)
     {

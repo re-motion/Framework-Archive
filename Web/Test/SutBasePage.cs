@@ -3,7 +3,7 @@ using Rubicon.Web.UI;
 
 namespace Rubicon.Web.Test
 {
-  public class BasePage : SmartPage
+  public class SutBasePage : SmartPage
   {
     protected override void OnPreRender (EventArgs e)
     {

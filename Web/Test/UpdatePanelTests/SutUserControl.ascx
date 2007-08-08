@@ -17,7 +17,8 @@
         <asp:Button ID="SyncPostBackInsideUpdatePanelButton" runat="server" Text="Button: Sync PostBack Inside Update Panel" /><br />
         <asp:LinkButton ID="AsyncPostBackInsideUpdatePanelLinkButton" runat="server" Text="LinkButton: Async PostBack Inside Update Panel" /><br />
         <asp:LinkButton ID="SyncPostBackInsideUpdatePanelLinkButton" runat="server" Text="LinkButton: Sync PostBack Inside Update Panel" /><br />
-        <asp:HyperLink ID="SyncCommandInsideUpdatePanelHyperLink" runat="server">Sync Command Inside Update Panel HyperLink</asp:HyperLink><br />
+        <asp:HyperLink ID="AsyncCommandInsideUpdatePanelHyperLink" runat="server">HyperLink: Async Command Inside Update Panel</asp:HyperLink><br />
+        <asp:HyperLink ID="SyncCommandInsideUpdatePanelHyperLink" runat="server">HyperLink: Sync Command Inside Update Panel</asp:HyperLink><br />
         <rubicon:WebButton ID="AsyncPostBackInsideUpdatePanelWebButton" runat="server" Text="WebButton: Async PostBack Inside Update Panel" /><br />
         <rubicon:WebButton ID="SyncPostBackInsideUpdatePanelWebButton" runat="server" Text="WebButton: Sync PostBack Inside Update Panel" RequiresSynchronousPostBack="true" /><br />
         <br />
