@@ -18,6 +18,7 @@
       </nowarn> 
       <sources failonempty="true">
         <include name="*.cs" />
+        <include name="CodeGeneration/**/*.cs" />
         <include name="Collections/**/*.cs" />
         <include name="Configuration/**/*.cs" />
         <include name="Context/**/*.cs" />
@@ -41,6 +42,7 @@
         <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="System.Xml.dll"/>
+        <include asis="true" name="${build.outputdir}/Castle.DynamicProxy.dll"/>
       </references>
     </csc>
         

@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Text;
 using System.Reflection.Emit;
 
-namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
+namespace Rubicon.CodeGeneration
 {
   public interface IAttributableEmitter
   {

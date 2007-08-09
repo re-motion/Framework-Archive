@@ -23,7 +23,7 @@ namespace Rubicon.Mixins
   /// When the default mixin configuration is built (see <see cref="ApplicationContextBuilder.BuildDefaultContext"/>), all complete interfaces
   /// are automatically registered with <see cref="MixinConfiguration.ActiveContext"/> (see
   /// <see cref="ApplicationContext.RegisterInterface(Type,Type)"/>). This means that in the default mixin configuration,
-  /// <see cref="ObjectFactory.Create{T}"/> and <see cref="ObjectFactory.CreateWithMixinInstances{T}"/> will be able to create instances from these
+  /// <see cref="ObjectFactory.Create{T}()"/> and <see cref="ObjectFactory.CreateWithMixinInstances{T}(object[])"/> will be able to create instances from these
   /// interfaces.
   /// </para>
   /// </remarks>

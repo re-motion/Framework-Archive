@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Rubicon.CodeGeneration;
 using Rubicon.Collections;
-using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
+using Rubicon.CodeGeneration.DPExtensions;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Utilities;
 using Rubicon.Utilities;
@@ -18,7 +19,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private ModuleManager _module;
     private readonly TypeGenerator _targetGenerator;
     private MixinDefinition _configuration;
-    private ExtendedClassEmitter _emitter;
+    private CustomClassEmitter _emitter;
     private FieldReference _configurationField;
 
     public MixinTypeGenerator (ModuleManager module, TypeGenerator targetGenerator, MixinDefinition configuration, INameProvider nameProvider)
@@ -41,7 +42,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       Type[] interfaces = isSerializable ? new Type[] {typeof (ISerializable)} : new Type[0];
 
       ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces);
-      _emitter = new ExtendedClassEmitter (classEmitter);
+      _emitter = new CustomClassEmitter (classEmitter);
 
       _configurationField = classEmitter.CreateStaticField ("__configuration", typeof (MixinDefinition));
 
@@ -61,8 +62,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       ConstructorEmitter emitter = _emitter.InnerEmitter.CreateTypeConstructor ();
 
-      LocalReference firstAttributeLocal = _emitter.LoadCustomAttribute (emitter.CodeBuilder, typeof (ConcreteMixinTypeAttribute), 0);
-
+      LocalReference firstAttributeLocal = TypeGenerator.GetFirstAttributeLocal (emitter, typeof (ConcreteMixinTypeAttribute));
+      
       MethodInfo getMixinDefinitionMethod = typeof (ConcreteMixinTypeAttribute).GetMethod ("GetMixinDefinition");
       Assertion.IsNotNull (getMixinDefinitionMethod);
 
@@ -123,7 +124,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       get { return _emitter.TypeBuilder; }
     }
 
-    public ExtendedClassEmitter Emitter
+    public CustomClassEmitter Emitter
     {
       get { return _emitter; }
     }
@@ -147,8 +148,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementGetObjectData ()
     {
-      Emitter.ImplementGetObjectDataByDelegation (
-          delegate (MethodEmitter newMethod, bool baseIsISerializable)
+      Rubicon.CodeGeneration.SerializationHelper.ImplementGetObjectDataByDelegation (Emitter, delegate (MethodEmitter newMethod, bool baseIsISerializable)
           {
             return new MethodInvocationExpression (
                 null,
@@ -167,7 +167,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       if (methodToBeWrapped.DeclaringClass != Configuration)
         throw new ArgumentException ("Only methods from class " + Configuration.FullName + " can be wrapped.");
 
-      return Emitter.GetPublicMethodWrapper (methodToBeWrapped.MethodInfo);
+      return Emitter.GetPublicMethodWrapper (methodToBeWrapped.MethodInfo).MethodBuilder;
     }
   }
 }

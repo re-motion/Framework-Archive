@@ -177,14 +177,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         for (int i = 0; i < argumentValues.Length; ++i)
           argumentValues[i] = GetMixinInitializationArgument (methodArguments[i], mixinTargetInstance, baseCallProxyInstance, mixinDefinition);
 
-        try
-        {
-          initializationMethod.Invoke (mixinInstance, argumentValues);
-        }
-        catch (TargetInvocationException ex)
-        {
-          throw ex.InnerException;
-        }
+        initializationMethod.Invoke (mixinInstance, argumentValues);
       }
     }
 

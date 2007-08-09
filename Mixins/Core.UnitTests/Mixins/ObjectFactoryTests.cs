@@ -308,5 +308,41 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       ObjectFactory.CreateWithMixinInstances (typeof (object), new object()).With ();
     }
+
+    public class MixinThrowingInOnInitialized : Mixin<object>
+    {
+      protected override void OnInitialized ()
+      {
+        throw new NotSupportedException ();
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (TargetInvocationException))]
+    public void TargetInvocationExceptionWhenMixinOnInitializedThrows ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinThrowingInOnInitialized)))
+      {
+        ObjectFactory.Create<object> ().With ();
+      }
+    }
+
+    public class MixinThrowingInCtor : Mixin<object>
+    {
+      public MixinThrowingInCtor()
+      {
+        throw new NotSupportedException ();
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (TargetInvocationException))]
+    public void TargetInvocationExceptionWhenMixinCtorThrows ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinThrowingInCtor)))
+      {
+        ObjectFactory.Create<object> ().With ();
+      }
+    }
   }
 }

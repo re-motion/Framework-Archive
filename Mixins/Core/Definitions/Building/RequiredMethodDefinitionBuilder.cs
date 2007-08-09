@@ -4,6 +4,7 @@ using System.Text;
 using Rubicon.Collections;
 using Rubicon.Mixins.Utilities;
 using System.Reflection;
+using Rubicon.Text;
 using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions.Building
@@ -174,9 +175,9 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private static Exception ConstructExceptionOnMemberNotFound (RequirementDefinitionBase requirement, string memberString)
     {
-      string dependenciesString = CollectionStringBuilder.BuildCollectionString (
-          requirement.FindRequiringMixins (),
+      string dependenciesString = SeparatedStringBuilder.Build (
           ", ",
+          requirement.FindRequiringMixins (),
           delegate (MixinDefinition m) { return m.FullName; });
       string message = string.Format (
           "The dependency {0} (mixins {1} applied to class {2}) is not fulfilled - public or protected {3} could not be "

@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Rubicon.Mixins;
 using Rubicon.Mixins.Utilities.Singleton;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Collections;
@@ -114,7 +115,7 @@ namespace Rubicon.Mixins.CodeGeneration
     /// </summary>
     /// <param name="configuration">The configuration object for the target class.</param>
     /// <returns>A concrete type with all mixins from <paramref name="configuration"/> mixed in.</returns>
-    /// <remarks>This is mostly for internal reasons, users should use <see cref="TypeFactory.GetConcreteType"/> instead.</remarks>
+    /// <remarks>This is mostly for internal reasons, users should use <see cref="TypeFactory.GetConcreteType(Type)"/> instead.</remarks>
     public Type GetConcreteType (TargetClassDefinition configuration)
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);

@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
 using System.Reflection;
-using Rubicon.Mixins.Utilities;
 using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Utilities;
 
-namespace Rubicon.Mixins.UnitTests.Utilities
+namespace Rubicon.Core.UnitTests.Utilities
 {
   [TestFixture]
   public class ReflectionEmitUtilityTests
@@ -71,83 +71,83 @@ namespace Rubicon.Mixins.UnitTests.Utilities
     }
 
     [AttributeWithPropertyParams (
-      1, 
-      "1", 
-      null, 
-      typeof (object),
+        1, 
+        "1", 
+        null, 
+        typeof (object),
       
-      new int[]{2, 3}, 
-      new string[] {"2", "3"}, 
-      new object[] {null, "foo", typeof (object)}, new Type[] {typeof (string), typeof (int), typeof(double)},
+        new int[]{2, 3}, 
+        new string[] {"2", "3"}, 
+        new object[] {null, "foo", typeof (object)}, new Type[] {typeof (string), typeof (int), typeof(double)},
       
-      INamed = 5, 
-      SNamed = "P5", 
-      ONamed = "Pbla", 
-      TNamed = typeof (float),
+        INamed = 5, 
+        SNamed = "P5", 
+        ONamed = "Pbla", 
+        TNamed = typeof (float),
 
-      INamedArray = new int[] {1, 2, 3}, 
-      SNamedArray = new string[] {"P1", null, "P2"}, 
-      ONamedArray = new object[] {1, 2, null}, 
-      TNamedArray = new Type[] {typeof (Random), null}
-    )]
+        INamedArray = new int[] {1, 2, 3}, 
+        SNamedArray = new string[] {"P1", null, "P2"}, 
+        ONamedArray = new object[] {1, 2, null}, 
+        TNamedArray = new Type[] {typeof (Random), null}
+        )]
     public class TestAttributeApplicationWithCtorArgumentsAndNamedProperties
     {
     }
 
     [AttributeWithFieldParams (
-      1,
-      "1",
-      null,
-      typeof (object),
+        1,
+        "1",
+        null,
+        typeof (object),
 
-      new int[] { 2, 3 },
-      new string[] { "2", "3" },
-      new object[] { null, "foo", typeof (object) }, new Type[] { typeof (string), typeof (int), typeof (double) },
+        new int[] { 2, 3 },
+        new string[] { "2", "3" },
+        new object[] { null, "foo", typeof (object) }, new Type[] { typeof (string), typeof (int), typeof (double) },
 
-      INamedF = 5,
-      SNamedF = "5",
-      ONamedF = "bla",
-      TNamedF = typeof (float),
+        INamedF = 5,
+        SNamedF = "5",
+        ONamedF = "bla",
+        TNamedF = typeof (float),
 
-      INamedArrayF = new int[] { 1, 2, 3 },
-      SNamedArrayF = new string[] { "1", null, "2" },
-      ONamedArrayF = new object[] { 1, 2, null },
-      TNamedArrayF = new Type[] { typeof (Random), null }
-    )]
+        INamedArrayF = new int[] { 1, 2, 3 },
+        SNamedArrayF = new string[] { "1", null, "2" },
+        ONamedArrayF = new object[] { 1, 2, null },
+        TNamedArrayF = new Type[] { typeof (Random), null }
+        )]
     public class TestAttributeApplicationWithCtorArgumentsAndNamedFields
     {
     }
 
     [AttributeWithPropertyAndFieldParams (
-      1,
-      "1",
-      null,
-      typeof (object),
+        1,
+        "1",
+        null,
+        typeof (object),
 
-      new int[] { 2, 3 },
-      new string[] { "2", "3" },
-      new object[] { null, "foo", typeof (object) }, new Type[] { typeof (string), typeof (int), typeof (double) },
+        new int[] { 2, 3 },
+        new string[] { "2", "3" },
+        new object[] { null, "foo", typeof (object) }, new Type[] { typeof (string), typeof (int), typeof (double) },
 
-      INamed = 5, 
-      SNamed = "P5", 
-      ONamed = "Pbla", 
-      TNamed = typeof (float),
+        INamed = 5, 
+        SNamed = "P5", 
+        ONamed = "Pbla", 
+        TNamed = typeof (float),
 
-      INamedArray = new int[] {1, 2, 3}, 
-      SNamedArray = new string[] {"P1", null, "P2"}, 
-      ONamedArray = new object[] {1, 2, null}, 
-      TNamedArray = new Type[] {typeof (Random), null},
+        INamedArray = new int[] {1, 2, 3}, 
+        SNamedArray = new string[] {"P1", null, "P2"}, 
+        ONamedArray = new object[] {1, 2, null}, 
+        TNamedArray = new Type[] {typeof (Random), null},
 
-      INamedF = 5, 
-      SNamedF = "5",
-      ONamedF = "bla",
-      TNamedF = typeof (float),
+        INamedF = 5, 
+        SNamedF = "5",
+        ONamedF = "bla",
+        TNamedF = typeof (float),
 
-      INamedArrayF = new int[] { 1, 2, 3 },
-      SNamedArrayF = new string[] { "1", null, "2" },
-      ONamedArrayF = new object[] { 1, 2, null },
-      TNamedArrayF = new Type[] { typeof (Random), null }
-    )]
+        INamedArrayF = new int[] { 1, 2, 3 },
+        SNamedArrayF = new string[] { "1", null, "2" },
+        ONamedArrayF = new object[] { 1, 2, null },
+        TNamedArrayF = new Type[] { typeof (Random), null }
+        )]
     public class TestAttributeApplicationWithCtorArgumentsNamedPropertiesAndNamedFields
     {
     }
@@ -244,10 +244,10 @@ namespace Rubicon.Mixins.UnitTests.Utilities
     }
 
     [Test (Description = "This traps the framework bug with named fields. Can be removed once "
-        + "CreateAttributeBuilderFromData_WithCtorArgumentsAndNamedFields works as intended.")]
+                         + "CreateAttributeBuilderFromData_WithCtorArgumentsAndNamedFields works as intended.")]
     [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Type .*AttributeWithFieldParams declares "
-    + "public fields: .*. Due to a bug in CustomAttributeData.GetCustomAttributes, attributes with public fields are currently not supported.",
-    MatchType = MessageMatch.Regex)]
+                                                                          + "public fields: .*. Due to a bug in CustomAttributeData.GetCustomAttributes, attributes with public fields are currently not supported.",
+        MatchType = MessageMatch.Regex)]
     public void CreateAttributeBuilderFromData_WithCtorArgumentsAndNamedFields ()
     {
       CustomAttributeData cad = CustomAttributeData.GetCustomAttributes (typeof (TestAttributeApplicationWithCtorArgumentsAndNamedFields))[0];

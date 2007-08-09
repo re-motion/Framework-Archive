@@ -73,6 +73,10 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.DynamicProxy, Version=2.0.0.1, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\prereq\Assemblies\Castle.DynamicProxy.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <Name>log4net</Name>
       <HintPath>..\prereq\Assemblies\log4net.dll</HintPath>
@@ -89,6 +93,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeGeneration\CustomClassEmitter.cs" />
+    <Compile Include="CodeGeneration\CustomEventEmitter.cs" />
+    <Compile Include="CodeGeneration\CustomMethodEmitter.cs" />
+    <Compile Include="CodeGeneration\CustomPropertyEmitter.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\AttributeReplicator.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\CastClassExpression.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\ClassEmitterSupportingOpenGenericBaseType.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\ConditionExpression.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\CustomAttributeExpression.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\ExpressionReference.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\FieldInfoReference.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\IfStatement.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\ILStatement.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\IndirectFieldReference.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\LoadArrayExpressionElementExpression.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\PropertyReference.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\SameConditionExpression.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\VirtualMethodInvocationExpression.cs" />
+    <Compile Include="CodeGeneration\IAttributableEmitter.cs" />
+    <Compile Include="CodeGeneration\SerializationHelper.cs" />
     <Compile Include="Collections\AutoInitDictionary.cs" />
     <Compile Include="Collections\MultiDictionary.cs" />
     <Compile Include="Collections\InterlockedCache.cs" />
@@ -358,6 +382,7 @@
     <Compile Include="Utilities\EnumerableUtility.cs" />
     <Compile Include="Utilities\EqualityUtility.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
+    <Compile Include="Utilities\ReflectionEmitUtility.cs" />
     <Compile Include="Utilities\TypeConverterResult.cs" />
     <Compile Include="Utilities\TypeConverterType.cs" />
     <Compile Include="Utilities\TypeNameConverter.cs" />

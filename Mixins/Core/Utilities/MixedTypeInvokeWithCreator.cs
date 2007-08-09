@@ -30,7 +30,7 @@ namespace Rubicon.Mixins.Utilities
       }
       catch (ArgumentException ex)
       {
-        throw new ArgumentException ("The given base type is invalid: " + ex.Message, "baseTypeOrInterface");
+        throw new ArgumentException ("The given base type is invalid: " + ex.Message, "baseTypeOrInterface", ex);
       }
 
       if (!typeof (IMixinTarget).IsAssignableFrom (concreteType) && mixinInstances.Length > 0)

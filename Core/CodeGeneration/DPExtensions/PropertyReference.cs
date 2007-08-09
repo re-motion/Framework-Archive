@@ -5,9 +5,9 @@ using System.Text;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using System.Reflection;
 
-namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
+namespace Rubicon.CodeGeneration.DPExtensions
 {
-  internal class PropertyReference : Reference
+  public class PropertyReference : Reference
   {
     private PropertyInfo _property;
 

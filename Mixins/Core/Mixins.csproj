@@ -41,13 +41,7 @@
   <ItemGroup>
     <Compile Include="CodeGeneration\ConcreteMixinTypeAttribute.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallMethodGenerator.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\FieldInfoReference.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\MixinSerializationHelper.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\ConditionExpression.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\ExpressionReference.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IfStatement.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IndirectFieldReference.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\SameConditionExpression.cs" />
     <Compile Include="CodeGeneration\GuidNameProvider.cs" />
     <Compile Include="CodeGeneration\INameProvider.cs" />
     <Compile Include="CodeGeneration\ConcreteMixedTypeAttribute.cs" />
@@ -74,12 +68,9 @@
     <None Include="Properties\AssemblyInfoTemplate.cs" />
     <Compile Include="NotIntroducedAttribute.cs" />
     <Compile Include="UsesAttribute.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\AttributeReplicator.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\PropertyReference.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\MixinTypeGenerator.cs" />
     <Compile Include="CodeGeneration\IMixinTypeGenerator.cs" />
     <Compile Include="ObjectFactory.cs" />
-    <Compile Include="Utilities\CollectionStringBuilder.cs" />
     <Compile Include="Utilities\DependencySort\DependencyKind.cs" />
     <Compile Include="Utilities\DependencySort\CircularDependenciesException.cs" />
     <Compile Include="Utilities\DependencySort\DependentObjectSorter.cs" />
@@ -92,16 +83,9 @@
     <Compile Include="Utilities\Singleton\ThreadSafeSingleton.cs" />
     <Compile Include="Utilities\Singleton\DefaultInstanceCreator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallProxyGenerator.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CastClassExpression.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\CustomEventEmitter.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\CustomMethodEmitter.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\CustomPropertyEmitter.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IAttributableEmitter.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\ExtendedClassEmitter.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\ModuleManager.cs" />
     <Compile Include="CodeGeneration\ConcreteTypeBuilder.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\TypeGenerator.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\VirtualMethodInvocationExpression.cs" />
     <Compile Include="CodeGeneration\ExtensionFieldAttribute.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\GeneratedClassInstanceInitializer.cs" />
     <Compile Include="CodeGeneration\IModuleManager.cs" />
@@ -115,7 +99,6 @@
     <Compile Include="Utilities\MultiSet.cs" />
     <Compile Include="Utilities\PropertyNameAndSignatureEqualityComparer.cs" />
     <Compile Include="Utilities\PropertySignatureEqualityComparer.cs" />
-    <Compile Include="Utilities\ReflectionEmitUtility.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\SerializationHelper.cs" />
     <Compile Include="Utilities\ReflectionUtility.cs" />
     <Compile Include="TypeFactory.cs" />

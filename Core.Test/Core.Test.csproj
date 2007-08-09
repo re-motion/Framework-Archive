@@ -113,6 +113,24 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeGeneration\ClassEmitterGenericsTest.cs" />
+    <Compile Include="CodeGeneration\ClassEmitterTest.cs" />
+    <Compile Include="CodeGeneration\LdArrayElementTest.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\ClassWithAllKindsOfMembers.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\ClassWithConstrainedGenericMethod.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\ClassWithCustomAttribute.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\ClassWithProtectedMethod.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\ClassWithSimpleGenericMethod.cs" />
+    <Compile Include="CodeGeneration\CodeGenerationBaseTest.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\GenericInterfaceWithAllKindsOfMembers.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\GenericClassWithAllKindsOfMembers.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\GenericClassWithConstraints.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\GenericClassWithGenericMethod.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\IArrayProvider.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\IInterfaceWithMethod.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\IMarkerInterface.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\SimpleAttribute.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\SimpleArrayProvider.cs" />
     <Compile Include="Collections\SetTest.cs" />
     <Compile Include="Collections\AutoInitDictionaryTest.cs" />
     <Compile Include="Configuration\ExtendedProviderBaseTest.cs" />
@@ -283,6 +301,7 @@
     <Compile Include="Utilities\NameValueCollectionUtilityTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\ReflectionEmitUtilityTests.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\GetAscribedGenericArguments_WithInterface.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\CanAscribe_WithInterface.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\GetAscribedGenericArguments_WithClass.cs" />

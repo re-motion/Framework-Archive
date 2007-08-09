@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Mixins.Utilities;
 using Rubicon.Collections;
+using Rubicon.Text;
 using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions.Building
@@ -110,7 +111,7 @@ namespace Rubicon.Mixins.Definitions.Building
             "There are more than one implementer candidates for member {0}.{1}: {2}. The mixin engine cannot detect the right one.",
             interfaceMember.DeclaringType.FullName,
             interfaceMember.Name,
-            CollectionStringBuilder.BuildCollectionString (weakCandidates, ", ", delegate (TDefinition d) { return d.FullName; }));
+            SeparatedStringBuilder.Build (", ", weakCandidates, delegate (TDefinition d) { return d.FullName; }));
         throw new NotSupportedException (message);
       }
     }

@@ -1,7 +1,8 @@
 using System;
 using System.Reflection;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
+using Rubicon.CodeGeneration;
+using Rubicon.CodeGeneration.DPExtensions;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Utilities;
 

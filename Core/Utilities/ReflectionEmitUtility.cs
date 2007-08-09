@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using Rubicon.Text;
 using Rubicon.Utilities;
 using System.Collections;
 
-namespace Rubicon.Mixins.Utilities
+namespace Rubicon.Utilities
 {
   public static class ReflectionEmitUtility
   {
@@ -18,7 +19,7 @@ namespace Rubicon.Mixins.Utilities
       public readonly object[] FieldValues;
 
       public CustomAttributeBuilderData (object[] constructorArgs, PropertyInfo[] namedProperties, object[] propertyValues, FieldInfo[] namedFields,
-          object[] fieldValues)
+                                         object[] fieldValues)
       {
         ConstructorArgs = constructorArgs;
         FieldValues = fieldValues;
@@ -34,7 +35,7 @@ namespace Rubicon.Mixins.Utilities
 
       CustomAttributeBuilderData builderData = GetCustomAttributeBuilderData (attributeData);
       return new CustomAttributeBuilder (attributeData.Constructor, builderData.ConstructorArgs, builderData.NamedProperties,
-                                         builderData.PropertyValues, builderData.NamedFields, builderData.FieldValues);
+          builderData.PropertyValues, builderData.NamedFields, builderData.FieldValues);
     }
 
     public static CustomAttributeBuilderData GetCustomAttributeBuilderData (CustomAttributeData attributeData)
@@ -84,7 +85,7 @@ namespace Rubicon.Mixins.Utilities
       {
         string message = string.Format ("Type {0} declares public fields: {1}. Due to a bug in CustomAttributeData.GetCustomAttributes, attributes "
             + "with public fields are currently not supported.", type.FullName,
-            CollectionStringBuilder.BuildCollectionString (fields, ", ", delegate (FieldInfo field) { return field.Name; }));
+            SeparatedStringBuilder.Build (", ", fields, delegate (FieldInfo field) { return field.Name; }));
         throw new NotSupportedException (message);
       }
     }
@@ -96,7 +97,7 @@ namespace Rubicon.Mixins.Utilities
         IList<CustomAttributeTypedArgument> elements = (IList<CustomAttributeTypedArgument>) typedArgument.Value;
         IList realValueArray = Array.CreateInstance (typedArgument.ArgumentType.GetElementType(), elements.Count);
         for (int i = 0; i < elements.Count; ++i)
-           realValueArray[i] = GetRealCustomAttributeArgumentValue (elements[i]);
+          realValueArray[i] = GetRealCustomAttributeArgumentValue (elements[i]);
         return realValueArray;
       }
       else

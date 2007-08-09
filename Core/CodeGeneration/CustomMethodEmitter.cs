@@ -1,23 +1,23 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
+using Rubicon.CodeGeneration.DPExtensions;
+using Rubicon.Utilities;
 
-namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
+namespace Rubicon.CodeGeneration
 {
-  internal class CustomMethodEmitter : IAttributableEmitter
+  public class CustomMethodEmitter : IAttributableEmitter
   {
-    private MethodEmitter _innerEmitter;
-    private AbstractTypeEmitter _parentEmitter;
+    private readonly MethodEmitter _innerEmitter;
+    private readonly AbstractTypeEmitter _parentEmitter;
 
-    public CustomMethodEmitter (AbstractTypeEmitter parentEmitter, string name, MethodAttributes attributes)
+    public CustomMethodEmitter (CustomClassEmitter parentEmitter, string name, MethodAttributes attributes)
     {
-      _parentEmitter = parentEmitter;
-      _innerEmitter = parentEmitter.CreateMethod (name, attributes);
+      _parentEmitter = parentEmitter.InnerEmitter;
+      _innerEmitter = _parentEmitter.CreateMethod (name, attributes);
+      _innerEmitter.SetReturnType (typeof (void));
     }
 
     public void AddCustomAttribute (CustomAttributeBuilder customAttribute)
@@ -25,9 +25,21 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       _innerEmitter.MethodBuilder.SetCustomAttribute (customAttribute);
     }
 
+    public void SetParameters (params Type[] parameters)
+    {
+      ArgumentUtility.CheckNotNull ("parameters", parameters);
+      InnerEmitter.SetParameters (parameters);
+    }
+
+    public void SetReturnType (Type returnType)
+    {
+      ArgumentUtility.CheckNotNull ("returnType", returnType);
+      InnerEmitter.SetReturnType (returnType);
+    }
+
     public void CopyParametersAndReturnTypeFrom (MethodInfo method)
     {
-      _innerEmitter.CopyParametersAndReturnTypeFrom (method, _parentEmitter);
+      _innerEmitter.CopyParametersAndReturnTypeFrom (method, _parentEmitter); // TODO: change to get rid of _parentEmitter
     }
 
     public MethodBuilder MethodBuilder
@@ -47,6 +59,12 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     public void ImplementMethodByBaseCall (MethodInfo baseMethod)
     {
+      ArgumentUtility.CheckNotNull ("baseMethod", baseMethod);
+
+      if (baseMethod.IsAbstract)
+        throw new ArgumentException (string.Format ("The given method {0}.{1} is abstract.", baseMethod.DeclaringType.FullName, baseMethod.Name),
+            "baseMethod");
+      
       AddDelegatingCallStatements (baseMethod, SelfReference.Self, false);
     }
 
@@ -74,6 +92,13 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       }
 
       InnerEmitter.CodeBuilder.AddStatement (new ReturnStatement (delegatingCall));
+    }
+
+    public CustomMethodEmitter AddStatement (Statement statement)
+    {
+      ArgumentUtility.CheckNotNull ("statement", statement);
+      InnerEmitter.CodeBuilder.AddStatement (statement);
+      return this;
     }
   }
 }

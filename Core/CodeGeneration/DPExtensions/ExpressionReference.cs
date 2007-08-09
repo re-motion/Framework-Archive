@@ -5,14 +5,14 @@ using System.Text;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Castle.DynamicProxy.Generators.Emitters;
 
-namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
+namespace Rubicon.CodeGeneration.DPExtensions
 {
   // Converts an expression to a reference by saving it as a temporary local variable at time of emitting
-  internal class ExpressionReference : Reference
+  public class ExpressionReference : Reference
   {
-    private Expression _expression;
-    private MethodEmitter _methodEmitter;
-    private Type _referenceType;
+    private readonly Expression _expression;
+    private readonly MethodEmitter _methodEmitter;
+    private readonly Type _referenceType;
 
     public ExpressionReference (Type referenceType, Expression expression, MethodEmitter methodEmitter) : base (null)
     {

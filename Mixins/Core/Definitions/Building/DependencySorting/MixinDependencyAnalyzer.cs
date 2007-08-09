@@ -33,7 +33,7 @@ namespace Rubicon.Mixins.Definitions.Building.DependencySorting
       string message = string.Format ("The following mixins are applied to the same base class {0} and require a clear base call ordering, but do not "
           + "provide enough dependency information: {1}.{2}Please add base call dependencies to the mixin definitions or adjust the mixin configuration "
           + "accordingly.", first.TargetClass.FullName,
-          CollectionStringBuilder.BuildCollectionString (equalRoots, ", ", delegate (MixinDefinition m) { return m.FullName; }),
+          SeparatedStringBuilder.Build (", ", equalRoots, delegate (MixinDefinition m) { return m.FullName; }),
           Environment.NewLine);
       throw new ConfigurationException (message);
     }

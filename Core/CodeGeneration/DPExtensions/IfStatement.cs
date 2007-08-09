@@ -4,9 +4,9 @@ using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
-namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
+namespace Rubicon.CodeGeneration.DPExtensions
 {
-  internal class IfStatement : Statement
+  public class IfStatement : Statement
   {
     private ConditionExpression _condition;
     private Statement[] _thenStatements;

@@ -6,6 +6,7 @@ using Rubicon.Mixins.Definitions.Building.DependencySorting;
 using Rubicon.Mixins.Utilities;
 using Rubicon.Mixins.Utilities.DependencySort;
 using Rubicon.Collections;
+using Rubicon.Text;
 using Rubicon.Utilities;
 using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 
@@ -95,7 +96,7 @@ namespace Rubicon.Mixins.Definitions.Building
         catch (CircularDependenciesException<MixinDefinition> ex)
         {
           string message = string.Format ("The following group of mixins contains circular dependencies: {0}.",
-              CollectionStringBuilder.BuildCollectionString (ex.Circulars, ", ", delegate (MixinDefinition m) { return m.FullName; }));
+              SeparatedStringBuilder.Build (", ", ex.Circulars, delegate (MixinDefinition m) { return m.FullName; }));
           throw new ConfigurationException (message, ex);
         }
       }

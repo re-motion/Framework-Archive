@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Rubicon.CodeGeneration;
 using Rubicon.Mixins.Definitions;
 using System.Reflection;
 using Rubicon.Utilities;
@@ -13,7 +14,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
   {
     private readonly TypeGenerator _surroundingType;
     private readonly MixinTypeGenerator[] _mixinTypeGenerators;
-    private readonly ExtendedClassEmitter _emitter;
+    private readonly CustomClassEmitter _emitter;
     private readonly TargetClassDefinition _targetClassConfiguration;
     private FieldReference _depthField;
     private FieldReference _thisField;
@@ -33,7 +34,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       foreach (RequiredBaseCallTypeDefinition requiredType in _targetClassConfiguration.RequiredBaseCallTypes)
         interfaces.Add (requiredType.Type);
 
-      _emitter = new ExtendedClassEmitter (
+      _emitter = new CustomClassEmitter (
           new NestedClassEmitter (
               surroundingTypeEmitter,
               "BaseCallProxy",
@@ -101,7 +102,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       Assertion.IsTrue (methodDefinitionOnTarget.DeclaringClass == _targetClassConfiguration);
 
       MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
-      CustomMethodEmitter methodOverride = new CustomMethodEmitter (_emitter.InnerEmitter, methodDefinitionOnTarget.FullName, attributes);
+      CustomMethodEmitter methodOverride = new CustomMethodEmitter (_emitter, methodDefinitionOnTarget.FullName, attributes);
       methodOverride.CopyParametersAndReturnTypeFrom (methodDefinitionOnTarget.MethodInfo);
 
       BaseCallMethodGenerator methodGenerator = new BaseCallMethodGenerator (methodOverride, this, _mixinTypeGenerators);

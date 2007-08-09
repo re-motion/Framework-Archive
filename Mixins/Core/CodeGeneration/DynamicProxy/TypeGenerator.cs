@@ -4,13 +4,14 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
+using Rubicon.CodeGeneration;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Utilities;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
+using Rubicon.CodeGeneration.DPExtensions;
 
 using Rubicon.Text;
 using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
@@ -24,7 +25,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private ModuleManager _module;
     private TargetClassDefinition _configuration;
-    private ExtendedClassEmitter _emitter;
+    private CustomClassEmitter _emitter;
     private BaseCallProxyGenerator _baseCallGenerator;
 
     private FieldReference _configurationField;
@@ -52,7 +53,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         flags |= TypeAttributes.Abstract;
 
       ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces.ToArray(), flags);
-      _emitter = new ExtendedClassEmitter (classEmitter);
+      _emitter = new CustomClassEmitter (classEmitter);
 
       _configurationField = _emitter.InnerEmitter.CreateStaticField ("__configuration", typeof (TargetClassDefinition));
       _extensionsField = _emitter.InnerEmitter.CreateField ("__extensions", typeof (object[]), true);
@@ -129,7 +130,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       get { return Emitter.TypeBuilder; }
     }
 
-    public ExtendedClassEmitter Emitter
+    public CustomClassEmitter Emitter
     {
       get { return _emitter; }
     }
@@ -163,7 +164,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       ConstructorEmitter emitter = _emitter.InnerEmitter.CreateTypeConstructor ();
 
-      LocalReference firstAttributeLocal = _emitter.LoadCustomAttribute (emitter.CodeBuilder, typeof (ConcreteMixedTypeAttribute), 0);
+      LocalReference firstAttributeLocal = GetFirstAttributeLocal (emitter, typeof (ConcreteMixedTypeAttribute));
 
       MethodInfo getTargetClassDefinitionMethod = typeof (ConcreteMixedTypeAttribute).GetMethod ("GetTargetClassDefinition");
       Assertion.IsNotNull (getTargetClassDefinitionMethod);
@@ -173,10 +174,20 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       emitter.CodeBuilder.AddStatement (new ReturnStatement ());
     }
 
+    internal static LocalReference GetFirstAttributeLocal (ConstructorEmitter emitter, Type attributeType)
+    {
+      LocalReference thisTypeLocal = emitter.CodeBuilder.DeclareLocal (typeof (Type));
+      emitter.CodeBuilder.AddStatement (new AssignStatement (thisTypeLocal, new TypeTokenExpression (emitter.ConstructorBuilder.DeclaringType)));
+
+      Expression firstAttributeExpression = new CustomAttributeExpression (thisTypeLocal, attributeType, 0, false);
+      LocalReference firstAttributeLocal = emitter.CodeBuilder.DeclareLocal (attributeType);
+      emitter.CodeBuilder.AddStatement (new AssignStatement (firstAttributeLocal, firstAttributeExpression));
+      return firstAttributeLocal;
+    }
+
     private void ImplementGetObjectData ()
     {
-      Emitter.ImplementGetObjectDataByDelegation (
-          delegate (MethodEmitter newMethod, bool baseIsISerializable)
+      Rubicon.CodeGeneration.SerializationHelper.ImplementGetObjectDataByDelegation (Emitter, delegate (MethodEmitter newMethod, bool baseIsISerializable)
           {
             return new MethodInvocationExpression (
                 null,
@@ -197,19 +208,19 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       CustomPropertyEmitter configurationProperty =
           Emitter.CreateInterfacePropertyImplementation (typeof (IMixinTarget).GetProperty ("Configuration"));
       configurationProperty.GetMethod =
-          Emitter.CreateInterfaceMethodImplementation (typeof (IMixinTarget).GetMethod ("get_Configuration")).InnerEmitter;
+          Emitter.CreateInterfaceMethodImplementation (typeof (IMixinTarget).GetMethod ("get_Configuration"));
       configurationProperty.ImplementPropertyWithField (_configurationField);
 
       CustomPropertyEmitter mixinsProperty =
           Emitter.CreateInterfacePropertyImplementation (typeof (IMixinTarget).GetProperty ("Mixins"));
       mixinsProperty.GetMethod =
-          Emitter.CreateInterfaceMethodImplementation (typeof (IMixinTarget).GetMethod ("get_Mixins")).InnerEmitter;
+          Emitter.CreateInterfaceMethodImplementation (typeof (IMixinTarget).GetMethod ("get_Mixins"));
       mixinsProperty.ImplementPropertyWithField (_extensionsField);
 
       CustomPropertyEmitter firstProperty =
           Emitter.CreateInterfacePropertyImplementation (typeof (IMixinTarget).GetProperty ("FirstBaseCallProxy"));
       firstProperty.GetMethod =
-          Emitter.CreateInterfaceMethodImplementation (typeof (IMixinTarget).GetMethod ("get_FirstBaseCallProxy")).InnerEmitter;
+          Emitter.CreateInterfaceMethodImplementation (typeof (IMixinTarget).GetMethod ("get_FirstBaseCallProxy"));
       firstProperty.ImplementPropertyWithField (_firstField);
     }
 
@@ -238,12 +249,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         MethodInfo interfaceMember)
     {
       CustomMethodEmitter customMethodEmitter = Emitter.CreateInterfaceMethodImplementation (interfaceMember);
-
-      LocalReference localImplementer = Emitter.AddMakeReferenceOfExpressionStatements (
-          customMethodEmitter,
-          interfaceMember.DeclaringType,
-          implementerExpression);
-      customMethodEmitter.ImplementMethodByDelegation (localImplementer, interfaceMember);
+      ExpressionReference implementer =
+          new ExpressionReference (interfaceMember.DeclaringType, implementerExpression, customMethodEmitter.InnerEmitter);
+      customMethodEmitter.ImplementMethodByDelegation (implementer, interfaceMember);
 
       ReplicateAttributes (implementingMember, customMethodEmitter);
       return customMethodEmitter;
@@ -257,13 +265,13 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         propertyEmitter.GetMethod = ImplementIntroducedMethod (
             implementerExpression,
             property.ImplementingMember.GetMethod,
-            property.InterfaceMember.GetGetMethod()).InnerEmitter;
+            property.InterfaceMember.GetGetMethod());
 
       if (property.IntroducesSetMethod)
         propertyEmitter.SetMethod = ImplementIntroducedMethod (
             implementerExpression,
             property.ImplementingMember.SetMethod,
-            property.InterfaceMember.GetSetMethod()).InnerEmitter;
+            property.InterfaceMember.GetSetMethod());
 
       ReplicateAttributes (property.ImplementingMember, propertyEmitter);
       return propertyEmitter;
@@ -278,11 +286,11 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       eventEmitter.AddMethod = ImplementIntroducedMethod (
           implementerExpression,
           eventIntro.ImplementingMember.AddMethod,
-          eventIntro.InterfaceMember.GetAddMethod()).InnerEmitter;
+          eventIntro.InterfaceMember.GetAddMethod());
       eventEmitter.RemoveMethod = ImplementIntroducedMethod (
           implementerExpression,
           eventIntro.ImplementingMember.RemoveMethod,
-          eventIntro.InterfaceMember.GetRemoveMethod()).InnerEmitter;
+          eventIntro.InterfaceMember.GetRemoveMethod());
 
       ReplicateAttributes (eventIntro.ImplementingMember, eventEmitter);
       return eventEmitter;
@@ -349,9 +357,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       CustomPropertyEmitter propertyOverride = Emitter.CreatePropertyOverride (property.PropertyInfo);
       if (property.GetMethod != null && property.GetMethod.Overrides.Count > 0)
-        propertyOverride.GetMethod = ImplementMethodOverride (property.GetMethod).InnerEmitter;
+        propertyOverride.GetMethod = ImplementMethodOverride (property.GetMethod);
       if (property.SetMethod != null && property.SetMethod.Overrides.Count > 0)
-        propertyOverride.SetMethod = ImplementMethodOverride (property.SetMethod).InnerEmitter;
+        propertyOverride.SetMethod = ImplementMethodOverride (property.SetMethod);
       return propertyOverride;
     }
 
@@ -359,9 +367,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       CustomEventEmitter eventOverride = Emitter.CreateEventOverride (eventDefinition.EventInfo);
       if (eventDefinition.AddMethod.Overrides.Count > 0)
-        eventOverride.AddMethod = ImplementMethodOverride (eventDefinition.AddMethod).InnerEmitter;
+        eventOverride.AddMethod = ImplementMethodOverride (eventDefinition.AddMethod);
       if (eventDefinition.RemoveMethod.Overrides.Count > 0)
-        eventOverride.RemoveMethod = ImplementMethodOverride (eventDefinition.RemoveMethod).InnerEmitter;
+        eventOverride.RemoveMethod = ImplementMethodOverride (eventDefinition.RemoveMethod);
       return eventOverride;
     }
 
@@ -429,7 +437,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       Assertion.IsTrue (ReflectionUtility.IsPublicOrProtected (method));
 
       MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
-      CustomMethodEmitter baseCallMethod = new CustomMethodEmitter (Emitter.InnerEmitter, "__base__" + method.Name, attributes);
+      CustomMethodEmitter baseCallMethod = new CustomMethodEmitter (Emitter, "__base__" + method.Name, attributes);
       baseCallMethod.CopyParametersAndReturnTypeFrom (method);
       baseCallMethod.ImplementMethodByBaseCall (method);
       return baseCallMethod.MethodBuilder;
@@ -441,7 +449,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       if (methodToBeWrapped.DeclaringClass != Configuration)
         throw new ArgumentException ("Only methods from class " + Configuration.FullName + " can be wrapped.");
 
-      return Emitter.GetPublicMethodWrapper (methodToBeWrapped.MethodInfo);
+      return Emitter.GetPublicMethodWrapper (methodToBeWrapped.MethodInfo).MethodBuilder;
     }
   }
 }

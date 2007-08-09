@@ -3,9 +3,9 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
-namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
+namespace Rubicon.CodeGeneration.DPExtensions
 {
-  internal class FieldInfoReference : Reference
+  public class FieldInfoReference : Reference
   {
     private FieldInfo field;
 

@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
-using Rubicon.Mixins.Utilities;
+using Rubicon.CodeGeneration;
+using Rubicon.Utilities;
 
-namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
+namespace Rubicon.CodeGeneration.DPExtensions
 {
   public static class AttributeReplicator
   {

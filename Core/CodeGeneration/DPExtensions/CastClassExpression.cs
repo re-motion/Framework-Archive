@@ -3,9 +3,9 @@ using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
-namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
+namespace Rubicon.CodeGeneration.DPExtensions
 {
-  internal class CastClassExpression : Expression
+  public class CastClassExpression : Expression
   {
     private readonly Type targetType;
     private readonly Expression sourceExpression;

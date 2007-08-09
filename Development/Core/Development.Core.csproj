@@ -103,6 +103,8 @@
     <Compile Include="UnitTesting\Dev.cs" />
     <Compile Include="UnitTesting\Configuration\FakeInternalConfigSystem.cs" />
     <Compile Include="UnitTesting\IO\TempFile.cs" />
+    <Compile Include="UnitTesting\PEVerifier.cs" />
+    <Compile Include="UnitTesting\PEVerifyException.cs" />
     <Compile Include="UnitTesting\PrivateInvoke.cs">
       <SubType>Code</SubType>
     </Compile>

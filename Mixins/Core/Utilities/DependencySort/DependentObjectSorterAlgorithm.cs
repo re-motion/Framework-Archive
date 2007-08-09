@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Rubicon.Collections;
+using Rubicon.Text;
 using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Utilities.DependencySort
@@ -60,7 +61,7 @@ namespace Rubicon.Mixins.Utilities.DependencySort
       if (rootCandidates.Count == 0)
       {
         string message = string.Format ("The object graph contains circular dependencies involving items {{{0}}}, no root object can be found.",
-            CollectionStringBuilder.BuildCollectionString (_objects, ", ", delegate (T t) { return t.ToString (); })); 
+            SeparatedStringBuilder.Build (", ", _objects, delegate (T t) { return t.ToString (); })); 
         throw new CircularDependenciesException<T> (message, _objects);
       }
       else if (rootCandidates.Count == 1)
