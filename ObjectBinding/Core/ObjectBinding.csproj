@@ -108,6 +108,7 @@
     <Compile Include="BindableObject\BindableObjectProvider.cs" />
     <Compile Include="BindableObject\BindableObjectWithIdentityMixin.cs" />
     <Compile Include="BindableObject\ConstantEnumerationValueFilter.cs" />
+    <Compile Include="BindableObject\PropertyInfoCollection.cs" />
     <Compile Include="BindableObject\DesignModeBindableObjectProvider.cs" />
     <Compile Include="BindableObject\GetObjectServiceTypeAttribute.cs" />
     <Compile Include="BindableObject\IBusinessObjectGlobalizationService.cs" />

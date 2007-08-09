@@ -23,7 +23,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 
     protected PropertyInfo GetPropertyInfo (Type type, string propertyName)
     {
-      PropertyInfo propertyInfo = type.GetProperty (propertyName, BindingFlags.Public | BindingFlags.Instance);
+      PropertyInfo propertyInfo = type.GetProperty (propertyName, BindingFlags.Public | BindingFlags.Instance );
       Assert.IsNotNull (propertyInfo, "Property '{0}' was not found on type '{1}'.", propertyName, type);
 
       return propertyInfo;

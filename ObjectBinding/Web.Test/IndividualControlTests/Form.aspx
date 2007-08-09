@@ -11,6 +11,8 @@
   <form id="Form" runat="server">
     <asp:ScriptManager ID="ScriptManager" runat="server" />
     <rubicon:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Rubicon.ObjectBinding.Sample::Person" />
+    <rubicon:SingleView ID="SingleView" runat="server">
+      <TopControls>
         <obwt:NavigationTabs ID="NavigationTabs" runat="server" />
         <asp:PlaceHolder ID="ButtonPlaceHolder" runat="server">
           <div>
@@ -20,13 +22,19 @@
             <rubicon:WebButton ID="CancelButton" runat="server" Text="Cancel" Width="120px" />
           </div>
         </asp:PlaceHolder>
-
+      </TopControls>
+      
+      <ViewTemplate>
         <asp:UpdatePanel ID="UserControlUpdatePanel" runat="server">
           <contenttemplate>
             <asp:PlaceHolder ID="UserControlPlaceHolder" runat="server" />
           </contenttemplate>
         </asp:UpdatePanel>
-
+      </ViewTemplate>
+      
+      <BottomControls>
+      </BottomControls>
+    </rubicon:SingleView>
         <asp:UpdatePanel ID="StackUpdatePanel" runat="server">
           <contenttemplate>
             <asp:Literal ID="Stack" runat="server" />

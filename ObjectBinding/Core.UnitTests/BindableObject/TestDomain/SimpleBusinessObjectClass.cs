@@ -17,11 +17,5 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
       get { return _string; }
       set { _string = value; }
     }
-
-    private string PrivateString
-    {
-      get { return null; }
-      set { }
-    }
   }
 }

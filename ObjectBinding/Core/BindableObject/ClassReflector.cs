@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
 
@@ -61,9 +60,19 @@ namespace Rubicon.ObjectBinding.BindableObject
       return properties;
     }
 
-    private MemberInfo[] GetPropertyInfos ()
+    private PropertyInfo[] GetPropertyInfos ()
     {
-      return _type.FindMembers (MemberTypes.Property, BindingFlags.Instance | BindingFlags.Public, PropertyFiler, null);
+      PropertyInfoCollection propertyInfos = new PropertyInfoCollection();
+      for (Type currentType = _type; currentType != null; currentType = currentType.BaseType)
+      {
+        foreach (PropertyInfo propertyInfo in currentType.FindMembers (
+            MemberTypes.Property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly, PropertyFiler, null))
+        {
+          if (!propertyInfos.Contains (propertyInfo.Name))
+            propertyInfos.Add (propertyInfo);
+        }
+      }
+      return propertyInfos.ToArray();
     }
 
     private bool PropertyFiler (MemberInfo memberInfo, object filterCriteria)

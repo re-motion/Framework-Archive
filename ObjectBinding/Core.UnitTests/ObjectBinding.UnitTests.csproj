@@ -84,6 +84,8 @@
     <Compile Include="BindableObject\TestDomain\ClassWithSearchServiceTypeAttribute.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithUndefinedEnumValue.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithDisabledEnumValue.cs" />
+    <Compile Include="BindableObject\TestDomain\DerivedBusinessObjectClass.cs" />
+    <Compile Include="BindableObject\TestDomain\BaseBusinessObjectClass.cs" />
     <Compile Include="BindableObject\TestDomain\ICustomGetObjectService.cs" />
     <Compile Include="BindableObject\TestDomain\SecurableClassWithOverriddenDisplayName.cs" />
     <Compile Include="BindableObject\TestDomain\ISearchServiceOnProperty.cs" />
