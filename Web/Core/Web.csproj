@@ -77,6 +77,7 @@
       <Name>System</Name>
     </Reference>
     <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Design">
       <Name>system.design</Name>
     </Reference>
@@ -309,6 +310,7 @@
     <Compile Include="UI\Controls\IValidatableControl.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Controls\SingleView.cs" />
     <Compile Include="UI\Controls\SubMenuTab.cs" />
     <Compile Include="UI\Controls\WebTreeViewMenuItemProvider.cs" />
     <Compile Include="UI\Design\WebDesginModeHelper.cs" />
@@ -569,6 +571,7 @@
     <Content Include="Res\HTML\FontSize100.css" />
     <Content Include="Res\HTML\FontSize100Quirks.css" />
     <Content Include="Res\HTML\FormGrid.css" />
+    <Content Include="Res\HTML\SingleView.css" />
     <Content Include="Res\HTML\SmartNavigation.js" />
     <Content Include="Res\HTML\SmartPage.css" />
     <Content Include="Res\HTML\SmartPage.js" />

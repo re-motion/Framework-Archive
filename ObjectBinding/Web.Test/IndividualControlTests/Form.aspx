@@ -1,4 +1,4 @@
-<%@ Page Language="c#" Codebehind="Form.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.IndividualControlTests.IndividualControlTestForm" %>
+<%@ Page Language="c#" Codebehind="Form.aspx.cs" AutoEventWireup="True" Inherits="OBWTest.IndividualControlTests.IndividualControlTestForm" %>
 
 <%@ Register TagPrefix="obwt" TagName="NavigationTabs" Src="../UI/NavigationTabs.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" >
@@ -24,22 +24,22 @@
         </asp:PlaceHolder>
       </TopControls>
       
-      <ViewTemplate>
+      <View>
         <asp:UpdatePanel ID="UserControlUpdatePanel" runat="server">
           <contenttemplate>
             <asp:PlaceHolder ID="UserControlPlaceHolder" runat="server" />
           </contenttemplate>
         </asp:UpdatePanel>
-      </ViewTemplate>
+      </View>
       
       <BottomControls>
-      </BottomControls>
-    </rubicon:SingleView>
-        <asp:UpdatePanel ID="StackUpdatePanel" runat="server">
+         <asp:UpdatePanel ID="StackUpdatePanel" runat="server" UpdateMode="Conditional">
           <contenttemplate>
             <asp:Literal ID="Stack" runat="server" />
           </contenttemplate>
         </asp:UpdatePanel>
+     </BottomControls>
+    </rubicon:SingleView>
   </form>
 </body>
 </html>
