@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using Rubicon.Utilities;
@@ -32,21 +31,17 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
       get { return _treeView; }
     }
 
-    public void PopulateTreeNodes (List<Type> types, string selectedValue)
+    public void PopulateTreeNodes (List<Type> types, Type selectedType)
     {
-      _treeView.BeginUpdate ();
+      _treeView.BeginUpdate();
       _treeView.Nodes.Clear();
 
       foreach (Type type in types)
       {
         TreeNode assemblyNode = GetAssemblyNode (type, _treeView.Nodes);
-        TrySelect (assemblyNode, selectedValue);
-        
         TreeNode namespaceNode = GetNamespaceNode (type, assemblyNode.Nodes);
-        TrySelect (namespaceNode, selectedValue);
-        
         TreeNode typeNode = GetTypeNode (type, namespaceNode.Nodes);
-        TrySelect (typeNode, selectedValue);
+        TrySelect (typeNode, selectedType);
       }
 
       ExpandTypeTreeView();
@@ -70,8 +65,8 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
         assemblyNode.Name = assemblyName.FullName;
         assemblyNode.Text = assemblyName.Name;
         assemblyNode.ToolTipText = assemblyName.FullName;
-        assemblyNode.ImageKey = TreeViewIcons.Assembly.ToString ();
-        assemblyNode.SelectedImageKey = TreeViewIcons.Assembly.ToString ();
+        assemblyNode.ImageKey = TreeViewIcons.Assembly.ToString();
+        assemblyNode.SelectedImageKey = TreeViewIcons.Assembly.ToString();
 
         assemblyNodes.Add (assemblyNode);
       }
@@ -88,7 +83,7 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
         namespaceNode.Name = type.Namespace;
         namespaceNode.Text = type.Namespace;
         namespaceNode.ImageKey = TreeViewIcons.Namespace.ToString();
-        namespaceNode.SelectedImageKey = TreeViewIcons.Namespace.ToString ();
+        namespaceNode.SelectedImageKey = TreeViewIcons.Namespace.ToString();
 
 
         namespaceNodes.Add (namespaceNode);
@@ -106,8 +101,8 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
         typeNode.Name = TypeUtility.GetPartialAssemblyQualifiedName (type);
         typeNode.Text = type.Name;
         typeNode.Tag = type;
-        typeNode.ImageKey = TreeViewIcons.Class.ToString ();
-        typeNode.SelectedImageKey = TreeViewIcons.Class.ToString ();
+        typeNode.ImageKey = TreeViewIcons.Class.ToString();
+        typeNode.SelectedImageKey = TreeViewIcons.Class.ToString();
 
         typeNodes.Add (typeNode);
       }
@@ -115,9 +110,11 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
       return typeNode;
     }
 
-    private void TrySelect (TreeNode node, string selectedValue)
+    private void TrySelect (TreeNode node, Type selectedType)
     {
-      if (node.Name.Equals (selectedValue, StringComparison.CurrentCultureIgnoreCase))
+      if (node.Tag is Type
+          && selectedType != null
+          && ((Type) node.Tag).FullName.Equals (selectedType.FullName, StringComparison.CurrentCultureIgnoreCase))
       {
         _treeView.SelectedNode = node;
         node.EnsureVisible();
@@ -125,7 +122,7 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
     }
 
     private void ExpandTypeTreeView ()
-    {      
+    {
       if (_treeView.Nodes.Count < 4)
       {
         bool expandAll = _treeView.GetNodeCount (true) < 21;

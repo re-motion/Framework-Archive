@@ -22,7 +22,7 @@ namespace Rubicon.ObjectBinding.Design
         if (editorService != null)
         {
           EditorControlBase control = CreateEditorControl (context, provider, editorService);
-          control.Value = (string) value;
+          control.Value = value;
           editorService.DropDownControl (control);
           value = control.Value;
         }

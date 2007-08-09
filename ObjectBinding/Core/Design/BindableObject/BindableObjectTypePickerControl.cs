@@ -10,7 +10,7 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
   {
     private static bool s_isGacIncluded;
 
-    private string _value;
+    private Type _value;
     private TypeTreeViewController _typeTreeViewController;
     private SearchFieldController _searchFieldController;
     private BindableObjectTypeFinder _typeFinder;
@@ -36,10 +36,10 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
       _typeFinder = typeFinder;
     }
 
-    public override string Value
+    public override object Value
     {
       get { return _value; }
-      set { _value = value; }
+      set { _value = ArgumentUtility.CheckType<Type> ("value", value); }
     }
 
     protected override void OnLoad (EventArgs e)
@@ -93,9 +93,7 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
 
     private void SelectButton_Click (object sender, EventArgs e)
     {
-      Type type = _typeTreeViewController.GetSelectedType();
-      if (type != null)
-        _value = TypeUtility.GetPartialAssemblyQualifiedName (type);
+      _value = _typeTreeViewController.GetSelectedType ();
 
       EditorService.CloseDropDown();
     }

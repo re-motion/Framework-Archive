@@ -47,7 +47,7 @@ namespace Rubicon.Core.UnitTests.Utilities
       Type destinationType = typeof (string);
 
       Assert.AreEqual ("", _converter.ConvertTo (null, null, null, destinationType));
-      StringAssert.StartsWith (
+      Assert.AreEqual (
           "Rubicon.Core.UnitTests.Utilities.TypeNameConverterTest, Rubicon.Core.UnitTests", 
           (string) _converter.ConvertTo (null, null, typeof (TypeNameConverterTest), destinationType));
     }

@@ -37,49 +37,17 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSourc
     }
 
     [Test]
-    public void GetAndSetTypeName ()
-    {
-      Assert.That (_dataSource.TypeName, Is.Empty);
-      string typeName = "Rubicon.ObjectBinding.UnitTests::BindableObject.TestDomain.SimpleBusinessObjectClass";
-      _dataSource.TypeName = typeName;
-      Assert.That (_dataSource.TypeName, Is.EqualTo (typeName));
-    }
-
-    [Test]
-    public void GetAndSetTypeName_WithEmpty ()
-    {
-      _dataSource.TypeName = string.Empty;
-      Assert.That (_dataSource.TypeName, Is.Empty);
-    }
-
-    [Test]
-    public void GetAndSetTypeName_WithNull ()
-    {
-      _dataSource.TypeName = null;
-      Assert.That (_dataSource.TypeName, Is.Empty);
-    }
-
-    [Test]
-    public void GetType_WithValidTypeName ()
+    public void GetAndSetType ()
     {
       Assert.That (_dataSource.Type, Is.Null);
-      _dataSource.TypeName = "Rubicon.ObjectBinding.UnitTests::BindableObject.TestDomain.SimpleBusinessObjectClass";
-      Assert.That (_dataSource.Type, Is.SameAs (typeof (SimpleBusinessObjectClass)));
+      _dataSource.Type = typeof (SimpleBusinessObjectClass);
+      Assert.That (_dataSource.Type, Is.EqualTo (typeof (SimpleBusinessObjectClass)));
     }
 
     [Test]
-    [ExpectedException (typeof (TypeLoadException))]
-    public void GetType_WithInvalidValidTypeName ()
+    public void GetAndSetType_WithNull ()
     {
-      _dataSource.TypeName = "Invalid";
-      Dev.Null = _dataSource.Type;
-    }
-
-    [Test]
-    public void GetType_WithEmptyTypeName ()
-    {
-      Assert.That (_dataSource.Type, Is.Null);
-      _dataSource.TypeName = string.Empty;
+      _dataSource.Type = null;
       Assert.That (_dataSource.Type, Is.Null);
     }
 
@@ -93,7 +61,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSourc
     [Test]
     public void GetBusinessObjectClass_WithValidType ()
     {
-      _dataSource.TypeName = "Rubicon.ObjectBinding.UnitTests::BindableObject.TestDomain.SimpleBusinessObjectClass";
+      _dataSource.Type = typeof (SimpleBusinessObjectClass);
       Assert.That (_dataSource.BusinessObjectClass, Is.SameAs (_provider.GetBindableObjectClass (typeof (SimpleBusinessObjectClass))));
     }
 
@@ -105,7 +73,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSourc
         + "Parameter name: type")]
     public void GetBusinessObjectClass_WithTypeNotUsingBindableObjectMixin ()
     {
-      _dataSource.TypeName = "Rubicon.ObjectBinding.UnitTests::BindableObject.TestDomain.SimpleReferenceType";
+      _dataSource.Type = typeof (SimpleReferenceType);
       Dev.Null = _dataSource.BusinessObjectClass;
     }
   }

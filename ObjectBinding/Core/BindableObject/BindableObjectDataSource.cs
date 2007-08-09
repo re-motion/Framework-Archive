@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Drawing.Design;
 using Rubicon.ObjectBinding.Design.BindableObject;
 using Rubicon.Utilities;
@@ -11,7 +10,7 @@ namespace Rubicon.ObjectBinding.BindableObject
   public class BindableObjectDataSource : BusinessObjectDataSource
   {
     private IBusinessObject _businessObject;
-    private string _typeName = string.Empty;
+    private string _typeName;
 
     public BindableObjectDataSource ()
     {
@@ -29,26 +28,27 @@ namespace Rubicon.ObjectBinding.BindableObject
     }
 
     [Category ("Data")]
+    [DefaultValue (null)]
     [Editor (typeof (BindableObjectTypePickerEditor), typeof (UITypeEditor))]
-    public string TypeName
-    {
-      get { return _typeName; }
-      set { _typeName = StringUtility.NullToEmpty (value); }
-    }
-
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [TypeConverter (typeof (TypeNameConverter))]
     public Type Type
     {
       get
       {
-        if (string.IsNullOrEmpty (_typeName))
+        if (_typeName == null)
           return null;
 
         if (IsDesignMode)
           return TypeUtility.GetDesignModeType (_typeName, Site, false);
 
         return TypeUtility.GetType (_typeName, true, false);
+      }
+      set
+      {
+        if (value == null)
+          _typeName = null;
+        else
+          _typeName = TypeUtility.GetPartialAssemblyQualifiedName (value);
       }
     }
 

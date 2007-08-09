@@ -5,6 +5,7 @@ using System.Web.UI;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.Design.BindableObject;
 using Rubicon.ObjectBinding.Web.UI.Design;
+using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
@@ -19,12 +20,13 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Data")]
-    [DefaultValue ("")]
+    [DefaultValue (null)]
     [Editor (typeof (BindableObjectTypePickerEditor), typeof (UITypeEditor))]
-    public string TypeName
+    [TypeConverter (typeof (TypeNameConverter))]
+    public Type Type
     {
-      get { return _dataSource.TypeName; }
-      set { _dataSource.TypeName = value; }
+      get { return _dataSource.Type; }
+      set { _dataSource.Type = value; }
     }
 
     protected override IBusinessObjectDataSource GetDataSource ()

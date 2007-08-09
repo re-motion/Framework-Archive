@@ -65,7 +65,7 @@
 </rubicon:BocList></td></tr>
           </table>
       <p><asp:button id=SaveButton runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></p>
-      <p><rubicon:formgridmanager id=FormGridManager runat="server" visible="true"></rubicon:formgridmanager><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" typename="Rubicon.ObjectBinding.Sample::Person" /><rubicon:BusinessObjectReferenceDataSourceControl id="PartnerDataSource" runat="server" PropertyIdentifier="Partner" DataSourceControl="CurrentObject"></rubicon:BusinessObjectReferenceDataSourceControl></p></form>
+      <p><rubicon:formgridmanager id=FormGridManager runat="server" visible="true"></rubicon:formgridmanager><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Rubicon.ObjectBinding.Sample::Person" /><rubicon:BusinessObjectReferenceDataSourceControl id="PartnerDataSource" runat="server" PropertyIdentifier="Partner" DataSourceControl="CurrentObject"></rubicon:BusinessObjectReferenceDataSourceControl></p></form>
 
   </body>
 </html>

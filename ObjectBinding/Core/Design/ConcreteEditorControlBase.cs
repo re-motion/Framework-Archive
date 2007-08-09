@@ -9,7 +9,7 @@ namespace Rubicon.ObjectBinding.Design
     {
     }
 
-    public override string Value
+    public override object Value
     {
       get { throw new NotImplementedException(); }
       set { throw new NotImplementedException (); }

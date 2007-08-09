@@ -4,7 +4,7 @@
 
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="BocEnumValueUserControl.ascx.cs" Inherits="OBWTest.IndividualControlTests.BocEnumValueUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
 <div style="BORDER-RIGHT: black thin solid; BORDER-TOP: black thin solid; BORDER-LEFT: black thin solid; BORDER-BOTTOM: black thin solid; BACKGROUND-COLOR: #ffff99" runat="server" visible="false" ID="NonVisualControls">
-<rubicon:formgridmanager id=FormGridManager runat="server"/><rubicon:BindableObjectDataSourceControl id=CurrentObject runat="server" typename="Rubicon.ObjectBinding.Sample::Person"/></div>
+<rubicon:formgridmanager id=FormGridManager runat="server"/><rubicon:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Rubicon.ObjectBinding.Sample::Person"/></div>
 <table id=FormGrid runat="server">
   <tr>
     <td colSpan=4><rubicon:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="CurrentObject" readonly="True"></rubicon:boctextvalue>&nbsp;<rubicon:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject" readonly="True"></rubicon:boctextvalue></td></tr>

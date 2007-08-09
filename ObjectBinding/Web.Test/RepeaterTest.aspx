@@ -18,7 +18,7 @@
     <div>
     <rubicon:boctextvalue id="FirstNameField" runat="server" ReadOnly="true" DataSourceControl="ItemDataSourceControl" PropertyIdentifier="FirstName">
 </rubicon:boctextvalue>
-<rubicon:bindableobjectdatasourcecontrol id="ItemDataSourceControl" runat="server" typename="Rubicon.ObjectBinding.Sample::Person"/>
+<rubicon:bindableobjectdatasourcecontrol id="ItemDataSourceControl" runat="server" Type="Rubicon.ObjectBinding.Sample::Person"/>
 </div>
 </ItemTemplate>
 </ros:ObjectBoundRepeater>
@@ -39,6 +39,6 @@
 </ItemTemplate>
 </ros:ObjectBoundRepeater>
 <hr>
-<rubicon:bindableobjectdatasourcecontrol id=CurrentObject runat="server" typename="Rubicon.ObjectBinding.Sample::Person"/></form>
+<rubicon:bindableobjectdatasourcecontrol id=CurrentObject runat="server" Type="Rubicon.ObjectBinding.Sample::Person"/></form>
   </body>
 </html>

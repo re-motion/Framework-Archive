@@ -163,6 +163,6 @@
 <rubicon:boccheckbox id="BocCheckBox35" cssclass="bocCheckBox block" runat="server" Width="33%" datasourcecontrol="CurrentObject" readonly="True" showdescription="True" propertyidentifier="Deceased"></rubicon:boccheckbox></td>
     <td width="50%" class="cell">
       <p>2x 33%</p></td>
-  </tr>  </table><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" typename="Rubicon.ObjectBinding.Sample::Person"></rubicon:BindableObjectDataSourceControl></form>
+  </tr>  </table><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Rubicon.ObjectBinding.Sample::Person"></rubicon:BindableObjectDataSourceControl></form>
   </body>
 </html>

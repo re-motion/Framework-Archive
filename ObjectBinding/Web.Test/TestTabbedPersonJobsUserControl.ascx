@@ -45,4 +45,4 @@
 </FixedColumns></rubicon:boclist></td>
 </tr>
 </table>
-<p><rubicon:formgridmanager id="FormGridManager" runat="server" visible="true"></rubicon:formgridmanager><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" typename="Rubicon.ObjectBinding.Sample::Person"></rubicon:BindableObjectDataSourceControl></p>
+<p><rubicon:formgridmanager id="FormGridManager" runat="server" visible="true"></rubicon:formgridmanager><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Rubicon.ObjectBinding.Sample::Person"></rubicon:BindableObjectDataSourceControl></p>

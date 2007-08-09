@@ -161,7 +161,7 @@ namespace Rubicon.ObjectBinding.Design
     {
     }
 
-    public override string Value
+    public override object Value
     {
       get { return _value; }
 
@@ -170,14 +170,14 @@ namespace Rubicon.ObjectBinding.Design
         if (value == null)
           _value = string.Empty;
         else
-          _value = value.Trim();
+          _value = ((string)value).Trim();
 
         if (_value.Length > 0)
         {
           for (int i = 0; i < PropertiesList.Items.Count; ++i)
           {
             string item = (string) PropertiesList.Items[i];
-            if (item == value)
+            if (item == (string)value)
               PropertiesList.SelectedIndex = i;
           }
         }

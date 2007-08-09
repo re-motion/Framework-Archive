@@ -12,7 +12,7 @@
   </HEAD>
   <body MS_POSITIONING="GridLayout">
     <form id="Form1" method="post" runat="server">
-      <rubicon:bindableobjectdatasourcecontrol id="CurrentObjectDataSource" runat="server" TypeName="Rubicon.ObjectBinding.Sample::Person"/>
+      <rubicon:bindableobjectdatasourcecontrol id="CurrentObjectDataSource" runat="server" Type="Rubicon.ObjectBinding.Sample::Person"/>
       <rubicon:businessobjectreferencedatasourcecontrol id="PartnerDataSource" runat="server" PropertyIdentifier="Partner" ReferencedDataSource="CurrentObjectDataSource"
         DataSourceControl="CurrentObjectDataSource"></rubicon:businessobjectreferencedatasourcecontrol>
       <rubicon:boctextvalue id=FirstNameField style="Z-INDEX: 100; LEFT: 224px; POSITION: absolute; TOP: 56px" runat="server" PropertyIdentifier="FirstName" DataSource="<%# CurrentObjectDataSource %>">

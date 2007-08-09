@@ -10,28 +10,28 @@
 <body>
   <form id="Form" runat="server">
     <asp:ScriptManager ID="ScriptManager" runat="server" />
-    <obwt:NavigationTabs ID="NavigationTabs" runat="server" />
-    <div>
-      <rubicon:WebButton ID="PostBackButton" runat="server" Text="Post Back" />
-      <rubicon:WebButton ID="SaveButton" runat="server" Width="120px" Text="Save" />
-      <rubicon:WebButton ID="SaveAndRestartButton" runat="server" Text="Save &amp; Restart" Width="120px" />
-      <rubicon:WebButton ID="CancelButton" runat="server" Text="Cancel" Width="120px" />
-    </div>
-    <div>
-      <asp:UpdatePanel ID="UserControlUpdatePanel" runat="server">
-        <contenttemplate>
-          <asp:PlaceHolder ID="UserControlPlaceHolder" runat="server" />
-        </contenttemplate>
-      </asp:UpdatePanel>
-    </div>
-    <div>
-      <asp:UpdatePanel ID="StackUpdatePanel" runat="server">
-        <contenttemplate>
-          <asp:Literal ID="Stack" runat="server" />
-        </contenttemplate>
-      </asp:UpdatePanel>
-    </div>
-    <rubicon:BindableObjectDataSourceControl ID="CurrentObject" runat="server" TypeName="Rubicon.ObjectBinding.Sample::Person" />
+    <rubicon:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Rubicon.ObjectBinding.Sample::Person" />
+        <obwt:NavigationTabs ID="NavigationTabs" runat="server" />
+        <asp:PlaceHolder ID="ButtonPlaceHolder" runat="server">
+          <div>
+            <rubicon:WebButton ID="PostBackButton" runat="server" Text="Post Back" />
+            <rubicon:WebButton ID="SaveButton" runat="server" Width="120px" Text="Save" />
+            <rubicon:WebButton ID="SaveAndRestartButton" runat="server" Text="Save &amp; Restart" Width="120px" />
+            <rubicon:WebButton ID="CancelButton" runat="server" Text="Cancel" Width="120px" />
+          </div>
+        </asp:PlaceHolder>
+
+        <asp:UpdatePanel ID="UserControlUpdatePanel" runat="server">
+          <contenttemplate>
+            <asp:PlaceHolder ID="UserControlPlaceHolder" runat="server" />
+          </contenttemplate>
+        </asp:UpdatePanel>
+
+        <asp:UpdatePanel ID="StackUpdatePanel" runat="server">
+          <contenttemplate>
+            <asp:Literal ID="Stack" runat="server" />
+          </contenttemplate>
+        </asp:UpdatePanel>
   </form>
 </body>
 </html>

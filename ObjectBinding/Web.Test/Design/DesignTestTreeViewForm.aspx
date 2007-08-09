@@ -15,6 +15,6 @@
 <p><ros:PersonTreeView id="PersonTreeView" runat="server" cssclass="TreeBlock" DataSourceControl="CurrentObject" enabletoplevelexpander="False" enablelookaheadevaluation="True"></ros:PersonTreeView></p>
 <p>
 
-<rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" typename="Rubicon.ObjectBinding.Sample::Person"/></p></form>
+<rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Rubicon.ObjectBinding.Sample::Person"/></p></form>
   </body>
 </html>

@@ -16,7 +16,7 @@
     <form id="Form1" method="post" runat="server">
       <div visible="false" runat="server" style="BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; FONT-SIZE: x-small; BORDER-LEFT: black 1px solid; BORDER-BOTTOM: black 1px solid; FONT-FAMILY: Verdana, Arial, Sans-Serif; BACKGROUND-COLOR: #ffffe0">
         <rubicon:FormGridManager id="FormGridManager" runat="server"></rubicon:FormGridManager>
-        <rubicon:BindableObjectDataSourceControl id="DataSource" runat="server" TypeName="OBWTest.Person" />
+        <rubicon:BindableObjectDataSourceControl id="DataSource" runat="server" Type="Rubicon.ObjectBinding.Sample::Person" />
       </div>
       <TABLE id="NameFormGrid" runat="server" style="WIDTH: 100%">
         <TR>

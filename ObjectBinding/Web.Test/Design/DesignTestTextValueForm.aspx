@@ -400,6 +400,6 @@
 </LabelStyle></rubicon:bocTextvalue></td>
     <td width="50%">
       <p>2x 33%</p></td>
-  </tr></table><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" typename="Rubicon.ObjectBinding.Sample::Person" /></form>
+  </tr></table><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Rubicon.ObjectBinding.Sample::Person" /></form>
   </body>
 </html>

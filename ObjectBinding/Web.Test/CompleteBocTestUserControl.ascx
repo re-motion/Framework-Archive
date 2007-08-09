@@ -48,7 +48,7 @@
 </PersistedCommand>
 </rubicon:BocSimpleColumnDefinition>
 </FixedColumns></rubicon:BocList></td></tr></table>
-<p><rubicon:formgridmanager id="FormGridManager" runat="server" visible="true"></rubicon:formgridmanager><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" typename="Rubicon.ObjectBinding.Sample::Person"></rubicon:BindableObjectDataSourceControl></p>
+<p><rubicon:formgridmanager id="FormGridManager" runat="server" visible="true"></rubicon:formgridmanager><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Rubicon.ObjectBinding.Sample::Person"></rubicon:BindableObjectDataSourceControl></p>
 <p><asp:button id="SaveButton" runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></p>
 <rubicon:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView" width="100%" height="10%">
 <views> 

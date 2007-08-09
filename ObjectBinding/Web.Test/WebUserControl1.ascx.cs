@@ -57,7 +57,7 @@ namespace OBWTest
       // 
       this.CurrentObject.BusinessObject = null;
       this.CurrentObject.Mode = DataSourceMode.Edit;
-      this.CurrentObject.TypeName = null;
+      this.CurrentObject.Type = null;
       this.Load += new System.EventHandler(this.Page_Load);
 
     }

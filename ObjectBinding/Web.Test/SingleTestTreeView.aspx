@@ -29,7 +29,7 @@
       </tr>
     </table>
 <rubicon:formgridmanager id=FormGridManager runat="server" />
-<rubicon:BindableObjectDataSourceControl id=CurrentObject runat="server" typename="Rubicon.ObjectBinding.Sample::Person" />
+<rubicon:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Rubicon.ObjectBinding.Sample::Person" />
 
 </form>
 

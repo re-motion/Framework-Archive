@@ -63,7 +63,7 @@ public class WebForm2: System.Web.UI.Page
     // 
     this.reflectionBusinessObjectDataSource1.BusinessObject = null;
     this.reflectionBusinessObjectDataSource1.Mode = DataSourceMode.Edit;
-    this.reflectionBusinessObjectDataSource1.TypeName = "OBWTest.Person, OBWTest";
+    this.reflectionBusinessObjectDataSource1.Type = typeof (Person);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }

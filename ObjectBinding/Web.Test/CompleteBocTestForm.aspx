@@ -71,7 +71,7 @@
 <p><rubicon:formgridmanager id=FormGridManager runat="server" 
 visible="true"></rubicon:formgridmanager><rubicon:BindableObjectDataSourceControl 
 id=CurrentObject runat="server" 
-typename="Rubicon.ObjectBinding.Sample::Person" /></p>
+Type="Rubicon.ObjectBinding.Sample::Person" /></p>
 <p><asp:button id=SaveButton runat="server" Text="Save" Width="80px"></asp:button><asp:button id=PostBackButton runat="server" Text="Post Back"></asp:button></p></form>
   </body>
 </html>

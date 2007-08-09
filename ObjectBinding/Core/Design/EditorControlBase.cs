@@ -27,7 +27,7 @@ namespace Rubicon.ObjectBinding.Design
 
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public abstract string Value { get; set; }
+    public abstract object Value { get; set; }
 
     public IServiceProvider ServiceProvider
     {

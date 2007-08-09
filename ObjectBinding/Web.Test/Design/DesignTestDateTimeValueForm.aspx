@@ -401,6 +401,6 @@
 </LabelStyle></rubicon:bocdatetimevalue></td>
     <td width="50%" class="cell">
       <p>2x 33%</p></td>
-  </tr></table><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" typename="Rubicon.ObjectBinding.Sample::Person"></rubicon:BindableObjectDataSourceControl></form>
+  </tr></table><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Rubicon.ObjectBinding.Sample::Person"></rubicon:BindableObjectDataSourceControl></form>
   </body>
 </html>

@@ -54,7 +54,7 @@ namespace Rubicon.Utilities
         return string.Empty;
 
       if (value is Type && destinationType == typeof (string))
-        return ((Type) value).AssemblyQualifiedName;
+        return TypeUtility.GetPartialAssemblyQualifiedName ((Type) value);
 
       return base.ConvertTo (context, culture, value, destinationType);
     }
