@@ -61,7 +61,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
 
       MethodInfo baseMethod = typeof (ClassWithSimpleGenericMethod).GetMethod ("GenericMethod");
       CustomMethodEmitter methodEmitter = classEmitter.CreateMethodOverride (baseMethod);
-      methodEmitter.ImplementMethodByBaseCall (baseMethod);
+      methodEmitter.ImplementByBaseCall (baseMethod);
 
       Type builtType = classEmitter.BuildType ();
       ClassWithSimpleGenericMethod instance = (ClassWithSimpleGenericMethod) Activator.CreateInstance (builtType);
@@ -78,7 +78,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
 
       MethodInfo baseMethod = typeof (ClassWithConstrainedGenericMethod).GetMethod ("GenericMethod");
       CustomMethodEmitter methodEmitter = classEmitter.CreateMethodOverride (baseMethod);
-      methodEmitter.ImplementMethodByBaseCall (baseMethod);
+      methodEmitter.ImplementByBaseCall (baseMethod);
 
       Type builtType = classEmitter.BuildType ();
       ClassWithConstrainedGenericMethod instance = (ClassWithConstrainedGenericMethod) Activator.CreateInstance (builtType);
@@ -103,7 +103,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
       MethodInfo baseMethod = baseType.GetMethod ("GenericMethod");
 
       CustomMethodEmitter methodEmitter = classEmitter.CreateMethodOverride (baseMethod);
-      methodEmitter.ImplementMethodByBaseCall (baseMethod);
+      methodEmitter.ImplementByBaseCall (baseMethod);
 
       Type builtType = classEmitter.BuildType ();
       GenericClassWithGenericMethod<IConvertible, List<string>, int, object, IConvertible, List<List<IConvertible[]>>> instance =
@@ -123,19 +123,19 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
 
       MethodInfo baseMethod = typeof (GenericClassWithAllKindsOfMembers<int>).GetMethod ("Method");
       CustomMethodEmitter overriddenMethod = classEmitter.CreateMethodOverride (baseMethod);
-      overriddenMethod.ImplementMethodByBaseCall (baseMethod);
+      overriddenMethod.ImplementByBaseCall (baseMethod);
 
       PropertyInfo baseProperty = typeof (GenericClassWithAllKindsOfMembers<int>).GetProperty ("Property");
       CustomPropertyEmitter overriddenProperty = classEmitter.CreatePropertyOverride (baseProperty);
       overriddenProperty.GetMethod = classEmitter.CreateMethodOverride (baseProperty.GetGetMethod ());
-      overriddenProperty.GetMethod.ImplementMethodByBaseCall (baseProperty.GetGetMethod ());
+      overriddenProperty.GetMethod.ImplementByBaseCall (baseProperty.GetGetMethod ());
 
       EventInfo baseEvent = typeof (GenericClassWithAllKindsOfMembers<int>).GetEvent ("Event");
       CustomEventEmitter overriddenEvent = classEmitter.CreateEventOverride (baseEvent);
       overriddenEvent.AddMethod = classEmitter.CreateMethodOverride (baseEvent.GetAddMethod ());
-      overriddenEvent.AddMethod.ImplementMethodByBaseCall (baseEvent.GetAddMethod ());
+      overriddenEvent.AddMethod.ImplementByBaseCall (baseEvent.GetAddMethod ());
       overriddenEvent.RemoveMethod = classEmitter.CreateMethodOverride (baseEvent.GetRemoveMethod ());
-      overriddenEvent.RemoveMethod.ImplementMethodByBaseCall (baseEvent.GetRemoveMethod ());
+      overriddenEvent.RemoveMethod.ImplementByBaseCall (baseEvent.GetRemoveMethod ());
 
       Type builtType = classEmitter.BuildType ();
       GenericClassWithAllKindsOfMembers<int> instance = (GenericClassWithAllKindsOfMembers<int>) Activator.CreateInstance (builtType);
@@ -154,19 +154,19 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
 
       MethodInfo baseMethod = typeof (GenericClassWithAllKindsOfMembers<>).GetMethod ("Method");
       CustomMethodEmitter overriddenMethod = classEmitter.CreateMethodOverride (baseMethod);
-      overriddenMethod.ImplementMethodByBaseCall (baseMethod);
+      overriddenMethod.ImplementByBaseCall (baseMethod);
 
       PropertyInfo baseProperty = typeof (GenericClassWithAllKindsOfMembers<>).GetProperty ("Property");
       CustomPropertyEmitter overriddenProperty = classEmitter.CreatePropertyOverride (baseProperty);
       overriddenProperty.GetMethod = classEmitter.CreateMethodOverride (baseProperty.GetGetMethod ());
-      overriddenProperty.GetMethod.ImplementMethodByBaseCall (baseProperty.GetGetMethod ());
+      overriddenProperty.GetMethod.ImplementByBaseCall (baseProperty.GetGetMethod ());
 
       EventInfo baseEvent = typeof (GenericClassWithAllKindsOfMembers<>).GetEvent ("Event");
       CustomEventEmitter overriddenEvent = classEmitter.CreateEventOverride (baseEvent);
       overriddenEvent.AddMethod = classEmitter.CreateMethodOverride (baseEvent.GetAddMethod ());
-      overriddenEvent.AddMethod.ImplementMethodByBaseCall (baseEvent.GetAddMethod ());
+      overriddenEvent.AddMethod.ImplementByBaseCall (baseEvent.GetAddMethod ());
       overriddenEvent.RemoveMethod = classEmitter.CreateMethodOverride (baseEvent.GetRemoveMethod ());
-      overriddenEvent.RemoveMethod.ImplementMethodByBaseCall (baseEvent.GetRemoveMethod ());
+      overriddenEvent.RemoveMethod.ImplementByBaseCall (baseEvent.GetRemoveMethod ());
 
       Type builtType = classEmitter.BuildType ();
       GenericClassWithAllKindsOfMembers<int> instance =

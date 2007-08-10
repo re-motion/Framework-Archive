@@ -110,13 +110,13 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void AddCallToOverrider (CustomMethodEmitter methodOverride, Reference targetReference, MethodInfo targetMethod)
     {
-      LocalReference castTargetLocal = methodOverride.InnerEmitter.CodeBuilder.DeclareLocal (targetMethod.DeclaringType);
-      methodOverride.InnerEmitter.CodeBuilder.AddStatement (
+      LocalReference castTargetLocal = methodOverride.DeclareLocal (targetMethod.DeclaringType);
+      methodOverride.AddStatement (
           new AssignStatement (
               castTargetLocal,
               new CastClassExpression (targetMethod.DeclaringType, targetReference.ToExpression())));
 
-      methodOverride.ImplementMethodByDelegation (castTargetLocal, targetMethod);
+      methodOverride.ImplementByDelegating (castTargetLocal, targetMethod);
     }
 
     public TypeBuilder TypeBuilder
@@ -148,13 +148,13 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementGetObjectData ()
     {
-      Rubicon.CodeGeneration.SerializationHelper.ImplementGetObjectDataByDelegation (Emitter, delegate (MethodEmitter newMethod, bool baseIsISerializable)
+      Rubicon.CodeGeneration.SerializationHelper.ImplementGetObjectDataByDelegation (Emitter, delegate (CustomMethodEmitter newMethod, bool baseIsISerializable)
           {
             return new MethodInvocationExpression (
                 null,
                 typeof (MixinSerializationHelper).GetMethod ("GetObjectDataForGeneratedTypes"),
-                new ReferenceExpression (newMethod.Arguments[0]),
-                new ReferenceExpression (newMethod.Arguments[1]),
+                new ReferenceExpression (newMethod.ArgumentReferences[0]),
+                new ReferenceExpression (newMethod.ArgumentReferences[1]),
                 new ReferenceExpression (SelfReference.Self),
                 new ReferenceExpression (_configurationField),
                 new ReferenceExpression (new ConstReference (!baseIsISerializable)));

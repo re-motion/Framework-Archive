@@ -16,6 +16,7 @@ namespace Rubicon.CodeGeneration
   {
     private readonly AbstractTypeEmitter _innerEmitter;
     private readonly Cache<MethodInfo, CustomMethodEmitter> _publicMethodWrappers = new Cache<MethodInfo, CustomMethodEmitter> ();
+    private bool _hasBeenBuilt = false;
 
     public CustomClassEmitter (AbstractTypeEmitter innerEmitter)
     {
@@ -73,6 +74,11 @@ namespace Rubicon.CodeGeneration
     public TypeBuilder TypeBuilder
     {
       get { return InnerEmitter.TypeBuilder; }
+    }
+
+    public bool HasBeenBuilt
+    {
+      get { return _hasBeenBuilt; }
     }
 
     public ConstructorEmitter CreateConstructor (ArgumentReference[] arguments)
@@ -173,7 +179,7 @@ namespace Rubicon.CodeGeneration
       else
         methodName = string.Format ("{0}.{1}", baseOrInterfaceMethod.DeclaringType.FullName, baseOrInterfaceMethod.Name);
       CustomMethodEmitter methodDefinition = CreateMethod (methodName, methodDefinitionAttributes);
-      methodDefinition.CopyParametersAndReturnTypeFrom (baseOrInterfaceMethod);
+      methodDefinition.CopyParametersAndReturnType (baseOrInterfaceMethod);
 
       TypeBuilder.DefineMethodOverride (methodDefinition.MethodBuilder, baseOrInterfaceMethod);
 
@@ -291,14 +297,15 @@ namespace Rubicon.CodeGeneration
           {
             MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
             CustomMethodEmitter wrapper = CreateMethod ("__wrap__" + method.Name, attributes);
-            wrapper.CopyParametersAndReturnTypeFrom (method);
-            wrapper.ImplementMethodByDelegation (SelfReference.Self, method);
+            wrapper.CopyParametersAndReturnType (method);
+            wrapper.ImplementByDelegating (SelfReference.Self, method);
             return wrapper;
           });
     }
 
     public Type BuildType ()
     {
+      _hasBeenBuilt = true;
       return InnerEmitter.BuildType();
     }
   }

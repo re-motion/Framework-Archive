@@ -116,6 +116,7 @@
     <Compile Include="CodeGeneration\ClassEmitterGenericsTest.cs" />
     <Compile Include="CodeGeneration\ClassEmitterTest.cs" />
     <Compile Include="CodeGeneration\LdArrayElementTest.cs" />
+    <Compile Include="CodeGeneration\MethodEmitterTest.cs" />
     <Compile Include="CodeGeneration\SampleTypes\ClassWithAllKindsOfMembers.cs" />
     <Compile Include="CodeGeneration\SampleTypes\ClassWithConstrainedGenericMethod.cs" />
     <Compile Include="CodeGeneration\SampleTypes\ClassWithCustomAttribute.cs" />

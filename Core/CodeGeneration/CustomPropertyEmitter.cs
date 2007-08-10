@@ -86,12 +86,12 @@ namespace Rubicon.CodeGeneration
     public void ImplementPropertyWithField (FieldReference backingField)
     {
       if (GetMethod != null)
-        GetMethod.InnerEmitter.CodeBuilder.AddStatement (new ReturnStatement (backingField));
+        GetMethod.AddStatement (new ReturnStatement (backingField));
       if (SetMethod != null)
       {
-        SetMethod.InnerEmitter.CodeBuilder.AddStatement (
-            new AssignStatement (backingField, SetMethod.InnerEmitter.Arguments[0].ToExpression()));
-        SetMethod.InnerEmitter.CodeBuilder.AddStatement (new ReturnStatement());
+        SetMethod.AddStatement (
+            new AssignStatement (backingField, SetMethod.ArgumentReferences[0].ToExpression()));
+        SetMethod.ImplementByReturningVoid();
       }
     }
 
@@ -104,7 +104,7 @@ namespace Rubicon.CodeGeneration
         CustomMethodEmitter method =
             DeclaringType.CreateMethod ("get_" + Name, MethodAttributes.Public | MethodAttributes.SpecialName);
         method.SetReturnType (PropertyType);
-        method.SetParameters (IndexParameters);
+        method.SetParameterTypes (IndexParameters);
         GetMethod = method;
         return method;
       }
@@ -121,7 +121,7 @@ namespace Rubicon.CodeGeneration
         Type[] setterParameterTypes = new Type[IndexParameters.Length + 1];
         IndexParameters.CopyTo (setterParameterTypes, 0);
         setterParameterTypes[IndexParameters.Length] = PropertyType;
-        method.SetParameters (setterParameterTypes);
+        method.SetParameterTypes (setterParameterTypes);
         SetMethod = method;
         return method;
       }

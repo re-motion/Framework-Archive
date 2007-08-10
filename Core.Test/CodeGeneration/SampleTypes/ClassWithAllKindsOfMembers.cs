@@ -11,6 +11,12 @@ namespace Rubicon.Core.UnitTests.CodeGeneration.SampleTypes
         Event (null, null);
     }
 
+    public virtual void MethodWithOutRef (out string outP, ref int refP)
+    {
+      outP = refP.ToString ();
+      ++refP;
+    }
+
     public virtual int Property
     {
       get { return 0; }

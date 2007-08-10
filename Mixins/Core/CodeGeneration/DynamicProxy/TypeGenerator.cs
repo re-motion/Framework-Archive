@@ -187,13 +187,13 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementGetObjectData ()
     {
-      Rubicon.CodeGeneration.SerializationHelper.ImplementGetObjectDataByDelegation (Emitter, delegate (MethodEmitter newMethod, bool baseIsISerializable)
+      Rubicon.CodeGeneration.SerializationHelper.ImplementGetObjectDataByDelegation (Emitter, delegate (CustomMethodEmitter newMethod, bool baseIsISerializable)
           {
             return new MethodInvocationExpression (
                 null,
                 typeof (SerializationHelper).GetMethod ("GetObjectDataForGeneratedTypes"),
-                new ReferenceExpression (newMethod.Arguments[0]),
-                new ReferenceExpression (newMethod.Arguments[1]),
+                new ReferenceExpression (newMethod.ArgumentReferences[0]),
+                new ReferenceExpression (newMethod.ArgumentReferences[1]),
                 new ReferenceExpression (SelfReference.Self),
                 new ReferenceExpression (_configurationField),
                 new ReferenceExpression (_extensionsField),
@@ -250,8 +250,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       CustomMethodEmitter customMethodEmitter = Emitter.CreateInterfaceMethodImplementation (interfaceMember);
       ExpressionReference implementer =
-          new ExpressionReference (interfaceMember.DeclaringType, implementerExpression, customMethodEmitter.InnerEmitter);
-      customMethodEmitter.ImplementMethodByDelegation (implementer, interfaceMember);
+          new ExpressionReference (interfaceMember.DeclaringType, implementerExpression, customMethodEmitter);
+      customMethodEmitter.ImplementByDelegating (implementer, interfaceMember);
 
       ReplicateAttributes (implementingMember, customMethodEmitter);
       return customMethodEmitter;
@@ -315,7 +315,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         "Duck typing is only supported with members from the base type");
 
       CustomMethodEmitter methodImplementation = _emitter.CreateInterfaceMethodImplementation (requiredMethod.InterfaceMethod);
-      methodImplementation.ImplementMethodByDelegation (SelfReference.Self, requiredMethod.ImplementingMethod.MethodInfo);
+      methodImplementation.ImplementByDelegating (SelfReference.Self, requiredMethod.ImplementingMethod.MethodInfo);
     }
 
     private void ImplementOverrides ()
@@ -349,7 +349,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       MethodInfo proxyMethod = _baseCallGenerator.GetProxyMethodForOverriddenMethod (method);
       CustomMethodEmitter methodOverride = Emitter.CreateMethodOverride (method.MethodInfo);
-      methodOverride.ImplementMethodByDelegation (_firstField, proxyMethod);
+      methodOverride.ImplementByDelegating (_firstField, proxyMethod);
       return methodOverride;
     }
 
@@ -438,8 +438,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
       MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
       CustomMethodEmitter baseCallMethod = new CustomMethodEmitter (Emitter, "__base__" + method.Name, attributes);
-      baseCallMethod.CopyParametersAndReturnTypeFrom (method);
-      baseCallMethod.ImplementMethodByBaseCall (method);
+      baseCallMethod.CopyParametersAndReturnType (method);
+      baseCallMethod.ImplementByBaseCall (method);
       return baseCallMethod.MethodBuilder;
     }
 

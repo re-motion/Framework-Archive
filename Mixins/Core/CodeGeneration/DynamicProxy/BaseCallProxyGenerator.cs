@@ -103,7 +103,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
       MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
       CustomMethodEmitter methodOverride = new CustomMethodEmitter (_emitter, methodDefinitionOnTarget.FullName, attributes);
-      methodOverride.CopyParametersAndReturnTypeFrom (methodDefinitionOnTarget.MethodInfo);
+      methodOverride.CopyParametersAndReturnType (methodDefinitionOnTarget.MethodInfo);
 
       BaseCallMethodGenerator methodGenerator = new BaseCallMethodGenerator (methodOverride, this, _mixinTypeGenerators);
       methodGenerator.AddBaseCallToNextInChain (methodDefinitionOnTarget);

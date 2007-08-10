@@ -72,7 +72,7 @@ namespace Rubicon.CodeGeneration
       {
         CustomMethodEmitter method =
             DeclaringType.CreateMethod ("add_" + Name, MethodAttributes.Public | MethodAttributes.SpecialName);
-        method.SetParameters (new Type[] { EventType });
+        method.SetParameterTypes (new Type[] { EventType });
         AddMethod = method;
         return method;
       }
@@ -86,7 +86,7 @@ namespace Rubicon.CodeGeneration
       {
         CustomMethodEmitter method =
             DeclaringType.CreateMethod ("remove_" + Name, MethodAttributes.Public | MethodAttributes.SpecialName);
-        method.SetParameters (new Type[] { EventType });
+        method.SetParameterTypes (new Type[] { EventType });
         RemoveMethod = method;
         return method;
       }

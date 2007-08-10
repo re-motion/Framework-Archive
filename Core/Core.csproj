@@ -107,6 +107,7 @@
     <Compile Include="CodeGeneration\DPExtensions\IfStatement.cs" />
     <Compile Include="CodeGeneration\DPExtensions\ILStatement.cs" />
     <Compile Include="CodeGeneration\DPExtensions\IndirectFieldReference.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\InitObjectExpression.cs" />
     <Compile Include="CodeGeneration\DPExtensions\LoadArrayExpressionElementExpression.cs" />
     <Compile Include="CodeGeneration\DPExtensions\PropertyReference.cs" />
     <Compile Include="CodeGeneration\DPExtensions\SameConditionExpression.cs" />

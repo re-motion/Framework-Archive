@@ -21,6 +21,11 @@ namespace Rubicon.CodeGeneration.DPExtensions
       _methodEmitter = methodEmitter;
     }
 
+    public ExpressionReference (Type referenceType, Expression expression, CustomMethodEmitter methodEmitter)
+      : this (referenceType, expression, methodEmitter.InnerEmitter)
+    {
+    }
+
     public override void LoadAddressOfReference (ILGenerator gen)
     {
       throw new NotImplementedException();

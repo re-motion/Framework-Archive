@@ -17,7 +17,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     {
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object));
       CustomMethodEmitter method = classEmitter.CreateMethod ("LoadArrayElementFromMethodCall", MethodAttributes.Public);
-      method.SetParameters (new Type[] { typeof (IArrayProvider), typeof (int) });
+      method.SetParameterTypes (new Type[] { typeof (IArrayProvider), typeof (int) });
       method.SetReturnType (typeof (object));
       method.AddStatement (new ILStatement (delegate (IMemberEmitter member, ILGenerator ilgen)
       {

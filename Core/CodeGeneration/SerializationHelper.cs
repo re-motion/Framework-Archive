@@ -1,7 +1,6 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Rubicon.Utilities;
 
@@ -16,7 +15,8 @@ namespace Rubicon.CodeGeneration
       return method.IsPublic || method.IsFamily || method.IsFamilyOrAssembly;
     }
 
-    public static void ImplementGetObjectDataByDelegation (CustomClassEmitter classEmitter, Func<MethodEmitter, bool, MethodInvocationExpression> delegatingMethodInvocationGetter)
+    public static void ImplementGetObjectDataByDelegation (
+        CustomClassEmitter classEmitter, Func<CustomMethodEmitter, bool, MethodInvocationExpression> delegatingMethodInvocationGetter)
     {
       ArgumentUtility.CheckNotNull ("delegatingMethodInvocationGetter", delegatingMethodInvocationGetter);
 
@@ -24,11 +24,11 @@ namespace Rubicon.CodeGeneration
 
       MethodInfo getObjectDataMethod =
           typeof (ISerializable).GetMethod ("GetObjectData", new Type[] {typeof (SerializationInfo), typeof (StreamingContext)});
-      MethodEmitter newMethod = classEmitter.CreateInterfaceMethodImplementation (getObjectDataMethod).InnerEmitter;
+      CustomMethodEmitter newMethod = classEmitter.CreateInterfaceMethodImplementation (getObjectDataMethod);
 
       MethodInvocationExpression delegatingMethodInvocation = delegatingMethodInvocationGetter (newMethod, baseIsISerializable);
       if (delegatingMethodInvocation != null)
-        newMethod.CodeBuilder.AddStatement (new ExpressionStatement (delegatingMethodInvocation));
+        newMethod.AddStatement (new ExpressionStatement (delegatingMethodInvocation));
 
       if (baseIsISerializable)
       {
@@ -53,15 +53,15 @@ namespace Rubicon.CodeGeneration
           string message = string.Format ("No public or protected GetObjectData in {0} - this is not supported.", classEmitter.BaseType.FullName);
           throw new NotSupportedException (message);
         }
-        newMethod.CodeBuilder.AddStatement (
+        newMethod.AddStatement (
             new ExpressionStatement (
                 new MethodInvocationExpression (
                     SelfReference.Self,
                     baseGetObjectDataMethod,
-                    new ReferenceExpression (newMethod.Arguments[0]),
-                    new ReferenceExpression (newMethod.Arguments[1]))));
+                    new ReferenceExpression (newMethod.ArgumentReferences[0]),
+                    new ReferenceExpression (newMethod.ArgumentReferences[1]))));
       }
-      newMethod.CodeBuilder.AddStatement (new ReturnStatement());
+      newMethod.ImplementByReturningVoid ();
     }
   }
 }

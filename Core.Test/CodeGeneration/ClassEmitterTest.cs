@@ -34,6 +34,15 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     }
 
     [Test]
+    public void HasBeenBuilt ()
+    {
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (ClassEmitterTest));
+      Assert.IsFalse (classEmitter.HasBeenBuilt);
+      classEmitter.BuildType();
+      Assert.IsTrue (classEmitter.HasBeenBuilt);
+    }
+
+    [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Base type must not be an interface (System.IConvertible).",
         MatchType = MessageMatch.Contains)]
     public void ThrowsWhenInterfaceAsBaseClass ()
@@ -261,8 +270,8 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
       PropertyInfo baseProperty = typeof (ClassWithAllKindsOfMembers).GetProperty ("Item", _declaredInstanceBindingFlags);
       CustomPropertyEmitter property = classEmitter.CreatePropertyOverride (baseProperty);
 
-      property.CreateGetMethod ().ImplementMethodByBaseCall (baseProperty.GetGetMethod ());
-      property.CreateSetMethod ().ImplementMethodByBaseCall (baseProperty.GetSetMethod ());
+      property.CreateGetMethod ().ImplementByBaseCall (baseProperty.GetGetMethod ());
+      property.CreateSetMethod ().ImplementByBaseCall (baseProperty.GetSetMethod ());
 
       Type builtType = classEmitter.BuildType ();
       ClassWithAllKindsOfMembers instance = (ClassWithAllKindsOfMembers) Activator.CreateInstance (builtType);

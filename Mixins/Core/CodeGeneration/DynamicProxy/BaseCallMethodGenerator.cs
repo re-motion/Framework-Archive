@@ -56,16 +56,16 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void AddBaseCallToTargetIfDepthMatches (MethodDefinition target, int requestedDepth)
     {
-      _methodEmitter.InnerEmitter.CodeBuilder.AddStatement (
+      _methodEmitter.AddStatement (
           new IfStatement (
               new SameConditionExpression (_depthField.ToExpression (), new ConstReference (requestedDepth).ToExpression ()),
-          CreateBaseCallStatement (target, _methodEmitter.InnerEmitter.Arguments)));
+          CreateBaseCallStatement (target, _methodEmitter.ArgumentReferences)));
     }
 
     public void AddBaseCallToTarget (MethodDefinition target)
     {
-      Statement baseCallStatement = CreateBaseCallStatement (target, _methodEmitter.InnerEmitter.Arguments);
-      _methodEmitter.InnerEmitter.CodeBuilder.AddStatement (baseCallStatement);
+      Statement baseCallStatement = CreateBaseCallStatement (target, _methodEmitter.ArgumentReferences);
+      _methodEmitter.AddStatement (baseCallStatement);
     }
 
     private Statement CreateBaseCallStatement (MethodDefinition target, ArgumentReference[] args)
@@ -102,7 +102,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       Reference extensionsReference = new IndirectFieldReference (_thisField, _surroundingType.ExtensionsField);
       Expression mixinExpression = new CastClassExpression (concreteMixinType, 
         new LoadArrayElementExpression (mixin.MixinIndex, extensionsReference, typeof (object)));
-      return new ExpressionReference (concreteMixinType, mixinExpression, _methodEmitter.InnerEmitter);
+      return new ExpressionReference (concreteMixinType, mixinExpression, _methodEmitter);
     }
   }
 }
