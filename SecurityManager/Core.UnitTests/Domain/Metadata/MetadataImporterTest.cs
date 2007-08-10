@@ -35,16 +35,20 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      Assert.AreEqual (0, _importer.Classes.Count, "Class count");
-      Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
-      Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
-      Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
+      using (_testHelper.Transaction.EnterScope ())
+      {
+        Assert.AreEqual (0, _importer.Classes.Count, "Class count");
+        Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
+      }
     }
 
     [Test]
     public void Import_1SecurableClass ()
     {
-      string metadataXml = @"
+      string metadataXml =
+          @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"" />
@@ -57,20 +61,24 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      Assert.AreEqual (1, _importer.Classes.Count, "Class count");
-      Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
-      Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
-      Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
+      using (_testHelper.Transaction.EnterScope())
+      {
+        Assert.AreEqual (1, _importer.Classes.Count, "Class count");
+        Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
 
-      SecurableClassDefinition actualClass1 = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
-      Assert.AreEqual (0, actualClass1.Index);
-      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", actualClass1.Name);
+        SecurableClassDefinition actualClass1 = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
+        Assert.AreEqual (0, actualClass1.Index);
+        Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", actualClass1.Name);
+      }
     }
 
     [Test]
     public void Import_2SecurableClasses ()
     {
-      string metadataXml = @"
+      string metadataXml =
+          @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"" />
@@ -84,24 +92,28 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      Assert.AreEqual (2, _importer.Classes.Count, "Class count");
-      Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
-      Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
-      Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
+      using (_testHelper.Transaction.EnterScope())
+      {
+        Assert.AreEqual (2, _importer.Classes.Count, "Class count");
+        Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
 
-      SecurableClassDefinition actualClass1 = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
-      Assert.AreEqual (0, actualClass1.Index);
-      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", actualClass1.Name);
+        SecurableClassDefinition actualClass1 = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
+        Assert.AreEqual (0, actualClass1.Index);
+        Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", actualClass1.Name);
 
-      SecurableClassDefinition actualClass2 = _importer.Classes[new Guid ("00000000-0000-0000-0002-000000000000")];
-      Assert.AreEqual (1, actualClass2.Index);
-      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.Directory", actualClass2.Name);
+        SecurableClassDefinition actualClass2 = _importer.Classes[new Guid ("00000000-0000-0000-0002-000000000000")];
+        Assert.AreEqual (1, actualClass2.Index);
+        Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.Directory", actualClass2.Name);
+      }
     }
 
     [Test]
     public void Import_3AbstractRoles ()
     {
-      string metadataXml = @"
+      string metadataXml =
+          @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes />
             <stateProperties />
@@ -116,25 +128,29 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      Assert.AreEqual (0, _importer.Classes.Count, "Class count");
-      Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
-      Assert.AreEqual (3, _importer.AbstractRoles.Count, "Abstract role count");
-      Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
+      using (_testHelper.Transaction.EnterScope())
+      {
+        Assert.AreEqual (0, _importer.Classes.Count, "Class count");
+        Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual (3, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
 
-      AbstractRoleDefinition expectedRole1 = _testHelper.CreateClerkAbstractRole (0);
-      MetadataObjectAssert.AreEqual (expectedRole1, _importer.AbstractRoles[expectedRole1.MetadataItemID], "Abstract Role Clerk");
+        AbstractRoleDefinition expectedRole1 = _testHelper.CreateClerkAbstractRole (0);
+        MetadataObjectAssert.AreEqual (expectedRole1, _importer.AbstractRoles[expectedRole1.MetadataItemID], "Abstract Role Clerk");
 
-      AbstractRoleDefinition expectedRole2 = _testHelper.CreateSecretaryAbstractRole (1);
-      MetadataObjectAssert.AreEqual (expectedRole2, _importer.AbstractRoles[expectedRole2.MetadataItemID], "Abstract Role Secretary");
+        AbstractRoleDefinition expectedRole2 = _testHelper.CreateSecretaryAbstractRole (1);
+        MetadataObjectAssert.AreEqual (expectedRole2, _importer.AbstractRoles[expectedRole2.MetadataItemID], "Abstract Role Secretary");
 
-      AbstractRoleDefinition expectedRole3 = _testHelper.CreateAdministratorAbstractRole (2);
-      MetadataObjectAssert.AreEqual (expectedRole3, _importer.AbstractRoles[expectedRole3.MetadataItemID], "Abstract Role Administrator");
+        AbstractRoleDefinition expectedRole3 = _testHelper.CreateAdministratorAbstractRole (2);
+        MetadataObjectAssert.AreEqual (expectedRole3, _importer.AbstractRoles[expectedRole3.MetadataItemID], "Abstract Role Administrator");
+      }
     }
 
     [Test]
     public void Import_3AccessTypes ()
     {
-      string metadataXml = @"
+      string metadataXml =
+          @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes />
             <stateProperties />
@@ -149,25 +165,29 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      Assert.AreEqual (0, _importer.Classes.Count, "Class count");
-      Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
-      Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
-      Assert.AreEqual (3, _importer.AccessTypes.Count, "Access type count");
+      using (_testHelper.Transaction.EnterScope())
+      {
+        Assert.AreEqual (0, _importer.Classes.Count, "Class count");
+        Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual (3, _importer.AccessTypes.Count, "Access type count");
 
-      AccessTypeDefinition expectedAccessType1 = _testHelper.CreateAccessTypeCreate (0);
-      MetadataObjectAssert.AreEqual (expectedAccessType1, _importer.AccessTypes[expectedAccessType1.MetadataItemID], "Access Type Create");
+        AccessTypeDefinition expectedAccessType1 = _testHelper.CreateAccessTypeCreate (0);
+        MetadataObjectAssert.AreEqual (expectedAccessType1, _importer.AccessTypes[expectedAccessType1.MetadataItemID], "Access Type Create");
 
-      AccessTypeDefinition expectedAccessType2 = _testHelper.CreateAccessTypeRead (1);
-      MetadataObjectAssert.AreEqual (expectedAccessType2, _importer.AccessTypes[expectedAccessType2.MetadataItemID], "Access Type Read");
+        AccessTypeDefinition expectedAccessType2 = _testHelper.CreateAccessTypeRead (1);
+        MetadataObjectAssert.AreEqual (expectedAccessType2, _importer.AccessTypes[expectedAccessType2.MetadataItemID], "Access Type Read");
 
-      AccessTypeDefinition expectedAccessType3 = _testHelper.CreateAccessTypeEdit (2);
-      MetadataObjectAssert.AreEqual (expectedAccessType3, _importer.AccessTypes[expectedAccessType3.MetadataItemID], "Access Type Edit");
+        AccessTypeDefinition expectedAccessType3 = _testHelper.CreateAccessTypeEdit (2);
+        MetadataObjectAssert.AreEqual (expectedAccessType3, _importer.AccessTypes[expectedAccessType3.MetadataItemID], "Access Type Edit");
+      }
     }
 
     [Test]
     public void Import_2StateProperties ()
     {
-      string metadataXml = @"
+      string metadataXml =
+          @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes />
             <stateProperties>
@@ -190,26 +210,30 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      Assert.AreEqual (0, _importer.Classes.Count, "Class count");
-      Assert.AreEqual (2, _importer.StateProperties.Count, "State property count");
-      Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
-      Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
+      using (_testHelper.Transaction.EnterScope())
+      {
+        Assert.AreEqual (0, _importer.Classes.Count, "Class count");
+        Assert.AreEqual (2, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
 
-      StatePropertyDefinition expectedProperty1 = _testHelper.CreateFileStateProperty (0);
-      StatePropertyDefinition actualProperty1 = _importer.StateProperties[expectedProperty1.MetadataItemID];
-      Assert.IsNotNull (actualProperty1, "State property not found");
-      MetadataObjectAssert.AreEqual (expectedProperty1, actualProperty1, "State property");
+        StatePropertyDefinition expectedProperty1 = _testHelper.CreateFileStateProperty (0);
+        StatePropertyDefinition actualProperty1 = _importer.StateProperties[expectedProperty1.MetadataItemID];
+        Assert.IsNotNull (actualProperty1, "State property not found");
+        MetadataObjectAssert.AreEqual (expectedProperty1, actualProperty1, "State property");
 
-      StatePropertyDefinition expectedProperty2 = _testHelper.CreateConfidentialityProperty (1);
-      StatePropertyDefinition actualProperty2 = _importer.StateProperties[expectedProperty2.MetadataItemID];
-      Assert.IsNotNull (actualProperty2, "Confidentiality property not found");
-      MetadataObjectAssert.AreEqual (expectedProperty2, actualProperty2, "Confidentiality property");
+        StatePropertyDefinition expectedProperty2 = _testHelper.CreateConfidentialityProperty (1);
+        StatePropertyDefinition actualProperty2 = _importer.StateProperties[expectedProperty2.MetadataItemID];
+        Assert.IsNotNull (actualProperty2, "Confidentiality property not found");
+        MetadataObjectAssert.AreEqual (expectedProperty2, actualProperty2, "Confidentiality property");
+      }
     }
 
     [Test]
     public void Import_ABaseClassAndADerivedClass ()
     {
-      string metadataXml = @"
+      string metadataXml =
+          @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"" />
@@ -222,26 +246,30 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      Assert.AreEqual (2, _importer.Classes.Count, "Class count");
-      Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
-      Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
-      Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
+      using (_testHelper.Transaction.EnterScope())
+      {
+        Assert.AreEqual (2, _importer.Classes.Count, "Class count");
+        Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
 
-      SecurableClassDefinition baseClass = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
-      SecurableClassDefinition derivedClass = _importer.Classes[new Guid ("00000000-0000-0000-0002-000000000000")];
+        SecurableClassDefinition baseClass = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
+        SecurableClassDefinition derivedClass = _importer.Classes[new Guid ("00000000-0000-0000-0002-000000000000")];
 
-      Assert.AreEqual (1, baseClass.DerivedClasses.Count);
-      Assert.AreSame (derivedClass, baseClass.DerivedClasses[0]);
-      Assert.IsNull (baseClass.BaseClass);
+        Assert.AreEqual (1, baseClass.DerivedClasses.Count);
+        Assert.AreSame (derivedClass, baseClass.DerivedClasses[0]);
+        Assert.IsNull (baseClass.BaseClass);
 
-      Assert.AreEqual (0, derivedClass.DerivedClasses.Count);
-      Assert.AreSame (baseClass, derivedClass.BaseClass);
+        Assert.AreEqual (0, derivedClass.DerivedClasses.Count);
+        Assert.AreSame (baseClass, derivedClass.BaseClass);
+      }
     }
 
     [Test]
     public void Import_1ClassAnd2StateProperties ()
     {
-      string metadataXml = @"
+      string metadataXml =
+          @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"">
@@ -270,23 +298,27 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      Assert.AreEqual (1, _importer.Classes.Count, "Class count");
-      Assert.AreEqual (2, _importer.StateProperties.Count, "State property count");
-      Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
-      Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
+      using (_testHelper.Transaction.EnterScope())
+      {
+        Assert.AreEqual (1, _importer.Classes.Count, "Class count");
+        Assert.AreEqual (2, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
 
-      SecurableClassDefinition classDefinition = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
-      StatePropertyDefinition property1 = _importer.StateProperties[new Guid ("00000000-0000-0000-0002-000000000001")];
-      StatePropertyDefinition property2 = _importer.StateProperties[new Guid ("00000000-0000-0000-0001-000000000001")];
+        SecurableClassDefinition classDefinition = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
+        StatePropertyDefinition property1 = _importer.StateProperties[new Guid ("00000000-0000-0000-0002-000000000001")];
+        StatePropertyDefinition property2 = _importer.StateProperties[new Guid ("00000000-0000-0000-0001-000000000001")];
 
-      Assert.AreEqual (1, classDefinition.StateProperties.Count, "State property count");
-      Assert.AreSame (property2, classDefinition.StateProperties[0]);
+        Assert.AreEqual (1, classDefinition.StateProperties.Count, "State property count");
+        Assert.AreSame (property2, classDefinition.StateProperties[0]);
+      }
     }
 
     [Test]
     public void Import_1ClassAnd8AccessTypes ()
     {
-      string metadataXml = @"
+      string metadataXml =
+          @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"">
@@ -314,22 +346,26 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      Assert.AreEqual (1, _importer.Classes.Count, "Class count");
-      Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
-      Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
-      Assert.AreEqual (8, _importer.AccessTypes.Count, "Access type count");
+      using (_testHelper.Transaction.EnterScope())
+      {
+        Assert.AreEqual (1, _importer.Classes.Count, "Class count");
+        Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual (8, _importer.AccessTypes.Count, "Access type count");
 
-      SecurableClassDefinition classDefinition = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
-      AccessTypeDefinition accessType = _importer.AccessTypes[new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a")];
+        SecurableClassDefinition classDefinition = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
+        AccessTypeDefinition accessType = _importer.AccessTypes[new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a")];
 
-      Assert.AreEqual (1, classDefinition.AccessTypes.Count, "Access type count");
-      Assert.AreSame (accessType, classDefinition.AccessTypes[0]);
+        Assert.AreEqual (1, classDefinition.AccessTypes.Count, "Access type count");
+        Assert.AreSame (accessType, classDefinition.AccessTypes[0]);
+      }
     }
 
     [Test]
     public void Import_ABaseClassAndADerivedClassWith2StatePropertiesAnd8AccessTypesAnd3AbstractRoles ()
     {
-      string metadataXml = @"
+      string metadataXml =
+          @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"">
@@ -400,10 +436,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      Assert.AreEqual (2, _importer.Classes.Count, "Class count");
-      Assert.AreEqual (2, _importer.StateProperties.Count, "State property count");
-      Assert.AreEqual (3, _importer.AbstractRoles.Count, "Abstract role count");
-      Assert.AreEqual (8, _importer.AccessTypes.Count, "Access type count");
+      using (_testHelper.Transaction.EnterScope())
+      {
+        Assert.AreEqual (2, _importer.Classes.Count, "Class count");
+        Assert.AreEqual (2, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual (3, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual (8, _importer.AccessTypes.Count, "Access type count");
+      }
     }
 
     [Test]

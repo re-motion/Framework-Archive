@@ -8,13 +8,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefiniti
   [TestFixture]
   public class Test : DomainTest
   {
-    private ClientTransaction _transaction;
-
     public override void SetUp ()
     {
       base.SetUp ();
-      
-      _transaction = ClientTransaction.NewTransaction();
+
+      new ClientTransactionScope ();
     }
 
     [Test]
@@ -23,7 +21,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefiniti
      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateEmptyDomain ();
 
-      DomainObjectCollection result = AbstractRoleDefinition.FindAll (_transaction);
+      DomainObjectCollection result = AbstractRoleDefinition.FindAll (ClientTransactionScope.CurrentTransaction);
 
       Assert.AreEqual (0, result.Count);
     }

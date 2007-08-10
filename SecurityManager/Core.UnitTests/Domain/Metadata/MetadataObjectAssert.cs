@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.Metadata;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
@@ -51,23 +52,31 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       Assert.AreEqual (expected.DefinedStates.Count, actual.DefinedStates.Count, message);
 
       for (int i = 0; i < expected.DefinedStates.Count; i++)
-        AreEqual ((StateDefinition) expected.DefinedStates[i], (StateDefinition) actual.DefinedStates[i], message);
+        AreEqual (expected.DefinedStates[i], actual.DefinedStates[i], message);
     }
 
-    public static void AreEqual (SecurableClassDefinition expected, SecurableClassDefinition actual)
+    public static void AreEqual (SecurableClassDefinition expected, ClientTransaction expectedObjectTransaction, SecurableClassDefinition actual)
     {
-      AreEqual (expected, actual, string.Empty, null);
+      AreEqual (expected, expectedObjectTransaction, actual, string.Empty, null);
     }
 
-    public static void AreEqual (SecurableClassDefinition expected, SecurableClassDefinition actual, string message)
+    public static void AreEqual (SecurableClassDefinition expected, ClientTransaction expectedObjectTransaction, SecurableClassDefinition actual, string message)
     {
-      AreEqual (expected, actual, message, null);
+      AreEqual (expected, expectedObjectTransaction, actual, message, null);
     }
 
-    public static void AreEqual (SecurableClassDefinition expected, SecurableClassDefinition actual, string message, params object[] args)
+    public static void AreEqual (SecurableClassDefinition expected, ClientTransaction expectedObjectTransaction, SecurableClassDefinition actual, string message, params object[] args)
     {
-      Assert.AreEqual (expected.Name, actual.Name, message, args);
-      Assert.AreEqual (expected.Index, actual.Index, message);
+      string expectedName;
+      int expectedIndex;
+      using (expectedObjectTransaction.EnterScope ())
+      {
+        expectedName = expected.Name;
+        expectedIndex = expected.Index;
+      }
+
+      Assert.AreEqual (expectedName, actual.Name, message, args);
+      Assert.AreEqual (expectedIndex, actual.Index, message);
     }
   }
 }

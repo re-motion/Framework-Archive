@@ -23,7 +23,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.TestFixtureSetUp ();
 
       _dbFixtures = new DatabaseFixtures ();
-      Tenant tenant = _dbFixtures.CreateOrganizationalStructureWithTwoTenants ();
+      Tenant tenant = _dbFixtures.CreateOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
       _expectedTenantID = tenant.ID;
     }
 
@@ -32,15 +32,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.SetUp ();
 
       _testHelper = new OrganizationalStructureTestHelper ();
-      _testHelper.Transaction.EnterScope ();
+      _testHelper.Transaction.EnterScope();
     }
 
     [Test]
     public void FindAll ()
     {
-      ClientTransaction transaction = ClientTransaction.NewTransaction();
-
-      DomainObjectCollection tenants = Tenant.FindAll (transaction);
+      DomainObjectCollection tenants = Tenant.FindAll (ClientTransactionScope.CurrentTransaction);
 
       Assert.AreEqual (2, tenants.Count);
       Assert.AreEqual (_expectedTenantID, tenants[1].ID);
@@ -49,7 +47,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindByUnqiueIdentifier_ValidTenant ()
     {
-      Tenant foundTenant = Tenant.FindByUnqiueIdentifier ("UID: testTenant", _testHelper.Transaction);
+      Tenant foundTenant = Tenant.FindByUnqiueIdentifier ("UID: testTenant", ClientTransactionScope.CurrentTransaction);
 
       Assert.AreEqual ("UID: testTenant", foundTenant.UniqueIdentifier);
     }
@@ -57,7 +55,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindByUnqiueIdentifier_NotExistingTenant ()
     {
-      Tenant foundTenant = Tenant.FindByUnqiueIdentifier ("UID: NotExistingTenant", _testHelper.Transaction);
+      Tenant foundTenant = Tenant.FindByUnqiueIdentifier ("UID: NotExistingTenant", ClientTransactionScope.CurrentTransaction);
 
       Assert.IsNull (foundTenant);
     }
@@ -68,7 +66,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       Tenant tenant = _testHelper.CreateTenant ("TestTenant", "UID: testTenant");
 
-      _testHelper.Transaction.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit ();
     }
 
     [Test]
@@ -114,14 +112,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
       ThreadRunner.Run (delegate ()
           {
-            using (_testHelper.Transaction.EnterScope ())
-            {
-              Tenant otherTenant = _testHelper.CreateTenant ("OtherTenant", "UID: OtherTenant");
+            Tenant otherTenant = _testHelper.CreateTenant ("OtherTenant", "UID: OtherTenant");
 
-              Assert.IsNull (Tenant.Current);
-              Tenant.Current = otherTenant;
-              Assert.AreSame (otherTenant, Tenant.Current);
-            }
+            Assert.IsNull (Tenant.Current);
+            Tenant.Current = otherTenant;
+            Assert.AreSame (otherTenant, Tenant.Current);
 
           });
 

@@ -22,7 +22,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.TestFixtureSetUp ();
       
       _dbFixtures = new DatabaseFixtures ();
-      Tenant tenant = _dbFixtures.CreateOrganizationalStructureWithTwoTenants ();
+      Tenant tenant = _dbFixtures.CreateOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
       _expectedTenantID = tenant.ID;
     }
 
@@ -31,13 +31,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.SetUp ();
 
       _testHelper = new OrganizationalStructureTestHelper ();
-      _testHelper.Transaction.EnterScope ();
+      _testHelper.Transaction.EnterScope();
     }
 
     [Test]
     public void FindByUnqiueIdentifier_ValidGroup ()
     {
-      Group foundGroup = Group.FindByUnqiueIdentifier ("UID: testGroup", _testHelper.Transaction);
+      Group foundGroup = Group.FindByUnqiueIdentifier ("UID: testGroup", ClientTransactionScope.CurrentTransaction);
 
       Assert.AreEqual ("UID: testGroup", foundGroup.UniqueIdentifier);
     }
@@ -45,7 +45,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindByUnqiueIdentifier_NotExistingGroup ()
     {
-      Group foundGroup = Group.FindByUnqiueIdentifier ("UID: NotExistingGroup", _testHelper.Transaction);
+      Group foundGroup = Group.FindByUnqiueIdentifier ("UID: NotExistingGroup", ClientTransactionScope.CurrentTransaction);
 
       Assert.IsNull (foundGroup);
     }
@@ -53,7 +53,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void Find_GroupsByTenantID ()
     {
-      DomainObjectCollection groups = Group.FindByTenantID (_expectedTenantID, _testHelper.Transaction);
+      DomainObjectCollection groups = Group.FindByTenantID (_expectedTenantID, ClientTransactionScope.CurrentTransaction);
 
       Assert.AreEqual (9, groups.Count);
     }
@@ -62,11 +62,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [ExpectedException (typeof (RdbmsProviderException))]
     public void UniqueIdentifier_SameIdentifierTwice ()
     {
-      ClientTransaction transaction = ClientTransactionScope.CurrentTransaction;
-      Tenant tenant = _testHelper.CreateTenant (transaction, "NewTenant2", "UID: testTenant");
-      _testHelper.CreateGroup (transaction, "NewGroup2", "UID: testGroup", null, tenant);
+      Tenant tenant = _testHelper.CreateTenant (ClientTransactionScope.CurrentTransaction, "NewTenant2", "UID: testTenant");
+      _testHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "NewGroup2", "UID: testGroup", null, tenant);
 
-      transaction.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit ();
     }
 
     [Test]
@@ -145,7 +144,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void Get_UniqueIdentifier ()
     {
       OrganizationalStructureFactory factory = new OrganizationalStructureFactory();
-      Group group = factory.CreateGroup (_testHelper.Transaction);
+      Group group = factory.CreateGroup (ClientTransactionScope.CurrentTransaction);
 
       Assert.IsNotEmpty (group.UniqueIdentifier);
     }

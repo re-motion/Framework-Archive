@@ -11,14 +11,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
   {
     public const int OrderClassPropertyCount = 2;
 
-    private ClientTransaction _transaction;
-    private OrganizationalStructureFactory _factory;
+    private readonly ClientTransaction _transaction;
+    private readonly OrganizationalStructureFactory _factory;
 
     public AccessControlTestHelper ()
     {
-      _transaction = ClientTransaction.NewTransaction();
+      _transaction = ClientTransaction.NewTransaction ();
       _factory = new OrganizationalStructureFactory ();
-      _transaction.EnterScope ();
     }
 
     public ClientTransaction Transaction

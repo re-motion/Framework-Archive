@@ -9,11 +9,21 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
   [TestFixture]
   public class StateCombinationBuilderTest : DomainTest
   {
+    private AccessControlTestHelper _testHelper;
+
+    public override void SetUp ()
+    {
+      base.SetUp ();
+
+      _testHelper = new AccessControlTestHelper ();
+      _testHelper.Transaction.EnterScope();
+    }
+
     [Test]
     public void CreateAndAttach_FromClassWithoutStateProperties ()
     {
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
+
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
       StateCombinationBuilder builder = new StateCombinationBuilder ();
 
       List<StateCombination> actualStateCombinations = builder.CreateAndAttach (orderClass);
@@ -28,9 +38,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Ignore ("Most likely obsolete")]
     public void CreateAndAttach_FromClassWithSingleStateProperties ()
     {
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
-      StatePropertyDefinition orderStateProperty = testHelper.CreateOrderStateProperty (orderClass);
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      StatePropertyDefinition orderStateProperty = _testHelper.CreateOrderStateProperty (orderClass);
       StateCombinationBuilder builder = new StateCombinationBuilder ();
 
       List<StateCombination> actualStateCombinations = builder.CreateAndAttach (orderClass);
@@ -62,9 +71,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     //[Test]
     //public void Create_From ()
     //{
-    //  AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-    //  SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinitionWithProperties ();
-    //  List<StateCombination> expectedStateCombinations = testHelper.CreateStateCombinationsForOrder ();
+    //  SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinitionWithProperties ();
+    //  List<StateCombination> expectedStateCombinations = _testHelper.CreateStateCombinationsForOrder ();
 
     //  List<StateDefinition> states = new List<StateDefinition> ();
     //  StateCombinationBuilder builder = new StateCombinationBuilder ();

@@ -32,7 +32,6 @@ namespace Rubicon.SecurityManager.UnitTests
 
     private SecurityService _service;
     private SecurityContext _context;
-    private ClientTransaction _transaction;
     private AccessControlEntry _ace;
     private IPrincipal _principal;
 
@@ -49,9 +48,9 @@ namespace Rubicon.SecurityManager.UnitTests
 
      _service = new SecurityService (_mockAclFinder, _mockTokenBuilder);
      _context = new SecurityContext (typeof (Order), "Owner", "UID: OwnerGroup", "OwnerTenant", null, null);
-     _transaction = ClientTransaction.NewTransaction();
-     _transaction.EnterScope ();
-     _ace = CreateAce (_transaction);
+
+      new ClientTransactionScope();
+     _ace = CreateAce ();
      _principal = CreateUser ();
   
       _memoryAppender = new MemoryAppender();
@@ -67,11 +66,10 @@ namespace Rubicon.SecurityManager.UnitTests
       BasicConfigurator.Configure(_memoryAppender); 
     }
 
-    [TearDown]
     public override void TearDown()
     {
-      LogManager.ResetConfiguration();
       base.TearDown();
+      LogManager.ResetConfiguration();
     }
 
     [Test]
@@ -90,13 +88,13 @@ namespace Rubicon.SecurityManager.UnitTests
     public void GetAccess_WithoutAccess ()
     {
       SecurityToken token = new SecurityToken (null, null, new List<Group> (), new List<AbstractRoleDefinition> ());
-      
-      Expect.Call (_mockAclFinder.Find (_transaction, _context)).Return (CreateAcl (_transaction, _ace));
-      Expect.Call (_mockTokenBuilder.CreateToken (_transaction, _principal, _context)).Return (token);
+
+      Expect.Call (_mockAclFinder.Find (ClientTransactionScope.CurrentTransaction, _context)).Return (CreateAcl (_ace));
+      Expect.Call (_mockTokenBuilder.CreateToken (ClientTransactionScope.CurrentTransaction, _principal, _context)).Return (token);
 
       _mocks.ReplayAll ();
 
-      AccessType[] accessTypes = _service.GetAccess (_transaction, _context, _principal);
+      AccessType[] accessTypes = _service.GetAccess (ClientTransactionScope.CurrentTransaction, _context, _principal);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (0, accessTypes.Length);
@@ -109,12 +107,12 @@ namespace Rubicon.SecurityManager.UnitTests
       roles.Add (_ace.SpecificAbstractRole);
       SecurityToken token = new SecurityToken (null, null, new List<Group> (), roles);
 
-      Expect.Call (_mockAclFinder.Find (_transaction, _context)).Return (CreateAcl (_transaction, _ace));
-      Expect.Call (_mockTokenBuilder.CreateToken (_transaction, _principal, _context)).Return(token);
+      Expect.Call (_mockAclFinder.Find (ClientTransactionScope.CurrentTransaction, _context)).Return (CreateAcl (_ace));
+      Expect.Call (_mockTokenBuilder.CreateToken (ClientTransactionScope.CurrentTransaction, _principal, _context)).Return(token);
 
       _mocks.ReplayAll ();
 
-      AccessType[] accessTypes = _service.GetAccess (_transaction, _context, _principal);
+      AccessType[] accessTypes = _service.GetAccess (ClientTransactionScope.CurrentTransaction, _context, _principal);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (1, accessTypes.Length);
@@ -128,7 +126,7 @@ namespace Rubicon.SecurityManager.UnitTests
       roles.Add (_ace.SpecificAbstractRole);
       SecurityToken token = new SecurityToken (null, null, new List<Group> (), roles);
 
-      Expect.Call (_mockAclFinder.Find (null, null)).Return (CreateAcl (_transaction, _ace)).Constraints (
+      Expect.Call (_mockAclFinder.Find (null, null)).Return (CreateAcl (_ace)).Constraints (
           Mocks_Is.NotNull (),
           Mocks_Is.Same (_context));
       Expect.Call (_mockTokenBuilder.CreateToken (null, null, null)).Return (token).Constraints (
@@ -148,14 +146,13 @@ namespace Rubicon.SecurityManager.UnitTests
     [Test]
     public void GetAccess_WithAccessControlExcptionFromAccessControlListFinder ()
     {
-      SecurityToken token = new SecurityToken (null, null, new List<Group> (), new List<AbstractRoleDefinition> ());
       AccessControlException expectedException = new AccessControlException ();
 
-      Expect.Call (_mockAclFinder.Find (_transaction, _context)).Throw (expectedException);
+      Expect.Call (_mockAclFinder.Find (ClientTransactionScope.CurrentTransaction, _context)).Throw (expectedException);
 
       _mocks.ReplayAll ();
 
-      AccessType[] accessTypes = _service.GetAccess (_transaction, _context, _principal);
+      AccessType[] accessTypes = _service.GetAccess (ClientTransactionScope.CurrentTransaction, _context, _principal);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (0, accessTypes.Length);
@@ -168,14 +165,13 @@ namespace Rubicon.SecurityManager.UnitTests
     [Test]
     public void GetAccess_WithAccessControlExcptionFromSecurityTokenBuilder ()
     {
-      SecurityToken token = new SecurityToken (null, null, new List<Group> (), new List<AbstractRoleDefinition> ());
       AccessControlException expectedException = new AccessControlException ();
 
-      Expect.Call (_mockAclFinder.Find (_transaction, _context)).Return (CreateAcl (_transaction, _ace));
-      Expect.Call (_mockTokenBuilder.CreateToken (_transaction, _principal, _context)).Throw (expectedException);
+      Expect.Call (_mockAclFinder.Find (ClientTransactionScope.CurrentTransaction, _context)).Return (CreateAcl (_ace));
+      Expect.Call (_mockTokenBuilder.CreateToken (ClientTransactionScope.CurrentTransaction, _principal, _context)).Throw (expectedException);
       _mocks.ReplayAll ();
 
-      AccessType[] accessTypes = _service.GetAccess (_transaction, _context, _principal);
+      AccessType[] accessTypes = _service.GetAccess (ClientTransactionScope.CurrentTransaction, _context, _principal);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (0, accessTypes.Length);
@@ -200,35 +196,32 @@ namespace Rubicon.SecurityManager.UnitTests
       Assert.IsFalse (((ISecurityProvider) _service).IsNull);
     }
     
-    private AccessControlList CreateAcl (ClientTransaction transaction, AccessControlEntry ace)
+    private AccessControlList CreateAcl (AccessControlEntry ace)
     {
-      AccessControlList acl = AccessControlList.NewObject (transaction);
+      AccessControlList acl = AccessControlList.NewObject (ClientTransactionScope.CurrentTransaction);
       acl.AccessControlEntries.Add (ace);
 
       return acl;
     }
 
-    private AccessControlEntry CreateAce (ClientTransaction transaction)
+    private AccessControlEntry CreateAce ()
     {
-      using (transaction.EnterScope())
-      {
-        AccessControlEntry ace = AccessControlEntry.NewObject (transaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
 
-        AbstractRoleDefinition abstractRole = AbstractRoleDefinition.NewObject (transaction, Guid.NewGuid (), "QualityManager", 0);
-        ace.SpecificAbstractRole = abstractRole;
+      AbstractRoleDefinition abstractRole = AbstractRoleDefinition.NewObject (ClientTransactionScope.CurrentTransaction, Guid.NewGuid (), "QualityManager", 0);
+      ace.SpecificAbstractRole = abstractRole;
 
-        AccessTypeDefinition readAccessType = AccessTypeDefinition.NewObject  (transaction, Guid.NewGuid (), "Read|MyTypeName", 0);
-        AccessTypeDefinition writeAccessType = AccessTypeDefinition.NewObject  (transaction, Guid.NewGuid (), "Write|MyTypeName", 1);
-        AccessTypeDefinition deleteAccessType = AccessTypeDefinition.NewObject  (transaction, Guid.NewGuid (), "Delete|MyTypeName", 2);
+      AccessTypeDefinition readAccessType = AccessTypeDefinition.NewObject (ClientTransactionScope.CurrentTransaction, Guid.NewGuid (), "Read|MyTypeName", 0);
+      AccessTypeDefinition writeAccessType = AccessTypeDefinition.NewObject (ClientTransactionScope.CurrentTransaction, Guid.NewGuid (), "Write|MyTypeName", 1);
+      AccessTypeDefinition deleteAccessType = AccessTypeDefinition.NewObject (ClientTransactionScope.CurrentTransaction, Guid.NewGuid (), "Delete|MyTypeName", 2);
 
-        ace.AttachAccessType (readAccessType);
-        ace.AttachAccessType (writeAccessType);
-        ace.AttachAccessType (deleteAccessType);
+      ace.AttachAccessType (readAccessType);
+      ace.AttachAccessType (writeAccessType);
+      ace.AttachAccessType (deleteAccessType);
 
-        ace.AllowAccess (readAccessType);
+      ace.AllowAccess (readAccessType);
 
-        return ace;
-      }
+      return ace;
     }
 
     private IPrincipal CreateUser ()

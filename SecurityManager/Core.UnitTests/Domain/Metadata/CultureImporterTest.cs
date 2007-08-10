@@ -10,15 +10,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
   [TestFixture]
   public class CultureImporterTest : DomainTest
   {
-    private ClientTransaction _transaction;
     private CultureImporter _importer;
+    private ClientTransaction _transaction;
 
     public override void TestFixtureSetUp ()
     {
       base.TestFixtureSetUp ();
 
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateSecurableClassDefinitionWithStates ();
+      dbFixtures.CreateSecurableClassDefinitionWithStates (ClientTransaction.NewTransaction());
     }
 
     public override void SetUp ()
@@ -26,23 +26,26 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       base.SetUp ();
 
       _transaction = ClientTransaction.NewTransaction();
-      _transaction.EnterScope ();
       _importer = new CultureImporter (_transaction);
     }
 
     [Test]
     public void Import_EmptyCultureFile ()
     {
-      string cultureXml = @"
+      string cultureXml =
+          @"
           <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"" />
           ";
 
       _importer.Import (GetXmlDocument (cultureXml));
 
-      Assert.AreEqual (0, _importer.LocalizedNames.Count, "LocalizedNames count");
-      Assert.IsNotNull (_importer.Cultures, "Cultures");
-      Assert.AreEqual (1, _importer.Cultures.Count);
-      Assert.AreEqual ("de", _importer.Cultures[0].CultureName);
+      using (_transaction.EnterScope())
+      {
+        Assert.AreEqual (0, _importer.LocalizedNames.Count, "LocalizedNames count");
+        Assert.IsNotNull (_importer.Cultures, "Cultures");
+        Assert.AreEqual (1, _importer.Cultures.Count);
+        Assert.AreEqual ("de", _importer.Cultures[0].CultureName);
+      }
     }
 
     [Test]
@@ -58,9 +61,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (cultureXml));
 
-      Assert.AreEqual (1, _importer.LocalizedNames.Count, "LocalizedNames count");
-      Assert.AreEqual ("Beamter", _importer.LocalizedNames[0].Text);
-      Assert.AreEqual (new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"), _importer.LocalizedNames[0].MetadataObject.MetadataItemID);
+      using (_transaction.EnterScope ())
+      {
+        Assert.AreEqual (1, _importer.LocalizedNames.Count, "LocalizedNames count");
+        Assert.AreEqual ("Beamter", _importer.LocalizedNames[0].Text);
+        Assert.AreEqual (new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"), _importer.LocalizedNames[0].MetadataObject.MetadataItemID);
+      }
     }
 
     [Test]
@@ -99,7 +105,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void Import_MultipleLocalizedNames ()
     {
-      string cultureXml = @"
+      string cultureXml =
+          @"
           <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
             <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain"">
               Beamter
@@ -115,12 +122,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (cultureXml));
 
-      Assert.AreEqual (3, _importer.LocalizedNames.Count, "LocalizedNames count");
-      Assert.AreEqual ("Beamter", _importer.LocalizedNames[0].Text);
-      Assert.AreEqual (new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"), _importer.LocalizedNames[0].MetadataObject.MetadataItemID);
-      Assert.AreEqual ("Vertraulichkeit", _importer.LocalizedNames[1].Text);
-      Assert.AreEqual (new Guid ("93969f13-65d7-49f4-a456-a1686a4de3de"), _importer.LocalizedNames[1].MetadataObject.MetadataItemID);
-      Assert.AreEqual ("Öffentlich", _importer.LocalizedNames[2].Text);
+      using (_transaction.EnterScope())
+      {
+        Assert.AreEqual (3, _importer.LocalizedNames.Count, "LocalizedNames count");
+        Assert.AreEqual ("Beamter", _importer.LocalizedNames[0].Text);
+        Assert.AreEqual (new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"), _importer.LocalizedNames[0].MetadataObject.MetadataItemID);
+        Assert.AreEqual ("Vertraulichkeit", _importer.LocalizedNames[1].Text);
+        Assert.AreEqual (new Guid ("93969f13-65d7-49f4-a456-a1686a4de3de"), _importer.LocalizedNames[1].MetadataObject.MetadataItemID);
+        Assert.AreEqual ("Öffentlich", _importer.LocalizedNames[2].Text);
+      }
     }
 
     [Test]
@@ -155,9 +165,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
           </localizedNames>
           ";
 
+      ObjectID clerkNameID;
+      ObjectID confidentialityNameID;
       _importer.Import (GetXmlDocument (cultureXml));
-      ObjectID clerkNameID = _importer.LocalizedNames[0].ID;
-      ObjectID confidentialityNameID = _importer.LocalizedNames[1].ID;
+      using (_transaction.EnterScope ())
+      {
+        clerkNameID = _importer.LocalizedNames[0].ID;
+        confidentialityNameID = _importer.LocalizedNames[1].ID;
+      }
 
       _importer = new CultureImporter (_transaction);
 
@@ -177,14 +192,17 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (cultureXml));
 
-      Assert.AreEqual (3, _importer.LocalizedNames.Count, "LocalizedNames count");
-      Assert.AreEqual ("Beamter", _importer.LocalizedNames[0].Text);
-      Assert.AreEqual (clerkNameID, _importer.LocalizedNames[0].ID);
-      Assert.AreEqual (new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"), _importer.LocalizedNames[0].MetadataObject.MetadataItemID);
-      Assert.AreEqual ("Vertraulichkeit", _importer.LocalizedNames[1].Text);
-      Assert.AreEqual (confidentialityNameID, _importer.LocalizedNames[1].ID);
-      Assert.AreEqual (new Guid ("93969f13-65d7-49f4-a456-a1686a4de3de"), _importer.LocalizedNames[1].MetadataObject.MetadataItemID);
-      Assert.AreEqual ("Öffentlich", _importer.LocalizedNames[2].Text);
+      using (_transaction.EnterScope ())
+      {
+        Assert.AreEqual (3, _importer.LocalizedNames.Count, "LocalizedNames count");
+        Assert.AreEqual ("Beamter", _importer.LocalizedNames[0].Text);
+        Assert.AreEqual (clerkNameID, _importer.LocalizedNames[0].ID);
+        Assert.AreEqual (new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"), _importer.LocalizedNames[0].MetadataObject.MetadataItemID);
+        Assert.AreEqual ("Vertraulichkeit", _importer.LocalizedNames[1].Text);
+        Assert.AreEqual (confidentialityNameID, _importer.LocalizedNames[1].ID);
+        Assert.AreEqual (new Guid ("93969f13-65d7-49f4-a456-a1686a4de3de"), _importer.LocalizedNames[1].MetadataObject.MetadataItemID);
+        Assert.AreEqual ("Öffentlich", _importer.LocalizedNames[2].Text);
+      }
     }
 
     private XmlDocument GetXmlDocument (string xml)

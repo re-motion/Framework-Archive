@@ -18,13 +18,14 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     /// </exception>
     public AccessControlList Find (ClientTransaction transaction, SecurityContext context)
     {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
       ArgumentUtility.CheckNotNull ("context", context);
 
       SecurableClassDefinition classDefinition = SecurableClassDefinition.FindByName (context.Class, transaction);
       if (classDefinition == null)
         throw CreateAccessControlException ("The securable class '{0}' cannot be found.", context.Class);
 
-      return Find (classDefinition, context);
+      return Find (transaction, classDefinition, context);
     }
 
     /// <exception cref="AccessControlException">
@@ -32,23 +33,27 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     ///   <paramref name="context"/> is not state-less and a <see cref="StatePropertyDefinition"/> is missing.<br/>- or -<br/>
     ///   <paramref name="context"/> is not state-less and contains an invalid state for a <see cref="StatePropertyDefinition"/>.
     /// </exception>
-    public AccessControlList Find (SecurableClassDefinition classDefinition, SecurityContext context)
+    public AccessControlList Find (ClientTransaction transaction, SecurableClassDefinition classDefinition, SecurityContext context)
     {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("context", context);
 
-      StateCombination foundStateCombination = null;
-
-      while (foundStateCombination == null && classDefinition != null)
+      using (transaction.EnterScope())
       {
-        foundStateCombination = FindStateCombination (classDefinition, context);
-        classDefinition = classDefinition.BaseClass;
+        StateCombination foundStateCombination = null;
+
+        while (foundStateCombination == null && classDefinition != null)
+        {
+          foundStateCombination = FindStateCombination (classDefinition, context);
+          classDefinition = classDefinition.BaseClass;
+        }
+
+        if (foundStateCombination == null)
+          throw CreateAccessControlException ("The ACL for the securable class '{0}' could not be found.", context.Class);
+
+        return foundStateCombination.AccessControlList;
       }
-
-      if (foundStateCombination == null)
-        throw CreateAccessControlException ("The ACL for the securable class '{0}' could not be found.", context.Class);
-
-      return foundStateCombination.AccessControlList;
     }
 
     private StateCombination FindStateCombination (SecurableClassDefinition classDefinition, SecurityContext context)

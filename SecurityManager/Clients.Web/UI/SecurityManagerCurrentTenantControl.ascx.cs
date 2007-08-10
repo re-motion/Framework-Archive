@@ -63,7 +63,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI
 
     private DomainObjectCollection GetPossibleTenants ()
     {
-      User user = ApplicationInstance.LoadUserFromSession (_clientTransaction);
+      User user = ApplicationInstance.LoadUserFromSession ();
       DomainObjectCollection tenants;
       if (user == null)
         tenants = new DomainObjectCollection ();
@@ -115,7 +115,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI
       else
         CurrentTenantField.ReadOnly = NaBooleanEnum.False;
 
-      User user = ApplicationInstance.LoadUserFromSession (_clientTransaction);
+      User user = ApplicationInstance.LoadUserFromSession ();
       CurrentUserField.LoadUnboundValue (user, false);
     }
 

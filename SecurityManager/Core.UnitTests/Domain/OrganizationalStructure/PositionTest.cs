@@ -12,32 +12,24 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
   [TestFixture]
   public class PositionTest : DomainTest
   {
-    private OrganizationalStructureTestHelper _testHelper;
-
-    public override void SetUp ()
-    {
-      base.SetUp ();
-      _testHelper = new OrganizationalStructureTestHelper ();
-      _testHelper.Transaction.EnterScope ();
-    }
-
     [Test]
     public void FindAll ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructureWithTwoTenants ();
-      ClientTransaction transaction = ClientTransaction.NewTransaction();
+      dbFixtures.CreateOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
+      using (new ClientTransactionScope ())
+      {
+        DomainObjectCollection positions = Position.FindAll (ClientTransactionScope.CurrentTransaction);
 
-      DomainObjectCollection positions = Position.FindAll (transaction);
-
-      Assert.AreEqual (3, positions.Count);
+        Assert.AreEqual (3, positions.Count);
+      }
     }
 
     [Test]
     public void DeletePosition_WithAccessControlEntry ()
     {
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      using (testHelper.Transaction.EnterScope ())
+      AccessControlTestHelper testHelper = new AccessControlTestHelper();
+      using (testHelper.Transaction.EnterScope())
       {
         Position position = testHelper.CreatePosition ("Position");
         AccessControlEntry ace = testHelper.CreateAceWithPosition (position, GroupSelection.All);
@@ -51,95 +43,127 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void DeletePosition_WithRole ()
     {
-      Tenant tenant = _testHelper.CreateTenant ("TestTenant", "UID: testTenant");
-      Group userGroup = _testHelper.CreateGroup ("UserGroup", Guid.NewGuid ().ToString(), null, tenant);
-      Group roleGroup = _testHelper.CreateGroup ("RoleGroup", Guid.NewGuid ().ToString (), null, tenant);
-      User user = _testHelper.CreateUser ("user", "Firstname", "Lastname", "Title", userGroup, tenant);
-      Position position = _testHelper.CreatePosition ("Position");
-      Role role = _testHelper.CreateRole (user, roleGroup, position);
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      using (testHelper.Transaction.EnterScope())
+      {
+        Tenant tenant = testHelper.CreateTenant ("TestTenant", "UID: testTenant");
+        Group userGroup = testHelper.CreateGroup ("UserGroup", Guid.NewGuid().ToString(), null, tenant);
+        Group roleGroup = testHelper.CreateGroup ("RoleGroup", Guid.NewGuid().ToString(), null, tenant);
+        User user = testHelper.CreateUser ("user", "Firstname", "Lastname", "Title", userGroup, tenant);
+        Position position = testHelper.CreatePosition ("Position");
+        Role role = testHelper.CreateRole (user, roleGroup, position);
 
-      position.Delete ();
+        position.Delete();
 
-      Assert.IsTrue (role.IsDiscarded);
+        Assert.IsTrue (role.IsDiscarded);
+      }
     }
 
     [Test]
     public void DeletePosition_WithGroupTypePosition ()
     {
-      GroupType groupType = _testHelper.CreateGroupType ("GroupType");
-      Position position = _testHelper.CreatePosition ("Position");
-      GroupTypePosition concretePosition = _testHelper.CreateGroupTypePosition (groupType, position);
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      using (testHelper.Transaction.EnterScope())
+      {
+        GroupType groupType = testHelper.CreateGroupType ("GroupType");
+        Position position = testHelper.CreatePosition ("Position");
+        GroupTypePosition concretePosition = testHelper.CreateGroupTypePosition (groupType, position);
 
-      position.Delete ();
+        position.Delete();
 
-      Assert.IsTrue (concretePosition.IsDiscarded);
+        Assert.IsTrue (concretePosition.IsDiscarded);
+      }
     }
 
     [Test]
     public void GetDisplayName ()
     {
-      Position position = _testHelper.CreatePosition ("PositionName");
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      using (testHelper.Transaction.EnterScope())
+      {
+        Position position = testHelper.CreatePosition ("PositionName");
 
-      Assert.AreEqual ("PositionName", position.DisplayName);
+        Assert.AreEqual ("PositionName", position.DisplayName);
+      }
     }
 
     [Test]
     public void GetSecurityStrategy ()
     {
-      ISecurableObject position = _testHelper.CreatePosition ("PositionName");
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      using (testHelper.Transaction.EnterScope())
+      {
+        ISecurableObject position = testHelper.CreatePosition ("PositionName");
 
-      IObjectSecurityStrategy objectSecurityStrategy = position.GetSecurityStrategy ();
-      Assert.IsNotNull (objectSecurityStrategy);
-      Assert.IsInstanceOfType (typeof (DomainObjectSecurityStrategy), objectSecurityStrategy);
-      DomainObjectSecurityStrategy domainObjectSecurityStrategy = (DomainObjectSecurityStrategy) objectSecurityStrategy;
-      Assert.AreEqual (RequiredSecurityForStates.None, domainObjectSecurityStrategy.RequiredSecurityForStates);
+        IObjectSecurityStrategy objectSecurityStrategy = position.GetSecurityStrategy();
+        Assert.IsNotNull (objectSecurityStrategy);
+        Assert.IsInstanceOfType (typeof (DomainObjectSecurityStrategy), objectSecurityStrategy);
+        DomainObjectSecurityStrategy domainObjectSecurityStrategy = (DomainObjectSecurityStrategy) objectSecurityStrategy;
+        Assert.AreEqual (RequiredSecurityForStates.None, domainObjectSecurityStrategy.RequiredSecurityForStates);
+      }
     }
 
     [Test]
     public void GetSecurityStrategy_SameTwice ()
     {
-      ISecurableObject position = _testHelper.CreatePosition ("PositionName");
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      using (testHelper.Transaction.EnterScope())
+      {
+        ISecurableObject position = testHelper.CreatePosition ("PositionName");
 
-      Assert.AreSame (position.GetSecurityStrategy (), position.GetSecurityStrategy ());
+        Assert.AreSame (position.GetSecurityStrategy(), position.GetSecurityStrategy());
+      }
     }
 
     [Test]
     public void GetSecurableType ()
     {
-      ISecurableObject position = _testHelper.CreatePosition ("PositionName");
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      using (testHelper.Transaction.EnterScope())
+      {
+        ISecurableObject position = testHelper.CreatePosition ("PositionName");
 
-      Assert.AreSame (typeof (Position), position.GetSecurableType());
+        Assert.AreSame (typeof (Position), position.GetSecurableType());
+      }
     }
 
     [Test]
     public void DomainObjectSecurityContextFactoryImplementation ()
     {
-      Position position = _testHelper.CreatePosition ("PositionName");
-      IDomainObjectSecurityContextFactory factory = position;
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      using (testHelper.Transaction.EnterScope())
+      {
+        Position position = testHelper.CreatePosition ("PositionName");
+        IDomainObjectSecurityContextFactory factory = position;
 
-      Assert.IsFalse (factory.IsDiscarded);
-      Assert.IsTrue (factory.IsNew);
-      Assert.IsFalse (factory.IsDeleted);
+        Assert.IsFalse (factory.IsDiscarded);
+        Assert.IsTrue (factory.IsNew);
+        Assert.IsFalse (factory.IsDeleted);
 
-      position.Delete ();
+        position.Delete();
 
-      Assert.IsTrue (factory.IsDiscarded);
+        Assert.IsTrue (factory.IsDiscarded);
+      }
     }
 
     [Test]
     public void CreateSecurityContext ()
     {
-      Position position = _testHelper.CreatePosition ("PositionName");
-      position.Delegation = Delegation.Enabled;
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      using (testHelper.Transaction.EnterScope())
+      {
+        Position position = testHelper.CreatePosition ("PositionName");
+        position.Delegation = Delegation.Enabled;
 
-      SecurityContext securityContext = ((ISecurityContextFactory) position).CreateSecurityContext ();
-      Assert.AreEqual (position.GetPublicDomainObjectType (), Type.GetType (securityContext.Class));
-      Assert.IsEmpty (securityContext.Owner);
-      Assert.IsEmpty (securityContext.OwnerGroup);
-      Assert.IsEmpty (securityContext.OwnerTenant);
-      Assert.IsEmpty (securityContext.AbstractRoles);
-      Assert.AreEqual (1, securityContext.GetNumberOfStates());
-      Assert.AreEqual (new EnumWrapper (Delegation.Enabled), securityContext.GetState ("Delegation"));
+        SecurityContext securityContext = ((ISecurityContextFactory) position).CreateSecurityContext();
+        Assert.AreEqual (position.GetPublicDomainObjectType(), Type.GetType (securityContext.Class));
+        Assert.IsEmpty (securityContext.Owner);
+        Assert.IsEmpty (securityContext.OwnerGroup);
+        Assert.IsEmpty (securityContext.OwnerTenant);
+        Assert.IsEmpty (securityContext.AbstractRoles);
+        Assert.AreEqual (1, securityContext.GetNumberOfStates());
+        Assert.AreEqual (new EnumWrapper (Delegation.Enabled), securityContext.GetState ("Delegation"));
+      }
     }
   }
 }

@@ -30,7 +30,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
               SecurityManagerUser.FindByTenantID (ObjectID.Parse ("Tenant|00000001-0000-0000-0000-000000000002|System.Guid"), clientTransaction));
 
           UsersField.SetBusinessObjectList (users);
-          UsersField.LoadUnboundValue (ApplicationInstance.LoadUserFromSession (clientTransaction), false);
+          UsersField.LoadUnboundValue (ApplicationInstance.LoadUserFromSession (), false);
         }
       }
     }

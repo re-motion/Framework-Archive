@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
@@ -15,12 +16,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     {
       base.SetUp ();
       _testHelper = new AccessControlTestHelper ();
+      _testHelper.Transaction.EnterScope ();
     }
 
     [Test]
     public void EmptyToken_EmptyAce_Matches ()
     {
-      AccessControlEntry entry = AccessControlEntry.NewObject (_testHelper.Transaction);
+      AccessControlEntry entry = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
       SecurityToken token = _testHelper.CreateEmptyToken ();
 
       Assert.IsTrue (entry.MatchesToken (token));
@@ -70,7 +72,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void TokenWithTenant_EmptyAce_Matches ()
     {
-      AccessControlEntry entry = AccessControlEntry.NewObject (_testHelper.Transaction);
+      AccessControlEntry entry = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
       SecurityToken token = _testHelper.CreateTokenWithOwningTenant (null, entry.SpecificTenant);
  
       Assert.IsTrue (entry.MatchesToken (token));
@@ -128,7 +130,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void TokenWithAbstractRole_EmptyAce_Matches ()
     {
-      AccessControlEntry entry = AccessControlEntry.NewObject (_testHelper.Transaction);
+      AccessControlEntry entry = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
       SecurityToken token = _testHelper.CreateTokenWithAbstractRole (_testHelper.CreateTestAbstractRole ());
 
       Assert.IsTrue (entry.MatchesToken (token));

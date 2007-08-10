@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects;
 using Rubicon.Security;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.Metadata;
@@ -17,6 +18,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
     {
       base.SetUp ();
       _testHelper = new AccessControlTestHelper ();
+      _testHelper.Transaction.EnterScope ();
     }
 
     [Test]
@@ -27,7 +29,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       SecurityContext context = CreateStatelessContext ();
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      AccessControlList foundAcl = aclFinder.Find (classDefinition, context);
+      AccessControlList foundAcl = aclFinder.Find (ClientTransactionScope.CurrentTransaction, classDefinition, context);
 
       Assert.AreSame (acl, foundAcl);
     }
@@ -40,7 +42,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       SecurityContext context = CreateContextForDeliveredAndUnpaidOrder ();
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      AccessControlList foundAcl = aclFinder.Find (classDefinition, context);
+      AccessControlList foundAcl = aclFinder.Find (ClientTransactionScope.CurrentTransaction, classDefinition, context);
 
       Assert.AreSame (acl, foundAcl);
     }
@@ -53,7 +55,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       SecurityContext context = CreateStatelessContext ();
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      AccessControlList foundAcl = aclFinder.Find (classDefinition, context);
+      AccessControlList foundAcl = aclFinder.Find (ClientTransactionScope.CurrentTransaction, classDefinition, context);
 
       Assert.AreSame (acl, foundAcl);
     }
@@ -67,7 +69,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       SecurityContext context = CreateContextWithoutPaymentState ();
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      aclFinder.Find (classDefinition, context);
+      aclFinder.Find (ClientTransactionScope.CurrentTransaction, classDefinition, context);
     }
 
     [Test]
@@ -82,7 +84,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       SecurityContext context = new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerTenant", states, null);
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      aclFinder.Find (classDefinition, context);
+      aclFinder.Find (ClientTransactionScope.CurrentTransaction, classDefinition, context);
     }
 
     [Test]
@@ -99,7 +101,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       SecurityContext context = new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerTenant", states, null);
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      AccessControlList acl = aclFinder.Find (classDefinition, context);
+      AccessControlList acl = aclFinder.Find (ClientTransactionScope.CurrentTransaction, classDefinition, context);
 
       Assert.IsNull (acl);
     }
@@ -113,7 +115,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       SecurityContext context = CreateContextForDeliveredAndUnpaidOrder (typeof (SpecialOrder));
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      AccessControlList foundAcl = aclFinder.Find (specialOrderClass, context);
+      AccessControlList foundAcl = aclFinder.Find (ClientTransactionScope.CurrentTransaction, specialOrderClass, context);
 
       Assert.AreSame (acl, foundAcl);
     }
@@ -128,7 +130,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       SecurityContext context = CreateContextForDeliveredAndUnpaidOrder (typeof (SpecialOrder));
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      AccessControlList foundAcl = aclFinder.Find (specialOrderClass, context);
+      AccessControlList foundAcl = aclFinder.Find (ClientTransactionScope.CurrentTransaction, specialOrderClass, context);
 
       Assert.AreSame (aclForSpecialOrder, foundAcl);
     }
@@ -143,7 +145,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       SecurityContext context = CreateContextForDeliveredAndUnpaidAndDhlOrder (typeof (SpecialOrder));
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      AccessControlList foundAcl = aclFinder.Find (premiumOrderClass, context);
+      AccessControlList foundAcl = aclFinder.Find (ClientTransactionScope.CurrentTransaction, premiumOrderClass, context);
 
       Assert.AreSame (aclForPremiumOrder, foundAcl);
     }
@@ -159,7 +161,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       SecurityContext context = CreateContextForDeliveredAndUnpaidOrder (typeof (SpecialOrder));
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      aclFinder.Find (premiumOrderClass, context);
+      aclFinder.Find (ClientTransactionScope.CurrentTransaction, premiumOrderClass, context);
     }
 
     private SecurityContext CreateStatelessContext ()

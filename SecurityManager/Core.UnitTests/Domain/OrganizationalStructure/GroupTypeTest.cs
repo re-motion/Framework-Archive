@@ -8,14 +8,20 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
   [TestFixture]
   public class GroupTypeTest : DomainTest
   {
+    public override void SetUp ()
+    {
+      base.SetUp ();
+
+      new ClientTransactionScope();
+    }
+
     [Test]
     public void FindAll ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructureWithTwoTenants();
-      ClientTransaction transaction = ClientTransaction.NewTransaction();
+      dbFixtures.CreateOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
 
-      DomainObjectCollection groupTypes = GroupType.FindAll (transaction);
+      DomainObjectCollection groupTypes = GroupType.FindAll (ClientTransactionScope.CurrentTransaction);
 
       Assert.AreEqual (2, groupTypes.Count);
     }

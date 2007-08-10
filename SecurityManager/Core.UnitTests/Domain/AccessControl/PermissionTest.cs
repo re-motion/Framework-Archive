@@ -8,20 +8,16 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
   [TestFixture]
   public class PermissionTest : DomainTest
   {
-    private ClientTransaction _transaction;
-
     public override void SetUp ()
     {
       base.SetUp ();
-
-      _transaction = ClientTransaction.NewTransaction();
-      _transaction.EnterScope ();
+      new ClientTransactionScope ();
     }
 
     [Test]
     public void GetBinaryAllowed_WithAllowedTrue ()
     {
-      Permission permission = Permission.NewObject (_transaction);
+      Permission permission = Permission.NewObject (ClientTransactionScope.CurrentTransaction);
       permission.Allowed = true;
 
       Assert.IsTrue (permission.BinaryAllowed);
@@ -30,7 +26,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetBinaryAllowed_WithAllowedFalse ()
     {
-      Permission permission = Permission.NewObject (_transaction);
+      Permission permission = Permission.NewObject (ClientTransactionScope.CurrentTransaction);
       permission.Allowed = false;
 
       Assert.IsFalse (permission.BinaryAllowed);
@@ -39,7 +35,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetBinaryAllowed_WithAllowedNull ()
     {
-      Permission permission = Permission.NewObject (_transaction);
+      Permission permission = Permission.NewObject (ClientTransactionScope.CurrentTransaction);
       permission.Allowed = null;
 
       Assert.IsFalse (permission.BinaryAllowed);
@@ -48,7 +44,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void SetBinaryAllowed_FromTrue()
     {
-      Permission permission = Permission.NewObject (_transaction);
+      Permission permission = Permission.NewObject (ClientTransactionScope.CurrentTransaction);
       permission.BinaryAllowed = true;
 
       Assert.AreEqual (true, permission.Allowed);
@@ -57,7 +53,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void SetBinaryAllowed_FromFalse ()
     {
-      Permission permission = Permission.NewObject (_transaction);
+      Permission permission = Permission.NewObject (ClientTransactionScope.CurrentTransaction);
       permission.BinaryAllowed = false;
 
       Assert.IsNull (permission.Allowed);
@@ -66,7 +62,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void SetAndGet_Index ()
     {
-      Permission permission = Permission.NewObject (_transaction);
+      Permission permission = Permission.NewObject (ClientTransactionScope.CurrentTransaction);
 
       permission.Index = 1;
       Assert.AreEqual (1, permission.Index);

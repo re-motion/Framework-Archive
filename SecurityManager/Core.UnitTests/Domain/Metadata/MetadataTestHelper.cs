@@ -20,7 +20,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public const string State_ArchivedName = "Archived";
     public const int State_ArchivedValue = 2;
 
-    private ClientTransaction _transaction;
+    private readonly ClientTransaction _transaction;
 
     public MetadataTestHelper ()
     {
@@ -34,72 +34,123 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public AbstractRoleDefinition CreateClerkAbstractRole (int index)
     {
-      AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (_transaction, new Guid ("00000003-0001-0000-0000-000000000000"), "Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain", 0);
-      role.Index = index;
+      using (_transaction.EnterScope())
+      {
+        AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (
+            ClientTransactionScope.CurrentTransaction,
+            new Guid ("00000003-0001-0000-0000-000000000000"),
+            "Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain",
+            0);
+        role.Index = index;
 
-      return role;
+        return role;
+      }
     }
 
     public AbstractRoleDefinition CreateSecretaryAbstractRole (int index)
     {
-      AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (_transaction, new Guid ("00000003-0002-0000-0000-000000000000"), "Secretary|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain", 1);
-      role.Index = index;
+      using (_transaction.EnterScope())
+      {
+        AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (
+            ClientTransactionScope.CurrentTransaction,
+            new Guid ("00000003-0002-0000-0000-000000000000"),
+            "Secretary|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain",
+            1);
+        role.Index = index;
 
-      return role;
+        return role;
+      }
     }
 
     public AbstractRoleDefinition CreateAdministratorAbstractRole (int index)
     {
-      AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (_transaction, new Guid ("00000004-0001-0000-0000-000000000000"), "Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRoles, Rubicon.Security.UnitTests.TestDomain", 0);
-      role.Index = index;
+      using (_transaction.EnterScope())
+      {
+        AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (
+            ClientTransactionScope.CurrentTransaction,
+            new Guid ("00000004-0001-0000-0000-000000000000"),
+            "Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRoles, Rubicon.Security.UnitTests.TestDomain",
+            0);
+        role.Index = index;
 
-      return role;
+        return role;
+      }
     }
 
     public AccessTypeDefinition CreateAccessTypeCreate (int index)
     {
-      AccessTypeDefinition type = AccessTypeDefinition.NewObject  (_transaction, new Guid ("1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"), "Create|Rubicon.Security.GeneralAccessTypes, Rubicon.Security", 0);
-      type.Index = index;
+      using (_transaction.EnterScope())
+      {
+        AccessTypeDefinition type = AccessTypeDefinition.NewObject (
+            ClientTransactionScope.CurrentTransaction,
+            new Guid ("1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"),
+            "Create|Rubicon.Security.GeneralAccessTypes, Rubicon.Security",
+            0);
+        type.Index = index;
 
-      return type;
+        return type;
+      }
     }
 
     public AccessTypeDefinition CreateAccessTypeRead (int index)
     {
-      AccessTypeDefinition type = AccessTypeDefinition.NewObject  (_transaction, new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a"), "Read|Rubicon.Security.GeneralAccessTypes, Rubicon.Security", 1);
-      type.Index = index;
+      using (_transaction.EnterScope())
+      {
+        AccessTypeDefinition type = AccessTypeDefinition.NewObject (
+            ClientTransactionScope.CurrentTransaction,
+            new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a"),
+            "Read|Rubicon.Security.GeneralAccessTypes, Rubicon.Security",
+            1);
+        type.Index = index;
 
-      return type;
+        return type;
+      }
     }
 
     public AccessTypeDefinition CreateAccessTypeEdit (int index)
     {
-      AccessTypeDefinition type = AccessTypeDefinition.NewObject  (_transaction, new Guid ("11186122-6de0-4194-b434-9979230c41fd"), "Edit|Rubicon.Security.GeneralAccessTypes, Rubicon.Security", 2);
-      type.Index = index;
-      
-      return type;
+      using (_transaction.EnterScope())
+      {
+        AccessTypeDefinition type = AccessTypeDefinition.NewObject (
+            ClientTransactionScope.CurrentTransaction,
+            new Guid ("11186122-6de0-4194-b434-9979230c41fd"),
+            "Edit|Rubicon.Security.GeneralAccessTypes, Rubicon.Security",
+            2);
+        type.Index = index;
+
+        return type;
+      }
     }
 
     public StatePropertyDefinition CreateConfidentialityProperty (int index)
     {
-      StatePropertyDefinition property = StatePropertyDefinition.NewObject  (_transaction, new Guid ("00000000-0000-0000-0001-000000000001"), "Confidentiality");
-      property.Index = index;
-      property.AddState (Confidentiality_NormalName, Confidentiality_NormalValue);
-      property.AddState (Confidentiality_ConfidentialName, Confidentiality_ConfidentialValue);
-      property.AddState (Confidentiality_PrivateName, Confidentiality_PrivateValue);
+      using (_transaction.EnterScope())
+      {
+        StatePropertyDefinition property =
+            StatePropertyDefinition.NewObject (
+                ClientTransactionScope.CurrentTransaction, new Guid ("00000000-0000-0000-0001-000000000001"), "Confidentiality");
+        property.Index = index;
+        property.AddState (Confidentiality_NormalName, Confidentiality_NormalValue);
+        property.AddState (Confidentiality_ConfidentialName, Confidentiality_ConfidentialValue);
+        property.AddState (Confidentiality_PrivateName, Confidentiality_PrivateValue);
 
-      return property;
+        return property;
+      }
     }
 
     public StatePropertyDefinition CreateFileStateProperty (int index)
     {
-      StatePropertyDefinition property = StatePropertyDefinition.NewObject  (_transaction, new Guid ("00000000-0000-0000-0002-000000000001"), "State");
-      property.Index = index;
-      property.AddState (State_NewName, State_NewValue);
-      property.AddState (State_NormalName, State_NormalValue);
-      property.AddState (State_ArchivedName, State_ArchivedValue);
+      using (_transaction.EnterScope())
+      {
+        StatePropertyDefinition property =
+            StatePropertyDefinition.NewObject (ClientTransactionScope.CurrentTransaction, new Guid ("00000000-0000-0000-0002-000000000001"), "State");
+        property.Index = index;
+        property.AddState (State_NewName, State_NewValue);
+        property.AddState (State_NormalName, State_NormalValue);
+        property.AddState (State_ArchivedName, State_ArchivedValue);
 
-      return property;
+        return property;
+      }
     }
 
     public StateDefinition CreateConfidentialState ()
@@ -114,15 +165,21 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public StatePropertyDefinition CreateNewStateProperty (string name)
     {
-      return StatePropertyDefinition.NewObject  (_transaction, Guid.NewGuid (), name);
+      using (_transaction.EnterScope())
+      {
+        return StatePropertyDefinition.NewObject (ClientTransactionScope.CurrentTransaction, Guid.NewGuid(), name);
+      }
     }
 
     public StateDefinition CreateState (string name, int value)
     {
-      StateDefinition state = StateDefinition.NewObject (_transaction, name, value);
-      state.Index = value;
+      using (_transaction.EnterScope())
+      {
+        StateDefinition state = StateDefinition.NewObject (ClientTransactionScope.CurrentTransaction, name, value);
+        state.Index = value;
 
-      return state;
+        return state;
+      }
     }
   }
 }

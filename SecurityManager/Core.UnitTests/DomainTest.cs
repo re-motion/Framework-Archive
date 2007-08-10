@@ -6,21 +6,9 @@ namespace Rubicon.SecurityManager.UnitTests
 {
   public abstract class DomainTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    private ClientTransactionScope _clientTransactionScope;
-
-    // construction and disposing
-
     protected DomainTest()
     {
     }
-
-    // methods and properties
 
     [TestFixtureSetUp]
     public virtual void TestFixtureSetUp()
@@ -30,16 +18,12 @@ namespace Rubicon.SecurityManager.UnitTests
     [SetUp]
     public virtual void SetUp()
     {
-      _clientTransactionScope = new ClientTransactionScope ();
     }
 
     [TearDown]
-    public virtual void TearDown ()
+    public virtual void TearDown()
     {
-      if (_clientTransactionScope == ClientTransactionScope.ActiveScope)
-        _clientTransactionScope.Leave ();
-      else
-        ClientTransactionScope.ResetActiveScope ();
+      ClientTransactionScope.ResetActiveScope();
     }
   }
 }

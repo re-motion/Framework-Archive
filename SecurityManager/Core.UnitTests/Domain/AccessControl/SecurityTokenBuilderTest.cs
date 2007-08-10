@@ -11,21 +11,19 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
   [TestFixture]
   public class SecurityTokenBuilderTest : DomainTest
   {
-    private ClientTransaction _transaction;
-
     public override void TestFixtureSetUp ()
     {
       base.TestFixtureSetUp ();
 
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructureWithTwoTenants ();
+      dbFixtures.CreateOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
     }
 
     public override void SetUp ()
     {
       base.SetUp ();
-      _transaction = ClientTransaction.NewTransaction();
-      _transaction.EnterScope ();
+
+      new ClientTransactionScope();
     }
 
     [Test]
@@ -34,7 +32,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurityContext context = CreateContext ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (_transaction, CreateTestUser (), context);
+      SecurityToken token = builder.CreateToken (ClientTransactionScope.CurrentTransaction, CreateTestUser (), context);
 
       Assert.IsEmpty (token.AbstractRoles);
     }
@@ -45,7 +43,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurityContext context = CreateContext (ProjectRoles.QualityManager);
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (_transaction, CreateTestUser (), context);
+      SecurityToken token = builder.CreateToken (ClientTransactionScope.CurrentTransaction, CreateTestUser (), context);
 
       Assert.AreEqual (1, token.AbstractRoles.Count);
       Assert.AreEqual ("QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRoles, Rubicon.SecurityManager.UnitTests", token.AbstractRoles[0].Name);
@@ -57,7 +55,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurityContext context = CreateContext (ProjectRoles.QualityManager, ProjectRoles.Developer);
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (_transaction, CreateTestUser (), context);
+      SecurityToken token = builder.CreateToken (ClientTransactionScope.CurrentTransaction, CreateTestUser (), context);
 
       Assert.AreEqual (2, token.AbstractRoles.Count);
     }
@@ -69,7 +67,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurityContext context = CreateContext (ProjectRoles.Developer, UndefinedAbstractRoles.Undefined, ProjectRoles.QualityManager);
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (_transaction, CreateTestUser (), context);
+      SecurityToken token = builder.CreateToken (ClientTransactionScope.CurrentTransaction, CreateTestUser (), context);
 
       Assert.AreEqual (2, token.AbstractRoles.Count);
     }
@@ -81,7 +79,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (_transaction, user, context);
+      SecurityToken token = builder.CreateToken (ClientTransactionScope.CurrentTransaction, user, context);
 
       Assert.AreEqual ("test.user", token.User.UserName);
     }
@@ -94,7 +92,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       IPrincipal user = CreateNotExistingUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (_transaction, user, context);
+      SecurityToken token = builder.CreateToken (ClientTransactionScope.CurrentTransaction, user, context);
     }
 
     [Test]
@@ -104,7 +102,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (_transaction, user, context);
+      SecurityToken token = builder.CreateToken (ClientTransactionScope.CurrentTransaction, user, context);
 
       Assert.IsNotNull (token.OwningTenant);
       Assert.AreEqual ("UID: testTenant", token.OwningTenant.UniqueIdentifier);
@@ -117,7 +115,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (_transaction, user, context);
+      SecurityToken token = builder.CreateToken (ClientTransactionScope.CurrentTransaction, user, context);
 
       Assert.IsNull (token.OwningTenant);
     }
@@ -130,7 +128,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (_transaction, user, context);
+      SecurityToken token = builder.CreateToken (ClientTransactionScope.CurrentTransaction, user, context);
     }
 
     [Test]
@@ -140,7 +138,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (_transaction, user, context);
+      SecurityToken token = builder.CreateToken (ClientTransactionScope.CurrentTransaction, user, context);
 
       AccessControlObjectAssert.ContainsGroup ("UID: testOwningGroup", token.OwningGroups);
     }
@@ -152,7 +150,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (_transaction, user, context);
+      SecurityToken token = builder.CreateToken (ClientTransactionScope.CurrentTransaction, user, context);
 
       Assert.IsEmpty (token.OwningGroups);
     }
@@ -165,7 +163,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (_transaction, user, context);
+      SecurityToken token = builder.CreateToken (ClientTransactionScope.CurrentTransaction, user, context);
     }
 
     [Test]
@@ -175,7 +173,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (_transaction, user, context);
+      SecurityToken token = builder.CreateToken (ClientTransactionScope.CurrentTransaction, user, context);
 
       AccessControlObjectAssert.ContainsGroup ("UID: testRootGroup", token.OwningGroups);
     }

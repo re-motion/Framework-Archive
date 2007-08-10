@@ -6,8 +6,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
   public class OrganizationalStructureTestHelper
   {
-    private ClientTransaction _transaction;
-    private OrganizationalStructureFactory _factory;
+    private readonly ClientTransaction _transaction;
+    private readonly OrganizationalStructureFactory _factory;
 
     public OrganizationalStructureTestHelper ()
     {
@@ -27,11 +27,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public Tenant CreateTenant (ClientTransaction transaction, string name, string uniqueIdentifier)
     {
-      Tenant tenant = _factory.CreateTenant (transaction);
-      tenant.UniqueIdentifier = uniqueIdentifier;
-      tenant.Name = name;
+      using (_transaction.EnterScope())
+      {
+        Tenant tenant = _factory.CreateTenant (transaction);
+        tenant.UniqueIdentifier = uniqueIdentifier;
+        tenant.Name = name;
 
-      return tenant;
+        return tenant;
+      }
     }
 
     public Group CreateGroup (string name, string uniqueIdentifier, Group parent, Tenant tenant)
@@ -41,62 +44,79 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public Group CreateGroup (ClientTransaction transaction, string name, string uniqueIdentifier, Group parent, Tenant tenant)
     {
-      Group group = _factory.CreateGroup (transaction);
-      group.Name = name;
-      group.Parent = parent;
-      group.Tenant = tenant;
-      group.UniqueIdentifier = uniqueIdentifier;
+      using (transaction.EnterScope())
+      {
+        Group group = _factory.CreateGroup (transaction);
+        group.Name = name;
+        group.Parent = parent;
+        group.Tenant = tenant;
+        group.UniqueIdentifier = uniqueIdentifier;
 
-      return group;
+        return group;
+      }
     }
-    
+
     public User CreateUser (string userName, string firstName, string lastName, string title, Group owningGroup, Tenant tenant)
     {
-      User user = _factory.CreateUser (_transaction);
-      user.UserName = userName;
-      user.FirstName = firstName;
-      user.LastName = lastName;
-      user.Title = title;
-      user.Tenant = tenant;
-      user.OwningGroup = owningGroup;
+      using (_transaction.EnterScope())
+      {
+        User user = _factory.CreateUser (ClientTransactionScope.CurrentTransaction);
+        user.UserName = userName;
+        user.FirstName = firstName;
+        user.LastName = lastName;
+        user.Title = title;
+        user.Tenant = tenant;
+        user.OwningGroup = owningGroup;
 
-      return user;
+        return user;
+      }
     }
 
     public Position CreatePosition (string name)
     {
-      Position position = _factory.CreatePosition (_transaction);
-      position.Name = name;
+      using (_transaction.EnterScope())
+      {
+        Position position = _factory.CreatePosition (ClientTransactionScope.CurrentTransaction);
+        position.Name = name;
 
-      return position;
+        return position;
+      }
     }
 
     public Role CreateRole (User user, Group group, Position position)
     {
-      Role role = Role.NewObject (_transaction);
-      role.User = user;
-      role.Group = group;
-      role.Position = position;
+      using (_transaction.EnterScope())
+      {
+        Role role = Role.NewObject (ClientTransactionScope.CurrentTransaction);
+        role.User = user;
+        role.Group = group;
+        role.Position = position;
 
-      return role;
+        return role;
+      }
     }
 
     public GroupType CreateGroupType (string name)
     {
-      GroupType groupType = GroupType.NewObject (_transaction);
-      groupType.Name = name;
+      using (_transaction.EnterScope())
+      {
+        GroupType groupType = GroupType.NewObject (ClientTransactionScope.CurrentTransaction);
+        groupType.Name = name;
 
-      return groupType;
+        return groupType;
+      }
     }
 
     public GroupTypePosition CreateGroupTypePosition (GroupType groupType, Position position)
     {
-      GroupTypePosition concretePosition = GroupTypePosition.NewObject (_transaction);
-      concretePosition.GroupType = groupType;
-      concretePosition.Position = position;
+      using (_transaction.EnterScope ())
+      {
+        GroupTypePosition concretePosition = GroupTypePosition.NewObject (ClientTransactionScope.CurrentTransaction);
+        concretePosition.GroupType = groupType;
+        concretePosition.Position = position;
 
-      return concretePosition;
-
+        return concretePosition;
+      }
     }
   }
 }

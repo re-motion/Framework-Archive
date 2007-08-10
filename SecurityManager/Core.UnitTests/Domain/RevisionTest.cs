@@ -22,9 +22,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateEmptyDomain ();
-      Revision.IncrementRevision (ClientTransaction.NewTransaction());
+      Revision.IncrementRevision (ClientTransaction.NewTransaction ());
 
-      Assert.AreEqual (1, Revision.GetRevision (ClientTransaction.NewTransaction()));
+      Assert.AreEqual (1, Revision.GetRevision ( ClientTransaction.NewTransaction ()));
     }
   }
 }

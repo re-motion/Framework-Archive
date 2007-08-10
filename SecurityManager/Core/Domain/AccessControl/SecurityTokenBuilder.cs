@@ -11,6 +11,10 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 {
   public class SecurityTokenBuilder : ISecurityTokenBuilder
   {
+    public SecurityTokenBuilder ()
+    {
+    }
+
     /// <exception cref="AccessControlException">
     ///   A matching <see cref="User"/> is not found for the <paramref name="principal"/>.<br/>- or -<br/>
     ///   A matching <see cref="Group"/> is not found for the <paramref name="context"/>'s <see cref="SecurityContext.OwnerGroup"/>.<br/>- or -<br/>
@@ -22,46 +26,49 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       ArgumentUtility.CheckNotNull ("principal", principal);
       ArgumentUtility.CheckNotNull ("context", context);
 
-      User user = GetUser (transaction, principal.Identity.Name);
-      Tenant owningTenant = GetTenant (transaction, context.OwnerTenant);
-      List<Group> owningGroups = GetGroups (transaction, context.OwnerGroup);
-      List<AbstractRoleDefinition> abstractRoles = GetAbstractRoles (transaction, context.AbstractRoles);
+      using (transaction.EnterScope())
+      {
+        User user = GetUser (principal.Identity.Name);
+        Tenant owningTenant = GetTenant (context.OwnerTenant);
+        List<Group> owningGroups = GetGroups (context.OwnerGroup);
+        List<AbstractRoleDefinition> abstractRoles = GetAbstractRoles (context.AbstractRoles);
 
-      return new SecurityToken (user, owningTenant, owningGroups, abstractRoles);
+        return new SecurityToken (user, owningTenant, owningGroups, abstractRoles);
+      }
     }
 
-    private Tenant GetTenant (ClientTransaction transaction, string tenantUniqueIdentifier)
+    private Tenant GetTenant (string tenantUniqueIdentifier)
     {
       if (StringUtility.IsNullOrEmpty (tenantUniqueIdentifier))
         return null;
 
-      Tenant tenant = Tenant.FindByUnqiueIdentifier (tenantUniqueIdentifier, transaction);
+      Tenant tenant = Tenant.FindByUnqiueIdentifier (tenantUniqueIdentifier, ClientTransactionScope.CurrentTransaction);
       if (tenant == null)
         throw CreateAccessControlException ("The tenant '{0}' could not be found.", tenantUniqueIdentifier);
 
       return tenant;
     }
 
-    private User GetUser (ClientTransaction transaction, string userName)
+    private User GetUser (string userName)
     {
       if (StringUtility.IsNullOrEmpty (userName))
         return null;
 
-      User user = User.FindByUserName (userName, transaction);
+      User user = User.FindByUserName (userName, ClientTransactionScope.CurrentTransaction);
       if (user == null)
         throw CreateAccessControlException ("The user '{0}' could not be found.", userName);
 
       return user;
     }
 
-    private List<Group> GetGroups (ClientTransaction transaction, string groupUniqueIdentifier)
+    private List<Group> GetGroups (string groupUniqueIdentifier)
     {
-      List<Group> groups = new List<Group> ();
+      List<Group> groups = new List<Group>();
 
       if (StringUtility.IsNullOrEmpty (groupUniqueIdentifier))
         return groups;
 
-      Group group = Group.FindByUnqiueIdentifier (groupUniqueIdentifier, transaction);
+      Group group = Group.FindByUnqiueIdentifier (groupUniqueIdentifier, ClientTransactionScope.CurrentTransaction);
       if (group == null)
         throw CreateAccessControlException ("The group '{0}' could not be found.", groupUniqueIdentifier);
 
@@ -76,15 +83,15 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       return groups;
     }
 
-    private List<AbstractRoleDefinition> GetAbstractRoles (ClientTransaction transaction, EnumWrapper[] abstractRoleNames)
+    private List<AbstractRoleDefinition> GetAbstractRoles (EnumWrapper[] abstractRoleNames)
     {
-      DomainObjectCollection abstractRolesCollection = AbstractRoleDefinition.Find (abstractRoleNames, transaction);
-      
+      DomainObjectCollection abstractRolesCollection = AbstractRoleDefinition.Find (abstractRoleNames, ClientTransactionScope.CurrentTransaction);
+
       EnumWrapper? missingAbstractRoleName = FindFirstMissingAbstractRole (abstractRoleNames, abstractRolesCollection);
       if (missingAbstractRoleName != null)
         throw CreateAccessControlException ("The abstract role '{0}' could not be found.", missingAbstractRoleName);
 
-      List<AbstractRoleDefinition> abstractRoles = new List<AbstractRoleDefinition> ();
+      List<AbstractRoleDefinition> abstractRoles = new List<AbstractRoleDefinition>();
       foreach (AbstractRoleDefinition abstractRole in abstractRolesCollection)
         abstractRoles.Add (abstractRole);
 
@@ -101,12 +108,10 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
       foreach (EnumWrapper expectedAbstractRole in expectedAbstractRoles)
       {
-        Predicate<AbstractRoleDefinition> match = delegate (AbstractRoleDefinition current) 
-            {
-              return current.Name.Equals (expectedAbstractRole.ToString (), StringComparison.Ordinal); 
-            };
+        Predicate<AbstractRoleDefinition> match =
+            delegate (AbstractRoleDefinition current) { return current.Name.Equals (expectedAbstractRole.ToString(), StringComparison.Ordinal); };
 
-        if (!Array.Exists<AbstractRoleDefinition> (actualAbstractRoles, match))
+        if (!Array.Exists (actualAbstractRoles, match))
           return expectedAbstractRole;
       }
 

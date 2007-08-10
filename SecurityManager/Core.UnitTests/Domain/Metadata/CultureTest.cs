@@ -8,28 +8,25 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
   [TestFixture]
   public class CultureTest : DomainTest
   {
-    private ClientTransaction _transaction;
-
     public override void TestFixtureSetUp ()
     {
       base.TestFixtureSetUp ();
     
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateSecurableClassDefinitionWithLocalizedNames ();
+      dbFixtures.CreateSecurableClassDefinitionWithLocalizedNames (ClientTransaction.NewTransaction());
     }
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _transaction = ClientTransaction.NewTransaction();
-      _transaction.EnterScope ();
+      new ClientTransactionScope();
     }
 
     [Test]
     public void Find_Existing ()
     {
-      Culture foundCulture = Culture.Find ("de", _transaction);
+      Culture foundCulture = Culture.Find ("de", ClientTransactionScope.CurrentTransaction);
 
       Assert.IsNotNull (foundCulture);
       Assert.AreNotEqual (StateType.New, foundCulture.State);
@@ -39,7 +36,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void Find_NotExisting ()
     {
-      Culture foundCulture = Culture.Find ("hu", _transaction);
+      Culture foundCulture = Culture.Find ("hu", ClientTransactionScope.CurrentTransaction);
 
       Assert.IsNull (foundCulture);
     }

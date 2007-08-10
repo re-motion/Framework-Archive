@@ -8,11 +8,16 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
   [TestFixture]
   public class AccessTypeReferenceTest : DomainTest
   {
+    public override void SetUp ()
+    {
+      base.SetUp ();
+      new ClientTransactionScope ();
+    }
+
     [Test]
     public void SetAndGet_Index ()
     {
-      ClientTransaction transaction = ClientTransactionScope.CurrentTransaction;
-      AccessTypeReference accessTypeReference = AccessTypeReference.NewObject (transaction);
+      AccessTypeReference accessTypeReference = AccessTypeReference.NewObject (ClientTransactionScope.CurrentTransaction);
 
       accessTypeReference.Index = 1;
       Assert.AreEqual (1, accessTypeReference.Index);

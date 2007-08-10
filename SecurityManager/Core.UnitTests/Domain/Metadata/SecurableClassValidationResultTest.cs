@@ -20,15 +20,18 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void IsValid_InvalidStateCombination ()
     {
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
-      StateCombination stateCombination = testHelper.CreateStateCombination (orderClass);
+      AccessControlTestHelper testHelper = new AccessControlTestHelper();
+      using (testHelper.Transaction.EnterScope())
+      {
+        SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
+        StateCombination stateCombination = testHelper.CreateStateCombination (orderClass);
 
-      SecurableClassValidationResult result = new SecurableClassValidationResult ();
-      
-      result.AddInvalidStateCombination (stateCombination);
+        SecurableClassValidationResult result = new SecurableClassValidationResult();
 
-      Assert.IsFalse (result.IsValid);
+        result.AddInvalidStateCombination (stateCombination);
+
+        Assert.IsFalse (result.IsValid);
+      }
     }
 
     [Test]
@@ -42,35 +45,41 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void InvalidStateCombinations_OneInvalidStateCombination ()
     {
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
-      StateCombination stateCombination = testHelper.CreateStateCombination (orderClass);
+      AccessControlTestHelper testHelper = new AccessControlTestHelper();
+      using (testHelper.Transaction.EnterScope())
+      {
+        SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
+        StateCombination stateCombination = testHelper.CreateStateCombination (orderClass);
 
-      SecurableClassValidationResult result = new SecurableClassValidationResult ();
+        SecurableClassValidationResult result = new SecurableClassValidationResult();
 
-      result.AddInvalidStateCombination (stateCombination);
+        result.AddInvalidStateCombination (stateCombination);
 
-      Assert.AreEqual (1, result.InvalidStateCombinations.Count);
-      Assert.Contains (stateCombination, result.InvalidStateCombinations);
+        Assert.AreEqual (1, result.InvalidStateCombinations.Count);
+        Assert.Contains (stateCombination, result.InvalidStateCombinations);
+      }
     }
 
     [Test]
     public void InvalidStateCombinations_TwoInvalidStateCombinations ()
     {
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
-      StatePropertyDefinition paymentProperty = testHelper.CreatePaymentStateProperty (orderClass);
-      StateCombination statelessCombination = testHelper.CreateStateCombination (orderClass);
-      StateCombination paidStateCombination = testHelper.CreateStateCombination (orderClass, paymentProperty["Paid"]);
+      AccessControlTestHelper testHelper = new AccessControlTestHelper();
+      using (testHelper.Transaction.EnterScope())
+      {
+        SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
+        StatePropertyDefinition paymentProperty = testHelper.CreatePaymentStateProperty (orderClass);
+        StateCombination statelessCombination = testHelper.CreateStateCombination (orderClass);
+        StateCombination paidStateCombination = testHelper.CreateStateCombination (orderClass, paymentProperty["Paid"]);
 
-      SecurableClassValidationResult result = new SecurableClassValidationResult ();
+        SecurableClassValidationResult result = new SecurableClassValidationResult();
 
-      result.AddInvalidStateCombination (statelessCombination);
-      result.AddInvalidStateCombination (paidStateCombination);
+        result.AddInvalidStateCombination (statelessCombination);
+        result.AddInvalidStateCombination (paidStateCombination);
 
-      Assert.AreEqual (2, result.InvalidStateCombinations.Count);
-      Assert.Contains (statelessCombination, result.InvalidStateCombinations);
-      Assert.Contains (paidStateCombination, result.InvalidStateCombinations);
+        Assert.AreEqual (2, result.InvalidStateCombinations.Count);
+        Assert.Contains (statelessCombination, result.InvalidStateCombinations);
+        Assert.Contains (paidStateCombination, result.InvalidStateCombinations);
+      }
     }
   }
 }

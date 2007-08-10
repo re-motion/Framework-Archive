@@ -11,32 +11,36 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
   [TestFixture]
   public class Find_BySecurityContext : DomainTest
   {
-    private AccessControlTestHelper _testHelper;
     private SecurableClassDefinition _currentClassDefinition;
+    private ClientTransaction _currentClassDefinitionTransaction;
 
     public override void TestFixtureSetUp ()
     {
       base.TestFixtureSetUp ();
  
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      _currentClassDefinition = dbFixtures.CreateSecurableClassDefinitionWithAccessControlLists (1);
+      _currentClassDefinitionTransaction = ClientTransaction.NewTransaction ();
+      _currentClassDefinition = dbFixtures.CreateSecurableClassDefinitionWithAccessControlLists (1, _currentClassDefinitionTransaction);
     }
 
     public override void SetUp ()
     {
       base.SetUp ();
-      _testHelper = new AccessControlTestHelper ();
-      _currentClassDefinition.ClientTransaction.EnterScope ();
+      new ClientTransactionScope (_currentClassDefinitionTransaction);
     }
 
     [Test]
     public void Succeed_WithValidSecurityContext ()
     {
-      AccessControlList expectedAccessControlList = (AccessControlList) _currentClassDefinition.AccessControlLists[0];
+      AccessControlList expectedAccessControlList;
+      using (_currentClassDefinitionTransaction.EnterScope ())
+      {
+        expectedAccessControlList = _currentClassDefinition.AccessControlLists[0];
+      }
       SecurityContext context = new SecurityContext (typeof (Order));
-   
+     
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      AccessControlList foundAcl = aclFinder.Find (ClientTransactionScope.CurrentTransaction, context);
+      AccessControlList foundAcl = aclFinder.Find (ClientTransaction.NewTransaction (), context);
 
       Assert.AreEqual (expectedAccessControlList.ID, foundAcl.ID);
     }
@@ -49,7 +53,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       SecurityContext context = new SecurityContext (typeof (PremiumOrder));
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      aclFinder.Find (ClientTransactionScope.CurrentTransaction, context);
+      aclFinder.Find (ClientTransaction.NewTransaction (), context);
     }
   }
 }

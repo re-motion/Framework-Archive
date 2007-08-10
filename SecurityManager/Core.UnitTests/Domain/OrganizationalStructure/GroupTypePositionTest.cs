@@ -8,6 +8,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
   [TestFixture]
   public class GroupTypePositionTest : DomainTest
   {
+    public override void SetUp ()
+    {
+      base.SetUp ();
+      new ClientTransactionScope ();
+    }
+
     [Test]
     public void GetDisplayName_WithGroupTypeAndPosition ()
     {
@@ -46,7 +52,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     private static GroupTypePosition CreateGroupTypePosition ()
     {
-      OrganizationalStructureFactory factory = new OrganizationalStructureFactory();
+      OrganizationalStructureFactory factory = new OrganizationalStructureFactory ();
+
       GroupTypePosition groupTypePosition = GroupTypePosition.NewObject (ClientTransactionScope.CurrentTransaction);
 
       groupTypePosition.GroupType = GroupType.NewObject (ClientTransactionScope.CurrentTransaction);

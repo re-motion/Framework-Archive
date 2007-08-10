@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.Metadata;
@@ -18,6 +17,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     {
       base.SetUp ();
       _testHelper = new AccessControlTestHelper ();
+      _testHelper.Transaction.EnterScope();
     }
 
     [Test]
@@ -179,7 +179,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void SetAndGet_Index ()
     {
-      ClientTransaction transaction = ClientTransaction.NewTransaction();
       StateCombination stateCombination = StateCombination.NewObject (_testHelper.Transaction);
 
       stateCombination.Index = 1;

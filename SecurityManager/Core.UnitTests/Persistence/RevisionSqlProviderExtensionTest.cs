@@ -10,42 +10,39 @@ namespace Rubicon.SecurityManager.UnitTests.Persistence
   [TestFixture]
   public class RevisionSqlProviderExtensionTest : DomainTest
   {
-    private ClientTransaction _clientTransaction;
     private OrganizationalStructureFactory _factory;
 
     public override void SetUp ()
     {
       base.SetUp ();
-      
+
+      new ClientTransactionScope();
+
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateEmptyDomain ();
       
-      _clientTransaction = ClientTransaction.NewTransaction();
       _factory = new OrganizationalStructureFactory ();
     }
 
     [Test]
     public void Saving_OneSecurityManagerDomainObject ()
     {
-      Tenant tenant = _factory.CreateTenant (_clientTransaction);
+      Tenant tenant = _factory.CreateTenant (ClientTransactionScope.CurrentTransaction);
 
-      _clientTransaction.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit ();
 
-      Assert.AreEqual (1, Revision.GetRevision (_clientTransaction));
+      Assert.AreEqual (1, Revision.GetRevision (ClientTransactionScope.CurrentTransaction));
     }
 
     [Test]
     public void Saving_DisacardedDomainObject ()
     {
-      Tenant tenant = _factory.CreateTenant (_clientTransaction);
-      using (_clientTransaction.EnterScope ())
-      {
-        tenant.Delete ();
-      }
+      Tenant tenant = _factory.CreateTenant (ClientTransactionScope.CurrentTransaction);
+      tenant.Delete ();
 
-      _clientTransaction.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit ();
 
-      Assert.AreEqual (0, Revision.GetRevision (_clientTransaction));
+      Assert.AreEqual (0, Revision.GetRevision (ClientTransactionScope.CurrentTransaction));
     }
   }
 }

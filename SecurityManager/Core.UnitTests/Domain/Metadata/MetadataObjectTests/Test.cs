@@ -10,7 +10,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
   [TestFixture]
   public class Test : DomainTest
   {
-    private ClientTransaction _transaction;
     private MetadataObject _metadataObject;
     private Culture _cultureInvariant;
     private Culture _cultureDe;
@@ -23,27 +22,26 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
     {
       base.SetUp ();
 
-      _transaction = ClientTransaction.NewTransaction();
-      _transaction.EnterScope ();
+      new ClientTransactionScope();
 
-      _metadataObject = SecurableClassDefinition.NewObject (_transaction);
+      _metadataObject = SecurableClassDefinition.NewObject (ClientTransactionScope.CurrentTransaction);
       _metadataObject.Name = "Technical Name";
 
-      _cultureInvariant = Culture.NewObject (_transaction, string.Empty);
-      _cultureDe = Culture.NewObject (_transaction, "de");
-      _cultureDeAt = Culture.NewObject (_transaction, "de-AT");
-      _cultureRu = Culture.NewObject (_transaction, "ru");
+      _cultureInvariant = Culture.NewObject (ClientTransactionScope.CurrentTransaction, string.Empty);
+      _cultureDe = Culture.NewObject (ClientTransactionScope.CurrentTransaction, "de");
+      _cultureDeAt = Culture.NewObject (ClientTransactionScope.CurrentTransaction, "de-AT");
+      _cultureRu = Culture.NewObject (ClientTransactionScope.CurrentTransaction, "ru");
 
       _backupCulture = Thread.CurrentThread.CurrentCulture;
       _backupUICulture = Thread.CurrentThread.CurrentUICulture;
     }
 
-    [TearDown]
     public override void TearDown ()
     {
+      base.TearDown();
+
       Thread.CurrentThread.CurrentCulture = _backupCulture;
       Thread.CurrentThread.CurrentUICulture = _backupUICulture;
-      base.TearDown ();
     }
 
     [Test]
@@ -145,7 +143,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
 
     private LocalizedName CreateLocalizedName (MetadataObject metadataObject, Culture culture, string text)
     {
-      return LocalizedName.NewObject (metadataObject.ClientTransaction, text, culture, metadataObject);
+      return LocalizedName.NewObject (ClientTransactionScope.CurrentTransaction, text, culture, metadataObject);
     }
   }
 }

@@ -42,24 +42,27 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public void Import (XmlDocument document)
     {
-      SecurityMetadataLocalizationSchema schema = new SecurityMetadataLocalizationSchema();
-      if (!document.Schemas.Contains (schema.SchemaUri))
-        document.Schemas.Add (schema.LoadSchemaSet ());
+      using (_transaction.EnterScope())
+      {
+        SecurityMetadataLocalizationSchema schema = new SecurityMetadataLocalizationSchema();
+        if (!document.Schemas.Contains (schema.SchemaUri))
+          document.Schemas.Add (schema.LoadSchemaSet());
 
-      document.Validate (null);
+        document.Validate (null);
 
-      XmlNamespaceManager namespaceManager = new XmlNamespaceManager (document.NameTable);
-      namespaceManager.AddNamespace ("mdl", schema.SchemaUri);
+        XmlNamespaceManager namespaceManager = new XmlNamespaceManager (document.NameTable);
+        namespaceManager.AddNamespace ("mdl", schema.SchemaUri);
 
-      Culture culture = ImportCulture (document.DocumentElement, namespaceManager);
-      ImportLocalizedNames (culture, document, namespaceManager);
+        Culture culture = ImportCulture (document.DocumentElement, namespaceManager);
+        ImportLocalizedNames (culture, document, namespaceManager);
+      }
     }
 
     private Culture ImportCulture (XmlElement rootElement, XmlNamespaceManager namespaceManager)
     {
       string cultureName = rootElement.Attributes["culture"].Value;
       // TODO: Convert to CultureInfo via GetCulture
-      Culture culture = Culture.NewObject (_transaction, cultureName);
+      Culture culture = Culture.NewObject (ClientTransactionScope.CurrentTransaction, cultureName);
 
       _cultures.Add (culture);
 

@@ -22,7 +22,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.TestFixtureSetUp ();
 
       _dbFixtures = new DatabaseFixtures ();
-      Tenant tenant = _dbFixtures.CreateOrganizationalStructureWithTwoTenants ();
+      Tenant tenant = _dbFixtures.CreateOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
       _expectedTenantID = tenant.ID;
     }
 
@@ -31,13 +31,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.SetUp ();
 
       _testHelper = new OrganizationalStructureTestHelper ();
-      _testHelper.Transaction.EnterScope ();
+      _testHelper.Transaction.EnterScope();
     }
 
     [Test]
     public void FindByUserName_ValidUser ()
     {
-      User foundUser = User.FindByUserName ("test.user", _testHelper.Transaction);
+      User foundUser = User.FindByUserName ("test.user", ClientTransactionScope.CurrentTransaction);
 
       Assert.AreEqual ("test.user", foundUser.UserName);
     }
@@ -45,7 +45,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindByUserName_NotExistingUser ()
     {
-      User foundUser = User.FindByUserName ("not.existing", _testHelper.Transaction);
+      User foundUser = User.FindByUserName ("not.existing", ClientTransactionScope.CurrentTransaction);
 
       Assert.IsNull (foundUser);
     }
@@ -53,8 +53,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetRolesForGroup_Empty ()
     {
-      User testUser = User.FindByUserName ("test.user", _testHelper.Transaction);
-      Group parentOfOwnerGroup = Group.FindByUnqiueIdentifier ("UID: testParentOfOwningGroup", _testHelper.Transaction);
+      User testUser = User.FindByUserName ("test.user", ClientTransactionScope.CurrentTransaction);
+      Group parentOfOwnerGroup = Group.FindByUnqiueIdentifier ("UID: testParentOfOwningGroup", ClientTransactionScope.CurrentTransaction);
       List<Role> roles = testUser.GetRolesForGroup (parentOfOwnerGroup);
 
       Assert.AreEqual (0, roles.Count);
@@ -63,8 +63,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetRolesForGroup_TwoRoles ()
     {
-      User testUser = User.FindByUserName ("test.user", _testHelper.Transaction);
-      Group testgroup = Group.FindByUnqiueIdentifier ("UID: testgroup", _testHelper.Transaction);
+      User testUser = User.FindByUserName ("test.user", ClientTransactionScope.CurrentTransaction);
+      Group testgroup = Group.FindByUnqiueIdentifier ("UID: testgroup", ClientTransactionScope.CurrentTransaction);
       List<Role> roles = testUser.GetRolesForGroup (testgroup);
 
       Assert.AreEqual (2, roles.Count);
@@ -73,7 +73,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void Find_UsersByTenantID ()
     {
-      DomainObjectCollection users = User.FindByTenantID (_expectedTenantID, _testHelper.Transaction);
+      DomainObjectCollection users = User.FindByTenantID (_expectedTenantID, ClientTransactionScope.CurrentTransaction);
 
       Assert.AreEqual (5, users.Count);
     }
@@ -86,7 +86,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Group group = _testHelper.CreateGroup ("TestGroup", "UID: testGroup", null, tenant);
       User newUser = _testHelper.CreateUser ("test.user", "Test", "User", "Ing.", group, tenant);
 
-      _testHelper.Transaction.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit ();
     }
 
     [Test]
@@ -115,16 +115,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
       ThreadRunner.Run (delegate ()
           {
-            using (_testHelper.Transaction.EnterScope ())
-            {
-              Tenant otherTenant = _testHelper.CreateTenant ("OtherTenant", "UID: otherTenant");
-              Group otherGroup = _testHelper.CreateGroup ("OtherGroup", "UID: otherGroup", null, otherTenant);
-              User otherUser = _testHelper.CreateUser ("other.user", "Other", "User", "Ing.", otherGroup, otherTenant);
+            Tenant otherTenant = _testHelper.CreateTenant ("OtherTenant", "UID: otherTenant");
+            Group otherGroup = _testHelper.CreateGroup ("OtherGroup", "UID: otherGroup", null, otherTenant);
+            User otherUser = _testHelper.CreateUser ("other.user", "Other", "User", "Ing.", otherGroup, otherTenant);
 
-              Assert.IsNull (User.Current);
-              User.Current = otherUser;
-              Assert.AreSame (otherUser, User.Current);
-            }
+            Assert.IsNull (User.Current);
+            User.Current = otherUser;
+            Assert.AreSame (otherUser, User.Current);
 
           });
 

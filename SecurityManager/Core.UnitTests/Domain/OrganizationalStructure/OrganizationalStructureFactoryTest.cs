@@ -10,38 +10,37 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
   public class OrganizationalStructureFactoryTest : DomainTest
   {
     private IOrganizationalStructureFactory _factory;
-    private ClientTransaction _transaction;
 
     public override void SetUp ()
     {
       base.SetUp ();
 
       _factory = new OrganizationalStructureFactory();
-      _transaction = ClientTransaction.NewTransaction();
+      new ClientTransactionScope();
     }
 
     [Test]
     public void CreateTenant ()
     {
-      Assert.That (_factory.CreateTenant (_transaction), Is.InstanceOfType (typeof (Tenant)));
+      Assert.That (_factory.CreateTenant (ClientTransactionScope.CurrentTransaction), Is.InstanceOfType (typeof (Tenant)));
     }
 
     [Test]
     public void CreateGroup ()
     {
-      Assert.That (_factory.CreateGroup (_transaction), Is.InstanceOfType (typeof (Group)));
+      Assert.That (_factory.CreateGroup (ClientTransactionScope.CurrentTransaction), Is.InstanceOfType (typeof (Group)));
     }
 
     [Test]
     public void CreateUser ()
     {
-      Assert.That (_factory.CreateUser (_transaction), Is.InstanceOfType (typeof (User)));
+      Assert.That (_factory.CreateUser (ClientTransactionScope.CurrentTransaction), Is.InstanceOfType (typeof (User)));
     }
 
     [Test]
     public void CreatePosition ()
     {
-      Assert.That (_factory.CreatePosition (_transaction), Is.InstanceOfType (typeof (Position)));
+      Assert.That (_factory.CreatePosition (ClientTransactionScope.CurrentTransaction), Is.InstanceOfType (typeof (Position)));
     }
 
     [Test]

@@ -61,15 +61,13 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
       return (ObjectID) Session[s_userKey];
     }
 
-    public SecurityManagerUser LoadUserFromSession (ClientTransaction clientTransaction)
+    public User LoadUserFromSession ()
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
       ObjectID userID = LoadUserIDFromSession ();
       if (userID == null)
         return null;
 
-      return SecurityManagerUser.GetObject (userID, clientTransaction);
+      return SecurityManagerUser.GetObject (userID, ClientTransactionScope.CurrentTransaction);
     }
 
     public void SaveUserToSession (SecurityManagerUser user, bool saveCurrentTenant)
@@ -101,15 +99,13 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
       return (ObjectID) Session[s_tenantKey];
     }
 
-    public Tenant LoadTenantFromSession (ClientTransaction clientTransaction)
+    public Tenant LoadTenantFromSession ()
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
       ObjectID tenantID = LoadTenantIDFromSession ();
       if (tenantID == null)
         return null;
 
-      return Tenant.GetObject (tenantID, clientTransaction);
+      return Tenant.GetObject (tenantID, ClientTransactionScope.CurrentTransaction);
     }
 
     public void SaveTenantToSession (Tenant tenant)
@@ -129,25 +125,26 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
     {
       base.Init ();
 
-      PostAcquireRequestState += new EventHandler (SecurityManagerHttpApplication_PostAcquireRequestState); 
+      PostAcquireRequestState += SecurityManagerHttpApplication_PostAcquireRequestState; 
     }
 
     private void SecurityManagerHttpApplication_PostAcquireRequestState (object sender, EventArgs e)
     {
       if (HasSessionState)
       {
-        ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
-        
-        SecurityManagerUser user = LoadUserFromSession (clientTransaction);
-        if (user == null && Context.User.Identity.IsAuthenticated)
+        using (new ClientTransactionScope())
         {
-          user = SecurityManagerUser.FindByUserName (Context.User.Identity.Name, clientTransaction);
-          SetCurrentUser (user, true);
-        }
-        else
-        {
-          SetCurrentUser (user, false);
-          SetCurrentTenant (LoadTenantFromSession (clientTransaction));
+          SecurityManagerUser user = LoadUserFromSession ();
+          if (user == null && Context.User.Identity.IsAuthenticated)
+          {
+            user = SecurityManagerUser.FindByUserName (Context.User.Identity.Name, ClientTransaction.NewTransaction());
+            SetCurrentUser (user, true);
+          }
+          else
+          {
+            SetCurrentUser (user, false);
+            SetCurrentTenant (LoadTenantFromSession ());
+          }
         }
       }
     }

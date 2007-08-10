@@ -8,13 +8,21 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
   [TestFixture]
   public class StateCombinationComparerTest : DomainTest
   {
+    private AccessControlTestHelper _testHelper;
+
+    public override void SetUp ()
+    {
+      base.SetUp ();
+      _testHelper = new AccessControlTestHelper ();
+      _testHelper.Transaction.EnterScope();
+    }
+
     [Test]
     public void Equals_TwoStatelessCombinations ()
     {
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
-      StateCombination combination1 = testHelper.CreateStateCombination (orderClass);
-      StateCombination combination2 = testHelper.CreateStateCombination (orderClass);
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      StateCombination combination1 = _testHelper.CreateStateCombination (orderClass);
+      StateCombination combination2 = _testHelper.CreateStateCombination (orderClass);
 
       StateCombinationComparer comparer = new StateCombinationComparer ();
 
@@ -24,11 +32,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Equals_OneStatelessAndOneWithAState ()
     {
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
-      StatePropertyDefinition paymentProperty = testHelper.CreatePaymentStateProperty (orderClass);
-      StateCombination combination1 = testHelper.CreateStateCombination (orderClass);
-      StateCombination combination2 = testHelper.CreateStateCombination (orderClass, paymentProperty["Paid"]);
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
+      StateCombination combination1 = _testHelper.CreateStateCombination (orderClass);
+      StateCombination combination2 = _testHelper.CreateStateCombination (orderClass, paymentProperty["Paid"]);
 
       StateCombinationComparer comparer = new StateCombinationComparer ();
 
@@ -38,11 +45,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Equals_TwoDifferent ()
     {
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
-      StatePropertyDefinition paymentProperty = testHelper.CreatePaymentStateProperty (orderClass);
-      StateCombination combination1 = testHelper.CreateStateCombination (orderClass, paymentProperty["None"]);
-      StateCombination combination2 = testHelper.CreateStateCombination (orderClass, paymentProperty["Paid"]);
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
+      StateCombination combination1 = _testHelper.CreateStateCombination (orderClass, paymentProperty["None"]);
+      StateCombination combination2 = _testHelper.CreateStateCombination (orderClass, paymentProperty["Paid"]);
 
       StateCombinationComparer comparer = new StateCombinationComparer ();
 
@@ -52,10 +58,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetHashCode_TwoStatelessCombinations ()
     {
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
-      StateCombination combination1 = testHelper.CreateStateCombination (orderClass);
-      StateCombination combination2 = testHelper.CreateStateCombination (orderClass);
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      StateCombination combination1 = _testHelper.CreateStateCombination (orderClass);
+      StateCombination combination2 = _testHelper.CreateStateCombination (orderClass);
 
       StateCombinationComparer comparer = new StateCombinationComparer ();
 
@@ -65,11 +70,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetHashCode_OneStatelessAndOneWithAState ()
     {
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
-      StatePropertyDefinition paymentProperty = testHelper.CreatePaymentStateProperty (orderClass);
-      StateCombination combination1 = testHelper.CreateStateCombination (orderClass);
-      StateCombination combination2 = testHelper.CreateStateCombination (orderClass, paymentProperty["Paid"]);
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
+      StateCombination combination1 = _testHelper.CreateStateCombination (orderClass);
+      StateCombination combination2 = _testHelper.CreateStateCombination (orderClass, paymentProperty["Paid"]);
 
       StateCombinationComparer comparer = new StateCombinationComparer ();
 
@@ -79,11 +83,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetHashCode_TwoDifferent ()
     {
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
-      StatePropertyDefinition paymentProperty = testHelper.CreatePaymentStateProperty (orderClass);
-      StateCombination combination1 = testHelper.CreateStateCombination (orderClass, paymentProperty["None"]);
-      StateCombination combination2 = testHelper.CreateStateCombination (orderClass, paymentProperty["Paid"]);
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
+      StateCombination combination1 = _testHelper.CreateStateCombination (orderClass, paymentProperty["None"]);
+      StateCombination combination2 = _testHelper.CreateStateCombination (orderClass, paymentProperty["Paid"]);
 
       StateCombinationComparer comparer = new StateCombinationComparer ();
 

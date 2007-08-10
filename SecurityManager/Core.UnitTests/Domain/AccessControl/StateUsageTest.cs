@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.Metadata;
@@ -16,8 +17,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     {
       base.SetUp ();
       _testHelper = new AccessControlTestHelper ();
+      _testHelper.Transaction.EnterScope();
     }
-
 
     [Test]
     [ExpectedException (typeof (ConstraintViolationException),
@@ -34,16 +35,16 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       StateCombination combination1 = _testHelper.CreateStateCombination (orderClass, paidState);
       StateCombination combination2 = _testHelper.CreateStateCombination (orderClass, notPaidState);
       StateCombination combination3 = _testHelper.CreateStateCombination (orderClass);
-      combination1.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject (_testHelper.Transaction));
-      combination2.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject (_testHelper.Transaction));
-      combination3.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject (_testHelper.Transaction));
+      combination1.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction));
+      combination2.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction));
+      combination3.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction));
 
-      _testHelper.Transaction.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit ();
 
-      StateUsage stateUsage = (StateUsage) combination2.StateUsages[0];
+      StateUsage stateUsage = combination2.StateUsages[0];
       stateUsage.StateDefinition = paidState;
 
-      _testHelper.Transaction.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit ();
     }
 
     private StateCombination GetStatelessCombinationForClass (SecurableClassDefinition classDefinition)

@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
@@ -15,12 +16,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     {
       base.SetUp ();
       _testHelper = new AccessControlTestHelper ();
+      _testHelper.Transaction.EnterScope ();
     }
 
     [Test]
     public void Validate_IsValid ()
     {
-      AccessControlEntry ace = AccessControlEntry.NewObject (_testHelper.Transaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
 
       AccessControlEntryValidationResult result = ace.Validate ();
 
@@ -60,7 +62,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
       AccessControlEntry ace = _testHelper.CreateAceWithSpecficTenant (tenant);
       ace.SpecificTenant = null;
 
-      _testHelper.Transaction.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit ();
     }
   }
 }

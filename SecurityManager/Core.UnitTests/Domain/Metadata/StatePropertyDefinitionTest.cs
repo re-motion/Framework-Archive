@@ -15,7 +15,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       base.SetUp ();
 
       _testHelper = new MetadataTestHelper ();
-      _testHelper.Transaction.EnterScope ();
+      _testHelper.Transaction.EnterScope();
     }
 
     [Test]
@@ -124,22 +124,20 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void GetDefinedStates ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateEmptyDomain ();
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
+      dbFixtures.CreateEmptyDomain();
       StatePropertyDefinition expectdPropertyDefinition = _testHelper.CreateConfidentialityProperty (0);
-      _testHelper.Transaction.Commit ();
+      ObjectList<StateDefinition> expectedStateDefinitions = expectdPropertyDefinition.DefinedStates;
+      _testHelper.Transaction.Commit();
 
-      ClientTransaction transaction = ClientTransaction.NewTransaction();
-      using (transaction.EnterScope())
+      using (new ClientTransactionScope())
       {
-        expectdPropertyDefinition = DomainObject.LoadIntoTransaction (expectdPropertyDefinition, transaction);
-        StatePropertyDefinition actualStatePropertyDefinition = StatePropertyDefinition.GetObject (expectdPropertyDefinition.ID, transaction);
+        StatePropertyDefinition actualStatePropertyDefinition = StatePropertyDefinition.GetObject (expectdPropertyDefinition.ID, ClientTransactionScope.CurrentTransaction);
 
         Assert.AreEqual (3, actualStatePropertyDefinition.DefinedStates.Count);
         for (int i = 0; i < actualStatePropertyDefinition.DefinedStates.Count; i++)
-          Assert.AreEqual (expectdPropertyDefinition.DefinedStates[i].ID, actualStatePropertyDefinition.DefinedStates[i].ID);
+          Assert.AreEqual (expectedStateDefinitions[i].ID, actualStatePropertyDefinition.DefinedStates[i].ID);
       }
     }
-
   }
 }
