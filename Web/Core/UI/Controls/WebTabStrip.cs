@@ -325,46 +325,14 @@ public class WebTabStrip :
     bool isEnabled = ! tab.IsSelected || _enableSelectedTab;
     WebTabStyle style = tab.IsSelected ? _selectedTabStyle : _tabStyle;
     tab.RenderBeginTagForCommand (writer, isEnabled, style);
-    
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabTopBorder);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin top border span
- 
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabBottomBorder);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin bottom border span
 
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabLeftBorder);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin left border span
- 
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabRightBorder);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin right border span
-
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabTopLeftCorner);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin top left corner span
- 
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabBottomLeftCorner);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin bottom left corner span
-
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabTopRightCorner);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin top right corner span
- 
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabBottomRightCorner);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin bottom right corner span
-
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabContent);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin content span
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabAnchorBody);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin anchor body span
 
     tab.RenderContents (writer);
 
-    writer.RenderEndTag(); // End content span
-    writer.RenderEndTag(); // End bottom right border span
-    writer.RenderEndTag(); // End top right border span
-    writer.RenderEndTag(); // End bottom left border span
-    writer.RenderEndTag(); // End top left border span
-    writer.RenderEndTag(); // End right border span
-    writer.RenderEndTag(); // End left border span
-    writer.RenderEndTag(); // End bottom border span
-    writer.RenderEndTag(); // End left border span
-    
+    RenderBorderSpans (writer);    
+    writer.RenderEndTag (); // End anchor body span
     tab.RenderEndTagForCommand (writer);
 
     writer.RenderEndTag(); // End tab span
@@ -389,6 +357,42 @@ public class WebTabStrip :
     writer.RenderBeginTag (HtmlTextWriterTag.Span);
     writer.RenderEndTag();
     writer.RenderEndTag();
+  }
+
+
+  private void RenderBorderSpans (HtmlTextWriter writer)
+  {
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabTopBorder);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span);
+    writer.RenderEndTag ();
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabLeftBorder);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span);
+    writer.RenderEndTag ();
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabBottomBorder);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span);
+    writer.RenderEndTag ();
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabRightBorder);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span);
+    writer.RenderEndTag ();
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabTopLeftCorner);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span);
+    writer.RenderEndTag ();
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabTopRightCorner);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span);
+    writer.RenderEndTag ();
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabBottomLeftCorner);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span);
+    writer.RenderEndTag ();
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabBottomRightCorner);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span);
+    writer.RenderEndTag ();
   }
 
   /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
@@ -731,13 +735,13 @@ public class WebTabStrip :
     get { return "bottomRight"; }
   }
 
-  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the content. </summary>
+  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the inside of the anchor element. </summary>
   /// <remarks> 
-  ///   <para> Class: <c>content</c>. </para>
+  ///   <para> Class: <c>anchorBody</c>. </para>
   /// </remarks>
-  protected virtual string CssClassTabContent
+  protected virtual string CssClassTabAnchorBody
   {
-    get { return "content"; }
+    get { return "anchorBody"; }
   }
 
   /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for clearing the space after the last tab. </summary>

@@ -26,10 +26,7 @@ td.singleViewView
   padding: 0;
   vertical-align: top; 
   height: 100%;
-	border-top: solid 1px #005588;	
-	border-left: solid 1px #005588;	
-	border-right: solid 1px #005588;	
-	border-bottom: solid 1px #005588;
+	border: solid 1px #005588;	
 }
 
 div.singleViewView
@@ -38,6 +35,18 @@ div.singleViewView
   overflow: auto;	
   height: 100%; 
   width: 100%; 
+}
+
+div.singleViewView *.left, 
+div.singleViewView *.top, 
+div.singleViewView *.right, 
+div.singleViewView *.bottom,
+div.singleViewView *.topLeft, 
+div.singleViewView *.bottomLeft, 
+div.singleViewView *.topRight, 
+div.singleViewView *.bottomRight
+{
+  display: none;
 }
 
 /* Non-IE Browsers hack \*/
@@ -55,7 +64,7 @@ td.singleViewTopControls
   height: 0%;
 }
 
-div.singleViewTopControls
+div.singleViewTopControls div.content
 {
   padding-bottom: 1em;
 }
@@ -67,7 +76,7 @@ td.singleViewBottomControls
   height: 0%;
 }
 
-div.singleViewBottomControls
+div.singleViewBottomControls div.content
 {
   padding-top: 1em;
 }

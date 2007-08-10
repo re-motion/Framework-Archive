@@ -12,14 +12,6 @@ namespace Rubicon.Web.UI.Controls
   //[Designer( typeof (SingleViewDesigner))]
   public class SingleView : WebControl, IControl
   {
-    // constants
-
-    // statics
-
-    // types
-
-    // fields
-
     private PlaceHolder _view;
     //private Control _viewTemplateContainer;
     //private ITemplate _viewTemplate;
@@ -30,7 +22,6 @@ namespace Rubicon.Web.UI.Controls
     private Style _topControlsStyle;
     private Style _bottomControlsStyle;
 
-    // construction and destruction
     public SingleView ()
     {
       CreateControls();
@@ -38,8 +29,6 @@ namespace Rubicon.Web.UI.Controls
       _topControlsStyle = new Style();
       _bottomControlsStyle = new Style();
     }
-
-    // methods and properties
 
     private void CreateControls ()
     {
@@ -171,7 +160,7 @@ namespace Rubicon.Web.UI.Controls
       _view.RenderControl (writer);
 
       writer.RenderEndTag(); // end content div
-      //RenderBorderSpans (writer);
+      RenderBorderSpans (writer);
       writer.RenderEndTag(); // end outer div
 
       writer.RenderEndTag(); // end td
@@ -231,40 +220,40 @@ namespace Rubicon.Web.UI.Controls
       writer.RenderEndTag(); // end tr
     }
 
-    //private void RenderBorderSpans (HtmlTextWriter writer)
-    //{
-    //  writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopBorder);
-    //  writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    //  writer.RenderEndTag();
+    private void RenderBorderSpans (HtmlTextWriter writer)
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopBorder);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag ();
 
-    //  writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassLeftBorder);
-    //  writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    //  writer.RenderEndTag();
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassLeftBorder);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag ();
 
-    //  writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBottomBorder);
-    //  writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    //  writer.RenderEndTag();
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBottomBorder);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag ();
 
-    //  writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassRightBorder);
-    //  writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    //  writer.RenderEndTag();
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassRightBorder);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag ();
 
-    //  writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopLeftCorner);
-    //  writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    //  writer.RenderEndTag();
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopLeftCorner);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag ();
 
-    //  writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopRightCorner);
-    //  writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    //  writer.RenderEndTag();
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopRightCorner);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag ();
 
-    //  writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBottomLeftCorner);
-    //  writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    //  writer.RenderEndTag();
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBottomLeftCorner);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag ();
 
-    //  writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBottomRightCorner);
-    //  writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    //  writer.RenderEndTag();
-    //}
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBottomRightCorner);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag ();
+    }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public override ControlCollection Controls
@@ -416,77 +405,77 @@ namespace Rubicon.Web.UI.Controls
       get { return "singleViewBottomControls"; }
     }
 
-    ///// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top border. </summary>
-    ///// <remarks> 
-    /////   <para> Class: <c>top</c>. </para>
-    ///// </remarks>
-    //protected virtual string CssClassTopBorder
-    //{
-    //  get { return "top"; }
-    //}
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top border. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>top</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassTopBorder
+    {
+      get { return "top"; }
+    }
 
-    ///// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom border. </summary>
-    ///// <remarks> 
-    /////   <para> Class: <c>bottom</c>. </para>
-    ///// </remarks>
-    //protected virtual string CssClassBottomBorder
-    //{
-    //  get { return "bottom"; }
-    //}
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom border. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>bottom</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassBottomBorder
+    {
+      get { return "bottom"; }
+    }
 
-    ///// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the left border. </summary>
-    ///// <remarks> 
-    /////   <para> Class: <c>left</c>. </para>
-    ///// </remarks>
-    //protected virtual string CssClassLeftBorder
-    //{
-    //  get { return "left"; }
-    //}
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the left border. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>left</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassLeftBorder
+    {
+      get { return "left"; }
+    }
 
-    ///// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the right border. </summary>
-    ///// <remarks> 
-    /////   <para> Class: <c>right</c>. </para>
-    ///// </remarks>
-    //protected virtual string CssClassRightBorder
-    //{
-    //  get { return "right"; }
-    //}
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the right border. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>right</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassRightBorder
+    {
+      get { return "right"; }
+    }
 
-    ///// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top left corner. </summary>
-    ///// <remarks> 
-    /////   <para> Class: <c>topLeft</c>. </para>
-    ///// </remarks>
-    //protected virtual string CssClassTopLeftCorner
-    //{
-    //  get { return "topLeft"; }
-    //}
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top left corner. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>topLeft</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassTopLeftCorner
+    {
+      get { return "topLeft"; }
+    }
 
-    ///// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom left corner. </summary>
-    ///// <remarks> 
-    /////   <para> Class: <c>bottomLeft</c>. </para>
-    ///// </remarks>
-    //protected virtual string CssClassBottomLeftCorner
-    //{
-    //  get { return "bottomLeft"; }
-    //}
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom left corner. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>bottomLeft</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassBottomLeftCorner
+    {
+      get { return "bottomLeft"; }
+    }
 
-    ///// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top right corner. </summary>
-    ///// <remarks> 
-    /////   <para> Class: <c>topRight</c>. </para>
-    ///// </remarks>
-    //protected virtual string CssClassTopRightCorner
-    //{
-    //  get { return "topRight"; }
-    //}
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top right corner. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>topRight</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassTopRightCorner
+    {
+      get { return "topRight"; }
+    }
 
-    ///// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom right corner. </summary>
-    ///// <remarks> 
-    /////   <para> Class: <c>bottomRight</c>. </para>
-    ///// </remarks>
-    //protected virtual string CssClassBottomRightCorner
-    //{
-    //  get { return "bottomRight"; }
-    //}
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom right corner. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>bottomRight</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassBottomRightCorner
+    {
+      get { return "bottomRight"; }
+    }
 
     /// <summary> Gets the CSS-Class applied to a <c>div</c> intended for formatting the content. </summary>
     /// <remarks> 

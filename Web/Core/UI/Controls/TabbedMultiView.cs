@@ -9,14 +9,14 @@ namespace Rubicon.Web.UI.Controls
 {
 
   /// <include file='doc\include\UI\Controls\TabbedMultiView.xml' path='TabbedMultiView/Class/*' />
-  [ToolboxData ("<{0}:TabbedMultiView id=\"MultiView\" runat=\"server\" cssclass=\"tabbedMultiView\"></{0}:TabbedMultiView>")]
+  [ToolboxData ("<{0}:TabbedMultiView id=\"MultiView\" runat=\"server\"></{0}:TabbedMultiView>")]
   [DefaultEvent ("ActiveViewChanged")]
   public class TabbedMultiView : WebControl, IControl
   {
     // constants
     private const string c_itemIDSuffix = "_Tab";
     // statics
-    
+
     // types
 
 #if NET11
@@ -361,7 +361,7 @@ namespace Rubicon.Web.UI.Controls
 
     protected override HtmlTextWriterTag TagKey
     {
-      get { return HtmlTextWriterTag.Table; }
+      get { return HtmlTextWriterTag.Div; }
     }
 
     protected override void OnPreRender (EventArgs e)
@@ -380,6 +380,8 @@ namespace Rubicon.Web.UI.Controls
         writer.AddStyleAttribute ("width", "100%");
         writer.AddStyleAttribute ("height", "75%");
       }
+      if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
+        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBase);
     }
 
     protected override void RenderContents (HtmlTextWriter writer)
@@ -389,10 +391,22 @@ namespace Rubicon.Web.UI.Controls
       if (WcagHelper.Instance.IsWcagDebuggingEnabled () && WcagHelper.Instance.IsWaiConformanceLevelARequired ())
         WcagHelper.Instance.HandleError (1, this);
 
+
+      if (!StringUtility.IsNullOrEmpty (CssClass))
+        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClass);
+      else if (!StringUtility.IsNullOrEmpty (Attributes["class"]))
+        writer.AddAttribute (HtmlTextWriterAttribute.Class, Attributes["class"]);
+      else
+        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBase);
+
+      writer.RenderBeginTag (HtmlTextWriterTag.Table);
+
       RenderTopControls (writer);
       RenderTabStrip (writer);
       RenderActiveView (writer);
       RenderBottomControls (writer);
+
+      writer.RenderEndTag ();
     }
 
     protected virtual void RenderTabStrip (HtmlTextWriter writer)
@@ -423,8 +437,11 @@ namespace Rubicon.Web.UI.Controls
       _activeViewStyle.AddAttributesToRender (writer);
       if (StringUtility.IsNullOrEmpty (_activeViewStyle.CssClass))
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassActiveView);
+      writer.RenderBeginTag (HtmlTextWriterTag.Div); // begin outer div
+
       writer.AddAttribute (HtmlTextWriterAttribute.Id, ClientID + "_ActiveView");
-      writer.RenderBeginTag (HtmlTextWriterTag.Div); // begin div
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
+      writer.RenderBeginTag (HtmlTextWriterTag.Div); // begin content div
 
       Control view = _multiViewInternal.GetActiveView ();
       if (view != null)
@@ -435,12 +452,10 @@ namespace Rubicon.Web.UI.Controls
           control.RenderControl (writer);
         }
       }
-      else
-      {
-        writer.Write ("&nbsp;");
-      }
 
-      writer.RenderEndTag (); // end div
+      writer.RenderEndTag (); // end content div
+      RenderBorderSpans (writer);
+      writer.RenderEndTag (); // end outer div
 
       writer.RenderEndTag (); // end td
       writer.RenderEndTag (); // end tr
@@ -448,48 +463,90 @@ namespace Rubicon.Web.UI.Controls
 
     protected virtual void RenderTopControls (HtmlTextWriter writer)
     {
-      if (_topControl.Controls.Count == 0)
-        return;
+      Style style = _topControlsStyle;
+      PlaceHolder placeHolder = _topControl;
+      string cssClass = CssClassTopControls;
+      RenderPlaceHolder (writer, style, placeHolder, cssClass);
+    }
 
+    protected virtual void RenderBottomControls (HtmlTextWriter writer)
+    {
+      Style style = _bottomControlsStyle;
+      PlaceHolder placeHolder = _bottomControl;
+      string cssClass = CssClassBottomControls;
+      RenderPlaceHolder (writer, style, placeHolder, cssClass);
+    }
+
+    private void RenderPlaceHolder (HtmlTextWriter writer, Style style, PlaceHolder placeHolder, string cssClass)
+    {
       writer.RenderBeginTag (HtmlTextWriterTag.Tr); // begin tr
-      if (StringUtility.IsNullOrEmpty (_topControlsStyle.CssClass))
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopControls);
+      if (StringUtility.IsNullOrEmpty (style.CssClass))
+      {
+        if (placeHolder.Controls.Count > 0)
+          writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
+        else
+          writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass + " " + CssClassEmpty);
+      }
+      else
+      {
+        if (placeHolder.Controls.Count > 0)
+          writer.AddAttribute (HtmlTextWriterAttribute.Class, style.CssClass);
+        else
+          writer.AddAttribute (HtmlTextWriterAttribute.Class, style.CssClass + " " + CssClassEmpty);
+      }
       writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
 
-      _topControlsStyle.AddAttributesToRender (writer);
-      if (StringUtility.IsNullOrEmpty (_topControlsStyle.CssClass))
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopControls);
-      writer.RenderBeginTag (HtmlTextWriterTag.Div); // begin div
+      style.AddAttributesToRender (writer);
+      if (StringUtility.IsNullOrEmpty (style.CssClass))
+        writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
+      writer.RenderBeginTag (HtmlTextWriterTag.Div); // begin outer div
 
-      _topControl.RenderControl (writer);
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
+      writer.RenderBeginTag (HtmlTextWriterTag.Div); // begin content div
 
-      writer.RenderEndTag (); // end div
+      placeHolder.RenderControl (writer);
+
+      writer.RenderEndTag (); // end content div
+      RenderBorderSpans (writer);
+      writer.RenderEndTag (); // end outer div
 
       writer.RenderEndTag (); // end td
       writer.RenderEndTag (); // end tr
     }
 
-    protected virtual void RenderBottomControls (HtmlTextWriter writer)
+    private void RenderBorderSpans (HtmlTextWriter writer)
     {
-      if (_bottomControl.Controls.Count == 0)
-        return;
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopBorder);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag();
 
-      writer.RenderBeginTag (HtmlTextWriterTag.Tr); // begin tr
-      if (StringUtility.IsNullOrEmpty (_bottomControlsStyle.CssClass))
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBottomControls);
-      writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassLeftBorder);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag();
 
-      _bottomControlsStyle.AddAttributesToRender (writer);
-      if (StringUtility.IsNullOrEmpty (_bottomControlsStyle.CssClass))
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBottomControls);
-      writer.RenderBeginTag (HtmlTextWriterTag.Div); // begin div
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBottomBorder);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag();
 
-      _bottomControl.RenderControl (writer);
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassRightBorder);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag();
 
-      writer.RenderEndTag (); // end div
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopLeftCorner);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag();
 
-      writer.RenderEndTag (); // end td
-      writer.RenderEndTag (); // end tr
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopRightCorner);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag();
+
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBottomLeftCorner);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag();
+
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBottomRightCorner);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag();
     }
 
     public override ControlCollection Controls
@@ -638,6 +695,15 @@ namespace Rubicon.Web.UI.Controls
     }
 
     #region protected virtual string CssClass...
+    /// <summary> Gets the CSS-Class applied to the <see cref="TabbedMultiView"/>. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>tabbedMultiView</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassBase
+    {
+      get { return "tabbedMultiView"; }
+    }
+
     /// <summary> Gets the CSS-Class applied to the <see cref="TabbedMultiView"/>'s tab strip. </summary>
     /// <remarks> 
     ///   <para> Class: <c>tabbedMultiViewTabStrip</c>. </para>
@@ -676,6 +742,98 @@ namespace Rubicon.Web.UI.Controls
     {
       get { return "tabbedMultiViewBottomControls"; }
     }
+
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top border. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>top</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassTopBorder
+    {
+      get { return "top"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom border. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>bottom</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassBottomBorder
+    {
+      get { return "bottom"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the left border. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>left</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassLeftBorder
+    {
+      get { return "left"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the right border. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>right</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassRightBorder
+    {
+      get { return "right"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top left corner. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>topLeft</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassTopLeftCorner
+    {
+      get { return "topLeft"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom left corner. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>bottomLeft</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassBottomLeftCorner
+    {
+      get { return "bottomLeft"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top right corner. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>topRight</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassTopRightCorner
+    {
+      get { return "topRight"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom right corner. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>bottomRight</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassBottomRightCorner
+    {
+      get { return "bottomRight"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>div</c> intended for formatting the content. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>content</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassContent
+    {
+      get { return "content"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied when the section is empty. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>empty</c>. </para>
+    ///   <para> 
+    ///     Applied in addition to the regular CSS-Class. Use <c>td.tabbedMultiViewTopControls.emtpy</c> or 
+    ///     <c>td.tabbedMultiViewBottomControls.emtpy</c>as a selector.
+    ///   </para>
+    /// </remarks>
+    protected virtual string CssClassEmpty
+    { get { return "empty"; } }
     #endregion
   }
 
