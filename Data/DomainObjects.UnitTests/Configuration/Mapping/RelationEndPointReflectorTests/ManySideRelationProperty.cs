@@ -54,10 +54,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
-      RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
-      Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
-      Assert.AreSame (GetPropertyDefinition ("Unidirectional"), relationEndPointDefiniton.PropertyDefinition);
-      Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
+      RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition) actual;
+      Assert.AreSame (_classDefinition, relationEndPointDefinition.ClassDefinition);
+      Assert.AreSame (GetPropertyDefinition ("Unidirectional"), relationEndPointDefinition.PropertyDefinition);
+      Assert.IsNull (relationEndPointDefinition.RelationDefinition);
     }
 
     [Test]
@@ -68,10 +68,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
-      RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
-      Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
-      Assert.AreSame (GetPropertyDefinition ("BidirectionalOneToOne"), relationEndPointDefiniton.PropertyDefinition);
-      Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
+      RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition) actual;
+      Assert.AreSame (_classDefinition, relationEndPointDefinition.ClassDefinition);
+      Assert.AreSame (GetPropertyDefinition ("BidirectionalOneToOne"), relationEndPointDefinition.PropertyDefinition);
+      Assert.IsNull (relationEndPointDefinition.RelationDefinition);
     }
 
     [Test]
@@ -82,10 +82,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
-      RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
-      Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
-      Assert.AreSame (GetPropertyDefinition ("BidirectionalOneToMany"), relationEndPointDefiniton.PropertyDefinition);
-      Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
+      RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition) actual;
+      Assert.AreSame (_classDefinition, relationEndPointDefinition.ClassDefinition);
+      Assert.AreSame (GetPropertyDefinition ("BidirectionalOneToMany"), relationEndPointDefinition.PropertyDefinition);
+      Assert.IsNull (relationEndPointDefinition.RelationDefinition);
     }
 
 

@@ -419,10 +419,10 @@ public class BocCustomCellArguments
 
   public BocCustomCellArguments (
       BocList list,
-      BocCustomColumnDefinition columnDefiniton)
+      BocCustomColumnDefinition columnDefinition)
   {
     _list = list;
-    _columnDefinition = columnDefiniton;
+    _columnDefinition = columnDefinition;
   }
 
   /// <summary> Gets the <see cref="BocList"/> containing the column. </summary>
@@ -448,10 +448,10 @@ public class BocCustomCellLoadArguments: BocCustomCellArguments
   public BocCustomCellLoadArguments (
       BocList list,
       IBusinessObject businessObject, 
-      BocCustomColumnDefinition columnDefiniton,
+      BocCustomColumnDefinition columnDefinition,
       int listIndex,
       Control control)
-    : base (list, columnDefiniton)
+    : base (list, columnDefinition)
   {
     _businessObject = businessObject;
     _listIndex = listIndex;
@@ -485,8 +485,8 @@ public class BocCustomCellClickArguments: BocCustomCellArguments
   public BocCustomCellClickArguments (
       BocList list,
       IBusinessObject businessObject, 
-      BocCustomColumnDefinition columnDefiniton)
-    : base (list, columnDefiniton)
+      BocCustomColumnDefinition columnDefinition)
+    : base (list, columnDefinition)
   {
     _businessObject = businessObject;
   }
@@ -508,9 +508,9 @@ public class BocCustomCellValidationArguments: BocCustomCellArguments
   public BocCustomCellValidationArguments (
       BocList list,
       IBusinessObject businessObject, 
-      BocCustomColumnDefinition columnDefiniton,
+      BocCustomColumnDefinition columnDefinition,
       Control control)
-    : base (list, columnDefiniton)
+    : base (list, columnDefinition)
   {
     _businessObject = businessObject;
     _control = control;
@@ -548,11 +548,11 @@ public class BocCustomCellRenderArguments: BocCustomCellArguments
   public BocCustomCellRenderArguments (
       BocList list,
       IBusinessObject businessObject, 
-      BocCustomColumnDefinition columnDefiniton,
+      BocCustomColumnDefinition columnDefinition,
       int columnIndex,
       int listIndex,
       string onClick)
-    : base (list, columnDefiniton)
+    : base (list, columnDefinition)
   {
     _columnIndex = columnIndex;
     _businessObject = businessObject;

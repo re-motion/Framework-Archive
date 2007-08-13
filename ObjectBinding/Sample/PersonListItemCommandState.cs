@@ -14,7 +14,7 @@ namespace Rubicon.ObjectBinding.Sample
     public bool IsEnabled(
         BocList list, 
         IBusinessObject businessObject, 
-        BocCommandEnabledColumnDefinition columnDefiniton)
+        BocCommandEnabledColumnDefinition columnDefinition)
     {
       return true;
     }

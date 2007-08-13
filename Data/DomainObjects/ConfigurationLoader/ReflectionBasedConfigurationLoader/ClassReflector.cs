@@ -43,10 +43,10 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       if (classDefinitions.Contains (_type))
         return (ReflectionBasedClassDefinition) classDefinitions.GetMandatory (_type);
 
-      ReflectionBasedClassDefinition classDefiniton = CreateClassDefinition (classDefinitions);
-      classDefinitions.Add (classDefiniton);
+      ReflectionBasedClassDefinition classDefinition = CreateClassDefinition (classDefinitions);
+      classDefinitions.Add (classDefinition);
 
-      return classDefiniton;
+      return classDefinition;
     }
 
     public List<RelationDefinition> GetRelationDefinitions (

@@ -29,14 +29,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata ();
 
       Assert.IsInstanceOfType (typeof (VirtualRelationEndPointDefinition), actual);
-      VirtualRelationEndPointDefinition relationEndPointDefiniton = (VirtualRelationEndPointDefinition) actual;
-      Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
+      VirtualRelationEndPointDefinition relationEndPointDefinition = (VirtualRelationEndPointDefinition) actual;
+      Assert.AreSame (_classDefinition, relationEndPointDefinition.ClassDefinition);
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationPropertiesNotInMapping.BaseBidirectionalOneToOne",
-          relationEndPointDefiniton.PropertyName);
-      Assert.AreSame (typeof (ClassWithManySideRelationProperties), relationEndPointDefiniton.PropertyType);
-      Assert.AreEqual (CardinalityType.One, relationEndPointDefiniton.Cardinality);
-      Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
+          relationEndPointDefinition.PropertyName);
+      Assert.AreSame (typeof (ClassWithManySideRelationProperties), relationEndPointDefinition.PropertyType);
+      Assert.AreEqual (CardinalityType.One, relationEndPointDefinition.Cardinality);
+      Assert.IsNull (relationEndPointDefinition.RelationDefinition);
     }
 
     [Test]
@@ -48,15 +48,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata ();
 
       Assert.IsInstanceOfType (typeof (VirtualRelationEndPointDefinition), actual);
-      VirtualRelationEndPointDefinition relationEndPointDefiniton = (VirtualRelationEndPointDefinition) actual;
-      Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
+      VirtualRelationEndPointDefinition relationEndPointDefinition = (VirtualRelationEndPointDefinition) actual;
+      Assert.AreSame (_classDefinition, relationEndPointDefinition.ClassDefinition);
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationPropertiesNotInMapping.BaseBidirectionalOneToMany",
-          relationEndPointDefiniton.PropertyName);
-      Assert.AreSame (typeof (ObjectList<ClassWithManySideRelationProperties>), relationEndPointDefiniton.PropertyType);
-      Assert.AreEqual (CardinalityType.Many, relationEndPointDefiniton.Cardinality);
-      Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
-      Assert.AreEqual ("The Sort Expression", relationEndPointDefiniton.SortExpression);
+          relationEndPointDefinition.PropertyName);
+      Assert.AreSame (typeof (ObjectList<ClassWithManySideRelationProperties>), relationEndPointDefinition.PropertyType);
+      Assert.AreEqual (CardinalityType.Many, relationEndPointDefinition.Cardinality);
+      Assert.IsNull (relationEndPointDefinition.RelationDefinition);
+      Assert.AreEqual ("The Sort Expression", relationEndPointDefinition.SortExpression);
     }
 
     [Test]

@@ -80,7 +80,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       {
         throw new MappingException (
             string.Format (
-                "The '{0}' is a mapping attribute and may only be applied at the property's base definiton.\r\n  Type: {1}, property: {2}",
+                "The '{0}' is a mapping attribute and may only be applied at the property's base definition.\r\n  Type: {1}, property: {2}",
                 mappingAttributes[0].GetType().FullName,
                 propertyInfo.DeclaringType.FullName,
                 propertyInfo.Name));

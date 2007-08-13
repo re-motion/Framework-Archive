@@ -320,7 +320,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
   public interface IBocListItemCommandState
   {
     /// <summary> 
-    ///   Evaluates whether the <paramref name="columnDefiniton"/>'s command should be enabled for the 
+    ///   Evaluates whether the <paramref name="columnDefinition"/>'s command should be enabled for the 
     ///   <paramref name="businessObject"/>.
     /// </summary>
     /// <remarks>
@@ -329,12 +329,12 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     /// </remarks>
     /// <param name="list"> The <see cref="BocList"/> containing the column. </param>
     /// <param name="businessObject"> The <see cref="IBusinessObject"/> to be rendered. </param>
-    /// <param name="columnDefiniton"> The column definition of the rendered column. </param>
+    /// <param name="columnDefinition"> The column definition of the rendered column. </param>
     /// <returns> 
-    ///   <see langword="true"/> if the <paramref name="columnDefiniton"/>'s command should be enabled for the 
+    ///   <see langword="true"/> if the <paramref name="columnDefinition"/>'s command should be enabled for the 
     ///   <paramref name="businessObject"/>. 
     /// </returns>
-    bool IsEnabled (BocList list, IBusinessObject businessObject, BocCommandEnabledColumnDefinition columnDefiniton);
+    bool IsEnabled (BocList list, IBusinessObject businessObject, BocCommandEnabledColumnDefinition columnDefinition);
   }
 
 }

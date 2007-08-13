@@ -4,7 +4,7 @@
       The <B>Rubicon.ObjectBinding</B> namespace contains interfaces for implementing a business object model with a 
       generic data definition and data access layer.
     </para><para>
-      The data definiton layer consists of the <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass" />
+      The data definition layer consists of the <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass" />
       and the <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProperty" /> interface. These interfaces are used to 
       determine which the fields are exposed by an <see cref="T:Rubicon.ObjectBinding.IBusinessObject" /> instance.
     </para><para>
