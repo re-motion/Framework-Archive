@@ -213,7 +213,7 @@ namespace Rubicon.Web.UI.Controls
       placeHolder.RenderControl (writer);
 
       writer.RenderEndTag(); // end content div
-      //RenderBorderSpans (writer);
+      RenderBorderSpans (writer);
       writer.RenderEndTag(); // end outer div
 
       writer.RenderEndTag(); // end td
