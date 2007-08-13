@@ -55,13 +55,13 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces.ToArray(), flags);
       _emitter = new CustomClassEmitter (classEmitter);
 
-      _configurationField = _emitter.InnerEmitter.CreateStaticField ("__configuration", typeof (TargetClassDefinition));
-      _extensionsField = _emitter.InnerEmitter.CreateField ("__extensions", typeof (object[]), true);
+      _configurationField = _emitter.CreateStaticField ("__configuration", typeof (TargetClassDefinition));
+      _extensionsField = _emitter.CreateField ("__extensions", typeof (object[]));
 
       _mixinTypeGenerators = CreateMixinTypeGenerators (mixinNameProvider);
       _baseCallGenerator = new BaseCallProxyGenerator (this, classEmitter, _mixinTypeGenerators);
 
-      _firstField = _emitter.InnerEmitter.CreateField ("__first", _baseCallGenerator.TypeBuilder, true);
+      _firstField = _emitter.CreateField ("__first", _baseCallGenerator.TypeBuilder);
 
       Statement initializationStatement = new ExpressionStatement (new MethodInvocationExpression (null, s_concreteTypeInitializationMethod,
           new CastClassExpression (typeof (IMixinTarget), SelfReference.Self.ToExpression ())));
@@ -142,7 +142,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     public Type GetBuiltType ()
     {
-      Type builtType = Emitter.InnerEmitter.BuildType();
+      Type builtType = Emitter.BuildType();
       return builtType;
     }
 
@@ -162,7 +162,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void AddTypeInitializer ()
     {
-      ConstructorEmitter emitter = _emitter.InnerEmitter.CreateTypeConstructor ();
+      ConstructorEmitter emitter = _emitter.CreateTypeConstructor ();
 
       LocalReference firstAttributeLocal = GetFirstAttributeLocal (emitter, typeof (ConcreteMixedTypeAttribute));
 

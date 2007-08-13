@@ -140,9 +140,9 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     public void CreateEvent ()
     {
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateEvent", typeof (object));
-      CustomEventEmitter eventEmitter = classEmitter.CreateEvent ("Eve", typeof (Func<string>), EventAttributes.None);
-      eventEmitter.CreateAddMethod ().AddStatement (new ReturnStatement ());
-      eventEmitter.CreateRemoveMethod ().AddStatement (new ReturnStatement ());
+      CustomEventEmitter eventEmitter = classEmitter.CreateEvent ("Eve", EventKind.Instance, typeof (Func<string>));
+      eventEmitter.AddMethod.AddStatement (new ReturnStatement ());
+      eventEmitter.RemoveMethod.AddStatement (new ReturnStatement ());
 
       object instance = Activator.CreateInstance (classEmitter.BuildType ());
       Assert.IsNotNull (instance.GetType ().GetEvent ("Eve"));
@@ -349,9 +349,6 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
       CustomEventEmitter eventEmitter =
           classEmitter.CreateEventOverride (typeof (ClassWithAllKindsOfMembers).GetEvent ("Event", _declaredInstanceBindingFlags));
 
-      Assert.IsNull (eventEmitter.AddMethod);
-      Assert.IsNull (eventEmitter.RemoveMethod);
-
       eventEmitter.AddMethod =
           classEmitter.CreateMethodOverride (typeof (ClassWithAllKindsOfMembers).GetMethod ("add_Event", _declaredInstanceBindingFlags));
       eventEmitter.AddMethod.AddStatement (new ReturnStatement ());
@@ -402,9 +399,6 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
 
       CustomEventEmitter eventEmitter = classEmitter.CreateInterfaceEventImplementation (
           typeof (IInterfaceWithEvent).GetEvent ("Event", _declaredInstanceBindingFlags));
-
-      Assert.IsNull (eventEmitter.AddMethod);
-      Assert.IsNull (eventEmitter.RemoveMethod);
 
       eventEmitter.AddMethod = classEmitter.CreateInterfaceMethodImplementation (
           typeof (IInterfaceWithEvent).GetMethod ("add_Event", _declaredInstanceBindingFlags));

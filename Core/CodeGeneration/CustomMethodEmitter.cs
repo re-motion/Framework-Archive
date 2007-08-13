@@ -11,16 +11,20 @@ namespace Rubicon.CodeGeneration
   public class CustomMethodEmitter : IAttributableEmitter
   {
     private readonly MethodEmitter _innerEmitter;
-    private readonly AbstractTypeEmitter _parentEmitter;
+    private readonly CustomClassEmitter _declaringType;
     private readonly string _name;
     
     private Type _returnType;
     private Type[] _parameterTypes;
 
-    public CustomMethodEmitter (CustomClassEmitter parentEmitter, string name, MethodAttributes attributes)
+    public CustomMethodEmitter (CustomClassEmitter declaringType, string name, MethodAttributes attributes)
     {
-      _parentEmitter = parentEmitter.InnerEmitter;
-      _innerEmitter = _parentEmitter.CreateMethod (name, attributes);
+      ArgumentUtility.CheckNotNull ("declaringType", declaringType);
+      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNull ("attributes", attributes);
+
+      _declaringType = declaringType;
+      _innerEmitter = _declaringType.InnerEmitter.CreateMethod (name, attributes);
       _name = name;
       _returnType = null;
       _parameterTypes = new Type[0];
@@ -77,7 +81,7 @@ namespace Rubicon.CodeGeneration
     {
       ArgumentUtility.CheckNotNull ("method", method);
 
-      _innerEmitter.CopyParametersAndReturnTypeFrom (method, _parentEmitter);
+      _innerEmitter.CopyParametersAndReturnTypeFrom (method, _declaringType.InnerEmitter);
       return this;
     }
 

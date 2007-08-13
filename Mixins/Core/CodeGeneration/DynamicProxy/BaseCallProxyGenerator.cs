@@ -42,8 +42,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
               interfaces.ToArray()));
       _emitter.AddCustomAttribute (new CustomAttributeBuilder (typeof (SerializableAttribute).GetConstructor (Type.EmptyTypes), new object[0]));
 
-      _thisField = _emitter.InnerEmitter.CreateField ("__this", _surroundingType.TypeBuilder);
-      _depthField = _emitter.InnerEmitter.CreateField ("__depth", typeof (int));
+      _thisField = _emitter.CreateField ("__this", _surroundingType.TypeBuilder);
+      _depthField = _emitter.CreateField ("__depth", typeof (int));
 
       ImplementConstructor();
       ImplementBaseCallsForOverriddenMethodsOnTarget();
@@ -81,7 +81,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       ArgumentReference arg1 = new ArgumentReference (_surroundingType.TypeBuilder);
       ArgumentReference arg2 = new ArgumentReference (typeof (int));
-      ConstructorEmitter ctor = _emitter.InnerEmitter.CreateConstructor (arg1, arg2);
+      ConstructorEmitter ctor = _emitter.CreateConstructor (new ArgumentReference[] { arg1, arg2 });
       ctor.CodeBuilder.InvokeBaseConstructor();
       ctor.CodeBuilder.AddStatement (new AssignStatement (_thisField, arg1.ToExpression()));
       ctor.CodeBuilder.AddStatement (new AssignStatement (_depthField, arg2.ToExpression()));

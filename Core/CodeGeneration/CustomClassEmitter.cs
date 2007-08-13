@@ -1,10 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Runtime.Serialization;
 using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators.Emitters;
-using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Rubicon.CodeGeneration.DPExtensions;
 using Rubicon.Collections;
@@ -17,6 +16,7 @@ namespace Rubicon.CodeGeneration
     private readonly AbstractTypeEmitter _innerEmitter;
     private readonly Cache<MethodInfo, CustomMethodEmitter> _publicMethodWrappers = new Cache<MethodInfo, CustomMethodEmitter> ();
     private bool _hasBeenBuilt = false;
+    private readonly List<CustomEventEmitter> _eventEmitters = new List<CustomEventEmitter> ();
 
     public CustomClassEmitter (AbstractTypeEmitter innerEmitter)
     {
@@ -39,7 +39,7 @@ namespace Rubicon.CodeGeneration
                 flags))
     {
     }
-
+    
     private static Type CheckBaseType (Type baseType)
     {
       ArgumentUtility.CheckNotNull ("baseType", baseType);
@@ -61,7 +61,7 @@ namespace Rubicon.CodeGeneration
       return interfaces;
     }
 
-    public AbstractTypeEmitter InnerEmitter
+    internal AbstractTypeEmitter InnerEmitter
     {
       get { return _innerEmitter; }
     }
@@ -147,12 +147,25 @@ namespace Rubicon.CodeGeneration
       return new CustomPropertyEmitter (this, name, propertyKind, propertyType, indexParameters, attributes);
     }
 
-    public CustomEventEmitter CreateEvent (string name, Type eventType, EventAttributes attributes)
+    public CustomEventEmitter CreateEvent (string name, EventKind eventKind, Type eventType, EventAttributes attributes)
     {
       ArgumentUtility.CheckNotNull ("name", name);
       ArgumentUtility.CheckNotNull ("eventType", eventType);
 
-      return new CustomEventEmitter (this, name, eventType, attributes);
+      return new CustomEventEmitter (this, name, eventKind, eventType, attributes);
+    }
+
+    public CustomEventEmitter CreateEvent (string name, EventKind eventKind, Type eventType)
+    {
+      ArgumentUtility.CheckNotNull ("name", name);
+      ArgumentUtility.CheckNotNull ("eventType", eventType);
+
+      return CreateEvent (name, eventKind, eventType, EventAttributes.None);
+    }
+
+    internal void RegisterEventEmitter (CustomEventEmitter emitter)
+    {
+      _eventEmitters.Add (emitter);
     }
 
     public CustomMethodEmitter CreateMethodOverride (MethodInfo baseMethod)
@@ -252,7 +265,7 @@ namespace Rubicon.CodeGeneration
         eventName = baseOrInterfaceEvent.Name;
       else
         eventName = string.Format ("{0}.{1}", baseOrInterfaceEvent.DeclaringType.FullName, baseOrInterfaceEvent.Name);
-      CustomEventEmitter newEvent = CreateEvent (eventName, baseOrInterfaceEvent.EventHandlerType, EventAttributes.None);
+      CustomEventEmitter newEvent = CreateEvent (eventName, EventKind.Instance, baseOrInterfaceEvent.EventHandlerType, EventAttributes.None);
       return newEvent;
     }
 
@@ -315,6 +328,9 @@ namespace Rubicon.CodeGeneration
     public Type BuildType ()
     {
       _hasBeenBuilt = true;
+      foreach (CustomEventEmitter eventEmitter in _eventEmitters)
+        eventEmitter.EnsureValid ();
+
       return InnerEmitter.BuildType();
     }
   }

@@ -60,7 +60,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void AddTypeInitializer ()
     {
-      ConstructorEmitter emitter = _emitter.InnerEmitter.CreateTypeConstructor ();
+      ConstructorEmitter emitter = _emitter.CreateTypeConstructor ();
 
       LocalReference firstAttributeLocal = TypeGenerator.GetFirstAttributeLocal (emitter, typeof (ConcreteMixinTypeAttribute));
       
@@ -136,7 +136,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     public Type GetBuiltType ()
     {
-      Type builtType = Emitter.InnerEmitter.BuildType();
+      Type builtType = Emitter.BuildType();
       return builtType;
     }
 
