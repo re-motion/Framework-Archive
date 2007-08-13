@@ -25,9 +25,9 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
       Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
     }
 
-    [TearDown]
-    public void TearDown ()
+    public override void TearDown ()
     {
+      base.TearDown();
       Thread.CurrentThread.CurrentUICulture = _uiCultureBackup;
     }
 

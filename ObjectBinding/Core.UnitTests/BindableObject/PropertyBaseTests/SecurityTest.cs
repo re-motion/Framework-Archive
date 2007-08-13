@@ -49,9 +49,9 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
               _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"), null, false, false));
     }
 
-    [TearDown]
-    public void TearDown ()
+    public override void TearDown ()
     {
+      base.TearDown();
       SecurityAdapterRegistry.Instance.SetAdapter (typeof (IObjectSecurityAdapter), null);
     }
 
