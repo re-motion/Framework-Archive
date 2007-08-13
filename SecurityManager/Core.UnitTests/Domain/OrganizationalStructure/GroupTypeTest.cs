@@ -21,7 +21,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
 
-      DomainObjectCollection groupTypes = GroupType.FindAll (ClientTransactionScope.CurrentTransaction);
+      DomainObjectCollection groupTypes = GroupType.FindAll ();
 
       Assert.AreEqual (2, groupTypes.Count);
     }

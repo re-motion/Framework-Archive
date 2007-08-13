@@ -55,34 +55,30 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return DomainObject.GetObject<User> (id);
     }
 
-    public static User FindByUserName (string userName, ClientTransaction clientTransaction)
+    public static User FindByUserName (string userName)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByUserName");
       query.Parameters.Add ("@userName", userName);
 
-      DomainObjectCollection users = clientTransaction.QueryManager.GetCollection (query);
+      DomainObjectCollection users = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
       if (users.Count == 0)
         return null;
 
       return (User) users[0];
     }
 
-    public static DomainObjectCollection FindByTenantID (ObjectID tenantID, ClientTransaction clientTransaction)
+    public static DomainObjectCollection FindByTenantID (ObjectID tenantID)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByTenantID");
       query.Parameters.Add ("@tenantID", tenantID);
 
-      return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
+      return ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
     }
 
     //[DemandMethodPermission (GeneralAccessTypes.Create)]
-    //public static User Create (ClientTransaction clientTransaction)
+    //public static User Create ()
     //{
-    //  return SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateUser (clientTransaction);
+    //  return SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateUser ();
     //}
 
     [DemandMethodPermission (GeneralAccessTypes.Search)]

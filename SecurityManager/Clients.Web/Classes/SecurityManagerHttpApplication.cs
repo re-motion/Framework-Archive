@@ -137,7 +137,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
           SecurityManagerUser user = LoadUserFromSession ();
           if (user == null && Context.User.Identity.IsAuthenticated)
           {
-            user = SecurityManagerUser.FindByUserName (Context.User.Identity.Name, ClientTransactionScope.CurrentTransaction);
+            user = SecurityManagerUser.FindByUserName (Context.User.Identity.Name);
             SetCurrentUser (user, true);
           }
           else

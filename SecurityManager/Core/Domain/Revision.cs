@@ -7,20 +7,16 @@ namespace Rubicon.SecurityManager.Domain
 {
   public static class Revision
   {
-    public static int GetRevision (ClientTransaction clientTransaction)
+    public static int GetRevision ()
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
       Query query = new Query ("Rubicon.SecurityManager.Domain.Revision.GetRevision");
-      return (int) clientTransaction.QueryManager.GetScalar (query);
+      return (int) ClientTransactionScope.CurrentTransaction.QueryManager.GetScalar (query);
     }
 
-    public static void IncrementRevision (ClientTransaction clientTransaction)
+    public static void IncrementRevision ()
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
       Query query = new Query ("Rubicon.SecurityManager.Domain.Revision.IncrementRevision");
-      clientTransaction.QueryManager.GetScalar (query);
+      ClientTransactionScope.CurrentTransaction.QueryManager.GetScalar (query);
     }
   }
 }

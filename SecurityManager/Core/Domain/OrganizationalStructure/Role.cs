@@ -42,7 +42,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       ArgumentUtility.CheckNotNull ("tenantID", tenantID);
 
       List<Group> groups = new List<Group> ();
-      foreach (Group group in Group.FindByTenantID (tenantID, ClientTransactionScope.CurrentTransaction))
+      foreach (Group group in Group.FindByTenantID (tenantID))
         groups.Add (group);
 
       return FilterByAccess (groups, SecurityManagerAccessTypes.AssignRole);
@@ -55,7 +55,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       List<Position> positions = new List<Position> ();
       if (group.GroupType == null)
       {
-        foreach (Position position in Position.FindAll (ClientTransactionScope.CurrentTransaction))
+        foreach (Position position in Position.FindAll ())
           positions.Add (position);
       }
       else

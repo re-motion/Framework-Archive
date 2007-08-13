@@ -59,22 +59,18 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return DomainObject.GetObject<Tenant> (id);
     }
 
-    public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)
+    public static DomainObjectCollection FindAll ()
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Tenant.FindAll");
-      return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
+      return ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
     }
 
-    public static Tenant FindByUnqiueIdentifier (string uniqueIdentifier, ClientTransaction clientTransaction)
+    public static Tenant FindByUnqiueIdentifier (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Tenant.FindByUnqiueIdentifier");
       query.Parameters.Add ("@uniqueIdentifier", uniqueIdentifier);
 
-      DomainObjectCollection tenants = clientTransaction.QueryManager.GetCollection (query);
+      DomainObjectCollection tenants = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
       if (tenants.Count == 0)
         return null;
 
@@ -128,7 +124,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       List<Tenant> clients = new List<Tenant> ();
 
-      foreach (Tenant tenant in FindAll (ClientTransactionScope.CurrentTransaction))
+      foreach (Tenant tenant in FindAll ())
       {
         if ((!Children.Contains (tenant.ID)) && (tenant.ID != this.ID))
           clients.Add (tenant);

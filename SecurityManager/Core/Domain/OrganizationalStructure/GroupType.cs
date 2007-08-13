@@ -27,12 +27,10 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return NewObject<GroupType> ().With ();
     }
 
-    public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)
+    public static DomainObjectCollection FindAll ()
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.GroupType.FindAll");
-      return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
+      return ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
     }
 
     [DemandMethodPermission (GeneralAccessTypes.Search)]

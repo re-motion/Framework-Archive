@@ -29,12 +29,10 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return NewObject<Position> ().With ();
     }
 
-    public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)
+    public static DomainObjectCollection FindAll ()
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindAll");
-      return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
+      return ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
     }
 
     [DemandMethodPermission (SecurityManagerAccessTypes.AssignRole)]
@@ -45,9 +43,9 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     }
 
     //[DemandMethodPermission (GeneralAccessTypes.Create)]
-    //public static Position Create (ClientTransaction clientTransaction)
+    //public static Position Create ()
     //{
-    //  return SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreatePosition (clientTransaction);
+    //  return SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreatePosition ();
     //}
 
     [DemandMethodPermission (GeneralAccessTypes.Search)]

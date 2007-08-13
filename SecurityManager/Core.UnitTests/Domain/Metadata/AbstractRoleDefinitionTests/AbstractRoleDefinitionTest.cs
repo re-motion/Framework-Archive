@@ -21,7 +21,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefiniti
      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateEmptyDomain ();
 
-      DomainObjectCollection result = AbstractRoleDefinition.FindAll (ClientTransactionScope.CurrentTransaction);
+      DomainObjectCollection result = AbstractRoleDefinition.FindAll ();
 
       Assert.AreEqual (0, result.Count);
     }

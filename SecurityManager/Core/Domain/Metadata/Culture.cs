@@ -16,14 +16,12 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       return NewObject<Culture> ().With (cultureName);
     }
 
-    public static Culture Find (string name, ClientTransaction clientTransaction)
+    public static Culture Find (string name)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
       Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.Culture.Find");
       query.Parameters.Add ("@cultureName", name);
 
-      DomainObjectCollection result = clientTransaction.QueryManager.GetCollection (query);
+      DomainObjectCollection result = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
       if (result.Count == 0)
         return null;
 

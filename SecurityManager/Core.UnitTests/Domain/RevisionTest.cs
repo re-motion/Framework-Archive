@@ -11,10 +11,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     [Test]
     public void GetRevision ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateEmptyDomain ();
-      
-      Assert.AreEqual (0, Revision.GetRevision (ClientTransaction.NewTransaction()));
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
+      dbFixtures.CreateEmptyDomain();
+
+      using (new ClientTransactionScope())
+      {
+        Assert.AreEqual (0, Revision.GetRevision ());
+      }
     }
 
     [Test]
@@ -22,9 +25,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateEmptyDomain ();
-      Revision.IncrementRevision (ClientTransaction.NewTransaction ());
+      using (new ClientTransactionScope ())
+      {
+        Revision.IncrementRevision ();
+      }
 
-      Assert.AreEqual (1, Revision.GetRevision ( ClientTransaction.NewTransaction ()));
+      using (new ClientTransactionScope ())
+      {
+        Assert.AreEqual (1, Revision.GetRevision ());
+      }
     }
   }
 }

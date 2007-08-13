@@ -37,7 +37,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindByUserName_ValidUser ()
     {
-      User foundUser = User.FindByUserName ("test.user", ClientTransactionScope.CurrentTransaction);
+      User foundUser = User.FindByUserName ("test.user");
 
       Assert.AreEqual ("test.user", foundUser.UserName);
     }
@@ -45,7 +45,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindByUserName_NotExistingUser ()
     {
-      User foundUser = User.FindByUserName ("not.existing", ClientTransactionScope.CurrentTransaction);
+      User foundUser = User.FindByUserName ("not.existing");
 
       Assert.IsNull (foundUser);
     }
@@ -53,8 +53,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetRolesForGroup_Empty ()
     {
-      User testUser = User.FindByUserName ("test.user", ClientTransactionScope.CurrentTransaction);
-      Group parentOfOwnerGroup = Group.FindByUnqiueIdentifier ("UID: testParentOfOwningGroup", ClientTransactionScope.CurrentTransaction);
+      User testUser = User.FindByUserName ("test.user");
+      Group parentOfOwnerGroup = Group.FindByUnqiueIdentifier ("UID: testParentOfOwningGroup");
       List<Role> roles = testUser.GetRolesForGroup (parentOfOwnerGroup);
 
       Assert.AreEqual (0, roles.Count);
@@ -63,8 +63,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetRolesForGroup_TwoRoles ()
     {
-      User testUser = User.FindByUserName ("test.user", ClientTransactionScope.CurrentTransaction);
-      Group testgroup = Group.FindByUnqiueIdentifier ("UID: testgroup", ClientTransactionScope.CurrentTransaction);
+      User testUser = User.FindByUserName ("test.user");
+      Group testgroup = Group.FindByUnqiueIdentifier ("UID: testgroup");
       List<Role> roles = testUser.GetRolesForGroup (testgroup);
 
       Assert.AreEqual (2, roles.Count);
@@ -73,7 +73,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void Find_UsersByTenantID ()
     {
-      DomainObjectCollection users = User.FindByTenantID (_expectedTenantID, ClientTransactionScope.CurrentTransaction);
+      DomainObjectCollection users = User.FindByTenantID (_expectedTenantID);
 
       Assert.AreEqual (5, users.Count);
     }
@@ -98,7 +98,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void SetAndGet_Current ()
     {
-      DomainObjectCollection users = User.FindByTenantID (_expectedTenantID, _testHelper.Transaction);
+      DomainObjectCollection users = User.FindByTenantID (_expectedTenantID);
       Assert.Greater (users.Count, 0);
       User user = (User) users[0];
 
@@ -117,7 +117,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void SetAndGet_Current_Threading ()
     {
-      DomainObjectCollection users = User.FindByTenantID (_expectedTenantID, _testHelper.Transaction);
+      DomainObjectCollection users = User.FindByTenantID (_expectedTenantID);
       Assert.Greater (users.Count, 0);
       User user = (User) users[0];
      

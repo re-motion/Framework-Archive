@@ -22,23 +22,19 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       return NewObject<AbstractRoleDefinition> ().With (metadataItemID, name, value);
     }
 
-    public static DomainObjectCollection Find (EnumWrapper[] abstractRoles, ClientTransaction clientTransaction)
+    public static DomainObjectCollection Find (EnumWrapper[] abstractRoles)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
       if (abstractRoles.Length == 0)
         return new DomainObjectCollection ();
 
       FindAbstractRolesQueryBuilder queryBuilder = new FindAbstractRolesQueryBuilder ();
-      return clientTransaction.QueryManager.GetCollection (queryBuilder.CreateQuery (abstractRoles));
+      return ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (queryBuilder.CreateQuery (abstractRoles));
     }
 
-    public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)
+    public static DomainObjectCollection FindAll ()
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
       Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll");
-      return clientTransaction.QueryManager.GetCollection (query);
+      return ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
     }
 
     protected AbstractRoleDefinition ()

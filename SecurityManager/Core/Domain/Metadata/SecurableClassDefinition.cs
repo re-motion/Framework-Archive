@@ -29,35 +29,30 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       return DomainObject.GetObject<SecurableClassDefinition> (id);
     }
 
-    public static SecurableClassDefinition FindByName (string name, ClientTransaction clientTransaction)
+    public static SecurableClassDefinition FindByName (string name)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
       Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindByName");
       query.Parameters.Add ("@name", name);
 
-      DomainObjectCollection result = clientTransaction.QueryManager.GetCollection (query);
+      DomainObjectCollection result = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
       if (result.Count == 0)
         return null;
 
       return (SecurableClassDefinition) result[0];
     }
 
-    public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)
+    public static DomainObjectCollection FindAll ()
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
       Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAll");
-      return clientTransaction.QueryManager.GetCollection (query);
+      return ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
     }
 
-    public static DomainObjectCollection FindAllBaseClasses (ClientTransaction clientTransaction)
+    public static DomainObjectCollection FindAllBaseClasses ()
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
       Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAllBaseClasses");
-      return clientTransaction.QueryManager.GetCollection (query);
+      return ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
     }
 
     // member fields

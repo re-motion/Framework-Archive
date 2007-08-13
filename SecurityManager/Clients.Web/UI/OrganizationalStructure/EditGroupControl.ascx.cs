@@ -53,7 +53,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     private void FillGroupTypeField ()
     {
-      GroupTypeField.SetBusinessObjectList (GroupType.FindAll (CurrentFunction.CurrentTransaction));
+      GroupTypeField.SetBusinessObjectList (GroupType.FindAll ());
     }
 
     private void FillParentField ()

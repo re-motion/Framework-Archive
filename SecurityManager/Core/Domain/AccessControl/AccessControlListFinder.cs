@@ -21,7 +21,11 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       ArgumentUtility.CheckNotNull ("transaction", transaction);
       ArgumentUtility.CheckNotNull ("context", context);
 
-      SecurableClassDefinition classDefinition = SecurableClassDefinition.FindByName (context.Class, transaction);
+      SecurableClassDefinition classDefinition;
+      using (transaction.EnterScope ())
+      {
+        classDefinition = SecurableClassDefinition.FindByName (context.Class);
+      }
       if (classDefinition == null)
         throw CreateAccessControlException ("The securable class '{0}' cannot be found.", context.Class);
 

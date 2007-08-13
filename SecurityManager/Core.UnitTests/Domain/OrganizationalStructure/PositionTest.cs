@@ -19,7 +19,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       dbFixtures.CreateOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
       using (new ClientTransactionScope ())
       {
-        DomainObjectCollection positions = Position.FindAll (ClientTransactionScope.CurrentTransaction);
+        DomainObjectCollection positions = Position.FindAll ();
 
         Assert.AreEqual (3, positions.Count);
       }

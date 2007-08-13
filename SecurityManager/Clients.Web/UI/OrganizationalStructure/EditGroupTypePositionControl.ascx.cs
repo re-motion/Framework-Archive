@@ -62,12 +62,12 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     private void FillGroupTypeField ()
     {
-      GroupTypeField.SetBusinessObjectList (GroupType.FindAll (CurrentFunction.CurrentTransaction));
+      GroupTypeField.SetBusinessObjectList (GroupType.FindAll ());
     }
 
     private void FillPositionField ()
     {
-      PositionField.SetBusinessObjectList (Position.FindAll (CurrentFunction.CurrentTransaction));
+      PositionField.SetBusinessObjectList (Position.FindAll ());
     }
 
     public override bool Validate ()

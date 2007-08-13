@@ -31,7 +31,7 @@ namespace Rubicon.SecurityManager.UnitTests.Persistence
 
       ClientTransactionScope.CurrentTransaction.Commit ();
 
-      Assert.AreEqual (1, Revision.GetRevision (ClientTransactionScope.CurrentTransaction));
+      Assert.AreEqual (1, Revision.GetRevision ());
     }
 
     [Test]
@@ -42,7 +42,7 @@ namespace Rubicon.SecurityManager.UnitTests.Persistence
 
       ClientTransactionScope.CurrentTransaction.Commit ();
 
-      Assert.AreEqual (0, Revision.GetRevision (ClientTransactionScope.CurrentTransaction));
+      Assert.AreEqual (0, Revision.GetRevision ());
     }
   }
 }

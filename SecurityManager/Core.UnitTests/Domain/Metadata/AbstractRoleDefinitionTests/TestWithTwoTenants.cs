@@ -30,7 +30,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefiniti
     [Test]
     public void Find_EmptyResult ()
     {
-      DomainObjectCollection result = AbstractRoleDefinition.Find (new EnumWrapper[0], ClientTransactionScope.CurrentTransaction);
+      DomainObjectCollection result = AbstractRoleDefinition.Find (new EnumWrapper[0]);
 
       Assert.IsEmpty (result);
     }
@@ -38,7 +38,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefiniti
     [Test]
     public void Find_ValidAbstractRole ()
     {
-      DomainObjectCollection result = AbstractRoleDefinition.Find (new EnumWrapper[] { new EnumWrapper (ProjectRoles.QualityManager) }, ClientTransactionScope.CurrentTransaction);
+      DomainObjectCollection result = AbstractRoleDefinition.Find (new EnumWrapper[] { new EnumWrapper (ProjectRoles.QualityManager) });
 
       Assert.AreEqual (1, result.Count);
       Assert.AreEqual ("QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRoles, Rubicon.SecurityManager.UnitTests", ((AbstractRoleDefinition) result[0]).Name);
@@ -47,7 +47,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefiniti
     [Test]
     public void FindAll_TwoFound ()
     {
-      DomainObjectCollection result = AbstractRoleDefinition.FindAll (ClientTransactionScope.CurrentTransaction);
+      DomainObjectCollection result = AbstractRoleDefinition.FindAll ();
 
       Assert.AreEqual (2, result.Count);
       for (int i = 0; i < result.Count; i++)

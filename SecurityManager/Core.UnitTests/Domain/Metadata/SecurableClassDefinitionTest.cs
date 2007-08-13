@@ -223,7 +223,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       using (new ClientTransactionScope ())
       {
         SecurableClassDefinition foundClass =
-            SecurableClassDefinition.FindByName ("Rubicon.SecurityManager.UnitTests.TestDomain.Invoice", ClientTransactionScope.CurrentTransaction);
+            SecurableClassDefinition.FindByName ("Rubicon.SecurityManager.UnitTests.TestDomain.Invoice");
 
         MetadataObjectAssert.AreEqual (invoiceClass, testHelper.Transaction, foundClass);
       }
@@ -245,7 +245,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       using (new ClientTransactionScope ())
       {
-        SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName ("Invce", ClientTransactionScope.CurrentTransaction);
+        SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName ("Invce");
 
         Assert.IsNull (foundClass);
       }
@@ -259,7 +259,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       using (new ClientTransactionScope())
       {
-        DomainObjectCollection result = SecurableClassDefinition.FindAll (ClientTransactionScope.CurrentTransaction);
+        DomainObjectCollection result = SecurableClassDefinition.FindAll ();
 
         Assert.AreEqual (0, result.Count);
       }
@@ -277,7 +277,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       using (new ClientTransactionScope())
       {
-        DomainObjectCollection result = SecurableClassDefinition.FindAll (ClientTransactionScope.CurrentTransaction);
+        DomainObjectCollection result = SecurableClassDefinition.FindAll ();
 
         Assert.AreEqual (10, result.Count);
         for (int i = 0; i < result.Count; i++)
@@ -297,7 +297,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       using (new ClientTransactionScope())
       {
-        DomainObjectCollection result = SecurableClassDefinition.FindAllBaseClasses (ClientTransactionScope.CurrentTransaction);
+        DomainObjectCollection result = SecurableClassDefinition.FindAllBaseClasses ();
 
         Assert.AreEqual (10, result.Count);
         for (int i = 0; i < result.Count; i++)

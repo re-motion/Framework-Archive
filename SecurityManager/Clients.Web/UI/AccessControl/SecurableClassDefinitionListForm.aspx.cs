@@ -47,7 +47,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 
     private void LoadTree (bool interim, bool refreshTreeNodes)
     {
-      SecurableClassDefinitionTree.LoadUnboundValue (SecurableClassDefinition.FindAllBaseClasses (CurrentFunction.CurrentTransaction), interim);
+      SecurableClassDefinitionTree.LoadUnboundValue (SecurableClassDefinition.FindAllBaseClasses (), interim);
       if (refreshTreeNodes)
         SecurableClassDefinitionTree.RefreshTreeNodes ();
     }

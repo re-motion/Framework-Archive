@@ -35,7 +35,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
         Tenant tenant = dbFixtures.CreateOrganizationalStructureWithTwoTenants (ClientTransactionScope.CurrentTransaction);
         _expectedTenantID = tenant.ID;
 
-        DomainObjectCollection groups = Group.FindByTenantID (_expectedTenantID, ClientTransactionScope.CurrentTransaction);
+        DomainObjectCollection groups = Group.FindByTenantID (_expectedTenantID);
         foreach (Group group in groups)
         {
           if (group.UniqueIdentifier == "UID: rootGroup")

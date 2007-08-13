@@ -63,25 +63,22 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return DomainObject.GetObject<Group> (id);
     }
 
-    public static DomainObjectCollection FindByTenantID (ObjectID tenantID, ClientTransaction clientTransaction)
+    public static DomainObjectCollection FindByTenantID (ObjectID tenantID)
     {
       ArgumentUtility.CheckNotNull ("tenantID", tenantID);
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByTenantID");
       query.Parameters.Add ("@tenantID", tenantID);
 
-      return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
+      return ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
     }
 
-    public static Group FindByUnqiueIdentifier (string uniqueIdentifier, ClientTransaction clientTransaction)
+    public static Group FindByUnqiueIdentifier (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByUnqiueIdentifier");
       query.Parameters.Add ("@uniqueIdentifier", uniqueIdentifier);
 
-      DomainObjectCollection groups = clientTransaction.QueryManager.GetCollection (query);
+      DomainObjectCollection groups = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
       if (groups.Count == 0)
         return null;
 
@@ -89,9 +86,9 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     }
 
     //[DemandMethodPermission (GeneralAccessTypes.Create)]
-    //public static Group Create (ClientTransaction clientTransaction)
+    //public static Group Create ()
     //{
-    //  return SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateGroup (clientTransaction);
+    //  return SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateGroup ();
     //}
 
     [DemandMethodPermission (GeneralAccessTypes.Search)]
@@ -160,7 +157,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
       List<Group> groups = new List<Group> ();
 
-      foreach (Group group in FindByTenantID (tenantID, ClientTransactionScope.CurrentTransaction))
+      foreach (Group group in FindByTenantID (tenantID))
       {
         if ((!Children.Contains (group.ID)) && (group.ID != this.ID))
           groups.Add (group);

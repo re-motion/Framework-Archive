@@ -40,7 +40,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
       if (!IsPostBack)
         TenantList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) TenantList.FixedColumns[0], SortingDirection.Ascending));
-      TenantList.LoadUnboundValue (Tenant.FindAll (CurrentFunction.CurrentTransaction), IsPostBack);
+      TenantList.LoadUnboundValue (Tenant.FindAll (), IsPostBack);
 
       if (SecurityConfiguration.Current.SecurityProvider != null)
       {
@@ -55,7 +55,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       base.OnPreRender (e);
 
       if (HasTenantChanged)
-        TenantList.LoadUnboundValue (Tenant.FindAll (CurrentFunction.CurrentTransaction), false);
+        TenantList.LoadUnboundValue (Tenant.FindAll (), false);
     }
 
     protected void TenantList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
@@ -69,7 +69,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       else
       {
         if (!((EditTenantFormFunction) Page.ReturningFunction).HasUserCancelled)
-          TenantList.LoadUnboundValue (Tenant.FindAll (CurrentFunction.CurrentTransaction), false);
+          TenantList.LoadUnboundValue (Tenant.FindAll (), false);
       }
     }
 
@@ -84,7 +84,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       else
       {
         if (!((EditTenantFormFunction) Page.ReturningFunction).HasUserCancelled)
-          TenantList.LoadUnboundValue (Tenant.FindAll (CurrentFunction.CurrentTransaction), false);
+          TenantList.LoadUnboundValue (Tenant.FindAll (), false);
       }
     }
   }

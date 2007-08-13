@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void Find_Existing ()
     {
-      Culture foundCulture = Culture.Find ("de", ClientTransactionScope.CurrentTransaction);
+      Culture foundCulture = Culture.Find ("de");
 
       Assert.IsNotNull (foundCulture);
       Assert.AreNotEqual (StateType.New, foundCulture.State);
@@ -36,7 +36,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void Find_NotExisting ()
     {
-      Culture foundCulture = Culture.Find ("hu", ClientTransactionScope.CurrentTransaction);
+      Culture foundCulture = Culture.Find ("hu");
 
       Assert.IsNull (foundCulture);
     }

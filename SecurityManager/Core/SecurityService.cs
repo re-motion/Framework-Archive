@@ -73,13 +73,16 @@ namespace Rubicon.SecurityManager
       using (transaction.EnterScope())
       {
         AccessTypeDefinition[] accessTypes = acl.GetAccessTypes (token);
-        return Array.ConvertAll<AccessTypeDefinition, AccessType> (accessTypes, new Converter<AccessTypeDefinition, AccessType> (ConvertToAccessType));
+        return Array.ConvertAll<AccessTypeDefinition, AccessType> (accessTypes, ConvertToAccessType);
       }
     }
 
-    public int GetRevision()
+    public int GetRevision ()
     {
-      return Revision.GetRevision (ClientTransaction.NewTransaction());
+      using (new ClientTransactionScope())
+      {
+        return Revision.GetRevision ();
+      }
     }
 
     private AccessType ConvertToAccessType (AccessTypeDefinition accessTypeDefinition)

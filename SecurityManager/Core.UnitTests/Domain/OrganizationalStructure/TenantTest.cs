@@ -38,7 +38,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindAll ()
     {
-      DomainObjectCollection tenants = Tenant.FindAll (ClientTransactionScope.CurrentTransaction);
+      DomainObjectCollection tenants = Tenant.FindAll ();
 
       Assert.AreEqual (2, tenants.Count);
       Assert.AreEqual (_expectedTenantID, tenants[1].ID);
@@ -47,7 +47,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindByUnqiueIdentifier_ValidTenant ()
     {
-      Tenant foundTenant = Tenant.FindByUnqiueIdentifier ("UID: testTenant", ClientTransactionScope.CurrentTransaction);
+      Tenant foundTenant = Tenant.FindByUnqiueIdentifier ("UID: testTenant");
 
       Assert.AreEqual ("UID: testTenant", foundTenant.UniqueIdentifier);
     }
@@ -55,7 +55,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindByUnqiueIdentifier_NotExistingTenant ()
     {
-      Tenant foundTenant = Tenant.FindByUnqiueIdentifier ("UID: NotExistingTenant", ClientTransactionScope.CurrentTransaction);
+      Tenant foundTenant = Tenant.FindByUnqiueIdentifier ("UID: NotExistingTenant");
 
       Assert.IsNull (foundTenant);
     }

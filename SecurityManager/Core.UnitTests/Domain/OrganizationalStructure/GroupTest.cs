@@ -37,7 +37,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindByUnqiueIdentifier_ValidGroup ()
     {
-      Group foundGroup = Group.FindByUnqiueIdentifier ("UID: testGroup", ClientTransactionScope.CurrentTransaction);
+      Group foundGroup = Group.FindByUnqiueIdentifier ("UID: testGroup");
 
       Assert.AreEqual ("UID: testGroup", foundGroup.UniqueIdentifier);
     }
@@ -45,7 +45,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindByUnqiueIdentifier_NotExistingGroup ()
     {
-      Group foundGroup = Group.FindByUnqiueIdentifier ("UID: NotExistingGroup", ClientTransactionScope.CurrentTransaction);
+      Group foundGroup = Group.FindByUnqiueIdentifier ("UID: NotExistingGroup");
 
       Assert.IsNull (foundGroup);
     }
@@ -53,7 +53,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void Find_GroupsByTenantID ()
     {
-      DomainObjectCollection groups = Group.FindByTenantID (_expectedTenantID, ClientTransactionScope.CurrentTransaction);
+      DomainObjectCollection groups = Group.FindByTenantID (_expectedTenantID);
 
       Assert.AreEqual (9, groups.Count);
     }
