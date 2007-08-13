@@ -199,9 +199,19 @@ namespace Rubicon.Data.DomainObjects
 
       Type originalDeclaringType = GetOriginalDeclaringType (propertyInfo);
       if (originalDeclaringType.IsGenericType)
-        return originalDeclaringType.GetGenericTypeDefinition().FullName + "." + propertyInfo.Name;
+        return GetPropertyName (originalDeclaringType.GetGenericTypeDefinition (), propertyInfo.Name);
       else
-        return originalDeclaringType.FullName + "." + propertyInfo.Name;
+        return GetPropertyName (originalDeclaringType, propertyInfo.Name);
+    }
+
+    /// <summary>Returns the property name scoped for a specific <paramref name="type"/>.</summary>
+    // TODO: Move to reflection based mapping
+    public static string GetPropertyName (Type type, string propertyName)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+
+      return type.FullName + "." + propertyName;
     }
 
     /// <summary>

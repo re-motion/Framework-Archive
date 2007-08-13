@@ -93,6 +93,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private string GetRelationID ()
     {
+      if (ClassDefinition.BaseClass == null && ClassDefinition.ClassType != PropertyInfo.DeclaringType)
+        return ReflectionUtility.GetPropertyName (ClassDefinition.ClassType, PropertyInfo.Name);
       return ReflectionUtility.GetPropertyName (PropertyInfo);
     }
 

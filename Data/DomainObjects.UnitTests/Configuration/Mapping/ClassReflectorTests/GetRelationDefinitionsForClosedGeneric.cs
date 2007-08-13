@@ -121,7 +121,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     private RelationDefinition CreateBaseUnidirectionalRelationDefinition ()
     {
       return new RelationDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.GenericClassWithManySideRelationPropertiesNotInMapping`1.BaseUnidirectional",
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClosedGenericClassWithManySideRelationProperties.BaseUnidirectional",
           CreateRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.GenericClassWithManySideRelationPropertiesNotInMapping`1.BaseUnidirectional",
               false),
           CreateAnonymousRelationEndPointDefinition ());
@@ -130,7 +130,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     private RelationDefinition CreateBaseBidirectionalOneToOneRelationDefinition ()
     {
       return new RelationDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.GenericClassWithManySideRelationPropertiesNotInMapping`1.BaseBidirectionalOneToOne",
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClosedGenericClassWithManySideRelationProperties.BaseBidirectionalOneToOne",
           CreateRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.GenericClassWithManySideRelationPropertiesNotInMapping`1.BaseBidirectionalOneToOne", 
               false),
           CreateVirtualRelationEndPointDefinitionForManySide ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.GenericClassWithOneSideRelationPropertiesNotInMapping`1.BaseBidirectionalOneToOne", 
@@ -140,7 +140,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     private RelationDefinition CreateBaseBidirectionalOneToManyRelationDefinition ()
     {
       return new RelationDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.GenericClassWithManySideRelationPropertiesNotInMapping`1.BaseBidirectionalOneToMany",
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClosedGenericClassWithManySideRelationProperties.BaseBidirectionalOneToMany",
           CreateRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.GenericClassWithManySideRelationPropertiesNotInMapping`1.BaseBidirectionalOneToMany",
               false),
           CreateVirtualRelationEndPointDefinitionForOneSide ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.GenericClassWithOneSideRelationPropertiesNotInMapping`1.BaseBidirectionalOneToMany",
