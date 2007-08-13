@@ -584,7 +584,6 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
   }
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-  /// <param name="value"> The <see cref="DateTime"/> value to load. </param>
   /// <include file='doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (DateTime? value, bool interim)
   {
@@ -1179,8 +1178,7 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
   }
 
   /// <summary>
-  ///   The <see cref="BocDateTimeValue"/> supports properties of types <see cref="IBusinessObjectDateTimeProperty"/>
-  ///   and <see cref="IBusinessObjectDateProperty"/>.
+  ///   The <see cref="BocDateTimeValue"/> supports properties of types <see cref="IBusinessObjectDateTimeProperty"/>.
   /// </summary>
   /// <seealso cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/>
   protected override Type[] SupportedPropertyInterfaces

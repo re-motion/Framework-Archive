@@ -10,7 +10,7 @@
       </para><para>
         The control's <see cref="BusinessObjectBoundWebControl.Property"/> supports objects of type 
         <see cref="IBusinessObjectStringProperty"/>, <see cref="IBusinessObjectNumericProperty"/>, 
-        <see cref="IBusinessObjectDateProperty"/>, and <see cref="IBusinessObjectDateTimeProperty"/>.
+        and <see cref="IBusinessObjectDateTimeProperty"/>.
       </para>
 
       <h4 class="dtH4">Standards Conformance</h4>

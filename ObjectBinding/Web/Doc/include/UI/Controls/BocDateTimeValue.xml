@@ -7,8 +7,7 @@
       <para>
         The control's <see cref="Value"/> can be assigned <see cref="DateTime"/> values and <see langword="null"/>. 
       </para><para>
-        The control's <see cref="BusinessObjectBoundWebControl.Property"/> supports the 
-        <see cref="IBusinessObjectDateProperty"/> and the <see cref="IBusinessObjectDateTimeProperty"/>.
+        The control's <see cref="BusinessObjectBoundWebControl.Property"/> supports the <see cref="IBusinessObjectDateTimeProperty"/>.
       </para>
       
       <h4 class="dtH4">Standards Conformance</h4>
@@ -184,7 +183,6 @@
     </returns>
   </LoadPostData>
   <LoadValue>
-    <param name="value">The value to load.</param>
     <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     <remarks>
       <para>
@@ -202,6 +200,7 @@
     <seealso cref="IBusinessObjectBoundControl.LoadValue">IBusinessObjectBoundControl.LoadValue</seealso>
   </LoadValue>
   <LoadUnboundValue>
+    <param name="value">The value to load.</param>
     <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     <remarks>
       <para>

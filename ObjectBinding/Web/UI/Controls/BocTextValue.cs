@@ -857,8 +857,7 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
 
   /// <summary>
   ///   The <see cref="BocTextValue"/> supports properties of types <see cref="IBusinessObjectStringProperty"/>,
-  ///   <see cref="IBusinessObjectDateProperty"/>, <see cref="IBusinessObjectDateProperty"/>, and 
-  ///   <see cref="IBusinessObjectNumericProperty"/>.
+  ///   <see cref="IBusinessObjectDateTimeProperty"/>, and <see cref="IBusinessObjectNumericProperty"/>.
   /// </summary>
   /// <seealso cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/>
   protected override Type[] SupportedPropertyInterfaces

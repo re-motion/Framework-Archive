@@ -153,7 +153,7 @@
             Read-Only / <see cref="Value"/> is not <see langword="null"/>
           </term>
           <description>
-            Displays the <see cref="IBusinessObjectWithIdentity.DisplayName"/> for <see cref="Value"/> 
+            Displays the <see cref="IBusinessObject.DisplayName"/> for <see cref="Value"/> 
             and the icon returned by <see cref="IBusinessObjectWebUIService.GetIcon"/>, 
             if <see cref="EnableIcon"/> is <see langword="true"/>.
           </description>

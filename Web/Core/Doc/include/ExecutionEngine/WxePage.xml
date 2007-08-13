@@ -88,8 +88,8 @@
         start page or a hyperlink that can be used to initialize the function.
       </para><para>
         It is possible to disable the page state management by setting the <see cref="EnableOutOfSequencePostBacks"/>
-        property to <see langword="NaBooleanEnum.True"/> and <see cref="EnableAbort"/> to 
-        <see cref="NaBooleanEnum.False"/>. In doing so, the application developer takes responsibility of handling
+        property to <see langword="true"/> and <see cref="EnableAbort"/> to 
+        <see langword="false"/>. In doing so, the application developer takes responsibility of handling
         resubmits to a page in a meaningful manner. If the execution engine detects an out-of-sequence postback, it 
         will set the <see cref="IsOutOfSequencePostBack"/> flag on the page.
       </para>

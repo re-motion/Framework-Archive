@@ -55,10 +55,6 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     /// <summary> 
     ///   Searches the object model for the <see cref="IBusinessObject"/> instances that can be assigned to this property.
     /// </summary>
-    /// <param name="requiresIdentity">
-    /// A flag that if <see langword="true"/> determines that the return value muss consist only of objects implenting 
-    /// <see cref="IBusinessObjectWithIdentity"/>.
-    /// </param>
     /// <param name="referencingObject"> The business object for which to search for the possible objects to be referenced. </param>
     /// <param name="requiresIdentity">
     /// A flag that if <see langword="true"/> determines that the return value muss consist only of objects implenting 
