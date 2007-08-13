@@ -22,11 +22,11 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void EmitSimpleClass ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (ClassEmitterTest), new Type[] { typeof (IMarkerInterface) },
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "SimpleClass", typeof (ClassEmitterTest), new Type[] { typeof (IMarkerInterface) },
           TypeAttributes.Public | TypeAttributes.Class);
       Type builtType = classEmitter.BuildType ();
 
-      Assert.AreEqual ("Foo", builtType.FullName);
+      Assert.AreEqual ("SimpleClass", builtType.FullName);
       Assert.AreEqual (typeof (ClassEmitterTest), builtType.BaseType);
       Assert.IsTrue (typeof (IMarkerInterface).IsAssignableFrom (builtType));
       Assert.IsTrue (builtType.IsClass);
@@ -36,7 +36,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void HasBeenBuilt ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (ClassEmitterTest));
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "HasBeenBuilt", typeof (ClassEmitterTest));
       Assert.IsFalse (classEmitter.HasBeenBuilt);
       classEmitter.BuildType();
       Assert.IsTrue (classEmitter.HasBeenBuilt);
@@ -47,7 +47,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
         MatchType = MessageMatch.Contains)]
     public void ThrowsWhenInterfaceAsBaseClass ()
     {
-      new CustomClassEmitter (Scope, "Foo", typeof (IConvertible));
+      new CustomClassEmitter (Scope, "ThrowsWhenInterfaceAsBaseClass", typeof (IConvertible));
     }
 
     [Test]
@@ -55,7 +55,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
         MatchType = MessageMatch.Contains)]
     public void ThrowsWhenSealedTypeAsBaseClass ()
     {
-      new CustomClassEmitter (Scope, "Foo", typeof (int));
+      new CustomClassEmitter (Scope, "ThrowsWhenSealedTypeAsBaseClass", typeof (int));
     }
 
     [Test]
@@ -63,13 +63,13 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
         MatchType = MessageMatch.Contains)]
     public void ThrowsWhenNonInterfaceAsInterface ()
     {
-      new CustomClassEmitter (Scope, "Foo", typeof (object), new Type[] {typeof (object)}, TypeAttributes.Public | TypeAttributes.Class);
+      new CustomClassEmitter (Scope, "ThrowsWhenNonInterfaceAsInterface", typeof (object), new Type[] { typeof (object) }, TypeAttributes.Public | TypeAttributes.Class);
     }
 
     [Test]
     public void CreateConstructorCreateField ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object));
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateConstructorCreateField", typeof (object));
       FieldReference field = classEmitter.CreateField ("_test", typeof (string));
       ConstructorEmitter constructor = classEmitter.CreateConstructor (new Type[] { typeof (string), typeof (int) });
       constructor.CodeBuilder.InvokeBaseConstructor();
@@ -84,7 +84,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void CreateDefaultConstructor ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object));
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateDefaultConstructor", typeof (object));
       classEmitter.CreateDefaultConstructor ();
       Activator.CreateInstance (classEmitter.BuildType ());
     }
@@ -92,7 +92,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void CreateTypeConstructorCreateStaticField ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object));
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateTypeConstructorCreateStaticField", typeof (object));
       FieldReference field = classEmitter.CreateStaticField ("s_test", typeof (string));
       classEmitter.CreateTypeConstructor ().CodeBuilder
           .AddStatement (new AssignStatement (field, (new ConstReference ("Yay").ToExpression ())))
@@ -104,7 +104,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void CreateMethod ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object));
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateMethod", typeof (object));
       CustomMethodEmitter method = classEmitter.CreateMethod ("Check", MethodAttributes.Public);
       method.SetReturnType (typeof (string));
       method.AddStatement (new ReturnStatement (new ConstReference ("ret")));
@@ -116,7 +116,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void CreateStaticMethod ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object));
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateStaticMethod", typeof (object));
       CustomMethodEmitter method = classEmitter.CreateMethod ("Check", MethodAttributes.Public | MethodAttributes.Static);
       method.SetReturnType (typeof (string));
       method.AddStatement (new ReturnStatement (new ConstReference ("stat")));
@@ -128,7 +128,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void CreateProperty ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object));
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateProperty", typeof (object));
       CustomPropertyEmitter property = classEmitter.CreateProperty ("Check", PropertyAttributes.None, true, typeof (string), Type.EmptyTypes);
       property.CreateGetMethod ().AddStatement (new ReturnStatement (new ConstReference ("4711")));
 
@@ -139,7 +139,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void CreateEvent ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object));
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateEvent", typeof (object));
       CustomEventEmitter eventEmitter = classEmitter.CreateEvent ("Eve", EventAttributes.None, typeof (Func<string>));
       eventEmitter.CreateAddMethod ().AddStatement (new ReturnStatement ());
       eventEmitter.CreateRemoveMethod ().AddStatement (new ReturnStatement ());
@@ -151,7 +151,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void CreateMethodOverride ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object), new Type[] { typeof (IMarkerInterface) },
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateMethodOverride", typeof (object), new Type[] { typeof (IMarkerInterface) },
           TypeAttributes.Public | TypeAttributes.Class);
       
       CustomMethodEmitter toStringMethod = classEmitter.CreateMethodOverride (typeof (object).GetMethod ("ToString"));
@@ -165,7 +165,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void MethodNameAndVisibilityArePreservedOnOverride ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (ClassWithAllKindsOfMembers), new Type[] { typeof (IMarkerInterface) },
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "MethodNameAndVisibilityArePreservedOnOverride", typeof (ClassWithAllKindsOfMembers), new Type[] { typeof (IMarkerInterface) },
           TypeAttributes.Public | TypeAttributes.Class);
 
       CustomMethodEmitter toStringMethod = classEmitter.CreateMethodOverride (typeof (object).GetMethod ("ToString", _declaredInstanceBindingFlags));
@@ -205,7 +205,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void CreateInterfaceMethodImplementation ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object), new Type[] { typeof (ICloneable) },
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateInterfaceMethodImplementation", typeof (object), new Type[] { typeof (ICloneable) },
           TypeAttributes.Public | TypeAttributes.Class);
 
       CustomMethodEmitter cloneMethod = classEmitter.CreateInterfaceMethodImplementation (typeof (ICloneable).GetMethod ("Clone"));
@@ -219,7 +219,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void MethodNameAndVisibilityAreChangedOnInterfaceImplementation ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object), new Type[] { typeof (ICloneable) },
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "MethodNameAndVisibilityAreChangedOnInterfaceImplementation", typeof (object), new Type[] { typeof (ICloneable) },
           TypeAttributes.Public | TypeAttributes.Class);
 
       CustomMethodEmitter method =
@@ -240,7 +240,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void CreatePropertyOverride ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (ClassWithAllKindsOfMembers), Type.EmptyTypes,
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreatePropertyOverride", typeof (ClassWithAllKindsOfMembers), Type.EmptyTypes,
           TypeAttributes.Public | TypeAttributes.Class);
 
       CustomPropertyEmitter property =
@@ -264,7 +264,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void CreateIndexedPropertyOverride ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (ClassWithAllKindsOfMembers), Type.EmptyTypes,
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateIndexedPropertyOverride", typeof (ClassWithAllKindsOfMembers), Type.EmptyTypes,
           TypeAttributes.Public | TypeAttributes.Class);
 
       PropertyInfo baseProperty = typeof (ClassWithAllKindsOfMembers).GetProperty ("Item", _declaredInstanceBindingFlags);
@@ -283,7 +283,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void PropertyNamePreservedOnOverride ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (ClassWithAllKindsOfMembers), Type.EmptyTypes,
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "PropertyNamePreservedOnOverride", typeof (ClassWithAllKindsOfMembers), Type.EmptyTypes,
           TypeAttributes.Public | TypeAttributes.Class);
 
       CustomPropertyEmitter property =
@@ -302,7 +302,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void CreateInterfacePropertyImplementation ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object), new Type[] { typeof (IInterfaceWithProperty) },
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateInterfacePropertyImplementation", typeof (object), new Type[] { typeof (IInterfaceWithProperty) },
           TypeAttributes.Public | TypeAttributes.Class);
 
       CustomPropertyEmitter property = classEmitter.CreateInterfacePropertyImplementation (
@@ -324,7 +324,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void PropertyNameIsChangedOnInterfaceImplementation ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object), new Type[] { typeof (IInterfaceWithProperty) },
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "PropertyNameIsChangedOnInterfaceImplementation", typeof (object), new Type[] { typeof (IInterfaceWithProperty) },
           TypeAttributes.Public | TypeAttributes.Class);
 
       CustomPropertyEmitter property = classEmitter.CreateInterfacePropertyImplementation (
@@ -343,7 +343,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void CreateEventOverride ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (ClassWithAllKindsOfMembers), Type.EmptyTypes,
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateEventOverride", typeof (ClassWithAllKindsOfMembers), Type.EmptyTypes,
           TypeAttributes.Public | TypeAttributes.Class);
 
       CustomEventEmitter eventEmitter =
@@ -370,7 +370,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void EventNamePreservedOnOverride ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (ClassWithAllKindsOfMembers), Type.EmptyTypes,
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "EventNamePreservedOnOverride", typeof (ClassWithAllKindsOfMembers), Type.EmptyTypes,
           TypeAttributes.Public | TypeAttributes.Class);
 
       CustomEventEmitter eventEmitter =
@@ -397,7 +397,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void CreateInterfaceEventImplementation ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object), new Type[] { typeof (IInterfaceWithEvent) },
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateInterfaceEventImplementation", typeof (object), new Type[] { typeof (IInterfaceWithEvent) },
           TypeAttributes.Public | TypeAttributes.Class);
 
       CustomEventEmitter eventEmitter = classEmitter.CreateInterfaceEventImplementation (
@@ -424,7 +424,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void EventNameIsChangedOnInterfaceImplementation ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object), new Type[] { typeof (IInterfaceWithEvent) },
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "EventNameIsChangedOnInterfaceImplementation", typeof (object), new Type[] { typeof (IInterfaceWithEvent) },
           TypeAttributes.Public | TypeAttributes.Class);
 
       CustomEventEmitter eventEmitter = classEmitter.CreateInterfaceEventImplementation (
@@ -447,7 +447,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void AddCustomAttribute ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object));
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "AddCustomAttribute", typeof (object));
       classEmitter.AddCustomAttribute (new CustomAttributeBuilder (typeof (SimpleAttribute).GetConstructor (Type.EmptyTypes), new object[0],
           typeof (SimpleAttribute).GetFields (), new object[] { "value" }));
 
@@ -461,7 +461,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void ReplicateBaseTypeConstructors ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (List<int>));
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "ReplicateBaseTypeConstructors", typeof (List<int>));
       FieldReference field = classEmitter.CreateStaticField ("s_ctorsCalled", typeof (int));
 
       classEmitter.ReplicateBaseTypeConstructors (
@@ -497,7 +497,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [Test]
     public void GetPublicMethodWrapper ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (ClassWithProtectedMethod));
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "GetPublicMethodWrapper", typeof (ClassWithProtectedMethod));
       CustomMethodEmitter emitter1 =
           classEmitter.GetPublicMethodWrapper (typeof (ClassWithProtectedMethod).GetMethod ("GetSecret", _declaredInstanceBindingFlags));
       CustomMethodEmitter emitter2 =
