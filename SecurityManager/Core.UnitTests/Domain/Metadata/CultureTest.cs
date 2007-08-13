@@ -13,7 +13,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       base.TestFixtureSetUp ();
     
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateSecurableClassDefinitionWithLocalizedNames (ClientTransaction.NewTransaction());
+      dbFixtures.CreateAndCommitSecurableClassDefinitionWithLocalizedNames (ClientTransaction.NewTransaction());
     }
 
     public override void SetUp ()

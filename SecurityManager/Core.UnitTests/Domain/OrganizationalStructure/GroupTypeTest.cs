@@ -19,7 +19,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void FindAll ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
+      dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
 
       DomainObjectCollection groupTypes = GroupType.FindAll ();
 

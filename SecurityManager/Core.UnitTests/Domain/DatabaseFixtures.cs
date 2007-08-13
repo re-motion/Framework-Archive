@@ -21,13 +21,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       dbHelper.SetupDB ();
     }
 
-    public void CreateSecurableClassDefinitionWithLocalizedNames (ClientTransaction transaction)
+    public void CreateAndCommitSecurableClassDefinitionWithLocalizedNames (ClientTransaction transaction)
     {
       CreateEmptyDomain ();
 
       using (transaction.EnterScope ())
       {
-        SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition (ClientTransactionScope.CurrentTransaction);
+        SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition ();
 
         Culture germanCulture = Culture.NewObject ("de");
         Culture englishCulture = Culture.NewObject ("en");
@@ -36,210 +36,210 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
         LocalizedName classInGerman = LocalizedName.NewObject ("Klasse", germanCulture, classDefinition);
         LocalizedName classInEnglish = LocalizedName.NewObject ("Class", englishCulture, classDefinition);
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        ClientTransactionScope.CurrentTransaction.Commit ();
       }
     }
 
-    public Tenant CreateOrganizationalStructureWithTwoTenants (ClientTransaction transaction)
+    public Tenant CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction transaction)
     {
       CreateEmptyDomain ();
 
       using (transaction.EnterScope ())
       {
         AbstractRoleDefinition qualityManagerRole = AbstractRoleDefinition.NewObject (
-            Guid.NewGuid(),
+            Guid.NewGuid (),
             "QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRoles, Rubicon.SecurityManager.UnitTests",
             0);
         qualityManagerRole.Index = 1;
-        AbstractRoleDefinition developerRole =AbstractRoleDefinition.NewObject (
-            Guid.NewGuid(),
+        AbstractRoleDefinition developerRole = AbstractRoleDefinition.NewObject (
+            Guid.NewGuid (),
             "Developer|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRoles, Rubicon.SecurityManager.UnitTests",
             1);
         developerRole.Index = 0;
 
-        Position globalPosition = CreatePosition (ClientTransactionScope.CurrentTransaction, "Global");
+        Position globalPosition = CreatePosition ("Global");
         globalPosition.Delegation = Delegation.Enabled;
-        Position officialPosition = CreatePosition (ClientTransactionScope.CurrentTransaction, "Official");
+        Position officialPosition = CreatePosition ("Official");
         officialPosition.Delegation = Delegation.Enabled;
-        Position managerPosition = CreatePosition (ClientTransactionScope.CurrentTransaction, "Manager");
+        Position managerPosition = CreatePosition ("Manager");
         managerPosition.Delegation = Delegation.Disabled;
 
-        GroupType groupType1 = CreateGroupType (ClientTransactionScope.CurrentTransaction, "groupType 1");
-        GroupType groupType2 = CreateGroupType (ClientTransactionScope.CurrentTransaction, "groupType 2");
+        GroupType groupType1 = CreateGroupType ("groupType 1");
+        GroupType groupType2 = CreateGroupType ("groupType 2");
 
-        GroupTypePosition groupType1_managerPosition = GroupTypePosition.NewObject();
+        GroupTypePosition groupType1_managerPosition = GroupTypePosition.NewObject ();
         groupType1_managerPosition.GroupType = groupType1;
         groupType1_managerPosition.Position = managerPosition;
-        GroupTypePosition groupType1_officialPosition = GroupTypePosition.NewObject();
+        GroupTypePosition groupType1_officialPosition = GroupTypePosition.NewObject ();
         groupType1_officialPosition.GroupType = groupType1;
         groupType1_officialPosition.Position = officialPosition;
-        GroupTypePosition groupType2_officialPosition = GroupTypePosition.NewObject();
+        GroupTypePosition groupType2_officialPosition = GroupTypePosition.NewObject ();
         groupType2_officialPosition.GroupType = groupType2;
         groupType2_officialPosition.Position = officialPosition;
 
-        Tenant tenant1 = CreateTenant (ClientTransactionScope.CurrentTransaction, "TestTenant");
+        Tenant tenant1 = CreateTenant ("TestTenant");
         tenant1.UniqueIdentifier = "UID: testTenant";
-        Group rootGroup = CreateGroup (ClientTransactionScope.CurrentTransaction, "rootGroup", "UID: rootGroup", null, tenant1);
+        Group rootGroup = CreateGroup ("rootGroup", "UID: rootGroup", null, tenant1);
         for (int i = 0; i < 2; i++)
         {
           Group parentGroup =
-              CreateGroup (ClientTransactionScope.CurrentTransaction, string.Format ("parentGroup{0}", i), string.Format ("UID: parentGroup{0}", i), rootGroup, tenant1);
+              CreateGroup (string.Format ("parentGroup{0}", i), string.Format ("UID: parentGroup{0}", i), rootGroup, tenant1);
           parentGroup.GroupType = groupType1;
 
-          Group group = CreateGroup (ClientTransactionScope.CurrentTransaction, string.Format ("group{0}", i), string.Format ("UID: group{0}", i), parentGroup, tenant1);
+          Group group = CreateGroup (string.Format ("group{0}", i), string.Format ("UID: group{0}", i), parentGroup, tenant1);
           group.GroupType = groupType2;
 
-          User user1 = CreateUser (ClientTransactionScope.CurrentTransaction, string.Format ("group{0}/user1", i), string.Empty, "user1", string.Empty, group, tenant1);
-          User user2 = CreateUser (ClientTransactionScope.CurrentTransaction, string.Format ("group{0}/user2", i), string.Empty, "user2", string.Empty, group, tenant1);
+          User user1 = CreateUser (string.Format ("group{0}/user1", i), string.Empty, "user1", string.Empty, group, tenant1);
+          User user2 = CreateUser (string.Format ("group{0}/user2", i), string.Empty, "user2", string.Empty, group, tenant1);
 
-          CreateRole (ClientTransactionScope.CurrentTransaction, user1, parentGroup, managerPosition);
-          CreateRole (ClientTransactionScope.CurrentTransaction, user2, parentGroup, officialPosition);
+          CreateRole (user1, parentGroup, managerPosition);
+          CreateRole (user2, parentGroup, officialPosition);
         }
 
-        Group testRootGroup = CreateGroup (ClientTransactionScope.CurrentTransaction, "testRootGroup", "UID: testRootGroup", null, tenant1);
-        Group testParentOfOwningGroup = CreateGroup (ClientTransactionScope.CurrentTransaction, "testParentOfOwningGroup", "UID: testParentOfOwningGroup", testRootGroup, tenant1);
-        Group testOwningGroup = CreateGroup (ClientTransactionScope.CurrentTransaction, "testOwningGroup", "UID: testOwningGroup", testParentOfOwningGroup, tenant1);
-        Group testGroup = CreateGroup (ClientTransactionScope.CurrentTransaction, "testGroup", "UID: testGroup", null, tenant1);
-        User testUser = CreateUser (ClientTransactionScope.CurrentTransaction, "test.user", "test", "user", "Dipl.Ing.(FH)", testOwningGroup, tenant1);
+        Group testRootGroup = CreateGroup ("testRootGroup", "UID: testRootGroup", null, tenant1);
+        Group testParentOfOwningGroup = CreateGroup ("testParentOfOwningGroup", "UID: testParentOfOwningGroup", testRootGroup, tenant1);
+        Group testOwningGroup = CreateGroup ("testOwningGroup", "UID: testOwningGroup", testParentOfOwningGroup, tenant1);
+        Group testGroup = CreateGroup ("testGroup", "UID: testGroup", null, tenant1);
+        User testUser = CreateUser ("test.user", "test", "user", "Dipl.Ing.(FH)", testOwningGroup, tenant1);
 
-        CreateRole (ClientTransactionScope.CurrentTransaction, testUser, testGroup, officialPosition);
-        CreateRole (ClientTransactionScope.CurrentTransaction, testUser, testGroup, managerPosition);
-        CreateRole (ClientTransactionScope.CurrentTransaction, testUser, testOwningGroup, managerPosition);
-        CreateRole (ClientTransactionScope.CurrentTransaction, testUser, testRootGroup, officialPosition);
+        CreateRole (testUser, testGroup, officialPosition);
+        CreateRole (testUser, testGroup, managerPosition);
+        CreateRole (testUser, testOwningGroup, managerPosition);
+        CreateRole (testUser, testRootGroup, officialPosition);
 
-        Tenant tenant2 = CreateTenant (ClientTransactionScope.CurrentTransaction, "Tenant 2");
-        Group groupTenant2 = CreateGroup (ClientTransactionScope.CurrentTransaction, "Group Tenant 2", "UID: group Tenant 2", null, tenant2);
-        User userTenant2 = CreateUser (ClientTransactionScope.CurrentTransaction, "User.Tenant2", "User", "Tenant 2", string.Empty, groupTenant2, tenant2);
+        Tenant tenant2 = CreateTenant ("Tenant 2");
+        Group groupTenant2 = CreateGroup ("Group Tenant 2", "UID: group Tenant 2", null, tenant2);
+        User userTenant2 = CreateUser ("User.Tenant2", "User", "Tenant 2", string.Empty, groupTenant2, tenant2);
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        ClientTransactionScope.CurrentTransaction.Commit ();
         return tenant1;
       }
     }
 
-    public SecurableClassDefinition[] CreateSecurableClassDefinitionsWithSubClassesEach (int classDefinitionCount, int derivedClassDefinitionCount, ClientTransaction transaction)
+    public SecurableClassDefinition[] CreateAndCommitSecurableClassDefinitionsWithSubClassesEach (int classDefinitionCount, int derivedClassDefinitionCount, ClientTransaction transaction)
     {
       CreateEmptyDomain ();
       using (transaction.EnterScope ())
       {
-        SecurableClassDefinition[] classDefinitions = CreateSecurableClassDefinitions (ClientTransactionScope.CurrentTransaction, classDefinitionCount, derivedClassDefinitionCount);
+        SecurableClassDefinition[] classDefinitions = CreateSecurableClassDefinitions (classDefinitionCount, derivedClassDefinitionCount);
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        ClientTransactionScope.CurrentTransaction.Commit ();
 
         return classDefinitions;
       }
     }
 
-    public SecurableClassDefinition[] CreateSecurableClassDefinitions (int classDefinitionCount, ClientTransaction transaction)
+    public SecurableClassDefinition[] CreateAndCommitSecurableClassDefinitions (int classDefinitionCount, ClientTransaction transaction)
     {
       CreateEmptyDomain ();
       using (transaction.EnterScope ())
       {
-        SecurableClassDefinition[] classDefinitions = CreateSecurableClassDefinitions (ClientTransactionScope.CurrentTransaction, classDefinitionCount, 0);
+        SecurableClassDefinition[] classDefinitions = CreateSecurableClassDefinitions (classDefinitionCount, 0);
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        ClientTransactionScope.CurrentTransaction.Commit ();
 
         return classDefinitions;
       }
     }
 
-    public SecurableClassDefinition CreateSecurableClassDefinitionWithStates (ClientTransaction transaction)
+    public SecurableClassDefinition CreateAndCommitSecurableClassDefinitionWithStates (ClientTransaction transaction)
     {
       CreateEmptyDomain ();
       using (transaction.EnterScope ())
       {
-        SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition (ClientTransactionScope.CurrentTransaction);
+        SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition ();
 
         classDefinition.AddStateProperty (CreateFileStateProperty (ClientTransactionScope.CurrentTransaction));
-        classDefinition.AddStateProperty (CreateConfidentialityProperty (ClientTransactionScope.CurrentTransaction));
+        classDefinition.AddStateProperty (CreateConfidentialityProperty ());
 
-        ClientTransactionScope.CurrentTransaction.Commit();
-
-        return classDefinition;
-      }
-    }
-
-    public SecurableClassDefinition CreateSecurableClassDefinitionWithAccessTypes (int accessTypes, ClientTransaction transaction)
-    {
-      CreateEmptyDomain ();
-      using (transaction.EnterScope ())
-      {
-        SecurableClassDefinition classDefinition = CreateSecurableClassDefinitionWithAccessTypes (ClientTransactionScope.CurrentTransaction, accessTypes);
-
-        ClientTransactionScope.CurrentTransaction.Commit();
+        ClientTransactionScope.CurrentTransaction.Commit ();
 
         return classDefinition;
       }
     }
 
-    public SecurableClassDefinition CreateSecurableClassDefinitionWithAccessControlLists (int accessControlLists, ClientTransaction transaction)
+    public SecurableClassDefinition CreateAndCommitSecurableClassDefinitionWithAccessTypes (int accessTypes, ClientTransaction transaction)
+    {
+      CreateEmptyDomain ();
+      using (transaction.EnterScope ())
+      {
+        SecurableClassDefinition classDefinition = CreateSecurableClassDefinitionWithAccessTypes (accessTypes);
+
+        ClientTransactionScope.CurrentTransaction.Commit ();
+
+        return classDefinition;
+      }
+    }
+
+    public SecurableClassDefinition CreateAndCommitSecurableClassDefinitionWithAccessControlLists (int accessControlLists, ClientTransaction transaction)
     {
       CreateEmptyDomain ();
 
       using (transaction.EnterScope ())
       {
-        SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition (ClientTransactionScope.CurrentTransaction);
+        SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition ();
         for (int i = 0; i < accessControlLists; i++)
         {
-          AccessControlList acl = AccessControlList.NewObject();
+          AccessControlList acl = AccessControlList.NewObject ();
           acl.Class = classDefinition;
-          acl.CreateAccessControlEntry();
+          acl.CreateAccessControlEntry ();
           if (i == 0)
-            CreateStateCombination (ClientTransactionScope.CurrentTransaction, acl);
+            CreateStateCombination (acl);
           else
-            CreateStateCombination (ClientTransactionScope.CurrentTransaction, acl, string.Format ("Property {0}", i));
+            CreateStateCombination (acl, string.Format ("Property {0}", i));
         }
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        ClientTransactionScope.CurrentTransaction.Commit ();
 
         return classDefinition;
       }
     }
 
-    public AccessControlList CreateAccessControlListWithAccessControlEntries (int accessControlEntries, ClientTransaction transaction)
+    public AccessControlList CreateAndCommitAccessControlListWithAccessControlEntries (int accessControlEntries, ClientTransaction transaction)
     {
-      CreateEmptyDomain();
+      CreateEmptyDomain ();
 
-      using (transaction.EnterScope())
+      using (transaction.EnterScope ())
       {
-        SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition (ClientTransactionScope.CurrentTransaction);
-        AccessControlList acl = AccessControlList.NewObject();
+        SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition ();
+        AccessControlList acl = AccessControlList.NewObject ();
         acl.Class = classDefinition;
-        acl.CreateStateCombination();
+        acl.CreateStateCombination ();
 
         for (int i = 0; i < accessControlEntries; i++)
-          acl.CreateAccessControlEntry();
+          acl.CreateAccessControlEntry ();
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        ClientTransactionScope.CurrentTransaction.Commit ();
 
         return acl;
       }
     }
 
-    public AccessControlList CreateAccessControlListWithStateCombinations (int stateCombinations, ClientTransaction transaction)
+    public AccessControlList CreateAndCommitAccessControlListWithStateCombinations (int stateCombinations, ClientTransaction transaction)
     {
       CreateEmptyDomain ();
       using (transaction.EnterScope ())
       {
-        SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition (ClientTransactionScope.CurrentTransaction);
-        AccessControlList acl = AccessControlList.NewObject();
+        SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition ();
+        AccessControlList acl = AccessControlList.NewObject ();
         acl.Class = classDefinition;
-        acl.CreateAccessControlEntry();
+        acl.CreateAccessControlEntry ();
 
         for (int i = 0; i < stateCombinations; i++)
         {
           if (i == 0)
-            CreateStateCombination (ClientTransactionScope.CurrentTransaction, acl);
+            CreateStateCombination (acl);
           else
-            CreateStateCombination (ClientTransactionScope.CurrentTransaction, acl, string.Format ("Property {0}", i));
+            CreateStateCombination (acl, string.Format ("Property {0}", i));
         }
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        ClientTransactionScope.CurrentTransaction.Commit ();
 
         return acl;
       }
     }
 
-    public void CreateAdministratorAbstractRole (ClientTransaction transaction)
+    public void CreateAndCommitAdministratorAbstractRole (ClientTransaction transaction)
     {
       CreateEmptyDomain ();
 
@@ -249,169 +249,139 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
         string abstractRoleName = "Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRoles, Rubicon.Security.UnitTests.TestDomain";
         AbstractRoleDefinition administratorAbstractRole = AbstractRoleDefinition.NewObject (metadataItemID, abstractRoleName, 0);
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        ClientTransactionScope.CurrentTransaction.Commit ();
       }
     }
 
-    public ObjectID CreateAccessControlEntryWithPermissions (int permissions, ClientTransaction transaction)
+    public ObjectID CreateAndCommitAccessControlEntryWithPermissions (int permissions, ClientTransaction transaction)
     {
       CreateEmptyDomain ();
 
       using (transaction.EnterScope ())
       {
-        SecurableClassDefinition classDefinition = CreateSecurableClassDefinitionWithAccessTypes (ClientTransactionScope.CurrentTransaction, permissions);
-        AccessControlList acl = classDefinition.CreateAccessControlList();
-        AccessControlEntry ace = acl.CreateAccessControlEntry();
+        SecurableClassDefinition classDefinition = CreateSecurableClassDefinitionWithAccessTypes (permissions);
+        AccessControlList acl = classDefinition.CreateAccessControlList ();
+        AccessControlEntry ace = acl.CreateAccessControlEntry ();
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        ClientTransactionScope.CurrentTransaction.Commit ();
 
         return ace.ID;
       }
     }
 
-    private Group CreateGroup (ClientTransaction transaction, string name, string uniqueIdentifier, Group parent, Tenant tenant)
+    private Group CreateGroup (string name, string uniqueIdentifier, Group parent, Tenant tenant)
     {
-      using (transaction.EnterScope ())
-      {
-        Group group = _factory.CreateGroup ();
-        group.Name = name;
-        group.Parent = parent;
-        group.Tenant = tenant;
-        group.UniqueIdentifier = uniqueIdentifier;
+      Group group = _factory.CreateGroup();
+      group.Name = name;
+      group.Parent = parent;
+      group.Tenant = tenant;
+      group.UniqueIdentifier = uniqueIdentifier;
 
-        return group;
-      }
+      return group;
     }
 
-    private Tenant CreateTenant (ClientTransaction transaction, string name)
+    private Tenant CreateTenant (string name)
     {
-      using (transaction.EnterScope ())
-      {
-        Tenant tenant = _factory.CreateTenant ();
-        tenant.Name = name;
+      Tenant tenant = _factory.CreateTenant();
+      tenant.Name = name;
 
-        return tenant;
-      }
+      return tenant;
     }
 
-    private User CreateUser (ClientTransaction transaction, string userName, string firstName, string lastName, string title, Group group, Tenant tenant)
+    private User CreateUser (string userName, string firstName, string lastName, string title, Group group, Tenant tenant)
     {
-      using (transaction.EnterScope ())
-      {
-        User user = _factory.CreateUser ();
-        user.UserName = userName;
-        user.FirstName = firstName;
-        user.LastName = lastName;
-        user.Title = title;
-        user.Tenant = tenant;
-        user.OwningGroup = group;
+      User user = _factory.CreateUser();
+      user.UserName = userName;
+      user.FirstName = firstName;
+      user.LastName = lastName;
+      user.Title = title;
+      user.Tenant = tenant;
+      user.OwningGroup = group;
 
-        return user;
-      }
+      return user;
     }
 
-    private SecurableClassDefinition CreateOrderSecurableClassDefinition (ClientTransaction transaction)
+    private SecurableClassDefinition CreateOrderSecurableClassDefinition ()
     {
-      using (transaction.EnterScope ())
-      {
-        SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (
-            ClientTransactionScope.CurrentTransaction,
-            new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"),
-            "Rubicon.SecurityManager.UnitTests.TestDomain.Order, Rubicon.SecurityManager.UnitTests");
-        return classDefinition;
-      }
+      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (
+          ClientTransactionScope.CurrentTransaction,
+          new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"),
+          "Rubicon.SecurityManager.UnitTests.TestDomain.Order, Rubicon.SecurityManager.UnitTests");
+      return classDefinition;
     }
 
-    private SecurableClassDefinition[] CreateSecurableClassDefinitions (
-        ClientTransaction transaction,
-        int classDefinitionCount,
-        int derivedClassDefinitionCount)
+    private SecurableClassDefinition[] CreateSecurableClassDefinitions (int classDefinitionCount, int derivedClassDefinitionCount)
     {
-      using (transaction.EnterScope ())
+      SecurableClassDefinition[] classDefinitions = new SecurableClassDefinition[classDefinitionCount];
+      for (int i = 0; i < classDefinitionCount; i++)
       {
-        SecurableClassDefinition[] classDefinitions = new SecurableClassDefinition[classDefinitionCount];
-        for (int i = 0; i < classDefinitionCount; i++)
-        {
-          SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
-          classDefinition.MetadataItemID = Guid.NewGuid();
-          classDefinition.Name = string.Format ("Class {0}", i);
-          classDefinition.Index = i;
-          classDefinitions[i] = classDefinition;
-          CreateDerivedSecurableClassDefinitions (classDefinition, derivedClassDefinitionCount);
-        }
-        return classDefinitions;
+        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
+        classDefinition.MetadataItemID = Guid.NewGuid();
+        classDefinition.Name = string.Format ("Class {0}", i);
+        classDefinition.Index = i;
+        classDefinitions[i] = classDefinition;
+        CreateDerivedSecurableClassDefinitions (classDefinition, derivedClassDefinitionCount);
       }
+      return classDefinitions;
     }
 
     private void CreateDerivedSecurableClassDefinitions (SecurableClassDefinition baseClassDefinition, int classDefinitionCount)
     {
       for (int i = 0; i < classDefinitionCount; i++)
       {
-        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
-        classDefinition.MetadataItemID = Guid.NewGuid();
+        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject ();
+        classDefinition.MetadataItemID = Guid.NewGuid ();
         classDefinition.Name = string.Format ("{0} - Subsclass {0}", baseClassDefinition.Name, i);
         classDefinition.Index = i;
         classDefinition.BaseClass = baseClassDefinition;
       }
     }
 
-    private SecurableClassDefinition CreateSecurableClassDefinitionWithAccessTypes (ClientTransaction transaction, int accessTypes)
+    private SecurableClassDefinition CreateSecurableClassDefinitionWithAccessTypes (int accessTypes)
     {
-      using (transaction.EnterScope ())
+      SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition ();
+
+      for (int i = 0; i < accessTypes; i++)
       {
-        SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition (ClientTransactionScope.CurrentTransaction);
-
-        for (int i = 0; i < accessTypes; i++)
-        {
-          AccessTypeDefinition accessType = CreateAccessType (ClientTransactionScope.CurrentTransaction, Guid.NewGuid(), string.Format ("Access Type {0}", i));
-          accessType.Index = i;
-          classDefinition.AddAccessType (accessType);
-        }
-
-        return classDefinition;
+        AccessTypeDefinition accessType = CreateAccessType (Guid.NewGuid(), string.Format ("Access Type {0}", i));
+        accessType.Index = i;
+        classDefinition.AddAccessType (accessType);
       }
+
+      return classDefinition;
     }
 
-    private GroupType CreateGroupType (ClientTransaction transaction, string name)
+    private GroupType CreateGroupType (string name)
     {
-      using (transaction.EnterScope ())
-      {
-        GroupType groupType = GroupType.NewObject();
-        groupType.Name = name;
+      GroupType groupType = GroupType.NewObject();
+      groupType.Name = name;
 
-        return groupType;
-      }
+      return groupType;
     }
 
-    private Position CreatePosition (ClientTransaction transaction, string name)
+    private Position CreatePosition (string name)
     {
-      using (transaction.EnterScope ())
-      {
-        Position position = _factory.CreatePosition ();
-        position.Name = name;
+      Position position = _factory.CreatePosition();
+      position.Name = name;
 
-        return position;
-      }
+      return position;
     }
 
-    private Role CreateRole (ClientTransaction transaction, User user, Group group, Position position)
+    private Role CreateRole (User user, Group group, Position position)
     {
-      using (transaction.EnterScope ())
-      {
-        Role role = Role.NewObject();
-        role.User = user;
-        role.Group = group;
-        role.Position = position;
+      Role role = Role.NewObject();
+      role.User = user;
+      role.Group = group;
+      role.Position = position;
 
-        return role;
-      }
+      return role;
     }
 
     private SecurableClassDefinition CreateSecurableClassDefinition (ClientTransaction transaction, Guid metadataItemID, string name)
     {
       using (transaction.EnterScope ())
       {
-        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
+        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject ();
         classDefinition.MetadataItemID = metadataItemID;
         classDefinition.Name = name;
 
@@ -434,45 +404,36 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       }
     }
 
-    private StatePropertyDefinition CreateConfidentialityProperty (ClientTransaction transaction)
+    private StatePropertyDefinition CreateConfidentialityProperty ()
     {
-      using (transaction.EnterScope ())
-      {
-        StatePropertyDefinition confidentialityProperty = 
-            StatePropertyDefinition.NewObject (new Guid ("93969f13-65d7-49f4-a456-a1686a4de3de"), "Confidentiality");
-        confidentialityProperty.AddState ("Public", 0);
-        confidentialityProperty.AddState ("Secret", 1);
-        confidentialityProperty.AddState ("TopSecret", 2);
+      StatePropertyDefinition confidentialityProperty =
+          StatePropertyDefinition.NewObject (new Guid ("93969f13-65d7-49f4-a456-a1686a4de3de"), "Confidentiality");
+      confidentialityProperty.AddState ("Public", 0);
+      confidentialityProperty.AddState ("Secret", 1);
+      confidentialityProperty.AddState ("TopSecret", 2);
 
-        return confidentialityProperty;
-      }
+      return confidentialityProperty;
     }
 
-    private AccessTypeDefinition CreateAccessType (ClientTransaction transaction, Guid metadataItemID, string name)
+    private AccessTypeDefinition CreateAccessType (Guid metadataItemID, string name)
     {
-      using (transaction.EnterScope ())
-      {
-        AccessTypeDefinition accessType = AccessTypeDefinition.NewObject();
-        accessType.MetadataItemID = metadataItemID;
-        accessType.Name = name;
+      AccessTypeDefinition accessType = AccessTypeDefinition.NewObject();
+      accessType.MetadataItemID = metadataItemID;
+      accessType.Name = name;
 
-        return accessType;
-      }
+      return accessType;
     }
 
-    private void CreateStateCombination (ClientTransaction transaction, AccessControlList acl, params string[] propertyNames)
+    private void CreateStateCombination (AccessControlList acl, params string[] propertyNames)
     {
-      using (transaction.EnterScope())
+      StateCombination stateCombination = acl.CreateStateCombination ();
+      foreach (string propertyName in propertyNames)
       {
-        StateCombination stateCombination = acl.CreateStateCombination();
-        foreach (string propertyName in propertyNames)
-        {
-          StatePropertyDefinition stateProperty = StatePropertyDefinition.NewObject (Guid.NewGuid(), propertyName);
-          StateDefinition stateDefinition = StateDefinition.NewObject ("value", 0);
-          stateProperty.AddState (stateDefinition);
-          acl.Class.AddStateProperty (stateProperty);
-          stateCombination.AttachState (stateDefinition);
-        }
+        StatePropertyDefinition stateProperty = StatePropertyDefinition.NewObject (Guid.NewGuid (), propertyName);
+        StateDefinition stateDefinition = StateDefinition.NewObject ("value", 0);
+        stateProperty.AddState (stateDefinition);
+        acl.Class.AddStateProperty (stateProperty);
+        stateCombination.AttachState (stateDefinition);
       }
     }
   }

@@ -18,7 +18,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       base.TestFixtureSetUp ();
 
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateSecurableClassDefinitionWithStates (ClientTransaction.NewTransaction());
+      dbFixtures.CreateAndCommitSecurableClassDefinitionWithStates (ClientTransaction.NewTransaction());
     }
 
     public override void SetUp ()

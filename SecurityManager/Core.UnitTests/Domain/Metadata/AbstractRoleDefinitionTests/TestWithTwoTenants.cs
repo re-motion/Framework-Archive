@@ -17,7 +17,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefiniti
       base.TestFixtureSetUp ();
     
       _dbFixtures = new DatabaseFixtures ();
-      _dbFixtures.CreateOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
+      _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
     }
 
     public override void SetUp ()

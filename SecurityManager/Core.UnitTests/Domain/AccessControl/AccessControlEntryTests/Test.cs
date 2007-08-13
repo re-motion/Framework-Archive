@@ -117,7 +117,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     public void Get_PermissionsFromDatabase ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
-      ObjectID aceID = dbFixtures.CreateAccessControlEntryWithPermissions (10, ClientTransaction.NewTransaction());
+      ObjectID aceID = dbFixtures.CreateAndCommitAccessControlEntryWithPermissions (10, ClientTransaction.NewTransaction());
 
       AccessControlEntry ace = AccessControlEntry.GetObject (aceID);
 
@@ -160,7 +160,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     public void ClearSpecificTenantOnCommit ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      ObjectID aceID = dbFixtures.CreateAccessControlEntryWithPermissions (0, ClientTransaction.NewTransaction());
+      ObjectID aceID = dbFixtures.CreateAndCommitAccessControlEntryWithPermissions (0, ClientTransaction.NewTransaction());
       AccessControlEntry ace = AccessControlEntry.GetObject (aceID);
       ace.Tenant = TenantSelection.OwningTenant;
       ace.SpecificTenant = _testHelper.CreateTenant ("TestTenant");
@@ -174,7 +174,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     public void ClearSpecificTenantOnCommitWhenObjectIsDeleted ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
-      ObjectID aceID = dbFixtures.CreateAccessControlEntryWithPermissions (0, ClientTransaction.NewTransaction());
+      ObjectID aceID = dbFixtures.CreateAndCommitAccessControlEntryWithPermissions (0, ClientTransaction.NewTransaction());
       AccessControlEntry ace = AccessControlEntry.GetObject (aceID);
       ace.Tenant = TenantSelection.SpecificTenant;
       ace.SpecificTenant = _testHelper.CreateTenant ("TestTenant");

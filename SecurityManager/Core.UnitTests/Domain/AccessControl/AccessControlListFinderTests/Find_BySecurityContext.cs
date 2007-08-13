@@ -20,7 +20,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
  
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       _currentClassDefinitionTransaction = ClientTransaction.NewTransaction ();
-      _currentClassDefinition = dbFixtures.CreateSecurableClassDefinitionWithAccessControlLists (1, _currentClassDefinitionTransaction);
+      _currentClassDefinition = dbFixtures.CreateAndCommitSecurableClassDefinitionWithAccessControlLists (1, _currentClassDefinitionTransaction);
     }
 
     public override void SetUp ()

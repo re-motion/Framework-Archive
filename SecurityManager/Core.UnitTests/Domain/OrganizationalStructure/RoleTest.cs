@@ -32,7 +32,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       using (new ClientTransactionScope ())
       {
-        Tenant tenant = dbFixtures.CreateOrganizationalStructureWithTwoTenants (ClientTransactionScope.CurrentTransaction);
+        Tenant tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransactionScope.CurrentTransaction);
         _expectedTenantID = tenant.ID;
 
         DomainObjectCollection groups = Group.FindByTenantID (_expectedTenantID);

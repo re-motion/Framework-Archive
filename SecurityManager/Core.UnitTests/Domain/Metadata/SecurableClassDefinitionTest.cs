@@ -272,7 +272,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       SecurableClassDefinition[] expectedClassDefinitions;
       using (new ClientTransactionScope ())
       {
-       expectedClassDefinitions = dbFixtures.CreateSecurableClassDefinitions (10, ClientTransactionScope.CurrentTransaction);
+       expectedClassDefinitions = dbFixtures.CreateAndCommitSecurableClassDefinitions (10, ClientTransactionScope.CurrentTransaction);
       }
 
       using (new ClientTransactionScope())
@@ -292,7 +292,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       SecurableClassDefinition[] expectedClassDefinitions;
       using (new ClientTransactionScope ())
       {
-        expectedClassDefinitions = dbFixtures.CreateSecurableClassDefinitionsWithSubClassesEach (10, 10, ClientTransactionScope.CurrentTransaction);
+        expectedClassDefinitions = dbFixtures.CreateAndCommitSecurableClassDefinitionsWithSubClassesEach (10, 10, ClientTransactionScope.CurrentTransaction);
       }
 
       using (new ClientTransactionScope())
@@ -313,7 +313,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       ObjectList<SecurableClassDefinition> expectedDerivedClasses;
       using (new ClientTransactionScope ())
       {
-        SecurableClassDefinition[] expectedBaseClassDefinitions = dbFixtures.CreateSecurableClassDefinitionsWithSubClassesEach (10, 10, ClientTransactionScope.CurrentTransaction);
+        SecurableClassDefinition[] expectedBaseClassDefinitions = dbFixtures.CreateAndCommitSecurableClassDefinitionsWithSubClassesEach (10, 10, ClientTransactionScope.CurrentTransaction);
         expectedBaseClassDefinition = expectedBaseClassDefinitions[4];
         expectedDerivedClasses = expectedBaseClassDefinition.DerivedClasses;
       }
@@ -375,7 +375,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       ObjectList<AccessTypeDefinition> expectedAccessTypes;
       using (new ClientTransactionScope ())
       {
-        expectedClassDefinition = dbFixtures.CreateSecurableClassDefinitionWithAccessTypes (10, ClientTransactionScope.CurrentTransaction);
+        expectedClassDefinition = dbFixtures.CreateAndCommitSecurableClassDefinitionWithAccessTypes (10, ClientTransactionScope.CurrentTransaction);
         expectedAccessTypes = expectedClassDefinition.AccessTypes;
       }
 
@@ -398,7 +398,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       ObjectList<AccessControlList> expectedAcls;
       using (new ClientTransactionScope ())
       {
-        expectedClassDefinition = dbFixtures.CreateSecurableClassDefinitionWithAccessControlLists (10, ClientTransactionScope.CurrentTransaction);
+        expectedClassDefinition = dbFixtures.CreateAndCommitSecurableClassDefinitionWithAccessControlLists (10, ClientTransactionScope.CurrentTransaction);
         expectedAcls = expectedClassDefinition.AccessControlLists;
       }
 

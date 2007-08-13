@@ -16,7 +16,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       base.TestFixtureSetUp ();
 
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
+      dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
     }
 
     public override void SetUp ()
