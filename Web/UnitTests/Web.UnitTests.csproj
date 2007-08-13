@@ -125,6 +125,9 @@
     <Compile Include="AspNetFramework\PageMock.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="ExecutionEngine\TestTransactedFunctionWithNestedFunction.cs" />
+    <Compile Include="ExecutionEngine\TestTransactedFunctionWithThreadAbort.cs" />
+    <Compile Include="ExecutionEngine\WxeTestTransaction.cs" />
     <Compile Include="ExecutionEngine\WxeTransactionBaseExecuteTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

@@ -22,7 +22,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web.WxeFunctions
   public CreateRootWithChildTestTransactedFunction (ClientTransaction previousClientTransaction, WxeFunction childFunction) 
       : base (WxeTransactionMode.CreateRoot, childFunction, previousClientTransaction)
   {
+    Add (new WxeMethodStep (delegate() {
+      TransactionAfterChild = ClientTransactionScope.CurrentTransaction;
+      Assert.AreSame (TransactionBeforeChild, TransactionAfterChild);
+    }));
   }
+
+    public ClientTransaction TransactionBeforeChild;
+    public ClientTransaction TransactionAfterChild;
 
   // methods and properties
 
@@ -36,6 +43,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web.WxeFunctions
   private void Step1 ()
   {
     Assert.AreNotSame (PreviousClientTransaction, ClientTransactionScope.CurrentTransaction);
+    TransactionBeforeChild = ClientTransactionScope.CurrentTransaction;
   }
 
 }

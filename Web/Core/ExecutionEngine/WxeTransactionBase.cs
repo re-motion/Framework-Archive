@@ -227,6 +227,7 @@ namespace Rubicon.Web.ExecutionEngine
       }
 
       SetCurrentTransaction (_transaction);
+      _isPreviousCurrentTransactionRestored = false; // we've just set the current transaction, so we need the old one to be restored later on
 
       try
       {
@@ -379,7 +380,7 @@ namespace Rubicon.Web.ExecutionEngine
       {
         SetPreviousCurrentTransaction (_previousCurrentTransaction);
         Assertion.IsTrue (_previousCurrentTransaction == CurrentTransaction);
-        _previousCurrentTransaction = null;
+        // Note: do not set _previousCurrentTransaction to null, we might need it again later
         _isPreviousCurrentTransactionRestored = true;
       }
     }

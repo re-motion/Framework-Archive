@@ -136,6 +136,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImmediatelyReturningPage.aspx.cs">
+      <DependentUpon>ImmediatelyReturningPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ImmediatelyReturningPage.aspx.designer.cs">
+      <DependentUpon>ImmediatelyReturningPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -197,6 +204,7 @@
     <Compile Include="WxeFunctions\AutoCommitTestTransactedFunction.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="WxeFunctions\NestedPageStepTestTransactedFunction.cs" />
     <Compile Include="WxeFunctions\CreateNoneTestTransactedFunction.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -212,6 +220,7 @@
     <Compile Include="WxeFunctions\NoAutoCommitTestTransactedFunction.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="WxeFunctions\ParentPageStepTestTransactedFunction.cs" />
     <Compile Include="WxeFunctions\SearchFunction.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -241,6 +250,7 @@
     <Content Include="Global.asax">
       <SubType>Component</SubType>
     </Content>
+    <Content Include="ImmediatelyReturningPage.aspx" />
     <Content Include="NewObject.aspx">
       <SubType>Form</SubType>
     </Content>

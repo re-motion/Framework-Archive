@@ -112,6 +112,14 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
       if (ClientTransactionScope.ActiveScope != ScopeStack.Pop())
         throw new InconsistentClientTransactionScopeException ("ClientTransactionScope.ActiveScope does not contain the expected transaction scope.");
 
+      if (previousTransaction != null && ClientTransactionScope.ActiveScope == null)
+      {
+        // there was a Thread transition during execution of this function, we need to restore the transaction that was active when this whole thing
+        // started
+        // we cannot restore the same scope we had on the other thread, but we can restore the transaction
+        new ClientTransactionScope (previousTransaction);
+      }
+
       Assertion.IsTrue ((previousTransaction == null && !ClientTransactionScope.HasCurrentTransaction)
         || (previousTransaction != null && ClientTransactionScope.HasCurrentTransaction &&
             ClientTransactionScope.CurrentTransaction == previousTransaction));

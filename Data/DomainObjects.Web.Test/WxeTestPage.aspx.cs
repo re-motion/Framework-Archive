@@ -18,6 +18,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
     protected Button WxeTransactedFunctionCreateNewNoAutoCommitButton;
     protected Button WxeTransactedFunctionNoneAutoCommitButton;
     protected Button WxeTransactedFunctionNoneNoAutoCommitButton;
+    protected Button WxeTransactedFunctionWithPageStepButton;
 
     protected WxeTestPageFunction CurrentWxeTestPageFunction
     {
@@ -55,6 +56,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
       this.WxeTransactedFunctionCreateNewNoAutoCommitButton.Click +=
           new System.EventHandler (this.WxeTransactedFunctionCreateNewNoAutoCommitButton_Click);
       this.WxeTransactedFunctionNoneNoAutoCommitButton.Click += new System.EventHandler (this.WxeTransactedFunctionNoneNoAutoCommitButton_Click);
+      this.WxeTransactedFunctionWithPageStepButton.Click += new EventHandler (WxeTransactedFunctionWithPageStepButton_Click);
       this.Load += new System.EventHandler (this.Page_Load);
     }
 
@@ -163,6 +165,28 @@ namespace Rubicon.Data.DomainObjects.Web.Test
       ShowResultText ("Test WxeTransactedFunction (TransactionMode = None, AutoCommit = false) executed successfully.");
     }
 
+    private void WxeTransactedFunctionWithPageStepButton_Click (object sender, EventArgs e)
+    {
+      if (!IsReturningPostBack)
+      {
+        using (new ClientTransactionScope ())
+        {
+          RememberCurrentClientTransaction();
+          ExecuteFunction (new ParentPageStepTestTransactedFunction());
+        } // we must dispose the scope on the original thread
+      }
+      else
+      {
+        // the WXE must copy the original scope to the new thread
+        if (ClientTransactionScope.ActiveScope == null)
+          throw new TestFailureException ("The function did not restore the original scope.");
+
+        CheckCurrentClientTransactionRestored();
+        ClientTransactionScope.ActiveScope.Leave (); // dispose the scope on the new thread
+        ShowResultText ("Test WxeTransactedFunction with nested PageStep executed successfully.");
+      }
+    }
+    
     private void SetInt32Property (int value, ClientTransaction clientTransaction)
     {
       using (clientTransaction.EnterScope ())

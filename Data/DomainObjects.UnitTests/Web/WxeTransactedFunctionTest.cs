@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Specialized;
+using System.Threading;
 using System.Web;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
@@ -349,6 +350,100 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
 
       Assert.IsTrue (deserializedFunction.FirstStepExecuted);
       Assert.IsTrue (deserializedFunction.SecondStepExecuted);
+    }
+
+    [Test]
+    public void ThreadAbortException ()
+    {
+      ThreadAbortTestTransactedFunction function = new ThreadAbortTestTransactedFunction ();
+      try
+      {
+        function.Execute (Context);
+        Assert.Fail ("Expected ThreadAbortException");
+      }
+      catch (ThreadAbortException)
+      {
+        Thread.ResetAbort();
+      }
+
+      Assert.IsTrue (function.FirstStepExecuted);
+      Assert.IsFalse (function.SecondStepExecuted);
+      Assert.IsTrue (function.ThreadAborted);
+
+      function.Execute (Context);
+
+      Assert.IsTrue (function.FirstStepExecuted);
+      Assert.IsTrue (function.SecondStepExecuted);
+    }
+
+    [Test]
+    public void ThreadAbortExceptionInNestedFunction ()
+    {
+      ThreadAbortTestTransactedFunction nestedFunction = new ThreadAbortTestTransactedFunction ();
+      ClientTransactionScope originalScope = new ClientTransactionScope ();
+      CreateRootWithChildTestTransactedFunction parentFunction =
+          new CreateRootWithChildTestTransactedFunction (ClientTransactionScope.CurrentTransaction, nestedFunction);
+
+      try
+      {
+        parentFunction.Execute (Context);
+        Assert.Fail ("Expected ThreadAbortException");
+      }
+      catch (ThreadAbortException)
+      {
+        Thread.ResetAbort();
+      }
+
+      Assert.AreSame (originalScope, ClientTransactionScope.ActiveScope);
+
+      Assert.IsTrue (nestedFunction.FirstStepExecuted);
+      Assert.IsFalse (nestedFunction.SecondStepExecuted);
+      Assert.IsTrue (nestedFunction.ThreadAborted);
+
+      parentFunction.Execute (Context);
+
+      Assert.IsTrue (nestedFunction.FirstStepExecuted);
+      Assert.IsTrue (nestedFunction.SecondStepExecuted);
+
+      Assert.AreSame (originalScope, ClientTransactionScope.ActiveScope);
+      originalScope.Leave ();
+    }
+
+    [Test]
+    public void ThreadAbortExceptionInNestedFunctionWithThreadMigration ()
+    {
+      ThreadAbortTestTransactedFunction nestedFunction = new ThreadAbortTestTransactedFunction ();
+      ClientTransactionScope originalScope = new ClientTransactionScope ();
+      CreateRootWithChildTestTransactedFunction parentFunction =
+          new CreateRootWithChildTestTransactedFunction (ClientTransactionScope.CurrentTransaction, nestedFunction);
+
+      try
+      {
+        parentFunction.Execute (Context);
+        Assert.Fail ("Expected ThreadAbortException");
+      }
+      catch (ThreadAbortException)
+      {
+        Thread.ResetAbort ();
+      }
+
+      Assert.AreSame (originalScope, ClientTransactionScope.ActiveScope);
+
+      ThreadRunner.Run (delegate {
+        Assert.IsTrue (nestedFunction.FirstStepExecuted);
+        Assert.IsFalse (nestedFunction.SecondStepExecuted);
+        Assert.IsTrue (nestedFunction.ThreadAborted);
+
+        parentFunction.Execute (Context);
+
+        Assert.IsTrue (nestedFunction.FirstStepExecuted);
+        Assert.IsTrue (nestedFunction.SecondStepExecuted);
+
+        Assert.AreNotSame (originalScope, ClientTransactionScope.ActiveScope); // new scope on new thread
+        Assert.AreSame (originalScope.ScopedTransaction, ClientTransactionScope.CurrentTransaction); // but same transaction as on old thread
+      });
+
+      originalScope.Leave ();
     }
   }
 }

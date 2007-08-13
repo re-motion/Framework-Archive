@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Data;
@@ -241,6 +243,39 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
       Assert.IsNull (outerFunction.MyTransaction);
       Assert.IsNull (outerFunction.Transaction);
+    }
+
+    [Test]
+    public void ThreadAbortExceptionInNestedFunction ()
+    {
+      TestTransaction originalTransaction = new TestTransaction ();
+      TestTransaction.Current = originalTransaction;
+
+      TestTransactedFunctionWithThreadAbort nestedFunction = new TestTransactedFunctionWithThreadAbort ();
+      TestTransactedFunctionWithNestedFunction parentFunction = new TestTransactedFunctionWithNestedFunction (originalTransaction, nestedFunction);
+
+      try
+      {
+        parentFunction.Execute (CurrentWxeContext);
+        Assert.Fail ("Expected ThreadAbortException");
+      }
+      catch (ThreadAbortException)
+      {
+        Thread.ResetAbort ();
+      }
+
+      Assert.AreSame (originalTransaction, TestTransaction.Current);
+
+      Assert.IsTrue (nestedFunction.FirstStepExecuted);
+      Assert.IsFalse (nestedFunction.SecondStepExecuted);
+      Assert.IsTrue (nestedFunction.ThreadAborted);
+
+      parentFunction.Execute (CurrentWxeContext);
+
+      Assert.IsTrue (nestedFunction.FirstStepExecuted);
+      Assert.IsTrue (nestedFunction.SecondStepExecuted);
+
+      Assert.AreSame (originalTransaction, TestTransaction.Current);
     }
   }
 }

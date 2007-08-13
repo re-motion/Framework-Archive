@@ -16,7 +16,6 @@
 runat="server">
 <P>
 <asp:Label id="ResultLabel" runat="server">ResultLabel</asp:Label></P>
-<P>
 <h2>WXE-TransactionMode</h2>
 <TABLE id="Table1" cellSpacing="1" cellPadding="10" border="1">
   <TR>
@@ -48,6 +47,8 @@ runat="server">
 <asp:Button id="WxeTransactedFunctionCreateNewNoAutoCommitButton" runat="server" Text="Run Test"></asp:Button></TD>
     <TD>
 <asp:Button id="WxeTransactedFunctionNoneNoAutoCommitButton" runat="server" Text="Run Test"></asp:Button></TD></TR></TABLE>
+<h2>Page step in nested transacted functions</h2>
+<p><asp:Button id="WxeTransactedFunctionWithPageStepButton" runat="server" Text="Run Test"></asp:Button></p>
 <P></P></form>
 	
   </body>
