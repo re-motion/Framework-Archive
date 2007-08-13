@@ -33,24 +33,30 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public static Tenant Current
     {
-      get { return (Tenant) CallContext.GetData (s_currentKey); }
-      set { CallContext.SetData (s_currentKey, value); }
-    }
-
-    internal static Tenant NewObject (ClientTransaction clientTransaction)
-    {
-      using (new ClientTransactionScope (clientTransaction))
+      get
       {
-        return NewObject<Tenant> ().With ();
+        ObjectID tenantID = (ObjectID) CallContext.GetData (s_currentKey);
+        if (tenantID == null)
+          return null;
+        return GetObject (tenantID);
+      }
+      set
+      {
+        if (value == null)
+          CallContext.SetData (s_currentKey, null);
+        else
+          CallContext.SetData (s_currentKey, value.ID);
       }
     }
 
-    public static new Tenant GetObject (ObjectID id, ClientTransaction clientTransaction)
+    internal static Tenant NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return DomainObject.GetObject<Tenant> (id);
-      }
+      return NewObject<Tenant> ().With ();
+    }
+
+    public static new Tenant GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<Tenant> (id);
     }
 
     public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)
@@ -122,7 +128,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       List<Tenant> clients = new List<Tenant> ();
 
-      foreach (Tenant tenant in FindAll (ClientTransaction))
+      foreach (Tenant tenant in FindAll (ClientTransactionScope.CurrentTransaction))
       {
         if ((!Children.Contains (tenant.ID)) && (tenant.ID != this.ID))
           clients.Add (tenant);

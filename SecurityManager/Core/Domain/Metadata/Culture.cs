@@ -11,12 +11,9 @@ namespace Rubicon.SecurityManager.Domain.Metadata
   [SecurityManagerStorageGroup]
   public abstract class Culture : BaseSecurityManagerObject
   {
-    public static Culture NewObject (ClientTransaction clientTransaction, string cultureName)
+    public static Culture NewObject (string cultureName)
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<Culture> ().With (cultureName);
-      }
+      return NewObject<Culture> ().With (cultureName);
     }
 
     public static Culture Find (string name, ClientTransaction clientTransaction)

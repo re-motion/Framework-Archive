@@ -12,20 +12,14 @@ namespace Rubicon.SecurityManager.Domain.Metadata
   [Instantiable]
   public abstract class AbstractRoleDefinition : EnumValueDefinition
   {
-    public static AbstractRoleDefinition NewObject (ClientTransaction clientTransaction)
+    public static AbstractRoleDefinition NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<AbstractRoleDefinition> ().With ();
-      }
+      return NewObject<AbstractRoleDefinition> ().With ();
     }
 
-    public static AbstractRoleDefinition NewObject (ClientTransaction clientTransaction, Guid metadataItemID, string name, int value)
+    public static AbstractRoleDefinition NewObject (Guid metadataItemID, string name, int value)
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<AbstractRoleDefinition> ().With (metadataItemID, name, value);
-      }
+      return NewObject<AbstractRoleDefinition> ().With (metadataItemID, name, value);
     }
 
     public static DomainObjectCollection Find (EnumWrapper[] abstractRoles, ClientTransaction clientTransaction)

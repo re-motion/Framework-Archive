@@ -10,12 +10,9 @@ namespace Rubicon.SecurityManager.Domain.Metadata
   [SecurityManagerStorageGroup]
   public abstract class LocalizedName : BaseSecurityManagerObject
   {
-    public static LocalizedName NewObject (ClientTransaction clientTransaction, string text, Culture culture, MetadataObject metadataObject)
+    public static LocalizedName NewObject (string text, Culture culture, MetadataObject metadataObject)
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<LocalizedName> ().With (text, culture, metadataObject);
-      }
+      return NewObject<LocalizedName> ().With (text, culture, metadataObject);
     }
 
     protected LocalizedName (string text, Culture culture, MetadataObject metadataObject)

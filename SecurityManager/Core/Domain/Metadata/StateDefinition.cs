@@ -13,28 +13,19 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // static members and constants
 
-    public static StateDefinition NewObject (ClientTransaction clientTransaction)
+    public static StateDefinition NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<StateDefinition> ().With ();
-      }
+      return NewObject<StateDefinition> ().With ();
+   }
+
+    public static StateDefinition NewObject (string name, int value)
+    {
+      return NewObject<StateDefinition> ().With (name, value);
     }
 
-    public static StateDefinition NewObject (ClientTransaction clientTransaction, string name, int value)
+    public static new StateDefinition GetObject (ObjectID id)
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<StateDefinition> ().With (name, value);
-      }
-    }
-
-    public static new StateDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return DomainObject.GetObject<StateDefinition> (id);
-      }
+      return DomainObject.GetObject<StateDefinition> (id);
     }
 
     // member fields

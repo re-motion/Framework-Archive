@@ -16,12 +16,9 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     // static members and constants
 
-     public static StateCombination NewObject (ClientTransaction clientTransaction)
+    public static StateCombination NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<StateCombination> ().With ();
-      }
+      return NewObject<StateCombination> ().With ();
     }
 
     // member fields
@@ -87,7 +84,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     public void AttachState (StateDefinition state)
     {
-      StateUsage usage = StateUsage.NewObject (ClientTransaction);
+      StateUsage usage = StateUsage.NewObject ();
       usage.StateDefinition = state;
       StateUsages.Add (usage);
     }

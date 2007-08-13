@@ -67,7 +67,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
       if (userID == null)
         return null;
 
-      return SecurityManagerUser.GetObject (userID, ClientTransactionScope.CurrentTransaction);
+      return SecurityManagerUser.GetObject (userID);
     }
 
     public void SaveUserToSession (SecurityManagerUser user, bool saveCurrentTenant)
@@ -105,7 +105,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
       if (tenantID == null)
         return null;
 
-      return Tenant.GetObject (tenantID, ClientTransactionScope.CurrentTransaction);
+      return Tenant.GetObject (tenantID);
     }
 
     public void SaveTenantToSession (Tenant tenant)
@@ -137,7 +137,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
           SecurityManagerUser user = LoadUserFromSession ();
           if (user == null && Context.User.Identity.IsAuthenticated)
           {
-            user = SecurityManagerUser.FindByUserName (Context.User.Identity.Name, ClientTransaction.NewTransaction());
+            user = SecurityManagerUser.FindByUserName (Context.User.Identity.Name, ClientTransactionScope.CurrentTransaction);
             SetCurrentUser (user, true);
           }
           else

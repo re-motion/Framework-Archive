@@ -27,9 +27,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public Tenant CreateTenant (ClientTransaction transaction, string name, string uniqueIdentifier)
     {
-      using (_transaction.EnterScope())
+      using (transaction.EnterScope())
       {
-        Tenant tenant = _factory.CreateTenant (transaction);
+        Tenant tenant = _factory.CreateTenant ();
         tenant.UniqueIdentifier = uniqueIdentifier;
         tenant.Name = name;
 
@@ -46,7 +46,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       using (transaction.EnterScope())
       {
-        Group group = _factory.CreateGroup (transaction);
+        Group group = _factory.CreateGroup ();
         group.Name = name;
         group.Parent = parent;
         group.Tenant = tenant;
@@ -60,7 +60,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       using (_transaction.EnterScope())
       {
-        User user = _factory.CreateUser (ClientTransactionScope.CurrentTransaction);
+        User user = _factory.CreateUser ();
         user.UserName = userName;
         user.FirstName = firstName;
         user.LastName = lastName;
@@ -76,7 +76,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       using (_transaction.EnterScope())
       {
-        Position position = _factory.CreatePosition (ClientTransactionScope.CurrentTransaction);
+        Position position = _factory.CreatePosition ();
         position.Name = name;
 
         return position;
@@ -87,7 +87,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       using (_transaction.EnterScope())
       {
-        Role role = Role.NewObject (ClientTransactionScope.CurrentTransaction);
+        Role role = Role.NewObject();
         role.User = user;
         role.Group = group;
         role.Position = position;
@@ -100,7 +100,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       using (_transaction.EnterScope())
       {
-        GroupType groupType = GroupType.NewObject (ClientTransactionScope.CurrentTransaction);
+        GroupType groupType = GroupType.NewObject();
         groupType.Name = name;
 
         return groupType;
@@ -111,7 +111,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       using (_transaction.EnterScope ())
       {
-        GroupTypePosition concretePosition = GroupTypePosition.NewObject (ClientTransactionScope.CurrentTransaction);
+        GroupTypePosition concretePosition = GroupTypePosition.NewObject();
         concretePosition.GroupType = groupType;
         concretePosition.Position = position;
 

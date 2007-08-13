@@ -12,12 +12,9 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   [SecurityManagerStorageGroup]
   public abstract class GroupTypePosition : OrganizationalStructureObject
   {
-    public static GroupTypePosition NewObject (ClientTransaction clientTransaction)
+    public static GroupTypePosition NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<GroupTypePosition> ().With ();
-      }
+      return NewObject<GroupTypePosition> ().With ();
     }
 
     protected GroupTypePosition ()

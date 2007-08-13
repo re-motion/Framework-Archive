@@ -29,24 +29,30 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public static User Current
     {
-      get { return (User) CallContext.GetData (s_currentKey); }
-      set { CallContext.SetData (s_currentKey, value); }
-    }
-
-    internal static User NewObject (ClientTransaction clientTransaction)
-    {
-      using (new ClientTransactionScope (clientTransaction))
+      get
       {
-        return NewObject<User> ().With ();
+        ObjectID userID = (ObjectID) CallContext.GetData (s_currentKey);
+        if (userID == null)
+          return null;
+        return GetObject (userID);
+      }
+      set
+      {
+        if (value == null)
+          CallContext.SetData (s_currentKey, null);
+        else
+          CallContext.SetData (s_currentKey, value.ID);
       }
     }
 
-    public static new User GetObject (ObjectID id, ClientTransaction clientTransaction)
+    internal static User NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return DomainObject.GetObject<User> (id);
-      }
+      return NewObject<User> ().With ();
+    }
+
+    public static new User GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<User> (id);
     }
 
     public static User FindByUserName (string userName, ClientTransaction clientTransaction)

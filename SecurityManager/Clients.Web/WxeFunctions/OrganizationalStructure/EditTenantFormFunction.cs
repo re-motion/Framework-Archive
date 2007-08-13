@@ -43,7 +43,7 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
       // TODO check CurrentTransaction
       if (CurrentObject == null)
       {
-        Tenant = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateTenant (CurrentTransaction);
+        Tenant = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateTenant ();
       }
     }
 

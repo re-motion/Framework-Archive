@@ -17,7 +17,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI
     private static readonly string s_enableAbstractTenantsKey = typeof (CurrentTenantControl).FullName + "_EnableAbstractTenants";
 
     private bool _isCurrentTenantFieldReadOnly = true;
-    private ClientTransaction _clientTransaction;
 
     [DefaultValue (true)]
     public bool EnableAbstractTenants
@@ -29,16 +28,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI
     protected SecurityManagerHttpApplication ApplicationInstance
     {
       get { return (SecurityManagerHttpApplication) Context.ApplicationInstance; }
-    }
-
-    protected override void OnInit (EventArgs e)
-    {
-      base.OnInit (e);
-
-      if (ClientTransactionScope.HasCurrentTransaction)
-        _clientTransaction = ClientTransactionScope.CurrentTransaction;
-      else
-        _clientTransaction = ClientTransaction.NewTransaction();
     }
 
     protected override void OnLoad (EventArgs e)
@@ -92,7 +81,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI
       }
       else
       {
-        ApplicationInstance.SetCurrentTenant (Tenant.GetObject (ObjectID.Parse (tenantID), _clientTransaction));
+        ApplicationInstance.SetCurrentTenant (Tenant.GetObject (ObjectID.Parse (tenantID)));
         _isCurrentTenantFieldReadOnly = true;
       }
 

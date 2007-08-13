@@ -53,20 +53,14 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     // static members and constants
 
-    internal static Group NewObject (ClientTransaction clientTransaction)
+    internal static Group NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<Group> ().With ();
-      }
+      return NewObject<Group> ().With ();
     }
 
-    public static new Group GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static new Group GetObject (ObjectID id)
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return DomainObject.GetObject<Group> (id);
-      }
+      return DomainObject.GetObject<Group> (id);
     }
 
     public static DomainObjectCollection FindByTenantID (ObjectID tenantID, ClientTransaction clientTransaction)
@@ -166,7 +160,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
       List<Group> groups = new List<Group> ();
 
-      foreach (Group group in FindByTenantID (tenantID, ClientTransaction))
+      foreach (Group group in FindByTenantID (tenantID, ClientTransactionScope.CurrentTransaction))
       {
         if ((!Children.Contains (group.ID)) && (group.ID != this.ID))
           groups.Add (group);

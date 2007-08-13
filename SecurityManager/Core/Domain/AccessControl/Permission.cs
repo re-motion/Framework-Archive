@@ -10,12 +10,9 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
   [SecurityManagerStorageGroup]
   public abstract class Permission : AccessControlObject
   {
-    public static Permission NewObject (ClientTransaction clientTransaction)
+    public static Permission NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<Permission> ().With ();
-      }
+      return NewObject<Permission> ().With ();
     }
 
     protected Permission ()

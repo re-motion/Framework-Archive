@@ -116,11 +116,11 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       }
       else 
       {
-        StateDefinition stateDefinition = StateDefinition.GetObject (ObjectID.Parse (id), CurrentStateCombination.ClientTransaction);
+        StateDefinition stateDefinition = StateDefinition.GetObject (ObjectID.Parse (id));
         StateUsage stateUsage;
         if (CurrentStateCombination.StateUsages.Count == 0)
         {
-          stateUsage = StateUsage.NewObject (CurrentStateCombination.ClientTransaction);
+          stateUsage = StateUsage.NewObject ();
           stateUsage.StateCombination = CurrentStateCombination;
         }
         else

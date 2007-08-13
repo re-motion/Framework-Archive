@@ -22,12 +22,9 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       Search
     }
 
-    public static GroupType NewObject (ClientTransaction clientTransaction)
+    public static GroupType NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<GroupType> ().With ();
-      }
+      return NewObject<GroupType> ().With ();
     }
 
     public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)

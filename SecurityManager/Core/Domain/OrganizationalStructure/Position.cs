@@ -24,12 +24,9 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       Search
     }
 
-    internal static Position NewObject (ClientTransaction clientTransaction)
+    internal static Position NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<Position> ().With ();
-      }
+      return NewObject<Position> ().With ();
     }
 
     public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)

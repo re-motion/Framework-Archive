@@ -144,7 +144,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void Get_UniqueIdentifier ()
     {
       OrganizationalStructureFactory factory = new OrganizationalStructureFactory();
-      Group group = factory.CreateGroup (ClientTransactionScope.CurrentTransaction);
+      Group group = factory.CreateGroup ();
 
       Assert.IsNotEmpty (group.UniqueIdentifier);
     }

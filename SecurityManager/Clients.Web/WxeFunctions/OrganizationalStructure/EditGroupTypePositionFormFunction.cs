@@ -56,7 +56,7 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
       // TODO check CurrentTransaction
       if (CurrentObject == null)
       {
-        GroupTypePosition = GroupTypePosition.NewObject (CurrentTransaction);
+        GroupTypePosition = GroupTypePosition.NewObject ();
         GroupTypePosition.GroupType = GroupType;
         GroupTypePosition.Position = Position;
       }

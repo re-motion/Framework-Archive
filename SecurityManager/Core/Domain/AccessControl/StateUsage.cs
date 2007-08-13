@@ -10,12 +10,9 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
   [SecurityManagerStorageGroup]
   public abstract class StateUsage : AccessControlObject
   {
-    public static StateUsage NewObject (ClientTransaction clientTransaction)
+    public static StateUsage NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<StateUsage> ().With ();
-      }
+      return NewObject<StateUsage> ().With ();
     }
 
     protected StateUsage ()

@@ -43,8 +43,8 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
       // TODO check CurrentTransaction
       if (CurrentObject == null)
       {
-        User = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateUser (CurrentTransaction);
-        User.Tenant = Tenant.GetObject (TenantID, CurrentTransaction);
+        User = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateUser ();
+        User.Tenant = Tenant.GetObject (TenantID);
       }
     }
 

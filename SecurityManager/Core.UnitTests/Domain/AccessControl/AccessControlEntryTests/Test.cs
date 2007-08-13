@@ -22,7 +22,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void GetAllowedAccessTypes_EmptyAce ()
     {
-      AccessControlEntry ace = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject();
 
       AccessTypeDefinition[] accessTypes = ace.GetAllowedAccessTypes();
 
@@ -32,7 +32,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void GetAllowedAccessTypes_ReadAllowed ()
     {
-      AccessControlEntry ace = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject();
       AccessTypeDefinition readAccessType = _testHelper.CreateReadAccessType (ace, true);
       AccessTypeDefinition writeAccessType = _testHelper.CreateWriteAccessType (ace, null);
       AccessTypeDefinition deleteAccessType = _testHelper.CreateDeleteAccessType (ace, null);
@@ -46,7 +46,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void AllowAccess_Read ()
     {
-      AccessControlEntry ace = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject();
       AccessTypeDefinition accessType = _testHelper.CreateReadAccessType (ace, null);
 
       ace.AllowAccess (accessType);
@@ -61,8 +61,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
         "The access type 'Test' is not assigned to this access control entry.\r\nParameter name: accessType")]
     public void AllowAccess_InvalidAccessType ()
     {
-      AccessControlEntry ace = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
-      AccessTypeDefinition accessType = AccessTypeDefinition.NewObject  (ClientTransactionScope.CurrentTransaction, Guid.NewGuid(), "Test", 42);
+      AccessControlEntry ace = AccessControlEntry.NewObject();
+      AccessTypeDefinition accessType = AccessTypeDefinition.NewObject  (Guid.NewGuid(), "Test", 42);
 
       ace.AllowAccess (accessType);
     }
@@ -70,7 +70,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void RemoveAccess_Read ()
     {
-      AccessControlEntry ace = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject();
       AccessTypeDefinition accessType = _testHelper.CreateReadAccessType (ace, true);
 
       ace.RemoveAccess (accessType);
@@ -82,9 +82,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void AttachAccessType_TwoNewAccessType ()
     {
-      AccessControlEntry ace = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
-      AccessTypeDefinition accessType0 = AccessTypeDefinition.NewObject  (ClientTransactionScope.CurrentTransaction, Guid.NewGuid(), "Access Type 0", 0);
-      AccessTypeDefinition accessType1 = AccessTypeDefinition.NewObject  (ClientTransactionScope.CurrentTransaction, Guid.NewGuid(), "Access Type 1", 1);
+      AccessControlEntry ace = AccessControlEntry.NewObject();
+      AccessTypeDefinition accessType0 = AccessTypeDefinition.NewObject  (Guid.NewGuid(), "Access Type 0", 0);
+      AccessTypeDefinition accessType1 = AccessTypeDefinition.NewObject  (Guid.NewGuid(), "Access Type 1", 1);
       DateTime changedAt = ace.ChangedAt;
       Thread.Sleep (50);
 
@@ -106,8 +106,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
         "The access type 'Test' has already been attached to this access control entry.\r\nParameter name: accessType")]
     public void AttachAccessType_ExistingAccessType ()
     {
-      AccessControlEntry ace = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
-      AccessTypeDefinition accessType = AccessTypeDefinition.NewObject  (ClientTransactionScope.CurrentTransaction, Guid.NewGuid(), "Test", 42);
+      AccessControlEntry ace = AccessControlEntry.NewObject();
+      AccessTypeDefinition accessType = AccessTypeDefinition.NewObject  (Guid.NewGuid(), "Test", 42);
 
       ace.AttachAccessType (accessType);
       ace.AttachAccessType (accessType);
@@ -119,7 +119,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       ObjectID aceID = dbFixtures.CreateAccessControlEntryWithPermissions (10, ClientTransaction.NewTransaction());
 
-      AccessControlEntry ace = AccessControlEntry.GetObject (aceID, ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry ace = AccessControlEntry.GetObject (aceID);
 
       Assert.AreEqual (10, ace.Permissions.Count);
       for (int i = 0; i < 10; i++)
@@ -129,7 +129,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void GetChangedAt_AfterCreation ()
     {
-      AccessControlEntry ace = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject();
 
       Assert.AreNotEqual (DateTime.MinValue, ace.ChangedAt);
     }
@@ -137,7 +137,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void Touch_AfterCreation ()
     {
-      AccessControlEntry ace = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject();
 
       DateTime creationDate = ace.ChangedAt;
 
@@ -150,7 +150,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void SetAndGet_Index ()
     {
-      AccessControlEntry ace = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject();
 
       ace.Index = 1;
       Assert.AreEqual (1, ace.Index);
@@ -161,7 +161,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       ObjectID aceID = dbFixtures.CreateAccessControlEntryWithPermissions (0, ClientTransaction.NewTransaction());
-      AccessControlEntry ace = AccessControlEntry.GetObject (aceID, ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry ace = AccessControlEntry.GetObject (aceID);
       ace.Tenant = TenantSelection.OwningTenant;
       ace.SpecificTenant = _testHelper.CreateTenant ("TestTenant");
 
@@ -175,13 +175,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       ObjectID aceID = dbFixtures.CreateAccessControlEntryWithPermissions (0, ClientTransaction.NewTransaction());
-      AccessControlEntry ace = AccessControlEntry.GetObject (aceID, ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry ace = AccessControlEntry.GetObject (aceID);
       ace.Tenant = TenantSelection.SpecificTenant;
       ace.SpecificTenant = _testHelper.CreateTenant ("TestTenant");
       ClientTransactionScope.CurrentTransaction.Commit();
       using (new ClientTransactionScope())
       {
-        AccessControlEntry aceActual = AccessControlEntry.GetObject (aceID, ClientTransactionScope.CurrentTransaction);
+        AccessControlEntry aceActual = AccessControlEntry.GetObject (aceID);
         aceActual.Tenant = TenantSelection.OwningTenant;
 
         Assert.IsNotNull (aceActual.SpecificTenant);

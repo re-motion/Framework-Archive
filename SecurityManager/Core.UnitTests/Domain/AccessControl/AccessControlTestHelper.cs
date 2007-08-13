@@ -52,11 +52,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public SecurableClassDefinition CreateClassDefinition (string name, SecurableClassDefinition baseClass)
     {
-      SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (_transaction);
-      classDefinition.Name = name;
-      classDefinition.BaseClass = baseClass;
+      using (_transaction.EnterScope ())
+      {
+        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject ();
+        classDefinition.Name = name;
+        classDefinition.BaseClass = baseClass;
 
-      return classDefinition;
+        return classDefinition;
+      }
     }
 
     public SecurableClassDefinition CreateOrderClassDefinitionWithProperties ()
@@ -70,196 +73,259 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlList CreateAcl (SecurableClassDefinition classDefinition, params StateDefinition[] states)
     {
-      AccessControlList acl = AccessControlList.NewObject (_transaction);
-      acl.Class = classDefinition;
-      StateCombination stateCombination = CreateStateCombination (acl);
+      using (_transaction.EnterScope())
+      {
+        AccessControlList acl = AccessControlList.NewObject ();
+        acl.Class = classDefinition;
+        StateCombination stateCombination = CreateStateCombination (acl);
 
-      foreach (StateDefinition state in states)
-        stateCombination.AttachState (state);
+        foreach (StateDefinition state in states)
+          stateCombination.AttachState (state);
 
-      return acl;
+        return acl;
+      }
     }
 
     public StateCombination CreateStateCombination (AccessControlList acl)
     {
-      StateCombination stateCombination = StateCombination.NewObject (_transaction);
-      stateCombination.AccessControlList = acl;
-      stateCombination.Class = acl.Class;
+      using (_transaction.EnterScope())
+      {
+        StateCombination stateCombination = StateCombination.NewObject ();
+        stateCombination.AccessControlList = acl;
+        stateCombination.Class = acl.Class;
 
-      return stateCombination;
+        return stateCombination;
+      }
     }
 
     public StateCombination CreateStateCombination (SecurableClassDefinition classDefinition, params StateDefinition[] states)
     {
-      AccessControlList acl = CreateAcl (classDefinition, states);
-      return (StateCombination) acl.StateCombinations[0];
+      using (_transaction.EnterScope())
+      {
+        AccessControlList acl = CreateAcl (classDefinition, states);
+        return (StateCombination) acl.StateCombinations[0];
+      }
     }
 
     public StatePropertyDefinition CreateStateProperty (string name)
     {
-      return StatePropertyDefinition.NewObject  (_transaction, Guid.NewGuid (), name);
+      using (_transaction.EnterScope())
+      {
+        return StatePropertyDefinition.NewObject (Guid.NewGuid(), name);
+      }
     }
 
     public StatePropertyDefinition CreateOrderStateProperty (SecurableClassDefinition classDefinition)
     {
-      StatePropertyDefinition orderStateProperty = CreateStateProperty ("State");
-      orderStateProperty.AddState ("Received", 0);
-      orderStateProperty.AddState ("Delivered", 1);
-      classDefinition.AddStateProperty (orderStateProperty);
+      using (_transaction.EnterScope())
+      {
+        StatePropertyDefinition orderStateProperty = CreateStateProperty ("State");
+        orderStateProperty.AddState ("Received", 0);
+        orderStateProperty.AddState ("Delivered", 1);
+        classDefinition.AddStateProperty (orderStateProperty);
 
-      return orderStateProperty;
+        return orderStateProperty;
+      }
     }
 
     public StatePropertyDefinition CreatePaymentStateProperty (SecurableClassDefinition classDefinition)
     {
-      StatePropertyDefinition paymentStateProperty = CreateStateProperty ("Payment");
-      paymentStateProperty.AddState ("None", 0);
-      paymentStateProperty.AddState ("Paid", 1);
-      classDefinition.AddStateProperty (paymentStateProperty);
+      using (_transaction.EnterScope())
+      {
+        StatePropertyDefinition paymentStateProperty = CreateStateProperty ("Payment");
+        paymentStateProperty.AddState ("None", 0);
+        paymentStateProperty.AddState ("Paid", 1);
+        classDefinition.AddStateProperty (paymentStateProperty);
 
-      return paymentStateProperty;
+        return paymentStateProperty;
+      }
     }
 
     public StatePropertyDefinition CreateDeliveryStateProperty (SecurableClassDefinition classDefinition)
     {
-      StatePropertyDefinition deliveryStateProperty = CreateStateProperty ("Delivery");
-      deliveryStateProperty.AddState ("Dhl", 0);
-      deliveryStateProperty.AddState ("Post", 1);
-      classDefinition.AddStateProperty (deliveryStateProperty);
+      using (_transaction.EnterScope())
+      {
+        StatePropertyDefinition deliveryStateProperty = CreateStateProperty ("Delivery");
+        deliveryStateProperty.AddState ("Dhl", 0);
+        deliveryStateProperty.AddState ("Post", 1);
+        classDefinition.AddStateProperty (deliveryStateProperty);
 
-      return deliveryStateProperty;
+        return deliveryStateProperty;
+      }
     }
 
     public List<StateCombination> CreateStateCombinationsForOrder ()
     {
-      SecurableClassDefinition orderClass = CreateOrderClassDefinition ();
-      return CreateOrderStateAndPaymentStateCombinations (orderClass);
+      using (_transaction.EnterScope())
+      {
+        SecurableClassDefinition orderClass = CreateOrderClassDefinition();
+        return CreateOrderStateAndPaymentStateCombinations (orderClass);
+      }
     }
 
     public List<StateCombination> CreateOrderStateAndPaymentStateCombinations (SecurableClassDefinition classDefinition)
     {
-      StatePropertyDefinition orderState = CreateOrderStateProperty (classDefinition);
-      StatePropertyDefinition paymentState = CreatePaymentStateProperty (classDefinition);
+      using (_transaction.EnterScope())
+      {
+        StatePropertyDefinition orderState = CreateOrderStateProperty (classDefinition);
+        StatePropertyDefinition paymentState = CreatePaymentStateProperty (classDefinition);
 
-      List<StateCombination> stateCombinations = new List<StateCombination> ();
-      stateCombinations.Add (CreateStateCombination (classDefinition, orderState["Received"], paymentState["None"]));
-      stateCombinations.Add (CreateStateCombination (classDefinition, orderState["Received"], paymentState["Paid"]));
-      stateCombinations.Add (CreateStateCombination (classDefinition, orderState["Delivered"], paymentState["None"]));
-      stateCombinations.Add (CreateStateCombination (classDefinition, orderState["Delivered"], paymentState["Paid"]));
-      stateCombinations.Add (CreateStateCombination (classDefinition));
+        List<StateCombination> stateCombinations = new List<StateCombination>();
+        stateCombinations.Add (CreateStateCombination (classDefinition, orderState["Received"], paymentState["None"]));
+        stateCombinations.Add (CreateStateCombination (classDefinition, orderState["Received"], paymentState["Paid"]));
+        stateCombinations.Add (CreateStateCombination (classDefinition, orderState["Delivered"], paymentState["None"]));
+        stateCombinations.Add (CreateStateCombination (classDefinition, orderState["Delivered"], paymentState["Paid"]));
+        stateCombinations.Add (CreateStateCombination (classDefinition));
 
-      return stateCombinations;
+        return stateCombinations;
+      }
     }
 
     public StateCombination GetStateCombinationForDeliveredAndUnpaidOrder ()
     {
-      List<StateCombination> stateCombinations = CreateStateCombinationsForOrder ();
-      return stateCombinations[2];
+      using (_transaction.EnterScope())
+      {
+        List<StateCombination> stateCombinations = CreateStateCombinationsForOrder();
+        return stateCombinations[2];
+      }
     }
 
     public StateCombination GetStateCombinationWithoutStates ()
     {
-      List<StateCombination> stateCombinations = CreateStateCombinationsForOrder ();
-      return stateCombinations[4];
+      using (_transaction.EnterScope())
+      {
+        List<StateCombination> stateCombinations = CreateStateCombinationsForOrder();
+        return stateCombinations[4];
+      }
     }
 
     public List<AccessControlList> CreateAclsForOrderAndPaymentStates (SecurableClassDefinition classDefinition)
     {
-      StatePropertyDefinition orderState = CreateOrderStateProperty (classDefinition);
-      StatePropertyDefinition paymentState = CreatePaymentStateProperty (classDefinition);
+      using (_transaction.EnterScope())
+      {
+        StatePropertyDefinition orderState = CreateOrderStateProperty (classDefinition);
+        StatePropertyDefinition paymentState = CreatePaymentStateProperty (classDefinition);
 
-      List<AccessControlList> acls = new List<AccessControlList> ();
-      acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["None"]));
-      acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["Paid"]));
-      acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["None"]));
-      acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["Paid"]));
-      acls.Add (CreateAcl (classDefinition));
+        List<AccessControlList> acls = new List<AccessControlList>();
+        acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["None"]));
+        acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["Paid"]));
+        acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["None"]));
+        acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["Paid"]));
+        acls.Add (CreateAcl (classDefinition));
 
-      return acls;
+        return acls;
+      }
     }
 
     public List<AccessControlList> CreateAclsForOrderAndPaymentAndDeliveryStates (SecurableClassDefinition classDefinition)
     {
-      StatePropertyDefinition orderState = CreateOrderStateProperty (classDefinition);
-      StatePropertyDefinition paymentState = CreatePaymentStateProperty (classDefinition);
-      StatePropertyDefinition deliveryState = CreateDeliveryStateProperty (classDefinition);
+      using (_transaction.EnterScope())
+      {
+        StatePropertyDefinition orderState = CreateOrderStateProperty (classDefinition);
+        StatePropertyDefinition paymentState = CreatePaymentStateProperty (classDefinition);
+        StatePropertyDefinition deliveryState = CreateDeliveryStateProperty (classDefinition);
 
-      List<AccessControlList> acls = new List<AccessControlList> ();
-      acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["None"], deliveryState["Dhl"]));
-      acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["Paid"], deliveryState["Dhl"]));
-      acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["None"], deliveryState["Dhl"]));
-      acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["Paid"], deliveryState["Dhl"]));
-      acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["None"], deliveryState["Post"]));
-      acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["Paid"], deliveryState["Post"]));
-      acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["None"], deliveryState["Post"]));
-      acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["Paid"], deliveryState["Post"]));
-      acls.Add (CreateAcl (classDefinition));
+        List<AccessControlList> acls = new List<AccessControlList>();
+        acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["None"], deliveryState["Dhl"]));
+        acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["Paid"], deliveryState["Dhl"]));
+        acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["None"], deliveryState["Dhl"]));
+        acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["Paid"], deliveryState["Dhl"]));
+        acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["None"], deliveryState["Post"]));
+        acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["Paid"], deliveryState["Post"]));
+        acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["None"], deliveryState["Post"]));
+        acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["Paid"], deliveryState["Post"]));
+        acls.Add (CreateAcl (classDefinition));
 
-      return acls;
+        return acls;
+      }
     }
 
     public AccessControlList GetAclForDeliveredAndUnpaidAndDhlStates (SecurableClassDefinition classDefinition)
     {
-      List<AccessControlList> acls = CreateAclsForOrderAndPaymentAndDeliveryStates (classDefinition);
-      return acls[2];
+      using (_transaction.EnterScope())
+      {
+        List<AccessControlList> acls = CreateAclsForOrderAndPaymentAndDeliveryStates (classDefinition);
+        return acls[2];
+      }
     }
 
     public AccessControlList GetAclForDeliveredAndUnpaidStates (SecurableClassDefinition classDefinition)
     {
-      List<AccessControlList> acls = CreateAclsForOrderAndPaymentStates (classDefinition);
-      return acls[2];
+      using (_transaction.EnterScope())
+      {
+        List<AccessControlList> acls = CreateAclsForOrderAndPaymentStates (classDefinition);
+        return acls[2];
+      }
     }
 
     public AccessControlList GetAclForStateless (SecurableClassDefinition classDefinition)
     {
-      List<AccessControlList> acls = CreateAclsForOrderAndPaymentStates (classDefinition);
-      return acls[4];
+      using (_transaction.EnterScope())
+      {
+        List<AccessControlList> acls = CreateAclsForOrderAndPaymentStates (classDefinition);
+        return acls[4];
+      }
     }
 
     public List<StateDefinition> GetDeliveredAndUnpaidStateList (SecurableClassDefinition classDefinition)
     {
-      List<StateDefinition> states = new List<StateDefinition> ();
-
-      foreach (StatePropertyDefinition property in classDefinition.StateProperties)
+      using (_transaction.EnterScope())
       {
-        if (property.Name == "State")
-          states.Add (property["Delivered"]);
+        List<StateDefinition> states = new List<StateDefinition>();
 
-        if (property.Name == "Payment")
-          states.Add (property["None"]);
+        foreach (StatePropertyDefinition property in classDefinition.StateProperties)
+        {
+          if (property.Name == "State")
+            states.Add (property["Delivered"]);
+
+          if (property.Name == "Payment")
+            states.Add (property["None"]);
+        }
+
+        return states;
       }
-
-      return states;
     }
 
     public StatePropertyDefinition CreateTestProperty ()
     {
-      StatePropertyDefinition property = CreateStateProperty ("Test");
-      property.AddState ("Test1", 0);
-      property.AddState ("Test2", 1);
+      using (_transaction.EnterScope())
+      {
+        StatePropertyDefinition property = CreateStateProperty ("Test");
+        property.AddState ("Test1", 0);
+        property.AddState ("Test2", 1);
 
-      return property;
+        return property;
+      }
     }
 
     public AccessTypeDefinition AttachAccessType (SecurableClassDefinition classDefinition, Guid metadataItemID, string name, int value)
     {
-      AccessTypeDefinition accessType = AccessTypeDefinition.NewObject  (_transaction, metadataItemID, name, value);
-      classDefinition.AddAccessType (accessType);
-      
-      return accessType;
+      using (_transaction.EnterScope())
+      {
+        AccessTypeDefinition accessType = AccessTypeDefinition.NewObject (metadataItemID, name, value);
+        classDefinition.AddAccessType (accessType);
+
+        return accessType;
+      }
     }
 
     public AccessTypeDefinition AttachJournalizeAccessType (SecurableClassDefinition classDefinition)
     {
-      AccessTypeDefinition accessType = CreateJournalizeAccessType ();
-      classDefinition.AddAccessType (accessType);
-     
-      return accessType;
+      using (_transaction.EnterScope())
+      {
+        AccessTypeDefinition accessType = CreateJournalizeAccessType();
+        classDefinition.AddAccessType (accessType);
+
+        return accessType;
+      }
     }
 
     public AccessTypeDefinition CreateJournalizeAccessType ()
     {
-      return AccessTypeDefinition.NewObject  (_transaction, Guid.NewGuid (), "Journalize", 42);
+      using (_transaction.EnterScope())
+      {
+        return AccessTypeDefinition.NewObject (Guid.NewGuid(), "Journalize", 42);
+      }
     }
 
     public SecurityToken CreateEmptyToken ()
@@ -303,59 +369,80 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AbstractRoleDefinition CreateAbstractRoleDefinition (string name, int value)
     {
-      return AbstractRoleDefinition.NewObject (_transaction, Guid.NewGuid (), name, value);
+      using (_transaction.EnterScope())
+      {
+        return AbstractRoleDefinition.NewObject (Guid.NewGuid(), name, value);
+      }
     }
 
     public AccessControlEntry CreateAceWithOwningTenant ()
     {
-      AccessControlEntry entry = AccessControlEntry.NewObject (_transaction);
-      entry.Tenant = TenantSelection.OwningTenant;
+      using (_transaction.EnterScope())
+      {
+        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        entry.Tenant = TenantSelection.OwningTenant;
 
-      return entry;
+        return entry;
+      }
     }
 
     public AccessControlEntry CreateAceWithSpecficTenant (Tenant tenant)
     {
-      AccessControlEntry entry = AccessControlEntry.NewObject (_transaction);
-      entry.Tenant = TenantSelection.SpecificTenant;
-      entry.SpecificTenant = tenant;
+      using (_transaction.EnterScope())
+      {
+        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        entry.Tenant = TenantSelection.SpecificTenant;
+        entry.SpecificTenant = tenant;
 
-      return entry;
+        return entry;
+      }
     }
 
     public AccessControlEntry CreateAceWithAbstractRole ()
     {
-      AccessControlEntry entry = AccessControlEntry.NewObject (_transaction);
-      entry.SpecificAbstractRole = CreateTestAbstractRole ();
+      using (_transaction.EnterScope())
+      {
+        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        entry.SpecificAbstractRole = CreateTestAbstractRole();
 
-      return entry;
+        return entry;
+      }
     }
 
     public AccessControlEntry CreateAceWithPosition (Position position, GroupSelection groupSelection)
     {
-      AccessControlEntry entry = AccessControlEntry.NewObject (_transaction);
-      entry.User = UserSelection.SpecificPosition;
-      entry.SpecificPosition = position;
-      entry.Group = groupSelection;
+      using (_transaction.EnterScope())
+      {
+        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        entry.User = UserSelection.SpecificPosition;
+        entry.SpecificPosition = position;
+        entry.Group = groupSelection;
 
-      return entry;
+        return entry;
+      }
     }
 
     public AccessControlList CreateAcl (params AccessControlEntry[] aces)
     {
-      AccessControlList acl = AccessControlList.NewObject (_transaction);
+      using (_transaction.EnterScope())
+      {
+        AccessControlList acl = AccessControlList.NewObject ();
 
-      foreach (AccessControlEntry ace in aces)
-        acl.AccessControlEntries.Add (ace);
+        foreach (AccessControlEntry ace in aces)
+          acl.AccessControlEntries.Add (ace);
 
-      return acl;
+        return acl;
+      }
     }
 
     public void AttachAccessType (AccessControlEntry ace, AccessTypeDefinition accessType, bool? allowed)
     {
-      ace.AttachAccessType (accessType);
-      if (allowed.HasValue && allowed.Value)
-        ace.AllowAccess (accessType);
+      using (_transaction.EnterScope())
+      {
+        ace.AttachAccessType (accessType);
+        if (allowed.HasValue && allowed.Value)
+          ace.AllowAccess (accessType);
+      }
     }
 
     public AccessTypeDefinition CreateReadAccessType (AccessControlEntry ace, bool? allowAccess)
@@ -375,59 +462,77 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessTypeDefinition CreateAccessTypeForAce (AccessControlEntry ace, bool? allowAccess, Guid metadataItemID, string name, int value)
     {
-      AccessTypeDefinition accessType = AccessTypeDefinition.NewObject  (_transaction, metadataItemID, name, value);
-      AttachAccessType (ace, accessType, allowAccess);
+      using (_transaction.EnterScope())
+      {
+        AccessTypeDefinition accessType = AccessTypeDefinition.NewObject (metadataItemID, name, value);
+        AttachAccessType (ace, accessType, allowAccess);
 
-      return accessType;
+        return accessType;
+      }
     }
 
     public Tenant CreateTenant (string name)
     {
-      Tenant tenant = _factory.CreateTenant (_transaction);
-      tenant.Name = name;
+      using (_transaction.EnterScope())
+      {
+        Tenant tenant = _factory.CreateTenant ();
+        tenant.Name = name;
 
-      return tenant;
+        return tenant;
+      }
     }
 
     public Group CreateGroup (string name, Group parent, Tenant tenant)
     {
-      Group group = _factory.CreateGroup (_transaction);
-      group.Name = name;
-      group.Parent = parent;
-      group.Tenant = tenant;
+      using (_transaction.EnterScope())
+      {
+        Group group = _factory.CreateGroup ();
+        group.Name = name;
+        group.Parent = parent;
+        group.Tenant = tenant;
 
-      return group;
+        return group;
+      }
     }
 
     public User CreateUser (string userName, string firstName, string lastName, string title, Group owningGroup, Tenant tenant)
     {
-      User user = _factory.CreateUser (_transaction);
-      user.UserName = userName;
-      user.FirstName = firstName;
-      user.LastName = lastName;
-      user.Title = title;
-      user.Tenant = tenant;
-      user.OwningGroup = owningGroup;
+      using (_transaction.EnterScope())
+      {
+        User user = _factory.CreateUser ();
+        user.UserName = userName;
+        user.FirstName = firstName;
+        user.LastName = lastName;
+        user.Title = title;
+        user.Tenant = tenant;
+        user.OwningGroup = owningGroup;
 
-      return user;
+        return user;
+      }
     }
 
     public Position CreatePosition (string name)
     {
-      Position position = _factory.CreatePosition (_transaction);
-      position.Name = name;
+      using (_transaction.EnterScope())
+      {
+        Position position = _factory.CreatePosition ();
+        position.Name = name;
 
-      return position;
+        return position;
+      }
     }
 
     public Role CreateRole (User user, Group group, Position position)
     {
-      Role role = Role.NewObject (_transaction);
-      role.User = user;
-      role.Group = group;
-      role.Position = position;
+      using (_transaction.EnterScope())
+      {
+        Role role = Role.NewObject ();
+        role.User = user;
+        role.Group = group;
+        role.Position = position;
 
-      return role;
+        return role;
+      }
     }
   }
 }

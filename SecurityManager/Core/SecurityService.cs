@@ -57,8 +57,8 @@ namespace Rubicon.SecurityManager
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("user", user);
 
-      AccessControlList acl = null;
-      SecurityToken token = null;
+      AccessControlList acl;
+      SecurityToken token;
       try
       {
         acl = _accessControlListFinder.Find (transaction, context);
@@ -70,8 +70,11 @@ namespace Rubicon.SecurityManager
         return new AccessType[0];
       }
 
-      AccessTypeDefinition[] accessTypes = acl.GetAccessTypes (token);
-      return Array.ConvertAll<AccessTypeDefinition, AccessType> (accessTypes, new Converter<AccessTypeDefinition, AccessType> (ConvertToAccessType));
+      using (transaction.EnterScope())
+      {
+        AccessTypeDefinition[] accessTypes = acl.GetAccessTypes (token);
+        return Array.ConvertAll<AccessTypeDefinition, AccessType> (accessTypes, new Converter<AccessTypeDefinition, AccessType> (ConvertToAccessType));
+      }
     }
 
     public int GetRevision()

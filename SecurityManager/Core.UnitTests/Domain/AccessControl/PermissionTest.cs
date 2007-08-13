@@ -17,7 +17,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetBinaryAllowed_WithAllowedTrue ()
     {
-      Permission permission = Permission.NewObject (ClientTransactionScope.CurrentTransaction);
+      Permission permission = Permission.NewObject();
       permission.Allowed = true;
 
       Assert.IsTrue (permission.BinaryAllowed);
@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetBinaryAllowed_WithAllowedFalse ()
     {
-      Permission permission = Permission.NewObject (ClientTransactionScope.CurrentTransaction);
+      Permission permission = Permission.NewObject();
       permission.Allowed = false;
 
       Assert.IsFalse (permission.BinaryAllowed);
@@ -35,7 +35,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetBinaryAllowed_WithAllowedNull ()
     {
-      Permission permission = Permission.NewObject (ClientTransactionScope.CurrentTransaction);
+      Permission permission = Permission.NewObject();
       permission.Allowed = null;
 
       Assert.IsFalse (permission.BinaryAllowed);
@@ -44,7 +44,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void SetBinaryAllowed_FromTrue()
     {
-      Permission permission = Permission.NewObject (ClientTransactionScope.CurrentTransaction);
+      Permission permission = Permission.NewObject();
       permission.BinaryAllowed = true;
 
       Assert.AreEqual (true, permission.Allowed);
@@ -53,7 +53,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void SetBinaryAllowed_FromFalse ()
     {
-      Permission permission = Permission.NewObject (ClientTransactionScope.CurrentTransaction);
+      Permission permission = Permission.NewObject();
       permission.BinaryAllowed = false;
 
       Assert.IsNull (permission.Allowed);
@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void SetAndGet_Index ()
     {
-      Permission permission = Permission.NewObject (ClientTransactionScope.CurrentTransaction);
+      Permission permission = Permission.NewObject();
 
       permission.Index = 1;
       Assert.AreEqual (1, permission.Index);

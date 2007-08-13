@@ -77,7 +77,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void AttachState_WithoutClassDefinition ()
     {
-      StateCombination combination = StateCombination.NewObject (_testHelper.Transaction);
+      StateCombination combination = StateCombination.NewObject ();
       StatePropertyDefinition property = _testHelper.CreateTestProperty ();
 
       combination.AttachState (property["Test1"]);
@@ -142,9 +142,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       StateCombination combination1 = _testHelper.CreateStateCombination (orderClass, paidState);
       StateCombination combination2 = _testHelper.CreateStateCombination (orderClass, notPaidState);
       StateCombination combination3 = _testHelper.CreateStateCombination (orderClass);
-      combination1.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject (_testHelper.Transaction));
-      combination2.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject (_testHelper.Transaction));
-      combination3.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject (_testHelper.Transaction));
+      combination1.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject ());
+      combination2.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject ());
+      combination3.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject ());
 
       _testHelper.Transaction.Commit ();
 
@@ -162,7 +162,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
       SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
       StateCombination combination = _testHelper.CreateStateCombination (orderClass);
-      combination.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject (_testHelper.Transaction));
+      combination.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject ());
 
       _testHelper.Transaction.Commit ();
 
@@ -179,7 +179,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void SetAndGet_Index ()
     {
-      StateCombination stateCombination = StateCombination.NewObject (_testHelper.Transaction);
+      StateCombination stateCombination = StateCombination.NewObject ();
 
       stateCombination.Index = 1;
       Assert.AreEqual (1, stateCombination.Index);

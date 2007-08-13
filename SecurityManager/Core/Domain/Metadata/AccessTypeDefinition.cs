@@ -10,20 +10,14 @@ namespace Rubicon.SecurityManager.Domain.Metadata
   [Instantiable]
   public abstract class AccessTypeDefinition : EnumValueDefinition
   {
-    public static AccessTypeDefinition NewObject (ClientTransaction clientTransaction)
+    public static AccessTypeDefinition NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<AccessTypeDefinition> ().With ();
-      }
+      return NewObject<AccessTypeDefinition> ().With ();
     }
 
-    public static AccessTypeDefinition NewObject (ClientTransaction clientTransaction, Guid metadataItemID, string name, int value)
+    public static AccessTypeDefinition NewObject (Guid metadataItemID, string name, int value)
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<AccessTypeDefinition> ().With (metadataItemID, name, value);
-      }
+      return NewObject<AccessTypeDefinition> ().With (metadataItemID, name, value);
     }
 
     protected AccessTypeDefinition ()

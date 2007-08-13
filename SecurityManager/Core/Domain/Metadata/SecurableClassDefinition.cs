@@ -19,20 +19,14 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // static members and constants
 
-    public static SecurableClassDefinition NewObject (ClientTransaction clientTransaction)
+    public static SecurableClassDefinition NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<SecurableClassDefinition> ().With ();
-      }
+      return NewObject<SecurableClassDefinition> ().With ();
     }
 
-    public static new SecurableClassDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static new SecurableClassDefinition GetObject (ObjectID id)
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return DomainObject.GetObject<SecurableClassDefinition> (id);
-      }
+      return DomainObject.GetObject<SecurableClassDefinition> (id);
     }
 
     public static SecurableClassDefinition FindByName (string name, ClientTransaction clientTransaction)
@@ -177,7 +171,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public void AddAccessType (AccessTypeDefinition accessType)
     {
-      AccessTypeReference reference = AccessTypeReference.NewObject (ClientTransaction);
+      AccessTypeReference reference = AccessTypeReference.NewObject ();
       reference.AccessType = accessType;
       AccessTypeReferences.Add (reference);
       DomainObjectCollection accessTypeReferences = AccessTypeReferences;
@@ -192,7 +186,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public void AddStateProperty (StatePropertyDefinition stateProperty)
     {
-      StatePropertyReference reference = StatePropertyReference.NewObject (ClientTransaction);
+      StatePropertyReference reference = StatePropertyReference.NewObject ();
       reference.StateProperty = stateProperty;
 
       StatePropertyReferences.Add (reference);
@@ -212,7 +206,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public AccessControlList CreateAccessControlList ()
     {
-      AccessControlList accessControlList = AccessControlList.NewObject (ClientTransaction);
+      AccessControlList accessControlList = AccessControlList.NewObject ();
       accessControlList.Class = this;
       accessControlList.CreateStateCombination ();
       accessControlList.CreateAccessControlEntry ();

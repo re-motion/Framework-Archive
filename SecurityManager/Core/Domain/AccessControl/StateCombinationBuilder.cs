@@ -25,12 +25,12 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
-      StateCombination stateCombination = StateCombination.NewObject (classDefinition.ClientTransaction);
-      stateCombination.AccessControlList = AccessControlList.NewObject (classDefinition.ClientTransaction);
+      StateCombination stateCombination = StateCombination.NewObject();
+      stateCombination.AccessControlList = AccessControlList.NewObject();
       stateCombination.AccessControlList.Class = classDefinition;
       stateCombination.Class = classDefinition;
 
-      List<StateCombination> stateCombinations = new List<StateCombination> ();
+      List<StateCombination> stateCombinations = new List<StateCombination>();
       stateCombinations.Add (stateCombination);
 
       return stateCombinations;

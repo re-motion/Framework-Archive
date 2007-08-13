@@ -16,20 +16,14 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     // static members and constants
 
-    public static AccessControlList NewObject (ClientTransaction clientTransaction)
+    public static AccessControlList NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<AccessControlList>().With();
-      }
+      return NewObject<AccessControlList>().With();
     }
 
-    public new static AccessControlList GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public new static AccessControlList GetObject (ObjectID id)
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return DomainObject.GetObject<AccessControlList> (id);
-      }
+      return DomainObject.GetObject<AccessControlList> (id);
     }
 
     // member fields
@@ -190,7 +184,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       if (Class == null)
         throw new InvalidOperationException ("Cannot create StateCombination if no SecurableClassDefinition is assigned to this AccessControlList.");
 
-      StateCombination stateCombination = StateCombination.NewObject (ClientTransaction);
+      StateCombination stateCombination = StateCombination.NewObject();
       stateCombination.Class = Class;
       stateCombination.AccessControlList = this;
 
@@ -202,7 +196,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       if (Class == null)
         throw new InvalidOperationException ("Cannot create AccessControlEntry if no SecurableClassDefinition is assigned to this AccessControlList.");
 
-      AccessControlEntry accessControlEntry = AccessControlEntry.NewObject (ClientTransaction);
+      AccessControlEntry accessControlEntry = AccessControlEntry.NewObject();
       foreach (AccessTypeDefinition accessTypeDefinition in Class.AccessTypes)
         accessControlEntry.AttachAccessType (accessTypeDefinition);
       accessControlEntry.AccessControlList = this;

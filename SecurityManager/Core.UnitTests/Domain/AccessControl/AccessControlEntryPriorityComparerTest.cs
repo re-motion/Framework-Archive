@@ -18,9 +18,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Compare_Equals ()
     {
-      AccessControlEntry leftAce = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry leftAce = AccessControlEntry.NewObject();
       leftAce.Priority = 42;
-      AccessControlEntry rightAce = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry rightAce = AccessControlEntry.NewObject();
       rightAce.Priority = 42;
       AccessControlEntryPriorityComparer comparer = new AccessControlEntryPriorityComparer ();
 
@@ -31,9 +31,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Compare_LeftIsLessThanRight ()
     {
-      AccessControlEntry leftAce = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry leftAce = AccessControlEntry.NewObject();
       leftAce.Priority = 24;
-      AccessControlEntry rightAce = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry rightAce = AccessControlEntry.NewObject();
       rightAce.Priority = 42;
       AccessControlEntryPriorityComparer comparer = new AccessControlEntryPriorityComparer ();
 
@@ -43,9 +43,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Compare_LeftIsGreaterThanRight ()
     {
-      AccessControlEntry leftAce = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry leftAce = AccessControlEntry.NewObject();
       leftAce.Priority = 42;
-      AccessControlEntry rightAce = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry rightAce = AccessControlEntry.NewObject();
       rightAce.Priority = 24;
       AccessControlEntryPriorityComparer comparer = new AccessControlEntryPriorityComparer ();
 
@@ -55,9 +55,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Compare_LeftIsLessThanRightAndRightIsCalculated ()
     {
-      AccessControlEntry leftAce = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry leftAce = AccessControlEntry.NewObject();
       leftAce.Priority = 2;
-      AccessControlEntry rightAce = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry rightAce = AccessControlEntry.NewObject();
       rightAce.User = UserSelection.Owner;
       AccessControlEntryPriorityComparer comparer = new AccessControlEntryPriorityComparer ();
 
@@ -67,7 +67,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Compare_RightIsNull ()
     {
-      AccessControlEntry leftAce = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry leftAce = AccessControlEntry.NewObject();
       leftAce.Priority = 0;
       AccessControlEntry rightAce = null;
       AccessControlEntryPriorityComparer comparer = new AccessControlEntryPriorityComparer ();
@@ -79,7 +79,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void Compare_LeftIsNull ()
     {
       AccessControlEntry leftAce = null;
-      AccessControlEntry rightAce = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry rightAce = AccessControlEntry.NewObject();
       rightAce.Priority = 0;
       AccessControlEntryPriorityComparer comparer = new AccessControlEntryPriorityComparer ();
 

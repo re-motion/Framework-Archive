@@ -18,10 +18,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       using (new ClientTransactionScope ())
       {
-        AccessTypeDefinition accessType0 = AccessTypeDefinition.NewObject (ClientTransactionScope.CurrentTransaction);
-        AccessTypeDefinition accessType1 = AccessTypeDefinition.NewObject (ClientTransactionScope.CurrentTransaction);
+        AccessTypeDefinition accessType0 = AccessTypeDefinition.NewObject();
+        AccessTypeDefinition accessType1 = AccessTypeDefinition.NewObject();
         SecurableClassDefinitionWrapper classDefinitionWrapper =
-            new SecurableClassDefinitionWrapper (SecurableClassDefinition.NewObject (ClientTransactionScope.CurrentTransaction));
+            new SecurableClassDefinitionWrapper (SecurableClassDefinition.NewObject());
         DateTime changedAt = classDefinitionWrapper.SecurableClassDefinition.ChangedAt;
         Thread.Sleep (50);
 
@@ -43,8 +43,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       using (new ClientTransactionScope ())
       {
-        StatePropertyDefinition stateProperty = StatePropertyDefinition.NewObject (ClientTransactionScope.CurrentTransaction);
-        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (ClientTransactionScope.CurrentTransaction);
+        StatePropertyDefinition stateProperty = StatePropertyDefinition.NewObject();
+        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
 
         classDefinition.AddStateProperty (stateProperty);
 
@@ -320,7 +320,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       using (new ClientTransactionScope())
       {
-        SecurableClassDefinition actualBaseClassDefinition = SecurableClassDefinition.GetObject (expectedBaseClassDefinition.ID, ClientTransactionScope.CurrentTransaction);
+        SecurableClassDefinition actualBaseClassDefinition = SecurableClassDefinition.GetObject (expectedBaseClassDefinition.ID);
 
         Assert.AreEqual (10, actualBaseClassDefinition.DerivedClasses.Count);
         for (int i = 0; i < actualBaseClassDefinition.DerivedClasses.Count; i++)
@@ -333,7 +333,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       using (new ClientTransactionScope())
       {
-        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (ClientTransactionScope.CurrentTransaction);
+        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
         DateTime changedAt = classDefinition.ChangedAt;
         Thread.Sleep (50);
 
@@ -351,7 +351,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       using (new ClientTransactionScope())
       {
-        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (ClientTransactionScope.CurrentTransaction);
+        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
         DateTime changedAt = classDefinition.ChangedAt;
         Thread.Sleep (50);
 
@@ -381,7 +381,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       using (new ClientTransactionScope())
       {
-        SecurableClassDefinition actualClassDefinition = SecurableClassDefinition.GetObject (expectedClassDefinition.ID, ClientTransactionScope.CurrentTransaction);
+        SecurableClassDefinition actualClassDefinition = SecurableClassDefinition.GetObject (expectedClassDefinition.ID);
 
         Assert.AreEqual (10, actualClassDefinition.AccessTypes.Count);
         for (int i = 0; i < 10; i++)
@@ -404,7 +404,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       using (new ClientTransactionScope())
       {
-        SecurableClassDefinition actualClassDefinition = SecurableClassDefinition.GetObject (expectedClassDefinition.ID, ClientTransactionScope.CurrentTransaction);
+        SecurableClassDefinition actualClassDefinition = SecurableClassDefinition.GetObject (expectedClassDefinition.ID);
 
         Assert.AreEqual (10, actualClassDefinition.AccessControlLists.Count);
         for (int i = 0; i < 10; i++)
@@ -419,7 +419,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       using (new ClientTransactionScope())
       {
-        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (ClientTransactionScope.CurrentTransaction);
+        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
 
         Assert.AreNotEqual (DateTime.MinValue, classDefinition.ChangedAt);
       }
@@ -430,7 +430,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       using (new ClientTransactionScope())
       {
-        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (ClientTransactionScope.CurrentTransaction);
+        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
 
         DateTime creationDate = classDefinition.ChangedAt;
 

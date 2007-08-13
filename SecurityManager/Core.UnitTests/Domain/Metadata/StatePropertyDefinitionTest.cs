@@ -132,7 +132,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       using (new ClientTransactionScope())
       {
-        StatePropertyDefinition actualStatePropertyDefinition = StatePropertyDefinition.GetObject (expectdPropertyDefinition.ID, ClientTransactionScope.CurrentTransaction);
+        StatePropertyDefinition actualStatePropertyDefinition = StatePropertyDefinition.GetObject (expectdPropertyDefinition.ID);
 
         Assert.AreEqual (3, actualStatePropertyDefinition.DefinedStates.Count);
         for (int i = 0; i < actualStatePropertyDefinition.DefinedStates.Count; i++)

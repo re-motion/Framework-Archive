@@ -26,20 +26,14 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     public const int GroupPriority = 2;
     public const int TenantPriority = 1;
 
-    public static AccessControlEntry NewObject (ClientTransaction clientTransaction)
+    public static AccessControlEntry NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<AccessControlEntry>().With();
-      }
+      return NewObject<AccessControlEntry>().With();
     }
 
-    public new static AccessControlEntry GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public new static AccessControlEntry GetObject (ObjectID id)
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return DomainObject.GetObject<AccessControlEntry> (id);
-      }
+      return DomainObject.GetObject<AccessControlEntry> (id);
     }
 
     // member fields
@@ -152,7 +146,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
             string.Format ("The access type '{0}' has already been attached to this access control entry.", accessType.Name), "accessType");
       }
 
-      Permission permission = Permission.NewObject (ClientTransaction);
+      Permission permission = Permission.NewObject ();
       permission.AccessType = accessType;
       permission.Allowed = null;
       DomainObjectCollection permissions = GetPermissions();

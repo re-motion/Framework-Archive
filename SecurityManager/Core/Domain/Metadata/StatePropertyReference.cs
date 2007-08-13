@@ -9,12 +9,9 @@ namespace Rubicon.SecurityManager.Domain.Metadata
   [SecurityManagerStorageGroup]
   public abstract class StatePropertyReference : BaseSecurityManagerObject
   {
-    public static StatePropertyReference NewObject (ClientTransaction clientTransaction)
+    public static StatePropertyReference NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<StatePropertyReference> ().With ();
-      }
+      return NewObject<StatePropertyReference> ().With ();
     }
 
     protected StatePropertyReference ()

@@ -98,10 +98,18 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void SetAndGet_Current ()
     {
-      User user = CreateUser ();
+      DomainObjectCollection users = User.FindByTenantID (_expectedTenantID, _testHelper.Transaction);
+      Assert.Greater (users.Count, 0);
+      User user = (User) users[0];
 
       User.Current = user;
       Assert.AreSame (user, User.Current);
+
+      using (new ClientTransactionScope ())
+      {
+        Assert.AreEqual (user.ID, User.Current.ID);
+        Assert.AreNotSame (user, User.Current);
+      }
 
       User.Current = null;
     }
@@ -109,20 +117,24 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void SetAndGet_Current_Threading ()
     {
-      User user = CreateUser ();
+      DomainObjectCollection users = User.FindByTenantID (_expectedTenantID, _testHelper.Transaction);
+      Assert.Greater (users.Count, 0);
+      User user = (User) users[0];
+     
       User.Current = user;
       Assert.AreSame (user, User.Current);
 
-      ThreadRunner.Run (delegate ()
+      ThreadRunner.Run (
+          delegate ()
           {
-            Tenant otherTenant = _testHelper.CreateTenant ("OtherTenant", "UID: otherTenant");
-            Group otherGroup = _testHelper.CreateGroup ("OtherGroup", "UID: otherGroup", null, otherTenant);
-            User otherUser = _testHelper.CreateUser ("other.user", "Other", "User", "Ing.", otherGroup, otherTenant);
-
+            User otherUser = CreateUser ();
+            
             Assert.IsNull (User.Current);
             User.Current = otherUser;
-            Assert.AreSame (otherUser, User.Current);
-
+            using (_testHelper.Transaction.EnterScope())
+            {
+              Assert.AreSame (otherUser, User.Current);
+            }
           });
 
       Assert.AreSame (user, User.Current);

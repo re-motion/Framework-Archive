@@ -13,28 +13,19 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // static members and constants
 
-    public static StatePropertyDefinition NewObject (ClientTransaction clientTransaction)
+    public static StatePropertyDefinition NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<StatePropertyDefinition> ().With ();
-      }
+      return NewObject<StatePropertyDefinition> ().With ();
     }
 
-    public static StatePropertyDefinition NewObject (ClientTransaction clientTransaction, Guid metadataItemID, string name)
+    public static StatePropertyDefinition NewObject (Guid metadataItemID, string name)
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<StatePropertyDefinition> ().With (metadataItemID, name);
-      }
+      return NewObject<StatePropertyDefinition> ().With (metadataItemID, name);
     }
 
-    public static new StatePropertyDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static new StatePropertyDefinition GetObject (ObjectID id)
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return DomainObject.GetObject<StatePropertyDefinition> (id);
-      }
+      return DomainObject.GetObject<StatePropertyDefinition> (id);
     }
 
     // member fields
@@ -119,7 +110,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       ArgumentUtility.CheckNotNullOrEmpty ("stateName", stateName);
 
-      StateDefinition newStateDefinition = StateDefinition.NewObject (ClientTransaction);
+      StateDefinition newStateDefinition = StateDefinition.NewObject ();
       newStateDefinition.Name = stateName;
       newStateDefinition.Value = value;
       newStateDefinition.Index = value;

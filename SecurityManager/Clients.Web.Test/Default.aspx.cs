@@ -12,27 +12,44 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
 {
   public partial class _Default : System.Web.UI.Page
   {
+    private ClientTransaction _clientTransaction;
+
     protected Global ApplicationInstance
     {
       get { return (Global) Context.ApplicationInstance; }
     }
-    
-    protected void Page_Load (object sender, EventArgs e)
+
+    protected override void OnLoad (EventArgs e)
     {
+      base.OnLoad (e);
+
+      _clientTransaction = ClientTransaction.NewTransaction();
+      _clientTransaction.EnterScope();
       if (!IsPostBack)
       {
         using (new SecurityFreeSection())
         {
-          ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
           DomainObjectCollection users =
-              SecurityManagerUser.FindByTenantID (ObjectID.Parse ("Tenant|00000001-0000-0000-0000-000000000001|System.Guid"), clientTransaction);
+              SecurityManagerUser.FindByTenantID (ObjectID.Parse ("Tenant|00000001-0000-0000-0000-000000000001|System.Guid"), ClientTransactionScope.CurrentTransaction);
           users.Combine (
-              SecurityManagerUser.FindByTenantID (ObjectID.Parse ("Tenant|00000001-0000-0000-0000-000000000002|System.Guid"), clientTransaction));
+              SecurityManagerUser.FindByTenantID (ObjectID.Parse ("Tenant|00000001-0000-0000-0000-000000000002|System.Guid"), ClientTransactionScope.CurrentTransaction));
 
           UsersField.SetBusinessObjectList (users);
-          UsersField.LoadUnboundValue (ApplicationInstance.LoadUserFromSession (), false);
+          UsersField.LoadUnboundValue (ApplicationInstance.LoadUserFromSession(), false);
         }
       }
+    }
+
+    protected override void OnPreRender (EventArgs e)
+    {
+      _clientTransaction.EnterScope ();
+      base.OnPreRender (e);
+    }
+
+    protected override void OnUnload (EventArgs e)
+    {
+      base.OnUnload (e);
+      ClientTransactionScope.ResetActiveScope();
     }
 
     protected void EvaluateSecurity_Click (object sender, EventArgs e)
@@ -55,7 +72,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
       if (StringUtility.IsNullOrEmpty (UsersField.BusinessObjectID))
         ApplicationInstance.SetCurrentUser (null, true);
       else
-        ApplicationInstance.SetCurrentUser (SecurityManagerUser.GetObject (ObjectID.Parse (UsersField.BusinessObjectID), ClientTransaction.NewTransaction()), true);
+        ApplicationInstance.SetCurrentUser (SecurityManagerUser.GetObject (ObjectID.Parse (UsersField.BusinessObjectID)), true);
     }
   }
 }

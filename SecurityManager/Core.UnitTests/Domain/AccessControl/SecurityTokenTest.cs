@@ -256,7 +256,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private Tenant CreateTenant (string name)
     {
-      Tenant tenant = _factory.CreateTenant (ClientTransactionScope.CurrentTransaction);
+      Tenant tenant = _factory.CreateTenant ();
       tenant.Name = name;
 
       return tenant;
@@ -264,7 +264,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private Group CreateGroup (string name, Group parent, Tenant tenant)
     {
-      Group group = _factory.CreateGroup (ClientTransactionScope.CurrentTransaction);
+      Group group = _factory.CreateGroup ();
       group.Name = name;
       group.Parent = parent;
       group.Tenant = tenant;
@@ -274,7 +274,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private User CreateUser (string userName, Group owningGroup, Tenant tenant)
     {
-      User user = _factory.CreateUser (ClientTransactionScope.CurrentTransaction);
+      User user = _factory.CreateUser ();
       user.UserName = userName;
       user.FirstName = "First Name";
       user.LastName = "Last Name";
@@ -287,7 +287,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private Position CreatePosition (string name)
     {
-      Position position = _factory.CreatePosition (ClientTransactionScope.CurrentTransaction);
+      Position position = _factory.CreatePosition ();
       position.Name = name;
 
       return position;
@@ -295,7 +295,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private Role CreateRole (User user, Group group, Position position)
     {
-      Role role = Role.NewObject (ClientTransactionScope.CurrentTransaction);
+      Role role = Role.NewObject();
       role.User = user;
       role.Group = group;
       role.Position = position;

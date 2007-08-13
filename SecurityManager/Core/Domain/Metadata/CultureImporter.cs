@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       string cultureName = rootElement.Attributes["culture"].Value;
       // TODO: Convert to CultureInfo via GetCulture
-      Culture culture = Culture.NewObject (ClientTransactionScope.CurrentTransaction, cultureName);
+      Culture culture = Culture.NewObject (cultureName);
 
       _cultures.Add (culture);
 
@@ -101,7 +101,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
         return localizedName;
       }
 
-      return LocalizedName.NewObject (_transaction, text, culture, metadataObject);
+      return LocalizedName.NewObject (text, culture, metadataObject);
     }
   }
 }

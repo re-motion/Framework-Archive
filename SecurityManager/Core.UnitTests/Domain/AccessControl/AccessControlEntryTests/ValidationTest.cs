@@ -22,7 +22,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void Validate_IsValid ()
     {
-      AccessControlEntry ace = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject();
 
       AccessControlEntryValidationResult result = ace.Validate ();
 

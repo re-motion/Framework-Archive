@@ -43,7 +43,7 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
       // TODO check CurrentTransaction
       if (CurrentObject == null)
       {
-        Position = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreatePosition (CurrentTransaction);
+        Position = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreatePosition ();
       }
     }
 

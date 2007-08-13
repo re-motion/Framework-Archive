@@ -84,7 +84,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       Group group = CurrentFunction.Group;
       if (group != null)
-        UserField.SetBusinessObjectList (User.FindByTenantID (group.Tenant.ID, CurrentFunction.Role.ClientTransaction));
+        UserField.SetBusinessObjectList (User.FindByTenantID (group.Tenant.ID, CurrentFunction.CurrentTransaction));
     }
 
     private void FillGroupField ()

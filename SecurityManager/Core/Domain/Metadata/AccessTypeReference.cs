@@ -9,12 +9,9 @@ namespace Rubicon.SecurityManager.Domain.Metadata
   [SecurityManagerStorageGroup]
   public abstract class AccessTypeReference : BaseSecurityManagerObject
   {
-    public static AccessTypeReference NewObject (ClientTransaction clientTransaction)
+    public static AccessTypeReference NewObject ()
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return NewObject<AccessTypeReference> ().With ();
-      }
+      return NewObject<AccessTypeReference> ().With ();
     }
 
     protected AccessTypeReference ()

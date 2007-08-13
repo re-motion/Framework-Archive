@@ -94,30 +94,39 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void SetAndGet_Current()
     {
-      Tenant tenant = _testHelper.CreateTenant ("Tenant", "UID: Tenant");
+      Tenant tenant = Tenant.GetObject (_expectedTenantID);
       
       Tenant.Current = tenant;
       Assert.AreSame (tenant, Tenant.Current);
-      
+
+      using (new ClientTransactionScope ())
+      {
+        Assert.AreEqual(tenant.ID, Tenant.Current.ID);
+        Assert.AreNotSame (tenant, Tenant.Current);
+      }
+
       Tenant.Current = null;
     }
 
     [Test]
     public void SetAndGet_Current_Threading ()
     {
-      Tenant tenant = _testHelper.CreateTenant ("Tenant", "UID: Tenant");
+      Tenant tenant = Tenant.GetObject (_expectedTenantID);
 
       Tenant.Current = tenant;
       Assert.AreSame (tenant, Tenant.Current);
 
-      ThreadRunner.Run (delegate ()
+      ThreadRunner.Run (
+          delegate ()
           {
             Tenant otherTenant = _testHelper.CreateTenant ("OtherTenant", "UID: OtherTenant");
 
             Assert.IsNull (Tenant.Current);
             Tenant.Current = otherTenant;
-            Assert.AreSame (otherTenant, Tenant.Current);
-
+            using (_testHelper.Transaction.EnterScope())
+            {
+              Assert.AreSame (otherTenant, Tenant.Current);
+            }
           });
 
       Assert.AreSame (tenant, Tenant.Current);

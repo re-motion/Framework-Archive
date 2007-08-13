@@ -36,6 +36,7 @@ namespace Rubicon.SecurityManager.UnitTests
     private IPrincipal _principal;
 
     private MemoryAppender _memoryAppender;
+    private ClientTransaction _clientTransaction;
 
     [SetUp]
     public override void SetUp ()
@@ -49,9 +50,12 @@ namespace Rubicon.SecurityManager.UnitTests
      _service = new SecurityService (_mockAclFinder, _mockTokenBuilder);
      _context = new SecurityContext (typeof (Order), "Owner", "UID: OwnerGroup", "OwnerTenant", null, null);
 
-      new ClientTransactionScope();
-     _ace = CreateAce ();
-     _principal = CreateUser ();
+      _clientTransaction = ClientTransaction.NewTransaction ();
+      using (_clientTransaction.EnterScope ())
+      {
+        _ace = CreateAce();
+      }
+      _principal = CreateUser ();
   
       _memoryAppender = new MemoryAppender();
       
@@ -87,14 +91,16 @@ namespace Rubicon.SecurityManager.UnitTests
     [Test]
     public void GetAccess_WithoutAccess ()
     {
-      SecurityToken token = new SecurityToken (null, null, new List<Group> (), new List<AbstractRoleDefinition> ());
+      using (_clientTransaction.EnterScope ())
+      {
+        SecurityToken token = new SecurityToken (null, null, new List<Group>(), new List<AbstractRoleDefinition>());
 
-      Expect.Call (_mockAclFinder.Find (ClientTransactionScope.CurrentTransaction, _context)).Return (CreateAcl (_ace));
-      Expect.Call (_mockTokenBuilder.CreateToken (ClientTransactionScope.CurrentTransaction, _principal, _context)).Return (token);
-
+        Expect.Call (_mockAclFinder.Find (ClientTransactionScope.CurrentTransaction, _context)).Return (CreateAcl (_ace));
+        Expect.Call (_mockTokenBuilder.CreateToken (ClientTransactionScope.CurrentTransaction, _principal, _context)).Return (token);
+      }
       _mocks.ReplayAll ();
 
-      AccessType[] accessTypes = _service.GetAccess (ClientTransactionScope.CurrentTransaction, _context, _principal);
+      AccessType[] accessTypes = _service.GetAccess (_clientTransaction, _context, _principal);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (0, accessTypes.Length);
@@ -103,16 +109,18 @@ namespace Rubicon.SecurityManager.UnitTests
     [Test]
     public void GetAccess_WithReadAccess ()
     {
-      List<AbstractRoleDefinition> roles = new List<AbstractRoleDefinition> ();
-      roles.Add (_ace.SpecificAbstractRole);
-      SecurityToken token = new SecurityToken (null, null, new List<Group> (), roles);
+      using (_clientTransaction.EnterScope ())
+      {
+        List<AbstractRoleDefinition> roles = new List<AbstractRoleDefinition>();
+        roles.Add (_ace.SpecificAbstractRole);
+        SecurityToken token = new SecurityToken (null, null, new List<Group>(), roles);
 
-      Expect.Call (_mockAclFinder.Find (ClientTransactionScope.CurrentTransaction, _context)).Return (CreateAcl (_ace));
-      Expect.Call (_mockTokenBuilder.CreateToken (ClientTransactionScope.CurrentTransaction, _principal, _context)).Return(token);
-
+        Expect.Call (_mockAclFinder.Find (ClientTransactionScope.CurrentTransaction, _context)).Return (CreateAcl (_ace));
+        Expect.Call (_mockTokenBuilder.CreateToken (ClientTransactionScope.CurrentTransaction, _principal, _context)).Return (token);
+      }
       _mocks.ReplayAll ();
 
-      AccessType[] accessTypes = _service.GetAccess (ClientTransactionScope.CurrentTransaction, _context, _principal);
+      AccessType[] accessTypes = _service.GetAccess (_clientTransaction, _context, _principal);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (1, accessTypes.Length);
@@ -122,21 +130,23 @@ namespace Rubicon.SecurityManager.UnitTests
     [Test]
     public void GetAccess_WithReadAccessFromInterface ()
     {
-      List<AbstractRoleDefinition> roles = new List<AbstractRoleDefinition> ();
-      roles.Add (_ace.SpecificAbstractRole);
-      SecurityToken token = new SecurityToken (null, null, new List<Group> (), roles);
+      using (_clientTransaction.EnterScope ())
+      {
+        List<AbstractRoleDefinition> roles = new List<AbstractRoleDefinition>();
+        roles.Add (_ace.SpecificAbstractRole);
+        SecurityToken token = new SecurityToken (null, null, new List<Group>(), roles);
 
-      Expect.Call (_mockAclFinder.Find (null, null)).Return (CreateAcl (_ace)).Constraints (
-          Mocks_Is.NotNull (),
-          Mocks_Is.Same (_context));
-      Expect.Call (_mockTokenBuilder.CreateToken (null, null, null)).Return (token).Constraints (
-          Mocks_Is.NotNull (),
-          Mocks_Is.Same (_principal),
-          Mocks_Is.Same (_context));
-
+        Expect.Call (_mockAclFinder.Find (null, null)).Return (CreateAcl (_ace)).Constraints (
+            Mocks_Is.NotNull(),
+            Mocks_Is.Same (_context));
+        Expect.Call (_mockTokenBuilder.CreateToken (null, null, null)).Return (token).Constraints (
+            Mocks_Is.NotNull(),
+            Mocks_Is.Same (_principal),
+            Mocks_Is.Same (_context));
+      }
       _mocks.ReplayAll ();
 
-      AccessType[] accessTypes = _service.GetAccess (_context, _principal);
+      AccessType[] accessTypes = _service.GetAccess (_clientTransaction, _context, _principal);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (1, accessTypes.Length);
@@ -146,13 +156,14 @@ namespace Rubicon.SecurityManager.UnitTests
     [Test]
     public void GetAccess_WithAccessControlExcptionFromAccessControlListFinder ()
     {
-      AccessControlException expectedException = new AccessControlException ();
-
-      Expect.Call (_mockAclFinder.Find (ClientTransactionScope.CurrentTransaction, _context)).Throw (expectedException);
-
+      AccessControlException expectedException = new AccessControlException();
+      using (_clientTransaction.EnterScope ())
+      {
+        Expect.Call (_mockAclFinder.Find (ClientTransactionScope.CurrentTransaction, _context)).Throw (expectedException);
+      }
       _mocks.ReplayAll ();
 
-      AccessType[] accessTypes = _service.GetAccess (ClientTransactionScope.CurrentTransaction, _context, _principal);
+      AccessType[] accessTypes = _service.GetAccess (_clientTransaction, _context, _principal);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (0, accessTypes.Length);
@@ -165,13 +176,15 @@ namespace Rubicon.SecurityManager.UnitTests
     [Test]
     public void GetAccess_WithAccessControlExcptionFromSecurityTokenBuilder ()
     {
-      AccessControlException expectedException = new AccessControlException ();
-
-      Expect.Call (_mockAclFinder.Find (ClientTransactionScope.CurrentTransaction, _context)).Return (CreateAcl (_ace));
-      Expect.Call (_mockTokenBuilder.CreateToken (ClientTransactionScope.CurrentTransaction, _principal, _context)).Throw (expectedException);
+      AccessControlException expectedException = new AccessControlException();
+      using (_clientTransaction.EnterScope ())
+      {
+        Expect.Call (_mockAclFinder.Find (ClientTransactionScope.CurrentTransaction, _context)).Return (CreateAcl (_ace));
+        Expect.Call (_mockTokenBuilder.CreateToken (ClientTransactionScope.CurrentTransaction, _principal, _context)).Throw (expectedException);
+      }
       _mocks.ReplayAll ();
 
-      AccessType[] accessTypes = _service.GetAccess (ClientTransactionScope.CurrentTransaction, _context, _principal);
+      AccessType[] accessTypes = _service.GetAccess (_clientTransaction, _context, _principal);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (0, accessTypes.Length);
@@ -198,7 +211,7 @@ namespace Rubicon.SecurityManager.UnitTests
     
     private AccessControlList CreateAcl (AccessControlEntry ace)
     {
-      AccessControlList acl = AccessControlList.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlList acl = AccessControlList.NewObject();
       acl.AccessControlEntries.Add (ace);
 
       return acl;
@@ -206,14 +219,14 @@ namespace Rubicon.SecurityManager.UnitTests
 
     private AccessControlEntry CreateAce ()
     {
-      AccessControlEntry ace = AccessControlEntry.NewObject (ClientTransactionScope.CurrentTransaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject();
 
-      AbstractRoleDefinition abstractRole = AbstractRoleDefinition.NewObject (ClientTransactionScope.CurrentTransaction, Guid.NewGuid (), "QualityManager", 0);
+      AbstractRoleDefinition abstractRole = AbstractRoleDefinition.NewObject (Guid.NewGuid (), "QualityManager", 0);
       ace.SpecificAbstractRole = abstractRole;
 
-      AccessTypeDefinition readAccessType = AccessTypeDefinition.NewObject (ClientTransactionScope.CurrentTransaction, Guid.NewGuid (), "Read|MyTypeName", 0);
-      AccessTypeDefinition writeAccessType = AccessTypeDefinition.NewObject (ClientTransactionScope.CurrentTransaction, Guid.NewGuid (), "Write|MyTypeName", 1);
-      AccessTypeDefinition deleteAccessType = AccessTypeDefinition.NewObject (ClientTransactionScope.CurrentTransaction, Guid.NewGuid (), "Delete|MyTypeName", 2);
+      AccessTypeDefinition readAccessType = AccessTypeDefinition.NewObject (Guid.NewGuid (), "Read|MyTypeName", 0);
+      AccessTypeDefinition writeAccessType = AccessTypeDefinition.NewObject (Guid.NewGuid (), "Write|MyTypeName", 1);
+      AccessTypeDefinition deleteAccessType = AccessTypeDefinition.NewObject (Guid.NewGuid (), "Delete|MyTypeName", 2);
 
       ace.AttachAccessType (readAccessType);
       ace.AttachAccessType (writeAccessType);

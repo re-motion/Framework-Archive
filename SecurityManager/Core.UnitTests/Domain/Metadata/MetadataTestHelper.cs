@@ -37,7 +37,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       using (_transaction.EnterScope())
       {
         AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (
-            ClientTransactionScope.CurrentTransaction,
             new Guid ("00000003-0001-0000-0000-000000000000"),
             "Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain",
             0);
@@ -52,7 +51,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       using (_transaction.EnterScope())
       {
         AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (
-            ClientTransactionScope.CurrentTransaction,
             new Guid ("00000003-0002-0000-0000-000000000000"),
             "Secretary|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain",
             1);
@@ -67,7 +65,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       using (_transaction.EnterScope())
       {
         AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (
-            ClientTransactionScope.CurrentTransaction,
             new Guid ("00000004-0001-0000-0000-000000000000"),
             "Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRoles, Rubicon.Security.UnitTests.TestDomain",
             0);
@@ -82,7 +79,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       using (_transaction.EnterScope())
       {
         AccessTypeDefinition type = AccessTypeDefinition.NewObject (
-            ClientTransactionScope.CurrentTransaction,
             new Guid ("1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"),
             "Create|Rubicon.Security.GeneralAccessTypes, Rubicon.Security",
             0);
@@ -97,7 +93,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       using (_transaction.EnterScope())
       {
         AccessTypeDefinition type = AccessTypeDefinition.NewObject (
-            ClientTransactionScope.CurrentTransaction,
             new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a"),
             "Read|Rubicon.Security.GeneralAccessTypes, Rubicon.Security",
             1);
@@ -112,7 +107,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       using (_transaction.EnterScope())
       {
         AccessTypeDefinition type = AccessTypeDefinition.NewObject (
-            ClientTransactionScope.CurrentTransaction,
             new Guid ("11186122-6de0-4194-b434-9979230c41fd"),
             "Edit|Rubicon.Security.GeneralAccessTypes, Rubicon.Security",
             2);
@@ -126,9 +120,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       using (_transaction.EnterScope())
       {
-        StatePropertyDefinition property =
-            StatePropertyDefinition.NewObject (
-                ClientTransactionScope.CurrentTransaction, new Guid ("00000000-0000-0000-0001-000000000001"), "Confidentiality");
+        StatePropertyDefinition property = StatePropertyDefinition.NewObject (new Guid ("00000000-0000-0000-0001-000000000001"), "Confidentiality");
         property.Index = index;
         property.AddState (Confidentiality_NormalName, Confidentiality_NormalValue);
         property.AddState (Confidentiality_ConfidentialName, Confidentiality_ConfidentialValue);
@@ -142,8 +134,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       using (_transaction.EnterScope())
       {
-        StatePropertyDefinition property =
-            StatePropertyDefinition.NewObject (ClientTransactionScope.CurrentTransaction, new Guid ("00000000-0000-0000-0002-000000000001"), "State");
+        StatePropertyDefinition property = StatePropertyDefinition.NewObject (new Guid ("00000000-0000-0000-0002-000000000001"), "State");
         property.Index = index;
         property.AddState (State_NewName, State_NewValue);
         property.AddState (State_NormalName, State_NormalValue);
@@ -167,7 +158,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       using (_transaction.EnterScope())
       {
-        return StatePropertyDefinition.NewObject (ClientTransactionScope.CurrentTransaction, Guid.NewGuid(), name);
+        return StatePropertyDefinition.NewObject (Guid.NewGuid(), name);
       }
     }
 
@@ -175,7 +166,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       using (_transaction.EnterScope())
       {
-        StateDefinition state = StateDefinition.NewObject (ClientTransactionScope.CurrentTransaction, name, value);
+        StateDefinition state = StateDefinition.NewObject (name, value);
         state.Index = value;
 
         return state;

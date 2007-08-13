@@ -106,7 +106,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 
     private void AdjustSpecificTenantField ()
     {
-      if ((TenantSelection) TenantField.Value == TenantSelection.SpecificTenant)
+      if ((TenantSelection?) TenantField.Value == TenantSelection.SpecificTenant)
       {
         SpecificTenantField.Visible = true;
       }
