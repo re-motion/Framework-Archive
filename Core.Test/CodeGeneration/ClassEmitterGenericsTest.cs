@@ -147,6 +147,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     }
 
     [Test]
+    [Ignore ("Due to a bug in the .NET framework, this seems not to work on all .NET 2.0 installations at the moment. Waiting for a service pack...")]
     public void OverridingSimpleMembersOfOpenGenericClass ()
     {
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (GenericClassWithAllKindsOfMembers<>), Type.EmptyTypes,
