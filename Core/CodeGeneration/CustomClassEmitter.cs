@@ -129,21 +129,30 @@ namespace Rubicon.CodeGeneration
       return new CustomMethodEmitter (this, name, attributes);
     }
 
-    public CustomPropertyEmitter CreateProperty (string name, PropertyAttributes attributes, bool hasThis, Type propertyType, Type[] indexParameters)
+    public CustomPropertyEmitter CreateProperty (string name, PropertyKind propertyKind, Type propertyType)
+    {
+      ArgumentUtility.CheckNotNull ("name", name);
+      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
+
+      return new CustomPropertyEmitter (this, name, propertyKind, propertyType, Type.EmptyTypes, PropertyAttributes.None);
+    }
+
+    public CustomPropertyEmitter CreateProperty (
+        string name, PropertyKind propertyKind, Type propertyType, Type[] indexParameters, PropertyAttributes attributes)
     {
       ArgumentUtility.CheckNotNull ("name", name);
       ArgumentUtility.CheckNotNull ("propertyType", propertyType);
       ArgumentUtility.CheckNotNull ("indexParameters", indexParameters);
 
-      return new CustomPropertyEmitter (this, name, attributes, hasThis, propertyType, indexParameters);
+      return new CustomPropertyEmitter (this, name, propertyKind, propertyType, indexParameters, attributes);
     }
 
-    public CustomEventEmitter CreateEvent (string name, EventAttributes attributes, Type eventType)
+    public CustomEventEmitter CreateEvent (string name, Type eventType, EventAttributes attributes)
     {
       ArgumentUtility.CheckNotNull ("name", name);
       ArgumentUtility.CheckNotNull ("eventType", eventType);
 
-      return new CustomEventEmitter (this, name, attributes, eventType);
+      return new CustomEventEmitter (this, name, eventType, attributes);
     }
 
     public CustomMethodEmitter CreateMethodOverride (MethodInfo baseMethod)
@@ -213,8 +222,8 @@ namespace Rubicon.CodeGeneration
       Type[] indexParameterTypes =
           Array.ConvertAll<ParameterInfo, Type> (baseOrInterfaceProperty.GetIndexParameters(), delegate (ParameterInfo p) { return p.ParameterType; });
 
-      CustomPropertyEmitter newProperty = CreateProperty (propertyName, PropertyAttributes.None, true, baseOrInterfaceProperty.PropertyType,
-          indexParameterTypes);
+      CustomPropertyEmitter newProperty = CreateProperty (propertyName, PropertyKind.Instance, baseOrInterfaceProperty.PropertyType,
+          indexParameterTypes, PropertyAttributes.None);
 
       return newProperty;
     }
@@ -243,7 +252,7 @@ namespace Rubicon.CodeGeneration
         eventName = baseOrInterfaceEvent.Name;
       else
         eventName = string.Format ("{0}.{1}", baseOrInterfaceEvent.DeclaringType.FullName, baseOrInterfaceEvent.Name);
-      CustomEventEmitter newEvent = CreateEvent (eventName, EventAttributes.None, baseOrInterfaceEvent.EventHandlerType);
+      CustomEventEmitter newEvent = CreateEvent (eventName, baseOrInterfaceEvent.EventHandlerType, EventAttributes.None);
       return newEvent;
     }
 

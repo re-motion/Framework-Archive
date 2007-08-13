@@ -15,7 +15,7 @@ namespace Rubicon.CodeGeneration
     private CustomMethodEmitter _addMethod;
     private CustomMethodEmitter _removeMethod;
 
-    public CustomEventEmitter (CustomClassEmitter declaringType, string name, EventAttributes attributes, Type eventType)
+    public CustomEventEmitter (CustomClassEmitter declaringType, string name, Type eventType, EventAttributes attributes)
     {
       DeclaringType = declaringType;
       EventBuilder = declaringType.TypeBuilder.DefineEvent (name, attributes, eventType);

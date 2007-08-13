@@ -129,7 +129,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     public void CreateProperty ()
     {
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateProperty", typeof (object));
-      CustomPropertyEmitter property = classEmitter.CreateProperty ("Check", PropertyAttributes.None, true, typeof (string), Type.EmptyTypes);
+      CustomPropertyEmitter property = classEmitter.CreateProperty ("Check", PropertyKind.Instance, typeof (string), Type.EmptyTypes, PropertyAttributes.None);
       property.CreateGetMethod ().AddStatement (new ReturnStatement (new ConstReference ("4711")));
 
       object instance = Activator.CreateInstance (classEmitter.BuildType ());
@@ -140,7 +140,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     public void CreateEvent ()
     {
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateEvent", typeof (object));
-      CustomEventEmitter eventEmitter = classEmitter.CreateEvent ("Eve", EventAttributes.None, typeof (Func<string>));
+      CustomEventEmitter eventEmitter = classEmitter.CreateEvent ("Eve", typeof (Func<string>), EventAttributes.None);
       eventEmitter.CreateAddMethod ().AddStatement (new ReturnStatement ());
       eventEmitter.CreateRemoveMethod ().AddStatement (new ReturnStatement ());
 

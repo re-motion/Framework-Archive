@@ -209,19 +209,19 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
           Emitter.CreateInterfacePropertyImplementation (typeof (IMixinTarget).GetProperty ("Configuration"));
       configurationProperty.GetMethod =
           Emitter.CreateInterfaceMethodImplementation (typeof (IMixinTarget).GetMethod ("get_Configuration"));
-      configurationProperty.ImplementPropertyWithField (_configurationField);
+      configurationProperty.ImplementWithBackingField (_configurationField);
 
       CustomPropertyEmitter mixinsProperty =
           Emitter.CreateInterfacePropertyImplementation (typeof (IMixinTarget).GetProperty ("Mixins"));
       mixinsProperty.GetMethod =
           Emitter.CreateInterfaceMethodImplementation (typeof (IMixinTarget).GetMethod ("get_Mixins"));
-      mixinsProperty.ImplementPropertyWithField (_extensionsField);
+      mixinsProperty.ImplementWithBackingField (_extensionsField);
 
       CustomPropertyEmitter firstProperty =
           Emitter.CreateInterfacePropertyImplementation (typeof (IMixinTarget).GetProperty ("FirstBaseCallProxy"));
       firstProperty.GetMethod =
           Emitter.CreateInterfaceMethodImplementation (typeof (IMixinTarget).GetMethod ("get_FirstBaseCallProxy"));
-      firstProperty.ImplementPropertyWithField (_firstField);
+      firstProperty.ImplementWithBackingField (_firstField);
     }
 
     private void ImplementIntroducedInterfaces ()
