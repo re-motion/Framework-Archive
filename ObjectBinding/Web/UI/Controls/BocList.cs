@@ -2122,14 +2122,13 @@ public class BocList:
       else if (Value != null)
         count = Value.Count;
 
-      string script = "<script type=\"text/javascript\">\r\n<!--\r\n"
-          + "BocList_InitializeList ("
+      string script = 
+           "BocList_InitializeList ("
           + "document.getElementById ('" + ClientID + "'), '"
           + ClientID + c_dataRowSelectorControlIDSuffix + "', "
-          + count.ToString() + ","
-          + (int) _selection + ");"
-          + "\r\n//-->\r\n</script>";
-      writer.Write (script);
+          + count.ToString () + ","
+          + (int) _selection + ");";
+      ScriptUtility.RegisterStartupScriptBlock (Page, typeof (BocList).FullName + "_" + ClientID + "_InitializeListScript", script);
     }
   }
 
