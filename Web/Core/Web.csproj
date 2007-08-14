@@ -560,6 +560,7 @@
     <Content Include="Doc\include\Utilities\UrlUtility.xml" />
     <Content Include="Doc\WhatsNew_Rubicon.Web.txt" />
     <Content Include="Res\HTML\ColorScheme_1_3_26.css" />
+    <Content Include="Res\HTML\WebButtonXHtml10.css" />
     <Content Include="Res\HTML\DatePicker.js" />
     <Content Include="Res\HTML\DropDownMenu.css" />
     <Content Include="Res\HTML\DropDownMenu.js" />
@@ -581,6 +582,8 @@
     <Content Include="Res\HTML\TabStrip.css" />
     <Content Include="Res\HTML\TreeView.css" />
     <Content Include="Res\HTML\Utilities.js" />
+    <Content Include="Res\HTML\WebButton.css" />
+    <Content Include="Res\HTML\WebButton.js" />
     <Content Include="Res\Image\DropDownMenuArrow.gif" />
     <Content Include="Res\Image\DropDownMenuItemIconPane.gif" />
     <Content Include="Res\Image\Help.gif" />

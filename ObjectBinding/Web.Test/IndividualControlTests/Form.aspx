@@ -16,10 +16,10 @@
         <obwt:NavigationTabs ID="NavigationTabs" runat="server" />
         <asp:PlaceHolder ID="ButtonPlaceHolder" runat="server">
           <div>
-            <rubicon:WebButton ID="PostBackButton" runat="server" Text="Post Back" />
-            <rubicon:WebButton ID="SaveButton" runat="server" Width="120px" Text="Save" />
-            <rubicon:WebButton ID="SaveAndRestartButton" runat="server" Text="Save &amp; Restart" Width="120px" />
-            <rubicon:WebButton ID="CancelButton" runat="server" Text="Cancel" Width="120px" />
+            <rubicon:WebButton ID="PostBackButton" runat="server" Text="Post Back"/>&nbsp;
+            <rubicon:WebButton ID="SaveButton" runat="server" Width="10em" Text="Save" />&nbsp;
+            <rubicon:WebButton ID="SaveAndRestartButton" runat="server" Width="10em" Text="Save &amp; Restart" />&nbsp;
+            <rubicon:WebButton ID="CancelButton" runat="server" Width="10em" Text="Cancel" />
           </div>
         </asp:PlaceHolder>
       </TopControls>

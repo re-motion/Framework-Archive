@@ -10,20 +10,20 @@ using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
-
   /// <summary> A <c>Button</c> using <c>&amp;</c> as access key prefix in <see cref="Button.Text"/>. </summary>
   /// <include file='doc\include\UI\Controls\WebButton.xml' path='WebButton/Class/*' />
   [ToolboxData ("<{0}:WebButton runat=server></{0}:WebButton>")]
-  public class WebButton :
-      Button,
-    // Required because Page.ProcessPostData always registers the last IPostBackEventHandler in the controls 
-    // collection for controls (buttons) having PostData but no IPostBackDataHandler. 
-      IPostBackDataHandler
+  public class WebButton
+      :
+          Button,
+          // Required because Page.ProcessPostData always registers the last IPostBackEventHandler in the controls 
+          // collection for controls (buttons) having PostData but no IPostBackDataHandler. 
+          IPostBackDataHandler
   {
-    private static readonly object s_clickEvent = new object ();
+    private static readonly object s_clickEvent = new object();
 
     private IconInfo _icon;
-    PostBackOptions _options;
+    private PostBackOptions _options;
 
     private bool _useLegacyButton;
     private bool _isDefaultButton;
@@ -34,7 +34,26 @@ namespace Rubicon.Web.UI.Controls
 
     public WebButton ()
     {
-      _icon = new IconInfo ();
+      _icon = new IconInfo();
+    }
+
+    protected override void OnInit (EventArgs e)
+    {
+      base.OnInit (e);
+
+      string scriptKey = typeof (WebButton).FullName + "_Script";
+      if (!HtmlHeadAppender.Current.IsRegistered (scriptKey))
+      {
+        string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebButton), ResourceType.Html, "WebButton.js");
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (scriptKey, url);
+      }
+
+      string styleKey = typeof (WebButton).FullName + "_Style";
+      if (!HtmlHeadAppender.Current.IsRegistered (styleKey))
+      {
+        string url = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebButton), ResourceType.Html, "WebButton.css");
+        HtmlHeadAppender.Current.RegisterStylesheetLink (styleKey, url, HtmlHeadAppender.Priority.Library);
+      }
     }
 
     void IPostBackDataHandler.RaisePostDataChangedEvent ()
@@ -114,7 +133,7 @@ namespace Rubicon.Web.UI.Controls
     /// <summary> Method to be executed when compiled for .net 2.0. </summary>
     private void AddAttributesToRender_net20 (HtmlTextWriter writer)
     {
-      if (this.Page != null)
+      if (Page != null)
         Page.VerifyRenderingInServerForm (this);
 
       if (IsEnabled)
@@ -132,7 +151,7 @@ namespace Rubicon.Web.UI.Controls
 
         if (Page != null)
         {
-          PostBackOptions options = GetPostBackOptions ();
+          PostBackOptions options = GetPostBackOptions();
           options.ClientSubmit = true;
 
           string postBackScript;
@@ -156,10 +175,14 @@ namespace Rubicon.Web.UI.Controls
 
         if (!StringUtility.IsNullOrEmpty (onClick))
           writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
+
+        writer.AddAttribute ("onmousedown", "WebButton_MouseDown (this, '" + CssClassMouseDown + "');");
+        writer.AddAttribute ("onmouseup", "WebButton_MouseUp (this, '" + CssClassMouseDown + "');");
+        writer.AddAttribute ("onmouseout", "WebButton_MouseOut (this, '" + CssClassMouseDown + "');");
       }
 
 
-      _options = base.GetPostBackOptions ();
+      _options = base.GetPostBackOptions();
       _options.ClientSubmit = false;
       _options.PerformValidation = false;
       _options.AutoPostBack = false;
@@ -177,7 +200,7 @@ namespace Rubicon.Web.UI.Controls
     protected override PostBackOptions GetPostBackOptions ()
     {
       if (_options == null)
-        return base.GetPostBackOptions ();
+        return base.GetPostBackOptions();
       else
         return _options;
     }
@@ -199,7 +222,7 @@ namespace Rubicon.Web.UI.Controls
     /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
     protected virtual void EvaluateWaiConformity ()
     {
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled () && WcagHelper.Instance.IsWaiConformanceLevelARequired ())
+      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
       {
         if (!_useLegacyButton)
           WcagHelper.Instance.HandleError (1, this, "UseLegacyButton");
@@ -208,7 +231,7 @@ namespace Rubicon.Web.UI.Controls
 
     protected override void RenderContents (HtmlTextWriter writer)
     {
-      EvaluateWaiConformity ();
+      EvaluateWaiConformity();
 
       if (IsLegacyButtonEnabled)
         return;
@@ -217,14 +240,13 @@ namespace Rubicon.Web.UI.Controls
       //if (ControlHelper.IsDesignMode (this))
       //  return;
 
-      //For new styles
-      //writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassAnchorBody);
-      //writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassButtonBody);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       string text = StringUtility.NullToEmpty (Text);
       text = SmartLabel.FormatLabelText (text, true);
 
-      if (HasControls ())
+      if (HasControls())
       {
         base.RenderContents (writer);
       }
@@ -236,20 +258,58 @@ namespace Rubicon.Web.UI.Controls
         {
           writer.AddAttribute (HtmlTextWriterAttribute.Src, _icon.Url);
           if (!_icon.Height.IsEmpty)
-            writer.AddAttribute (HtmlTextWriterAttribute.Height, _icon.Height.ToString ());
+            writer.AddAttribute (HtmlTextWriterAttribute.Height, _icon.Height.ToString());
           if (!_icon.Width.IsEmpty)
-            writer.AddAttribute (HtmlTextWriterAttribute.Width, _icon.Width.ToString ());
+            writer.AddAttribute (HtmlTextWriterAttribute.Width, _icon.Width.ToString());
           writer.AddStyleAttribute ("vertical-align", "middle");
           writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
           writer.AddAttribute (HtmlTextWriterAttribute.Alt, _icon.AlternateText);
           writer.RenderBeginTag (HtmlTextWriterTag.Img);
-          writer.RenderEndTag ();
+          writer.RenderEndTag();
         }
         if (hasIcon && hasText)
           writer.Write ("&nbsp;");
         if (hasText)
           writer.Write (text); // Do not HTML enocde
       }
+
+      RenderBorderSpans (writer);
+      writer.RenderEndTag (); // End acnhorBody span
+    }
+
+    private void RenderBorderSpans (HtmlTextWriter writer)
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopBorder);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag ();
+
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassLeftBorder);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag ();
+
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBottomBorder);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag ();
+
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassRightBorder);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag ();
+
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopLeftCorner);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag ();
+
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopRightCorner);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag ();
+
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBottomLeftCorner);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag ();
+
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBottomRightCorner);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag ();
     }
 
     /// <summary> Gets or sets the icon displayed in this menu item. </summary>
@@ -308,7 +368,7 @@ namespace Rubicon.Web.UI.Controls
 
     protected bool IsLegacyButtonEnabled
     {
-      get { return WcagHelper.Instance.IsWaiConformanceLevelARequired () || _useLegacyButton; }
+      get { return WcagHelper.Instance.IsWaiConformanceLevelARequired() || _useLegacyButton; }
     }
 
     [Category ("Behavior")]
@@ -323,7 +383,7 @@ namespace Rubicon.Web.UI.Controls
     {
       if (!StringUtility.IsNullOrEmpty (value))
       {
-        value = value.Trim ();
+        value = value.Trim();
 
         if (!value.EndsWith (";"))
           value += ";";
@@ -343,7 +403,7 @@ namespace Rubicon.Web.UI.Controls
 
     protected bool HasAccess ()
     {
-      IWebSecurityAdapter securityAdapter = SecurityAdapterRegistry.Instance.GetAdapter<IWebSecurityAdapter> ();
+      IWebSecurityAdapter securityAdapter = SecurityAdapterRegistry.Instance.GetAdapter<IWebSecurityAdapter>();
       if (securityAdapter == null)
         return true;
 
@@ -362,14 +422,11 @@ namespace Rubicon.Web.UI.Controls
           return false;
 
         if (_missingPermissionBehavior == MissingPermissionBehavior.Invisible)
-          return HasAccess ();
+          return HasAccess();
 
         return true;
       }
-      set
-      {
-        base.Visible = value;
-      }
+      set { base.Visible = value; }
     }
 
     public override bool Enabled
@@ -380,27 +437,18 @@ namespace Rubicon.Web.UI.Controls
           return false;
 
         if (_missingPermissionBehavior == MissingPermissionBehavior.Disabled)
-          return HasAccess ();
+          return HasAccess();
 
         return true;
       }
-      set
-      {
-        base.Enabled = value;
-      }
+      set { base.Enabled = value; }
     }
 
     [Category ("Action")]
     public new event EventHandler Click
     {
-      add
-      {
-        base.Events.AddHandler (s_clickEvent, value);
-      }
-      remove
-      {
-        base.Events.RemoveHandler (s_clickEvent, value);
-      }
+      add { base.Events.AddHandler (s_clickEvent, value); }
+      remove { base.Events.RemoveHandler (s_clickEvent, value); }
     }
 
     protected override void OnClick (EventArgs e)
@@ -441,14 +489,110 @@ namespace Rubicon.Web.UI.Controls
     }
 
     #region protected virtual string CssClass...
+
     /// <summary> Gets the CSS-Class applied to the <see cref="WebButton"/> itself. </summary>
     /// <remarks> 
     ///   <para> Class: <c>webButton</c>. </para>
     ///   <para> Applied only if the <see cref="WebControl.CssClass"/> is not set. </para>
     /// </remarks>
     protected virtual string CssClassBase
-    { get { return "webButton"; } }
+    {
+      get { return "webButton"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top border. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>top</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassTopBorder
+    {
+      get { return "top"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom border. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>bottom</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassBottomBorder
+    {
+      get { return "bottom"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the left border. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>left</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassLeftBorder
+    {
+      get { return "left"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the right border. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>right</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassRightBorder
+    {
+      get { return "right"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top left corner. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>topLeft</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassTopLeftCorner
+    {
+      get { return "topLeft"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom left corner. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>bottomLeft</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassBottomLeftCorner
+    {
+      get { return "bottomLeft"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top right corner. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>topRight</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassTopRightCorner
+    {
+      get { return "topRight"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom right corner. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>bottomRight</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassBottomRightCorner
+    {
+      get { return "bottomRight"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to a <c>div</c> intended for formatting the content. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>content</c>. </para>
+    /// </remarks>
+    protected virtual string CssClassButtonBody
+    {
+      get { return "buttonBody"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied when the section is empty. </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>mouseDown</c>. </para>
+    ///   <para> 
+    ///     Applied in addition to the regular CSS-Class. Use <c>a.webButton.mouseDown</c>as a selector.
+    ///   </para>
+    /// </remarks>
+    protected virtual string CssClassMouseDown
+    {
+      get { return "mouseDown"; }
+    }
+
     #endregion
   }
-
 }
