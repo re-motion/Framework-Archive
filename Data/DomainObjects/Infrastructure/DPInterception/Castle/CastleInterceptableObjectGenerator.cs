@@ -9,7 +9,7 @@ using Rubicon.Reflection;
 using Rubicon.Utilities;
 using CastleInterceptor = Castle.Core.Interceptor.IInterceptor;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle
+namespace Rubicon.Data.DomainObjects.Infrastructure.DPInterception.Castle
 {
   using CacheKey = Tuple<Type, Type>; // defining type, delegate type
 

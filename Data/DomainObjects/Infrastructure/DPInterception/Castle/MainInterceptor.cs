@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle
+namespace Rubicon.Data.DomainObjects.Infrastructure.DPInterception.Castle
 {
   /// <summary>Intercepts all methods and delegates to the respective specialized interceptor.</summary>
   // TODO: Instead of MainInterceptor use IInterceptorSelector as soon as implemented by DynamicProxy 2

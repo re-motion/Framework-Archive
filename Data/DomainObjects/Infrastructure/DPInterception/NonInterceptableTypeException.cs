@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
+namespace Rubicon.Data.DomainObjects.Infrastructure.DPInterception
 {
   public class NonInterceptableTypeException : Exception
   {

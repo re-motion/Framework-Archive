@@ -3,7 +3,7 @@ using System.Reflection;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
+namespace Rubicon.Data.DomainObjects.Infrastructure.DPInterception
 {
   /// <summary>
   /// Handles property accessor calls of domain objects and prepares the properties accordingly.

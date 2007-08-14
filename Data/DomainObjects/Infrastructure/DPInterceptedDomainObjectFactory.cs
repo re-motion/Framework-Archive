@@ -4,8 +4,8 @@ using System.Text;
 using System.Diagnostics;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Infrastructure.Interception;
-using Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle;
+using Rubicon.Data.DomainObjects.Infrastructure.DPInterception;
+using Rubicon.Data.DomainObjects.Infrastructure.DPInterception.Castle;
 using Rubicon.Reflection;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure

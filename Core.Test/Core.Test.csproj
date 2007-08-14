@@ -113,6 +113,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeGeneration\AssemblySaverTest.cs" />
     <Compile Include="CodeGeneration\ClassEmitterGenericsTest.cs" />
     <Compile Include="CodeGeneration\ClassEmitterTest.cs" />
     <Compile Include="CodeGeneration\EventEmitterTest.cs" />

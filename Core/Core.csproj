@@ -97,6 +97,7 @@
     <Compile Include="CodeGeneration\CustomEventEmitter.cs" />
     <Compile Include="CodeGeneration\CustomMethodEmitter.cs" />
     <Compile Include="CodeGeneration\CustomPropertyEmitter.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\AssemblySaver.cs" />
     <Compile Include="CodeGeneration\DPExtensions\AttributeReplicator.cs" />
     <Compile Include="CodeGeneration\DPExtensions\CastClassExpression.cs" />
     <Compile Include="CodeGeneration\DPExtensions\ClassEmitterSupportingOpenGenericBaseType.cs" />

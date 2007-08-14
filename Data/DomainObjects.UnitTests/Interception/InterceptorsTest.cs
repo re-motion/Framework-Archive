@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Infrastructure.Interception;
+using Rubicon.Data.DomainObjects.Infrastructure.DPInterception;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
@@ -15,11 +15,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public void PropInterceptorShouldInterceptNonAutoPropertiesInMapping ()
     {
       IInterceptor<DomainObject> interceptor = (IInterceptor<DomainObject>) InstantiateInternalType (typeof (DomainObject).Assembly,
-          "Rubicon.Data.DomainObjects.Infrastructure.Interception.DomainObjectPropertyInterceptor");
+          "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectPropertyInterceptor");
       IInterceptorSelector<DomainObject> selector = (IInterceptorSelector<DomainObject>) GetFieldValue(interceptor, "Selector");
       
       IInterceptorSelector<DomainObject> outerSelector = (IInterceptorSelector<DomainObject>) InstantiateInternalType (typeof (DomainObject).Assembly,
-          "Rubicon.Data.DomainObjects.Infrastructure.Interception.DomainObjectInterceptorSelector");
+          "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectInterceptorSelector");
       IInterceptor<DomainObject> interceptorOfOuter = (IInterceptor<DomainObject>) GetFieldValue (outerSelector, "_propertyInterceptor");
 
       MethodInfo valuePropertyGet = typeof (OrderWithNewPropertyAccess).GetMethod ("get_DeliveryDate");
@@ -76,11 +76,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public void PropInterceptorShouldInterceptNonAutoPropertiesInMapping_ForBaseTypeNotInMapping ()
     {
       IInterceptor<DomainObject> interceptor = (IInterceptor<DomainObject>) InstantiateInternalType (typeof (DomainObject).Assembly,
-          "Rubicon.Data.DomainObjects.Infrastructure.Interception.DomainObjectPropertyInterceptor");
+          "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectPropertyInterceptor");
       IInterceptorSelector<DomainObject> selector = (IInterceptorSelector<DomainObject>) GetFieldValue (interceptor, "Selector");
 
       IInterceptorSelector<DomainObject> outerSelector = (IInterceptorSelector<DomainObject>) InstantiateInternalType (typeof (DomainObject).Assembly,
-          "Rubicon.Data.DomainObjects.Infrastructure.Interception.DomainObjectInterceptorSelector");
+          "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectInterceptorSelector");
       IInterceptor<DomainObject> interceptorOfOuter = (IInterceptor<DomainObject>) GetFieldValue (outerSelector, "_propertyInterceptor");
 
       MethodInfo basePropertyGet = typeof (OrderWithNewPropertyAccess).GetMethod ("get_BaseProperty");
@@ -98,11 +98,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public void PropInterceptorShouldInterceptAutoPropertiesInMapping ()
     {
       IInterceptor<DomainObject> interceptor = (IInterceptor<DomainObject>) InstantiateInternalType (typeof (DomainObject).Assembly,
-          "Rubicon.Data.DomainObjects.Infrastructure.Interception.DomainObjectPropertyInterceptor");
+          "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectPropertyInterceptor");
       IInterceptorSelector<DomainObject> selector = (IInterceptorSelector<DomainObject>) GetFieldValue (interceptor, "Selector");
       
       IInterceptorSelector<DomainObject> outerSelector = (IInterceptorSelector<DomainObject>) InstantiateInternalType (typeof (DomainObject).Assembly,
-          "Rubicon.Data.DomainObjects.Infrastructure.Interception.DomainObjectInterceptorSelector");
+          "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectInterceptorSelector");
       IInterceptor<DomainObject> interceptorOfOuter = (IInterceptor<DomainObject>) GetFieldValue (outerSelector, "_propertyInterceptor");
 
       MethodInfo valuePropertyGet = typeof (Order).GetMethod ("get_DeliveryDate");
@@ -135,11 +135,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public void NoInterceptorShouldInterceptPropertiesNotInMapping ()
     {
       IInterceptor<DomainObject> interceptor = (IInterceptor<DomainObject>) InstantiateInternalType (typeof (DomainObject).Assembly,
-          "Rubicon.Data.DomainObjects.Infrastructure.Interception.DomainObjectPropertyInterceptor");
+          "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectPropertyInterceptor");
       IInterceptorSelector<DomainObject> selector = (IInterceptorSelector<DomainObject>) GetFieldValue (interceptor, "Selector");
       
       IInterceptorSelector<DomainObject> outerSelector = (IInterceptorSelector<DomainObject>) InstantiateInternalType (typeof (DomainObject).Assembly,
-          "Rubicon.Data.DomainObjects.Infrastructure.Interception.DomainObjectInterceptorSelector");
+          "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectInterceptorSelector");
 
       MethodInfo valuePropertyGet = typeof (OrderWithNewPropertyAccess).GetMethod ("get_NotInMapping");
       CheckInterception (false, selector, null, valuePropertyGet);
@@ -166,7 +166,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public void PropInterceptorShouldNotInterceptAnythingButProperties ()
     {
       IInterceptor<DomainObject> interceptor = (IInterceptor<DomainObject>) InstantiateInternalType (typeof (DomainObject).Assembly,
-          "Rubicon.Data.DomainObjects.Infrastructure.Interception.DomainObjectPropertyInterceptor");
+          "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectPropertyInterceptor");
       IInterceptorSelector<DomainObject> selector = (IInterceptorSelector<DomainObject>) GetFieldValue (interceptor, "Selector");
 
       MethodInfo[] methods = typeof (OrderWithNewPropertyAccess).GetMethods (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
@@ -183,11 +183,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public void TypeInterceptorShouldInterceptGetPublicType ()
     {
       IInterceptor<DomainObject> interceptor = (IInterceptor<DomainObject>) InstantiateInternalType (typeof (DomainObject).Assembly,
-          "Rubicon.Data.DomainObjects.Infrastructure.Interception.DomainObjectTypeInterceptor");
+          "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectTypeInterceptor");
       IInterceptorSelector<DomainObject> selector = (IInterceptorSelector<DomainObject>) GetFieldValue (interceptor, "Selector");
 
       IInterceptorSelector<DomainObject> outerSelector = (IInterceptorSelector<DomainObject>) InstantiateInternalType (typeof (DomainObject).Assembly,
-          "Rubicon.Data.DomainObjects.Infrastructure.Interception.DomainObjectInterceptorSelector");
+          "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectInterceptorSelector");
       IInterceptor<DomainObject> interceptorOfOuter = (IInterceptor<DomainObject>) GetFieldValue (outerSelector, "_typeInterceptor");
 
       MethodInfo getPublicType = typeof (OrderWithNewPropertyAccess).GetMethod ("GetPublicDomainObjectType", 
@@ -200,7 +200,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public void TypeInterceptorShouldNotInterceptAnythingElse()
     {
       IInterceptor<DomainObject> interceptor = (IInterceptor<DomainObject>) InstantiateInternalType (typeof (DomainObject).Assembly,
-          "Rubicon.Data.DomainObjects.Infrastructure.Interception.DomainObjectTypeInterceptor");
+          "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectTypeInterceptor");
       IInterceptorSelector<DomainObject> selector = (IInterceptorSelector<DomainObject>) GetFieldValue (interceptor, "Selector");
 
       MethodInfo getPublicType = typeof (OrderWithNewPropertyAccess).GetMethod ("GetPublicDomainObjectType",
@@ -233,7 +233,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public void PropSelectionThrowsOnAbstractUndefined ()
     {
       IInterceptor<DomainObject> interceptor = (IInterceptor<DomainObject>) InstantiateInternalType (typeof (DomainObject).Assembly,
-          "Rubicon.Data.DomainObjects.Infrastructure.Interception.DomainObjectPropertyInterceptor");
+          "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectPropertyInterceptor");
       IInterceptorSelector<DomainObject> selector = (IInterceptorSelector<DomainObject>) GetFieldValue (interceptor, "Selector");
 
       selector.ShouldInterceptMethod (typeof (InterceptedPropertyTest.NonInstantiableAbstractClassWithProps),
@@ -249,7 +249,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public void PropSelectionThrowsOnAbstractRelatedCollectionSetter ()
     {
       IInterceptor<DomainObject> interceptor = (IInterceptor<DomainObject>) InstantiateInternalType (typeof (DomainObject).Assembly,
-          "Rubicon.Data.DomainObjects.Infrastructure.Interception.DomainObjectPropertyInterceptor");
+          "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectPropertyInterceptor");
       IInterceptorSelector<DomainObject> selector = (IInterceptorSelector<DomainObject>) GetFieldValue (interceptor, "Selector");
 
       selector.ShouldInterceptMethod (typeof (InterceptedPropertyTest.NonInstantiableClassWithAutomaticRelatedCollectionSetter),
@@ -259,7 +259,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [Test]
     public void GetIdentifierFromProperty ()
     {
-      Type t = typeof (DomainObject).Assembly.GetType ("Rubicon.Data.DomainObjects.Infrastructure.Interception.DomainObjectPropertyInterceptor");
+      Type t = typeof (DomainObject).Assembly.GetType ("Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectPropertyInterceptor");
 
       PropertyInfo property = typeof (OrderWithNewPropertyAccess).GetProperty ("Customer");
       Assert.AreEqual (property.DeclaringType.FullName + "." + property.Name,
@@ -269,7 +269,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [Test]
     public void GetClassDefinitionIfRelevantProperty ()
     {
-      Type t = typeof (DomainObject).Assembly.GetType ("Rubicon.Data.DomainObjects.Infrastructure.Interception.DomainObjectPropertyInterceptorSelector");
+      Type t = typeof (DomainObject).Assembly.GetType ("Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectPropertyInterceptorSelector");
 
       Assert.IsNotNull (PrivateInvoke.InvokePublicStaticMethod(t, "GetClassDefinitionIfRelevantProperty", typeof (OrderWithNewPropertyAccess),
         MakeID ("OrderItems")));

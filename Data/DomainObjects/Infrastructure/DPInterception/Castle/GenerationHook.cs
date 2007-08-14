@@ -5,7 +5,7 @@ using Castle.DynamicProxy;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle
+namespace Rubicon.Data.DomainObjects.Infrastructure.DPInterception.Castle
 {
   [Serializable]
   class GenerationHook<TTarget> : IProxyGenerationHook

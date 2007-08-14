@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
+namespace Rubicon.Data.DomainObjects.Infrastructure.DPInterception
 {
   public interface IInterceptorSelector<TTarget>
   {

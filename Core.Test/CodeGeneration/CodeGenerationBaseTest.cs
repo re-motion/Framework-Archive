@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Castle.DynamicProxy;
 using NUnit.Framework;
+using Rubicon.CodeGeneration.DPExtensions;
 using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Core.UnitTests.CodeGeneration
@@ -19,16 +20,9 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     [TearDown]
     public virtual void TearDown ()
     {
-      if (_scope.StrongNamedModule != null)
-      {
-        _scope.SaveAssembly (true);
+      string[] paths = AssemblySaver.SaveAssemblies (_scope);
+      foreach (string path in paths)
         PEVerifier.VerifyPEFile (_scope.StrongNamedModule.FullyQualifiedName);
-      }
-      if (_scope.WeakNamedModule != null)
-      {
-        _scope.SaveAssembly (true);
-        PEVerifier.VerifyPEFile (_scope.WeakNamedModule.FullyQualifiedName);
-      }
     }
 
     public ModuleScope Scope

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Castle.DynamicProxy;
+using Rubicon.CodeGeneration.DPExtensions;
 using Rubicon.Mixins.Definitions;
 using System.IO;
 using Rubicon.Utilities;
@@ -99,23 +100,10 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     public string[] SaveAssemblies ()
     {
-      List<string> paths = new List<string> ();
-
       if (!HasSignedAssembly && !HasUnsignedAssembly)
         throw new InvalidOperationException ("No types have been built, so no assembly has been generated.");
-
-      if (HasSignedAssembly)
-      {
-        Scope.SaveAssembly (true);
-        paths.Add (Scope.StrongNamedModule.FullyQualifiedName);
-      }
-
-      if (HasUnsignedAssembly)
-      {
-        Scope.SaveAssembly (false);
-        paths.Add (Scope.WeakNamedModule.FullyQualifiedName);
-      }
-      return paths.ToArray ();
+      else
+        return AssemblySaver.SaveAssemblies (_scope);
     }
 
     public void InitializeDeserializedMixinTarget (IMixinTarget instance, object[] mixinInstances)

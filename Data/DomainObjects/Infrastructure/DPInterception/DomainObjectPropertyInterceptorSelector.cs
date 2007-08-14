@@ -5,7 +5,7 @@ using System.Text;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
+namespace Rubicon.Data.DomainObjects.Infrastructure.DPInterception
 {
   [Serializable]
   internal class DomainObjectPropertyInterceptorSelector : IInterceptorSelector<DomainObject>
