@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Globalization;
+using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
@@ -550,11 +551,11 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
       case BocTextValueType.Byte:
       case BocTextValueType.Int16:
       case BocTextValueType.Int32:
-      case BocTextValueType.Integer:
       case BocTextValueType.Int64:
       case BocTextValueType.Decimal:
       case BocTextValueType.Double:
       case BocTextValueType.Single:
+      case BocTextValueType.Integer:
       {
         NumericValidator typeValidator = new NumericValidator();
         typeValidator.ID = baseID + "Type";
@@ -584,22 +585,27 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     {
       case BocTextValueType.Byte:
         return NumericValidationDataType.Byte;
+
       case BocTextValueType.Int16:
         return NumericValidationDataType.Int16;
+
       case BocTextValueType.Int32:
       case BocTextValueType.Integer:
         return NumericValidationDataType.Int32;
+
       case BocTextValueType.Int64:
         return NumericValidationDataType.Int64;
+
       case BocTextValueType.Decimal:
         return NumericValidationDataType.Decimal;
+
       case BocTextValueType.Double:
         return NumericValidationDataType.Double;
+
       case BocTextValueType.Single:
         return NumericValidationDataType.Single;
-      default:
-        throw new ArgumentOutOfRangeException ("valueType", valueType, "Only numeric value types are supported.");
     }
+    throw new ArgumentOutOfRangeException ("valueType", valueType, "Only numeric value types are supported.");
   }
 
   private ResourceIdentifier GetNumericValidatorErrorMessage (NumericValidationDataType dataType)
@@ -608,21 +614,26 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     {
       case NumericValidationDataType.Byte:
         return ResourceIdentifier.InvalidIntegerErrorMessage;
-      case NumericValidationDataType.Int16:
-        return ResourceIdentifier.InvalidIntegerErrorMessage;
-      case NumericValidationDataType.Int32:
-        return ResourceIdentifier.InvalidIntegerErrorMessage;
-      case NumericValidationDataType.Int64:
-        return ResourceIdentifier.InvalidIntegerErrorMessage;
+
       case NumericValidationDataType.Decimal:
         return ResourceIdentifier.InvalidDoubleErrorMessage;
+
       case NumericValidationDataType.Double:
         return ResourceIdentifier.InvalidDoubleErrorMessage;
+
+      case NumericValidationDataType.Int16:
+        return ResourceIdentifier.InvalidIntegerErrorMessage;
+
+      case NumericValidationDataType.Int32:
+        return ResourceIdentifier.InvalidIntegerErrorMessage;
+
+      case NumericValidationDataType.Int64:
+        return ResourceIdentifier.InvalidIntegerErrorMessage;
+
       case NumericValidationDataType.Single:
         return ResourceIdentifier.InvalidDoubleErrorMessage;
-      default:
-        throw new ArgumentOutOfRangeException ("dataType", dataType, "Only numeric value types are supported.");
     }
+    throw new ArgumentOutOfRangeException ("dataType", dataType, "Only numeric value types are supported.");
   }
 
   /// <summary> Handles refreshing the bound control. </summary>
@@ -669,19 +680,19 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     else if (property is IBusinessObjectNumericProperty)
     {
       IBusinessObjectNumericProperty numericProperty = (IBusinessObjectNumericProperty) property;
-      if (numericProperty.Type == typeof (Byte))
+      if (numericProperty.Type == typeof (byte))
         return BocTextValueType.Byte;
-      else if (numericProperty.Type == typeof (Decimal))
+      else if (numericProperty.Type == typeof (decimal))
         return BocTextValueType.Decimal;
-      else if (numericProperty.Type == typeof (Double))
+      else if (numericProperty.Type == typeof (double))
         return BocTextValueType.Double;
-      else if (numericProperty.Type == typeof (Int16))
+      else if (numericProperty.Type == typeof (short))
         return BocTextValueType.Int16;
-      else if (numericProperty.Type == typeof (Int32))
+      else if (numericProperty.Type == typeof (int))
         return BocTextValueType.Int32;
-      else if (numericProperty.Type == typeof (Int64))
+      else if (numericProperty.Type == typeof (long))
         return BocTextValueType.Int64;
-      else if (numericProperty.Type == typeof (Single))
+      else if (numericProperty.Type == typeof (float))
         return BocTextValueType.Single;
       else
         throw new NotSupportedException ("BocTextValue does not support property type " + property.GetType ());
@@ -729,29 +740,37 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
 
       switch (ActualValueType)
       {
-        case BocTextValueType.Byte:
-          return Byte.Parse (text);
-        case BocTextValueType.Date:
-          return DateTime.Parse (text).Date;
-        case BocTextValueType.DateTime:
-          return DateTime.Parse (text);
-        case BocTextValueType.Decimal:
-          return Decimal.Parse (text);
-        case BocTextValueType.Double:
-          return Double.Parse (text);
-        case BocTextValueType.Int16:
-          return Int16.Parse (text);
-        case BocTextValueType.Int32:
-          return Int32.Parse (text);
-        case BocTextValueType.Int64:
-          return Int64.Parse (text);
-        case BocTextValueType.Single:
-          return Single.Parse (text);
         case BocTextValueType.String:
           return text;
-        default:
-          return text;
+
+        case BocTextValueType.Byte:
+          return byte.Parse (text);
+
+        case BocTextValueType.Int16:
+          return short.Parse (text);
+
+        case BocTextValueType.Int32:
+          return int.Parse (text);
+
+        case BocTextValueType.Int64:
+          return long.Parse (text);
+
+        case BocTextValueType.Date:
+          return DateTime.Parse (text).Date;
+
+        case BocTextValueType.DateTime:
+          return DateTime.Parse (text);
+
+        case BocTextValueType.Decimal:
+          return decimal.Parse (text);
+
+        case BocTextValueType.Double:
+          return double.Parse (text);
+
+        case BocTextValueType.Single:
+          return float.Parse (text);
       }
+      return text;
     }
 
     set 
@@ -1090,11 +1109,11 @@ public enum BocTextValueType
   String,
   /// <summary> Interpret the value as an <see cref="Byte"/>. </summary>
   Byte,
-  /// <summary> Interpret the value as an <see cref="Int16"/>. </summary>
+  /// <summary> Interpret the value as a <see cref="Int16"/>. </summary>
   Int16,
-  /// <summary> Interpret the value as an <see cref="Int32"/>. </summary>
+  /// <summary> Interpret the value as a <see cref="Int32"/>. </summary>
   Int32,
-  /// <summary> Interpret the value as an <see cref="Int64"/>. </summary>
+  /// <summary> Interpret the value as a <see cref="Int64"/>. </summary>
   Int64,
   /// <summary> Interpret the value as a <see cref="DateTime"/> with the time component set to zero. </summary>
   Date,
@@ -1106,8 +1125,9 @@ public enum BocTextValueType
   Double,
   /// <summary> Interpret the value as a <see cref="Single"/>. </summary>
   Single,
-  /// <summary> Obsolete, interpret the value as an <see cref="Int32"/>. </summary>
+  /// <summary> Obsolete. Interpret the value as a <see cref="Int32"/>. </summary>
   [Obsolete ("Use Int32 instead. (Version 1.7.53)")]
+  [Browsable(false)]
   Integer,
 }
 
