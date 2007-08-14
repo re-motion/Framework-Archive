@@ -560,7 +560,6 @@
     <Content Include="Doc\include\Utilities\UrlUtility.xml" />
     <Content Include="Doc\WhatsNew_Rubicon.Web.txt" />
     <Content Include="Res\HTML\ColorScheme_1_3_26.css" />
-    <Content Include="Res\HTML\WebButtonXHtml10.css" />
     <Content Include="Res\HTML\DatePicker.js" />
     <Content Include="Res\HTML\DropDownMenu.css" />
     <Content Include="Res\HTML\DropDownMenu.js" />
