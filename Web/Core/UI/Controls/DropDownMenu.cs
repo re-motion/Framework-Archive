@@ -270,7 +270,7 @@ namespace Rubicon.Web.UI.Controls
 
     protected override HtmlTextWriterTag TagKey
     {
-      get { return HtmlTextWriterTag.Span; }
+      get { return HtmlTextWriterTag.Div; }
     }
 
     protected override void AddAttributesToRender (HtmlTextWriter writer)
