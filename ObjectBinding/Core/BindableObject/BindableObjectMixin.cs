@@ -1,9 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 using Rubicon.Mixins;
-using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Definitions;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
 

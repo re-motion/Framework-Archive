@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Development.UnitTesting;
 using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
@@ -26,6 +27,28 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
       IBusinessObjectWithIdentity businessObjectWithIdentity = mixin;
 
       Assert.That (businessObjectWithIdentity.UniqueIdentifier, Is.SameAs ("TheUniqueIdentifier"));
+    }
+
+    [Test]
+    public void SerializeAndDeserialize ()
+    {
+      ClassWithIdentity value = ObjectFactory.Create<ClassWithIdentity> ().With ();
+      value.String = "TheString";
+      ClassWithIdentity deserialized = Serializer.SerializeAndDeserialize (value);
+
+      Assert.That (deserialized.String, Is.EqualTo ("TheString"));
+      Assert.That (((IBusinessObject) deserialized).BusinessObjectClass, Is.SameAs (((IBusinessObject) value).BusinessObjectClass));
+    }
+
+    [Test]
+    public void SerializeAndDeserialize_WithNewBindableObjectProvider ()
+    {
+      ClassWithIdentity value = ObjectFactory.Create<ClassWithIdentity> ().With ();
+      byte[] serialized = Serializer.Serialize (value);
+      BindableObjectProvider.SetCurrent (null);
+      ClassWithIdentity deserialized = (ClassWithIdentity) Serializer.Deserialize (serialized);
+
+      Assert.That (((IBusinessObject) deserialized).BusinessObjectClass, Is.Not.SameAs (((IBusinessObject) value).BusinessObjectClass));
     }
   }
 }
