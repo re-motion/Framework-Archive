@@ -39,12 +39,20 @@ namespace Rubicon.Development.UnitTesting
         process.StartInfo.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
         process.StartInfo.Arguments = modulePath;
         process.Start();
-        process.WaitForExit();
+        
+        bool finished = process.WaitForExit (10000);
+        if (!finished)
+          process.Kill();
 
         string output = process.StandardOutput.ReadToEnd();
         Console.WriteLine ("PEVerify: " + process.ExitCode);
+
+        if (!finished)
+          throw new PEVerifyException ("PEVerify needed more than ten seconds to complete. Output was: " + output);
+
         if (process.ExitCode != 0)
           throw new PEVerifyException (process.ExitCode, output);
+
       }
     }
 

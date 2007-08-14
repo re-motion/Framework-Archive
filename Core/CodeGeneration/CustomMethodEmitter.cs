@@ -41,6 +41,11 @@ namespace Rubicon.CodeGeneration
       get { return _innerEmitter; }
     }
 
+    public ILGenerator ILGenerator
+    {
+      get { return _innerEmitter.CodeBuilder.Generator; }
+    }
+
     public string Name
     {
       get { return _name; }
@@ -59,6 +64,14 @@ namespace Rubicon.CodeGeneration
     public Type[] ParameterTypes
     {
       get { return _parameterTypes; }
+    }
+
+    public Expression[] GetArgumentExpressions ()
+    {
+      Expression[] argumentExpressions = new Expression[ArgumentReferences.Length];
+      for (int i = 0; i < argumentExpressions.Length; ++i)
+        argumentExpressions[i] = ArgumentReferences[i].ToExpression ();
+      return argumentExpressions;
     }
 
     public CustomMethodEmitter SetParameterTypes (params Type[] parameters)
@@ -126,9 +139,7 @@ namespace Rubicon.CodeGeneration
 
     private void AddDelegatingCallStatements (MethodInfo methodToCall, Reference owner, bool callVirtual)
     {
-      Expression[] argumentExpressions = new Expression[ArgumentReferences.Length];
-      for (int i = 0; i < argumentExpressions.Length; ++i)
-        argumentExpressions[i] = ArgumentReferences[i].ToExpression ();
+      Expression[] argumentExpressions = GetArgumentExpressions();
 
       MethodInvocationExpression delegatingCall;
       if (callVirtual)
@@ -138,7 +149,6 @@ namespace Rubicon.CodeGeneration
 
       AddStatement (new ReturnStatement (delegatingCall));
     }
-
 
     public CustomMethodEmitter ImplementByThrowing (Type exceptionType, string message)
     {

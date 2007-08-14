@@ -6,6 +6,7 @@ using Rubicon.CodeGeneration;
 using System.Reflection;
 using Rubicon.Core.UnitTests.CodeGeneration.SampleTypes;
 using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Core.UnitTests.CodeGeneration
 {
@@ -100,6 +101,33 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
 
       object returnValue = BuildTypeAndInvokeMethod (method, "Param");
       Assert.AreEqual ("ParamSimple", returnValue);
+    }
+
+    [Test]
+    public void ILGenerator ()
+    {
+      CustomMethodEmitter method = _classEmitter.CreateMethod ("StaticMethod", MethodAttributes.Public | MethodAttributes.Static)
+          .SetReturnType (typeof (string));
+      ILGenerator gen = method.ILGenerator;
+      Assert.IsNotNull (gen);
+      gen.Emit (OpCodes.Ldstr, "manual retval");
+      gen.Emit (OpCodes.Ret);
+
+      object returnValue = BuildTypeAndInvokeMethod (method);
+      Assert.AreEqual ("manual retval", returnValue);
+    }
+
+    [Test]
+    public void GetArgumentExpressions ()
+    {
+      CustomMethodEmitter method = _classEmitter.CreateMethod ("StaticMethod", MethodAttributes.Public | MethodAttributes.Static)
+          .SetReturnType (typeof (string))
+          .SetParameterTypes (new Type[] { typeof (string) });
+      Expression[] argumentExpressions = method.GetArgumentExpressions ();
+
+      Assert.AreEqual (method.ArgumentReferences.Length, argumentExpressions.Length);
+      for (int i = 0; i < argumentExpressions.Length; ++i)
+        Assert.AreEqual (method.ArgumentReferences[i], PrivateInvoke.GetNonPublicField (argumentExpressions[i], "reference"));
     }
 
     [Test]
