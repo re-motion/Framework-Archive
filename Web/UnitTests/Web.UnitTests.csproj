@@ -250,6 +250,16 @@
     <Compile Include="UI\Controls\NavigationCommandTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Controls\NumericValidatorTests\Common.cs" />
+    <Compile Include="UI\Controls\NumericValidatorTests\ValidateWithSingle.cs" />
+    <Compile Include="UI\Controls\NumericValidatorTests\ValidateWithInt64.cs" />
+    <Compile Include="UI\Controls\NumericValidatorTests\ValidateWithByte.cs" />
+    <Compile Include="UI\Controls\NumericValidatorTests\ValidateWithInt16.cs" />
+    <Compile Include="UI\Controls\NumericValidatorTests\ValidateWithDecimal.cs" />
+    <Compile Include="UI\Controls\NumericValidatorTests\ValidateWithDouble.cs" />
+    <Compile Include="UI\Controls\NumericValidatorTests\NumericValidatorMock.cs" />
+    <Compile Include="UI\Controls\NumericValidatorTests\TestBase.cs" />
+    <Compile Include="UI\Controls\NumericValidatorTests\ValidateWithInt32.cs" />
     <Compile Include="UI\Controls\TabbedMenuMock.cs">
       <SubType>Code</SubType>
     </Compile>

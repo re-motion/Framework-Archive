@@ -232,9 +232,10 @@
     <Compile Include="UI\Controls\BocTextBoxValueMock.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Controls\BocTextValueTest.cs">
+    <Compile Include="UI\Controls\BocTextValueTests\Common.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Controls\BocTextValueTests\AllDataTypes.cs" />
     <Compile Include="UI\Controls\BocTreeViewMock.cs">
       <SubType>Code</SubType>
     </Compile>

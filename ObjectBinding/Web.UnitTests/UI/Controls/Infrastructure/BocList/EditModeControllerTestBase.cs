@@ -51,8 +51,8 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls.Infrastructure.BocList
 
       _class = BindableObjectProvider.Current.GetBindableObjectClass (typeof (TypeWithAllDataTypes));
 
-      _stringValuePath = BusinessObjectPropertyPath.Parse (_class, "StringValue");
-      _int32ValuePath = BusinessObjectPropertyPath.Parse (_class, "Int32Value");
+      _stringValuePath = BusinessObjectPropertyPath.Parse (_class, "String");
+      _int32ValuePath = BusinessObjectPropertyPath.Parse (_class, "Int32");
 
       _stringValueSimpleColumn = new BocSimpleColumnDefinition();
       _stringValueSimpleColumn.PropertyPath = _stringValuePath;
@@ -135,8 +135,8 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls.Infrastructure.BocList
     {
       TypeWithAllDataTypes typeWithAllDataTypes = ArgumentUtility.CheckNotNullAndType<TypeWithAllDataTypes> ("value", value);
 
-      Assert.AreEqual (stringValue, typeWithAllDataTypes.StringValue);
-      Assert.AreEqual (int32Value, typeWithAllDataTypes.Int32Value);
+      Assert.AreEqual (stringValue, typeWithAllDataTypes.String);
+      Assert.AreEqual (int32Value, typeWithAllDataTypes.Int32);
     }
 
     protected void CheckEvents (StringCollection expected, StringCollection actual)

@@ -48,8 +48,8 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls.Infrastructure.BocList
 
       _typeWithAllDataTypesClass = BindableObjectProvider.Current.GetBindableObjectClass (typeof (TypeWithAllDataTypes));
 
-      _typeWithAllDataTypesStringValuePath = BusinessObjectPropertyPath.Parse (_typeWithAllDataTypesClass, "StringValue");
-      _typeWithAllDataTypesInt32ValuePath = BusinessObjectPropertyPath.Parse (_typeWithAllDataTypesClass, "Int32Value");
+      _typeWithAllDataTypesStringValuePath = BusinessObjectPropertyPath.Parse (_typeWithAllDataTypesClass, "String");
+      _typeWithAllDataTypesInt32ValuePath = BusinessObjectPropertyPath.Parse (_typeWithAllDataTypesClass, "Int32");
 
       _typeWithAllDataTypesStringValueSimpleColumn = new BocSimpleColumnDefinition();
       _typeWithAllDataTypesStringValueSimpleColumn.PropertyPath = _typeWithAllDataTypesStringValuePath;
@@ -349,8 +349,8 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls.Infrastructure.BocList
 
       dataSource.SaveValues (false);
 
-      Assert.AreEqual ("New Value A", ((TypeWithAllDataTypes) _value01).StringValue);
-      Assert.AreEqual (100, ((TypeWithAllDataTypes) _value01).Int32Value);
+      Assert.AreEqual ("New Value A", ((TypeWithAllDataTypes) _value01).String);
+      Assert.AreEqual (100, ((TypeWithAllDataTypes) _value01).Int32);
     }
 
 

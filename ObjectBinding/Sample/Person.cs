@@ -29,8 +29,8 @@ namespace Rubicon.ObjectBinding.Sample
     private string _firstName;
     private string _lastName;
     private DateTime _dateOfBirth;
-    private int _height;
-    private double? _income = 1000.50f;
+    private byte _height;
+    private decimal? _income = 1000.50m;
     private Gender _gender;
     private MarriageStatus _marriageStatus;
     private DateTime _dateOfDeath;
@@ -66,14 +66,14 @@ namespace Rubicon.ObjectBinding.Sample
     }
 
     [XmlAttribute]
-    public int Height
+    public byte Height
     {
       get { return _height; }
       set { _height = value; }
     }
 
     [XmlElement]
-    public double? Income
+    public decimal? Income
     {
       get { return _income; }
       set { _income = value; }
