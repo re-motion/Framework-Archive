@@ -28,7 +28,7 @@ namespace OBWTest.IndividualControlTests
     {
       base.OnInit (e);
 
-      EnableAbort = false;
+      //EnableAbort = false;
       EnableOutOfSequencePostBacks = true;
       ShowAbortConfirmation = ShowAbortConfirmation.OnlyIfDirty;
     }

@@ -364,7 +364,6 @@ namespace Rubicon.Web.UI
       initScript.AppendLine ("SmartPage_Context.Instance = new SmartPage_Context (");
       initScript.Append ("    '").Append (_page.HtmlForm.ClientID).AppendLine ("',");
       initScript.Append ("    ").Append (isDirtyStateTrackingEnabled).AppendLine (",");
-      initScript.Append ("    ").Append (isDirty).AppendLine (",");
       initScript.Append ("    ").Append (abortMessage).AppendLine (",");
       initScript.Append ("    ").Append (statusIsSubmittingMessage).AppendLine (",");
       initScript.Append ("    ").Append (smartScrollingFieldID).AppendLine (",");
@@ -388,7 +387,7 @@ namespace Rubicon.Web.UI
       ScriptManager scriptManager = ScriptManager.GetCurrent ((Page) _page);
       if (scriptManager != null && scriptManager.IsInAsyncPostBack)
         isAsynchronous = "true";
-      ScriptUtility.RegisterStartupScriptBlock ((Page) _page, "smartPageStartUp", "SmartPage_OnStartUp (" + isAsynchronous + ");");
+      ScriptUtility.RegisterStartupScriptBlock ((Page) _page, "smartPageStartUp", "SmartPage_OnStartUp (" + isAsynchronous + ", " + isDirty +");");
 
       // Ensure the __doPostBack function on the rendered page
       _page.GetPostBackEventReference ((Page) _page);

@@ -14,7 +14,7 @@
 // eventHandlers: The hashtable of eventhandlers: Hashtable < event-key, Array < event-handler > >
 function SmartPage_Context (
     theFormID, 
-    isDirtyStateTrackingEnabled, isDirty,
+    isDirtyStateTrackingEnabled,
     abortMessage, statusIsSubmittingMessage,
     smartScrollingFieldID, smartFocusFieldID,
     checkFormStateFunctionName,
@@ -22,7 +22,6 @@ function SmartPage_Context (
 {
   ArgumentUtility.CheckNotNullAndTypeIsString ('theFormID', theFormID);
   ArgumentUtility.CheckNotNullAndTypeIsBoolean ('isDirtyStateTrackingEnabled', isDirtyStateTrackingEnabled);
-  ArgumentUtility.CheckNotNullAndTypeIsBoolean ('isDirty', isDirty);
   ArgumentUtility.CheckTypeIsString ('abortMessage', abortMessage);
   ArgumentUtility.CheckTypeIsString ('statusIsSubmittingMessage', statusIsSubmittingMessage);
   ArgumentUtility.CheckTypeIsString ('smartScrollingFieldID', smartScrollingFieldID);
@@ -33,7 +32,7 @@ function SmartPage_Context (
   var _theForm;
     
   var _isDirtyStateTrackingEnabled = isDirtyStateTrackingEnabled;
-  var _isDirty = isDirty;
+  var _isDirty = false;
     
   // The message displayed when the user attempts to leave the page.
   // null to disable the message.
@@ -164,10 +163,16 @@ function SmartPage_Context (
 
   // Called after page's html content is complete.
   // Used to perform initalization code that only requires complete the HTML source but not necessarily all images.
-  this.OnStartUp = function (isAsynchronous)
+  this.OnStartUp = function (isAsynchronous, isDirty)
   {
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean ('isAsynchronous', isAsynchronous);
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean ('isDirty', isDirty);
+
+    _isDirty = isDirty;
+    
     if (_isDirtyStateTrackingEnabled)
       SetDataChangedEventHandlers (_theForm);
+      
     if (! _isMsIE)
   	  SetFocusEventHandlers (window.document.body);
 	  
@@ -1032,9 +1037,9 @@ function SmartPage_Context (
 SmartPage_Context.Instance = null;
 
 // Called after page's html content is complete.
-function SmartPage_OnStartUp (isAsynchronous)
+function SmartPage_OnStartUp (isAsynchronous, isDirty)
 {
-  SmartPage_Context.Instance.OnStartUp (isAsynchronous);
+  SmartPage_Context.Instance.OnStartUp (isAsynchronous, isDirty);
 }
 
 function SmartPage_PageRequestManager_pageLoaded (sender, args)
