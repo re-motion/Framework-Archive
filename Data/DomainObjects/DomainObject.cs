@@ -31,8 +31,8 @@ public class DomainObject
   /// <remarks>
   /// <para>
   /// This method's return value is an <see cref="FuncInvoker{T}"/> object, which can be used to specify the required constructor and 
-  /// pass it the necessary arguments in order to create a new domain object. Depending on the mapping being used by the object (and
-  /// on whether <see cref="FactoryInstantiationScope"/> is being used), one of two methods of object creation is used: legacy or via factory.
+  /// pass it the necessary arguments in order to create a new domain object. Depending on the mapping being used by the object, one of two
+  /// methods of object creation is used: legacy or via factory.
   /// </para>
   /// <para>
   /// Legacy objects are created by simply invoking the constructor matching the arguments passed to the <see cref="FuncInvoker{T}"/>
@@ -250,12 +250,9 @@ public class DomainObject
 
   #endregion
 
-  // True if the domain object type requires to be instantiated via the DomainObjectFactory; false if it is safe to just invoke its constructor.
+  // True if the domain object type requires to be instantiated via a IDomainObjectFactory; false if it is safe to just invoke its constructor.
   private static bool ShouldUseFactoryForInstantiation (Type domainObjectType)
   {
-    if (FactoryInstantiationScope.WithinScope)
-      return true;
-    
     ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (domainObjectType);
     return classDefinition is ReflectionBasedClassDefinition;
   }
@@ -264,7 +261,7 @@ public class DomainObject
   private static IDomainObjectCreator GetCreator (Type domainObjectType)
   {
     if (ShouldUseFactoryForInstantiation (domainObjectType))
-      return NewStyleDomainObjectCreator.Instance;
+      return DPInterceptedDomainObjectCreator.Instance;
     else
       return LegacyDomainObjectCreator.Instance;
   }
@@ -608,7 +605,7 @@ public class DomainObject
   /// </summary>
   /// <param name="propertyName">The name of the <see cref="PropertyValue"/> to be accessed.</param>
   /// <remarks>This method prepares the given property for access via <see cref="CurrentProperty"/>.
-  /// It is automatically invoked for virtual properties in domain objects created with the <see cref="DomainObjectFactory"/> and thus doesn't
+  /// It is automatically invoked for virtual properties in domain objects created with interception support and thus doesn't
   /// have to be called manually for these objects. If you choose to invoke <see cref="PreparePropertyAccess"/> and
   /// <see cref="PropertyAccessFinished"/> yourself, be sure to finish the property access with exactly one call to 
   /// <see cref="PropertyAccessFinished"/> from a finally-block.</remarks>
@@ -636,7 +633,7 @@ public class DomainObject
   /// Indicates that access to the <see cref="PropertyValue"/> of the given name is finished.
   /// </summary>
   /// <remarks>This method must be executed after a property previously prepared via <see cref="PreparePropertyAccess"/> has been accessed as needed.
-  /// It is automatically invoked for virtual properties in domain objects created with the <see cref="DomainObjectFactory"/> and thus doesn't
+  /// It is automatically invoked for virtual properties in domain objects created with interception suppport and thus doesn't
   /// have to be called manually for these objects. If you choose to invoke <see cref="PreparePropertyAccess"/> and
   /// <see cref="PropertyAccessFinished"/> yourself, be sure to invoke this method in a finally-block in order to guarantee its execution.</remarks>
   /// <exception cref="InvalidOperationException">There is no property to be finished. There is likely a mismatched number of calls to
@@ -650,8 +647,8 @@ public class DomainObject
   /// Retrieves the current property name and throws an exception if there is no current property.
   /// </summary>
   /// <returns>The current property name.</returns>
-  /// <remarks>Retrieves the current property name previously initialized via <see cref="PreparePropertyAccess"/>. Domain objects created with the
-  /// <see cref="DomainObjectFactory"/> automatically initialize their virtual properties without needing any further work.</remarks>
+  /// <remarks>Retrieves the current property name previously initialized via <see cref="PreparePropertyAccess"/>. Domain objects created with 
+  /// interception support automatically initialize their virtual properties without needing any further work.</remarks>
   /// <exception cref="InvalidOperationException">There is no current property or it hasn't been properly initialized.</exception>
   protected internal virtual string GetAndCheckCurrentPropertyName ()
   {

@@ -7,9 +7,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   /// Public interface for a factory creating instances of domain objects.
   /// </summary>
   /// <remarks>
-  /// This interface is used internally by <see cref="DomainObject.NewObject"/> (indirectly via <see cref="NewStyleDomainObjectCreator"/>
-  /// and should likely not be used directly. If a factory really needs to be accessed directly,
-  /// <see cref="Rubicon.Data.DomainObjects.Configuration.DomainObjectsConfiguration"/> can be used to access the current factory.
+  /// This interface is used internally by <see cref="DomainObject.NewObject"/> and will likely not be used directly.
+  /// If a factory does need to be accessed directly,
+  /// <see cref="Rubicon.Data.DomainObjects.Configuration.DomainObjectsConfiguration"/> can be used to access the currently used implementation
+  /// of this interface.
   /// </remarks>
   public interface IDomainObjectFactory
   {

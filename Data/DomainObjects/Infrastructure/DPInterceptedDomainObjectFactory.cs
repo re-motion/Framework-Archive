@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   /// <summary>
   /// Default implementation of <see cref="IDomainObjectFactory"/>.
   /// </summary>
-  public class DomainObjectFactory : IDomainObjectFactory
+  public class DPInterceptedDomainObjectFactory : IDomainObjectFactory
   {
     private readonly IInterceptableObjectGenerator<DomainObject> _generator =
         new CastleInterceptableObjectGenerator<DomainObject>(new DomainObjectInterceptorSelector());

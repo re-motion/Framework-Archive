@@ -78,7 +78,6 @@
     <Compile Include="DomainObjects\ChangeUnidirectionalRelationWithNullTest.cs" />
     <Compile Include="DomainObjects\DomainObjectTest.cs" />
     <Compile Include="DomainObjects\NewDomainObjectTest.cs" />
-    <Compile Include="DomainObjects\OldPropertyStyleDomainObjectsWithFactoryTest.cs" />
     <Compile Include="EventReceiver\ChangeState.cs" />
     <Compile Include="EventReceiver\CollectionChangeState.cs" />
     <Compile Include="EventReceiver\DomainObjectCollectionEventReceiver.cs" />

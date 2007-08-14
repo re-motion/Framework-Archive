@@ -196,7 +196,7 @@
     <Compile Include="Design\DomainObjectsDesignModeHelperTest.cs" />
     <Compile Include="Design\FakeDesignModeMappingLoader.cs" />
     <Compile Include="DomainObjects\ConstructionTest.cs" />
-    <Compile Include="DomainObjects\InterceptorsTest.cs" />
+    <Compile Include="Interception\InterceptorsTest.cs" />
     <Compile Include="Factories\BaseConfiguration.cs" />
     <Compile Include="Persistence\MixedStorageProviderTest.cs" />
     <Compile Include="Persistence\StorageProviderWithFixedGuidMixin.cs" />
@@ -204,7 +204,7 @@
     <Compile Include="Persistence\Rdbms\InsertCommandBuilderTest.cs" />
     <Compile Include="Persistence\Rdbms\QueryCommandBuilderTest.cs" />
     <Compile Include="StandardMappingTest.cs" />
-    <Compile Include="DomainObjects\InterceptedPropertyTest.cs" />
+    <Compile Include="Interception\InterceptedPropertyTest.cs" />
     <Compile Include="Configuration\StorageProviders\StorageProviderConfigurationTest.cs" />
     <Compile Include="Factories\TestDomainFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

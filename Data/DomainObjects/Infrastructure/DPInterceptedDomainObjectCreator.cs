@@ -10,13 +10,13 @@ using Rubicon.Logging;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
-  // Creates new domain object instances via the DomainObjectFactory.
+  // Creates new domain object instances via the DPInterceptedDomainObjectFactory.
   // Needed constructors:
   // (any constructor) -- for new objects
   // no constructor for loading required
-  class NewStyleDomainObjectCreator : IDomainObjectCreator
+  class DPInterceptedDomainObjectCreator : IDomainObjectCreator
   {
-    public readonly static NewStyleDomainObjectCreator Instance = new NewStyleDomainObjectCreator ();
+    public readonly static DPInterceptedDomainObjectCreator Instance = new DPInterceptedDomainObjectCreator ();
 
     public DomainObject CreateWithDataContainer (DataContainer dataContainer)
     {

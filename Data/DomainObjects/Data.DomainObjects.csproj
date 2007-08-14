@@ -167,8 +167,7 @@
     <Compile Include="Infrastructure\LegacyDomainObjectCreator.cs" />
     <Compile Include="CurrentPropertyManager.cs" />
     <Compile Include="Development\FakeDomainObjectsConfiguration.cs" />
-    <Compile Include="Infrastructure\DomainObjectFactory.cs" />
-    <Compile Include="FactoryInstantiationScope.cs" />
+    <Compile Include="Infrastructure\DPInterceptedDomainObjectFactory.cs" />
     <Compile Include="Configuration\DomainObjectsConfiguration.cs" />
     <Compile Include="ObjectList.cs" />
     <Compile Include="Infrastructure\IDomainObjectCreator.cs" />
@@ -185,7 +184,7 @@
     <Compile Include="Infrastructure\Interception\IInterceptorSelector.cs" />
     <Compile Include="Infrastructure\Interception\IInvocation.cs" />
     <Compile Include="Mapping\Configuration\MappingLoaderConfiguration.cs" />
-    <Compile Include="Infrastructure\NewStyleDomainObjectCreator.cs" />
+    <Compile Include="Infrastructure\DPInterceptedDomainObjectCreator.cs" />
     <Compile Include="Persistence\Configuration\PersistenceConfiguration.cs" />
     <Compile Include="Persistence\Configuration\StorageProviderDefinitionHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

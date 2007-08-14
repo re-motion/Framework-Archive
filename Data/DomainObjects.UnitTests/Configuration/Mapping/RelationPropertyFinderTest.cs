@@ -27,7 +27,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       Assert.That (
           propertyFinder.FindPropertyInfos (CreateReflectionBasedClassDefinition (typeof (ClassWithMixedProperties))),
-          Is.EqualTo (
+          Is.EquivalentTo (
               new PropertyInfo[]
                   {
                       GetProperty (typeof (ClassWithMixedPropertiesNotInMapping), "BaseUnidirectionalOneToOne"),
@@ -43,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       Assert.That (
           propertyFinder.FindPropertyInfos (CreateReflectionBasedClassDefinition (typeof (ClassWithOneSideRelationProperties))),
-          Is.EqualTo (
+          Is.EquivalentTo (
               new PropertyInfo[]
                   {
                       GetProperty (typeof (ClassWithOneSideRelationPropertiesNotInMapping), "BaseBidirectionalOneToOne"),

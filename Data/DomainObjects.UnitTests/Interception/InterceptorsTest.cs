@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 {
   [TestFixture]
   public class InterceptorsTest : StandardMappingTest
@@ -227,8 +227,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException(typeof (NonInterceptableTypeException), ExpectedMessage =  "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "DomainObjects.InterceptedPropertyTest+NonInstantiableAbstractClassWithProps, property Foo is abstract but not "
-        + "defined in the mapping (assumed property id: Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
+        + "Interception.InterceptedPropertyTest+NonInstantiableAbstractClassWithProps, property Foo is abstract but not "
+        + "defined in the mapping (assumed property id: Rubicon.Data.DomainObjects.UnitTests.Interception."
         + "InterceptedPropertyTest+NonInstantiableAbstractClassWithProps.Foo).")]
     public void PropSelectionThrowsOnAbstractUndefined ()
     {
@@ -242,9 +242,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "DomainObjects.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, "
+        + "Interception.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, "
         + "automatic properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data."
-        + "DomainObjects.UnitTests.DomainObjects.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
+        + "DomainObjects.UnitTests.Interception.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
         + "RelatedObjects'.")]
     public void PropSelectionThrowsOnAbstractRelatedCollectionSetter ()
     {

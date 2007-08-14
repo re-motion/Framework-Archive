@@ -11,7 +11,7 @@ using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Infrastructure;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 {
   [TestFixture]
   public class InterceptedPropertyTest : ClientTransactionBaseTest
@@ -201,11 +201,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void ShouldUseFactoryForInstantiation ()
     {
       Assert.IsTrue (ShouldUseFactoryForInstantiation (typeof (OrderItem)));
-
-      using (new FactoryInstantiationScope ())
-      {
-        Assert.IsTrue (ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
-      }
       Assert.IsTrue (ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
     }
 
@@ -249,35 +244,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "DomainObjects.InterceptedPropertyTest+NonInstantiableAbstractClass as its member Foo is abstract (and not an "
+        + "Interception.InterceptedPropertyTest+NonInstantiableAbstractClass as its member Foo is abstract (and not an "
         + "automatic property).\r\nParameter name: type")]
     public void AbstractWithMethodCannotBeInstantiated ()
     {
-      using (new FactoryInstantiationScope ())
-      {
-        NonInstantiableAbstractClass.NewObject ();
-      }
+      NonInstantiableAbstractClass.NewObject ();
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type "
-        + "Rubicon.Data.DomainObjects.UnitTests.DomainObjects.InterceptedPropertyTest+NonInstantiableAbstractClassWithProps, "
+        + "Rubicon.Data.DomainObjects.UnitTests.Interception.InterceptedPropertyTest+NonInstantiableAbstractClassWithProps, "
         + "property Foo is abstract but not defined in the mapping (assumed property id: "
-        + "Rubicon.Data.DomainObjects.UnitTests.DomainObjects.InterceptedPropertyTest+NonInstantiableAbstractClassWithProps.Foo)."
+        + "Rubicon.Data.DomainObjects.UnitTests.Interception.InterceptedPropertyTest+NonInstantiableAbstractClassWithProps.Foo)."
         + "\r\nParameter name: type")]
     public void AbstractWithNonAutoPropertiesCannotBeInstantiated ()
     {
-      using (new FactoryInstantiationScope ())
-      {
-        NonInstantiableAbstractClassWithProps.NewObject ();
-      }
+      NonInstantiableAbstractClassWithProps.NewObject ();
     }
 
     [Test]
     [ExpectedException(typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "DomainObjects.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, automatic "
+        + "Interception.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, automatic "
         + "properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data.DomainObjects."
-        + "UnitTests.DomainObjects.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
+        + "UnitTests.Interception.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
         + "RelatedObjects'.\r\nParameter name: type")]
     public void AbstractWithAutoCollectionSetterCannotBeInstantiated ()
     {
@@ -285,14 +274,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.Interception."
         + "InterceptedPropertyTest+NonInstantiableSealedClass as it is sealed.\r\nParameter name: baseType")]
     public void SealedCannotBeInstantiated ()
     {
-      using (new FactoryInstantiationScope ())
-      {
-        NonInstantiableSealedClass.NewObject ();
-      }
+      NonInstantiableSealedClass.NewObject ();
     }
 
     [Test]
@@ -324,14 +310,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (Exception), ExpectedMessage = "Thrown in ThrowException()")]
     public void NewConstructorThrowIsPropagated ()
     {
-      using (new FactoryInstantiationScope ())
-      {
-        Throws.NewObject ();
-      }
+      Throws.NewObject ();
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.Interception."
         + "InterceptedPropertyTest+ClassWithWrongConstructor does not support the requested constructor with signature ().")]
     public void NewConstructorMismatch1 ()
     {
@@ -339,15 +322,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.Interception."
         + "InterceptedPropertyTest+ClassWithWrongConstructor does not support the requested constructor with signature "
         + "(System.Double).")]
     public void NewConstructorMismatch2 ()
     {
-      using (new FactoryInstantiationScope ())
-      {
-        ClassWithWrongConstructor.NewObject (3.0);
-      }
+      ClassWithWrongConstructor.NewObject (3.0);
     }
 
     [Test]
@@ -476,10 +456,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         + "AbstractClass as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.\r\nParameter name: baseType")]
     public void CannotInstantiateReallyAbstractClass ()
     {
-      using (new FactoryInstantiationScope ())
-      {
-        AbstractClass.NewObject ();
-      }
+      AbstractClass.NewObject ();
     }
 
     [Test]
