@@ -20,7 +20,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     {
     }
 
-    protected override TestTransaction CreateRootTransaction ()
+    protected override TestTransaction GetRootTransactionFromFunction ()
     {
       _hasCreatedRootTransaction = true;
       return new TestTransaction ();

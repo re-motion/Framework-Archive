@@ -4,11 +4,11 @@ using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
-  public class WxeTestTransaction : WxeTransactionBase<TestTransaction>
+  public class TestWxeTransaction : WxeTransactionBase<TestTransaction>
   {
     private readonly Stack<TestTransaction> _previousTransactionsStack = new Stack<TestTransaction> ();
 
-    public WxeTestTransaction ()
+    public TestWxeTransaction ()
         : base (null, false, true)
     {
     }
@@ -29,11 +29,6 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       TestTransaction storedPreviousTransaction = _previousTransactionsStack.Pop ();
       Assert.AreSame (storedPreviousTransaction, previousTransaction);
       TestTransaction.Current = previousTransaction;
-    }
-
-    protected override TestTransaction CreateRootTransaction ()
-    {
-      return new TestTransaction ();
     }
   }
 }

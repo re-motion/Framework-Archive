@@ -23,6 +23,11 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       return _storedWxeTransaction;
     }
 
+    protected override ITransaction CreateRootTransaction ()
+    {
+      throw new NotImplementedException ();
+    }
+
     public new ITransaction MyTransaction
     {
       get { return base.MyTransaction; }

@@ -119,9 +119,9 @@ namespace Rubicon.Web.ExecutionEngine
       else
       {
         OnTransactionCreating ();
-        transaction = CreateRootTransaction ();
+        transaction = GetRootTransactionFromFunction ();
         if (transaction == null)
-          throw new InvalidOperationException (string.Format ("{0}.CreateRootTransaction() evaluated and returned null.", GetType ().Name));
+          throw new InvalidOperationException (string.Format ("{0}.GetRootTransactionFromFunction() evaluated and returned null.", GetType ().Name));
         s_log.Debug ("Created root " + this.GetType ().Name + ".");
       }
 
@@ -156,9 +156,26 @@ namespace Rubicon.Web.ExecutionEngine
         TransactionCreated (this, new WxeTransactionEventArgs<TTransaction> (transaction));
     }
 
-    /// <summary> Creates a new root transaction. </summary>
-    /// <returns> A new instance of type <typeparamref name="TTransaction"/>. </returns>
-    protected abstract TTransaction CreateRootTransaction ();
+    /// <summary>Retrieves a root transaction from the parent transacted function.</summary>
+    /// <returns>An instance of <typeparamref name="TTransaction"/> which will be encapsulated by this object.</returns>
+    protected virtual TTransaction GetRootTransactionFromFunction ()
+    {
+      return GetParentTransactedFunction().CreateRootTransaction ();
+    }
+
+    /// <summary>
+    /// Gets the parent transacted function of this <see cref="WxeTransactionBase{TTransaction}"/>.
+    /// </summary>
+    /// <returns>This transaction's parent transacted function.</returns>
+    /// <exception cref="InvalidOperationException">This object has not yet been encapsulated by a transacted function.</exception>
+    public WxeTransactedFunctionBase<TTransaction> GetParentTransactedFunction ()
+    {
+      WxeTransactedFunctionBase<TTransaction> parentFunction = ParentFunction as WxeTransactedFunctionBase<TTransaction>;
+      if (parentFunction == null)
+        throw new InvalidOperationException ("This object has not yet been encapsulated by a transacted function.");
+      else
+        return parentFunction;
+    }
 
     /// <summary> Creates a new <typeparamref name="TTransaction"/> using the <paramref name="parentTransaction"/> as parent. </summary>
     /// <param name="parentTransaction"> The <typeparamref name="TTransaction"/> to be used as parent. </param>
@@ -186,11 +203,11 @@ namespace Rubicon.Web.ExecutionEngine
       }
       else
       {
-        transaction = CreateRootTransaction ();
+        transaction = GetRootTransactionFromFunction ();
         if (transaction == null)
         {
           throw new InvalidOperationException (string.Format (
-              "{0}.CreateRootTransaction() evaluated and returned null.", GetType ().Name));
+              "{0}.GetRootTransactionFromFunction() evaluated and returned null.", GetType ().Name));
         }
       }
       return transaction;

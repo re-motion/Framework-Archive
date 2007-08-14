@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 
@@ -8,12 +9,16 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
   /// A <see cref="WxeFunction"/> that will always have a <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.
   /// </summary>
   /// <remarks>
-  /// <para>A <b>WxeTransactedFunction</b> always creates a new <see cref="ClientTransaction"/>, unless <see cref="WxeTransactionMode"/>.<b>None</b> 
-  /// is passed to the constructor.<br />
-  /// Therefore you should not pass <see cref="DomainObject"/>s to a <b>WxeTransactedFunction</b> as parameters since it is not allowed to use a 
-  /// <see cref="DomainObject"/> from one <see cref="ClientTransaction"/> in another <see cref="ClientTransaction"/>.<br />
-  /// Pass the corresponding <see cref="ObjectID"/>s instead and use the <see cref="DomainObject.GetObject"/> or <see cref="ClientTransaction.GetObject"/> method.</para>
-  /// <para>A <b>WxeTransactedFunction</b> has <see cref="AutoCommit"/> set to <see langword="true"/> by default. <br />
+  /// <para>A <b>WxeTransactedFunction</b> always creates a new <see cref="ClientTransaction"/>, unless <see cref="WxeTransactionMode.None"/>
+  /// is passed to the constructor. <see cref="DomainObject">DomainObjects</see> passed to a <see cref="WxeTransactedFunction"/> as In parameters are
+  /// automatically enlisted in the new transaction; <see cref="DomainObject">DomainObjects</see> returned as Out parameters are automatically
+  /// enlisted in the surrounding transaction (if any).
+  /// </para>
+  /// <para>
+  /// Override <see cref="CreateRootTransaction"/> if you wish to replace the default behavior of creating new <see cref="ClientTransaction"/>
+  /// instances.
+  /// </para>
+  /// <para>A <see cref="WxeTransactedFunction"/> has <see cref="AutoCommit"/> set to <see langword="true"/> by default. <br />
   /// To change this behavior for a function you can overwrite this property.</para>
   /// </remarks>
   [Serializable]
@@ -92,6 +97,16 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
         default:
           return null;
       }
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> object.
+    /// </summary>
+    /// <returns>A new <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.</returns>
+    /// <remarks>Derived class should override this method to provide specific implemenations of <see cref="ClientTransaction"/>s.</remarks>
+    protected override ClientTransaction CreateRootTransaction ()
+    {
+      return ClientTransaction.NewTransaction ();
     }
 
     /// <summary>

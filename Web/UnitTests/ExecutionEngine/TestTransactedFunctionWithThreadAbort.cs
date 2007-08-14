@@ -13,7 +13,12 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
     protected override WxeTransactionBase<TestTransaction> CreateWxeTransaction ()
     {
-      return new WxeTestTransaction ();
+      return new TestWxeTransaction ();
+    }
+
+    protected override TestTransaction CreateRootTransaction ()
+    {
+      return new TestTransaction ();
     }
 
     private void Step1 ()

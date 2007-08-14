@@ -86,6 +86,24 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     }
 
     [Test]
+    public void GetParentTransactedFunction ()
+    {
+      TestFunctionWithSpecificTransaction function = new TestFunctionWithSpecificTransaction (new TestTransaction ());
+      function.Execute (CurrentWxeContext);
+      TestWxeTransaction transaction = function.WxeTransaction;
+      Assert.IsNotNull (transaction);
+      Assert.AreSame (function, transaction.GetParentTransactedFunction());
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This object has not yet been encapsulated by a transacted function.")]
+    public void GetParentTransactedFunctionThrowsIfNoFunction ()
+    {
+      TestWxeTransaction transaction = new TestWxeTransaction ();
+      transaction.GetParentTransactedFunction ();
+    }
+
+    [Test]
     public void GetTransaction ()
     {
       Assert.AreSame (_parentTransaction, _parentWxeTransaction.Transaction);

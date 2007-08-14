@@ -21,7 +21,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       set { PrivateInvoke.SetNonPublicField (this, "_transaction", value); }
     }
 
-    protected override ITransaction CreateRootTransaction ()
+    protected override ITransaction GetRootTransactionFromFunction ()
     {
       return Proxy_CreateRootTransaction ();
     }

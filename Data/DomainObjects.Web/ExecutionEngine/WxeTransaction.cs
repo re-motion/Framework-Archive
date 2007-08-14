@@ -9,7 +9,8 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
   /// <summary>
   /// Creates a scope for a <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.
   /// </summary>
-  /// <remarks>Derived classes can provide specific implementations of <see cref="ClientTransaction"/>s by overriding <see cref="CreateRootTransaction"/>.</remarks>
+  /// <remarks>Derived classes can provide specific implementations of <see cref="ClientTransaction"/>s by overriding <see cref="GetRootTransactionFromFunction"/>,
+  /// but in most cases. In many cases it will however be more convenient to override <see cref="WxeTransactedFunction.CreateRootTransaction"/>.</remarks>
   [Serializable]
   public class WxeTransaction : WxeTransactionBase<ClientTransaction>
   {
@@ -83,16 +84,6 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
       ScopeStack.Push (ClientTransactionScope.ActiveScope);
       ClientTransactionScope newScope = new ClientTransactionScope (transaction); // set new scope and store old one
       Assertion.IsTrue (ClientTransactionScope.ActiveScope == newScope);
-    }
-
-    /// <summary>
-    /// Creates a new <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> object.
-    /// </summary>
-    /// <returns>A new <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.</returns>
-    /// <remarks>Derived class should override this method to provide specific implemenations of <see cref="ClientTransaction"/>s.</remarks>
-    protected override ClientTransaction CreateRootTransaction ()
-    {
-      return ClientTransaction.NewTransaction();
     }
 
     /// <summary>

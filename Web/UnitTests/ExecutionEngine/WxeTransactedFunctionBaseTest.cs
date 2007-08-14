@@ -277,5 +277,15 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
       Assert.AreSame (originalTransaction, TestTransaction.Current);
     }
+
+    [Test]
+    public void FunctionWithSpecificTransaction ()
+    {
+      TestTransaction transaction = new TestTransaction ();
+      Assert.AreNotSame (transaction, TestTransaction.Current);
+      TestFunctionWithSpecificTransaction func = new TestFunctionWithSpecificTransaction (transaction);
+      func.Execute (CurrentWxeContext);
+      Assert.AreSame (transaction, func.TransactionInFirstStep);
+    }
   }
 }
