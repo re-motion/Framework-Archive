@@ -15,6 +15,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     private const BindingFlags _declaredPublicInstanceFlags = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance;
 
     [DBTable]
+    public class DOWithConstructors : DomainObject
+    {
+      public readonly string FirstArg;
+      public readonly string SecondArg;
+
+      public DOWithConstructors (string firstArg, string secondArg)
+      {
+        FirstArg = firstArg;
+        SecondArg = secondArg;
+      }
+
+      public DOWithConstructors (int arg)
+        : this (arg.ToString(), null)
+      {
+      }
+    }
+
+    [DBTable]
     public class DOWithVirtualProperties : DomainObject
     {
       public virtual int PropertyWithGetterAndSetter
@@ -107,6 +125,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       Type type2 = new InterceptedDomainObjectFactory().GetConcreteDomainObjectType (typeof (DOWithVirtualProperties));
       Assert.AreNotSame (type1, type2);
       Assert.AreNotEqual (type1.Name, type2.Name);
+    }
+
+    [Test]
+    public void ReplicatesConstructors ()
+    {
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithConstructors)).BuildType ();
+      Assert.IsNotNull (type.GetConstructor (new Type[] { typeof (string), typeof (string) }));
+      Assert.IsNotNull (type.GetConstructor (new Type[] { typeof (int) }));
+    }
+
+    [Test]
+    public void ReplicatedConstructorsDelegateToBase ()
+    {
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithConstructors)).BuildType ();
+      DOWithConstructors instance1 = (DOWithConstructors) Activator.CreateInstance (type, "Foo", "Bar");
+      Assert.AreEqual ("Foo", instance1.FirstArg);
+      Assert.AreEqual ("Bar", instance1.SecondArg);
+
+      DOWithConstructors instance2 = (DOWithConstructors) Activator.CreateInstance (type, 7);
+      Assert.AreEqual ("7", instance2.FirstArg);
+      Assert.IsNull (instance2.SecondArg);
     }
 
     [Test]
@@ -265,7 +304,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
         + "InterceptedPropertyTest+NonInstantiableAbstractClassWithProps.Foo).")]
     public void ThrowsOnAbstractPropertyNotInMapping ()
     {
-      _scope.CreateTypeGenerator (typeof (InterceptedPropertyTest.NonInstantiableAbstractClassWithProps)).BuildType();
+      _scope.CreateTypeGenerator (typeof (InterceptedPropertyIntegrationTest.NonInstantiableAbstractClassWithProps)).BuildType();
     }
 
     [Test]
@@ -276,7 +315,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
         + "RelatedObjects'.")]
     public void ThrowsOnAbstractRelatedObjectCollectionSetter ()
     {
-      _scope.CreateTypeGenerator (typeof (InterceptedPropertyTest.NonInstantiableClassWithAutomaticRelatedCollectionSetter)).BuildType();
+      _scope.CreateTypeGenerator (typeof (InterceptedPropertyIntegrationTest.NonInstantiableClassWithAutomaticRelatedCollectionSetter)).BuildType();
     }
 
     [Test]
@@ -285,7 +324,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
         + "automatic property).")]
     public void ThrowsOnAbstractMethod ()
     {
-      _scope.CreateTypeGenerator (typeof (InterceptedPropertyTest.NonInstantiableAbstractClass)).BuildType();
+      _scope.CreateTypeGenerator (typeof (InterceptedPropertyIntegrationTest.NonInstantiableAbstractClass)).BuildType();
     }
 
     [Test]
@@ -294,7 +333,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
         + "InterceptedPropertyTest+NonInstantiableSealedClass as it is sealed.")]
     public void ThrowsOnSealedBaseType ()
     {
-      _scope.CreateTypeGenerator (typeof (InterceptedPropertyTest.NonInstantiableSealedClass)).BuildType();
+      _scope.CreateTypeGenerator (typeof (InterceptedPropertyIntegrationTest.NonInstantiableSealedClass)).BuildType();
     }
 
     [Test]
@@ -302,7 +341,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
         + "Interception.InterceptedPropertyTest+NonInstantiableNonDomainClass as it is not part of the mapping.")]
     public void ThrowsOnClassWithoutClassDefinition ()
     {
-      _scope.CreateTypeGenerator (typeof (InterceptedPropertyTest.NonInstantiableNonDomainClass)).BuildType();
+      _scope.CreateTypeGenerator (typeof (InterceptedPropertyIntegrationTest.NonInstantiableNonDomainClass)).BuildType();
     }
   }
 }

@@ -10,6 +10,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [Instantiable]
   public abstract class OrderItem : TestDomainBase
   {
+    private object _OriginalOrder;
+
     public static OrderItem NewObject ()
     {
       return NewObject<OrderItem> ().With();
@@ -43,5 +45,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     [DBBidirectionalRelation ("OrderItems")]
     [Mandatory]
     public abstract Order Order { get; set; }
+
+    [StorageClassNone]
+    public object OriginalOrder
+    {
+      get { return Properties[typeof (OrderItem), "Order"].GetOriginalValue<TestDomain.Order>(); }
+    }
   }
 }

@@ -237,8 +237,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
           "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectPropertyInterceptor");
       IInterceptorSelector<DomainObject> selector = (IInterceptorSelector<DomainObject>) GetFieldValue (interceptor, "Selector");
 
-      selector.ShouldInterceptMethod (typeof (InterceptedPropertyTest.NonInstantiableAbstractClassWithProps),
-        typeof (InterceptedPropertyTest.NonInstantiableAbstractClassWithProps).GetMethod ("get_Foo"));
+      selector.ShouldInterceptMethod (typeof (InterceptedPropertyIntegrationTest.NonInstantiableAbstractClassWithProps),
+        typeof (InterceptedPropertyIntegrationTest.NonInstantiableAbstractClassWithProps).GetMethod ("get_Foo"));
     }
 
     [Test]
@@ -253,8 +253,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
           "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectPropertyInterceptor");
       IInterceptorSelector<DomainObject> selector = (IInterceptorSelector<DomainObject>) GetFieldValue (interceptor, "Selector");
 
-      selector.ShouldInterceptMethod (typeof (InterceptedPropertyTest.NonInstantiableClassWithAutomaticRelatedCollectionSetter),
-        typeof (InterceptedPropertyTest.NonInstantiableClassWithAutomaticRelatedCollectionSetter).GetMethod ("set_RelatedObjects"));
+      selector.ShouldInterceptMethod (typeof (InterceptedPropertyIntegrationTest.NonInstantiableClassWithAutomaticRelatedCollectionSetter),
+        typeof (InterceptedPropertyIntegrationTest.NonInstantiableClassWithAutomaticRelatedCollectionSetter).GetMethod ("set_RelatedObjects"));
     }
 
     [Test]

@@ -1,9 +1,12 @@
 using System;
 using System.IO;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Utilities;
 using File=System.IO.File;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Interception
@@ -52,5 +55,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       _factory.SaveGeneratedAssemblies ();
       _factory.GetConcreteDomainObjectType (typeof (ClassWithAllDataTypes));
     }
+
   }
 }

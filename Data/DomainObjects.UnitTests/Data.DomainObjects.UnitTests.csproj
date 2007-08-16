@@ -206,7 +206,7 @@
     <Compile Include="Persistence\Rdbms\InsertCommandBuilderTest.cs" />
     <Compile Include="Persistence\Rdbms\QueryCommandBuilderTest.cs" />
     <Compile Include="StandardMappingTest.cs" />
-    <Compile Include="Interception\InterceptedPropertyTest.cs" />
+    <Compile Include="Interception\InterceptedPropertyIntegrationTest.cs" />
     <Compile Include="Configuration\StorageProviders\StorageProviderConfigurationTest.cs" />
     <Compile Include="Factories\TestDomainFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

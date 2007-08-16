@@ -14,7 +14,7 @@ using Rubicon.Data.DomainObjects.Infrastructure;
 namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 {
   [TestFixture]
-  public class InterceptedPropertyTest : ClientTransactionBaseTest
+  public class InterceptedPropertyIntegrationTest : ClientTransactionBaseTest
   {
     [DBTable]
     [Instantiable]
@@ -169,14 +169,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [Test]
     public void LoadOfSimpleObjectWorks ()
     {
-      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       Assert.IsTrue (WasCreatedByFactory (order));
     }
 
     [Test]
     public void ConstructionOfSimpleObjectWorks ()
     {
-      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.NewObject ();
+      Order order = Order.NewObject ();
       Assert.IsTrue (WasCreatedByFactory (order));
 
       ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.NewObject ();
@@ -207,7 +207,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [Test]
     public void GetPropertyValueWorks ()
     {
-      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       Assert.AreEqual (1, order.OrderNumber);
       Assert.AreEqual (new DateTime (2005, 01, 01), order.DeliveryDate);
       Assert.AreEqual (1, order.OrderNumber);
@@ -223,7 +223,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [Test]
     public void SetPropertyValueWorks ()
     {
-      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       
       order.OrderNumber = 15;
       Assert.AreEqual (15, order.OrderNumber);
@@ -290,11 +290,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
-        + "OrderWithNewPropertyAccess does not support the requested constructor with signature (System.String, System.String, System.String, "
+        + "Order does not support the requested constructor with signature (System.String, System.String, System.String, "
         + "System.Object).")]
     public void WrongConstructorCannotBeInstantiated ()
     {
-      Type t = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.GetConcreteDomainObjectType(typeof(OrderWithNewPropertyAccess));;
+      Type t = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.GetConcreteDomainObjectType(typeof(Order));;
       DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.GetTypesafeConstructorInvoker<object> (t)
         .With ("foo", "bar", "foobar", (object)null);
     }
@@ -326,7 +326,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [Test]
     public void GetSetRelatedObjectAndOriginal ()
     {
-      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       Customer customer = order.Customer;
       Assert.IsNotNull (customer);
       Assert.AreSame (Customer.GetObject (DomainObjectIDs.Customer1), customer);
@@ -342,9 +342,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [Test]
     public void GetSetRelatedObjectAndOriginal_WithNullAndAutomaticProperty ()
     {
-      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       Assert.IsNotEmpty (order.OrderItems);
-      OrderItemWithNewPropertyAccess orderItem = order.OrderItems[0];
+      OrderItem orderItem = order.OrderItems[0];
 
       orderItem.Order = null;
       Assert.IsNull (orderItem.Order);
@@ -355,15 +355,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [Test]
     public void GetRelatedObjects()
     {
-      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       DomainObjectCollection orderItems = order.OrderItems;
       Assert.IsNotNull (orderItems);
       Assert.AreEqual (2, orderItems.Count);
 
-      Assert.IsTrue (orderItems.Contains (DomainObjectIDs.OrderItemWithNewPropertyAccess1));
-      Assert.IsTrue (orderItems.Contains (DomainObjectIDs.OrderItemWithNewPropertyAccess2));
+      Assert.IsTrue (orderItems.Contains (DomainObjectIDs.OrderItem1));
+      Assert.IsTrue (orderItems.Contains (DomainObjectIDs.OrderItem2));
 
-      OrderItemWithNewPropertyAccess newItem = OrderItemWithNewPropertyAccess.NewObject ();
+      OrderItem newItem = OrderItem.NewObject ();
       order.OrderItems.Add (newItem);
 
       Assert.IsTrue (order.OrderItems.ContainsObject (newItem));
@@ -390,7 +390,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
         MatchType = MessageMatch.Contains)]
     public void PropertyAccessWithoutBeingInMappingThrows ()
     {
-      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.NewObject ();
+      Order order = Order.NewObject ();
       Dev.Null = order.NotInMapping;
     }
 
@@ -399,7 +399,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
         MatchType = MessageMatch.Contains)]
     public void RelatedAccessWithoutBeingInMappingThrows ()
     {
-      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.NewObject ();
+      Order order = Order.NewObject ();
       Dev.Null = order.NotInMappingRelated;
     }
 
@@ -408,7 +408,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
         MatchType = MessageMatch.Contains)]
     public void RelatedObjectsAccessWithoutBeingInMappingThrows ()
     {
-      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.NewObject ();
+      Order order = Order.NewObject ();
       Dev.Null = order.NotInMappingRelatedObjects;
     }
 
@@ -418,7 +418,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
         MatchType = MessageMatch.Contains)]
     public void PropertySetAccessWithoutBeingInMappingThrows ()
     {
-      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.NewObject ();
+      Order order = Order.NewObject ();
       order.NotInMapping = 0;
     }
 
@@ -427,18 +427,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
         MatchType = MessageMatch.Contains)]
     public void RelatedSetAccessWithoutBeingInMappingThrows ()
     {
-      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.NewObject ();
+      Order order = Order.NewObject ();
       order.NotInMappingRelated = null;
     }
 
     [Test]
     public void DefaultRelatedObject ()
     {
-      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
-      OrderItemWithNewPropertyAccess item = order.OrderItems[0];
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      OrderItem item = order.OrderItems[0];
       Assert.AreSame (order, item.Order);
 
-      OrderWithNewPropertyAccess newOrder = OrderWithNewPropertyAccess.NewObject ();
+      Order newOrder = Order.NewObject ();
       Assert.IsNotNull (newOrder);
       item.Order = newOrder;
       Assert.AreNotSame (order, item.Order);

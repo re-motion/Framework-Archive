@@ -64,5 +64,31 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
       get { return base.CurrentProperty; }
     }
+
+    [StorageClassNone]
+    public Customer OriginalCustomer
+    {
+      get { return Properties[typeof (Order), "Customer"].GetOriginalValue<Customer>(); }
+    }
+
+    [StorageClassNone]
+    public virtual int NotInMapping
+    {
+      get { return CurrentProperty.GetValue<int> (); }
+      set { CurrentProperty.SetValue (value); }
+    }
+
+    [StorageClassNone]
+    public virtual OrderWithNewPropertyAccess NotInMappingRelated
+    {
+      get { return CurrentProperty.GetValue<OrderWithNewPropertyAccess> (); }
+      set { CurrentProperty.SetValue (value); }
+    }
+
+    [StorageClassNone]
+    public virtual ObjectList<OrderItem> NotInMappingRelatedObjects
+    {
+      get { return CurrentProperty.GetValue<ObjectList<OrderItem>> (); }
+    }
   }
 }

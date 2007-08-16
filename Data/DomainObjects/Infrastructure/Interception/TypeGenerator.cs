@@ -59,6 +59,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       TypeAttributes flags = TypeAttributes.Public;
       _classEmitter = new CustomClassEmitter (scope, typeName, baseType, Type.EmptyTypes, flags);
 
+      _classEmitter.ReplicateBaseTypeConstructors ();
       OverrideGetPublicDomainObjectType ();
       ProcessProperties (properties);
     }
