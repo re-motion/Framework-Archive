@@ -100,7 +100,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public override void SetUp ()
     {
       base.SetUp ();
-      _scope = new ModuleManager ();
+      string directory = Path.Combine (Environment.CurrentDirectory, "Interception.TypeGeneratorTest.Dlls");
+      SetupAssemblyDirectory(directory);
+
+      _scope = new ModuleManager (directory);
+    }
+
+    private void SetupAssemblyDirectory (string directory)
+    {
+      if (Directory.Exists (directory))
+        Directory.Delete (directory, true);
+
+      Directory.CreateDirectory (directory);
+
+      Module unitTestAssemblyModule = Assembly.GetExecutingAssembly ().ManifestModule;
+      File.Copy (unitTestAssemblyModule.FullyQualifiedName, Path.Combine (directory, unitTestAssemblyModule.Name));
+
+      Module domainObjectAssemblyModule = typeof (DomainObject).Assembly.ManifestModule;
+      File.Copy (domainObjectAssemblyModule.FullyQualifiedName, Path.Combine (directory, domainObjectAssemblyModule.Name));
     }
 
     public override void TearDown ()
@@ -122,7 +139,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public void EachGeneratedTypeHasDifferentName ()
     {
       Type type1 = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType();
-      Type type2 = new InterceptedDomainObjectFactory().GetConcreteDomainObjectType (typeof (DOWithVirtualProperties));
+      Type type2 = new InterceptedDomainObjectFactory(Environment.CurrentDirectory).GetConcreteDomainObjectType (typeof (DOWithVirtualProperties));
       Assert.AreNotSame (type1, type2);
       Assert.AreNotEqual (type1.Name, type2.Name);
     }

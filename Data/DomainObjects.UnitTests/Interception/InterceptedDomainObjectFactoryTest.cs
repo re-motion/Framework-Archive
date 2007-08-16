@@ -15,11 +15,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
   public class InterceptedDomainObjectFactoryTest : ClientTransactionBaseTest
   {
     private InterceptedDomainObjectFactory _factory;
+    private readonly string _assemblyDirectory = Path.Combine (Environment.CurrentDirectory, "Interception.InterceptedDomainObjectFactoryTest.Dlls");
 
     public override void SetUp ()
     {
       base.SetUp ();
-      _factory = new InterceptedDomainObjectFactory ();
+      if (!Directory.Exists (_assemblyDirectory))
+        Directory.CreateDirectory (_assemblyDirectory);
+      _factory = new InterceptedDomainObjectFactory (_assemblyDirectory);
     }
 
     [Test]
@@ -37,12 +40,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
+    public void FactoryCachesGeneratedTypes ()
+    {
+      Type concreteType1 = _factory.GetConcreteDomainObjectType (typeof (Order));
+      Type concreteType2 = _factory.GetConcreteDomainObjectType (typeof (Order));
+      Assert.AreSame (concreteType1, concreteType2);
+    }
+
+    [Test]
     public void SaveReturnsPathOfGeneratedAssemblySigned ()
     {
       _factory.GetConcreteDomainObjectType (typeof (Order));
       string[] paths = _factory.SaveGeneratedAssemblies ();
       Assert.AreEqual (1, paths.Length);
-      Assert.AreEqual (Path.Combine (Environment.CurrentDirectory, "Rubicon.Data.DomainObjects.Generated.Signed.dll"), paths[0]);
+      Assert.AreEqual (Path.Combine (_assemblyDirectory, "Rubicon.Data.DomainObjects.Generated.Signed.dll"), paths[0]);
       Assert.IsTrue (File.Exists (paths[0]));
     }
 
