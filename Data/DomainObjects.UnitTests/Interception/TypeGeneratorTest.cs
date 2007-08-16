@@ -3,14 +3,14 @@ using System.IO;
 using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Data.DomainObjects.Infrastructure.Interception;
 using Rubicon.Development.UnitTesting;
-using File=System.IO.File;
+using System.Threading;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 {
   [TestFixture]
-  public class CodeGenerationTest : ClientTransactionBaseTest
+  public class TypeGeneratorTest : ClientTransactionBaseTest
   {
     private const BindingFlags _declaredPublicInstanceFlags = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance;
 
@@ -37,6 +37,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       {
         get { throw new Exception (); }
         set { throw new Exception (); }
+      }
+
+      [StorageClassNone]
+      public virtual DateTime PropertyNotInMapping
+      {
+        get { return CurrentProperty.GetValue<DateTime>(); }
       }
 
       [StorageClassNone]
@@ -71,60 +77,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       }
     }
 
-    private InterceptedDomainObjectFactory _factory;
+    private ModuleManager _scope;
 
     public override void SetUp ()
     {
       base.SetUp ();
-      _factory = new InterceptedDomainObjectFactory ();
+      _scope = new ModuleManager ();
     }
 
     public override void TearDown ()
     {
-      base.TearDown ();
-      string[] paths = _factory.SaveGeneratedAssemblies ();
+      string[] paths = _scope.SaveAssemblies ();
       foreach (string path in paths)
         PEVerifier.VerifyPEFile (path);
     }
 
     [Test]
-    public void GetConcreteDomainObjectTypeReturnsAssignableType ()
-    {
-      Type concreteType = _factory.GetConcreteDomainObjectType (typeof (Order));
-      Assert.IsTrue (typeof (Order).IsAssignableFrom (concreteType));
-    }
-
-    [Test]
-    public void GetConcreteDomainObjectTypeReturnsDifferentType ()
-    {
-      Type concreteType = _factory.GetConcreteDomainObjectType (typeof (Order));
-      Assert.AreNotEqual (typeof (Order), concreteType);
-    }
-
-    [Test]
-    public void SaveReturnsPathOfGeneratedAssemblySigned ()
-    {
-      _factory.GetConcreteDomainObjectType (typeof (Order));
-      string[] paths = _factory.SaveGeneratedAssemblies ();
-      Assert.AreEqual (1, paths.Length);
-      Assert.AreEqual (Path.Combine (Environment.CurrentDirectory, "Rubicon.Data.DomainObjects.Generated.Signed.dll"), paths[0]);
-      Assert.IsTrue (File.Exists (paths[0]));
-    }
-
-    [Test]
-    public void CanContinueToGenerateTypesAfterSave ()
-    {
-      _factory.GetConcreteDomainObjectType (typeof (Order));
-      _factory.SaveGeneratedAssemblies ();
-      _factory.GetConcreteDomainObjectType (typeof (OrderItem));
-      _factory.SaveGeneratedAssemblies ();
-      _factory.GetConcreteDomainObjectType (typeof (ClassWithAllDataTypes));
-    }
-
-    [Test]
     public void GeneratedTypeHasOtherNameThanBaseType ()
     {
-      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithVirtualProperties));
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType();
       Assert.AreNotEqual (typeof (DOWithVirtualProperties).Name, type.Name);
       Assert.AreNotEqual (typeof (DOWithVirtualProperties).FullName, type.Name);
     }
@@ -132,7 +103,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [Test]
     public void EachGeneratedTypeHasDifferentName ()
     {
-      Type type1 = _factory.GetConcreteDomainObjectType (typeof (DOWithVirtualProperties));
+      Type type1 = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType();
       Type type2 = new InterceptedDomainObjectFactory().GetConcreteDomainObjectType (typeof (DOWithVirtualProperties));
       Assert.AreNotSame (type1, type2);
       Assert.AreNotEqual (type1.Name, type2.Name);
@@ -141,14 +112,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [Test]
     public void OverridesGetPublicDomainObjectType ()
     {
-      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithVirtualProperties));
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType();
       Assert.IsNotNull (type.GetMethod ("GetPublicDomainObjectType", _declaredPublicInstanceFlags));
     }
 
     [Test]
     public void OverridesGetPublicDomainObjectTypeToReturnBaseType ()
     {
-      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithVirtualProperties));
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType();
       DOWithVirtualProperties instance = (DOWithVirtualProperties) Activator.CreateInstance (type);
       Assert.AreEqual (typeof (DOWithVirtualProperties), instance.GetPublicDomainObjectType ());
       Assert.IsNotNull (type.GetMethod ("GetPublicDomainObjectType", _declaredPublicInstanceFlags));
@@ -157,7 +128,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [Test]
     public void OverridesVirtualProperties ()
     {
-      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithVirtualProperties));
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType();
       Assert.IsNotNull (type.GetProperty ("PropertyWithGetterOnly", _declaredPublicInstanceFlags));
       Assert.IsNotNull (type.GetProperty ("PropertyWithSetterOnly", _declaredPublicInstanceFlags));
       Assert.IsNotNull (type.GetProperty ("PropertyWithGetterAndSetter", _declaredPublicInstanceFlags));
@@ -166,7 +137,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [Test]
     public void OverridesVirtualPropertiesSoThatCurrentPropertyWorks ()
     {
-      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithVirtualProperties));
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType();
       DOWithVirtualProperties instance = (DOWithVirtualProperties) Activator.CreateInstance (type);
 
       Assert.AreEqual (0, instance.PropertyWithGetterAndSetter);
@@ -186,7 +157,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property", MatchType = MessageMatch.Contains)]
     public void OverriddenPropertiesCleanUpCurrentPropertyName ()
     {
-      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithVirtualProperties));
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType();
       DOWithVirtualProperties instance = (DOWithVirtualProperties) Activator.CreateInstance (type);
 
       Assert.AreEqual (0, instance.PropertyWithGetterAndSetter);
@@ -197,7 +168,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property", MatchType = MessageMatch.Contains)]
     public void OverriddenPropertiesCleanUpCurrentPropertyNameEvenOnExceptionInGetter ()
     {
-      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithVirtualProperties));
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType();
       DOWithVirtualProperties instance = (DOWithVirtualProperties) Activator.CreateInstance (type);
 
       try
@@ -214,7 +185,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property", MatchType = MessageMatch.Contains)]
     public void OverriddenPropertiesCleanUpCurrentPropertyNameEvenOnExceptionInSetter ()
     {
-      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithVirtualProperties));
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType();
       DOWithVirtualProperties instance = (DOWithVirtualProperties) Activator.CreateInstance (type);
 
       try
@@ -228,9 +199,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property", MatchType = MessageMatch.Contains)]
+    public void DoesNotOverridePropertiesNotInMapping ()
+    {
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType();
+      DOWithVirtualProperties instance = (DOWithVirtualProperties) Activator.CreateInstance (type);
+      Dev.Null = instance.PropertyNotInMapping;
+    }
+
+    [Test]
     public void ImplementsAbstractProperties ()
     {
-      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithAbstractProperties));
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithAbstractProperties)).BuildType();
       Assert.IsNotNull (type.GetProperty ("PropertyWithGetterOnly", _declaredPublicInstanceFlags));
       Assert.IsNotNull (type.GetProperty ("PropertyWithSetterOnly", _declaredPublicInstanceFlags));
       Assert.IsNotNull (type.GetProperty ("PropertyWithGetterAndSetter", _declaredPublicInstanceFlags));
@@ -240,7 +220,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [Test]
     public void ImplementsAbstractPropertiesSoThatCurrentPropertyWorks ()
     {
-      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithAbstractProperties));
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithAbstractProperties)).BuildType();
       DOWithAbstractProperties instance = (DOWithAbstractProperties) Activator.CreateInstance (type);
 
       Assert.AreEqual (0, instance.PropertyWithGetterAndSetter);
@@ -260,7 +240,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property", MatchType = MessageMatch.Contains)]
     public void ImplementedAbstractPropertyGettersCleanUpCurrentPropertyName ()
     {
-      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithAbstractProperties));
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithAbstractProperties)).BuildType();
       DOWithAbstractProperties instance = (DOWithAbstractProperties) Activator.CreateInstance (type);
 
       Assert.AreEqual (0, instance.PropertyWithGetterAndSetter);
@@ -271,11 +251,58 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property", MatchType = MessageMatch.Contains)]
     public void ImplementedAbstractPropertySettersCleanUpCurrentPropertyName ()
     {
-      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithAbstractProperties));
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithAbstractProperties)).BuildType();
       DOWithAbstractProperties instance = (DOWithAbstractProperties) Activator.CreateInstance (type);
 
       instance.PropertyWithGetterAndSetter = 17;
       instance.GetAndCheckCurrentPropertyName ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+        + "Interception.InterceptedPropertyTest+NonInstantiableAbstractClassWithProps, property Foo is abstract but not "
+        + "defined in the mapping (assumed property id: Rubicon.Data.DomainObjects.UnitTests.Interception."
+        + "InterceptedPropertyTest+NonInstantiableAbstractClassWithProps.Foo).")]
+    public void ThrowsOnAbstractPropertyNotInMapping ()
+    {
+      _scope.CreateTypeGenerator (typeof (InterceptedPropertyTest.NonInstantiableAbstractClassWithProps)).BuildType();
+    }
+
+    [Test]
+    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+        + "Interception.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, "
+        + "automatic properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data."
+        + "DomainObjects.UnitTests.Interception.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
+        + "RelatedObjects'.")]
+    public void ThrowsOnAbstractRelatedObjectCollectionSetter ()
+    {
+      _scope.CreateTypeGenerator (typeof (InterceptedPropertyTest.NonInstantiableClassWithAutomaticRelatedCollectionSetter)).BuildType();
+    }
+
+    [Test]
+    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+        + "Interception.InterceptedPropertyTest+NonInstantiableAbstractClass as its member Foo is abstract (and not an "
+        + "automatic property).")]
+    public void ThrowsOnAbstractMethod ()
+    {
+      _scope.CreateTypeGenerator (typeof (InterceptedPropertyTest.NonInstantiableAbstractClass)).BuildType();
+    }
+
+    [Test]
+    [ExpectedException (typeof (NonInterceptableTypeException),
+        ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.Interception."
+        + "InterceptedPropertyTest+NonInstantiableSealedClass as it is sealed.")]
+    public void ThrowsOnSealedBaseType ()
+    {
+      _scope.CreateTypeGenerator (typeof (InterceptedPropertyTest.NonInstantiableSealedClass)).BuildType();
+    }
+
+    [Test]
+    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+        + "Interception.InterceptedPropertyTest+NonInstantiableNonDomainClass as it is not part of the mapping.")]
+    public void ThrowsOnClassWithoutClassDefinition ()
+    {
+      _scope.CreateTypeGenerator (typeof (InterceptedPropertyTest.NonInstantiableNonDomainClass)).BuildType();
     }
   }
 }

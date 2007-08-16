@@ -5,6 +5,7 @@ using System.Reflection.Emit;
 using System.Text;
 using Castle.DynamicProxy;
 using Rubicon.Collections;
+using Rubicon.Data.DomainObjects.Infrastructure.Interception;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
 using CastleInterceptor = Castle.Core.Interceptor.IInterceptor;

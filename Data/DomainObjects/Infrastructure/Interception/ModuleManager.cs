@@ -6,10 +6,10 @@ using Rubicon.CodeGeneration.DPExtensions;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 {
-  internal class ModuleManager
+  public class ModuleManager
   {
-    private const string _strongAssemblyName = "Rubicon.Data.DomainObjects.Generated.Signed";
-    private const string _weakAssemblyName = "Rubicon.Data.DomainObjects.Generated.Unsigned";
+    public const string StrongAssemblyName = "Rubicon.Data.DomainObjects.Generated.Signed";
+    public const string WeakAssemblyName = "Rubicon.Data.DomainObjects.Generated.Unsigned";
 
     private ModuleScope _scope;
 
@@ -20,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     private ModuleScope CreateModuleScope ()
     {
-      return new ModuleScope (true, _strongAssemblyName, _strongAssemblyName + ".dll", _weakAssemblyName, _weakAssemblyName + ".dll");
+      return new ModuleScope (true, StrongAssemblyName, StrongAssemblyName + ".dll", WeakAssemblyName, WeakAssemblyName + ".dll");
     }
 
     public TypeGenerator CreateTypeGenerator (Type baseType)

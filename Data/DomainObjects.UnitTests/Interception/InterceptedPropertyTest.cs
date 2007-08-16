@@ -301,14 +301,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (Exception), ExpectedMessage = "Thrown in ThrowException()")]
-    public void OldConstructorThrowIsPropagated ()
-    {
-      Throws.NewObject ();
-    }
-
-    [Test]
-    [ExpectedException (typeof (Exception), ExpectedMessage = "Thrown in ThrowException()")]
-    public void NewConstructorThrowIsPropagated ()
+    public void ConstructorThrowIsPropagated ()
     {
       Throws.NewObject ();
     }
@@ -316,7 +309,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.Interception."
         + "InterceptedPropertyTest+ClassWithWrongConstructor does not support the requested constructor with signature ().")]
-    public void NewConstructorMismatch1 ()
+    public void ConstructorMismatch1 ()
     {
       ClassWithWrongConstructor.NewObject();
     }
@@ -325,7 +318,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.Interception."
         + "InterceptedPropertyTest+ClassWithWrongConstructor does not support the requested constructor with signature "
         + "(System.Double).")]
-    public void NewConstructorMismatch2 ()
+    public void ConstructorMismatch2 ()
     {
       ClassWithWrongConstructor.NewObject (3.0);
     }

@@ -15,6 +15,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [SetUp]
     public void SetUp ()
     {
+      ClientTransactionScope.ResetActiveScope ();
       _outermostScope = new ClientTransactionScope ();
     }
 

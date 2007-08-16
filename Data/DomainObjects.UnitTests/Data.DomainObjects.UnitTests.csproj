@@ -196,7 +196,8 @@
     <Compile Include="Design\DomainObjectsDesignModeHelperTest.cs" />
     <Compile Include="Design\FakeDesignModeMappingLoader.cs" />
     <Compile Include="DomainObjects\ConstructionTest.cs" />
-    <Compile Include="Interception\CodeGenerationTest.cs" />
+    <Compile Include="Interception\TypeGeneratorTest.cs" />
+    <Compile Include="Interception\InterceptedDomainObjectFactoryTest.cs" />
     <Compile Include="Interception\InterceptorsTest.cs" />
     <Compile Include="Factories\BaseConfiguration.cs" />
     <Compile Include="Persistence\MixedStorageProviderTest.cs" />
