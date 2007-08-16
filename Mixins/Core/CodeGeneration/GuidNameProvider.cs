@@ -15,7 +15,7 @@ namespace Rubicon.Mixins.CodeGeneration
     
     public string GetNewTypeName (ClassDefinitionBase configuration)
     {
-      return string.Format ("{0}_Concrete_{1}", configuration.FullName, Guid.NewGuid ().ToString ("N"));
+      return string.Format ("{0}_Mixed_{1}", configuration.FullName, Guid.NewGuid ().ToString ("N"));
     }
   }
 }

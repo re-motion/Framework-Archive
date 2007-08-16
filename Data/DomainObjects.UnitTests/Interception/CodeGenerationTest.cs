@@ -52,6 +52,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [DBTable]
+    [Instantiable]
     public abstract class DOWithAbstractProperties : DomainObject
     {
       public abstract int PropertyWithGetterAndSetter { get; set; }
@@ -227,7 +228,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    public void OverridesAbstractProperties ()
+    public void ImplementsAbstractProperties ()
     {
       Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithAbstractProperties));
       Assert.IsNotNull (type.GetProperty ("PropertyWithGetterOnly", _declaredPublicInstanceFlags));
@@ -236,23 +237,45 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       Assert.IsFalse (type.IsAbstract);
     }
 
-    /*[Test]
-    public void OverridesVirtualPropertiesSoThatCurrentPropertyWorks ()
+    [Test]
+    public void ImplementsAbstractPropertiesSoThatCurrentPropertyWorks ()
     {
-      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithVirtualProperties));
-      DOWithVirtualProperties instance = (DOWithVirtualProperties) Activator.CreateInstance (type);
+      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithAbstractProperties));
+      DOWithAbstractProperties instance = (DOWithAbstractProperties) Activator.CreateInstance (type);
 
       Assert.AreEqual (0, instance.PropertyWithGetterAndSetter);
       instance.PropertyWithGetterAndSetter = 17;
       Assert.AreEqual (17, instance.PropertyWithGetterAndSetter);
 
       Assert.IsNull (instance.PropertyWithGetterOnly);
-      instance.Properties[typeof (DOWithVirtualProperties), "PropertyWithGetterOnly"].SetValue ("hear, hear");
+      instance.Properties[typeof (DOWithAbstractProperties), "PropertyWithGetterOnly"].SetValue ("hear, hear");
       Assert.AreEqual ("hear, hear", instance.PropertyWithGetterOnly);
 
-      Assert.AreEqual (new DateTime (), instance.Properties[typeof (DOWithVirtualProperties), "PropertyWithSetterOnly"].GetValue<DateTime> ());
+      Assert.AreEqual (new DateTime (), instance.Properties[typeof (DOWithAbstractProperties), "PropertyWithSetterOnly"].GetValue<DateTime> ());
       instance.PropertyWithSetterOnly = new DateTime (2260, 1, 2);
-      Assert.AreEqual (new DateTime (2260, 1, 2), instance.Properties[typeof (DOWithVirtualProperties), "PropertyWithSetterOnly"].GetValue<DateTime> ());
-    }*/
+      Assert.AreEqual (new DateTime (2260, 1, 2), instance.Properties[typeof (DOWithAbstractProperties), "PropertyWithSetterOnly"].GetValue<DateTime> ());
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property", MatchType = MessageMatch.Contains)]
+    public void ImplementedAbstractPropertyGettersCleanUpCurrentPropertyName ()
+    {
+      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithAbstractProperties));
+      DOWithAbstractProperties instance = (DOWithAbstractProperties) Activator.CreateInstance (type);
+
+      Assert.AreEqual (0, instance.PropertyWithGetterAndSetter);
+      instance.GetAndCheckCurrentPropertyName ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property", MatchType = MessageMatch.Contains)]
+    public void ImplementedAbstractPropertySettersCleanUpCurrentPropertyName ()
+    {
+      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithAbstractProperties));
+      DOWithAbstractProperties instance = (DOWithAbstractProperties) Activator.CreateInstance (type);
+
+      instance.PropertyWithGetterAndSetter = 17;
+      instance.GetAndCheckCurrentPropertyName ();
+    }
   }
 }

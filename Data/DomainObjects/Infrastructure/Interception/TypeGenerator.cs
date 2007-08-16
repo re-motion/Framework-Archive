@@ -49,7 +49,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       ArgumentUtility.CheckNotNull ("baseType", baseType);
       ArgumentUtility.CheckNotNull ("scope", scope);
 
-      string typeName = baseType.Name + "_WithInterception_ "+ Guid.NewGuid().ToString ("N");
+      string typeName = baseType.FullName + "_WithInterception_ "+ Guid.NewGuid().ToString ("N");
       TypeAttributes flags = TypeAttributes.Public;
       _classEmitter = new CustomClassEmitter (scope, typeName, baseType, Type.EmptyTypes, flags);
 
