@@ -32,8 +32,15 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("baseType", baseType, typeof (DomainObject));
 
-      TypeGenerator generator = _scope.CreateTypeGenerator (baseType);
-      return generator.BuildType ();
+      try
+      {
+        TypeGenerator generator = _scope.CreateTypeGenerator (baseType);
+        return generator.BuildType ();
+      }
+      catch (NonInterceptableTypeException ex)
+      {
+        throw new ArgumentException (ex.Message, "baseType", ex);
+      }
     }
   }
 }

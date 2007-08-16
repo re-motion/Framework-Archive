@@ -228,9 +228,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException(typeof (NonInterceptableTypeException), ExpectedMessage =  "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyTest+NonInstantiableAbstractClassWithProps, property Foo is abstract but not "
+        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps, property Foo is abstract but not "
         + "defined in the mapping (assumed property id: Rubicon.Data.DomainObjects.UnitTests.Interception."
-        + "InterceptedPropertyTest+NonInstantiableAbstractClassWithProps.Foo).")]
+        + "InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps.Foo).")]
     public void PropSelectionThrowsOnAbstractUndefined ()
     {
       IInterceptor<DomainObject> interceptor = (IInterceptor<DomainObject>) InstantiateInternalType (typeof (DomainObject).Assembly,
@@ -243,9 +243,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, "
+        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, "
         + "automatic properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data."
-        + "DomainObjects.UnitTests.Interception.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
+        + "DomainObjects.UnitTests.Interception.InterceptedPropertyIntegrationTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
         + "RelatedObjects'.")]
     public void PropSelectionThrowsOnAbstractRelatedCollectionSetter ()
     {

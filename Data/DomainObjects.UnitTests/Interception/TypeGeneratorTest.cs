@@ -299,9 +299,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyTest+NonInstantiableAbstractClassWithProps, property Foo is abstract but not "
+        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps, property Foo is abstract but not "
         + "defined in the mapping (assumed property id: Rubicon.Data.DomainObjects.UnitTests.Interception."
-        + "InterceptedPropertyTest+NonInstantiableAbstractClassWithProps.Foo).")]
+        + "InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps.Foo).")]
     public void ThrowsOnAbstractPropertyNotInMapping ()
     {
       _scope.CreateTypeGenerator (typeof (InterceptedPropertyIntegrationTest.NonInstantiableAbstractClassWithProps)).BuildType();
@@ -309,9 +309,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, "
+        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, "
         + "automatic properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data."
-        + "DomainObjects.UnitTests.Interception.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
+        + "DomainObjects.UnitTests.Interception.InterceptedPropertyIntegrationTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
         + "RelatedObjects'.")]
     public void ThrowsOnAbstractRelatedObjectCollectionSetter ()
     {
@@ -320,7 +320,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyTest+NonInstantiableAbstractClass as its member Foo is abstract (and not an "
+        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClass as its member Foo is abstract (and not an "
         + "automatic property).")]
     public void ThrowsOnAbstractMethod ()
     {
@@ -330,7 +330,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException),
         ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.Interception."
-        + "InterceptedPropertyTest+NonInstantiableSealedClass as it is sealed.")]
+        + "InterceptedPropertyIntegrationTest+NonInstantiableSealedClass as it is sealed.")]
     public void ThrowsOnSealedBaseType ()
     {
       _scope.CreateTypeGenerator (typeof (InterceptedPropertyIntegrationTest.NonInstantiableSealedClass)).BuildType();
@@ -338,7 +338,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyTest+NonInstantiableNonDomainClass as it is not part of the mapping.")]
+        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableNonDomainClass as it is not part of the mapping.")]
     public void ThrowsOnClassWithoutClassDefinition ()
     {
       _scope.CreateTypeGenerator (typeof (InterceptedPropertyIntegrationTest.NonInstantiableNonDomainClass)).BuildType();

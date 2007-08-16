@@ -244,7 +244,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyTest+NonInstantiableAbstractClass as its member Foo is abstract (and not an "
+        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClass as its member Foo is abstract (and not an "
         + "automatic property).\r\nParameter name: type")]
     public void AbstractWithMethodCannotBeInstantiated ()
     {
@@ -253,9 +253,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type "
-        + "Rubicon.Data.DomainObjects.UnitTests.Interception.InterceptedPropertyTest+NonInstantiableAbstractClassWithProps, "
+        + "Rubicon.Data.DomainObjects.UnitTests.Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps, "
         + "property Foo is abstract but not defined in the mapping (assumed property id: "
-        + "Rubicon.Data.DomainObjects.UnitTests.Interception.InterceptedPropertyTest+NonInstantiableAbstractClassWithProps.Foo)."
+        + "Rubicon.Data.DomainObjects.UnitTests.Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps.Foo)."
         + "\r\nParameter name: type")]
     public void AbstractWithNonAutoPropertiesCannotBeInstantiated ()
     {
@@ -264,9 +264,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException(typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, automatic "
+        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, automatic "
         + "properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data.DomainObjects."
-        + "UnitTests.Interception.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
+        + "UnitTests.Interception.InterceptedPropertyIntegrationTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
         + "RelatedObjects'.\r\nParameter name: type")]
     public void AbstractWithAutoCollectionSetterCannotBeInstantiated ()
     {
@@ -275,7 +275,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.Interception."
-        + "InterceptedPropertyTest+NonInstantiableSealedClass as it is sealed.\r\nParameter name: baseType")]
+        + "InterceptedPropertyIntegrationTest+NonInstantiableSealedClass as it is sealed.\r\nParameter name: baseType")]
     public void SealedCannotBeInstantiated ()
     {
       NonInstantiableSealedClass.NewObject ();
@@ -308,7 +308,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.Interception."
-        + "InterceptedPropertyTest+ClassWithWrongConstructor does not support the requested constructor with signature ().")]
+        + "InterceptedPropertyIntegrationTest+ClassWithWrongConstructor does not support the requested constructor with signature ().")]
     public void ConstructorMismatch1 ()
     {
       ClassWithWrongConstructor.NewObject();
@@ -316,7 +316,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.Interception."
-        + "InterceptedPropertyTest+ClassWithWrongConstructor does not support the requested constructor with signature "
+        + "InterceptedPropertyIntegrationTest+ClassWithWrongConstructor does not support the requested constructor with signature "
         + "(System.Double).")]
     public void ConstructorMismatch2 ()
     {

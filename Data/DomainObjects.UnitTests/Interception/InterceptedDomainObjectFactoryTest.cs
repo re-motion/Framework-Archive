@@ -56,5 +56,50 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       _factory.GetConcreteDomainObjectType (typeof (ClassWithAllDataTypes));
     }
 
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClass as its member Foo is abstract (and not an "
+        + "automatic property).\r\nParameter name: baseType")]
+    public void AbstractWithMethodCannotBeInstantiated ()
+    {
+      _factory.GetConcreteDomainObjectType (typeof (InterceptedPropertyIntegrationTest.NonInstantiableAbstractClass));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type "
+        + "Rubicon.Data.DomainObjects.UnitTests.Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps, "
+        + "property Foo is abstract but not defined in the mapping (assumed property id: "
+        + "Rubicon.Data.DomainObjects.UnitTests.Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps.Foo)."
+        + "\r\nParameter name: baseType")]
+    public void AbstractWithNonAutoPropertiesCannotBeInstantiated ()
+    {
+      _factory.GetConcreteDomainObjectType (typeof (InterceptedPropertyIntegrationTest.NonInstantiableAbstractClassWithProps));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, automatic "
+        + "properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data.DomainObjects."
+        + "UnitTests.Interception.InterceptedPropertyIntegrationTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
+        + "RelatedObjects'.\r\nParameter name: baseType")]
+    public void AbstractWithAutoCollectionSetterCannotBeInstantiated ()
+    {
+      _factory.GetConcreteDomainObjectType (typeof (InterceptedPropertyIntegrationTest.NonInstantiableClassWithAutomaticRelatedCollectionSetter));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.Interception."
+        + "InterceptedPropertyIntegrationTest+NonInstantiableSealedClass as it is sealed.\r\nParameter name: baseType")]
+    public void SealedCannotBeInstantiated ()
+    {
+      _factory.GetConcreteDomainObjectType (typeof (InterceptedPropertyIntegrationTest.NonInstantiableSealedClass));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException))]
+    public void NonDomainCannotBeInstantiated ()
+    {
+      _factory.GetConcreteDomainObjectType (typeof (InterceptedPropertyIntegrationTest.NonInstantiableNonDomainClass));
+    }
   }
 }
