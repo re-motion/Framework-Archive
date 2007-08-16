@@ -121,7 +121,7 @@ namespace Rubicon.CodeGeneration
 
     public CustomMethodEmitter ImplementByDelegating (Reference implementer, MethodInfo methodToCall)
     {
-      AddDelegatingCallStatements (methodToCall, implementer, true);
+      AddDelegatingCallStatements (methodToCall, new TypeReferenceWrapper (implementer, _declaringType.TypeBuilder), true);
       return this;
     }
 
@@ -133,19 +133,19 @@ namespace Rubicon.CodeGeneration
         throw new ArgumentException (string.Format ("The given method {0}.{1} is abstract.", baseMethod.DeclaringType.FullName, baseMethod.Name),
             "baseMethod");
       
-      AddDelegatingCallStatements (baseMethod, SelfReference.Self, false);
+      AddDelegatingCallStatements (baseMethod, new TypeReferenceWrapper (SelfReference.Self, _declaringType.TypeBuilder), false);
       return this;
     }
 
-    private void AddDelegatingCallStatements (MethodInfo methodToCall, Reference owner, bool callVirtual)
+    private void AddDelegatingCallStatements (MethodInfo methodToCall, TypeReference owner, bool callVirtual)
     {
       Expression[] argumentExpressions = GetArgumentExpressions();
 
-      MethodInvocationExpression delegatingCall;
+      TypedMethodInvocationExpression delegatingCall;
       if (callVirtual)
         delegatingCall = new VirtualMethodInvocationExpression (owner, methodToCall, argumentExpressions);
       else
-        delegatingCall = new MethodInvocationExpression (owner, methodToCall, argumentExpressions);
+        delegatingCall = new TypedMethodInvocationExpression (owner, methodToCall, argumentExpressions);
 
       AddStatement (new ReturnStatement (delegatingCall));
     }

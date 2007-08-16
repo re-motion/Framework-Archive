@@ -8,38 +8,16 @@ using System.Reflection;
 
 namespace Rubicon.CodeGeneration.DPExtensions
 {
-  public class VirtualMethodInvocationExpression : MethodInvocationExpression
+  public class VirtualMethodInvocationExpression : TypedMethodInvocationExpression
   {
-    public VirtualMethodInvocationExpression(MethodInfo method, params Expression[] args)
-      : base (method, args)
+    public VirtualMethodInvocationExpression (TypeReference owner, MethodInfo method, params Expression[] arguments)
+        : base (owner, method, arguments)
     {
     }
 
-    public VirtualMethodInvocationExpression(MethodEmitter method, params Expression[] args)
-      : base (method, args)
+    protected override void EmitCall (IMemberEmitter member, ILGenerator gen)
     {
-    }
-
-    public VirtualMethodInvocationExpression(Reference owner, MethodEmitter method, params Expression[] args)
-      : base (owner, method, args)
-    {
-    }
-
-    public VirtualMethodInvocationExpression (Reference owner, MethodInfo method, params Expression[] args)
-      : base (owner, method, args)
-    {
-    }
-
-    public override void Emit (IMemberEmitter member, ILGenerator gen)
-    {
-      ArgumentsUtil.EmitLoadOwnerAndReference (owner, gen);
-
-      foreach (Expression exp in args)
-      {
-        exp.Emit (member, gen);
-      }
-
-      gen.EmitCall (OpCodes.Callvirt, method, null);
+      gen.Emit (OpCodes.Callvirt, Method);
     }
   }
 }

@@ -8,13 +8,13 @@ using Castle.DynamicProxy.Generators.Emitters;
 namespace Rubicon.CodeGeneration.DPExtensions
 {
   // Converts an expression to a reference by saving it as a temporary local variable at time of emitting
-  public class ExpressionReference : Reference
+  public class ExpressionReference : TypeReference
   {
     private readonly Expression _expression;
     private readonly MethodEmitter _methodEmitter;
     private readonly Type _referenceType;
 
-    public ExpressionReference (Type referenceType, Expression expression, MethodEmitter methodEmitter) : base (null)
+    public ExpressionReference (Type referenceType, Expression expression, MethodEmitter methodEmitter) : base (referenceType)
     {
       _referenceType = referenceType;
       _expression = expression;
@@ -28,15 +28,22 @@ namespace Rubicon.CodeGeneration.DPExtensions
 
     public override void LoadAddressOfReference (ILGenerator gen)
     {
-      throw new NotImplementedException();
+      LocalReference local = CreateLocal (gen);
+      local.LoadAddressOfReference (gen);
     }
 
     public override void LoadReference (ILGenerator gen)
     {
+      LocalReference local = CreateLocal(gen);
+      local.LoadReference (gen);
+    }
+
+    private LocalReference CreateLocal (ILGenerator gen)
+    {
       LocalReference local = _methodEmitter.CodeBuilder.DeclareLocal (_referenceType);
       local.Generate (gen);
       new AssignStatement (local, _expression).Emit (_methodEmitter, gen);
-      local.LoadReference (gen);
+      return local;
     }
 
     public override void StoreReference (ILGenerator gen)

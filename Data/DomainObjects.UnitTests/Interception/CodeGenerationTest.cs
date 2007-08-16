@@ -51,6 +51,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       }
     }
 
+    [DBTable]
+    public abstract class DOWithAbstractProperties : DomainObject
+    {
+      public abstract int PropertyWithGetterAndSetter { get; set; }
+      public abstract string PropertyWithGetterOnly { get; }
+      public abstract DateTime PropertyWithSetterOnly { set; }
+
+      [StorageClassNone]
+      public new PropertyIndexer Properties
+      {
+        get { return base.Properties; }
+      }
+
+      public new string GetAndCheckCurrentPropertyName ()
+      {
+        return base.GetAndCheckCurrentPropertyName();
+      }
+    }
+
     private InterceptedDomainObjectFactory _factory;
 
     public override void SetUp ()
@@ -206,5 +225,34 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       }
       instance.GetAndCheckCurrentPropertyName ();
     }
+
+    [Test]
+    public void OverridesAbstractProperties ()
+    {
+      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithAbstractProperties));
+      Assert.IsNotNull (type.GetProperty ("PropertyWithGetterOnly", _declaredPublicInstanceFlags));
+      Assert.IsNotNull (type.GetProperty ("PropertyWithSetterOnly", _declaredPublicInstanceFlags));
+      Assert.IsNotNull (type.GetProperty ("PropertyWithGetterAndSetter", _declaredPublicInstanceFlags));
+      Assert.IsFalse (type.IsAbstract);
+    }
+
+    /*[Test]
+    public void OverridesVirtualPropertiesSoThatCurrentPropertyWorks ()
+    {
+      Type type = _factory.GetConcreteDomainObjectType (typeof (DOWithVirtualProperties));
+      DOWithVirtualProperties instance = (DOWithVirtualProperties) Activator.CreateInstance (type);
+
+      Assert.AreEqual (0, instance.PropertyWithGetterAndSetter);
+      instance.PropertyWithGetterAndSetter = 17;
+      Assert.AreEqual (17, instance.PropertyWithGetterAndSetter);
+
+      Assert.IsNull (instance.PropertyWithGetterOnly);
+      instance.Properties[typeof (DOWithVirtualProperties), "PropertyWithGetterOnly"].SetValue ("hear, hear");
+      Assert.AreEqual ("hear, hear", instance.PropertyWithGetterOnly);
+
+      Assert.AreEqual (new DateTime (), instance.Properties[typeof (DOWithVirtualProperties), "PropertyWithSetterOnly"].GetValue<DateTime> ());
+      instance.PropertyWithSetterOnly = new DateTime (2260, 1, 2);
+      Assert.AreEqual (new DateTime (2260, 1, 2), instance.Properties[typeof (DOWithVirtualProperties), "PropertyWithSetterOnly"].GetValue<DateTime> ());
+    }*/
   }
 }

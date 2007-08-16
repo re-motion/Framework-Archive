@@ -113,6 +113,8 @@
     <Compile Include="CodeGeneration\DPExtensions\PropertyReference.cs" />
     <Compile Include="CodeGeneration\DPExtensions\SameConditionExpression.cs" />
     <Compile Include="CodeGeneration\DPExtensions\TryFinallyStatement.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\TypedMethodInvocationExpression.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\TypeReferenceWrapper.cs" />
     <Compile Include="CodeGeneration\DPExtensions\VirtualMethodInvocationExpression.cs" />
     <Compile Include="CodeGeneration\IAttributableEmitter.cs" />
     <Compile Include="CodeGeneration\SerializationHelper.cs" />

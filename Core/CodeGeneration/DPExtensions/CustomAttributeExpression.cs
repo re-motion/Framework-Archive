@@ -11,13 +11,13 @@ namespace Rubicon.CodeGeneration.DPExtensions
     private static readonly MethodInfo s_getCustomAttributesMethod =
         typeof (Type).GetMethod ("GetCustomAttributes", new Type[] {typeof (Type), typeof (bool)}, null);
 
-    private readonly Reference _attributeOwner;
+    private readonly TypeReference _attributeOwner;
     private readonly Type _attributeType;
     private readonly int _index;
     private readonly bool _inherited;
     private readonly Expression _getAttributeExpression;
 
-    public CustomAttributeExpression (Reference attributeOwner, Type attributeType, int index, bool inherited)
+    public CustomAttributeExpression (TypeReference attributeOwner, Type attributeType, int index, bool inherited)
     {
       _attributeOwner = attributeOwner;
       _attributeType = attributeType;

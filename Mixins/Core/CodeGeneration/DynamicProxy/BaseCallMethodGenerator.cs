@@ -74,13 +74,14 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       if (target.DeclaringClass == _targetClassConfiguration)
       {
         MethodInfo baseCallMethod = _surroundingType.GetBaseCallMethod (target.MethodInfo);
-        return new ReturnStatement (new VirtualMethodInvocationExpression (_thisField, baseCallMethod, argExpressions));
+        return new ReturnStatement (new VirtualMethodInvocationExpression (new TypeReferenceWrapper (_thisField, _surroundingType.Emitter.TypeBuilder),
+            baseCallMethod, argExpressions));
       }
       else
       {
         MixinDefinition mixin = (MixinDefinition) target.DeclaringClass;
         MethodInfo baseCallMethod = GetMixinMethodToCall (mixin.MixinIndex, target);
-        Reference mixinReference = GetMixinReference (mixin, baseCallMethod.DeclaringType);
+        TypeReference mixinReference = GetMixinReference (mixin, baseCallMethod.DeclaringType);
 
         return new ReturnStatement (new VirtualMethodInvocationExpression (mixinReference, baseCallMethod, argExpressions));
       }
@@ -97,7 +98,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       }
     }
 
-    private Reference GetMixinReference (MixinDefinition mixin, Type concreteMixinType)
+    private TypeReference GetMixinReference (MixinDefinition mixin, Type concreteMixinType)
     {
       Reference extensionsReference = new IndirectFieldReference (_thisField, _surroundingType.ExtensionsField);
       Expression mixinExpression = new CastClassExpression (concreteMixinType, 

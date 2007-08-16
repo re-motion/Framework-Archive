@@ -20,10 +20,29 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
         typeof (DomainObject).GetMethod ("GetPublicDomainObjectType", _infrastructureBindingFlags);
     private static readonly MethodInfo s_preparePropertyAccessMethod =
         typeof (DomainObject).GetMethod ("PreparePropertyAccess", _infrastructureBindingFlags);
-    private static readonly MethodInfo s_propertyAccessFinished =
+    private static readonly MethodInfo s_propertyAccessFinishedMethod =
         typeof (DomainObject).GetMethod ("PropertyAccessFinished", _infrastructureBindingFlags);
+    private static readonly MethodInfo s_getPropertiesMethod =
+        typeof (DomainObject).GetMethod ("get_Properties", _infrastructureBindingFlags);
+    private static readonly MethodInfo s_getPropertyAccessorMethod =
+        typeof (PropertyIndexer).GetMethod ("get_Item", _infrastructureBindingFlags, null, new Type[] {typeof (string)}, null);
+    private static readonly MethodInfo s_propertyGetValueMethod =
+        typeof (PropertyAccessor).GetMethod ("GetValue", _infrastructureBindingFlags);
+    private static readonly MethodInfo s_propertySetValueMethod =
+        typeof (PropertyAccessor).GetMethod ("SetValue", _infrastructureBindingFlags);
 
     private readonly CustomClassEmitter _classEmitter;
+
+    static TypeGenerator ()
+    {
+      Assertion.IsNotNull (s_getPublicDomainObjectTypeMethod);
+      Assertion.IsNotNull (s_preparePropertyAccessMethod);
+      Assertion.IsNotNull (s_propertyAccessFinishedMethod);
+      Assertion.IsNotNull (s_getPropertiesMethod);
+      Assertion.IsNotNull (s_getPropertyAccessorMethod);
+      Assertion.IsNotNull (s_propertyGetValueMethod);
+      Assertion.IsNotNull (s_propertySetValueMethod);
+    }
 
     public TypeGenerator (Type baseType, ModuleScope scope)
     {
@@ -32,9 +51,6 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
       string typeName = baseType.Name + "_WithInterception_ "+ Guid.NewGuid().ToString ("N");
       TypeAttributes flags = TypeAttributes.Public;
-      if (baseType.IsAbstract)
-        flags |= TypeAttributes.Abstract;
-
       _classEmitter = new CustomClassEmitter (scope, typeName, baseType, Type.EmptyTypes, flags);
 
       OverrideGetPublicDomainObjectType ();
@@ -61,17 +77,21 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
         {
           CustomPropertyEmitter overrider = _classEmitter.CreatePropertyOverride (property);
           string propertyIdentifier = ReflectionUtility.GetPropertyName (property);
-          if (IsOverridable (getMethod) && !getMethod.IsAbstract)
+
+          if (getMethod != null)
           {
-            CustomMethodEmitter accessor = OverrideAccessor (getMethod, propertyIdentifier);
-            if (accessor != null)
-              overrider.GetMethod = accessor;
+            if (getMethod.IsAbstract)
+              overrider.GetMethod = ImplementAbstractGetAccessor (getMethod, propertyIdentifier);
+            else if (IsOverridable (getMethod))
+              overrider.GetMethod = OverrideAccessor (getMethod, propertyIdentifier);
           }
-          if (IsOverridable (setMethod) && !setMethod.IsAbstract)
+
+          if (setMethod != null)
           {
-            CustomMethodEmitter accessor = OverrideAccessor (setMethod, propertyIdentifier);
-            if (accessor != null)
-              overrider.SetMethod = accessor;
+            if (setMethod.IsAbstract)
+              overrider.SetMethod = ImplementAbstractSetAccessor (setMethod, propertyIdentifier, property.PropertyType);
+            else if (IsOverridable (setMethod))
+              overrider.SetMethod = OverrideAccessor (setMethod, propertyIdentifier);
           }
         }
       }
@@ -84,41 +104,105 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     private CustomMethodEmitter OverrideAccessor (MethodInfo accessor, string propertyIdentifier)
     {
-      if (accessor.IsVirtual && !accessor.IsFinal)
+      ArgumentUtility.CheckNotNull ("accessor", accessor);
+      ArgumentUtility.CheckNotNull ("propertyIdentifier", propertyIdentifier);
+
+      Assertion.IsFalse (accessor.IsAbstract);
+      Assertion.IsTrue (IsOverridable (accessor));
+
+      CustomMethodEmitter emitter = _classEmitter.CreateMethodOverride (accessor);
+      MethodInvocationExpression baseCallExpression =
+          new MethodInvocationExpression (SelfReference.Self, accessor, emitter.GetArgumentExpressions ());
+
+      ImplementWrappedAccessor(emitter, propertyIdentifier, baseCallExpression, accessor.ReturnType);
+
+      return emitter;
+    }
+
+    private CustomMethodEmitter ImplementAbstractGetAccessor (MethodInfo accessor, string propertyIdentifier)
+    {
+      ArgumentUtility.CheckNotNull ("accessor", accessor);
+      ArgumentUtility.CheckNotNull ("propertyIdentifier", propertyIdentifier);
+
+      Assertion.IsTrue (accessor.IsAbstract);
+      Assertion.IsTrue (accessor.ReturnType != typeof (void));
+
+      CustomMethodEmitter emitter = _classEmitter.CreateMethodOverride (accessor);
+
+      ExpressionReference propertyAccessorReference = CreatePropertyAccessorReference (propertyIdentifier, emitter);
+      TypedMethodInvocationExpression getValueMethodCall = new TypedMethodInvocationExpression (propertyAccessorReference,
+          s_propertyGetValueMethod.MakeGenericMethod (accessor.ReturnType));
+
+      ImplementWrappedAccessor (emitter, propertyIdentifier, getValueMethodCall, accessor.ReturnType);
+
+      return emitter;
+    }
+
+    private CustomMethodEmitter ImplementAbstractSetAccessor (MethodInfo accessor, string propertyIdentifier, Type propertyType)
+    {
+      ArgumentUtility.CheckNotNull ("accessor", accessor);
+      ArgumentUtility.CheckNotNull ("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
+
+      Assertion.IsTrue (accessor.IsAbstract);
+      Assertion.IsTrue (accessor.ReturnType == typeof (void));
+
+      CustomMethodEmitter emitter = _classEmitter.CreateMethodOverride (accessor);
+
+      Assertion.IsTrue (emitter.ArgumentReferences.Length > 0);
+      Reference valueArgumentReference = emitter.ArgumentReferences[emitter.ArgumentReferences.Length - 1];
+
+      ExpressionReference propertyAccessorReference = CreatePropertyAccessorReference(propertyIdentifier, emitter);
+      TypedMethodInvocationExpression setValueMethodCall = new TypedMethodInvocationExpression (propertyAccessorReference,
+          s_propertySetValueMethod.MakeGenericMethod (propertyType), valueArgumentReference.ToExpression());
+
+      ImplementWrappedAccessor (emitter, propertyIdentifier, setValueMethodCall, typeof (void));
+
+      return emitter;
+    }
+
+    private ExpressionReference CreatePropertyAccessorReference (string propertyIdentifier, CustomMethodEmitter emitter)
+    {
+      ExpressionReference propertiesReference = new ExpressionReference (typeof (PropertyIndexer),
+          new MethodInvocationExpression (SelfReference.Self, s_getPropertiesMethod),
+          emitter);
+      return new ExpressionReference (typeof (PropertyAccessor),
+          new TypedMethodInvocationExpression (propertiesReference, s_getPropertyAccessorMethod, new ConstReference (propertyIdentifier).ToExpression ()),
+          emitter);
+    }
+
+
+    private void ImplementWrappedAccessor (CustomMethodEmitter emitter, string propertyIdentifier, Expression implementation, Type returnType)
+    {
+      ArgumentUtility.CheckNotNull ("emitter", emitter);
+      ArgumentUtility.CheckNotNull ("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNull ("implementation", implementation);
+      ArgumentUtility.CheckNotNull ("returnType", returnType);
+
+      emitter.AddStatement (
+          new ExpressionStatement (
+              new MethodInvocationExpression (
+                  SelfReference.Self, s_preparePropertyAccessMethod, new ConstReference (propertyIdentifier).ToExpression ())));
+
+      Statement baseCallStatement;
+      LocalReference returnValueLocal = null;
+      if (returnType != typeof (void))
       {
-        CustomMethodEmitter emitter = _classEmitter.CreateMethodOverride (accessor);
-
-        emitter.AddStatement (new ExpressionStatement (
-                new MethodInvocationExpression (
-                    SelfReference.Self, s_preparePropertyAccessMethod, new ConstReference (propertyIdentifier).ToExpression())));
-
-        MethodInvocationExpression baseCallExpression =
-            new MethodInvocationExpression (SelfReference.Self, accessor, emitter.GetArgumentExpressions());
-
-        Statement baseCallStatement;
-        LocalReference returnValueLocal = null;
-        if (accessor.ReturnType != typeof (void))
-        {
-          returnValueLocal = emitter.DeclareLocal (accessor.ReturnType);
-          baseCallStatement = new AssignStatement (returnValueLocal, baseCallExpression);
-        }
-        else
-          baseCallStatement = new ExpressionStatement (baseCallExpression);
-
-        Statement propertyAccessFinishedStatement = new ExpressionStatement (
-            new MethodInvocationExpression (SelfReference.Self, s_propertyAccessFinished));
-
-        emitter.AddStatement (new TryFinallyStatement (new Statement[] { baseCallStatement }, new Statement[] { propertyAccessFinishedStatement }));
-
-        if (accessor.ReturnType != typeof (void))
-          emitter.AddStatement (new ReturnStatement (returnValueLocal));
-        else
-          emitter.AddStatement (new ReturnStatement());
-
-        return emitter;
+        returnValueLocal = emitter.DeclareLocal (returnType);
+        baseCallStatement = new AssignStatement (returnValueLocal, implementation);
       }
       else
-        return null;
+        baseCallStatement = new ExpressionStatement (implementation);
+
+      Statement propertyAccessFinishedStatement = new ExpressionStatement (
+          new MethodInvocationExpression (SelfReference.Self, s_propertyAccessFinishedMethod));
+
+      emitter.AddStatement (new TryFinallyStatement (new Statement[] {baseCallStatement}, new Statement[] {propertyAccessFinishedStatement}));
+
+      if (returnType != typeof (void))
+        emitter.AddStatement (new ReturnStatement (returnValueLocal));
+      else
+        emitter.AddStatement (new ReturnStatement());
     }
   }
 }
