@@ -10,9 +10,9 @@ using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain;
 
-namespace Rubicon.Security.Data.DomainObjects.UnitTests
+namespace Rubicon.Security.UnitTests.Data.DomainObjects
 {
   [SetUpFixture]
   public class SetUpFixture
@@ -26,7 +26,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
       DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration));
 
       MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (GetType().Assembly)));
-      QueryConfiguration.SetCurrent (new QueryConfiguration (GetFullPath (@"Rubicon.Security.Data.DomainObjects.UnitTests.Queries.xml")));
+      QueryConfiguration.SetCurrent (new QueryConfiguration (GetFullPath (@"Rubicon.Security.UnitTests.Data.DomainObjects.Queries.xml")));
     }
 
     private string GetFullPath (string fileName)

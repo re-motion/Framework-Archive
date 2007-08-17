@@ -19,6 +19,7 @@
       </sources>
       <references failonempty="true">
         <include name="${build.test.outputdir}/Rubicon.Core.dll" />
+        <include name="${build.test.outputdir}/Rubicon.Data.DomainObjects.dll" />
         <include name="${build.test.outputdir}/Rubicon.Development.dll" />
         <include name="${build.test.outputdir}/Rubicon.Security.dll" />
         <include name="${build.test.outputdir}/Rubicon.Security.Data.DomainObjects.dll" />
@@ -28,7 +29,6 @@
         <include name="${build.test.outputdir}/Rhino.Mocks.dll" />
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Configuration.dll"/>
-        <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="System.Xml.dll"/>
       </references>
     </csc>
@@ -36,6 +36,12 @@
     <copy todir="${build.test.outputdir}" flatten="false" overwrite="true">
       <fileset failonempty="true">
         <include name="Core/Metadata/LocalizationFiles/*.xml" />
+      </fileset>
+    </copy>
+    
+    <copy todir="${build.test.outputdir}" flatten="true" overwrite="true">
+      <fileset>
+        <include name="Rubicon.Security.UnitTests.Data.DomainObjects.*.xml" />
       </fileset>
     </copy>
 

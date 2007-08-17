@@ -3,9 +3,10 @@ using System.Security.Principal;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Security.Data.DomainObjects;
+using Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain;
 
-namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactionExtensionTests
+namespace Rubicon.Security.UnitTests.Data.DomainObjects.SecurityClientTransactionExtensionTests
 {
   [TestFixture]
   public class RelationChangingTest

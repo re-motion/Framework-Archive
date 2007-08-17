@@ -2,7 +2,7 @@ using System;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Development.UnitTesting;
 
-namespace Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain
+namespace Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain
 {
   [Instantiable]
   [DBTable]

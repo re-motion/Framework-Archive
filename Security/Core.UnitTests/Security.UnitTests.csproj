@@ -39,7 +39,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +107,21 @@
     <Compile Include="Core\NullSecurityClientTests\NullSecurityClientTestHelper.cs" />
     <Compile Include="Core\NullSecurityProviderTest.cs" />
     <Compile Include="Core\NullUserProviderTest.cs" />
+    <Compile Include="Data.DomainObjects.UnitTests\DomainObjectSecurityStrategyTest.cs" />
+    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\FilterQueryResultTest.cs" />
+    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\InterfaceTest.cs" />
+    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\NewObjectCreatingTest.cs" />
+    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\ObjectDeletingTest.cs" />
+    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\PropertyValueChangingTest.cs" />
+    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\PropertyValueReadingTest.cs" />
+    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\RelationChangingTest.cs" />
+    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\RelationReadingTest.cs" />
+    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\SecurityClientTransactionExtensionTestHelper.cs" />
+    <Compile Include="Data.DomainObjects.UnitTests\SetupFixture.cs" />
+    <Compile Include="Data.DomainObjects.UnitTests\TestDomain\NonSecurableObject.cs" />
+    <Compile Include="Data.DomainObjects.UnitTests\TestDomain\SecurableObject.cs" />
+    <Compile Include="Data.DomainObjects.UnitTests\TestDomain\StubStorageProvider.cs" />
+    <Compile Include="Data.DomainObjects.UnitTests\TestDomain\TestAccessTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\RevisionBasedAccessTypeCacheProviderTest.cs" />
     <Compile Include="Core\SampleDomain\DerivedSecurableObject.cs" />
@@ -168,6 +182,10 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core %28Core\Core%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Data\DomainObjects\Data.DomainObjects.csproj">
+      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
+      <Name>Data.DomainObjects %28Data.DomainObjects\Data.DomainObjects%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
       <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
       <Name>Development.Core</Name>
@@ -197,7 +215,13 @@
     <LocalizationFiles Include="Core\Metadata\LocalizationFiles\OneLocalizationFile.Localization.de.xml" />
   </ItemGroup>
   <ItemGroup>
+    <MappingFiles Include="Data.DomainObjects.UnitTests\Rubicon.Security.UnitTests.Data.DomainObjects.Queries.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data.DomainObjects.UnitTests\Rubicon.Security.Data.DomainObjects.UnitTests.Queries.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -208,6 +232,9 @@
   </Target>
   -->
   <Target Name="AfterBuild">
+    <Delete Files="@(LocalizationFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(Identity)')" />
+    <Delete Files="@(MappingFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
     <Copy SourceFiles="@(LocalizationFiles->'%(Fullpath)')" DestinationFiles="@(LocalizationFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(Identity)')" />
+    <Copy SourceFiles="@(MappingFiles->'%(Fullpath)')" DestinationFiles="@(MappingFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
   </Target>
 </Project>

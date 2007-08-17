@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
 
-namespace Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain
+namespace Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain
 {
   public class StubStorageProvider : StorageProvider
   {

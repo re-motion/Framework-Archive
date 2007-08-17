@@ -3,12 +3,14 @@ using System.Security.Principal;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
+using Rubicon.Security.Data.DomainObjects;
+using Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain;
 
-namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactionExtensionTests
+namespace Rubicon.Security.UnitTests.Data.DomainObjects.SecurityClientTransactionExtensionTests
 {
   [TestFixture]
-  public class PropertyValueChangingTest
+  public class PropertyValueReadingTest
   {
     private SecurityClientTransactionExtensionTestHelper _testHelper;
     private IClientTransactionExtension _extension;
@@ -35,11 +37,11 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       SecurableObject securableObject = _testHelper.CreateSecurableObject ();
       DataContainer dataContainer = securableObject.GetDataContainer ();
       _testHelper.AddExtension (_extension);
-      _testHelper.ExpectPermissionReflectorGetRequiredPropertyWritePermissions ("StringProperty", TestAccessTypes.First);
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("StringProperty", TestAccessTypes.First);
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, true);
       _testHelper.ReplayAll ();
 
-      _extension.PropertyValueChanging (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain.SecurableObject.StringProperty"], "old", "new");
+      _extension.PropertyValueReading (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain.SecurableObject.StringProperty"], ValueAccess.Current);
 
       _testHelper.VerifyAll ();
     }
@@ -51,11 +53,11 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       SecurableObject securableObject = _testHelper.CreateSecurableObject ();
       DataContainer dataContainer = securableObject.GetDataContainer ();
       _testHelper.AddExtension (_extension);
-      _testHelper.ExpectPermissionReflectorGetRequiredPropertyWritePermissions ("StringProperty", TestAccessTypes.First);
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("StringProperty", TestAccessTypes.First);
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, false);
       _testHelper.ReplayAll ();
 
-      _extension.PropertyValueChanging (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain.SecurableObject.StringProperty"], "old", "new");
+      _extension.PropertyValueReading (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain.SecurableObject.StringProperty"], ValueAccess.Current);
     }
 
     [Test]
@@ -68,7 +70,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
 
       using (new SecurityFreeSection ())
       {
-        _extension.PropertyValueChanging (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain.SecurableObject.StringProperty"], "old", "new");
+        _extension.PropertyValueReading (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain.SecurableObject.StringProperty"], ValueAccess.Current);
       }
 
       _testHelper.VerifyAll ();
@@ -82,7 +84,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.AddExtension (_extension);
       _testHelper.ReplayAll ();
 
-      _extension.PropertyValueChanging (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain.NonSecurableObject.StringProperty"], "old", "new");
+      _extension.PropertyValueReading (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain.NonSecurableObject.StringProperty"], ValueAccess.Current);
 
       _testHelper.VerifyAll ();
     }
@@ -93,16 +95,16 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       SecurableObject securableObject = _testHelper.CreateSecurableObject ();
       DataContainer dataContainer = securableObject.GetDataContainer ();
       _testHelper.AddExtension (_extension);
-      _testHelper.ExpectPermissionReflectorGetRequiredPropertyWritePermissions ("StringProperty", TestAccessTypes.First);
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("StringProperty", TestAccessTypes.First);
       HasAccessDelegate hasAccess = delegate (ISecurityProvider securityProvider, IPrincipal user, AccessType[] requiredAccessTypes)
       {
-        securableObject.OtherStringProperty = "dummy";
+        Dev.Null = securableObject.OtherStringProperty;
         return true;
       };
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, hasAccess);
       _testHelper.ReplayAll ();
 
-      _extension.PropertyValueChanging (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain.SecurableObject.StringProperty"], "old", "new");
+      _extension.PropertyValueReading (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain.SecurableObject.StringProperty"], ValueAccess.Current);
 
       _testHelper.VerifyAll ();
     }
@@ -112,11 +114,23 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject ();
       _testHelper.AddExtension (_extension);
-      _testHelper.ExpectPermissionReflectorGetRequiredPropertyWritePermissions ("StringProperty", TestAccessTypes.First);
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("StringProperty", TestAccessTypes.First);
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, true);
       _testHelper.ReplayAll ();
 
-      securableObject.StringProperty = "new";
+      Dev.Null = securableObject.StringProperty;
+
+      _testHelper.VerifyAll ();
+    }
+
+    [Test]
+    public void Test_ID ()
+    {
+      SecurableObject securableObject = _testHelper.CreateSecurableObject ();
+      _testHelper.AddExtension (_extension);
+      _testHelper.ReplayAll ();
+
+      Dev.Null = securableObject.ID;
 
       _testHelper.VerifyAll ();
     }

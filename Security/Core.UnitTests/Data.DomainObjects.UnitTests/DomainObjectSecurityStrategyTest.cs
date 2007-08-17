@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using Rubicon.Security.Data.DomainObjects;
 using Rubicon.Utilities;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -9,7 +9,7 @@ using System.Security.Principal;
 using Rubicon.Security.Configuration;
 using Rubicon.Collections;
 
-namespace Rubicon.Security.Data.DomainObjects.UnitTests
+namespace Rubicon.Security.UnitTests.Data.DomainObjects
 {
   [TestFixture]
   public class DomainObjectSecurityStrategyTest
