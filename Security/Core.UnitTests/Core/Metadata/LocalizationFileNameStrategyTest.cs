@@ -13,7 +13,7 @@ namespace Rubicon.Security.UnitTests.Core.Metadata
     public void GetLocalizationFileNames_NoLocalizationFiles ()
     {
       LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy ();
-      string metadataFileName = @"Metadata\LocalizationFiles\notexisting.xml";
+      string metadataFileName = @"Core\Metadata\LocalizationFiles\notexisting.xml";
 
       string[] localizationFileNames = nameStrategy.GetLocalizationFileNames (metadataFileName);
 
@@ -25,41 +25,41 @@ namespace Rubicon.Security.UnitTests.Core.Metadata
     public void GetLocalizationFileNames_OneLocalizationFile ()
     {
       LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy ();
-      string metadataFileName = @"Metadata\LocalizationFiles\OneLocalizationFile.xml";
+      string metadataFileName = @"Core\Metadata\LocalizationFiles\OneLocalizationFile.xml";
 
       string[] localizationFileNames = nameStrategy.GetLocalizationFileNames (metadataFileName);
 
       Assert.IsNotNull (localizationFileNames);
       Assert.AreEqual (1, localizationFileNames.Length);
-      Assert.Contains (@"Metadata\LocalizationFiles\OneLocalizationFile.Localization.de.xml", localizationFileNames);
+      Assert.Contains (@"Core\Metadata\LocalizationFiles\OneLocalizationFile.Localization.de.xml", localizationFileNames);
     }
 
     [Test]
     public void GetLocalizationFileNames_TwoLocalizationFiles ()
     {
       LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy ();
-      string metadataFileName = @"Metadata\LocalizationFiles\TwoLocalizationFiles.xml";
+      string metadataFileName = @"Core\Metadata\LocalizationFiles\TwoLocalizationFiles.xml";
 
       string[] localizationFileNames = nameStrategy.GetLocalizationFileNames (metadataFileName);
 
       Assert.IsNotNull (localizationFileNames);
       Assert.AreEqual (2, localizationFileNames.Length);
-      Assert.Contains (@"Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.de.xml", localizationFileNames);
-      Assert.Contains (@"Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.en.xml", localizationFileNames);
+      Assert.Contains (@"Core\Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.de.xml", localizationFileNames);
+      Assert.Contains (@"Core\Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.en.xml", localizationFileNames);
     }
 
     [Test]
     public void GetLocalizationFileNames_TwoLocalizationFilesIncludingInvariantCulture ()
     {
       LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy ();
-      string metadataFileName = @"Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.xml";
+      string metadataFileName = @"Core\Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.xml";
 
       string[] localizationFileNames = nameStrategy.GetLocalizationFileNames (metadataFileName);
 
       Assert.IsNotNull (localizationFileNames);
       Assert.AreEqual (2, localizationFileNames.Length);
-      Assert.Contains (@"Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.de.xml", localizationFileNames);
-      Assert.Contains (@"Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.xml", localizationFileNames);
+      Assert.Contains (@"Core\Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.de.xml", localizationFileNames);
+      Assert.Contains (@"Core\Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.xml", localizationFileNames);
     }
 
     [Test]
@@ -67,7 +67,7 @@ namespace Rubicon.Security.UnitTests.Core.Metadata
     {
       LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy ();
       string wd = Directory.GetCurrentDirectory ();
-      Directory.SetCurrentDirectory (@"Metadata\LocalizationFiles");
+      Directory.SetCurrentDirectory (@"Core\Metadata\LocalizationFiles");
       string metadataFileName = "TwoLocalizationFilesIncludingInvariantCulture.xml";
 
       string[] localizationFileNames = nameStrategy.GetLocalizationFileNames (metadataFileName);

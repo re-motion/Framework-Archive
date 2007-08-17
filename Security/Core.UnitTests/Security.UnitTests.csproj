@@ -180,6 +180,10 @@
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security %28Security\Security%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Data.DomainObjects\Security.Data.DomainObjects.csproj">
+      <Project>{D4397460-CE03-43E6-87F7-3A4E50B8250E}</Project>
+      <Name>Security.Data.DomainObjects</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Web\Security.Web.csproj">
       <Project>{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}</Project>
       <Name>Security.Web</Name>
@@ -204,6 +208,6 @@
   </Target>
   -->
   <Target Name="AfterBuild">
-    <Copy SourceFiles="@(LocalizationFiles->'%(Fullpath)')" DestinationFiles="@(LocalizationFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\Metadata\LocalizationFiles\%(FileName)%(Extension)')" />
+    <Copy SourceFiles="@(LocalizationFiles->'%(Fullpath)')" DestinationFiles="@(LocalizationFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(Identity)')" />
   </Target>
 </Project>
