@@ -198,6 +198,7 @@
     <Compile Include="DomainObjects\ConstructionTest.cs" />
     <Compile Include="Interception\SampleTypes\ClassWithExplicitInterfaceProperty.cs" />
     <Compile Include="Interception\SampleTypes\ClassWithWrongConstructor.cs" />
+    <Compile Include="Interception\SampleTypes\DOHidingVirtualProperties.cs" />
     <Compile Include="Interception\SampleTypes\IPropertyInterface.cs" />
     <Compile Include="Interception\SampleTypes\NonInstantiableAbstractClass.cs" />
     <Compile Include="Interception\SampleTypes\NonInstantiableAbstractClassWithProps.cs" />

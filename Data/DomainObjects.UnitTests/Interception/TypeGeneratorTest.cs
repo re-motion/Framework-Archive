@@ -339,5 +339,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
         Assert.AreEqual ("Start-GetObjectData-Ctor", data.B.MemberHeldAsField);
       }
     }
+
+    [Test]
+    [Ignore ("TODO: FS")]
+    public void ShadowedPropertiesAreSeparatelyOverridden ()
+    {
+      Type type = _scope.CreateTypeGenerator (typeof (DOHidingVirtualProperties)).BuildType ();
+      DOHidingVirtualProperties instance = (DOHidingVirtualProperties) Activator.CreateInstance (type);
+      DOWithVirtualProperties instanceAsBase = instance;
+
+      instance.PropertyWithGetterAndSetter = 1;
+      instanceAsBase.PropertyWithGetterAndSetter = 2;
+      
+      Assert.AreEqual (1, instance.PropertyWithGetterAndSetter);
+      Assert.AreEqual (1, instanceAsBase.PropertyWithGetterAndSetter);
+    }
   }
 }
