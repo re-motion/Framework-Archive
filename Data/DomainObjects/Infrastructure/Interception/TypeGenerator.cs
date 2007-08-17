@@ -56,8 +56,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       List<Tuple<PropertyInfo, string>> properties = new List<Tuple<PropertyInfo, string>> (AnalyzeAndValidateBaseType (baseType));
 
       string typeName = baseType.FullName + "_WithInterception_ "+ Guid.NewGuid().ToString ("N");
+      Type[] interfaces = new Type[] { typeof (IInterceptedDomainObject) };
       TypeAttributes flags = TypeAttributes.Public;
-      _classEmitter = new CustomClassEmitter (scope, typeName, baseType, Type.EmptyTypes, flags);
+
+      _classEmitter = new CustomClassEmitter (scope, typeName, baseType, interfaces, flags);
 
       _classEmitter.ReplicateBaseTypeConstructors ();
       OverrideGetPublicDomainObjectType ();

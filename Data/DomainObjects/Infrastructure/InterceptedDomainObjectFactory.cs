@@ -12,7 +12,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   public class InterceptedDomainObjectFactory
   {
     private readonly ModuleManager _scope;
-    private InterlockedCache<Type, Type> _typeCache = new InterlockedCache<Type, Type> ();
+    private readonly InterlockedCache<Type, Type> _typeCache = new InterlockedCache<Type, Type> ();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InterceptedDomainObjectFactory"/> class.
@@ -60,6 +60,18 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       {
         throw new ArgumentException (ex.Message, "baseType", ex);
       }
+    }
+
+    /// <summary>
+    /// Checkes whether a given domain object type was created by this factory implementation (but not necessarily the same factory instance).
+    /// </summary>
+    /// <param name="type">The type to be checked.</param>
+    /// <returns>True if <paramref name="type"/> was created by an instance of the <see cref="InterceptedDomainObjectFactory"/>; false otherwise.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="type"/> parameter was null.</exception>
+    public bool WasCreatedByFactory (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      return typeof (IInterceptedDomainObject).IsAssignableFrom (type);
     }
   }
 }

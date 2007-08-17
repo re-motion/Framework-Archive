@@ -112,5 +112,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     {
       _factory.GetConcreteDomainObjectType (typeof (InterceptedPropertyIntegrationTest.NonInstantiableNonDomainClass));
     }
+
+    [Test]
+    public void WasCreatedByFactory ()
+    {
+      Assert.IsTrue (_factory.WasCreatedByFactory (_factory.GetConcreteDomainObjectType (typeof (Order))));
+      Assert.IsFalse (_factory.WasCreatedByFactory (typeof (Order)));
+    }
   }
 }

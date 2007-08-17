@@ -117,6 +117,7 @@
     <Compile Include="Infrastructure\ExtensionClientTransactionListener.cs" />
     <Compile Include="Infrastructure\IClientTransactionListener.cs" />
     <Compile Include="Infrastructure\InterceptedDomainObjectFactory.cs" />
+    <Compile Include="Infrastructure\Interception\IInterceptedDomainObject.cs" />
     <Compile Include="Infrastructure\Interception\TypeGenerator.cs" />
     <Compile Include="Infrastructure\Interception\ModuleManager.cs" />
     <Compile Include="Infrastructure\InvalidatedSubTransactionListener.cs" />
