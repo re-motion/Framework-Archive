@@ -40,8 +40,8 @@
     </copy>
     
     <copy todir="${build.test.outputdir}" flatten="true" overwrite="true">
-      <fileset>
-        <include name="Rubicon.Security.UnitTests.Data.DomainObjects.*.xml" />
+      <fileset failonempty="true">
+        <include name="Data/DomainObjects/Rubicon.Security.UnitTests.Data.DomainObjects.*.xml" />
       </fileset>
     </copy>
 

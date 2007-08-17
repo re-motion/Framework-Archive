@@ -107,21 +107,21 @@
     <Compile Include="Core\NullSecurityClientTests\NullSecurityClientTestHelper.cs" />
     <Compile Include="Core\NullSecurityProviderTest.cs" />
     <Compile Include="Core\NullUserProviderTest.cs" />
-    <Compile Include="Data.DomainObjects.UnitTests\DomainObjectSecurityStrategyTest.cs" />
-    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\FilterQueryResultTest.cs" />
-    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\InterfaceTest.cs" />
-    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\NewObjectCreatingTest.cs" />
-    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\ObjectDeletingTest.cs" />
-    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\PropertyValueChangingTest.cs" />
-    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\PropertyValueReadingTest.cs" />
-    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\RelationChangingTest.cs" />
-    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\RelationReadingTest.cs" />
-    <Compile Include="Data.DomainObjects.UnitTests\SecurityClientTransactionExtensionTests\SecurityClientTransactionExtensionTestHelper.cs" />
-    <Compile Include="Data.DomainObjects.UnitTests\SetupFixture.cs" />
-    <Compile Include="Data.DomainObjects.UnitTests\TestDomain\NonSecurableObject.cs" />
-    <Compile Include="Data.DomainObjects.UnitTests\TestDomain\SecurableObject.cs" />
-    <Compile Include="Data.DomainObjects.UnitTests\TestDomain\StubStorageProvider.cs" />
-    <Compile Include="Data.DomainObjects.UnitTests\TestDomain\TestAccessTypes.cs" />
+    <Compile Include="Data.DomainObjects\DomainObjectSecurityStrategyTest.cs" />
+    <Compile Include="Data.DomainObjects\SecurityClientTransactionExtensionTests\FilterQueryResultTest.cs" />
+    <Compile Include="Data.DomainObjects\SecurityClientTransactionExtensionTests\InterfaceTest.cs" />
+    <Compile Include="Data.DomainObjects\SecurityClientTransactionExtensionTests\NewObjectCreatingTest.cs" />
+    <Compile Include="Data.DomainObjects\SecurityClientTransactionExtensionTests\ObjectDeletingTest.cs" />
+    <Compile Include="Data.DomainObjects\SecurityClientTransactionExtensionTests\PropertyValueChangingTest.cs" />
+    <Compile Include="Data.DomainObjects\SecurityClientTransactionExtensionTests\PropertyValueReadingTest.cs" />
+    <Compile Include="Data.DomainObjects\SecurityClientTransactionExtensionTests\RelationChangingTest.cs" />
+    <Compile Include="Data.DomainObjects\SecurityClientTransactionExtensionTests\RelationReadingTest.cs" />
+    <Compile Include="Data.DomainObjects\SecurityClientTransactionExtensionTests\SecurityClientTransactionExtensionTestHelper.cs" />
+    <Compile Include="Data.DomainObjects\SetupFixture.cs" />
+    <Compile Include="Data.DomainObjects\TestDomain\NonSecurableObject.cs" />
+    <Compile Include="Data.DomainObjects\TestDomain\SecurableObject.cs" />
+    <Compile Include="Data.DomainObjects\TestDomain\StubStorageProvider.cs" />
+    <Compile Include="Data.DomainObjects\TestDomain\TestAccessTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\RevisionBasedAccessTypeCacheProviderTest.cs" />
     <Compile Include="Core\SampleDomain\DerivedSecurableObject.cs" />
@@ -215,7 +215,7 @@
     <LocalizationFiles Include="Core\Metadata\LocalizationFiles\OneLocalizationFile.Localization.de.xml" />
   </ItemGroup>
   <ItemGroup>
-    <MappingFiles Include="Data.DomainObjects.UnitTests\Rubicon.Security.UnitTests.Data.DomainObjects.Queries.xml" />
+    <MappingFiles Include="Data.DomainObjects\Rubicon.Security.UnitTests.Data.DomainObjects.Queries.xml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
