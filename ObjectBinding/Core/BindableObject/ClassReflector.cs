@@ -81,6 +81,9 @@ namespace Rubicon.ObjectBinding.BindableObject
       if (attribute != null && !attribute.Visible)
         return false;
 
+      if (((PropertyInfo)memberInfo).GetGetMethod (false) == null)
+        return false;
+
       return true;
     }
   }

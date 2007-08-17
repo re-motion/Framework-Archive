@@ -96,6 +96,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
               CreateProperty (type, "Scalar"),
               CreateProperty (type, "ReadOnlyScalar"),
               CreateProperty (type, "ReadOnlyAttributeScalar"),
+              CreateProperty (type, "ReadOnlyNonPublicSetterScalar"),
               CreateProperty (type, "Array")
           };
 

@@ -9,6 +9,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
     private T _scalar;
     private T? _nullableScalar;
     private T _readOnlyScalar;
+    private T _readOnlyNonPublicSetterScalar;
     private T _notVisibleScalar;
     private T _readOnlyAttributeScalar;
     private T[] _array;
@@ -33,6 +34,12 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
     public T ReadOnlyScalar
     {
       get { return _readOnlyScalar; }
+    }
+
+    public T ReadOnlyNonPublicSetterScalar
+    {
+      get { return _readOnlyNonPublicSetterScalar; }
+      protected set { _readOnlyNonPublicSetterScalar = value; }
     }
 
     [ObjectBinding (Visible = false)]

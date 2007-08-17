@@ -89,6 +89,23 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     }
 
     [Test]
+    public void GetMetadata_WithReadOnlyNonPublicSetterScalar ()
+    {
+      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "ReadOnlyNonPublicSetterScalar");
+      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
+
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+
+      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (PropertyBase)));
+      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (propertyInfo));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("ReadOnlyNonPublicSetterScalar"));
+      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (SimpleValueType)));
+      Assert.That (businessObjectProperty.IsList, Is.False);
+      Assert.That (businessObjectProperty.IsRequired, Is.True);
+      Assert.That (businessObjectProperty.IsReadOnly (null), Is.True);
+    }
+
+    [Test]
     public void GetMetadata_WithReadOnlyAttributeScalar ()
     {
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "ReadOnlyAttributeScalar");

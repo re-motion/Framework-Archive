@@ -131,7 +131,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       if (ReflectionUtility.CanAscribe (_propertyInfo.PropertyType, typeof (ReadOnlyCollection<>)))
         return true;
 
-      if (_propertyInfo.CanWrite)
+      if (_propertyInfo.GetSetMethod (false) != null)
         return false;
 
       if (IsListProperty() && !_propertyInfo.PropertyType.IsArray)
