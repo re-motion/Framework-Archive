@@ -5,6 +5,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Infrastructure;
+using Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Reflection;
@@ -79,48 +80,48 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClass as its member Foo is abstract (and not an "
+        + "Interception.SampleTypes.NonInstantiableAbstractClass as its member Foo is abstract (and not an "
         + "automatic property).\r\nParameter name: baseType")]
     public void AbstractWithMethodCannotBeInstantiated ()
     {
-      _factory.GetConcreteDomainObjectType (typeof (InterceptedPropertyIntegrationTest.NonInstantiableAbstractClass));
+      _factory.GetConcreteDomainObjectType (typeof (NonInstantiableAbstractClass));
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type "
-        + "Rubicon.Data.DomainObjects.UnitTests.Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps, "
+        + "Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes.NonInstantiableAbstractClassWithProps, "
         + "property Foo is abstract but not defined in the mapping (assumed property id: "
-        + "Rubicon.Data.DomainObjects.UnitTests.Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps.Foo)."
+        + "Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes.NonInstantiableAbstractClassWithProps.Foo)."
         + "\r\nParameter name: baseType")]
     public void AbstractWithNonAutoPropertiesCannotBeInstantiated ()
     {
-      _factory.GetConcreteDomainObjectType (typeof (InterceptedPropertyIntegrationTest.NonInstantiableAbstractClassWithProps));
+      _factory.GetConcreteDomainObjectType (typeof (NonInstantiableAbstractClassWithProps));
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, automatic "
+        + "Interception.SampleTypes.NonInstantiableClassWithAutomaticRelatedCollectionSetter, automatic "
         + "properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data.DomainObjects."
-        + "UnitTests.Interception.InterceptedPropertyIntegrationTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
+        + "UnitTests.Interception.SampleTypes.NonInstantiableClassWithAutomaticRelatedCollectionSetter."
         + "RelatedObjects'.\r\nParameter name: baseType")]
     public void AbstractWithAutoCollectionSetterCannotBeInstantiated ()
     {
-      _factory.GetConcreteDomainObjectType (typeof (InterceptedPropertyIntegrationTest.NonInstantiableClassWithAutomaticRelatedCollectionSetter));
+      _factory.GetConcreteDomainObjectType (typeof (NonInstantiableClassWithAutomaticRelatedCollectionSetter));
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.Interception."
-        + "InterceptedPropertyIntegrationTest+NonInstantiableSealedClass as it is sealed.\r\nParameter name: baseType")]
+        + "SampleTypes.NonInstantiableSealedClass as it is sealed.\r\nParameter name: baseType")]
     public void SealedCannotBeInstantiated ()
     {
-      _factory.GetConcreteDomainObjectType (typeof (InterceptedPropertyIntegrationTest.NonInstantiableSealedClass));
+      _factory.GetConcreteDomainObjectType (typeof (NonInstantiableSealedClass));
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentTypeException))]
     public void NonDomainCannotBeInstantiated ()
     {
-      _factory.GetConcreteDomainObjectType (typeof (InterceptedPropertyIntegrationTest.NonInstantiableNonDomainClass));
+      _factory.GetConcreteDomainObjectType (typeof (NonInstantiableNonDomainClass));
     }
 
     [Test]
@@ -142,10 +143,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     [Test]
     public void GetTypesafeConstructorInvokerWithConstructors ()
     {
-      IFuncInvoker<TypeGeneratorTest.DOWithConstructors> invoker =
-          _factory.GetTypesafeConstructorInvoker<TypeGeneratorTest.DOWithConstructors> (
-              _factory.GetConcreteDomainObjectType (typeof (TypeGeneratorTest.DOWithConstructors)));
-      TypeGeneratorTest.DOWithConstructors instance = invoker.With ("17", "4");
+      IFuncInvoker<DOWithConstructors> invoker =
+          _factory.GetTypesafeConstructorInvoker<DOWithConstructors> (
+              _factory.GetConcreteDomainObjectType (typeof (DOWithConstructors)));
+      DOWithConstructors instance = invoker.With ("17", "4");
       Assert.IsNotNull (instance);
       Assert.AreEqual ("17", instance.FirstArg);
       Assert.AreEqual ("4", instance.SecondArg);
@@ -177,11 +178,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object's type "
-        + "Rubicon.Data.DomainObjects.UnitTests.Interception.TypeGeneratorTest+DOWithConstructors was not "
+        + "Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes.DOWithConstructors was not "
         + "created by InterceptedDomainObjectFactory.GetConcreteDomainObjectType.\r\nParameter name: instance")]
     public void PrepareUnconstructedInstanceThrowsOnTypeNotCreatedByFactory ()
     {
-      _factory.PrepareUnconstructedInstance (new TypeGeneratorTest.DOWithConstructors (7));
+      _factory.PrepareUnconstructedInstance (new DOWithConstructors (7));
     }
   }
 }

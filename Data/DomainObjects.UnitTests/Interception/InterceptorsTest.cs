@@ -3,6 +3,7 @@ using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Infrastructure.DPInterception;
 using Rubicon.Data.DomainObjects.Infrastructure.Interception;
+using Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
@@ -228,24 +229,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException(typeof (NonInterceptableTypeException), ExpectedMessage =  "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps, property Foo is abstract but not "
+        + "Interception.SampleTypes.NonInstantiableAbstractClassWithProps, property Foo is abstract but not "
         + "defined in the mapping (assumed property id: Rubicon.Data.DomainObjects.UnitTests.Interception."
-        + "InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps.Foo).")]
+        + "SampleTypes.NonInstantiableAbstractClassWithProps.Foo).")]
     public void PropSelectionThrowsOnAbstractUndefined ()
     {
       IInterceptor<DomainObject> interceptor = (IInterceptor<DomainObject>) InstantiateInternalType (typeof (DomainObject).Assembly,
           "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectPropertyInterceptor");
       IInterceptorSelector<DomainObject> selector = (IInterceptorSelector<DomainObject>) GetFieldValue (interceptor, "Selector");
 
-      selector.ShouldInterceptMethod (typeof (InterceptedPropertyIntegrationTest.NonInstantiableAbstractClassWithProps),
-        typeof (InterceptedPropertyIntegrationTest.NonInstantiableAbstractClassWithProps).GetMethod ("get_Foo"));
+      selector.ShouldInterceptMethod (typeof (NonInstantiableAbstractClassWithProps),
+        typeof (NonInstantiableAbstractClassWithProps).GetMethod ("get_Foo"));
     }
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, "
+        + "Interception.SampleTypes.NonInstantiableClassWithAutomaticRelatedCollectionSetter, "
         + "automatic properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data."
-        + "DomainObjects.UnitTests.Interception.InterceptedPropertyIntegrationTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
+        + "DomainObjects.UnitTests.Interception.SampleTypes.NonInstantiableClassWithAutomaticRelatedCollectionSetter."
         + "RelatedObjects'.")]
     public void PropSelectionThrowsOnAbstractRelatedCollectionSetter ()
     {
@@ -253,8 +254,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
           "Rubicon.Data.DomainObjects.Infrastructure.DPInterception.DomainObjectPropertyInterceptor");
       IInterceptorSelector<DomainObject> selector = (IInterceptorSelector<DomainObject>) GetFieldValue (interceptor, "Selector");
 
-      selector.ShouldInterceptMethod (typeof (InterceptedPropertyIntegrationTest.NonInstantiableClassWithAutomaticRelatedCollectionSetter),
-        typeof (InterceptedPropertyIntegrationTest.NonInstantiableClassWithAutomaticRelatedCollectionSetter).GetMethod ("set_RelatedObjects"));
+      selector.ShouldInterceptMethod (typeof (NonInstantiableClassWithAutomaticRelatedCollectionSetter),
+        typeof (NonInstantiableClassWithAutomaticRelatedCollectionSetter).GetMethod ("set_RelatedObjects"));
     }
 
     [Test]

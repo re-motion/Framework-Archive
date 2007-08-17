@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Development;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
+using Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
@@ -16,138 +17,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
   [TestFixture]
   public class InterceptedPropertyIntegrationTest : ClientTransactionBaseTest
   {
-    [DBTable]
-    [Instantiable]
-    public abstract class NonInstantiableAbstractClass : DomainObject
-    {
-      public static NonInstantiableAbstractClass NewObject()
-      {
-        return NewObject<NonInstantiableAbstractClass>().With();
-      }
-
-      protected NonInstantiableAbstractClass ()
-      {
-      }
-  
-      public abstract void Foo ();
-    }
-
-    [Instantiable]
-    [DBTable]
-    public abstract class NonInstantiableAbstractClassWithProps : DomainObject
-    {
-      public static NonInstantiableAbstractClassWithProps NewObject ()
-      {
-        return NewObject<NonInstantiableAbstractClassWithProps> ().With();
-      }
-
-      protected NonInstantiableAbstractClassWithProps()
-      {
-      }
-
-      [StorageClassNone]
-      public abstract int Foo { get; }
-    }
-
-    [DBTable]
-    public sealed class NonInstantiableSealedClass : DomainObject
-    {
-      public static NonInstantiableSealedClass NewObject ()
-      {
-        return NewObject<NonInstantiableSealedClass> ().With();
-      }
-
-      public NonInstantiableSealedClass()
-      {
-      }
-    }
-
-    [DBTable]
-    [Instantiable]
-    public abstract class NonInstantiableClassWithAutomaticRelatedCollectionSetter : DomainObject
-    {
-      public static NonInstantiableClassWithAutomaticRelatedCollectionSetter NewObject ()
-      {
-        return NewObject<NonInstantiableClassWithAutomaticRelatedCollectionSetter> ().With ();
-      }
-
-      protected NonInstantiableClassWithAutomaticRelatedCollectionSetter()
-      {
-      }
-
-      [DBBidirectionalRelation ("RelatedObjects")]
-      public abstract NonInstantiableClassWithAutomaticRelatedCollectionSetter Parent { get; }
-
-      [DBBidirectionalRelation ("Parent")]
-      public abstract ObjectList<NonInstantiableClassWithAutomaticRelatedCollectionSetter> RelatedObjects { get; set; }
-    }
-
-    public class NonInstantiableNonDomainClass
-    {
-    }
-
-    [DBTable]
-    public class Throws : DomainObject
-    {
-      public static Throws NewObject ()
-      {
-        return NewObject<Throws> ().With();
-      }
-
-      public Throws ()
-        : base (ThrowException())
-      {
-      }
-
-      private static DataContainer ThrowException ()
-      {
-        throw new Exception ("Thrown in ThrowException()");
-      }
-    }
-
-    [DBTable]
-    public class ClassWithWrongConstructor : DomainObject
-    {
-      public static ClassWithWrongConstructor NewObject ()
-      {
-        return NewObject<ClassWithWrongConstructor> ().With();
-      }
-
-      public static ClassWithWrongConstructor NewObject (double d)
-      {
-        return NewObject<ClassWithWrongConstructor> ().With (d);
-      }
-
-      public ClassWithWrongConstructor (string s)
-      {
-        Assert.Fail ("Shouldn't be executed.");
-      }
-    }
-
-    public interface IPropertyInterface
-    {
-      int Property { get; set; }
-    }
-
-    [DBTable]
-    public class ClassWithExplicitInterfaceProperty : DomainObject, IPropertyInterface
-    {
-      public static ClassWithExplicitInterfaceProperty NewObject()
-      {
-        return DomainObject.NewObject<ClassWithExplicitInterfaceProperty>().With();
-      }
-
-      protected ClassWithExplicitInterfaceProperty ()
-      {
-      }
-
-      int IPropertyInterface.Property
-      {
-        get { return CurrentProperty.GetValue<int> (); }
-        set { CurrentProperty.SetValue (value); }
-      }
-    }
-
     [SetUp]
     public override void SetUp ()
     {
@@ -244,8 +113,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClass as its member Foo is abstract (and not an "
-        + "automatic property).", MatchType = MessageMatch.Contains)]
+                                                                      + "Interception.SampleTypes.NonInstantiableAbstractClass as its member Foo is abstract (and not an "
+                                                                      + "automatic property).", MatchType = MessageMatch.Contains)]
     public void AbstractWithMethodCannotBeInstantiated ()
     {
       NonInstantiableAbstractClass.NewObject ();
@@ -253,9 +122,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type "
-        + "Rubicon.Data.DomainObjects.UnitTests.Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps, "
-        + "property Foo is abstract but not defined in the mapping (assumed property id: "
-        + "Rubicon.Data.DomainObjects.UnitTests.Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps.Foo).",
+                                                                      + "Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes.NonInstantiableAbstractClassWithProps, "
+                                                                      + "property Foo is abstract but not defined in the mapping (assumed property id: "
+                                                                      + "Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes.NonInstantiableAbstractClassWithProps.Foo).",
         MatchType = MessageMatch.Contains)]
     public void AbstractWithNonAutoPropertiesCannotBeInstantiated ()
     {
@@ -264,11 +133,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException(typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, automatic "
-        + "properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data.DomainObjects."
-        + "UnitTests.Interception.InterceptedPropertyIntegrationTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
-       + "RelatedObjects'.",
-       MatchType = MessageMatch.Contains)]
+                                                                     + "Interception.SampleTypes.NonInstantiableClassWithAutomaticRelatedCollectionSetter, automatic "
+                                                                     + "properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data.DomainObjects."
+                                                                     + "UnitTests.Interception.SampleTypes.NonInstantiableClassWithAutomaticRelatedCollectionSetter."
+                                                                     + "RelatedObjects'.",
+        MatchType = MessageMatch.Contains)]
     public void AbstractWithAutoCollectionSetterCannotBeInstantiated ()
     {
       NonInstantiableClassWithAutomaticRelatedCollectionSetter.NewObject();
@@ -276,7 +145,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.Interception."
-        + "InterceptedPropertyIntegrationTest+NonInstantiableSealedClass as it is sealed.",
+                                                                      + "SampleTypes.NonInstantiableSealedClass as it is sealed.",
         MatchType = MessageMatch.Contains)]
     public void SealedCannotBeInstantiated ()
     {
@@ -292,13 +161,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
-        + "Order does not support the requested constructor with signature (System.String, System.String, System.String, "
-        + "System.Object).")]
+                                                                           + "Order does not support the requested constructor with signature (System.String, System.String, System.String, "
+                                                                           + "System.Object).")]
     public void WrongConstructorCannotBeInstantiated ()
     {
       Type t = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.GetConcreteDomainObjectType(typeof(Order));;
       DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.GetTypesafeConstructorInvoker<object> (t)
-        .With ("foo", "bar", "foobar", (object)null);
+          .With ("foo", "bar", "foobar", (object)null);
     }
 
     [Test]
@@ -310,7 +179,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.Interception."
-        + "InterceptedPropertyIntegrationTest+ClassWithWrongConstructor does not support the requested constructor with signature ().")]
+                                                                           + "SampleTypes.ClassWithWrongConstructor does not support the requested constructor with signature ().")]
     public void ConstructorMismatch1 ()
     {
       ClassWithWrongConstructor.NewObject();
@@ -318,8 +187,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.Interception."
-        + "InterceptedPropertyIntegrationTest+ClassWithWrongConstructor does not support the requested constructor with signature "
-        + "(System.Double).")]
+                                                                           + "SampleTypes.ClassWithWrongConstructor does not support the requested constructor with signature "
+                                                                           + "(System.Double).")]
     public void ConstructorMismatch2 ()
     {
       ClassWithWrongConstructor.NewObject (3.0);
@@ -448,7 +317,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test][ExpectedException(typeof(ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
-        + "AbstractClass as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.\r\nParameter name: baseType")]
+                                                                          + "AbstractClass as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.\r\nParameter name: baseType")]
     public void CannotInstantiateReallyAbstractClass ()
     {
       AbstractClass.NewObject ();

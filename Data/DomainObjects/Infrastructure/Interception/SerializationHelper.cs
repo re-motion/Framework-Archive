@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 using System.Reflection;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
@@ -45,8 +46,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       _baseMembers = (object[]) info.GetValue ("BaseType.Data", typeof (object[]));
       _baseType = Type.GetType (baseTypeName);
 
-      // TODO: replace this with configuration factory later
-      InterceptedDomainObjectFactory factory = new InterceptedDomainObjectFactory (Environment.CurrentDirectory);
+      IDomainObjectFactory factory = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory;
       Type concreteType = factory.GetConcreteDomainObjectType (_baseType);
 
       if (typeof (ISerializable).IsAssignableFrom (_baseType))

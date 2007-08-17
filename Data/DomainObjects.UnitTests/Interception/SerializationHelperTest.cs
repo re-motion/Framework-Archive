@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Infrastructure.Interception;
 using System.Runtime.Serialization;
@@ -67,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     private SerializationInfo _info;
     private StreamingContext _context;
-    private InterceptedDomainObjectFactory _factory; // TODO: replace with config factory later
+    private InterceptedDomainObjectFactory _factory;
     private SerializableClass _serializableInstance;
     private SerializableClassImplementingISerializable _serializableInstanceImplementingISerializable;
     private SerializableClassImplementingISerializableNotCallingBaseCtor _serializableInstanceImplementingISerializableNotCallingBaseCtor;
@@ -208,12 +209,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [Ignore ("TODO: should be fixed once InterceptedDomainObjectFactory has been put into DomainObjectsConfiguration")]
     public void DeserializerUsesConfigFactory ()
     {
       SerializationHelper.GetObjectDataForGeneratedTypes (_info, _context, _serializableInstance, true);
       SerializationHelper helper = new SerializationHelper (_info, _context);
-      Assert.AreSame (((object) _serializableInstance).GetType (), helper.GetRealObject (_context).GetType ());
+      Assert.AreSame (DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.GetConcreteDomainObjectType (typeof (SerializableClass)),
+          helper.GetRealObject (_context).GetType ());
     }
   }
 }

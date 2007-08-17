@@ -6,8 +6,8 @@ using NUnit.Framework;
 using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Infrastructure.Interception;
+using Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes;
 using Rubicon.Development.UnitTesting;
-using System.Threading;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 {
@@ -16,127 +16,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
   {
     private const BindingFlags _declaredPublicInstanceFlags = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance;
     private const BindingFlags _declaredInstanceFlags = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-
-    [DBTable]
-    public class DOWithConstructors : DomainObject
-    {
-      public readonly string FirstArg;
-      public readonly string SecondArg;
-
-      public DOWithConstructors (string firstArg, string secondArg)
-      {
-        FirstArg = firstArg;
-        SecondArg = secondArg;
-      }
-
-      public DOWithConstructors (int arg)
-        : this (arg.ToString(), null)
-      {
-      }
-    }
-
-    [DBTable]
-    [Serializable]
-    public class DOWithVirtualProperties : DomainObject
-    {
-      public virtual int PropertyWithGetterAndSetter
-      {
-        get { return CurrentProperty.GetValue<int> (); }
-        set { CurrentProperty.SetValue (value); }
-      }
-
-      public virtual string PropertyWithGetterOnly
-      {
-        get { return CurrentProperty.GetValue<string> (); }
-      }
-
-      public virtual DateTime PropertyWithSetterOnly
-      {
-        set { CurrentProperty.SetValue (value); }
-      }
-
-      protected virtual int ProtectedProperty
-      {
-        get { return CurrentProperty.GetValue<int> (); }
-        set { CurrentProperty.SetValue (value); }
-      }
-
-      public virtual DateTime PropertyThrowing
-      {
-        get { throw new Exception (); }
-        set { throw new Exception (); }
-      }
-
-      [StorageClassNone]
-      public virtual DateTime PropertyNotInMapping
-      {
-        get { return CurrentProperty.GetValue<DateTime>(); }
-      }
-
-      [StorageClassNone]
-      public new PropertyIndexer Properties
-      {
-        get { return base.Properties; }
-      }
-
-      public new string GetAndCheckCurrentPropertyName()
-      {
-        return base.GetAndCheckCurrentPropertyName();
-      }
-    }
-
-    [DBTable]
-    [Instantiable]
-    public abstract class DOWithAbstractProperties : DomainObject
-    {
-      public abstract int PropertyWithGetterAndSetter { get; set; }
-      public abstract string PropertyWithGetterOnly { get; }
-      public abstract DateTime PropertyWithSetterOnly { set; }
-      protected abstract int ProtectedProperty { get; set; }
-
-      [StorageClassNone]
-      public new PropertyIndexer Properties
-      {
-        get { return base.Properties; }
-      }
-
-      public new string GetAndCheckCurrentPropertyName ()
-      {
-        return base.GetAndCheckCurrentPropertyName();
-      }
-    }
-
-    [DBTable]
-    [Instantiable]
-    [Serializable]
-    public abstract class DOImplementingISerializable : DomainObject, ISerializable
-    {
-      private string _memberHeldAsField;
-
-      public DOImplementingISerializable (string memberHeldAsField)
-      {
-        _memberHeldAsField = memberHeldAsField;
-      }
-
-      protected DOImplementingISerializable (SerializationInfo info, StreamingContext context)
-          : base (info, context)
-      {
-        _memberHeldAsField = info.GetString ("_memberHeldAsField") + "-Ctor";
-      }
-
-      public abstract int PropertyWithGetterAndSetter { get; set; }
-
-      public string MemberHeldAsField
-      {
-        get { return _memberHeldAsField; }
-        set { _memberHeldAsField = value; }
-      }
-
-      public void GetObjectData (SerializationInfo info, StreamingContext context)
-      {
-        info.AddValue ("_memberHeldAsField", _memberHeldAsField + "-GetObjectData");
-      }
-    }
 
     private ModuleManager _scope;
 
@@ -373,49 +252,49 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps, property Foo is abstract but not "
+        + "Interception.SampleTypes.NonInstantiableAbstractClassWithProps, property Foo is abstract but not "
         + "defined in the mapping (assumed property id: Rubicon.Data.DomainObjects.UnitTests.Interception."
-        + "InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps.Foo).")]
+        + "SampleTypes.NonInstantiableAbstractClassWithProps.Foo).")]
     public void ThrowsOnAbstractPropertyNotInMapping ()
     {
-      _scope.CreateTypeGenerator (typeof (InterceptedPropertyIntegrationTest.NonInstantiableAbstractClassWithProps)).BuildType();
+      _scope.CreateTypeGenerator (typeof (NonInstantiableAbstractClassWithProps)).BuildType();
     }
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, "
+        + "Interception.SampleTypes.NonInstantiableClassWithAutomaticRelatedCollectionSetter, "
         + "automatic properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data."
-        + "DomainObjects.UnitTests.Interception.InterceptedPropertyIntegrationTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
+        + "DomainObjects.UnitTests.Interception.SampleTypes.NonInstantiableClassWithAutomaticRelatedCollectionSetter."
         + "RelatedObjects'.")]
     public void ThrowsOnAbstractRelatedObjectCollectionSetter ()
     {
-      _scope.CreateTypeGenerator (typeof (InterceptedPropertyIntegrationTest.NonInstantiableClassWithAutomaticRelatedCollectionSetter)).BuildType();
+      _scope.CreateTypeGenerator (typeof (NonInstantiableClassWithAutomaticRelatedCollectionSetter)).BuildType();
     }
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClass as its member Foo is abstract (and not an "
+        + "Interception.SampleTypes.NonInstantiableAbstractClass as its member Foo is abstract (and not an "
         + "automatic property).")]
     public void ThrowsOnAbstractMethod ()
     {
-      _scope.CreateTypeGenerator (typeof (InterceptedPropertyIntegrationTest.NonInstantiableAbstractClass)).BuildType();
+      _scope.CreateTypeGenerator (typeof (NonInstantiableAbstractClass)).BuildType();
     }
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException),
         ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.Interception."
-        + "InterceptedPropertyIntegrationTest+NonInstantiableSealedClass as it is sealed.")]
+        + "SampleTypes.NonInstantiableSealedClass as it is sealed.")]
     public void ThrowsOnSealedBaseType ()
     {
-      _scope.CreateTypeGenerator (typeof (InterceptedPropertyIntegrationTest.NonInstantiableSealedClass)).BuildType();
+      _scope.CreateTypeGenerator (typeof (NonInstantiableSealedClass)).BuildType();
     }
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableNonDomainClass as it is not part of the mapping.")]
+        + "Interception.SampleTypes.NonInstantiableNonDomainClass as it is not part of the mapping.")]
     public void ThrowsOnClassWithoutClassDefinition ()
     {
-      _scope.CreateTypeGenerator (typeof (InterceptedPropertyIntegrationTest.NonInstantiableNonDomainClass)).BuildType();
+      _scope.CreateTypeGenerator (typeof (NonInstantiableNonDomainClass)).BuildType();
     }
 
     [Test]
