@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -169,7 +170,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       ReflectionBasedClassDefinition classDefinition =
           new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order), false);
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition (classDefinition, name, name, propertyType, isNullable, maxLength, true);
+      PropertyDefinition definition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(classDefinition, name, name, propertyType, isNullable, maxLength, true);
       return new PropertyValue (definition, value);
     }
   }

@@ -4,6 +4,7 @@ using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.MockConstraints;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -735,8 +736,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       Employee employee = Employee.NewObject();
 
       PropertyDefinition propertyDefinition =
-          new ReflectionBasedPropertyDefinition (
-							(ReflectionBasedClassDefinition) employee.InternalDataContainer.ClassDefinition, "testproperty", "testproperty", typeof (string), true, 10);
+          ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition((ReflectionBasedClassDefinition) employee.InternalDataContainer.ClassDefinition, "testproperty", "testproperty", typeof (string), true, 10);
 			PropertyValueCollection propertyValues = employee.InternalDataContainer.PropertyValues;
 
       Assert.IsFalse (propertyValues.Contains ("testproperty"));
@@ -756,13 +756,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       Employee employee = Employee.NewObject();
 
       PropertyDefinition propertyDefinition =
-          new ReflectionBasedPropertyDefinition (
-              (ReflectionBasedClassDefinition) employee.InternalDataContainer.ClassDefinition,
-              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name",
-              "Name",
-              typeof (string),
-              true,
-              10);
+          ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition((ReflectionBasedClassDefinition) employee.InternalDataContainer.ClassDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name", "Name", typeof (string), true, 10);
       PropertyValueCollection propertyValues = employee.InternalDataContainer.PropertyValues;
 
       Assert.IsTrue (propertyValues.Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name"));

@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -303,7 +304,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (ValueTooLongException))]
     public void MaxLengthCheck ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition (_classDefinition, "test", "test", typeof (string), 10);
+      PropertyDefinition definition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(_classDefinition, "test", "test", typeof (string), 10);
       PropertyValue propertyValue = new PropertyValue (definition, "12345");
       propertyValue.Value = "12345678901";
     }
@@ -312,7 +313,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (ValueTooLongException))]
     public void MaxLengthCheckInConstructor ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition (_classDefinition, "test", "test", typeof (string), 10);
+      PropertyDefinition definition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(_classDefinition, "test", "test", typeof (string), 10);
       new PropertyValue (definition, "12345678901");
     }
 
@@ -320,7 +321,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidTypeException))]
     public void TypeCheckInConstructor ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition (_classDefinition, "test", "test", typeof (string), 10);
+      PropertyDefinition definition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(_classDefinition, "test", "test", typeof (string), 10);
       new PropertyValue (definition, 123);
     }
 
@@ -328,7 +329,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidTypeException))]
     public void TypeCheck ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition (_classDefinition, "test", "test", typeof (string), 10);
+      PropertyDefinition definition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(_classDefinition, "test", "test", typeof (string), 10);
       PropertyValue propertyValue = new PropertyValue (definition, "123");
       propertyValue.Value = 123;
     }
@@ -337,7 +338,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property 'test' does not allow null values.")]
     public void SetNotNullableStringToNull ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition (_classDefinition, "test", "test", typeof (string), false, 10);
+      PropertyDefinition definition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(_classDefinition, "test", "test", typeof (string), false, 10);
       PropertyValue propertyValue = new PropertyValue (definition, string.Empty);
 
       propertyValue.Value = null;
@@ -346,7 +347,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNullableBinary ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition (_classDefinition, "test", "test", typeof (byte[]), true);
+      PropertyDefinition definition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(_classDefinition, "test", "test", typeof (byte[]), true);
       PropertyValue propertyValue = new PropertyValue (definition, null);
       Assert.IsNull (propertyValue.Value);
     }
@@ -354,7 +355,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNotNullableBinary ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition (_classDefinition, "test", "test", typeof (byte[]), false);
+      PropertyDefinition definition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(_classDefinition, "test", "test", typeof (byte[]), false);
 
       PropertyValue propertyValue = new PropertyValue (definition, new byte[0]);
       ResourceManager.IsEmptyImage ((byte[]) propertyValue.Value);
@@ -367,7 +368,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidTypeException))]
     public void SetBinaryWithInvalidType ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition (_classDefinition, "test", "test", typeof (byte[]), false);
+      PropertyDefinition definition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(_classDefinition, "test", "test", typeof (byte[]), false);
       new PropertyValue (definition, new int[0]);
     }
 
@@ -375,7 +376,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property 'test' does not allow null values.")]
     public void SetNotNullableBinaryToNullViaConstructor ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition (_classDefinition, "test", "test", typeof (byte[]), false);
+      PropertyDefinition definition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(_classDefinition, "test", "test", typeof (byte[]), false);
       new PropertyValue (definition, null);
     }
 
@@ -383,7 +384,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property 'test' does not allow null values.")]
     public void SetNotNullableBinaryToNullViaProperty ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition (_classDefinition, "test", "test", typeof (byte[]), false);
+      PropertyDefinition definition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(_classDefinition, "test", "test", typeof (byte[]), false);
       PropertyValue propertyValue = new PropertyValue (definition, ResourceManager.GetImage1 ());
       propertyValue.Value = null;
     }
@@ -392,7 +393,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (ValueTooLongException), ExpectedMessage = "Value for property 'test' is too large. Maximum size: 1000000.")]
     public void SetBinaryLargerThanMaxLength ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition (_classDefinition, "test", "test", typeof (byte[]), true, 1000000);
+      PropertyDefinition definition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(_classDefinition, "test", "test", typeof (byte[]), true, 1000000);
       PropertyValue propertyValue = new PropertyValue (definition, new byte[0]);
       propertyValue.Value = ResourceManager.GetImageLarger1MB ();
     }
@@ -401,7 +402,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The relation property 'test' cannot be set directly.")]
     public void SetRelationPropertyDirectly ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition (_classDefinition, "test", "test", typeof (ObjectID), true);
+      PropertyDefinition definition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(_classDefinition, "test", "test", typeof (ObjectID), true);
       PropertyValue propertyValue = new PropertyValue (definition, null);
 
       propertyValue.Value = DomainObjectIDs.Customer1;
@@ -432,7 +433,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       int? maxLength = (propertyType == typeof (string)) ? (int?) 100 : null;
 
-      return new ReflectionBasedPropertyDefinition (_classDefinition, name, name, propertyType, isNullable, maxLength, true);
+      return ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(_classDefinition, name, name, propertyType, isNullable, maxLength, true);
     }
 
     private PropertyValue CreatePropertyValue (string name, Type propertyType, bool? isNullable, object value)

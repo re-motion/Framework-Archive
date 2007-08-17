@@ -15,8 +15,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ReflectionBasedClassDefinition classDefinition = CreateOrderDefinition();
       classDefinition.MyPropertyDefinitions.Add (
-          new ReflectionBasedPropertyDefinition (
-              classDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", "CustomerID", typeof (ObjectID), false));
+          ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(classDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", "CustomerID", typeof (ObjectID), false));
 
       return classDefinition;
     }

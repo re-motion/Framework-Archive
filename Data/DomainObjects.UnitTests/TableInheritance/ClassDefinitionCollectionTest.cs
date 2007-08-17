@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
@@ -149,12 +150,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition (
           "Person", "TableInheritance_Person", TableInheritanceTestDomainProviderID, typeof (Person), false, domainBaseClass);
 
-      personClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition (personClass, "PersonName", "NameColumn", typeof (string), false, 100));
+      personClass.MyPropertyDefinitions.Add (ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(personClass, "PersonName", "NameColumn", typeof (string), false, 100));
 
       ReflectionBasedClassDefinition organizationalUnitClass = new ReflectionBasedClassDefinition (
           "OrganizationalUnit", "TableInheritance_OrganizationalUnit", TableInheritanceTestDomainProviderID, typeof (OrganizationalUnit), false, domainBaseClass);
 
-      organizationalUnitClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition (organizationalUnitClass, "OrganizationalUnitName", "NameColumn", typeof (string), false, 100));
+      organizationalUnitClass.MyPropertyDefinitions.Add (ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(organizationalUnitClass, "OrganizationalUnitName", "NameColumn", typeof (string), false, 100));
 
       _classDefinitions.Add (domainBaseClass);
       _classDefinitions.Add (personClass);

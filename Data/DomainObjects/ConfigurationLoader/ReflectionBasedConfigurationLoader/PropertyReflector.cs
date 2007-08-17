@@ -27,8 +27,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       CheckValidPropertyType();
 
       return new ReflectionBasedPropertyDefinition (
-          _classDefinition,
-          GetPropertyName(),
+          _classDefinition, PropertyInfo, GetPropertyName(),
           GetStorageSpecificIdentifier(),
           IsRelationProperty() ? typeof (ObjectID) : PropertyInfo.PropertyType,
           IsNullable(),

@@ -135,6 +135,7 @@
     <Compile Include="Configuration\Mapping\ClassReflectorTests\GetClassDefinitionForHierarchyWithoutStorageGroup.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\TestBaseForHierarchyWithoutStorageGroup.cs" />
     <Compile Include="Configuration\Mapping\PropertyFinderBaseTest.cs" />
+    <Compile Include="Configuration\Mapping\ReflectionBasedPropertyDefinitionFactory.cs" />
     <Compile Include="Configuration\Mapping\RelationEndPointReflectorTests\BaseManySideRelationProperty.cs" />
     <Compile Include="Configuration\Mapping\RelationEndPointReflectorTests\BaseOneSideRelationProperty.cs" />
     <Compile Include="Configuration\Mapping\RelationEndPointReflectorTests\GenericManySideRelationProperty.cs" />

@@ -87,34 +87,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     private void CreatePropertyDefinitionsForClosedGenericClassWithManySideRelationProperties (ReflectionBasedClassDefinition classDefinition)
     {
       classDefinition.MyPropertyDefinitions.Add (
-          new ReflectionBasedPropertyDefinition (
-              classDefinition,
-              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.GenericClassWithManySideRelationPropertiesNotInMapping`1.BaseUnidirectional",
-              "BaseUnidirectionalID",
-              typeof (ObjectID),
-              true,
-              null,
-              true));
+          ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(classDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.GenericClassWithManySideRelationPropertiesNotInMapping`1.BaseUnidirectional", "BaseUnidirectionalID", typeof (ObjectID), true, null, true));
 
       classDefinition.MyPropertyDefinitions.Add (
-          new ReflectionBasedPropertyDefinition (
-              classDefinition,
-              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.GenericClassWithManySideRelationPropertiesNotInMapping`1.BaseBidirectionalOneToOne",
-              "BaseBidirectionalOneToOneID",
-              typeof (ObjectID),
-              true,
-              null,
-              true));
+          ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(classDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.GenericClassWithManySideRelationPropertiesNotInMapping`1.BaseBidirectionalOneToOne", "BaseBidirectionalOneToOneID", typeof (ObjectID), true, null, true));
 
       classDefinition.MyPropertyDefinitions.Add (
-          new ReflectionBasedPropertyDefinition (
-              classDefinition,
-              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.GenericClassWithManySideRelationPropertiesNotInMapping`1.BaseBidirectionalOneToMany",
-              "BaseBidirectionalOneToManyID",
-              typeof (ObjectID),
-              true,
-              null,
-              true));
+          ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(classDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.GenericClassWithManySideRelationPropertiesNotInMapping`1.BaseBidirectionalOneToMany", "BaseBidirectionalOneToManyID", typeof (ObjectID), true, null, true));
 
     }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer;
@@ -64,10 +65,10 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
           "FirstClass", "FirstEntity", "FirstStorageProvider", typeof (Company), false);
 
       firstClass.MyPropertyDefinitions.Add (
-          new ReflectionBasedPropertyDefinition (firstClass, "SecondClass", "SecondClassID", typeof (ObjectID), true, null, true));
+          CreatePropertyDefinition(firstClass, "SecondClass", "SecondClassID", typeof (ObjectID), true, null, true));
 
       firstClass.MyPropertyDefinitions.Add (
-          new ReflectionBasedPropertyDefinition (firstClass, "ThirdClass", "ThirdClassID", typeof (ObjectID), true, null, true));
+          CreatePropertyDefinition(firstClass, "ThirdClass", "ThirdClassID", typeof (ObjectID), true, null, true));
 
       ReflectionBasedClassDefinition secondClass = new ReflectionBasedClassDefinition (
           "SecondClass", "SecondEntity", "FirstStorageProvider", typeof (Address), false);
@@ -99,6 +100,14 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript());
     }
 
+    private PropertyDefinition CreatePropertyDefinition (ReflectionBasedClassDefinition classDefinition, string propertyName, string columnName,
+        Type propertyType, bool? isNullable, int? maxLength, bool isPersistent)
+    {
+      PropertyInfo dummyPropertyInfo = typeof (Order).GetProperty ("Number");
+      return new ReflectionBasedPropertyDefinition (
+        classDefinition, dummyPropertyInfo, propertyName, columnName, propertyType, isNullable, maxLength, isPersistent);
+    }
+
     [Test]
     public void AddConstraintWithNoConstraintNecessary ()
     {
@@ -116,7 +125,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
           "DerivedClass", "BaseClassEntity", "FirstStorageProvider", typeof (Customer), false, baseClass);
 
       derivedClass.MyPropertyDefinitions.Add (
-          new ReflectionBasedPropertyDefinition (derivedClass, "OtherClass", "OtherClassID", typeof (ObjectID), true, null, true));
+          CreatePropertyDefinition(derivedClass, "OtherClass", "OtherClassID", typeof (ObjectID), true, null, true));
 
       ReflectionBasedClassDefinition otherClass = new ReflectionBasedClassDefinition (
           "OtherClass", "OtherClassEntity", "FirstStorageProvider", typeof (DevelopmentPartner), false);

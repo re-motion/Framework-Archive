@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using System.Text;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -42,8 +43,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
       _tableBuilder = new TableBuilder();
       _classDefintion = new ReflectionBasedClassDefinition ("ClassID", "Table", "StorageProvider", typeof (Order), false);
     }
-
-    [Test]
+[Test]
     public void GetSqlDataType ()
     {
       Assert.AreEqual ("bit", _tableBuilder.GetSqlDataType (CreatePropertyDefinition (typeof (Boolean), null, null)));
@@ -163,19 +163,17 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
       ReflectionBasedClassDefinition abstractClass =
           new ReflectionBasedClassDefinition ("AbstractClass", null, "FirstStorageProvider", typeof (AbstractClass), false);
       abstractClass.MyPropertyDefinitions.Add (
-          new ReflectionBasedPropertyDefinition (abstractClass, "PropertyInAbstractClass", "PropertyInAbstractClass", typeof (string), true, 100));
+          CreatePropertyDefinition (abstractClass, "PropertyInAbstractClass", "PropertyInAbstractClass", typeof (string), true, 100, true));
 
       ReflectionBasedClassDefinition derivedAbstractClass =
           new ReflectionBasedClassDefinition ("DerivedAbstractClass", null, "FirstStorageProvider", typeof (DerivedAbstractClass), false, abstractClass);
       derivedAbstractClass.MyPropertyDefinitions.Add (
-          new ReflectionBasedPropertyDefinition (
-              derivedAbstractClass, "PropertyInAbstractDerivedClass", "PropertyInAbstractDerivedClass", typeof (string), false, 101));
+          CreatePropertyDefinition (derivedAbstractClass, "PropertyInAbstractDerivedClass", "PropertyInAbstractDerivedClass", typeof (string), false, 101, true));
 
       ReflectionBasedClassDefinition derivedConcreteClass = new ReflectionBasedClassDefinition (
           "DerivedConcreteClass", "EntityName", "FirstStorageProvider", typeof (DerivedConcreteClass), false, derivedAbstractClass);
       derivedConcreteClass.MyPropertyDefinitions.Add (
-          new ReflectionBasedPropertyDefinition (
-              derivedConcreteClass, "PropertyInDerivedConcreteClass", "PropertyInDerivedConcreteClass", typeof (string), true, 102));
+          CreatePropertyDefinition (derivedConcreteClass, "PropertyInDerivedConcreteClass", "PropertyInDerivedConcreteClass", typeof (string), true, 102, true));
 
       string expectedStatement =
           "CREATE TABLE [dbo].[EntityName]\r\n"
@@ -329,7 +327,15 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
 
     private PropertyDefinition CreatePropertyDefinition (Type propertyType, bool? isNullable, int? maxLength)
     {
-      return new ReflectionBasedPropertyDefinition (_classDefintion, "Name", "ColumnName", propertyType, isNullable, maxLength, true);
+      return CreatePropertyDefinition(_classDefintion, "Name", "ColumnName", propertyType, isNullable, maxLength, true);
+    }
+
+    private PropertyDefinition CreatePropertyDefinition (ReflectionBasedClassDefinition classDefinition, string propertyName, string columnName,
+        Type propertyType, bool? isNullable, int? maxLength, bool isPersistent)
+    {
+      PropertyInfo dummyPropertyInfo = typeof (Order).GetProperty ("Number");
+      return new ReflectionBasedPropertyDefinition (
+          classDefinition, dummyPropertyInfo, propertyName, columnName, propertyType, isNullable, maxLength, isPersistent);
     }
   }
 }

@@ -30,15 +30,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void TwoRelationEndPointDefinitions ()
     {
       ReflectionBasedClassDefinition partnerDefinition = new ReflectionBasedClassDefinition ("Partner", "Partner", "TestDomain", typeof (Partner), false);
-      partnerDefinition.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition (
-          partnerDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson", "ContactPersonID", typeof (ObjectID)));
+      partnerDefinition.MyPropertyDefinitions.Add (ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(partnerDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson", "ContactPersonID", typeof (ObjectID)));
 
       RelationEndPointDefinition endPointDefinition1 = new RelationEndPointDefinition (
           partnerDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson", false);
 
       ReflectionBasedClassDefinition personDefinition = new ReflectionBasedClassDefinition ("Person", "Person", "TestDomain", typeof (Person), false);
-      personDefinition.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition (
-          personDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany", "AssociatedPartnerCompanyID", typeof (ObjectID)));
+      personDefinition.MyPropertyDefinitions.Add (ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(personDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany", "AssociatedPartnerCompanyID", typeof (ObjectID)));
 
       RelationEndPointDefinition endPointDefinition2 = new RelationEndPointDefinition (
           personDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany", false);

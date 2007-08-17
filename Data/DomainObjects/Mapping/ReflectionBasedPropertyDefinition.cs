@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using System.Runtime.Serialization;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
@@ -8,35 +9,13 @@ namespace Rubicon.Data.DomainObjects.Mapping
   [Serializable]
   public class ReflectionBasedPropertyDefinition: PropertyDefinition
   {
-    private Type _propertyType;
-    private bool _isNullable;
-
-    public ReflectionBasedPropertyDefinition (
-        ReflectionBasedClassDefinition classDefinition, string propertyName, string columnName, Type propertyType)
-        : this (classDefinition, propertyName, columnName, propertyType, null, null, true)
-    {
-    }
-
-    public ReflectionBasedPropertyDefinition (
-        ReflectionBasedClassDefinition classDefinition, string propertyName, string columnName, Type propertyType, bool isNullable)
-        : this (classDefinition, propertyName, columnName, propertyType, isNullable, null, true)
-    {
-    }
-
-    public ReflectionBasedPropertyDefinition (
-        ReflectionBasedClassDefinition classDefinition, string propertyName, string columnName, Type propertyType, int maxLength)
-        : this (classDefinition, propertyName, columnName, propertyType, null, maxLength, true)
-    {
-    }
-
-    public ReflectionBasedPropertyDefinition (
-        ReflectionBasedClassDefinition classDefinition, string propertyName, string columnName, Type propertyType, bool isNullable, int maxLength)
-        : this (classDefinition, propertyName, columnName, propertyType, isNullable, maxLength, true)
-    {
-    }
+    private readonly PropertyInfo _propertyInfo;
+    private readonly Type _propertyType;
+    private readonly bool _isNullable;
 
     public ReflectionBasedPropertyDefinition (
         ReflectionBasedClassDefinition classDefinition,
+        PropertyInfo propertyInfo,
         string propertyName,
         string columnName,
         Type propertyType,
@@ -45,6 +24,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
         bool isPersistent)
         : base (classDefinition, propertyName, columnName, maxLength, isPersistent)
     {
+      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
       ArgumentUtility.CheckNotNull ("propertyType", propertyType);
       if (propertyType.IsValueType && isNullable.HasValue)
       {
@@ -58,11 +38,17 @@ namespace Rubicon.Data.DomainObjects.Mapping
             propertyName, "MaxLength parameter can only be supplied for strings and byte arrays but the property is of type '{0}'.", propertyType);
       }
 
+      _propertyInfo = propertyInfo;
       _propertyType = propertyType;
       if (propertyType.IsValueType)
         _isNullable = Nullable.GetUnderlyingType (propertyType) != null;
       else
         _isNullable = isNullable ?? true;
+    }
+
+    public PropertyInfo PropertyInfo
+    {
+      get { return _propertyInfo; }
     }
 
     public override Type PropertyType

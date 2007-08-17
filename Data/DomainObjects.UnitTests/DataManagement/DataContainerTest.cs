@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -32,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       ClientTransactionMock.SetClientTransaction (_existingDataContainer);
       ClientTransactionMock.SetClientTransaction (_newDataContainer);
 
-      _nameDefinition = new ReflectionBasedPropertyDefinition (orderClass, "Name", "Name", typeof (string), 100);
+      _nameDefinition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(orderClass, "Name", "Name", typeof (string), 100);
       _nameProperty = new PropertyValue (_nameDefinition, "Arthur Dent");
     }
 
@@ -169,8 +170,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       ObjectID id = new ObjectID ("Official", 1);
       DataContainer container = DataContainer.CreateNew (id);
 
-      PropertyDefinition reportsToDefinition = new ReflectionBasedPropertyDefinition (
-          (ReflectionBasedClassDefinition) container.ClassDefinition, "ReportsTo", "ReportsTo", typeof (string), true, 100);
+      PropertyDefinition reportsToDefinition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition((ReflectionBasedClassDefinition) container.ClassDefinition, "ReportsTo", "ReportsTo", typeof (string), true, 100);
 
       container.PropertyValues.Add (new PropertyValue (reportsToDefinition, null));
 
