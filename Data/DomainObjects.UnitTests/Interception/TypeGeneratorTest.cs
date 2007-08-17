@@ -15,6 +15,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
   public class TypeGeneratorTest : ClientTransactionBaseTest
   {
     private const BindingFlags _declaredPublicInstanceFlags = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance;
+    private const BindingFlags _declaredInstanceFlags = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
     [DBTable]
     public class DOWithConstructors : DomainObject
@@ -54,6 +55,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
         set { CurrentProperty.SetValue (value); }
       }
 
+      protected virtual int ProtectedProperty
+      {
+        get { return CurrentProperty.GetValue<int> (); }
+        set { CurrentProperty.SetValue (value); }
+      }
+
       public virtual DateTime PropertyThrowing
       {
         get { throw new Exception (); }
@@ -85,6 +92,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       public abstract int PropertyWithGetterAndSetter { get; set; }
       public abstract string PropertyWithGetterOnly { get; }
       public abstract DateTime PropertyWithSetterOnly { set; }
+      protected abstract int ProtectedProperty { get; set; }
 
       [StorageClassNone]
       public new PropertyIndexer Properties
@@ -223,6 +231,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       Assert.IsNotNull (type.GetProperty ("PropertyWithGetterOnly", _declaredPublicInstanceFlags));
       Assert.IsNotNull (type.GetProperty ("PropertyWithSetterOnly", _declaredPublicInstanceFlags));
       Assert.IsNotNull (type.GetProperty ("PropertyWithGetterAndSetter", _declaredPublicInstanceFlags));
+      Assert.IsNotNull (type.GetProperty ("ProtectedProperty", _declaredInstanceFlags));
+      Assert.IsTrue (type.GetProperty ("ProtectedProperty", _declaredInstanceFlags).GetGetMethod (true).IsFamily);
+      Assert.IsTrue (type.GetProperty ("ProtectedProperty", _declaredInstanceFlags).GetSetMethod (true).IsFamily);
     }
 
     [Test]
@@ -242,6 +253,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       Assert.AreEqual (new DateTime(), instance.Properties[typeof (DOWithVirtualProperties), "PropertyWithSetterOnly"].GetValue<DateTime>());
       instance.PropertyWithSetterOnly = new DateTime (2260, 1, 2);
       Assert.AreEqual (new DateTime (2260, 1, 2), instance.Properties[typeof (DOWithVirtualProperties), "PropertyWithSetterOnly"].GetValue<DateTime> ());
+
+      type.GetProperty ("ProtectedProperty", _declaredInstanceFlags).SetValue (instance, 67, _declaredInstanceFlags, null, null, null);
+      Assert.AreEqual (67,
+          type.GetProperty ("ProtectedProperty", _declaredInstanceFlags).GetValue (instance, _declaredInstanceFlags, null, null, null));
     }
 
     [Test]
@@ -305,6 +320,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       Assert.IsNotNull (type.GetProperty ("PropertyWithGetterOnly", _declaredPublicInstanceFlags));
       Assert.IsNotNull (type.GetProperty ("PropertyWithSetterOnly", _declaredPublicInstanceFlags));
       Assert.IsNotNull (type.GetProperty ("PropertyWithGetterAndSetter", _declaredPublicInstanceFlags));
+      Assert.IsNotNull (type.GetProperty ("ProtectedProperty", _declaredInstanceFlags));
+      Assert.IsTrue (type.GetProperty ("ProtectedProperty", _declaredInstanceFlags).GetGetMethod (true).IsFamily);
+      Assert.IsTrue (type.GetProperty ("ProtectedProperty", _declaredInstanceFlags).GetSetMethod (true).IsFamily);
       Assert.IsFalse (type.IsAbstract);
     }
 
@@ -325,6 +343,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       Assert.AreEqual (new DateTime (), instance.Properties[typeof (DOWithAbstractProperties), "PropertyWithSetterOnly"].GetValue<DateTime> ());
       instance.PropertyWithSetterOnly = new DateTime (2260, 1, 2);
       Assert.AreEqual (new DateTime (2260, 1, 2), instance.Properties[typeof (DOWithAbstractProperties), "PropertyWithSetterOnly"].GetValue<DateTime> ());
+
+      type.GetProperty ("ProtectedProperty", _declaredInstanceFlags).SetValue (instance, 4711, _declaredInstanceFlags, null, null, null);
+      Assert.AreEqual (4711,
+          type.GetProperty ("ProtectedProperty", _declaredInstanceFlags).GetValue (instance, _declaredInstanceFlags, null, null, null));
     }
 
     [Test]

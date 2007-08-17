@@ -121,6 +121,7 @@
     <Compile Include="Infrastructure\Interception\SerializationHelper.cs" />
     <Compile Include="Infrastructure\Interception\TypeGenerator.cs" />
     <Compile Include="Infrastructure\Interception\ModuleManager.cs" />
+    <Compile Include="Infrastructure\Interception\TypesafeDomainObjectActivator.cs" />
     <Compile Include="Infrastructure\InvalidatedSubTransactionListener.cs" />
     <Compile Include="Infrastructure\LoggingClientTransactionListener.cs" />
     <Compile Include="Infrastructure\ReadOnlyClientTransactionListener.cs" />
@@ -189,7 +190,7 @@
     <Compile Include="Infrastructure\DPInterception\IInterceptorSelector.cs" />
     <Compile Include="Infrastructure\DPInterception\IInvocation.cs" />
     <Compile Include="Mapping\Configuration\MappingLoaderConfiguration.cs" />
-    <Compile Include="Infrastructure\DPInterceptedDomainObjectCreator.cs" />
+    <Compile Include="Infrastructure\FactoryBasedDomainObjectCreator.cs" />
     <Compile Include="Persistence\Configuration\PersistenceConfiguration.cs" />
     <Compile Include="Persistence\Configuration\StorageProviderDefinitionHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

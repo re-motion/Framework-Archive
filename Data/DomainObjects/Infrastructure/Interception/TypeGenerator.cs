@@ -185,8 +185,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     private void ProcessProperty (PropertyInfo property, string propertyIdentifier)
     {
-      MethodInfo getMethod = property.GetGetMethod();
-      MethodInfo setMethod = property.GetSetMethod();
+      MethodInfo getMethod = property.GetGetMethod (true);
+      MethodInfo setMethod = property.GetSetMethod (true);
       if (IsOverridable (getMethod) || IsOverridable (setMethod))
       {
         CustomPropertyEmitter overrider = _classEmitter.CreatePropertyOverride (property);

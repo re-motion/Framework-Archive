@@ -284,7 +284,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
       object value = GetValueWithoutTypeCheck();
       Assertion.DebugAssert (
-          !(value == null && PropertyType.IsValueType),
+          value != null || !PropertyType.IsValueType || Nullable.GetUnderlyingType(PropertyType) != null,
           "Property '{0}' is a value type but the DataContainer returned null.",
           PropertyIdentifier);
       Assertion.DebugAssert (value == null || value is T);

@@ -70,6 +70,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
+        + "AbstractClass as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.\r\nParameter name: baseType")]
+    public void AbstractWithoutInstantiableAttributeCannotBeInstantiated ()
+    {
+      _factory.GetConcreteDomainObjectType (typeof (AbstractClass));
+    }
+
+    [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
         + "Interception.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClass as its member Foo is abstract (and not an "
         + "automatic property).\r\nParameter name: baseType")]

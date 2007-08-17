@@ -1,6 +1,7 @@
 using System;
 using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Infrastructure.Interception;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
 using System.Reflection;
@@ -14,6 +15,14 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   {
     private readonly ModuleManager _scope;
     private readonly InterlockedCache<Type, Type> _typeCache = new InterlockedCache<Type, Type> ();
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InterceptedDomainObjectFactory"/> class.
+    /// </summary>
+    public InterceptedDomainObjectFactory ()
+        : this (Environment.CurrentDirectory)
+    {
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InterceptedDomainObjectFactory"/> class.
@@ -41,9 +50,18 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <returns>A domain object type which intercepts property calls.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="baseType"/> is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentTypeException"><paramref name="baseType"/> cannot be assigned to <see cref="DomainObject"/>.</exception>
+    /// <exception cref="MappingException">The given <paramref name="baseType"/> is not part of the mapping.</exception>
     public Type GetConcreteDomainObjectType (Type baseType)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("baseType", baseType, typeof (DomainObject));
+
+      if (MappingConfiguration.Current.ClassDefinitions.GetMandatory (baseType).IsAbstract)
+      {
+        string message = string.Format (
+          "Cannot instantiate type {0} as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.",
+          baseType.FullName);
+        throw new ArgumentException (message, "baseType");
+      }
 
       return _typeCache.GetOrCreateValue (baseType, CreateConcreteDomainObjectType);
     }
@@ -91,7 +109,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       if (!WasCreatedByFactory (type))
         throw new ArgumentException (
             string.Format ("The type {0} was not created by InterceptedDomainObjectFactory.GetConcreteDomainObjectType.", type.FullName), "type");
-      return TypesafeActivator.CreateInstance<TMinimal> (type, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+      return TypesafeDomainObjectActivator.CreateInstance<TMinimal> (type.BaseType, type, 
+          BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
     /// <summary>

@@ -28,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.Mapping.Configuration
           new DoubleCheckedLockingContainer<IDomainObjectFactory> (delegate { return DomainObjectFactoryElement.CreateInstance(); });
       _domainObjectFactoryProperty = new ConfigurationProperty (
           "domainObjectFactory",
-          typeof (TypeElement<IDomainObjectFactory, DPInterceptedDomainObjectFactory>),
+          typeof (TypeElement<IDomainObjectFactory, InterceptedDomainObjectFactory>),
           null,
           ConfigurationPropertyOptions.None);
 

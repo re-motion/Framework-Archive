@@ -61,7 +61,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
 
-      Assert.IsInstanceOfType (typeof (DPInterceptedDomainObjectFactory), _configuration.DomainObjectFactory);
+      Assert.IsInstanceOfType (typeof (InterceptedDomainObjectFactory), _configuration.DomainObjectFactory);
     }
   }
 }

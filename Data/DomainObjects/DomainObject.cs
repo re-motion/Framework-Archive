@@ -262,7 +262,7 @@ public class DomainObject
   private static IDomainObjectCreator GetCreator (Type domainObjectType)
   {
     if (ShouldUseFactoryForInstantiation (domainObjectType))
-      return DPInterceptedDomainObjectCreator.Instance;
+      return FactoryBasedDomainObjectCreator.Instance;
     else
       return LegacyDomainObjectCreator.Instance;
   }

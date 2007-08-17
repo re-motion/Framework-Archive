@@ -14,9 +14,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   // Needed constructors:
   // (any constructor) -- for new objects
   // no constructor for loading required
-  class DPInterceptedDomainObjectCreator : IDomainObjectCreator
+  class FactoryBasedDomainObjectCreator : IDomainObjectCreator
   {
-    public readonly static DPInterceptedDomainObjectCreator Instance = new DPInterceptedDomainObjectCreator ();
+    public readonly static FactoryBasedDomainObjectCreator Instance = new FactoryBasedDomainObjectCreator ();
 
     public DomainObject CreateWithDataContainer (DataContainer dataContainer)
     {

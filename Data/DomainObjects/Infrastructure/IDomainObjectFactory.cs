@@ -1,4 +1,5 @@
 ﻿using System;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Reflection;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
@@ -25,6 +26,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="ArgumentNullException">The <paramref name="baseType"/> argument is null.</exception>
     /// <exception cref="ArgumentException">The <paramref name="baseType"/> argument is sealed, contains abstract methods (apart from automatic
     /// properties), or is not derived from <see cref="DomainObject"/>.</exception>
+    /// <exception cref="MappingException">The given <paramref name="baseType"/> is not part of the mapping.</exception>
     Type GetConcreteDomainObjectType (Type baseType);
 
     /// <summary>
