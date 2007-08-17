@@ -12,15 +12,9 @@
       <nowarn>
       </nowarn> 
       <sources failonempty="true">
-        <include name="*.cs" />
-        <include name="Configuration/**/*.cs" />
-        <include name="Metadata/**/*.cs" />
-        <include name="MockConstraints/**/*.cs" />
-        <include name="Properties/**/*.cs" />
-        <include name="SampleDomain/**/*.cs" />
-        <include name="SecurityClientTests/**/*.cs" />
-        <include name="SecurityStrategyTests/**/*.cs" />
-        <include name="XmlAsserter/**/*.cs" />
+        <include name="**/*.cs"/>
+        <exclude name="bin/**" />
+        <exclude name="obj/**" />
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
