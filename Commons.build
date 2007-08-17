@@ -546,7 +546,7 @@
 
   <target name="Security.UnitTests.TestDomain" depends="Core, Security">
     <property name="project.name" value="Security.UnitTests.TestDomain" />
-    <property name="project.dir" value="Security/Core.UnitTests.TestDomain" />
+    <property name="project.dir" value="Security/UnitTests.TestDomain" />
     <property name="project.output" value="Rubicon.Security.UnitTests.TestDomain" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
@@ -564,7 +564,7 @@
     <call target="Web.UnitTests" cascade="false"/>
 
     <property name="project.name" value="Security.UnitTests" />
-    <property name="project.dir" value="Security/Core.UnitTests" />
+    <property name="project.dir" value="Security/UnitTests" />
     <property name="project.output" value="Rubicon.Security.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />

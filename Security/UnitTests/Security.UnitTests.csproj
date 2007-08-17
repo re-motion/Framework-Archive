@@ -228,7 +228,7 @@
       <Project>{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}</Project>
       <Name>Web.UnitTests</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Core.UnitTests.TestDomain\Security.UnitTests.TestDomain.csproj">
+    <ProjectReference Include="..\UnitTests.TestDomain\Security.UnitTests.TestDomain.csproj">
       <Project>{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}</Project>
       <Name>Security.UnitTests.TestDomain</Name>
     </ProjectReference>
