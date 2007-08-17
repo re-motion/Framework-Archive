@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Security.UnitTests.SampleDomain;
+using Rubicon.Security.UnitTests.Core.SampleDomain;
 using Rubicon.Security.UnitTests.TestDomain;
 using Rubicon.Utilities;
 
-namespace Rubicon.Security.UnitTests
+namespace Rubicon.Security.UnitTests.Core
 {
   [TestFixture]
   public class SecurityContextTest
@@ -23,7 +23,7 @@ namespace Rubicon.Security.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-       ExpectedMessage = "Enumerated Type 'Rubicon.Security.UnitTests.SampleDomain.SimpleEnum' cannot be used as an abstract role. "
+       ExpectedMessage = "Enumerated Type 'Rubicon.Security.UnitTests.Core.SampleDomain.SimpleEnum' cannot be used as an abstract role. "
         + "Valid abstract roles must have the Rubicon.Security.AbstractRoleAttribute applied.\r\nParameter name: abstractRoles")]
     public void CreateSecurityContextWithInvalidAbstractRole ()
     {
@@ -54,7 +54,7 @@ namespace Rubicon.Security.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-       ExpectedMessage = "Enumerated Type 'Rubicon.Security.UnitTests.SampleDomain.SimpleEnum' cannot be used as a security state. "
+       ExpectedMessage = "Enumerated Type 'Rubicon.Security.UnitTests.Core.SampleDomain.SimpleEnum' cannot be used as a security state. "
         + "Valid security states must have the Rubicon.Security.SecurityStateAttribute applied.\r\nParameter name: states")]
     public void CreateSecurityContextWithInvalidState ()
     {

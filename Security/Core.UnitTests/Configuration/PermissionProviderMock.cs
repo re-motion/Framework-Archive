@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using Rubicon.Configuration;
 using Rubicon.Security.Metadata;
 
-namespace Rubicon.Security.UnitTests.Configuration
+namespace Rubicon.Security.UnitTests.Core.Configuration
 {
   public class PermissionProviderMock : ExtendedProviderBase, IPermissionProvider
   {

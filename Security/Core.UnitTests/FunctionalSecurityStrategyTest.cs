@@ -4,14 +4,14 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Collections;
 using Rubicon.Security.Configuration;
-using Rubicon.Security.UnitTests.Configuration;
-using Rubicon.Security.UnitTests.MockConstraints;
-using Rubicon.Security.UnitTests.SampleDomain;
+using Rubicon.Security.UnitTests.Core.Configuration;
+using Rubicon.Security.UnitTests.Core.MockConstraints;
+using Rubicon.Security.UnitTests.Core.SampleDomain;
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 using Mocks_List = Rhino.Mocks.Constraints.List;
 using Mocks_Property = Rhino.Mocks.Constraints.Property;
 
-namespace Rubicon.Security.UnitTests
+namespace Rubicon.Security.UnitTests.Core
 {
 
   [TestFixture]
@@ -67,7 +67,7 @@ namespace Rubicon.Security.UnitTests
     public void HasAccess_WithAccessGranted ()
     {
       Expect.Call (_mockSecurityStrategy.HasAccess (null, null, null, null)).Return (true).Constraints (
-          new FunctionalSecurityContextFactoryConstraint ("Rubicon.Security.UnitTests.SampleDomain.SecurableObject, Rubicon.Security.UnitTests"),
+          new FunctionalSecurityContextFactoryConstraint ("Rubicon.Security.UnitTests.Core.SampleDomain.SecurableObject, Rubicon.Security.UnitTests"),
           Mocks_Is.Same (_stubSecurityProvider),
           Mocks_Is.Same (_user),
           Mocks_List.Equal (_accessTypeResult));
@@ -83,7 +83,7 @@ namespace Rubicon.Security.UnitTests
     public void HasAccess_WithAccessDenied ()
     {
       Expect.Call (_mockSecurityStrategy.HasAccess (null, null, null, null)).Return (false).Constraints (
-          new FunctionalSecurityContextFactoryConstraint ("Rubicon.Security.UnitTests.SampleDomain.SecurableObject, Rubicon.Security.UnitTests"),
+          new FunctionalSecurityContextFactoryConstraint ("Rubicon.Security.UnitTests.Core.SampleDomain.SecurableObject, Rubicon.Security.UnitTests"),
           Mocks_Is.Same (_stubSecurityProvider),
           Mocks_Is.Same (_user),
           Mocks_List.Equal (_accessTypeResult));

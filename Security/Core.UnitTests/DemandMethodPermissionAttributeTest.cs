@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Security.UnitTests.SampleDomain;
+using Rubicon.Security.UnitTests.Core.SampleDomain;
 using Rubicon.Utilities;
 
-namespace Rubicon.Security.UnitTests
+namespace Rubicon.Security.UnitTests.Core
 {
   [TestFixture]
   public class DemandMethodPermissionAttributeTest
@@ -17,7 +17,7 @@ namespace Rubicon.Security.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Enumerated Type 'Rubicon.Security.UnitTests.SampleDomain.TestAccessTypesWithoutAccessTypeAttribute' cannot be used as an access type. "
+        ExpectedMessage = "Enumerated Type 'Rubicon.Security.UnitTests.Core.SampleDomain.TestAccessTypesWithoutAccessTypeAttribute' cannot be used as an access type. "
         + "Valid access types must have the Rubicon.Security.AccessTypeAttribute applied.\r\nParameter name: accessType")]
     public void RejectAccessTypeWithoutAccessTypeAttribute ()
     {

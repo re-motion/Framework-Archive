@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Security.Metadata;
-using Rubicon.Security.UnitTests.SampleDomain;
+using Rubicon.Security.UnitTests.Core.SampleDomain;
 
-namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
+namespace Rubicon.Security.UnitTests.Core.Metadata.PermissionReflectorTests
 {
   [TestFixture]
   public class GetRequiredPropertyWritePermissionsTest

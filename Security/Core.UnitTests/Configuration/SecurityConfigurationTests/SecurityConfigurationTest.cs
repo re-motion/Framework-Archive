@@ -4,7 +4,7 @@ using Rubicon.Development.UnitTesting.Configuration;
 using Rubicon.Security.Configuration;
 using Rubicon.Security.Metadata;
 
-namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
+namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
 {
   [TestFixture]
   public class SecurityConfigurationTest: TestBase
@@ -52,7 +52,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       string xmlFragment =
           @"
           <rubicon.security>
-            <functionalSecurityStrategy type=""Rubicon.Security.UnitTests::Configuration.FunctionalSecurityStrategyMock"" />
+            <functionalSecurityStrategy type=""Rubicon.Security.UnitTests::Core.Configuration.FunctionalSecurityStrategyMock"" />
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);

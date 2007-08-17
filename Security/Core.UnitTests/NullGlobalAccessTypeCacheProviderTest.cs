@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Rubicon.Collections;
 using Rubicon.Configuration;
 
-namespace Rubicon.Security.UnitTests
+namespace Rubicon.Security.UnitTests.Core
 {
   [TestFixture]
   public class NullGlobalAccessTypeCacheProviderTest

@@ -3,7 +3,7 @@ using System.Reflection;
 using Rubicon.Collections;
 using Rubicon.Security.Metadata;
 
-namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
+namespace Rubicon.Security.UnitTests.Core.Metadata.PermissionReflectorTests
 {
   public class TestPermissionReflector : PermissionReflector
   {

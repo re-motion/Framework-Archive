@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Development.UnitTesting.Configuration;
 
-namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
+namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
 {
   [TestFixture]
   public class DeserializeSecurityConfigurationForGlobalAccessTypeCacheProviderTest: TestBase
@@ -52,7 +52,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security defaultGlobalAccessTypeCacheProvider=""Custom"">
             <globalAccessTypeCacheProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.GlobalAccessTypeCacheProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
             </globalAccessTypeCacheProviders>
           </rubicon.security>";
 
@@ -69,7 +69,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security>
             <globalAccessTypeCacheProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.GlobalAccessTypeCacheProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
             </globalAccessTypeCacheProviders>
           </rubicon.security>";
 
@@ -90,7 +90,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security defaultGlobalAccessTypeCacheProvider=""Invalid"">
             <globalAccessTypeCacheProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.GlobalAccessTypeCacheProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
             </globalAccessTypeCacheProviders>
           </rubicon.security>";
 
@@ -108,7 +108,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security defaultGlobalAccessTypeCacheProvider=""None"">
             <globalAccessTypeCacheProviders>
-              <add name=""None"" type=""Rubicon.Security.UnitTests::Configuration.GlobalAccessTypeCacheProviderMock"" />
+              <add name=""None"" type=""Rubicon.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
             </globalAccessTypeCacheProviders>
           </rubicon.security>";
 
@@ -124,7 +124,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security defaultGlobalAccessTypeCacheProvider=""RevisionBased"">
             <globalAccessTypeCacheProviders>
-              <add name=""RevisionBased"" type=""Rubicon.Security.UnitTests::Configuration.GlobalAccessTypeCacheProviderMock"" />
+              <add name=""RevisionBased"" type=""Rubicon.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
             </globalAccessTypeCacheProviders>
           </rubicon.security>";
 
@@ -141,7 +141,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security defaultGlobalAccessTypeCacheProvider="""">
             <globalAccessTypeCacheProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.GlobalAccessTypeCacheProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
             </globalAccessTypeCacheProviders>
           </rubicon.security>";
 
@@ -158,7 +158,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security>
             <globalAccessTypeCacheProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.GlobalAccessTypeCacheProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
             </globalAccessTypeCacheProviders>
           </rubicon.security>";
 
@@ -175,7 +175,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security>
             <globalAccessTypeCacheProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.UserProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.UserProviderMock"" />
             </globalAccessTypeCacheProviders>
           </rubicon.security>";
 

@@ -5,13 +5,13 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Collections;
 using Rubicon.Security.Configuration;
-using Rubicon.Security.UnitTests.Configuration;
-using Rubicon.Security.UnitTests.SampleDomain;
+using Rubicon.Security.UnitTests.Core.Configuration;
+using Rubicon.Security.UnitTests.Core.SampleDomain;
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 using Mocks_List = Rhino.Mocks.Constraints.List;
 using Mocks_Property = Rhino.Mocks.Constraints.Property;
 
-namespace Rubicon.Security.UnitTests.SecurityStrategyTests
+namespace Rubicon.Security.UnitTests.Core.SecurityStrategyTests
 {
   using GlobalCacheKey = Tuple<SecurityContext, string>;
 

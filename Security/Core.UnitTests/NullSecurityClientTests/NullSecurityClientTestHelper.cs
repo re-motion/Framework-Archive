@@ -1,8 +1,8 @@
 using System;
 using Rhino.Mocks;
-using Rubicon.Security.UnitTests.SampleDomain;
+using Rubicon.Security.UnitTests.Core.SampleDomain;
 
-namespace Rubicon.Security.UnitTests.NullSecurityClientTests
+namespace Rubicon.Security.UnitTests.Core.NullSecurityClientTests
 {
   public class NullSecurityClientTestHelper
   {

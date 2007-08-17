@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Rubicon.Security.Metadata;
 
-namespace Rubicon.Security.UnitTests.Metadata
+namespace Rubicon.Security.UnitTests.Core.Metadata
 {
   public static class EnumValueInfoAssert
   {

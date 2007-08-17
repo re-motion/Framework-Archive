@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using System.Security.Principal;
 using Rubicon.Configuration;
 
-namespace Rubicon.Security.UnitTests.Configuration
+namespace Rubicon.Security.UnitTests.Core.Configuration
 {
   public class UserProviderMock : ExtendedProviderBase, IUserProvider
   {

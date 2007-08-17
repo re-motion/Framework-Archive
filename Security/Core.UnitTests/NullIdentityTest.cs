@@ -2,7 +2,7 @@ using System;
 using System.Security.Principal;
 using NUnit.Framework;
 
-namespace Rubicon.Security.UnitTests
+namespace Rubicon.Security.UnitTests.Core
 {
   [TestFixture]
   public class NullIdentityTest

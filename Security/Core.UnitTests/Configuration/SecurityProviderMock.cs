@@ -2,7 +2,7 @@ using System;
 using System.Collections.Specialized;
 using Rubicon.Configuration;
 
-namespace Rubicon.Security.UnitTests.Configuration
+namespace Rubicon.Security.UnitTests.Core.Configuration
 {
   public class SecurityProviderMock : ExtendedProviderBase, ISecurityProvider
   {

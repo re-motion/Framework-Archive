@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using Rubicon.Collections;
 using Rubicon.Configuration;
 
-namespace Rubicon.Security.UnitTests.Configuration
+namespace Rubicon.Security.UnitTests.Core.Configuration
 {
   public class GlobalAccessTypeCacheProviderMock : ExtendedProviderBase, IGlobalAccessTypeCacheProvider
   {

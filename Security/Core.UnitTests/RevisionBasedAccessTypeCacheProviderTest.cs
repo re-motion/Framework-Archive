@@ -6,9 +6,9 @@ using Rubicon.Collections;
 using Rubicon.Configuration;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Security.Configuration;
-using Rubicon.Security.UnitTests.Configuration;
+using Rubicon.Security.UnitTests.Core.Configuration;
 
-namespace Rubicon.Security.UnitTests
+namespace Rubicon.Security.UnitTests.Core
 {
   [TestFixture]
   public class RevisionBasedAccessTypeCacheProviderTest

@@ -1,7 +1,7 @@
 using System;
 using System.Xml;
 
-namespace Rubicon.Security.UnitTests.XmlAsserter
+namespace Rubicon.Security.UnitTests.Core.XmlAsserter
 {
   [CLSCompliant (false)]
   public class XmlDocumentEqualAsserter : XmlDocumentBaseAsserter

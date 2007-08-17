@@ -2,7 +2,7 @@ using System;
 using System.Xml;
 using Rubicon.Utilities;
 
-namespace Rubicon.Security.UnitTests.XmlAsserter
+namespace Rubicon.Security.UnitTests.Core.XmlAsserter
 {
   public class XmlnsAttributeEventArgs : EventArgs
   {

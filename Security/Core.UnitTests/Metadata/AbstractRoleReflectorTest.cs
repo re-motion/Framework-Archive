@@ -5,7 +5,7 @@ using Rhino.Mocks;
 using Rubicon.Security.Metadata;
 using Rubicon.Security.UnitTests.TestDomain;
 
-namespace Rubicon.Security.UnitTests.Metadata
+namespace Rubicon.Security.UnitTests.Core.Metadata
 {
 
   [TestFixture]

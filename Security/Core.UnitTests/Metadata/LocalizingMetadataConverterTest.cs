@@ -5,10 +5,10 @@ using System.Reflection;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Security.Metadata;
-using Rubicon.Security.UnitTests.SampleDomain;
+using Rubicon.Security.UnitTests.Core.SampleDomain;
 using Rubicon.Security.UnitTests.TestDomain;
 
-namespace Rubicon.Security.UnitTests.Metadata
+namespace Rubicon.Security.UnitTests.Core.Metadata
 {
   [TestFixture]
   public class LocalizingMetadataConverterTest
@@ -83,7 +83,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       LocalizingMetadataConverter converter = new LocalizingMetadataConverter (_localizationConverter, cultures);
       string filename = "metadata.xml";
       MetadataCache cache = new MetadataCache ();
-      EnumValueInfo abstractRoleInfo = AddAbstractRoleInfo (cache, TestAbstractRoles.Developer, "6aba5c1a-cf54-4a12-9523-204fe0b56fd5", "Developer", "Rubicon.Security.UnitTests.SampleDomain.TestAbstractRoles", 0);
+      EnumValueInfo abstractRoleInfo = AddAbstractRoleInfo (cache, TestAbstractRoles.Developer, "6aba5c1a-cf54-4a12-9523-204fe0b56fd5", "Developer", "Rubicon.Security.UnitTests.Core.SampleDomain.TestAbstractRoles", 0);
 
       LocalizedName expectedGermanName = CreateLocalizedName (abstractRoleInfo);
       _localizationConverter.ConvertAndSave (new LocalizedName[] { expectedGermanName }, cultures[0], filename);
@@ -103,7 +103,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       LocalizingMetadataConverter converter = new LocalizingMetadataConverter (_localizationConverter, cultures);
       string filename = "metadata.xml";
       MetadataCache cache = new MetadataCache ();
-      EnumValueInfo accessTypeInfo = AddAccessTypeInfo (cache, TestAccessTypes.First, "31ba143f-bef0-442b-a6dd-3b36a390e639", "First", "Rubicon.Security.UnitTests.SampleDomain.TestAccessTypes", 1);
+      EnumValueInfo accessTypeInfo = AddAccessTypeInfo (cache, TestAccessTypes.First, "31ba143f-bef0-442b-a6dd-3b36a390e639", "First", "Rubicon.Security.UnitTests.Core.SampleDomain.TestAccessTypes", 1);
 
       LocalizedName expectedGermanName = CreateLocalizedName (accessTypeInfo);
       _localizationConverter.ConvertAndSave (new LocalizedName[] { expectedGermanName }, cultures[0], filename);

@@ -3,7 +3,7 @@ using System.Globalization;
 using NUnit.Framework;
 using Rubicon.Security.Metadata;
 
-namespace Rubicon.Security.UnitTests.Metadata
+namespace Rubicon.Security.UnitTests.Core.Metadata
 {
   [TestFixture]
   public class MetadataConverterBuilderTest

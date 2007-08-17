@@ -5,7 +5,7 @@ using Rubicon.Development.UnitTesting;
 using Rubicon.Development.UnitTesting.Configuration;
 using Rubicon.Security.Metadata;
 
-namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
+namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
 {
   [TestFixture]
   public class DeserializeSecurityConfigurationForPermissionProviderTest: TestBase
@@ -36,7 +36,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security defaultPermissionProvider=""Custom"">
             <permissionProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
             </permissionProviders>
           </rubicon.security>";
 
@@ -53,7 +53,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security>
             <permissionProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
             </permissionProviders>
           </rubicon.security>";
 
@@ -74,7 +74,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security defaultPermissionProvider=""Invalid"">
             <permissionProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
             </permissionProviders>
           </rubicon.security>";
 
@@ -92,7 +92,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security defaultPermissionProvider=""Reflection"">
             <permissionProviders>
-              <add name=""Reflection"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
+              <add name=""Reflection"" type=""Rubicon.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
             </permissionProviders>
           </rubicon.security>";
 
@@ -108,7 +108,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security defaultPermissionProvider="""">
             <permissionProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
             </permissionProviders>
           </rubicon.security>";
 
@@ -125,7 +125,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security>
             <permissionProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
             </permissionProviders>
           </rubicon.security>";
 
@@ -142,7 +142,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security>
             <permissionProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.UserProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.UserProviderMock"" />
             </permissionProviders>
           </rubicon.security>";
 

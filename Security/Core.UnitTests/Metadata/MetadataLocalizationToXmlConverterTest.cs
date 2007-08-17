@@ -4,9 +4,9 @@ using System.IO;
 using System.Xml;
 using NUnit.Framework;
 using Rubicon.Security.Metadata;
-using Rubicon.Security.UnitTests.XmlAsserter;
+using Rubicon.Security.UnitTests.Core.XmlAsserter;
 
-namespace Rubicon.Security.UnitTests.Metadata
+namespace Rubicon.Security.UnitTests.Core.Metadata
 {
   [TestFixture]
   public class MetadataLocalizationToXmlConverterTest

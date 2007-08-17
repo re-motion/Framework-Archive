@@ -2,7 +2,7 @@ using System;
 using System.Xml;
 using NUnit.Framework;
 
-namespace Rubicon.Security.UnitTests.XmlAsserter
+namespace Rubicon.Security.UnitTests.Core.XmlAsserter
 {
   public static class XmlAssert
   {

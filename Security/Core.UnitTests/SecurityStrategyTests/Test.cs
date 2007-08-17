@@ -4,9 +4,9 @@ using System.Security.Principal;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Collections;
-using Rubicon.Security.UnitTests.SampleDomain;
+using Rubicon.Security.UnitTests.Core.SampleDomain;
 
-namespace Rubicon.Security.UnitTests.SecurityStrategyTests
+namespace Rubicon.Security.UnitTests.Core.SecurityStrategyTests
 {
   [TestFixture]
   public class Test

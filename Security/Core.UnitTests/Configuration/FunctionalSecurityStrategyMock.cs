@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Security.UnitTests.Configuration
+namespace Rubicon.Security.UnitTests.Core.Configuration
 {
   public class FunctionalSecurityStrategyMock : IFunctionalSecurityStrategy
   {

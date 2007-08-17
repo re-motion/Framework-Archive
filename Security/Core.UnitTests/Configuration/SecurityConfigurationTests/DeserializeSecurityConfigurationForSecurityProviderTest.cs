@@ -5,7 +5,7 @@ using Rubicon.Development.UnitTesting;
 using Rubicon.Development.UnitTesting.Configuration;
 using Rubicon.Utilities;
 
-namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
+namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
 {
   [TestFixture]
   public class DeserializeSecurityConfigurationForSecurityProviderTest : TestBase
@@ -61,7 +61,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       string xmlFragment = @"
           <rubicon.security defaultSecurityProvider=""Custom"">
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
             </securityProviders>
           </rubicon.security>";
 
@@ -76,7 +76,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       string xmlFragment = @"
           <rubicon.security>
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
             </securityProviders>
           </rubicon.security>";
 
@@ -96,7 +96,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       string xmlFragment = @"
           <rubicon.security defaultSecurityProvider=""Invalid"">
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
             </securityProviders>
           </rubicon.security>";
 
@@ -112,7 +112,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       string xmlFragment = @"
           <rubicon.security defaultSecurityProvider=""None"">
             <securityProviders>
-              <add name=""None"" type=""Rubicon.Security.UnitTests::Configuration.SecurityProviderMock"" />
+              <add name=""None"" type=""Rubicon.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
             </securityProviders>
           </rubicon.security>";
 
@@ -126,7 +126,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       string xmlFragment = @"
           <rubicon.security defaultSecurityProvider=""SecurityManager"">
             <securityProviders>
-              <add name=""SecurityManager"" type=""Rubicon.Security.UnitTests::Configuration.SecurityProviderMock"" />
+              <add name=""SecurityManager"" type=""Rubicon.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
             </securityProviders>
           </rubicon.security>";
 
@@ -141,7 +141,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       string xmlFragment = @"
           <rubicon.security defaultSecurityProvider="""">
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
             </securityProviders>
           </rubicon.security>";
 
@@ -158,7 +158,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security>
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
             </securityProviders>
           </rubicon.security>";
 
@@ -174,7 +174,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security>
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.UserProviderMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.UserProviderMock"" />
             </securityProviders>
           </rubicon.security>";
 

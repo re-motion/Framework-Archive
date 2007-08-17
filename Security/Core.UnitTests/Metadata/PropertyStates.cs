@@ -1,7 +1,7 @@
 using System;
 using Rubicon.Security.Metadata;
 
-namespace Rubicon.Security.UnitTests.Metadata
+namespace Rubicon.Security.UnitTests.Core.Metadata
 {
   public static class PropertyStates
   {

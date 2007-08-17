@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Security.Configuration;
 
-namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
+namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
 {
   public class TestBase
   {

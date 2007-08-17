@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Security.Metadata;
-using Rubicon.Security.UnitTests.SampleDomain;
+using Rubicon.Security.UnitTests.Core.SampleDomain;
 using Rubicon.Security.UnitTests.TestDomain;
 using Rubicon.Utilities;
 
-namespace Rubicon.Security.UnitTests.Metadata
+namespace Rubicon.Security.UnitTests.Core.Metadata
 {
 
   [TestFixture]

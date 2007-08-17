@@ -2,7 +2,7 @@ using System;
 using Rhino.Mocks.Constraints;
 using Rubicon.Utilities;
 
-namespace Rubicon.Security.UnitTests.MockConstraints
+namespace Rubicon.Security.UnitTests.Core.MockConstraints
 {
   public class FunctionalSecurityContextFactoryConstraint : AbstractConstraint
   {
