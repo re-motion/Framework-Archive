@@ -3,6 +3,7 @@ using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Infrastructure.Interception;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
+using System.Reflection;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
@@ -72,6 +73,42 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull ("type", type);
       return typeof (IInterceptedDomainObject).IsAssignableFrom (type);
+    }
+
+    /// <summary>
+    /// Returns a construction object that can be used to instantiate objects of a given interceptable type.
+    /// </summary>
+    /// <typeparam name="TMinimal">The type statically returned by the construction object.</typeparam>
+    /// <param name="type">The exatct interceptable type to be constructed; this must be a type returned by <see cref="GetConcreteDomainObjectType"/>.
+    /// <typeparamref name="TMinimal"/> must be assignable from this type.</param>
+    /// <returns>A construction object, which instantiates <paramref name="type"/> and returns <typeparamref name="TMinimal"/>.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="type"/> argument is null.</exception>
+    /// <exception cref="ArgumentTypeException"><paramref name="type"/> is not the same or a subtype of <typeparamref name="TMinimal"/>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="type"/> wasn't created by this kind of factory.</exception>
+    public IFuncInvoker<TMinimal> GetTypesafeConstructorInvoker<TMinimal> (Type type)
+    {
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (TMinimal));
+      if (!WasCreatedByFactory (type))
+        throw new ArgumentException (
+            string.Format ("The type {0} was not created by InterceptedDomainObjectFactory.GetConcreteDomainObjectType.", type.FullName), "type");
+      return TypesafeActivator.CreateInstance<TMinimal> (type, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+    }
+
+    /// <summary>
+    /// Prepares an instance which has not been created via <see cref="GetTypesafeConstructorInvoker{TMinimal}"/> for use. This operation
+    /// is a no-op for this implementation of <see cref="IDomainObjectFactory"/>.
+    /// </summary>
+    /// <param name="instance">The instance to be prepared</param>
+    /// <exception cref="ArgumentNullException">The <paramref name="instance"/> argument is null.</exception>
+    /// <exception cref="ArgumentException"><paramref name="instance"/> is not of a type created by this kind of factory.</exception>
+    public void PrepareUnconstructedInstance (DomainObject instance)
+    {
+      ArgumentUtility.CheckNotNull ("instance", instance);
+      Type type = ((object)instance).GetType ();
+      if (!WasCreatedByFactory (type))
+        throw new ArgumentException (
+            string.Format ("The domain object's type {0} was not created by InterceptedDomainObjectFactory.GetConcreteDomainObjectType.",
+              type.FullName), "instance");
     }
   }
 }

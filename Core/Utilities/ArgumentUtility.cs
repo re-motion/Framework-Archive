@@ -215,7 +215,7 @@ namespace Rubicon.Utilities
         if (!expectedType.IsAssignableFrom (actualType))
         {
           throw new ArgumentTypeException (
-              string.Format ("Argument {0} is a {2}, which is cannot be assigned to type {1}.", argumentName, expectedType, actualType));
+              string.Format ("Argument {0} is a {2}, which cannot be assigned to type {1}.", argumentName, expectedType, actualType));
         }
       }
 

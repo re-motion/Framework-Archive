@@ -48,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     IFuncInvoker<TMinimal> GetTypesafeConstructorInvoker<TMinimal> (Type type);
 
     /// <summary>
-    /// Prepares an instance which has not been created via <see cref="GetTypesafeConstructorInvoker"/> for use.
+    /// Prepares an instance which has not been created via <see cref="GetTypesafeConstructorInvoker{TMinimal}"/> for use.
     /// </summary>
     /// <param name="instance">The instance to be prepared</param>
     /// <remarks>

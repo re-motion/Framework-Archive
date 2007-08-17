@@ -1,11 +1,13 @@
 using System;
 using System.IO;
+using System.Runtime.Serialization;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Reflection;
 using Rubicon.Utilities;
 using File=System.IO.File;
 
@@ -118,6 +120,60 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     {
       Assert.IsTrue (_factory.WasCreatedByFactory (_factory.GetConcreteDomainObjectType (typeof (Order))));
       Assert.IsFalse (_factory.WasCreatedByFactory (typeof (Order)));
+    }
+
+    [Test]
+    public void GetTypesafeConstructorInvoker ()
+    {
+      IFuncInvoker<Order> invoker = _factory.GetTypesafeConstructorInvoker<Order> (_factory.GetConcreteDomainObjectType (typeof (Order)));
+      Order order = invoker.With ();
+      Assert.IsNotNull (order);
+      Assert.AreSame (_factory.GetConcreteDomainObjectType (typeof (Order)), ((object) order).GetType ());
+    }
+
+    [Test]
+    public void GetTypesafeConstructorInvokerWithConstructors ()
+    {
+      IFuncInvoker<TypeGeneratorTest.DOWithConstructors> invoker =
+          _factory.GetTypesafeConstructorInvoker<TypeGeneratorTest.DOWithConstructors> (
+              _factory.GetConcreteDomainObjectType (typeof (TypeGeneratorTest.DOWithConstructors)));
+      TypeGeneratorTest.DOWithConstructors instance = invoker.With ("17", "4");
+      Assert.IsNotNull (instance);
+      Assert.AreEqual ("17", instance.FirstArg);
+      Assert.AreEqual ("4", instance.SecondArg);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order was not "
+        + "created by InterceptedDomainObjectFactory.GetConcreteDomainObjectType.\r\nParameter name: type")]
+    public void GetTypesafeConstructorInvokerThrowsOnTypeNotCreatedByFactory ()
+    {
+      _factory.GetTypesafeConstructorInvoker<Order> (typeof (Order));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException),
+        ExpectedMessage = "Argument type is a .*Order_WithInterception.* which cannot be assigned to type .*OrderTicket.",
+        MatchType = MessageMatch.Regex)]
+    public void GetTypesafeConstructorInvokerThrowsOnInvalidTMinimimal ()
+    {
+      _factory.GetTypesafeConstructorInvoker<OrderTicket> (_factory.GetConcreteDomainObjectType (typeof (Order)));
+    }
+
+    [Test]
+    public void PrepareUnconstructedInstance ()
+    {
+      Order order = (Order) FormatterServices.GetSafeUninitializedObject (_factory.GetConcreteDomainObjectType (typeof (Order)));
+      _factory.PrepareUnconstructedInstance (order);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object's type "
+        + "Rubicon.Data.DomainObjects.UnitTests.Interception.TypeGeneratorTest+DOWithConstructors was not "
+        + "created by InterceptedDomainObjectFactory.GetConcreteDomainObjectType.\r\nParameter name: instance")]
+    public void PrepareUnconstructedInstanceThrowsOnTypeNotCreatedByFactory ()
+    {
+      _factory.PrepareUnconstructedInstance (new TypeGeneratorTest.DOWithConstructors (7));
     }
   }
 }
