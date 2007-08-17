@@ -1,9 +1,0 @@
-﻿<NUnitProject>
-  <Settings activeconfig="Debug" />
-  <Config name="Debug" binpathtype="Auto">
-    <assembly path="Core.UnitTests\bin\Debug\Rubicon.Security.UnitTests.dll" />
-    <assembly path="Data.DomainObjects.UnitTests\bin\Debug\Rubicon.Security.Data.DomainObjects.UnitTests.dll" />
-    <assembly path="Web.UnitTests\bin\Debug\Rubicon.Security.Web.UnitTests.dll" />
-  </Config>
-  <Config name="Release" binpathtype="Auto" />
-</NUnitProject>

@@ -166,7 +166,7 @@
       ObjectBinding.UnitTests, ObjectBinding.Web.UnitTests,       
       Data.DomainObjects.UnitTests, Data.DomainObjects.Legacy.UnitTests, Data.DomainObjects.ObjectBinding.UnitTests, 
       Data.DomainObjects.RdbmsTools.UnitTests, Data.DomainObjects.Legacy.CodeGenerator.UnitTests, 
-      Security.UnitTests.TestDomain, Security.UnitTests, Security.Web.UnitTests, 
+      Security.UnitTests.TestDomain, Security.UnitTests, 
       SecurityManager.Core.UnitTests">
     <echo message="Target has executed."/>
   </target>
@@ -558,27 +558,14 @@
     <call target="Development.Core" cascade="false"/>
     <call target="Security" cascade="false"/>
     <call target="Security.Data.DomainObjects" cascade="false"/>
-    <call target="Security.Web" cascade="false"/>
     <call target="Security.UnitTests.TestDomain" cascade="false"/>
+    <call target="Security.Web" cascade="false"/>
+    <call target="Web" cascade="false"/>
+    <call target="Web.UnitTests" cascade="false"/>
 
     <property name="project.name" value="Security.UnitTests" />
     <property name="project.dir" value="Security/Core.UnitTests" />
     <property name="project.output" value="Rubicon.Security.UnitTests" />
-    <property name="project.extension" value="dll" />
-    <call target="buildtest" />
-  </target>
-
-  <target name="Security.Web.UnitTests">
-    <call target="Core" cascade="false"/>
-    <call target="Web" cascade="false"/>
-    <call target="Web.UnitTests" cascade="false"/>
-    <call target="Security" cascade="false"/>
-    <call target="Security.Web" cascade="false"/>
-    <call target="Security.UnitTests.TestDomain" cascade="false"/>
-
-    <property name="project.name" value="Security.Web.UnitTests" />
-    <property name="project.dir" value="Security/Web.UnitTests" />
-    <property name="project.output" value="Rubicon.Security.Web.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
   </target>

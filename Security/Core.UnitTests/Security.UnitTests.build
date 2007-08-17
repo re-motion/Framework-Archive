@@ -25,11 +25,14 @@
         <include name="${build.test.outputdir}/Rubicon.Security.Data.DomainObjects.dll" />
         <include name="${build.test.outputdir}/Rubicon.Security.UnitTests.TestDomain.dll" />
         <include name="${build.test.outputdir}/Rubicon.Security.Web.dll" />
+        <include name="${build.test.outputdir}/Rubicon.Web.dll" />
+        <include name="${build.test.outputdir}/Rubicon.Web.UnitTests.dll" />
         <include name="${build.test.outputdir}/nunit.framework.dll" />
         <include name="${build.test.outputdir}/Rhino.Mocks.dll" />
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Xml.dll"/>
+        <include asis="true" name="System.Web.dll"/>
       </references>
     </csc>
     
