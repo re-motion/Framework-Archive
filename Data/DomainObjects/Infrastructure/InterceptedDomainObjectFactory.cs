@@ -10,7 +10,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   /// <summary>
   /// Provides functionality for creating instances of DomainObjects which intercept property calls.
   /// </summary>
-  public class InterceptedDomainObjectFactory
+  public class InterceptedDomainObjectFactory : IDomainObjectFactory
   {
     private readonly ModuleManager _scope;
     private readonly InterlockedCache<Type, Type> _typeCache = new InterlockedCache<Type, Type> ();

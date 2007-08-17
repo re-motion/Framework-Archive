@@ -4,6 +4,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Collections
 {
   // TODO: Doc
+  [Serializable]
   public class Tuple<TA, TB, TC> : IEquatable<Tuple<TA, TB, TC>>
   {
     private readonly TA _a;

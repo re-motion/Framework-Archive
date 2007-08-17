@@ -16,11 +16,11 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
   internal class MixinTypeGenerator : IMixinTypeGenerator
   {
-    private ModuleManager _module;
+    private readonly ModuleManager _module;
     private readonly TypeGenerator _targetGenerator;
-    private MixinDefinition _configuration;
-    private CustomClassEmitter _emitter;
-    private FieldReference _configurationField;
+    private readonly MixinDefinition _configuration;
+    private readonly CustomClassEmitter _emitter;
+    private readonly FieldReference _configurationField;
 
     public MixinTypeGenerator (ModuleManager module, TypeGenerator targetGenerator, MixinDefinition configuration, INameProvider nameProvider)
     {
@@ -148,7 +148,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementGetObjectData ()
     {
-      Rubicon.CodeGeneration.SerializationHelper.ImplementGetObjectDataByDelegation (Emitter, delegate (CustomMethodEmitter newMethod, bool baseIsISerializable)
+      Rubicon.CodeGeneration.GetObjectMethodImplementer.ImplementGetObjectDataByDelegation (Emitter, delegate (CustomMethodEmitter newMethod, bool baseIsISerializable)
           {
             return new MethodInvocationExpression (
                 null,

@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Reflection;
@@ -353,6 +354,21 @@ public class DomainObject
     firstDataContainer.SetDomainObject (this);
 
     InitializeFromDataContainer (firstDataContainer);
+  }
+
+  /// <summary>
+  /// Initializes a new instance of the <see cref="DomainObject"/> class in the process of deserialization.
+  /// </summary>
+  /// <param name="info">The <see cref="SerializationInfo"/> coming from the .NET serialization infrastructure.</param>
+  /// <param name="context">The <see cref="StreamingContext"/> coming from the .NET serialization infrastructure.</param>
+  /// <remarks>Be sure to call this base constructor from the deserialization constructor of any concrete <see cref="DomainObject"/> type
+  /// implementing the <see cref="ISerializable"/> interface.</remarks>
+  protected DomainObject (SerializationInfo info, StreamingContext context)
+  {
+    ArgumentUtility.CheckNotNull ("info", info);
+    ArgumentUtility.CheckNotNull ("context", context);
+
+    _id = (ObjectID) info.GetValue ("DomainObject.ID", typeof (ObjectID));
   }
 
   #region Legacy constructors

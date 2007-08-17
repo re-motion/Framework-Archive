@@ -1,13 +1,9 @@
 using System;
-using System.IO;
-using System.Runtime.Serialization;
 using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
-using Rubicon.Mixins;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Definitions.Building;
-using Rubicon.Utilities;
+using System.Runtime.Serialization;
 using Rubicon.Mixins.Context;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {

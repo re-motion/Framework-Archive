@@ -6,10 +6,8 @@ using Rubicon.Utilities;
 
 namespace Rubicon.CodeGeneration
 {
-  public static class SerializationHelper
+  public static class GetObjectMethodImplementer
   {
-    
-
     private static bool IsPublicOrProtected (MethodBase method)
     {
       return method.IsPublic || method.IsFamily || method.IsFamilyOrAssembly;

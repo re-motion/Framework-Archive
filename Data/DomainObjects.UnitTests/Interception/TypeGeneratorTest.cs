@@ -1,7 +1,9 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Serialization;
 using NUnit.Framework;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Infrastructure.Interception;
 using Rubicon.Development.UnitTesting;
@@ -33,6 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [DBTable]
+    [Serializable]
     public class DOWithVirtualProperties : DomainObject
     {
       public virtual int PropertyWithGetterAndSetter
@@ -92,6 +95,38 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       public new string GetAndCheckCurrentPropertyName ()
       {
         return base.GetAndCheckCurrentPropertyName();
+      }
+    }
+
+    [DBTable]
+    [Instantiable]
+    [Serializable]
+    public abstract class DOImplementingISerializable : DomainObject, ISerializable
+    {
+      private string _memberHeldAsField;
+
+      public DOImplementingISerializable (string memberHeldAsField)
+      {
+        _memberHeldAsField = memberHeldAsField;
+      }
+
+      protected DOImplementingISerializable (SerializationInfo info, StreamingContext context)
+          : base (info, context)
+      {
+        _memberHeldAsField = info.GetString ("_memberHeldAsField") + "-Ctor";
+      }
+
+      public abstract int PropertyWithGetterAndSetter { get; set; }
+
+      public string MemberHeldAsField
+      {
+        get { return _memberHeldAsField; }
+        set { _memberHeldAsField = value; }
+      }
+
+      public void GetObjectData (SerializationInfo info, StreamingContext context)
+      {
+        info.AddValue ("_memberHeldAsField", _memberHeldAsField + "-GetObjectData");
       }
     }
 
@@ -359,6 +394,49 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public void ThrowsOnClassWithoutClassDefinition ()
     {
       _scope.CreateTypeGenerator (typeof (InterceptedPropertyIntegrationTest.NonInstantiableNonDomainClass)).BuildType();
+    }
+
+    [Test]
+    public void GeneratedTypeImplementsISerializable ()
+    {
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType ();
+      Assert.IsTrue (typeof (ISerializable).IsAssignableFrom (type));
+    }
+
+    [Test]
+    public void GeneratedTypeCanBeSerialized ()
+    {
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType ();
+      DOWithVirtualProperties instance = (DOWithVirtualProperties) Activator.CreateInstance (type);
+      instance.PropertyWithGetterAndSetter = 17;
+
+      Tuple<ClientTransaction, DOWithVirtualProperties> data =
+          Serializer.SerializeAndDeserialize (
+              new Tuple<ClientTransaction, DOWithVirtualProperties> (ClientTransactionScope.CurrentTransaction, instance));
+
+      using (data.A.EnterScope ())
+      {
+        Assert.AreEqual (17, data.B.PropertyWithGetterAndSetter);
+      }
+    }
+
+    [Test]
+    public void GeneratedTypeCanBeSerializedWhenItImplementsISerializable ()
+    {
+      Type type = _scope.CreateTypeGenerator (typeof (DOImplementingISerializable)).BuildType ();
+      DOImplementingISerializable instance = (DOImplementingISerializable) Activator.CreateInstance (type, "Start");
+      instance.PropertyWithGetterAndSetter = 23;
+      Assert.AreEqual ("Start", instance.MemberHeldAsField);
+
+      Tuple<ClientTransaction, DOImplementingISerializable> data =
+          Serializer.SerializeAndDeserialize (
+              new Tuple<ClientTransaction, DOImplementingISerializable> (ClientTransactionScope.CurrentTransaction, instance));
+
+      using (data.A.EnterScope ())
+      {
+        Assert.AreEqual (23, data.B.PropertyWithGetterAndSetter);
+        Assert.AreEqual ("Start-GetObjectData-Ctor", data.B.MemberHeldAsField);
+      }
     }
   }
 }

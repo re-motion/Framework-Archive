@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.Serialization;
 using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
@@ -18,6 +19,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
   {
     private const BindingFlags _propertyBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
     private const BindingFlags _infrastructureBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+    private const BindingFlags _staticInfrastructureBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 
     private static readonly MethodInfo s_getPublicDomainObjectTypeMethod =
         typeof (DomainObject).GetMethod ("GetPublicDomainObjectType", _infrastructureBindingFlags);
@@ -33,6 +35,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
         typeof (PropertyAccessor).GetMethod ("GetValue", _infrastructureBindingFlags);
     private static readonly MethodInfo s_propertySetValueMethod =
         typeof (PropertyAccessor).GetMethod ("SetValue", _infrastructureBindingFlags);
+    private static readonly MethodInfo s_getObjectDataForGeneratedTypesMethod =
+        typeof (SerializationHelper).GetMethod ("GetObjectDataForGeneratedTypes", _staticInfrastructureBindingFlags);
 
     private readonly CustomClassEmitter _classEmitter;
 
@@ -45,6 +49,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       Assertion.IsNotNull (s_getPropertyAccessorMethod);
       Assertion.IsNotNull (s_propertyGetValueMethod);
       Assertion.IsNotNull (s_propertySetValueMethod);
+      Assertion.IsNotNull (s_getObjectDataForGeneratedTypesMethod);
     }
 
     public TypeGenerator (Type baseType, ModuleScope scope)
@@ -56,14 +61,15 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       List<Tuple<PropertyInfo, string>> properties = new List<Tuple<PropertyInfo, string>> (AnalyzeAndValidateBaseType (baseType));
 
       string typeName = baseType.FullName + "_WithInterception_ "+ Guid.NewGuid().ToString ("N");
-      Type[] interfaces = new Type[] { typeof (IInterceptedDomainObject) };
-      TypeAttributes flags = TypeAttributes.Public;
+      Type[] interfaces = new Type[] { typeof (IInterceptedDomainObject), typeof (ISerializable) };
+      TypeAttributes flags = TypeAttributes.Public | TypeAttributes.Serializable;
 
       _classEmitter = new CustomClassEmitter (scope, typeName, baseType, interfaces, flags);
 
       _classEmitter.ReplicateBaseTypeConstructors ();
       OverrideGetPublicDomainObjectType ();
       ProcessProperties (properties);
+      ImplementISerializable ();
     }
 
     public Type BuildType ()
@@ -315,6 +321,21 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
         emitter.AddStatement (new ReturnStatement (returnValueLocal));
       else
         emitter.AddStatement (new ReturnStatement());
+    }
+
+    private void ImplementISerializable ()
+    {
+      GetObjectMethodImplementer.ImplementGetObjectDataByDelegation (_classEmitter,
+          delegate (CustomMethodEmitter methodEmitter, bool baseIsISerializable)
+          {
+            return new MethodInvocationExpression (
+                null,
+                s_getObjectDataForGeneratedTypesMethod,
+                methodEmitter.ArgumentReferences[0].ToExpression(),
+                methodEmitter.ArgumentReferences[1].ToExpression(),
+                SelfReference.Self.ToExpression(),
+                new ConstReference (!baseIsISerializable).ToExpression());
+          });
     }
   }
 }
