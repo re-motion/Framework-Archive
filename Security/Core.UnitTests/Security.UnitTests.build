@@ -34,7 +34,7 @@
     
     <copy todir="${build.test.outputdir}" flatten="false" overwrite="true">
       <fileset failonempty="true">
-        <include name="Metadata/LocalizationFiles/*.xml" />
+        <include name="Core/Metadata/LocalizationFiles/*.xml" />
       </fileset>
     </copy>
 
