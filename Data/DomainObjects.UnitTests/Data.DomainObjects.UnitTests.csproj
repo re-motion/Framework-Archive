@@ -222,7 +222,6 @@
     <Compile Include="Interception\SampleTypes\Throws.cs" />
     <Compile Include="Interception\TypeGeneratorTest.cs" />
     <Compile Include="Interception\InterceptedDomainObjectFactoryTest.cs" />
-    <Compile Include="Interception\InterceptorsTest.cs" />
     <Compile Include="Factories\BaseConfiguration.cs" />
     <Compile Include="Persistence\MixedStorageProviderTest.cs" />
     <Compile Include="Persistence\StorageProviderWithFixedGuidMixin.cs" />
