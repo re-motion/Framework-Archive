@@ -49,8 +49,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
       RelationEndPointDefinition domainBaseEndPointDefinition = new RelationEndPointDefinition (domainBaseClass, "Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client", false);
 
-      VirtualRelationEndPointDefinition clientEndPointDefinition = new VirtualRelationEndPointDefinition (
-          clientClass, "AssignedObjects", false, CardinalityType.Many, typeof (DomainObjectCollection));
+      VirtualRelationEndPointDefinition clientEndPointDefinition = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(clientClass, "AssignedObjects", false, CardinalityType.Many, typeof (DomainObjectCollection));
 
       RelationDefinition clientToDomainBaseDefinition = new RelationDefinition (
           "ClientToDomainBase", clientEndPointDefinition, domainBaseEndPointDefinition);

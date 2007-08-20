@@ -7,7 +7,9 @@ using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Infrastructure.Interception;
 using Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
+using File=System.IO.File;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 {
@@ -104,15 +106,42 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    public void OverridesVirtualProperties ()
+    public void DosNotOverrideVirtualProperties ()
     {
       Type type = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType();
-      Assert.IsNotNull (type.GetProperty ("PropertyWithGetterOnly", _declaredPublicInstanceFlags));
-      Assert.IsNotNull (type.GetProperty ("PropertyWithSetterOnly", _declaredPublicInstanceFlags));
-      Assert.IsNotNull (type.GetProperty ("PropertyWithGetterAndSetter", _declaredPublicInstanceFlags));
-      Assert.IsNotNull (type.GetProperty ("ProtectedProperty", _declaredInstanceFlags));
-      Assert.IsTrue (type.GetProperty ("ProtectedProperty", _declaredInstanceFlags).GetGetMethod (true).IsFamily);
-      Assert.IsTrue (type.GetProperty ("ProtectedProperty", _declaredInstanceFlags).GetSetMethod (true).IsFamily);
+      Assert.IsNull (type.GetProperty ("PropertyWithGetterOnly", _declaredInstanceFlags));
+      Assert.IsNull (type.GetProperty ("PropertyWithSetterOnly", _declaredInstanceFlags));
+      Assert.IsNull (type.GetProperty ("PropertyWithGetterAndSetter", _declaredInstanceFlags));
+      Assert.IsNull (type.GetProperty ("ProtectedProperty", _declaredInstanceFlags));
+    }
+
+    [Test]
+    public void OverridesVirtualPropertyAccessors ()
+    {
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType ();
+      Assert.IsNotNull (type.GetMethod (typeof (DOWithVirtualProperties).FullName + ".get_PropertyWithGetterOnly", _declaredInstanceFlags));
+      Assert.IsNull (type.GetMethod (typeof (DOWithVirtualProperties).FullName + ".set_PropertyWithGetterOnly", _declaredInstanceFlags));
+
+      Assert.IsNull (type.GetMethod (typeof (DOWithVirtualProperties).FullName + ".get_PropertyWithSetterOnly", _declaredInstanceFlags));
+      Assert.IsNotNull (type.GetMethod (typeof (DOWithVirtualProperties).FullName + ".set_PropertyWithSetterOnly", _declaredInstanceFlags));
+
+      Assert.IsNotNull (type.GetMethod (typeof (DOWithVirtualProperties).FullName + ".get_PropertyWithGetterAndSetter", _declaredInstanceFlags));
+      Assert.IsNotNull (type.GetMethod (typeof (DOWithVirtualProperties).FullName + ".set_PropertyWithGetterAndSetter", _declaredInstanceFlags));
+
+      Assert.IsNotNull (type.GetMethod (typeof (DOWithVirtualProperties).FullName + ".get_ProtectedProperty", _declaredInstanceFlags));
+      Assert.IsNotNull (type.GetMethod (typeof (DOWithVirtualProperties).FullName + ".set_ProtectedProperty", _declaredInstanceFlags));
+    }
+
+    [Test]
+    public void OverriddenVirtualPropertyAccessorsArePrivate ()
+    {
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType ();
+      Assert.IsTrue (type.GetMethod (typeof (DOWithVirtualProperties).FullName + ".get_PropertyWithGetterOnly", _declaredInstanceFlags).IsPrivate);
+      Assert.IsTrue (type.GetMethod (typeof (DOWithVirtualProperties).FullName + ".set_PropertyWithSetterOnly", _declaredInstanceFlags).IsPrivate);
+      Assert.IsTrue (type.GetMethod (typeof (DOWithVirtualProperties).FullName + ".get_PropertyWithGetterAndSetter", _declaredInstanceFlags).IsPrivate);
+      Assert.IsTrue (type.GetMethod (typeof (DOWithVirtualProperties).FullName + ".set_PropertyWithGetterAndSetter", _declaredInstanceFlags).IsPrivate);
+      Assert.IsTrue (type.GetMethod (typeof (DOWithVirtualProperties).FullName + ".get_ProtectedProperty", _declaredInstanceFlags).IsPrivate);
+      Assert.IsTrue (type.GetMethod (typeof (DOWithVirtualProperties).FullName + ".set_ProtectedProperty", _declaredInstanceFlags).IsPrivate);
     }
 
     [Test]
@@ -133,9 +162,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       instance.PropertyWithSetterOnly = new DateTime (2260, 1, 2);
       Assert.AreEqual (new DateTime (2260, 1, 2), instance.Properties[typeof (DOWithVirtualProperties), "PropertyWithSetterOnly"].GetValue<DateTime> ());
 
-      type.GetProperty ("ProtectedProperty", _declaredInstanceFlags).SetValue (instance, 67, _declaredInstanceFlags, null, null, null);
-      Assert.AreEqual (67,
-          type.GetProperty ("ProtectedProperty", _declaredInstanceFlags).GetValue (instance, _declaredInstanceFlags, null, null, null));
+      typeof (DOWithVirtualProperties).GetProperty ("ProtectedProperty", _declaredInstanceFlags)
+          .SetValue (instance, 67, _declaredInstanceFlags, null, null, null);
+      Assert.AreEqual (67, typeof (DOWithVirtualProperties).GetProperty ("ProtectedProperty", _declaredInstanceFlags)
+          .GetValue (instance, _declaredInstanceFlags, null, null, null));
     }
 
     [Test]
@@ -193,16 +223,42 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    public void ImplementsAbstractProperties ()
+    public void DosNotImplementAbstractProperties ()
     {
-      Type type = _scope.CreateTypeGenerator (typeof (DOWithAbstractProperties)).BuildType();
-      Assert.IsNotNull (type.GetProperty ("PropertyWithGetterOnly", _declaredPublicInstanceFlags));
-      Assert.IsNotNull (type.GetProperty ("PropertyWithSetterOnly", _declaredPublicInstanceFlags));
-      Assert.IsNotNull (type.GetProperty ("PropertyWithGetterAndSetter", _declaredPublicInstanceFlags));
-      Assert.IsNotNull (type.GetProperty ("ProtectedProperty", _declaredInstanceFlags));
-      Assert.IsTrue (type.GetProperty ("ProtectedProperty", _declaredInstanceFlags).GetGetMethod (true).IsFamily);
-      Assert.IsTrue (type.GetProperty ("ProtectedProperty", _declaredInstanceFlags).GetSetMethod (true).IsFamily);
-      Assert.IsFalse (type.IsAbstract);
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithAbstractProperties)).BuildType ();
+      Assert.IsNull (type.GetProperty ("PropertyWithGetterOnly", _declaredInstanceFlags));
+      Assert.IsNull (type.GetProperty ("PropertyWithSetterOnly", _declaredInstanceFlags));
+      Assert.IsNull (type.GetProperty ("PropertyWithGetterAndSetter", _declaredInstanceFlags));
+      Assert.IsNull (type.GetProperty ("ProtectedProperty", _declaredInstanceFlags));
+    }
+
+    [Test]
+    public void ImplementsAbstractPropertyAccessors ()
+    {
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithAbstractProperties)).BuildType ();
+      Assert.IsNotNull (type.GetMethod (typeof (DOWithAbstractProperties).FullName + ".get_PropertyWithGetterOnly", _declaredInstanceFlags));
+      Assert.IsNull (type.GetMethod (typeof (DOWithAbstractProperties).FullName + ".set_PropertyWithGetterOnly", _declaredInstanceFlags));
+
+      Assert.IsNull (type.GetMethod (typeof (DOWithAbstractProperties).FullName + ".get_PropertyWithSetterOnly", _declaredInstanceFlags));
+      Assert.IsNotNull (type.GetMethod (typeof (DOWithAbstractProperties).FullName + ".set_PropertyWithSetterOnly", _declaredInstanceFlags));
+
+      Assert.IsNotNull (type.GetMethod (typeof (DOWithAbstractProperties).FullName + ".get_PropertyWithGetterAndSetter", _declaredInstanceFlags));
+      Assert.IsNotNull (type.GetMethod (typeof (DOWithAbstractProperties).FullName + ".set_PropertyWithGetterAndSetter", _declaredInstanceFlags));
+
+      Assert.IsNotNull (type.GetMethod (typeof (DOWithAbstractProperties).FullName + ".get_ProtectedProperty", _declaredInstanceFlags));
+      Assert.IsNotNull (type.GetMethod (typeof (DOWithAbstractProperties).FullName + ".set_ProtectedProperty", _declaredInstanceFlags));
+    }
+
+    [Test]
+    public void ImplementedAbstractPropertyAccessorsArePrivate ()
+    {
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithAbstractProperties)).BuildType ();
+      Assert.IsTrue (type.GetMethod (typeof (DOWithAbstractProperties).FullName + ".get_PropertyWithGetterOnly", _declaredInstanceFlags).IsPrivate);
+      Assert.IsTrue (type.GetMethod (typeof (DOWithAbstractProperties).FullName + ".set_PropertyWithSetterOnly", _declaredInstanceFlags).IsPrivate);
+      Assert.IsTrue (type.GetMethod (typeof (DOWithAbstractProperties).FullName + ".get_PropertyWithGetterAndSetter", _declaredInstanceFlags).IsPrivate);
+      Assert.IsTrue (type.GetMethod (typeof (DOWithAbstractProperties).FullName + ".set_PropertyWithGetterAndSetter", _declaredInstanceFlags).IsPrivate);
+      Assert.IsTrue (type.GetMethod (typeof (DOWithAbstractProperties).FullName + ".get_ProtectedProperty", _declaredInstanceFlags).IsPrivate);
+      Assert.IsTrue (type.GetMethod (typeof (DOWithAbstractProperties).FullName + ".set_ProtectedProperty", _declaredInstanceFlags).IsPrivate);
     }
 
     [Test]
@@ -223,9 +279,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       instance.PropertyWithSetterOnly = new DateTime (2260, 1, 2);
       Assert.AreEqual (new DateTime (2260, 1, 2), instance.Properties[typeof (DOWithAbstractProperties), "PropertyWithSetterOnly"].GetValue<DateTime> ());
 
-      type.GetProperty ("ProtectedProperty", _declaredInstanceFlags).SetValue (instance, 4711, _declaredInstanceFlags, null, null, null);
-      Assert.AreEqual (4711,
-          type.GetProperty ("ProtectedProperty", _declaredInstanceFlags).GetValue (instance, _declaredInstanceFlags, null, null, null));
+      typeof (DOWithAbstractProperties).GetProperty ("ProtectedProperty", _declaredInstanceFlags)
+          .SetValue (instance, 4711, _declaredInstanceFlags, null, null, null);
+      Assert.AreEqual (4711, typeof (DOWithAbstractProperties).GetProperty ("ProtectedProperty", _declaredInstanceFlags)
+          .GetValue (instance, _declaredInstanceFlags, null, null, null));
     }
 
     [Test]
@@ -252,9 +309,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.SampleTypes.NonInstantiableAbstractClassWithProps, property Foo is abstract but not "
-        + "defined in the mapping (assumed property id: Rubicon.Data.DomainObjects.UnitTests.Interception."
-        + "SampleTypes.NonInstantiableAbstractClassWithProps.Foo).")]
+        + "Interception.SampleTypes.NonInstantiableAbstractClassWithProps as its member get_Foo (on type NonInstantiableAbstractClassWithProps) is "
+        + "abstract (and not an automatic property).")]
     public void ThrowsOnAbstractPropertyNotInMapping ()
     {
       _scope.CreateTypeGenerator (typeof (NonInstantiableAbstractClassWithProps)).BuildType();
@@ -273,7 +329,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.SampleTypes.NonInstantiableAbstractClass as its member Foo is abstract (and not an "
+        + "Interception.SampleTypes.NonInstantiableAbstractClass as its member Foo (on type NonInstantiableAbstractClass) is abstract (and not an "
         + "automatic property).")]
     public void ThrowsOnAbstractMethod ()
     {
@@ -291,10 +347,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+        + "Interception.SampleTypes.NonInstantiableAbstractClassWithoutAttribute as it is abstract and not instantiable.")]
+    public void ThrowsOnAbstractClassWithoutInstantiableAttribute ()
+    {
+      _scope.CreateTypeGenerator (typeof (NonInstantiableAbstractClassWithoutAttribute)).BuildType ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
         + "Interception.SampleTypes.NonInstantiableNonDomainClass as it is not part of the mapping.")]
     public void ThrowsOnClassWithoutClassDefinition ()
     {
-      _scope.CreateTypeGenerator (typeof (NonInstantiableNonDomainClass)).BuildType();
+      _scope.CreateTypeGenerator (typeof (NonInstantiableNonDomainClass)).BuildType ();
     }
 
     [Test]
@@ -341,7 +405,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [Ignore ("TODO: FS")]
     public void ShadowedPropertiesAreSeparatelyOverridden ()
     {
       Type type = _scope.CreateTypeGenerator (typeof (DOHidingVirtualProperties)).BuildType ();
@@ -352,7 +415,77 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       instanceAsBase.PropertyWithGetterAndSetter = 2;
       
       Assert.AreEqual (1, instance.PropertyWithGetterAndSetter);
-      Assert.AreEqual (1, instanceAsBase.PropertyWithGetterAndSetter);
+      Assert.AreEqual (2, instanceAsBase.PropertyWithGetterAndSetter);
+    }
+
+    [Test]
+    public void RealEndPointDefinitionsAreOverridden ()
+    {
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithRealRelationEndPoint)).BuildType ();
+      Assert.IsNotNull (type.GetMethod (typeof (DOWithRealRelationEndPoint).FullName + ".get_RelatedObject", _declaredInstanceFlags));
+
+      DOWithRealRelationEndPoint instance = (DOWithRealRelationEndPoint) Activator.CreateInstance (type);
+      DOWithVirtualRelationEndPoint relatedObject = (DOWithVirtualRelationEndPoint) DomainObject.NewObject (typeof (DOWithVirtualRelationEndPoint));
+      instance.RelatedObject = relatedObject;
+      Assert.AreSame (relatedObject, instance.RelatedObject);
+    }
+
+    [Test]
+    public void VirtualEndPointDefinitionsAreOverridden ()
+    {
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithVirtualRelationEndPoint)).BuildType ();
+      Assert.IsNotNull (type.GetMethod (typeof (DOWithVirtualRelationEndPoint).FullName + ".get_RelatedObject", _declaredInstanceFlags));
+
+      DOWithVirtualRelationEndPoint instance = (DOWithVirtualRelationEndPoint) Activator.CreateInstance (type);
+      DOWithRealRelationEndPoint relatedObject = (DOWithRealRelationEndPoint) DomainObject.NewObject (typeof (DOWithRealRelationEndPoint));
+      instance.RelatedObject = relatedObject;
+      Assert.AreSame (relatedObject, instance.RelatedObject);
+    }
+
+    [Test]
+    public void UnidirectionalEndPointDefinitionsAreOverridden ()
+    {
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithUnidirectionalRelationEndPoint)).BuildType ();
+      Assert.IsNotNull (type.GetMethod (typeof (DOWithUnidirectionalRelationEndPoint).FullName + ".get_RelatedObject", _declaredInstanceFlags));
+
+      DOWithUnidirectionalRelationEndPoint instance = (DOWithUnidirectionalRelationEndPoint) Activator.CreateInstance (type);
+      DOWithVirtualProperties relatedObject = (DOWithVirtualProperties) DomainObject.NewObject (typeof (DOWithVirtualProperties));
+      instance.RelatedObject = relatedObject;
+      Assert.AreSame (relatedObject, instance.RelatedObject);
+    }
+
+    [Test]
+    public void PropertyAccessorsIndirectlySealedAreNotOverridden ()
+    {
+      Type type = _scope.CreateTypeGenerator (typeof (DOWithIndirectlySealedPropertyAccessors)).BuildType ();
+      Assert.IsNull (type.GetMethod (typeof (DOWithIndirectlySealedPropertyAccessors).FullName + ".get_PropertyWithGetterAndSetter", _declaredInstanceFlags));
+    }
+
+    [Test]
+    public void SpikeAssertingBaseDefinitionFitsMethodOnBaseType ()
+    {
+      MethodInfo sealedMethod = typeof (DOWithIndirectlySealedPropertyAccessors).GetMethod ("get_PropertyWithGetterAndSetter", _declaredInstanceFlags);
+      MethodInfo unsealedMethod = typeof (DOWithVirtualProperties).GetMethod ("get_PropertyWithGetterAndSetter", _declaredInstanceFlags);
+
+      Assert.IsNotNull (sealedMethod);
+      Assert.IsNotNull (unsealedMethod);
+
+      Assert.AreNotEqual (sealedMethod, unsealedMethod);
+      Assert.AreEqual (sealedMethod.GetBaseDefinition(), unsealedMethod);
+      Assert.AreEqual (sealedMethod.GetBaseDefinition (), unsealedMethod.GetBaseDefinition());
+    }
+
+    [Test]
+    public void AbstractPropertyAccessorsIndirectlyImplementedAreOverriddenNotImplemented ()
+    {
+      Type type = _scope.CreateTypeGenerator (typeof (DOImplementingAbstractPropertyAccessors)).BuildType ();
+      Assert.IsNotNull (type.GetMethod (typeof (DOImplementingAbstractPropertyAccessors).FullName + ".get_PropertyWithGetterAndSetter",
+          _declaredInstanceFlags));
+      DOImplementingAbstractPropertyAccessors instance = (DOImplementingAbstractPropertyAccessors) Activator.CreateInstance (type);
+      
+      // assert that getter and setter are correctly propagated to base implementation
+      instance.PropertyWithGetterAndSetter = 3;
+      Assert.AreEqual (10, instance.PropertyWithGetterAndSetter);
     }
   }
 }

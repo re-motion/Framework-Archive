@@ -174,6 +174,19 @@ namespace Rubicon.CodeGeneration
       return CreateMethodOverrideOrInterfaceImplementation (baseMethod, true);
     }
 
+    /// <summary>
+    /// Creates a private method override, i.e. a method override with private visibility whose name includes the name of the base method's
+    /// declaring type, similar to an explicit interface implementation.
+    /// </summary>
+    /// <param name="baseMethod">The base method to override.</param>
+    /// <returns>A <see cref="CustomMethodEmitter"/> for the private method override.</returns>
+    /// <remarks>This method can be useful when overriding several (shadowed) methods of the same name inherited by different base types.</remarks>
+    public CustomMethodEmitter CreatePrivateMethodOverride (MethodInfo baseMethod)
+    {
+      ArgumentUtility.CheckNotNull ("baseMethod", baseMethod);
+      return CreateMethodOverrideOrInterfaceImplementation (baseMethod, false);
+    }
+
     public CustomMethodEmitter CreateInterfaceMethodImplementation (MethodInfo interfaceMethod)
     {
       ArgumentUtility.CheckNotNull ("interfaceMethod", interfaceMethod);

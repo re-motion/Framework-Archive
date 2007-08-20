@@ -1,23 +1,18 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Runtime.Serialization;
 using Castle.DynamicProxy;
-using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Rubicon.CodeGeneration;
 using Rubicon.CodeGeneration.DPExtensions;
 using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
-using Rubicon.CodeGeneration;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 {
   public class TypeGenerator
   {
-    private const BindingFlags _propertyBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
     private const BindingFlags _infrastructureBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
     private const BindingFlags _staticInfrastructureBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 
@@ -57,8 +52,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       ArgumentUtility.CheckNotNull ("baseType", baseType);
       ArgumentUtility.CheckNotNull ("scope", scope);
 
-      // Store analysis results in a list to force analysis before ClassEmitter is created
-      List<Tuple<PropertyInfo, string>> properties = new List<Tuple<PropertyInfo, string>> (AnalyzeAndValidateBaseType (baseType));
+      // Analyze type before creating the class emitter; that way, we won't have half-created types lying around in case of configuration errors
+      Set<Tuple<PropertyInfo, string>> properties = new InterceptedPropertyCollector (baseType).GetProperties ();
 
       string typeName = baseType.FullName + "_WithInterception_ "+ Guid.NewGuid().ToString ("N");
       Type[] interfaces = new Type[] { typeof (IInterceptedDomainObject), typeof (ISerializable) };
@@ -77,101 +72,6 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       return _classEmitter.BuildType ();
     }
 
-    private IEnumerable<Tuple<PropertyInfo, string>> AnalyzeAndValidateBaseType (Type baseType)
-    {
-      ArgumentUtility.CheckNotNull ("baseType", baseType);
-      Set<MethodInfo> methodsBeingProcessed = new Set<MethodInfo> ();
-
-      ValidateBaseType (baseType);
-
-      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[baseType];
-      ValidateClassDefinition (classDefinition, baseType);
-
-      foreach (PropertyInfo property in baseType.GetProperties (_propertyBindingFlags))
-      {
-        string propertyIdentifier = ReflectionUtility.GetPropertyName (property);
-        if (PropertyAccessor.IsValidProperty (classDefinition, propertyIdentifier))
-        {
-          MethodInfo getMethod = property.GetGetMethod (true);
-          MethodInfo setMethod = property.GetSetMethod (true);
-
-          ValidatePropertySetter(setMethod, property, propertyIdentifier, classDefinition);
-
-          if (getMethod != null)
-            methodsBeingProcessed.Add (getMethod);
-          if (setMethod != null)
-            methodsBeingProcessed.Add (setMethod);
-          
-          yield return new Tuple<PropertyInfo, string> (property, propertyIdentifier);
-        }
-        else ValidatePropertyNotInMapping(property, propertyIdentifier);
-      }
-
-      ValidateRemainingMethods(baseType, methodsBeingProcessed);
-    }
-
-    private void ValidateBaseType (Type baseType)
-    {
-      if (baseType.IsSealed)
-        throw new NonInterceptableTypeException (string.Format ("Cannot instantiate type {0} as it is sealed.", baseType.FullName), baseType);
-    }
-
-    private void ValidateRemainingMethods (Type baseType, Set<MethodInfo> methodsBeingProcessed)
-    {
-      foreach (MethodInfo method in baseType.GetMethods (_infrastructureBindingFlags))
-      {
-        if (method.IsAbstract && !methodsBeingProcessed.Contains (method))
-          throw new NonInterceptableTypeException (
-              string.Format (
-                  "Cannot instantiate type {0} as its member {1} is abstract (and not an automatic property).",
-                  baseType.FullName,
-                  method.Name),
-              baseType);
-      }
-    }
-
-    private void ValidateClassDefinition (ClassDefinition classDefinition, Type baseType)
-    {
-      if ( classDefinition == null)
-        throw new NonInterceptableTypeException (string.Format ("Cannot instantiate type {0} as it is not part of the mapping.", baseType.FullName),
-            baseType);
-    }
-
-    private void ValidatePropertyNotInMapping (PropertyInfo property, string propertyIdentifier)
-    {
-      Type baseType = property.DeclaringType;
-      if (IsAbstract (property))
-        throw new NonInterceptableTypeException (
-            string.Format (
-                "Cannot instantiate type {0}, property {1} is abstract but not defined in the mapping (assumed property id: {2}).",
-                baseType.FullName,
-                property.Name,
-                propertyIdentifier),
-            baseType);
-    }
-
-    private void ValidatePropertySetter (MethodInfo propertySetter, PropertyInfo property, string propertyIdentifier, ClassDefinition classDefinition)
-    {
-      Type baseType = property.DeclaringType;
-      if (propertySetter != null && PropertyAccessor.GetPropertyKind (classDefinition, propertyIdentifier) == PropertyKind.RelatedObjectCollection)
-      {
-        throw new NonInterceptableTypeException (
-            string.Format (
-                "Cannot instantiate type {0}, automatic properties for related object collections cannot have setters: property '{1}', property id '{2}'.",
-                baseType.FullName,
-                property.Name,
-                propertyIdentifier),
-            baseType);
-      }
-    }
-
-    private bool IsAbstract (PropertyInfo property)
-    {
-      MethodInfo getMethod = property.GetGetMethod (true);
-      MethodInfo setMethod = property.GetSetMethod (true);
-      return (getMethod != null && getMethod.IsAbstract) || (setMethod != null && setMethod.IsAbstract);
-    }
-
     private void OverrideGetPublicDomainObjectType ()
     {
       _classEmitter.CreateMethodOverride (s_getPublicDomainObjectTypeMethod).ImplementByReturning (new TypeTokenExpression (_classEmitter.BaseType));
@@ -187,24 +87,26 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
     {
       MethodInfo getMethod = property.GetGetMethod (true);
       MethodInfo setMethod = property.GetSetMethod (true);
-      if (IsOverridable (getMethod) || IsOverridable (setMethod))
-      {
-        CustomPropertyEmitter overrider = _classEmitter.CreatePropertyOverride (property);
 
-        if (getMethod != null)
+      MethodInfo topMostGetOverride = getMethod != null ? GetTopMostOverrideOfMethod (getMethod) : null;
+      MethodInfo topMostSetOverride = setMethod != null ? GetTopMostOverrideOfMethod (setMethod) : null;
+
+      if (IsOverridable (topMostGetOverride) || IsOverridable (topMostSetOverride))
+      {
+        if (topMostGetOverride != null)
         {
-          if (getMethod.IsAbstract)
-            overrider.GetMethod = ImplementAbstractGetAccessor (getMethod, propertyIdentifier);
-          else if (IsOverridable (getMethod))
-            overrider.GetMethod = OverrideAccessor (getMethod, propertyIdentifier);
+          if (topMostGetOverride.IsAbstract)
+            ImplementAbstractGetAccessor (topMostGetOverride, propertyIdentifier);
+          else if (IsOverridable (topMostGetOverride))
+            OverrideAccessor (topMostGetOverride, propertyIdentifier);
         }
 
-        if (setMethod != null)
+        if (topMostSetOverride != null)
         {
-          if (setMethod.IsAbstract)
-            overrider.SetMethod = ImplementAbstractSetAccessor (setMethod, propertyIdentifier, property.PropertyType);
-          else if (IsOverridable (setMethod))
-            overrider.SetMethod = OverrideAccessor (setMethod, propertyIdentifier);
+          if (topMostSetOverride.IsAbstract)
+            ImplementAbstractSetAccessor (topMostSetOverride, propertyIdentifier, property.PropertyType);
+          else if (IsOverridable (topMostSetOverride))
+            OverrideAccessor (topMostSetOverride, propertyIdentifier);
         }
       }
     }
@@ -212,6 +114,32 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
     private bool IsOverridable (MethodInfo method)
     {
       return method != null && method.IsVirtual && !method.IsFinal;
+    }
+
+    private MethodInfo GetTopMostOverrideOfMethod (MethodInfo method)
+    {
+      ArgumentUtility.CheckNotNull ("method", method);
+      if (method.DeclaringType == _classEmitter.BaseType)
+        return method;
+      else
+        return GetTopMostOverrideOfMethod (method.GetBaseDefinition(), _classEmitter.BaseType);
+    }
+
+    private MethodInfo GetTopMostOverrideOfMethod (MethodInfo baseDefinition, Type typeToSearch)
+    {
+      if (baseDefinition.DeclaringType == typeToSearch)
+        return baseDefinition;
+      else
+      {
+        foreach (MethodInfo methodOnTypeToSearch in typeToSearch.GetMethods (_infrastructureBindingFlags | BindingFlags.DeclaredOnly))
+        {
+          if (methodOnTypeToSearch.GetBaseDefinition ().Equals (baseDefinition))
+            return methodOnTypeToSearch;
+        }
+
+        Assertion.IsNotNull (typeToSearch.BaseType, "we have to get to the base definition at some point");
+        return GetTopMostOverrideOfMethod (baseDefinition, typeToSearch.BaseType);
+      }
     }
 
     private CustomMethodEmitter OverrideAccessor (MethodInfo accessor, string propertyIdentifier)
@@ -222,7 +150,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       Assertion.IsFalse (accessor.IsAbstract);
       Assertion.IsTrue (IsOverridable (accessor));
 
-      CustomMethodEmitter emitter = _classEmitter.CreateMethodOverride (accessor);
+      CustomMethodEmitter emitter = _classEmitter.CreatePrivateMethodOverride (accessor);
       MethodInvocationExpression baseCallExpression =
           new MethodInvocationExpression (SelfReference.Self, accessor, emitter.GetArgumentExpressions());
 
@@ -239,7 +167,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       Assertion.IsTrue (accessor.IsAbstract);
       Assertion.IsTrue (accessor.ReturnType != typeof (void));
 
-      CustomMethodEmitter emitter = _classEmitter.CreateMethodOverride (accessor);
+      CustomMethodEmitter emitter = _classEmitter.CreatePrivateMethodOverride (accessor);
 
       ExpressionReference propertyAccessorReference = CreatePropertyAccessorReference (propertyIdentifier, emitter);
       TypedMethodInvocationExpression getValueMethodCall = new TypedMethodInvocationExpression (
@@ -260,7 +188,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       Assertion.IsTrue (accessor.IsAbstract);
       Assertion.IsTrue (accessor.ReturnType == typeof (void));
 
-      CustomMethodEmitter emitter = _classEmitter.CreateMethodOverride (accessor);
+      CustomMethodEmitter emitter = _classEmitter.CreatePrivateMethodOverride (accessor);
 
       Assertion.IsTrue (emitter.ArgumentReferences.Length > 0);
       Reference valueArgumentReference = emitter.ArgumentReferences[emitter.ArgumentReferences.Length - 1];

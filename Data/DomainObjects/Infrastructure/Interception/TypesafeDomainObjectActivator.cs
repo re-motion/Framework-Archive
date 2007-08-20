@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
           Type[] parameterTypes = ConstructorWrapper.GetParameterTypes (delegateType);
           string message = string.Format ("Type {0} does not support the requested constructor with signature ({1}).",
               _baseType.FullName, SeparatedStringBuilder.Build (", ", parameterTypes, delegate (Type t) { return t.FullName; })); 
-          throw new MissingMethodException (message);
+          throw new MissingMethodException (message, ex);
         }
       }
     }

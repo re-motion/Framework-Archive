@@ -133,23 +133,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
 
     private VirtualRelationEndPointDefinition CreateVirtualRelationEndPointDefinitionForManySide (string propertyName, bool isMandatory)
     {
-      return new VirtualRelationEndPointDefinition (
-          _closedGenericClassWithOneSideRelationPropertiesClassDefinition,
-          propertyName,
-          isMandatory,
-          CardinalityType.One,
-          typeof (ClosedGenericClassWithManySideRelationProperties));
+      return ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(_closedGenericClassWithOneSideRelationPropertiesClassDefinition, propertyName, isMandatory, CardinalityType.One, typeof (ClosedGenericClassWithManySideRelationProperties));
     }
 
     private VirtualRelationEndPointDefinition CreateVirtualRelationEndPointDefinitionForOneSide (string propertyName, bool isMandatory, string sortExpression)
     {
-      return new VirtualRelationEndPointDefinition (
-          _closedGenericClassWithOneSideRelationPropertiesClassDefinition,
-          propertyName,
-          isMandatory,
-          CardinalityType.Many,
-          typeof (ObjectList<ClosedGenericClassWithManySideRelationProperties>),
-          sortExpression);
+      return ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(_closedGenericClassWithOneSideRelationPropertiesClassDefinition, propertyName, isMandatory, CardinalityType.Many, typeof (ObjectList<ClosedGenericClassWithManySideRelationProperties>), sortExpression);
     }
 
     private AnonymousRelationEndPointDefinition CreateAnonymousRelationEndPointDefinition ()

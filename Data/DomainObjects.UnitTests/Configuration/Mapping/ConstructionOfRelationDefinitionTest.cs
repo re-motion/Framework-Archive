@@ -14,13 +14,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ClassDefinition customerDefinition = new ReflectionBasedClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer), false);
 
-      VirtualRelationEndPointDefinition endPointDefinition1 = new VirtualRelationEndPointDefinition (
-          customerDefinition, "Orders", true, CardinalityType.One, typeof (Order));
+      VirtualRelationEndPointDefinition endPointDefinition1 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(customerDefinition, "Orders", true, CardinalityType.One, typeof (Order));
 
       ClassDefinition orderDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order), false);
 
-      VirtualRelationEndPointDefinition endPointDefinition2 = new VirtualRelationEndPointDefinition (
-          orderDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", true, CardinalityType.One, typeof (Customer));
+      VirtualRelationEndPointDefinition endPointDefinition2 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(orderDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", true, CardinalityType.One, typeof (Customer));
 
       new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", endPointDefinition1, endPointDefinition2);
     }

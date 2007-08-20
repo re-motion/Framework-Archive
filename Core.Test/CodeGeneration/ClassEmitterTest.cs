@@ -158,8 +158,33 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
       toStringMethod.AddStatement (new ReturnStatement (new ConstReference ("P0wned!")));
 
       Type builtType = classEmitter.BuildType ();
+      MethodInfo method =
+          builtType.GetMethod ("ToString", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+      Assert.IsNotNull (method);
+      Assert.IsTrue (method.IsPublic);
       object instance = Activator.CreateInstance (builtType);
       Assert.AreEqual ("P0wned!", instance.ToString());
+    }
+
+    [Test]
+    public void CreatePrivateMethodOverride ()
+    {
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreateMethodOverride", typeof (object), new Type[] { typeof (IMarkerInterface) },
+          TypeAttributes.Public | TypeAttributes.Class);
+
+      CustomMethodEmitter toStringMethod = classEmitter.CreatePrivateMethodOverride (typeof (object).GetMethod ("ToString"));
+      toStringMethod.AddStatement (new ReturnStatement (new ConstReference ("P0wned!")));
+
+      Type builtType = classEmitter.BuildType ();
+      MethodInfo method = builtType.GetMethod ("ToString",
+          BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+      Assert.IsNull (method);
+      method = builtType.GetMethod ("System.Object.ToString",
+          BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+      Assert.IsNotNull (method);
+      Assert.IsTrue (method.IsPrivate);
+      object instance = Activator.CreateInstance (builtType);
+      Assert.AreEqual ("P0wned!", instance.ToString ());
     }
 
     [Test]

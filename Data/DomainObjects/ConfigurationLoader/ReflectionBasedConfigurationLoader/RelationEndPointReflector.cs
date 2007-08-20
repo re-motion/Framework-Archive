@@ -46,13 +46,9 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private VirtualRelationEndPointDefinition CreateVirtualRelationEndPointDefinition (ClassDefinition classDefinition)
     {
-      return new VirtualRelationEndPointDefinition (
-          classDefinition,
-          GetPropertyName(),
-          !IsNullable(),
-          GetCardinality(),
-          PropertyInfo.PropertyType,
-          GetSortExpression());
+      return
+          new ReflectionBasedVirtualRelationEndPointDefinition (
+              classDefinition, GetPropertyName(), !IsNullable(), GetCardinality(), PropertyInfo.PropertyType, GetSortExpression(), PropertyInfo);
     }
 
     private CardinalityType GetCardinality()

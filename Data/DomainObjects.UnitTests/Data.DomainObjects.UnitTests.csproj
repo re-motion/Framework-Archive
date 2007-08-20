@@ -136,6 +136,8 @@
     <Compile Include="Configuration\Mapping\ClassReflectorTests\TestBaseForHierarchyWithoutStorageGroup.cs" />
     <Compile Include="Configuration\Mapping\PropertyFinderBaseTest.cs" />
     <Compile Include="Configuration\Mapping\ReflectionBasedPropertyDefinitionFactory.cs" />
+    <Compile Include="Configuration\Mapping\ReflectionBasedVirtualRelationEndPointDefinitionFactory.cs" />
+    <Compile Include="Configuration\Mapping\ReflectionBasedVirtualRelationEndPointDefinitionTest.cs" />
     <Compile Include="Configuration\Mapping\RelationEndPointReflectorTests\BaseManySideRelationProperty.cs" />
     <Compile Include="Configuration\Mapping\RelationEndPointReflectorTests\BaseOneSideRelationProperty.cs" />
     <Compile Include="Configuration\Mapping\RelationEndPointReflectorTests\GenericManySideRelationProperty.cs" />
@@ -199,7 +201,13 @@
     <Compile Include="DomainObjects\ConstructionTest.cs" />
     <Compile Include="Interception\SampleTypes\ClassWithExplicitInterfaceProperty.cs" />
     <Compile Include="Interception\SampleTypes\ClassWithWrongConstructor.cs" />
+    <Compile Include="Interception\SampleTypes\DOImplementingAbstractPropertyAccessors.cs" />
+    <Compile Include="Interception\SampleTypes\DOWithIndirectlySealedPropertyAccessors.cs" />
+    <Compile Include="Interception\SampleTypes\NonInstantiableAbstractClassWithoutAttribute.cs" />
     <Compile Include="Interception\SampleTypes\DOHidingVirtualProperties.cs" />
+    <Compile Include="Interception\SampleTypes\DOWithRealRelationEndPoint.cs" />
+    <Compile Include="Interception\SampleTypes\DOWithUnidirectionalRelationEndPoint.cs" />
+    <Compile Include="Interception\SampleTypes\DOWithVirtualRelationEndPoint.cs" />
     <Compile Include="Interception\SampleTypes\IPropertyInterface.cs" />
     <Compile Include="Interception\SampleTypes\NonInstantiableAbstractClass.cs" />
     <Compile Include="Interception\SampleTypes\NonInstantiableAbstractClassWithProps.cs" />

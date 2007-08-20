@@ -80,7 +80,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "Interception.SampleTypes.NonInstantiableAbstractClass as its member Foo is abstract (and not an "
+        + "Interception.SampleTypes.NonInstantiableAbstractClass as its member Foo (on type NonInstantiableAbstractClass) is abstract (and not an "
         + "automatic property).\r\nParameter name: baseType")]
     public void AbstractWithMethodCannotBeInstantiated ()
     {
@@ -89,9 +89,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type "
-        + "Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes.NonInstantiableAbstractClassWithProps, "
-        + "property Foo is abstract but not defined in the mapping (assumed property id: "
-        + "Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes.NonInstantiableAbstractClassWithProps.Foo)."
+        + "Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes.NonInstantiableAbstractClassWithProps as its "
+        + "member get_Foo (on type NonInstantiableAbstractClassWithProps) is abstract (and not an automatic property)."
         + "\r\nParameter name: baseType")]
     public void AbstractWithNonAutoPropertiesCannotBeInstantiated ()
     {

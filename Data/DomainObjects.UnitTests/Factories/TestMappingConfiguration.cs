@@ -669,13 +669,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     {
       ClassDefinition customer = _classDefinitions[typeof (Customer)];
 
-      VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          customer,
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders",
-          false,
-          CardinalityType.Many,
-          typeof (OrderCollection),
-          "OrderNo asc");
+      VirtualRelationEndPointDefinition endPoint1 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(customer, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", false, CardinalityType.Many, typeof (OrderCollection), "OrderNo asc");
 
       ClassDefinition orderClass = _classDefinitions[typeof (Order)];
 
@@ -693,8 +687,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private RelationDefinition CreateOrderToOrderTicketRelationDefinition()
     {
       ClassDefinition orderClass = _classDefinitions[typeof (Order)];
-      VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          orderClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
+      VirtualRelationEndPointDefinition endPoint1 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(orderClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
 
       ClassDefinition orderTicketClass = _classDefinitions[typeof (OrderTicket)];
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
@@ -711,8 +704,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private RelationDefinition CreateOrderToOrderItemRelationDefinition()
     {
       ClassDefinition orderClass = _classDefinitions[typeof (Order)];
-      VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          orderClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", true, CardinalityType.Many, typeof (ObjectList<OrderItem>));
+      VirtualRelationEndPointDefinition endPoint1 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(orderClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", true, CardinalityType.Many, typeof (ObjectList<OrderItem>));
 
       ClassDefinition orderItemClass = _classDefinitions[typeof (OrderItem)];
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
@@ -730,8 +722,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     {
       ClassDefinition officialClass = _classDefinitions[typeof (Official)];
 
-      VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          officialClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Official.Orders", false, CardinalityType.Many, typeof (ObjectList<Order>));
+      VirtualRelationEndPointDefinition endPoint1 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(officialClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Official.Orders", false, CardinalityType.Many, typeof (ObjectList<Order>));
 
       ClassDefinition orderClass = _classDefinitions[typeof (Order)];
 
@@ -750,8 +741,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     {
       ClassDefinition companyClass = _classDefinitions[typeof (Company)];
 
-      VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          companyClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo", true, CardinalityType.One, typeof (Ceo));
+      VirtualRelationEndPointDefinition endPoint1 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(companyClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo", true, CardinalityType.One, typeof (Ceo));
 
       ClassDefinition ceoClass = _classDefinitions[typeof (Ceo)];
 
@@ -773,8 +763,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
           partnerClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson", true);
 
       ClassDefinition personClass = _classDefinitions[typeof (Person)];
-      VirtualRelationEndPointDefinition endPoint2 = new VirtualRelationEndPointDefinition (
-          personClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany", false, CardinalityType.One, typeof (Partner));
+      VirtualRelationEndPointDefinition endPoint2 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(personClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany", false, CardinalityType.One, typeof (Partner));
 
       RelationDefinition relation =
           new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson", endPoint1, endPoint2);
@@ -824,12 +813,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
           fileSystemItemClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder", false);
 
       ClassDefinition folderClass = _classDefinitions[typeof (Folder)];
-      VirtualRelationEndPointDefinition endPoint2 = new VirtualRelationEndPointDefinition (
-          folderClass,
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder.FileSystemItems",
-          false,
-          CardinalityType.Many,
-          typeof (ObjectList<FileSystemItem>));
+      VirtualRelationEndPointDefinition endPoint2 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(folderClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder.FileSystemItems", false, CardinalityType.Many, typeof (ObjectList<FileSystemItem>));
 
       RelationDefinition relation =
           new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder", endPoint1, endPoint2);
@@ -846,12 +830,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
       ClassDefinition classWithoutRelatedClassIDColumnClass = _classDefinitions[typeof (ClassWithoutRelatedClassIDColumn)];
 
-      VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          distributorClass,
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor.ClassWithoutRelatedClassIDColumn",
-          false,
-          CardinalityType.One,
-          typeof (ClassWithoutRelatedClassIDColumn));
+      VirtualRelationEndPointDefinition endPoint1 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(distributorClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor.ClassWithoutRelatedClassIDColumn", false, CardinalityType.One, typeof (ClassWithoutRelatedClassIDColumn));
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
           classWithoutRelatedClassIDColumnClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumn.Distributor", false);
@@ -872,12 +851,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
       ClassDefinition classWithoutRelatedClassIDColumnAndDerivation = _classDefinitions[typeof (ClassWithoutRelatedClassIDColumnAndDerivation)];
 
-      VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          companyClass,
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.ClassWithoutRelatedClassIDColumnAndDerivation",
-          false,
-          CardinalityType.One,
-          typeof (ClassWithoutRelatedClassIDColumnAndDerivation));
+      VirtualRelationEndPointDefinition endPoint1 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(companyClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.ClassWithoutRelatedClassIDColumnAndDerivation", false, CardinalityType.One, typeof (ClassWithoutRelatedClassIDColumnAndDerivation));
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
           classWithoutRelatedClassIDColumnAndDerivation,
@@ -919,12 +893,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private RelationDefinition CreateClassWithGuidKeyToClassWithValidRelationsOptional()
     {
       ClassDefinition classWithGuidKey = _classDefinitions[typeof (ClassWithGuidKey)];
-      VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          classWithGuidKey,
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsOptional",
-          false,
-          CardinalityType.One,
-          typeof (ClassWithValidRelations));
+      VirtualRelationEndPointDefinition endPoint1 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(classWithGuidKey, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsOptional", false, CardinalityType.One, typeof (ClassWithValidRelations));
 
       ClassDefinition classWithValidRelations = _classDefinitions[typeof (ClassWithValidRelations)];
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
@@ -945,12 +914,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private RelationDefinition CreateClassWithGuidKeyToClassWithValidRelationsNonOptional()
     {
       ClassDefinition classWithGuidKey = _classDefinitions[typeof (ClassWithGuidKey)];
-      VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          classWithGuidKey,
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsNonOptional",
-          true,
-          CardinalityType.One,
-          typeof (ClassWithValidRelations));
+      VirtualRelationEndPointDefinition endPoint1 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(classWithGuidKey, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsNonOptional", true, CardinalityType.One, typeof (ClassWithValidRelations));
 
       ClassDefinition classWithValidRelations = _classDefinitions[typeof (ClassWithValidRelations)];
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
@@ -971,12 +935,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private RelationDefinition CreateClassWithGuidKeyToClassWithInvalidRelation()
     {
       ClassDefinition classWithGuidKey = _classDefinitions[typeof (ClassWithGuidKey)];
-      VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          classWithGuidKey,
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithInvalidRelation",
-          false,
-          CardinalityType.One,
-          typeof (ClassWithInvalidRelation));
+      VirtualRelationEndPointDefinition endPoint1 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(classWithGuidKey, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithInvalidRelation", false, CardinalityType.One, typeof (ClassWithInvalidRelation));
 
       ClassDefinition classWithInvalidRelation = _classDefinitions[typeof (ClassWithInvalidRelation)];
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
@@ -997,12 +956,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private RelationDefinition CreateClassWithGuidKeyToClassWithRelatedClassIDColumnAndNoInheritanceRelation()
     {
       ClassDefinition classWithGuidKey = _classDefinitions[typeof (ClassWithGuidKey)];
-      VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          classWithGuidKey,
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithRelatedClassIDColumnAndNoInheritance",
-          false,
-          CardinalityType.One,
-          typeof (ClassWithRelatedClassIDColumnAndNoInheritance));
+      VirtualRelationEndPointDefinition endPoint1 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(classWithGuidKey, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithRelatedClassIDColumnAndNoInheritance", false, CardinalityType.One, typeof (ClassWithRelatedClassIDColumnAndNoInheritance));
 
       ClassDefinition classWithRelatedClassIDColumnAndNoInheritance = _classDefinitions[typeof (ClassWithRelatedClassIDColumnAndNoInheritance)];
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
@@ -1026,12 +980,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     {
       ClassDefinition industrialSectorClass = _classDefinitions[typeof (IndustrialSector)];
 
-      VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          industrialSectorClass,
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies",
-          true,
-          CardinalityType.Many,
-          typeof (ObjectList<Company>));
+      VirtualRelationEndPointDefinition endPoint1 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(industrialSectorClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies", true, CardinalityType.Many, typeof (ObjectList<Company>));
 
       ClassDefinition companyClass = _classDefinitions[typeof (Company)];
 
@@ -1051,12 +1000,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     {
       ClassDefinition employeeClass = _classDefinitions[typeof (Employee)];
 
-      VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          employeeClass,
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates",
-          false,
-          CardinalityType.Many,
-          typeof (ObjectList<Employee>));
+      VirtualRelationEndPointDefinition endPoint1 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(employeeClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates", false, CardinalityType.Many, typeof (ObjectList<Employee>));
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
           employeeClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", false);
@@ -1073,8 +1017,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     {
       ClassDefinition employeeClass = _classDefinitions[typeof (Employee)];
 
-      VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          employeeClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer", false, CardinalityType.One, typeof (Computer));
+      VirtualRelationEndPointDefinition endPoint1 = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(employeeClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer", false, CardinalityType.One, typeof (Computer));
 
       ClassDefinition computerClass = _classDefinitions[typeof (Computer)];
 

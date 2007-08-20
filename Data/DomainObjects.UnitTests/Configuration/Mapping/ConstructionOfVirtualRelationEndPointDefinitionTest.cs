@@ -33,8 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ReflectionBasedClassDefinition companyDefinition = new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company), false);
 
-      VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
-          companyDefinition, "Dummy", false, CardinalityType.One, typeof (DomainObject));
+      VirtualRelationEndPointDefinition endPointDefinition = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(companyDefinition, "Dummy", false, CardinalityType.One, typeof (DomainObject));
     }
 
     [Test]
@@ -42,8 +41,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ReflectionBasedClassDefinition companyDefinition = new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company), false);
 
-      VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
-          companyDefinition, "Dummy", false, CardinalityType.Many, typeof (DomainObjectCollection));
+      VirtualRelationEndPointDefinition endPointDefinition = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(companyDefinition, "Dummy", false, CardinalityType.Many, typeof (DomainObjectCollection));
     }
 
     [Test]
@@ -51,8 +49,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ReflectionBasedClassDefinition companyDefinition = new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company), false);
 
-      VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
-          companyDefinition, "Dummy", false, CardinalityType.Many, typeof (OrderCollection));
+      VirtualRelationEndPointDefinition endPointDefinition = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(companyDefinition, "Dummy", false, CardinalityType.Many, typeof (OrderCollection));
     }
 
     [Test]
@@ -63,8 +60,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ReflectionBasedClassDefinition companyDefinition = new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company), false);
 
-      VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
-          companyDefinition, "Dummy", false, CardinalityType.One, typeof (OrderCollection));
+      VirtualRelationEndPointDefinition endPointDefinition = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(companyDefinition, "Dummy", false, CardinalityType.One, typeof (OrderCollection));
     }
 
     [Test]
@@ -75,8 +71,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ReflectionBasedClassDefinition companyDefinition = new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company), false);
 
-      VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
-          companyDefinition, "Dummy", false, CardinalityType.Many, typeof (Company));
+      VirtualRelationEndPointDefinition endPointDefinition = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(companyDefinition, "Dummy", false, CardinalityType.Many, typeof (Company));
     }
 
     [Test]
@@ -84,8 +79,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ReflectionBasedClassDefinition customerDefinition = new ReflectionBasedClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer), false);
 
-      VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
-          customerDefinition, "Orders", false, CardinalityType.Many, typeof (OrderCollection), "OrderNumber desc");
+      VirtualRelationEndPointDefinition endPointDefinition = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(customerDefinition, "Orders", false, CardinalityType.Many, typeof (OrderCollection), "OrderNumber desc");
 
       Assert.AreEqual ("OrderNumber desc", endPointDefinition.SortExpression);
     }
@@ -96,8 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ReflectionBasedClassDefinition customerDefinition = new ReflectionBasedClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer), false);
 
-      VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
-          customerDefinition, "Orders", false, CardinalityType.One, typeof (Order), "OrderNumber desc");
+      VirtualRelationEndPointDefinition endPointDefinition = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(customerDefinition, "Orders", false, CardinalityType.One, typeof (Order), "OrderNumber desc");
     }
   }
 }

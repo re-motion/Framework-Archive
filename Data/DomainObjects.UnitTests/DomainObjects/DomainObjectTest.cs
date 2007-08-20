@@ -636,7 +636,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [Ignore ("TODO: Should work when shadowed properties are correctly intercepted")]
     public void MultiplePropertiesWithSameShortName ()
     {
       DerivedClassWithMixedProperties derivedClass =
@@ -647,13 +646,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       baseClass.String = "Base";
       
       Assert.AreEqual ("Derived", derivedClass.String);
-      Assert.AreEqual ("Base", derivedClass.String);
+      Assert.AreEqual ("Base", baseClass.String);
 
       baseClass.String = "NewBase";
       derivedClass.String = "NewDerived";
       
       Assert.AreEqual ("NewDerived", derivedClass.String);
-      Assert.AreEqual ("NewBase", derivedClass.String);
+      Assert.AreEqual ("NewBase", baseClass.String);
     }
   }
 }
