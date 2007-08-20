@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
@@ -47,11 +48,31 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void GetEnumerator ()
+    public void GetEnumeratorGeneric ()
     {
       Order order = Order.NewObject();
       List<string> propertyNames = new List<string> ();
-      foreach (PropertyAccessor propertyAccessor in order.Properties)
+      foreach (PropertyAccessor propertyAccessor in (IEnumerable<PropertyAccessor>)order.Properties)
+      {
+        propertyNames.Add (propertyAccessor.PropertyIdentifier);
+      }
+
+      Assert.That (propertyNames, Is.EquivalentTo (new string[] {
+        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber",
+        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.DeliveryDate",
+        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official",
+        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket",
+        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer",
+        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"
+      }));
+    }
+
+    [Test]
+    public void GetEnumeratorNonGeneric ()
+    {
+      Order order = Order.NewObject ();
+      List<string> propertyNames = new List<string> ();
+      foreach (PropertyAccessor propertyAccessor in (IEnumerable)order.Properties)
       {
         propertyNames.Add (propertyAccessor.PropertyIdentifier);
       }

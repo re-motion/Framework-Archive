@@ -6,174 +6,174 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 {
   public class InvalidatedSubTransactionListener : IClientTransactionListener
   {
-    private void ThrowException ()
+    private Exception CreateException ()
     {
-      throw new InvalidOperationException ("The subtransaction can no longer be used because control has returned to its parent transaction.");
+      return new InvalidOperationException ("The subtransaction can no longer be used because control has returned to its parent transaction.");
     }
 
     public void SubTransactionCreating ()
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void SubTransactionCreated (ClientTransaction subTransaction)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void NewObjectCreating (Type type)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void ObjectLoading (ObjectID id)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void ObjectsLoaded (DomainObjectCollection domainObjects)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void ObjectDeleting (DomainObject domainObject)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void ObjectDeleted (DomainObject domainObject)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void PropertyValueReading (DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void PropertyValueRead (DataContainer dataContainer, PropertyValue propertyValue, object value, ValueAccess valueAccess)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void PropertyValueChanging (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void PropertyValueChanged (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void RelationRead (DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void RelationRead (DomainObject domainObject, string propertyName, DomainObjectCollection relatedObjects, ValueAccess valueAccess)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void RelationChanging (DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void RelationChanged (DomainObject domainObject, string propertyName)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void FilterQueryResult (DomainObjectCollection queryResult, IQuery query)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void TransactionCommitting (DomainObjectCollection domainObjects)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void TransactionCommitted (DomainObjectCollection domainObjects)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void TransactionRollingBack (DomainObjectCollection domainObjects)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void TransactionRolledBack (DomainObjectCollection domainObjects)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void RelationEndPointMapRegistering (RelationEndPoint endPoint)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void RelationEndPointMapUnregistering (RelationEndPointID endPointID)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void RelationEndPointMapPerformingDelete (RelationEndPointID[] endPointIDs)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void RelationEndPointMapCopyingFrom (RelationEndPointMap source)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void RelationEndPointMapCopyingTo (RelationEndPointMap source)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void DataManagerMarkingObjectDiscarded (ObjectID id)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void DataManagerCopyingFrom (DataManager source)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void DataManagerCopyingTo (DataManager destination)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void DataContainerMapRegistering (DataContainer container)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void DataContainerMapUnregistering (DataContainer container)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void DataContainerMapCopyingFrom (DataContainerMap source)
     {
-      ThrowException();
+      throw CreateException();
     }
 
     public void DataContainerMapCopyingTo (DataContainerMap destination)
     {
-      ThrowException();
+      throw CreateException();
     }
   }
 }

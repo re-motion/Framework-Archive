@@ -9,6 +9,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
 
     // static members and constants
 
+    public static Order NewObject ()
+    {
+      return DomainObject.NewObject<Order> ().With ();
+    }
+
     public static new Order GetObject (ObjectID id)
     {
       return (Order) DomainObject.GetObject (id);

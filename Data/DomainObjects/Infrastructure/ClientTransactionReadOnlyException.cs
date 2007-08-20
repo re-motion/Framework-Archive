@@ -16,16 +16,5 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         : base (message)
     {
     }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ClientTransactionReadOnlyException"/> class, specifying an exception message and an inner
-    /// exception.
-    /// </summary>
-    /// <param name="message">The exception message.</param>
-    /// <param name="inner">The inner exception.</param>
-    public ClientTransactionReadOnlyException (string message, Exception inner)
-        : base (message, inner)
-    {
-    }
   }
 }

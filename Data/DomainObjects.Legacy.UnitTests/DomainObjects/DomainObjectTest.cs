@@ -43,6 +43,15 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DomainObjects
     }
 
     [Test]
+    public void NewObject ()
+    {
+      Order order = Order.NewObject ();
+      Assert.IsNotNull (order);
+      order.OrderNumber = 7;
+      Assert.AreEqual (7, order.OrderNumber);
+    }
+
+    [Test]
     public void PropertyAccess ()
     {
       ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
