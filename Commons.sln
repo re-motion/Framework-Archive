@@ -54,12 +54,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.UnitTests", "Web\UnitTe
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.UnitTests", "ObjectBinding\Web.UnitTests\ObjectBinding.Web.UnitTests.csproj", "{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Test", "ObjectBinding\Web.Test\ObjectBinding.Web.Test.csproj", "{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
@@ -222,12 +216,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Data.DomainObjects
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.UnitTests", "ObjectBinding\Core.UnitTests\ObjectBinding.UnitTests.csproj", "{5C1EB605-33ED-4A19-91B0-D060638191FB}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins", "Mixins\Core\Mixins.csproj", "{18C1D36B-CC05-4334-BF29-DE5A886DA89D}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
@@ -340,6 +328,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_BuildFiles", "_BuildFiles"
 		build\properties.include.build = build\properties.include.build
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.UnitTests", "ObjectBinding\UnitTests\ObjectBinding.UnitTests.csproj", "{5C1EB605-33ED-4A19-91B0-D060638191FB}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -382,10 +376,6 @@ Global
 		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -494,10 +484,6 @@ Global
 		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C1EB605-33ED-4A19-91B0-D060638191FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C1EB605-33ED-4A19-91B0-D060638191FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C1EB605-33ED-4A19-91B0-D060638191FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C1EB605-33ED-4A19-91B0-D060638191FB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{18C1D36B-CC05-4334-BF29-DE5A886DA89D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{18C1D36B-CC05-4334-BF29-DE5A886DA89D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18C1D36B-CC05-4334-BF29-DE5A886DA89D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -530,6 +516,10 @@ Global
 		{0B5318E7-4878-402A-8CF8-6BFFC47F571D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B5318E7-4878-402A-8CF8-6BFFC47F571D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B5318E7-4878-402A-8CF8-6BFFC47F571D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C1EB605-33ED-4A19-91B0-D060638191FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C1EB605-33ED-4A19-91B0-D060638191FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C1EB605-33ED-4A19-91B0-D060638191FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C1EB605-33ED-4A19-91B0-D060638191FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -538,11 +528,10 @@ Global
 		{C216DEC9-8820-4298-B10F-FB4131466B69} = {5B3CB3F6-DE69-41D6-8BBC-EFF4932F0F7E}
 		{2AA369EC-A4E7-4D75-9101-EFA90E902625} = {5B3CB3F6-DE69-41D6-8BBC-EFF4932F0F7E}
 		{390FBB93-A757-47A7-B769-A64A7465FF84} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
-		{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
-		{5C1EB605-33ED-4A19-91B0-D060638191FB} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
 		{5F1B88F7-FAFB-45C2-A357-333245870A6B} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
 		{FDCCDB1E-0962-41DA-99A1-2DB390C48748} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
+		{5C1EB605-33ED-4A19-91B0-D060638191FB} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
 		{F5416318-15B4-421E-9B44-03CD4C052D5A} = {9F4D90EC-6AD2-495D-BFC3-270DC15974DD}
 		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC} = {9F4D90EC-6AD2-495D-BFC3-270DC15974DD}
 		{B719A305-0493-4C72-88FE-9A2FC6964578} = {9F4D90EC-6AD2-495D-BFC3-270DC15974DD}
