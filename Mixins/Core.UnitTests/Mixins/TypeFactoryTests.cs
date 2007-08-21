@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using Rubicon.Mixins;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
@@ -115,6 +116,17 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Type concreteType = TypeFactory.GetConcreteType (typeof (object), GenerationPolicy.ForceGeneration);
       Assert.AreNotSame (typeof (object), concreteType);
       Assert.AreSame (typeof (object), concreteType.BaseType);
+    }
+
+    [Test]
+    public void InitializeUnconstructedInstance ()
+    {
+      Type concreteType = TypeFactory.GetConcreteType (typeof (BaseType3));
+      BaseType3 bt3 = (BaseType3) FormatterServices.GetSafeUninitializedObject (concreteType);
+      TypeFactory.InitializeUnconstructedInstance (bt3 as IMixinTarget);
+      BT3Mixin1 bt3m1 = Mixin.Get<BT3Mixin1> (bt3);
+      Assert.IsNotNull (bt3m1, "Mixin must have been created");
+      Assert.AreSame (bt3, bt3m1.This, "Mixin must have been initialized");
     }
   }
 }

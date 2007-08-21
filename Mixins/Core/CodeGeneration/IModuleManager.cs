@@ -21,6 +21,7 @@ namespace Rubicon.Mixins.CodeGeneration
 
     string[] SaveAssemblies ();
 
+    void InitializeMixinTarget (IMixinTarget target);
     void InitializeDeserializedMixinTarget (IMixinTarget instance, object[] mixinInstances);
   }
 }

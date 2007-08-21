@@ -263,6 +263,38 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     }
 
     [Test]
+    public void CreatePublicInterfaceMethodImplementation ()
+    {
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreatePublicInterfaceMethodImplementation", typeof (object),
+          new Type[] { typeof (ICloneable) }, TypeAttributes.Public | TypeAttributes.Class);
+
+      CustomMethodEmitter cloneMethod = classEmitter.CreatePublicInterfaceMethodImplementation (typeof (ICloneable).GetMethod ("Clone"));
+      cloneMethod.AddStatement (new ReturnStatement (new ConstReference ("P0wned!")));
+
+      Type builtType = classEmitter.BuildType ();
+      object instance = Activator.CreateInstance (builtType);
+      Assert.AreEqual ("P0wned!", ((ICloneable) instance).Clone ());
+    }
+
+    [Test]
+    public void MethodNameAndVisibilityAreUnchangedOnPublicInterfaceImplementation ()
+    {
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "MethodNameAndVisibilityAreUnchangedOnPublicInterfaceImplementation",
+          typeof (object), new Type[] { typeof (ICloneable) }, TypeAttributes.Public | TypeAttributes.Class);
+
+      CustomMethodEmitter method =
+          classEmitter.CreatePublicInterfaceMethodImplementation (typeof (ICloneable).GetMethod ("Clone", _declaredInstanceBindingFlags));
+      method.AddStatement (new ReturnStatement ());
+
+      Type builtType = classEmitter.BuildType ();
+
+      MethodInfo implementedMethod = builtType.GetMethod ("Clone", _declaredInstanceBindingFlags);
+      Assert.AreEqual ("Clone", implementedMethod.Name);
+      Assert.IsTrue (implementedMethod.IsPublic);
+      Assert.AreEqual (MethodAttributes.NewSlot, implementedMethod.Attributes & MethodAttributes.NewSlot);
+    }
+
+    [Test]
     public void CreatePropertyOverride ()
     {
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "CreatePropertyOverride", typeof (ClassWithAllKindsOfMembers), Type.EmptyTypes,

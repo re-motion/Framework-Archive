@@ -29,10 +29,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
         WeakAssemblyName, Path.Combine (_directory, WeakAssemblyName + ".dll"));
     }
 
-    public TypeGenerator CreateTypeGenerator (Type baseType)
+    public TypeGenerator CreateTypeGenerator (Type publicDomainObjectType, Type typeToDeriveFrom)
     {
-      ArgumentUtility.CheckNotNull ("baseType", baseType);
-      return new TypeGenerator (baseType, _scope);
+      ArgumentUtility.CheckNotNull ("publicDomainObjectType", publicDomainObjectType);
+      ArgumentUtility.CheckNotNull ("typeToDeriveFrom", typeToDeriveFrom);
+      return new TypeGenerator (publicDomainObjectType, typeToDeriveFrom, _scope);
     }
 
     public string[] SaveAssemblies ()

@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Rubicon.Mixins;
 using Rubicon.Mixins.Utilities.Singleton;
 using Rubicon.Mixins.Definitions;
@@ -194,6 +195,8 @@ namespace Rubicon.Mixins.CodeGeneration
     /// <param name="assembly">The assembly whose public types to load into the cache.</param>
     public void LoadScopeIntoCache (Assembly assembly)
     {
+      ArgumentUtility.CheckNotNull ("assembly", assembly);
+
       foreach (Type type in assembly.GetExportedTypes ())
       {
         foreach (ConcreteMixedTypeAttribute typeDescriptor in type.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false))
@@ -208,6 +211,18 @@ namespace Rubicon.Mixins.CodeGeneration
           _typeCache.GetOrCreateValue (mixinDefinition, delegate { return type; });
         }
       }
+    }
+
+    /// <summary>
+    /// Initializes a mixin target instance which was created without its constructor having been called.
+    /// </summary>
+    /// <param name="mixinTarget">The mixin target to initialize.</param>
+    /// <exception cref="ArgumentNullException">The mixin target is <see langword="null"/>.</exception>
+    /// <remarks>This method is useful when a mixin target instance is created via <see cref="FormatterServices.GetSafeUninitializedObject"/>.</remarks>
+    public void InitializeUnconstructedInstance (IMixinTarget mixinTarget)
+    {
+      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
+      Scope.InitializeMixinTarget (mixinTarget);
     }
   }
 }

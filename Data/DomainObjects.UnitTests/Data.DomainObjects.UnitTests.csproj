@@ -201,6 +201,7 @@
     <Compile Include="DomainObjects\ConstructionTest.cs" />
     <Compile Include="Interception\SampleTypes\ClassWithExplicitInterfaceProperty.cs" />
     <Compile Include="Interception\SampleTypes\ClassWithWrongConstructor.cs" />
+    <Compile Include="Interception\SampleTypes\DerivedDO.cs" />
     <Compile Include="Interception\SampleTypes\DOImplementingAbstractPropertyAccessors.cs" />
     <Compile Include="Interception\SampleTypes\DOWithIndirectlySealedPropertyAccessors.cs" />
     <Compile Include="Interception\SampleTypes\NonInstantiableAbstractClassWithoutAttribute.cs" />
@@ -218,11 +219,18 @@
     <Compile Include="Interception\SampleTypes\DOWithAbstractProperties.cs" />
     <Compile Include="Interception\SampleTypes\DOWithConstructors.cs" />
     <Compile Include="Interception\SampleTypes\DOWithVirtualProperties.cs" />
+    <Compile Include="Interception\SampleTypes\NonSerializableDO.cs" />
     <Compile Include="Interception\SerializationHelperTest.cs" />
     <Compile Include="Interception\SampleTypes\Throws.cs" />
     <Compile Include="Interception\TypeGeneratorTest.cs" />
     <Compile Include="Interception\InterceptedDomainObjectFactoryTest.cs" />
     <Compile Include="Factories\BaseConfiguration.cs" />
+    <Compile Include="MixedDomains\BehavioralMixinTest.cs" />
+    <Compile Include="MixedDomains\SampleTypes\DOWithVirtualPropertiesAndMethods.cs" />
+    <Compile Include="MixedDomains\SampleTypes\IInterfaceAddedByMixin.cs" />
+    <Compile Include="MixedDomains\SampleTypes\MixinAddingInterface.cs" />
+    <Compile Include="MixedDomains\SampleTypes\MixinOverridingPropertiesAndMethods.cs" />
+    <Compile Include="MixedDomains\SampleTypes\NullMixin.cs" />
     <Compile Include="Persistence\MixedStorageProviderTest.cs" />
     <Compile Include="Persistence\StorageProviderWithFixedGuidMixin.cs" />
     <Compile Include="Persistence\Rdbms\UpdateCommandBuilderTest.cs" />

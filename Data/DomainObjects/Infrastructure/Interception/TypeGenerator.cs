@@ -13,6 +13,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 {
   public class TypeGenerator
   {
+    private readonly Type _publicDomainObjectType;
+    private readonly Type _baseType;
     private const BindingFlags _infrastructureBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
     private const BindingFlags _staticInfrastructureBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 
@@ -47,19 +49,23 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       Assertion.IsNotNull (s_getObjectDataForGeneratedTypesMethod);
     }
 
-    public TypeGenerator (Type baseType, ModuleScope scope)
+    public TypeGenerator (Type publicDomainObjectType, Type typeToDeriveFrom, ModuleScope scope)
     {
-      ArgumentUtility.CheckNotNull ("baseType", baseType);
+      ArgumentUtility.CheckNotNull ("publicDomainObjectType", publicDomainObjectType);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("typeToDeriveFrom", typeToDeriveFrom, publicDomainObjectType);
       ArgumentUtility.CheckNotNull ("scope", scope);
 
-      // Analyze type before creating the class emitter; that way, we won't have half-created types lying around in case of configuration errors
-      Set<Tuple<PropertyInfo, string>> properties = new InterceptedPropertyCollector (baseType).GetProperties ();
+      _publicDomainObjectType = publicDomainObjectType;
+      _baseType = typeToDeriveFrom;
 
-      string typeName = baseType.FullName + "_WithInterception_ "+ Guid.NewGuid().ToString ("N");
+      // Analyze type before creating the class emitter; that way, we won't have half-created types lying around in case of configuration errors
+      Set<Tuple<PropertyInfo, string>> properties = new InterceptedPropertyCollector (publicDomainObjectType).GetProperties ();
+
+      string typeName = typeToDeriveFrom.FullName + "_WithInterception_ " + Guid.NewGuid ().ToString ("N");
       Type[] interfaces = new Type[] { typeof (IInterceptedDomainObject), typeof (ISerializable) };
       TypeAttributes flags = TypeAttributes.Public | TypeAttributes.Serializable;
 
-      _classEmitter = new CustomClassEmitter (scope, typeName, baseType, interfaces, flags);
+      _classEmitter = new CustomClassEmitter (scope, typeName, typeToDeriveFrom, interfaces, flags);
 
       _classEmitter.ReplicateBaseTypeConstructors ();
       OverrideGetPublicDomainObjectType ();
@@ -74,7 +80,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     private void OverrideGetPublicDomainObjectType ()
     {
-      _classEmitter.CreateMethodOverride (s_getPublicDomainObjectTypeMethod).ImplementByReturning (new TypeTokenExpression (_classEmitter.BaseType));
+      _classEmitter.CreateMethodOverride (s_getPublicDomainObjectTypeMethod).ImplementByReturning (new TypeTokenExpression (_publicDomainObjectType));
     }
 
     private void ProcessProperties (IEnumerable<Tuple<PropertyInfo, string>> properties)
@@ -119,10 +125,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
     private MethodInfo GetTopMostOverrideOfMethod (MethodInfo method)
     {
       ArgumentUtility.CheckNotNull ("method", method);
-      if (method.DeclaringType == _classEmitter.BaseType)
+      if (method.DeclaringType == _baseType)
         return method;
       else
-        return GetTopMostOverrideOfMethod (method.GetBaseDefinition(), _classEmitter.BaseType);
+        return GetTopMostOverrideOfMethod (method.GetBaseDefinition(), _baseType);
     }
 
     private MethodInfo GetTopMostOverrideOfMethod (MethodInfo baseDefinition, Type typeToSearch)
@@ -253,7 +259,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     private void ImplementISerializable ()
     {
-      GetObjectMethodImplementer.ImplementGetObjectDataByDelegation (_classEmitter,
+      SerializationImplementer.ImplementGetObjectDataByDelegation (_classEmitter,
           delegate (CustomMethodEmitter methodEmitter, bool baseIsISerializable)
           {
             return new MethodInvocationExpression (
@@ -264,6 +270,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
                 SelfReference.Self.ToExpression(),
                 new ConstReference (!baseIsISerializable).ToExpression());
           });
+
+      // Implement dummy ISerializable constructor if we haven't already replicated it
+      SerializationImplementer.ImplementDeserializationConstructorByThrowingIfNotExistsOnBase (_classEmitter);
     }
   }
 }

@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using Castle.DynamicProxy;
 using Rubicon.CodeGeneration.DPExtensions;
 using Rubicon.Mixins.Definitions;
-using System.IO;
 using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
@@ -106,8 +104,18 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         return AssemblySaver.SaveAssemblies (_scope);
     }
 
+    public void InitializeMixinTarget (IMixinTarget target)
+    {
+      ArgumentUtility.CheckNotNull ("target", target);
+
+      GeneratedClassInstanceInitializer.InitializeMixinTarget (target);
+    }
+
     public void InitializeDeserializedMixinTarget (IMixinTarget instance, object[] mixinInstances)
     {
+      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull ("mixinInstances", mixinInstances);
+
       GeneratedClassInstanceInitializer.InitializeDeserializedMixinTarget (instance, mixinInstances);
     }
   }

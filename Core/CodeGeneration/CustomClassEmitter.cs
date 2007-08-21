@@ -171,7 +171,8 @@ namespace Rubicon.CodeGeneration
     public CustomMethodEmitter CreateMethodOverride (MethodInfo baseMethod)
     {
       ArgumentUtility.CheckNotNull ("baseMethod", baseMethod);
-      return CreateMethodOverrideOrInterfaceImplementation (baseMethod, true);
+      MethodAttributes oldVisibility = baseMethod.Attributes & MethodAttributes.MemberAccessMask;
+      return CreateMethodOverrideOrInterfaceImplementation (baseMethod, true, MethodAttributes.ReuseSlot | oldVisibility);
     }
 
     /// <summary>
@@ -184,35 +185,45 @@ namespace Rubicon.CodeGeneration
     public CustomMethodEmitter CreatePrivateMethodOverride (MethodInfo baseMethod)
     {
       ArgumentUtility.CheckNotNull ("baseMethod", baseMethod);
-      return CreateMethodOverrideOrInterfaceImplementation (baseMethod, false);
+      return CreateMethodOverrideOrInterfaceImplementation (baseMethod, false, MethodAttributes.NewSlot | MethodAttributes.Private);
     }
 
     public CustomMethodEmitter CreateInterfaceMethodImplementation (MethodInfo interfaceMethod)
     {
       ArgumentUtility.CheckNotNull ("interfaceMethod", interfaceMethod);
-      return CreateMethodOverrideOrInterfaceImplementation (interfaceMethod, false);
+      return CreateMethodOverrideOrInterfaceImplementation (interfaceMethod, false, MethodAttributes.NewSlot | MethodAttributes.Private);
     }
 
-    private CustomMethodEmitter CreateMethodOverrideOrInterfaceImplementation (MethodInfo baseOrInterfaceMethod, bool keepNameAndVisibility)
+    /// <summary>
+    /// Creates a public interface method implementation, i.e. an interface implementation with public visibility whose name equals the name
+    /// of the interface method (like a C# implicit interface implementation).
+    /// </summary>
+    /// <param name="interfaceMethod">The interface method to implement.</param>
+    /// <returns>A <see cref="CustomMethodEmitter"/> for the interface implementation.</returns>
+    /// <remarks>The generated method has public visibility and the <see cref="MethodAttributes.NewSlot"/> flag set. This means that the method
+    /// will shadow methods from the base type with the same name and signature, not override them. Use <see cref="CreatePrivateMethodOverride"/> to
+    /// explicitly create an override for such a method.</remarks>
+    public CustomMethodEmitter CreatePublicInterfaceMethodImplementation (MethodInfo interfaceMethod)
+    {
+      ArgumentUtility.CheckNotNull ("interfaceMethod", interfaceMethod);
+      return CreateMethodOverrideOrInterfaceImplementation (interfaceMethod, true, MethodAttributes.NewSlot | MethodAttributes.Public);
+    }
+
+    private CustomMethodEmitter CreateMethodOverrideOrInterfaceImplementation (MethodInfo baseOrInterfaceMethod, bool keepName,
+        MethodAttributes visibilityFlags)
     {
       ArgumentUtility.CheckNotNull ("baseOrInterfaceMethod", baseOrInterfaceMethod);
 
-      MethodAttributes methodDefinitionAttributes = MethodAttributes.HideBySig | MethodAttributes.Virtual | MethodAttributes.Final;
-      if (keepNameAndVisibility)
-        methodDefinitionAttributes |= (baseOrInterfaceMethod.Attributes & MethodAttributes.MemberAccessMask) | MethodAttributes.ReuseSlot;
-      else
-        methodDefinitionAttributes |= MethodAttributes.Private | MethodAttributes.NewSlot;
-
+      MethodAttributes methodDefinitionAttributes = MethodAttributes.HideBySig | MethodAttributes.Virtual | visibilityFlags;
       if (baseOrInterfaceMethod.IsSpecialName)
-      {
         methodDefinitionAttributes |= MethodAttributes.SpecialName;
-      }
 
       string methodName;
-      if (keepNameAndVisibility)
+      if (keepName)
         methodName = baseOrInterfaceMethod.Name;
       else
         methodName = string.Format ("{0}.{1}", baseOrInterfaceMethod.DeclaringType.FullName, baseOrInterfaceMethod.Name);
+
       CustomMethodEmitter methodDefinition = CreateMethod (methodName, methodDefinitionAttributes);
       methodDefinition.CopyParametersAndReturnType (baseOrInterfaceMethod);
 
@@ -243,13 +254,17 @@ namespace Rubicon.CodeGeneration
       string propertyName;
       if (keepName)
         propertyName = baseOrInterfaceProperty.Name;
-      else 
+      else
         propertyName = string.Format ("{0}.{1}", baseOrInterfaceProperty.DeclaringType.FullName, baseOrInterfaceProperty.Name);
       Type[] indexParameterTypes =
           Array.ConvertAll<ParameterInfo, Type> (baseOrInterfaceProperty.GetIndexParameters(), delegate (ParameterInfo p) { return p.ParameterType; });
 
-      CustomPropertyEmitter newProperty = CreateProperty (propertyName, PropertyKind.Instance, baseOrInterfaceProperty.PropertyType,
-          indexParameterTypes, PropertyAttributes.None);
+      CustomPropertyEmitter newProperty = CreateProperty (
+          propertyName,
+          PropertyKind.Instance,
+          baseOrInterfaceProperty.PropertyType,
+          indexParameterTypes,
+          PropertyAttributes.None);
 
       return newProperty;
     }
@@ -342,7 +357,7 @@ namespace Rubicon.CodeGeneration
     {
       _hasBeenBuilt = true;
       foreach (CustomEventEmitter eventEmitter in _eventEmitters)
-        eventEmitter.EnsureValid ();
+        eventEmitter.EnsureValid();
 
       return InnerEmitter.BuildType();
     }

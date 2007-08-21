@@ -13,8 +13,23 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   /// </summary>
   public class InterceptedDomainObjectFactory : IDomainObjectFactory
   {
+    private struct CodeGenerationKeys
+    {
+      public readonly Type PublicDomainObjectType;
+      public readonly Type TypeToDeriveFrom;
+
+      public CodeGenerationKeys (Type publicDomainObjectType, Type typeToDeriveFrom)
+      {
+        ArgumentUtility.CheckNotNull ("publicDomainObjectType", publicDomainObjectType);
+        ArgumentUtility.CheckNotNull ("typeToDeriveFrom", typeToDeriveFrom);
+
+        PublicDomainObjectType = publicDomainObjectType;
+        TypeToDeriveFrom = typeToDeriveFrom;
+      }
+    }
+
     private readonly ModuleManager _scope;
-    private readonly InterlockedCache<Type, Type> _typeCache = new InterlockedCache<Type, Type> ();
+    private readonly InterlockedCache<CodeGenerationKeys, Type> _typeCache = new InterlockedCache<CodeGenerationKeys, Type> ();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InterceptedDomainObjectFactory"/> class.
@@ -63,22 +78,21 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         throw new ArgumentException (message, "baseType");
       }
 
-      return _typeCache.GetOrCreateValue (baseType, CreateConcreteDomainObjectType);
-    }
-
-    private Type CreateConcreteDomainObjectType (Type baseType)
-    {
-      ArgumentUtility.CheckNotNull ("baseType", baseType);
-
+      Type concreteBaseType = Mixins.TypeFactory.GetConcreteType (baseType);
       try
       {
-        TypeGenerator generator = _scope.CreateTypeGenerator (baseType);
-        return generator.BuildType ();
+        return _typeCache.GetOrCreateValue (new CodeGenerationKeys (baseType, concreteBaseType), CreateConcreteDomainObjectType);
       }
       catch (NonInterceptableTypeException ex)
       {
         throw new ArgumentException (ex.Message, "baseType", ex);
       }
+    }
+
+    private Type CreateConcreteDomainObjectType (CodeGenerationKeys codeGenerationData)
+    {
+      TypeGenerator generator = _scope.CreateTypeGenerator (codeGenerationData.PublicDomainObjectType, codeGenerationData.TypeToDeriveFrom);
+      return generator.BuildType ();
     }
 
     /// <summary>
@@ -128,6 +142,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         throw new ArgumentException (
             string.Format ("The domain object's type {0} was not created by InterceptedDomainObjectFactory.GetConcreteDomainObjectType.",
               type.FullName), "instance");
+
+      Rubicon.Mixins.IMixinTarget instanceAsMixinTarget = instance as Rubicon.Mixins.IMixinTarget;
+      if (instanceAsMixinTarget != null)
+        Rubicon.Mixins.TypeFactory.InitializeUnconstructedInstance (instanceAsMixinTarget);
     }
   }
 }

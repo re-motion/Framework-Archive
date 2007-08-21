@@ -386,5 +386,25 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         ConcreteTypeBuilder.Current.GetConcreteMixinType (TypeFactory.GetActiveConfiguration (typeof (object)).Mixins[0]);
       }
     }
+
+    [Test]
+    public void InitializeUnconstructedInstanceDelegatesToScope ()
+    {
+      MockRepository mockRepository = new MockRepository();
+      IMixinTarget mockMixinTarget = mockRepository.CreateMock<IMixinTarget>();
+      IModuleManager mockScope = mockRepository.CreateMock<IModuleManager> ();
+      
+      ConcreteTypeBuilder builder = new ConcreteTypeBuilder ();
+      builder.Scope = mockScope;
+
+      //expect
+      mockScope.InitializeMixinTarget (mockMixinTarget);
+
+      mockRepository.ReplayAll ();
+
+      builder.InitializeUnconstructedInstance (mockMixinTarget);
+
+      mockRepository.VerifyAll ();
+    }
   }
 }

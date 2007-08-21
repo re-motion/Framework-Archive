@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Definitions.Building;
@@ -234,6 +235,18 @@ namespace Rubicon.Mixins
 
         return TargetClassDefinitionCache.Current.GetTargetClassDefinition (context);
       }
+    }
+
+    /// <summary>
+    /// Initializes a mixin target instance which was created without its constructor having been called.
+    /// </summary>
+    /// <param name="mixinTarget">The mixin target to initialize.</param>
+    /// <exception cref="ArgumentNullException">The mixin target is <see langword="null"/>.</exception>
+    /// <remarks>This method is useful when a mixin target instance is created via <see cref="FormatterServices.GetSafeUninitializedObject"/>.</remarks>
+    public static void InitializeUnconstructedInstance (IMixinTarget mixinTarget)
+    {
+      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
+      ConcreteTypeBuilder.Current.InitializeUnconstructedInstance (mixinTarget);
     }
   }
 }

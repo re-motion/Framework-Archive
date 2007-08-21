@@ -42,11 +42,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       _module = module;
       _configuration = configuration;
 
-      bool isSerializable = configuration.Type.IsSerializable || typeof (ISerializable).IsAssignableFrom (configuration.Type);
-
       string typeName = nameProvider.GetNewTypeName (configuration);
 
-      List<Type> interfaces = GetInterfacesToImplement(isSerializable);
+      List<Type> interfaces = GetInterfacesToImplement (true);
 
       TypeAttributes flags = TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable;
       if (_configuration.IsAbstract)
@@ -70,8 +68,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
       AddTypeInitializer ();
 
-      if (isSerializable)
-        ImplementGetObjectData();
+      ImplementISerializable();
 
       ImplementIMixinTarget();
       ImplementIntroducedInterfaces ();
@@ -185,9 +182,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       return firstAttributeLocal;
     }
 
-    private void ImplementGetObjectData ()
+    private void ImplementISerializable ()
     {
-      GetObjectMethodImplementer.ImplementGetObjectDataByDelegation (Emitter, delegate (CustomMethodEmitter newMethod, bool baseIsISerializable)
+      SerializationImplementer.ImplementGetObjectDataByDelegation (Emitter, delegate (CustomMethodEmitter newMethod, bool baseIsISerializable)
           {
             return new MethodInvocationExpression (
                 null,
@@ -199,6 +196,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
                 new ReferenceExpression (_extensionsField),
                 new ReferenceExpression (new ConstReference (!baseIsISerializable)));
           });
+
+      // Implement dummy ISerializable constructor if we haven't already replicated it
+      SerializationImplementer.ImplementDeserializationConstructorByThrowingIfNotExistsOnBase (Emitter);
     }
 
     private void ImplementIMixinTarget ()

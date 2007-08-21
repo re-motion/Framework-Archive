@@ -148,7 +148,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementGetObjectData ()
     {
-      Rubicon.CodeGeneration.GetObjectMethodImplementer.ImplementGetObjectDataByDelegation (Emitter, delegate (CustomMethodEmitter newMethod, bool baseIsISerializable)
+      Rubicon.CodeGeneration.SerializationImplementer.ImplementGetObjectDataByDelegation (Emitter, delegate (CustomMethodEmitter newMethod, bool baseIsISerializable)
           {
             return new MethodInvocationExpression (
                 null,

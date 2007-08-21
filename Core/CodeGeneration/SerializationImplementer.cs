@@ -1,12 +1,13 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Rubicon.Utilities;
 
 namespace Rubicon.CodeGeneration
 {
-  public static class GetObjectMethodImplementer
+  public static class SerializationImplementer
   {
     private static bool IsPublicOrProtected (MethodBase method)
     {
@@ -22,7 +23,7 @@ namespace Rubicon.CodeGeneration
 
       MethodInfo getObjectDataMethod =
           typeof (ISerializable).GetMethod ("GetObjectData", new Type[] {typeof (SerializationInfo), typeof (StreamingContext)});
-      CustomMethodEmitter newMethod = classEmitter.CreateInterfaceMethodImplementation (getObjectDataMethod);
+      CustomMethodEmitter newMethod = classEmitter.CreatePublicInterfaceMethodImplementation (getObjectDataMethod);
 
       MethodInvocationExpression delegatingMethodInvocation = delegatingMethodInvocationGetter (newMethod, baseIsISerializable);
       if (delegatingMethodInvocation != null)
@@ -60,6 +61,22 @@ namespace Rubicon.CodeGeneration
                     new ReferenceExpression (newMethod.ArgumentReferences[1]))));
       }
       newMethod.ImplementByReturningVoid ();
+    }
+
+    public static void ImplementDeserializationConstructorByThrowing (CustomClassEmitter classEmitter)
+    {
+      ConstructorEmitter emitter = classEmitter.CreateConstructor (new Type[] {typeof (SerializationInfo), typeof (StreamingContext)});
+      emitter.CodeBuilder.AddStatement (new ThrowStatement (typeof (NotImplementedException),
+          "The deserialization constructor should never be called; generated types are deserialized via IObjectReference helpers."));
+    }
+
+    public static void ImplementDeserializationConstructorByThrowingIfNotExistsOnBase (CustomClassEmitter classEmitter)
+    {
+      Type[] serializationConstructorSignature = new Type[] { typeof (SerializationInfo), typeof (StreamingContext) };
+      ConstructorInfo baseConstructor = classEmitter.BaseType.GetConstructor (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+          null, serializationConstructorSignature, null);
+      if (baseConstructor == null)
+        SerializationImplementer.ImplementDeserializationConstructorByThrowing (classEmitter);
     }
   }
 }

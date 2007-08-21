@@ -7,6 +7,7 @@ using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework.SyntaxHelpers;
+using System.Runtime.Serialization;
 
 namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
 {
@@ -157,6 +158,16 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
       string[] abstractMethodNames = Array.ConvertAll<MethodInfo, string> (abstractMethods, delegate (MethodInfo method) { return method.Name; });
       Assert.That (abstractMethodNames, Is.EquivalentTo (new string[] { "VirtualMethod", "get_VirtualProperty", "set_VirtualProperty",
           "add_VirtualEvent", "remove_VirtualEvent" }));
+    }
+
+    [Test]
+    public void DeserializationConstructorGeneratedEvenIfBaseNotISerializable ()
+    {
+      Type concreteType = CreateMixedType (typeof (BaseType1));
+      Assert.IsNull (typeof (BaseType1).GetConstructor (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+          null, new Type[] {typeof (SerializationInfo), typeof (StreamingContext)}, null));
+      Assert.IsNotNull (concreteType.GetConstructor (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+          null, new Type[] { typeof (SerializationInfo), typeof (StreamingContext) }, null));
     }
   }
 }
