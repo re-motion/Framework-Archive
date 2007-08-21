@@ -1,3 +1,8 @@
+1.7.55.0
+========
+- Gemixte DomainObjects, vorerst noch ohne Einfluss auf das Mapping (d.h. Mixins auf DomainObjects können Interfaces hinzufügen,
+  Methoden überschreiben, etc., aber hinzugefügte Properties werden nicht als Storage-Properties betrachtet)
+
 1.7.48.0
 ========
 - order.Properties[typeof (Order), "OrderNumber"] zusätzlich zu order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]
