@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 using Rubicon.Mixins.Definitions;
 
@@ -23,5 +24,8 @@ namespace Rubicon.Mixins.CodeGeneration
 
     void InitializeMixinTarget (IMixinTarget target);
     void InitializeDeserializedMixinTarget (IMixinTarget instance, object[] mixinInstances);
+
+    IObjectReference BeginDeserialization (Type concreteDeserializedType, SerializationInfo info, StreamingContext context);
+    void FinishDeserialization (IObjectReference objectReference);
   }
 }

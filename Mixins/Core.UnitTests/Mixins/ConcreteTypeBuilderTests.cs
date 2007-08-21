@@ -10,6 +10,7 @@ using Rubicon.Development.UnitTesting;
 using System.IO;
 using System.Threading;
 using Rubicon.Mixins.Definitions;
+using System.Runtime.Serialization;
 
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
@@ -403,6 +404,51 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       mockRepository.ReplayAll ();
 
       builder.InitializeUnconstructedInstance (mockMixinTarget);
+
+      mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void BeginDeserializationDelegatesToScope ()
+    {
+      MockRepository mockRepository = new MockRepository ();
+
+      Type deserializedType = typeof (object);
+      IObjectReference objectReference = mockRepository.CreateMock<IObjectReference> ();
+      SerializationInfo info = new SerializationInfo (deserializedType, new FormatterConverter ());
+      StreamingContext context = new StreamingContext ();
+
+      IModuleManager mockScope = mockRepository.CreateMock<IModuleManager> ();
+
+      ConcreteTypeBuilder builder = new ConcreteTypeBuilder ();
+      builder.Scope = mockScope;
+
+      Expect.Call (mockScope.BeginDeserialization (deserializedType, info, context)).Return (objectReference);
+
+      mockRepository.ReplayAll ();
+
+      Assert.AreSame (objectReference, builder.BeginDeserialization (deserializedType, info, context));
+
+      mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void FinishDeserializationDelegatesToScope ()
+    {
+      MockRepository mockRepository = new MockRepository ();
+
+      IObjectReference objectReference = mockRepository.CreateMock<IObjectReference> ();
+      IModuleManager mockScope = mockRepository.CreateMock<IModuleManager> ();
+
+      ConcreteTypeBuilder builder = new ConcreteTypeBuilder ();
+      builder.Scope = mockScope;
+
+      //expect
+      mockScope.FinishDeserialization (objectReference);
+
+      mockRepository.ReplayAll ();
+
+      builder.FinishDeserialization (objectReference);
 
       mockRepository.VerifyAll ();
     }

@@ -114,6 +114,7 @@
     <Compile Include="Infrastructure\ClientTransactionReadOnlyException.cs" />
     <Compile Include="Infrastructure\CompoundClientTransactionListener.cs" />
     <Compile Include="Infrastructure\DataContainerIndirection.cs" />
+    <Compile Include="Infrastructure\DomainObjectMixinCodeGenerationBridge.cs" />
     <Compile Include="Infrastructure\ExtensionClientTransactionListener.cs" />
     <Compile Include="Infrastructure\IClientTransactionListener.cs" />
     <Compile Include="Infrastructure\InterceptedDomainObjectFactory.cs" />

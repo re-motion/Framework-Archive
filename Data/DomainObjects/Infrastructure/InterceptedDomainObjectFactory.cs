@@ -78,7 +78,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         throw new ArgumentException (message, "baseType");
       }
 
-      Type concreteBaseType = Mixins.TypeFactory.GetConcreteType (baseType);
+      Type concreteBaseType = DomainObjectMixinCodeGenerationBridge.GetConcreteType (baseType);
       try
       {
         return _typeCache.GetOrCreateValue (new CodeGenerationKeys (baseType, concreteBaseType), CreateConcreteDomainObjectType);
@@ -143,9 +143,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
             string.Format ("The domain object's type {0} was not created by InterceptedDomainObjectFactory.GetConcreteDomainObjectType.",
               type.FullName), "instance");
 
-      Rubicon.Mixins.IMixinTarget instanceAsMixinTarget = instance as Rubicon.Mixins.IMixinTarget;
-      if (instanceAsMixinTarget != null)
-        Rubicon.Mixins.TypeFactory.InitializeUnconstructedInstance (instanceAsMixinTarget);
+      DomainObjectMixinCodeGenerationBridge.PrepareUnconstructedInstance (instance);
     }
   }
 }

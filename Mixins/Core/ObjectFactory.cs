@@ -1,10 +1,14 @@
 using System;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Threading;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Utilities;
 using Rubicon.Mixins.Validation;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
+using Rubicon.Mixins.CodeGeneration;
 
 namespace Rubicon.Mixins
 {
@@ -338,6 +342,91 @@ namespace Rubicon.Mixins
     public static FuncInvokerWrapper<object> CreateWithMixinInstances (Type baseType, GenerationPolicy generationPolicy, params object[] mixinInstances)
     {
       return MixedTypeInvokeWithCreator.CreateInvokeWithWrapper<object> (baseType, generationPolicy, mixinInstances);
+    }
+
+    // <summary>
+    /// Begins deserialization of a mixed object.
+    /// </summary>
+    /// <param name="concreteDeserializedType">Target type of the object to be deserialized.</param>
+    /// <param name="info">The <see cref="SerializationInfo"/> object provided by the .NET serialization infrastructure.</param>
+    /// <param name="context">The <see cref="StreamingContext"/> object provided by the .NET serialization infrastructure.</param>
+    /// <returns>An <see cref="IObjectReference"/> object containing a partially deserialized mixed object. Be sure to call
+    /// <see cref="FinishDeserialization"/> from an implementation of <see cref="IDeserializationCallback.OnDeserialization"/> to finish the
+    /// deserialization process.</returns>
+    /// <exception cref="ArgumentNullException">One or more of the parameters passed to this method are <see langword="null"/>.</exception>
+    /// <exception cref="MissingMethodException"><paramref name="concreteDeserializedType"/> is not a mixed type and does not contain a
+    /// deserialization constructor.</exception>
+    /// <remarks>
+    /// <para>
+    /// This method is useful when the mixin engine is combined with other code generation mechanisms. In such a case, the default
+    /// <see cref="IObjectReference"/> implementation provided by the mixin code generation can be extended by a custom <see cref="IObjectReference"/>
+    /// object by calling this method.
+    /// </para>
+    /// <para>
+    /// If the given <paramref name="concreteDeserializedType"/> is not a mixed type, this method will use the deserialization constructor
+    /// to instantiate it. If the type does not have a deserialization constructor, an exception is thrown.
+    /// </para>
+    /// </remarks>
+    public static IObjectReference BeginDeserialization (Type concreteDeserializedType, SerializationInfo info, StreamingContext context)
+    {
+      ArgumentUtility.CheckNotNull ("concreteDeserializedType", concreteDeserializedType);
+      ArgumentUtility.CheckNotNull ("info", info);
+
+      if (typeof (IMixinTarget).IsAssignableFrom (concreteDeserializedType))
+        return ConcreteTypeBuilder.Current.BeginDeserialization (concreteDeserializedType, info, context);
+      else
+      {
+        return new DummyObjectReference (concreteDeserializedType, info, context);
+      }
+    }
+
+    /// <summary>
+    /// Finishes a deserialization process started by <see cref="BeginDeserialization"/>.
+    /// </summary>
+    /// <param name="objectReference">The object returned from <see cref="BeginDeserialization"/>.</param>
+    /// <remarks>
+    /// <exception cref="ArgumentNullException">One or more of the parameters passed to this method are <see langword="null"/>.</exception>
+    /// <para>
+    /// Call this method to complete deserialization of a mixed object when the .NET serialization infrastructure has finished its
+    /// work, e.g. from an implementation of <see cref="IDeserializationCallback.OnDeserialization"/>. After this method, the real object
+    /// contained in <paramref name="objectReference"/> can safely be used.
+    /// </para>
+    /// <para>
+    /// If the given instance is not an instance of a mixed type, this method does nothing.
+    /// </para>
+    /// </remarks>
+    public static void FinishDeserialization (IObjectReference objectReference)
+    {
+      ArgumentUtility.CheckNotNull ("objectReference", objectReference);
+
+      ConcreteTypeBuilder.Current.FinishDeserialization (objectReference);
+    }
+  }
+
+  internal class DummyObjectReference : IObjectReference
+  {
+    private object _realObject;
+
+    public DummyObjectReference (Type concreteDeserializedType, SerializationInfo info, StreamingContext context)
+    {
+      try
+      {
+        _realObject = Activator.CreateInstance (
+            concreteDeserializedType,
+            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+            null,
+            new object[] { info, context },
+            null);
+      }
+      catch (MissingMethodException ex)
+      {
+        throw new MissingMethodException ("No deserialization constructor was found on type " + concreteDeserializedType.FullName + ".", ex);
+      }
+    }
+
+    public object GetRealObject (StreamingContext context)
+    {
+      return _realObject;
     }
   }
 }

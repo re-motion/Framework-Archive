@@ -231,7 +231,9 @@
     <Compile Include="MixedDomains\SampleTypes\IInterfaceAddedByMixin.cs" />
     <Compile Include="MixedDomains\SampleTypes\MixinAddingInterface.cs" />
     <Compile Include="MixedDomains\SampleTypes\MixinOverridingPropertiesAndMethods.cs" />
+    <Compile Include="MixedDomains\SampleTypes\MixinWithState.cs" />
     <Compile Include="MixedDomains\SampleTypes\NullMixin.cs" />
+    <Compile Include="MixedDomains\SerializationTest.cs" />
     <Compile Include="Persistence\MixedStorageProviderTest.cs" />
     <Compile Include="Persistence\StorageProviderWithFixedGuidMixin.cs" />
     <Compile Include="Persistence\Rdbms\UpdateCommandBuilderTest.cs" />

@@ -23,7 +23,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       object[] baseMemberValues;
       if (serializeBaseMembers)
       {
-        MemberInfo[] baseMembers = FormatterServices.GetSerializableMembers (concreteObject.GetType().BaseType);
+        MemberInfo[] baseMembers = FormatterServices.GetSerializableMembers (configuration.Type);
         baseMemberValues = FormatterServices.GetObjectData (concreteObject, baseMembers);
       }
       else
@@ -38,11 +38,19 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private readonly TargetClassDefinition _targetClassDefinition;
 
     public SerializationHelper (SerializationInfo info, StreamingContext context)
+        : this (null, info, context)
+    {
+    }
+
+    public SerializationHelper (Type concreteType, SerializationInfo info, StreamingContext context)
     {
       ClassContext configurationContext = (ClassContext) info.GetValue ("__configuration.ConfigurationContext", typeof (ClassContext));
       _targetClassDefinition = TargetClassDefinitionCache.Current.GetTargetClassDefinition (configurationContext);
 
-      Type concreteType = ConcreteTypeBuilder.Current.GetConcreteType (_targetClassDefinition);
+      if (concreteType == null)
+        concreteType = ConcreteTypeBuilder.Current.GetConcreteType (_targetClassDefinition);
+      else
+        ArgumentUtility.CheckTypeIsAssignableFrom ("concreteType", concreteType, _targetClassDefinition.Type);
 
       _extensions = (object[]) info.GetValue ("__extensions", typeof (object[]));
       Assertion.IsNotNull (_extensions);
@@ -68,7 +76,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      throw new NotImplementedException("This should never be called.");
+      throw new NotImplementedException ("This should never be called.");
     }
 
     // Here, we can rely on everything being deserialized as needed.
@@ -76,7 +84,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       if (_baseMemberValues != null)
       {
-        MemberInfo[] baseMembers = FormatterServices.GetSerializableMembers (_deserializedObject.GetType ().BaseType);
+        MemberInfo[] baseMembers = FormatterServices.GetSerializableMembers (_targetClassDefinition.Type);
         FormatterServices.PopulateObjectMembers (_deserializedObject, baseMembers, _baseMemberValues);
       }
 

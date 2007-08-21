@@ -3,6 +3,7 @@ using Rubicon.Mixins;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
 {
+  [Serializable]
   public class MixinAddingInterface : Mixin<DomainObject>, IInterfaceAddedByMixin
   {
     public string GetGreetings ()

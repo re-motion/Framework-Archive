@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using Castle.DynamicProxy;
 using Rubicon.CodeGeneration.DPExtensions;
 using Rubicon.Mixins.Definitions;
@@ -117,6 +118,22 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       ArgumentUtility.CheckNotNull ("mixinInstances", mixinInstances);
 
       GeneratedClassInstanceInitializer.InitializeDeserializedMixinTarget (instance, mixinInstances);
+    }
+
+    public IObjectReference BeginDeserialization (Type concreteDeserializedType, SerializationInfo info, StreamingContext context)
+    {
+      ArgumentUtility.CheckNotNull ("concreteDeserializedType", concreteDeserializedType);
+      ArgumentUtility.CheckNotNull ("info", info);
+
+      return new SerializationHelper (concreteDeserializedType, info, context);
+    }
+
+    public void FinishDeserialization (IObjectReference objectReference)
+    {
+      ArgumentUtility.CheckNotNull ("objectReference", objectReference);
+      ArgumentUtility.CheckTypeIsAssignableFrom ("objectReference", objectReference.GetType (), typeof (IDeserializationCallback));
+
+      ((IDeserializationCallback) objectReference).OnDeserialization (this);
     }
   }
 }

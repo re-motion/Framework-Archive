@@ -7,6 +7,7 @@ using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Mixins.CodeGeneration;
+using System.Runtime.Serialization;
 
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
@@ -343,6 +344,142 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       {
         ObjectFactory.Create<object> ().With ();
       }
+    }
+
+    [Test]
+    public void BeginDeserializationReturnsObjectReferenceForTheRightType ()
+    {
+      BaseType1 mixedObject = ObjectFactory.Create<BaseType1>().With();
+      SerializationInfo info = new SerializationInfo (mixedObject.GetType (), new FormatterConverter ());
+      StreamingContext context = new StreamingContext();
+
+      ((ISerializable) mixedObject).GetObjectData (info, context);
+
+      IObjectReference objectReference = ObjectFactory.BeginDeserialization (mixedObject.GetType (), info, context);
+      object deserializedObject = objectReference.GetRealObject (context);
+      Assert.AreEqual (mixedObject.GetType (), deserializedObject.GetType ());
+    }
+
+    [Test]
+    public void BeginDeserializationDoesNotFillUpData ()
+    {
+      BaseType1 mixedObject = ObjectFactory.Create<BaseType1> ().With ();
+      mixedObject.I = 50;
+      SerializationInfo info = new SerializationInfo (mixedObject.GetType (), new FormatterConverter ());
+      StreamingContext context = new StreamingContext ();
+
+      ((ISerializable) mixedObject).GetObjectData (info, context);
+
+      BaseType1 deserializedObject = (BaseType1) ObjectFactory.BeginDeserialization (mixedObject.GetType(), info, context).GetRealObject(context);
+      Assert.AreNotEqual (50, deserializedObject.I);
+    }
+
+    class ClassNotImplementingISerializable
+    {
+      public bool CtorCalled = false;
+
+      public ClassNotImplementingISerializable ()
+      {
+        CtorCalled = true;
+      }
+    }
+
+    class ClassImplementingISerializable : ISerializable
+    {
+      public bool CtorCalled = false;
+
+      public ClassImplementingISerializable ()
+      {
+      }
+
+      private ClassImplementingISerializable (SerializationInfo info, StreamingContext context)
+      {
+        CtorCalled = true;
+      }
+
+      public void GetObjectData (SerializationInfo info, StreamingContext context)
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    class ClassImplementingISerializableWithoutCtor : ISerializable
+    {
+      public void GetObjectData (SerializationInfo info, StreamingContext context)
+      {
+        throw new NotImplementedException ();
+      }
+    }
+
+    [Test]
+    public void BeginDeserializationCallsDeserializationCtorOnUnmixedTypesImplementingISerializable()
+    {
+      ClassImplementingISerializable instance = new ClassImplementingISerializable ();
+      Assert.IsFalse (instance.CtorCalled);
+
+      SerializationInfo info = new SerializationInfo (instance.GetType (), new FormatterConverter ());
+      StreamingContext context = new StreamingContext ();
+
+      ClassImplementingISerializable deserializedObject = (ClassImplementingISerializable) ObjectFactory.BeginDeserialization (instance.GetType(),
+          info, context).GetRealObject (context);
+      Assert.IsTrue (deserializedObject.CtorCalled);
+    }
+
+    [Test]
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "No deserialization constructor was found on type "
+        + "Rubicon.Mixins.UnitTests.Mixins.ObjectFactoryTests+ClassNotImplementingISerializable.")]
+    public void BeginDeserializationThrowsOnTypeNotImplementingISerializable ()
+    {
+      ClassNotImplementingISerializable instance = new ClassNotImplementingISerializable ();
+
+      SerializationInfo info = new SerializationInfo (instance.GetType (), new FormatterConverter ());
+      StreamingContext context = new StreamingContext ();
+
+      ObjectFactory.BeginDeserialization (instance.GetType (), info, context);
+    }
+
+    [Test]
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "No deserialization constructor was found on type "
+        + "Rubicon.Mixins.UnitTests.Mixins.ObjectFactoryTests+ClassImplementingISerializableWithoutCtor.")]
+    public void BeginDeserializationThrowsOnTypeImplementingISerializableWithoutCtor ()
+    {
+      ClassImplementingISerializableWithoutCtor instance = new ClassImplementingISerializableWithoutCtor ();
+
+      SerializationInfo info = new SerializationInfo (instance.GetType (), new FormatterConverter ());
+      StreamingContext context = new StreamingContext ();
+
+      ObjectFactory.BeginDeserialization (instance.GetType (), info, context);
+    }
+
+    [Test]
+    public void EndDeserializationFillsUpDataAndMixins ()
+    {
+      BaseType1 mixedObject = ObjectFactory.Create<BaseType1> ().With ();
+      mixedObject.I = 50;
+      Mixin.Get<BT1Mixin1> (mixedObject).BackingField = "Data";
+
+      SerializationInfo info = new SerializationInfo (mixedObject.GetType (), new FormatterConverter ());
+      StreamingContext context = new StreamingContext ();
+
+      ((ISerializable) mixedObject).GetObjectData (info, context);
+
+      IObjectReference objectReference = ObjectFactory.BeginDeserialization (mixedObject.GetType(), info, context);
+      ObjectFactory.FinishDeserialization (objectReference);
+
+      BaseType1 deserializedObject = (BaseType1) objectReference.GetRealObject (context);
+      Assert.AreEqual (50, deserializedObject.I);
+      Assert.IsNotNull (Mixin.Get<BT1Mixin1> (deserializedObject));
+      Assert.AreEqual ("Data", Mixin.Get<BT1Mixin1> (deserializedObject).BackingField);
+    }
+
+    [Test]
+    public void EndDeserializationIgnoresUnmixedObjects ()
+    {
+      ClassImplementingISerializable obj = new ClassImplementingISerializable ();
+      SerializationInfo info = new SerializationInfo (obj.GetType (), new FormatterConverter ());
+      StreamingContext context = new StreamingContext ();
+
+      ObjectFactory.FinishDeserialization (ObjectFactory.BeginDeserialization (obj.GetType(), info, context));
     }
   }
 }

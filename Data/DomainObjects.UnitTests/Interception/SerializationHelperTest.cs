@@ -137,7 +137,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public void CtorCreatesUninitializedRealObjectOfRightType ()
     {
       _serializableInstance.I = 13;
-      SerializationHelper.GetObjectDataForGeneratedTypes (_info, _context, _serializableInstance, false);
+      SerializationHelper.GetObjectDataForGeneratedTypes (_info, _context, _serializableInstance, true);
       SerializationHelper helper = new SerializationHelper (_info, _context);
       SerializableClass realObject = (SerializableClass) helper.GetRealObject (_context);
       Assert.IsNotNull (realObject);
