@@ -221,10 +221,6 @@
     <Compile Include="WxeFunctions\WxeTestPageFunction.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="WxeTestPage.aspx.cs">
-      <DependentUpon>WxeTestPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Content Include="ControlWithAllDataTypes.ascx">
       <SubType>UserControl</SubType>
     </Content>
@@ -257,9 +253,6 @@
       <SubType>Form</SubType>
     </Content>
     <Content Include="Web.config" />
-    <Content Include="WxeTestPage.aspx">
-      <SubType>Form</SubType>
-    </Content>
     <None Include="WxeHandler.ashx" />
   </ItemGroup>
   <ItemGroup>
