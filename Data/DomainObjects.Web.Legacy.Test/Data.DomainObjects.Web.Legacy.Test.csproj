@@ -194,15 +194,6 @@
       <DependentUpon>UndefinedEnumTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WxeFunctions\AutoCommitTestTransactedFunction.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="WxeFunctions\CreateNoneTestTransactedFunction.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="WxeFunctions\CreateRootTestTransactedFunction.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="WxeFunctions\EditObjectFunction.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -216,9 +207,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="WxeFunctions\UndefinedEnumTestFunction.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="WxeFunctions\WxeTestPageFunction.cs">
       <SubType>Code</SubType>
     </Compile>
     <Content Include="ControlWithAllDataTypes.ascx">
