@@ -286,7 +286,7 @@ public class BocListUserControl : BaseUserControl
     {
       ChildrenList.SetSortingOrder (
           new BocListSortingOrderEntry[] {
-              new BocListSortingOrderEntry ((BocColumnDefinition) ChildrenList.FixedColumns[7], SortingDirection.Ascending) });
+              new BocListSortingOrderEntry ((IBocSortableColumnDefinition) ChildrenList.FixedColumns[7], SortingDirection.Ascending) });
     }
     if (IsPostBack)
     {

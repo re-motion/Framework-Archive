@@ -39,7 +39,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       base.OnLoad (e);
 
       if (!IsPostBack)
-        PositionList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) PositionList.FixedColumns[0], SortingDirection.Ascending));
+        PositionList.SetSortingOrder (new BocListSortingOrderEntry ((IBocSortableColumnDefinition) PositionList.FixedColumns[0], SortingDirection.Ascending));
       PositionList.LoadUnboundValue (Position.FindAll (), false);
 
       if (!SecurityConfiguration.Current.SecurityProvider.IsNull)

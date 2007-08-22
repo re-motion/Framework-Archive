@@ -12,7 +12,7 @@ using Rubicon.Web.Utilities;
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 /// <summary> A column definition using <see cref="BocCustomColumnDefinitionCell"/> for rendering the data. </summary>
-public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClassSource
+public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClassSource, IBocSortableColumnDefinition
 {
   private PropertyPathBinding _propertyPathBinding;
   private BocCustomColumnDefinitionCell _customCell;

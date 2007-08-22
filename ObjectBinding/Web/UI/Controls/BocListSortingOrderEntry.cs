@@ -11,16 +11,21 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 public class BocListSortingOrderEntry
 {
   private int _columnIndex;
-  private BocColumnDefinition _column;
+  private IBocSortableColumnDefinition _column;
   private SortingDirection _direction;
   private bool _isEmpty = false;
 
   /// <summary> Represents a null <see cref="BocListSortingOrderEntry"/>. </summary>
   public static readonly BocListSortingOrderEntry Empty = new BocListSortingOrderEntry ();
 
+  [Obsolete ("Use overload BocListSortingOrderEntry (IBocSortableColumnDefinition, SortingDirection) instead. (Version 1.7.55)")]
   public BocListSortingOrderEntry (BocColumnDefinition column, SortingDirection direction)
+    : this (ArgumentUtility.CheckNotNullAndType<IBocSortableColumnDefinition> ("column", column), direction)
   {
-    ArgumentUtility.CheckNotNull ("column", column);
+  }
+
+  public BocListSortingOrderEntry (IBocSortableColumnDefinition column, SortingDirection direction)
+  {
     _columnIndex = Int32.MinValue;
     SetColumn (column);
     _direction = direction;
@@ -55,7 +60,7 @@ public class BocListSortingOrderEntry
   }
 
   /// <summary> Gets the column to sort by. </summary>
-  public BocColumnDefinition Column
+  public IBocSortableColumnDefinition Column
   {
     get { return _column; }
   }
@@ -63,19 +68,14 @@ public class BocListSortingOrderEntry
   /// <summary> Sets the column to sort by. </summary>
   /// <param name="column">
   ///   Must not be <see langword="null"/>. 
-  ///   Must be of type <see cref="BocValueColumnDefinition"/> 
-  ///   or <see cref="BocCustomColumnDefinition"/> with <see cref="BocCustomColumnDefinition.IsSortable"/> set
-  ///   <see langword="true"/>.
+  ///   Must have <see cref="IBocSortableColumnDefinition.IsSortable"/> set <see langword="true"/>.
   /// </param>
-  protected internal void SetColumn (BocColumnDefinition column)
+  protected internal void SetColumn (IBocSortableColumnDefinition column)
   {
     ArgumentUtility.CheckNotNull ("column", column);
-    if (   ! (column is BocValueColumnDefinition) 
-        && ! (   column is BocCustomColumnDefinition
-              && ((BocCustomColumnDefinition) column).IsSortable))
-    {
-      throw new ArgumentException ("BocListSortingOrderEntry can only use columns of type BocValueColumnDefinition or BocCustomColumnDefinition with BocCustomColumnDefinition.IsSortable set true.", "column");
-    }
+    if (!column.IsSortable)
+      throw new ArgumentException ("BocListSortingOrderEntry can only use columns with IBocSortableColumnDefinition.IsSortable set true.", "column");
+
     _column = column; 
   }
 

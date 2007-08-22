@@ -44,8 +44,8 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       if (!IsPostBack)
       {
         RolesList.SetSortingOrder (
-            new BocListSortingOrderEntry ((BocColumnDefinition) RolesList.FixedColumns[0], SortingDirection.Ascending),
-            new BocListSortingOrderEntry ((BocColumnDefinition) RolesList.FixedColumns[1], SortingDirection.Ascending));
+            new BocListSortingOrderEntry ((IBocSortableColumnDefinition) RolesList.FixedColumns[0], SortingDirection.Ascending),
+            new BocListSortingOrderEntry ((IBocSortableColumnDefinition) RolesList.FixedColumns[1], SortingDirection.Ascending));
       }
 
       FillOwningGroupField ();

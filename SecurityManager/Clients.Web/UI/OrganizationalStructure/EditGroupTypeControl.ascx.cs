@@ -43,8 +43,8 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
       if (!IsPostBack)
       {
-        GroupsList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) GroupsList.FixedColumns[0], SortingDirection.Ascending));
-        PositionsList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) PositionsList.FixedColumns[0], SortingDirection.Ascending));
+        GroupsList.SetSortingOrder (new BocListSortingOrderEntry ((IBocSortableColumnDefinition) GroupsList.FixedColumns[0], SortingDirection.Ascending));
+        PositionsList.SetSortingOrder (new BocListSortingOrderEntry ((IBocSortableColumnDefinition) PositionsList.FixedColumns[0], SortingDirection.Ascending));
       }
 
       if (GroupsList.IsReadOnly)

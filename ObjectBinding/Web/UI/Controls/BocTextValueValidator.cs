@@ -146,7 +146,9 @@ public class BocTextValueValidator: CompoundValidator
         return ValidationDataType.Date;
       case BocTextValueType.DateTime:
         return ValidationDataType.Date;
+#pragma warning disable 618,612
       case BocTextValueType.Integer:
+#pragma warning restore 618,612
         return ValidationDataType.Integer;
       case BocTextValueType.Double:
         return ValidationDataType.Double;

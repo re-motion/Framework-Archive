@@ -1,3 +1,11 @@
+1.7.55
+======
+- BocList: 
+  * Bei ValueColumns lässt sich nun die Sortierung deaktivieren (IsSortable = false).
+  * BocListSortingOrderEntry erwartet nun Splaten die IBocSortableColumnDefinition implementieren 
+    (BocSimpleColumnDefinition, BocCompoundColumnDefinition, BocCustomColumnDefinition)
+
+
 1.7.47
 ======
 - Business Object Controls verwenden nun ControlState anstatt ViewState um ihren Zustand zu speichern.

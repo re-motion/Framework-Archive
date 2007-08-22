@@ -1062,13 +1062,9 @@ public class BocList:
     BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot();
 
     if (columnIndex >= columns.Length)
-      throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'");
-    if (   ! (columns[columnIndex] is BocValueColumnDefinition) 
-        && ! (   columns[columnIndex] is BocCustomColumnDefinition
-              && ((BocCustomColumnDefinition) columns[columnIndex]).IsSortable))
-    {
-      throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a value or sortable custom column at index" + columnIndex + ".");
-    }
+      throw new ArgumentOutOfRangeException ("eventArgument", eventArgument, "Column index was out of the range of valid values. Index must be less than the number of displayed columns.'");
+    if (!(columns[columnIndex] is IBocSortableColumnDefinition && ((IBocSortableColumnDefinition) columns[columnIndex]).IsSortable))
+      throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not sortable column at index" + columnIndex + ".");
 
     ArrayList workingSortingOrder = new ArrayList (_sortingOrder);
 
@@ -1093,8 +1089,7 @@ public class BocList:
       {
         case SortingDirection.Ascending:
         {
-          newSortingOrderEntry = 
-              new BocListSortingOrderEntry (oldSortingOrderEntry.Column, SortingDirection.Descending);
+          newSortingOrderEntry = new BocListSortingOrderEntry (oldSortingOrderEntry.Column, SortingDirection.Descending);
           newSortingOrderEntry.SetColumnIndex (oldSortingOrderEntry.ColumnIndex);
           break;
         }
@@ -1105,8 +1100,7 @@ public class BocList:
         }
         case SortingDirection.None:
         {
-          newSortingOrderEntry = 
-              new BocListSortingOrderEntry (oldSortingOrderEntry.Column, SortingDirection.Ascending);
+          newSortingOrderEntry = new BocListSortingOrderEntry (oldSortingOrderEntry.Column, SortingDirection.Ascending);
           newSortingOrderEntry.SetColumnIndex (oldSortingOrderEntry.ColumnIndex);
           break;
         }
@@ -1114,7 +1108,7 @@ public class BocList:
     }
     else
     {
-      newSortingOrderEntry = new BocListSortingOrderEntry (columns[columnIndex], SortingDirection.Ascending);
+      newSortingOrderEntry = new BocListSortingOrderEntry ((IBocSortableColumnDefinition) columns[columnIndex], SortingDirection.Ascending);
       newSortingOrderEntry.SetColumnIndex (columnIndex);
     }
 
@@ -2563,9 +2557,7 @@ public class BocList:
       int columnIndex)
   {
     bool hasSortingCommand =   IsClientSideSortingEnabled 
-                           && (   column is BocValueColumnDefinition
-                               || (   column is BocCustomColumnDefinition 
-                                   && ((BocCustomColumnDefinition) column).IsSortable));
+                           && (column is IBocSortableColumnDefinition && ((IBocSortableColumnDefinition) column).IsSortable);
     
     if (hasSortingCommand)
     {
@@ -4111,7 +4103,7 @@ public class BocList:
         continue;
       }
       if (entry.ColumnIndex != Int32.MinValue)
-        entry.SetColumn (columnDefinitions[entry.ColumnIndex]);
+        entry.SetColumn ((IBocSortableColumnDefinition) columnDefinitions[entry.ColumnIndex]);
     }
     for (int i = 0; i < entriesToBeRemoved.Count; i++)
       sortingOrder.Remove (entriesToBeRemoved[i]);
@@ -4129,7 +4121,7 @@ public class BocList:
         continue;
       if (entry.Column == null)
       {
-        entry.SetColumn (columnDefinitions[entry.ColumnIndex]);
+        entry.SetColumn ((IBocSortableColumnDefinition) columnDefinitions[entry.ColumnIndex]);
       }
       else
       {

@@ -13,6 +13,10 @@ using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
+  public interface IBocSortableColumnDefinition: IControlItem
+  {
+    bool IsSortable { get; }
+  }
 
   #region Obsolete
   [Obsolete ("Use BocRowEditModeColumnDefinition instead", true)]
@@ -320,9 +324,10 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
   }
 
   /// <summary> A column definition for displaying data and an optional command. </summary>
-  public abstract class BocValueColumnDefinition : BocCommandEnabledColumnDefinition
+  public abstract class BocValueColumnDefinition : BocCommandEnabledColumnDefinition, IBocSortableColumnDefinition
   {
     private bool _enforceWidth;
+    private bool _isSortable = true;
 
     public BocValueColumnDefinition ()
     {
@@ -351,6 +356,18 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     {
       get { return _enforceWidth; }
       set { _enforceWidth = value; }
+    }
+
+    /// <summary> Gets or sets a flag that determines whether to enable sorting for this columns. </summary>
+    [PersistenceMode (PersistenceMode.Attribute)]
+    [Category ("Behavior")]
+    [Description ("A flag determining whether to enable sorting for this columns.")]
+    [DefaultValue (true)]
+    [NotifyParentProperty (true)]
+    public bool IsSortable
+    {
+      get { return _isSortable; }
+      set { _isSortable = value; }
     }
 
     /// <summary> Gets the human readable name of this type. </summary>

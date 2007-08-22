@@ -26,7 +26,7 @@ public class BocListSortingOrderEntryMock : BocListSortingOrderEntry
     base.SetColumnIndex (columnIndex);
   }
 
-  public new void SetColumn (BocColumnDefinition column)
+  public new void SetColumn (IBocSortableColumnDefinition column)
   {
     base.SetColumn (column); 
   }

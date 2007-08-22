@@ -19,32 +19,32 @@
 <rubicon:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit"></rubicon:BocRowEditModeColumnDefinition>
 <rubicon:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="Event" CommandStateType="Rubicon.ObjectBinding.Sample::PersonListItemCommandState" ToolTip="An Event Command"></rubicon:BocListItemCommand>
+<rubicon:BocListItemCommand ToolTip="An Event Command" CommandStateType="Rubicon.ObjectBinding.Sample::PersonListItemCommandState" Type="Event"></rubicon:BocListItemCommand>
 </PersistedCommand>
 </rubicon:BocCommandColumnDefinition>
 <rubicon:BocCommandColumnDefinition ItemID="Href" Text="Href">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="Href" HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}"></rubicon:BocListItemCommand>
+<rubicon:BocListItemCommand HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}" Type="Href"></rubicon:BocListItemCommand>
 </PersistedCommand>
 </rubicon:BocCommandColumnDefinition>
 <rubicon:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName">
 <persistedcommand>
-<rubicon:BocListItemCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></rubicon:BocListItemCommand>
+<rubicon:BocListItemCommand WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" WxeFunctionCommand-Parameters="id" Type="WxeFunction"></rubicon:BocListItemCommand>
 </PersistedCommand>
 </rubicon:BocSimpleColumnDefinition>
 <rubicon:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
+
+<persistedcommand>
+<rubicon:BocListItemCommand></rubicon:BocListItemCommand>
+</PersistedCommand>
 <propertypathbindings>
 <rubicon:PropertyPathBinding PropertyPathIdentifier="LastName"></rubicon:PropertyPathBinding>
 <rubicon:PropertyPathBinding PropertyPathIdentifier="FirstName"></rubicon:PropertyPathBinding>
 </PropertyPathBindings>
-
-<persistedcommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
-</PersistedCommand>
 </rubicon:BocCompoundColumnDefinition>
 <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" EnforceWidth="True" Width="4em" ColumnTitle="Partner">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<rubicon:BocListItemCommand></rubicon:BocListItemCommand>
 </PersistedCommand>
 </rubicon:BocSimpleColumnDefinition>
 <rubicon:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName">
@@ -54,13 +54,13 @@
 </rubicon:BocSimpleColumnDefinition>
 <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" IsReadOnly="True">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<rubicon:BocListItemCommand></rubicon:BocListItemCommand>
 </PersistedCommand>
 </rubicon:BocSimpleColumnDefinition>
 <rubicon:BocCustomColumnDefinition ItemID="CustomCell" PropertyPathIdentifier="LastName" CustomCellType="Rubicon.ObjectBinding.Sample::PersonCustomCell" Mode="ControlInEditedRow" ColumnTitle="Custom Cell"></rubicon:BocCustomColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased">
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased" IsSortable="False">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<rubicon:BocListItemCommand></rubicon:BocListItemCommand>
 </PersistedCommand>
 </rubicon:BocSimpleColumnDefinition>
 <rubicon:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" Width="0%" ColumnTitle="Menu"></rubicon:BocDropDownMenuColumnDefinition>
