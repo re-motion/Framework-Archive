@@ -309,7 +309,11 @@
     </Compile>
     <Compile Include="PermanentGuidAttribute.cs" />
     <Compile Include="Reflection\AssemblyFinder.cs" />
+    <Compile Include="Reflection\AttributeAssemblyFinderFilter.cs" />
     <Compile Include="Reflection\ConstructorWrapper.cs" />
+    <Compile Include="Reflection\IAssemblyFinderFilter.cs" />
+    <Compile Include="Reflection\RegexAssemblyFinderFilter.cs" />
+    <Compile Include="Reflection\NonSystemAssemblyFinderFilter.cs" />
     <Compile Include="Reflection\ProcInvoker.generated.cs" />
     <Compile Include="Reflection\ProcInvoker.template.cs" />
     <Compile Include="Reflection\FuncInvoker.generated.cs" />

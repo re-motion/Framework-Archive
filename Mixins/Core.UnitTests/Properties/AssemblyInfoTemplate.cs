@@ -55,8 +55,6 @@ using Rubicon.Mixins;
 //       documentation for more information on this.
 //
 
-[assembly: ContainsMixinInfo]
-
 //#pragma warning disable 1699
 //[assembly: AssemblyDelaySign (false)]
 //[assembly: AssemblyKeyFile (@"@keyfile@")]

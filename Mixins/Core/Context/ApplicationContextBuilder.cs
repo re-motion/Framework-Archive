@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Mixins;
 using Rubicon.Collections;
+using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
 using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
@@ -11,7 +12,7 @@ namespace Rubicon.Mixins.Context
 {
   /// <summary>
   /// Provides support for building mixin configuration data for an application from the declarative configuration attributes
-  /// (<see cref="ContainsMixinInfoAttribute"/>, <see cref="UsesAttribute"/>, <see cref="ExtendsAttribute"/>, <see cref="CompleteInterfaceAttribute"/>,
+  /// (<see cref="UsesAttribute"/>, <see cref="ExtendsAttribute"/>, <see cref="CompleteInterfaceAttribute"/>,
   /// and <see cref="IgnoreForMixinConfigurationAttribute"/>).
   /// </summary>
   /// <threadsafety static="true" instance="false"/>
@@ -21,8 +22,7 @@ namespace Rubicon.Mixins.Context
     /// Builds a new <see cref="ApplicationContext"/> from the declarative configuration information in the given assemblies.
     /// </summary>
     /// <param name="parentContext">The parent context to derive the new context from (can be <see langword="null"/>).</param>
-    /// <param name="assemblies">The assemblies to be scanned for declarative mixin information (if they are marked with the
-    /// <see cref="ContainsMixinInfoAttribute"/>).</param>
+    /// <param name="assemblies">The assemblies to be scanned for declarative mixin information.</param>
     /// <returns>An application context inheriting from <paramref name="parentContext"/> and incorporating the configuration information
     /// held by the given assemblies.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="assemblies"/> parameter is <see langword="null"/>.</exception>
@@ -51,8 +51,7 @@ namespace Rubicon.Mixins.Context
     /// Builds a new <see cref="ApplicationContext"/> from the declarative configuration information in the given assemblies.
     /// </summary>
     /// <param name="parentContext">The parent context to derive the new context from (can be <see langword="null"/>).</param>
-    /// <param name="assemblies">The assemblies to be scanned for declarative mixin information (if they are marked with the
-    /// <see cref="ContainsMixinInfoAttribute"/>).</param>
+    /// <param name="assemblies">The assemblies to be scanned for declarative mixin information.</param>
     /// <returns>An application context inheriting from <paramref name="parentContext"/> and incorporating the configuration information
     /// held by the given assemblies.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="assemblies"/> parameter is <see langword="null"/>.</exception>
@@ -67,8 +66,7 @@ namespace Rubicon.Mixins.Context
     /// Builds a new <see cref="ApplicationContext"/> from the declarative configuration information in the given assemblies without inheriting
     /// from a parent context.
     /// </summary>
-    /// <param name="assemblies">The assemblies to be scanned for declarative mixin information (if they are marked with the
-    /// <see cref="ContainsMixinInfoAttribute"/>).</param>
+    /// <param name="assemblies">The assemblies to be scanned for declarative mixin information.</param>
     /// <returns>An application context incorporating the configuration information held by the given assemblies.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="assemblies"/> parameter is <see langword="null"/>.</exception>
     public static ApplicationContext BuildContextFromAssemblies (params Assembly[] assemblies)
@@ -97,169 +95,33 @@ namespace Rubicon.Mixins.Context
     }
 
     /// <summary>
-    /// Builds the default application context by analyzing all currently loaded assemblies and their (directly or indirectly) referenced assemblies
-    /// for mixin configuration information if they are marked with the <see cref="ContainsMixinInfoAttribute"/>.
+    /// Builds the default application context by analyzing all assemblies in the application bin directory and their (directly or indirectly)
+    /// referenced assemblies for mixin configuration information. System assemblies are not scanned.
     /// </summary>
     /// <returns>An application context holding the default mixin configuration information for this application.</returns>
     /// <remarks>This method performs the following steps (see also <see cref="AssemblyFinder"/>):
     /// <list type="number">
-    /// <item>Retrieve all assemblies loaded into the current <see cref="AppDomain"/>.</item>
-    /// <item>Analyze each of them marked with the <see cref="ContainsMixinInfoAttribute"/> for mixin configuration information.</item>
-    /// <item>Load the referenced assemblies of those assemblies marked with the attribute.</item>
+    /// <item>Retrieve all assemblies from the current <see cref="AppDomain">AppDomain's</see> bin directory.</item>
+    /// <item>Analyze each of them which is not excluded by the <see cref="NonSystemAssemblyFinderFilter"/> for mixin configuration information.</item>
+    /// <item>Load the referenced assemblies of those assemblies if they aren't excluded by the <see cref="NonSystemAssemblyFinderFilter"/>.</item>
     /// <item>If the loaded assemblies haven't already been analyzed, treat them according to steps 2-4.</item>
     /// </list>
     /// </remarks>
     /// <seealso cref="AssemblyFinder"/>
     public static ApplicationContext BuildDefaultContext ()
     {
-      Assembly[] rootAssemblies =
-          Array.FindAll (
-              AppDomain.CurrentDomain.GetAssemblies (), delegate (Assembly a) { return a.IsDefined (typeof (ContainsMixinInfoAttribute), false); });
-
-      Assembly[] assembliesToBeScanned = rootAssemblies;
-      if (rootAssemblies.Length > 0)
-      {
-        AssemblyFinder finder = new AssemblyFinder (typeof (ContainsMixinInfoAttribute), rootAssemblies);
-        assembliesToBeScanned = finder.FindAssemblies ();
-      }
+      AssemblyFinder finder = new AssemblyFinder (new ApplicationConctextBuilderAssemblyFinderFilter ());
+      Assembly[] assembliesToBeScanned = finder.FindAssemblies();
       return BuildContextFromAssemblies (assembliesToBeScanned);
-    }
-
-    private class InternalBuilder
-    {
-      private readonly ApplicationContext _parentContext;
-      private readonly Set<Type> _extenders;
-      private readonly Set<Type> _users;
-      private readonly Set<Type> _potentialTargets;
-      private readonly Set<Type> _completeInterfaces;
-
-      private ApplicationContext _builtContext;
-
-      public InternalBuilder (ApplicationContext parentContext, Set<Type> extenders, Set<Type> users, Set<Type> potentialTargets,
-          Set<Type> completeInterfaces)
-      {
-        _parentContext = parentContext;
-        _extenders = extenders;
-        _completeInterfaces = completeInterfaces;
-        _potentialTargets = potentialTargets;
-        _users = users;
-
-        Analyze ();
-      }
-
-      public ApplicationContext BuiltContext
-      {
-        get { return _builtContext; }
-      }
-
-      public void Analyze ()
-      {
-        _builtContext = new ApplicationContext (_parentContext);
-        foreach (Type extender in _extenders)
-          AnalyzeExtender (extender);
-        foreach (Type user in _users)
-          AnalyzeUser (user);
-        foreach (Type completeInterface in _completeInterfaces)
-          AnalyzeCompleteInterface (completeInterface);
-        foreach (Type type in _potentialTargets)
-          AnalyzeInheritedMixins (type);
-      }
-
-      private void AnalyzeExtender (Type extender)
-      {
-        foreach (ExtendsAttribute mixinAttribute in extender.GetCustomAttributes (typeof (ExtendsAttribute), false))
-          ApplyMixinToClassContext (_builtContext.GetOrAddClassContext (mixinAttribute.TargetType), extender, Type.EmptyTypes);
-      }
-
-      private void AnalyzeUser (Type user)
-      {
-        ClassContext classContext = _builtContext.GetOrAddClassContext (user);
-        foreach (UsesAttribute usesAttribute in user.GetCustomAttributes (typeof (UsesAttribute), false))
-          ApplyMixinToClassContext (classContext, usesAttribute.MixinType, usesAttribute.AdditionalDependencies);
-      }
-
-      private void ApplyMixinToClassContext (ClassContext classContext, Type mixinType, IEnumerable<Type> explicitDependencies)
-      {
-        if (AlreadyAppliedSame (mixinType, classContext))
-        {
-          Type typeForMessage = mixinType;
-          if (typeForMessage.IsGenericType)
-            typeForMessage = typeForMessage.GetGenericTypeDefinition();
-          string message = string.Format ("Two instances of mixin {0} are configured for target type {1}.",
-              typeForMessage.FullName, classContext.Type.FullName);
-          throw new ConfigurationException (message);
-        }
-        else {
-          MixinContext mixinContext = classContext.AddMixin (mixinType);
-          foreach (Type additionalDependency in explicitDependencies)
-            mixinContext.AddExplicitDependency (additionalDependency);
-        }
-      }
-
-      private void AnalyzeCompleteInterface (Type completeInterfaceType)
-      {
-        foreach (CompleteInterfaceAttribute ifaceAttribute in completeInterfaceType.GetCustomAttributes (typeof (CompleteInterfaceAttribute), false))
-        {
-          ClassContext classContext = _builtContext.GetOrAddClassContext (ifaceAttribute.TargetType);
-          classContext.AddCompleteInterface (completeInterfaceType);
-          _builtContext.RegisterInterface (completeInterfaceType, classContext);
-        }
-      }
-
-      private void AnalyzeInheritedMixins (Type targetType)
-      {
-        Type currentBaseType = targetType.BaseType;
-        while (currentBaseType != null)
-        {
-          if (currentBaseType.IsGenericType)
-            currentBaseType = currentBaseType.GetGenericTypeDefinition ();
-          AnalyzeInheritedMixins (targetType, currentBaseType);
-          currentBaseType = currentBaseType.BaseType;
-        }
-      }
-
-      private void AnalyzeInheritedMixins (Type targetType, Type baseType)
-      {
-        ClassContext baseTypeContext = _builtContext.GetClassContextNonRecursive (baseType);
-        if (baseTypeContext != null)
-        {
-          foreach (MixinContext baseMixinContext in baseTypeContext.Mixins)
-          {
-            ClassContext targetContext = _builtContext.GetOrAddClassContext (targetType);
-            if (!AlreadyAppliedSameOrDerived (baseMixinContext.MixinType, targetContext))
-              baseMixinContext.CloneAndAddTo (targetContext);
-          }
-        }
-      }
-
-      private bool AlreadyAppliedSame (Type mixinType, ClassContext contextToCheck)
-      {
-        foreach (MixinContext mixin in contextToCheck.Mixins)
-        {
-          if (ReflectionUtility.IsSameTypeIgnoreGenerics (mixinType, mixin.MixinType))
-            return true;
-        }
-        return false;
-      }
-
-      private bool AlreadyAppliedSameOrDerived (Type mixinType, ClassContext contextToCheck)
-      {
-        foreach (MixinContext mixin in contextToCheck.Mixins)
-        {
-          if (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (mixin.MixinType, mixinType))
-            return true;
-        }
-        return false;
-      }
     }
 
     private readonly ApplicationContext _parentContext;
 
-    private Set<Type> _extenders = new Set<Type>();
-    private Set<Type> _users = new Set<Type>();
-    private Set<Type> _potentialTargets = new Set<Type>();
-    private Set<Type> _completeInterfaces = new Set<Type>();
-    private Set<Type> _allTypes = new Set<Type> ();
+    private readonly Set<Type> _extenders = new Set<Type>();
+    private readonly Set<Type> _users = new Set<Type>();
+    private readonly Set<Type> _potentialTargets = new Set<Type>();
+    private readonly Set<Type> _completeInterfaces = new Set<Type>();
+    private readonly Set<Type> _allTypes = new Set<Type> ();
 
     /// <summary>
     /// Initializes a new <see cref="ApplicationContextBuilder"/>, which can be used to collect assemblies and types with declarative
@@ -340,7 +202,7 @@ namespace Rubicon.Mixins.Context
     /// <see cref="ClassContext"/> and <see cref="MixinContext"/> objects based on the information added so far.</returns>
     public ApplicationContext BuildContext ()
     {
-      return new InternalBuilder (_parentContext, _extenders, _users, _potentialTargets, _completeInterfaces).BuiltContext;
+      return new InternalApplicationContextBuilder (_parentContext, _extenders, _users, _potentialTargets, _completeInterfaces).BuiltContext;
     }
   }
 }

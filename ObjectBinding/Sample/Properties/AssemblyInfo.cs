@@ -57,5 +57,3 @@ using Rubicon.Mixins;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
-
-[assembly: ContainsMixinInfo]

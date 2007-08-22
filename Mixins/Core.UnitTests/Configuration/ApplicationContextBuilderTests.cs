@@ -66,5 +66,34 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       Assert.IsFalse (TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins.ContainsKey (typeof (Foo)));
     }
+
+    [Test]
+    public void FilterExcludesSystemAssemblies ()
+    {
+      ApplicationConctextBuilderAssemblyFinderFilter filter = new ApplicationConctextBuilderAssemblyFinderFilter ();
+      Assert.IsFalse (filter.ShouldConsiderAssembly (typeof (object).Assembly.GetName()));
+      Assert.IsFalse (filter.ShouldConsiderAssembly (typeof (Uri).Assembly.GetName()));
+    }
+
+    [Test]
+    public void FilterExcludesGeneratedAssemblies ()
+    {
+      ApplicationConctextBuilderAssemblyFinderFilter filter = new ApplicationConctextBuilderAssemblyFinderFilter ();
+      Assert.IsFalse (filter.ShouldConsiderAssembly (new AssemblyName ("Rubicon.Mixins.Generated.Unsigned")));
+      Assert.IsFalse (filter.ShouldConsiderAssembly (new AssemblyName ("Rubicon.Mixins.Generated.Signed")));
+    }
+
+    [Test]
+    public void FilterIncludesAllNormalAssemblies ()
+    {
+      ApplicationConctextBuilderAssemblyFinderFilter filter = new ApplicationConctextBuilderAssemblyFinderFilter ();
+      Assert.IsTrue (filter.ShouldConsiderAssembly (typeof (ApplicationContextBuilderTests).Assembly.GetName()));
+      Assert.IsTrue (filter.ShouldConsiderAssembly (typeof (ApplicationContextBuilder).Assembly.GetName()));
+      Assert.IsTrue (filter.ShouldConsiderAssembly (new AssemblyName ("whatever")));
+
+      Assert.IsTrue (filter.ShouldIncludeAssembly (typeof (ApplicationContextBuilderTests).Assembly));
+      Assert.IsTrue (filter.ShouldIncludeAssembly (typeof (ApplicationContextBuilder).Assembly));
+      Assert.IsTrue (filter.ShouldConsiderAssembly (new AssemblyName ("whatever")));
+    }
   }
 }

@@ -189,7 +189,10 @@ namespace Rubicon.Mixins.UnitTests.Mixins
             IModuleManager moduleManagerMock = repository.CreateMock<IModuleManager> ();
             ConcreteTypeBuilder.Current.Scope = moduleManagerMock;
 
-            // expecting _no_ actions on the scope when loading and accessing types from saved module
+            Expect.Call (moduleManagerMock.SignedAssemblyName).Return ("whatever");
+            Expect.Call (moduleManagerMock.UnsignedAssemblyName).Return ("whatever");
+
+            // expecting _no_ other actions on the scope when loading and accessing types from saved module
 
             repository.ReplayAll ();
 
@@ -245,7 +248,10 @@ namespace Rubicon.Mixins.UnitTests.Mixins
             IModuleManager moduleManagerMock = repository.CreateMock<IModuleManager> ();
             ConcreteTypeBuilder.Current.Scope = moduleManagerMock;
 
-            // expecting _no_ actions on the scope when loading and accessing types from saved module
+            Expect.Call (moduleManagerMock.SignedAssemblyName).Return ("whatever");
+            Expect.Call (moduleManagerMock.UnsignedAssemblyName).Return ("whatever");
+
+            // expecting _no_ other actions on the scope when loading and accessing types from saved module
 
             repository.ReplayAll ();
 
@@ -318,9 +324,16 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         IModuleManager realScope = ConcreteTypeBuilder.Current.Scope;
         ConcreteTypeBuilder.Current.Scope = moduleManagerMock;
 
+        Expect.Call (moduleManagerMock.SignedAssemblyName).Return ("whatever");
+        Expect.Call (moduleManagerMock.UnsignedAssemblyName).Return ("whatever");
+
+        repository.Replay (moduleManagerMock);
+
         TargetClassDefinition innerClassDefinition = TypeFactory.GetActiveConfiguration (typeof (BaseType2), GenerationPolicy.ForceGeneration);
         MixinDefinition innerMixinDefinition =
           TypeFactory.GetActiveConfiguration (typeof (ClassOverridingSingleMixinMethod)).Mixins[typeof (MixinWithSingleAbstractMethod)];
+
+        repository.BackToRecord (moduleManagerMock);
 
         using (repository.Ordered ())
         {
