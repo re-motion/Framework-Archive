@@ -81,7 +81,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       OrderTicket changedOrderTicket;
       DataContainer changedDataContainer;
-      using (new ClientTransactionScope (clientTransaction1))
+      using (clientTransaction1.EnterScope())
       {
         changedOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
         changedOrderTicket.FileName = @"C:\NewFile.jpg";
@@ -90,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       OrderTicket deletedOrderTicket;
       DataContainer deletedDataContainer;
-      using (new ClientTransactionScope (clientTransaction2))
+      using (clientTransaction2.EnterScope())
       {
         deletedOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
         deletedOrderTicket.Delete();
@@ -112,7 +112,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       DataContainer changedDataContainer;
       ClassWithAllDataTypes changedObject;
 
-      using (new ClientTransactionScope (clientTransaction1))
+      using (clientTransaction1.EnterScope())
       {
         changedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
         changedDataContainer = changedObject.InternalDataContainer;
@@ -122,7 +122,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       DataContainer deletedDataContainer;
       ClassWithAllDataTypes deletedObject;
       
-      using (new ClientTransactionScope (clientTransaction2))
+      using (clientTransaction2.EnterScope())
       {
         deletedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
         deletedDataContainer = deletedObject.InternalDataContainer;

@@ -30,7 +30,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.TestFixtureSetUp ();
 
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
       {
         Tenant tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransactionScope.CurrentTransaction);
         _expectedTenantID = tenant.ID;
@@ -63,7 +63,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       SecurityConfiguration.Current.UserProvider = _mockUserProvider;
       SecurityConfiguration.Current.FunctionalSecurityStrategy = _stubFunctionalSecurityStrategy;
 
-      new ClientTransactionScope();
+      ClientTransaction.NewTransaction ().EnterNonReturningScope ();
     }
 
     public override void TearDown ()

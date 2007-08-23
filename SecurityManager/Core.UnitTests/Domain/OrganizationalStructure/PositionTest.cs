@@ -17,7 +17,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
       {
         DomainObjectCollection positions = Position.FindAll ();
 

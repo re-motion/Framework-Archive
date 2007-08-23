@@ -105,7 +105,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       User.Current = user;
       Assert.AreSame (user, User.Current);
 
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
       {
         Assert.AreEqual (user.ID, User.Current.ID);
         Assert.AreNotSame (user, User.Current);

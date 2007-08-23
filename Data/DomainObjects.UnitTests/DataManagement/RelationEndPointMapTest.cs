@@ -172,7 +172,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
       OrderTicket orderTicket2;
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         orderTicket2 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
       }
@@ -188,7 +188,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
       OrderItem orderItem3;
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         orderItem3 = OrderItem.GetObject (DomainObjectIDs.OrderItem3);
       }
@@ -207,7 +207,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
       OrderItem orderItem3;
 
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         orderItem3 = OrderItem.GetObject (DomainObjectIDs.OrderItem3);
       }
@@ -224,7 +224,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
       OrderItem orderItem1;
-      using (new ClientTransactionScope())
+      using (ClientTransaction.NewTransaction ().EnterScope ())
       {
         orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
       }
@@ -238,7 +238,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
       OrderItem orderItem3;
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         orderItem3 = OrderItem.GetObject (DomainObjectIDs.OrderItem3);
       }
@@ -265,7 +265,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void PerformDeletionWithOtherClientTransaction ()
     {
       Order order1;
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         order1 = Order.GetObject (DomainObjectIDs.Order1);
       }

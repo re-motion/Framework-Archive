@@ -32,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       _clientID = new ObjectID ("Client", new Guid ("6F20355F-FA99-4c4e-B432-02C41F7BD390"));
       _fileID = new ObjectID ("File", Guid.NewGuid());
 
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
       {
         Client.NewObject();
         File.NewObject();
@@ -51,7 +51,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       Stopwatch stopwatch = new Stopwatch ();
       for (int i = 0; i < numberOfTests; i++)
       {
-        using (new ClientTransactionScope (AutoRollbackBehavior.None))
+        using (ClientTransaction.NewTransaction().EnterScope (AutoRollbackBehavior.None))
         {
           Client client = Client.GetObject (_clientID);
 
@@ -79,7 +79,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       Stopwatch stopwatch = new Stopwatch ();
       for (int i = 0; i < numberOfTests; i++)
       {
-        using (new ClientTransactionScope (AutoRollbackBehavior.None))
+        using (ClientTransaction.NewTransaction ().EnterScope (AutoRollbackBehavior.None))
         {
           Client client = Client.GetObject (_clientID);
 

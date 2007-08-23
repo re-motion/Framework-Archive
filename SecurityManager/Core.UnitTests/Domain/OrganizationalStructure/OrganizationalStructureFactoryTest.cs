@@ -16,7 +16,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.SetUp ();
 
       _factory = new OrganizationalStructureFactory();
-      new ClientTransactionScope();
+      ClientTransaction.NewTransaction ().EnterNonReturningScope ();
     }
 
     [Test]

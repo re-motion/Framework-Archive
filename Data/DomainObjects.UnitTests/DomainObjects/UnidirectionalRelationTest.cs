@@ -114,7 +114,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       ClientTransactionMock.Commit ();
 
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         client1 = Client.GetObject (clientID1);
         client2 = Client.GetObject (clientID2);
@@ -242,7 +242,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       ClientTransactionMock.Commit ();
 
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         newClient1 = Client.GetObject (newClientID1);
         newClient2 = Client.GetObject (newClientID2);

@@ -11,7 +11,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public override void SetUp ()
     {
       base.SetUp ();
-      new ClientTransactionScope ();
+      ClientTransaction.NewTransaction ().EnterNonReturningScope ();
     }
 
     [Test]

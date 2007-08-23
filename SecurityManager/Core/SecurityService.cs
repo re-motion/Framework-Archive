@@ -79,7 +79,7 @@ namespace Rubicon.SecurityManager
 
     public int GetRevision ()
     {
-      using (new ClientTransactionScope())
+      using (ClientTransaction.NewTransaction().EnterNonReturningScope())
       {
         return Revision.GetRevision ();
       }

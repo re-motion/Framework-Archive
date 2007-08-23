@@ -597,7 +597,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DomainObjects
     public void GetObjectWithTransaction ()
     {
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-      using (new ClientTransactionScope (clientTransactionMock))
+      using (clientTransactionMock.EnterNonReturningScope())
       {
         Order order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1);
 
@@ -610,7 +610,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DomainObjects
     public void GetDeletedObjectWithTransaction ()
     {
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-      using (new ClientTransactionScope (clientTransactionMock))
+      using (clientTransactionMock.EnterNonReturningScope ())
       {
         Order order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1);
 
@@ -628,7 +628,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DomainObjects
     public void CreateNewObjectWithTransaction ()
     {
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-      using (new ClientTransactionScope (clientTransactionMock))
+      using (clientTransactionMock.EnterNonReturningScope ())
       {
         Order order = new Order ();
 

@@ -195,7 +195,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       DomainObjectCollection[] deserializedCollections = (DomainObjectCollection[]) deserializedObjects[1];
       ClientTransaction deserializedClientTransaction = (ClientTransaction) deserializedObjects[2];
       
-      using (new ClientTransactionScope (deserializedClientTransaction))
+      using (deserializedClientTransaction.EnterScope())
       {
         SequenceEventReceiver deserializedEventReceiver = (SequenceEventReceiver) deserializedObjects[3];
 

@@ -22,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     [Test]
     public void WxeTransactedFunctionCreateRoot ()
     {
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
         new CreateRootTestTransactedFunction (originalScope).Execute (Context);
@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     [Test]
     public void WxeTransactedFunctionCreateChildIfParent ()
     {
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
         new CreateRootWithChildTestTransactedFunction (originalScope.ScopedTransaction, new CreateChildIfParentTestTransactedFunction ()).Execute (Context);
@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     [Test]
     public void WxeTransactedFunctionNone ()
     {
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         ClientTransactionScope originalScope  = ClientTransactionScope.ActiveScope;
         new CreateNoneTestTransactedFunction (originalScope).Execute (Context);
@@ -56,7 +56,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     public void WxeTransactedFunctionCreateNewAutoCommit ()
     {
       SetDatabaseModifyable ();
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
         SetInt32Property (5, ClientTransaction.NewTransaction ());
@@ -72,7 +72,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     public void WxeTransactedFunctionCreateNewNoAutoCommit()
     {
       SetDatabaseModifyable ();
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
         SetInt32Property (5, ClientTransaction.NewTransaction ());
@@ -90,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     {
       SetDatabaseModifyable ();
       SetInt32Property (5, ClientTransaction.NewTransaction ());
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
 
@@ -109,7 +109,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     {
       SetDatabaseModifyable ();
       SetInt32Property (5, ClientTransaction.NewTransaction ());
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
 
@@ -147,7 +147,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     {
       try
       {
-        new ClientTransactionScope ();
+        ClientTransaction.NewTransaction().EnterScope();
         new RemoveCurrentTransactionScopeFunction ().Execute (Context);
       }
       catch (WxeUnhandledException ex)
@@ -181,7 +181,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     [Test]
     public void AutoEnlistingCreateNone ()
     {
-      using (new ClientTransactionScope())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         ClassWithAllDataTypes inParameter = ClassWithAllDataTypes.NewObject();
         inParameter.Int32Property = 7;
@@ -202,7 +202,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
       // TODO: Die Fehlersituation führt auch dazu, dass im ClientTransactionScope.Leave ein Fehler auftritt, weil
       // ClientTransactionScope.ActiveScope nicht gleich dem ist, dessen Leave-Methode ausgeführt wird => checken
 
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         ClassWithAllDataTypes inParameter = ClassWithAllDataTypes.NewObject ();
         inParameter.DateTimeProperty = DateTime.Now;
@@ -227,7 +227,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
         + "function's transaction. Maybe it was newly created and has not yet been committed, or it was deleted.", MatchType =  MessageMatch.Regex)]
     public void AutoEnlistingCreateRootThrowsWhenInvalidInParameter ()
     {
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         ClassWithAllDataTypes inParameter = ClassWithAllDataTypes.NewObject ();
         DomainObjectParameterTestTransactedFunction function = new DomainObjectParameterTestTransactedFunction (WxeTransactionMode.CreateRoot,
@@ -256,7 +256,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
         + "function's transaction. Maybe it was newly created and has not yet been committed, or it was deleted.", MatchType = MessageMatch.Regex)]
     public void AutoEnlistingCreateRootThrowsWhenInvalidOutParameter ()
     {
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         DomainObjectParameterInvalidOutTestTransactedFunction function = new DomainObjectParameterInvalidOutTestTransactedFunction (WxeTransactionMode.CreateRoot);
         try
@@ -380,7 +380,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     public void ThreadAbortExceptionInNestedFunction ()
     {
       ThreadAbortTestTransactedFunction nestedFunction = new ThreadAbortTestTransactedFunction ();
-      ClientTransactionScope originalScope = new ClientTransactionScope ();
+      ClientTransactionScope originalScope = ClientTransaction.NewTransaction().EnterScope();
       CreateRootWithChildTestTransactedFunction parentFunction =
           new CreateRootWithChildTestTransactedFunction (ClientTransactionScope.CurrentTransaction, nestedFunction);
 
@@ -413,7 +413,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     public void ThreadAbortExceptionInNestedFunctionWithThreadMigration ()
     {
       ThreadAbortTestTransactedFunction nestedFunction = new ThreadAbortTestTransactedFunction ();
-      ClientTransactionScope originalScope = new ClientTransactionScope ();
+      ClientTransactionScope originalScope = ClientTransaction.NewTransaction().EnterScope();
       CreateRootWithChildTestTransactedFunction parentFunction =
           new CreateRootWithChildTestTransactedFunction (ClientTransactionScope.CurrentTransaction, nestedFunction);
 

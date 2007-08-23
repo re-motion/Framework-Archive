@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
     public override void SetUp ()
     {
       base.SetUp();
-      _transactionScope = new ClientTransactionScope ();
+      _transactionScope = ClientTransaction.NewTransaction ().EnterNonReturningScope ();
       _domainObjectClass = new DomainObjectClass (typeof (Order));
     }
 

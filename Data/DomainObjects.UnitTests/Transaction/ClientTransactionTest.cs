@@ -483,7 +483,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void GetObjectByNewIndependentTransaction ()
     {
       ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
-      using (new ClientTransactionScope (clientTransaction))
+      using (clientTransaction.EnterScope())
       {
         Order order = Order.GetObject (DomainObjectIDs.Order1);
 
@@ -496,7 +496,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void GetDeletedObjectByNewIndependentTransaction ()
     {
       ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
-      using (new ClientTransactionScope (clientTransaction))
+      using (clientTransaction.EnterScope())
       {
         Order order = Order.GetObject (DomainObjectIDs.Order1);
 
@@ -557,7 +557,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No ClientTransaction has been associated with the current thread.")]
     public void NoAutoInitializationOfCurrent ()
     {
-      using (new ClientTransactionScope (null))
+      using (ClientTransactionScope.EnterNullScope())
       {
         Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
         ClientTransaction transaction = ClientTransactionScope.CurrentTransaction;
@@ -573,7 +573,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void HasCurrentFalseViaNullTransaction ()
     {
-      using (new ClientTransactionScope (null))
+      using (ClientTransactionScope.EnterNullScope())
       {
         Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
       }
@@ -705,6 +705,52 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void IsDiscardedReturnsFalse ()
     {
       Assert.IsFalse (ClientTransactionMock.IsDiscarded);
+    }
+
+    [Test]
+    public void DefaultEnterScope ()
+    {
+      ClientTransactionScope outerScope = ClientTransactionScope.ActiveScope;
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      using (newTransaction.EnterScope ())
+      {
+        Assert.AreNotSame (outerScope, ClientTransactionScope.ActiveScope);
+        Assert.AreSame (newTransaction, ClientTransactionScope.CurrentTransaction);
+        Assert.AreEqual (AutoRollbackBehavior.ReturnToParent, ClientTransactionScope.ActiveScope.AutoRollbackBehavior);
+      }
+    }
+
+    [Test]
+    public void EnterScopeWithRollbackBehavior ()
+    {
+      ClientTransactionScope outerScope = ClientTransactionScope.ActiveScope;
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      using (newTransaction.EnterScope (AutoRollbackBehavior.Rollback))
+      {
+        Assert.AreNotSame (outerScope, ClientTransactionScope.ActiveScope);
+        Assert.AreSame (newTransaction, ClientTransactionScope.CurrentTransaction);
+        Assert.AreEqual (AutoRollbackBehavior.Rollback, ClientTransactionScope.ActiveScope.AutoRollbackBehavior);
+      }
+
+      using (newTransaction.EnterScope (AutoRollbackBehavior.None))
+      {
+        Assert.AreNotSame (outerScope, ClientTransactionScope.ActiveScope);
+        Assert.AreSame (newTransaction, ClientTransactionScope.CurrentTransaction);
+        Assert.AreEqual (AutoRollbackBehavior.None, ClientTransactionScope.ActiveScope.AutoRollbackBehavior);
+      }
+    }
+
+    [Test]
+    public void EnterNonReturningScope ()
+    {
+      ClientTransactionScope outerScope = ClientTransactionScope.ActiveScope;
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      using (newTransaction.EnterNonReturningScope ())
+      {
+        Assert.AreNotSame (outerScope, ClientTransactionScope.ActiveScope);
+        Assert.AreSame (newTransaction, ClientTransactionScope.CurrentTransaction);
+        Assert.AreEqual (AutoRollbackBehavior.None, ClientTransactionScope.ActiveScope.AutoRollbackBehavior);
+      }
     }
   }
 }

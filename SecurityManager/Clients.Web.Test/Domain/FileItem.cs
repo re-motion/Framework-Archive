@@ -12,7 +12,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
   {
     public static FileItem NewObject (ClientTransaction clientTransaction)
     {
-      using (new ClientTransactionScope (clientTransaction))
+      using (clientTransaction.EnterNonReturningScope ())
       {
         return DomainObject.NewObject<FileItem> ().With ();
       }
@@ -20,7 +20,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
 
     public static new FileItem GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      using (new ClientTransactionScope (clientTransaction))
+      using (clientTransaction.EnterNonReturningScope())
       {
         return DomainObject.GetObject<FileItem> (id);
       }

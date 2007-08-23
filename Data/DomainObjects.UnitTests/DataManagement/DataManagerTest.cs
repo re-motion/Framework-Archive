@@ -358,7 +358,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
       Order order1;
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         order1 = Order.GetObject (DomainObjectIDs.Order1);
       }

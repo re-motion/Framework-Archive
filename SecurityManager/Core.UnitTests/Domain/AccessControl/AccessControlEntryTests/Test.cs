@@ -179,7 +179,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
       ace.Tenant = TenantSelection.SpecificTenant;
       ace.SpecificTenant = _testHelper.CreateTenant ("TestTenant");
       ClientTransactionScope.CurrentTransaction.Commit();
-      using (new ClientTransactionScope())
+      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
       {
         AccessControlEntry aceActual = AccessControlEntry.GetObject (aceID);
         aceActual.Tenant = TenantSelection.OwningTenant;

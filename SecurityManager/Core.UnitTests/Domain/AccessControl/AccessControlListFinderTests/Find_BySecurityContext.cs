@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
     public override void SetUp ()
     {
       base.SetUp ();
-      new ClientTransactionScope (_currentClassDefinitionTransaction);
+      _currentClassDefinitionTransaction.EnterNonReturningScope();
     }
 
     [Test]

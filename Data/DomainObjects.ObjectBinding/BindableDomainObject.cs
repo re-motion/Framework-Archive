@@ -77,7 +77,7 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
     
-    using (new ClientTransactionScope (clientTransaction))
+    using (clientTransaction.EnterNonReturningScope())
     {
       return DomainObject.GetObject<BindableDomainObject> (id);
     }
@@ -104,7 +104,7 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
-    using (new ClientTransactionScope (clientTransaction))
+    using (clientTransaction.EnterNonReturningScope())
     {
       return DomainObject.GetObject<BindableDomainObject> (id, includeDeleted);
     }

@@ -344,7 +344,7 @@ namespace Rubicon.Mixins
       return MixedTypeInvokeWithCreator.CreateInvokeWithWrapper<object> (baseType, generationPolicy, mixinInstances);
     }
 
-    // <summary>
+    /// <summary>
     /// Begins deserialization of a mixed object.
     /// </summary>
     /// <param name="concreteDeserializedType">Target type of the object to be deserialized.</param>

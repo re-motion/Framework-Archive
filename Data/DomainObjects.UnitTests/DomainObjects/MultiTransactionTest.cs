@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void LoadIntoTransaction ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      using (new ClientTransactionScope())
+      using (ClientTransaction.NewTransaction ().EnterScope ())
       {
         Order order2 = DomainObject.LoadIntoTransaction (order, ClientTransactionScope.CurrentTransaction);
         Assert.IsNotNull (order2);
@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order order2 = DomainObject.LoadIntoTransaction (order, ClientTransactionScope.CurrentTransaction);
       Assert.AreSame (order, order2);
 
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         Order order3 = DomainObject.LoadIntoTransaction (order, ClientTransactionScope.CurrentTransaction);
         Order order4 = DomainObject.LoadIntoTransaction (order, ClientTransactionScope.CurrentTransaction);
@@ -50,7 +50,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       int outerNumber = order.OrderNumber;
       int outerNumberOfItems = order.OrderItems.Count;
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         Order order2 = DomainObject.LoadIntoTransaction (order, ClientTransactionScope.CurrentTransaction);
         Assert.AreEqual (outerNumber + 1, order2.OrderNumber);
@@ -73,7 +73,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       order.DeliveryDate = DateTime.Now;
       ClientTransactionScope.CurrentTransaction.Commit ();
 
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         Order order2 = DomainObject.LoadIntoTransaction (order, ClientTransactionScope.CurrentTransaction);
         Assert.AreEqual (order.ID, order2.ID);
@@ -92,7 +92,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void LoadIntoTransactionThrowsWithUncommitedNewObjects ()
     {
       Order order = Order.NewObject ();
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         DomainObject.LoadIntoTransaction (order, ClientTransactionScope.CurrentTransaction);
       }
@@ -113,7 +113,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void ThrowsWhenCannotBeUsedInTransaction ()
     {
       Order order = Order.NewObject ();
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
         int i = order.OrderNumber;
@@ -127,7 +127,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void ThrowsOnDeleteWhenCannotBeUsedInTransaction ()
     {
       Order order = Order.NewObject ();
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
         order.Delete();
@@ -276,7 +276,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void GetObjectAfterEnlistingReturnsEnlistedObject ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
         Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
@@ -290,7 +290,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void EnlistingAlthoughObjectHasAlreadyBeenLoadedThrows ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         Assert.AreNotSame (order, Order.GetObject (order.ID));
         ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
@@ -302,7 +302,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
         ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);

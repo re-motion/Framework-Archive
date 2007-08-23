@@ -568,7 +568,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order order;
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-      using (new ClientTransactionScope (clientTransactionMock))
+      using (clientTransactionMock.EnterScope())
       {
         order = Order.GetObject (DomainObjectIDs.Order1);
       }
@@ -581,7 +581,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order order;
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-      using (new ClientTransactionScope (clientTransactionMock))
+      using (clientTransactionMock.EnterScope())
       {
         order = Order.GetObject (DomainObjectIDs.Order1);
 
@@ -600,7 +600,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
       Order order;
-      using (new ClientTransactionScope (clientTransactionMock))
+      using (clientTransactionMock.EnterScope())
       {
         order = Order.NewObject ();
       }

@@ -341,7 +341,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       AccessControlList expectedAcl = dbFixtures.CreateAndCommitAccessControlListWithAccessControlEntries (10, ClientTransactionScope.CurrentTransaction);
       ObjectList<AccessControlEntry> expectedAces = expectedAcl.AccessControlEntries;
 
-      using (new ClientTransactionScope())
+      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
       {
         AccessControlList actualAcl = AccessControlList.GetObject (expectedAcl.ID);
 
@@ -358,7 +358,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       AccessControlList expectedAcl = dbFixtures.CreateAndCommitAccessControlListWithStateCombinations (10, ClientTransactionScope.CurrentTransaction);
       ObjectList<StateCombination> expectedStateCombinations = expectedAcl.StateCombinations;
 
-      using (new ClientTransactionScope())
+      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
       {
         AccessControlList actualAcl = AccessControlList.GetObject (expectedAcl.ID);
 

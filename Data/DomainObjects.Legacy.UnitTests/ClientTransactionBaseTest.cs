@@ -58,7 +58,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
         _clientTransactionScope.Leave();
 
       _clientTransactionMock = new ClientTransactionMock ();
-      _clientTransactionScope = new ClientTransactionScope (_clientTransactionMock);
+      _clientTransactionScope = _clientTransactionMock.EnterNonReturningScope();
       _testDataContainerFactory = new TestDataContainerFactory (_clientTransactionMock);
     }
 

@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
         // succeed
       }
 
-      using (new ClientTransactionScope())
+      using (ClientTransaction.NewTransaction().EnterScope())
       {
         ClassWithUnidirectionalRelation reloadedObject =
             ClassWithUnidirectionalRelation.GetObject (DomainObjectIDs.ClassWithUnidirectionalRelation);

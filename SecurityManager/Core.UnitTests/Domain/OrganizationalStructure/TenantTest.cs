@@ -99,7 +99,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Tenant.Current = tenant;
       Assert.AreSame (tenant, Tenant.Current);
 
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
       {
         Assert.AreEqual(tenant.ID, Tenant.Current.ID);
         Assert.AreNotSame (tenant, Tenant.Current);

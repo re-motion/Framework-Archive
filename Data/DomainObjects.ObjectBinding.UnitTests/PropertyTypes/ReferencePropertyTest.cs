@@ -26,7 +26,7 @@ public class ReferencePropertyTest : DatabaseTest
   {
     base.SetUp ();
 
-    _transactionScope = new ClientTransactionScope ();
+    _transactionScope = ClientTransaction.NewTransaction().EnterNonReturningScope();
     _clientTransaction = _transactionScope.ScopedTransaction;
 
     _order = new Order();
@@ -57,7 +57,7 @@ public class ReferencePropertyTest : DatabaseTest
   [Test]
   public void SearchAvailableObjectsUsesCurrentTransaction ()
   {
-    using (new ClientTransactionScope ())
+    using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
     {
       ReferenceProperty referenceProperty = new ReferenceProperty (_orderTicketBusinessObjectClass, GetOrderProperty(), true, null, false);
 

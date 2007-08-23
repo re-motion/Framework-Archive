@@ -117,7 +117,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     internal protected override DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)
     {
       ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-      using (EnterSideEffectFreeScope())
+      using (EnterNonReturningScope())
       {
         DomainObject domainObject = GetObject (relationEndPointID.ObjectID, false);
 
@@ -147,7 +147,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     internal protected override DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID)
     {
       ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-      using (EnterSideEffectFreeScope())
+      using (EnterNonReturningScope())
       {
         using (PersistenceManager persistenceManager = new PersistenceManager())
         {

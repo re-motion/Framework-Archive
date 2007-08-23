@@ -269,28 +269,63 @@ public abstract class ClientTransaction : ITransaction
   }
 
   /// <summary>
-  /// Creates a new <see cref="ClientTransactionScope"/> for this transaction with an automatic ReturnToParent rollback behavior and enters it.
+  /// Creates a new <see cref="ClientTransactionScope"/> for this transaction with an automatic <see cref="AutoRollbackBehavior.ReturnToParent"/>
+  /// behavior and enters it, setting it the <see cref="ClientTransactionScope.ActiveScope"/> for the current thread.
   /// </summary>
-  /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction with an automatic ReturnToParent behavior.</returns>
-  /// <remarks>This method exists for convenience and is equivalent to <c>new ClientTransactionScope (this, AutomaticRollbackBehavior.ReturnToParent)</c>.
-  /// The created scope will not perform any automatic rollback, but it will return control to the parent transaction at its end if this transaction
-  /// is a subtransaction.</remarks>
+  /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction with an automatic <see cref="AutoRollbackBehavior.ReturnToParent"/>
+  /// behavior.</returns>
+  /// <remarks>
+  /// <para>
+  /// The created scope will not perform any automatic rollback, but it will return control to the parent transaction at its end if this
+  /// transaction is a subtransaction.
+  /// </para>
+  /// <para>
+  /// The new <see cref="ClientTransactionScope"/> stores the previous <see cref="ClientTransactionScope.ActiveScope"/>. When this scope's
+  /// <see cref="ClientTransactionScope.Leave"/> method is called or the scope is disposed of, the previous scope is reactivated.
+  /// </para>
+  /// </remarks>
   public virtual ClientTransactionScope EnterScope ()
   {
-    ClientTransactionScope scope = EnterSideEffectFreeScope ();
-    scope.AutoRollbackBehavior = AutoRollbackBehavior.ReturnToParent;
-    return scope;
+    return EnterScope (AutoRollbackBehavior.ReturnToParent);
   }
 
   /// <summary>
-  /// Creates a new <see cref="ClientTransactionScope"/> for this transaction with no automatic rollback behavior and enters it.
+  /// Creates a new <see cref="ClientTransactionScope"/> for this transaction with the given automatic rollback behavior and enters it,
+  /// setting it the <see cref="ClientTransactionScope.ActiveScope"/> for the current thread.
   /// </summary>
-  /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction with no rollback behavior.</returns>
-  /// <remarks>This method exists for convenience and is equivalent to <c>new ClientTransactionScope (this)</c>. The created scope will not
-  /// perform any automatic rollback behavior.</remarks>
-  public virtual ClientTransactionScope EnterSideEffectFreeScope ()
+  /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction.</returns>
+  /// <param name="rollbackBehavior">The automatic rollback behavior to be performed when the scope's <see cref="ClientTransactionScope.Leave"/>
+  /// method is called.</param>
+  /// <remarks>
+  /// <para>
+  /// The new <see cref="ClientTransactionScope"/> stores the previous <see cref="ClientTransactionScope.ActiveScope"/>. When this scope's
+  /// <see cref="ClientTransactionScope.Leave"/> method is called or the scope is disposed of, the previous scope is reactivated.
+  /// </para>
+  /// </remarks>
+  public virtual ClientTransactionScope EnterScope (AutoRollbackBehavior rollbackBehavior)
   {
-    return new ClientTransactionScope (this);
+    return new ClientTransactionScope (this, rollbackBehavior);
+  }
+
+  /// <summary>
+  /// Creates a new <see cref="ClientTransactionScope"/> for this transaction with no automatic rollback behavior and enters it, setting it the
+  /// <see cref="ClientTransactionScope.ActiveScope"/> for the current thread.
+  /// </summary>
+  /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction with no automatic rollback behavior.</returns>
+  /// <remarks>
+  /// <para>
+  /// The created scope will not perform any automatic rollback and it will not return control to the parent transaction at its end if this
+  /// transaction is a subtransaction. You must explicitly call <see cref="ReturnToParentTransaction"/> if you want to continue working with
+  /// the parent transaction.
+  /// </para>
+  /// <para>
+  /// The new <see cref="ClientTransactionScope"/> stores the previous <see cref="ClientTransactionScope.ActiveScope"/>. When this scope's
+  /// <see cref="ClientTransactionScope.Leave"/> method is called or the scope is disposed of, the previous scope is reactivated.
+  /// </para>
+  /// </remarks>
+  public virtual ClientTransactionScope EnterNonReturningScope ()
+  {
+    return EnterScope (AutoRollbackBehavior.None);
   }
 
   /// <summary>
@@ -376,7 +411,7 @@ public abstract class ClientTransaction : ITransaction
   /// <exception cref="Persistence.StorageProviderException">An error occurred while committing the changes to the datasource.</exception>
   public virtual void Commit ()
   {
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       BeginCommit();
       DomainObjectCollection changedButNotDeletedDomainObjects = _dataManager.GetDomainObjects (new StateType[] {StateType.Changed, StateType.New});
@@ -394,7 +429,7 @@ public abstract class ClientTransaction : ITransaction
   /// </summary>
   public virtual void Rollback ()
   {
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       BeginRollback();
       DomainObjectCollection changedButNotNewDomainObjects = _dataManager.GetDomainObjects (new StateType[] {StateType.Changed, StateType.Deleted});
@@ -443,7 +478,7 @@ public abstract class ClientTransaction : ITransaction
   internal DataContainer CreateNewDataContainer (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (type);
 
@@ -467,7 +502,7 @@ public abstract class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.GetDataContainer());
     }
@@ -484,7 +519,7 @@ public abstract class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
@@ -506,7 +541,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual DomainObject GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
@@ -528,7 +563,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual DomainObjectCollection GetRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
@@ -550,7 +585,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual DomainObjectCollection GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
@@ -579,7 +614,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual void SetRelatedObject (RelationEndPointID relationEndPointID, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       _dataManager.RelationEndPointMap.SetRelatedObject (relationEndPointID, newRelatedObject);
     }
@@ -596,7 +631,7 @@ public abstract class ClientTransaction : ITransaction
   protected internal virtual void Delete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       _dataManager.Delete (domainObject);
     }
@@ -619,7 +654,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual DomainObject LoadObject (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       DataContainer dataContainer = LoadDataContainer (id);
 
@@ -647,7 +682,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual DataContainer LoadDataContainerForExistingObject (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       DataContainer dataContainer = LoadDataContainer (domainObject.ID);
       dataContainer.SetDomainObject (domainObject);
@@ -713,7 +748,7 @@ public abstract class ClientTransaction : ITransaction
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
     ArgumentUtility.CheckNotNull ("collectionType", collectionType);
 
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       DataContainerCollection newLoadedDataContainers = _dataManager.DataContainerMap.GetNotRegisteredDataContainers (dataContainers);
       NotifyOfLoading (newLoadedDataContainers);
@@ -770,7 +805,7 @@ public abstract class ClientTransaction : ITransaction
 
   private void OnSubTransactionCreating ()
   {
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       TransactionEventSink.SubTransactionCreating();
     }
@@ -783,7 +818,7 @@ public abstract class ClientTransaction : ITransaction
 
   protected virtual void OnSubTransactionCreated (SubTransactionCreatedEventArgs args)
   {
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       TransactionEventSink.SubTransactionCreated (args.SubTransaction);
 
@@ -798,7 +833,7 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnLoaded (ClientTransactionEventArgs args)
   {
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       foreach (DomainObject loadedDomainObject in args.DomainObjects)
         loadedDomainObject.EndObjectLoading();
@@ -819,7 +854,7 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnCommitting (ClientTransactionEventArgs args)
   {
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       TransactionEventSink.TransactionCommitting (args.DomainObjects);
 
@@ -835,7 +870,7 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnCommitted (ClientTransactionEventArgs args)
   {
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       if (Committed != null)
         Committed (this, args);
@@ -850,7 +885,7 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnRollingBack (ClientTransactionEventArgs args)
   {
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       TransactionEventSink.TransactionRollingBack (args.DomainObjects);
 
@@ -865,7 +900,7 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnRolledBack (ClientTransactionEventArgs args)
   {
-    using (EnterSideEffectFreeScope ())
+    using (EnterNonReturningScope ())
     {
       if (RolledBack != null)
         RolledBack (this, args);

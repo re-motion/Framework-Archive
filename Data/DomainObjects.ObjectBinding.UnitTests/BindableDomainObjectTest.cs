@@ -24,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
       _mockObjectSecurityStrategy = _mocks.CreateMock<IObjectSecurityStrategy> ();
 
       _transaction = ClientTransaction.NewTransaction();
-      using (new ClientTransactionScope (_transaction))
+      using (_transaction.EnterNonReturningScope ())
       {
         _securableOder = new SecurableOrder (_mockObjectSecurityStrategy);
         _securableOder.SetDisplayName ("Value");

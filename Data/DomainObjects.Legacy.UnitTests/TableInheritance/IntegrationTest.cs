@@ -171,13 +171,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
       Assert.AreEqual (DomainObjectIDs.Client, derivedClassWithEntity1.ClientFromAbstractBaseClass.ID);
 
 
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
       {
         derivedClassWithEntity1 = DerivedClassWithEntityWithHierarchy.GetObject (_derivedClassWithEntity1ID);
         Assert.AreEqual (client2, derivedClassWithEntity1.ClientFromDerivedClassWithEntity.ID);
       }
 
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
       {
         DerivedClassWithEntityFromBaseClassWithHierarchy derivedClassWithEntityFromBaseClass1 =
             DerivedClassWithEntityFromBaseClassWithHierarchy.GetObject (_derivedClassWithEntityFromBaseClass1ID);
@@ -193,14 +193,14 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
       Assert.AreEqual (_rootFolderID, derivedClassWithEntity1.FileSystemItemFromAbstractBaseClass.ID);
 
 
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
       {
         derivedClassWithEntity1 = DerivedClassWithEntityWithHierarchy.GetObject (_derivedClassWithEntity1ID);
         Assert.AreEqual (_fileInRootFolderID, derivedClassWithEntity1.FileSystemItemFromDerivedClassWithEntity.ID);
       }
 
 
-      using (new ClientTransactionScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
       {
         DerivedClassWithEntityFromBaseClassWithHierarchy derivedClassWithEntityFromBaseClass1 =
             DerivedClassWithEntityFromBaseClassWithHierarchy.GetObject (_derivedClassWithEntityFromBaseClass1ID);
