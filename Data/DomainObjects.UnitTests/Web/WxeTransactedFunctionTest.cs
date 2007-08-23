@@ -184,12 +184,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
       using (ClientTransaction.NewTransaction().EnterScope())
       {
         ClassWithAllDataTypes inParameter = ClassWithAllDataTypes.NewObject();
+        ClassWithAllDataTypes[] inParameterArray = new ClassWithAllDataTypes[] { ClassWithAllDataTypes.NewObject () };
         inParameter.Int32Property = 7;
-        DomainObjectParameterTestTransactedFunction function = new DomainObjectParameterTestTransactedFunction (WxeTransactionMode.None, inParameter);
+        inParameterArray[0].Int32Property = 8;
+
+        DomainObjectParameterTestTransactedFunction function =
+            new DomainObjectParameterTestTransactedFunction (WxeTransactionMode.None, inParameter, inParameterArray);
         function.Execute (Context);
+
         ClassWithAllDataTypes outParameter = function.OutParameter;
+        ClassWithAllDataTypes[] outParameterArray = function.OutParameterArray;
+
         Assert.IsTrue (outParameter.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
         Assert.AreEqual (12, outParameter.Int32Property);
+        
+        Assert.IsTrue (outParameterArray[0].CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+        Assert.AreEqual (13, outParameterArray[0].Int32Property);
       }
     }
 
@@ -198,27 +208,37 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     {
       SetDatabaseModifyable ();
 
-      // TODO: WxeTransaction.OnExecutionStarted wirft eine Exception => ungültiger Zustand im RestorePreviousTransaction (ExecutionStarted == false)
-      // TODO: Die Fehlersituation führt auch dazu, dass im ClientTransactionScope.Leave ein Fehler auftritt, weil
-      // ClientTransactionScope.ActiveScope nicht gleich dem ist, dessen Leave-Methode ausgeführt wird => checken
-
       using (ClientTransaction.NewTransaction().EnterScope())
       {
         ClassWithAllDataTypes inParameter = ClassWithAllDataTypes.NewObject ();
         inParameter.DateTimeProperty = DateTime.Now;
         inParameter.DateProperty = DateTime.Now.Date;
         inParameter.Int32Property = 4;
+
+        ClassWithAllDataTypes[] inParameterArray = new ClassWithAllDataTypes[] { ClassWithAllDataTypes.NewObject () };
+        inParameterArray[0].Int32Property = 5;
+        inParameterArray[0].DateTimeProperty = DateTime.Now;
+        inParameterArray[0].DateProperty = DateTime.Now.Date;
+
         ClientTransactionScope.CurrentTransaction.Commit ();
 
         inParameter.Int32Property = 7;
+        inParameterArray[0].Int32Property = 8;
+
         DomainObjectParameterTestTransactedFunction function = new DomainObjectParameterTestTransactedFunction (WxeTransactionMode.CreateRoot,
-            inParameter);
+            inParameter, inParameterArray);
         function.Execute (Context);
+        
         ClassWithAllDataTypes outParameter = function.OutParameter;
+        ClassWithAllDataTypes[] outParameterArray = function.OutParameterArray;
 
         Assert.IsTrue (outParameter.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
         Assert.AreNotEqual (12, outParameter.Int32Property);
         Assert.AreEqual (9, outParameter.Int32Property);
+
+        Assert.IsTrue (outParameterArray[0].CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+        Assert.AreNotEqual (13, outParameterArray[0].Int32Property);
+        Assert.AreEqual (10, outParameterArray[0].Int32Property);
       }
     }
 
@@ -230,8 +250,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
       using (ClientTransaction.NewTransaction().EnterScope())
       {
         ClassWithAllDataTypes inParameter = ClassWithAllDataTypes.NewObject ();
+        ClassWithAllDataTypes[] inParameterArray = new ClassWithAllDataTypes[] { ClassWithAllDataTypes.NewObject () };
+
         DomainObjectParameterTestTransactedFunction function = new DomainObjectParameterTestTransactedFunction (WxeTransactionMode.CreateRoot,
-            inParameter);
+            inParameter, inParameterArray);
         try
         {
           function.Execute (Context);
@@ -258,7 +280,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     {
       using (ClientTransaction.NewTransaction().EnterScope())
       {
-        DomainObjectParameterInvalidOutTestTransactedFunction function = new DomainObjectParameterInvalidOutTestTransactedFunction (WxeTransactionMode.CreateRoot);
+        DomainObjectParameterInvalidOutTestTransactedFunction function =
+            new DomainObjectParameterInvalidOutTestTransactedFunction (WxeTransactionMode.CreateRoot);
         try
         {
           function.Execute (Context);

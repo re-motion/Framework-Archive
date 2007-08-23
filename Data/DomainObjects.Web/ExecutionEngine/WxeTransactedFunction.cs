@@ -2,6 +2,7 @@ using System;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
+using System.Collections;
 
 namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 {
@@ -181,19 +182,46 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 
     private void EnlistParameter (WxeParameterDeclaration parameterDeclaration, object parameter, ClientTransaction transaction)
     {
-      DomainObject domainObject = parameter as DomainObject;
+      if (!TryEnlistAsDomainObject (parameterDeclaration, parameter as DomainObject, transaction))
+        TryEnlistAsEnumerable (parameterDeclaration, parameter as IEnumerable, transaction);
+    }
+
+    private bool TryEnlistAsDomainObject (WxeParameterDeclaration parameterDeclaration, DomainObject domainObject, ClientTransaction transaction)
+    {
       if (domainObject != null)
       {
-        try
-        {
-          transaction.EnlistDomainObject (domainObject);
-        }
-        catch (Exception ex)
-        {
-          string message = string.Format ("The domain object '{0}' cannot be enlisted in the function's transaction. Maybe it was newly created "
-              + "and has not yet been committed, or it was deleted.", domainObject.ID);
-          throw new ArgumentException (message, parameterDeclaration.Name, ex);
-        }
+        EnlistDomainObject (transaction, domainObject, parameterDeclaration);
+        return true;
+      }
+      else
+        return false;
+    }
+
+    private bool TryEnlistAsEnumerable (WxeParameterDeclaration parameterDeclaration, IEnumerable enumerable, ClientTransaction transaction)
+    {
+      if (enumerable != null)
+      {
+        foreach (object innerParameter in enumerable)
+          EnlistParameter (parameterDeclaration, innerParameter, transaction);
+        return true;
+      }
+      else
+        return false;
+    }
+
+    private void EnlistDomainObject (ClientTransaction transaction, DomainObject domainObject, WxeParameterDeclaration parameterDeclaration)
+    {
+      try
+      {
+        transaction.EnlistDomainObject (domainObject);
+      }
+      catch (Exception ex)
+      {
+        string message = string.Format (
+            "The domain object '{0}' cannot be enlisted in the function's transaction. Maybe it was newly created "
+            + "and has not yet been committed, or it was deleted.",
+            domainObject.ID);
+        throw new ArgumentException (message, parameterDeclaration.Name, ex);
       }
     }
   }

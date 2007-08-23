@@ -12,7 +12,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web.WxeFunctions
   public class DomainObjectParameterWithChildInvalidInTestTransactedFunction : CreateRootWithChildTestTransactedFunctionBase
   {
     public DomainObjectParameterWithChildInvalidInTestTransactedFunction ()
-        : base (WxeTransactionMode.CreateRoot, new DomainObjectParameterTestTransactedFunction (WxeTransactionMode.CreateChildIfParent, null))
+        : base (WxeTransactionMode.CreateRoot, new DomainObjectParameterTestTransactedFunction (WxeTransactionMode.CreateChildIfParent, null, null))
     {
       Insert (0, new WxeMethodStep (FirstStep));
     }
@@ -25,6 +25,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web.WxeFunctions
       ClassWithAllDataTypes inParameter = ClassWithAllDataTypes.GetObject (new DomainObjectIDs().ClassWithAllDataTypes2);
       inParameter.Delete ();
       childFunction.InParameter = inParameter;
+
+      ClassWithAllDataTypes[] inParameterArray =
+          new ClassWithAllDataTypes[] { inParameter };
+      childFunction.InParameterArray = inParameterArray;
     }
   }
 }
