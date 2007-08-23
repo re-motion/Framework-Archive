@@ -4,6 +4,7 @@ using Rubicon.Mixins.Context;
 using System.Threading;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Reflection;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Mixins.UnitTests.Configuration
 {
@@ -20,6 +21,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     public void TearDown ()
     {
       MixinConfiguration.SetActiveContext (null);
+      MixinConfiguration.ResetMasterConfiguration ();
     }
 
     [Test]
@@ -157,6 +159,21 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       {
         Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
       }
+    }
+
+    [Test]
+    public void MasterConfigurationIsCopiedByNewThreads ()
+    {
+      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
+      MixinConfiguration.EditMasterConfiguration (delegate (ApplicationContext masterConfiguration)
+      {
+        masterConfiguration.AddClassContext (new ClassContext (typeof (object)));
+      });
+      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
+      ThreadRunner.Run (delegate
+      {
+        Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
+      });
     }
   }
 }

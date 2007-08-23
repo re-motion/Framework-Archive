@@ -57,9 +57,12 @@ namespace Rubicon.Mixins
   /// </remarks>
   public class MixinConfiguration : IDisposable
   {
-    private static CallContextSingleton<ApplicationContext> _activeContext =
+    private static readonly CallContextSingleton<ApplicationContext> _activeContext =
         new CallContextSingleton<ApplicationContext> ("Rubicon.Mixins.MixinConfiguration._activeContext",
-        delegate { return ApplicationContextBuilder.BuildDefaultContext(); });
+        delegate { return CopyMasterContext (); });
+
+    private static ApplicationContext _masterContext = null;
+    private static readonly object _masterContextLock = new object ();
 
     /// <summary>
     /// Gets a value indicating whether this instance has an active mixin configuration context.
@@ -189,7 +192,60 @@ namespace Rubicon.Mixins
       return ScopedReplace (newContext);
     }
 
-    private ApplicationContext _previousContext = null;
+    private static ApplicationContext GetMasterContext()
+    {
+      lock (_masterContextLock)
+      {
+        if (_masterContext == null)
+          _masterContext = ApplicationContextBuilder.BuildDefaultContext();
+        return _masterContext;
+      }
+    }
+
+    private static ApplicationContext CopyMasterContext ()
+    {
+      lock (_masterContextLock)
+      {
+        ApplicationContext masterContext = GetMasterContext ();
+        return new ApplicationContext (masterContext);
+      }
+    }
+
+    /// <summary>
+    /// Locks access to the application's master mixin configuration and accepts a delegate to edit the configuration while it is locked.
+    /// </summary>
+    /// <param name="editor">A delegate performing changes to the master configuration.</param>
+    /// <remarks>
+    /// The master mixin configuration is the default mixin configuration used whenever a thread first accesses
+    /// <see cref="MixinConfiguration.ActiveContext"/>. Changes made to it will affect any thread accessing its mixin configuration for the
+    /// first time after this method has been called. If a thread attempts to access its mixin configuration for the first time while
+    /// a change is in progress, it will block until until that process has finished (i.e. until <paramref name="editor"/> has returned).
+    /// </remarks>
+    public static void EditMasterConfiguration (Proc<ApplicationContext> editor)
+    {
+      lock (_masterContextLock)
+      {
+        editor (GetMasterContext ());
+      }
+    }
+
+    /// <summary>
+    /// Causes the master mixin configuration to be rebuilt from scratch the next time a thread accesses its mixin configuration for the first time.
+    /// </summary>
+    /// <remarks>
+    /// The master mixin configuration is the default mixin configuration used whenever a thread first accesses
+    /// <see cref="MixinConfiguration.ActiveContext"/>. Changes made to it will affect any thread accessing its mixin configuration for the
+    /// first time after this method has been called.
+    /// </remarks>
+    public static void ResetMasterConfiguration ()
+    {
+      lock (_masterContextLock)
+      {
+        _masterContext = null;
+      }
+    }
+
+    private readonly ApplicationContext _previousContext = null;
     private bool _disposed;
 
     /// <summary>
