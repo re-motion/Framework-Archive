@@ -19,6 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "prereq", "prereq", "{F5218E
 		..\..\build\Commons.include.xml = ..\..\build\Commons.include.xml
 		..\..\build\properties.include.xml = ..\..\build\properties.include.xml
 	EndProjectSection
+	ProjectSection(FolderStartupServices) = postProject
+		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assemblies", "Assemblies", "{8FE7DEF5-877F-4E34-BF7C-A65C714269D0}"
 	ProjectSection(WebsiteProperties) = preProject
@@ -33,6 +36,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assemblies", "Assemblies", 
 		..\..\prereq\Assemblies\Rhino.Mocks.dll = ..\..\prereq\Assemblies\Rhino.Mocks.dll
 		..\..\prereq\Assemblies\Rhino.Mocks.xml = ..\..\prereq\Assemblies\Rhino.Mocks.xml
 	EndProjectSection
+	ProjectSection(FolderStartupServices) = postProject
+		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins", "..\..\Mixins\Core\Mixins.csproj", "{18C1D36B-CC05-4334-BF29-DE5A886DA89D}"
 	ProjectSection(WebsiteProperties) = preProject
@@ -40,7 +46,40 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins", "..\..\Mixins\Core
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects", "..\..\Data\DomainObjects\Data.DomainObjects.csproj", "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "..\..\Core\Core.csproj", "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.ObjectBinding", "..\..\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj", "{D06C0145-A94A-48AE-B186-BC3C8E8F3650}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Legacy", "..\..\Data\DomainObjects.Legacy\Data.DomainObjects.Legacy.csproj", "{E6A8B6CE-2E19-4C01-9D41-63899FE52020}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding", "..\Core\ObjectBinding.csproj", "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(TextTemplating) = postSolution
+		TextTemplating = 1
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -54,6 +93,26 @@ Global
 		{18C1D36B-CC05-4334-BF29-DE5A886DA89D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18C1D36B-CC05-4334-BF29-DE5A886DA89D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18C1D36B-CC05-4334-BF29-DE5A886DA89D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D06C0145-A94A-48AE-B186-BC3C8E8F3650}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D06C0145-A94A-48AE-B186-BC3C8E8F3650}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D06C0145-A94A-48AE-B186-BC3C8E8F3650}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D06C0145-A94A-48AE-B186-BC3C8E8F3650}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

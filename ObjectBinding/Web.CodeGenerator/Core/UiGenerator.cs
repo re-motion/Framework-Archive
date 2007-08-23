@@ -20,6 +20,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Reflection;
 
 namespace Rubicon.ObjectBinding.Web.CodeGenerator
 {
@@ -63,12 +64,13 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 
     protected virtual void InitializeConfiguration (string assemblyDirectory)
     {
+      NonSystemAssemblyFinderFilter filter = new NonSystemAssemblyFinderFilter ();
       List<Assembly> assemblies = new List<Assembly>();
       DirectoryInfo dir = new DirectoryInfo (assemblyDirectory);
       foreach (FileInfo file in dir.GetFiles ("*.dll"))
       {
         Assembly asm = Assembly.LoadFile (file.FullName);
-        if (asm.GetCustomAttributes(typeof (ContainsMappingAttribute), false).Length > 0)
+        if (filter.ShouldConsiderAssembly (asm.GetName()) && filter.ShouldIncludeAssembly (asm))
           assemblies.Add (asm);
       }
       DomainObjectsConfiguration.SetCurrent (

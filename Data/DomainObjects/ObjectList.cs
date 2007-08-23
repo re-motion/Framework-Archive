@@ -65,7 +65,7 @@ namespace Rubicon.Data.DomainObjects
       return result;
     }
 
-    public IEnumerator<T> GetEnumerator ()
+    public new IEnumerator<T> GetEnumerator ()
     {
       foreach (T t in (IEnumerable) this)
         yield return t;

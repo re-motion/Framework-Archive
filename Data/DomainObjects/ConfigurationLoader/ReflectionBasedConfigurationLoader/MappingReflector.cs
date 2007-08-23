@@ -16,14 +16,14 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     //TODO: Test
     public MappingReflector ()
     {
-      _assemblyFinder = new AssemblyFinder (new AttributeAssemblyFinderFilter (typeof (ContainsMappingAttribute)));
+      _assemblyFinder = new AssemblyFinder (new NonSystemAssemblyFinderFilter());
     }
 
     public MappingReflector (params Assembly[] rootAssemblies)
     {
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("rootAssemblies", rootAssemblies);
 
-      _assemblyFinder = new AssemblyFinder (new AttributeAssemblyFinderFilter (typeof (ContainsMappingAttribute)), rootAssemblies);
+      _assemblyFinder = new AssemblyFinder (new NonSystemAssemblyFinderFilter (), rootAssemblies);
     }
 
     protected override Type[] GetDomainObjectTypes ()

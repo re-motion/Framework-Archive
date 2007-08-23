@@ -60,4 +60,3 @@ using Rubicon.Data.DomainObjects;
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
 
-[assembly: ContainsMapping]
