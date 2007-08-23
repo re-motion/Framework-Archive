@@ -93,7 +93,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
       Assert.IsTrue (filter.ShouldIncludeAssembly (typeof (ApplicationContextBuilderTests).Assembly));
       Assert.IsTrue (filter.ShouldIncludeAssembly (typeof (ApplicationContextBuilder).Assembly));
-      Assert.IsTrue (filter.ShouldConsiderAssembly (new AssemblyName ("whatever")));
     }
   }
 }
