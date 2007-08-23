@@ -11,7 +11,7 @@ namespace Rubicon.ObjectBinding.BindableObject
   [Serializable]
   public class BindableObjectMixin : Mixin<object>, IBusinessObject
   {
-    internal static bool HasMixin (Type targetType)
+    public static bool HasMixin (Type targetType)
     {
       ArgumentUtility.CheckNotNull ("targetType", targetType);
       return HasMixin (targetType, typeof (BindableObjectMixin), MixinConfiguration.ActiveContext);
@@ -33,7 +33,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     }
 
 
-    internal static bool IncludesMixin (Type concreteType)
+    public static bool IncludesMixin (Type concreteType)
     {
       ArgumentUtility.CheckNotNull ("concreteType", concreteType);
       return IncludesMixin (concreteType, typeof (BindableObjectMixin), MixinConfiguration.ActiveContext);
