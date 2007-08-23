@@ -65,18 +65,34 @@ namespace Rubicon.ObjectBinding
       {
         properties[i] = objectClass.GetPropertyDefinition (propertyIdentifiers[i]);
         if (properties[i] == null)
-          throw new ArgumentException ("BusinessObjectClass '" + objectClass.GetType ().FullName + "' does not contain a property named '" + propertyIdentifiers[i] + "'.", propertyPathIdentifier);
-
+        {
+          throw new ArgumentException (
+              string.Format ("BusinessObjectClass '{0}' does not contain a property named '{1}'.", objectClass.Identifier, propertyIdentifiers[i]),
+              propertyPathIdentifier);
+        }
         IBusinessObjectReferenceProperty referenceProperty = properties[i] as IBusinessObjectReferenceProperty;
         if (referenceProperty == null)
-          throw new ArgumentException (string.Format ("Each property in a property path except the last one must be a reference property. Property {0} is of type {1}.", i, properties[i].GetType().FullName));
+        {
+          throw new ArgumentException (
+              string.Format (
+                  "Each property in a property path except the last one must be a reference property. Property {0} is of type {1}.",
+                  i,
+                  properties[i].GetType().FullName));
+        }
 
         objectClass = referenceProperty.ReferenceClass;
       }
 
       properties[lastProperty] = objectClass.GetPropertyDefinition (propertyIdentifiers[lastProperty]);
       if (properties[lastProperty] == null)
-        throw new ArgumentException ("BusinessObjectClass '" + objectClass.GetType ().FullName + "' does not contain a property named '" + propertyIdentifiers[lastProperty] + "'.", propertyPathIdentifier);
+      {
+        throw new ArgumentException (
+            string.Format (
+                "BusinessObjectClass '{0}' does not contain a property named '{1}'.",
+                objectClass.Identifier,
+                propertyIdentifiers[lastProperty]),
+            propertyPathIdentifier);
+      }
 
       return objectClass.BusinessObjectProvider.CreatePropertyPath (properties);
     }

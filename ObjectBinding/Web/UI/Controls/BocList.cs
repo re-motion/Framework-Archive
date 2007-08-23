@@ -2764,8 +2764,7 @@ public class BocList:
       bool isCommandEnabled = false;
       if (commandColumn != null || ! StringUtility.IsNullOrEmpty (valueColumnText))
       {
-        isCommandEnabled = RenderBeginTagDataCellCommand (
-            writer, commandEnabledColumn, businessObject, columnIndex, originalRowIndex);
+        isCommandEnabled = RenderBeginTagDataCellCommand (writer, commandEnabledColumn, businessObject, columnIndex, originalRowIndex);
       }
       if (! isCommandEnabled)
       {
@@ -2774,8 +2773,23 @@ public class BocList:
       }
 
       //  Render the icon
-      if (showIcon && ! hasEditModeControl)
-        RenderDataCellIcon (writer, businessObject);
+      if (!hasEditModeControl)
+      {
+        if (showIcon)
+          RenderDataCellIcon (writer, businessObject);
+        if (simpleColumn != null && simpleColumn.EnableIcon)
+        {
+          BusinessObjectPropertyPath propertyPath;
+          if (simpleColumn.IsDynamic)
+            propertyPath = simpleColumn.GetDynamicPropertyPath (businessObject.BusinessObjectClass);
+          else
+            propertyPath = simpleColumn.GetPropertyPath ();
+
+          IBusinessObject value = propertyPath.GetValue (businessObject, false, true) as IBusinessObject;
+          if (value != null)
+            RenderDataCellIcon (writer, value);
+        }
+      }
 
       //  Render the text
       if (commandColumn != null)

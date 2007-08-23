@@ -409,6 +409,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     private PropertyPathBinding _propertyPathBinding;
     private string _editModeControlType = string.Empty;
     private bool _isReadOnly;
+    private bool _enableIcon = false;
 
     public BocSimpleColumnDefinition ()
     {
@@ -579,6 +580,16 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     {
       get { return _isReadOnly; }
       set { _isReadOnly = value; }
+    }
+
+    [PersistenceMode (PersistenceMode.Attribute)]
+    [Category ("Appearance")]
+    [Description ("Flag that determines whether to show the icon in front of the value. Only allowed for reference properties")]
+    [DefaultValue (true)]
+    public bool EnableIcon
+    {
+      get { return _enableIcon; }
+      set { _enableIcon = value; }
     }
 
     /// <summary> Gets the displayed value of the column title. </summary>

@@ -42,7 +42,7 @@
 <rubicon:PropertyPathBinding PropertyPathIdentifier="FirstName" IsDynamic="True"></rubicon:PropertyPathBinding>
 </PropertyPathBindings>
 </rubicon:BocCompoundColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" EnforceWidth="True" Width="4em" ColumnTitle="Partner" IsDynamic="True">
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" EnforceWidth="True" Width="6em" ColumnTitle="Partner" IsDynamic="True" EnableIcon="True" >
 <persistedcommand>
 <rubicon:BocListItemCommand></rubicon:BocListItemCommand>
 </PersistedCommand>
