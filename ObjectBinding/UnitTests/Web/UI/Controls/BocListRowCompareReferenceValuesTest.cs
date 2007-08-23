@@ -51,33 +51,29 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
 
 
       _firstValueSimpleColumn = new BocSimpleColumnDefinition();
-      _firstValueSimpleColumn.PropertyPath = _firstValuePath;
+      _firstValueSimpleColumn.SetPropertyPath (_firstValuePath);
 
       _secondValueSimpleColumn = new BocSimpleColumnDefinition();
-      _secondValueSimpleColumn.PropertyPath = _secondValuePath;
+      _secondValueSimpleColumn.SetPropertyPath (_secondValuePath);
 
 
       _firstValueFirstValueCompoundColumn = new BocCompoundColumnDefinition();
-      _firstValueFirstValueCompoundColumn.PropertyPathBindings.Add (
-          new PropertyPathBinding (_firstValuePath));
-      _firstValueFirstValueCompoundColumn.PropertyPathBindings.Add (
-          new PropertyPathBinding (_firstValuePath));
+      _firstValueFirstValueCompoundColumn.PropertyPathBindings.Add (new PropertyPathBinding (_firstValuePath));
+      _firstValueFirstValueCompoundColumn.PropertyPathBindings.Add (new PropertyPathBinding (_firstValuePath));
       _firstValueFirstValueCompoundColumn.FormatString = "{0}, {1}";
 
       _firstValueSecondValueCompoundColumn = new BocCompoundColumnDefinition();
-      _firstValueSecondValueCompoundColumn.PropertyPathBindings.Add (
-          new PropertyPathBinding (_firstValuePath));
-      _firstValueSecondValueCompoundColumn.PropertyPathBindings.Add (
-          new PropertyPathBinding (_secondValuePath));
+      _firstValueSecondValueCompoundColumn.PropertyPathBindings.Add (new PropertyPathBinding (_firstValuePath));
+      _firstValueSecondValueCompoundColumn.PropertyPathBindings.Add (new PropertyPathBinding (_secondValuePath));
       _firstValueSecondValueCompoundColumn.FormatString = "{0}, {1}";
 
 
       _firstValueCustomColumn = new BocCustomColumnDefinition();
-      _firstValueCustomColumn.PropertyPath = _firstValuePath;
+      _firstValueCustomColumn.SetPropertyPath (_firstValuePath);
       _firstValueCustomColumn.IsSortable = true;
 
       _secondValueCustomColumn = new BocCustomColumnDefinition();
-      _secondValueCustomColumn.PropertyPath = _secondValuePath;
+      _secondValueCustomColumn.SetPropertyPath (_secondValuePath);
       _secondValueCustomColumn.IsSortable = true;
     }
 

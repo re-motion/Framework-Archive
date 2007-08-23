@@ -231,47 +231,43 @@ public class BocListUserControl : BaseUserControl
 
     BocSimpleColumnDefinition birthdayColumnDefinition = new BocSimpleColumnDefinition();
     birthdayColumnDefinition.ColumnTitle = "Birthday";
-    birthdayColumnDefinition.PropertyPath = dateOfBirth.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{dateOfBirth});
+    birthdayColumnDefinition.SetPropertyPath (dateOfBirth.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{dateOfBirth}));
     birthdayColumnDefinition.Width = Unit.Parse ("6em");
     birthdayColumnDefinition.EnforceWidth = true;
 
     BocSimpleColumnDefinition dayofDeathColumnDefinition = new BocSimpleColumnDefinition();
     dayofDeathColumnDefinition.ColumnTitle = "Day of Death";
-    dayofDeathColumnDefinition.PropertyPath = dateOfDeath.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{dateOfDeath});
+    dayofDeathColumnDefinition.SetPropertyPath (dateOfDeath.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{dateOfDeath}));
     dayofDeathColumnDefinition.Width = Unit.Parse ("4em");
     dayofDeathColumnDefinition.EnforceWidth = true;
 
     BocSimpleColumnDefinition heightColumnDefinition = new BocSimpleColumnDefinition();
-    heightColumnDefinition.PropertyPath = height.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{height});
+    heightColumnDefinition.SetPropertyPath (height.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{height}));
 
     BocSimpleColumnDefinition genderColumnDefinition = new BocSimpleColumnDefinition();
-    genderColumnDefinition.PropertyPath = gender.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{gender});
+    genderColumnDefinition.SetPropertyPath (gender.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{gender}));
 
     BocSimpleColumnDefinition cvColumnDefinition = new BocSimpleColumnDefinition();
-    cvColumnDefinition.PropertyPath = cv.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{cv});
+    cvColumnDefinition.SetPropertyPath (cv.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{cv}));
 
     BocSimpleColumnDefinition incomeColumnDefinition = new BocSimpleColumnDefinition();
-    incomeColumnDefinition.PropertyPath = cv.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{income});
+    incomeColumnDefinition.SetPropertyPath (cv.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{income}));
 
     BocListView datesView = new BocListView();
     datesView.Title = "Dates";
-    datesView.ColumnDefinitions.AddRange (
-          new BocColumnDefinition[] {birthdayColumnDefinition, dayofDeathColumnDefinition});
+    datesView.ColumnDefinitions.AddRange (new BocColumnDefinition[] {birthdayColumnDefinition, dayofDeathColumnDefinition});
 
     BocListView statsView = new BocListView();
     statsView.Title = "Stats";
-    statsView.ColumnDefinitions.AddRange (
-        new BocColumnDefinition[] {heightColumnDefinition, genderColumnDefinition});
+    statsView.ColumnDefinitions.AddRange (new BocColumnDefinition[] {heightColumnDefinition, genderColumnDefinition});
 
     BocListView cvView = new BocListView();
     cvView.Title = "CV";
-    cvView.ColumnDefinitions.AddRange (
-        new BocColumnDefinition[] {cvColumnDefinition});
+    cvView.ColumnDefinitions.AddRange (new BocColumnDefinition[] {cvColumnDefinition});
 
     BocListView incomeView = new BocListView();
     incomeView.Title = "Income";
-    incomeView.ColumnDefinitions.AddRange (
-        new BocColumnDefinition[] {incomeColumnDefinition});
+    incomeView.ColumnDefinitions.AddRange (new BocColumnDefinition[] {incomeColumnDefinition});
 
     ChildrenList.AvailableViews.AddRange (new BocListView[] {
       datesView,

@@ -24,7 +24,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
       _stringValuePropertyPath = BusinessObjectPropertyPath.Parse (_stringValueClass, "FirstValue");
 
       _stringValueColumn = new BocSimpleColumnDefinition();
-      _stringValueColumn.PropertyPath = _stringValuePropertyPath;
+      _stringValueColumn.SetPropertyPath (_stringValuePropertyPath);
 
       _factory = new EditableRowControlFactory();
     }

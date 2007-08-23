@@ -24,7 +24,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
     private BusinessObjectPropertyPath _typeWithAllDataTypesInt32ValuePath;
 
     private BocSimpleColumnDefinition _typeWithAllDataTypesStringValueSimpleColumn;
+    private BocSimpleColumnDefinition _typeWithAllDataTypesStringValueSimpleColumnAsDynamic;
     private BocSimpleColumnDefinition _typeWithAllDataTypesInt32ValueSimpleColumn;
+
     private BocCompoundColumnDefinition _typeWithAllDataTypesStringValueFirstValueCompoundColumn;
     private BocCustomColumnDefinition _typeWithAllDataTypesStringValueCustomColumn;
     private BocCommandColumnDefinition _commandColumn;
@@ -52,10 +54,14 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
       _typeWithAllDataTypesInt32ValuePath = BusinessObjectPropertyPath.Parse (_typeWithAllDataTypesClass, "Int32");
 
       _typeWithAllDataTypesStringValueSimpleColumn = new BocSimpleColumnDefinition();
-      _typeWithAllDataTypesStringValueSimpleColumn.PropertyPath = _typeWithAllDataTypesStringValuePath;
+      _typeWithAllDataTypesStringValueSimpleColumn.SetPropertyPath (_typeWithAllDataTypesStringValuePath);
+
+      _typeWithAllDataTypesStringValueSimpleColumnAsDynamic = new BocSimpleColumnDefinition ();
+      _typeWithAllDataTypesStringValueSimpleColumnAsDynamic.PropertyPathIdentifier = "StringValue";
+      _typeWithAllDataTypesStringValueSimpleColumnAsDynamic.IsDynamic = true;
 
       _typeWithAllDataTypesInt32ValueSimpleColumn = new BocSimpleColumnDefinition();
-      _typeWithAllDataTypesInt32ValueSimpleColumn.PropertyPath = _typeWithAllDataTypesInt32ValuePath;
+      _typeWithAllDataTypesInt32ValueSimpleColumn.SetPropertyPath (_typeWithAllDataTypesInt32ValuePath);
 
       _typeWithAllDataTypesStringValueFirstValueCompoundColumn = new BocCompoundColumnDefinition();
       _typeWithAllDataTypesStringValueFirstValueCompoundColumn.PropertyPathBindings.Add (
@@ -65,7 +71,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
       _typeWithAllDataTypesStringValueFirstValueCompoundColumn.FormatString = "{0}, {1}";
 
       _typeWithAllDataTypesStringValueCustomColumn = new BocCustomColumnDefinition();
-      _typeWithAllDataTypesStringValueCustomColumn.PropertyPath = _typeWithAllDataTypesStringValuePath;
+      _typeWithAllDataTypesStringValueCustomColumn.SetPropertyPath (_typeWithAllDataTypesStringValuePath);
       _typeWithAllDataTypesStringValueCustomColumn.IsSortable = true;
 
       _commandColumn = new BocCommandColumnDefinition();
@@ -119,7 +125,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
       _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
       _editableRow.ControlFactory = new EditableRowControlFactory();
 
-      BocColumnDefinition[] columns = new BocColumnDefinition[7];
+      BocColumnDefinition[] columns = new BocColumnDefinition[8];
       columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
       columns[1] = _typeWithAllDataTypesStringValueFirstValueCompoundColumn;
       columns[2] = _typeWithAllDataTypesStringValueCustomColumn;
@@ -127,6 +133,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
       columns[4] = _rowEditModeColumn;
       columns[5] = _dropDownMenuColumn;
       columns[6] = _typeWithAllDataTypesInt32ValueSimpleColumn;
+      columns[7] = _typeWithAllDataTypesStringValueSimpleColumnAsDynamic;
 
       _editableRow.CreateControls (_value01, columns);
 
@@ -147,6 +154,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
       Assert.IsFalse (_editableRow.HasEditControl (4));
       Assert.IsFalse (_editableRow.HasEditControl (5));
       Assert.IsTrue (_editableRow.HasEditControl (6));
+      Assert.IsFalse (_editableRow.HasEditControl (7));
 
       IBusinessObjectBoundEditableWebControl textBoxFirstValue = _editableRow.GetEditControl (0);
       Assert.IsTrue (textBoxFirstValue is BocTextValue);

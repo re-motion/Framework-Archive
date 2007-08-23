@@ -148,6 +148,19 @@ namespace Rubicon.ObjectBinding.Sample
       }
     }
 
+    [XmlIgnore]
+    public BindableXmlObject[] ChildrenAsObjects
+    {
+      get
+      {
+        return Children;
+      }
+      set
+      {
+        Children = (Person[]) value;
+      }
+    }
+
     [XmlElement]
     [ObjectBinding (Visible = false)]
     public Guid[] JobIDs

@@ -50,10 +50,10 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
 
 
       _firstValueSimpleColumn = new BocSimpleColumnDefinition();
-      _firstValueSimpleColumn.PropertyPath = _firstValuePath;
+      _firstValueSimpleColumn.SetPropertyPath (_firstValuePath);
 
       _secondValueSimpleColumn = new BocSimpleColumnDefinition();
-      _secondValueSimpleColumn.PropertyPath = _secondValuePath;
+      _secondValueSimpleColumn.SetPropertyPath (_secondValuePath);
 
 
       _firstValueFirstValueCompoundColumn = new BocCompoundColumnDefinition();
@@ -68,11 +68,11 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
 
 
       _firstValueCustomColumn = new BocCustomColumnDefinition();
-      _firstValueCustomColumn.PropertyPath = _firstValuePath;
+      _firstValueCustomColumn.SetPropertyPath (_firstValuePath);
       _firstValueCustomColumn.IsSortable = true;
 
       _secondValueCustomColumn = new BocCustomColumnDefinition();
-      _secondValueCustomColumn.PropertyPath = _secondValuePath;
+      _secondValueCustomColumn.SetPropertyPath (_secondValuePath);
       _secondValueCustomColumn.IsSortable = true;
     }
 

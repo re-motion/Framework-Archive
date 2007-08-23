@@ -14,7 +14,7 @@
     <td></td>
     <td></td></tr>
   <tr>
-    <td colSpan=2><ros:TestBocList id=ChildrenList runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="4" indexoffset="100" RowMenuDisplay="Manual" ShowEmptyListMessage="True" enableselection="True" Index="InitialOrder" Selection="Multiple">
+    <td colSpan=2><ros:TestBocList id=ChildrenList runat="server" datasourcecontrol="CurrentObject" propertyidentifier="ChildrenAsObjects" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="4" indexoffset="100" RowMenuDisplay="Manual" ShowEmptyListMessage="True" enableselection="True" Index="InitialOrder" Selection="Multiple">
 <fixedcolumns>
 <rubicon:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit"></rubicon:BocRowEditModeColumnDefinition>
 <rubicon:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
@@ -27,7 +27,7 @@
 <rubicon:BocListItemCommand HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}" Type="Href"></rubicon:BocListItemCommand>
 </PersistedCommand>
 </rubicon:BocCommandColumnDefinition>
-<rubicon:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName">
+<rubicon:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName" IsDynamic="True">
 <persistedcommand>
 <rubicon:BocListItemCommand WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" WxeFunctionCommand-Parameters="id" Type="WxeFunction"></rubicon:BocListItemCommand>
 </PersistedCommand>
@@ -38,27 +38,27 @@
 <rubicon:BocListItemCommand></rubicon:BocListItemCommand>
 </PersistedCommand>
 <propertypathbindings>
-<rubicon:PropertyPathBinding PropertyPathIdentifier="LastName"></rubicon:PropertyPathBinding>
-<rubicon:PropertyPathBinding PropertyPathIdentifier="FirstName"></rubicon:PropertyPathBinding>
+<rubicon:PropertyPathBinding PropertyPathIdentifier="LastName" IsDynamic="True"></rubicon:PropertyPathBinding>
+<rubicon:PropertyPathBinding PropertyPathIdentifier="FirstName" IsDynamic="True"></rubicon:PropertyPathBinding>
 </PropertyPathBindings>
 </rubicon:BocCompoundColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" EnforceWidth="True" Width="4em" ColumnTitle="Partner">
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" EnforceWidth="True" Width="4em" ColumnTitle="Partner" IsDynamic="True">
 <persistedcommand>
 <rubicon:BocListItemCommand></rubicon:BocListItemCommand>
 </PersistedCommand>
 </rubicon:BocSimpleColumnDefinition>
-<rubicon:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName">
+<rubicon:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName" ColumnTitle="Parter" IsDynamic="True">
 <persistedcommand>
 <rubicon:BocListItemCommand Type="Event"></rubicon:BocListItemCommand>
 </PersistedCommand>
 </rubicon:BocSimpleColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" IsReadOnly="True">
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" ColumnTitle="LastName" IsReadOnly="True" IsDynamic="True">
 <persistedcommand>
 <rubicon:BocListItemCommand></rubicon:BocListItemCommand>
 </PersistedCommand>
 </rubicon:BocSimpleColumnDefinition>
-<rubicon:BocCustomColumnDefinition ItemID="CustomCell" PropertyPathIdentifier="LastName" CustomCellType="Rubicon.ObjectBinding.Sample::PersonCustomCell" Mode="ControlInEditedRow" ColumnTitle="Custom Cell"></rubicon:BocCustomColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased" IsSortable="False">
+<rubicon:BocCustomColumnDefinition ItemID="CustomCell" PropertyPathIdentifier="LastName" CustomCellType="Rubicon.ObjectBinding.Sample::PersonCustomCell" Mode="ControlInEditedRow" ColumnTitle="Custom Cell" IsDynamic="True"></rubicon:BocCustomColumnDefinition>
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased" IsSortable="False" ColumnTitle="Deceased" IsDynamic="True">
 <persistedcommand>
 <rubicon:BocListItemCommand></rubicon:BocListItemCommand>
 </PersistedCommand>

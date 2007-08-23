@@ -428,15 +428,23 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     /// <returns> A <see cref="string"/> representing the contents of <paramref name="obj"/>. </returns>
     public override string GetStringValue (IBusinessObject obj)
     {
-      if (PropertyPath == null)
+      ArgumentUtility.CheckNotNull ("obj", obj);
+
+      BusinessObjectPropertyPath propertyPath = null;
+      if (!_propertyPathBinding.IsDynamic)
+        propertyPath = _propertyPathBinding.GetPropertyPath ();
+      else
+        propertyPath = _propertyPathBinding.GetDynamicPropertyPath (obj.BusinessObjectClass);
+
+      if (propertyPath == null)
         return string.Empty;
 
       string formatString = _formatString;
       if (StringUtility.IsNullOrEmpty (formatString))
       {
-        if (PropertyPath.LastProperty is IBusinessObjectDateTimeProperty)
+        if (propertyPath.LastProperty is IBusinessObjectDateTimeProperty)
         {
-          if (((IBusinessObjectDateTimeProperty)PropertyPath.LastProperty).Type == DateTimeType.Date)
+          if (((IBusinessObjectDateTimeProperty) propertyPath.LastProperty).Type == DateTimeType.Date)
             formatString = "d";
           else
             formatString = "g";
@@ -445,8 +453,9 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 
       try
       {
-        return PropertyPath.GetString (obj, StringUtility.EmptyToNull (formatString));
+        return propertyPath.GetString (obj, StringUtility.EmptyToNull (formatString));
       }
+      //TODO: Move to BusinessObjectPropertyPath.GetString
       catch (PermissionDeniedException)
       {
         return c_notAccessible;
@@ -479,10 +488,34 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     /// <value> A <see cref="BusinessObjectPropertyPath"/>. </value>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
+    [Obsolete ("Use GetPropertyPath() and SetPropertyPath (IBusinessObjectClass) instead. (Version 1.7.56)", true)]
     public BusinessObjectPropertyPath PropertyPath
     {
-      get { return _propertyPathBinding.PropertyPath; }
-      set { _propertyPathBinding.PropertyPath = value; }
+      get { throw new NotImplementedException ("Obsolete. Use GetPropertyPath() instead."); }
+      set { throw new NotImplementedException ("Obsolete. Use SetPropertyPath (IBusinessObjectClass) instead."); }
+    }
+
+    public BusinessObjectPropertyPath GetPropertyPath ()
+    {
+      return _propertyPathBinding.GetPropertyPath ();
+    }
+
+    public BusinessObjectPropertyPath GetDynamicPropertyPath (IBusinessObjectClass businessObjectClass)
+    {
+      return _propertyPathBinding.GetDynamicPropertyPath (businessObjectClass);
+    }
+
+    public void SetPropertyPath (BusinessObjectPropertyPath propertyPath)
+    {
+      _propertyPathBinding.SetPropertyPath (propertyPath);
+    }
+
+    [DefaultValue (false)]
+    [Category ("Data")]
+    public bool IsDynamic
+    {
+      get { return _propertyPathBinding.IsDynamic; }
+      set { _propertyPathBinding.IsDynamic = value; }
     }
 
     /// <summary>
@@ -562,10 +595,24 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 
         if (!isTitleEmpty)
           return ColumnTitle;
-        else if (PropertyPath != null)
-          return PropertyPath.LastProperty.DisplayName;
-        else
-          return string.Empty;
+
+        BusinessObjectPropertyPath propertyPath = null;
+        if (!_propertyPathBinding.IsDynamic)
+        {
+          try
+          {
+            propertyPath = _propertyPathBinding.GetPropertyPath ();
+          }
+            // TODO: Why is this catch block required?
+          catch (ArgumentException)
+          {
+          }
+        }
+
+        if (propertyPath != null)
+          return propertyPath.LastProperty.DisplayName;
+
+        return string.Empty;
       }
     }
 
@@ -609,14 +656,22 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     /// <returns> A <see cref="string"/> representing the contents of <paramref name="obj"/>. </returns>
     public override string GetStringValue (IBusinessObject obj)
     {
+      ArgumentUtility.CheckNotNull ("obj", obj);
+
       BusinessObjectPropertyPath.Formatter[] formatters = new BusinessObjectPropertyPath.Formatter[_propertyPathBindings.Count];
       for (int i = 0; i < _propertyPathBindings.Count; ++i)
-        formatters[i] = new BusinessObjectPropertyPath.Formatter (obj, _propertyPathBindings[i].PropertyPath);
+      {
+        if (_propertyPathBindings[i].IsDynamic)
+          formatters[i] = new BusinessObjectPropertyPath.Formatter (obj, _propertyPathBindings[i].GetDynamicPropertyPath (obj.BusinessObjectClass));
+        else
+          formatters[i] = new BusinessObjectPropertyPath.Formatter (obj, _propertyPathBindings[i].GetPropertyPath ());
+      }      
 
       try
       {
         return string.Format (_formatString, formatters);
       }
+      //TODO: Move to BusinessObjectPropertyPath.GetString
       catch (PermissionDeniedException)
       {
         return c_notAccessible;

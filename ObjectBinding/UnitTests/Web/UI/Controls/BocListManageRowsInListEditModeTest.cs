@@ -44,11 +44,10 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
       _typeWithStringSecondValuePath = BusinessObjectPropertyPath.Parse (_typeWithStringClass, "SecondValue");
 
       _typeWithStringFirstValueSimpleColumn = new BocSimpleColumnDefinition();
-      _typeWithStringFirstValueSimpleColumn.PropertyPath = _typeWithStringFirstValuePath;
+      _typeWithStringFirstValueSimpleColumn.SetPropertyPath (_typeWithStringFirstValuePath);
 
       _typeWithStringSecondValueSimpleColumn = new BocSimpleColumnDefinition();
-      _typeWithStringSecondValueSimpleColumn.PropertyPath = _typeWithStringSecondValuePath;
-
+      _typeWithStringSecondValueSimpleColumn.SetPropertyPath (_typeWithStringSecondValuePath);
 
       _bocList = new BocListMock();
       _bocList.ID = "BocList";

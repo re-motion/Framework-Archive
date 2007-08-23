@@ -55,10 +55,10 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
       _int32ValuePath = BusinessObjectPropertyPath.Parse (_class, "Int32");
 
       _stringValueSimpleColumn = new BocSimpleColumnDefinition();
-      _stringValueSimpleColumn.PropertyPath = _stringValuePath;
+      _stringValueSimpleColumn.SetPropertyPath (_stringValuePath);
 
       _int32ValueSimpleColumn = new BocSimpleColumnDefinition();
-      _int32ValueSimpleColumn.PropertyPath = _int32ValuePath;
+      _int32ValueSimpleColumn.SetPropertyPath (_int32ValuePath);
 
       _columns = new BocColumnDefinition[2];
       _columns[0] = _stringValueSimpleColumn;

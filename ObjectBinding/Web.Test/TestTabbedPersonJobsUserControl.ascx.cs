@@ -150,7 +150,7 @@ public class TestTabbedPersonJobsUserControl :
     
     BocSimpleColumnDefinition endDateColumnDefinition = new BocSimpleColumnDefinition();
     endDateColumnDefinition.ColumnTitle = "EndDate";
-    endDateColumnDefinition.PropertyPath = endDate.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{endDate});
+    endDateColumnDefinition.SetPropertyPath (endDate.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{endDate}));
 
     BocListView emptyView = new BocListView();
     emptyView.Title = "Empty";

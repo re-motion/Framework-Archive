@@ -111,7 +111,8 @@ public class EditableRow : PlaceHolder, INamingContainer
         {
           control.ID = idxColumns.ToString();
           control.DataSource = _dataSource;
-          control.Property = simpleColumn.PropertyPath.Properties[0];
+          BusinessObjectPropertyPath propertyPath = simpleColumn.GetPropertyPath ();
+          control.Property = propertyPath.Properties[0];
           SetEditControl (idxColumns, control);
 
           _rowEditModeControls[idxColumns] = control;
@@ -144,7 +145,10 @@ public class EditableRow : PlaceHolder, INamingContainer
       return false;
     if (column.IsReadOnly)
       return false;
-    if (column.PropertyPath.Properties.Length > 1)
+    if (column.IsDynamic)
+      return false;
+    BusinessObjectPropertyPath propertyPath = column.GetPropertyPath ();
+    if (propertyPath.Properties.Length > 1)
       return false;
     return true;
   }
