@@ -388,7 +388,7 @@ public abstract class ClientTransaction : ITransaction
   /// <summary>
   /// Initializes a new subtransaction with this <see cref="ClientTransaction"/> as its <see cref="ParentTransaction"/>.
   /// </summary>
-  public ClientTransaction CreateSubTransaction ()
+  public virtual ClientTransaction CreateSubTransaction ()
   {
     ClientTransaction subTransaction = ObjectFactory.Create<SubClientTransaction> ().With (this);
     return subTransaction;
