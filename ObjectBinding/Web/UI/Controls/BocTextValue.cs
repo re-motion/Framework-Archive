@@ -105,8 +105,6 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
 
     if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
-
-    RegisterHtmlHeadContents (Context);
   }
 
   public override void RegisterHtmlHeadContents (HttpContext context)

@@ -148,8 +148,6 @@ public class BocReferenceValue:
       Page.RegisterRequiresPostBack (this);
       InitializeMenusItems();
     }
-
-    RegisterHtmlHeadContents(Context);
   }
 
   public override void RegisterHtmlHeadContents (HttpContext context)

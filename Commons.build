@@ -153,7 +153,7 @@
   </target>
 
   <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Web, Mixins,
-      ObjectBinding, ObjectBinding.Web, ObjectBinding.Web.CodeGenerator, ObjectBinding.Web.CodeGenerator.Templates, 
+      ObjectBinding, ObjectBinding.Web, ObjectBinding.Web.Preview, ObjectBinding.Web.CodeGenerator, ObjectBinding.Web.CodeGenerator.Templates, 
       Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.ObjectBinding.Web, Data.DomainObjects.Web, 
       Data.DomainObjects.RdbmsTools, Data.DomainObjects.RdbmsTools.Console, 
       Data.DomainObjects.Legacy, Data.DomainObjects.Legacy.CodeGenerator, Data.DomainObjects.Legacy.CodeGenerator.Console, 
@@ -306,7 +306,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="ObjectBinding.Web" depends="Core, Mixins, ObjectBinding, Web">
+  <target name="ObjectBinding.Web" depends="Core, Mixins, Web, ObjectBinding">
     <property name="project.name" value="ObjectBinding.Web" />
     <property name="project.dir" value="ObjectBinding/Web" />
     <property name="project.output" value="Rubicon.ObjectBinding.Web" />
@@ -335,6 +335,14 @@
         <include name="**/*.*" />
       </fileset>
     </copy>
+  </target>
+
+  <target name="ObjectBinding.Web.Preview" depends="Core, Mixins, Web, ObjectBinding, ObjectBinding.Web">
+    <property name="project.name" value="ObjectBinding.Web.Preview" />
+    <property name="project.dir" value="ObjectBinding/Web.Preview" />
+    <property name="project.output" value="Rubicon.ObjectBinding.Web.Preview" />
+    <property name="project.extension" value="dll" />
+    <call target="execute-buildstep" />
   </target>
 
   <target name="Security" depends="Core">

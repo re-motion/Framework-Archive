@@ -2,22 +2,22 @@ using System;
 using System.Reflection;
 using System.Web.UI;
 
-[assembly: TagPrefix ("Rubicon.Web.UI.Controls", "rubicon")]
+[assembly: TagPrefix ("Rubicon.ObjectBinding.Web.UI.Controls", "rubicon")]
 
 //
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Rubicon Controls Library for Web Applications")]
-[assembly: AssemblyDescription("Common Controls for Web Applications")]
-[assembly: AssemblyConfiguration(".NET Framework: net-2.0, build type: debug")]
-[assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
-[assembly: AssemblyProduct("Rubicon .NET Commons")]
-[assembly: AssemblyCopyright("(c) 2003 - 2007 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]		
-[assembly: CLSCompliant(true)]
+[assembly: AssemblyTitle ("Rubicon BusinessObjectControls (Preview) Library")]
+[assembly: AssemblyDescription ("Web controls for 2-way databinding with BusinessObjects.")]
+[assembly: AssemblyConfiguration (".NET Framework: net-2.0, build type: debug")]
+[assembly: AssemblyCompany ("rubicon informationstechnologie gmbh")]
+[assembly: AssemblyProduct ("Rubicon .NET Commons")]
+[assembly: AssemblyCopyright ("(c) 2003 - 2007 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
+[assembly: AssemblyTrademark ("")]
+[assembly: AssemblyCulture ("")]
+[assembly: CLSCompliant (true)]
 //
 // Version information for an assembly consists of the following four values:
 //
@@ -29,7 +29,7 @@ using System.Web.UI;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.7.47.202")]
+[assembly: AssemblyVersion ("1.7.43.202")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -58,6 +58,6 @@ using System.Web.UI;
 //
 #pragma warning disable 1699
 [assembly: AssemblyDelaySign (false)]
-[assembly: AssemblyKeyFile(@"\Development\global/rubicon.snk")]
-[assembly: AssemblyKeyName("")]
+[assembly: AssemblyKeyFile (@"\Development\global/rubicon.snk")]
+[assembly: AssemblyKeyName ("")]
 #pragma warning restore 1699

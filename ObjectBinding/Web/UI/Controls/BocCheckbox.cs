@@ -113,8 +113,6 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
     base.OnInit (e);
     if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
-
-    RegisterHtmlHeadContents (Context);
   }
 
   public override void RegisterHtmlHeadContents (HttpContext context)

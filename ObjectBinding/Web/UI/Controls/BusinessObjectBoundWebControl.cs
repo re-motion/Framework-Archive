@@ -182,6 +182,8 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
       {
         Page.RegisterRequiresControlState (this);
       }
+
+      RegisterHtmlHeadContents (Context);
     }
 
     /// <value> 

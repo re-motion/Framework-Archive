@@ -6,61 +6,67 @@
 <tabs>
 <rubicon:MainMenuTab Text="Tests by Control" ItemID="IndividualControlTests">
 <submenutabs>
-<rubicon:SubMenuTab Text="BocBooleanValue" ItemID="BocBooleanValue">
+<rubicon:SubMenuTab Text="Boolean" ItemID="BocBooleanValue">
 <persistedcommand>
 <rubicon:NavigationCommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocBooleanValueUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:NavigationCommand>
 </PersistedCommand>
 </rubicon:SubMenuTab>
 
-<rubicon:submenutab Text="BocCheckBox" ItemID="BocCheckBox">
+<rubicon:submenutab Text="CheckBox" ItemID="BocCheckBox">
 <persistedcommand>
 <rubicon:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocCheckBoxUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:navigationcommand>
 </PersistedCommand>
 </rubicon:submenutab>
 
-<rubicon:submenutab Text="BocDateTimeValue" ItemID="BocDateTimeValue">
+<rubicon:submenutab Text="DateTime" ItemID="BocDateTimeValue">
 <persistedcommand>
 <rubicon:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocDateTimeValueUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:navigationcommand>
 </PersistedCommand>
 </rubicon:submenutab>
 
-<rubicon:submenutab Text="BocEnumValue" ItemID="BocEnumValue">
+<rubicon:submenutab Text="Enum" ItemID="BocEnumValue">
 <persistedcommand>
 <rubicon:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocEnumValueUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:navigationcommand>
 </PersistedCommand>
 </rubicon:submenutab>
 
-<rubicon:submenutab Text="BocList" ItemID="BocList">
+<rubicon:submenutab Text="List" ItemID="BocList">
 <persistedcommand>
 <rubicon:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocListUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:navigationcommand>
 </PersistedCommand>
 </rubicon:submenutab>
 
-<rubicon:submenutab Text="BocList as Grid" ItemID="BocListAsGrid">
+<rubicon:submenutab Text="List as Grid" ItemID="BocListAsGrid">
 <persistedcommand>
 <rubicon:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocListAsGridUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:navigationcommand>
 </PersistedCommand>
 </rubicon:submenutab>
 
-<rubicon:submenutab Text="BocLiteral" ItemID="BocLiteral">
+<rubicon:submenutab Text="Literal" ItemID="BocLiteral">
 <persistedcommand>
 <rubicon:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocLiteralUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:navigationcommand>
 </PersistedCommand>
 </rubicon:submenutab>
 
-<rubicon:submenutab Text="BocMultilineTextValue" ItemID="BocMultilineTextValue">
+<rubicon:submenutab Text="MultilineText" ItemID="BocMultilineTextValue">
 <persistedcommand>
 <rubicon:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocMultilineTextValueUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:navigationcommand>
 </PersistedCommand>
 </rubicon:submenutab>
 
-<rubicon:submenutab Text="BocReferenceValue" ItemID="BocReferenceValue">
+<rubicon:submenutab Text="Reference" ItemID="BocReferenceValue">
 <persistedcommand>
 <rubicon:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocReferenceValueUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:navigationcommand>
 </PersistedCommand>
 </rubicon:submenutab>
 
-<rubicon:submenutab Text="BocTextValue" ItemID="BocTextValue">
+<rubicon:submenutab Text="Auto Complete Reference" ItemID="BocAutoCompleteReferenceValue">
+<persistedcommand>
+<rubicon:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocAutoCompleteReferenceValueUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:navigationcommand>
+</PersistedCommand>
+</rubicon:submenutab>
+
+<rubicon:submenutab Text="Text" ItemID="BocTextValue">
 <persistedcommand>
 <rubicon:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocTextValueUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:navigationcommand>
 </PersistedCommand>

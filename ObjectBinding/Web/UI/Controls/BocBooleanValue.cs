@@ -125,8 +125,6 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
     base.OnInit (e);
     if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
-
-    RegisterHtmlHeadContents (Context);
   }
 
   public override void RegisterHtmlHeadContents (HttpContext context)

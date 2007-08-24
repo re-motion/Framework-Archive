@@ -9,7 +9,7 @@ using System.Web.UI;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Rubicon BusinessObjectControls Library")]
+[assembly: AssemblyTitle("Rubicon BusinessObjectControls (Preview) Library")]
 [assembly: AssemblyDescription("Web controls for 2-way databinding with BusinessObjects.")]
 [assembly: AssemblyConfiguration("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]

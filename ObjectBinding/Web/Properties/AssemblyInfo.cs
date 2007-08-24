@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using System.Web.UI;
 
-[assembly: TagPrefix ("Rubicon.ObjectBinding.Web.UI.Controls", "obw")]
+[assembly: TagPrefix ("Rubicon.ObjectBinding.Web.UI.Controls", "rubicon")]
 
 //
 // General Information about an assembly is controlled through the following 

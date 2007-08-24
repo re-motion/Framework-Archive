@@ -100,8 +100,6 @@ public class BocMultilineTextValue: BusinessObjectBoundEditableWebControl, IPost
     base.OnInit (e);
     if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
-
-    RegisterHtmlHeadContents (Context);
   }
 
   public override void RegisterHtmlHeadContents (HttpContext context)

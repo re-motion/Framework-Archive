@@ -150,8 +150,6 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
     if (!IsDesignMode)
       Page.RegisterRequiresPostBack (this);
-
-    RegisterHtmlHeadContents (Context);
   }
 
   public override void RegisterHtmlHeadContents (HttpContext context)
