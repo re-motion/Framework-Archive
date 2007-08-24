@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Rubicon.Mixins;
 
 //
@@ -6,13 +6,13 @@ using Rubicon.Mixins;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle ("Rubicon BusinessObject Library Unit Tests")]
-[assembly: AssemblyConfiguration (".NET Framework: net-2.0, build type: debug")]
-[assembly: AssemblyCompany ("rubicon informationstechnologie gmbh")]
-[assembly: AssemblyProduct ("Rubicon .NET Commons")]
-[assembly: AssemblyCopyright ("(c) 2003 - 2007 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
-[assembly: AssemblyTrademark ("")]
-[assembly: AssemblyCulture ("")]
+[assembly: AssemblyTitle("Rubicon BusinessObject Library Unit Tests")]
+[assembly: AssemblyConfiguration(".NET Framework: net-2.0, build type: debug")]
+[assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
+[assembly: AssemblyProduct("Rubicon .NET Commons")]
+[assembly: AssemblyCopyright("(c) 2003 - 2007 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]		
 
 //
 // Version information for an assembly consists of the following four values:
@@ -25,7 +25,7 @@ using Rubicon.Mixins;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion ("1.7.43.202")]
+[assembly: AssemblyVersion("1.7.56.202")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
