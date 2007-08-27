@@ -4,7 +4,9 @@ using System.Reflection;
 using System.Text;
 using NUnit.Framework;
 using Rubicon.Collections;
+using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Infrastructure;
+using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -564,5 +566,396 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order newOrder = Order.NewObject ();
       newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].SetValueWithoutTypeCheck (new ObjectList<OrderItem>());
     }
+
+    [Test]
+    public void GetValueTx ()
+    {
+      Order newOrder = Order.NewObject ();
+      
+      newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValue(9);
+      newOrder.OrderItems.Add (DomainObject.GetObject (DomainObjectIDs.OrderItem1));
+      newOrder.OrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValue (10);
+        newOrder.OrderItems.Clear();
+        newOrder.OrderItems.Add (DomainObject.GetObject (DomainObjectIDs.OrderItem2));
+        newOrder.OrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
+
+        Assert.AreEqual (
+            10,
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetValueTx<int> (
+                ClientTransactionScope.CurrentTransaction));
+        Assert.AreEqual (
+            9,
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetValueTx<int> (
+                ClientTransactionScope.CurrentTransaction.ParentTransaction));
+
+        Assert.AreEqual (
+            DomainObject.GetObject (DomainObjectIDs.OrderItem2),
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetValueTx<ObjectList<OrderItem>> (
+                ClientTransactionScope.CurrentTransaction)[0]);
+        Assert.AreEqual (
+            DomainObject.GetObject (DomainObjectIDs.OrderItem1),
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetValueTx<ObjectList<OrderItem>> (
+                ClientTransactionScope.CurrentTransaction.ParentTransaction)[0]);
+
+        Assert.AreEqual (
+            DomainObject.GetObject (DomainObjectIDs.OrderTicket2),
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetValueTx<OrderTicket> (
+                ClientTransactionScope.CurrentTransaction));
+        Assert.AreEqual (
+            DomainObject.GetObject (DomainObjectIDs.OrderTicket1),
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetValueTx<OrderTicket> (
+                ClientTransactionScope.CurrentTransaction.ParentTransaction));
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionsDifferException))]
+    public void GetValueTxWithInvalidTransactionNew ()
+    {
+      Order newOrder = Order.NewObject ();
+      PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        accessor.GetValueTx<int> (ClientTransactionScope.CurrentTransaction);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionsDifferException))]
+    public void GetValueTxWithInvalidTransactionLoaded ()
+    {
+      Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
+      PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        accessor.GetValueTx<int> (ClientTransactionScope.CurrentTransaction);
+      }
+    }
+
+    [Test]
+    public void GetValueWithoutTypeCheckTx ()
+    {
+      Order newOrder = Order.NewObject ();
+
+      newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValue (9);
+      newOrder.OrderItems.Add (DomainObject.GetObject (DomainObjectIDs.OrderItem1));
+      newOrder.OrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValue (10);
+        newOrder.OrderItems.Clear ();
+        newOrder.OrderItems.Add (DomainObject.GetObject (DomainObjectIDs.OrderItem2));
+        newOrder.OrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
+
+        Assert.AreEqual (
+            10,
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetValueWithoutTypeCheckTx (
+                ClientTransactionScope.CurrentTransaction));
+        Assert.AreEqual (
+            9,
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetValueWithoutTypeCheckTx (
+                ClientTransactionScope.CurrentTransaction.ParentTransaction));
+
+        Assert.AreEqual (
+            DomainObject.GetObject (DomainObjectIDs.OrderItem2),
+            ((DomainObjectCollection)newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetValueWithoutTypeCheckTx (
+                ClientTransactionScope.CurrentTransaction))[0]);
+        Assert.AreEqual (
+            DomainObject.GetObject (DomainObjectIDs.OrderItem1),
+            ((DomainObjectCollection)newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetValueWithoutTypeCheckTx (
+                ClientTransactionScope.CurrentTransaction.ParentTransaction))[0]);
+
+        Assert.AreEqual (
+            DomainObject.GetObject (DomainObjectIDs.OrderTicket2),
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetValueWithoutTypeCheckTx (
+                ClientTransactionScope.CurrentTransaction));
+        Assert.AreEqual (
+            DomainObject.GetObject (DomainObjectIDs.OrderTicket1),
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetValueWithoutTypeCheckTx (
+                ClientTransactionScope.CurrentTransaction.ParentTransaction));
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionsDifferException))]
+    public void GetValueWithoutTypeCheckTxWithInvalidTransactionNew ()
+    {
+      Order newOrder = Order.NewObject ();
+      PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        accessor.GetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionsDifferException))]
+    public void GetValueWithoutTypeCheckTxWithInvalidTransactionLoaded ()
+    {
+      Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
+      PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        accessor.GetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
+      }
+    }
+
+    [Test]
+    public void GetOriginalValueTx ()
+    {
+      Order newOrder = Order.NewObject ();
+      
+      newOrder.OrderNumber = 9;
+      OrderItem newOrderItem = OrderItem.NewObject ();
+      newOrder.OrderItems.Add (newOrderItem);
+      OrderTicket newOrderTicket = OrderTicket.NewObject ();
+      newOrder.OrderTicket = newOrderTicket;
+
+      newOrder.Official = Official.NewObject ();
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        ClientTransactionScope.CurrentTransaction.Commit();
+        
+        Assert.AreEqual (
+            9,
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetOriginalValueTx<int> (
+                ClientTransactionScope.CurrentTransaction));
+        Assert.AreEqual (
+            0,
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetOriginalValueTx<int> (
+                ClientTransactionScope.CurrentTransaction.ParentTransaction));
+
+        Assert.AreEqual (
+            newOrderItem,
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetOriginalValueTx<ObjectList<OrderItem>> (
+                ClientTransactionScope.CurrentTransaction)[0]);
+        Assert.AreEqual (
+            0,
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetOriginalValueTx<ObjectList<OrderItem>> (
+                ClientTransactionScope.CurrentTransaction.ParentTransaction).Count);
+
+        Assert.AreEqual (
+            newOrderTicket,
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetOriginalValueTx<OrderTicket> (
+                ClientTransactionScope.CurrentTransaction));
+        Assert.AreEqual (
+            null,
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetOriginalValueTx<OrderTicket> (
+                ClientTransactionScope.CurrentTransaction.ParentTransaction));
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionsDifferException))]
+    public void GetOriginalValueTxWithInvalidTransactionNew ()
+    {
+      Order newOrder = Order.NewObject ();
+      PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        accessor.GetOriginalValueTx<int> (ClientTransactionScope.CurrentTransaction);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionsDifferException))]
+    public void GetOriginalValueTxWithInvalidTransactionLoaded ()
+    {
+      Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
+      PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        accessor.GetOriginalValueTx<int> (ClientTransactionScope.CurrentTransaction);
+      }
+    }
+
+    [Test]
+    public void GetOriginalValueWithoutTypeCheckTx ()
+    {
+      Order newOrder = Order.NewObject ();
+
+      newOrder.OrderNumber = 9;
+      OrderItem newOrderItem = OrderItem.NewObject ();
+      newOrder.OrderItems.Add (newOrderItem);
+      OrderTicket newOrderTicket = OrderTicket.NewObject ();
+      newOrder.OrderTicket = newOrderTicket;
+
+      newOrder.Official = Official.NewObject ();
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        ClientTransactionScope.CurrentTransaction.Commit ();
+
+        Assert.AreEqual (
+            9,
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetOriginalValueWithoutTypeCheckTx (
+                ClientTransactionScope.CurrentTransaction));
+        Assert.AreEqual (
+            0,
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetOriginalValueWithoutTypeCheckTx (
+                ClientTransactionScope.CurrentTransaction.ParentTransaction));
+
+        Assert.AreEqual (
+            newOrderItem,
+            ((ObjectList<OrderItem>) newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetOriginalValueWithoutTypeCheckTx (
+                ClientTransactionScope.CurrentTransaction))[0]);
+        Assert.AreEqual (
+            0,
+            ((ObjectList<OrderItem>) newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetOriginalValueWithoutTypeCheckTx (
+                ClientTransactionScope.CurrentTransaction.ParentTransaction)).Count);
+
+        Assert.AreEqual (
+            newOrderTicket,
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetOriginalValueWithoutTypeCheckTx (
+                ClientTransactionScope.CurrentTransaction));
+        Assert.AreEqual (
+            null,
+            newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetOriginalValueWithoutTypeCheckTx (
+                ClientTransactionScope.CurrentTransaction.ParentTransaction));
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionsDifferException))]
+    public void GetOriginalValueWithoutTypeCheckTxWithInvalidTransactionNew ()
+    {
+      Order newOrder = Order.NewObject ();
+      PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        accessor.GetOriginalValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionsDifferException))]
+    public void GetOriginalValueWithoutTypeCheckTxWithInvalidTransactionLoaded ()
+    {
+      Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
+      PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        accessor.GetOriginalValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
+      }
+    }
+
+    [Test]
+    public void SetValueTx ()
+    {
+      Order order = Order.GetObject(DomainObjectIDs.Order1);
+      OrderTicket orderTicket2 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
+
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
+        OrderTicket orderTicket1 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+
+        order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValueTx (
+            ClientTransactionScope.CurrentTransaction, 1);
+        order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValueTx (ClientTransactionMock, 2);
+
+        order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].SetValueTx (
+            ClientTransactionScope.CurrentTransaction, orderTicket1);
+        order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].SetValueTx (
+            ClientTransactionMock, orderTicket2);
+
+        Assert.AreEqual (1, order.OrderNumber);
+        Assert.AreSame (orderTicket1, order.OrderTicket);
+      }
+      Assert.AreEqual (2, order.OrderNumber);
+      Assert.AreSame (orderTicket2, order.OrderTicket);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionsDifferException))]
+    public void SetValueTxWithInvalidTransactionNew ()
+    {
+      Order newOrder = Order.NewObject ();
+      PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        accessor.SetValueTx (ClientTransactionScope.CurrentTransaction, 1);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionsDifferException))]
+    public void SetValueTxWithInvalidTransactionLoaded ()
+    {
+      Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
+      PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        accessor.SetValueTx (ClientTransactionScope.CurrentTransaction, 2);
+      }
+    }
+
+    [Test]
+    public void SetValueWithoutTypeCheckTx ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      OrderTicket orderTicket2 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
+
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
+        OrderTicket orderTicket1 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+
+        order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValueWithoutTypeCheckTx (
+            ClientTransactionScope.CurrentTransaction, 1);
+        order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValueWithoutTypeCheckTx (ClientTransactionMock, 2);
+
+        order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].SetValueWithoutTypeCheckTx (
+            ClientTransactionScope.CurrentTransaction, orderTicket1);
+        order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].SetValueWithoutTypeCheckTx (
+            ClientTransactionMock, orderTicket2);
+
+        Assert.AreEqual (1, order.OrderNumber);
+        Assert.AreSame (orderTicket1, order.OrderTicket);
+      }
+      Assert.AreEqual (2, order.OrderNumber);
+      Assert.AreSame (orderTicket2, order.OrderTicket);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionsDifferException))]
+    public void SetValueWithoutTypeCheckTxWithInvalidTransactionNew ()
+    {
+      Order newOrder = Order.NewObject ();
+      PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        accessor.SetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction, 1);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionsDifferException))]
+    public void SetValueWithoutTypeCheckTxWithInvalidTransactionLoaded ()
+    {
+      Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
+      PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        accessor.SetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction, 2);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidTypeException))]
+    public void SetValueWithoutTypeCheckTxForWrongType ()
+    {
+      Order newOrder = Order.NewObject ();
+      newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValueWithoutTypeCheckTx (
+            ClientTransactionScope.CurrentTransaction, "1");
+    }
+
+
   }
 }

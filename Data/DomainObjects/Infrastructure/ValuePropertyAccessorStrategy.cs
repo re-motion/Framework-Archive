@@ -20,40 +20,52 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       return propertyDefinition.PropertyType;
     }
 
-    private PropertyValue GetPropertyValue (PropertyAccessor propertyAccessor)
+    private PropertyValue GetPropertyValue (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      return propertyAccessor.DomainObject.GetDataContainer().PropertyValues[propertyAccessor.PropertyIdentifier];
+      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      return propertyAccessor.DomainObject.GetDataContainerForTransaction (transaction).PropertyValues[propertyAccessor.PropertyIdentifier];
     }
 
-    public bool HasChanged (PropertyAccessor propertyAccessor)
+    public bool HasChanged (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
 			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      return GetPropertyValue(propertyAccessor).HasChanged;
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      return GetPropertyValue (propertyAccessor, transaction).HasChanged;
     }
 
-		public bool IsNull (PropertyAccessor propertyAccessor)
+    public bool IsNull (PropertyAccessor propertyAccessor, ClientTransaction transaction)
 		{
 			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-			return GetValueWithoutTypeCheck (propertyAccessor) == null;
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+			return GetValueWithoutTypeCheck (propertyAccessor, transaction) == null;
 		}
 
-    public object GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor)
+    public object GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
 			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      return GetPropertyValue (propertyAccessor).Value;
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      return GetPropertyValue (propertyAccessor, transaction).Value;
     }
 
-    public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, object value)
+    public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction, object value)
     {
 			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      GetPropertyValue (propertyAccessor).Value = value;
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      GetPropertyValue (propertyAccessor, transaction).Value = value;
     }
 
-    public object GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor)
+    public object GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
 			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      return GetPropertyValue (propertyAccessor).OriginalValue;
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      return GetPropertyValue (propertyAccessor, transaction).OriginalValue;
     }
   }
 }

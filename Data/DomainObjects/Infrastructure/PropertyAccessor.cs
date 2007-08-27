@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
@@ -245,7 +246,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       get
       {
         DomainObject.CheckIfObjectIsDiscarded();
-        return _strategy.HasChanged (this);
+        _domainObject.CheckIfRightTransaction (ClientTransactionScope.CurrentTransaction);
+        return _strategy.HasChanged (this, ClientTransactionScope.CurrentTransaction);
       }
     }
 
@@ -260,7 +262,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       get
       {
         DomainObject.CheckIfObjectIsDiscarded ();
-        return _strategy.IsNull (this);
+        DomainObject.CheckIfRightTransaction (ClientTransactionScope.CurrentTransaction);
+        return _strategy.IsNull (this, ClientTransactionScope.CurrentTransaction);
       }
     }
 
@@ -279,12 +282,33 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public T GetValue<T> ()
     {
+      return GetValueTx<T> (ClientTransactionScope.CurrentTransaction);
+    }
+
+    /// <summary>
+    /// Gets the property's value for a given <see cref="ClientTransaction"/>.
+    /// </summary>
+    /// <typeparam name="T">
+    /// The property value type. This must be the same as the type returned by <see cref="PropertyType"/>: For simple value properties,
+    /// this is the simple property type. For related objects, this is the related object's type. For related object collections,
+    /// this is <see cref="ObjectList{T}"/>, where "T" is the related objects' type.
+    /// </typeparam>
+    /// <param name="transaction">The <see cref="ClientTransaction"/> to get the value for.</param>
+    /// <returns>The value of the encapsulated property.</returns>
+    /// <exception cref="InvalidTypeException">
+    /// The type requested via <typeparamref name="T"/> is not the same as the property's type indicated by <see cref="PropertyType"/>.
+    /// </exception>
+    /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
+    public T GetValueTx<T> (ClientTransaction transaction)
+    {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
       if (!PropertyType.Equals (typeof (T)))
         throw new InvalidTypeException (PropertyIdentifier, typeof (T), PropertyType);
 
-      object value = GetValueWithoutTypeCheck();
+      object value = GetValueWithoutTypeCheckTx (transaction);
       Assertion.DebugAssert (
-          value != null || !PropertyType.IsValueType || Nullable.GetUnderlyingType(PropertyType) != null,
+          value != null || !PropertyType.IsValueType || Nullable.GetUnderlyingType (PropertyType) != null,
           "Property '{0}' is a value type but the DataContainer returned null.",
           PropertyIdentifier);
       Assertion.DebugAssert (value == null || value is T);
@@ -308,10 +332,33 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public void SetValue<T> (T value)
     {
+      SetValueTx (ClientTransactionScope.CurrentTransaction, value);
+    }
+
+    /// <summary>
+    /// Sets the property's value for the given <see cref="ClientTransaction"/>.
+    /// </summary>
+    /// <typeparam name="T">
+    /// The property value type. This must be the same as the type returned by <see cref="PropertyType"/>: For simple value properties,
+    /// this is the simple property type. For related objects, this is the related object's type. For related object collections,
+    /// this is <see cref="ObjectList{T}"/>, where "T" is the related objects' type. The type parameter can usually be inferred and needn't be
+    /// specified in such cases.
+    /// </typeparam>
+    /// <param name="transaction">The <see cref="ClientTransaction"/> to set the value for.</param>
+    /// <param name="value">The value to be set.</param>
+    /// <exception cref="InvalidTypeException">
+    /// The type <typeparamref name="T"/> is not the same as the property's type indicated by <see cref="PropertyType"/>.
+    /// </exception>
+    /// <exception cref="InvalidOperationException">The property is a related object collection; such properties cannot be set.</exception>
+    /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
+    public void SetValueTx<T> (ClientTransaction transaction, T value)
+    {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
       if (!PropertyType.Equals (typeof (T)))
         throw new InvalidTypeException (PropertyIdentifier, typeof (T), PropertyType);
 
-      SetValueWithoutTypeCheck ((object) value);
+      SetValueWithoutTypeCheckTx (transaction, value);
     }
 
     /// <summary>
@@ -327,7 +374,27 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public void SetValueWithoutTypeCheck (object value)
     {
       _domainObject.CheckIfObjectIsDiscarded ();
-      _strategy.SetValueWithoutTypeCheck (this, value);
+      SetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction, value);
+    }
+
+    /// <summary>
+    /// Sets the property's value without performing an exact type check on the given value for the given transaction. The value must still be
+    /// asssignable to <see cref="PropertyType"/>, though.
+    /// </summary>
+    /// <param name="transaction">The <see cref="ClientTransaction"/> to set the value for.</param>
+    /// <param name="value">The value to be set.</param>
+    /// <exception cref="InvalidTypeException">
+    /// The given <paramref name="value"/> is not assignable to the property because of its type.
+    /// </exception>
+    /// <exception cref="InvalidOperationException">The property is a related object collection; such properties cannot be set.</exception>
+    /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
+    public void SetValueWithoutTypeCheckTx (ClientTransaction transaction, object value)
+    {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      _domainObject.CheckIfObjectIsDiscarded ();
+      _domainObject.CheckIfRightTransaction (transaction);
+      _strategy.SetValueWithoutTypeCheck (this, transaction, value);
     }
 
     /// <summary>
@@ -338,11 +405,26 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public object GetValueWithoutTypeCheck ()
     {
       _domainObject.CheckIfObjectIsDiscarded();
-      return _strategy.GetValueWithoutTypeCheck (this);
+      return GetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
     }
 
     /// <summary>
-    /// Gets the property's value from that moment when the property's domain object was enlisted in its current <see cref="ClientTransaction"/>.
+    /// Gets the property's value without performing a type check for the given transaction.
+    /// </summary>
+    /// <param name="transaction">The <see cref="ClientTransaction"/> to get the value for.</param>
+    /// <returns>The value of the encapsulated property.</returns>
+    /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
+    public object GetValueWithoutTypeCheckTx (ClientTransaction transaction)
+    {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      _domainObject.CheckIfObjectIsDiscarded ();
+      _domainObject.CheckIfRightTransaction (transaction);
+      return _strategy.GetValueWithoutTypeCheck (this, transaction);
+    }
+
+    /// <summary>
+    /// Gets the property's value from that moment when the property's domain object was enlisted in the current <see cref="ClientTransaction"/>.
     /// </summary>
     /// <typeparam name="T">
     /// The property value type. This must be the same as the type returned by <see cref="PropertyType"/>: For simple value properties,
@@ -364,14 +446,52 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     }
 
     /// <summary>
+    /// Gets the property's value from that moment when the property's domain object was enlisted in the given <see cref="ClientTransaction"/>.
+    /// </summary>
+    /// <typeparam name="T">
+    /// The property value type. This must be the same as the type returned by <see cref="PropertyType"/>: For simple value properties,
+    /// this is the simple property type. For related objects, this is the related object's type. For related object collections,
+    /// this is <see cref="ObjectList{T}"/>, where "T" is the related objects' type. The type parameter can usually be inferred and needn't be
+    /// specified in such cases.
+    /// </typeparam>
+    /// <param name="transaction">The <see cref="ClientTransaction"/> to get the value for.</param>
+    /// <returns>The original value of the encapsulated property in the current transaction.</returns>
+    /// <exception cref="InvalidTypeException">
+    /// The type requested via <typeparamref name="T"/> is not the same as the property's type indicated by <see cref="PropertyType"/>.
+    /// </exception>
+    /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
+    public T GetOriginalValueTx<T> (ClientTransaction transaction)
+    {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      if (!PropertyType.Equals (typeof (T)))
+        throw new InvalidTypeException (PropertyIdentifier, typeof (T), PropertyType);
+
+      return (T) GetOriginalValueWithoutTypeCheckTx (transaction);
+    }
+
+    /// <summary>
     /// Gets the property's original value without performing a type check.
     /// </summary>
     /// <returns>The original value of the encapsulated property in the current transaction.</returns>
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public object GetOriginalValueWithoutTypeCheck ()
     {
-      _domainObject.CheckIfObjectIsDiscarded();
-      return _strategy.GetOriginalValueWithoutTypeCheck (this);
+      return GetOriginalValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
+    }
+
+    /// <summary>
+    /// Gets the property's original value for the given <see cref="ClientTransaction"/> without performing a type check.
+    /// </summary>
+    /// <returns>The original value of the encapsulated property in the current transaction.</returns>
+    /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
+    public object GetOriginalValueWithoutTypeCheckTx (ClientTransaction transaction)
+    {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      _domainObject.CheckIfObjectIsDiscarded ();
+      _domainObject.CheckIfRightTransaction (transaction);
+      return _strategy.GetOriginalValueWithoutTypeCheck (this, transaction);
     }
   }
 }

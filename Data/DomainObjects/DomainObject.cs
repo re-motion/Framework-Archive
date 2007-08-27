@@ -603,11 +603,17 @@ public class DomainObject
 
   private void CheckIfRightTransaction ()
   {
-    if (!CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction))
+    ClientTransaction transaction = ClientTransactionScope.CurrentTransaction;
+    CheckIfRightTransaction(transaction);
+  }
+
+  internal void CheckIfRightTransaction (ClientTransaction transaction)
+  {
+    if (!CanBeUsedInTransaction (transaction))
     {
       string message = string.Format ("Domain object '{0}' cannot be used in the current transaction as it was loaded or created in another "
-          + "transaction. Use a ClientTransactionScope to set the right transaction, or call EnlistInTransaction to enlist the object "
-          + "in the current transaction.", ID);
+                                      + "transaction. Use a ClientTransactionScope to set the right transaction, or call EnlistInTransaction to enlist the object "
+                                      + "in the current transaction.", ID);
       throw new ClientTransactionsDifferException (message);
     }
   }

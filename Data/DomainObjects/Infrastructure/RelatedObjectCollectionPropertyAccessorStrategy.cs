@@ -26,34 +26,44 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       return RelatedObjectPropertyAccessorStrategy.Instance.GetPropertyType (propertyDefinition, relationEndPointDefinition);
     }
 
-    public bool HasChanged (PropertyAccessor propertyAccessor)
+    public bool HasChanged (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
 			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      return RelatedObjectPropertyAccessorStrategy.Instance.HasChanged (propertyAccessor);
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      return RelatedObjectPropertyAccessorStrategy.Instance.HasChanged (propertyAccessor, transaction);
     }
 
-  	public bool IsNull (PropertyAccessor propertyAccessor)
+    public bool IsNull (PropertyAccessor propertyAccessor, ClientTransaction transaction)
   	{
 			ArgumentUtility.CheckNotNull ("accessor", propertyAccessor);
-			return false;
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      return false;
   	}
 
-  	public object GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor)
+    public object GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
 			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      return ClientTransactionScope.CurrentTransaction.GetRelatedObjects (CreateRelationEndPointID (propertyAccessor));
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      return transaction.GetRelatedObjects (CreateRelationEndPointID (propertyAccessor));
     }
 
-    public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, object value)
+    public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction, object value)
     {
 			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
       throw new InvalidOperationException ("Related object collections cannot be set.");
     }
 
-    public object GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor)
+    public object GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
 			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      return ClientTransactionScope.CurrentTransaction.GetOriginalRelatedObjects (CreateRelationEndPointID (propertyAccessor));
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      return transaction.GetOriginalRelatedObjects (CreateRelationEndPointID (propertyAccessor));
     }
   }
 }
