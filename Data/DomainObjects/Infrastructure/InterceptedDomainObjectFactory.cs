@@ -118,6 +118,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="ArgumentTypeException"><paramref name="type"/> is not the same or a subtype of <typeparamref name="TMinimal"/>.</exception>
     /// <exception cref="ArgumentException"><paramref name="type"/> wasn't created by this kind of factory.</exception>
     public IFuncInvoker<TMinimal> GetTypesafeConstructorInvoker<TMinimal> (Type type)
+        where TMinimal : DomainObject
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (TMinimal));
       if (!WasCreatedByFactory (type))

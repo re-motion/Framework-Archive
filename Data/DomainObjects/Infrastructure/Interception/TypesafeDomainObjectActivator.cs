@@ -36,10 +36,16 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       }
     }
 
-    public static FuncInvoker<TMinimal> CreateInstance<TMinimal> (Type baseType, Type type, BindingFlags bindingFlags)
+    public static IFuncInvoker<TMinimal> CreateInstance<TMinimal> (Type baseType, Type type, BindingFlags bindingFlags)
+        where TMinimal : DomainObject
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (TMinimal));
-      return new FuncInvoker<TMinimal> (new ConstructorLookupInfo (baseType, type, bindingFlags).GetDelegate);
+      FuncInvoker<TMinimal> constructorInvoker = new FuncInvoker<TMinimal> (new ConstructorLookupInfo (baseType, type, bindingFlags).GetDelegate);
+      return new FuncInvokerWrapper<TMinimal> (constructorInvoker, delegate (TMinimal instance)
+      {
+        DomainObjectMixinCodeGenerationBridge.OnDomainObjectCreated (instance);
+        return instance;
+      });
     }
   }
 }

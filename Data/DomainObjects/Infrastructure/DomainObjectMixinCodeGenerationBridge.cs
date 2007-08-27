@@ -44,5 +44,31 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       ArgumentUtility.CheckNotNull ("objectReference", objectReference);
       ObjectFactory.FinishDeserialization (objectReference);
     }
+
+    public static void OnDomainObjectCreated (DomainObject instance)
+    {
+      ArgumentUtility.CheckNotNull ("instance", instance);
+      NotifyDomainObjectMixins (instance, delegate (IDomainObjectMixin mixin) { mixin.OnDomainObjectCreated (); });
+    }
+
+    public static void OnDomainObjectLoaded (DomainObject instance)
+    {
+      ArgumentUtility.CheckNotNull ("instance", instance);
+      NotifyDomainObjectMixins (instance, delegate (IDomainObjectMixin mixin) { mixin.OnDomainObjectLoaded (); });
+    }
+
+    private static void NotifyDomainObjectMixins (DomainObject instance, Proc<IDomainObjectMixin> notifier)
+    {
+      IMixinTarget instanceAsMixinTarget = instance as IMixinTarget;
+      if (instanceAsMixinTarget != null)
+      {
+        foreach (object mixin in instanceAsMixinTarget.Mixins)
+        {
+          IDomainObjectMixin mixinAsDomainObjectMixin = mixin as IDomainObjectMixin;
+          if (mixinAsDomainObjectMixin != null)
+            notifier (mixinAsDomainObjectMixin);
+        }
+      }
+    }
   }
 }

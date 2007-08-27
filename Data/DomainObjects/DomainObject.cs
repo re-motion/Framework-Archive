@@ -923,6 +923,7 @@ public class DomainObject
 
   internal void EndObjectLoading ()
   {
+    DomainObjectMixinCodeGenerationBridge.OnDomainObjectLoaded (this);
     OnLoaded();
   }
 

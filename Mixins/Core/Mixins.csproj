@@ -67,7 +67,7 @@
     <Compile Include="Definitions\IDefinitionCollection.cs" />
     <Compile Include="Definitions\CovariantDefinitionCollectionWrapper.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
-    <Compile Include="NotIntroducedAttribute.cs" />
+    <Compile Include="NonIntroducedAttribute.cs" />
     <Compile Include="UsesAttribute.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\MixinTypeGenerator.cs" />
     <Compile Include="CodeGeneration\IMixinTypeGenerator.cs" />

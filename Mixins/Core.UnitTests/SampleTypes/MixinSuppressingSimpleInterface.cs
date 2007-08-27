@@ -2,7 +2,7 @@ using System;
 
 namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
-  [NotIntroduced (typeof (ISimpleInterface))]
+  [NonIntroduced (typeof (ISimpleInterface))]
   public class MixinSuppressingSimpleInterface : ISimpleInterface
   {
     public string Method ()

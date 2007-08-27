@@ -25,7 +25,7 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private void AnalyzeSuppressedInterfaces ()
     {
-      foreach (NotIntroducedAttribute notIntroducedAttribute in _mixin.Type.GetCustomAttributes (typeof (NotIntroducedAttribute), true))
+      foreach (NonIntroducedAttribute notIntroducedAttribute in _mixin.Type.GetCustomAttributes (typeof (NonIntroducedAttribute), true))
         _suppressedInterfaces.Add (notIntroducedAttribute.SuppressedInterface);
     }
 

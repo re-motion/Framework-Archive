@@ -3,11 +3,11 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins
 {
-  public class NotIntroducedAttribute : Attribute
+  public class NonIntroducedAttribute : Attribute
   {
     private readonly Type _suppressedInterface;
 
-    public NotIntroducedAttribute (Type suppressedInterface)
+    public NonIntroducedAttribute (Type suppressedInterface)
     {
       ArgumentUtility.CheckNotNull ("suppressedInterface", suppressedInterface);
       _suppressedInterface = suppressedInterface;

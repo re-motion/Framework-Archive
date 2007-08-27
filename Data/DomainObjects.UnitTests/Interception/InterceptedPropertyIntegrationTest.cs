@@ -165,7 +165,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public void WrongConstructorCannotBeInstantiated ()
     {
       Type t = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.GetConcreteDomainObjectType(typeof(Order));;
-      DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.GetTypesafeConstructorInvoker<object> (t)
+      DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.GetTypesafeConstructorInvoker<DomainObject> (t)
           .With ("foo", "bar", "foobar", (object)null);
     }
 
