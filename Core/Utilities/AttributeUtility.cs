@@ -72,8 +72,8 @@ namespace Rubicon.Utilities
 
       if (!typeof (Attribute).IsAssignableFrom (attributeType) && !attributeType.IsInterface)
       {
-        throw new ArgumentTypeException (
-            string.Format ("The attribute type must be assignable to System.Attribute or an interface.\r\nParameter name: {0}", parameterName));
+        string message = "The attribute type must be assignable to System.Attribute or an interface.";
+        throw new ArgumentTypeException (message, parameterName, typeof (Attribute), attributeType);
       }
     }
 

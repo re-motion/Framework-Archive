@@ -214,8 +214,8 @@ namespace Rubicon.Utilities
       {
         if (!expectedType.IsAssignableFrom (actualType))
         {
-          throw new ArgumentTypeException (
-              string.Format ("Argument {0} is a {2}, which cannot be assigned to type {1}.", argumentName, expectedType, actualType));
+          string message = string.Format ("Argument {0} is a {2}, which cannot be assigned to type {1}.", argumentName, expectedType, actualType);
+          throw new ArgumentTypeException (message, expectedType, actualType);
         }
       }
 
@@ -338,24 +338,31 @@ namespace Rubicon.Utilities
   [Serializable]
   public class ArgumentTypeException : ArgumentException
   {
+    public readonly Type ExpectedType;
+    public readonly Type ActualType;
+
+    public ArgumentTypeException (string message, string argumentName, Type expectedType, Type actualType)
+      : base (message, argumentName)
+    {
+      ExpectedType = expectedType;
+      ActualType = actualType;
+    }
+
     public ArgumentTypeException (string argumentName, Type expectedType, Type actualType)
-      : base (FormatMessage (argumentName, expectedType, actualType), argumentName)
+    : this (FormatMessage (argumentName, expectedType, actualType), argumentName, actualType, expectedType)
     {
     }
 
     public ArgumentTypeException (string argumentName, Type actualType)
-      : base (FormatMessage (argumentName, null, actualType), argumentName)
+      : this (argumentName, null, actualType)
     {
     }
 
     public ArgumentTypeException (SerializationInfo info, StreamingContext context)
       : base (info, context)
     {
-    }
-
-    public ArgumentTypeException (string message)
-      : base (message)
-    {
+      ExpectedType = (Type) info.GetValue ("ExpectedType", typeof (Type));
+      ActualType = (Type) info.GetValue ("ActualType", typeof (Type));
     }
 
     private static string FormatMessage (string argumentName, Type expectedType, Type actualType)

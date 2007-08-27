@@ -69,7 +69,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
+    [ExpectedException (typeof (ArgumentTypeException),
         ExpectedMessage = "Values of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor' cannot be added to this collection. "
         + "Values must be of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer' "
         + "or derived from 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer'.\r\nParameter name: domainObject")]
@@ -910,7 +910,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
+    [ExpectedException (typeof (ArgumentTypeException))]
     public void SetNumericIndexerWithInvalidType ()
     {
       _collection[0] = Order.NewObject ();
@@ -974,7 +974,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
+    [ExpectedException (typeof (ArgumentTypeException))]
     public void CombineWithItemOfInvalidType ()
     {
       DomainObjectCollection secondCollection = new DomainObjectCollection ();

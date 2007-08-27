@@ -359,11 +359,6 @@ public class DataContainer
   }
 
 
-  internal ObjectID GetID ()
-  {
-    return _id;
-  }
-
   internal void Delete ()
   {
     if (_state == DataContainerStateType.New)

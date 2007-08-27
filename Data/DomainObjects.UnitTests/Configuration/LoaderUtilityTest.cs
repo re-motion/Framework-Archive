@@ -51,5 +51,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
           Path.Combine (ReflectionUtility.GetExecutingAssemblyPath(), "Mapping.xml"),
           LoaderUtility.GetConfigurationFileName ("AppSettingKeyDoesNotExist", "Mapping.xml"));
     }
+
+    [Test]
+    public void GetTypeWithTypeUtilityNotation ()
+    {
+      Assert.AreEqual (typeof (LoaderUtility), LoaderUtility.GetType ("Rubicon.Data.DomainObjects::ConfigurationLoader.XmlBasedConfigurationLoader.LoaderUtility"));
+    }
   }
 }

@@ -41,6 +41,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
+    public void ObjectQueryWithObjectListInSubTransaction ()
+    {
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        Query query = new Query ("CustomerTypeQuery");
+        query.Parameters.Add ("@customerType", Customer.CustomerType.Standard);
+
+        ObjectList<Customer> queriedObjects = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection<Customer> (query);
+        Customer queriedObject = queriedObjects[0];
+
+        Assert.IsNotNull (queriedObjects);
+        Assert.AreEqual (1, queriedObjects.Count);
+        Assert.AreEqual (DomainObjectIDs.Customer1, queriedObjects[0].ID);
+
+        Assert.AreEqual (new DateTime (2000, 1, 1), queriedObject.CustomerSince);
+        Assert.AreSame (Order.GetObject (DomainObjectIDs.Order1), queriedObject.Orders[0]);
+      }
+    }
+
+    [Test]
     public void ObjectQueryInSubAndRootTransaction ()
     {
       DomainObjectCollection queriedObjectsInSub;

@@ -22,10 +22,6 @@ public class InvalidTypeException : DomainObjectException
 
   // construction and disposing
 
-  public InvalidTypeException () : this ("Value does not match expected type.") 
-  {
-  }
-
   public InvalidTypeException (string message) : base (message) 
   {
   }

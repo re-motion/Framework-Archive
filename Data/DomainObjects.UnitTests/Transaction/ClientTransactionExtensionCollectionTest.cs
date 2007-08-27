@@ -1,8 +1,11 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+
+using Mocks_Is = Rhino.Mocks.Constraints.Is;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -431,6 +434,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _mockRepository.ReplayAll ();
 
       _collectionWithExtensions.RelationRead (ClientTransactionMock, _order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", orderItems, ValueAccess.Original);
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void Subtransactions ()
+    {
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension1.SubTransactionCreating (ClientTransactionMock);
+        _extension2.SubTransactionCreating (ClientTransactionMock);
+        _extension1.SubTransactionCreated (ClientTransactionMock, subTransaction);
+        _extension2.SubTransactionCreated (ClientTransactionMock, subTransaction);
+      }
+
+      _mockRepository.ReplayAll ();
+
+      _collectionWithExtensions.SubTransactionCreating (ClientTransactionMock);
+      _collectionWithExtensions.SubTransactionCreated (ClientTransactionMock, subTransaction);
 
       _mockRepository.VerifyAll ();
     }

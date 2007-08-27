@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Persistence;
@@ -82,7 +83,7 @@ public class RootQueryManager : IQueryManager
   /// Executes a given <see cref="IQuery"/> and returns a collection of the <see cref="DomainObject"/>s returned by the query.
   /// </summary>
   /// <param name="query">The query to execute. Must not be <see langword="null"/>.</param>
-  /// <returns>The scalar value that is returned by the query.</returns>
+  /// <returns>A collection containing the <see cref="DomainObject"/>s returned by the query.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="query"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.</exception>
   /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
@@ -97,7 +98,13 @@ public class RootQueryManager : IQueryManager
   public DomainObjectCollection GetCollection (IQuery query)
   {
     ArgumentUtility.CheckNotNull ("query", query);
+    Type collectionType = query.CollectionType;
 
+    return GetCollection(query, collectionType, null);
+  }
+
+  private DomainObjectCollection GetCollection (IQuery query, Type collectionType, Type requiredItemType)
+  {
     if (query.QueryType == QueryType.Scalar)
       throw new ArgumentException ("A scalar query cannot be used with GetCollection.", "query");
 
@@ -106,10 +113,64 @@ public class RootQueryManager : IQueryManager
       StorageProvider provider = storageProviderManager.GetMandatory (query.StorageProviderID);
       DataContainerCollection dataContainers = provider.ExecuteCollectionQuery (query);
 
-      DomainObjectCollection queryResult = _clientTransaction.MergeLoadedDomainObjects (dataContainers, query.CollectionType);
+      DomainObjectCollection queryResult = _clientTransaction.MergeLoadedDomainObjects (dataContainers, collectionType, requiredItemType);
       _clientTransaction.TransactionEventSink.FilterQueryResult (queryResult, query);
       return queryResult;
-    }    
+    }
+  }
+
+  /// <summary>
+  /// Executes a given <see cref="IQuery"/> and returns a collection of the <see cref="DomainObject"/>s returned by the query.
+  /// </summary>
+  /// <typeparam name="T">The type of <see cref="DomainObjects"/> to be returned from the query.</typeparam>
+  /// <param name="query">The query to execute. Must not be <see langword="null"/>.</param>
+  /// <returns>
+  /// A collection containing the <see cref="DomainObject"/>s returned by the query.
+  /// </returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="query"/> is <see langword="null"/>.</exception>
+  /// <exception cref="InvalidTypeException">The objects returned by the <paramref name="query"/> do not match the expected type
+  /// <typeparamref name="T"/> or the configured collection type is not assignable to <see cref="ObjectList{T}"/> with the given <typeparamref name="T"/>.</exception>
+  /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.</exception>
+  /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
+  /// The <see cref="IQuery.StorageProviderID"/> of <paramref name="query"/> could not be found.
+  /// </exception>
+  /// <exception cref="Rubicon.Data.DomainObjects.Persistence.PersistenceException">
+  /// The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
+  /// </exception>
+  /// <exception cref="Rubicon.Data.DomainObjects.Persistence.StorageProviderException">
+  /// An error occurred while executing the query.
+  /// </exception>
+  public ObjectList<T> GetCollection<T> (IQuery query) where T : DomainObject
+  {
+    ArgumentUtility.CheckNotNull ("query", query);
+
+    Type collectionType;
+    if (typeof (ObjectList<T>).IsAssignableFrom (query.CollectionType)) // specified type is more special - use it
+      collectionType = query.CollectionType;
+    else if (query.CollectionType.IsAssignableFrom (typeof (ObjectList<T>))) // we are more special - use us
+      collectionType = typeof (ObjectList<T>);
+    else // incompatible types
+    {
+      string message = string.Format (
+          "The query definition specifies a collection type of {0}, which is not compatible with ObjectList<{1}>.",
+          query.CollectionType.FullName,
+          typeof (T).Name);
+      throw new InvalidTypeException (message);
+    }
+
+    Assertion.IsTrue (typeof (ObjectList<T>).IsAssignableFrom (collectionType));
+    Assertion.IsTrue (query.CollectionType.IsAssignableFrom (collectionType));
+
+    try
+    {
+      return (ObjectList<T>) GetCollection (query, collectionType, typeof (T));
+    }
+    catch (ArgumentTypeException ex)
+    {
+      string message = string.Format ("The query returned an object of type {0}, which cannot be added to an ObjectList<{1}>.",
+        ex.ActualType.FullName, typeof (T).Name);
+      throw new InvalidTypeException (message, ex);
+    }
   }
 }
 }

@@ -53,6 +53,12 @@
     <statement>select * from [Company] where [CustomerType] = @customerType order by [Name] asc;</statement>
   </query>
 
+  <query id="QueryWithSpecificCollectionType" type="collection">
+    <storageProviderID>TestDomain</storageProviderID>
+    <statement>select * from [Order];</statement>
+    <collectionType>Rubicon.Data.DomainObjects.UnitTests::TestDomain.SpecificOrderCollection</collectionType>
+  </query>
+
   <query id="QueryWithAllDataTypes" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
     <!-- SQL statement with invalid XML character value. -->

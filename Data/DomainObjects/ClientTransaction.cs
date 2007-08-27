@@ -723,15 +723,17 @@ public abstract class ClientTransaction : ITransaction
   /// </summary>
   /// <param name="dataContainers">The newly loaded <see cref="DataContainer"/>s.</param>
   /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
+  /// <param name="requiredItemType">If not <see langword="null"/>, the created collection will only accept items of this type.</param>
   /// <returns>A <see cref="DomainObjectCollection"/>.</returns>
   /// <exception cref="System.InvalidCastException"><paramref name="collectionType"/> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
   internal DomainObjectCollection MergeLoadedDomainObjects (
       DataContainerCollection dataContainers, 
-      Type collectionType)
+      Type collectionType,
+      Type requiredItemType)
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
     ArgumentUtility.CheckNotNull ("collectionType", collectionType);
-    return MergeLoadedDomainObjects (dataContainers, collectionType, null, null);
+    return MergeLoadedDomainObjects (dataContainers, collectionType, requiredItemType, null);
   }
 
   /// <summary>

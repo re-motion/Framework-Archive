@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Queries
 {
@@ -48,6 +49,59 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Queries
     public void GetCollectionWithScalarQuery ()
     {
       _queryManager.GetCollection (new Query ("OrderNoSumByCustomerNameQuery"));
+    }
+
+    [Test]
+    public void GetCollectionWithObjectList ()
+    {
+      Query query = new Query ("CustomerTypeQuery");
+      query.Parameters.Add ("@customerType", Customer.CustomerType.Standard);
+
+      ObjectList<Customer> customers = _queryManager.GetCollection<Customer> (query);
+      Assert.IsNotNull (customers);
+      Assert.AreEqual (1, customers.Count);
+      Assert.AreEqual (DomainObjectIDs.Customer1, customers[0].ID);
+      Assert.IsTrue (query.CollectionType.IsAssignableFrom (customers.GetType ()));
+    }
+
+    [Test]
+    public void GetCollectionWithObjectListWorksWhenAssignableCollectionType ()
+    {
+      Query query = new Query ("OrderByOfficialQuery");
+      query.Parameters.Add ("@officialID", DomainObjectIDs.Official1);
+
+      ObjectList<Order> orders = _queryManager.GetCollection<Order> (query);
+      Assert.AreEqual (5, orders.Count);
+      Assert.That (orders, Is.EquivalentTo (new object[]
+      {
+        Order.GetObject (DomainObjectIDs.Order1),
+        Order.GetObject (DomainObjectIDs.Order2),
+        Order.GetObject (DomainObjectIDs.OrderWithoutOrderItem),
+        Order.GetObject (DomainObjectIDs.Order3),
+        Order.GetObject (DomainObjectIDs.Order4),
+      }));
+      Assert.IsTrue (query.CollectionType.IsAssignableFrom (orders.GetType ()));
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidTypeException), ExpectedMessage = "The query returned an object of type "
+        + "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer, which cannot be added to an ObjectList<Order>.")]
+    public void GetCollectionWithObjectListThrowsWhenInvalidT ()
+    {
+      Query query = new Query ("CustomerTypeQuery");
+      query.Parameters.Add ("@customerType", Customer.CustomerType.Standard);
+
+      _queryManager.GetCollection<Order> (query);
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidTypeException), ExpectedMessage = "The query definition specifies a collection type of "
+        + "Rubicon.Data.DomainObjects.UnitTests.TestDomain.SpecificOrderCollection, which is not compatible with ObjectList<Order>.")]
+    public void GetCollectionWithObjectListThrowsWhenUnassignableCollectionType ()
+    {
+      Query query = new Query ("QueryWithSpecificCollectionType");
+
+      _queryManager.GetCollection<Order> (query);
     }
 
     [Test]

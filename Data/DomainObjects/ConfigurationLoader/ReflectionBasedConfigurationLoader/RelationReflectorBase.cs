@@ -72,12 +72,12 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       if (!PropertyInfo.DeclaringType.IsAssignableFrom (classDefinition.ClassType))
       {
-        throw new ArgumentTypeException (
-            string.Format (
-                "The classDefinition's class type '{0}' is not assignable to the property's declaring type.\r\nDeclaring type: {1}, property: {2}",
-                classDefinition.ClassType,
-                propertyInfo.DeclaringType,
-                propertyInfo.Name));
+        string message = string.Format (
+            "The classDefinition's class type '{0}' is not assignable to the property's declaring type.\r\nDeclaring type: {1}, property: {2}",
+            classDefinition.ClassType,
+            propertyInfo.DeclaringType,
+            propertyInfo.Name);
+        throw new ArgumentTypeException (message, null, classDefinition.ClassType, propertyInfo.DeclaringType);
       }
     }
   }

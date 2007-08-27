@@ -1,3 +1,6 @@
+using Rubicon.Data.DomainObjects;
+using Rubicon.Utilities;
+
 namespace Rubicon.Data.DomainObjects.Queries
 {
   /// <summary>
@@ -32,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.Queries
     /// Executes a given <see cref="IQuery"/> and returns a collection of the <see cref="DomainObject"/>s returned by the query.
     /// </summary>
     /// <param name="query">The query to execute. Must not be <see langword="null"/>.</param>
-    /// <returns>The scalar value that is returned by the query.</returns>
+    /// <returns>A collection containing the <see cref="DomainObject"/>s returned by the query.</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="query"/> is <see langword="null"/>.</exception>
     /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.</exception>
     /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
@@ -45,5 +48,26 @@ namespace Rubicon.Data.DomainObjects.Queries
     ///   An error occurred while executing the query.
     /// </exception>
     DomainObjectCollection GetCollection (IQuery query);
+
+    /// <summary>
+    /// Executes a given <see cref="IQuery"/> and returns a collection of the <see cref="DomainObject"/>s returned by the query.
+    /// </summary>
+    /// <param name="query">The query to execute. Must not be <see langword="null"/>.</param>
+    /// <typeparam name="T">The type of <see cref="DomainObjects"/> to be returned from the query.</typeparam>
+    /// <returns>A collection containing the <see cref="DomainObject"/>s returned by the query.</returns>
+    /// <exception cref="System.ArgumentNullException"><paramref name="query"/> is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidTypeException">The objects returned by the <paramref name="query"/> do not match the expected type
+    ///   <typeparamref name="T"/> or the configured collection type is not assignable to <see cref="ObjectList{T}"/> with the given <typeparamref name="T"/>.</exception>
+    /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.</exception>
+    /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
+    ///   The <see cref="IQuery.StorageProviderID"/> of <paramref name="query"/> could not be found.
+    /// </exception>
+    /// <exception cref="Rubicon.Data.DomainObjects.Persistence.PersistenceException">
+    ///   The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
+    /// </exception>
+    /// <exception cref="Rubicon.Data.DomainObjects.Persistence.StorageProviderException">
+    ///   An error occurred while executing the query.
+    /// </exception>
+    ObjectList<T> GetCollection<T> (IQuery query) where T : DomainObject;
   }
 }

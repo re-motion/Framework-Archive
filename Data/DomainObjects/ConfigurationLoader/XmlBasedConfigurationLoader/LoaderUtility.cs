@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLo
     {
       ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
 
-      return Type.GetType (typeName.Trim (), true);    
+      return TypeUtility.GetType (typeName.Trim (), true);    
     }
 
     public static Type GetType (XmlNode node)

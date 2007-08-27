@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
 {
@@ -97,6 +98,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
       queries.Add (QueryFactory.CreateOrderSumQueryDefinition ());
 
       return queries;
+    }
+
+    [Test]
+    public void CollectionTypeSupportsTypeUtilityNotation ()
+    {
+      Assert.AreSame (typeof (SpecificOrderCollection), QueryConfiguration.Current["QueryWithSpecificCollectionType"].CollectionType);
     }
   }
 }

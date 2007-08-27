@@ -432,5 +432,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       DataContainer dataContainer = order.InternalDataContainer;
       dataContainer.MarkAsChanged ();
     }
+
+    [Test]
+    [ExpectedException (typeof (DomainObjectException), ExpectedMessage = "Internal error: ClientTransaction of DataContainer is not set.")]
+    public void ErrorWhenNoClientTransaction ()
+    {
+      DataContainer dc = DataContainer.CreateNew (DomainObjectIDs.Order1);
+      Dev.Null = dc.ClientTransaction;
+    }
   }
 }
