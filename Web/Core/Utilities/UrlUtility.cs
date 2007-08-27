@@ -18,7 +18,7 @@ public class UrlUtility
   /// </summary>
   /// <param name="page">The requesting page.</param>
   /// <param name="relativeUrl">The relative URL.</param>
-  /// <param name="includeServer"><see langword="true"/> to include the server part. Defaults to <see langword="true"/>.</param>
+  /// <param name="includeServer"><see langword="true"/> to include the server part. Defaults to <see langword="false"/>.</param>
   /// <returns>The absolute URL.</returns>
   public static string GetAbsoluteUrl (Page page, string relativeUrl, bool includeServer)
   {
@@ -49,7 +49,7 @@ public class UrlUtility
   /// <returns>The absolute URL.</returns>
   public static string GetAbsoluteUrl (Page page, string relativeUrl)
   {
-    return UrlUtility.GetAbsoluteUrl (page, relativeUrl, true);
+    return UrlUtility.GetAbsoluteUrl (page, relativeUrl, false);
   }
 
   /// <summary>
@@ -76,7 +76,7 @@ public class UrlUtility
   /// <summary> Makes a relative URL absolute. </summary>
   /// <param name="context"> The <see cref="HttpContext"/> to be used. Must not be <see langword="null"/>. </param>
   /// <param name="relativeUrl"> The relative URL. Must not be <see langword="null"/> or empty. </param>
-  /// <param name="includeServer"><see langword="true"/> to include the server part. Defaults to <see langword="true"/>.</param>
+  /// <param name="includeServer"><see langword="true"/> to include the server part. Defaults to <see langword="false"/>.</param>
   /// <returns> The absolute URL. </returns>
   public static string GetAbsoluteUrl (HttpContext context, string relativeUrl, bool includeServer)
   {
@@ -108,7 +108,7 @@ public class UrlUtility
   /// <returns> The absolute URL. </returns>
   public static string GetAbsoluteUrl (HttpContext context, string relativeUrl)
   {
-    return UrlUtility.GetAbsoluteUrl (context, relativeUrl, true);
+    return UrlUtility.GetAbsoluteUrl (context, relativeUrl, false);
   }
 
   /// <summary> Resolves a URL. </summary>

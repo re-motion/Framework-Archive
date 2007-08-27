@@ -1,3 +1,10 @@
+1.7.58
+======
+- Das Framework generiert nur noch absolute URLs ohne Servernamen für Commands und Navigationcontrols.
+- UrlUtility.GetAbsolutePath (...): Der DefaultValue für inlcudeServer ist nun false anstatt true. Damit wird der Servername nicht mehr
+  automatisch inkludiert.
+- UrlUtility.ResolveUrl (...): Der Servername wird nicht mehr inkludiert.
+
 1.7.47
 ======
 - Rubicon.Web.UI.Controls.WebTreeView

@@ -353,12 +353,19 @@ public class WxeContext
   ///   that the session or function timeout, resuming will fail with a timeout
   ///   exception.
   /// </remarks>
-  public string GetResumeUrl ()
+  public string GetResumeUrl (bool includeServer)
   {
     string pathPart = GetResumePath();
     pathPart = HttpContext.Response.ApplyAppPathModifier (pathPart);
-    string serverPart = HttpContext.Request.Url.GetLeftPart (System.UriPartial.Authority);
-    return serverPart + pathPart;
+    if (includeServer)
+    {
+      string serverPart = HttpContext.Request.Url.GetLeftPart (System.UriPartial.Authority);
+      return serverPart + pathPart;
+    }
+    else
+    {
+      return pathPart;
+    }
   }
 
   /// <summary> Gets the absolute path that resumes the current function. </summary>
