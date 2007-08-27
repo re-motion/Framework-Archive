@@ -154,6 +154,9 @@ namespace OBWTest.IndividualControlTests
           persons.FindAll (
               delegate (BusinessObjectWithIdentityProxy person) { return person.DisplayName.StartsWith (prefixText, StringComparison.OrdinalIgnoreCase); });
 
+      filteredPersons.Sort (delegate (BusinessObjectWithIdentityProxy left, BusinessObjectWithIdentityProxy right)
+      { return string.Compare (left.DisplayName, right.DisplayName, StringComparison.OrdinalIgnoreCase); });
+      
       return filteredPersons.ToArray();
     }
   }
