@@ -130,7 +130,7 @@ public class WxeContextTest
   public void GetStaticPermanentUrlWithQueryStringExceedingMaxLength()
   {
     string parameterName = "Param";
-    string parameterValue = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ";
+    string parameterValue = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ";
 
     NameValueCollection queryString = new NameValueCollection();
     queryString.Add (parameterName, parameterValue);
@@ -181,7 +181,7 @@ public class WxeContextTest
   public void GetPermanentUrlWithQueryStringExceedingMaxLength()
   {
     string parameterName = "Param";
-    string parameterValue = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ";
+    string parameterValue = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ";
 
     NameValueCollection queryString = new NameValueCollection();
     queryString.Add (parameterName, parameterValue);
