@@ -881,6 +881,7 @@
     <Compile Include="Transaction\RollbackEventsWithNewObjectTest.cs" />
     <Compile Include="Transaction\SubTransactionCommitRollbackTest.cs" />
     <Compile Include="Transaction\SubTransactionCreationStateTransitionTest.cs" />
+    <Compile Include="Transaction\SubTransactionQueryTest.cs" />
     <Compile Include="Transaction\SubTransactionRollbackDataTest.cs" />
     <Compile Include="Transaction\SubTransactionTest.cs" />
     <Compile Include="UnitTestStorageProviderStub.cs">

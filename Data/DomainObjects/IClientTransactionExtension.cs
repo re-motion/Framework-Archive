@@ -286,7 +286,7 @@ namespace Rubicon.Data.DomainObjects
     void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, string propertyName);
 
     /// <summary>
-    /// This method is invoked after a collection query was executed by <see cref="Queries.QueryManager.GetCollection"/>.
+    /// This method is invoked after a collection query was executed by <see cref="RootQueryManager.GetCollection"/>.
     /// The <see cref="IClientTransactionExtension"/> may change the result at this point.
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> instance for which the event is raised.</param>

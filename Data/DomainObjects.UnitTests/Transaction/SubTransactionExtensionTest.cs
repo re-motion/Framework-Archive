@@ -1115,7 +1115,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _mockRepository.BackToRecord (_extension);
 
       _extension.FilterQueryResult (null, null, null);
-      LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Property.Value ("Count", 2), Mocks_Is.Same (query));
+      LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Property.Value ("Count", 2), Mocks_Is.Same (query));
 
       _mockRepository.ReplayAll ();
 
@@ -1132,20 +1132,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
-        _extension.ObjectLoading (_subTransaction, null);
-        LastCall.IgnoreArguments ();
-        _extension.ObjectLoading (_subTransaction, null);
-        LastCall.IgnoreArguments ();
+        _extension.ObjectLoading (null, null);
+        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Is.Anything());
+        _extension.ObjectLoading (null, null);
+        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Is.Anything ());
 
         _extension.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Property.Value ("Count", 2));
+        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Property.Value ("Count", 2));
         _extension.FilterQueryResult (null, null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Property.Value ("Count", 2), Mocks_Is.Same (query));
+        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Property.Value ("Count", 2), Mocks_Is.Same (query));
+
+        _extension.ObjectLoading (null, null);
+        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything ());
+        _extension.ObjectsLoaded (null, null);
+        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Property.Value ("Count", 1));
       }
 
       _mockRepository.ReplayAll ();
 
-      ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
+      DomainObjectCollection loadedObjects = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
+      Dev.Null = ((Order) loadedObjects[0]).InternalDataContainer;
 
       _mockRepository.VerifyAll ();
     }
@@ -1165,26 +1171,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         for (int i = 0; i < 2; ++i)
         {
           _extension.ObjectLoading (null, null);
-          LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything ());
+          LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Is.Anything ());
           filteringExtension.ObjectLoading (null, null);
-          LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything ());
+          LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Is.Anything ());
           lastExtension.ObjectLoading (null, null);
-          LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything ());
+          LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Is.Anything ());
           }
 
         _extension.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Property.Value ("Count", 2));
+        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Property.Value ("Count", 2));
         filteringExtension.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Property.Value ("Count", 2));
+        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Property.Value ("Count", 2));
         lastExtension.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Property.Value ("Count", 2));
+        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Property.Value ("Count", 2));
 
         _extension.FilterQueryResult (null, null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Property.Value ("Count", 2), Mocks_Is.Same (query));
+        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Property.Value ("Count", 2), Mocks_Is.Same (query));
         filteringExtension.FilterQueryResult (null, null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Property.Value ("Count", 2), Mocks_Is.Same (query)).CallOriginalMethod (OriginalCallOptions.CreateExpectation);
+        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Property.Value ("Count", 2), Mocks_Is.Same (query)).CallOriginalMethod (OriginalCallOptions.CreateExpectation);
         lastExtension.FilterQueryResult (null, null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Property.Value ("Count", 1), Mocks_Is.Same (query));
+        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Property.Value ("Count", 1), Mocks_Is.Same (query));
       }
 
       _mockRepository.ReplayAll ();

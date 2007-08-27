@@ -8,13 +8,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Queries
   [TestFixture]
   public class QueryManagerTest : ClientTransactionBaseTest
   {
-    private QueryManager _queryManager;
+    private RootQueryManager _queryManager;
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _queryManager = new QueryManager (ClientTransactionMock);
+      _queryManager = new RootQueryManager (ClientTransactionMock);
     }
 
     [Test]

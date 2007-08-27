@@ -100,7 +100,6 @@ public abstract class ClientTransaction : ITransaction
   private readonly CompoundClientTransactionListener _listeners;
   private readonly ClientTransactionExtensionCollection _extensions;
 
-  private QueryManager _queryManager;
   private bool _isReadOnly;
   
   // construction and disposing
@@ -213,6 +212,11 @@ public abstract class ClientTransaction : ITransaction
   ///   The StorageProvider for the related objects could not be initialized.
   /// </exception>
   internal protected abstract DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID);  
+
+  /// <summary>
+  /// Gets the <see cref="IQueryManager"/> of the <b>ClientTransaction</b>.
+  /// </summary>
+  public abstract IQueryManager QueryManager { get; }
 
   // methods and properties
 
@@ -915,20 +919,6 @@ public abstract class ClientTransaction : ITransaction
   protected internal DataManager DataManager
   {
     get { return _dataManager; }
-  }
-
-  /// <summary>
-  /// Gets the <see cref="QueryManager"/> of the <b>ClientTransaction</b>.
-  /// </summary>
-  public virtual QueryManager QueryManager 
-  {
-    get 
-    {
-      if (_queryManager == null)
-        _queryManager = new QueryManager (this);
-
-      return _queryManager;
-    }
   }
 
   /// <summary>

@@ -257,5 +257,38 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreSame (newCeo, newCustomer.Ceo);
       Assert.AreSame (newCustomer, newCeo.Company);
     }
+
+    [Test]
+    public void CommitObjectInSubTransactionAndReloadInParent ()
+    {
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        Order orderInSub = Order.GetObject (DomainObjectIDs.Order1);
+        Assert.AreNotEqual (4711, orderInSub.OrderNumber);
+        orderInSub.OrderNumber = 4711;
+        ClientTransactionScope.CurrentTransaction.Commit ();
+      }
+
+      Order orderInParent = Order.GetObject (DomainObjectIDs.Order1);
+      Assert.AreEqual (4711, orderInParent.OrderNumber);
+    }
+
+    [Test]
+    public void CommitObjectInSubTransactionAndReloadInNewSub ()
+    {
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        Order orderInSub = Order.GetObject (DomainObjectIDs.Order1);
+        Assert.AreNotEqual (4711, orderInSub.OrderNumber);
+        orderInSub.OrderNumber = 4711;
+        ClientTransactionScope.CurrentTransaction.Commit ();
+      }
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        Order orderInSub = Order.GetObject (DomainObjectIDs.Order1);
+        Assert.AreEqual (4711, orderInSub.OrderNumber);
+      }
+    }
   }
 }

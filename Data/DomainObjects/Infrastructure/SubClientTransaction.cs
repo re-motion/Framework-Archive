@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
@@ -16,35 +17,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   [Serializable]
   public class SubClientTransaction : ClientTransaction
   {
-    private struct TransactionUnlocker : IDisposable
-    {
-      public static TransactionUnlocker MakeWriteable (ClientTransaction transaction)
-      {
-        return new TransactionUnlocker (transaction);
-      }
-
-      private ClientTransaction _transaction;
-
-      private TransactionUnlocker (ClientTransaction transaction)
-      {
-        Assertion.IsTrue (transaction.IsReadOnly);
-        transaction.IsReadOnly = false;
-        _transaction = transaction;
-      }
-
-      public void Dispose ()
-      {
-        if (_transaction != null)
-        {
-          Assertion.IsFalse (_transaction.IsReadOnly);
-          _transaction.IsReadOnly = true;
-          _transaction = null;
-        }
-      }
-    }
-
     private readonly ClientTransaction _parentTransaction;
     private bool _isDiscarded;
+
+    private SubQueryManager _queryManager;
 
     public SubClientTransaction (ClientTransaction parentTransaction)
         : base (ArgumentUtility.CheckNotNull("parentTransaction", parentTransaction).ApplicationData,
@@ -78,6 +54,17 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public override bool IsDiscarded
     {
       get { return _isDiscarded; }
+    }
+
+    public override IQueryManager QueryManager
+    {
+      get
+      {
+        if (_queryManager == null)
+          _queryManager = new SubQueryManager (this);
+
+        return _queryManager;
+      }
     }
 
     public override bool ReturnToParentTransaction ()

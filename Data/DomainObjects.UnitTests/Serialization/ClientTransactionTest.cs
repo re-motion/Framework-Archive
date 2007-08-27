@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -181,9 +182,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void QueryManagerTest ()
     {
-      QueryManager queryManager = new QueryManager (ClientTransactionScope.CurrentTransaction);
+      RootQueryManager queryManager = new RootQueryManager ((RootClientTransaction) ClientTransactionScope.CurrentTransaction);
 
-      QueryManager deserializedQueryManager = (QueryManager) SerializeAndDeserialize (queryManager);
+      RootQueryManager deserializedQueryManager = (RootQueryManager) SerializeAndDeserialize (queryManager);
 
       Assert.IsNotNull (deserializedQueryManager);
     }

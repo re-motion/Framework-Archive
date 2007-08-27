@@ -1,5 +1,6 @@
 using System;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Utilities;
@@ -7,10 +8,10 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.Queries
 {
 /// <summary>
-/// <see cref="QueryManager"/> provides methods to execute queries within a <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.
+/// <see cref="RootQueryManager"/> provides methods to execute queries within a <see cref="RootClientTransaction"/>.
 /// </summary>
 [Serializable]
-public class QueryManager
+public class RootQueryManager : IQueryManager
 {
   // types
 
@@ -18,19 +19,19 @@ public class QueryManager
 
   // member fields
 
-  private ClientTransaction _clientTransaction;
+  private readonly RootClientTransaction _clientTransaction;
 
   // construction and disposing
 
   /// <summary>
-  /// Initializes a new instance of the <see cref="QueryManager"/> class. 
+  /// Initializes a new instance of the <see cref="RootQueryManager"/> class. 
   /// </summary>
   /// <remarks>
-  /// All <see cref="DomainObject"/>s that are loaded by the <b>QueryManager</b> will exist within the given <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.
+  /// All <see cref="DomainObject"/>s that are loaded by the <b>RootQueryManager</b> will exist within the given <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.
   /// </remarks>
-  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> to be used in the <b>QueryManager</b>. Must not be <see langword="null"/>.</param>
+  /// <param name="clientTransaction">The <see cref="RootClientTransaction"/> to be used in the <b>RootQueryManager</b>. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> is <see langword="null"/>.</exception>
-  public QueryManager (ClientTransaction clientTransaction)
+  public RootQueryManager (RootClientTransaction clientTransaction)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
@@ -40,7 +41,7 @@ public class QueryManager
   // methods and properties
 
   /// <summary>
-  /// Gets the <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that is associated with the <see cref="QueryManager"/>.
+  /// Gets the <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that is associated with the <see cref="RootQueryManager"/>.
   /// </summary>
   public ClientTransaction ClientTransaction
   {
@@ -108,7 +109,6 @@ public class QueryManager
       DomainObjectCollection queryResult = _clientTransaction.MergeLoadedDomainObjects (dataContainers, query.CollectionType);
       _clientTransaction.TransactionEventSink.FilterQueryResult (queryResult, query);
       return queryResult;
-
     }    
   }
 }

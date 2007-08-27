@@ -4,6 +4,7 @@ using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
@@ -15,6 +16,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   public class RootClientTransaction : ClientTransaction
   {
     private readonly Dictionary<ObjectID, DomainObject> _enlistedObjects;
+    private RootQueryManager _queryManager;
 
     /// <summary>
     /// Initializes a new instance of the <b>RootClientTransaction</b> class.
@@ -38,6 +40,17 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public override ClientTransaction RootTransaction
     {
       get { return this; }
+    }
+
+    public override IQueryManager QueryManager
+    {
+      get
+      {
+        if (_queryManager == null)
+          _queryManager = new RootQueryManager (this);
+
+        return _queryManager;
+      }
     }
 
     public override bool ReturnToParentTransaction ()

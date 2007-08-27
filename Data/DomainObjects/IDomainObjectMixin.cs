@@ -8,7 +8,7 @@ namespace Rubicon.Data.DomainObjects
   /// <remarks>
   /// <para>
   /// Implement this interface on a mixin applied to a <see cref="DomainObject"/> to be informed about when the <see cref="DomainObject"/> instance
-  /// is retrieved via <see cref="DomainObject.NewObject{T}"/> or <see cref="DomainObject.GetObject{T}(ObjectID)"/>.
+  /// is created or loaded.
   /// </para>
   /// <para>
   /// The hook methods defined on

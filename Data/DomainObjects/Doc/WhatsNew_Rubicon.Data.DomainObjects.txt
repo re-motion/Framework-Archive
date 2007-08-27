@@ -2,6 +2,8 @@
 ========
 - ClientTransactionScope-Konstruktor ist jetzt internal; statt dessen ClientTransaction.EnterScope/EnterNonReturningScope bzw.
   ClientTransactionScope.EnterNullScope benutzen
+- QueryManager-Klasse wurde durch IQueryManager-Interface ersetzt (zwei konkrete Implementierungen: RootQueryManager und SubQueryManager,
+  für RootClientTransactions bzw. SubClientTransactions)
 
 1.7.55.0
 ========

@@ -133,6 +133,7 @@
     <Compile Include="Infrastructure\PropertyIndexer.cs" />
     <Compile Include="Infrastructure\RelatedObjectPropertyAccessorStrategy.cs" />
     <Compile Include="Infrastructure\RootClientTransaction.cs" />
+    <Compile Include="Infrastructure\TransactionUnlocker.cs" />
     <Compile Include="Infrastructure\ValuePropertyAccessorStrategy.cs" />
     <Compile Include="Mapping\ReflectionBasedClassDefinition.cs" />
     <Compile Include="Mapping\ReflectionBasedPropertyDefinition.cs" />
@@ -165,6 +166,8 @@
     <Compile Include="Persistence\Configuration\StorageGroupElement.cs" />
     <Compile Include="Persistence\Configuration\TypeProvider.cs" />
     <Compile Include="Infrastructure\PropertyAccessor.cs" />
+    <Compile Include="Queries\IQueryManager.cs" />
+    <Compile Include="Queries\SubQueryManager.cs" />
     <Compile Include="StorageClassNoneAttribute.cs" />
     <Compile Include="StorageClassTransactionAttribute.cs" />
     <Compile Include="StorageGroupAttribute.cs" />
@@ -462,7 +465,7 @@
     <Compile Include="Queries\Query.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Queries\QueryManager.cs">
+    <Compile Include="Queries\RootQueryManager.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Queries\QueryParameter.cs">
