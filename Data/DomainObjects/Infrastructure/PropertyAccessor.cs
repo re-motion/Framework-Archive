@@ -240,6 +240,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// Indicates whether the property's value has been changed in its current transaction.
     /// </summary>
     /// <value>True if the property's value has changed; false otherwise.</value>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="ClientTransaction"/>.</exception>
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public bool HasChanged
     {
@@ -257,6 +258,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <value>True if this instance is null; otherwise, false.</value>
     /// <remarks>This can be used to efficiently check whether a related object property has a value without actually loading the related
     /// object.</remarks>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="ClientTransaction"/>.</exception>
+    /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public bool IsNull
     {
       get
@@ -265,6 +268,13 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         DomainObject.CheckIfRightTransaction (ClientTransactionScope.CurrentTransaction);
         return _strategy.IsNull (this, ClientTransactionScope.CurrentTransaction);
       }
+    }
+
+    internal void CheckType (Type typeToCheck)
+    {
+      ArgumentUtility.CheckNotNull ("typeToCheck", typeToCheck);
+      if (!PropertyType.Equals (typeToCheck))
+        throw new InvalidTypeException (PropertyIdentifier, typeToCheck, PropertyType);
     }
 
     /// <summary>
@@ -279,6 +289,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="InvalidTypeException">
     /// The type requested via <typeparamref name="T"/> is not the same as the property's type indicated by <see cref="PropertyType"/>.
     /// </exception>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="ClientTransaction"/>.</exception>
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public T GetValue<T> ()
     {
@@ -295,16 +306,17 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// </typeparam>
     /// <param name="transaction">The <see cref="ClientTransaction"/> to get the value for.</param>
     /// <returns>The value of the encapsulated property.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="transaction"/> parameter is <see langword="null"/>.</exception>
     /// <exception cref="InvalidTypeException">
     /// The type requested via <typeparamref name="T"/> is not the same as the property's type indicated by <see cref="PropertyType"/>.
     /// </exception>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the given <see cref="ClientTransaction"/>.</exception>
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public T GetValueTx<T> (ClientTransaction transaction)
     {
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
-      if (!PropertyType.Equals (typeof (T)))
-        throw new InvalidTypeException (PropertyIdentifier, typeof (T), PropertyType);
+      CheckType(typeof (T));
 
       object value = GetValueWithoutTypeCheckTx (transaction);
       Assertion.DebugAssert (
@@ -329,6 +341,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// The type <typeparamref name="T"/> is not the same as the property's type indicated by <see cref="PropertyType"/>.
     /// </exception>
     /// <exception cref="InvalidOperationException">The property is a related object collection; such properties cannot be set.</exception>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="ClientTransaction"/>.</exception>
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public void SetValue<T> (T value)
     {
@@ -350,13 +363,12 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// The type <typeparamref name="T"/> is not the same as the property's type indicated by <see cref="PropertyType"/>.
     /// </exception>
     /// <exception cref="InvalidOperationException">The property is a related object collection; such properties cannot be set.</exception>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the given <see cref="ClientTransaction"/>.</exception>
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public void SetValueTx<T> (ClientTransaction transaction, T value)
     {
       ArgumentUtility.CheckNotNull ("transaction", transaction);
-
-      if (!PropertyType.Equals (typeof (T)))
-        throw new InvalidTypeException (PropertyIdentifier, typeof (T), PropertyType);
+      CheckType (typeof (T));
 
       SetValueWithoutTypeCheckTx (transaction, value);
     }
@@ -370,6 +382,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// The given <paramref name="value"/> is not assignable to the property because of its type.
     /// </exception>
     /// <exception cref="InvalidOperationException">The property is a related object collection; such properties cannot be set.</exception>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="ClientTransaction"/>.</exception>
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public void SetValueWithoutTypeCheck (object value)
     {
@@ -386,7 +399,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="InvalidTypeException">
     /// The given <paramref name="value"/> is not assignable to the property because of its type.
     /// </exception>
+    /// <exception cref="ArgumentNullException">The <paramref name="transaction"/> parameter is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The property is a related object collection; such properties cannot be set.</exception>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the given <see cref="ClientTransaction"/>.</exception>
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public void SetValueWithoutTypeCheckTx (ClientTransaction transaction, object value)
     {
@@ -401,6 +416,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// Gets the property's value without performing a type check.
     /// </summary>
     /// <returns>The value of the encapsulated property.</returns>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="ClientTransaction"/>.</exception>
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public object GetValueWithoutTypeCheck ()
     {
@@ -413,6 +429,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// </summary>
     /// <param name="transaction">The <see cref="ClientTransaction"/> to get the value for.</param>
     /// <returns>The value of the encapsulated property.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="transaction"/> parameter is <see langword="null"/>.</exception>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the given <see cref="ClientTransaction"/>.</exception>
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public object GetValueWithoutTypeCheckTx (ClientTransaction transaction)
     {
@@ -436,12 +454,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="InvalidTypeException">
     /// The type requested via <typeparamref name="T"/> is not the same as the property's type indicated by <see cref="PropertyType"/>.
     /// </exception>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="ClientTransaction"/>.</exception>
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public T GetOriginalValue<T> ()
     {
-      if (!PropertyType.Equals (typeof (T)))
-        throw new InvalidTypeException (PropertyIdentifier, typeof (T), PropertyType);
-
+      CheckType (typeof (T));
       return (T) GetOriginalValueWithoutTypeCheck();
     }
 
@@ -459,13 +476,13 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="InvalidTypeException">
     /// The type requested via <typeparamref name="T"/> is not the same as the property's type indicated by <see cref="PropertyType"/>.
     /// </exception>
+    /// <exception cref="ArgumentNullException">The <paramref name="transaction"/> parameter is <see langword="null"/>.</exception>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the given <see cref="ClientTransaction"/>.</exception>
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public T GetOriginalValueTx<T> (ClientTransaction transaction)
     {
       ArgumentUtility.CheckNotNull ("transaction", transaction);
-
-      if (!PropertyType.Equals (typeof (T)))
-        throw new InvalidTypeException (PropertyIdentifier, typeof (T), PropertyType);
+      CheckType(typeof (T));
 
       return (T) GetOriginalValueWithoutTypeCheckTx (transaction);
     }
@@ -474,6 +491,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// Gets the property's original value without performing a type check.
     /// </summary>
     /// <returns>The original value of the encapsulated property in the current transaction.</returns>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="ClientTransaction"/>.</exception>
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public object GetOriginalValueWithoutTypeCheck ()
     {
@@ -484,6 +502,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// Gets the property's original value for the given <see cref="ClientTransaction"/> without performing a type check.
     /// </summary>
     /// <returns>The original value of the encapsulated property in the current transaction.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="transaction"/> parameter is <see langword="null"/>.</exception>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the given <see cref="ClientTransaction"/>.</exception>
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public object GetOriginalValueWithoutTypeCheckTx (ClientTransaction transaction)
     {

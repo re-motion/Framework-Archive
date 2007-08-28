@@ -715,6 +715,11 @@ public class DomainObject
     }
   }
 
+  protected TransactionalAccessor<T> GetTransactionalAccessor<T> (PropertyAccessor property)
+  {
+    return new TransactionalAccessor<T> (property);
+  }
+
   #endregion
 
   #region Related objects

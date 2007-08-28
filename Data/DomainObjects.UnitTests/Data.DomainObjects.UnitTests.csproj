@@ -158,6 +158,7 @@
     <Compile Include="DomainObjects\ObjectListIListTest.cs" />
     <Compile Include="DomainObjects\PropertyAccessorTest.cs" />
     <Compile Include="DomainObjects\PropertyIndexerTest.cs" />
+    <Compile Include="DomainObjects\TransactionalAccessorTest.cs" />
     <Compile Include="Factories\ConfigurationFactory.cs" />
     <Compile Include="Configuration\FakeDomainObjectsConfigurationTest.cs" />
     <Compile Include="Configuration\DomainObjectsConfigurationTest.cs" />

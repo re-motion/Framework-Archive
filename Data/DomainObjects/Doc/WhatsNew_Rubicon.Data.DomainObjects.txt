@@ -2,8 +2,30 @@
 ========
 - ClientTransactionScope-Konstruktor ist jetzt internal; statt dessen ClientTransaction.EnterScope/EnterNonReturningScope bzw.
   ClientTransactionScope.EnterNullScope benutzen
+
 - QueryManager-Klasse wurde durch IQueryManager-Interface ersetzt (zwei konkrete Implementierungen: RootQueryManager und SubQueryManager,
   für RootClientTransactions bzw. SubClientTransactions)
+
+- TransactionalAccessor für das einfache Zugreifen auf Properties in anderen Transaktionen:
+  
+  [StorageClassNone]
+  public TransactionalAccessor<int> OrderNumberTx
+  {
+    get { return GetTransactionalAccessor<int> (Properties[typeof (Order), "OrderNumber"]); }
+  }
+  
+  public static void Test()
+  {
+    Order order = ...;
+    ClientTransaction tx1 = ...; // make sure order is enlisted in tx1
+    ClientTransaction tx2 = ...; // make sure order is enlisted in tx2
+    
+    order.OrderNumberTx[tx1] = 7;
+    order.OrderNumberTx[tx2] = 8;
+    
+    Console.WriteLine (order.OrderNumberTx[tx1]); // 7
+    Console.WriteLine (order.OrderNumberTx[tx2]); // 8
+  }
 
 1.7.55.0
 ========
