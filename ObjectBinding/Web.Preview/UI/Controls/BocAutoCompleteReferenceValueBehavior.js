@@ -539,18 +539,20 @@ function Rubicon$UI$BocAutoCompleteReferenceValueBehavior$_onTextBoxFocus ()
   this._blurTimer.set_enabled (false);
 }
 
-function Rubicon$UI$BocAutoCompleteReferenceValueBehavior$_onTextBoxKeyDown ()
+function Rubicon$UI$BocAutoCompleteReferenceValueBehavior$_onTextBoxKeyDown (ev)
 {
   if (this._oldText == null)
     this._oldText = this._textBox.get_text();
     
-  var e = window.event;
+  //var e = window.event;
+  var e = ev;
   if (e.keyCode == Sys.UI.Key.esc) 
   {
     this._blurTimer.set_enabled (false);
     this._resetValue ();
     
    this._lastKeyWasCursorUpOrDown = false;
+   e.preventDefault();
    e.returnValue = false;
   }
   else if (e.keyCode == Sys.UI.Key.up) 
@@ -563,6 +565,8 @@ function Rubicon$UI$BocAutoCompleteReferenceValueBehavior$_onTextBoxKeyDown ()
       this._setValue (child.value, false);
       this._highlightItem (child, !this._isCompletionListItemVisible (child));
       this._lastKeyWasCursorUpOrDown = true;
+      e.stopPropagation();                
+      e.preventDefault();
       e.returnValue = false;
     }
   }
@@ -578,6 +582,8 @@ function Rubicon$UI$BocAutoCompleteReferenceValueBehavior$_onTextBoxKeyDown ()
         this._setValue (child.value, false);
         this._highlightItem (child, !this._isCompletionListItemVisible (child));
         this._lastKeyWasCursorUpOrDown = true;
+        e.stopPropagation();                
+        e.preventDefault();
         e.returnValue = false;
       }
     }
@@ -586,7 +592,7 @@ function Rubicon$UI$BocAutoCompleteReferenceValueBehavior$_onTextBoxKeyDown ()
       this._showCompletionList (true, false);  
     }
   }
-  else if (e.keyCode == Sys.UI.Key["return"] || e.keyCode == Sys.UI.Key.tab) 
+  else if (e.keyCode == Sys.UI.Key.enter || e.keyCode == Sys.UI.Key.tab) 
   {
     if (Sys.UI.DomElement.getVisible(this._completionListElement) && this._selectedIndex != -1) 
     {
@@ -606,13 +612,14 @@ function Rubicon$UI$BocAutoCompleteReferenceValueBehavior$_onTextBoxKeyDown ()
         }
         e.returnValue = true;
       }
-      else if (e.keyCode == Sys.UI.Key["return"])
+      else if (e.keyCode == Sys.UI.Key.enter)
       {
         var completionItem = this._completionListElement.childNodes[this._selectedIndex].value;
         var hasChanged = completionItem.DisplayName != this._oldText || this._lastKeyWasCursorUpOrDown;
         this._setValue (completionItem, true);
         if (hasChanged)
           this._textBox._element.fireEvent ('onchange', null);
+        e.preventDefault();
         e.returnValue = false;
       }
     }
