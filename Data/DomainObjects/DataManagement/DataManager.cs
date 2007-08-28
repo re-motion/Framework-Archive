@@ -296,27 +296,37 @@ public class DataManager
     _transactionEventSink.DataManagerCopyingFrom (source);
     source._transactionEventSink.DataManagerCopyingTo (this);
 
-    CopyDiscardedDataContainersFrom (source);
+    CopyDiscardedDataContainers (source);
     DataContainerMap.CopyFrom (source.DataContainerMap);
     RelationEndPointMap.CopyFrom (source.RelationEndPointMap);
   }
 
-  private void CopyDiscardedDataContainersFrom (DataManager source)
+  internal void CopyDiscardedDataContainers (DataManager source)
   {
+    ArgumentUtility.CheckNotNull ("source", source);
+
     foreach (KeyValuePair<ObjectID, DataContainer> discardedItem in source._discardedDataContainers)
     {
       ObjectID discardedObjectID = discardedItem.Key;
       DataContainer discardedDataContainer = discardedItem.Value;
-      DataContainer newDiscardedContainer = DataContainer.CreateNew (discardedObjectID);
-
-      newDiscardedContainer.SetClientTransaction (_clientTransaction);
-      newDiscardedContainer.SetDomainObject (discardedDataContainer.DomainObject);
-      newDiscardedContainer.Delete ();
-
-      Assertion.IsTrue (IsDiscarded (newDiscardedContainer.ID),
-          "newDiscardedContainer.Delete must have inserted the DataContainer into the list of discarded objects");
-      Assertion.IsTrue (GetDiscardedDataContainer (newDiscardedContainer.ID) == newDiscardedContainer);
+      CopyDiscardedDataContainer (discardedObjectID, discardedDataContainer);
     }
+  }
+
+  internal void CopyDiscardedDataContainer (ObjectID discardedObjectID, DataContainer discardedDataContainer)
+  {
+    ArgumentUtility.CheckNotNull ("discardedObjectID", discardedObjectID);
+
+    ArgumentUtility.CheckNotNull ("discardedDataContainer", discardedDataContainer);
+    DataContainer newDiscardedContainer = DataContainer.CreateNew (discardedObjectID);
+
+    newDiscardedContainer.SetClientTransaction (_clientTransaction);
+    newDiscardedContainer.SetDomainObject (discardedDataContainer.DomainObject);
+    newDiscardedContainer.Delete ();
+
+    Assertion.IsTrue (IsDiscarded (newDiscardedContainer.ID),
+        "newDiscardedContainer.Delete must have inserted the DataContainer into the list of discarded objects");
+    Assertion.IsTrue (GetDiscardedDataContainer (newDiscardedContainer.ID) == newDiscardedContainer);
   }
 }
 }

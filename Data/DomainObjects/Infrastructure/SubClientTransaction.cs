@@ -23,22 +23,26 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     private SubQueryManager _queryManager;
 
     public SubClientTransaction (ClientTransaction parentTransaction)
-        : base (ArgumentUtility.CheckNotNull("parentTransaction", parentTransaction).ApplicationData,
-            ArgumentUtility.CheckNotNull("parentTransaction", parentTransaction).Extensions)
+        : base (ArgumentUtility.CheckNotNull("parentTransaction", parentTransaction).ApplicationData, parentTransaction.Extensions)
     {
-      ArgumentUtility.CheckNotNull ("parentTransaction", parentTransaction);
-
       parentTransaction.NotifyOfSubTransactionCreating ();
       Assertion.IsTrue (parentTransaction.IsReadOnly);
       _parentTransaction = parentTransaction;
 
-      DataManager.CopyFrom (_parentTransaction.DataManager);
-      // commit the data manager to the data we got from the parent transaction, this will set all DomainObject states as needed (mostly
-      // StateType.Unchanged, unless the object deleted, in which case it will be discarded), and set the original values to the current values
-      DataManager.Commit ();
+      DataManager.CopyDiscardedDataContainers (_parentTransaction.DataManager);
+      DiscardDeletedDataContainers (_parentTransaction.DataManager.DataContainerMap);
 
       parentTransaction.NotifyOfSubTransactionCreated (this);
       _isDiscarded = false;
+    }
+
+    private void DiscardDeletedDataContainers (DataContainerMap source)
+    {
+      foreach (DataContainer dataContainer in source)
+      {
+        if (dataContainer.State == StateType.Deleted)
+          DataManager.CopyDiscardedDataContainer (dataContainer.ID, dataContainer);
+      }
     }
 
     public override ClientTransaction ParentTransaction
@@ -71,7 +75,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       ParentTransaction.IsReadOnly = false;
       _isDiscarded = true;
-      AddListener (new InvalidatedSubTransactionListener ());
+      AddListener (new InvalidatedSubTransactionListener());
       return true;
     }
 
@@ -109,7 +113,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
           DomainObject parentObject = ParentTransaction.GetObject (id);
           DataContainer parentDataContainer = parentObject.GetDataContainerForTransaction (ParentTransaction);
 
-          DataContainer thisDataContainer = TransferParentContainer(parentDataContainer);
+          DataContainer thisDataContainer = TransferParentContainer (parentDataContainer);
 
           thisDataContainer.SetClientTransaction (this);
           thisDataContainer.SetDomainObject (parentObject);

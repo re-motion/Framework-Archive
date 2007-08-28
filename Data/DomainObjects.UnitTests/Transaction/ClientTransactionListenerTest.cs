@@ -351,13 +351,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         _listener.SubTransactionCreating ();
 
-        _listener.DataManagerCopyingTo (null);
-        LastCall.IgnoreArguments ();
-        _listener.DataContainerMapCopyingTo (null);
-        LastCall.IgnoreArguments ();
-        _listener.RelationEndPointMapCopyingTo (null);
-        LastCall.IgnoreArguments ();
-
         _listener.SubTransactionCreated (null);
         LastCall.Constraints (Mock_Is.NotNull () && Mock_Is.NotSame (ClientTransactionMock)
           && Mock_Property.Value ("ParentTransaction", ClientTransactionMock));
