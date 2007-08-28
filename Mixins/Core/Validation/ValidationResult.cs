@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Rubicon.Mixins.Definitions;
@@ -6,6 +7,7 @@ using Rubicon.Text;
 
 namespace Rubicon.Mixins.Validation
 {
+  [Serializable]
   public struct ValidationResult
   {
     public readonly IVisitableDefinition Definition;

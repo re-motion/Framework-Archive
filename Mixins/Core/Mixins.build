@@ -21,6 +21,7 @@
         <include name="CodeGeneration/**/*.cs"/>
         <include name="Context/**/*.cs"/>
         <include name="Definitions/**/*.cs"/>
+        <include name="MixerTool/**/*.cs"/>
         <include name="Utilities/**/*.cs"/>
         <include name="Validation/**/*.cs"/>
         <include name="Properties/**/*.cs" />

@@ -62,6 +62,9 @@
     <Compile Include="GenerationForceKind.cs" />
     <Compile Include="IgnoreForMixinConfigurationAttribute.cs" />
     <Compile Include="MixedTypeInstantiationScope.cs" />
+    <Compile Include="MixerTool\Mixer.cs" />
+    <Compile Include="MixerTool\MixerParameters.cs" />
+    <Compile Include="MixerTool\MixerRunner.cs" />
     <Compile Include="MixinConfiguration.cs" />
     <Compile Include="Definitions\Building\MemberChain.cs" />
     <Compile Include="Definitions\IDefinitionCollection.cs" />

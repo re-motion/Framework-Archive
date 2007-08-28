@@ -26,5 +26,10 @@ namespace Rubicon.Logging
     /// Initializes the logging framework abstracted through the <see cref="ILogManager"/> interface.
     /// </summary>
     void Initialize ();
+
+    /// <summary>
+    /// Initializes the logging framework to log to the console.
+    /// </summary>
+    void InitializeConsole ();
   }
 }

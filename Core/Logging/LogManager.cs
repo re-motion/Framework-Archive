@@ -42,5 +42,13 @@ namespace Rubicon.Logging
       //TODO: Test once current ILogManager can be set through configuration.
       s_current.Initialize ();
     }
+
+    /// <summary>
+    /// Initializes the current logging framework to log to the console.
+    /// </summary>
+    public static void InitializeConsole ()
+    {
+      s_current.InitializeConsole ();
+    }
   }
 }

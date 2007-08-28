@@ -7,6 +7,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Validation
 {
+  [Serializable]
   public class DefaultValidationLog : IValidationLog
   {
     private Stack<ValidationResult> _currentData = new Stack<ValidationResult> ();

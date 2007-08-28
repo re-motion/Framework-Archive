@@ -1,7 +1,9 @@
 using System;
 using System.Reflection;
+using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
+using log4net.Layout;
 using Rubicon.Utilities;
 
 namespace Rubicon.Logging
@@ -42,6 +44,13 @@ namespace Rubicon.Logging
     {
       //TODO: Check if there is a sensible way for testing log4net startup.
       XmlConfigurator.Configure ();
+    }
+
+    public void InitializeConsole ()
+    {
+      ConsoleAppender appender = new ConsoleAppender ();
+      appender.Layout = new PatternLayout ("%-5level: %message%newline");
+      BasicConfigurator.Configure (appender);
     }
   }
 }

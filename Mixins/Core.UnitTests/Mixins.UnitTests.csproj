@@ -46,6 +46,12 @@
   <ItemGroup>
     <Compile Include="Configuration\AttributeIntroductionDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\ClassWithVirtualMethod.cs" />
+    <Compile Include="MixerTool\MixerRunnerTest.cs" />
+    <Compile Include="MixerTool\MixerTest.cs" />
+    <Compile Include="MixerTool\MixerToolBaseTest.cs" />
+    <Content Include="MixerTool\SampleAssembly\SampleTypes.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Compile Include="Mixins\BaseCallProxyCodeGeneration\BaseCallTests.cs" />
     <Compile Include="Mixins\BaseCallProxyCodeGeneration\InstantiationTests.cs" />
     <Compile Include="Mixins\MixedTypeCodeGeneration\AttributeSpike.cs" />

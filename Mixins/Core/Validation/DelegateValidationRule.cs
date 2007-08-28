@@ -6,6 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Validation
 {
+  [Serializable]
   public class DelegateValidationRule<TDefinition> : IValidationRule<TDefinition> where TDefinition : IVisitableDefinition
   {
     public struct Args

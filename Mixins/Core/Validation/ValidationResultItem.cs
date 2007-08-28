@@ -3,6 +3,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Validation
 {
+  [Serializable]
   public struct ValidationResultItem : IDefaultValidationResultItem
   {
     private IValidationRule _rule;
