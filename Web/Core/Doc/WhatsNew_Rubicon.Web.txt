@@ -1,3 +1,27 @@
+1.7.59
+======
+- Das Framework generiert die Border-Elemente nun via Javascript: ScriptUtility.RegisterElementForBorderSpans (page, elementID).
+  Der Entwickler muss ein Element mit ID sowie ein SubElement bereit stellen, in dem der Content steht. Die Border-Elemente werden 
+  am Ende des Contents eingefügt.
+  
+  * Für Elemente ohne Scrolling
+  <element id="elementID">
+    <elementBody>
+      eigener content      
+      <!-- Border-Elemente werden hier generiert -->
+    <elementBody>
+  </element>
+
+  * Für Elemente mit Scrolling
+  <element id="elementID">
+    <elementBody>
+      <scrollableElement>
+        eigener content      
+      </scrollableElement>
+      <!-- Border-Elemente werden hier generiert  -->
+    <elementBody>
+  </element>
+
 1.7.58
 ======
 - Das Framework generiert nur noch absolute URLs ohne Servernamen für Commands und Navigationcontrols.

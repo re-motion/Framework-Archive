@@ -105,6 +105,9 @@ namespace Rubicon.Web.Utilities
       ArgumentUtility.CheckNotNull ("key", key);
       ArgumentUtility.CheckNotNull ("javascript", javascript);
 
+      if (!string.IsNullOrEmpty (javascript))
+        javascript += "\r\n";
+      
       ScriptManager.RegisterClientScriptBlock (page, typeof (Page), key, javascript, true);
     }
 
@@ -128,7 +131,19 @@ namespace Rubicon.Web.Utilities
       ArgumentUtility.CheckNotNull ("key", key);
       ArgumentUtility.CheckNotNull ("javascript", javascript);
 
+      if (!string.IsNullOrEmpty (javascript))
+        javascript += "\r\n";
+      
       ScriptManager.RegisterStartupScript (page, typeof (Page), key, javascript, true);
+    }
+
+    public static void RegisterElementForBorderSpans (Page page, string elementID)
+    {
+      ArgumentUtility.CheckNotNull ("page", page);
+      ArgumentUtility.CheckNotNullOrEmpty ("elementID", elementID);
+
+      ScriptUtility.RegisterStartupScriptBlock (
+         page, "BorderSpans_" + elementID, string.Format ("StyleUtility.CreateBorderSpans (document.getElementById ('{0}'));", elementID));
     }
   }
 }

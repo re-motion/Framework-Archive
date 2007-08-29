@@ -37,6 +37,14 @@ div.tabbedMultiViewActiveView
 {
   height: 100%;
   width: 100%;
+  position: relative;
+}
+
+div.tabbedMultiViewActiveView div.body
+{
+  height: 100%;
+  width: 100%;
+  position: absolute;
 }
 
 div.tabbedMultiViewActiveView div.content

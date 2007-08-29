@@ -128,8 +128,6 @@ div.tabbedMainMenu a span.topRight
   height: 5px;
   top: 0px;
   right: 0px;
-  left: auto;
-  left: expression(this.offsetParent.clientWidth - 5);
 }
 
 /* Content area of the tab */

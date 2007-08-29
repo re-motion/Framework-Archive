@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
@@ -205,6 +206,15 @@ public class WebTabStrip :
   
     IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
     LoadResources (resourceManager);
+
+    List<WebTab> visibleTabs = GetVisibleTabs ();
+    for (int i = 0; i < visibleTabs.Count; i++)
+    {
+      WebTab visibleTab = visibleTabs[i];
+      if (string.IsNullOrEmpty (visibleTab.ItemID))
+        visibleTab.ItemID = i.ToString ();
+      ScriptUtility.RegisterElementForBorderSpans (Page, ClientID + "_" + visibleTab.ItemID);
+    }
   }
 
   /// <summary> Calls <see cref="Control.OnPreRender"/> on every invocation. </summary>
@@ -237,29 +247,36 @@ public class WebTabStrip :
     if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
       WcagHelper.Instance.HandleError (1, this);
 
-    WebTabCollection tabs = Tabs;
-    
-    if (   ControlHelper.IsDesignMode (this, Context)
-        && tabs.Count == 0)
-    {
-      tabs = GetDesignTimeTabs(); 
-    }
-
-    ArrayList visibleTabs = new ArrayList();
-    foreach (WebTab tab in tabs)
-    {
-      if (tab.EvaluateVisible() || ControlHelper.IsDesignMode (this, Context))
-        visibleTabs.Add (tab);
-    }
+    List<WebTab> visibleTabs = GetVisibleTabs ();
 
     RenderBeginTabsPane (writer);
     for (int i = 0; i < visibleTabs.Count; i++)
     { 
       bool isLast = i == (visibleTabs.Count - 1);
-      WebTab tab = (WebTab) visibleTabs[i];
+      WebTab tab = visibleTabs[i];
       RenderTab (writer, tab, isLast);
     }
     RenderEndTabsPane (writer);
+  }
+
+  private List<WebTab> GetVisibleTabs ()
+  {
+    WebTabCollection tabs = Tabs;
+
+    if (ControlHelper.IsDesignMode (this, Context)
+        && tabs.Count == 0)
+    {
+      tabs = GetDesignTimeTabs ();
+    }
+
+    List<WebTab> visibleTabs = new List<WebTab> ();
+    foreach (WebTab tab in tabs)
+    {
+      if (tab.EvaluateVisible () || ControlHelper.IsDesignMode (this, Context))
+        visibleTabs.Add (tab);
+    }
+
+    return visibleTabs;
   }
 
   private WebTabCollection GetDesignTimeTabs()
@@ -312,6 +329,7 @@ public class WebTabStrip :
 
     RenderSeperator (writer);
 
+    writer.AddAttribute (HtmlTextWriterAttribute.Id, ClientID + "_" + tab.ItemID);
     string cssClass;
     if (tab.IsSelected)
       cssClass = CssClassTabSelected;
@@ -331,7 +349,6 @@ public class WebTabStrip :
 
     tab.RenderContents (writer);
 
-    RenderBorderSpans (writer);    
     writer.RenderEndTag (); // End anchor body span
     tab.RenderEndTagForCommand (writer);
 
@@ -357,42 +374,6 @@ public class WebTabStrip :
     writer.RenderBeginTag (HtmlTextWriterTag.Span);
     writer.RenderEndTag();
     writer.RenderEndTag();
-  }
-
-
-  private void RenderBorderSpans (HtmlTextWriter writer)
-  {
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabTopBorder);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    writer.RenderEndTag ();
-
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabLeftBorder);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    writer.RenderEndTag ();
-
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabBottomBorder);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    writer.RenderEndTag ();
-
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabRightBorder);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    writer.RenderEndTag ();
-
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabTopLeftCorner);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    writer.RenderEndTag ();
-
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabTopRightCorner);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    writer.RenderEndTag ();
-
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabBottomLeftCorner);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    writer.RenderEndTag ();
-
-    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabBottomRightCorner);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    writer.RenderEndTag ();
   }
 
   /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
@@ -661,78 +642,6 @@ public class WebTabStrip :
   protected virtual string CssClassTabSelected
   {
     get { return "tabStripTabSelected"; }
-  }
-
-  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top border. </summary>
-  /// <remarks> 
-  ///   <para> Class: <c>top</c>. </para>
-  /// </remarks>
-  protected virtual string CssClassTabTopBorder
-  {
-    get { return "top"; }
-  }
-
-  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom border. </summary>
-  /// <remarks> 
-  ///   <para> Class: <c>bottom</c>. </para>
-  /// </remarks>
-  protected virtual string CssClassTabBottomBorder
-  {
-    get { return "bottom"; }
-  }
-
-  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the left border. </summary>
-  /// <remarks> 
-  ///   <para> Class: <c>left</c>. </para>
-  /// </remarks>
-  protected virtual string CssClassTabLeftBorder
-  {
-    get { return "left"; }
-  }
-
-  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the right border. </summary>
-  /// <remarks> 
-  ///   <para> Class: <c>right</c>. </para>
-  /// </remarks>
-  protected virtual string CssClassTabRightBorder
-  {
-    get { return "right"; }
-  }
-
-  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top left corner. </summary>
-  /// <remarks> 
-  ///   <para> Class: <c>topLeft</c>. </para>
-  /// </remarks>
-  protected virtual string CssClassTabTopLeftCorner
-  {
-    get { return "topLeft"; }
-  }
-
-  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom left corner. </summary>
-  /// <remarks> 
-  ///   <para> Class: <c>bottomLeft</c>. </para>
-  /// </remarks>
-  protected virtual string CssClassTabBottomLeftCorner
-  {
-    get { return "bottomLeft"; }
-  }
-
-  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top right corner. </summary>
-  /// <remarks> 
-  ///   <para> Class: <c>topRight</c>. </para>
-  /// </remarks>
-  protected virtual string CssClassTabTopRightCorner
-  {
-    get { return "topRight"; }
-  }
-
-  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom right corner. </summary>
-  /// <remarks> 
-  ///   <para> Class: <c>bottomRight</c>. </para>
-  /// </remarks>
-  protected virtual string CssClassTabBottomRightCorner
-  {
-    get { return "bottomRight"; }
   }
 
   /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the inside of the anchor element. </summary>
