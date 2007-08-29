@@ -71,6 +71,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{AED28559-722
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeMixer", "TypeMixer\TypeMixer.csproj", "{152DAF45-13C9-4A73-90D0-DF774ED12528}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
@@ -108,6 +114,10 @@ Global
 		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{152DAF45-13C9-4A73-90D0-DF774ED12528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{152DAF45-13C9-4A73-90D0-DF774ED12528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{152DAF45-13C9-4A73-90D0-DF774ED12528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{152DAF45-13C9-4A73-90D0-DF774ED12528}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

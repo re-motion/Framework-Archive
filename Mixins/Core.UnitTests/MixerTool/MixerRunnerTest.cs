@@ -19,7 +19,6 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
       Assert.AreEqual (Environment.CurrentDirectory, Parameters.AssemblyOutputDirectory);
       Assert.AreEqual (Environment.CurrentDirectory, Parameters.BaseDirectory);
       Assert.AreEqual ("", Parameters.ConfigFile);
-      Assert.AreEqual (true, Parameters.Verbose);
       Assert.AreEqual ("Rubicon.Mixins.Generated.Signed", Parameters.SignedAssemblyName);
       Assert.AreEqual ("Rubicon.Mixins.Generated.Unsigned", Parameters.UnsignedAssemblyName);
     }
@@ -74,9 +73,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
             string path = (string) args[0];
             Assembly assembly = Assembly.LoadFile (path);
             Assert.AreEqual (2, assembly.GetTypes().Length); // concrete type + base call proxy
-            Type generatedType = assembly.GetTypes ()[0];
-            if (!generatedType.IsDefined (typeof (ConcreteMixedTypeAttribute), false))
-              generatedType = assembly.GetTypes()[1];
+            Type generatedType = GetFirstMixedType (assembly);
             Assert.AreEqual ("BaseType", generatedType.BaseType.Name);
           },  localGeneratedPath);
 

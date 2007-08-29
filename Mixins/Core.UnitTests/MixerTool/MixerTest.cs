@@ -83,14 +83,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
             mixer.Execute();
             Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
             
-            Set<ClassContext> contextsFromTypes = new Set<ClassContext> ();
-            foreach (Type concreteType in theAssembly.GetTypes ())
-            {
-              ClassContext context = Mixin.GetMixinConfigurationFromConcreteType (concreteType);
-              if (context != null)
-                contextsFromTypes.Add (context);
-            }
-
+            Set<ClassContext> contextsFromTypes = GetContextsFromGeneratedTypes (theAssembly);
             Set<ClassContext> contextsFromConfig = new Set<ClassContext> ();
             foreach (ClassContext context in MixinConfiguration.ActiveContext.ClassContexts)
             {
@@ -155,9 +148,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
                 mixer.Execute();
             Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
             Assert.AreEqual (2, theAssembly.GetTypes().Length);
-            Type generatedType = theAssembly.GetTypes()[0];
-            if (!generatedType.IsDefined (typeof (ConcreteMixedTypeAttribute), false))
-              generatedType = theAssembly.GetTypes ()[1];
+            Type generatedType = GetFirstMixedType(theAssembly);
 
             Assert.IsNotNull (Mixin.GetMixinConfigurationFromConcreteType (generatedType));
             Assert.AreEqual (
@@ -202,6 +193,53 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
               }
             }
           });
+    }
+
+    [Test]
+    public void MixerIgnoresInvalidTypes ()
+    {
+      Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
+      using (MixinConfiguration.ScopedEmpty ())
+      {
+        using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin1))) // valid
+        {
+          using (MixinConfiguration.ScopedExtend (typeof (BaseType2), typeof (BT1Mixin1))) // invalid
+          {
+            mixer.Execute();
+          }
+        }
+      }
+
+      Assert.IsTrue (File.Exists (UnsignedAssemblyPath));
+
+      AppDomainRunner.Run (
+          delegate
+          {
+            Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
+            Assert.AreEqual (2, theAssembly.GetTypes ().Length); // mixed type + base call proxy
+            Type generatedType = GetFirstMixedType (theAssembly);
+            Assert.AreEqual (typeof (BaseType1), generatedType.BaseType);
+          });
+    }
+
+    [Test]
+    public void MixerRaisesEventForEachClassContextBeingProcessed ()
+    {
+      Set<ClassContext> classContextsBeingProcessed = new Set<ClassContext> ();
+
+      Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
+      mixer.ClassContextBeingProcessed +=
+          delegate (object sender, ClassContextEventArgs args) { classContextsBeingProcessed.Add (args.ClassContext); };
+      mixer.Execute ();
+
+      AppDomainRunner.Run (
+          delegate (object[] args)
+          {
+            Set<ClassContext> contextsFromEvent = (Set<ClassContext>) args[0];
+            Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
+            Set<ClassContext> contextsFromTypes = GetContextsFromGeneratedTypes (theAssembly);
+            Assert.That (contextsFromEvent, Is.EquivalentTo (contextsFromTypes));
+          }, classContextsBeingProcessed);
     }
   }
 }

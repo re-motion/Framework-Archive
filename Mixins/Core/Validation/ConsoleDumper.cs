@@ -17,14 +17,14 @@ namespace Rubicon.Mixins.Validation
       {
         if (result.TotalRulesExecuted == 0)
         {
-          Console.ForegroundColor = ConsoleColor.DarkGray;
-          Console.WriteLine ("No rules found for {0} '{1}'", result.Definition.GetType ().Name, result.Definition.FullName);
+          //Console.ForegroundColor = ConsoleColor.DarkGray;
+          //Console.WriteLine ("No rules found for {0} '{1}'", result.Definition.GetType ().Name, result.Definition.FullName);
         }
         else if (result.TotalRulesExecuted != result.Successes.Count)
         {
           Console.ForegroundColor = ConsoleColor.Gray;
           Console.WriteLine ("{0} '{1}', {2} rules executed", result.Definition.GetType().Name, result.Definition.FullName, result.TotalRulesExecuted);
-          DumpHierarchy (result);
+          DumpContext (result);
         }
         DumpResultList ("unexpected exceptions", result.Exceptions, ConsoleColor.White, ConsoleColor.DarkRed);
         // DumpResultList ("successes", result.Successes, ConsoleColor.Green, ConsoleColor.Black);
@@ -34,11 +34,11 @@ namespace Rubicon.Mixins.Validation
       }
     }
 
-    private static void DumpHierarchy (ValidationResult result)
+    private static void DumpContext (ValidationResult result)
     {
-      string hierarchyString = result.GetParentDefinitionString();
-      if (hierarchyString.Length > 0)
-        Console.WriteLine (hierarchyString);
+      string contextString = result.GetParentDefinitionString();
+      if (contextString.Length > 0)
+        Console.WriteLine ("Context: " + contextString);
     }
 
     private static void DumpResultList<T> (string title, List<T> resultList, ConsoleColor foreColor, ConsoleColor backColor) where T : IDefaultValidationResultItem

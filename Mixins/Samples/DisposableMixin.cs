@@ -20,7 +20,7 @@ namespace Samples
       }
     }
 
-    protected abstract void CleanupManagedResources();
+    protected abstract void CleanupManagedResources ();
     protected abstract void CleanupUnmanagedResources ();
 
     ~DisposableMixin ()

@@ -27,16 +27,12 @@ namespace Rubicon.Mixins.MixerTool
 
     [CommandLineStringArgument ("signedAssemblyName", true,
         Description = "The simple name of the signed assembly generated (without extension; default: Rubicon.Mixins.Generated.Signed).",
-        Placeholder = "directory")]
+        Placeholder = "simpleName")]
     public string SignedAssemblyName = "Rubicon.Mixins.Generated.Signed";
 
     [CommandLineStringArgument ("unsignedAssemblyName", true,
         Description = "The simple name of the unsigned assembly generated (without extension; default: Rubicon.Mixins.Generated.Unsigned).",
-        Placeholder = "directory")]
+        Placeholder = "simpleName")]
     public string UnsignedAssemblyName = "Rubicon.Mixins.Generated.Unsigned";
-
-    [CommandLineFlagArgument ("verbose", true,
-        Description = "Verbose output")]
-    public bool Verbose = true;
   }
 }

@@ -1,15 +1,15 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Rubicon.Mixins;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle ("Samples")]
+[assembly: AssemblyTitle ("TypeMixer")]
 [assembly: AssemblyDescription ("")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("rubicon")]
-[assembly: AssemblyProduct ("Samples")]
+[assembly: AssemblyProduct ("TypeMixer")]
 [assembly: AssemblyCopyright ("Copyright © rubicon 2007")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
@@ -20,7 +20,7 @@ using Rubicon.Mixins;
 [assembly: ComVisible (false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid ("586440e6-f9f6-4167-a523-a9d7f8274dfd")]
+[assembly: Guid ("3cc48b87-f8f9-41f4-b7af-3de7f2522da0")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,8 +29,5 @@ using Rubicon.Mixins;
 //      Build Number
 //      Revision
 //
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
 [assembly: AssemblyVersion ("1.0.0.0")]
 [assembly: AssemblyFileVersion ("1.0.0.0")]
-

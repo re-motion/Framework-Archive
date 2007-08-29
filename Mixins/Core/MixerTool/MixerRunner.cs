@@ -1,7 +1,9 @@
 using System;
 using System.IO;
+using Rubicon.Mixins.Definitions;
 using Rubicon.Utilities;
 using Rubicon.Logging;
+using Rubicon.Mixins.Validation;
 
 namespace Rubicon.Mixins.MixerTool
 {
@@ -42,10 +44,10 @@ namespace Rubicon.Mixins.MixerTool
 
     protected override void CrossAppDomainCallbackHandler ()
     {
-      if (_parameters.Verbose)
-        LogManager.InitializeConsole ();
+      LogManager.InitializeConsole ();
 
       Mixer mixer = new Mixer (_parameters.SignedAssemblyName, _parameters.UnsignedAssemblyName, _parameters.AssemblyOutputDirectory);
+      mixer.ClassContextBeingProcessed += Mixer_ClassContextBeingProcessed;
       try
       {
         mixer.Execute ();
@@ -53,6 +55,19 @@ namespace Rubicon.Mixins.MixerTool
       catch (Exception ex)
       {
         Console.WriteLine (ex.Message);
+      }
+    }
+
+    private void Mixer_ClassContextBeingProcessed (object sender, ClassContextEventArgs e)
+    {
+      try
+      {
+        Validator.Validate (TargetClassDefinitionCache.Current.GetTargetClassDefinition (e.ClassContext));
+      }
+      catch (ValidationException ex)
+      {
+        ConsoleDumper.DumpValidationResults (ex.ValidationLog.GetResults());
+        throw;
       }
     }
   }
