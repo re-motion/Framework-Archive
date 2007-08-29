@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
   [TestFixture]
-  public class CheckPEVerify : MixinTestBase
+  public class CheckPEVerify : MixinBaseTest
   {
     [Test]
     public void Foo ()

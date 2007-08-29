@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
   [TestFixture]
-  public class MixinSerializationTests : MixinTestBase
+  public class MixinSerializationTests : MixinBaseTest
   {
     [Test]
     public void SerializationOfMixinThisWorks ()

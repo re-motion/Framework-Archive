@@ -15,7 +15,7 @@ using System.Runtime.Serialization;
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
   [TestFixture]
-  public class ConcreteTypeBuilderTests : MixinTestBase
+  public class ConcreteTypeBuilderTests : MixinBaseTest
   {
     [Test]
     public void TypesAreCached()

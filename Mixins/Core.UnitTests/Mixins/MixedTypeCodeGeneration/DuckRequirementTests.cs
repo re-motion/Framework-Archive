@@ -5,7 +5,7 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
 {
   [TestFixture]
-  public class DuckRequirementTests : MixinTestBase
+  public class DuckRequirementTests : MixinBaseTest
   {
     [Test]
     public void GeneratedTypeImplementsRequiredDuckInterfaces ()

@@ -1,10 +1,10 @@
 using System;
-using Samples.Aktology.Akten;
-using Samples.Aktology.Mixins;
+using Rubicon.Mixins.Samples.Aktology.Akten;
+using Rubicon.Mixins.Samples.Aktology.Mixins;
 using Rubicon.Mixins;
 using Rubicon.Mixins.Context;
 
-namespace Samples.Aktology
+namespace Rubicon.Mixins.Samples.Aktology
 {
   public interface IFahrzeugAkt : IAkt, IFahrzeugMixin {}
   public interface IFahrzeugSachAkt : ISachAkt, IFahrzeugMixin {}

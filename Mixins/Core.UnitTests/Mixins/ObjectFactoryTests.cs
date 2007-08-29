@@ -12,7 +12,7 @@ using System.Runtime.Serialization;
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
   [TestFixture]
-  public class ObjectFactoryTests : MixinTestBase
+  public class ObjectFactoryTests : MixinBaseTest
   {
     [Test]
     public void MixedObjectsCanBeCreated ()

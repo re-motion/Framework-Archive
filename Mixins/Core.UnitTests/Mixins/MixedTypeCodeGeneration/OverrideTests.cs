@@ -7,7 +7,7 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
 {
   [TestFixture]
-  public class OverrideTests : MixinTestBase
+  public class OverrideTests : MixinBaseTest
   {
     [Test]
     public void OverrideClassMethods ()

@@ -9,7 +9,7 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
 {
   [TestFixture]
-  public class TypeFeatureTests : MixinTestBase
+  public class TypeFeatureTests : MixinBaseTest
   {
     [Test]
     public void GeneratedMixinTypeHasMixinTypeAttribute ()

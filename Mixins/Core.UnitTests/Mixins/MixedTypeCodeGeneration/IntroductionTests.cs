@@ -8,7 +8,7 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
 {
   [TestFixture]
-  public class IntroductionTests : MixinTestBase
+  public class IntroductionTests : MixinBaseTest
   {
     [Test]
     public void IntroducedInterfacesAreImplementedViaDelegation ()

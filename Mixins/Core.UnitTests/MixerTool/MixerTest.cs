@@ -82,9 +82,8 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
           {
             Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
             mixer.Execute();
-            Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
-            
-            Set<ClassContext> contextsFromTypes = GetContextsFromGeneratedTypes (theAssembly);
+            Set<ClassContext> contextsFromTypes = GetContextsFromGeneratedTypes (Assembly.LoadFile (UnsignedAssemblyPath));
+            contextsFromTypes.AddRange (GetContextsFromGeneratedTypes (Assembly.LoadFile (SignedAssemblyPath)));
             Set<ClassContext> contextsFromConfig = new Set<ClassContext> ();
             foreach (ClassContext context in MixinConfiguration.ActiveContext.ClassContexts)
             {
@@ -228,10 +227,14 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
     {
       Set<ClassContext> classContextsBeingProcessed = new Set<ClassContext> ();
 
-      Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
-      mixer.ClassContextBeingProcessed +=
-          delegate (object sender, ClassContextEventArgs args) { classContextsBeingProcessed.Add (args.ClassContext); };
-      mixer.Execute ();
+      // only use this assembly for this test case
+      using (MixinConfiguration.ScopedReplace (ApplicationContextBuilder.BuildContextFromAssemblies (typeof (MixerTest).Assembly)))
+      {
+        Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
+        mixer.ClassContextBeingProcessed +=
+            delegate (object sender, ClassContextEventArgs args) { classContextsBeingProcessed.Add (args.ClassContext); };
+        mixer.Execute();
+      }
 
       AppDomainRunner.Run (
           delegate (object[] args)

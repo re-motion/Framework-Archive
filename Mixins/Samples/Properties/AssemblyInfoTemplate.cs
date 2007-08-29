@@ -2,19 +2,20 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Rubicon.Mixins;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle ("Rubicon.Mixins samples")]
 [assembly: AssemblyDescription ("Examples illustrating the usage of the Rubicon Mixins library")]
-[assembly: AssemblyConfiguration (".NET Framework: net-2.0, build type: debug")]
-[assembly: AssemblyCompany ("rubicon informationstechnologie gmbh")]
-[assembly: AssemblyProduct ("Rubicon .NET Commons")]
-[assembly: AssemblyCopyright ("(c) 2003 - 2007 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
+[assembly: AssemblyConfiguration ("@buildinfo@")]
+[assembly: AssemblyCompany ("@company@")]
+[assembly: AssemblyProduct ("@productname@")]
+[assembly: AssemblyCopyright ("@copyright@")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
-[assembly: CLSCompliant (true)]
+
 //
 // Version information for an assembly consists of the following four values:
 //
@@ -26,7 +27,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion ("1.7.56.202")]
+[assembly: AssemblyVersion ("@versionnumber@")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -53,8 +54,9 @@ using System.Runtime.InteropServices;
 //   (*) Delay Signing is an advanced option - see the Microsoft .NET Framework
 //       documentation for more information on this.
 //
+
 #pragma warning disable 1699
 [assembly: AssemblyDelaySign (false)]
-[assembly: AssemblyKeyFile (@"\Development\global/rubicon.snk")]
+[assembly: AssemblyKeyFile (@"@keyfile@")]
 [assembly: AssemblyKeyName ("")]
 #pragma warning restore 1699

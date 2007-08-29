@@ -7,7 +7,7 @@ using Rubicon.Reflection;
 
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
-  public abstract class MixinTestBase
+  public abstract class MixinBaseTest
   {
     private IDisposable currentConfiguration = null;
 

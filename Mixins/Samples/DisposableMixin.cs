@@ -3,7 +3,7 @@ using Rubicon.Mixins;
 using System.Reflection;
 using Rubicon.Utilities;
 
-namespace Samples
+namespace Rubicon.Mixins.Samples
 {
   public abstract class DisposableMixin : Mixin<object>, IDisposable
   {

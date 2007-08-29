@@ -65,7 +65,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       Type[] interfaces = new Type[] { typeof (IInterceptedDomainObject), typeof (ISerializable) };
       TypeAttributes flags = TypeAttributes.Public | TypeAttributes.Serializable;
 
-      _classEmitter = new CustomClassEmitter (scope, typeName, typeToDeriveFrom, interfaces, flags);
+      _classEmitter = new CustomClassEmitter (scope, typeName, typeToDeriveFrom, interfaces, flags, false);
 
       _classEmitter.ReplicateBaseTypeConstructors ();
       OverrideGetPublicDomainObjectType ();

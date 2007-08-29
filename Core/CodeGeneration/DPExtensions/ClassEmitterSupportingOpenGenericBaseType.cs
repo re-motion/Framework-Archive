@@ -10,18 +10,9 @@ namespace Rubicon.CodeGeneration.DPExtensions
 {
   internal class ClassEmitterSupportingOpenGenericBaseType : ClassEmitter
   {
-    public ClassEmitterSupportingOpenGenericBaseType (TypeBuilder typeBuilder)
-        : base (typeBuilder)
-    {
-    }
-
-    public ClassEmitterSupportingOpenGenericBaseType (ModuleScope modulescope, string name, Type baseType, Type[] interfaces, TypeAttributes flags)
-        : base (modulescope, name, baseType, interfaces, flags)
-    {
-    }
-
-    public ClassEmitterSupportingOpenGenericBaseType (ModuleScope modulescope, string name, Type baseType, Type[] interfaces)
-        : base (modulescope, name, baseType, interfaces)
+    public ClassEmitterSupportingOpenGenericBaseType (ModuleScope modulescope, string name, Type baseType, Type[] interfaces, TypeAttributes flags,
+        bool forceUnsigned)
+        : base (modulescope, name, baseType, interfaces, flags, forceUnsigned)
     {
     }
 

@@ -22,7 +22,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     {
       string[] paths = AssemblySaver.SaveAssemblies (_scope);
       foreach (string path in paths)
-        PEVerifier.VerifyPEFile (_scope.StrongNamedModule.FullyQualifiedName);
+        PEVerifier.VerifyPEFile (path);
     }
 
     public ModuleScope Scope

@@ -6,7 +6,7 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 namespace Rubicon.Mixins.UnitTests.Mixins.BaseCallProxyCodeGeneration
 {
   [TestFixture]
-  public class InstantiationTests : MixinTestBase
+  public class InstantiationTests : MixinBaseTest
   {
     [Test]
     public void GeneratedTypeInstantiableWithDepthAndBase ()

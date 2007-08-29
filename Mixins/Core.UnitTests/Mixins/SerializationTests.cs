@@ -8,7 +8,7 @@ using Rubicon.Development.UnitTesting;
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
   [TestFixture]
-  public class SerializationTests : MixinTestBase
+  public class SerializationTests : MixinBaseTest
   {
     [Serializable]
     [Uses(typeof(NullMixin))]

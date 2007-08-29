@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
   [TestFixture]
-  public class MixinBaseClassTests : MixinTestBase
+  public class MixinBaseClassTests : MixinBaseTest
   {
     public class MixinWithOnInitialize1 : Mixin<object>
     {

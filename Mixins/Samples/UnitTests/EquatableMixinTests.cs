@@ -4,7 +4,7 @@ using Rubicon.Mixins;
 using Rubicon.Mixins.CodeGeneration;
 using System.Reflection;
 
-namespace Samples.UnitTests
+namespace Rubicon.Mixins.Samples.UnitTests
 {
   [TestFixture]
   public class EquatableMixinTests

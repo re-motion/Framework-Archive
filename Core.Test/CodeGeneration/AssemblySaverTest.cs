@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 using NUnit.Framework;
 using Castle.DynamicProxy;
 using Rubicon.CodeGeneration;
@@ -29,11 +30,15 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
       Assert.AreEqual (Path.Combine (Environment.CurrentDirectory, scope.StrongNamedModuleName), paths[0]);
     }
 
-    //[Test]
-    //public void SaveAssemblyUnsigned ()
-    //{
-    //  This test cannot be implemented in a signed test assembly, it's semantics are tested indirectly in
-    //  Rubicon.Mixins.UnitTests.Mixins.ModuleManagerTests.
-    //}
+    [Test]
+    public void SaveAssemblyUnsigned ()
+    {
+      ModuleScope scope = new ModuleScope (true);
+      CustomClassEmitter emitter = new CustomClassEmitter (scope, "UnsignedType", typeof (object), Type.EmptyTypes, TypeAttributes.Public, true);
+      emitter.BuildType ();
+      string[] paths = AssemblySaver.SaveAssemblies (scope);
+      Assert.AreEqual (1, paths.Length);
+      Assert.AreEqual (Path.Combine (Environment.CurrentDirectory, scope.WeakNamedModuleName), paths[0]);
+    }
   }
 }

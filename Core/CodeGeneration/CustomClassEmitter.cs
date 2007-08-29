@@ -25,18 +25,18 @@ namespace Rubicon.CodeGeneration
     }
 
     public CustomClassEmitter (ModuleScope scope, string name, Type baseType)
-      : this (scope, name, baseType, Type.EmptyTypes, TypeAttributes.Class | TypeAttributes.Public)
+      : this (scope, name, baseType, Type.EmptyTypes, TypeAttributes.Class | TypeAttributes.Public, false)
     {
     }
 
-    public CustomClassEmitter (ModuleScope scope, string name, Type baseType, Type[] interfaces, TypeAttributes flags)
+    public CustomClassEmitter (ModuleScope scope, string name, Type baseType, Type[] interfaces, TypeAttributes flags, bool forceUnsigned)
         : this (
             new ClassEmitterSupportingOpenGenericBaseType (
                 ArgumentUtility.CheckNotNull ("scope", scope),
                 ArgumentUtility.CheckNotNullOrEmpty ("name", name),
                 CheckBaseType (baseType),
                 CheckInterfaces (interfaces),
-                flags))
+                flags, forceUnsigned))
     {
     }
     

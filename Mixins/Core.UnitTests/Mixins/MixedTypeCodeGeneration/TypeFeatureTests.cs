@@ -12,7 +12,7 @@ using System.Runtime.Serialization;
 namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
 {
   [TestFixture]
-  public class TypeFeatureTests : MixinTestBase
+  public class TypeFeatureTests : MixinBaseTest
   {
     [Uses (typeof (NullMixin))]
     public class ClassWithCtors

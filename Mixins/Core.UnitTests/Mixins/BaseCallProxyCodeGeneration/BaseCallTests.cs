@@ -8,7 +8,7 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 namespace Rubicon.Mixins.UnitTests.Mixins.BaseCallProxyCodeGeneration
 {
   [TestFixture]
-  public class BaseCallTests : MixinTestBase
+  public class BaseCallTests : MixinBaseTest
   {
     [Test]
     public void GeneratedTypeImplementsRequiredBaseCallInterfaces1 ()

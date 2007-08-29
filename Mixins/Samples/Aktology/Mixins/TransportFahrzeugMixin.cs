@@ -1,8 +1,8 @@
 using System;
 using Rubicon.Mixins;
-using Samples.Aktology.Akten;
+using Rubicon.Mixins.Samples.Aktology.Akten;
 
-namespace Samples.Aktology.Mixins
+namespace Rubicon.Mixins.Samples.Aktology.Mixins
 {
   public interface ITransportFahrzeugMixin : IFahrzeugMixin
   {

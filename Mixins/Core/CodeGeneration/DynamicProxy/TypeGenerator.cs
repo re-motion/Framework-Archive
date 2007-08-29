@@ -23,16 +23,16 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private static readonly MethodInfo s_concreteTypeInitializationMethod =
         typeof (GeneratedClassInstanceInitializer).GetMethod ("InitializeMixinTarget", new Type[] { typeof (IMixinTarget) });
 
-    private ModuleManager _module;
-    private TargetClassDefinition _configuration;
-    private CustomClassEmitter _emitter;
-    private BaseCallProxyGenerator _baseCallGenerator;
+    private readonly ModuleManager _module;
+    private readonly TargetClassDefinition _configuration;
+    private readonly CustomClassEmitter _emitter;
+    private readonly BaseCallProxyGenerator _baseCallGenerator;
 
-    private FieldReference _configurationField;
-    private FieldReference _extensionsField;
-    private FieldReference _firstField;
-    private Dictionary<MethodInfo, MethodInfo> _baseCallMethods = new Dictionary<MethodInfo, MethodInfo>();
-    private MixinTypeGenerator[] _mixinTypeGenerators;
+    private readonly FieldReference _configurationField;
+    private readonly FieldReference _extensionsField;
+    private readonly FieldReference _firstField;
+    private readonly Dictionary<MethodInfo, MethodInfo> _baseCallMethods = new Dictionary<MethodInfo, MethodInfo>();
+    private readonly MixinTypeGenerator[] _mixinTypeGenerators;
 
     public TypeGenerator (ModuleManager module, TargetClassDefinition configuration, INameProvider nameProvider, INameProvider mixinNameProvider)
     {
@@ -50,7 +50,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       if (_configuration.IsAbstract)
         flags |= TypeAttributes.Abstract;
 
-      ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces.ToArray(), flags);
+      bool forceUnsigned = StrongNameUtil.IsAnyTypeFromUnsignedAssembly (GetMixinTypes());
+      ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces.ToArray(), flags, forceUnsigned);
       _emitter = new CustomClassEmitter (classEmitter);
 
       _configurationField = _emitter.CreateStaticField ("__configuration", typeof (TargetClassDefinition));
@@ -79,6 +80,12 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       AddDebuggerAttributes();
 
       ImplementOverrides ();
+    }
+
+    private IEnumerable<Type> GetMixinTypes ()
+    {
+      foreach (MixinDefinition mixin in Configuration.Mixins)
+        yield return mixin.Type;
     }
 
     private MixinTypeGenerator[] CreateMixinTypeGenerators (INameProvider mixinNameProvider)

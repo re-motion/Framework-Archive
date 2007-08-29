@@ -16,7 +16,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     {
       Type baseType = typeof (List<>);
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", baseType, Type.EmptyTypes,
-          TypeAttributes.Public | TypeAttributes.Class);
+          TypeAttributes.Public | TypeAttributes.Class, false);
       Type builtType = classEmitter.BuildType ();
 
       Assert.IsTrue (builtType.ContainsGenericParameters);
@@ -31,7 +31,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     {
       Type baseType = typeof (GenericClassWithConstraints<ICloneable, List<string>, int, object, ICloneable, List<List<ICloneable[]>>>);
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", baseType, Type.EmptyTypes,
-          TypeAttributes.Public | TypeAttributes.Class);
+          TypeAttributes.Public | TypeAttributes.Class, false);
       Type builtType = classEmitter.BuildType ();
       Assert.IsFalse (builtType.ContainsGenericParameters);
       Assert.IsFalse (builtType.BaseType.ContainsGenericParameters);
@@ -44,7 +44,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     {
       Type baseType = typeof (GenericClassWithConstraints<,,,,,>);
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", baseType, Type.EmptyTypes,
-          TypeAttributes.Public | TypeAttributes.Class);
+          TypeAttributes.Public | TypeAttributes.Class, false);
       Type builtType = classEmitter.BuildType ();
       Assert.IsTrue (builtType.ContainsGenericParameters);
       Type[] typeParameters = builtType.GetGenericArguments ();
@@ -57,7 +57,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     public void OverrideSimpleGenericMethod ()
     {
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (ClassWithSimpleGenericMethod), Type.EmptyTypes,
-          TypeAttributes.Public | TypeAttributes.Class);
+          TypeAttributes.Public | TypeAttributes.Class, false);
 
       MethodInfo baseMethod = typeof (ClassWithSimpleGenericMethod).GetMethod ("GenericMethod");
       CustomMethodEmitter methodEmitter = classEmitter.CreateMethodOverride (baseMethod);
@@ -74,7 +74,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     public void OverrideConstrainedGenericMethod ()
     {
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (ClassWithConstrainedGenericMethod), Type.EmptyTypes,
-          TypeAttributes.Public | TypeAttributes.Class);
+          TypeAttributes.Public | TypeAttributes.Class, false);
 
       MethodInfo baseMethod = typeof (ClassWithConstrainedGenericMethod).GetMethod ("GenericMethod");
       CustomMethodEmitter methodEmitter = classEmitter.CreateMethodOverride (baseMethod);
@@ -98,7 +98,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
               "Foo",
               baseType,
               Type.EmptyTypes,
-          TypeAttributes.Public | TypeAttributes.Class);
+          TypeAttributes.Public | TypeAttributes.Class, false);
 
       MethodInfo baseMethod = baseType.GetMethod ("GenericMethod");
 
@@ -119,7 +119,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     public void OverridingSimpleMembersOfClosedGenericClass ()
     {
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (GenericClassWithAllKindsOfMembers<int>), Type.EmptyTypes,
-          TypeAttributes.Public | TypeAttributes.Class);
+          TypeAttributes.Public | TypeAttributes.Class, false);
 
       MethodInfo baseMethod = typeof (GenericClassWithAllKindsOfMembers<int>).GetMethod ("Method");
       CustomMethodEmitter overriddenMethod = classEmitter.CreateMethodOverride (baseMethod);
@@ -151,7 +151,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     public void OverridingSimpleMembersOfOpenGenericClass ()
     {
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (GenericClassWithAllKindsOfMembers<>), Type.EmptyTypes,
-          TypeAttributes.Public | TypeAttributes.Class);
+          TypeAttributes.Public | TypeAttributes.Class, false);
 
       MethodInfo baseMethod = typeof (GenericClassWithAllKindsOfMembers<>).GetMethod ("Method");
       CustomMethodEmitter overriddenMethod = classEmitter.CreateMethodOverride (baseMethod);
@@ -188,7 +188,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
               "Foo",
               typeof (object),
               new Type[] {typeof (GenericInterfaceWithAllKindsOfMembers<int>)},
-              TypeAttributes.Public | TypeAttributes.Class);
+              TypeAttributes.Public | TypeAttributes.Class, false);
 
       MethodInfo baseMethod = typeof (GenericInterfaceWithAllKindsOfMembers<int>).GetMethod ("Method");
       CustomMethodEmitter overriddenMethod = classEmitter.CreateInterfaceMethodImplementation (baseMethod);

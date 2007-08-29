@@ -1,6 +1,6 @@
 using System;
 
-namespace Samples.Aktology.Akten
+namespace Rubicon.Mixins.Samples.Aktology.Akten
 {
   public interface IAkt
   {

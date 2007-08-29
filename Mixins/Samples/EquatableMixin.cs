@@ -3,7 +3,7 @@ using Rubicon.Mixins;
 using System.Reflection;
 using Rubicon.Utilities;
 
-namespace Samples
+namespace Rubicon.Mixins.Samples
 {
   public class EquatableMixin<T> : Mixin<T>, IEquatable<T>
      where T : class
@@ -32,13 +32,13 @@ namespace Samples
     }
 
     [Override]
-    public new bool Equals (object other)
+    protected new bool Equals (object other)
     {
       return ((IEquatable<T>)this).Equals (other as T);
     }
 
     [Override]
-    public new int GetHashCode ()
+    protected new int GetHashCode ()
     {
       object[] fieldValues = new object[_targetFields.Length];
       for (int i = 0; i < fieldValues.Length; ++i)

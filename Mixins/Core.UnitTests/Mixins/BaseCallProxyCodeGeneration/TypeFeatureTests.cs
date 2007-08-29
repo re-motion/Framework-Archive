@@ -8,7 +8,7 @@ using Rubicon.Mixins.UnitTests.Mixins.CodeGenSampleTypes;
 namespace Rubicon.Mixins.UnitTests.Mixins.BaseCallProxyCodeGeneration
 {
   [TestFixture]
-  public class TypeFeatureTests : MixinTestBase
+  public class TypeFeatureTests : MixinBaseTest
   {
     [Test]
     public void GeneratedTypeExists ()

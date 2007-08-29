@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Rubicon.Mixins;
 
-namespace Samples.PhotoStuff.Variant2
+namespace Rubicon.Mixins.Samples.PhotoStuff.Variant2
 {
   [Uses (typeof (DocumentMixin))]
   public class Photo

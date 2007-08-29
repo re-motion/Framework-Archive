@@ -35,13 +35,13 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       _targetGenerator = targetGenerator;
       _configuration = configuration;
 
-      bool isSerializable = configuration.Type.IsSerializable || typeof (ISerializable).IsAssignableFrom(configuration.Type);
-
       string typeName = nameProvider.GetNewTypeName (configuration);
+      Type[] interfaces = new Type[] {typeof (ISerializable)};
+      TypeAttributes flags = TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable;
 
-      Type[] interfaces = isSerializable ? new Type[] {typeof (ISerializable)} : new Type[0];
-
-      ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces);
+      bool forceUnsigned = !StrongNameUtil.IsAssemblySigned (targetGenerator.TypeBuilder.Assembly);
+      ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces,
+          flags, forceUnsigned);
       _emitter = new CustomClassEmitter (classEmitter);
 
       _configurationField = classEmitter.CreateStaticField ("__configuration", typeof (MixinDefinition));
@@ -50,8 +50,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
       _emitter.ReplicateBaseTypeConstructors ();
 
-      if (isSerializable)
-        ImplementGetObjectData();
+      ImplementGetObjectData();
 
       AddMixinTypeAttribute ();
       ReplicateAttributes (_configuration.CustomAttributes, _emitter);

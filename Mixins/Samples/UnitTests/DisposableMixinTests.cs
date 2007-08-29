@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Rubicon.Mixins;
 
-namespace Samples.UnitTests
+namespace Rubicon.Mixins.Samples.UnitTests
 {
   [TestFixture]
   public class DisposableMixinTests

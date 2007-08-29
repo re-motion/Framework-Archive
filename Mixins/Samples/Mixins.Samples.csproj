@@ -7,8 +7,8 @@
     <ProjectGuid>{9731FCDD-0F9F-41C5-B691-8AA9101CE249}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Samples</RootNamespace>
-    <AssemblyName>Samples</AssemblyName>
+    <RootNamespace>Rubicon.Mixins.Samples</RootNamespace>
+    <AssemblyName>Rubicon.Mixins.Samples</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,6 +58,8 @@
     <Compile Include="PhotoStuff\Variant3\Document.cs" />
     <Compile Include="PhotoStuff\Variant3\Photo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Mixins.Samples.build" />
+    <None Include="Properties\AssemblyInfoTemplate.cs" />
     <Compile Include="UnitTests\Aktology\AktenTests.cs" />
     <Compile Include="UnitTests\DisposableMixinTests.cs" />
     <Compile Include="UnitTests\EquatableMixinTests.cs" />

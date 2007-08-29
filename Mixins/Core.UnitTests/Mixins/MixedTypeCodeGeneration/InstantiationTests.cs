@@ -9,7 +9,7 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
 {
   [TestFixture]
-  public class InstantiationTests : MixinTestBase
+  public class InstantiationTests : MixinBaseTest
   {
     [Test]
     public void GeneratedTypeCanBeInstantiatedViaCtorCall ()

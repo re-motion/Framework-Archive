@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
   [TestFixture]
-  public class MixinReflectionTests: MixinTestBase
+  public class MixinReflectionTests: MixinBaseTest
   {
     [Test]
     public void FindMixinInstanceInTarget()

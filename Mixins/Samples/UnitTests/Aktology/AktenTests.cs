@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Samples.Aktology;
+using Rubicon.Mixins.Samples.Aktology;
 
-namespace Samples.UnitTests.Aktology
+namespace Rubicon.Mixins.Samples.UnitTests.Aktology
 {
   [TestFixture]
   public class AktenTests
