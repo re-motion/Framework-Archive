@@ -367,7 +367,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Preview",
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeMixer", "Mixins\TypeMixer\TypeMixer.csproj", "{152DAF45-13C9-4A73-90D0-DF774ED12528}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins.MixerTool.Console", "Mixins\MxerTool.Console\Mixins.MixerTool.Console.csproj", "{152DAF45-13C9-4A73-90D0-DF774ED12528}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"

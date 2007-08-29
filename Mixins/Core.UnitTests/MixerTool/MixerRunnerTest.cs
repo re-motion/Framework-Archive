@@ -6,6 +6,7 @@ using Rubicon.Mixins.Context;
 using Rubicon.Mixins.MixerTool;
 using System.IO;
 using System.Reflection;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 
 namespace Rubicon.Mixins.UnitTests.MixerTool
 {
@@ -21,6 +22,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
       Assert.AreEqual ("", Parameters.ConfigFile);
       Assert.AreEqual ("Rubicon.Mixins.Generated.Signed", Parameters.SignedAssemblyName);
       Assert.AreEqual ("Rubicon.Mixins.Generated.Unsigned", Parameters.UnsignedAssemblyName);
+      Assert.AreEqual (false, Parameters.KeepTypeNames);
     }
 
     [Test]
@@ -79,6 +81,28 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
 
       File.Delete (localSampleTypesPath);
       File.Delete (localGeneratedPath);
+    }
+
+    [Test]
+    public void RunWithKeepTypeNames ()
+    {
+      Parameters.KeepTypeNames = true;
+      using (MixinConfiguration.ScopedEmpty())
+      {
+        using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (NullMixin)))
+        {
+          MixerRunner runner = new MixerRunner (Parameters);
+          runner.Run();
+        }
+      }
+
+      AppDomainRunner.Run (
+          delegate
+          {
+            Assembly assembly = Assembly.LoadFile (UnsignedAssemblyPath);
+            Type generatedType = GetFirstMixedType (assembly);
+            Assert.IsTrue (generatedType.Namespace.EndsWith ("MixedTypes"));
+          });
     }
   }
 }

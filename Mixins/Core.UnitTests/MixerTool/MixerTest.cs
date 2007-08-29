@@ -7,6 +7,7 @@ using Rubicon.Collections;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.Context;
+using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.MixerTool;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Reflection;
@@ -240,6 +241,33 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
             Set<ClassContext> contextsFromTypes = GetContextsFromGeneratedTypes (theAssembly);
             Assert.That (contextsFromEvent, Is.EquivalentTo (contextsFromTypes));
           }, classContextsBeingProcessed);
+    }
+
+    private class FooNameProvider : INameProvider
+    {
+      public string GetNewTypeName (ClassDefinitionBase configuration)
+      {
+        return "Foo";
+      }
+    }
+
+    [Test]
+    public void UsesGivenNameProvider ()
+    {
+      Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
+      mixer.NameProvider = new FooNameProvider ();
+      using (MixinConfiguration.ScopedEmpty())
+      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin1)))
+      {
+        mixer.Execute();
+      }
+
+      AppDomainRunner.Run (
+          delegate
+          {
+            Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
+            Assert.AreEqual ("Foo", GetFirstMixedType (theAssembly).FullName);
+          });
     }
   }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Utilities;
 using Rubicon.Logging;
@@ -47,6 +48,9 @@ namespace Rubicon.Mixins.MixerTool
       LogManager.InitializeConsole ();
 
       Mixer mixer = new Mixer (_parameters.SignedAssemblyName, _parameters.UnsignedAssemblyName, _parameters.AssemblyOutputDirectory);
+      if (_parameters.KeepTypeNames)
+        mixer.NameProvider = NamespaceChangingNameProvider.Instance;
+
       mixer.ClassContextBeingProcessed += Mixer_ClassContextBeingProcessed;
       try
       {

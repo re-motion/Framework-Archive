@@ -34,5 +34,10 @@ namespace Rubicon.Mixins.MixerTool
         Description = "The simple name of the unsigned assembly generated (without extension; default: Rubicon.Mixins.Generated.Unsigned).",
         Placeholder = "simpleName")]
     public string UnsignedAssemblyName = "Rubicon.Mixins.Generated.Unsigned";
+
+    [CommandLineFlagArgument ("keepTypeNames", false,
+        Description = "Specifies that the mixer should not use GUIDs to name the generated types, but instead keep the type names of the target "
+        + "types. To get unique names, the mixer will put the generated types in a dedicated namespace.")]
+    public bool KeepTypeNames;
   }
 }

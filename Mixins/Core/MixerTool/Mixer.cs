@@ -16,6 +16,7 @@ namespace Rubicon.Mixins.MixerTool
     private readonly string _signedAssemblyName;
     private readonly string _unsignedAssemblyName;
     private readonly string _assemblyOutputDirectory;
+    private INameProvider _nameProvider = GuidNameProvider.Instance;
 
     public Mixer (string signedAssemblyName, string unsignedAssemblyName, string assemblyOutputDirectory)
     {
@@ -26,6 +27,12 @@ namespace Rubicon.Mixins.MixerTool
       _signedAssemblyName = signedAssemblyName;
       _unsignedAssemblyName = unsignedAssemblyName;
       _assemblyOutputDirectory = assemblyOutputDirectory;
+    }
+
+    public INameProvider NameProvider
+    {
+      get { return _nameProvider; }
+      set { _nameProvider = value; }
     }
 
     public void Execute ()
@@ -47,6 +54,8 @@ namespace Rubicon.Mixins.MixerTool
     private void Configure ()
     {
       ConcreteTypeBuilder.SetCurrent (new ConcreteTypeBuilder ());
+
+      ConcreteTypeBuilder.Current.TypeNameProvider = NameProvider;
 
       if (!Directory.Exists (_assemblyOutputDirectory))
         Directory.CreateDirectory (_assemblyOutputDirectory);

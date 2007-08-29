@@ -2,7 +2,7 @@ using System;
 using Rubicon.Mixins.MixerTool;
 using Rubicon.Text.CommandLine;
 
-namespace TypeMixer
+namespace Rubicon.Mixins.MixerTool.Console
 {
   class Program
   {
@@ -24,8 +24,8 @@ namespace TypeMixer
 
       try
       {
-        MixerRunner MixerRunner = new MixerRunner (parameters);
-        MixerRunner.Run ();
+        MixerRunner mixerRunner = new MixerRunner (parameters);
+        mixerRunner.Run ();
       }
       catch (Exception e)
       {
