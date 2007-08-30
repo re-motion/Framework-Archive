@@ -34,7 +34,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectData
       _mockDesignerHost = _mockRepository.CreateMock<IDesignerHost>();
       SetupResult.For (_stubSite.GetService (typeof (IDesignerHost))).Return (_mockDesignerHost);
 
-      _provider = new BindableObjectProvider();
+      _provider = BindableObjectProvider.CreateDesignModeBindableObjectProvider ();
       BindableObjectProvider.SetCurrent (_provider);
     }
 
