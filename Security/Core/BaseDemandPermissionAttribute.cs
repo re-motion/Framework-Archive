@@ -28,9 +28,9 @@ namespace Rubicon.Security
       _accessTypes = accessTypeEnums;
     }
 
-    public Enum[] AccessTypes
+    public Enum[] GetAccessTypes ()
     {
-      get { return _accessTypes; }
+      return _accessTypes;
     }
 
     private Enum GetAccessType (object accessType)

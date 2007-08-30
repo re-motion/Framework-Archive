@@ -12,7 +12,7 @@ namespace Rubicon.Security.UnitTests.Core
     public void AcceptValidAccessType ()
     {
       DemandMethodPermissionAttribute methodPermissionAttribute = new DemandMethodPermissionAttribute (TestAccessTypes.Second);
-      Assert.AreEqual (TestAccessTypes.Second, methodPermissionAttribute.AccessTypes[0]);
+      Assert.AreEqual (TestAccessTypes.Second, methodPermissionAttribute.GetAccessTypes()[0]);
     }
 
     [Test]
@@ -38,9 +38,9 @@ namespace Rubicon.Security.UnitTests.Core
       DemandMethodPermissionAttribute methodPermissionAttribute =
           new DemandMethodPermissionAttribute (TestAccessTypes.Second, TestAccessTypes.Fourth);
 
-      Assert.AreEqual (2, methodPermissionAttribute.AccessTypes.Length);
-      Assert.Contains (TestAccessTypes.Second, methodPermissionAttribute.AccessTypes);
-      Assert.Contains (TestAccessTypes.Fourth, methodPermissionAttribute.AccessTypes);
+      Assert.AreEqual (2, methodPermissionAttribute.GetAccessTypes().Length);
+      Assert.Contains (TestAccessTypes.Second, methodPermissionAttribute.GetAccessTypes());
+      Assert.Contains (TestAccessTypes.Fourth, methodPermissionAttribute.GetAccessTypes());
     }
   }
 }

@@ -93,7 +93,7 @@ namespace Rubicon.Security.Metadata
       TAttribute permission = permissionAttributes[0];
 
       List<Enum> permissions = new List<Enum>();
-      foreach (Enum accessTypeEnum in permission.AccessTypes)
+      foreach (Enum accessTypeEnum in permission.GetAccessTypes())
       {
         if (!permissions.Contains (accessTypeEnum))
           permissions.Add (accessTypeEnum);
