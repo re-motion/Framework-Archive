@@ -308,10 +308,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\ReflectionEmitUtilityTests.cs" />
-    <Compile Include="Utilities\ReflectionUtilityTests\GetAscribedGenericArguments_WithInterface.cs" />
-    <Compile Include="Utilities\ReflectionUtilityTests\CanAscribe_WithInterface.cs" />
-    <Compile Include="Utilities\ReflectionUtilityTests\GetAscribedGenericArguments_WithClass.cs" />
-    <Compile Include="Utilities\ReflectionUtilityTests\CanAscribe_WithClass.cs" />
+    <Compile Include="Utilities\ReflectionUtilityTests\CanAscribe_WithGenericClass.cs" />
+    <Compile Include="Utilities\ReflectionUtilityTests\CanAscribe_WithGenericInterface.cs" />
+    <Compile Include="Utilities\ReflectionUtilityTests\CanAscribe_WithNonGenericClass.cs" />
+    <Compile Include="Utilities\ReflectionUtilityTests\CanAscribe_WithNonGenericInterface.cs" />
+    <Compile Include="Utilities\ReflectionUtilityTests\GetAscribedGenericArguments_WithGenericClass.cs" />
+    <Compile Include="Utilities\ReflectionUtilityTests\GetAscribedGenericArguments_WithGenericInterface.cs" />
+    <Compile Include="Utilities\ReflectionUtilityTests\GetAscribedGenericArguments_WithNonGenericClass.cs" />
+    <Compile Include="Utilities\ReflectionUtilityTests\GetAscribedGenericArguments_WithNonGenericInterface.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\SampleTypes.cs" />
     <Compile Include="Utilities\StubStringUtility.cs">
       <SubType>Code</SubType>

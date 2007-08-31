@@ -10,6 +10,10 @@ namespace Rubicon.Core.UnitTests.Utilities.ReflectionUtilityTests
   {
   }
 
+  public interface IDerivedInterface : IBaseInterface
+  {
+  }
+
   public interface IGenericInterface<T> : IBaseInterface
   {
   }
@@ -19,6 +23,15 @@ namespace Rubicon.Core.UnitTests.Utilities.ReflectionUtilityTests
   }
 
   public interface IDerivedGenericInterface : IGenericInterface<ParameterType>
+  {
+  }
+
+  public interface IDoubleDerivedGenericInterface : IDerivedGenericInterface
+  {
+  }
+
+  // inherits IGenericInterface<> twice
+  public interface IDoubleInheritingGenericInterface : IGenericInterface<int>, IGenericInterface<ParameterType>
   {
   }
 
@@ -37,6 +50,10 @@ namespace Rubicon.Core.UnitTests.Utilities.ReflectionUtilityTests
   }
 
   public class BaseType
+  {
+  }
+
+  public class DerivedType : BaseType, IDerivedInterface
   {
   }
 
