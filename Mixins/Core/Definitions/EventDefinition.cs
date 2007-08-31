@@ -9,16 +9,17 @@ namespace Rubicon.Mixins.Definitions
   [Serializable]
   public class EventDefinition : MemberDefinition, IVisitableDefinition
   {
-    private static SignatureChecker s_signatureChecker = new SignatureChecker();
+    private static readonly SignatureChecker s_signatureChecker = new SignatureChecker();
 
     public new readonly UniqueDefinitionCollection<Type, EventDefinition> Overrides =
         new UniqueDefinitionCollection<Type, EventDefinition> (delegate (EventDefinition m) { return m.DeclaringClass.Type; });
 
     private EventDefinition _base;
-    private MethodDefinition _addMethod;
-    private MethodDefinition _removeMethod;
+    private readonly MethodDefinition _addMethod;
+    private readonly MethodDefinition _removeMethod;
 
-    public EventDefinition (EventInfo memberInfo, ClassDefinitionBase declaringClass, MethodDefinition addMethod, MethodDefinition removeMethod)
+    public EventDefinition (EventInfo memberInfo, ClassDefinitionBase declaringClass, MethodDefinition addMethod, MethodDefinition removeMethod,
+        IVisitableDefinition parent)
         : base (memberInfo, declaringClass)
     {
       ArgumentUtility.CheckNotNull ("addMethod", addMethod);
@@ -26,6 +27,9 @@ namespace Rubicon.Mixins.Definitions
 
       _addMethod = addMethod;
       _removeMethod = removeMethod;
+
+      _addMethod.Parent = this;
+      _removeMethod.Parent = this;
     }
 
     public EventInfo EventInfo

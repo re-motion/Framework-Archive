@@ -1,25 +1,19 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.Mixins.Utilities;
+using System.Runtime.Serialization;
 using Rubicon.Collections;
-using Rubicon.Text;
-using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions.Building
 {
   public class InterfaceIntroductionBuilder
   {
-    private static PropertySignatureEqualityComparer s_propertyComparer = new PropertySignatureEqualityComparer ();
-    private static EventSignatureEqualityComparer s_eventComparer = new EventSignatureEqualityComparer ();
-
     private readonly MixinDefinition _mixin;
     private readonly Set<Type> _suppressedInterfaces;
 
     public InterfaceIntroductionBuilder (MixinDefinition mixin)
     {
       _mixin = mixin;
-      _suppressedInterfaces = new Set<Type> (typeof (System.Runtime.Serialization.ISerializable));
+      _suppressedInterfaces = new Set<Type> (typeof (ISerializable));
       AnalyzeSuppressedInterfaces ();
     }
 
@@ -73,54 +67,20 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private void AnalyzeIntroducedMembers (InterfaceIntroductionDefinition introducedInterface)
     {
+      MemberImplementationFinder memberFinder = new MemberImplementationFinder (introducedInterface.Type, _mixin);
       Set<MethodInfo> specialMethods = new Set<MethodInfo>();
 
-      AnalyzeProperties (introducedInterface, specialMethods);
-      AnalyzeEvents (introducedInterface, specialMethods);
-      AnalyzeMethods (introducedInterface, specialMethods);
+      AnalyzeProperties (introducedInterface, memberFinder, specialMethods);
+      AnalyzeEvents (introducedInterface, memberFinder, specialMethods);
+      AnalyzeMethods (introducedInterface, memberFinder, specialMethods);
     }
 
-    private TDefinition FindImplementer<TDefinition, TMemberInfo> (
-        TMemberInfo interfaceMember,
-        IEnumerable<TDefinition> candidates,
-        IEqualityComparer<TMemberInfo> comparer)
-        where TDefinition: MemberDefinition
-        where TMemberInfo: MemberInfo
-    {
-      List<TDefinition> strongCandidates = new List<TDefinition>();
-      List<TDefinition> weakCandidates = new List<TDefinition>();
-
-      foreach (TDefinition candidate in candidates)
-        if (interfaceMember.Name == candidate.Name && comparer.Equals (interfaceMember, (TMemberInfo) candidate.MemberInfo))
-          strongCandidates.Add (candidate);
-        else if (candidate.Name.EndsWith (interfaceMember.Name) && comparer.Equals (interfaceMember, (TMemberInfo) candidate.MemberInfo))
-          weakCandidates.Add (candidate);
-
-      Assertion.IsTrue (
-          strongCandidates.Count == 0 || strongCandidates.Count == 1, "If this throws, we have an oversight in the candidate algorithm.");
-
-      if (strongCandidates.Count == 1)
-        return strongCandidates[0];
-      else if (weakCandidates.Count == 0)
-        return null;
-      else if (weakCandidates.Count == 1)
-        return weakCandidates[0]; // probably an explicit interface implementation
-      else // weakCandidates.Count > 1
-      {
-        string message = string.Format (
-            "There are more than one implementer candidates for member {0}.{1}: {2}. The mixin engine cannot detect the right one.",
-            interfaceMember.DeclaringType.FullName,
-            interfaceMember.Name,
-            SeparatedStringBuilder.Build (", ", weakCandidates, delegate (TDefinition d) { return d.FullName; }));
-        throw new NotSupportedException (message);
-      }
-    }
-
-    private void AnalyzeProperties (InterfaceIntroductionDefinition introducedInterface, Set<MethodInfo> specialMethods)
+    private void AnalyzeProperties (InterfaceIntroductionDefinition introducedInterface, MemberImplementationFinder memberFinder,
+         Set<MethodInfo> specialMethods)
     {
       foreach (PropertyInfo interfaceProperty in introducedInterface.Type.GetProperties())
       {
-        PropertyDefinition implementer = FindImplementer (interfaceProperty, _mixin.Properties, s_propertyComparer);
+        PropertyDefinition implementer = memberFinder.FindPropertyImplementation (interfaceProperty);
         CheckMemberImplementationFound (implementer, interfaceProperty);
         introducedInterface.IntroducedProperties.Add (new PropertyIntroductionDefinition (introducedInterface, interfaceProperty, implementer));
 
@@ -134,11 +94,12 @@ namespace Rubicon.Mixins.Definitions.Building
       }
     }
 
-    private void AnalyzeEvents (InterfaceIntroductionDefinition introducedInterface, Set<MethodInfo> specialMethods)
+    private void AnalyzeEvents (InterfaceIntroductionDefinition introducedInterface, MemberImplementationFinder memberFinder,
+        Set<MethodInfo> specialMethods)
     {
       foreach (EventInfo interfaceEvent in introducedInterface.Type.GetEvents())
       {
-        EventDefinition implementer = FindImplementer (interfaceEvent, _mixin.Events, s_eventComparer);
+        EventDefinition implementer = memberFinder.FindEventImplementation (interfaceEvent);
         CheckMemberImplementationFound (implementer, interfaceEvent);
         introducedInterface.IntroducedEvents.Add (new EventIntroductionDefinition (introducedInterface, interfaceEvent, implementer));
 
@@ -147,18 +108,16 @@ namespace Rubicon.Mixins.Definitions.Building
       }
     }
 
-    private void AnalyzeMethods (InterfaceIntroductionDefinition introducedInterface, Set<MethodInfo> specialMethods)
+    private void AnalyzeMethods (InterfaceIntroductionDefinition introducedInterface, MemberImplementationFinder memberFinder,
+        Set<MethodInfo> specialMethods)
     {
-      InterfaceMapping mapping = _mixin.GetAdjustedInterfaceMap (introducedInterface.Type);
-      for (int i = 0; i < mapping.InterfaceMethods.Length; ++i)
+      foreach (MethodInfo interfaceMethod in introducedInterface.Type.GetMethods())
       {
-        MethodInfo interfaceMethod = mapping.InterfaceMethods[i];
         if (!specialMethods.Contains (interfaceMethod))
         {
-          MethodInfo targetMethod = mapping.TargetMethods[i];
-          MethodDefinition implementer = _mixin.Methods[targetMethod];
-          CheckMemberImplementationFound (implementer, mapping.InterfaceMethods[i]);
-          introducedInterface.IntroducedMethods.Add (new MethodIntroductionDefinition (introducedInterface, mapping.InterfaceMethods[i], implementer));
+          MethodDefinition implementer = memberFinder.FindMethodImplementation (interfaceMethod);
+          CheckMemberImplementationFound (implementer, interfaceMethod);
+          introducedInterface.IntroducedMethods.Add (new MethodIntroductionDefinition (introducedInterface, interfaceMethod, implementer));
         }
       }
     }

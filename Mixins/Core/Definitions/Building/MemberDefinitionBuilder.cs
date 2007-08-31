@@ -82,7 +82,7 @@ namespace Rubicon.Mixins.Definitions.Building
 
         if (addMethodDefinition != null || removeMethodDefinition != null)
         {
-          EventDefinition definition = new EventDefinition (eventInfo, _classDefinition, addMethodDefinition, removeMethodDefinition);
+          EventDefinition definition = new EventDefinition (eventInfo, _classDefinition, addMethodDefinition, removeMethodDefinition, _classDefinition);
           AttributeDefinitionBuilder attributeBuilder = new AttributeDefinitionBuilder (definition);
           attributeBuilder.Apply (CustomAttributeData.GetCustomAttributes (eventInfo));
           _classDefinition.Events.Add (definition);

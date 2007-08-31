@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -303,6 +304,28 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.IsTrue (suppressedDefinition.IsShadowed);
         Assert.AreSame (typeof (ISimpleInterface), suppressedDefinition.Type);
         Assert.AreSame (definition.Mixins[typeof (MixinImplementingSimpleInterface)], suppressedDefinition.Parent);
+      }
+    }
+
+    [Test]
+    public void MultipleSimilarInterfaces ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (List<>)))
+      {
+        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassImplementingSimpleInterface));
+        MixinDefinition mixinDefinition = definition.GetMixinByConfiguredType (typeof (List<>));
+        
+        Assert.IsTrue (definition.IntroducedInterfaces.ContainsKey (typeof (IList)));
+        Assert.AreSame (mixinDefinition, definition.IntroducedInterfaces[typeof (IList)].Implementer);
+
+        Assert.IsTrue (definition.IntroducedInterfaces.ContainsKey (typeof (ICollection<object>)));
+        Assert.AreSame (mixinDefinition, definition.IntroducedInterfaces[typeof (ICollection<object>)].Implementer);
+
+        Assert.IsTrue (definition.IntroducedInterfaces[typeof (IList)].IntroducedProperties.ContainsKey (typeof (IList).GetProperty ("IsReadOnly")));
+        Assert.IsTrue (definition.IntroducedInterfaces[typeof (ICollection<object>)].IntroducedProperties.ContainsKey (typeof (ICollection<object>).GetProperty ("IsReadOnly")));
+
+        Assert.AreNotEqual (definition.IntroducedInterfaces[typeof (IList)].IntroducedProperties[typeof (IList).GetProperty ("IsReadOnly")].ImplementingMember,
+            definition.IntroducedInterfaces[typeof (ICollection<object>)].IntroducedProperties[typeof (ICollection<object>).GetProperty ("IsReadOnly")].ImplementingMember);
       }
     }
   }

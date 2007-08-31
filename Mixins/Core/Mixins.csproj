@@ -51,6 +51,7 @@
     <Compile Include="Context\InternalApplicationContextBuilder.cs" />
     <Compile Include="Context\MixinContext.cs" />
     <Compile Include="Definitions\AttributeIntroductionDefinition.cs" />
+    <Compile Include="Definitions\Building\MemberImplementationFinder.cs" />
     <Compile Include="Definitions\TargetClassDefinitionCache.cs" />
     <Compile Include="Definitions\Building\AttributeIntroductionBuilder.cs" />
     <Compile Include="Definitions\Building\DependencySorting\MixinDependencyAnalyzer.cs" />

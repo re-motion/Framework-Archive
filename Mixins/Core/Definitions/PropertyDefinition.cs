@@ -9,20 +9,25 @@ namespace Rubicon.Mixins.Definitions
   [Serializable]
   public class PropertyDefinition : MemberDefinition, IVisitableDefinition
   {
-    private static SignatureChecker s_signatureChecker = new SignatureChecker();
+    private static readonly SignatureChecker s_signatureChecker = new SignatureChecker();
 
     public new readonly UniqueDefinitionCollection<Type, PropertyDefinition> Overrides =
         new UniqueDefinitionCollection<Type, PropertyDefinition> (delegate (PropertyDefinition m) { return m.DeclaringClass.Type; });
 
     private PropertyDefinition _base;
-    private MethodDefinition _getMethod;
-    private MethodDefinition _setMethod;
+    private readonly MethodDefinition _getMethod;
+    private readonly MethodDefinition _setMethod;
 
     public PropertyDefinition (PropertyInfo memberInfo, ClassDefinitionBase declaringClass, MethodDefinition getMethod, MethodDefinition setMethod)
         : base (memberInfo, declaringClass)
     {
       _getMethod = getMethod;
       _setMethod = setMethod;
+
+      if (_getMethod != null)
+        _getMethod.Parent = this;
+      if (_setMethod != null)
+        _setMethod.Parent = this;
     }
 
     public PropertyInfo PropertyInfo

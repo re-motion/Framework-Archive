@@ -93,6 +93,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.IsFalse (targetClass.Methods.ContainsKey (member.GetMethod.MethodInfo));
         Assert.IsFalse (targetClass.Methods.ContainsKey (member.SetMethod.MethodInfo));
 
+        Assert.AreSame (member, member.GetMethod.Parent);
+        Assert.AreSame (member, member.SetMethod.Parent);
+
         member = targetClass.Properties[indexedProperty1];
         Assert.AreNotSame (member, targetClass.Properties[indexedProperty2]);
 
@@ -156,6 +159,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
         Assert.IsFalse (targetClass.Methods.ContainsKey (member.AddMethod.MethodInfo));
         Assert.IsFalse (targetClass.Methods.ContainsKey (member.RemoveMethod.MethodInfo));
+
+        Assert.AreSame (member, member.AddMethod.Parent);
+        Assert.AreSame (member, member.RemoveMethod.Parent);
 
         member = targetClass.Events[baseEvent2];
         Assert.IsNotNull (member.AddMethod);

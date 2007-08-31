@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Mixins.UnitTests.Mixins.CodeGenSampleTypes;
 using Rubicon.Mixins.UnitTests.SampleTypes;
+using System.Collections.Generic;
 
 namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
 {
@@ -79,6 +81,18 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
       ClassImplementingSimpleInterface o = CreateMixedObject<ClassImplementingSimpleInterface> (typeof (MixinImplementingSimpleInterface)).With();
       Assert.IsTrue (o is ISimpleInterface);
       Assert.AreEqual ("ClassImplementingSimpleInterface.Method", o.Method ());
+    }
+
+    [Test]
+    public void MultipleSimilarInterfaces ()
+    {
+      object o = CreateMixedObject<object> (typeof (List<>)).With();
+      Assert.IsTrue (o is IList<object>);
+      Assert.IsTrue (o is ICollection<object>);
+      Assert.IsTrue (o is IEnumerable<object>);
+      Assert.IsTrue (o is IList);
+      Assert.IsTrue (o is ICollection);
+      Assert.IsTrue (o is IEnumerable);
     }
   }
 }

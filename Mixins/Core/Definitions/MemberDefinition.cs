@@ -8,10 +8,11 @@ namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   [DebuggerDisplay ("{MemberInfo}, DeclaringClass = {DeclaringClass.Type}")]
-  public abstract class MemberDefinition : IAttributeIntroductionTargetDefinition
+  public abstract class MemberDefinition : IAttributeIntroductionTargetDefinition, IVisitableDefinition
   {
     private readonly MemberInfo _memberInfo;
     private readonly ClassDefinitionBase _declaringClass;
+    private IVisitableDefinition _parent;
 
     private readonly MultiDefinitionCollection<Type, AttributeDefinition> _customAttributes =
         new MultiDefinitionCollection<Type, AttributeDefinition> (delegate (AttributeDefinition a) { return a.AttributeType; });
@@ -27,6 +28,7 @@ namespace Rubicon.Mixins.Definitions
 
       _memberInfo = memberInfo;
       _declaringClass = declaringClass;
+      _parent = declaringClass;
     }
 
     public MemberInfo MemberInfo
@@ -73,7 +75,8 @@ namespace Rubicon.Mixins.Definitions
 
     public IVisitableDefinition Parent
     {
-      get { return DeclaringClass; }
+      get { return _parent; }
+      internal set { _parent = ArgumentUtility.CheckNotNull ("value", value); }
     }
 
     public MultiDefinitionCollection<Type, AttributeDefinition> CustomAttributes
