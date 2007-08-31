@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Mixins;
 using Rubicon.Security;
 using Rubicon.Security.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
@@ -269,5 +270,23 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       return user;
     }
 
+    public interface ITestInterface
+    {
+    }
+
+    public class TestMixin : Mixin<User>, ITestInterface
+    {
+    }
+
+    [Test]
+    public void MixedUserTest ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (User), typeof (TestMixin)))
+      {
+        User user = CreateUser ();
+        Assert.IsNotNull (Mixin.Get<TestMixin> (user));
+        Assert.IsTrue (user is ITestInterface);
+      }
+    }
   }
 }
