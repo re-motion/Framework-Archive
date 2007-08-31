@@ -11,11 +11,14 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
   // threads at the same time.
   public class ModuleManager : IModuleManager
   {
+    public const string DefaultWeakModulePath = "Rubicon.Mixins.Generated.Unsigned.dll";
+    public const string DefaultStrongModulePath = "Rubicon.Mixins.Generated.Signed.dll";
+
     private string _weakAssemblyName = "Rubicon.Mixins.Generated.Unsigned";
-    private string _weakModulePath = "Rubicon.Mixins.Generated.Unsigned.dll";
+    private string _weakModulePath = DefaultWeakModulePath;
 
     private string _strongAssemblyName = "Rubicon.Mixins.Generated.Signed";
-    private string _strongModulePath = "Rubicon.Mixins.Generated.Signed.dll";
+    private string _strongModulePath = DefaultStrongModulePath;
 
     private ModuleScope _scope;
 

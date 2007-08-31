@@ -1,9 +1,11 @@
 using System;
+using System.IO;
 using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Reflection;
+using Rubicon.Mixins.CodeGeneration.DynamicProxy;
 
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
@@ -14,8 +16,18 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [SetUp]
     public virtual void SetUp()
     {
+      ResetGeneratedAssemblies ();
       ConcreteTypeBuilder.SetCurrent (null);
+      
       currentConfiguration = MixinConfiguration.ScopedExtend (Assembly.GetExecutingAssembly ());
+    }
+
+    private void ResetGeneratedAssemblies ()
+    {
+      if (File.Exists (ModuleManager.DefaultWeakModulePath))
+        File.Delete (ModuleManager.DefaultWeakModulePath);
+      if (File.Exists (ModuleManager.DefaultStrongModulePath))
+        File.Delete (ModuleManager.DefaultStrongModulePath);
     }
 
     [TearDown]
@@ -38,6 +50,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       foreach (string path in paths)
         PEVerifier.VerifyPEFile (path);
 
+      ResetGeneratedAssemblies (); // delete assemblies if everything went fine
       ConcreteTypeBuilder.SetCurrent (null);
     }
 
