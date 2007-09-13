@@ -29,6 +29,12 @@
   automatisch inkludiert.
 - UrlUtility.ResolveUrl (...): Der Servername wird nicht mehr inkludiert.
 
+1.7.48
+======
+- ASP.NET 2.0 AJAX Extensions 1.0 müssen installiert sein.
+  Download: http://go.microsoft.com/fwlink/?LinkID=77296
+  Übersichtsseite: http://asp.net/ajax/
+
 1.7.47
 ======
 - Rubicon.Web.UI.Controls.WebTreeView
