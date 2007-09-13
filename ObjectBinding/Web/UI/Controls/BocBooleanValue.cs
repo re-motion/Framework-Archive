@@ -33,6 +33,7 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
   private const string c_nullIcon = "CheckBoxNull.gif";
 
   private const string c_defaultControlWidth = "100pt";
+  private const string c_nullString = "null";
 
   // types
 
@@ -160,14 +161,20 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
   /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadPostData/*' />
   protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
-    string newValue = PageUtility.GetPostBackCollectionItem (Page, _hiddenField.UniqueID);
-    bool? newNaValue = null;
-    if (!string.IsNullOrEmpty (newValue))
-      newNaValue = bool.Parse (newValue);
-    bool isDataChanged = newValue != null && _value != newNaValue;
+    string newValueAsString = PageUtility.GetPostBackCollectionItem (Page, _hiddenField.UniqueID);
+    bool? newValue = null;
+    bool isDataChanged = false;
+    if (newValueAsString != null)
+    {
+      if (newValueAsString == c_nullString)
+        newValue = null;
+      else
+        newValue = bool.Parse (newValueAsString);
+      isDataChanged = _value != newValue;
+    }
     if (isDataChanged)
     {
-      _value = newNaValue;
+      _value = newValue;
       IsDirty = true;
     }
     return isDataChanged;
@@ -227,15 +234,15 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
 
     LoadResources (resourceManager);
 
-    if (_value == NaBoolean.True)
-    {
-      imageUrl = trueIconUrl;
-      description = trueDescription;
-    }
-    else if (_value == NaBoolean.Null)
+    if (!_value.HasValue)
     {
       imageUrl = nullIconUrl;
       description = nullDescription;
+    }
+    else if (_value.Value)
+    {
+      imageUrl = trueIconUrl;
+      description = trueDescription;
     }
     else
     {
@@ -253,9 +260,9 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
       {
         if (!Page.ClientScript.IsStartupScriptRegistered (s_startUpScriptKey))
         {
-          string trueValue = NaBoolean.True.ToString();
-          string falseValue = NaBoolean.False.ToString();
-          string nullValue = NaBoolean.Null.ToString();
+          string trueValue = true.ToString();
+          string falseValue = false.ToString();
+          string nullValue = c_nullString;
 
           script = string.Format (
               "BocBooleanValue_InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}');",
@@ -300,7 +307,7 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
     }
 
     if (!isReadOnly)
-      _hiddenField.Value = _value.ToString();
+      _hiddenField.Value = _value.HasValue ? _value.ToString() : c_nullString;
     _hiddenField.Visible = ! isReadOnly;
     _image.ImageUrl = imageUrl;
     _image.AlternateText = description;
@@ -377,7 +384,7 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
     base.LoadControlState (values[0]);
     _value = (bool?) values[1];
 
-    _hiddenField.Value = _value.ToString();
+    _hiddenField.Value = _value.HasValue ? _value.ToString () : c_nullString;
   }
 
   protected override object SaveControlState ()
@@ -480,7 +487,7 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
     CompareValidator notNullItemValidator = new CompareValidator();
     notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
     notNullItemValidator.ControlToValidate = ID;
-    notNullItemValidator.ValueToCompare = NaBoolean.NullString;
+    notNullItemValidator.ValueToCompare = c_nullString;
     notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
     if (StringUtility.IsNullOrEmpty (_errorMessage))
       notNullItemValidator.ErrorMessage = GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
