@@ -605,6 +605,13 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
       get { return _treeView.Nodes; }
     }
 
+    /// <summary>Gets the <see cref="WebTreeView"/> used by this <see cref="BocTreeView"/> to render the tree.</summary>
+    [Browsable (false)]
+    public WebTreeView TreeView
+    {
+      get { return _treeView; }
+    }
+
     /// <summary> 
     ///   Gets or sets a flag that determines whether to show the top level expander and automatically expand the 
     ///   child nodes if the expander is hidden.
@@ -683,6 +690,20 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
         _enableTreeNodeCaching = value;
         _treeView.EnableTreeNodeControlState = !value;
       }
+    }
+
+    /// <summary>
+    /// Gets or sets a flag that determines whether the post back from a node click must be executed synchronously when the tree is rendered within 
+    /// an <see cref="UpdatePanel"/>.
+    /// </summary>
+    [PersistenceMode (PersistenceMode.Attribute)]
+    [Category ("Behavior")]
+    [Description ("True to require a synchronous postback for node clicks within Ajax Update Panels.")]
+    [DefaultValue (false)]
+    public bool RequiresSynchronousPostBack
+    {
+      get { return _treeView.RequiresSynchronousPostBack; }
+      set { _treeView.RequiresSynchronousPostBack = value; }
     }
 
     /// <summary> Occurs when a node is clicked. </summary>

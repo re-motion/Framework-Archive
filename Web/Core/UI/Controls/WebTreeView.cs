@@ -93,6 +93,7 @@ namespace Rubicon.Web.UI.Controls
     private bool _showLines = true;
     private bool _enableTreeNodeControlState = true;
     private bool _hasTreeNodesCreated;
+    private bool _requiresSynchronousPostBack;
     private WebTreeNode _selectedNode;
     private WebTreeViewMenuItemProvider _menuItemProvider;
     private Dictionary<WebTreeNode, DropDownMenu> _menus = new Dictionary<WebTreeNode, DropDownMenu>();
@@ -446,7 +447,46 @@ namespace Rubicon.Web.UI.Controls
       IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
       LoadResources (resourceManager);
 
+      if (_requiresSynchronousPostBack)
+      {
+        ScriptManager scriptManager = ScriptManager.GetCurrent (Page);
+        if (scriptManager != null)
+        {
+          bool hasUpdatePanelAsParent = false;
+          for (Control current = Parent; current != null && !(current is Page); current = current.Parent)
+          {
+            if (current is UpdatePanel)
+            {
+              hasUpdatePanelAsParent = true;
+              break;
+            }
+          }
+
+          if (hasUpdatePanelAsParent)
+          {
+            ISmartPage smartPage = Page as ISmartPage;
+            if (smartPage == null)
+            {
+              throw new InvalidOperationException (
+                  string.Format (
+                      "{0}: WebTreeViews with RequiresSynchronousPostBack set to true are only supported on pages implementing ISmartPage when used within an UpdatePanel.",
+                      ID));
+            }
+            RegisterTreeNodesForSynchronousPostback (smartPage, _nodes);
+          }
+        }
+      }
+
       PreRenderTreeNodeMenus();
+    }
+
+    private void RegisterTreeNodesForSynchronousPostback (ISmartPage smartPage, WebTreeNodeCollection nodes)
+    {
+      foreach (WebTreeNode node in nodes)
+      {
+        ((ISmartPage) Page).RegisterCommandForSynchronousPostBack (this, GetClickCommandArgument (FormatNodePath (node)));
+        RegisterTreeNodesForSynchronousPostback (smartPage, node.Children);
+      }
     }
 
     /// <summary> Overrides the parent control's <c>TagKey</c> property. </summary>
@@ -594,7 +634,7 @@ namespace Rubicon.Web.UI.Controls
 
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-      string argument = c_clickCommandPrefix + nodePath;
+      string argument = GetClickCommandArgument(nodePath);
       string postBackLink = Page.ClientScript.GetPostBackClientHyperlink (this, argument);
       writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
       writer.RenderBeginTag (HtmlTextWriterTag.A);
@@ -615,6 +655,11 @@ namespace Rubicon.Web.UI.Controls
       writer.RenderEndTag();
 
       writer.RenderEndTag();
+    }
+
+    private string GetClickCommandArgument (string nodePath)
+    {
+      return c_clickCommandPrefix + nodePath;
     }
 
     /// <summary> Renders the <paramref name="node"/>'s children onto the <paremref name="writer"/>. </summary>
@@ -918,6 +963,20 @@ namespace Rubicon.Web.UI.Controls
     {
       get { return _enableTreeNodeControlState; }
       set { _enableTreeNodeControlState = value; }
+    }
+
+    /// <summary>
+    /// Gets or sets a flag that determines whether the post back from a node click must be executed synchronously when the tree is rendered within 
+    /// an <see cref="UpdatePanel"/>.
+    /// </summary>
+    [PersistenceMode (PersistenceMode.Attribute)]
+    [Category ("Behavior")]
+    [Description ("True to require a synchronous postback for node clicks within Ajax Update Panels.")]
+    [DefaultValue (false)]
+    public bool RequiresSynchronousPostBack
+    {
+      get { return _requiresSynchronousPostBack; }
+      set { _requiresSynchronousPostBack = value; }
     }
 
     /// <summary> Occurs when a node is clicked. </summary>

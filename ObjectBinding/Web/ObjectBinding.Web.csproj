@@ -88,6 +88,7 @@
     <Reference Include="System.Web">
       <Name>system.web</Name>
     </Reference>
+    <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Forms">
       <Name>system.windows.forms</Name>
     </Reference>
