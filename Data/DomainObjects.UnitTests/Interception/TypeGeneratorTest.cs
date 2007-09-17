@@ -516,5 +516,30 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       Type type = _scope.CreateTypeGenerator (typeof (DOWithVirtualProperties), typeof (DerivedDO)).BuildType ();
       Assert.IsNull (type.GetMethod (typeof (DerivedDO).FullName + ".get_VirtualPropertyOnDerivedClass", _declaredInstanceFlags));
     }
+
+    [Test]
+    public void DoesNotImplementAbstractStorageClassNonePropertyAccessors ()
+    {
+      Type type = CreateTypeGenerator (typeof (DOImplementingAbstractStorageClassNoneProperties)).BuildType ();
+      Assert.IsNull (type.GetMethod (typeof (DOImplementingAbstractStorageClassNoneProperties).FullName + ".get_PropertyImplementingGetterAndSetter", _declaredInstanceFlags));
+      Assert.IsNull (type.GetMethod (typeof (DOImplementingAbstractStorageClassNoneProperties).FullName + ".set_PropertyWithGetterAndSetter", _declaredInstanceFlags));
+      Assert.IsNull (type.GetMethod (typeof (DOWithAbstractStorageClassNoneProperties).FullName + ".get_PropertyWithGetterAndSetter", _declaredInstanceFlags));
+      Assert.IsNull (type.GetMethod (typeof (DOWithAbstractStorageClassNoneProperties).FullName + ".set_PropertyWithGetterAndSetter", _declaredInstanceFlags));
+    }
+
+    [Test]
+    public void DoesNotOverrideVirtualStorageClassNonePropertyAccessors ()
+    {
+      Type type = CreateTypeGenerator (typeof (DOWithVirtualStorageClassNoneProperties)).BuildType ();
+      
+      Assert.IsNull (type.GetMethod (typeof (DOWithVirtualStorageClassNoneProperties).FullName + ".get_PropertyWithGetterAndSetter", _declaredInstanceFlags));
+      Assert.IsNull (type.GetMethod (typeof (DOWithVirtualStorageClassNoneProperties).FullName + ".set_PropertyWithGetterAndSetter", _declaredInstanceFlags));
+
+      type = CreateTypeGenerator (typeof (DOOverridingVirtualStorageClassNoneProperties)).BuildType ();
+      Assert.IsNull (type.GetMethod (typeof (DOWithVirtualStorageClassNoneProperties).FullName + ".get_PropertyWithGetterAndSetter", _declaredInstanceFlags));
+      Assert.IsNull (type.GetMethod (typeof (DOWithVirtualStorageClassNoneProperties).FullName + ".set_PropertyWithGetterAndSetter", _declaredInstanceFlags));
+      Assert.IsNull (type.GetMethod (typeof (DOOverridingVirtualStorageClassNoneProperties).FullName + ".get_PropertyOverridingGetterAndSetter", _declaredInstanceFlags));
+      Assert.IsNull (type.GetMethod (typeof (DOOverridingVirtualStorageClassNoneProperties).FullName + ".set_PropertyOverridingGetterAndSetter", _declaredInstanceFlags));
+    }
   }
 }

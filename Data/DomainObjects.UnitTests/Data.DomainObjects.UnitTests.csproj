@@ -203,6 +203,10 @@
     <Compile Include="DomainObjects\ConstructionTest.cs" />
     <Compile Include="Interception\SampleTypes\ClassWithExplicitInterfaceProperty.cs" />
     <Compile Include="Interception\SampleTypes\ClassWithWrongConstructor.cs" />
+    <Compile Include="Interception\SampleTypes\DOOverridingVirtualStorageClassNoneProperties.cs" />
+    <Compile Include="Interception\SampleTypes\DOWithVirtualStorageClassNoneProperties.cs" />
+    <Compile Include="Interception\SampleTypes\DOImplementingAbstractStorageClassNoneProperties.cs" />
+    <Compile Include="Interception\SampleTypes\DOWithAbstractStorageClassNoneProperties.cs" />
     <Compile Include="Interception\SampleTypes\DerivedDO.cs" />
     <Compile Include="Interception\SampleTypes\DOImplementingAbstractPropertyAccessors.cs" />
     <Compile Include="Interception\SampleTypes\DOWithIndirectlySealedPropertyAccessors.cs" />

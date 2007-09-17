@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     private readonly Type _baseType;
     private readonly Set<Tuple<PropertyInfo, string>> _properties = new Set<Tuple<PropertyInfo, string>> ();
-    private readonly Set<MethodInfo> _methodsBeingProcessed = new Set<MethodInfo> ();
+    private readonly Set<MethodInfo> _validatedMethods = new Set<MethodInfo> ();
     private readonly ClassDefinition _classDefinition;
 
     public InterceptedPropertyCollector (Type baseType)
@@ -79,9 +79,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       ValidatePropertySetter (setMethod, property, propertyIdentifier);
 
       if (getMethod != null)
-        _methodsBeingProcessed.Add (getMethod);
+        _validatedMethods.Add (getMethod.GetBaseDefinition());
       if (setMethod != null)
-        _methodsBeingProcessed.Add (setMethod);
+        _validatedMethods.Add (setMethod.GetBaseDefinition ());
 
       _properties.Add (new Tuple<PropertyInfo, string> (property, propertyIdentifier));
     }
@@ -96,7 +96,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
     {
       foreach (MethodInfo method in currentType.GetMethods (_declaredInfrastructureBindingFlags))
       {
-        if (method.IsAbstract && !_methodsBeingProcessed.Contains (method))
+        if (method.IsAbstract && !_validatedMethods.Contains (method.GetBaseDefinition()))
           throw new NonInterceptableTypeException (
               string.Format (
                   "Cannot instantiate type {0} as its member {1} (on type {2}) is abstract (and not an automatic property).",
@@ -104,6 +104,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
                   method.Name,
                   currentType.Name),
               _baseType);
+
+        _validatedMethods.Add (method.GetBaseDefinition());
       }
 
       if (currentType.BaseType != null)
