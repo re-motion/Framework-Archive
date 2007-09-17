@@ -51,7 +51,6 @@ namespace Rubicon.Mixins.Samples.UnitTests
     }
 
     [Test]
-    [Ignore ("GCCollectionMode does not exist.")]
     public void GCCallsAllUnmanagedCleanup ()
     {
       DisposableMixinTests.C c = ObjectFactory.Create<C> ().With ();
@@ -63,9 +62,7 @@ namespace Rubicon.Mixins.Samples.UnitTests
       GC.KeepAlive (c);
       c = null;
 
-      //TODO: does not exist in .net 2.0
-      //TODO: re-add Mixins.Samples to build target all-test
-      //GC.Collect (2, GCCollectionMode.Forced);
+      GC.Collect ();
       GC.WaitForPendingFinalizers();
 
       Assert.IsFalse (data.ManagedCalled);
