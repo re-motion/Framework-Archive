@@ -230,16 +230,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNull (dataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"));
     }
 
-    private void CheckIfDataContainersAreEqual (DataContainer expected, DataContainer actual)
+    private void CheckIfDataContainersAreEqual (DataContainer expected, DataContainer actual, bool checkID)
     {
       ArgumentUtility.CheckNotNull ("expected", expected);
       ArgumentUtility.CheckNotNull ("actual", actual);
 
       Assert.AreNotSame (expected, actual);
       
-      Assert.AreEqual (expected.ID, actual.ID);
+      if (checkID)
+        Assert.AreEqual (expected.ID, actual.ID);
+
       Assert.AreSame (expected.ClassDefinition, actual.ClassDefinition);
-      Assert.AreSame (expected.ClientTransaction, actual.ClientTransaction);
       Assert.AreSame (expected.DomainObject, actual.DomainObject);
       Assert.AreSame (expected.DomainObjectType, actual.DomainObjectType);
       Assert.AreEqual (expected.IsDiscarded, actual.IsDiscarded);
@@ -256,6 +257,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       
       Assert.AreEqual (expected.State, actual.State);
       Assert.AreSame (expected.Timestamp, actual.Timestamp);
+    }
+
+    private void CheckIfClientTransactionIsNull (DataContainer dataContainer)
+    {
+      Assert.IsNull (PrivateInvoke.GetNonPublicField (dataContainer, "_clientTransaction"));
+    }
+
+    private void SetClientTransaction (DataContainer dataContainer, ClientTransaction transaction)
+    {
+      PrivateInvoke.InvokeNonPublicMethod (dataContainer, "SetClientTransaction", transaction);
     }
 
     [Test]
@@ -281,7 +292,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       DataContainer clone = original.Clone ();
 
       Assert.IsNotNull (clone);
-      CheckIfDataContainersAreEqual (original, clone);
+      CheckIfClientTransactionIsNull (clone);
+      SetClientTransaction (clone, original.ClientTransaction);
+
+      CheckIfDataContainersAreEqual (original, clone, true);
     }
 
     [Test]
@@ -309,7 +323,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       DataContainer clone = original.Clone ();
 
       Assert.IsNotNull (clone);
-      CheckIfDataContainersAreEqual (original, clone);
+      CheckIfClientTransactionIsNull (clone);
+      SetClientTransaction (clone, original.ClientTransaction);
+
+      CheckIfDataContainersAreEqual (original, clone, true);
     }
 
     [Test]
@@ -337,7 +354,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       DataContainer clone = original.Clone ();
 
       Assert.IsNotNull (clone);
-      CheckIfDataContainersAreEqual (original, clone);
+      CheckIfClientTransactionIsNull (clone);
+      SetClientTransaction (clone, original.ClientTransaction);
+
+      CheckIfDataContainersAreEqual (original, clone, true);
     }
 
     [Test]
@@ -351,6 +371,51 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsTrue (original.IsDiscarded);
 
       original.Clone ();
+    }
+
+    [Test]
+    public void CloneDataContainerWithoutClientTransaction ()
+    {
+      Order order = Order.NewObject ();
+      DataContainer containerWithoutClientTransaction = order.InternalDataContainer.Clone ();
+      CheckIfClientTransactionIsNull (containerWithoutClientTransaction);
+
+      DataContainer clone = containerWithoutClientTransaction.Clone ();
+
+      Assert.IsNotNull (clone);
+      CheckIfClientTransactionIsNull (clone);
+      SetClientTransaction (clone, ClientTransactionScope.CurrentTransaction);
+
+      CheckIfDataContainersAreEqual (containerWithoutClientTransaction, clone, true);
+    }
+
+    [Test]
+    public void CreateAndCopyState ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      DataContainer original = order.InternalDataContainer;
+      ObjectID newID = new ObjectID (order.ID.ClassDefinition, Guid.NewGuid());
+
+      DataContainer cloneWithDifferentID = DataContainer.CreateAndCopyState (newID, original);
+      Assert.AreNotEqual (original.ID, cloneWithDifferentID.ID);
+      Assert.AreEqual (newID, cloneWithDifferentID.ID);
+
+      CheckIfClientTransactionIsNull (cloneWithDifferentID);
+      SetClientTransaction (cloneWithDifferentID, original.ClientTransaction);
+
+      CheckIfDataContainersAreEqual (original, cloneWithDifferentID, false);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The ID parameter specifies class 'Rubicon.Data.DomainObjects.Mapping."
+        + "ReflectionBasedClassDefinition: Official', but the state source is of class 'Rubicon.Data.DomainObjects.Mapping."
+        + "ReflectionBasedClassDefinition: Order'.\r\nParameter name: stateSource")]
+    public void CreateAndCopyStateThrowsWhenWrongClassDefinition ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      DataContainer original = order.InternalDataContainer;
+      ObjectID newID = new ObjectID (DomainObjectIDs.Official1.ClassDefinition, Guid.NewGuid ());
+      DataContainer.CreateAndCopyState (newID, original);
     }
 
     [Test]

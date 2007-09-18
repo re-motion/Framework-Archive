@@ -1,6 +1,7 @@
 using System;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
@@ -63,6 +64,40 @@ public class DataContainer
 
     DataContainer dataContainer = new DataContainer (id, timestamp);
     dataContainer._state = DataContainerStateType.Existing;
+    return dataContainer;
+  }
+
+  /// <summary>
+  /// Creates a <see cref="DataContainer"/> for the given <paramref name="id"/>, assuming the same state as another <see cref="DataContainer"/>.
+  /// </summary>
+  /// <param name="id">The <see cref="ObjectID"/> of the new <see cref="DataContainer"/>. Must not be <see langword="null"/>.</param>
+  /// <param name="stateSource">The <see cref="DataContainer"/> whose state to copy to the new container. Must not be <see langword="null"/> and must
+  /// match the <see cref="ClassDefinition"/> of <paramref name="id"/>.</param>
+  /// <returns>A <see cref="DataContainer"/> with exactly the same state as <paramref name="stateSource"/> and the given <paramref name="id"/>.</returns>
+  /// <exception cref="ArgumentNullException">One of the arguments passed to this method is <see langword="null"/>.</exception>
+  /// <exception cref="ArgumentException">The <see cref="ClassDefinition"/> specified in the given <paramref name="id"/> does not match the
+  /// <see cref="ClassDefinition"/> of <paramref name="stateSource"/>.</exception>
+  /// <remarks>
+  /// <para>
+  /// This is identical to a <see cref="Clone"/> operation on the object passed as <paramref name="stateSource"/>, but it allows the
+  /// new <see cref="DataContainer"/> to assume a different <see cref="ObjectID"/> than <paramref name="stateSource"/>. It is meant mainly for
+  /// <see cref="StorageProvider"/> implementations.
+  /// </para>
+  /// </remarks>
+  public static DataContainer CreateAndCopyState (ObjectID id, DataContainer stateSource)
+  {
+    ArgumentUtility.CheckNotNull ("id", id);
+    ArgumentUtility.CheckNotNull ("stateSource", stateSource);
+
+    if (!id.ClassDefinition.Equals (stateSource.ClassDefinition))
+    {
+      string message = string.Format ("The ID parameter specifies class '{0}', but the state source is of class '{1}'.", id.ClassDefinition,
+          stateSource.ClassDefinition);
+      throw new ArgumentException (message, "stateSource");
+    }
+
+    DataContainer dataContainer = CreateNew (id);
+    dataContainer.AssumeSameState (stateSource, true);
     return dataContainer;
   }
 
@@ -498,14 +533,15 @@ public class DataContainer
   /// <summary>
   /// Creates a copy of this data container and its state.
   /// </summary>
-  /// <returns>A copy of this data container.</returns>
+  /// <returns>A copy of this data container with the same <see cref="ObjectID"/> and the same property values. The copy's
+  /// <see cref="ClientTransaction"/> member is not set, so the returned <see cref="DataContainer"/> cannot be used until it is registered with a
+  /// <see cref="ClientTransaction"/>.</returns>
   public DataContainer Clone ()
   {
     CheckDiscarded();
 
-    DataContainer clone = CreateNew (_id);
-    clone._clientTransaction = _clientTransaction;
-    clone.AssumeSameState (this, true);
+    DataContainer clone = CreateAndCopyState (_id, this);
+    Assertion.IsNull (clone._clientTransaction);
     return clone;
   }
 
