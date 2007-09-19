@@ -63,7 +63,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       _firstField = _emitter.CreateField ("__first", _baseCallGenerator.TypeBuilder);
 
       Statement initializationStatement = new ExpressionStatement (new MethodInvocationExpression (null, s_concreteTypeInitializationMethod,
-          new CastClassExpression (typeof (IMixinTarget), SelfReference.Self.ToExpression ())));
+          new ConvertExpression (typeof (IMixinTarget), SelfReference.Self.ToExpression ())));
 
       _emitter.ReplicateBaseTypeConstructors (initializationStatement);
 
@@ -235,7 +235,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       foreach (InterfaceIntroductionDefinition introduction in _configuration.IntroducedInterfaces)
       {
-        Expression implementerExpression = new CastClassExpression (
+        Expression implementerExpression = new ConvertExpression (
             introduction.Type,
             new LoadArrayElementExpression (introduction.Implementer.MixinIndex, _extensionsField, typeof (object)));
 

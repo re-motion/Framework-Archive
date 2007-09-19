@@ -7,27 +7,41 @@ namespace Rubicon.CodeGeneration.DPExtensions
 {
   public class FieldInfoReference : Reference
   {
-    private FieldInfo field;
+    private readonly FieldInfo _field;
 
     public FieldInfoReference (Reference owner, FieldInfo field)
         : base (owner)
     {
-      this.field = field;
+      _field = field;
     }
 
     public override void LoadAddressOfReference (ILGenerator gen)
     {
-      gen.Emit (OpCodes.Ldflda, field);
+      if (IsStaticField)
+        gen.Emit (OpCodes.Ldsflda, _field);
+      else
+        gen.Emit (OpCodes.Ldflda, _field);
     }
 
     public override void LoadReference (ILGenerator gen)
     {
-      gen.Emit (OpCodes.Ldfld, field);
+      if (IsStaticField)
+        gen.Emit (OpCodes.Ldsfld, _field);
+      else
+        gen.Emit (OpCodes.Ldfld, _field);
     }
 
     public override void StoreReference (ILGenerator gen)
     {
-      gen.Emit (OpCodes.Stfld, field);
+      if (IsStaticField)
+        gen.Emit (OpCodes.Stsfld, _field);
+      else
+        gen.Emit (OpCodes.Stfld, _field);
+    }
+
+    private bool IsStaticField
+    {
+      get { return _field.IsStatic; }
     }
   }
 }

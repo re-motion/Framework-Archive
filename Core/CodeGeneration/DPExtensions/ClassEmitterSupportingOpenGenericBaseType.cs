@@ -12,32 +12,39 @@ namespace Rubicon.CodeGeneration.DPExtensions
   {
     public ClassEmitterSupportingOpenGenericBaseType (ModuleScope modulescope, string name, Type baseType, Type[] interfaces, TypeAttributes flags,
         bool forceUnsigned)
-        : base (modulescope, name, baseType, interfaces, flags, forceUnsigned)
+        : base (modulescope, name, CheckBaseType (baseType), interfaces, flags, forceUnsigned)
     {
     }
 
-    protected override void InitializeGenericArgumentsFromBases (ref Type baseType, ref Type[] interfaces)
+    private static Type CheckBaseType (Type baseType)
     {
       if (baseType.DeclaringType != null && baseType.DeclaringType.ContainsGenericParameters)
         throw new NotSupportedException ("This emitter does not support nested types of non-closed generic types.");
 
+      if (!baseType.IsGenericTypeDefinition && baseType.ContainsGenericParameters)
+        throw new NotSupportedException (
+            "This emitter does not support open constructed types as base types. Specify a closed type or a generic "
+            + "type definition.");
+
+      return baseType;
+    }
+
+    protected override void InitializeGenericArgumentsFromBases (ref Type baseType, ref Type[] interfaces)
+    {
+      Assertion.IsTrue (baseType.DeclaringType == null || baseType.DeclaringType.ContainsGenericParameters);
       if (baseType.IsGenericTypeDefinition)
       {
-        Type[] baseTypeParameters = baseType.GetGenericArguments();
+        Type[] baseTypeParameters = baseType.GetGenericArguments ();
         string[] typeParameterNames = Array.ConvertAll<Type, string> (baseTypeParameters, delegate (Type t) { return t.Name; });
 
         Assertion.DebugAssert (
             Array.TrueForAll (baseTypeParameters, delegate (Type param) { return param.IsGenericParameter; }),
             "type definitions have no bound arguments");
-        
+
         baseType = CloseBaseType (baseType, typeParameterNames, baseTypeParameters);
       }
-      else if (baseType.ContainsGenericParameters)
-      {
-        throw new NotSupportedException (
-            "This emitter does not support open constructed types as base types. Specify a closed type or a generic "
-            + "type definition.");
-      }
+      else
+        Assertion.IsFalse (baseType.ContainsGenericParameters);
 
       base.InitializeGenericArgumentsFromBases (ref baseType, ref interfaces); // checks that no interface contains generic parameters
     }

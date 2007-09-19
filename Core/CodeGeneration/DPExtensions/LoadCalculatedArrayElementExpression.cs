@@ -6,13 +6,13 @@ using Rubicon.Utilities;
 
 namespace Rubicon.CodeGeneration.DPExtensions
 {
-  public class LoadArrayExpressionElementExpression : Expression
+  public class LoadCalculatedArrayElementExpression : Expression
   {
     private readonly Expression _arrayExpression;
     private readonly Expression _elementIndexExpression;
     private readonly Type _elementType;
 
-    public LoadArrayExpressionElementExpression (Expression arrayExpression, Expression elementIndexExpression, Type elementType)
+    public LoadCalculatedArrayElementExpression (Expression arrayExpression, Expression elementIndexExpression, Type elementType)
     {
       ArgumentUtility.CheckNotNull ("arrayExpression", arrayExpression);
       ArgumentUtility.CheckNotNull ("elementIndexExpression", elementIndexExpression);

@@ -113,7 +113,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       methodOverride.AddStatement (
           new AssignStatement (
               castTargetLocal,
-              new CastClassExpression (targetMethod.DeclaringType, targetReference.ToExpression())));
+              new ConvertExpression (targetMethod.DeclaringType, targetReference.ToExpression())));
 
       methodOverride.ImplementByDelegating (castTargetLocal, targetMethod);
     }

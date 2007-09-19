@@ -99,7 +99,6 @@
     <Compile Include="CodeGeneration\CustomPropertyEmitter.cs" />
     <Compile Include="CodeGeneration\DPExtensions\AssemblySaver.cs" />
     <Compile Include="CodeGeneration\DPExtensions\AttributeReplicator.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\CastClassExpression.cs" />
     <Compile Include="CodeGeneration\DPExtensions\ClassEmitterSupportingOpenGenericBaseType.cs" />
     <Compile Include="CodeGeneration\DPExtensions\ConditionExpression.cs" />
     <Compile Include="CodeGeneration\DPExtensions\CustomAttributeExpression.cs" />
@@ -107,9 +106,8 @@
     <Compile Include="CodeGeneration\DPExtensions\FieldInfoReference.cs" />
     <Compile Include="CodeGeneration\DPExtensions\IfStatement.cs" />
     <Compile Include="CodeGeneration\DPExtensions\ILStatement.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\IndirectFieldReference.cs" />
     <Compile Include="CodeGeneration\DPExtensions\InitObjectExpression.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\LoadArrayExpressionElementExpression.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\LoadCalculatedArrayElementExpression.cs" />
     <Compile Include="CodeGeneration\DPExtensions\PropertyReference.cs" />
     <Compile Include="CodeGeneration\DPExtensions\SameConditionExpression.cs" />
     <Compile Include="CodeGeneration\DPExtensions\TryFinallyStatement.cs" />

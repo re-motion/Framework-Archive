@@ -14,9 +14,10 @@ namespace Rubicon.CodeGeneration
       return method.IsPublic || method.IsFamily || method.IsFamilyOrAssembly;
     }
 
-    public static void ImplementGetObjectDataByDelegation (
+    public static CustomMethodEmitter ImplementGetObjectDataByDelegation (
         CustomClassEmitter classEmitter, Func<CustomMethodEmitter, bool, MethodInvocationExpression> delegatingMethodInvocationGetter)
     {
+      ArgumentUtility.CheckNotNull ("classEmitter", classEmitter);
       ArgumentUtility.CheckNotNull ("delegatingMethodInvocationGetter", delegatingMethodInvocationGetter);
 
       bool baseIsISerializable = typeof (ISerializable).IsAssignableFrom (classEmitter.BaseType);
@@ -33,6 +34,8 @@ namespace Rubicon.CodeGeneration
         newMethod.AddStatement (new ExpressionStatement (delegatingMethodInvocation));
 
       newMethod.ImplementByReturningVoid();
+
+      return newMethod;
     }
 
     private static void ImplementBaseGetObjectDataCall (CustomClassEmitter classEmitter, CustomMethodEmitter getObjectDataMethod)
@@ -55,7 +58,7 @@ namespace Rubicon.CodeGeneration
           classEmitter.BaseType.GetMethod ("GetObjectData", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
       if (baseGetObjectDataMethod == null || !IsPublicOrProtected (baseGetObjectDataMethod))
       {
-        string message = string.Format ("No public or protected GetObjectData in {0} - this is not supported.", classEmitter.BaseType.FullName);
+        string message = string.Format ("No public or protected GetObjectData in type {0} - this is not supported.", classEmitter.BaseType.FullName);
         throw new NotSupportedException (message);
       }
       getObjectDataMethod.AddStatement (
@@ -67,17 +70,22 @@ namespace Rubicon.CodeGeneration
                   new ReferenceExpression (getObjectDataMethod.ArgumentReferences[1]))));
     }
 
-    public static void ImplementDeserializationConstructorByThrowing (CustomClassEmitter classEmitter)
+    public static ConstructorEmitter ImplementDeserializationConstructorByThrowing (CustomClassEmitter classEmitter)
     {
+      ArgumentUtility.CheckNotNull ("classEmitter", classEmitter);
+
       ConstructorEmitter emitter = classEmitter.CreateConstructor (new Type[] {typeof (SerializationInfo), typeof (StreamingContext)});
       emitter.CodeBuilder.AddStatement (
           new ThrowStatement (
               typeof (NotImplementedException),
               "The deserialization constructor should never be called; generated types are deserialized via IObjectReference helpers."));
+      return emitter;
     }
 
-    public static void ImplementDeserializationConstructorByThrowingIfNotExistsOnBase (CustomClassEmitter classEmitter)
+    public static ConstructorEmitter ImplementDeserializationConstructorByThrowingIfNotExistsOnBase (CustomClassEmitter classEmitter)
     {
+      ArgumentUtility.CheckNotNull ("classEmitter", classEmitter);
+
       Type[] serializationConstructorSignature = new Type[] {typeof (SerializationInfo), typeof (StreamingContext)};
       ConstructorInfo baseConstructor = classEmitter.BaseType.GetConstructor (
           BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
@@ -85,7 +93,9 @@ namespace Rubicon.CodeGeneration
           serializationConstructorSignature,
           null);
       if (baseConstructor == null)
-        SerializationImplementer.ImplementDeserializationConstructorByThrowing (classEmitter);
+        return SerializationImplementer.ImplementDeserializationConstructorByThrowing (classEmitter);
+      else
+        return null;
     }
   }
 }

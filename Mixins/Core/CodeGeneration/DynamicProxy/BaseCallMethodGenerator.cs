@@ -100,8 +100,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private TypeReference GetMixinReference (MixinDefinition mixin, Type concreteMixinType)
     {
-      Reference extensionsReference = new IndirectFieldReference (_thisField, _surroundingType.ExtensionsField);
-      Expression mixinExpression = new CastClassExpression (concreteMixinType, 
+      Reference extensionsReference = new FieldInfoReference (_thisField, _surroundingType.ExtensionsField);
+      Expression mixinExpression = new ConvertExpression (concreteMixinType, 
         new LoadArrayElementExpression (mixin.MixinIndex, extensionsReference, typeof (object)));
       return new ExpressionReference (concreteMixinType, mixinExpression, _methodEmitter);
     }

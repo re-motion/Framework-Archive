@@ -214,5 +214,22 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
       instance.Event += delegate { return 0; };
       instance.Event -= delegate { return 0; };
     }
+
+    [Test]
+    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "This emitter does not support nested types of non-closed generic types.")]
+    public void ClassEmitterThrowsOnNestedGenericBase ()
+    {
+      new CustomClassEmitter (Scope, "Foo", typeof (GenericClassWithNested<>.Nested));
+    }
+
+    [Test]
+    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "This emitter does not support open constructed types as base types. "
+        + "Specify a closed type or a generic type definition.")]
+    public void ClassEmitterThrowsOnOpenConstructedBase ()
+    {
+      Type genericParameter = typeof (ClassWithSimpleGenericMethod).GetMethod ("GenericMethod").GetGenericArguments()[0];
+      Type openConstructedType = typeof (GenericClassWithNested<>).MakeGenericType (genericParameter);
+      new CustomClassEmitter (Scope, "Foo", openConstructedType);
+    }
   }
 }
