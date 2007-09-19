@@ -1,3 +1,15 @@
+1.7.42
+======
+- Konfiguration Clients.Web
+  Zusätzlicher Eintrag in der Compilation-Section:
+  <system.web>
+    <compilation defaultLanguage="c#" debug="true">
+      <expressionBuilders>
+        <add expressionPrefix="res" type="Rubicon.Web.Compilation.ResourceExpressionBuilder, Rubicon.Web" />
+      </expressionBuilders>
+    </compilation>
+  </system.web>
+
 1.7.41
 ======
 - Konfiguration:
