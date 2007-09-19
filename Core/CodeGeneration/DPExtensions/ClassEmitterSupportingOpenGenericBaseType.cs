@@ -31,7 +31,7 @@ namespace Rubicon.CodeGeneration.DPExtensions
 
     protected override void InitializeGenericArgumentsFromBases (ref Type baseType, ref Type[] interfaces)
     {
-      Assertion.IsTrue (baseType.DeclaringType == null || baseType.DeclaringType.ContainsGenericParameters);
+      Assertion.IsTrue (baseType.DeclaringType == null || !baseType.DeclaringType.ContainsGenericParameters);
       if (baseType.IsGenericTypeDefinition)
       {
         Type[] baseTypeParameters = baseType.GetGenericArguments ();

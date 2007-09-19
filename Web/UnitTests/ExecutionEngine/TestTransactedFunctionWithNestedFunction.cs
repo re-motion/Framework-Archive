@@ -15,7 +15,9 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
     protected override TestTransaction CreateRootTransaction ()
     {
-      return new TestTransaction ();
+      TestTransaction newTransaction = new TestTransaction ();
+      newTransaction.CanCreateChild = true;
+      return newTransaction;
     }
 
     public new TestTransaction Transaction

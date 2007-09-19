@@ -28,7 +28,8 @@ namespace Rubicon.CodeGeneration.DPExtensions
 
     public override void LoadAddressOfReference (ILGenerator gen)
     {
-      throw new NotSupportedException ("Expressions have no addresses to be loaded.");
+      LocalReference local = CreateLocal (gen);
+      local.LoadAddressOfReference (gen);
     }
 
     public override void LoadReference (ILGenerator gen)

@@ -24,10 +24,11 @@ namespace Rubicon.Web.ExecutionEngine
       return WxeStep.GetStepByType (step, typeof (WxeTransactionBase<TTransaction>)) != null;
     }
 
+    private readonly bool _autoCommit;
+    private readonly bool _forceRoot;
+
     private TTransaction _transaction = null;
     private TTransaction _previousCurrentTransaction = null;
-    private bool _autoCommit;
-    private bool _forceRoot;
     private bool _isPreviousCurrentTransactionRestored = false;
 
     /// <summary> Creates a new instance. </summary>
@@ -95,6 +96,15 @@ namespace Rubicon.Web.ExecutionEngine
     ///   </para>
     /// </remarks>
     protected abstract void SetPreviousCurrentTransaction (TTransaction previousTransaction);
+
+    /// <summary>
+    /// Checks whether <see cref="CurrentTransaction"/> can be resettable and throws an exception if it isn't.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">The current transaction cannot be reset or the current transaction is <see langword="null"/>.</exception>
+    /// <remarks>When implementing this method, subclasses should check the current transaction for any state issues preventing it from just being
+    /// thrown away when this <see cref="WxeTransactionBase{TTransaction}"/> is reset. For example, implementers should throw an exception if the current transaction
+    /// is read-only, has an open child transaction, or similar.</remarks>
+    protected abstract void CheckCurrentTransactionResettable ();
 
     /// <summary> Creates a new transaction. </summary>
     /// <returns> A new instance of type <typeparamref name="TTransaction"/>. </returns>
@@ -223,6 +233,30 @@ namespace Rubicon.Web.ExecutionEngine
       return (WxeTransactionBase<TTransaction>) WxeStep.GetStepByType (ParentStep, typeof (WxeTransactionBase<TTransaction>));
     }
 
+    /// <summary>
+    /// Resets this <see cref="WxeTransactionBase{TTransaction}"/> instance by discarding of the current <see cref="Transaction"/> and
+    /// creating a new instance of <typeparamref name="TTransaction"/>. This method can only be called from within <see cref="Execute"/>.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Execution of this <see cref="WxeTransactionBase{TTransaction}"/> hasn't started yet or
+    /// has already finished, or <see cref="Transaction"/> is not the <see cref="CurrentTransaction"/>.</exception>
+    protected internal virtual void Reset ()
+    {
+      if (!ExecutionStarted)
+        throw new InvalidOperationException ("Transaction cannot be reset before its execution has started.");
+
+      if (_transaction == null)
+        throw new InvalidOperationException ("Transaction cannot be reset after its execution has finished.");
+
+      if (Transaction != CurrentTransaction)
+        throw new InvalidOperationException ("A WxeFunction's transaction can only be reset when it is the current transaction.");
+
+      CheckCurrentTransactionResettable ();
+
+      RestorePreviousCurrentTransaction ();
+      _transaction = null;
+      InitializeTransaction ();
+    }
+
     /// <summary> Gets the underlying <typeparamref name="TTransaction"/>. </summary>
     public TTransaction Transaction
     {
@@ -234,17 +268,13 @@ namespace Rubicon.Web.ExecutionEngine
       if (!ExecutionStarted)
       {
         s_log.Debug ("Initializing execution of " + this.GetType ().FullName + ".");
-        _previousCurrentTransaction = CurrentTransaction;
-        if (_transaction == null)
-          _transaction = CreateTransaction ();
+        InitializeTransaction();
       }
       else
       {
         s_log.Debug (string.Format ("Resuming execution of " + this.GetType ().FullName + "."));
+        MakeTransactionCurrent ();
       }
-
-      SetCurrentTransaction (_transaction);
-      _isPreviousCurrentTransactionRestored = false; // we've just set the current transaction, so we need the old one to be restored later on
 
       try
       {
@@ -272,6 +302,20 @@ namespace Rubicon.Web.ExecutionEngine
       RestorePreviousCurrentTransaction ();
 
       s_log.Debug ("Ending execution of " + this.GetType ().Name);
+    }
+
+    private void InitializeTransaction ()
+    {
+      _previousCurrentTransaction = CurrentTransaction;
+      if (_transaction == null)
+        _transaction = CreateTransaction ();
+      MakeTransactionCurrent();
+    }
+
+    private void MakeTransactionCurrent ()
+    {
+      SetCurrentTransaction (_transaction);
+      _isPreviousCurrentTransactionRestored = false; // we've just set the current transaction, so we need the old one to be restored later on
     }
 
     protected override void AbortRecursive ()

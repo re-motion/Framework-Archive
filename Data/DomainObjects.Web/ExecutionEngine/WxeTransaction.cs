@@ -66,6 +66,22 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
       }
     }
 
+    protected override void CheckCurrentTransactionResettable ()
+    {
+      if (CurrentTransaction == null)
+        throw new InvalidOperationException ("There is no current transaction.");
+
+      if (CurrentTransaction.IsReadOnly)
+        throw new InvalidOperationException (
+            "The current transaction cannot be reset as it is read-only. The reason might be an open child transaction.");
+
+      if (CurrentTransaction.HasChanged())
+        throw new InvalidOperationException (
+            "The current transaction cannot be reset as it is in a dirty state and needs to be committed or rolled back.");
+
+      // else succeed
+    }
+
     private Stack<ClientTransactionScope> ScopeStack
     {
       get

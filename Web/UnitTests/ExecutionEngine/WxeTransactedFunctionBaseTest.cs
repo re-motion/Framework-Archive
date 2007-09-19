@@ -10,6 +10,7 @@ using Rubicon.Web.ExecutionEngine;
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 using Mocks_List = Rhino.Mocks.Constraints.List;
 using Mocks_Property = Rhino.Mocks.Constraints.Property;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
@@ -214,22 +215,22 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       WxeTransactedFunctionMock outerFunction = new WxeTransactedFunctionMock (outerTransaction);
       outerFunction.InitiateCreateTransaction ();
 
-      WxeTransactedFunctionMock mediumNullFunction = new WxeTransactedFunctionMock (null);
-      outerFunction.Add (mediumNullFunction);
-      mediumNullFunction.InitiateCreateTransaction ();
+      WxeTransactedFunctionMock middleNullFunction = new WxeTransactedFunctionMock (null);
+      outerFunction.Add (middleNullFunction);
+      middleNullFunction.InitiateCreateTransaction ();
 
       ProxyWxeTransaction innerTransaction = _mocks.CreateMock<ProxyWxeTransaction> ();
       innerTransaction.Transaction = _mocks.CreateMock<ITransaction> ();
       Assert.IsNotNull (innerTransaction.Transaction);
       WxeTransactedFunctionMock innerFunction = new WxeTransactedFunctionMock (innerTransaction);
-      mediumNullFunction.Add (innerFunction);
+      middleNullFunction.Add (innerFunction);
       innerFunction.InitiateCreateTransaction ();
 
       Assert.AreSame (outerTransaction.Transaction, outerFunction.MyTransaction);
       Assert.AreSame (outerTransaction.Transaction, outerFunction.Transaction);
 
-      Assert.IsNull (mediumNullFunction.MyTransaction);
-      Assert.AreSame (outerTransaction.Transaction, mediumNullFunction.Transaction);
+      Assert.IsNull (middleNullFunction.MyTransaction);
+      Assert.AreSame (outerTransaction.Transaction, middleNullFunction.Transaction);
 
       Assert.AreSame (innerTransaction.Transaction, innerFunction.MyTransaction);
       Assert.AreSame (innerTransaction.Transaction, innerFunction.Transaction);
@@ -286,6 +287,89 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       TestFunctionWithSpecificTransaction func = new TestFunctionWithSpecificTransaction (transaction);
       func.Execute (CurrentWxeContext);
       Assert.AreSame (transaction, func.TransactionInFirstStep);
+    }
+
+    [Test]
+    public void TransactionResetInRootFunction ()
+    {
+      TestTransaction originalTransaction = new TestTransaction ();
+      TestTransaction.Current = originalTransaction;
+
+      TestTransactedFunctionWithReset rootFunction = new TestTransactedFunctionWithReset (true);
+
+      rootFunction.Execute (CurrentWxeContext);
+
+      Assert.AreSame (originalTransaction, TestTransaction.Current);
+    }
+
+    [Test]
+    public void TransactionResetInNestedFunction ()
+    {
+      TestTransaction originalTransaction = new TestTransaction ();
+      TestTransaction.Current = originalTransaction;
+
+      TestTransactedFunctionWithReset nestedFunction = new TestTransactedFunctionWithReset (false);
+      TestTransactedFunctionWithNestedFunction rootFunction = new TestTransactedFunctionWithNestedFunction (originalTransaction, nestedFunction);
+
+      rootFunction.Execute (CurrentWxeContext);
+
+      Assert.AreSame (originalTransaction, TestTransaction.Current);
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Transaction cannot be reset before the function has started execution.")]
+    public void TransactionResetBeforeExecutionStarted ()
+    {
+      TestTransactedFunctionWithReset rootFunction = new TestTransactedFunctionWithReset (true);
+      rootFunction.ResetTransaction ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This function does not have a transaction to be reset.")]
+    public void TransactionResetWithoutTransaction ()
+    {
+      WxeTransactedFunctionMock functionWithoutTransaction = new WxeTransactedFunctionMock (null);
+      functionWithoutTransaction.OnStep1 += delegate { functionWithoutTransaction.ResetTransaction(); };
+      try
+      {
+        functionWithoutTransaction.Execute ();
+      }
+      catch (WxeUnhandledException ex)
+      {
+        throw ex.InnerException;
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The current transaction cannot be reset.")]
+    public void TestTransactedFunctionWithResetFailingSubclassValidation ()
+    {
+      TestTransactedFunctionWithResetFailingSubclassValidation rootFunction = new TestTransactedFunctionWithResetFailingSubclassValidation ();
+      try
+      {
+        rootFunction.Execute ();
+      }
+      catch (WxeUnhandledException ex)
+      {
+        throw ex.InnerException;
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException),
+        ExpectedMessage = "A WxeFunction's transaction can only be reset when it is the current transaction.")]
+    public void TransactionResetFailingMyTransactionValdiation ()
+    {
+      TestTransactedFunctionWithResetFailingMyTransactionValidation nestedFunction = new TestTransactedFunctionWithResetFailingMyTransactionValidation ();
+      TestTransactedFunctionWithNestedFunction rootFunction = new TestTransactedFunctionWithNestedFunction (null, nestedFunction);
+      try
+      {
+        rootFunction.Execute ();
+      }
+      catch (WxeUnhandledException ex)
+      {
+        throw ex.InnerException;
+      }
     }
   }
 }

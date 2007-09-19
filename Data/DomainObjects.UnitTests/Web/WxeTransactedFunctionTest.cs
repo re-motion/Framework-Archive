@@ -468,5 +468,88 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
 
       originalScope.Leave ();
     }
+
+    [Test]
+    public void TransactionResettableWhenNotReadOnly ()
+    {
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        WxeTransaction tx = new WxeTransaction();
+        PrivateInvoke.InvokeNonPublicMethod (tx, "CheckCurrentTransactionResettable");
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The current transaction cannot be reset as it is read-only. "
+        + "The reason might be an open child transaction.")]
+    public void TransactionNotResettableWhenReadOnly ()
+    {
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        ClientTransactionScope.CurrentTransaction.CreateSubTransaction ();
+
+        WxeTransaction tx = new WxeTransaction ();
+        PrivateInvoke.InvokeNonPublicMethod (tx, "CheckCurrentTransactionResettable");
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current transaction.")]
+    public void TransactionNotResettableWhenNull ()
+    {
+      using (ClientTransactionScope.EnterNullScope())
+      {
+        WxeTransaction tx = new WxeTransaction ();
+        PrivateInvoke.InvokeNonPublicMethod (tx, "CheckCurrentTransactionResettable");
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The current transaction cannot be reset as it is in a dirty state and "
+        + "needs to be committed or rolled back.")]
+    public void TransactionNotResettableWhenNewObject ()
+    {
+      using (ClientTransaction.NewTransaction().EnterScope())
+      {
+        WxeTransaction tx = new WxeTransaction ();
+        Order.NewObject ();
+        PrivateInvoke.InvokeNonPublicMethod (tx, "CheckCurrentTransactionResettable");
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The current transaction cannot be reset as it is in a dirty state and "
+        + "needs to be committed or rolled back.")]
+    public void TransactionNotResettableWhenChangedObject ()
+    {
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        WxeTransaction tx = new WxeTransaction ();
+        ++Order.GetObject (DomainObjectIDs.Order1).OrderNumber;
+        PrivateInvoke.InvokeNonPublicMethod (tx, "CheckCurrentTransactionResettable");
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The current transaction cannot be reset as it is in a dirty state and "
+        + "needs to be committed or rolled back.")]
+    public void TransactionNotResettableWhenChangedRelation ()
+    {
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        WxeTransaction tx = new WxeTransaction ();
+        Order.GetObject (DomainObjectIDs.Order1).OrderItems.Clear();
+        PrivateInvoke.InvokeNonPublicMethod (tx, "CheckCurrentTransactionResettable");
+      }
+    }
+
+    [Test]
+    public void ResetAutoEnlistsObjects ()
+    {
+      Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
+      ResetTestTransactedFunction function = new ResetTestTransactedFunction ();
+      function.Execute (Context);
+      Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
+    }
   }
 }

@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
 using Rubicon.Data;
+using Rubicon.Development.UnitTesting;
 using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine
@@ -342,6 +343,23 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       Assert.IsTrue (parentWxeTransaction.AutoCommit);
       Assert.IsTrue (parentWxeTransaction.ForceRoot);
       Assert.IsTrue (parentWxeTransaction.IsPreviousCurrentTransactionRestored);
+    }
+
+    [Test]
+    [ExpectedException(typeof (InvalidOperationException), ExpectedMessage = "Transaction cannot be reset before its execution has started.")]
+    public void ResetThrowsWhenExecutionNotStarted ()
+    {
+      WxeTransactionMock wxeTransaction = new WxeTransactionMock (null, false, false);
+      PrivateInvoke.InvokeNonPublicMethod (wxeTransaction, "Reset");
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Transaction cannot be reset after its execution has finished.")]
+    public void ResetThrowsWhenExecutionHasFinished ()
+    {
+      WxeTransactionMock wxeTransaction = new WxeTransactionMock (null, false, false);
+      wxeTransaction.Execute ();
+      PrivateInvoke.InvokeNonPublicMethod (wxeTransaction, "Reset");
     }
   }
 }

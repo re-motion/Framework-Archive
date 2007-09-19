@@ -43,22 +43,22 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Expressions have no addresses to be loaded.")]
-    public void ExpressionReferenceHasNoAddress ()
+    public void LoadAddressOfExpressionReference ()
     {
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (ClassWithStringMethod));
       CustomMethodEmitter methodEmitter = classEmitter.CreateMethodOverride (typeof (ClassWithStringMethod).GetMethod ("StringMethod"));
 
-      try
-      {
-        ExpressionReference expressionReference = new ExpressionReference (typeof (string), new ConstReference ("bla").ToExpression (), methodEmitter);
-        expressionReference.LoadAddressOfReference (null);
-      }
-      finally
-      {
-        classEmitter.BuildType ();
-      }
-    }
+      ExpressionReference expressionReference =
+          new ExpressionReference (typeof (StructWithMethod), new InitObjectExpression (methodEmitter, typeof (StructWithMethod)), methodEmitter);
+      ExpressionReference addressReference =
+          new ExpressionReference (typeof (StructWithMethod).MakeByRefType(), expressionReference.ToAddressOfExpression(), methodEmitter);
+      MethodInvocationExpression methodCall =
+          new MethodInvocationExpression (addressReference, typeof (StructWithMethod).GetMethod ("Method"));
 
+      methodEmitter.ImplementByReturning (methodCall);
+
+      ClassWithStringMethod method = (ClassWithStringMethod) Activator.CreateInstance (classEmitter.BuildType());
+      Assert.AreEqual ("StructMethod", method.StringMethod());
+    }
   }
 }

@@ -89,6 +89,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       return ParentTransaction.IsEnlisted (domainObject);
     }
 
+    protected internal override IEnumerable<DomainObject> EnlistedDomainObjects
+    {
+      get { return ParentTransaction.EnlistedDomainObjects; }
+    }
+
     protected internal override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
@@ -122,6 +127,28 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
           return thisDataContainer;
         }
+      }
+    }
+
+    internal protected override DataContainer LoadDataContainerForExistingObject (DomainObject domainObject)
+    {
+      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
+      // ensure that parent transaction knows the given object, that way, LoadDataContainer will associate the child DataContainer with it
+      using (TransactionUnlocker.MakeWriteable (ParentTransaction))
+      {
+        domainObject.GetDataContainerForTransaction (ParentTransaction);
+      }
+
+      using (EnterNonReturningScope ())
+      {
+        DataContainer dataContainer = LoadDataContainer (domainObject.ID);
+        Assertion.IsTrue (dataContainer.DomainObject == domainObject);
+
+        DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] { dataContainer.DomainObject }, true);
+        OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
+
+        return dataContainer;
       }
     }
 

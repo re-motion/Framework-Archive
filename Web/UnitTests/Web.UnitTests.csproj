@@ -125,6 +125,10 @@
     <Compile Include="AspNetFramework\PageMock.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="ExecutionEngine\TestTransactedFunctionWithResetFailingMyTransactionValidation.cs" />
+    <Compile Include="ExecutionEngine\TestWxeTransactionFailingResetValidation.cs" />
+    <Compile Include="ExecutionEngine\TestTransactedFunctionWithResetFailingSubclassValidation.cs" />
+    <Compile Include="ExecutionEngine\TestTransactedFunctionWithReset.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithSpecificTransaction.cs" />
     <Compile Include="ExecutionEngine\TestTransactedFunctionWithNestedFunction.cs" />
     <Compile Include="ExecutionEngine\TestTransactedFunctionWithThreadAbort.cs" />

@@ -80,6 +80,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       return GetEnlistedOrNull (domainObject.ID) == domainObject;
     }
 
+    protected internal override IEnumerable<DomainObject> EnlistedDomainObjects
+    {
+      get { return _enlistedObjects.Values; }
+    }
+
     private DomainObject GetEnlistedOrNull (ObjectID objectID)
     {
       DomainObject domainObject;
@@ -123,6 +128,21 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         SetClientTransaction (dataContainer);
 
         DataManager.RegisterExistingDataContainer (dataContainer);
+        return dataContainer;
+      }
+    }
+
+    internal protected override DataContainer LoadDataContainerForExistingObject (DomainObject domainObject)
+    {
+      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      using (EnterNonReturningScope ())
+      {
+        DataContainer dataContainer = LoadDataContainer (domainObject.ID);
+        dataContainer.SetDomainObject (domainObject);
+
+        DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] { dataContainer.DomainObject }, true);
+        OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
+
         return dataContainer;
       }
     }

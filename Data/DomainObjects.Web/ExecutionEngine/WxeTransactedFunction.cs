@@ -152,6 +152,37 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
         EnlistOutParameters (ClientTransactionScope.CurrentTransaction);
     }
 
+    /// <summary>
+    /// Discards of the <see cref="MyTransaction"/> instance managed by this <see cref="WxeTransactedFunctionBase{TTransaction}"/> and replaces
+    /// it by a newly created instance of <see cref="ClientTransaction"/>. This method can only be called from within <see cref="Execute"/>, when
+    /// the current transaction has no open subtransaction, and when it holds no new or changed objects.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Execution of this <see cref="WxeTransactedFunctionBase{TTransaction}"/> hasn't started yet or
+    /// has already finished, or this function does not have its own <see cref="MyTransaction"/>, or <see cref="MyTransaction"/> is not the
+    /// <see cref="WxeTransactionBase{TTransaction}.CurrentTransaction"/>.</exception>
+    /// <remarks>
+    /// <para>
+    /// Use this method if you need to replace this <see cref="WxeTransactedFunctionBase{TTransaction}"/>'s transaction by a new, empty one while the
+    /// function is executing.
+    /// </para>
+    /// <para>
+    /// All <see cref="DomainObject"/> instances enlisted in this function's transaction prior to the call to this method are automatically enlisted
+    /// in the new transaction. To reset a transaction that contains new, changed, or deleted objects, first roll back or commit the transaction.
+    /// </para>
+    /// </remarks>
+    public override void ResetTransaction ()
+    {
+      ClientTransaction oldTransaction = MyTransaction;
+      
+      base.ResetTransaction ();
+      
+      Assertion.IsNotNull (oldTransaction, "base method should have thrown if there was no transaction");
+      Assertion.IsNotNull (MyTransaction, "base method should have created a new transaction");
+      Assertion.IsFalse (oldTransaction.HasChanged(), "WxeTransaction should have thrown if there was transaction");
+
+      MyTransaction.EnlistSameDomainObjects (oldTransaction);
+    }
+
     private void EnlistInParameters (ClientTransaction transaction)
     {
       WxeParameterDeclaration[] parameterDeclarations = ParameterDeclarations;

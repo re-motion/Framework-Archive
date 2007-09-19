@@ -13,9 +13,19 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     {
     }
 
+    public TestWxeTransaction (bool forceRoot)
+      : base (null, false, forceRoot)
+    {
+    }
+
     protected override TestTransaction CurrentTransaction
     {
       get { return TestTransaction.Current; }
+    }
+
+    protected override void CheckCurrentTransactionResettable ()
+    {
+      // always succeeds
     }
 
     protected override void SetCurrentTransaction (TestTransaction transaction)

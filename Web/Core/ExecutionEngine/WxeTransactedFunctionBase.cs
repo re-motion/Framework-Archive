@@ -90,6 +90,28 @@ namespace Rubicon.Web.ExecutionEngine
       base.Execute (context);
     }
 
+    /// <summary>
+    /// Discards of the <see cref="MyTransaction"/> instance managed by this <see cref="WxeTransactedFunctionBase{TTransaction}"/> and replaces
+    /// it by a newly created instance of <typeparamref name="TTransaction"/>. This method can only be called from within <see cref="Execute"/>.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Execution of this <see cref="WxeTransactedFunctionBase{TTransaction}"/> hasn't started yet or
+    /// has already finished, or this function does not have its own <see cref="MyTransaction"/>, or <see cref="MyTransaction"/> is not the
+    /// <see cref="WxeTransactionBase{TTransaction}.CurrentTransaction"/>.</exception>
+    /// <remarks>
+    /// Use this method if you need to replace this <see cref="WxeTransactedFunctionBase{TTransaction}"/>'s transaction by a new, empty one while the
+    /// function is executing.
+    /// </remarks>
+    public virtual void ResetTransaction ()
+    {
+      if (!ExecutionStarted)
+        throw new InvalidOperationException ("Transaction cannot be reset before the function has started execution.");
+
+      if (_wxeTransaction == null)
+        throw new InvalidOperationException ("This function does not have a transaction to be reset.");
+
+      _wxeTransaction.Reset ();
+    }
+
     private void InitializeEvents (WxeTransactionBase<TTransaction> wxeTransaction)
     {
       wxeTransaction.TransactionCreating += delegate { OnTransactionCreating (); };

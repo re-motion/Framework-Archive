@@ -897,6 +897,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Web\WxeFunctionBaseTest.cs" />
+    <Compile Include="Web\WxeFunctions\ResetTestTransactedFunction.cs" />
     <Compile Include="Web\WxeFunctions\ThreadAbortTestTransactedFunction.cs" />
     <Compile Include="Web\WxeFunctions\SerializationTestTransactedFunction.cs" />
     <Compile Include="Web\WxeFunctions\DomainObjectParameterInvalidOutTestTransactedFunction.cs" />

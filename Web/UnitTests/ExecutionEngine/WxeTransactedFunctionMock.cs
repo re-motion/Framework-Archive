@@ -11,6 +11,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
   public class WxeTransactedFunctionMock : WxeTransactedFunctionBase<ITransaction>
   {
     private ProxyWxeTransaction _storedWxeTransaction;
+    public event Proc OnStep1;
 
     public WxeTransactedFunctionMock (ProxyWxeTransaction wxeTransaction)
       : base ()
@@ -41,6 +42,12 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     public void InitiateCreateTransaction ()
     {
       PrivateInvoke.SetNonPublicField (this, "_wxeTransaction", CreateWxeTransaction ());
+    }
+
+    private void Step1 ()
+    {
+      if (OnStep1 != null)
+        OnStep1();
     }
   }
 }

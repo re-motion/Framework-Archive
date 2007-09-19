@@ -31,6 +31,11 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       get { return TestTransaction.Current; }
     }
 
+    protected override void CheckCurrentTransactionResettable ()
+    {
+      // always succeeds
+    }
+
     protected override void SetCurrentTransaction (TestTransaction transaction)
     {
       _previousTransactions.Push (TestTransaction.Current);

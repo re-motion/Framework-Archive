@@ -145,6 +145,7 @@
     <Compile Include="CodeGeneration\SampleTypes\SerializableClassWithoutCtor.cs" />
     <Compile Include="CodeGeneration\SampleTypes\SimpleAttribute.cs" />
     <Compile Include="CodeGeneration\SampleTypes\SimpleArrayProvider.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\StructWithMethod.cs" />
     <Compile Include="CodeGeneration\SerializationImplementerTest.cs" />
     <Compile Include="Collections\SetTest.cs" />
     <Compile Include="Collections\AutoInitDictionaryTest.cs" />

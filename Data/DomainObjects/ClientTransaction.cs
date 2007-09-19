@@ -154,6 +154,7 @@ public abstract class ClientTransaction : ITransaction
 
   protected internal abstract void DoEnlistDomainObject (DomainObject domainObject);
   protected internal abstract bool IsEnlisted (DomainObject domainObject);
+  protected internal abstract IEnumerable<DomainObject> EnlistedDomainObjects { get; }
 
   /// <summary>
   /// Persists changed data in the couse of a <see cref="Commit"/> operation.
@@ -174,6 +175,22 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="id">The id of the <see cref="DataContainer"/> to load.</param>
   /// <returns>A <see cref="DataContainer"/> with the given <paramref name="id"/>.</returns>
   protected abstract DataContainer LoadDataContainer (ObjectID id);
+
+  /// <summary>
+  /// Loads a <see cref="DataContainer"/> from the datasource for an existing <see cref="DomainObject"/>.
+  /// </summary>
+  /// <remarks>
+  /// This method raises the <see cref="Loaded"/> event.
+  /// </remarks>
+  /// <param name="domainObject">The <see cref="DomainObject"/> to load the <see cref="DataContainer"/> for. Must not be <see langword="null"/>.</param>
+  /// <returns>The <see cref="DataContainer"/> that was loaded.</returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Persistence.StorageProviderException">
+  ///   The Mapping does not contain a class definition for the given <paramref name="domainObject"/>.<br /> -or- <br />
+  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occurred while accessing the datasource.
+  /// </exception>
+  protected internal abstract DataContainer LoadDataContainerForExistingObject (DomainObject domainObject);
 
   /// <summary>
   /// Loads the related <see cref="DomainObject"/> of a given <see cref="DataManagement.RelationEndPointID"/>.
@@ -355,7 +372,7 @@ public abstract class ClientTransaction : ITransaction
   /// possible to register another <see cref="DomainObject"/> reference with the same <see cref="DomainObject.ID"/>.
   /// </para>
   /// </remarks>
-  /// <exception cref="ObjectNotFoundException">The domain object cannot be enlisted because it does not exist in the context of this
+  /// <exception cref="ArgumentException">The domain object cannot be enlisted because it does not exist in the context of this
   /// transaction. Maybe it was newly created and has not yet been committed, or it was deleted.</exception>
   /// <exception cref="InvalidOperationException">The domain object cannot be enlisted, because another <see cref="DomainObject"/> with the same
   /// <see cref="ObjectID"/> has already been associated with this transaction.</exception>
@@ -390,6 +407,26 @@ public abstract class ClientTransaction : ITransaction
   }
 
   /// <summary>
+  /// Calls <see cref="EnlistDomainObject"/> for each non-discarded <see cref="DomainObject"/> reference currently enlisted with the given
+  /// <paramref name="sourceTransaction"/>.
+  /// </summary>
+  /// <param name="sourceTransaction">The source transaction.</param>
+  /// <exception cref="ArgumentException">A domain object cannot be enlisted because it does not exist in the context of this
+  /// transaction. Maybe it was newly created and has not yet been committed, or it was deleted.</exception>
+  /// <exception cref="InvalidOperationException">A domain object cannot be enlisted, because another <see cref="DomainObject"/> with the same
+  /// <see cref="ObjectID"/> has already been associated with this transaction.</exception>
+  public void EnlistSameDomainObjects (ClientTransaction sourceTransaction)
+  {
+    ArgumentUtility.CheckNotNull ("sourceTransaction", sourceTransaction);
+
+    foreach (DomainObject domainObject in sourceTransaction.EnlistedDomainObjects)
+    {
+      if (!sourceTransaction.DataManager.IsDiscarded (domainObject.ID) && !DataManager.IsDiscarded (domainObject.ID))
+        EnlistDomainObject (domainObject);
+    }
+  }
+
+  /// <summary>
   /// Initializes a new subtransaction with this <see cref="ClientTransaction"/> as its <see cref="ParentTransaction"/>.
   /// </summary>
   public virtual ClientTransaction CreateSubTransaction ()
@@ -404,8 +441,11 @@ public abstract class ClientTransaction : ITransaction
   /// <returns><see langword="true"/> if at least one <see cref="DomainObject"/> in this <b>ClientTransaction</b> has been changed; otherwise, <see langword="false"/>.</returns>
   public virtual bool HasChanged ()
   {
-    DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects();
-    return changedDomainObjects.Count > 0;
+    using (EnterNonReturningScope ())
+    {
+      DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects();
+      return changedDomainObjects.Count > 0;
+    }
   }
 
   /// <summary>
@@ -666,35 +706,6 @@ public abstract class ClientTransaction : ITransaction
       OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
 
       return dataContainer.DomainObject;
-    }
-  }
-
-  /// <summary>
-  /// Loads a <see cref="DataContainer"/> from the datasource for an existing <see cref="DomainObject"/>.
-  /// </summary>
-  /// <remarks>
-  /// This method raises the <see cref="Loaded"/> event.
-  /// </remarks>
-  /// <param name="domainObject">The <see cref="DomainObject"/> to load the <see cref="DataContainer"/> for. Must not be <see langword="null"/>.</param>
-  /// <returns>The <see cref="DataContainer"/> that was loaded.</returns>
-  /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Persistence.StorageProviderException">
-  ///   The Mapping does not contain a class definition for the given <paramref name="domainObject"/>.<br /> -or- <br />
-  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-  ///   An error occurred while accessing the datasource.
-  /// </exception>
-  internal protected virtual DataContainer LoadDataContainerForExistingObject (DomainObject domainObject)
-  {
-    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    using (EnterNonReturningScope ())
-    {
-      DataContainer dataContainer = LoadDataContainer (domainObject.ID);
-      dataContainer.SetDomainObject (domainObject);
-
-      DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] {dataContainer.DomainObject}, true);
-      OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
-
-      return dataContainer;
     }
   }
 

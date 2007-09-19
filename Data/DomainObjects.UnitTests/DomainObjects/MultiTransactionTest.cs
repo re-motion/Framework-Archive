@@ -146,8 +146,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
     }
 
-    [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object '.*' cannot be enlisted because it does not exist in this "
+    [Test][ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object '.*' cannot be enlisted because it does not exist in this "
           + "transaction. Maybe it was newly created and has not yet been committed, or it was deleted.",
           MatchType = MessageMatch.Regex)]
     public void NewObjectCannotBeEnlistedInTransaction ()
@@ -313,6 +312,123 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
           ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
         }
       }
+    }
+
+    [Test]
+    public void EnlistDomainObjectInSubTransaction ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ().CreateSubTransaction ();
+      newTransaction.EnlistDomainObject (order);
+      Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
+    }
+
+    [Test]
+    public void EnlistSameDomainObjects()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      OrderItem orderItem = order.OrderItems[0];
+      
+      Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionMock));
+      Assert.IsTrue (orderItem.CanBeUsedInTransaction (ClientTransactionMock));
+
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+
+      Assert.IsFalse (order.CanBeUsedInTransaction (newTransaction));
+      Assert.IsFalse (orderItem.CanBeUsedInTransaction (newTransaction));
+
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
+
+      Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
+      Assert.IsTrue (orderItem.CanBeUsedInTransaction (newTransaction));
+    }
+
+    [Test]
+    public void EnlistSameDomainObjectsInSubTransaction ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      OrderItem orderItem = order.OrderItems[0];
+
+      Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionMock));
+      Assert.IsTrue (orderItem.CanBeUsedInTransaction (ClientTransactionMock));
+
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ().CreateSubTransaction();
+
+      Assert.IsFalse (order.CanBeUsedInTransaction (newTransaction));
+      Assert.IsFalse (orderItem.CanBeUsedInTransaction (newTransaction));
+
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
+
+      Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
+      Assert.IsTrue (orderItem.CanBeUsedInTransaction (newTransaction));
+
+      Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction.ParentTransaction));
+      Assert.IsTrue (orderItem.CanBeUsedInTransaction (newTransaction.ParentTransaction));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object '.*' "
+        + "cannot be enlisted because it does not exist in this transaction. Maybe it was newly created and has not yet been committed, or it was "
+        + "deleted.", MatchType = MessageMatch.Regex)]
+    public void EnlistSameDomainObjectsThrowsOnNewObjects ()
+    {
+      Order.NewObject ();
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
+    }
+
+    [Test]
+    public void EnlistSameDomainObjectsIgnoresDiscardedObjects ()
+    {
+      Order order = Order.NewObject ();
+      order.Delete ();
+      ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+      Assert.IsTrue (order.IsDiscarded);
+
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+
+      using (newTransaction.EnterScope())
+      {
+        ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1).Delete ();
+        SetDatabaseModifyable ();
+        newTransaction.Commit ();
+      }
+
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
+
+      Assert.IsFalse (order.CanBeUsedInTransaction (newTransaction));
+      Assert.IsFalse (cwadt.CanBeUsedInTransaction (newTransaction));
+    }
+
+    [Test]
+    public void EnlistSameDomainObjectsIgnoresObjectsAlreadyEnlisted ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      
+      newTransaction.EnlistDomainObject (order);
+      Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
+
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
+
+      Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "A domain object instance for object "
+        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' already exists in this transaction.")]
+    public void EnlistSameDomainObjectsThrowsOnObjectsAlreadyEnlistedWithDifferentReferences ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+
+      using (newTransaction.EnterScope ())
+      {
+        Order order2 = Order.GetObject (DomainObjectIDs.Order1);
+        Assert.AreNotSame (order, order2);
+      }
+
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
     }
   }
 }
