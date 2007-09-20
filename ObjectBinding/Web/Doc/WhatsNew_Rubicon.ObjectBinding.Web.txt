@@ -1,3 +1,10 @@
+1.7.61
+======
+- BocBooleanValue, BocCheckBox, BocDateTimeValue
+  Property IBusinessObjectBoundControl.Value konnte nicht null nicht verarbeiten. 
+  Nicht betroffen waren die konkreten Implementierungen von Value sowie LoadValue und LoadUnboundValue.
+  Aufgetreten mit 1.7.47  
+  
 1.7.60
 ======
 - BocBooleanValue

@@ -13,7 +13,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     private TypeWithBoolean _businessObject;
     private BusinessObjectReferenceDataSource _dataSource;
     private IBusinessObjectBooleanProperty _propertyBooleanValue;
-    private IBusinessObjectBooleanProperty _propertyNaBooleanValue;
+    private IBusinessObjectBooleanProperty _propertyNullableBooleanValue;
 
     public BocBooleanValueTest()
     {
@@ -31,7 +31,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
       _businessObject = TypeWithBoolean.Create();
 
       _propertyBooleanValue = (IBusinessObjectBooleanProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("BooleanValue");
-      _propertyNaBooleanValue = (IBusinessObjectBooleanProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("NullableBooleanValue");
+      _propertyNullableBooleanValue = (IBusinessObjectBooleanProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("NullableBooleanValue");
 
       _dataSource = new BusinessObjectReferenceDataSource();
       _dataSource.BusinessObject = (IBusinessObject) _businessObject;
@@ -120,7 +120,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     }
 
     [Test]
-    public void SetValueToNaBooleanTrue()
+    public void SetValueToNullableBooleanTrue()
     {
       _bocBooleanValue.IsDirty = false;
       _bocBooleanValue.Value = true;
@@ -129,7 +129,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     }
 
     [Test]
-    public void SetValueToNaBooleanFalse()
+    public void SetValueToNullableBooleanFalse()
     {
       _bocBooleanValue.IsDirty = false;
       _bocBooleanValue.Value = false;
@@ -138,11 +138,66 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     }
 
     [Test]
-    public void SetValueToNaBooleanNull()
+    public void SetValueToNullableBooleanNull()
     {
       _bocBooleanValue.IsDirty = false;
       _bocBooleanValue.Value = null;
       Assert.AreEqual (null, _bocBooleanValue.Value);
+      Assert.IsTrue (_bocBooleanValue.IsDirty);
+    }
+
+
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToTrue ()
+    {
+      _bocBooleanValue.IsDirty = false;
+      ((IBusinessObjectBoundControl) _bocBooleanValue).Value = true;
+      Assert.AreEqual (true, ((IBusinessObjectBoundControl) _bocBooleanValue).Value);
+      Assert.IsTrue (_bocBooleanValue.IsDirty);
+    }
+
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToFalse ()
+    {
+      _bocBooleanValue.IsDirty = false;
+      ((IBusinessObjectBoundControl) _bocBooleanValue).Value = false;
+      Assert.AreEqual (false, ((IBusinessObjectBoundControl) _bocBooleanValue).Value);
+      Assert.IsTrue (_bocBooleanValue.IsDirty);
+    }
+
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToNull ()
+    {
+      _bocBooleanValue.IsDirty = false;
+      ((IBusinessObjectBoundControl) _bocBooleanValue).Value = null;
+      Assert.AreEqual (null, ((IBusinessObjectBoundControl) _bocBooleanValue).Value);
+      Assert.IsTrue (_bocBooleanValue.IsDirty);
+    }
+
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToNullableBooleanTrue ()
+    {
+      _bocBooleanValue.IsDirty = false;
+      ((IBusinessObjectBoundControl) _bocBooleanValue).Value = true;
+      Assert.AreEqual (true, ((IBusinessObjectBoundControl) _bocBooleanValue).Value);
+      Assert.IsTrue (_bocBooleanValue.IsDirty);
+    }
+
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToNullableBooleanFalse ()
+    {
+      _bocBooleanValue.IsDirty = false;
+      ((IBusinessObjectBoundControl) _bocBooleanValue).Value = false;
+      Assert.AreEqual (false, ((IBusinessObjectBoundControl) _bocBooleanValue).Value);
+      Assert.IsTrue (_bocBooleanValue.IsDirty);
+    }
+
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToNullableBooleanNull ()
+    {
+      _bocBooleanValue.IsDirty = false;
+      ((IBusinessObjectBoundControl) _bocBooleanValue).Value = null;
+      Assert.AreEqual (null, ((IBusinessObjectBoundControl) _bocBooleanValue).Value);
       Assert.IsTrue (_bocBooleanValue.IsDirty);
     }
 
@@ -194,7 +249,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     {
       _businessObject.NullableBooleanValue = true;
       _bocBooleanValue.DataSource = _dataSource;
-      _bocBooleanValue.Property = _propertyNaBooleanValue;
+      _bocBooleanValue.Property = _propertyNullableBooleanValue;
       _bocBooleanValue.Value = null;
       _bocBooleanValue.IsDirty = true;
 
@@ -208,7 +263,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     {
       _businessObject.NullableBooleanValue = false;
       _bocBooleanValue.DataSource = _dataSource;
-      _bocBooleanValue.Property = _propertyNaBooleanValue;
+      _bocBooleanValue.Property = _propertyNullableBooleanValue;
       _bocBooleanValue.Value = null;
       _bocBooleanValue.IsDirty = true;
 
@@ -222,7 +277,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     {
       _businessObject.NullableBooleanValue = null;
       _bocBooleanValue.DataSource = _dataSource;
-      _bocBooleanValue.Property = _propertyNaBooleanValue;
+      _bocBooleanValue.Property = _propertyNullableBooleanValue;
       _bocBooleanValue.Value = true;
       _bocBooleanValue.IsDirty = true;
 

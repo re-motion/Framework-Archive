@@ -13,7 +13,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     private TypeWithBoolean _businessObject;
     private BusinessObjectReferenceDataSource _dataSource;
     private IBusinessObjectBooleanProperty _propertyBooleanValue;
-    private IBusinessObjectBooleanProperty _propertyNaBooleanValue;
+    private IBusinessObjectBooleanProperty _propertyNullableBooleanValue;
 
     public BocCheckBoxTest()
     {
@@ -31,7 +31,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
       _businessObject = TypeWithBoolean.Create();
 
       _propertyBooleanValue = (IBusinessObjectBooleanProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("BooleanValue");
-      _propertyNaBooleanValue = (IBusinessObjectBooleanProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("NullableBooleanValue");
+      _propertyNullableBooleanValue = (IBusinessObjectBooleanProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("NullableBooleanValue");
 
       _dataSource = new BusinessObjectReferenceDataSource();
       _dataSource.BusinessObject = (IBusinessObject) _businessObject;
@@ -123,7 +123,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     }
 
     [Test]
-    public void SetValueToNaBooleanTrue()
+    public void SetValueToNullableBooleanTrue()
     {
       _bocCheckBox.IsDirty = false;
       _bocCheckBox.Value = true;
@@ -132,7 +132,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     }
 
     [Test]
-    public void SetValueToNaBooleanFalse()
+    public void SetValueToNullableBooleanFalse()
     {
       _bocCheckBox.IsDirty = false;
       _bocCheckBox.Value = false;
@@ -141,12 +141,69 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     }
 
     [Test]
-    public void SetValueToNaBooleanNull()
+    public void SetValueToNullableBooleanNull()
     {
       _bocCheckBox.DefaultValue = NaBoolean.False;
       _bocCheckBox.IsDirty = false;
       _bocCheckBox.Value = null;
       Assert.AreEqual (false, _bocCheckBox.Value);
+      Assert.IsTrue (_bocCheckBox.IsDirty);
+    }
+
+
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToTrue ()
+    {
+      _bocCheckBox.IsDirty = false;
+      ((IBusinessObjectBoundControl) _bocCheckBox).Value = true;
+      Assert.AreEqual (true, ((IBusinessObjectBoundControl) _bocCheckBox).Value);
+      Assert.IsTrue (_bocCheckBox.IsDirty);
+    }
+
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToFalse ()
+    {
+      _bocCheckBox.IsDirty = false;
+      ((IBusinessObjectBoundControl) _bocCheckBox).Value = false;
+      Assert.AreEqual (false, ((IBusinessObjectBoundControl) _bocCheckBox).Value);
+      Assert.IsTrue (_bocCheckBox.IsDirty);
+    }
+
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToNull ()
+    {
+      _bocCheckBox.DefaultValue = NaBoolean.False;
+      _bocCheckBox.IsDirty = false;
+      ((IBusinessObjectBoundControl) _bocCheckBox).Value = null;
+      Assert.AreEqual (false, ((IBusinessObjectBoundControl) _bocCheckBox).Value);
+      Assert.IsTrue (_bocCheckBox.IsDirty);
+    }
+
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToNullableBooleanTrue ()
+    {
+      _bocCheckBox.IsDirty = false;
+      ((IBusinessObjectBoundControl) _bocCheckBox).Value = true;
+      Assert.AreEqual (true, ((IBusinessObjectBoundControl) _bocCheckBox).Value);
+      Assert.IsTrue (_bocCheckBox.IsDirty);
+    }
+
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToNullableBooleanFalse ()
+    {
+      _bocCheckBox.IsDirty = false;
+      ((IBusinessObjectBoundControl) _bocCheckBox).Value = false;
+      Assert.AreEqual (false, ((IBusinessObjectBoundControl) _bocCheckBox).Value);
+      Assert.IsTrue (_bocCheckBox.IsDirty);
+    }
+
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToNullableBooleanNull ()
+    {
+      _bocCheckBox.DefaultValue = NaBoolean.False;
+      _bocCheckBox.IsDirty = false;
+      ((IBusinessObjectBoundControl) _bocCheckBox).Value = null;
+      Assert.AreEqual (false, ((IBusinessObjectBoundControl) _bocCheckBox).Value);
       Assert.IsTrue (_bocCheckBox.IsDirty);
     }
 
@@ -198,7 +255,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     {
       _businessObject.NullableBooleanValue = true;
       _bocCheckBox.DataSource = _dataSource;
-      _bocCheckBox.Property = _propertyNaBooleanValue;
+      _bocCheckBox.Property = _propertyNullableBooleanValue;
       _bocCheckBox.Value = false;
       _bocCheckBox.IsDirty = true;
 
@@ -212,7 +269,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     {
       _businessObject.NullableBooleanValue = false;
       _bocCheckBox.DataSource = _dataSource;
-      _bocCheckBox.Property = _propertyNaBooleanValue;
+      _bocCheckBox.Property = _propertyNullableBooleanValue;
       _bocCheckBox.Value = true;
       _bocCheckBox.IsDirty = true;
 
@@ -227,7 +284,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
       _businessObject.NullableBooleanValue = null;
       _bocCheckBox.DefaultValue = NaBoolean.False;
       _bocCheckBox.DataSource = _dataSource;
-      _bocCheckBox.Property = _propertyNaBooleanValue;
+      _bocCheckBox.Property = _propertyNullableBooleanValue;
       _bocCheckBox.Value = true;
       _bocCheckBox.IsDirty = true;
 

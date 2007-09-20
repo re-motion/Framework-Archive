@@ -540,7 +540,7 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
   protected override object ValueImplementation
   {
     get { return Value; }
-    set { Value = ArgumentUtility.CheckType<bool> ("value", value); }
+    set { Value = ArgumentUtility.CheckType<bool?> ("value", value); }
   }
 
   /// <summary> The boolean value to which this control defaults if the assigned value is <see langword="null"/>. </summary>

@@ -14,7 +14,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     private TypeWithDateTime _businessObject;
     private BusinessObjectReferenceDataSource _dataSource;
     private IBusinessObjectDateTimeProperty _propertyDateTimeValue;
-    private IBusinessObjectDateTimeProperty _propertyNaDateTimeValue;
+    private IBusinessObjectDateTimeProperty _propertyNullableDateTimeValue;
 
     public BocDateTimeValueTest()
     {
@@ -32,7 +32,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
       _businessObject = TypeWithDateTime.Create();
 
       _propertyDateTimeValue = (IBusinessObjectDateTimeProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("DateTimeValue");
-      _propertyNaDateTimeValue = (IBusinessObjectDateTimeProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("NullableDateTimeValue");
+      _propertyNullableDateTimeValue = (IBusinessObjectDateTimeProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("NullableDateTimeValue");
 
       _dataSource = new BusinessObjectReferenceDataSource();
       _dataSource.BusinessObject = (IBusinessObject) _businessObject;
@@ -216,11 +216,50 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     }
 
     [Test]
-    public void SetValueToNaDateTimeNull()
+    public void SetValueToNullableDateTimeNull()
     {
       _bocDateTimeValue.IsDirty = false;
       _bocDateTimeValue.Value = null;
       Assert.AreEqual (null, _bocDateTimeValue.Value);
+      Assert.IsTrue (_bocDateTimeValue.IsDirty);
+    }
+
+
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToDateTime ()
+    {
+      DateTime dateTime = new DateTime (2006, 1, 1, 1, 1, 1);
+      _bocDateTimeValue.IsDirty = false;
+      ((IBusinessObjectBoundControl) _bocDateTimeValue).Value = dateTime;
+      Assert.AreEqual (dateTime, ((IBusinessObjectBoundControl) _bocDateTimeValue).Value);
+      Assert.IsTrue (_bocDateTimeValue.IsDirty);
+    }
+
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToNull ()
+    {
+      _bocDateTimeValue.IsDirty = false;
+      ((IBusinessObjectBoundControl) _bocDateTimeValue).Value = null;
+      Assert.AreEqual (null, ((IBusinessObjectBoundControl) _bocDateTimeValue).Value);
+      Assert.IsTrue (_bocDateTimeValue.IsDirty);
+    }
+
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToNullableDateTime ()
+    {
+      DateTime? dateTime = new DateTime (2006, 1, 1, 1, 1, 1);
+      _bocDateTimeValue.IsDirty = false;
+      ((IBusinessObjectBoundControl) _bocDateTimeValue).Value = dateTime;
+      Assert.AreEqual (dateTime, ((IBusinessObjectBoundControl) _bocDateTimeValue).Value);
+      Assert.IsTrue (_bocDateTimeValue.IsDirty);
+    }
+
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToNullableDateTimeNull ()
+    {
+      _bocDateTimeValue.IsDirty = false;
+      ((IBusinessObjectBoundControl) _bocDateTimeValue).Value = null;
+      Assert.AreEqual (null, ((IBusinessObjectBoundControl) _bocDateTimeValue).Value);
       Assert.IsTrue (_bocDateTimeValue.IsDirty);
     }
 
@@ -254,11 +293,11 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     }
 
     [Test]
-    public void LoadValueAndInterimFalseWithValueNaDateTime()
+    public void LoadValueAndInterimFalseWithValueNullableDateTime()
     {
       _businessObject.NullableDateTimeValue = new DateTime (2006, 1, 1, 1, 1, 1);
       _bocDateTimeValue.DataSource = _dataSource;
-      _bocDateTimeValue.Property = _propertyNaDateTimeValue;
+      _bocDateTimeValue.Property = _propertyNullableDateTimeValue;
       _bocDateTimeValue.Value = null;
       _bocDateTimeValue.IsDirty = true;
 
@@ -268,11 +307,11 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     }
 
     [Test]
-    public void LoadValueAndInterimFalseWithValueNaDateTimeNull()
+    public void LoadValueAndInterimFalseWithValueNullableDateTimeNull()
     {
       _businessObject.NullableDateTimeValue = null;
       _bocDateTimeValue.DataSource = _dataSource;
-      _bocDateTimeValue.Property = _propertyNaDateTimeValue;
+      _bocDateTimeValue.Property = _propertyNullableDateTimeValue;
       _bocDateTimeValue.Value = DateTime.Now;
       _bocDateTimeValue.IsDirty = true;
 
@@ -331,7 +370,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
     }
 
     [Test]
-    public void LoadUnboundValueAndInterimFalseWithValueNaDateTimeNull()
+    public void LoadUnboundValueAndInterimFalseWithValueNullableDateTimeNull()
     {
       DateTime? value = null;
       _bocDateTimeValue.Value = DateTime.Now;
