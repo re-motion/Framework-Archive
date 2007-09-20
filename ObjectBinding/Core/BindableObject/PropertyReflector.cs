@@ -113,6 +113,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       return null;
     }
 
+    //OPF Mapping
     private bool GetIsRequired ()
     {
       if (_propertyInfo.PropertyType.IsEnum && AttributeUtility.IsDefined<UndefinedEnumValueAttribute> (_propertyInfo.PropertyType, false))
@@ -140,6 +141,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       return true;
     }
 
+    //OPF Mapping
     private int? GetMaxLength ()
     {
       return null;

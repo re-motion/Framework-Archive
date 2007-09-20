@@ -66,7 +66,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       for (Type currentType = _type; currentType != null; currentType = currentType.BaseType)
       {
         foreach (PropertyInfo propertyInfo in currentType.FindMembers (
-            MemberTypes.Property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly, PropertyFiler, null))
+            MemberTypes.Property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly, PropertyFilter, null))
         {
           if (!propertyInfos.Contains (propertyInfo.Name))
             propertyInfos.Add (propertyInfo);
@@ -75,7 +75,8 @@ namespace Rubicon.ObjectBinding.BindableObject
       return propertyInfos.ToArray();
     }
 
-    private bool PropertyFiler (MemberInfo memberInfo, object filterCriteria)
+    //OPF Mapping
+    private bool PropertyFilter (MemberInfo memberInfo, object filterCriteria)
     {
       ObjectBindingAttribute attribute = AttributeUtility.GetCustomAttribute<ObjectBindingAttribute> (memberInfo, true);
       if (attribute != null && !attribute.Visible)
