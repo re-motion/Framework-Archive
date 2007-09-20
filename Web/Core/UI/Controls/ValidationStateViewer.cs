@@ -92,6 +92,27 @@ public class ValidationStateViewer : WebControl, IControl
     get { return HtmlTextWriterTag.Div; }
   }
 
+  protected override void OnPreRender (EventArgs e)
+  {
+    base.OnPreRender (e);
+
+    IResourceManager resourceManager = GetResourceManager ();
+    LoadResources (resourceManager);
+  }
+
+  protected virtual void LoadResources (IResourceManager resourceManager)
+  {
+    if (resourceManager == null)
+      return;
+
+    if (ControlHelper.IsDesignMode ((Control) this))
+      return;
+
+    string key = ResourceManagerUtility.GetGlobalResourceKey (NoticeText);
+    if (!StringUtility.IsNullOrEmpty (key))
+      NoticeText = resourceManager.GetString (key);
+  }
+
   protected override void RenderContents (HtmlTextWriter writer)
   {
     if (!ControlHelper.IsDesignMode (this, this.Context))

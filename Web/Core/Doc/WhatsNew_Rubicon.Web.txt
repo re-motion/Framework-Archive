@@ -1,3 +1,14 @@
+1.7.61
+======
+- Rubicon.Web.UI.Controls.SmartLabel
+  Property Text unterstützt nun das selbstständige Auslesen von Reosurcen über das $res-Prefix.
+
+- Rubicon.Web.UI.Controls.FormGridLabel
+  Property Text unterstützt nun das selbstständige Auslesen von Reosurcen über das $res-Prefix.
+
+- Rubicon.Web.UI.Controls.SmartLabel
+  Property NoticeText unterstützt nun das selbstständige Auslesen von Reosurcen über das $res-Prefix.
+ 
 1.7.59
 ======
 - Das Framework generiert die Border-Elemente nun via Javascript: ScriptUtility.RegisterElementForBorderSpans (page, elementID).

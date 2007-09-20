@@ -3,6 +3,10 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Rubicon.Globalization;
+using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.Utilities;
+using Rubicon.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -59,6 +63,27 @@ public class FormGridLabel: Label, ISmartControl
   string ISmartControl.DisplayName
   {
     get { return base.Text; }
+  }
+
+  protected override void OnPreRender (EventArgs e)
+  {
+    base.OnPreRender (e);
+
+    IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
+    LoadResources (resourceManager);
+  }
+
+  protected virtual void LoadResources (IResourceManager resourceManager)
+  {
+    if (resourceManager == null)
+      return;
+
+    if (ControlHelper.IsDesignMode ((Control) this))
+      return;
+
+    string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
+    if (!StringUtility.IsNullOrEmpty (key))
+      Text = resourceManager.GetString (key);
   }
 
   void ISmartControl.RegisterHtmlHeadContents (HttpContext context)

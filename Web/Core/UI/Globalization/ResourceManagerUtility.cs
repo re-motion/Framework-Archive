@@ -10,12 +10,28 @@ namespace Rubicon.Web.UI.Globalization
 /// <summary>
 ///   Functionality for working with <see cref="IResourceManager"/> in Controls.
 /// </summary>
-public class ResourceManagerUtility
+public static class ResourceManagerUtility
 {
+  private const string c_globalResourceKeyPrefix = "$res:";
   /// <summary> Hashtable&lt;type,IResourceManagers&gt; </summary>
   private static Hashtable s_chachedResourceManagers = new Hashtable();
   /// <summary> Dummy value used mark cached types without a resource manager. </summary>
   private static readonly object s_dummyResourceManager = new object();
+
+  public static bool IsGlobalResourceKey (string elementValue)
+  {
+    if (StringUtility.IsNullOrEmpty (elementValue))
+      return false;
+    return elementValue.StartsWith (c_globalResourceKeyPrefix);
+  }
+
+  public static string GetGlobalResourceKey (string elementValue)
+  {
+    if (IsGlobalResourceKey (elementValue))
+      return elementValue.Substring (c_globalResourceKeyPrefix.Length);
+    else
+      return null;
+  }
 
   /// <summary>
   ///   Get resource managers of all controls impementing <see cref="IObjectWithResources"/> in the 
@@ -119,29 +135,6 @@ public class ResourceManagerUtility
     }
     
     return s_chachedResourceManagers[type] as IResourceManager;
-  }
-
-  private const string c_globalResourceKeyPrefix = "$res:";
-
-  public static bool IsGlobalResourceKey (string elementValue)
-  {
-    if (StringUtility.IsNullOrEmpty (elementValue))
-      return false;
-    return elementValue.StartsWith (c_globalResourceKeyPrefix);
-  }
-
-  public static string GetGlobalResourceKey (string elementValue)
-  {
-    if (IsGlobalResourceKey (elementValue))
-      return elementValue.Substring (c_globalResourceKeyPrefix.Length);
-    else
-      return null;
-  }
-
-  //  No construction for static only class
-  /// <exclude />
-	private ResourceManagerUtility()
-	{
   }
 }
 }

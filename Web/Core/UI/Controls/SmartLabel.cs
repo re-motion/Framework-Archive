@@ -4,8 +4,10 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Rubicon.Globalization;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Design;
+using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
@@ -113,6 +115,14 @@ public class SmartLabel: WebControl
     set { _text = value; }
   }
 
+  protected override void OnPreRender (EventArgs e)
+  {
+    base.OnPreRender (e);
+
+    IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
+    LoadResources (resourceManager);
+  }
+
   protected override void Render(HtmlTextWriter writer)
   {
     this.RenderBeginTag (writer);
@@ -212,6 +222,18 @@ public class SmartLabel: WebControl
       // ToName: '.' -> '_'
     }
   }
-}
 
+  protected virtual void LoadResources (IResourceManager resourceManager)
+  {
+    if (resourceManager == null)
+      return;
+
+    if (ControlHelper.IsDesignMode ((Control) this))
+      return;
+
+    string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
+    if (!StringUtility.IsNullOrEmpty (key))
+      Text = resourceManager.GetString (key);
+  }
+}
 }
