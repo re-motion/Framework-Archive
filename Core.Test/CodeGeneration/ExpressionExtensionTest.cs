@@ -1,55 +1,44 @@
 using System;
-using System.Reflection.Emit;
-using Castle.DynamicProxy.Generators.Emitters;
+using System.Reflection;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Rubicon.CodeGeneration.DPExtensions;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Rubicon.Collections;
 using Rubicon.Core.UnitTests.CodeGeneration.SampleTypes;
 using Rubicon.Utilities;
+using Rubicon.CodeGeneration;
+using Rubicon.Development.UnitTesting;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace Rubicon.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
-  [Ignore ("TODO: FS")]
-  public class ExpressionExtensionTest
+  public class ExpressionExtensionTest : CodeGenerationBaseTest
   {
-    private MockRepository _mockRepository;
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _mockRepository = new MockRepository ();
-    }
-
-    private Func<T> CreateMethod<T> (Proc<IMemberEmitter, ILGenerator> codeGenerator)
-    {
-      //TODO: FS
-      DynamicMethod method = null;//new DynamicMethod ("TestMethod", typeof (T), Type.EmptyTypes);
-      ILGenerator gen = method.GetILGenerator ();
-      codeGenerator (null, gen);
-      return (Func<T>) method.CreateDelegate (typeof (Func<T>));
-    }
-
     [Test]
     public void CustomAttributeExpression ()
     {
-      Func<SimpleAttribute> attributeGetter = CreateMethod<SimpleAttribute> (delegate (IMemberEmitter member, ILGenerator gen)
-      {
-        LocalReference attributeOwner = new LocalReference (typeof (Type));
-        attributeOwner.Generate (gen);
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "ExpressionExtensionTest", typeof (object));
+      CustomMethodEmitter methodEmitter = classEmitter.CreateMethod ("TestMethod", MethodAttributes.Public)
+          .SetReturnType (typeof (Tuple<SimpleAttribute, SimpleAttribute>));
 
-        new AssignStatement (attributeOwner, new TypeTokenExpression (typeof (ClassWithCustomAttribute))).Emit (member, gen);
+      LocalReference attributeOwner = methodEmitter.DeclareLocal (typeof (Type));
+      methodEmitter.AddStatement (new AssignStatement (attributeOwner, new TypeTokenExpression (typeof (ClassWithCustomAttribute))));
 
-        CustomAttributeExpression expression = new CustomAttributeExpression (attributeOwner, typeof (SimpleAttribute), 0, true);
+      ConstructorInfo tupleCtor =
+          typeof (Tuple<SimpleAttribute, SimpleAttribute>).GetConstructor (new Type[] {typeof (SimpleAttribute), typeof (SimpleAttribute)});
+      Expression tupleExpression = new NewInstanceExpression (tupleCtor,
+          new CustomAttributeExpression (attributeOwner, typeof (SimpleAttribute), 0, true),
+          new CustomAttributeExpression (attributeOwner, typeof (SimpleAttribute), 1, true));
 
-        new ReturnStatement (expression).Emit (member, gen);
-        
-      });
+      methodEmitter.AddStatement (new ReturnStatement (tupleExpression));
 
-      SimpleAttribute attribute = attributeGetter ();
-      Assert.IsNotNull (attribute);
-      Assert.Contains (attribute.S, new string[] { "whazzup1", "whazzup2" });
+      object[] attributes = typeof (ClassWithCustomAttribute).GetCustomAttributes (typeof (SimpleAttribute), true);
+
+      object instance = Activator.CreateInstance (classEmitter.BuildType ());
+      Tuple<SimpleAttribute, SimpleAttribute> attributeTuple = 
+          (Tuple<SimpleAttribute, SimpleAttribute>) PrivateInvoke.InvokePublicMethod (instance, "TestMethod");
+      Assert.That (new object[] { attributeTuple.A, attributeTuple.B }, Is.EquivalentTo (attributes));
     }
 
     [Test]
