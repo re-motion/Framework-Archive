@@ -19,9 +19,6 @@ public class DomainObject
 
   // static members and constants
 
-  private static readonly MethodInfo s_newObjectWithDefaultConstructorMethodInfo =
-      typeof (DomainObject).GetMethod ("NewObjectWithDefaultConstructor", BindingFlags.NonPublic | BindingFlags.Static, null, new Type[0], null);
-
   #region Creation and GetObject factory methods
 
   /// <summary>
@@ -72,13 +69,7 @@ public class DomainObject
   public static DomainObject NewObject (Type type)
   {
     ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (DomainObject));
-    //TODO: FS: replace this with the native syntax once the subclassproxying is refactored.
-    return (DomainObject) s_newObjectWithDefaultConstructorMethodInfo.MakeGenericMethod (type).Invoke (null, new object[0]);
-  }
-
-  private static T NewObjectWithDefaultConstructor<T> () where T : DomainObject
-  {
-    return DomainObject.NewObject<T>().With();
+    return GetCreator (type).GetTypesafeConstructorInvoker (type).With();
   }
 
   /// <summary>

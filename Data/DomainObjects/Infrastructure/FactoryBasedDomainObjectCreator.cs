@@ -14,12 +14,13 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   // Needed constructors:
   // (any constructor) -- for new objects
   // no constructor for loading required
-  class FactoryBasedDomainObjectCreator : IDomainObjectCreator
+  internal class FactoryBasedDomainObjectCreator : IDomainObjectCreator
   {
     public readonly static FactoryBasedDomainObjectCreator Instance = new FactoryBasedDomainObjectCreator ();
 
     public DomainObject CreateWithDataContainer (DataContainer dataContainer)
     {
+      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
       IDomainObjectFactory factory = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory;
       Type concreteType = factory.GetConcreteDomainObjectType(dataContainer.DomainObjectType);
       DomainObject instance = (DomainObject) System.Runtime.Serialization.FormatterServices.GetSafeUninitializedObject (concreteType);
@@ -31,9 +32,22 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public IFuncInvoker<T> GetTypesafeConstructorInvoker<T> ()
        where T : DomainObject
     {
+      return GetTypesafeConstructorInvoker<T> (typeof (T));
+    }
+
+    public IFuncInvoker<DomainObject> GetTypesafeConstructorInvoker (Type type)
+    {
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (DomainObject));
+      return GetTypesafeConstructorInvoker<DomainObject> (type);
+    }
+
+    private IFuncInvoker<TMinimal> GetTypesafeConstructorInvoker<TMinimal> (Type domainObjectType)
+        where TMinimal : DomainObject
+    {
+      ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);
       IDomainObjectFactory factory = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory;
-      Type concreteType = factory.GetConcreteDomainObjectType(typeof (T));
-      return factory.GetTypesafeConstructorInvoker<T> (concreteType);
+      Type concreteType = factory.GetConcreteDomainObjectType(domainObjectType);
+      return factory.GetTypesafeConstructorInvoker<TMinimal> (concreteType);
     }
   }
 }

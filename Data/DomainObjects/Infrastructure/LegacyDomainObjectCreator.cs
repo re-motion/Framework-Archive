@@ -28,12 +28,13 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public IFuncInvoker<T> GetTypesafeConstructorInvoker<T> ()
        where T : DomainObject
     {
-      return new FuncInvoker<T> (
-          delegate (Type delegateType)
-          {
-            BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-            return ConstructorWrapper.CreateDelegate (typeof (T), delegateType, bindingFlags, null, CallingConventions.Any, null);
-          });
+      return TypesafeActivator.CreateInstance<T> (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+    }
+
+    public IFuncInvoker<DomainObject> GetTypesafeConstructorInvoker (Type domainObjectType)
+    {
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("domainObjectType", domainObjectType, typeof (DomainObject));
+      return TypesafeActivator.CreateInstance<DomainObject> (domainObjectType, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     }
   }
 }
