@@ -57,6 +57,8 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public static User FindByUserName (string userName)
     {
+      ArgumentUtility.CheckNotNull ("userName", userName);
+
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByUserName");
       query.Parameters.Add ("@userName", userName);
 
@@ -69,6 +71,8 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public static DomainObjectCollection FindByTenantID (ObjectID tenantID)
     {
+      ArgumentUtility.CheckNotNull ("tenantID", tenantID);
+
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByTenantID");
       query.Parameters.Add ("@tenantID", tenantID);
 

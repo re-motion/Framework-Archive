@@ -67,6 +67,8 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public static Tenant FindByUnqiueIdentifier (string uniqueIdentifier)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
+
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Tenant.FindByUnqiueIdentifier");
       query.Parameters.Add ("@uniqueIdentifier", uniqueIdentifier);
 

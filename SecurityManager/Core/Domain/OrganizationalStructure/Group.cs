@@ -75,6 +75,8 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public static Group FindByUnqiueIdentifier (string uniqueIdentifier)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
+
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByUnqiueIdentifier");
       query.Parameters.Add ("@uniqueIdentifier", uniqueIdentifier);
 
