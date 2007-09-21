@@ -99,9 +99,9 @@
       <Project>{E6A8B6CE-2E19-4C01-9D41-63899FE52020}</Project>
       <Name>Data.DomainObjects.Legacy</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
+    <ProjectReference Include="..\DomainObjects.Legacy.ObjectBinding\Data.DomainObjects.Legacy.ObjectBinding.csproj">
       <Project>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</Project>
-      <Name>Data.DomainObjects.ObjectBinding</Name>
+      <Name>Data.DomainObjects.Legacy.ObjectBinding</Name>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>

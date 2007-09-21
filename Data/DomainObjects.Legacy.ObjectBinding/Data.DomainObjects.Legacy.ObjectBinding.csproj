@@ -3,14 +3,14 @@
     <ProjectType>Local</ProjectType>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9246E440-009C-44BE-A801-C66D8DE04A8F}</ProjectGuid>
+    <ProjectGuid>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ApplicationIcon>
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>Rubicon.Data.DomainObjects.ObjectBinding.Web</AssemblyName>
+    <AssemblyName>Rubicon.Data.DomainObjects.Legacy.ObjectBinding</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -19,7 +19,7 @@
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Data.DomainObjects.ObjectBinding.Web</RootNamespace>
+    <RootNamespace>Rubicon.Data.DomainObjects.ObjectBinding</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -35,8 +35,8 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DocumentationFile>bin\Debug\Rubicon.Data.DomainObjects.ObjectBinding.Web.XML</DocumentationFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\Rubicon.Data.DomainObjects.Legacy.ObjectBinding.XML</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
@@ -57,7 +57,7 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\Rubicon.Data.DomainObjects.ObjectBinding.Web.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Rubicon.Data.DomainObjects.Legacy.ObjectBinding.XML</DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
@@ -74,18 +74,14 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
-    <Reference Include="System.configuration" />
     <Reference Include="System.Data">
       <Name>System.Data</Name>
-    </Reference>
-    <Reference Include="System.Design">
-      <Name>system.design</Name>
     </Reference>
     <Reference Include="System.Drawing">
       <Name>system.drawing</Name>
     </Reference>
-    <Reference Include="System.Web">
-      <Name>system.web</Name>
+    <Reference Include="System.Windows.Forms">
+      <Name>system.windows.forms</Name>
     </Reference>
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
@@ -96,28 +92,12 @@
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
     <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.csproj">
-      <Name>ObjectBinding %28ObjectBinding\ObjectBinding%29</Name>
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ObjectBinding\Web\ObjectBinding.Web.csproj">
-      <Name>ObjectBinding.Web</Name>
-      <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Web\Core\Web.csproj">
-      <Name>Web %28Web\Web%29</Name>
-      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Name>ObjectBinding %28ObjectBinding\ObjectBinding%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects.Legacy\Data.DomainObjects.Legacy.csproj">
       <Project>{E6A8B6CE-2E19-4C01-9D41-63899FE52020}</Project>
       <Name>Data.DomainObjects.Legacy</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
-      <Name>Data.DomainObjects.ObjectBinding</Name>
-      <Project>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
       <Name>Data.DomainObjects %28Data.DomainObjects\Data.DomainObjects%29</Name>
@@ -126,22 +106,121 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IsReadOnlyAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Design\DomainObjectDataSourceDesigner.cs">
+    <Compile Include="BaseProperty.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DomainObjectDataSourceControl.cs">
+    <Compile Include="BindableDomainObject.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SearchObjectDataSourceControl.cs">
+    <Compile Include="BindableSearchObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BusinessObjectClassReflector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BusinessObjectReflector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DateTypeAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Design\ClassPickerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\ClassPickerEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjectClass.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjectDataSource.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DomainObjectPropertyFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjectProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InvalidNullAssignmentException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IsRequiredAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\BooleanProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\ByteProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\DateProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\DateTimeProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\DecimalProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\DoubleProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\EnumerationProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\GuidProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\Int16Property.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\Int32Property.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\NullableProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\ReferenceProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\SingleProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\StringProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ReflectionPropertyFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SearchObjectClass.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SearchObjectDataSource.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SearchObjectProvider.cs">
       <SubType>Code</SubType>
     </Compile>
     <None Include="Properties\AssemblyInfoTemplate.cs">
       <SubType>Code</SubType>
     </None>
-    <None Include="Data.DomainObjects.ObjectBinding.Web.build" />
+    <None Include="Data.DomainObjects.Legacy.ObjectBinding.build" />
+    <EmbeddedResource Include="Design\ClassPickerControl.resx">
+      <DependentUpon>ClassPickerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BooleanProperty.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BooleanProperty.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

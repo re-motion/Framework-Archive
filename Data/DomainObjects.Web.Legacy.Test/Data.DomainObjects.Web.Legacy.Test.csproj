@@ -114,13 +114,13 @@
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
-      <Name>Data.DomainObjects.ObjectBinding</Name>
+    <ProjectReference Include="..\DomainObjects.Legacy.ObjectBinding\Data.DomainObjects.Legacy.ObjectBinding.csproj">
+      <Name>Data.DomainObjects.Legacy.ObjectBinding</Name>
       <Project>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\DomainObjects.ObjectBinding.Web\Data.DomainObjects.ObjectBinding.Web.csproj">
-      <Name>Data.DomainObjects.ObjectBinding.Web</Name>
+    <ProjectReference Include="..\DomainObjects.Legacy.ObjectBinding.Web\Data.DomainObjects.Legacy.ObjectBinding.Web.csproj">
+      <Name>Data.DomainObjects.Legacy.ObjectBinding.Web</Name>
       <Project>{9246E440-009C-44BE-A801-C66D8DE04A8F}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>

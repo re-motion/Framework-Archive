@@ -43,13 +43,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Rubicon.Data.DomainObjects.dll</HintPath>
     </Reference>
-    <Reference Include="Rubicon.Data.DomainObjects.ObjectBinding, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+    <Reference Include="Rubicon.Data.DomainObjects.Legacy.ObjectBinding, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Data.DomainObjects.ObjectBinding.dll</HintPath>
+      <HintPath>..\References\Rubicon.Data.DomainObjects.Legacy.ObjectBinding.dll</HintPath>
     </Reference>
-    <Reference Include="Rubicon.Data.DomainObjects.ObjectBinding.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+    <Reference Include="Rubicon.Data.DomainObjects.Legacy.ObjectBinding.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Data.DomainObjects.ObjectBinding.Web.dll</HintPath>
+      <HintPath>..\References\Rubicon.Data.DomainObjects.Legacy.ObjectBinding.Web.dll</HintPath>
     </Reference>
     <Reference Include="Rubicon.Data.DomainObjects.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

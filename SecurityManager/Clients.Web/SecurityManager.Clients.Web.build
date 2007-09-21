@@ -25,8 +25,8 @@
       <references failonempty="true">
         <include name="${build.outputdir}/Rubicon.Core.dll" />
         <include name="${build.outputdir}/Rubicon.Data.DomainObjects.dll" />
-        <include name="${build.outputdir}/Rubicon.Data.DomainObjects.ObjectBinding.dll" />
-        <include name="${build.outputdir}/Rubicon.Data.DomainObjects.ObjectBinding.Web.dll" />
+        <include name="${build.outputdir}/Rubicon.Data.DomainObjects.Legacy.ObjectBinding.dll" />
+        <include name="${build.outputdir}/Rubicon.Data.DomainObjects.Legacy.ObjectBinding.Web.dll" />
         <include name="${build.outputdir}/Rubicon.Data.DomainObjects.Web.dll" />
         <include name="${build.outputdir}/Rubicon.ObjectBinding.dll" />
         <include name="${build.outputdir}/Rubicon.ObjectBinding.Web.dll" />

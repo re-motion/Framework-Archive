@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Rubicon.Data.DomainObjects.ObjectBinding">
+<project xmlns="nant-schema" name="Rubicon.Data.DomainObjects.Legacy.ObjectBinding">
   
   <target name="build" description="perform a build">
     <csc  target="library"
@@ -31,7 +31,7 @@
         <include asis="true" name="System.Windows.Forms.dll"/>
         <include asis="true" name="System.Xml.dll"/>
       </references>
-      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Data.DomainObjects.ObjectBinding">
+      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Data.DomainObjects.Legacy.ObjectBinding">
         <include name="Globalization/*.resx" />
       </resources>
     </csc>

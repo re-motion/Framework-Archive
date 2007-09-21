@@ -3,23 +3,23 @@
     <ProjectType>Local</ProjectType>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{21EC480E-91C6-4558-963B-796698DBB668}</ProjectGuid>
+    <ProjectGuid>{9246E440-009C-44BE-A801-C66D8DE04A8F}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ApplicationIcon>
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>Rubicon.Data.DomainObjects.ObjectBinding.UnitTests</AssemblyName>
+    <AssemblyName>Rubicon.Data.DomainObjects.Legacy.ObjectBinding.Web</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
-    <DefaultHTMLPageLayout>Flow</DefaultHTMLPageLayout>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Data.DomainObjects.ObjectBinding.UnitTests</RootNamespace>
+    <RootNamespace>Rubicon.Data.DomainObjects.ObjectBinding.Web</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -35,14 +35,12 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DocumentationFile>bin\Debug\Rubicon.Data.DomainObjects.Legacy.ObjectBinding.Web.XML</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
+    <NoWarn>1591;419</NoWarn>
     <Optimize>false</Optimize>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
@@ -59,13 +57,11 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\Release\Rubicon.Data.DomainObjects.Legacy.ObjectBinding.Web.XML</DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
+    <NoWarn>1591;419</NoWarn>
     <Optimize>true</Optimize>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
@@ -75,19 +71,22 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <Name>nunit.framework</Name>
-      <HintPath>..\..\prereq\Assemblies\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks, Version=2.8.9.24225, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\prereq\Assemblies\Rhino.Mocks.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
     <Reference Include="System.configuration" />
-    <Reference Include="System.Data" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Design">
+      <Name>system.design</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>system.drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>system.web</Name>
+    </Reference>
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
@@ -96,21 +95,27 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
-      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
-      <Name>Development.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.csproj">
       <Name>ObjectBinding %28ObjectBinding\ObjectBinding%29</Name>
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ObjectBinding\Web\ObjectBinding.Web.csproj">
+      <Name>ObjectBinding.Web</Name>
+      <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Core\Web.csproj">
+      <Name>Web %28Web\Web%29</Name>
+      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects.Legacy\Data.DomainObjects.Legacy.csproj">
       <Project>{E6A8B6CE-2E19-4C01-9D41-63899FE52020}</Project>
       <Name>Data.DomainObjects.Legacy</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
-      <Name>Data.DomainObjects.ObjectBinding</Name>
+    <ProjectReference Include="..\DomainObjects.Legacy.ObjectBinding\Data.DomainObjects.Legacy.ObjectBinding.csproj">
+      <Name>Data.DomainObjects.Legacy.ObjectBinding</Name>
       <Project>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
@@ -124,73 +129,28 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BindableDomainObjectTest.cs" />
-    <Compile Include="BusinessObjectReflectorTest.cs" />
-    <Compile Include="DatabaseTest.cs">
+    <Compile Include="Design\DomainObjectDataSourceDesigner.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Database\TestDataLoader.cs">
+    <Compile Include="DomainObjectDataSourceControl.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DomainObjectClassTest.cs" />
-    <Compile Include="DomainObjectIDs.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PropertyTypes\BasePropertySecurityTest.cs" />
-    <Compile Include="PropertyTypes\BusinessObjectWithIdentity.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PropertyTypes\EnumerationPropertyTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PropertyTypes\ReferencePropertyTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Serialization\SerializationTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SetupFixture.cs" />
-    <Compile Include="TestDomain\Order.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestDomain\OrderItem.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestDomain\OrderTicket.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestDomain\SecurableOrder.cs" />
-    <Compile Include="TestDomain\SecurableSearchObject.cs" />
-    <Compile Include="TestDomain\TestDomainBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestDomain\TestSearchObject.cs">
+    <Compile Include="SearchObjectDataSourceControl.cs">
       <SubType>Code</SubType>
     </Compile>
     <None Include="Properties\AssemblyInfoTemplate.cs">
       <SubType>Code</SubType>
     </None>
-    <None Include="Data.DomainObjects.ObjectBinding.UnitTests.build" />
-    <Content Include="Database\DataDomainObjectsObjectBinding_CreateDB.sql" />
-    <Content Include="Database\DataDomainObjectsObjectBinding_CreateTestData.sql" />
-    <Content Include="Database\DataDomainObjectsObjectBinding_SetupDB.sql" />
-    <Content Include="DataDomainObjectsObjectBinding_Mapping.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DataDomainObjectsObjectBinding_Queries.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="Data.DomainObjects.Legacy.ObjectBinding.Web.build" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Configuration\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy "$(ProjectDir)Database\*.sql" "$(TargetDir)*.sql"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

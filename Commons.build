@@ -154,7 +154,7 @@
 
   <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Web, Mixins, Mixins.MixerTool.Console,
       ObjectBinding, ObjectBinding.Web, ObjectBinding.Web.Preview, ObjectBinding.Web.CodeGenerator, ObjectBinding.Web.CodeGenerator.Templates, 
-      Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.ObjectBinding.Web, Data.DomainObjects.Web, 
+      Data.DomainObjects, Data.DomainObjects.Legacy.ObjectBinding, Data.DomainObjects.Legacy.ObjectBinding.Web, Data.DomainObjects.Web, 
       Data.DomainObjects.RdbmsTools, Data.DomainObjects.RdbmsTools.Console, 
       Data.DomainObjects.Legacy, Data.DomainObjects.Legacy.CodeGenerator, Data.DomainObjects.Legacy.CodeGenerator.Console, 
       Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Web, Security.Data.DomainObjects, 
@@ -163,7 +163,7 @@
   </target>
 
   <target name="all-test" depends="prereq, CoreTest, Development.CoreTest, Mixins.Samples, Mixins.UnitTests, Web.UnitTests, ObjectBinding.UnitTests, 
-      Data.DomainObjects.UnitTests, Data.DomainObjects.Legacy.UnitTests, Data.DomainObjects.ObjectBinding.UnitTests, 
+      Data.DomainObjects.UnitTests, Data.DomainObjects.Legacy.UnitTests, Data.DomainObjects.Legacy.ObjectBinding.UnitTests, 
       Data.DomainObjects.RdbmsTools.UnitTests, Data.DomainObjects.Legacy.CodeGenerator.UnitTests, 
       Security.UnitTests.TestDomain, Security.UnitTests, SecurityManager.Core.UnitTests">
     <echo message="Target has executed."/>
@@ -217,7 +217,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Data.DomainObjects.Legacy.CodeGenerator" depends="Core, Data.DomainObjects, Data.DomainObjects.ObjectBinding">
+  <target name="Data.DomainObjects.Legacy.CodeGenerator" depends="Core, Data.DomainObjects, Data.DomainObjects.Legacy.ObjectBinding">
     <property name="project.name" value="Data.DomainObjects.Legacy.CodeGenerator" />
     <property name="project.dir" value="Data/DomainObjects.Legacy.CodeGenerator" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.Legacy.CodeGenerator" />
@@ -249,19 +249,19 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Data.DomainObjects.ObjectBinding" depends="Core, Data.DomainObjects, Data.DomainObjects.Legacy, ObjectBinding">
-    <property name="project.name" value="Data.DomainObjects.ObjectBinding" />
-    <property name="project.dir" value="Data/DomainObjects.ObjectBinding" />
-    <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding" />
+  <target name="Data.DomainObjects.Legacy.ObjectBinding" depends="Core, Data.DomainObjects, Data.DomainObjects.Legacy, ObjectBinding">
+    <property name="project.name" value="Data.DomainObjects.Legacy.ObjectBinding" />
+    <property name="project.dir" value="Data/DomainObjects.Legacy.ObjectBinding" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.Legacy.ObjectBinding" />
     <property name="project.extension" value="dll" />
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Data.DomainObjects.ObjectBinding.Web" 
-      depends="Core, Data.DomainObjects, Data.DomainObjects.Legacy, Data.DomainObjects.ObjectBinding, ObjectBinding, ObjectBinding.Web, Web">
-    <property name="project.name" value="Data.DomainObjects.ObjectBinding.Web" />
-    <property name="project.dir" value="Data/DomainObjects.ObjectBinding.Web" />
-    <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.Web" />
+  <target name="Data.DomainObjects.Legacy.ObjectBinding.Web" 
+      depends="Core, Data.DomainObjects, Data.DomainObjects.Legacy, Data.DomainObjects.Legacy.ObjectBinding, ObjectBinding, ObjectBinding.Web, Web">
+    <property name="project.name" value="Data.DomainObjects.Legacy.ObjectBinding.Web" />
+    <property name="project.dir" value="Data/DomainObjects.Legacy.ObjectBinding.Web" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.Legacy.ObjectBinding.Web" />
     <property name="project.extension" value="dll" />
     <call target="execute-buildstep" />
   </target>
@@ -323,7 +323,7 @@
   </target>
 
   <target name="ObjectBinding.Web.CodeGenerator" 
-      depends="Core, Mixins, Web, ObjectBinding, ObjectBinding.Web, Data.DomainObjects, Data.DomainObjects.Legacy, Data.DomainObjects.ObjectBinding">
+      depends="Core, Mixins, Web, ObjectBinding, ObjectBinding.Web, Data.DomainObjects, Data.DomainObjects.Legacy, Data.DomainObjects.Legacy.ObjectBinding">
     <property name="project.name" value="ObjectBinding.Web.CodeGenerator" />
     <property name="project.dir" value="ObjectBinding/Web.CodeGenerator/Core" />
     <property name="project.output" value="UIGen" />
@@ -393,7 +393,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="SecurityManager.Core" depends="Core, ObjectBinding, Data.DomainObjects, Data.DomainObjects.ObjectBinding">
+  <target name="SecurityManager.Core" depends="Core, ObjectBinding, Data.DomainObjects, Data.DomainObjects.Legacy.ObjectBinding">
     <property name="project.name" value="SecurityManager.Core" />
     <property name="project.dir" value="SecurityManager/Core" />
     <property name="project.output" value="Rubicon.SecurityManager" />
@@ -401,7 +401,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="SecurityManager.Metadata.Importer" depends="Core, Data.DomainObjects, Data.DomainObjects.ObjectBinding, SecurityManager.Core">
+  <target name="SecurityManager.Metadata.Importer" depends="Core, Data.DomainObjects, Data.DomainObjects.Legacy.ObjectBinding, SecurityManager.Core">
     <property name="project.name" value="SecurityManager.Metadata.Importer" />
     <property name="project.dir" value="SecurityManager/Metadata.Importer" />
     <property name="project.output" value="Rubicon.SecurityManager.Metadata.Importer" />
@@ -410,7 +410,7 @@
   </target>
 
   <target name="SecurityManager.Clients.Web" depends="Core, ObjectBinding, ObjectBinding.Web, Web, 
-        Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.Web, Data.DomainObjects.ObjectBinding.Web, 
+        Data.DomainObjects, Data.DomainObjects.Legacy.ObjectBinding, Data.DomainObjects.Web, Data.DomainObjects.Legacy.ObjectBinding.Web, 
         SecurityManager.Core">
     <property name="project.name" value="SecurityManager.Clients.Web" />
     <property name="project.dir" value="SecurityManager/Clients.Web" />
@@ -519,16 +519,16 @@
     <call target="buildtest" />
   </target>
 
-  <target name="Data.DomainObjects.ObjectBinding.UnitTests">
+  <target name="Data.DomainObjects.Legacy.ObjectBinding.UnitTests">
     <call target="Core" cascade="false"/>
     <call target="Data.DomainObjects" cascade="false"/>
-    <call target="Data.DomainObjects.ObjectBinding" cascade="false"/>
+    <call target="Data.DomainObjects.Legacy.ObjectBinding" cascade="false"/>
     <call target="Development.Core" cascade="false"/>
     <call target="ObjectBinding" cascade="false"/>
 
-    <property name="project.name" value="Data.DomainObjects.ObjectBinding.UnitTests" />
-    <property name="project.dir" value="Data/DomainObjects.ObjectBinding.UnitTests" />
-    <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.UnitTests" />
+    <property name="project.name" value="Data.DomainObjects.Legacy.ObjectBinding.UnitTests" />
+    <property name="project.dir" value="Data/DomainObjects.Legacy.ObjectBinding.UnitTests" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.Legacy.ObjectBinding.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
   </target>
@@ -537,7 +537,7 @@
     <call target="Core" cascade="false"/>
     <call target="Data.DomainObjects" cascade="false"/>
     <call target="Data.DomainObjects.Legacy.CodeGenerator" cascade="false"/>
-    <call target="Data.DomainObjects.ObjectBinding" cascade="false"/>
+    <call target="Data.DomainObjects.Legacy.ObjectBinding" cascade="false"/>
 
     <property name="project.name" value="Data.DomainObjects.Legacy.CodeGenerator.UnitTests" />
     <property name="project.dir" value="Data/DomainObjects.Legacy.CodeGenerator.UnitTests" />
@@ -587,7 +587,7 @@
   <target name="SecurityManager.Core.UnitTests">
     <call target="Core" cascade="false"/>
     <call target="Data.DomainObjects" cascade="false"/>
-    <call target="Data.DomainObjects.ObjectBinding" cascade="false"/>
+    <call target="Data.DomainObjects.Legacy.ObjectBinding" cascade="false"/>
     <call target="Development.Core" cascade="false"/>
     <call target="Security" cascade="false"/>
     <call target="Security.Data.DomainObjects" cascade="false"/>

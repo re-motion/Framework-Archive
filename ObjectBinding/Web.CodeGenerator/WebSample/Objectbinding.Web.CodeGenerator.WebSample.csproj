@@ -217,13 +217,13 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Data\DomainObjects.ObjectBinding.Web\Data.DomainObjects.ObjectBinding.Web.csproj">
+    <ProjectReference Include="..\..\..\Data\DomainObjects.Legacy.ObjectBinding.Web\Data.DomainObjects.Legacy.ObjectBinding.Web.csproj">
       <Project>{9246E440-009C-44BE-A801-C66D8DE04A8F}</Project>
-      <Name>Data.DomainObjects.ObjectBinding.Web</Name>
+      <Name>Data.DomainObjects.Legacy.ObjectBinding.Web</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
+    <ProjectReference Include="..\..\..\Data\DomainObjects.Legacy.ObjectBinding\Data.DomainObjects.Legacy.ObjectBinding.csproj">
       <Project>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</Project>
-      <Name>Data.DomainObjects.ObjectBinding</Name>
+      <Name>Data.DomainObjects.Legacy.ObjectBinding</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Data\DomainObjects.Web\Data.DomainObjects.Web.csproj">
       <Project>{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}</Project>
