@@ -15,6 +15,7 @@
         <include name="**/*.cs"/>
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
         <exclude name="MixerTool/SampleAssembly/*.cs" />
+        <exclude name="bin/**/*.cs" />
       </sources>
       <references failonempty="true">
         <include asis="true" name="${build.test.outputdir}/nunit.framework.dll"/>
