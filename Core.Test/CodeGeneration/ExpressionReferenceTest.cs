@@ -9,44 +9,36 @@ using Rubicon.Core.UnitTests.CodeGeneration.SampleTypes;
 namespace Rubicon.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
-  public class ExpressionReferenceTest : CodeGenerationBaseTest
+  public class ExpressionReferenceTest : SnippetGenerationBaseTest
   {
     [Test]
     public void ExpressionReference ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (ClassWithStringMethod));
-      CustomMethodEmitter methodEmitter = classEmitter.CreateMethodOverride (typeof (ClassWithStringMethod).GetMethod ("StringMethod"));
+      CustomMethodEmitter methodEmitter = GetMethodEmitter (false);
+      methodEmitter.SetReturnType (typeof (string));
       
       ExpressionReference expressionReference = new ExpressionReference (typeof (string), new ConstReference ("bla").ToExpression(), methodEmitter);
       methodEmitter.ImplementByReturning (new ReferenceExpression (expressionReference));
 
-      ClassWithStringMethod method = (ClassWithStringMethod) Activator.CreateInstance (classEmitter.BuildType ());
-      Assert.AreEqual ("bla", method.StringMethod ());
+      Assert.AreEqual ("bla", InvokeMethod());
     }
 
     [Test]
     [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Expressions cannot be assigned to.")]
     public void ExpressionReferenceCannotBeStored ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (ClassWithStringMethod));
-      CustomMethodEmitter methodEmitter = classEmitter.CreateMethodOverride (typeof (ClassWithStringMethod).GetMethod ("StringMethod"));
+      SuppressAssemblySave ();
 
-      try
-      {
-        ExpressionReference expressionReference = new ExpressionReference (typeof (string), new ConstReference ("bla").ToExpression (), methodEmitter);
-        expressionReference.StoreReference (null);
-      }
-      finally
-      {
-        classEmitter.BuildType ();
-      }
+      CustomMethodEmitter methodEmitter = GetMethodEmitter (false);
+      ExpressionReference expressionReference = new ExpressionReference (typeof (string), new ConstReference ("bla").ToExpression (), methodEmitter);
+      expressionReference.StoreReference (null);
     }
 
     [Test]
     public void LoadAddressOfExpressionReference ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (ClassWithStringMethod));
-      CustomMethodEmitter methodEmitter = classEmitter.CreateMethodOverride (typeof (ClassWithStringMethod).GetMethod ("StringMethod"));
+      CustomMethodEmitter methodEmitter = GetMethodEmitter (false);
+      methodEmitter.SetReturnType (typeof (string));
 
       ExpressionReference expressionReference =
           new ExpressionReference (typeof (StructWithMethod), new InitObjectExpression (methodEmitter, typeof (StructWithMethod)), methodEmitter);
@@ -57,8 +49,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
 
       methodEmitter.ImplementByReturning (methodCall);
 
-      ClassWithStringMethod method = (ClassWithStringMethod) Activator.CreateInstance (classEmitter.BuildType());
-      Assert.AreEqual ("StructMethod", method.StringMethod());
+      Assert.AreEqual ("StructMethod", InvokeMethod());
     }
   }
 }

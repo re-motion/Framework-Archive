@@ -18,7 +18,7 @@ namespace Rubicon.CodeGeneration.DPExtensions
 
     public override OpCode BranchIfTrue
     {
-      get { return OpCodes.Ceq; }
+      get { return OpCodes.Beq; }
     }
 
     public override OpCode BranchIfFalse

@@ -10,13 +10,12 @@ using System.Reflection.Emit;
 namespace Rubicon.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
-  public class LdArrayElementTest : CodeGenerationBaseTest
+  public class LdArrayElementTest : SnippetGenerationBaseTest
   {
     [Test]
     public void LoadArrayElementFromExpression ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "Foo", typeof (object));
-      CustomMethodEmitter method = classEmitter.CreateMethod ("LoadArrayElementFromMethodCall", MethodAttributes.Public);
+      CustomMethodEmitter method = GetMethodEmitter (false);
       method.SetParameterTypes (new Type[] { typeof (IArrayProvider), typeof (int) });
       method.SetReturnType (typeof (object));
       method.AddStatement (new ILStatement (delegate (IMemberEmitter member, ILGenerator ilgen)
@@ -30,9 +29,8 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
         ilgen.Emit (OpCodes.Ret);
       }));
 
-      object instance = Activator.CreateInstance (classEmitter.BuildType ());
       SimpleArrayProvider provider = new SimpleArrayProvider();
-      object result = instance.GetType ().GetMethod ("LoadArrayElementFromMethodCall").Invoke (instance, new object[] { provider, 1 });
+      object result = InvokeMethod (provider, 1);
       Assert.AreEqual (2, result);
     }
   }

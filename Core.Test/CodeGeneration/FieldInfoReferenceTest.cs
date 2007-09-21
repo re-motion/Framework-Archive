@@ -12,7 +12,7 @@ using Rubicon.Development.UnitTesting;
 namespace Rubicon.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
-  public class FieldInfoReferenceTest : CodeGenerationBaseTest
+  public class FieldInfoReferenceTest : SnippetGenerationBaseTest
   {
     public override void SetUp ()
     {
@@ -24,8 +24,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     public void LoadAndStoreStatic ()
     {
       FieldInfo fieldInfo = typeof (ClassWithPublicFields).GetField ("StaticReferenceTypeField");
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "FieldInfoReferenceTest", typeof (object));
-      CustomMethodEmitter methodEmitter = classEmitter.CreateMethod ("Do", MethodAttributes.Public)
+      CustomMethodEmitter methodEmitter = GetMethodEmitter (false)
         .SetReturnType (typeof (string));
 
       LocalReference local = methodEmitter.DeclareLocal (typeof (string));
@@ -35,12 +34,8 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
           .AddStatement (new AssignStatement (fieldReference, new ConstReference ("Replacement").ToExpression ()))
           .AddStatement (new ReturnStatement (local));
 
-      object instance = Activator.CreateInstance (classEmitter.BuildType ());
-
       Assert.AreEqual ("InitialStatic", ClassWithPublicFields.StaticReferenceTypeField);
-      object returnValue = PrivateInvoke.InvokePublicMethod (instance, "Do");
-
-      Assert.AreEqual ("InitialStatic", returnValue);
+      Assert.AreEqual ("InitialStatic", InvokeMethod ());
       Assert.AreEqual ("Replacement", ClassWithPublicFields.StaticReferenceTypeField);
     }
 
@@ -48,10 +43,9 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     public void LoadAndStoreInstance ()
     {
       FieldInfo fieldInfo = typeof (ClassWithPublicFields).GetField ("ReferenceTypeField");
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "FieldInfoReferenceTest", typeof (object));
-      CustomMethodEmitter methodEmitter = classEmitter.CreateMethod ("Do", MethodAttributes.Public)
-        .SetParameterTypes (typeof (ClassWithPublicFields))
-        .SetReturnType (typeof (string));
+      CustomMethodEmitter methodEmitter = GetMethodEmitter (false)
+          .SetParameterTypes (typeof (ClassWithPublicFields))
+          .SetReturnType (typeof (string));
 
       LocalReference local = methodEmitter.DeclareLocal (typeof (string));
       FieldInfoReference fieldReference = new FieldInfoReference (methodEmitter.ArgumentReferences[0], fieldInfo);
@@ -60,13 +54,9 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
           .AddStatement (new AssignStatement (fieldReference, new ConstReference ("Replacement").ToExpression ()))
           .AddStatement (new ReturnStatement (local));
 
-      object instance = Activator.CreateInstance (classEmitter.BuildType ());
-
       ClassWithPublicFields parameter = new ClassWithPublicFields ();
       Assert.AreEqual ("Initial", parameter.ReferenceTypeField);
-      object returnValue = PrivateInvoke.InvokePublicMethod (instance, "Do", parameter);
-
-      Assert.AreEqual ("Initial", returnValue);
+      Assert.AreEqual ("Initial", InvokeMethod (parameter));
       Assert.AreEqual ("Replacement", parameter.ReferenceTypeField);
     }
 
@@ -74,9 +64,8 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     public void LoadAndStoreAddressStatic ()
     {
       FieldInfo fieldInfo = typeof (ClassWithPublicFields).GetField ("StaticReferenceTypeField");
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "FieldInfoReferenceTest", typeof (object));
-      CustomMethodEmitter methodEmitter = classEmitter.CreateMethod ("Do", MethodAttributes.Public)
-        .SetReturnType (typeof (string));
+      CustomMethodEmitter methodEmitter = GetMethodEmitter (false)
+          .SetReturnType (typeof (string));
 
       LocalReference local = methodEmitter.DeclareLocal (typeof (string));
       FieldInfoReference fieldReference = new FieldInfoReference (null, fieldInfo);
@@ -90,12 +79,8 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
           .AddStatement (new AssignStatement (indirectReference, new ConstReference ("Replacement").ToExpression ()))
           .AddStatement (new ReturnStatement (local));
 
-      object instance = Activator.CreateInstance (classEmitter.BuildType ());
-
       Assert.AreEqual ("InitialStatic", ClassWithPublicFields.StaticReferenceTypeField);
-      object returnValue = PrivateInvoke.InvokePublicMethod (instance, "Do");
-
-      Assert.AreEqual ("InitialStatic", returnValue);
+      Assert.AreEqual ("InitialStatic", InvokeMethod());
       Assert.AreEqual ("Replacement", ClassWithPublicFields.StaticReferenceTypeField);
     }
 
@@ -103,10 +88,9 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     public void LoadAndStoreAddressInstance ()
     {
       FieldInfo fieldInfo = typeof (ClassWithPublicFields).GetField ("ReferenceTypeField");
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "FieldInfoReferenceTest", typeof (object));
-      CustomMethodEmitter methodEmitter = classEmitter.CreateMethod ("Do", MethodAttributes.Public)
-        .SetParameterTypes (typeof (ClassWithPublicFields))
-        .SetReturnType (typeof (string));
+      CustomMethodEmitter methodEmitter = GetMethodEmitter (false)
+          .SetParameterTypes (typeof (ClassWithPublicFields))
+          .SetReturnType (typeof (string));
 
       LocalReference local = methodEmitter.DeclareLocal (typeof (string));
       FieldInfoReference fieldReference = new FieldInfoReference (methodEmitter.ArgumentReferences[0], fieldInfo);
@@ -120,13 +104,9 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
           .AddStatement (new AssignStatement (indirectReference, new ConstReference ("Replacement").ToExpression ()))
           .AddStatement (new ReturnStatement (local));
 
-      object instance = Activator.CreateInstance (classEmitter.BuildType ());
-
       ClassWithPublicFields parameter = new ClassWithPublicFields ();
       Assert.AreEqual ("Initial", parameter.ReferenceTypeField);
-      object returnValue = PrivateInvoke.InvokePublicMethod (instance, "Do", parameter);
-
-      Assert.AreEqual ("Initial", returnValue);
+      Assert.AreEqual ("Initial", InvokeMethod (parameter));
       Assert.AreEqual ("Replacement", parameter.ReferenceTypeField);
     }
   }

@@ -37,6 +37,7 @@ namespace Rubicon.CodeGeneration.DPExtensions
         statement.Emit (member, gen);
 
       gen.EndExceptionBlock ();
+      gen.Emit (OpCodes.Nop); // ensure a leave target for try block
     }
   }
 }

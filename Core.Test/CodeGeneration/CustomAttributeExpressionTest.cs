@@ -13,13 +13,12 @@ using NUnit.Framework.SyntaxHelpers;
 namespace Rubicon.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
-  public class ExpressionExtensionTest : CodeGenerationBaseTest
+  public class CustomAttributeExpressionTest : SnippetGenerationBaseTest
   {
     [Test]
     public void CustomAttributeExpression ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "ExpressionExtensionTest", typeof (object));
-      CustomMethodEmitter methodEmitter = classEmitter.CreateMethod ("TestMethod", MethodAttributes.Public)
+      CustomMethodEmitter methodEmitter = GetMethodEmitter(false)
           .SetReturnType (typeof (Tuple<SimpleAttribute, SimpleAttribute>));
 
       LocalReference attributeOwner = methodEmitter.DeclareLocal (typeof (Type));
@@ -35,9 +34,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
 
       object[] attributes = typeof (ClassWithCustomAttribute).GetCustomAttributes (typeof (SimpleAttribute), true);
 
-      object instance = Activator.CreateInstance (classEmitter.BuildType ());
-      Tuple<SimpleAttribute, SimpleAttribute> attributeTuple = 
-          (Tuple<SimpleAttribute, SimpleAttribute>) PrivateInvoke.InvokePublicMethod (instance, "TestMethod");
+      Tuple<SimpleAttribute, SimpleAttribute> attributeTuple = (Tuple<SimpleAttribute, SimpleAttribute>) InvokeMethod();
       Assert.That (new object[] { attributeTuple.A, attributeTuple.B }, Is.EquivalentTo (attributes));
     }
 
@@ -46,8 +43,8 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
         + "to type System.Reflection.ICustomAttributeProvider.\r\nParameter name: attributeOwner")]
     public void CustomAttributeExpressionThrowsOnWrongReferenceType ()
     {
+      SuppressAssemblySave ();
       new CustomAttributeExpression (new LocalReference (typeof (string)), typeof (SimpleAttribute), 0, true);
     }
-
   }
 }

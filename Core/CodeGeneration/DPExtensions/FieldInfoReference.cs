@@ -5,12 +5,12 @@ using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
 namespace Rubicon.CodeGeneration.DPExtensions
 {
-  public class FieldInfoReference : Reference
+  public class FieldInfoReference : TypeReference
   {
     private readonly FieldInfo _field;
 
     public FieldInfoReference (Reference owner, FieldInfo field)
-        : base (owner)
+        : base (owner, field.FieldType)
     {
       _field = field;
     }

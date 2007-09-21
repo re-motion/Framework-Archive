@@ -55,7 +55,7 @@ namespace Rubicon.CodeGeneration.DPExtensions
       MethodInfo setMethod = Reference.GetSetMethod (true);
       if (setMethod == null)
       {
-        string message = string.Format ("The property {0}.{1} cannot be loaded, it has no setter.", Reference.DeclaringType.FullName, Reference.Name);
+        string message = string.Format ("The property {0}.{1} cannot be stored, it has no setter.", Reference.DeclaringType.FullName, Reference.Name);
         throw new InvalidOperationException (message);
       }
       if (setMethod.IsStatic)
