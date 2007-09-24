@@ -30,6 +30,7 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
       ApplicationContext applicationContext = ApplicationContextBuilder.BuildContextFromAssemblies (GetAssemblies (includeGac));
       foreach (ClassContext classContext in applicationContext.ClassContexts)
       {
+        // TODO: Use Mixins.TypeUtility.IsAssignableFrom (typeof (IBusinessObject), _concreteType) with a ScopedReplace instead?
         if (BindableObjectMixin.HasMixin (classContext.Type, applicationContext))
           types.Add (classContext.Type);
       }

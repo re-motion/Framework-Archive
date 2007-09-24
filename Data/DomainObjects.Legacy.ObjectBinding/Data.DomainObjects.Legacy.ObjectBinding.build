@@ -17,6 +17,7 @@
       <sources failonempty="true">
         <include name="*.cs"/>
         <include name="Design/**/*.cs"/>
+        <include name="Infrastructure/**/*.cs"/>
         <include name="Properties/**/*.cs" />
         <include name="PropertyTypes/**/*.cs"/>
         <exclude name="Properties/AssemblyInfoTemplate.cs" />

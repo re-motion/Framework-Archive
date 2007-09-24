@@ -105,6 +105,7 @@
     </Compile>
     <Compile Include="BindableObject\BindableObjectGlobalizationService.cs" />
     <Compile Include="BindableObject\BindableObjectMixin.cs" />
+    <Compile Include="BindableObject\BindableObjectMixinBase.cs" />
     <Compile Include="BindableObject\BindableObjectProvider.cs" />
     <Compile Include="BindableObject\BindableObjectWithIdentityMixin.cs" />
     <Compile Include="BindableObject\ConstantEnumerationValueFilter.cs" />

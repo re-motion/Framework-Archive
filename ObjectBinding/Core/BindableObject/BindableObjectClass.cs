@@ -16,6 +16,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
       //TODO: Check for value type
       ArgumentUtility.CheckNotNull ("type", type);
+      // TODO: check using Mixins.TypeUtility.IsAssignableFrom (typeof (IBusinessObject), _concreteType) instead?
       CheckTypeForBindableObjectMixin (type);
       ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
 

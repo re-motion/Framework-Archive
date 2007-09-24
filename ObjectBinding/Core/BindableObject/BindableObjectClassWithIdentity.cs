@@ -7,12 +7,6 @@ namespace Rubicon.ObjectBinding.BindableObject
   //TODO: doc
   public class BindableObjectClassWithIdentity : BindableObjectClass, IBusinessObjectClassWithIdentity
   {
-    internal static bool HasMixin (Type targetType)
-    {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      return BindableObjectMixin.HasMixin (targetType, typeof (BindableObjectWithIdentityMixin), MixinConfiguration.ActiveContext);
-    }
-    
     private readonly Type _getObjectServiceType;
 
     public BindableObjectClassWithIdentity (Type type, BindableObjectProvider businessObjectProvider)

@@ -50,5 +50,13 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
 
       Assert.That (((IBusinessObject) deserialized).BusinessObjectClass, Is.Not.SameAs (((IBusinessObject) value).BusinessObjectClass));
     }
+
+    [Test]
+    public void HasMixin ()
+    {
+      Assert.IsTrue (BindableObjectWithIdentityMixin.HasMixin (typeof (ClassWithIdentity)));
+      Assert.IsFalse (BindableObjectWithIdentityMixin.HasMixin (typeof (ClassWithAllDataTypes)));
+      Assert.IsFalse (BindableObjectWithIdentityMixin.HasMixin (typeof (object)));
+    }
   }
 }
