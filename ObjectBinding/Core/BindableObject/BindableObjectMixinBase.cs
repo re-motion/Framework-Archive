@@ -19,20 +19,6 @@ namespace Rubicon.ObjectBinding.BindableObject
   public abstract class BindableObjectMixinBase<TBindableObject> : Mixin<TBindableObject>, IBusinessObject
       where TBindableObject : class
   {
-    // Note: will not work for generic mixin types
-    protected static bool HasMixin (Type targetType, Type mixinType, ApplicationContext applicationContext)
-    {
-      ClassContext mixinConfiguration = applicationContext.GetClassContext (targetType);
-      return mixinConfiguration != null && mixinConfiguration.ContainsAssignableMixin (mixinType);
-    }
-
-    // Note: will not work for generic mixin types
-    protected static bool IncludesMixin (Type concreteType, Type mixinType, ApplicationContext applicationContext)
-    {
-      ClassContext mixinConfiguration = Mixin.GetMixinConfigurationFromConcreteType (concreteType);
-      return mixinConfiguration != null && mixinConfiguration.ContainsAssignableMixin (mixinType);
-    }
-
     [NonSerialized]
     private BindableObjectClass _bindableObjectClass;
 

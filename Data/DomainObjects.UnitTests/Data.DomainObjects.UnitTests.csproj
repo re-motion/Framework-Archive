@@ -254,6 +254,7 @@
     <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\GetDisplayName.cs" />
     <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\GetProperty.cs" />
     <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\GetPropertyString.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\Identity.cs" />
     <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\SetProperty.cs" />
     <Compile Include="ObjectBinding\ObjectBindingBaseTest.cs" />
     <Compile Include="ObjectBinding\TestDomain\BindableDomainObject.cs" />

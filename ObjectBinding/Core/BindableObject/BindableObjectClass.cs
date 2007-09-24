@@ -115,14 +115,14 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     protected void CheckTypeForIBusinessObject (Type type)
     {
-      if (!Mixins.TypeUtility.IsAssignableFrom (typeof (IBusinessObject), type))
+      if (Mixins.TypeUtility.GetAscribableMixinType (type, typeof (BindableObjectMixinBase<>)) == null)
       {
         throw new ArgumentException (
             string.Format (
-                "Type '{0}' does not implement the '{1}' interface, e.g. via the '{2}'.",
+                "Type '{0}' does not implement the '{1}' interface via the '{2}'.",
                 type.FullName,
                 typeof (IBusinessObject).FullName,
-                typeof (BindableObjectMixin).FullName),
+                typeof (BindableObjectMixinBase<>).FullName),
             "type");
       }
     }

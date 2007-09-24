@@ -55,6 +55,16 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     }
 
     [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain."
+        + "ClassWithManualIdentity' does not implement the 'Rubicon.ObjectBinding.IBusinessObject' interface via the 'Rubicon.ObjectBinding."
+        + "BindableObject.BindableObjectMixinBase`1'.\r\nParameter name: type")]
+    public void GetMetadata_ForBindableObjectWithManualIdentity ()
+    {
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithManualIdentity), _businessObjectProvider);
+      classReflector.GetMetadata ();
+    }
+
+    [Test]
     public void GetMetadata_FromCache ()
     {
       ClassReflector otherClassReflector = new ClassReflector (_type, _businessObjectProvider);

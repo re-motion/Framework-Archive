@@ -38,8 +38,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     private BindableObjectClass CreateBindableObjectClass ()
     {
       BindableObjectClass bindableObjectClass;
-      // TODO: Use Mixins.TypeUtility.IsAssignableFrom (typeof (IBusinessObjectWithIdentity), _concreteType) instead?
-      if (BindableObjectWithIdentityMixin.HasMixin (_type))
+      if (Mixins.TypeUtility.IsAssignableFrom (typeof (IBusinessObjectWithIdentity), _type))
         bindableObjectClass = new BindableObjectClassWithIdentity (_type, _businessObjectProvider);
       else
         bindableObjectClass = new BindableObjectClass (_type, _businessObjectProvider);

@@ -6,6 +6,7 @@ using Rubicon.Collections;
 using Rubicon.Mixins.Context;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.Utilities;
+using System.Collections;
 
 namespace Rubicon.ObjectBinding.Design.BindableObject
 {
@@ -26,28 +27,34 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
 
     public List<Type> GetTypes (bool includeGac)
     {
-      List<Type> types = new List<Type>();
-      ApplicationContext applicationContext = ApplicationContextBuilder.BuildContextFromAssemblies (GetAssemblies (includeGac));
+      IEnumerable allTypes = GetAllDesignerTypes (includeGac);
+      ApplicationContext applicationContext = GetApplicationContext (allTypes);
+
+      List<Type> bindableTypes = new List<Type> ();
       foreach (ClassContext classContext in applicationContext.ClassContexts)
       {
-        // TODO: Use Mixins.TypeUtility.IsAssignableFrom (typeof (IBusinessObject), _concreteType) with a ScopedReplace instead?
-        if (BindableObjectMixin.HasMixin (classContext.Type, applicationContext))
-          types.Add (classContext.Type);
+        if (Mixins.TypeUtility.GetAscribableMixinType (classContext.Type, typeof (BindableObjectMixinBase<>)) != null)
+          bindableTypes.Add (classContext.Type);
       }
-      return types;
+      return bindableTypes;
     }
 
-    private Assembly[] GetAssemblies (bool includeGac)
+    private ApplicationContext GetApplicationContext (IEnumerable typesToBeAnalyzed)
+    {
+      ApplicationContextBuilder builder = new ApplicationContextBuilder (null);
+      foreach (Type type in typesToBeAnalyzed)
+        builder.AddType (type);
+
+      return builder.BuildContext ();
+    }
+
+    private IEnumerable GetAllDesignerTypes (bool includeGac)
     {
       ITypeDiscoveryService typeDiscoveryService = (ITypeDiscoveryService) _serviceProvider.GetService (typeof (ITypeDiscoveryService));
       if (typeDiscoveryService == null)
-        return new Assembly[0];
-
-      Set<Assembly> assemblySet = new Set<Assembly>();
-      foreach (Type type in typeDiscoveryService.GetTypes (typeof (object), !includeGac))
-        assemblySet.Add (type.Assembly);
-
-      return assemblySet.ToArray();
+        return Type.EmptyTypes;
+      else
+        return typeDiscoveryService.GetTypes (typeof (object), !includeGac);
     }
   }
 }

@@ -54,9 +54,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [Test]
     public void HasMixin ()
     {
-      Assert.IsTrue (BindableObjectWithIdentityMixin.HasMixin (typeof (ClassWithIdentity)));
-      Assert.IsFalse (BindableObjectWithIdentityMixin.HasMixin (typeof (ClassWithAllDataTypes)));
-      Assert.IsFalse (BindableObjectWithIdentityMixin.HasMixin (typeof (object)));
+      Assert.IsTrue (Mixins.TypeUtility.HasMixin (typeof (ClassWithIdentity), typeof (BindableObjectWithIdentityMixin)));
+      Assert.IsFalse (Mixins.TypeUtility.HasMixin (typeof (ClassWithAllDataTypes), typeof (BindableObjectWithIdentityMixin)));
+      Assert.IsFalse (Mixins.TypeUtility.HasMixin (typeof (object), typeof (BindableObjectWithIdentityMixin)));
     }
   }
 }

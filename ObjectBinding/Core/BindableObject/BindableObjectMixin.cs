@@ -9,26 +9,6 @@ namespace Rubicon.ObjectBinding.BindableObject
   [Serializable]
   public class BindableObjectMixin : BindableObjectMixinBase<object>
   {
-    public static bool HasMixin (Type targetType)
-    {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      return HasMixin (targetType, MixinConfiguration.ActiveContext);
-    }
-
-    internal static bool HasMixin (Type targetType, ApplicationContext applicationContext)
-    {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      ArgumentUtility.CheckNotNull ("applicationContext", applicationContext);
-
-      return HasMixin (targetType, typeof (BindableObjectMixin), applicationContext);
-    }
-
-    public static bool IncludesMixin (Type concreteType)
-    {
-      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
-      return IncludesMixin (concreteType, typeof (BindableObjectMixin), MixinConfiguration.ActiveContext);
-    }
-
     public BindableObjectMixin ()
     {
     }

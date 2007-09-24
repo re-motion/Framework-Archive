@@ -122,8 +122,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
 
     private bool IsBindableObjectImplementation ()
     {
-      // TODO: Use Mixins.TypeUtility.IsAssignableFrom (typeof (IBusinessObject), _concreteType) instead?
-      return BindableObjectMixin.IncludesMixin (_concreteType);
+      return Mixins.TypeUtility.GetAscribableMixinType (_concreteType, typeof (BindableObjectMixinBase<>)) != null;
     }
 
     private IBusinessObjectClass GetReferenceClassFromService ()
