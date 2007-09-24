@@ -120,6 +120,7 @@
     <Compile Include="Collections\MultiDictionary.cs" />
     <Compile Include="Collections\InterlockedCache.cs" />
     <Compile Include="Collections\Set.cs" />
+    <Compile Include="Collections\Tuple.cs" />
     <Compile Include="Configuration\ConfigurationElementCollection.cs" />
     <Compile Include="Configuration\ConfigurationWrapper.cs" />
     <Compile Include="Configuration\ConfigurationWrapperFromConfigurationObject.cs" />

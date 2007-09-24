@@ -22,6 +22,16 @@ namespace Rubicon.Core.UnitTests.Collections
     }
 
     [Test]
+    public void EasyInitialize ()
+    {
+      Tuple<int, string, double, DateTime> tuple = Tuple.NewTuple (1, "X", 2.5, date1);
+      Assert.AreEqual (1, tuple.A);
+      Assert.AreEqual ("X", tuple.B);
+      Assert.AreEqual (2.5, tuple.C);
+      Assert.AreEqual (date1, tuple.D);
+    }
+
+    [Test]
     public void Equals_WithNull ()
     {
       TestTuple left = new TestTuple (1, "X", 2.5,date1);

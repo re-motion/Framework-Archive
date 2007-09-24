@@ -19,6 +19,14 @@ namespace Rubicon.Core.UnitTests.Collections
     }
 
     [Test]
+    public void EasyInitialize ()
+    {
+      Tuple<int, string> tuple = Tuple.NewTuple (1, "X");
+      Assert.AreEqual (1, tuple.A);
+      Assert.AreEqual ("X", tuple.B);
+    }
+
+    [Test]
     public void Equals_WithNull ()
     {
       TestTuple left = new TestTuple (1, "X");
