@@ -69,7 +69,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectData
     [ExpectedException (typeof (ArgumentException),
         ExpectedMessage =
         "Type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleReferenceType' does not implement the "
-        + "'Rubicon.ObjectBinding.IBusinessObject' interface via the 'Rubicon.ObjectBinding.BindableObject.BindableObjectMixin'.\r\n"
+        + "'Rubicon.ObjectBinding.IBusinessObject' interface, e.g. via the 'Rubicon.ObjectBinding.BindableObject.BindableObjectMixin'.\r\n"
         + "Parameter name: type")]
     public void GetBusinessObjectClass_WithTypeNotUsingBindableObjectMixin ()
     {

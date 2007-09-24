@@ -111,6 +111,10 @@
       <Project>{18C1D36B-CC05-4334-BF29-DE5A886DA89D}</Project>
       <Name>Mixins %28Mixins\Mixins%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.csproj">
+      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
+      <Name>ObjectBinding %28ObjectBinding\ObjectBinding%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Web\Core\Web.csproj">
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
       <Name>Web %28Web\Web%29</Name>
@@ -118,6 +122,10 @@
     <ProjectReference Include="..\..\Web\UnitTests\Web.UnitTests.csproj">
       <Project>{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}</Project>
       <Name>Web.UnitTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
+      <Project>{B915A0FD-92E5-42C5-BEB9-EB4D382563D7}</Project>
+      <Name>Data.DomainObjects.ObjectBinding</Name>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects.Web\Data.DomainObjects.Web.csproj">
       <Project>{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}</Project>
@@ -241,6 +249,16 @@
     <Compile Include="MixedDomains\SampleTypes\MixinWithState.cs" />
     <Compile Include="MixedDomains\SampleTypes\NullMixin.cs" />
     <Compile Include="MixedDomains\SerializationTest.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\Common.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\GetBusinessObjectClass.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\GetDisplayName.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\GetProperty.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\GetPropertyString.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\SetProperty.cs" />
+    <Compile Include="ObjectBinding\ObjectBindingBaseTest.cs" />
+    <Compile Include="ObjectBinding\TestDomain\BindableDomainObject.cs" />
+    <Compile Include="ObjectBinding\TestDomain\BindableDomainObjectWithOverriddenDisplayName.cs" />
+    <Compile Include="ObjectBinding\TestDomain\SecurableBindableDomainObjectWithOverriddenDisplayName.cs" />
     <Compile Include="Persistence\MixedStorageProviderTest.cs" />
     <Compile Include="Persistence\StorageProviderWithFixedGuidMixin.cs" />
     <Compile Include="Persistence\Rdbms\UpdateCommandBuilderTest.cs" />

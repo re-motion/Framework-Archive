@@ -3,11 +3,13 @@ using Rubicon.ObjectBinding.BindableObject;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
-  class BindableDomainObjectMixin : BindableObjectMixinBase<DomainObject>
+  [Serializable]
+  public class BindableDomainObjectMixin : BindableObjectMixinBase<DomainObject>
   {
     protected override BindableObjectClass InitializeBindableObjectClass ()
     {
-      throw new NotImplementedException();
+      // TODO: Configure the BindableObjectClass to instantiate the right ClassReflectors and PropertyReflectors
+      return BindableObjectProvider.Current.GetBindableObjectClass (Configuration.TargetClass.Type);
     }
   }
 }

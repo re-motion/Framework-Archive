@@ -17,7 +17,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       //TODO: Check for value type
       ArgumentUtility.CheckNotNull ("type", type);
       // TODO: check using Mixins.TypeUtility.IsAssignableFrom (typeof (IBusinessObject), _concreteType) instead?
-      CheckTypeForBindableObjectMixin (type);
+      CheckTypeForIBusinessObject (type);
       ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
 
       _type = type;
@@ -113,13 +113,13 @@ namespace Rubicon.ObjectBinding.BindableObject
         _properties.Add (property);
     }
 
-    protected void CheckTypeForBindableObjectMixin (Type type)
+    protected void CheckTypeForIBusinessObject (Type type)
     {
-      if (!BindableObjectMixin.HasMixin (type))
+      if (!Mixins.TypeUtility.IsAssignableFrom (typeof (IBusinessObject), type))
       {
         throw new ArgumentException (
             string.Format (
-                "Type '{0}' does not implement the '{1}' interface via the '{2}'.",
+                "Type '{0}' does not implement the '{1}' interface, e.g. via the '{2}'.",
                 type.FullName,
                 typeof (IBusinessObject).FullName,
                 typeof (BindableObjectMixin).FullName),

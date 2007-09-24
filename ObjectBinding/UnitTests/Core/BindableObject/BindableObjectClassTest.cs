@@ -46,11 +46,18 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [ExpectedException (typeof (ArgumentException),
         ExpectedMessage =
         "Type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleReferenceType' does not implement the "
-        + "'Rubicon.ObjectBinding.IBusinessObject' interface via the 'Rubicon.ObjectBinding.BindableObject.BindableObjectMixin'.\r\n"
+        + "'Rubicon.ObjectBinding.IBusinessObject' interface, e.g. via the 'Rubicon.ObjectBinding.BindableObject.BindableObjectMixin'.\r\n"
         + "Parameter name: type")]
     public void Initialize_WithTypeNotUsingBindableObjectMixin ()
     {
       new BindableObjectClass (typeof (SimpleReferenceType), _bindableObjectProvider);
+    }
+
+    [Test]
+    public void Initialize_WithTypeManuallyImplementingBindableObjectMixin ()
+    {
+      BindableObjectClass bindableObjectClass = new BindableObjectClass (typeof (ManualBusinessObject), _bindableObjectProvider);
+      Assert.That (bindableObjectClass.Type, Is.SameAs (typeof (ManualBusinessObject)));
     }
 
     [Test]

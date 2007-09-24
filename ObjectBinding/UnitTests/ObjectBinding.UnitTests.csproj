@@ -88,6 +88,7 @@
     <Compile Include="Core\BindableObject\TestDomain\DerivedBusinessObjectClass.cs" />
     <Compile Include="Core\BindableObject\TestDomain\BaseBusinessObjectClass.cs" />
     <Compile Include="Core\BindableObject\TestDomain\ICustomGetObjectService.cs" />
+    <Compile Include="Core\BindableObject\TestDomain\ManualBusinessObject.cs" />
     <Compile Include="Core\BindableObject\TestDomain\SecurableClassWithOverriddenDisplayName.cs" />
     <Compile Include="Core\BindableObject\TestDomain\ISearchServiceOnProperty.cs" />
     <Compile Include="Core\BindableObject\TestDomain\EnumWithUndefinedValueFromOtherType.cs" />
