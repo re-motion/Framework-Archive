@@ -7,8 +7,8 @@ using System.Reflection;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle("Rubicon Legacy ObjectBinding for DomainObjects Web Library")]
-[assembly: AssemblyDescription("Class library for using Rubicon ObjectBinding and the legacy Rubicon Persistence Framework in web applications.")]
+[assembly: AssemblyTitle("Rubicon ObjectBinding for DomainObjects Web Library")]
+[assembly: AssemblyDescription("Class library for using Rubicon ObjectBinding and the Rubicon Persistence Framework in web applications.")]
 [assembly: AssemblyConfiguration(".NET Framework: net-2.0, build type: debug")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
 [assembly: AssemblyProduct("Rubicon .NET Commons")]

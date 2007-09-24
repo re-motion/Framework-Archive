@@ -7,12 +7,12 @@ using System.Reflection;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle("Rubicon Legacy ObjectBinding for DomainObjects Web Library")]
-[assembly: AssemblyDescription("Class library for using Rubicon ObjectBinding and the legacy Rubicon Persistence Framework in web applications.")]
-[assembly: AssemblyConfiguration(".NET Framework: net-2.0, build type: debug")]
-[assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
-[assembly: AssemblyProduct("Rubicon .NET Commons")]
-[assembly: AssemblyCopyright("(c) 2003 - 2007 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
+[assembly: AssemblyTitle("Rubicon ObjectBinding for DomainObjects Web Library")]
+[assembly: AssemblyDescription("Class library for using Rubicon ObjectBinding and the Rubicon Persistence Framework in web applications.")]
+[assembly: AssemblyConfiguration("@buildinfo@")]
+[assembly: AssemblyCompany("@company@")]
+[assembly: AssemblyProduct("@productname@")]
+[assembly: AssemblyCopyright("@copyright@")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
@@ -28,7 +28,7 @@ using System.Reflection;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.7.56.202")]
+[assembly: AssemblyVersion("@versionnumber@")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -57,6 +57,6 @@ using System.Reflection;
 //
 #pragma warning disable 1699
 [assembly: AssemblyDelaySign (false)]
-[assembly: AssemblyKeyFile(@"\Development\global/rubicon.snk")]
+[assembly: AssemblyKeyFile(@"@keyfile@")]
 [assembly: AssemblyKeyName("")]
 #pragma warning restore 1699
