@@ -11,11 +11,12 @@ using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Web.UI.Design;
 using Rubicon.Web.Utilities;
+using Rubicon.Data.DomainObjects.ObjectBinding.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.Web
 {
   [Designer (typeof (DomainObjectDataSourceDesigner))]
-  public class DomainObjectDataSourceControl: BusinessObjectDataSourceControl
+  public class DomainObjectDataSourceControl: BusinessObjectDataSourceControl, IForceLegacyReferenceMarker
   {
     private DomainObjectDataSource _dataSource = new DomainObjectDataSource();
     private Exception _designTimeMappingException = null;

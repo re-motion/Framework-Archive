@@ -106,6 +106,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\IForceLegacyReferenceMarker.cs" />
     <Compile Include="IsReadOnlyAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
