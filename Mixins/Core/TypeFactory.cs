@@ -2,7 +2,6 @@ using System;
 using System.Runtime.Serialization;
 using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Definitions.Building;
 using Rubicon.Mixins.Validation;
 using Rubicon.Utilities;
 using Rubicon.Mixins.Context;
@@ -59,6 +58,9 @@ namespace Rubicon.Mixins
     /// instantiated and configured to be used with the target instance. If you need to supply pre-created mixin instances for an object, use
     /// <see cref="MixedTypeInstantiationScope"/>. See <see cref="ObjectFactory"/> for a simpler way to immediately create instances of mixed types.
     /// </para>
+    /// <para>
+    /// If <paramref name="targetType"/> is already a generated type, this method will not subclass it again.
+    /// </para>
     /// </remarks>
     public static Type GetConcreteType (Type targetType)
     {
@@ -94,6 +96,10 @@ namespace Rubicon.Mixins
     /// <see cref="Activator.CreateInstance(Type, object[])"/>. When this happens, all the mixins associated with the generated type are also
     /// instantiated and configured to be used with the target instance. If you need to supply pre-created mixin instances for an object, use
     /// <see cref="MixedTypeInstantiationScope"/>. See <see cref="ObjectFactory"/> for a simpler way to immediately create instances of mixed types.
+    /// </para>
+    /// <para>
+    /// If <paramref name="targetType"/> is already a generated type, this method will only subclass it again when
+    /// <see cref="GenerationPolicy.ForceGeneration"/> is specified.
     /// </para>
     /// </remarks>
     public static Type GetConcreteType (Type targetType, GenerationPolicy generationPolicy)
@@ -213,13 +219,22 @@ namespace Rubicon.Mixins
     /// Use the <paramref name="generationPolicy"/> parameter to configure whether this method should return an empty but valid
     /// <see cref="TargetClassDefinition"/> for types that do not have a mixin configuration in <paramref name="applicationContext"/>.
     /// </para>
+    /// <para>
+    /// If <paramref name="targetType"/> is already a generated type, no new <see cref="TargetClassDefinition"/> is created for it unless
+    /// <see cref="GenerationPolicy.ForceGeneration"/> is specified.
+    /// </para>
     /// </remarks>
     public static TargetClassDefinition GetConfiguration (Type targetType, ApplicationContext applicationContext, GenerationPolicy generationPolicy)
     {
       ArgumentUtility.CheckNotNull ("targetType", targetType);
       ArgumentUtility.CheckNotNull ("applicationContext", applicationContext);
 
-      ClassContext context = applicationContext.GetClassContext (targetType);
+      ClassContext context;
+      if (generationPolicy != GenerationPolicy.ForceGeneration && TypeUtility.IsGeneratedType (targetType))
+        context = Mixin.GetMixinConfigurationFromConcreteType (targetType);
+      else
+        context = applicationContext.GetClassContext (targetType);
+
       if (context == null && generationPolicy == GenerationPolicy.ForceGeneration)
         context = new ClassContext (targetType);
 

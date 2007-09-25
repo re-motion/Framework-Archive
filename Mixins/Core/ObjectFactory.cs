@@ -1,7 +1,6 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Threading;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Utilities;
@@ -115,6 +114,9 @@ namespace Rubicon.Mixins
     /// The <see cref="Create(Type)"/> method supports the creation of instances from their complete interfaces: <paramref name="baseType"/> can be
     /// an interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
+    /// <para>
+    /// If <paramref name="baseType"/> is already a generated type, this method will not subclass it again.
+    /// </para>
     /// </remarks>
     public static FuncInvokerWrapper<object> Create (Type baseType)
     {
@@ -148,6 +150,10 @@ namespace Rubicon.Mixins
     /// The <see cref="Create(Type, GenerationPolicy)"/> method supports the creation of instances from their complete interfaces:
     /// <paramref name="baseType"/> can be an interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also
     /// <see cref="CompleteInterfaceAttribute"/>.
+    /// </para>
+    /// <para>
+    /// If <paramref name="baseType"/> is already a generated type, this method will only subclass it again when
+    /// <see cref="GenerationPolicy.ForceGeneration"/> is specified.
     /// </para>
     /// </remarks>
     public static FuncInvokerWrapper<object> Create (Type baseType, GenerationPolicy generationPolicy)
@@ -290,6 +296,9 @@ namespace Rubicon.Mixins
     /// <paramref name="baseType"/> can be an interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also
     /// <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
+    /// <para>
+    /// If <paramref name="baseType"/> is already a generated type, this method will not subclass it again.
+    /// </para>
     /// </remarks>
     public static FuncInvokerWrapper<object> CreateWithMixinInstances (Type baseType, params object[] mixinInstances)
     {
@@ -338,6 +347,10 @@ namespace Rubicon.Mixins
     /// interfaces: <paramref name="baseType"/> can be an interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also
     /// <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
+    /// <para>
+    /// If <paramref name="baseType"/> is already a generated type, this method will only subclass it again when
+    /// <see cref="GenerationPolicy.ForceGeneration"/> is specified.
+    /// </para>
     /// </remarks>
     public static FuncInvokerWrapper<object> CreateWithMixinInstances (Type baseType, GenerationPolicy generationPolicy, params object[] mixinInstances)
     {
@@ -375,9 +388,7 @@ namespace Rubicon.Mixins
       if (typeof (IMixinTarget).IsAssignableFrom (concreteDeserializedType))
         return ConcreteTypeBuilder.Current.BeginDeserialization (concreteDeserializedType, info, context);
       else
-      {
         return new DummyObjectReference (concreteDeserializedType, info, context);
-      }
     }
 
     /// <summary>
@@ -405,7 +416,7 @@ namespace Rubicon.Mixins
 
   internal class DummyObjectReference : IObjectReference
   {
-    private object _realObject;
+    private readonly object _realObject;
 
     public DummyObjectReference (Type concreteDeserializedType, SerializationInfo info, StreamingContext context)
     {

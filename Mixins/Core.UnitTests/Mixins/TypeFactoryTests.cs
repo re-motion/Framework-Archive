@@ -73,6 +73,13 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (object)));
     }
 
+    [Test]
+    public void NoNewDefinitionGeneratedForGeneratedTypeByDefault ()
+    {
+      Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType1));
+      TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (generatedType);
+      Assert.AreSame (definition, TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
+    }
 
     [Test]
     public void DefinitionGeneratedIfNoConfigViaPolicy ()
@@ -81,6 +88,16 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       TargetClassDefinition configuration = TypeFactory.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
       Assert.IsNotNull (configuration);
       Assert.AreEqual (typeof (object), configuration.Type);
+    }
+
+    [Test]
+    public void NewDefinitionGeneratedForGeneratedTypeViaPolicy ()
+    {
+      Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType1));
+      TargetClassDefinition newDefinition = TypeFactory.GetActiveConfiguration (generatedType, GenerationPolicy.ForceGeneration);
+      TargetClassDefinition baseDefinition = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      Assert.AreNotSame (baseDefinition, newDefinition);
+      Assert.AreSame (baseDefinition.Type, newDefinition.Type.BaseType);
     }
 
     [Test]
@@ -110,12 +127,28 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
+    public void NoTypeGeneratedIfGeneratedTypeIsGivenByDefault ()
+    {
+      Type concreteType = TypeFactory.GetConcreteType (typeof (BaseType1));
+      Assert.AreSame (concreteType, TypeFactory.GetConcreteType (concreteType));
+    }
+
+    [Test]
     public void TypeGeneratedIfNoConfigViaPolicy ()
     {
       Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
       Type concreteType = TypeFactory.GetConcreteType (typeof (object), GenerationPolicy.ForceGeneration);
       Assert.AreNotSame (typeof (object), concreteType);
       Assert.AreSame (typeof (object), concreteType.BaseType);
+    }
+
+    [Test]
+    public void TypeGeneratedIfGeneratedTypeIsGivenViaPolicy ()
+    {
+      Type concreteType = TypeFactory.GetConcreteType (typeof (BaseType1));
+      Type concreteType2 = TypeFactory.GetConcreteType (concreteType, GenerationPolicy.ForceGeneration);
+      Assert.AreNotSame (concreteType, concreteType2);
+      Assert.AreSame (concreteType, concreteType2.BaseType);
     }
 
     [Test]
