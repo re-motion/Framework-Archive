@@ -63,7 +63,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-      DomainObject alreadyEnlistedObject = GetEnlistedOrNull (domainObject.ID);
+      DomainObject alreadyEnlistedObject = GetEnlistedDomainObject (domainObject.ID);
       if (alreadyEnlistedObject != null && alreadyEnlistedObject != domainObject)
       {
         string message = string.Format ("A domain object instance for object '{0}' already exists in this transaction.", domainObject.ID);
@@ -77,19 +77,20 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-      return GetEnlistedOrNull (domainObject.ID) == domainObject;
+      return GetEnlistedDomainObject (domainObject.ID) == domainObject;
+    }
+
+    protected internal override DomainObject GetEnlistedDomainObject (ObjectID objectID)
+    {
+      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      DomainObject domainObject;
+      _enlistedObjects.TryGetValue (objectID, out domainObject);
+      return domainObject;
     }
 
     protected internal override IEnumerable<DomainObject> EnlistedDomainObjects
     {
       get { return _enlistedObjects.Values; }
-    }
-
-    private DomainObject GetEnlistedOrNull (ObjectID objectID)
-    {
-      DomainObject domainObject;
-      _enlistedObjects.TryGetValue (objectID, out domainObject);
-      return domainObject;
     }
 
     protected override void PersistData (DataContainerCollection changedDataContainers)

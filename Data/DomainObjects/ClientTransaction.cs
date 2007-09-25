@@ -176,6 +176,17 @@ public abstract class ClientTransaction : ITransaction
   protected internal abstract bool IsEnlisted (DomainObject domainObject);
 
   /// <summary>
+  /// Returns the <see cref="DomainObject"/> enlisted for the given <paramref name="objectID"/> in this transaction, or <see langword="null"/> if
+  /// none such object exists.
+  /// </summary>
+  /// <param name="objectID">The <see cref="ObjectID"/> for which to retrueve a <see cref="DomainObject"/>.</param>
+  /// <returns>
+  /// A <see cref="DomainObject"/> with the given <paramref name="objectID"/> previously enlisted via <see cref="DoEnlistDomainObject"/>,
+  /// or <see langword="null"/> if no such object exists.
+  /// </returns>
+  protected internal abstract DomainObject GetEnlistedDomainObject (ObjectID objectID);
+
+  /// <summary>
   /// Gets all domain objects enlisted in this transaction.
   /// </summary>
   /// <value>The domain objects enlisted in this transaction via <see cref="DoEnlistDomainObject"/>.</value>
@@ -455,6 +466,8 @@ public abstract class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("sourceTransaction", sourceTransaction);
 
+    Set<DomainObject> domainObjectsToBeLoaded = new Set<DomainObject> ();
+
     foreach (DomainObject domainObject in sourceTransaction.EnlistedDomainObjects)
     {
       if (!sourceTransaction.DataManager.IsDiscarded (domainObject.ID) && !DataManager.IsDiscarded (domainObject.ID))
@@ -466,9 +479,15 @@ public abstract class ClientTransaction : ITransaction
           throw new ArgumentException (message, "sourceTransaction");
         }
         else
-          EnlistDomainObject (domainObject, false);
+        {
+          DoEnlistDomainObject (domainObject);
+          domainObjectsToBeLoaded.Add (domainObject);
+        }
       }
     }
+
+    foreach (DomainObject domainObject in domainObjectsToBeLoaded)
+      EnlistDomainObject (domainObject, false);
   }
 
   /// <summary>
@@ -527,6 +546,22 @@ public abstract class ClientTransaction : ITransaction
 
       EndRollback (changedButNotNewDomainObjects);
     }
+  }
+
+  /// <summary>
+  /// Retrieves a <see cref="DomainObject"/> to be used with the given <paramref name="dataContainer"/>.
+  /// </summary>
+  /// <param name="dataContainer">The data container for which to retrieve a <see cref="DomainObject"/>.</param>
+  /// <returns>The <see cref="DomainObject"/> enlisted with the given <paramref name="dataContainer"/>'s <see cref="ObjectID"/>, or
+  /// a newly loaded <see cref="DomainObject"/> if none has been enlisted.</returns>
+  protected internal virtual DomainObject GetObjectForDataContainer (DataContainer dataContainer)
+  {
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+    DomainObject enlistedObject = GetEnlistedDomainObject (dataContainer.ID);
+    if (enlistedObject != null)
+      return enlistedObject;
+    else
+      return DomainObject.CreateWithDataContainer (dataContainer);
   }
 
   /// <summary>

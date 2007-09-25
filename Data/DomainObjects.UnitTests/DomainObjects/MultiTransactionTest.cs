@@ -486,7 +486,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [Ignore ("TODO: fix bug")]
     public void OnLoadedCannReliablyAccessRelatedObjectPropertiesInEnlistSameDomainObjectsFromOrder ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
@@ -502,7 +501,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [Ignore ("TODO: fix bug")]
     public void OnLoadedCannReliablyAccessRelatedObjectPropertiesInEnlistSameDomainObjectsFromOrderItem ()
     {
       OrderItem orderItem = OrderItem.GetObject (DomainObjectIDs.OrderItem1);

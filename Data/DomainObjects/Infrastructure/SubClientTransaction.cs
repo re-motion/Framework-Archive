@@ -89,6 +89,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       return ParentTransaction.IsEnlisted (domainObject);
     }
 
+    protected internal override DomainObject GetEnlistedDomainObject (ObjectID objectID)
+    {
+      return ParentTransaction.GetEnlistedDomainObject (objectID);
+    }
+
     protected internal override IEnumerable<DomainObject> EnlistedDomainObjects
     {
       get { return ParentTransaction.EnlistedDomainObjects; }

@@ -239,7 +239,7 @@ public class DataContainer
       if (_domainObject == null)
       {
         Assertion.IsFalse (IsDiscarded, "DataContainers cannot be discarded when they don't have a DomainObject referende");
-        _domainObject = DomainObject.CreateWithDataContainer (this);
+        _domainObject = ClientTransaction.GetObjectForDataContainer (this);
       }
 
       return _domainObject; 
