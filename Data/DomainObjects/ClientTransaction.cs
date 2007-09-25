@@ -379,22 +379,33 @@ public abstract class ClientTransaction : ITransaction
   public void EnlistDomainObject (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    EnlistDomainObject (domainObject, true);
+  }
 
-    DataContainer dataContainer;
+  private void EnlistDomainObject (DomainObject domainObject, bool throwOnNotFound)
+  {
+    DataContainer dataContainer = null;
     try
     {
       dataContainer = domainObject.GetDataContainerForTransaction (this);
     }
     catch (ObjectNotFoundException ex)
     {
-      string message = string.Format ("The domain object '{0}' cannot be enlisted because it does not exist in this "
-          + "transaction. Maybe it was newly created and has not yet been committed, or it was deleted.", domainObject.ID);
-      throw new ArgumentException (message, "domainObject", ex);
+      if (throwOnNotFound)
+      {
+        string message = string.Format (
+            "The domain object '{0}' cannot be enlisted because it does not exist in this "
+            + "transaction. Maybe it was newly created and has not yet been committed, or it was deleted.",
+            domainObject.ID);
+        throw new ArgumentException (message, "domainObject", ex);
+      }
+      // else ignore
     }
 
     DoEnlistDomainObject (domainObject);
 
-    Assertion.IsTrue(dataContainer.DomainObject == domainObject, "DoEnlistDomainObject should throw an exception if this isn't the case");
+    Assertion.IsTrue (dataContainer == null || dataContainer.DomainObject == domainObject,
+        "DoEnlistDomainObject should throw an exception if this isn't the case");
   }
 
   /// <summary>
@@ -422,7 +433,16 @@ public abstract class ClientTransaction : ITransaction
     foreach (DomainObject domainObject in sourceTransaction.EnlistedDomainObjects)
     {
       if (!sourceTransaction.DataManager.IsDiscarded (domainObject.ID) && !DataManager.IsDiscarded (domainObject.ID))
-        EnlistDomainObject (domainObject);
+      {
+        if (domainObject.GetDataContainerForTransaction (sourceTransaction).State == StateType.New)
+        {
+          string message = string.Format ("The source transaction contains domain object '{0}', which cannot be enlisted because its state type "
+              + "is 'New'. Delete the object or rollback or commit the transaction.", domainObject.ID);
+          throw new ArgumentException (message, "sourceTransaction");
+        }
+        else
+          EnlistDomainObject (domainObject, false);
+      }
     }
   }
 

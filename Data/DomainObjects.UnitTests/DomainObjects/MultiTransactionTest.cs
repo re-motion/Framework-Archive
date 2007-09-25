@@ -367,9 +367,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object '.*' "
-        + "cannot be enlisted because it does not exist in this transaction. Maybe it was newly created and has not yet been committed, or it was "
-        + "deleted.", MatchType = MessageMatch.Regex)]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The source transaction contains domain object '.*', which "
+        + "cannot be enlisted because its state type is 'New'. Delete the object or rollback or commit the transaction.",
+        MatchType = MessageMatch.Regex)]
     public void EnlistSameDomainObjectsThrowsOnNewObjects ()
     {
       Order.NewObject ();
@@ -412,6 +412,50 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
 
       Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
+    }
+
+    [Test]
+    public void EnlistSameDomainObjectsWorksWithObjectsDeletedInDatabase ()
+    {
+      SetDatabaseModifyable ();
+      ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+      
+      using (ClientTransaction.NewTransaction ().EnterScope())
+      {
+        ClassWithAllDataTypes.GetObject (cwadt.ID).Delete ();
+        ClientTransactionScope.CurrentTransaction.Commit ();
+      }
+
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
+
+      Assert.IsTrue (cwadt.CanBeUsedInTransaction (newTransaction));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ObjectNotFoundException),
+        ExpectedMessage = "Object 'ClassWithAllDataTypes|3f647d79-0caf-4a53-baa7-a56831f8ce2d|System.Guid' could not be found.")]
+    public void UsingEnlistedObjectsDeletedInDatabaseThrowsObjectNotFoundException ()
+    {
+      SetDatabaseModifyable ();
+      ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        ClassWithAllDataTypes.GetObject (cwadt.ID).Delete ();
+        ClientTransactionScope.CurrentTransaction.Commit ();
+      }
+
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
+
+      Assert.IsTrue (cwadt.CanBeUsedInTransaction (newTransaction));
+      using (newTransaction.EnterScope ())
+      {
+        cwadt.StringProperty = "FoO";
+      }
     }
 
     [Test]
