@@ -36,7 +36,6 @@
     <Compile Include="BindableDomainObjectAttribute.cs" />
     <Compile Include="BindableDomainObjectMixin.cs" />
     <Compile Include="GetBindableDomainObjectService.cs" />
-    <Compile Include="IGetBindableDomainObjectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
   </ItemGroup>

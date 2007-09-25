@@ -250,14 +250,13 @@
     <Compile Include="MixedDomains\SampleTypes\NullMixin.cs" />
     <Compile Include="MixedDomains\SerializationTest.cs" />
     <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\Common.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\DomainObjectSpecifics.cs" />
     <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\GetBusinessObjectClass.cs" />
     <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\GetDisplayName.cs" />
-    <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\GetProperty.cs" />
-    <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\GetPropertyString.cs" />
     <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\Identity.cs" />
-    <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\SetProperty.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectMixinTest\PropertyIntegrationTest.cs" />
     <Compile Include="ObjectBinding\ObjectBindingBaseTest.cs" />
-    <Compile Include="ObjectBinding\TestDomain\BindableDomainObject.cs" />
+    <Compile Include="ObjectBinding\TestDomain\BindableSampleDomainObject.cs" />
     <Compile Include="ObjectBinding\TestDomain\BindableDomainObjectWithOverriddenDisplayName.cs" />
     <Compile Include="ObjectBinding\TestDomain\SecurableBindableDomainObjectWithOverriddenDisplayName.cs" />
     <Compile Include="Persistence\MixedStorageProviderTest.cs" />

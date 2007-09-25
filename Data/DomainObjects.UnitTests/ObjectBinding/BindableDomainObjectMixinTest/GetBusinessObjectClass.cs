@@ -12,7 +12,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
   [TestFixture]
   public class GetBusinessObjectClass : ObjectBindingBaseTest
   {
-    private BindableDomainObject _bindableObject;
+    private BindableSampleDomainObject _bindableObject;
     private BindableDomainObjectMixin _bindableObjectMixin;
     private IBusinessObject _businessObject;
 
@@ -20,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
     {
       base.SetUp();
 
-      _bindableObject = BindableDomainObject.NewObject();
+      _bindableObject = BindableSampleDomainObject.NewObject();
       _bindableObjectMixin = Mixin.Get<BindableDomainObjectMixin> (_bindableObject);
       _businessObject = _bindableObjectMixin;
     }
@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
     public void FromClass ()
     {
       Assert.That (_bindableObjectMixin.BusinessObjectClass, Is.Not.Null);
-      Assert.That (_bindableObjectMixin.BusinessObjectClass.TargetType, Is.SameAs (typeof (BindableDomainObject)));
+      Assert.That (_bindableObjectMixin.BusinessObjectClass.TargetType, Is.SameAs (typeof (BindableSampleDomainObject)));
       Assert.That (_bindableObjectMixin.BusinessObjectClass.BusinessObjectProvider, Is.SameAs (BindableObjectProvider.Current));
     }
 

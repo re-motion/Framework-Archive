@@ -35,11 +35,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
     [Test]
     public void DisplayName ()
     {
-      BindableDomainObjectMixin bindableObjectMixin = Mixin.Get<BindableDomainObjectMixin> (BindableDomainObject.NewObject ());
+      BindableDomainObjectMixin bindableObjectMixin = Mixin.Get<BindableDomainObjectMixin> (BindableSampleDomainObject.NewObject ());
 
       Assert.That (
           ((IBusinessObject) bindableObjectMixin).DisplayName,
-          Is.EqualTo ("Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain.BindableDomainObject, Rubicon.Data.DomainObjects.UnitTests"));
+          Is.EqualTo ("Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain.BindableSampleDomainObject, Rubicon.Data.DomainObjects.UnitTests"));
     }
 
     [Test]

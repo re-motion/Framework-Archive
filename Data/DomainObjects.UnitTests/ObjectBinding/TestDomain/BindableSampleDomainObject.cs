@@ -8,16 +8,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain
   [Instantiable]
   [Serializable]
   [DBTable]
-  public abstract class BindableDomainObject : DomainObject
+  public abstract class BindableSampleDomainObject : DomainObject
   {
-    public static BindableDomainObject NewObject ()
+    public static BindableSampleDomainObject NewObject ()
     {
-      return DomainObject.NewObject<BindableDomainObject> ().With ();
+      return DomainObject.NewObject<BindableSampleDomainObject> ().With ();
     }
 
-    public static BindableDomainObject GetObject (ObjectID id)
+    public static BindableSampleDomainObject GetObject (ObjectID id)
     {
-      return DomainObject.GetObject<BindableDomainObject> (id);
+      return DomainObject.GetObject<BindableSampleDomainObject> (id);
     }
 
     public abstract string Name { get; set; }

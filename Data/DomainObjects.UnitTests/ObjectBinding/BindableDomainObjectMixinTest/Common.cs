@@ -15,16 +15,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
     [Test]
     public void InstantiateMixedType ()
     {
-      Assert.That (BindableDomainObject.NewObject(), Is.InstanceOfType (typeof (IBusinessObject)));
+      Assert.That (BindableSampleDomainObject.NewObject(), Is.InstanceOfType (typeof (IBusinessObject)));
     }
 
     [Test]
     public void SerializeAndDeserialize ()
     {
-      BindableDomainObject value = BindableDomainObject.NewObject ();
+      BindableSampleDomainObject value = BindableSampleDomainObject.NewObject ();
       Assert.AreNotEqual ("Earl", value.Name);
       value.Name = "Earl";
-      Tuple<ClientTransactionMock, BindableDomainObject> deserialized = Serializer.SerializeAndDeserialize (Tuple.NewTuple (ClientTransactionMock, value));
+      Tuple<ClientTransactionMock, BindableSampleDomainObject> deserialized = Serializer.SerializeAndDeserialize (Tuple.NewTuple (ClientTransactionMock, value));
 
       using (deserialized.A.EnterScope ())
       {
@@ -36,10 +36,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
     [Test]
     public void SerializeAndDeserialize_WithNewBindableObjectProvider ()
     {
-      BindableDomainObject value = BindableDomainObject.NewObject ();
+      BindableSampleDomainObject value = BindableSampleDomainObject.NewObject ();
       byte[] serialized = Serializer.Serialize (Tuple.NewTuple (ClientTransactionMock, value));
       BindableObjectProvider.SetCurrent (null);
-      Tuple<ClientTransactionMock, BindableDomainObject> deserialized = (Tuple<ClientTransactionMock, BindableDomainObject>) Serializer.Deserialize (serialized);
+      Tuple<ClientTransactionMock, BindableSampleDomainObject> deserialized = (Tuple<ClientTransactionMock, BindableSampleDomainObject>) Serializer.Deserialize (serialized);
 
       using (deserialized.A.EnterScope ())
       {

@@ -7,7 +7,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain
 {
   [Instantiable]
   [Serializable]
-  public abstract class BindableDomainObjectWithOverriddenDisplayName : BindableDomainObject
+  public abstract class BindableDomainObjectWithOverriddenDisplayName : BindableSampleDomainObject
   {
     public static BindableDomainObjectWithOverriddenDisplayName NewObject ()
     {
