@@ -259,6 +259,30 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     }
 
     [Test]
+    public void CommitAndReleaseTransactionCallsReleaseEvenWhenCommitThrows ()
+    {
+      TestTransaction currentTransaction = new TestTransaction ();
+      TestTransaction.Current = currentTransaction;
+
+      TestTransaction transaction = (TestTransaction) _rootWxeTransaction.Transaction;
+      transaction.ThrowOnCommit = true;
+      try
+      {
+        _rootWxeTransaction.CommitAndReleaseTransaction ();
+        Assert.Fail ("Expected exception");
+      }
+      catch (CommitException)
+      {
+        // ok
+      }
+
+      Assert.IsFalse (transaction.IsCommitted);
+      Assert.IsTrue (transaction.IsReleased);
+      Assert.IsNull (_rootWxeTransaction.Transaction);
+      Assert.AreSame (currentTransaction, TestTransaction.Current);
+    }
+
+    [Test]
     public void RollbackAndReleaseTransaction ()
     {
       TestTransaction currentTransaction = new TestTransaction ();
@@ -268,6 +292,30 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       _rootWxeTransaction.RollbackAndReleaseTransaction ();
 
       Assert.IsTrue (transaction.IsRolledBack);
+      Assert.IsTrue (transaction.IsReleased);
+      Assert.IsNull (_rootWxeTransaction.Transaction);
+      Assert.AreSame (currentTransaction, TestTransaction.Current);
+    }
+
+    [Test]
+    public void RollbackAndReleaseTransactionCallsReleaseEvenWhenRollbackThrows ()
+    {
+      TestTransaction currentTransaction = new TestTransaction ();
+      TestTransaction.Current = currentTransaction;
+
+      TestTransaction transaction = (TestTransaction) _rootWxeTransaction.Transaction;
+      transaction.ThrowOnRollback = true;
+      try
+      {
+        _rootWxeTransaction.RollbackAndReleaseTransaction ();
+        Assert.Fail ("Expected exception");
+      }
+      catch (RollbackException)
+      {
+        // ok
+      }
+
+      Assert.IsFalse (transaction.IsRolledBack);
       Assert.IsTrue (transaction.IsReleased);
       Assert.IsNull (_rootWxeTransaction.Transaction);
       Assert.AreSame (currentTransaction, TestTransaction.Current);

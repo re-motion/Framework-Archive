@@ -342,9 +342,10 @@ namespace Rubicon.Web.ExecutionEngine
         {
           SetPreviousCurrentTransaction (previousTransaction);
           Assertion.IsTrue (CurrentTransaction == previousTransaction);
+
+          _transaction.Release ();
+          _transaction = null;
         }
-        _transaction.Release ();
-        _transaction = null;
       }
     }
 
@@ -395,9 +396,10 @@ namespace Rubicon.Web.ExecutionEngine
         {
           SetPreviousCurrentTransaction (previousTransaction);
           Assertion.IsTrue (CurrentTransaction == previousTransaction);
+
+          _transaction.Release ();
+          _transaction = null;
         }
-        _transaction.Release ();
-        _transaction = null;
       }
     }
 

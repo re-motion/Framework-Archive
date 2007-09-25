@@ -23,6 +23,8 @@ public class TestTransaction: ITransaction
   private TestTransaction _child;
   private TestTransaction _parent;
   private bool _isChild;
+  private bool _throwOnCommit;
+  private bool _throwOnRollback;
 
   public event EventHandler Committed;
   public event EventHandler RolledBack;
@@ -35,6 +37,8 @@ public class TestTransaction: ITransaction
   {
     if (Current != this)
       throw new InvalidOperationException ("Current transaction is not this transaction.");
+    if (ThrowOnRollback)
+      throw new RollbackException ();
     _isRolledBack = true;
     if (RolledBack != null)
       RolledBack (this, EventArgs.Empty);
@@ -44,6 +48,8 @@ public class TestTransaction: ITransaction
   {
     if (Current != this)
       throw new InvalidOperationException ("Current transaction is not this transaction.");
+    if (ThrowOnCommit)
+      throw new CommitException ();
     _isCommitted = true;
     if (Committed != null)
       Committed (this, EventArgs.Empty);
@@ -96,6 +102,18 @@ public class TestTransaction: ITransaction
   public bool IsReleased
   {
     get { return _isReleased; }
+  }
+
+  public bool ThrowOnCommit
+  {
+    get { return _throwOnCommit; }
+    set { _throwOnCommit = value; }
+  }
+
+  public bool ThrowOnRollback
+  {
+    get { return _throwOnRollback; }
+    set { _throwOnRollback = value; }
   }
 }
 
