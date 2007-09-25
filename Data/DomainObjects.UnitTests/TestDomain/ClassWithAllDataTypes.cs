@@ -26,6 +26,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     }
 
     private bool _onLoadedHasBeenCalled;
+    private int _onLoadedCallCount;
+    private LoadMode _onLoadedLoadMode;
 
     protected ClassWithAllDataTypes ()
     {
@@ -35,12 +37,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     internal bool OnLoadedHasBeenCalled
     {
       get { return _onLoadedHasBeenCalled; }
+      set { _onLoadedHasBeenCalled = value; }
     }
 
-    protected override void OnLoaded()
+    [StorageClassNone]
+    internal int OnLoadedCallCount
     {
-      base.OnLoaded();
+      get { return _onLoadedCallCount; }
+      set { _onLoadedCallCount = value; }
+    }
+
+    [StorageClassNone]
+    internal LoadMode OnLoadedLoadMode
+    {
+      get { return _onLoadedLoadMode; }
+    }
+
+    protected override void OnLoaded (LoadMode loadMode)
+    {
+      base.OnLoaded (loadMode);
       _onLoadedHasBeenCalled = true;
+      ++_onLoadedCallCount;
+      _onLoadedLoadMode = loadMode;
     }
 
     [StorageClassNone]

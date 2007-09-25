@@ -42,10 +42,11 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     // methods and properties
 
     //TODO: Add test for initialize during on load
-    protected override void OnLoaded ()
+    protected override void OnLoaded (LoadMode loadMode)
     {
-      base.OnLoaded();
-      Initialize();
+      base.OnLoaded (loadMode);
+      if (loadMode == LoadMode.WholeDomainObjectInitialized)
+        Initialize();
     }
 
     private void Initialize ()

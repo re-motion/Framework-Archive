@@ -135,6 +135,7 @@
     <Compile Include="Infrastructure\RootClientTransaction.cs" />
     <Compile Include="Infrastructure\TransactionUnlocker.cs" />
     <Compile Include="Infrastructure\ValuePropertyAccessorStrategy.cs" />
+    <Compile Include="LoadMode.cs" />
     <Compile Include="Mapping\ReflectionBasedClassDefinition.cs" />
     <Compile Include="Mapping\ReflectionBasedPropertyDefinition.cs" />
     <Compile Include="InstantiableAttribute.cs" />

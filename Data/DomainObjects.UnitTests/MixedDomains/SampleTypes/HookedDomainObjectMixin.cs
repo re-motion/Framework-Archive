@@ -9,11 +9,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
   public class HookedDomainObjectMixin : Mixin<Order>, IDomainObjectMixin
   {
     public bool OnLoadedCalled = false;
+    public int OnLoadedCount = 0;
+    public LoadMode OnLoadedLoadMode;
     public bool OnCreatedCalled = false;
 
-    public void OnDomainObjectLoaded ()
+    public void OnDomainObjectLoaded (LoadMode loadMode)
     {
       OnLoadedCalled = true;
+      OnLoadedLoadMode = loadMode;
+      ++OnLoadedCount;
       Assert.IsNotNull (This.ID);
       ++This.OrderNumber;
       Assert.IsNotNull (This.OrderItems);

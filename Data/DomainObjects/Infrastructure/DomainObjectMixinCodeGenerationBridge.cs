@@ -51,10 +51,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       NotifyDomainObjectMixins (instance, delegate (IDomainObjectMixin mixin) { mixin.OnDomainObjectCreated (); });
     }
 
-    public static void OnDomainObjectLoaded (DomainObject instance)
+    public static void OnDomainObjectLoaded (DomainObject instance, LoadMode loadMode)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
-      NotifyDomainObjectMixins (instance, delegate (IDomainObjectMixin mixin) { mixin.OnDomainObjectLoaded (); });
+      NotifyDomainObjectMixins (instance, delegate (IDomainObjectMixin mixin) { mixin.OnDomainObjectLoaded (loadMode); });
     }
 
     private static void NotifyDomainObjectMixins (DomainObject instance, Proc<IDomainObjectMixin> notifier)

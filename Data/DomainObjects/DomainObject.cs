@@ -327,6 +327,7 @@ public class DomainObject
   public event EventHandler Deleted;
 
   private ObjectID _id;
+  private int _loadCount;
 
   // construction and disposing
 
@@ -805,10 +806,12 @@ public class DomainObject
   /// <summary>
   /// Method is invoked after the loading process of the object is completed.
   /// </summary>
+  /// <param name="loadMode">Specifies whether the whole domain object or only the <see cref="Rubicon.Data.DomainObjects.DataContainer"/> has been
+  /// newly loaded.</param>
   /// <remarks>
   /// Override this method to initialize <see cref="DomainObject"/>s that are loaded from the datasource.
   /// </remarks>
-  protected virtual void OnLoaded ()
+  protected virtual void OnLoaded (LoadMode loadMode)
   {
   }
 
@@ -925,8 +928,16 @@ public class DomainObject
 
   internal void EndObjectLoading ()
   {
-    DomainObjectMixinCodeGenerationBridge.OnDomainObjectLoaded (this);
-    OnLoaded();
+    LoadMode loadMode;
+
+    ++_loadCount;
+    if (_loadCount == 1)
+      loadMode = LoadMode.WholeDomainObjectInitialized;
+    else
+      loadMode = LoadMode.DataContainerLoadedOnly;
+
+    DomainObjectMixinCodeGenerationBridge.OnDomainObjectLoaded (this, loadMode);
+    OnLoaded (loadMode);
   }
 
   internal void EndRelationChange (string propertyName)

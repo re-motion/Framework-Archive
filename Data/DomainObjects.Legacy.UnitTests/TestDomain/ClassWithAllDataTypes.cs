@@ -43,9 +43,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
       get { return _onLoadedHasBeenCalled; }
     }
 
-    protected override void OnLoaded ()
+    protected override void OnLoaded (LoadMode loadMode)
     {
-      base.OnLoaded ();
+      base.OnLoaded (loadMode);
       _onLoadedHasBeenCalled = true;
     }
 

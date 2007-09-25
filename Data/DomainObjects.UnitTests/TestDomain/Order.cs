@@ -99,9 +99,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       get { return CurrentProperty.GetValue<ObjectList<OrderItem>> (); }
     }
 
-    protected override void OnLoaded ()
+    protected override void OnLoaded (LoadMode loadMode)
     {
-      base.OnLoaded ();
+      base.OnLoaded (loadMode);
       if (ProtectedLoaded != null)
         ProtectedLoaded (this, EventArgs.Empty);
     }

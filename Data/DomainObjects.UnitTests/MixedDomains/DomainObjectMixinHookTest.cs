@@ -25,6 +25,90 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
         }
 
         Assert.IsTrue (mixinInstance.OnLoadedCalled);
+        Assert.AreEqual (LoadMode.WholeDomainObjectInitialized, mixinInstance.OnLoadedLoadMode);
+        Assert.IsFalse (mixinInstance.OnCreatedCalled);
+      }
+    }
+
+    [Test]
+    public void OnDomainObjectLoadedOnEnlist ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (HookedDomainObjectMixin)))
+      {
+        HookedDomainObjectMixin mixinInstance = new HookedDomainObjectMixin ();
+
+        Assert.IsFalse (mixinInstance.OnLoadedCalled);
+        Assert.IsFalse (mixinInstance.OnCreatedCalled);
+
+        Order order;
+        using (new MixedTypeInstantiationScope (mixinInstance))
+        {
+          order = Order.GetObject (DomainObjectIDs.Order1);
+        }
+
+        mixinInstance.OnLoadedCalled = false;
+        mixinInstance.OnLoadedCount = 0;
+
+        ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+        newTransaction.EnlistDomainObject (order);
+
+        Assert.IsTrue (mixinInstance.OnLoadedCalled);
+        Assert.AreEqual (LoadMode.DataContainerLoadedOnly, mixinInstance.OnLoadedLoadMode);
+        Assert.AreEqual (1, mixinInstance.OnLoadedCount);
+        Assert.IsFalse (mixinInstance.OnCreatedCalled);
+      }
+    }
+
+    [Test]
+    public void OnDomainObjectLoadedInSubTransaction ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (HookedDomainObjectMixin)))
+      {
+        HookedDomainObjectMixin mixinInstance = new HookedDomainObjectMixin ();
+
+        Assert.IsFalse (mixinInstance.OnLoadedCalled);
+        Assert.IsFalse (mixinInstance.OnCreatedCalled);
+
+        using (new MixedTypeInstantiationScope (mixinInstance))
+        {
+          using (ClientTransactionMock.CreateSubTransaction().EnterScope())
+          {
+            Order.GetObject (DomainObjectIDs.Order1);
+          }
+        }
+
+        Assert.IsTrue (mixinInstance.OnLoadedCalled);
+        Assert.AreEqual (2, mixinInstance.OnLoadedCount);
+        Assert.AreEqual (LoadMode.DataContainerLoadedOnly, mixinInstance.OnLoadedLoadMode);
+        Assert.IsFalse (mixinInstance.OnCreatedCalled);
+      }
+    }
+
+    [Test]
+    public void OnDomainObjectLoadedInParentAndSubTransaction ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (HookedDomainObjectMixin)))
+      {
+        HookedDomainObjectMixin mixinInstance = new HookedDomainObjectMixin ();
+
+        Assert.IsFalse (mixinInstance.OnLoadedCalled);
+        Assert.IsFalse (mixinInstance.OnCreatedCalled);
+
+        using (new MixedTypeInstantiationScope (mixinInstance))
+        {
+          Order.GetObject (DomainObjectIDs.Order1);
+          Assert.IsTrue (mixinInstance.OnLoadedCalled);
+          Assert.AreEqual (1, mixinInstance.OnLoadedCount);
+          Assert.AreEqual (LoadMode.WholeDomainObjectInitialized, mixinInstance.OnLoadedLoadMode);
+
+          using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+          {
+            Order.GetObject (DomainObjectIDs.Order1);
+          }
+        }
+
+        Assert.AreEqual (2, mixinInstance.OnLoadedCount);
+        Assert.AreEqual (LoadMode.DataContainerLoadedOnly, mixinInstance.OnLoadedLoadMode);
         Assert.IsFalse (mixinInstance.OnCreatedCalled);
       }
     }

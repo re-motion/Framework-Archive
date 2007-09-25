@@ -23,9 +23,9 @@ namespace Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain
       _securityStrategy = securityStrategy;
     }
 
-    protected override void OnLoaded ()
+    protected override void OnLoaded (LoadMode loadMode)
     {
-      base.OnLoaded();
+      base.OnLoaded (loadMode);
       _securityStrategy = new ObjectSecurityStrategy (this);
     }
 

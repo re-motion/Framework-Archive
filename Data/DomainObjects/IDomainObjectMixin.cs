@@ -27,6 +27,8 @@ namespace Rubicon.Data.DomainObjects
     /// <summary>
     /// Called when the mixin's target domain object has been loaded.
     /// </summary>
-    void OnDomainObjectLoaded ();
+    /// <param name="loadMode">Specifies whether the whole domain object or only the <see cref="Rubicon.Data.DomainObjects.DataContainer"/> has been
+    /// newly loaded.</param>
+    void OnDomainObjectLoaded (LoadMode loadMode);
   }
 }

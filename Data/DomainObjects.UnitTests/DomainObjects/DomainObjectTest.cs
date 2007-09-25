@@ -135,6 +135,59 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (id);
 
       Assert.IsTrue (classWithAllDataTypes.OnLoadedHasBeenCalled);
+      Assert.AreEqual (1, classWithAllDataTypes.OnLoadedCallCount);
+      Assert.AreEqual (LoadMode.WholeDomainObjectInitialized, classWithAllDataTypes.OnLoadedLoadMode);
+    }
+
+    [Test]
+    public void OnLoadedInReactionToEnlist ()
+    {
+      ObjectID id = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+
+      ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (id);
+      classWithAllDataTypes.OnLoadedHasBeenCalled = false;
+      classWithAllDataTypes.OnLoadedCallCount = 0;
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+
+      newTransaction.EnlistDomainObject (classWithAllDataTypes);
+
+      Assert.IsTrue (classWithAllDataTypes.OnLoadedHasBeenCalled);
+      Assert.AreEqual (1, classWithAllDataTypes.OnLoadedCallCount);
+      Assert.AreEqual (LoadMode.DataContainerLoadedOnly, classWithAllDataTypes.OnLoadedLoadMode);
+    }
+
+    [Test]
+    public void OnLoadedInSubTransaction ()
+    {
+      ObjectID id = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (id);
+
+        Assert.IsTrue (classWithAllDataTypes.OnLoadedHasBeenCalled);
+        Assert.AreEqual (2, classWithAllDataTypes.OnLoadedCallCount);
+        Assert.AreEqual (LoadMode.DataContainerLoadedOnly, classWithAllDataTypes.OnLoadedLoadMode);
+      }
+    }
+
+    [Test]
+    public void OnLoadedInParentAndSubTransaction ()
+    {
+      ObjectID id = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+
+      ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (id);
+      Assert.IsTrue (classWithAllDataTypes.OnLoadedHasBeenCalled);
+      Assert.AreEqual (1, classWithAllDataTypes.OnLoadedCallCount);
+      Assert.AreEqual (LoadMode.WholeDomainObjectInitialized, classWithAllDataTypes.OnLoadedLoadMode);
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        ClassWithAllDataTypes.GetObject (id);
+
+        Assert.AreEqual (2, classWithAllDataTypes.OnLoadedCallCount);
+        Assert.AreEqual (LoadMode.DataContainerLoadedOnly, classWithAllDataTypes.OnLoadedLoadMode);
+      }
     }
 
     [Test]
