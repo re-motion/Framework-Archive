@@ -152,8 +152,33 @@ public abstract class ClientTransaction : ITransaction
   /// <returns>True if control was returned to the parent transaction, false if this transaction has no parent transaction.</returns>
   public abstract bool ReturnToParentTransaction ();
 
+  /// <summary>
+  /// Enlists the given domain object in the current transaction.
+  /// </summary>
+  /// <param name="domainObject">The domain object to be enlisted.</param>
+  /// <exception cref="InvalidOperationException">Another <see cref="DomainObject"/> instance with the same <see cref="ObjectID"/> already exists
+  /// in the transaction.</exception>
+  /// <exception cref="ArgumentNullException">The <paramref name="domainObject"/> parameter is <see langword="null"/>.</exception>
+  /// <remarks>
+  /// Implementers of this method should add the given <paramref name="domainObject"/> to the data structure holding all <see cref="DomainObject"/>
+  /// instances currently registered in this transaction unless the <paramref name="domainObject"/> has already been enlisted. From within this
+  /// method, the object's <see cref="DataContainer"/> must not be accessed (directly or indirectly).
+  /// </remarks>
   protected internal abstract void DoEnlistDomainObject (DomainObject domainObject);
+
+  /// <summary>
+  /// Determines whether the specified <paramref name="domainObject"/> is enlisted in this transaction.
+  /// </summary>
+  /// <param name="domainObject">The domain object to be checked.</param>
+  /// <returns>
+  /// True if the specified domain object has been enlisted via <see cref="DoEnlistDomainObject"/>; otherwise, false.
+  /// </returns>
   protected internal abstract bool IsEnlisted (DomainObject domainObject);
+
+  /// <summary>
+  /// Gets all domain objects enlisted in this transaction.
+  /// </summary>
+  /// <value>The domain objects enlisted in this transaction via <see cref="DoEnlistDomainObject"/>.</value>
   protected internal abstract IEnumerable<DomainObject> EnlistedDomainObjects { get; }
 
   /// <summary>
@@ -384,6 +409,8 @@ public abstract class ClientTransaction : ITransaction
 
   private void EnlistDomainObject (DomainObject domainObject, bool throwOnNotFound)
   {
+    DoEnlistDomainObject (domainObject);
+
     DataContainer dataContainer = null;
     try
     {
@@ -402,10 +429,8 @@ public abstract class ClientTransaction : ITransaction
       // else ignore
     }
 
-    DoEnlistDomainObject (domainObject);
-
     Assertion.IsTrue (dataContainer == null || dataContainer.DomainObject == domainObject,
-        "DoEnlistDomainObject should throw an exception if this isn't the case");
+        "DoEnlistDomainObject should have throw an exception if this wasn't the case");
   }
 
   /// <summary>

@@ -24,6 +24,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return DomainObject.GetObject<Order> (id, includeDeleted);
     }
 
+    public event EventHandler ProtectedLoaded;
+
     protected Order ()
     {
     }
@@ -95,6 +97,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     public virtual ObjectList<OrderItem> NotInMappingRelatedObjects
     {
       get { return CurrentProperty.GetValue<ObjectList<OrderItem>> (); }
+    }
+
+    protected override void OnLoaded ()
+    {
+      base.OnLoaded ();
+      if (ProtectedLoaded != null)
+        ProtectedLoaded (this, EventArgs.Empty);
     }
   }
 }

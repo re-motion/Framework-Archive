@@ -474,5 +474,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
     }
+
+    [Test]
+    public void OnLoadedCannAccessObjectPropertiesInEnlistDomainObject ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      order.ProtectedLoaded += delegate (object sender, EventArgs e) { Assert.AreEqual (1, ((Order) sender).OrderNumber); };
+
+      newTransaction.EnlistDomainObject (order);
+    }
   }
 }
