@@ -476,7 +476,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void OnLoadedCannAccessValuePropertiesInEnlistDomainObject ()
+    public void OnLoadedCanAccessValuePropertiesInEnlistDomainObject ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
@@ -486,7 +486,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void OnLoadedCannReliablyAccessRelatedObjectPropertiesInEnlistSameDomainObjectsFromOrder ()
+    public void OnLoadedCanReliablyAccessRelatedObjectPropertiesInEnlistSameDomainObjectsFromOrder ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       OrderItem orderItem = order.OrderItems[0];
@@ -501,7 +501,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void OnLoadedCannReliablyAccessRelatedObjectPropertiesInEnlistSameDomainObjectsFromOrderItem ()
+    public void OnLoadedCanReliablyAccessRelatedObjectPropertiesInEnlistSameDomainObjectsFromOrderItem ()
     {
       OrderItem orderItem = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
       Order order = orderItem.Order;
