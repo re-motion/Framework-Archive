@@ -39,6 +39,21 @@ namespace Rubicon.Mixins
     }
 
     /// <summary>
+    /// Gets the underlying target type for a given <paramref name="type"/>.
+    /// </summary>
+    /// <param name="type">The type to get the underlying target type for.</param>
+    /// <returns>The <paramref name="type"/> itself if it is not a generated type; otherwise, the type that was used as a target type when the
+    /// given <paramref name="type"/> was generated.</returns>
+    public static Type GetUnderlyingTargetType (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      if (IsGeneratedType (type))
+        return Mixin.GetMixinConfigurationFromConcreteType (type).Type;
+      else
+        return type;
+    }
+
+    /// <summary>
     /// Determines whether the given <paramref name="typeToAssign"/> would be assignable to <paramref name="baseOrInterface"/> after all mixins
     /// currently configured for the type have been taken into account.
     /// </summary>
@@ -113,6 +128,21 @@ namespace Rubicon.Mixins
           return configuredMixinType;
       }
       return null;
+    }
+
+    /// <summary>
+    /// Determines whether the specified <paramref name="typeToCheck"/> is associated with a mixin that can be ascribed to the given
+    /// <paramref name="mixinType"/>.
+    /// </summary>
+    /// <param name="typeToCheck">The type to check.</param>
+    /// <param name="mixinType">The mixin type to check for.</param>
+    /// <returns>
+    /// True, if the specified type is a generated type containing a mixin that can be ascribed to <paramref name="mixinType"/> or a
+    /// base type currently configured with such a mixin; otherwise false.
+    /// </returns>
+    public static bool HasAscribableMixin (Type typeToCheck, Type mixinType)
+    {
+      return GetAscribableMixinType (typeToCheck, mixinType) != null;
     }
 
     private static ClassContext GetConcreteClassContext (Type type)

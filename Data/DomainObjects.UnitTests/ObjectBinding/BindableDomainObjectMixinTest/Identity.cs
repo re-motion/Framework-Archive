@@ -34,7 +34,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
     }
 
     [Test]
-    [Ignore ("TODO: Implement GetObjectServiceAttribute logic")]
     public void GetFromUniqueIdentifier ()
     {
       BindableObjectProvider.Current.AddService (typeof (IGetBindableDomainObjectService), new GetBindableDomainObjectService());

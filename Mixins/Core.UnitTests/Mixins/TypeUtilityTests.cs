@@ -201,7 +201,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
-    public void HasAscribableMixinOnUnmixedTypes ()
+    public void GetAscribableMixinOnUnmixedTypes ()
     {
       Assert.IsNull (TypeUtility.GetAscribableMixinType (typeof (object), typeof (NullMixin)));
       Assert.IsNull (TypeUtility.GetAscribableMixinType (typeof (int), typeof (object)));
@@ -256,6 +256,57 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
+    public void HasAscribableMixinOnUnmixedTypes ()
+    {
+      Assert.IsFalse (TypeUtility.HasAscribableMixin (typeof (object), typeof (NullMixin)));
+      Assert.IsFalse (TypeUtility.HasAscribableMixin (typeof (int), typeof (object)));
+      Assert.IsFalse (TypeUtility.HasAscribableMixin (typeof (int), typeof (List<>)));
+      Assert.IsFalse (TypeUtility.HasAscribableMixin (typeof (int), typeof (List<int>)));
+    }
+
+    [Test]
+    public void HasAscribableMixinOnMixedTypes ()
+    {
+      Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (BT1Mixin1)));
+      Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (BT1Mixin2)));
+      Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (IBT1Mixin1)));
+      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (GenericMixin<>)))
+      {
+        Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (GenericMixin<>)));
+        Assert.IsFalse (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (GenericMixin<int>)));
+        Assert.IsFalse (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (GenericMixin<string>)));
+      }
+      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (GenericMixin<int>)))
+      {
+        Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (GenericMixin<>)));
+        Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (GenericMixin<int>)));
+        Assert.IsFalse (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (GenericMixin<string>)));
+      }
+      Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (object)));
+    }
+
+    [Test]
+    public void HasAscribableMixinOnGeneratedTypes ()
+    {
+      Assert.IsTrue (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (BT1Mixin1)));
+      Assert.IsTrue (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (BT1Mixin2)));
+      Assert.IsTrue (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (IBT1Mixin1)));
+      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (GenericMixin<>)))
+      {
+        Assert.IsTrue (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (GenericMixin<>)));
+        Assert.IsFalse (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (GenericMixin<int>)));
+        Assert.IsFalse (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (GenericMixin<string>)));
+      }
+      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (GenericMixin<int>)))
+      {
+        Assert.IsTrue (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (GenericMixin<>)));
+        Assert.IsTrue (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (GenericMixin<int>)));
+        Assert.IsFalse (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (GenericMixin<string>)));
+      }
+      Assert.IsTrue (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (object)));
+    }
+
+    [Test]
     public void GetMixinTypesOnUnmixedTypes ()
     {
       Assert.That (new List<Type> (TypeUtility.GetMixinTypes (typeof (object))), Is.EquivalentTo (new Type[0]));
@@ -303,6 +354,24 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       List<int> instance = (List<int>) TypeUtility.CreateInstance (typeof (List<int>), 51);
       Assert.AreEqual (51, instance.Capacity);
+    }
+
+    [Test]
+    public void GetUnderlyingTargetTypeOnMixedType ()
+    {
+      Assert.AreSame (typeof (BaseType1), TypeUtility.GetUnderlyingTargetType (typeof (BaseType1)));
+    }
+
+    [Test]
+    public void GetUnderlyingTargetTypeOnUnmixedType ()
+    {
+      Assert.AreSame (typeof (object), TypeUtility.GetUnderlyingTargetType (typeof (object)));
+    }
+
+    [Test]
+    public void GetUnderlyingTargetTypeOnConcreteType ()
+    {
+      Assert.AreSame (typeof (BaseType1), TypeUtility.GetUnderlyingTargetType (TypeUtility.GetConcreteType (typeof (BaseType1))));
     }
   }
 }

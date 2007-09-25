@@ -8,19 +8,18 @@ namespace Rubicon.ObjectBinding.BindableObject
   //TODO: doc
   public class BindableObjectClass : IBusinessObjectClass
   {
-    private readonly Type _type;
+    private readonly Type _concreteType;
     private readonly BindableObjectProvider _businessObjectProvider;
     private readonly PropertyCollection _properties = new PropertyCollection();
 
-    public BindableObjectClass (Type type, BindableObjectProvider businessObjectProvider)
+    public BindableObjectClass (Type concreteType, BindableObjectProvider businessObjectProvider)
     {
-      //TODO: Check for value type
-      ArgumentUtility.CheckNotNull ("type", type);
-      // TODO: check using Mixins.TypeUtility.IsAssignableFrom (typeof (IBusinessObject), _concreteType) instead?
-      CheckTypeForIBusinessObject (type);
+      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
+      CheckTypeForMixin (concreteType);
+      Assertion.IsFalse (concreteType.IsValueType, "mixed types cannot be value types");
       ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
 
-      _type = type;
+      _concreteType = concreteType;
       _businessObjectProvider = businessObjectProvider;
     }
 
@@ -97,12 +96,17 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// </value>
     public string Identifier
     {
-      get { return TypeUtility.GetPartialAssemblyQualifiedName (_type); }
+      get { return TypeUtility.GetPartialAssemblyQualifiedName (TargetType); }
     }
 
-    public Type Type
+    public Type TargetType
     {
-      get { return _type; }
+      get { return Mixins.TypeUtility.GetUnderlyingTargetType (ConcreteType); }
+    }
+
+    public Type ConcreteType
+    {
+      get { return _concreteType; }
     }
 
     internal void SetProperties (IList<PropertyBase> properties)
@@ -113,17 +117,18 @@ namespace Rubicon.ObjectBinding.BindableObject
         _properties.Add (property);
     }
 
-    protected void CheckTypeForIBusinessObject (Type type)
+    protected void CheckTypeForMixin (Type concreteType)
     {
-      if (Mixins.TypeUtility.GetAscribableMixinType (type, typeof (BindableObjectMixinBase<>)) == null)
+      Type underlyingTargetType = Mixins.TypeUtility.GetUnderlyingTargetType (concreteType);
+      if (underlyingTargetType == concreteType || !Mixins.TypeUtility.HasAscribableMixin (concreteType, typeof (BindableObjectMixinBase<>)))
       {
         throw new ArgumentException (
             string.Format (
                 "Type '{0}' does not implement the '{1}' interface via the '{2}'.",
-                type.FullName,
+                underlyingTargetType.FullName,
                 typeof (IBusinessObject).FullName,
                 typeof (BindableObjectMixinBase<>).FullName),
-            "type");
+            "concreteType");
       }
     }
   }

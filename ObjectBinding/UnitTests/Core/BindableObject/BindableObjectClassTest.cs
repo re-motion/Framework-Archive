@@ -6,6 +6,8 @@ using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
 using Rubicon.Utilities;
+using TypeUtility=Rubicon.Mixins.TypeUtility;
+using Rubicon.Mixins;
 
 namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
 {
@@ -16,17 +18,19 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
 
     public override void SetUp ()
     {
-      base.SetUp();
+      base.SetUp ();
 
-      _bindableObjectProvider = new BindableObjectProvider();
+      _bindableObjectProvider = new BindableObjectProvider ();
     }
 
     [Test]
     public void Initialize ()
     {
-      BindableObjectClass bindableObjectClass = new BindableObjectClass (typeof (SimpleBusinessObjectClass), _bindableObjectProvider);
+      BindableObjectClass bindableObjectClass = new BindableObjectClass (TypeUtility.GetConcreteType (typeof (SimpleBusinessObjectClass)), _bindableObjectProvider);
 
-      Assert.That (bindableObjectClass.Type, Is.SameAs (typeof (SimpleBusinessObjectClass)));
+      Assert.That (bindableObjectClass.TargetType, Is.SameAs (typeof (SimpleBusinessObjectClass)));
+      Assert.That (bindableObjectClass.ConcreteType, Is.Not.SameAs (typeof (SimpleBusinessObjectClass)));
+      Assert.That (bindableObjectClass.ConcreteType, Is.SameAs (Mixins.TypeUtility.GetConcreteType (typeof (SimpleBusinessObjectClass))));
       Assert.That (
           bindableObjectClass.Identifier,
           Is.EqualTo ("Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleBusinessObjectClass, Rubicon.ObjectBinding.UnitTests"));
@@ -37,9 +41,10 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [Test]
     public void Initialize_WithGeneric ()
     {
-      BindableObjectClass bindableObjectClass = new BindableObjectClass (typeof (ClassWithReferenceType<SimpleReferenceType>), _bindableObjectProvider);
+      BindableObjectClass bindableObjectClass =
+          new BindableObjectClass (TypeUtility.GetConcreteType (typeof (ClassWithReferenceType<SimpleReferenceType>)), _bindableObjectProvider);
 
-      Assert.That (bindableObjectClass.Type, Is.SameAs (typeof (ClassWithReferenceType<SimpleReferenceType>)));
+      Assert.That (bindableObjectClass.TargetType, Is.SameAs (typeof (ClassWithReferenceType<SimpleReferenceType>)));
     }
 
     [Test]
@@ -47,10 +52,10 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
         ExpectedMessage =
         "Type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleReferenceType' does not implement the "
         + "'Rubicon.ObjectBinding.IBusinessObject' interface via the 'Rubicon.ObjectBinding.BindableObject.BindableObjectMixinBase`1'.\r\n"
-        + "Parameter name: type")]
+        + "Parameter name: concreteType")]
     public void Initialize_WithTypeNotUsingBindableObjectMixin ()
     {
-      new BindableObjectClass (typeof (SimpleReferenceType), _bindableObjectProvider);
+      new BindableObjectClass (TypeUtility.GetConcreteType (typeof (SimpleReferenceType)), _bindableObjectProvider);
     }
 
     [Test]
@@ -58,11 +63,24 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
         ExpectedMessage =
         "Type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ManualBusinessObject' does not implement the "
         + "'Rubicon.ObjectBinding.IBusinessObject' interface via the 'Rubicon.ObjectBinding.BindableObject.BindableObjectMixinBase`1'.\r\n"
-        + "Parameter name: type")]
-    public void Initialize_WithTypeManuallyImplementingBindableObjectMixin ()
+        + "Parameter name: concreteType")]
+    public void Initialize_WithUnmixedType ()
     {
-      BindableObjectClass bindableObjectClass = new BindableObjectClass (typeof (ManualBusinessObject), _bindableObjectProvider);
-      Assert.That (bindableObjectClass.Type, Is.SameAs (typeof (ManualBusinessObject)));
+      new BindableObjectClass (typeof (ManualBusinessObject), _bindableObjectProvider);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException),
+        ExpectedMessage =
+        "Type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ManualBusinessObject' does not implement the "
+        + "'Rubicon.ObjectBinding.IBusinessObject' interface via the 'Rubicon.ObjectBinding.BindableObject.BindableObjectMixinBase`1'.\r\n"
+        + "Parameter name: concreteType")]
+    public void Initialize_WithMixedTypeManuallyImplementingBindableObjectMixin ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (ManualBusinessObject), typeof (object)))
+      {
+        new BindableObjectClass (TypeUtility.GetConcreteType (typeof (ManualBusinessObject)), _bindableObjectProvider);
+      }
     }
 
     [Test]
@@ -71,20 +89,20 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       PropertyReflector propertyReflector =
           new PropertyReflector (GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String"), _bindableObjectProvider);
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithAllDataTypes), _bindableObjectProvider);
-      BindableObjectClass bindableObjectClass = classReflector.GetMetadata();
+      BindableObjectClass bindableObjectClass = classReflector.GetMetadata ();
 
-      CheckPropertyBase (propertyReflector.GetMetadata(), bindableObjectClass.GetPropertyDefinition ("String"));
+      CheckPropertyBase (propertyReflector.GetMetadata (), bindableObjectClass.GetPropertyDefinition ("String"));
     }
 
     [Test]
     [ExpectedException (typeof (KeyNotFoundException),
-        ExpectedMessage = 
+        ExpectedMessage =
         "The property 'Invalid' was not found on business object class "
         + "'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithAllDataTypes, Rubicon.ObjectBinding.UnitTests'.")]
     public void GetPropertyDefinition_WithInvalidPropertyName ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithAllDataTypes), _bindableObjectProvider);
-      BindableObjectClass bindableObjectClass = classReflector.GetMetadata();
+      BindableObjectClass bindableObjectClass = classReflector.GetMetadata ();
 
       bindableObjectClass.GetPropertyDefinition ("Invalid");
     }
@@ -96,7 +114,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       BindableObjectClass bindableObjectClass = classReflector.GetMetadata ();
 
       Assert.That (bindableObjectClass.HasPropertyDefinition ("String"), Is.True);
-      Assert.That(bindableObjectClass.HasPropertyDefinition ("Invalid"), Is.False);
+      Assert.That (bindableObjectClass.HasPropertyDefinition ("Invalid"), Is.False);
     }
 
     [Test]
@@ -113,8 +131,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
           };
 
       ClassReflector classReflector = new ClassReflector (type, _bindableObjectProvider);
-      BindableObjectClass bindableObjectClass = classReflector.GetMetadata();
-      IBusinessObjectProperty[] actualProperties = bindableObjectClass.GetPropertyDefinitions();
+      BindableObjectClass bindableObjectClass = classReflector.GetMetadata ();
+      IBusinessObjectProperty[] actualProperties = bindableObjectClass.GetPropertyDefinitions ();
 
       Assert.That (actualProperties.Length, Is.EqualTo (expectedProperties.Length));
       foreach (PropertyBase expectedProperty in expectedProperties)
@@ -138,14 +156,14 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       ArgumentUtility.CheckNotNull ("expectedProperty", expectedProperty);
 
       Assert.That (actualProperty, Is.Not.Null);
-      Assert.That (actualProperty.GetType(), Is.SameAs (expectedProperty.GetType()), "BusinessObjectPropertyType");
+      Assert.That (actualProperty.GetType (), Is.SameAs (expectedProperty.GetType ()), "BusinessObjectPropertyType");
       Assert.That (expectedProperty.PropertyType, Is.EqualTo (actualProperty.PropertyType), "PropertyType");
       Assert.That (expectedProperty.IsList, Is.EqualTo (actualProperty.IsList), "IsList");
       if (expectedProperty.IsList)
         Assert.That (expectedProperty.ListInfo.ItemType, Is.EqualTo (actualProperty.ListInfo.ItemType), "ListInfo.ItemType");
       Assert.That (expectedProperty.IsRequired, Is.EqualTo (actualProperty.IsRequired), "IsRequired");
 
-      if (typeof (IBusinessObjectStringProperty).IsAssignableFrom (actualProperty.GetType()))
+      if (typeof (IBusinessObjectStringProperty).IsAssignableFrom (actualProperty.GetType ()))
         CheckStringProperty ((IBusinessObjectStringProperty) actualProperty, expectedProperty);
     }
 
@@ -160,7 +178,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     private PropertyBase CreateProperty (Type type, string propertyName)
     {
       PropertyReflector propertyReflector = new PropertyReflector (GetPropertyInfo (type, propertyName), _bindableObjectProvider);
-      return propertyReflector.GetMetadata();
+      return propertyReflector.GetMetadata ();
     }
   }
 }

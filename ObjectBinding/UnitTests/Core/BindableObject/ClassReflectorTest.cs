@@ -26,7 +26,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [Test]
     public void Initialize ()
     {
-      Assert.That (_classReflector.Type, Is.SameAs (_type));
+      Assert.That (_classReflector.TargetType, Is.SameAs (_type));
+      Assert.That (_classReflector.ConcreteType, Is.Not.SameAs (_type));
+      Assert.That (_classReflector.ConcreteType, Is.SameAs (Mixins.TypeUtility.GetConcreteType (_type)));
       Assert.That (_classReflector.BusinessObjectProvider, Is.SameAs (_businessObjectProvider));
     }
 
@@ -36,7 +38,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       BindableObjectClass bindableObjectClass = _classReflector.GetMetadata();
 
       Assert.That (bindableObjectClass, Is.InstanceOfType (typeof (IBusinessObjectClass)));
-      Assert.That (bindableObjectClass.Type, Is.SameAs (_type));
+      Assert.That (bindableObjectClass.TargetType, Is.SameAs (_type));
       Assert.That (bindableObjectClass.GetPropertyDefinitions().Length, Is.EqualTo (1));
       Assert.That (bindableObjectClass.GetPropertyDefinitions()[0].Identifier, Is.EqualTo ("Public"));
       Assert.That (((PropertyBase) bindableObjectClass.GetPropertyDefinitions()[0]).PropertyInfo.DeclaringType, Is.SameAs (_type));
@@ -50,14 +52,14 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       BindableObjectClass bindableObjectClass = classReflector.GetMetadata();
 
       Assert.That (bindableObjectClass, Is.InstanceOfType (typeof (IBusinessObjectClassWithIdentity)));
-      Assert.That (bindableObjectClass.Type, Is.SameAs (typeof (ClassWithIdentity)));
+      Assert.That (bindableObjectClass.TargetType, Is.SameAs (typeof (ClassWithIdentity)));
       Assert.That (bindableObjectClass.GetPropertyDefinitions()[0].BusinessObjectProvider, Is.SameAs (_businessObjectProvider));
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain."
         + "ClassWithManualIdentity' does not implement the 'Rubicon.ObjectBinding.IBusinessObject' interface via the 'Rubicon.ObjectBinding."
-        + "BindableObject.BindableObjectMixinBase`1'.\r\nParameter name: type")]
+        + "BindableObject.BindableObjectMixinBase`1'.\r\nParameter name: concreteType")]
     public void GetMetadata_ForBindableObjectWithManualIdentity ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithManualIdentity), _businessObjectProvider);

@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
     public void FromClass ()
     {
       Assert.That (_bindableObjectMixin.BusinessObjectClass, Is.Not.Null);
-      Assert.That (_bindableObjectMixin.BusinessObjectClass.Type, Is.SameAs (typeof (BindableDomainObject)));
+      Assert.That (_bindableObjectMixin.BusinessObjectClass.TargetType, Is.SameAs (typeof (BindableDomainObject)));
       Assert.That (_bindableObjectMixin.BusinessObjectClass.BusinessObjectProvider, Is.SameAs (BindableObjectProvider.Current));
     }
 

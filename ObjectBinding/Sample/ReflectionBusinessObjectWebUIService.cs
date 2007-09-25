@@ -18,7 +18,7 @@ public class ReflectionBusinessObjectWebUIService: IBusinessObjectWebUIService
     }
     else
     {
-      string url = "~/Images/" + ((BindableObjectClass) obj.BusinessObjectClass).Type.FullName + ".gif";
+      string url = "~/Images/" + ((BindableObjectClass) obj.BusinessObjectClass).TargetType.FullName + ".gif";
       return new IconInfo (url, Unit.Pixel (16), Unit.Pixel (16));
     }
   }
@@ -28,7 +28,7 @@ public class ReflectionBusinessObjectWebUIService: IBusinessObjectWebUIService
     if (obj == null)
       return "No ToolTip";
     else
-      return "ToolTip: " + ((BindableObjectClass)obj.BusinessObjectClass).Type.FullName;
+      return "ToolTip: " + ((BindableObjectClass)obj.BusinessObjectClass).TargetType.FullName;
   }
 
 }

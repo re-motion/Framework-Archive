@@ -170,7 +170,7 @@ namespace Rubicon.ObjectBinding.Sample
 
     private Type GetTargetType (BindableXmlObject obj)
     {
-      return ((BindableObjectClass) ((IBusinessObject) obj).BusinessObjectClass).Type;
+      return ((BindableObjectClass) ((IBusinessObject) obj).BusinessObjectClass).TargetType;
     }
 
     private XmlSerializer GetXmlSerializer (Type concreteType)
@@ -214,7 +214,7 @@ namespace Rubicon.ObjectBinding.Sample
       ArgumentUtility.CheckNotNull ("classWithIdentity", classWithIdentity);
       ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
 
-      return (IBusinessObjectWithIdentity) GetObject (classWithIdentity.Type, new Guid (uniqueIdentifier));
+      return (IBusinessObjectWithIdentity) GetObject (classWithIdentity.TargetType, new Guid (uniqueIdentifier));
     }
   }
 }

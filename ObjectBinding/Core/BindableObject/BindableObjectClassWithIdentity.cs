@@ -9,8 +9,8 @@ namespace Rubicon.ObjectBinding.BindableObject
   {
     private readonly Type _getObjectServiceType;
 
-    public BindableObjectClassWithIdentity (Type type, BindableObjectProvider businessObjectProvider)
-        : base (type, businessObjectProvider)
+    public BindableObjectClassWithIdentity (Type concreteType, BindableObjectProvider businessObjectProvider)
+        : base (concreteType, businessObjectProvider)
     {
       _getObjectServiceType = GetGetObjectServiceType();
     }
@@ -30,7 +30,7 @@ namespace Rubicon.ObjectBinding.BindableObject
             string.Format (
                 "The '{0}' required for loading objectes of type '{1}' is not registered with the '{2}'.",
                 _getObjectServiceType.FullName,
-                Type.FullName,
+                TargetType.FullName,
                 BusinessObjectProvider.GetType().FullName));
       }
       return service;
@@ -38,7 +38,7 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     private Type GetGetObjectServiceType ()
     {
-      GetObjectServiceTypeAttribute attribute = AttributeUtility.GetCustomAttribute<GetObjectServiceTypeAttribute> (Type, true);
+      GetObjectServiceTypeAttribute attribute = AttributeUtility.GetCustomAttribute<GetObjectServiceTypeAttribute> (ConcreteType, true);
       if (attribute == null)
         return typeof (IGetObjectService);
       return attribute.Type;

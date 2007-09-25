@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
+using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
 
@@ -24,9 +25,10 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [Test]
     public void Initialize ()
     {
-      BindableObjectClassWithIdentity bindableObjectClass = new BindableObjectClassWithIdentity (typeof (ClassWithIdentity), _bindableObjectProvider);
+      BindableObjectClassWithIdentity bindableObjectClass =
+          new BindableObjectClassWithIdentity (TypeUtility.GetConcreteType (typeof (ClassWithIdentity)), _bindableObjectProvider);
 
-      Assert.That (bindableObjectClass.Type, Is.SameAs (typeof (ClassWithIdentity)));
+      Assert.That (bindableObjectClass.TargetType, Is.SameAs (typeof (ClassWithIdentity)));
       Assert.That (
           bindableObjectClass.Identifier,
           Is.EqualTo ("Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithIdentity, Rubicon.ObjectBinding.UnitTests"));
@@ -37,7 +39,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [Test]
     public void GetObject_WithDefaultService ()
     {
-      BindableObjectClassWithIdentity bindableObjectClass = new BindableObjectClassWithIdentity (typeof (ClassWithIdentity), _bindableObjectProvider);
+      BindableObjectClassWithIdentity bindableObjectClass =
+          new BindableObjectClassWithIdentity (TypeUtility.GetConcreteType (typeof (ClassWithIdentity)), _bindableObjectProvider);
       IGetObjectService mockService = _mockRepository.CreateMock<IGetObjectService>();
       IBusinessObjectWithIdentity expected = _mockRepository.Stub<IBusinessObjectWithIdentity>();
 
@@ -54,8 +57,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [Test]
     public void GetObject_WithCustomService ()
     {
-      BindableObjectClassWithIdentity bindableObjectClass =
-          new BindableObjectClassWithIdentity (typeof (ClassWithIdentityAndGetObjectServiceAttribute), _bindableObjectProvider);
+      BindableObjectClassWithIdentity bindableObjectClass = new BindableObjectClassWithIdentity (
+          TypeUtility.GetConcreteType (typeof (ClassWithIdentityAndGetObjectServiceAttribute)), _bindableObjectProvider);
       ICustomGetObjectService mockService = _mockRepository.CreateMock<ICustomGetObjectService>();
       IBusinessObjectWithIdentity expected = _mockRepository.Stub<IBusinessObjectWithIdentity>();
 
@@ -77,7 +80,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
         + "'Rubicon.ObjectBinding.BindableObject.BindableObjectProvider'.")]
     public void GetObject_WithoutService ()
     {
-      BindableObjectClassWithIdentity bindableObjectClass = new BindableObjectClassWithIdentity (typeof (ClassWithIdentity), _bindableObjectProvider);
+      BindableObjectClassWithIdentity bindableObjectClass =
+          new BindableObjectClassWithIdentity (TypeUtility.GetConcreteType (typeof (ClassWithIdentity)), _bindableObjectProvider);
 
       bindableObjectClass.GetObject ("TheUniqueIdentifier");
     }

@@ -27,7 +27,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectMixi
     public void FromClass ()
     {
       Assert.That (_bindableObjectMixin.BusinessObjectClass, Is.Not.Null);
-      Assert.That (_bindableObjectMixin.BusinessObjectClass.Type, Is.SameAs (typeof (SimpleBusinessObjectClass)));
+      Assert.That (_bindableObjectMixin.BusinessObjectClass.TargetType, Is.SameAs (typeof (SimpleBusinessObjectClass)));
       Assert.That (_bindableObjectMixin.BusinessObjectClass.BusinessObjectProvider, Is.SameAs (BindableObjectProvider.Current));
     }
 

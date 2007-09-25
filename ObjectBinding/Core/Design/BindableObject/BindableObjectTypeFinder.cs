@@ -33,7 +33,7 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
       List<Type> bindableTypes = new List<Type> ();
       foreach (ClassContext classContext in applicationContext.ClassContexts)
       {
-        if (Mixins.TypeUtility.GetAscribableMixinType (classContext.Type, typeof (BindableObjectMixinBase<>)) != null)
+        if (Mixins.TypeUtility.HasAscribableMixin (classContext.Type, typeof (BindableObjectMixinBase<>)))
           bindableTypes.Add (classContext.Type);
       }
       return bindableTypes;

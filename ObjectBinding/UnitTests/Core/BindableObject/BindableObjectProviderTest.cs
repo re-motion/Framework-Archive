@@ -85,7 +85,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       BindableObjectClass actual = _provider.GetBindableObjectClass (typeof (SimpleBusinessObjectClass));
 
       Assert.That (actual, Is.Not.Null);
-      Assert.That (actual.Type, Is.SameAs (typeof (SimpleBusinessObjectClass)));
+      Assert.That (actual.TargetType, Is.SameAs (typeof (SimpleBusinessObjectClass)));
       Assert.That (actual.BusinessObjectProvider, Is.SameAs (_provider));
       BindableObjectClass cachedBindableObjectClass;
       Assert.That (_provider.BusinessObjectClassCache.TryGetValue (typeof (SimpleBusinessObjectClass), out cachedBindableObjectClass), Is.True);
@@ -103,7 +103,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
        ExpectedMessage =
        "Type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleReferenceType' does not implement the "
        + "'Rubicon.ObjectBinding.IBusinessObject' interface via the 'Rubicon.ObjectBinding.BindableObject.BindableObjectMixinBase`1'.\r\n"
-       + "Parameter name: type")]
+       + "Parameter name: concreteType")]
     public void GetBindableObjectClass_WithTypeNotUsingBindableObjectMixin ()
     {
       _provider.GetBindableObjectClass (typeof (SimpleReferenceType));

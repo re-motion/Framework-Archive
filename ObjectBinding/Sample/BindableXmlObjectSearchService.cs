@@ -22,7 +22,7 @@ namespace Rubicon.ObjectBinding.Sample
       BindableObjectClass bindableObjectClass = (BindableObjectClass) referenceProperty.ReferenceClass;
 
       return (IBusinessObject[]) ArrayUtility.Convert (
-                                     XmlReflectionBusinessObjectStorageProvider.Current.GetObjects (bindableObjectClass.Type),
+                                     XmlReflectionBusinessObjectStorageProvider.Current.GetObjects (bindableObjectClass.TargetType),
                                      typeof (IBusinessObject));
     }
   }

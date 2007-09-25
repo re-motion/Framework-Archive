@@ -8,21 +8,28 @@ namespace Rubicon.ObjectBinding.BindableObject
 {
   public class ClassReflector
   {
-    private readonly Type _type;
+    private readonly Type _targetType;
+    private readonly Type _concreteType;
     private readonly BindableObjectProvider _businessObjectProvider;
 
-    public ClassReflector (Type type, BindableObjectProvider businessObjectProvider)
+    public ClassReflector (Type targetType, BindableObjectProvider businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull ("targetType", targetType);
       ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
 
-      _type = type;
+      _targetType = targetType;
+      _concreteType = Mixins.TypeUtility.GetConcreteType (_targetType);
       _businessObjectProvider = businessObjectProvider;
     }
 
-    public Type Type
+    public Type TargetType
     {
-      get { return _type; }
+      get { return _targetType; }
+    }
+
+    public Type ConcreteType
+    {
+      get { return _concreteType; }
     }
 
     public BindableObjectProvider BusinessObjectProvider
@@ -32,16 +39,16 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     public BindableObjectClass GetMetadata ()
     {
-      return _businessObjectProvider.BusinessObjectClassCache.GetOrCreateValue (_type, delegate { return CreateBindableObjectClass(); });
+      return _businessObjectProvider.BusinessObjectClassCache.GetOrCreateValue (_targetType, delegate { return CreateBindableObjectClass(); });
     }
 
     private BindableObjectClass CreateBindableObjectClass ()
     {
       BindableObjectClass bindableObjectClass;
-      if (Mixins.TypeUtility.IsAssignableFrom (typeof (IBusinessObjectWithIdentity), _type))
-        bindableObjectClass = new BindableObjectClassWithIdentity (_type, _businessObjectProvider);
+      if (typeof (IBusinessObjectWithIdentity).IsAssignableFrom (ConcreteType))
+        bindableObjectClass = new BindableObjectClassWithIdentity (_concreteType, _businessObjectProvider);
       else
-        bindableObjectClass = new BindableObjectClass (_type, _businessObjectProvider);
+        bindableObjectClass = new BindableObjectClass (_concreteType, _businessObjectProvider);
 
       bindableObjectClass.SetProperties (GetProperties());
 
@@ -63,7 +70,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     private PropertyInfo[] GetPropertyInfos ()
     {
       PropertyInfoCollection propertyInfos = new PropertyInfoCollection();
-      for (Type currentType = _type; currentType != null; currentType = currentType.BaseType)
+      for (Type currentType = _targetType; currentType != null; currentType = currentType.BaseType)
       {
         foreach (PropertyInfo propertyInfo in currentType.FindMembers (
             MemberTypes.Property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly, PropertyFilter, null))

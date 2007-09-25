@@ -70,7 +70,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectData
         ExpectedMessage =
         "Type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleReferenceType' does not implement the "
         + "'Rubicon.ObjectBinding.IBusinessObject' interface via the 'Rubicon.ObjectBinding.BindableObject.BindableObjectMixinBase`1'.\r\n"
-        + "Parameter name: type")]
+        + "Parameter name: concreteType")]
     public void GetBusinessObjectClass_WithTypeNotUsingBindableObjectMixin ()
     {
       _dataSource.Type = typeof (SimpleReferenceType);
