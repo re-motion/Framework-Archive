@@ -27,6 +27,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return DomainObject.GetObject<OrderItem> (id);
     }
 
+    public event EventHandler ProtectedLoaded;
+
     protected OrderItem()
     {
     }
@@ -50,6 +52,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     public object OriginalOrder
     {
       get { return Properties[typeof (OrderItem), "Order"].GetOriginalValue<TestDomain.Order>(); }
+    }
+
+    protected override void OnLoaded (LoadMode loadMode)
+    {
+      base.OnLoaded (loadMode);
+      if (ProtectedLoaded != null)
+        ProtectedLoaded (this, EventArgs.Empty);
     }
   }
 }

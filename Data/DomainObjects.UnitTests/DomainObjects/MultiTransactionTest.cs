@@ -476,13 +476,45 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void OnLoadedCannAccessObjectPropertiesInEnlistDomainObject ()
+    public void OnLoadedCannAccessValuePropertiesInEnlistDomainObject ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
       order.ProtectedLoaded += delegate (object sender, EventArgs e) { Assert.AreEqual (1, ((Order) sender).OrderNumber); };
 
       newTransaction.EnlistDomainObject (order);
+    }
+
+    [Test]
+    [Ignore ("TODO: fix bug")]
+    public void OnLoadedCannReliablyAccessRelatedObjectPropertiesInEnlistSameDomainObjectsFromOrder ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      OrderItem orderItem = order.OrderItems[0];
+
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      order.ProtectedLoaded += delegate (object sender, EventArgs e) { Assert.AreSame (sender, ((Order) sender).OrderItems[0].Order); };
+
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
+      Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
+      Assert.IsTrue (orderItem.CanBeUsedInTransaction (newTransaction));
+      Assert.AreSame (orderItem, order.OrderItems[0]);
+    }
+
+    [Test]
+    [Ignore ("TODO: fix bug")]
+    public void OnLoadedCannReliablyAccessRelatedObjectPropertiesInEnlistSameDomainObjectsFromOrderItem ()
+    {
+      OrderItem orderItem = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
+      Order order = orderItem.Order;
+
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      orderItem.ProtectedLoaded += delegate (object sender, EventArgs e) { Assert.Contains (sender, ((OrderItem) sender).Order.OrderItems); };
+
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
+      Assert.IsTrue (orderItem.CanBeUsedInTransaction (newTransaction));
+      Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
+      Assert.AreSame (order, orderItem.Order);
     }
   }
 }
