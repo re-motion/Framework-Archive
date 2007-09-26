@@ -32,7 +32,7 @@
         <include asis="true" name="System.Windows.Forms.dll"/>
         <include asis="true" name="System.Xml.dll"/>
       </references>
-      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Data.DomainObjects.Legacy.ObjectBinding">
+      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Data.DomainObjects.ObjectBinding">
         <include name="Globalization/*.resx" />
       </resources>
     </csc>

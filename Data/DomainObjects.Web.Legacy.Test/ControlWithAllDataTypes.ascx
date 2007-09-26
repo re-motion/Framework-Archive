@@ -1,11 +1,8 @@
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="ControlWithAllDataTypes.ascx.cs" Inherits="Rubicon.Data.DomainObjects.Web.Legacy.Test.ControlWithAllDataTypes" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
-<%@ Register TagPrefix="dob" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 
 
-<rwc:formgridmanager id="FormGridManager" runat="server" visible="true"></rwc:formgridmanager>
-<dob:domainobjectdatasourcecontrol id="CurrentObject" runat="server" TypeName="Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.Web.Legacy.Test"></dob:domainobjectdatasourcecontrol>
+<rubicon:formgridmanager id="FormGridManager" runat="server" visible="true"></rubicon:formgridmanager>
+<rubicon:domainobjectdatasourcecontrol id="CurrentObject" runat="server" TypeName="Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.Web.Legacy.Test"></rubicon:domainobjectdatasourcecontrol>
 
 <P><STRONG><FONT color="#ff3333">Achtung: Auf dieser Seite befinden sich Controls, 
 die mehrfach auf die gleiche Porperty gebunden sind. Dadurch überschreiben sich 
@@ -19,112 +16,112 @@ beachten!</FONT></STRONG></P>
   </tr>
   <TR>
     <TD></TD>
-    <TD><obc:bocbooleanvalue id="BocBooleanValue1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="BooleanProperty"></obc:bocbooleanvalue></TD>
+    <TD><rubicon:bocbooleanvalue id="BocBooleanValue1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="BooleanProperty"></rubicon:bocbooleanvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:bocenumvalue id="BocEnumValue2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="BooleanProperty">
+    <TD><rubicon:bocenumvalue id="BocEnumValue2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="BooleanProperty">
         <ListControlStyle RadioButtonListCellPadding="" RadioButtonListCellSpacing=""></ListControlStyle>
-      </obc:bocenumvalue></TD>
+      </rubicon:bocenumvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="BocTextValue10" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ByteProperty">
+    <TD><rubicon:boctextvalue id="BocTextValue10" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ByteProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD style="HEIGHT: 25px"></TD>
-    <TD style="HEIGHT: 25px"><obc:boctextvalue id="Boctextvalue12" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DateProperty">
+    <TD style="HEIGHT: 25px"><rubicon:boctextvalue id="Boctextvalue12" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DateProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:bocdatetimevalue id="Bocdatetimevalue4" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DateProperty"></obc:bocdatetimevalue></TD>
+    <TD><rubicon:bocdatetimevalue id="Bocdatetimevalue4" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DateProperty"></rubicon:bocdatetimevalue></TD>
   </TR>
   <TR>
     <TD style="HEIGHT: 25px"></TD>
-    <TD style="HEIGHT: 25px"><obc:boctextvalue id="Boctextvalue7" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DateTimeProperty">
+    <TD style="HEIGHT: 25px"><rubicon:boctextvalue id="Boctextvalue7" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DateTimeProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:bocdatetimevalue id="BocDateTimeValue1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DateTimeProperty"></obc:bocdatetimevalue></TD>
+    <TD><rubicon:bocdatetimevalue id="BocDateTimeValue1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DateTimeProperty"></rubicon:bocdatetimevalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:bocdatetimevalue id="BocDateTimeValue7" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ReadOnlyDateTimeProperty"></obc:bocdatetimevalue></TD>
+    <TD><rubicon:bocdatetimevalue id="BocDateTimeValue7" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ReadOnlyDateTimeProperty"></rubicon:bocdatetimevalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="BocTextValue16" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DecimalProperty">
+    <TD><rubicon:boctextvalue id="BocTextValue16" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DecimalProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="BocTextValue15" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DoubleProperty">
+    <TD><rubicon:boctextvalue id="BocTextValue15" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DoubleProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:bocenumvalue id="BocEnumValue1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="EnumProperty">
+    <TD><rubicon:bocenumvalue id="BocEnumValue1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="EnumProperty">
         <ListControlStyle></ListControlStyle>
-      </obc:bocenumvalue></TD>
+      </rubicon:bocenumvalue></TD>
   </TR>
   <TR>
     <TD></TD>
     <TD>
-      <obc:bocenumvalue id="Bocenumvalue5" runat="server" PropertyIdentifier="EnumProperty" DataSourceControl="CurrentObject"
+      <rubicon:bocenumvalue id="Bocenumvalue5" runat="server" PropertyIdentifier="EnumProperty" DataSourceControl="CurrentObject"
         ReadOnly="True">
         <ListControlStyle></ListControlStyle>
-      </obc:bocenumvalue></TD>
+      </rubicon:bocenumvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="BocTextValue19" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="GuidProperty">
+    <TD><rubicon:boctextvalue id="BocTextValue19" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="GuidProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue11" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Int16Property">
+    <TD><rubicon:boctextvalue id="Boctextvalue11" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Int16Property">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="BocTextValue4" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Int32Property">
+    <TD><rubicon:boctextvalue id="BocTextValue4" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Int32Property">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue20" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="SingleProperty">
+    <TD><rubicon:boctextvalue id="Boctextvalue20" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="SingleProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <td></td>
-    <TD><obc:boctextvalue id="BocTextValue1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="StringProperty">
+    <TD><rubicon:boctextvalue id="BocTextValue1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="StringProperty">
         <TextBoxStyle TextMode="MultiLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <td></td>
-    <TD><obc:boctextvalue id="BocTextValue30" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="StringPropertyWithoutMaxLength">
+    <TD><rubicon:boctextvalue id="BocTextValue30" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="StringPropertyWithoutMaxLength">
         <TextBoxStyle TextMode="MultiLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:BocMultilineTextValue id="BocMultilineTextValue1" runat="server" PropertyIdentifier="StringArray" DataSourceControl="CurrentObject">
+    <TD><rubicon:BocMultilineTextValue id="BocMultilineTextValue1" runat="server" PropertyIdentifier="StringArray" DataSourceControl="CurrentObject">
 <TextBoxStyle TextMode="MultiLine">
 </TextBoxStyle>
-</obc:BocMultilineTextValue></TD></TR>
+</rubicon:BocMultilineTextValue></TD></TR>
   <tr>
     <td></td>
     <td><br>
@@ -133,76 +130,76 @@ beachten!</FONT></STRONG></P>
   </tr>
   <TR>
     <TD></TD>
-    <TD><obc:bocbooleanvalue id="BocBooleanValue2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaBooleanProperty"
-        TrueDescription="Ja" FalseDescription="Nein" NullDescription="Undefiniert"></obc:bocbooleanvalue></TD>
+    <TD><rubicon:bocbooleanvalue id="BocBooleanValue2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaBooleanProperty"
+        TrueDescription="Ja" FalseDescription="Nein" NullDescription="Undefiniert"></rubicon:bocbooleanvalue></TD>
   </TR>
   <TR>
     <TD style="HEIGHT: 12px"></TD>
-    <TD style="HEIGHT: 12px"><obc:bocenumvalue id="BocEnumValue3" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaBooleanProperty">
+    <TD style="HEIGHT: 12px"><rubicon:bocenumvalue id="BocEnumValue3" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaBooleanProperty">
         <ListControlStyle></ListControlStyle>
-      </obc:bocenumvalue></TD>
+      </rubicon:bocenumvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue3" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaByteProperty">
+    <TD><rubicon:boctextvalue id="Boctextvalue3" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaByteProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue13" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDateProperty">
+    <TD><rubicon:boctextvalue id="Boctextvalue13" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDateProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:bocdatetimevalue id="Bocdatetimevalue5" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDateProperty"></obc:bocdatetimevalue></TD>
+    <TD><rubicon:bocdatetimevalue id="Bocdatetimevalue5" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDateProperty"></rubicon:bocdatetimevalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue8" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDateTimeProperty">
+    <TD><rubicon:boctextvalue id="Boctextvalue8" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDateTimeProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:bocdatetimevalue id="BocDateTimeValue2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDateTimeProperty"></obc:bocdatetimevalue></TD>
+    <TD><rubicon:bocdatetimevalue id="BocDateTimeValue2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDateTimeProperty"></rubicon:bocdatetimevalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue24" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDecimalProperty">
+    <TD><rubicon:boctextvalue id="Boctextvalue24" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDecimalProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue25" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDoubleProperty">
+    <TD><rubicon:boctextvalue id="Boctextvalue25" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDoubleProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue27" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaGuidProperty">
+    <TD><rubicon:boctextvalue id="Boctextvalue27" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaGuidProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue22" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaInt16Property">
+    <TD><rubicon:boctextvalue id="Boctextvalue22" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaInt16Property">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="BocTextValue5" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaInt32Property">
+    <TD><rubicon:boctextvalue id="BocTextValue5" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaInt32Property">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue28" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaSingleProperty">
+    <TD><rubicon:boctextvalue id="Boctextvalue28" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaSingleProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <tr>
     <td></td>
@@ -212,91 +209,91 @@ beachten!</FONT></STRONG></P>
   </tr>
   <TR>
     <TD></TD>
-    <TD><obc:bocbooleanvalue id="BocBooleanValue3" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaBooleanWithNullValueProperty"
-        TrueDescription="Ja" FalseDescription="Nein" NullDescription="Undefiniert"></obc:bocbooleanvalue></TD>
+    <TD><rubicon:bocbooleanvalue id="BocBooleanValue3" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaBooleanWithNullValueProperty"
+        TrueDescription="Ja" FalseDescription="Nein" NullDescription="Undefiniert"></rubicon:bocbooleanvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:bocenumvalue id="BocEnumValue4" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaBooleanWithNullValueProperty">
+    <TD><rubicon:bocenumvalue id="BocEnumValue4" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaBooleanWithNullValueProperty">
         <ListControlStyle></ListControlStyle>
-      </obc:bocenumvalue></TD>
+      </rubicon:bocenumvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue21" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaByteWithNullValueProperty">
+    <TD><rubicon:boctextvalue id="Boctextvalue21" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaByteWithNullValueProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue14" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDateWithNullValueProperty"
+    <TD><rubicon:boctextvalue id="Boctextvalue14" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDateWithNullValueProperty"
         ValueType="Date">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:bocdatetimevalue id="Bocdatetimevalue6" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDateWithNullValueProperty"></obc:bocdatetimevalue></TD>
+    <TD><rubicon:bocdatetimevalue id="Bocdatetimevalue6" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDateWithNullValueProperty"></rubicon:bocdatetimevalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue9" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDateTimeWithNullValueProperty"
+    <TD><rubicon:boctextvalue id="Boctextvalue9" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDateTimeWithNullValueProperty"
         ValueType="Date">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:bocdatetimevalue id="BocDateTimeValue3" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDateTimeWithNullValueProperty"></obc:bocdatetimevalue></TD>
+    <TD><rubicon:bocdatetimevalue id="BocDateTimeValue3" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDateTimeWithNullValueProperty"></rubicon:bocdatetimevalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue26" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDecimalWithNullValueProperty">
+    <TD><rubicon:boctextvalue id="Boctextvalue26" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDecimalWithNullValueProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="BocTextValue18" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDoubleWithNullValueProperty">
+    <TD><rubicon:boctextvalue id="BocTextValue18" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaDoubleWithNullValueProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue17" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaGuidWithNullValueProperty">
+    <TD><rubicon:boctextvalue id="Boctextvalue17" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaGuidWithNullValueProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue23" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaInt16WithNullValueProperty">
+    <TD><rubicon:boctextvalue id="Boctextvalue23" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaInt16WithNullValueProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="BocTextValue6" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaInt32WithNullValueProperty">
+    <TD><rubicon:boctextvalue id="BocTextValue6" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaInt32WithNullValueProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="Boctextvalue29" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaSingleWithNullValueProperty">
+    <TD><rubicon:boctextvalue id="Boctextvalue29" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaSingleWithNullValueProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boctextvalue id="BocTextValue2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="StringWithNullValueProperty">
+    <TD><rubicon:boctextvalue id="BocTextValue2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="StringWithNullValueProperty">
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-      </obc:boctextvalue></TD>
+      </rubicon:boctextvalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:BocMultilineTextValue id="BocMultilineTextValue2" runat="server" PropertyIdentifier="NullStringArray" DataSourceControl="CurrentObject">
+    <TD><rubicon:BocMultilineTextValue id="BocMultilineTextValue2" runat="server" PropertyIdentifier="NullStringArray" DataSourceControl="CurrentObject">
 <TextBoxStyle TextMode="MultiLine">
 </TextBoxStyle>
-</obc:BocMultilineTextValue></TD></TR>
+</rubicon:BocMultilineTextValue></TD></TR>
   <tr>
     <td></td>
     <td><br>
@@ -305,55 +302,55 @@ beachten!</FONT></STRONG></P>
   </tr>
   <TR>
     <TD></TD>
-    <TD><obc:bocreferencevalue id="BocReferenceValue1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ClassForRelationTestMandatory"
+    <TD><rubicon:bocreferencevalue id="BocReferenceValue1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ClassForRelationTestMandatory"
         Select="GetAllRelatedObjects">
         <PersistedCommand>
-          <obc:BocCommand Type="None"></obc:BocCommand>
+          <rubicon:BocCommand Type="None"></rubicon:BocCommand>
         </PersistedCommand>
-      </obc:bocreferencevalue></TD>
+      </rubicon:bocreferencevalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:bocreferencevalue id="BocReferenceValue2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ClassForRelationTestOptional"
+    <TD><rubicon:bocreferencevalue id="BocReferenceValue2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ClassForRelationTestOptional"
         Select="GetAllRelatedObjects">
         <PersistedCommand>
-          <obc:BocCommand Type="None"></obc:BocCommand>
+          <rubicon:BocCommand Type="None"></rubicon:BocCommand>
         </PersistedCommand>
-      </obc:bocreferencevalue></TD>
+      </rubicon:bocreferencevalue></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boclist id="BocList1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ClassesForRelationTestMandatoryNavigateOnly">
+    <TD><rubicon:boclist id="BocList1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ClassesForRelationTestMandatoryNavigateOnly">
         <FixedColumns>
-          <obc:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
+          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
             <PersistedCommand>
-              <obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
+              <rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
             </PersistedCommand>
-          </obc:BocSimpleColumnDefinition>
-          <obc:BocSimpleColumnDefinition PropertyPathIdentifier="EnumProperty">
+          </rubicon:BocSimpleColumnDefinition>
+          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="EnumProperty">
             <PersistedCommand>
-              <obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
+              <rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
             </PersistedCommand>
-          </obc:BocSimpleColumnDefinition>
+          </rubicon:BocSimpleColumnDefinition>
         </FixedColumns>
-      </obc:boclist></TD>
+      </rubicon:boclist></TD>
   </TR>
   <TR>
     <TD></TD>
-    <TD><obc:boclist id="BocList2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ClassesForRelationTestOptionalNavigateOnly">
+    <TD><rubicon:boclist id="BocList2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ClassesForRelationTestOptionalNavigateOnly">
         <FixedColumns>
-          <obc:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
+          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
             <PersistedCommand>
-              <obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
+              <rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
             </PersistedCommand>
-          </obc:BocSimpleColumnDefinition>
-          <obc:BocSimpleColumnDefinition PropertyPathIdentifier="EnumProperty">
+          </rubicon:BocSimpleColumnDefinition>
+          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="EnumProperty">
             <PersistedCommand>
-              <obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
+              <rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
             </PersistedCommand>
-          </obc:BocSimpleColumnDefinition>
+          </rubicon:BocSimpleColumnDefinition>
         </FixedColumns>
-      </obc:boclist></TD>
+      </rubicon:boclist></TD>
   </TR>
 </TABLE>
 <P><br>
