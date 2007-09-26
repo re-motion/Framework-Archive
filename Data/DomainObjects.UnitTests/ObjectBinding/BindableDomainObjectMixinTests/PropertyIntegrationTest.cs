@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain;
 using Rubicon.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTest
+namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
 {
   [TestFixture]
   public class PropertyIntegrationTest : ObjectBindingBaseTest

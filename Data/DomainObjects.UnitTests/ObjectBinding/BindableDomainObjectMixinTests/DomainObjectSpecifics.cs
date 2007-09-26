@@ -5,7 +5,7 @@ using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTest
+namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
 {
   [TestFixture]
   public class DomainObjectSpecifics

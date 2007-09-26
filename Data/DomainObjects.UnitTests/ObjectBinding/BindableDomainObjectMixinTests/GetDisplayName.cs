@@ -9,7 +9,7 @@ using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.Security;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTest
+namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
 {
   [TestFixture]
   public class GetDisplayName : ObjectBindingBaseTest

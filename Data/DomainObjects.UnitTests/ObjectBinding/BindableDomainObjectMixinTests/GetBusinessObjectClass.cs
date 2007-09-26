@@ -7,7 +7,7 @@ using Rubicon.Mixins;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.BindableObject;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTest
+namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
 {
   [TestFixture]
   public class GetBusinessObjectClass : ObjectBindingBaseTest
