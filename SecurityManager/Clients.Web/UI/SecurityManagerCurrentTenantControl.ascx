@@ -1,5 +1,4 @@
 <%@ Control Language="C#" AutoEventWireup="true" Codebehind="SecurityManagerCurrentTenantControl.ascx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.CurrentTenantControl" %>
-<%@ Register TagPrefix="rubicon" Assembly="Rubicon.ObjectBinding.Web" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" %>
  <div>
   <rubicon:BocReferenceValue ID="CurrentUserField" runat="server" ReadOnly="True">
     <PersistedCommand>

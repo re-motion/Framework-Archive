@@ -1,3 +1,8 @@
+1.7.64
+======
+- Bugfix: User.OwningGorup wurde für nicht übersetzt.
+- Web-Applikation: Die Applikation hat stets die Request-Sprache des Browsers für die CurrentCulture genommen. Diese Logik ist nun entfernt.
+
 1.7.42
 ======
 - Konfiguration Clients.Web

@@ -41,24 +41,6 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
     {
       base.OnInit (e);
 
-      if (Request.UserLanguages.Length > 0)
-      {
-        try
-        {
-          string[] cultureInfo = Request.UserLanguages[0].Split (';');
-
-          if (cultureInfo.Length > 0)
-          {
-            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture (cultureInfo[0]);
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo (cultureInfo[0]);
-          }
-        }
-        catch (ArgumentException)
-        {
-          // if cultureInfo contains a invalid value we just ignore it
-        }
-      }
-
       RegisterStyleSheets ();
     }
 

@@ -1,5 +1,4 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditUserForm.aspx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditUserForm" MasterPageFile="../SecurityManagerMasterPage.Master"  %>
-<%@ Register TagPrefix="rubicon" Assembly="Rubicon.Web" Namespace="Rubicon.Web.UI.Controls" %>
 <%@ Register TagPrefix="securityManager" Src="EditUserControl.ascx" TagName="EditUserControl" %>
 <%@ Register TagPrefix="securityManager" Src="../ErrorMessageControl.ascx" TagName="ErrorMessageControl" %>
 
