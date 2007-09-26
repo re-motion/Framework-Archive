@@ -1,6 +1,4 @@
 using System;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Mixins;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain

@@ -472,7 +472,16 @@ public abstract class ClientTransaction : ITransaction
     {
       if (!sourceTransaction.DataManager.IsDiscarded (domainObject.ID) && !DataManager.IsDiscarded (domainObject.ID))
       {
-        if (domainObject.GetDataContainerForTransaction (sourceTransaction).State == StateType.New)
+        DataContainer dataContainer = null;
+        try
+        {
+          dataContainer = domainObject.GetDataContainerForTransaction (sourceTransaction);
+        }
+        catch (ObjectNotFoundException)
+        {
+          // ignore, this object is enlisted anyway
+        }
+        if (dataContainer != null && dataContainer.State == StateType.New)
         {
           string message = string.Format ("The source transaction contains domain object '{0}', which cannot be enlisted because its state type "
               + "is 'New'. Delete the object or rollback or commit the transaction.", domainObject.ID);
@@ -486,6 +495,7 @@ public abstract class ClientTransaction : ITransaction
       }
     }
 
+    // TODO: Remove this once it has been determined that loading all DataContainers on Enlist isn't necessary
     foreach (DomainObject domainObject in domainObjectsToBeLoaded)
       EnlistDomainObject (domainObject, false);
   }

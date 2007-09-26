@@ -434,6 +434,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    public void EnlistSameDomainObjectsWorksTwiceWithObjectsDeletedInDatabase ()
+    {
+      SetDatabaseModifyable ();
+      ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        ClassWithAllDataTypes.GetObject (cwadt.ID).Delete ();
+        ClientTransactionScope.CurrentTransaction.Commit ();
+      }
+
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
+
+      ClientTransaction newTransaction2 = ClientTransaction.NewTransaction ();
+      newTransaction2.EnlistSameDomainObjects (newTransaction);
+
+      Assert.IsTrue (cwadt.CanBeUsedInTransaction (newTransaction));
+      Assert.IsTrue (cwadt.CanBeUsedInTransaction (newTransaction2));
+    }
+
+    [Test]
     [ExpectedException (typeof (ObjectNotFoundException),
         ExpectedMessage = "Object 'ClassWithAllDataTypes|3f647d79-0caf-4a53-baa7-a56831f8ce2d|System.Guid' could not be found.")]
     public void UsingEnlistedObjectsDeletedInDatabaseThrowsObjectNotFoundException ()
