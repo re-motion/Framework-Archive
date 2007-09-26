@@ -4,6 +4,7 @@ using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
 {
@@ -107,6 +108,20 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     public void GetBindableObjectClass_WithTypeNotUsingBindableObjectMixin ()
     {
       _provider.GetBindableObjectClass (typeof (SimpleReferenceType));
+    }
+
+    [Test]
+    public void GetMetadataFactoryForType_DefaultMetadataFactoryByDefault ()
+    {
+      Assert.AreSame (DefaultMetadataFactory.Instance, _provider.GetMetadataFactoryForType (typeof (SimpleBusinessObjectClass)));
+    }
+
+    [Test]
+    public void GetMetadataFactoryForType_SpecialMetadataFactoryViaAttribute ()
+    {
+      Assert.AreNotSame (DefaultMetadataFactory.Instance, _provider.GetMetadataFactoryForType (typeof (ClassWithSpecialFactory)));
+      Assert.AreSame (SpecialMetadataFactory.Instance, _provider.GetMetadataFactoryForType (typeof (ClassWithSpecialFactory)));
+      Assert.IsTrue (_provider.GetBindableObjectClass (typeof (ClassWithSpecialFactory)).HasPropertyDefinition ("PrivateString"));
     }
   }
 }

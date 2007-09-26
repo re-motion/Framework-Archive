@@ -57,10 +57,23 @@ namespace Rubicon.ObjectBinding.BindableObject
       return classReflector.GetMetadata();
     }
 
-    private IMetadataFactory GetMetadataFactoryForType (Type type)
+    /// <summary>
+    /// Gets the <see cref="IMetadataFactory"/> for the specified <paramref name="type"/>.
+    /// </summary>
+    /// <param name="type">The type for which an <see cref="IMetadataFactory"/> is needed..</param>
+    /// <returns><see cref="DefaultMetadataFactory.Instance"/> by default, unless the <paramref name="type"/> is configured to use a specific
+    /// <see cref="IMetadataFactory"/> implementation (via a subclass of <see cref="UseCustomMetadataFactoryAttribute"/>), in which case an instance of
+    /// that implementation is returned.</returns>
+    public virtual IMetadataFactory GetMetadataFactoryForType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      return DefaultMetadataFactory.Instance;
+      Type concreteType = Mixins.TypeUtility.GetConcreteType (type);
+      UseCustomMetadataFactoryAttribute attribute =
+          (UseCustomMetadataFactoryAttribute) AttributeUtility.GetCustomAttribute (concreteType, typeof (UseCustomMetadataFactoryAttribute), true);
+      if (attribute != null)
+        return attribute.GetFactoryInstance ();
+      else
+        return DefaultMetadataFactory.Instance;
     }
 
     public InterlockedCache<Type, BindableObjectClass> BusinessObjectClassCache

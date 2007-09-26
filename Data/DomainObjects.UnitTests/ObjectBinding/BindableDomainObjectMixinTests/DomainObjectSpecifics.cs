@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding;
@@ -17,8 +18,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
       Assert.IsTrue (businessObjectClass.HasPropertyDefinition ("Name"));
     }
 
+    public void UsesBindableDomainObjectMetadataFactory ()
+    {
+      Assert.AreSame (BindableDomainObjectMetadataFactory.Instance,
+          BindableObjectProvider.Current.GetMetadataFactoryForType (typeof (BindableSampleDomainObject)));
+    }
+
     [Test]
-    [Ignore ("TODO: Implement custom PropertyFinder")]
     public void NoIDProperty ()
     {
       BindableObjectClass businessObjectClass = BindableObjectProvider.Current.GetBindableObjectClass (typeof (BindableSampleDomainObject));
@@ -26,7 +32,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
     }
 
     [Test]
-    [Ignore ("TODO: Implement custom PropertyFinder")]
     public void NoPropertyFromDomainObject ()
     {
       BindableObjectClass businessObjectClass = BindableObjectProvider.Current.GetBindableObjectClass (typeof (BindableSampleDomainObject));
