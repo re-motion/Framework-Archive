@@ -7,7 +7,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
       where T: class
   {
     private T _scalar;
-    private T _readOnlyScalar;
+    private readonly T _readOnlyScalar = default (T);
     private T _readOnlyNonPublicSetterScalar;
     private T _notVisibleAttributeScalar;
     private T _notVisibleNonPublicGetterScalar;

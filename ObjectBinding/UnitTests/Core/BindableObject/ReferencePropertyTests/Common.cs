@@ -44,8 +44,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.ReferencePropertyT
     public void Initialize_WithMissmatchedConcreteType ()
     {
       new ReferenceProperty (
-          new PropertyBase.Parameters (
-              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleBusinessObjectClass>), "Scalar"), null, false, false),
+          GetPropertyParameters (GetPropertyInfo (typeof (ClassWithReferenceType<SimpleBusinessObjectClass>), "Scalar"), _businessObjectProvider),
           TypeFactory.GetConcreteType (typeof (ClassWithAllDataTypes)));
     }
 
@@ -54,16 +53,14 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.ReferencePropertyT
     public void Initialize_WithConcreteTypeNotImplementingIBusinessObject ()
     {
       new ReferenceProperty (
-          new PropertyBase.Parameters (
-              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleBusinessObjectClass>), "Scalar"), null, false, false),
+          GetPropertyParameters (GetPropertyInfo (typeof (ClassWithReferenceType<SimpleBusinessObjectClass>), "Scalar"), _businessObjectProvider),
           typeof (SimpleBusinessObjectClass));
     }
 
     private ReferenceProperty CreateProperty (string propertyName)
     {
       return new ReferenceProperty (
-          new PropertyBase.Parameters (
-              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleBusinessObjectClass>), propertyName), null, false, false),
+          GetPropertyParameters (GetPropertyInfo (typeof (ClassWithReferenceType<SimpleBusinessObjectClass>), propertyName), _businessObjectProvider),
           TypeFactory.GetConcreteType (typeof (SimpleBusinessObjectClass)));
     }
   }

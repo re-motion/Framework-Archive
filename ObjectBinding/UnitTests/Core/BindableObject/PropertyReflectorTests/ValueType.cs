@@ -5,6 +5,7 @@ using NUnit.Framework.SyntaxHelpers;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorTests
 {
@@ -26,6 +27,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "Scalar");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
+      Assert.IsFalse (IsNullable (propertyReflector));
+      Assert.AreSame (typeof (SimpleValueType), GetUnderlyingType (propertyReflector));
+      
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
       Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (PropertyBase)));
@@ -42,6 +46,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
     {
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "NullableScalar");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
+
+      Assert.IsTrue (IsNullable (propertyReflector));
+      Assert.AreSame (typeof (SimpleValueType), GetUnderlyingType (propertyReflector));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
@@ -60,6 +67,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithUndefinedEnumValue), "Scalar");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
+      Assert.IsFalse (IsNullable (propertyReflector));
+      Assert.AreSame (typeof (EnumWithUndefinedValue), GetUnderlyingType (propertyReflector));
+
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
 
       Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (EnumerationProperty)));
@@ -76,6 +86,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
     {
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "ReadOnlyScalar");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
+
+      Assert.IsFalse (IsNullable (propertyReflector));
+      Assert.AreSame (typeof (SimpleValueType), GetUnderlyingType (propertyReflector));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
 
@@ -94,6 +107,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "ReadOnlyNonPublicSetterScalar");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
+      Assert.IsFalse (IsNullable (propertyReflector));
+      Assert.AreSame (typeof (SimpleValueType), GetUnderlyingType (propertyReflector));
+
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
 
       Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (PropertyBase)));
@@ -111,6 +127,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "ReadOnlyAttributeScalar");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
+      Assert.IsFalse (IsNullable (propertyReflector));
+      Assert.AreSame (typeof (SimpleValueType), GetUnderlyingType (propertyReflector));
+
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
 
       Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (PropertyBase)));
@@ -127,6 +146,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
     {
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "Array");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
+
+      Assert.IsFalse (IsNullable (propertyReflector));
+      Assert.AreSame (typeof (SimpleValueType), GetUnderlyingType (propertyReflector));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
@@ -146,6 +168,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
     {
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "NullableArray");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
+
+      Assert.IsTrue (IsNullable (propertyReflector));
+      Assert.AreSame (typeof (SimpleValueType), GetUnderlyingType (propertyReflector));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 

@@ -11,15 +11,18 @@ namespace Rubicon.ObjectBinding.BindableObject
     private readonly Type _targetType;
     private readonly Type _concreteType;
     private readonly BindableObjectProvider _businessObjectProvider;
+    private readonly IMetadataFactory _metadataFactory;
 
-    public ClassReflector (Type targetType, BindableObjectProvider businessObjectProvider)
+    public ClassReflector (Type targetType, BindableObjectProvider businessObjectProvider, IMetadataFactory metadataFactory)
     {
       ArgumentUtility.CheckNotNull ("targetType", targetType);
       ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
+      ArgumentUtility.CheckNotNull ("metadataFactory", metadataFactory);
 
       _targetType = targetType;
       _concreteType = Mixins.TypeUtility.GetConcreteType (_targetType);
       _businessObjectProvider = businessObjectProvider;
+      _metadataFactory = metadataFactory;
     }
 
     public Type TargetType
@@ -57,42 +60,16 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     private List<PropertyBase> GetProperties ()
     {
-      List<PropertyBase> properties = new List<PropertyBase>();
-      foreach (PropertyInfo propertyInfo in GetPropertyInfos())
+      IPropertyFinder propertyFinder = _metadataFactory.CreatePropertyFinder (_targetType);
+      
+      List <PropertyBase> properties = new List<PropertyBase> ();
+      foreach (PropertyInfo propertyInfo in propertyFinder.GetPropertyInfos ())
       {
-        PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
+        PropertyReflector propertyReflector = _metadataFactory.CreatePropertyReflector (propertyInfo, _businessObjectProvider);
         properties.Add (propertyReflector.GetMetadata());
       }
 
       return properties;
-    }
-
-    private PropertyInfo[] GetPropertyInfos ()
-    {
-      PropertyInfoCollection propertyInfos = new PropertyInfoCollection();
-      for (Type currentType = _targetType; currentType != null; currentType = currentType.BaseType)
-      {
-        foreach (PropertyInfo propertyInfo in currentType.FindMembers (
-            MemberTypes.Property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly, PropertyFilter, null))
-        {
-          if (!propertyInfos.Contains (propertyInfo.Name))
-            propertyInfos.Add (propertyInfo);
-        }
-      }
-      return propertyInfos.ToArray();
-    }
-
-    //OPF Mapping
-    private bool PropertyFilter (MemberInfo memberInfo, object filterCriteria)
-    {
-      ObjectBindingAttribute attribute = AttributeUtility.GetCustomAttribute<ObjectBindingAttribute> (memberInfo, true);
-      if (attribute != null && !attribute.Visible)
-        return false;
-
-      if (((PropertyInfo)memberInfo).GetGetMethod (false) == null)
-        return false;
-
-      return true;
     }
   }
 }

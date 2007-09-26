@@ -88,7 +88,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     {
       PropertyReflector propertyReflector =
           new PropertyReflector (GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String"), _bindableObjectProvider);
-      ClassReflector classReflector = new ClassReflector (typeof (ClassWithAllDataTypes), _bindableObjectProvider);
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithAllDataTypes), _bindableObjectProvider, DefaultMetadataFactory.Instance);
       BindableObjectClass bindableObjectClass = classReflector.GetMetadata ();
 
       CheckPropertyBase (propertyReflector.GetMetadata (), bindableObjectClass.GetPropertyDefinition ("String"));
@@ -101,7 +101,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
         + "'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithAllDataTypes, Rubicon.ObjectBinding.UnitTests'.")]
     public void GetPropertyDefinition_WithInvalidPropertyName ()
     {
-      ClassReflector classReflector = new ClassReflector (typeof (ClassWithAllDataTypes), _bindableObjectProvider);
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithAllDataTypes), _bindableObjectProvider, DefaultMetadataFactory.Instance);
       BindableObjectClass bindableObjectClass = classReflector.GetMetadata ();
 
       bindableObjectClass.GetPropertyDefinition ("Invalid");
@@ -110,7 +110,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [Test]
     public void HasPropertyDefinition ()
     {
-      ClassReflector classReflector = new ClassReflector (typeof (ClassWithAllDataTypes), _bindableObjectProvider);
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithAllDataTypes), _bindableObjectProvider, DefaultMetadataFactory.Instance);
       BindableObjectClass bindableObjectClass = classReflector.GetMetadata ();
 
       Assert.That (bindableObjectClass.HasPropertyDefinition ("String"), Is.True);
@@ -130,7 +130,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
               CreateProperty (type, "Array")
           };
 
-      ClassReflector classReflector = new ClassReflector (type, _bindableObjectProvider);
+      ClassReflector classReflector = new ClassReflector (type, _bindableObjectProvider, DefaultMetadataFactory.Instance);
       BindableObjectClass bindableObjectClass = classReflector.GetMetadata ();
       IBusinessObjectProperty[] actualProperties = bindableObjectClass.GetPropertyDefinitions ();
 
@@ -142,7 +142,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
         {
           if (actualProperty.Identifier == expectedProperty.Identifier)
           {
-            Assert.That (isFound, Is.False, "Multiple properties '{0}' found", expectedProperty.Identifier);
+            Assert.That (isFound, Is.False, "Multiple properties '{0}' found", expectedProperty.Identifier, DefaultMetadataFactory.Instance);
             CheckPropertyBase (expectedProperty, actualProperty);
             isFound = true;
           }

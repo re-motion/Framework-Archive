@@ -42,12 +42,25 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
     }
 
+    /// <summary>
+    /// Gets the <see cref="BindableObjectClass"/> for the specified <paramref name="type"/>.
+    /// </summary>
+    /// <param name="type">The type to get a <see cref="BindableObjectClass"/> for. This type must have a mixin derived from
+    /// <see cref="BindableObjectMixinBase{TBindableObject}"/> configured, and it is recommended to specify the simple target type rather then the
+    /// generated mixed type.</param>
+    /// <returns>A <see cref="BindableObjectClass"/> for the given <paramref name="type"/>.</returns>
     public virtual BindableObjectClass GetBindableObjectClass (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      ClassReflector classReflector = new ClassReflector (type, this);
+      ClassReflector classReflector = new ClassReflector (type, this, GetMetadataFactoryForType (type));
       return classReflector.GetMetadata();
+    }
+
+    private IMetadataFactory GetMetadataFactoryForType (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      return DefaultMetadataFactory.Instance;
     }
 
     public InterlockedCache<Type, BindableObjectClass> BusinessObjectClassCache

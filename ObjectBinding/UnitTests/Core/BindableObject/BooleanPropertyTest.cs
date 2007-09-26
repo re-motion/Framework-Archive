@@ -22,7 +22,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       base.SetUp();
 
       _businessObjectProvider = new BindableObjectProvider();
-      ClassReflector classReflector = new ClassReflector (typeof (ClassWithValueType<bool>), _businessObjectProvider);
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithValueType<bool>), _businessObjectProvider, DefaultMetadataFactory.Instance);
       _businessObjectClass = classReflector.GetMetadata();
 
       _mockRepository = new MockRepository();
@@ -51,7 +51,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
           new PropertyBase.Parameters (
               _businessObjectProvider,
               GetPropertyInfo (typeof (ClassWithValueType<bool>), "Array"),
+              typeof (bool),
               new ListInfo (typeof (bool[]), typeof (bool)),
+              false,
               false,
               false));
 
@@ -65,9 +67,11 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
           new PropertyBase.Parameters (
               _businessObjectProvider,
               GetPropertyInfo (typeof (ClassWithValueType<bool>), "NullableArray"),
+              typeof (bool),
               new ListInfo (typeof (bool?[]), typeof (bool?)),
               false,
-              false));
+              false,
+              true));
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.Null);
     }
@@ -191,8 +195,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
 
     private BooleanProperty CreateProperty (string propertyName)
     {
-      return new BooleanProperty (
-          new PropertyBase.Parameters (_businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), propertyName), null, false, false));
+      return new BooleanProperty (GetPropertyParameters (GetPropertyInfo (typeof (ClassWithValueType<bool>), propertyName), _businessObjectProvider));
     }
 
     private void CheckEnumerationValueInfos (BooleanEnumerationValueInfo[] expected, IEnumerationValueInfo[] actual)

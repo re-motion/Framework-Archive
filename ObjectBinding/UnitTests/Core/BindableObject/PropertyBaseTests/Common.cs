@@ -28,7 +28,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
     public void Initialize ()
     {
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
-      PropertyBase propertyBase = new StubPropertyBase (new PropertyBase.Parameters (_bindableObjectProvider, propertyInfo, null, true, true));
+      PropertyBase propertyBase = new StubPropertyBase (new PropertyBase.Parameters (_bindableObjectProvider, propertyInfo, propertyInfo.PropertyType,
+          null, true, true, true));
 
       Assert.That (propertyBase.PropertyInfo, Is.SameAs (propertyInfo));
       Assert.That (propertyBase.PropertyType, Is.SameAs (propertyInfo.PropertyType));
@@ -36,6 +37,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
       Assert.That (propertyBase.IsReadOnly (null), Is.True);
       Assert.That (propertyBase.BusinessObjectProvider, Is.SameAs (_bindableObjectProvider));
       Assert.That (((IBusinessObjectProperty) propertyBase).BusinessObjectProvider, Is.SameAs (_bindableObjectProvider));
+      Assert.That (PrivateInvoke.GetNonPublicProperty (propertyBase, "IsNullable"), Is.True);
     }
 
     [Test]
@@ -44,7 +46,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
       IListInfo expected = new ListInfo (typeof (SimpleReferenceType[]), typeof (SimpleReferenceType));
       PropertyBase property = new StubPropertyBase (
           new PropertyBase.Parameters (
-              _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Array"), expected, false, false));
+              _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Array"), typeof (SimpleReferenceType),
+              expected, false, false, false));
 
       Assert.That (property.IsList, Is.True);
       Assert.That (property.ListInfo, Is.SameAs (expected));
@@ -56,7 +59,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
     {
       PropertyBase property = new StubPropertyBase (
           new PropertyBase.Parameters (
-              _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"), null, false, false));
+              _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"), typeof (SimpleReferenceType),
+              null, false, false, false));
 
       Assert.That (property.IsList, Is.False);
       Dev.Null = property.ListInfo;
@@ -68,7 +72,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
     {
       PropertyBase property = new StubPropertyBase (
           new PropertyBase.Parameters (
-              _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"), null, false, false));
+              _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"), typeof (SimpleReferenceType),
+              null, false, false, false));
       SimpleReferenceType expected = new SimpleReferenceType();
 
       Assert.That (property.ConvertFromNativePropertyType (expected), Is.SameAs (expected));
@@ -79,7 +84,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
     {
       PropertyBase property = new StubPropertyBase (
           new PropertyBase.Parameters (
-              _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"), null, false, false));
+              _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"), typeof (SimpleReferenceType),
+              null, false, false, false));
       SimpleReferenceType expected = new SimpleReferenceType();
 
       Assert.That (property.ConvertToNativePropertyType (expected), Is.SameAs (expected));
@@ -91,7 +97,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
       PropertyBase property = new StubPropertyBase (
           new PropertyBase.Parameters (
-              _bindableObjectProvider, propertyInfo, null, false, false));
+              _bindableObjectProvider, propertyInfo, typeof (string), null, false, false, false));
       IBindableObjectGlobalizationService mockGlobalizationService = _mockRepository.CreateMock<IBindableObjectGlobalizationService> ();
       _bindableObjectProvider.AddService (typeof (IBindableObjectGlobalizationService), mockGlobalizationService);
 
@@ -109,7 +115,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
     {
       PropertyBase property = new StubPropertyBase (
           new PropertyBase.Parameters (
-              _bindableObjectProvider, GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String"), null, false, false));
+              _bindableObjectProvider, GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String"), typeof (string),
+              null, false, false, false));
 
       Assert.That (property.DisplayName, Is.EqualTo ("String"));
     }

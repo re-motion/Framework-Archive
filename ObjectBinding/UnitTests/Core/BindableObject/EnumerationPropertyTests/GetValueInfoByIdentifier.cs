@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
@@ -87,7 +88,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.EnumerationPropert
 
     private EnumerationProperty CreateProperty (Type type, string propertyName)
     {
-      return new EnumerationProperty (new PropertyBase.Parameters (_businessObjectProvider, GetPropertyInfo (type, propertyName), null, false, false));
+      return new EnumerationProperty (
+        GetPropertyParameters (GetPropertyInfo (type, propertyName), _businessObjectProvider));
     }
   }
 }

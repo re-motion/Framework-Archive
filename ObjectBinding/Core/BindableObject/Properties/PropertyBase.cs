@@ -12,21 +12,25 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     {
       public readonly BindableObjectProvider BusinessObjectProvider;
       public readonly PropertyInfo PropertyInfo;
+      public readonly Type UnderlyingType;
       public readonly IListInfo ListInfo;
       public readonly bool IsRequired;
       public readonly bool IsReadOnly;
+      public readonly bool IsNullable;
 
-      public Parameters (
-          BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired, bool isReadOnly)
+      public Parameters (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, Type underlyingType, IListInfo listInfo,
+          bool isRequired, bool isReadOnly, bool isNullable)
       {
         ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
         ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
         BusinessObjectProvider = businessObjectProvider;
         PropertyInfo = propertyInfo;
+        UnderlyingType = underlyingType;
         ListInfo = listInfo;
         IsRequired = isRequired;
         IsReadOnly = isReadOnly;
+        IsNullable = isNullable;
       }
     }
 
@@ -42,11 +46,11 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     {
       _businessObjectProvider = parameters.BusinessObjectProvider;
       _propertyInfo = parameters.PropertyInfo;
+      _underlyingType = parameters.UnderlyingType;
       _listInfo = parameters.ListInfo;
       _isRequired = parameters.IsRequired;
       _isReadOnly = parameters.IsReadOnly;
-      _underlyingType = GetUnderlyingType();
-      _isNullable = GetNullability();
+      _isNullable = parameters.IsNullable;
     }
 
     /// <summary> Gets a flag indicating whether this property contains multiple values. </summary>
@@ -189,17 +193,6 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     protected bool IsNullable
     {
       get { return _isNullable; }
-    }
-
-    private Type GetUnderlyingType ()
-    {
-      Type type = IsList ? ListInfo.ItemType : PropertyType;
-      return Nullable.GetUnderlyingType (type) ?? type;
-    }
-
-    private bool GetNullability ()
-    {
-      return Nullable.GetUnderlyingType (IsList ? ListInfo.ItemType : PropertyType) != null;
     }
   }
 }

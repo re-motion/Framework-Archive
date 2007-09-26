@@ -69,7 +69,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.EnumerationPropert
 
     protected EnumerationProperty CreateProperty (Type type, string propertyName)
     {
-      return new EnumerationProperty (new PropertyBase.Parameters (_businessObjectProvider, GetPropertyInfo (type, propertyName), null, false, false));
+      return new EnumerationProperty (
+        GetPropertyParameters (GetPropertyInfo (type, propertyName), _businessObjectProvider));
     }
   }
 }

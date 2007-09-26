@@ -73,9 +73,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.ReferencePropertyT
     private ReferenceProperty CreateProperty (string propertyName, Type propertyType)
     {
       return new ReferenceProperty (
-          new PropertyBase.Parameters (
-              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithBusinessObjectProperties), propertyName), null, false, false),
-          TypeFactory.GetConcreteType (propertyType));
+        GetPropertyParameters (GetPropertyInfo (typeof (ClassWithBusinessObjectProperties), propertyName), _businessObjectProvider),  
+        TypeFactory.GetConcreteType (propertyType));
     }
   }
 }

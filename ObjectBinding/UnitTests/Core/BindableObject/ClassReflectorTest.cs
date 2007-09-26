@@ -1,9 +1,11 @@
 using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using System.Reflection;
 
 namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
 {
@@ -20,7 +22,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
 
       _type = typeof (DerivedBusinessObjectClass);
       _businessObjectProvider = new BindableObjectProvider();
-      _classReflector = new ClassReflector (_type, _businessObjectProvider);
+      _classReflector = new ClassReflector (_type, _businessObjectProvider, DefaultMetadataFactory.Instance);
     }
 
     [Test]
@@ -48,7 +50,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [Test]
     public void GetMetadata_ForBindableObjectWithIdentity ()
     {
-      ClassReflector classReflector = new ClassReflector (typeof (ClassWithIdentity), _businessObjectProvider);
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithIdentity), _businessObjectProvider, DefaultMetadataFactory.Instance);
       BindableObjectClass bindableObjectClass = classReflector.GetMetadata();
 
       Assert.That (bindableObjectClass, Is.InstanceOfType (typeof (IBusinessObjectClassWithIdentity)));
@@ -62,15 +64,48 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
         + "BindableObject.BindableObjectMixinBase`1'.\r\nParameter name: concreteType")]
     public void GetMetadata_ForBindableObjectWithManualIdentity ()
     {
-      ClassReflector classReflector = new ClassReflector (typeof (ClassWithManualIdentity), _businessObjectProvider);
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithManualIdentity), _businessObjectProvider, DefaultMetadataFactory.Instance);
       classReflector.GetMetadata ();
     }
 
     [Test]
     public void GetMetadata_FromCache ()
     {
-      ClassReflector otherClassReflector = new ClassReflector (_type, _businessObjectProvider);
+      ClassReflector otherClassReflector = new ClassReflector (_type, _businessObjectProvider, DefaultMetadataFactory.Instance);
       Assert.That (otherClassReflector.GetMetadata(), Is.SameAs (_classReflector.GetMetadata()));
+    }
+
+    [Test]
+    public void GetMetadata_UsesFactory ()
+    {
+      MockRepository mockRepository = new MockRepository ();
+      IMetadataFactory factoryMock = mockRepository.CreateMock<IMetadataFactory> ();
+      
+      PropertyInfo dummyProperty1 = typeof (DateTime).GetProperty ("Now");
+      PropertyInfo dummyProperty2 = typeof (Environment).GetProperty ("TickCount");
+
+      PropertyReflector dummyReflector1 = new PropertyReflector (typeof (DateTime).GetProperty ("Ticks"), _businessObjectProvider);
+      PropertyReflector dummyReflector2 = new PropertyReflector (typeof (Environment).GetProperty ("NewLine"), _businessObjectProvider);
+
+      IPropertyFinder propertyFinderMock = mockRepository.CreateMock<IPropertyFinder> ();
+
+      ClassReflector otherClassReflector = new ClassReflector (_type, _businessObjectProvider, factoryMock);
+
+      Expect.Call (factoryMock.CreatePropertyFinder (_type)).Return (propertyFinderMock);
+      Expect.Call (propertyFinderMock.GetPropertyInfos ()).Return (new PropertyInfo[] { dummyProperty1, dummyProperty2 });
+      Expect.Call (factoryMock.CreatePropertyReflector (dummyProperty1, _businessObjectProvider)).Return (dummyReflector1);
+      Expect.Call (factoryMock.CreatePropertyReflector (dummyProperty2, _businessObjectProvider)).Return (dummyReflector2);
+
+      mockRepository.ReplayAll ();
+
+      BindableObjectClass theClass = otherClassReflector.GetMetadata ();
+      Assert.IsTrue (theClass.HasPropertyDefinition ("Ticks"));
+      Assert.IsTrue (theClass.HasPropertyDefinition ("NewLine"));
+      
+      Assert.IsFalse (theClass.HasPropertyDefinition ("Now"));
+      Assert.IsFalse (theClass.HasPropertyDefinition ("TickCount"));
+
+      mockRepository.VerifyAll ();
     }
   }
 }

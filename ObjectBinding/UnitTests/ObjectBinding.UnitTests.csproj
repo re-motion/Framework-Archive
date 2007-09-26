@@ -58,6 +58,7 @@
     <Compile Include="Core\BindableObject\BindableObjectWithIdentityMixinTest.cs" />
     <Compile Include="Core\BindableObject\BooleanPropertyTest.cs" />
     <Compile Include="Core\BindableObject\ConstantEnumerationValueFilterTest.cs" />
+    <Compile Include="Core\BindableObject\DefaultMetadataFactoryTest.cs" />
     <Compile Include="Core\BindableObject\Design\SearchFieldControllerTest.cs" />
     <Compile Include="Core\BindableObject\Design\TypeTreeViewControllerTest.cs" />
     <Compile Include="Core\BindableObject\GuidPropertyTest.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Core\BindableObject\EnumerationPropertyTests\GetValueInfoByIdentifier.cs" />
     <Compile Include="Core\BindableObject\EnumerationPropertyTests\GetValueInfoByValue.cs" />
     <Compile Include="Core\BindableObject\EnumerationTestBase.cs" />
+    <Compile Include="Core\BindableObject\ReflectionBasedPropertyFinderTest.cs" />
     <Compile Include="Core\BindableObject\TestDomain\ClassWithIdentityAndGetObjectServiceAttribute.cs" />
     <Compile Include="Core\BindableObject\PropertyBaseTests\SecurityTest.cs" />
     <Compile Include="Core\BindableObject\ReferencePropertyTests\SearchAvailableObjects.cs" />

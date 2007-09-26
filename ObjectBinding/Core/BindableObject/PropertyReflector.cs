@@ -36,7 +36,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     public PropertyBase GetMetadata ()
     {
       Type underlyingType = GetUnderlyingType();
-      PropertyBase.Parameters parameters = new PropertyBase.Parameters (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired (), GetIsReadOnly());
+      PropertyBase.Parameters parameters = CreateParameters(underlyingType);
 
       if (underlyingType == typeof (Boolean))
         return new BooleanProperty (parameters);
@@ -70,19 +70,25 @@ namespace Rubicon.ObjectBinding.BindableObject
         return new NotSupportedProperty (parameters);
     }
 
-    private Type GetConcreteType (Type type)
+    private PropertyBase.Parameters CreateParameters (Type underlyingType)
+    {
+      return new PropertyBase.Parameters (_businessObjectProvider, _propertyInfo, underlyingType, GetListInfo (),
+          GetIsRequired (), GetIsReadOnly(), GetIsNullable());
+    }
+
+    protected virtual Type GetConcreteType (Type type)
     {
       if (MixinConfiguration.ActiveContext.ContainsClassContext (type))
         return TypeFactory.GetConcreteType(type);
       return type;
     }
 
-    private Type GetUnderlyingType ()
+    protected virtual Type GetUnderlyingType ()
     {
       return Nullable.GetUnderlyingType (GetItemType()) ?? GetItemType();
     }
 
-    private Type GetItemType ()
+    protected virtual Type GetItemType ()
     {
       if (_propertyInfo.PropertyType.IsArray)
         return _propertyInfo.PropertyType.GetElementType();
@@ -105,7 +111,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       return itemTypeAttribute.ItemType;
     }
 
-    private ListInfo GetListInfo ()
+    protected virtual ListInfo GetListInfo ()
     {
       if (IsListProperty ())
         return new ListInfo (_propertyInfo.PropertyType, GetItemType ());
@@ -114,7 +120,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     }
 
     //OPF Mapping
-    private bool GetIsRequired ()
+    protected virtual bool GetIsRequired ()
     {
       if (_propertyInfo.PropertyType.IsEnum && AttributeUtility.IsDefined<UndefinedEnumValueAttribute> (_propertyInfo.PropertyType, false))
         return false;
@@ -123,7 +129,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       return false;
     }
 
-    private bool GetIsReadOnly ()
+    protected virtual bool GetIsReadOnly ()
     {
       ObjectBindingAttribute attribute = AttributeUtility.GetCustomAttribute<ObjectBindingAttribute>(_propertyInfo, true);
       if (attribute != null && attribute.ReadOnly)
@@ -142,14 +148,19 @@ namespace Rubicon.ObjectBinding.BindableObject
     }
 
     //OPF Mapping
-    private int? GetMaxLength ()
+    protected virtual int? GetMaxLength ()
     {
       return null;
     }
 
-    private bool IsListProperty ()
+    protected virtual bool IsListProperty ()
     {
       return typeof(IList).IsAssignableFrom (_propertyInfo.PropertyType);
+    }
+
+    protected virtual bool GetIsNullable ()
+    {
+      return Nullable.GetUnderlyingType (IsListProperty() ? GetListInfo().ItemType : PropertyInfo.PropertyType) != null;
     }
   }
 }
