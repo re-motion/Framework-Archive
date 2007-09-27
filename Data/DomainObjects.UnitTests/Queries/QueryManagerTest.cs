@@ -134,5 +134,47 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Queries
       Assert.AreEqual (DomainObjectIDs.Order1, orders[0].ID, "Order1");
       Assert.AreEqual (DomainObjectIDs.OrderWithoutOrderItem, orders[1].ID, "OrderWithoutOrderItem");
     }
+
+    [Test]
+    public void QueryingEnlists ()
+    {
+      Order.GetObject (DomainObjectIDs.Order1); // ensure Order1 already exists in transaction
+
+      OrderCollection orders = (OrderCollection) _queryManager.GetCollection (new Query ("StoredProcedureQuery"));
+      Assert.AreEqual (2, orders.Count, "Order count");
+
+      foreach (Order order in orders)
+        Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionMock));
+
+      int orderNumberSum = 0;
+      foreach (Order order in orders)
+        orderNumberSum += order.OrderNumber;
+
+      Assert.AreEqual (Order.GetObject (DomainObjectIDs.Order1).OrderNumber + Order.GetObject (DomainObjectIDs.Order2).OrderNumber, orderNumberSum);
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "A domain object instance for object "
+        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' already exists in this transaction.")]
+    public void QueriedObjectsMightNotBeEnlistableInOtherTransaction ()
+    {
+      ClientTransactionMock newTransaction = new ClientTransactionMock ();
+      using (newTransaction.EnterScope ())
+      {
+        Order.GetObject (DomainObjectIDs.Order1); // ensure Order1 already exists in newTransaction
+      }
+
+      OrderCollection orders = (OrderCollection) _queryManager.GetCollection (new Query ("StoredProcedureQuery"));
+      Assert.AreEqual (2, orders.Count, "Order count");
+
+      using (newTransaction.EnterScope ())
+      {
+        foreach (Order order in orders)
+        {
+          if (!order.CanBeUsedInTransaction (newTransaction))
+            newTransaction.EnlistDomainObject (order);  // this throws because there is already _another_ instance of Order1 enlisted
+        }
+      }
+    }
   }
 }
