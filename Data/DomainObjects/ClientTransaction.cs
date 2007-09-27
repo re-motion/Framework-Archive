@@ -387,8 +387,8 @@ public abstract class ClientTransaction : ITransaction
 
   /// <summary>
   /// Allows the given <see cref="DomainObject"/> to be used in the context of this transaction without needing to explicitly reload it there.
-  /// The <see cref="DomainObject"/> must be loadable into this transaction (i.e. it must be present in the underlying data store or the
-  /// ParentTransaction).
+  /// The <see cref="DomainObject"/> should be loadable into this transaction (i.e. it must be present in the underlying data store or the
+  /// ParentTransaction), but this is not enforced until first access to the object.
   /// </summary>
   /// <param name="domainObject">The object to be enlisted in this transaction.</param>
   /// <remarks>
@@ -407,97 +407,66 @@ public abstract class ClientTransaction : ITransaction
   /// If a certain <see cref="ObjectID"/> has already been associated with a certain <see cref="DomainObject"/> in this transaction, it is not
   /// possible to register another <see cref="DomainObject"/> reference with the same <see cref="DomainObject.ID"/>.
   /// </para>
+  /// <para>The data for the <see cref="DomainObject"/> is not loaded immediately by this method, but will be retrieved when the object is first
+  /// used in this transaction. If the object has been deleted from the underlying database, access to such an object will result in an
+  /// <see cref="ObjectNotFoundException"/>.</para>
   /// </remarks>
-  /// <exception cref="ArgumentException">The domain object cannot be enlisted because it does not exist in the context of this
-  /// transaction. Maybe it was newly created and has not yet been committed, or it was deleted.</exception>
   /// <exception cref="InvalidOperationException">The domain object cannot be enlisted, because another <see cref="DomainObject"/> with the same
+  /// <exception cref="ArgumentNullException">The <paramref name="domainObject"/> parameter is <see langword="null"/>.</exception>
   /// <see cref="ObjectID"/> has already been associated with this transaction.</exception>
   public void EnlistDomainObject (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    EnlistDomainObject (domainObject, true);
-  }
-
-  private void EnlistDomainObject (DomainObject domainObject, bool throwOnNotFound)
-  {
-    DoEnlistDomainObject (domainObject);
-
-    DataContainer dataContainer = null;
-    try
-    {
-      dataContainer = domainObject.GetDataContainerForTransaction (this);
-    }
-    catch (ObjectNotFoundException ex)
-    {
-      if (throwOnNotFound)
-      {
-        string message = string.Format (
-            "The domain object '{0}' cannot be enlisted because it does not exist in this "
-            + "transaction. Maybe it was newly created and has not yet been committed, or it was deleted.",
-            domainObject.ID);
-        throw new ArgumentException (message, "domainObject", ex);
-      }
-      // else ignore
-    }
-
-    Assertion.IsTrue (dataContainer == null || dataContainer.DomainObject == domainObject,
-        "DoEnlistDomainObject should have throw an exception if this wasn't the case");
-  }
-
-  /// <summary>
-  /// Enlists a newly created <see cref="DomainObject"/> for use in this transaction.
-  /// </summary>
-  /// <param name="domainObject">The newly created <see cref="DomainObject"/> to be enlisted in this transaction.</param>
-  internal void EnlistNewlyCreatedDomainObject (DomainObject domainObject)
-  {
     DoEnlistDomainObject (domainObject);
   }
 
   /// <summary>
-  /// Calls <see cref="EnlistDomainObject"/> for each non-discarded <see cref="DomainObject"/> reference currently enlisted with the given
+  /// Calls <see cref="EnlistDomainObject"/> for each <see cref="DomainObject"/> reference currently enlisted with the given
   /// <paramref name="sourceTransaction"/>.
   /// </summary>
   /// <param name="sourceTransaction">The source transaction.</param>
-  /// <exception cref="ArgumentException">A domain object cannot be enlisted because it does not exist in the context of this
-  /// transaction. Maybe it was newly created and has not yet been committed, or it was deleted.</exception>
+  /// <exception cref="ArgumentNullException">The <paramref name="sourceTransaction"/> parameter is <see langword="null"/>.</exception>
   /// <exception cref="InvalidOperationException">A domain object cannot be enlisted, because another <see cref="DomainObject"/> with the same
   /// <see cref="ObjectID"/> has already been associated with this transaction.</exception>
+  /// <remarks>This method also enlists objects that do not exist in the database; accessing such an object in the context of this transaction will
+  /// result in an <see cref="ObjectNotFoundException"/>.</remarks>
   public void EnlistSameDomainObjects (ClientTransaction sourceTransaction)
   {
     ArgumentUtility.CheckNotNull ("sourceTransaction", sourceTransaction);
+    EnlistDomainObjects (sourceTransaction.EnlistedDomainObjects);
+  }
 
-    Set<DomainObject> domainObjectsToBeLoaded = new Set<DomainObject> ();
+  /// <summary>
+  /// Calls <see cref="EnlistDomainObject"/> for each <see cref="DomainObject"/> reference in the given collection.
+  /// </summary>
+  /// <param name="domainObjects">The domain objects to enlist.</param>
+  /// <exception cref="ArgumentNullException">The <paramref name="domainObjects"/> parameter is <see langword="null"/>.</exception>
+  /// <exception cref="InvalidOperationException">A domain object cannot be enlisted, because another <see cref="DomainObject"/> with the same
+  /// <see cref="ObjectID"/> has already been associated with this transaction.</exception>
+  /// <remarks>This method also enlists objects that do not exist in the database; accessing such an object in the context of this transaction will
+  /// result in an <see cref="ObjectNotFoundException"/>.</remarks>
+  public void EnlistDomainObjects (IEnumerable<DomainObject> domainObjects)
+  {
+    ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
 
-    foreach (DomainObject domainObject in sourceTransaction.EnlistedDomainObjects)
-    {
-      if (!sourceTransaction.DataManager.IsDiscarded (domainObject.ID) && !DataManager.IsDiscarded (domainObject.ID))
-      {
-        DataContainer dataContainer = null;
-        try
-        {
-          dataContainer = domainObject.GetDataContainerForTransaction (sourceTransaction);
-        }
-        catch (ObjectNotFoundException)
-        {
-          // ignore, this object is enlisted anyway
-        }
-        if (dataContainer != null && dataContainer.State == StateType.New)
-        {
-          string message = string.Format ("The source transaction contains domain object '{0}', which cannot be enlisted because its state type "
-              + "is 'New'. Delete the object or rollback or commit the transaction.", domainObject.ID);
-          throw new ArgumentException (message, "sourceTransaction");
-        }
-        else
-        {
-          DoEnlistDomainObject (domainObject);
-          domainObjectsToBeLoaded.Add (domainObject);
-        }
-      }
-    }
+    foreach (DomainObject domainObject in domainObjects)
+      EnlistDomainObject (domainObject);
+  }
 
-    // TODO: Remove this once it has been determined that loading all DataContainers on Enlist isn't necessary
-    foreach (DomainObject domainObject in domainObjectsToBeLoaded)
-      EnlistDomainObject (domainObject, false);
+  /// <summary>
+  /// Calls <see cref="EnlistDomainObject"/> for each <see cref="DomainObject"/> reference in the given collection.
+  /// </summary>
+  /// <param name="domainObjects">The domain objects to enlist.</param>
+  /// <exception cref="ArgumentNullException">The <paramref name="domainObjects"/> parameter is <see langword="null"/>.</exception>
+  /// <exception cref="InvalidOperationException">A domain object cannot be enlisted, because another <see cref="DomainObject"/> with the same
+  /// <see cref="ObjectID"/> has already been associated with this transaction.</exception>
+  /// <remarks>This method also enlists objects that do not exist in the database; accessing such an object in the context of this transaction will
+  /// result in an <see cref="ObjectNotFoundException"/>.</remarks>
+  public void EnlistDomainObjects (params DomainObject[] domainObjects)
+  {
+    ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
+
+    EnlistDomainObjects ((IEnumerable<DomainObject>) domainObjects);
   }
 
   /// <summary>

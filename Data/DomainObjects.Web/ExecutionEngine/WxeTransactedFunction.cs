@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
@@ -32,7 +34,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
     /// </summary>
     /// <param name="actualParameters">Parameters that are passed to the <see cref="WxeFunction"/>.</param>
     public WxeTransactedFunction (params object[] actualParameters)
-        : this (WxeTransactionMode.CreateRoot, actualParameters)
+      : this (WxeTransactionMode.CreateRoot, actualParameters)
     {
     }
 
@@ -42,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
     /// <param name="transactionMode">A value indicating the behavior of the WxeTransactedFunction.</param>
     /// <param name="actualParameters">Parameters that are passed to the <see cref="WxeFunction"/>.</param>
     public WxeTransactedFunction (WxeTransactionMode transactionMode, params object[] actualParameters)
-        : base (actualParameters)
+      : base (actualParameters)
     {
       ArgumentUtility.CheckValidEnumValue ("transactionMode", transactionMode);
 
@@ -173,18 +175,20 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
     public override void ResetTransaction ()
     {
       ClientTransaction oldTransaction = MyTransaction;
-      
+
       base.ResetTransaction ();
-      
+
       Assertion.IsNotNull (oldTransaction, "base method should have thrown if there was no transaction");
       Assertion.IsNotNull (MyTransaction, "base method should have created a new transaction");
-      Assertion.IsFalse (oldTransaction.HasChanged(), "WxeTransaction should have thrown if there was transaction");
+      Assertion.IsFalse (oldTransaction.HasChanged (), "WxeTransaction should have thrown if there was transaction");
 
       MyTransaction.EnlistSameDomainObjects (oldTransaction);
     }
 
     private void EnlistInParameters (ClientTransaction transaction)
     {
+      Set<Tuple<WxeParameterDeclaration, DomainObject>> enlistedObjects = new Set<Tuple<WxeParameterDeclaration, DomainObject>> ();
+
       WxeParameterDeclaration[] parameterDeclarations = ParameterDeclarations;
       for (int i = 0; i < parameterDeclarations.Length; i++)
       {
@@ -192,13 +196,17 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
         if (parameterDeclaration.IsIn)
         {
           object parameter = parameterDeclaration.GetValue (Variables);
-          EnlistParameter (parameterDeclaration, parameter, transaction);
+          EnlistParameter (parameterDeclaration, parameter, transaction, enlistedObjects);
         }
       }
+
+      LoadAllEnlistedObjects (transaction, enlistedObjects);
     }
 
     private void EnlistOutParameters (ClientTransaction transaction)
     {
+      Set<Tuple<WxeParameterDeclaration, DomainObject>> enlistedObjects = new Set<Tuple<WxeParameterDeclaration, DomainObject>> ();
+
       WxeParameterDeclaration[] parameterDeclarations = ParameterDeclarations;
       for (int i = 0; i < parameterDeclarations.Length; i++)
       {
@@ -206,53 +214,67 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
         if (parameterDeclaration.IsOut)
         {
           object parameter = parameterDeclaration.GetValue (Variables);
-          EnlistParameter (parameterDeclaration, parameter, transaction);
+          EnlistParameter (parameterDeclaration, parameter, transaction, enlistedObjects);
         }
       }
+
+      LoadAllEnlistedObjects (transaction, enlistedObjects);
     }
 
-    private void EnlistParameter (WxeParameterDeclaration parameterDeclaration, object parameter, ClientTransaction transaction)
+    private void EnlistParameter (WxeParameterDeclaration parameterDeclaration, object parameter, ClientTransaction transaction,
+        Set<Tuple<WxeParameterDeclaration, DomainObject>> enlistedObjects)
     {
-      if (!TryEnlistAsDomainObject (parameterDeclaration, parameter as DomainObject, transaction))
-        TryEnlistAsEnumerable (parameterDeclaration, parameter as IEnumerable, transaction);
+      if (!TryEnlistAsDomainObject (parameterDeclaration, parameter as DomainObject, transaction, enlistedObjects))
+        TryEnlistAsEnumerable (parameterDeclaration, parameter as IEnumerable, transaction, enlistedObjects);
     }
 
-    private bool TryEnlistAsDomainObject (WxeParameterDeclaration parameterDeclaration, DomainObject domainObject, ClientTransaction transaction)
+    private bool TryEnlistAsDomainObject (WxeParameterDeclaration parameterDeclaration, DomainObject domainObject, ClientTransaction transaction,
+        Set<Tuple<WxeParameterDeclaration, DomainObject>> enlistedObjects)
     {
       if (domainObject != null)
       {
-        EnlistDomainObject (transaction, domainObject, parameterDeclaration);
+        transaction.EnlistDomainObject (domainObject);
+        enlistedObjects.Add (Tuple.NewTuple (parameterDeclaration, domainObject));
         return true;
       }
       else
         return false;
     }
 
-    private bool TryEnlistAsEnumerable (WxeParameterDeclaration parameterDeclaration, IEnumerable enumerable, ClientTransaction transaction)
+    private bool TryEnlistAsEnumerable (WxeParameterDeclaration parameterDeclaration, IEnumerable enumerable, ClientTransaction transaction,
+         Set<Tuple<WxeParameterDeclaration, DomainObject>> enlistedObjects)
     {
       if (enumerable != null)
       {
         foreach (object innerParameter in enumerable)
-          EnlistParameter (parameterDeclaration, innerParameter, transaction);
+          EnlistParameter (parameterDeclaration, innerParameter, transaction, enlistedObjects);
         return true;
       }
       else
         return false;
     }
 
-    private void EnlistDomainObject (ClientTransaction transaction, DomainObject domainObject, WxeParameterDeclaration parameterDeclaration)
+    private void LoadAllEnlistedObjects (ClientTransaction transaction, IEnumerable<Tuple<WxeParameterDeclaration, DomainObject>> objectsToLoad)
     {
-      try
+      using (transaction.EnterNonReturningScope ())
       {
-        transaction.EnlistDomainObject (domainObject);
-      }
-      catch (Exception ex)
-      {
-        string message = string.Format (
-            "The domain object '{0}' cannot be enlisted in the function's transaction. Maybe it was newly created "
-            + "and has not yet been committed, or it was deleted.",
-            domainObject.ID);
-        throw new ArgumentException (message, parameterDeclaration.Name, ex);
+        foreach (Tuple<WxeParameterDeclaration, DomainObject> objectToLoad in objectsToLoad)
+        {
+          DomainObject loadedObject;
+          try
+          {
+            loadedObject = DomainObject.GetObject (objectToLoad.B.ID);
+          }
+          catch (Exception ex)
+          {
+            string message = string.Format (
+                "The domain object '{0}' cannot be enlisted in the function's transaction. Maybe it was newly created "
+                + "and has not yet been committed, or it was deleted.",
+                objectToLoad.B.ID);
+            throw new ArgumentException (message, objectToLoad.A.Name, ex);
+          }
+          Assertion.IsTrue (object.ReferenceEquals (loadedObject, objectToLoad.B));
+        }
       }
     }
   }

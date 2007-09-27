@@ -140,7 +140,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void OnLoadedInReactionToEnlist ()
+    public void NoOnLoadedInReactionToEnlist ()
     {
       ObjectID id = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
 
@@ -150,6 +150,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
 
       newTransaction.EnlistDomainObject (classWithAllDataTypes);
+
+      Assert.IsFalse (classWithAllDataTypes.OnLoadedHasBeenCalled);
+    }
+
+    [Test]
+    public void OnLoadedInReactionToEnlistOnFirstAccess ()
+    {
+      ObjectID id = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+
+      ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (id);
+      classWithAllDataTypes.OnLoadedHasBeenCalled = false;
+      classWithAllDataTypes.OnLoadedCallCount = 0;
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+
+      newTransaction.EnlistDomainObject (classWithAllDataTypes);
+
+      using (newTransaction.EnterScope ())
+      {
+        classWithAllDataTypes.Int32Property = 5;
+      }
 
       Assert.IsTrue (classWithAllDataTypes.OnLoadedHasBeenCalled);
       Assert.AreEqual (1, classWithAllDataTypes.OnLoadedCallCount);

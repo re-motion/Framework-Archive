@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     }
 
     [Test]
-    public void OnDomainObjectLoadedOnEnlist ()
+    public void OnDomainObjectLoadedAfterEnlist ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (HookedDomainObjectMixin)))
       {
@@ -51,6 +51,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
 
         ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
         newTransaction.EnlistDomainObject (order);
+
+        Assert.IsFalse (mixinInstance.OnLoadedCalled);
+
+        using (newTransaction.EnterScope ())
+        {
+          ++order.OrderNumber;
+        }
 
         Assert.IsTrue (mixinInstance.OnLoadedCalled);
         Assert.AreEqual (LoadMode.DataContainerLoadedOnly, mixinInstance.OnLoadedLoadMode);

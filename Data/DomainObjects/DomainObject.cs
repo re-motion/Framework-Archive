@@ -417,7 +417,7 @@ public class DomainObject
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
     _id = dataContainer.ID;
-    dataContainer.ClientTransaction.EnlistNewlyCreatedDomainObject (this);
+    dataContainer.ClientTransaction.EnlistDomainObject (this);
   }
 
   /// <summary>
