@@ -57,6 +57,18 @@ public abstract class ClientTransaction : ITransaction
     return ObjectFactory.Create<RootClientTransaction>().With();
   }
 
+  /// <summary>
+  /// Gets the <see cref="ClientTransaction"/> currently associated with this thread, or <see langword="null"/> if no such transaction exists.
+  /// </summary>
+  /// <value>The current <see cref="ClientTransaction"/> for the active thread, or <see langword="null"/> if no transaction is associated with it.</value>
+  /// <remarks>This method is a shortcut for calling <see cref="ClientTransactionScope.CurrentTransaction"/>, but it doesn't throw an exception but
+  /// return <see langword="null"/> if no transaction exists for the current thread.
+  /// </remarks>
+  public static ClientTransaction Current
+  {
+    get { return ClientTransactionScope.HasCurrentTransaction ? ClientTransactionScope.CurrentTransaction : null; }
+  }
+
   // member fields
 
   /// <summary>

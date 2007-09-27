@@ -587,6 +587,31 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
+    public void ClientTransactionCurrentIdenticalToScopeCurrentButNullOnEmptyScope ()
+    {
+      ClientTransaction clientTransaction1 = ClientTransaction.NewTransaction ();
+      ClientTransaction clientTransaction2 = ClientTransaction.NewTransaction ();
+
+      Assert.AreSame (ClientTransactionScope.CurrentTransaction, ClientTransaction.Current);
+
+      using (clientTransaction1.EnterScope ())
+      {
+        Assert.AreSame (ClientTransactionScope.CurrentTransaction, ClientTransaction.Current);
+        using (clientTransaction2.EnterScope ())
+        {
+          Assert.AreSame (ClientTransactionScope.CurrentTransaction, ClientTransaction.Current);
+        }
+        Assert.AreSame (ClientTransactionScope.CurrentTransaction, ClientTransaction.Current);
+      }
+      Assert.AreSame (ClientTransactionScope.CurrentTransaction, ClientTransaction.Current);
+
+      using (ClientTransactionScope.EnterNullScope ())
+      {
+        Assert.IsNull (ClientTransaction.Current);
+      }
+    }
+
+    [Test]
     public void MandatoryRelationNotSetExceptionForOneToOneRelation ()
     {
       OrderTicket newOrderTicket = OrderTicket.NewObject ();
