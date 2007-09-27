@@ -26,7 +26,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     {
       IBusinessObjectStringProperty property = new GuidProperty (
           new PropertyBase.Parameters (_businessObjectProvider, GetPropertyInfo (typeof (ClassWithAllDataTypes), "Guid"),
-          typeof (Guid), null, true, false, false));
+          typeof (Guid), null, true, false));
 
       Assert.That (property.MaxLength, Is.EqualTo (38));
     }
@@ -100,7 +100,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     {
       return new GuidProperty (
           new PropertyBase.Parameters (_businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<Guid>), "Scalar"),
-          typeof (Guid), null, true, false, false));
+          typeof (Guid), null, true, false));
     }
 
     private PropertyBase GetArrayProperty ()
@@ -111,7 +111,6 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
               GetPropertyInfo (typeof (ClassWithValueType<Guid>), "Array"),
               typeof (Guid),
               new ListInfo (typeof (Guid[]), typeof (Guid)),
-              false,
               false,
               false));
     }
@@ -125,8 +124,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
               typeof (Guid),
               new ListInfo (typeof (Guid?[]), typeof (Guid?)),
               false,
-              false,
-              true));
+              false));
     }
   }
 }

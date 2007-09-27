@@ -16,10 +16,9 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
       public readonly IListInfo ListInfo;
       public readonly bool IsRequired;
       public readonly bool IsReadOnly;
-      public readonly bool IsNullable;
 
       public Parameters (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, Type underlyingType, IListInfo listInfo,
-          bool isRequired, bool isReadOnly, bool isNullable)
+          bool isRequired, bool isReadOnly)
       {
         ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
         ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
@@ -30,7 +29,6 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
         ListInfo = listInfo;
         IsRequired = isRequired;
         IsReadOnly = isReadOnly;
-        IsNullable = isNullable;
       }
     }
 
@@ -39,8 +37,8 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     private readonly IListInfo _listInfo;
     private readonly bool _isRequired;
     private readonly Type _underlyingType;
-    private readonly bool _isNullable;
     private readonly bool _isReadOnly;
+    private readonly bool _isNullable;
 
     protected PropertyBase (Parameters parameters)
     {
@@ -50,7 +48,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
       _listInfo = parameters.ListInfo;
       _isRequired = parameters.IsRequired;
       _isReadOnly = parameters.IsReadOnly;
-      _isNullable = parameters.IsNullable;
+      _isNullable = GetNullability ();
     }
 
     /// <summary> Gets a flag indicating whether this property contains multiple values. </summary>
@@ -193,6 +191,11 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     protected bool IsNullable
     {
       get { return _isNullable; }
+    }
+
+    private bool GetNullability ()
+    {
+      return Nullable.GetUnderlyingType (IsList ? ListInfo.ItemType : PropertyType) != null;
     }
   }
 }

@@ -93,8 +93,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
 
       Expect.Call (factoryMock.CreatePropertyFinder (_type)).Return (propertyFinderMock);
       Expect.Call (propertyFinderMock.GetPropertyInfos ()).Return (new PropertyInfo[] { dummyProperty1, dummyProperty2 });
-      Expect.Call (factoryMock.CreatePropertyReflector (dummyProperty1, _businessObjectProvider)).Return (dummyReflector1);
-      Expect.Call (factoryMock.CreatePropertyReflector (dummyProperty2, _businessObjectProvider)).Return (dummyReflector2);
+      Expect.Call (factoryMock.CreatePropertyReflector (_type, dummyProperty1, _businessObjectProvider)).Return (dummyReflector1);
+      Expect.Call (factoryMock.CreatePropertyReflector (_type, dummyProperty2, _businessObjectProvider)).Return (dummyReflector2);
 
       mockRepository.ReplayAll ();
 

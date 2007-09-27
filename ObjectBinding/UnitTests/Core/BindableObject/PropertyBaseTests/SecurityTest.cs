@@ -39,17 +39,17 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
       _securableProperty = new StubPropertyBase (
           new PropertyBase.Parameters (
               _businessObjectProvider, GetPropertyInfo (typeof (SecurableClassWithReferenceType<SimpleReferenceType>), "Scalar"),
-              typeof (SimpleReferenceType), null, false, false, false));
+              typeof (SimpleReferenceType), null, false, false));
       
       _nonSecurablePropertyReadOnly = new StubPropertyBase (
           new PropertyBase.Parameters (
               _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ReadOnlyScalar"),
-              typeof (SimpleReferenceType), null,  false, true, false));
+              typeof (SimpleReferenceType), null,  false, true));
       
       _nonSecurableProperty = new StubPropertyBase (
           new PropertyBase.Parameters (
               _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"),
-              typeof (SimpleReferenceType), null, false, false, false));
+              typeof (SimpleReferenceType), null, false, false));
     }
 
     public override void TearDown ()

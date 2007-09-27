@@ -23,9 +23,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     public void Initialize_DateProperty ()
     {
       IBusinessObjectDateTimeProperty property = new DateProperty (
-          new PropertyBase.Parameters (_businessObjectProvider, GetPropertyInfo (typeof (ClassWithAllDataTypes), "Date"),
-          typeof (DateTime),
-          null, false, false, false));
+          GetPropertyParameters (GetPropertyInfo (typeof (ClassWithAllDataTypes), "Date"), _businessObjectProvider));
 
       Assert.That (property.Type, Is.EqualTo (DateTimeType.Date));
     }
@@ -34,8 +32,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     public void Initialize_DateTimeProperty ()
     {
       IBusinessObjectDateTimeProperty property = new DateTimeProperty (
-          new PropertyBase.Parameters (_businessObjectProvider, GetPropertyInfo (typeof (ClassWithAllDataTypes), "DateTime"),
-          typeof (DateTime), null, false, false, false));
+          GetPropertyParameters (GetPropertyInfo (typeof (ClassWithAllDataTypes), "DateTime"), _businessObjectProvider));
 
       Assert.That (property.Type, Is.EqualTo (DateTimeType.DateTime));
     }

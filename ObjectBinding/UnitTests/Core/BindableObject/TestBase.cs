@@ -31,11 +31,6 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       return propertyInfo;
     }
 
-    protected bool IsNullable (PropertyReflector reflector)
-    {
-      return (bool) PrivateInvoke.InvokeNonPublicMethod (reflector, "GetIsNullable");
-    }
-
     protected Type GetUnderlyingType (PropertyReflector reflector)
     {
       return (Type) PrivateInvoke.InvokeNonPublicMethod (reflector, "GetUnderlyingType");

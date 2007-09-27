@@ -24,7 +24,7 @@ namespace OBWTest.UI
       PropertyInfo propertyInfo = itemType.GetProperty ("ConformanceLevel");
 			EnumerationProperty property = 
           new EnumerationProperty(new PropertyBase.Parameters(BindableObjectProvider.Current, propertyInfo, propertyInfo.PropertyType, null, false,
-          false, false));
+          false));
 
       WaiConformanceLevelField.Property = property;
       WaiConformanceLevelField.LoadUnboundValue (WebConfiguration.Current.Wcag.ConformanceLevel, IsPostBack);

@@ -26,7 +26,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     public void CreatePropertyReflector ()
     {
       PropertyInfo property = typeof (TestClass).GetProperty ("Property");
-      PropertyReflector propertyReflector = DefaultMetadataFactory.Instance.CreatePropertyReflector (property, BindableObjectProvider.Current);
+      PropertyReflector propertyReflector = DefaultMetadataFactory.Instance.CreatePropertyReflector (typeof (TestClass), property, BindableObjectProvider.Current);
       Assert.AreSame (typeof (PropertyReflector), propertyReflector.GetType ());
       Assert.AreSame (property, propertyReflector.PropertyInfo);
     }

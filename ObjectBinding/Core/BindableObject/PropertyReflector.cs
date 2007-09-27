@@ -72,8 +72,7 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     private PropertyBase.Parameters CreateParameters (Type underlyingType)
     {
-      return new PropertyBase.Parameters (_businessObjectProvider, _propertyInfo, underlyingType, GetListInfo (),
-          GetIsRequired (), GetIsReadOnly(), GetIsNullable());
+      return new PropertyBase.Parameters (_businessObjectProvider, _propertyInfo, underlyingType, GetListInfo (), GetIsRequired (), GetIsReadOnly());
     }
 
     protected virtual Type GetConcreteType (Type type)
@@ -156,11 +155,6 @@ namespace Rubicon.ObjectBinding.BindableObject
     protected virtual bool IsListProperty ()
     {
       return typeof(IList).IsAssignableFrom (_propertyInfo.PropertyType);
-    }
-
-    protected virtual bool GetIsNullable ()
-    {
-      return Nullable.GetUnderlyingType (IsListProperty() ? GetListInfo().ItemType : PropertyInfo.PropertyType) != null;
     }
   }
 }

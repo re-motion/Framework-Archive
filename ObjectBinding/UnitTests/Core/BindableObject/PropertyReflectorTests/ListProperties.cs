@@ -29,7 +29,6 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithListProperties), "Array");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
-      Assert.IsFalse (IsNullable (propertyReflector));
       Assert.AreSame (typeof (SimpleReferenceType), GetUnderlyingType (propertyReflector));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
@@ -51,7 +50,6 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithListProperties), "ReadOnlyArray");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
-      Assert.IsFalse (IsNullable (propertyReflector));
       Assert.AreSame (typeof (SimpleReferenceType), GetUnderlyingType (propertyReflector));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
@@ -73,7 +71,6 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithListProperties), "ListOfT");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
-      Assert.IsFalse (IsNullable (propertyReflector));
       Assert.AreSame (typeof (SimpleReferenceType), GetUnderlyingType (propertyReflector));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
@@ -95,7 +92,6 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithListProperties), "ReadOnlyListOfT");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
-      Assert.IsFalse (IsNullable (propertyReflector));
       Assert.AreSame (typeof (SimpleReferenceType), GetUnderlyingType (propertyReflector));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
@@ -117,7 +113,6 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithListProperties), "ReadOnlyCollectionOfT");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
-      Assert.IsFalse (IsNullable (propertyReflector));
       Assert.AreSame (typeof (SimpleReferenceType), GetUnderlyingType (propertyReflector));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
@@ -139,7 +134,6 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithListProperties), "ReadOnlyCollectionOfTWithSetter");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
-      Assert.IsFalse (IsNullable (propertyReflector));
       Assert.AreSame (typeof (SimpleReferenceType), GetUnderlyingType (propertyReflector));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
@@ -161,7 +155,6 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithListProperties), "ArrayList");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
-      Assert.IsFalse (IsNullable (propertyReflector));
       Assert.AreSame (typeof (SimpleReferenceType), GetUnderlyingType (propertyReflector));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
@@ -183,7 +176,6 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithListProperties), "ReadOnlyArrayList");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
-      Assert.IsFalse (IsNullable (propertyReflector));
       Assert.AreSame (typeof (SimpleReferenceType), GetUnderlyingType (propertyReflector));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();

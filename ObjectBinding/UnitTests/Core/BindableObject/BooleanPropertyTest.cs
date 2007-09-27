@@ -54,7 +54,6 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
               typeof (bool),
               new ListInfo (typeof (bool[]), typeof (bool)),
               false,
-              false,
               false));
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.False);
@@ -70,8 +69,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
               typeof (bool),
               new ListInfo (typeof (bool?[]), typeof (bool?)),
               false,
-              false,
-              true));
+              false));
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.Null);
     }
