@@ -65,7 +65,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       List <PropertyBase> properties = new List<PropertyBase> ();
       foreach (PropertyInfo propertyInfo in propertyFinder.GetPropertyInfos ())
       {
-        PropertyReflector propertyReflector = _metadataFactory.CreatePropertyReflector (propertyInfo, _businessObjectProvider);
+        PropertyReflector propertyReflector = _metadataFactory.CreatePropertyReflector (_targetType, propertyInfo, _businessObjectProvider);
         properties.Add (propertyReflector.GetMetadata());
       }
 

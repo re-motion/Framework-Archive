@@ -256,8 +256,12 @@
     <Compile Include="ObjectBinding\BindableDomainObjectMixinTests\Identity.cs" />
     <Compile Include="ObjectBinding\BindableDomainObjectMixinTests\PropertyIntegrationTest.cs" />
     <Compile Include="ObjectBinding\ObjectBindingBaseTest.cs" />
+    <Compile Include="ObjectBinding\TestDomain\BindableBaseDomainObject.cs" />
+    <Compile Include="ObjectBinding\TestDomain\BindableDomainObjectWithProperties.cs" />
     <Compile Include="ObjectBinding\TestDomain\BindableSampleDomainObject.cs" />
     <Compile Include="ObjectBinding\TestDomain\BindableDomainObjectWithOverriddenDisplayName.cs" />
+    <Compile Include="ObjectBinding\TestDomain\OppositeBidirectionalBindableDomainObject.cs" />
+    <Compile Include="ObjectBinding\TestDomain\OppositeAnonymousBindableDomainObject.cs" />
     <Compile Include="ObjectBinding\TestDomain\SecurableBindableDomainObjectWithOverriddenDisplayName.cs" />
     <Compile Include="Persistence\MixedStorageProviderTest.cs" />
     <Compile Include="Persistence\StorageProviderWithFixedGuidMixin.cs" />
