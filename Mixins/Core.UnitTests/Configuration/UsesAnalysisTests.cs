@@ -8,6 +8,31 @@ namespace Rubicon.Mixins.UnitTests.Configuration
   [TestFixture]
   public class UsesAnalysisTests
   {
+    [Uses (typeof (NullMixin))]
+    [IgnoreForMixinConfiguration]
+    public class UserWithoutDependencies
+    {
+    }
+
+    [Uses (typeof (NullMixin), AdditionalDependencies = new Type[] { typeof (string) })]
+    [IgnoreForMixinConfiguration]
+    public class UserWithDependencies
+    {
+    }
+
+    [Test]
+    public void AdditionalDependencies ()
+    {
+      ApplicationContext context =
+          new ApplicationContextBuilder (null).AddType (typeof (UserWithoutDependencies)).AddType (typeof (UserWithDependencies)).BuildContext();
+      Assert.AreEqual (0, context.GetClassContext (typeof (UserWithoutDependencies)).GetOrAddMixinContext (typeof (NullMixin))
+          .ExplicitDependencyCount);
+      Assert.AreEqual (1, context.GetClassContext (typeof (UserWithDependencies)).GetOrAddMixinContext (typeof (NullMixin))
+          .ExplicitDependencyCount);
+      Assert.IsTrue (context.GetClassContext (typeof (UserWithDependencies)).GetOrAddMixinContext (typeof (NullMixin))
+          .ContainsExplicitDependency (typeof (string)));
+    }
+
     [Uses (typeof (NullMixin), AdditionalDependencies = new Type[] { typeof (object) })]
     [IgnoreForMixinConfiguration]
     public class BaseWithUses { }

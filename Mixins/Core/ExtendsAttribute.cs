@@ -26,7 +26,8 @@ namespace Rubicon.Mixins
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
   public class ExtendsAttribute : Attribute
   {
-    private Type _targetType;
+    private readonly Type _targetType;
+    private Type[] _additionalDependencies = Type.EmptyTypes;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ExtendsAttribute"/> class.
@@ -45,6 +46,22 @@ namespace Rubicon.Mixins
     public Type TargetType
     {
       get { return _targetType; }
+    }
+
+    /// <summary>
+    /// Gets or sets additional explicit base call dependencies for this mixin type when applied to the given target type. This can be used to
+    /// establish an ordering when combining unrelated mixins on a class which override the same methods.
+    /// </summary>
+    /// <value>The additional dependencies of the mixin. The validity of the dependency types is not checked until the configuration is built.</value>
+    /// <exception cref="ArgumentNullException">The <paramref name="value"/> argument is <see langword="null"/>.</exception>
+    public Type[] AdditionalDependencies
+    {
+      get { return _additionalDependencies; }
+      set
+      {
+        ArgumentUtility.CheckNotNull ("value", value);
+        _additionalDependencies = value;
+      }
     }
   }
 }

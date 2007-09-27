@@ -48,7 +48,7 @@ namespace Rubicon.Mixins.Context
     private void AnalyzeExtender (Type extender)
     {
       foreach (ExtendsAttribute mixinAttribute in extender.GetCustomAttributes (typeof (ExtendsAttribute), false))
-        ApplyMixinToClassContext (_builtContext.GetOrAddClassContext (mixinAttribute.TargetType), extender, Type.EmptyTypes);
+        ApplyMixinToClassContext (_builtContext.GetOrAddClassContext (mixinAttribute.TargetType), extender, mixinAttribute.AdditionalDependencies);
     }
 
     private void AnalyzeUser (Type user)

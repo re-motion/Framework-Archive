@@ -26,7 +26,7 @@ namespace Rubicon.Mixins
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
   public class UsesAttribute : Attribute
   {
-    private Type _mixinType;
+    private readonly Type _mixinType;
     private Type[] _additionalDependencies = Type.EmptyTypes;
 
     /// <summary>

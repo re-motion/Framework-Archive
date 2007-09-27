@@ -7,6 +7,31 @@ namespace Rubicon.Mixins.UnitTests.Configuration
   [TestFixture]
   public class ExtendsAnalysisTests
   {
+    [Extends (typeof (object))]
+    [IgnoreForMixinConfiguration]
+    public class ExtenderWithoutDependencies
+    {
+    }
+
+    [Extends (typeof (object), AdditionalDependencies = new Type[] { typeof (string) })]
+    [IgnoreForMixinConfiguration]
+    public class ExtenderWithDependencies
+    {
+    }
+
+    [Test]
+    public void AdditionalDependencies ()
+    {
+      ApplicationContext context =
+          new ApplicationContextBuilder (null).AddType (typeof (ExtenderWithDependencies)).AddType (typeof (ExtenderWithoutDependencies)).BuildContext ();
+      Assert.AreEqual (0, context.GetClassContext (typeof (object)).GetOrAddMixinContext (typeof (ExtenderWithoutDependencies))
+          .ExplicitDependencyCount);
+      Assert.AreEqual (1, context.GetClassContext (typeof (object)).GetOrAddMixinContext (typeof (ExtenderWithDependencies))
+          .ExplicitDependencyCount);
+      Assert.IsTrue (context.GetClassContext (typeof (object)).GetOrAddMixinContext (typeof (ExtenderWithDependencies))
+          .ContainsExplicitDependency (typeof (string)));
+    }
+
     public class ExtendsTargetBase { }
 
     [Extends (typeof (ExtendsTargetBase))]
