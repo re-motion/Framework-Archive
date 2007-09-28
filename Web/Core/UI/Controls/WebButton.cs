@@ -97,7 +97,8 @@ namespace Rubicon.Web.UI.Controls
           scriptManager.RegisterPostBackControl (this);
       }
 
-      ScriptUtility.RegisterElementForBorderSpans (Page, ClientID);
+      if (!IsLegacyButtonEnabled)
+        ScriptUtility.RegisterElementForBorderSpans (Page, ClientID);
     }
 
     protected override void AddAttributesToRender (HtmlTextWriter writer)
