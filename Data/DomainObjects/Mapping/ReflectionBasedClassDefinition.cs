@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
@@ -9,8 +9,8 @@ namespace Rubicon.Data.DomainObjects.Mapping
   [Serializable]
   public class ReflectionBasedClassDefinition: ClassDefinition
   {
-    private bool _isAbstract;
-    private Type _classType;
+    private readonly bool _isAbstract;
+    private readonly Type _classType;
 
     public ReflectionBasedClassDefinition (string id, string entityName, string storageProviderID, Type classType, bool isAbstract)
         : this (id, entityName, storageProviderID, classType, isAbstract, null)
@@ -59,6 +59,11 @@ namespace Rubicon.Data.DomainObjects.Mapping
     private MappingException CreateMappingException (string message, params object[] args)
     {
       return new MappingException (string.Format (message, args));
+    }
+
+    protected internal override IDomainObjectCreator GetDomainObjectCreator ()
+    {
+      return FactoryBasedDomainObjectCreator.Instance;
     }
 
     #region ISerializable Members

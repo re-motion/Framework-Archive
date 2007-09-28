@@ -823,5 +823,14 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       return new XmlBasedClassDefinition ("Partner", "Company", DatabaseTest.c_testDomainProviderID, typeof (Partner));
     }
+
+    [Test]
+    public void CreatorIsDirectCreator ()
+    {
+      object creatorInstance = PrivateInvoke.GetPublicStaticField (
+          typeof (XmlBasedClassDefinition).Assembly.GetType ("Rubicon.Data.DomainObjects.Legacy.Infrastructure.DirectDomainObjectCreator", true),
+          "Instance");
+      Assert.AreEqual (creatorInstance, PrivateInvoke.InvokeNonPublicMethod (_orderClass, "GetDomainObjectCreator"));
+    }
   }
 }

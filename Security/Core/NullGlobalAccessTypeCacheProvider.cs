@@ -9,6 +9,7 @@ namespace Rubicon.Security
   /// <summary>
   /// Represents a nullable <see cref="IGlobalAccessTypeCacheProvider"/> according to the "Null Object Pattern".
   /// </summary>
+  //TODO: Serializable via ObjectReference, like OPF Mapping
   public class NullGlobalAccessTypeCacheProvider : ExtendedProviderBase, IGlobalAccessTypeCacheProvider
   {
     private NullCache<Tuple<SecurityContext, string>, AccessType[]> _cache = new NullCache<Tuple<SecurityContext, string>, AccessType[]>();

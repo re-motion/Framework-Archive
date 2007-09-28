@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
-using Rubicon.Collections;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
@@ -17,17 +17,18 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     // member fields
 
-    private string _id;
-    private string _entityName;
-    private string _storageProviderID;
+    private readonly string _id;
+    private readonly string _entityName;
+    private readonly string _storageProviderID;
+    private readonly PropertyDefinitionCollection _propertyDefinitions;
+    private readonly RelationDefinitionCollection _relationDefinitions;
+
     private ClassDefinition _baseClass;
     private ClassDefinitionCollection _derivedClasses;
-    private PropertyDefinitionCollection _propertyDefinitions;
-    private RelationDefinitionCollection _relationDefinitions;
 
     // Note: _isPartOfMappingConfiguration is used only during the deserialization process. 
     // It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.
-    private bool _isPartOfMappingConfiguration;
+    private readonly bool _isPartOfMappingConfiguration;
 
     // construction and disposing
 
@@ -589,6 +590,8 @@ namespace Rubicon.Data.DomainObjects.Mapping
         derivedClass.FillAllDerivedClasses (allDerivedClasses);
       }
     }
+
+    protected internal abstract IDomainObjectCreator GetDomainObjectCreator ();
 
     #region ISerializable Members
 

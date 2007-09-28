@@ -6,6 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
+  //TODO: Serializable
   public class SecurityStrategy : ISecurityStrategy
   {
     private ICache<string, AccessType[]> _localCache;

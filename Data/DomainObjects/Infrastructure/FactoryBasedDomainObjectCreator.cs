@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
+using System.Runtime.Serialization;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
-using System.Reflection;
-using Rubicon.Logging;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
@@ -23,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
       IDomainObjectFactory factory = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory;
       Type concreteType = factory.GetConcreteDomainObjectType(dataContainer.DomainObjectType);
-      DomainObject instance = (DomainObject) System.Runtime.Serialization.FormatterServices.GetSafeUninitializedObject (concreteType);
+      DomainObject instance = (DomainObject) FormatterServices.GetSafeUninitializedObject (concreteType);
       factory.PrepareUnconstructedInstance (instance);
       instance.InitializeFromDataContainer (dataContainer);
       return instance;

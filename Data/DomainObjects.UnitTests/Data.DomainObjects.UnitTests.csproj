@@ -162,6 +162,7 @@
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidProperties.cs" />
     <Compile Include="Configuration\StorageProviders\RdbmsProviderDefinitionTest.cs" />
     <Compile Include="Configuration\StorageProviders\TypeProviderTest.cs" />
+    <Compile Include="DomainObjects\GraphTest.cs" />
     <Compile Include="DomainObjects\MultiTransactionTest.cs" />
     <Compile Include="DomainObjects\ObjectListIListTest.cs" />
     <Compile Include="DomainObjects\PropertyAccessorTest.cs" />

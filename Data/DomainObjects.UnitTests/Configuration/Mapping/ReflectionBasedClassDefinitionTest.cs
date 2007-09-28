@@ -8,6 +8,7 @@ using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Utilities;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
@@ -895,6 +896,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       
       Assert.AreEqual (property1, propertyDefinition1.PropertyInfo);
       Assert.AreEqual (property2, propertyDefinition2.PropertyInfo);
+    }
+
+    [Test]
+    public void CreatorIsFactoryBasedCreator ()
+    {
+      object creatorInstance = PrivateInvoke.GetPublicStaticField (
+          typeof (ReflectionBasedClassDefinition).Assembly.GetType ("Rubicon.Data.DomainObjects.Infrastructure.FactoryBasedDomainObjectCreator", true),
+          "Instance");
+      Assert.AreEqual (creatorInstance, PrivateInvoke.InvokeNonPublicMethod (_orderClass, "GetDomainObjectCreator"));
     }
   }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Development.UnitTesting;
 
@@ -69,6 +70,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 		{
 			get { return base.Properties; }
 		}
+
+    public new IEnumerable<DomainObject> GetAllRelatedObjects ()
+    {
+      return base.GetAllRelatedObjects ();
+    }
   }
 }
 #pragma warning restore 0618

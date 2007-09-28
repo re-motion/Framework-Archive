@@ -7,7 +7,8 @@ using Rubicon.Security.Configuration;
 
 namespace Rubicon.Security
 {
-  public class RevisionBasedAccessTypeCacheProvider: ExtendedProviderBase, IGlobalAccessTypeCacheProvider
+  //TODO: Serializable via ObjectReference, like OPF Mapping
+  public class RevisionBasedAccessTypeCacheProvider : ExtendedProviderBase, IGlobalAccessTypeCacheProvider
   {
     // constants
 

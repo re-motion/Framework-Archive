@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Rubicon.Data.DomainObjects.DataManagement;
@@ -242,20 +243,10 @@ public class DomainObject
 
   #endregion
 
-  // True if the domain object type requires to be instantiated via a IDomainObjectFactory; false if it is safe to just invoke its constructor.
-  private static bool ShouldUseFactoryForInstantiation (Type domainObjectType)
-  {
-    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (domainObjectType);
-    return classDefinition is ReflectionBasedClassDefinition;
-  }
-
   // Returns a strategy object for creating instances of the given domain object type.
   private static IDomainObjectCreator GetCreator (Type domainObjectType)
   {
-    if (ShouldUseFactoryForInstantiation (domainObjectType))
-      return FactoryBasedDomainObjectCreator.Instance;
-    else
-      return LegacyDomainObjectCreator.Instance;
+    return MappingConfiguration.Current.ClassDefinitions.GetMandatory (domainObjectType).GetDomainObjectCreator ();
   }
 
   // member fields
@@ -500,7 +491,6 @@ public class DomainObject
     }
   }
 
-
   /// <summary>
   /// Gets a value indicating the discarded status of the object.
   /// </summary>
@@ -532,7 +522,7 @@ public class DomainObject
     }
 	}
 
-		/// <summary>
+	/// <summary>
   /// Gets the <see cref="DomainObjects.DataContainer"/> of the <see cref="DomainObject"/> in the <see cref="ClientTransactionScope.CurrentTransaction"/>.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
@@ -712,9 +702,29 @@ public class DomainObject
     return new TransactionalAccessor<T> (property);
   }
 
+  protected IEnumerable<DomainObject> GetAllRelatedObjects ()
+  {
+    foreach (PropertyAccessor property in Properties)
+    {
+      switch (property.Kind)
+      {
+        case PropertyKind.RelatedObject:
+          DomainObject value = (DomainObject) property.GetValueWithoutTypeCheck ();
+          if (value != null)
+            yield return value;
+          break;
+        case PropertyKind.RelatedObjectCollection:
+          DomainObjectCollection values = (DomainObjectCollection) property.GetValueWithoutTypeCheck ();
+          foreach (DomainObject relatedObject in values)
+            yield return relatedObject;
+          break;
+      }
+    }
+  }
+
   #endregion
 
-  #region Related objects
+  #region Obsolete related objects
 
   /// <summary>
   /// Gets the related object of a given <paramref name="propertyName"/>.

@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
-using Rubicon.Collections;
+using Rubicon.Data.DomainObjects.Infrastructure;
+using Rubicon.Data.DomainObjects.Legacy.Infrastructure;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
@@ -108,6 +107,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
     private MappingException CreateMappingException (string message, params object[] args)
     {
       return new MappingException (string.Format (message, args));
+    }
+
+    protected override IDomainObjectCreator GetDomainObjectCreator ()
+    {
+      return DirectDomainObjectCreator.Instance;
     }
 
     #region ISerializable Members

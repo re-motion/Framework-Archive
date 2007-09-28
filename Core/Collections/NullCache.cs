@@ -9,6 +9,7 @@ namespace Rubicon.Collections
   /// <remarks>
   /// Use NullCache objects if some code expects an <see cref="ICache{TKey,TValue}"/> interface, but you don't actually want to use caching.
   /// </remarks>
+  //TODO: Serializable
   public class NullCache<TKey, TValue> : ICache<TKey, TValue>
   {
     public NullCache ()

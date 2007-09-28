@@ -25,18 +25,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DomainObjects
       Assert.AreEqual (typeof (ClassWithAllDataTypes), classWithAllDataTypes.GetPublicDomainObjectType());
     }
 
-    private bool ShouldUseFactoryForInstantiation (Type type)
-    {
-      return (bool) PrivateInvoke.InvokeNonPublicStaticMethod (typeof (DomainObject), "ShouldUseFactoryForInstantiation", type);
-    }
-
-    [Test]
-    public void ShouldUseFactoryForInstantiation ()
-    {
-      Assert.IsFalse (ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
-      Assert.IsFalse (ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
-    }
-
     private bool WasCreatedByFactory (object o)
     {
       return DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.WasCreatedByFactory (o.GetType ());

@@ -1,22 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Utilities;
-using Rubicon.Logging;
 using System.Reflection;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Reflection;
+using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Rubicon.Data.DomainObjects.Legacy.Infrastructure
 {
   // Creates new domain object instances via a Reflection-based constructor call.
   // Needed constructors:
   // MyDomainObject (DataContainer) -- for loading
   // (any constructor) -- for new objects
-  internal class LegacyDomainObjectCreator : IDomainObjectCreator
+  internal class DirectDomainObjectCreator : IDomainObjectCreator
   {
-    public readonly static LegacyDomainObjectCreator Instance = new LegacyDomainObjectCreator ();
+    public static readonly DirectDomainObjectCreator Instance = new DirectDomainObjectCreator();
 
     public DomainObject CreateWithDataContainer (DataContainer dataContainer)
     {
@@ -26,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     }
 
     public IFuncInvoker<T> GetTypesafeConstructorInvoker<T> ()
-       where T : DomainObject
+        where T: DomainObject
     {
       return TypesafeActivator.CreateInstance<T> (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     }

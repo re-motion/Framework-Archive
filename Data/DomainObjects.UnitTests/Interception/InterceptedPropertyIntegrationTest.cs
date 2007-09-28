@@ -61,18 +61,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       Assert.IsFalse (((object)classWithAllDataTypes).GetType ().Equals (typeof (ClassWithAllDataTypes)));
     }
 
-    private bool ShouldUseFactoryForInstantiation (Type type)
-    {
-      return (bool) PrivateInvoke.InvokeNonPublicStaticMethod (typeof (DomainObject), "ShouldUseFactoryForInstantiation", type);
-    }
-
-    [Test]
-    public void ShouldUseFactoryForInstantiation ()
-    {
-      Assert.IsTrue (ShouldUseFactoryForInstantiation (typeof (OrderItem)));
-      Assert.IsTrue (ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
-    }
-
     [Test]
     public void GetPropertyValueWorks ()
     {

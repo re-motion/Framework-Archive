@@ -5,6 +5,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Collections
 {
   //TODO: Doc
+  //TODO: Serializable
   public class Cache<TKey, TValue> : ICache<TKey, TValue>
   {
     // types
