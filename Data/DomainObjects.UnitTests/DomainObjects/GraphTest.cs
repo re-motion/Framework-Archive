@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using NUnit.Framework.SyntaxHelpers;
 using System.Collections.Generic;
+using Rubicon.Collections;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -23,6 +24,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Ceo ceo = Ceo.GetObject (DomainObjectIDs.Ceo1);
       List<DomainObject> relatedObjects = new List<DomainObject> (ceo.GetAllRelatedObjects ());
       Assert.That (relatedObjects, List.Not.Contains (ceo.Company.IndustrialSector));
+    }
+
+    [Test]
+    public void GetAllRelatedObjects_DoesNotContainDuplicates ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      List<DomainObject> relatedObjects = new List<DomainObject> (order.GetAllRelatedObjects ());
+      Assert.That (relatedObjects, Is.EquivalentTo (new Set<DomainObject> (relatedObjects)));
     }
 
     [Test]
@@ -69,6 +78,46 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       List<DomainObject> relatedObjects = new List<DomainObject> (order.GetAllRelatedObjects ());
       Assert.That (order.OrderItems, Is.SubsetOf (relatedObjects));
+    }
+
+    private Order GetGraph ()
+    {
+      Order root = Order.NewObject ();
+      root.Official = Official.NewObject ();
+      root.OrderTicket = OrderTicket.NewObject ();
+      root.OrderItems.Add (OrderItem.NewObject ());
+      root.OrderItems.Add (OrderItem.NewObject ());
+      root.Customer = Customer.NewObject ();
+      root.Customer.Ceo = Ceo.NewObject ();
+      return root;
+    }
+
+    [Test]
+    public void GetFlattenedRelatedObjectGraph_ContainsRoot ()
+    {
+      Order order = GetGraph();
+      Set<DomainObject> graph = order.GetFlattenedRelatedObjectGraph();
+
+      Assert.That (graph, List.Contains (order));
+    }
+
+    [Test]
+    public void TraverseRelatedObjectGraph_ContainsRelatedObjects ()
+    {
+      Order order = GetGraph();
+      Set<DomainObject> graph = order.GetFlattenedRelatedObjectGraph();
+
+      foreach (DomainObject relatedObject in order.GetAllRelatedObjects())
+        Assert.That (graph, List.Contains (relatedObject));
+    }
+
+    [Test]
+    public void TraverseRelatedObjectGraph_ContainsIndirectRelatedObjects ()
+    {
+      Order order = GetGraph();
+      Set<DomainObject> graph = order.GetFlattenedRelatedObjectGraph();
+
+      Assert.That (graph, List.Contains (order.Customer.Ceo));
     }
   }
 }

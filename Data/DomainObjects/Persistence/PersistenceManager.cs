@@ -150,8 +150,8 @@ namespace Rubicon.Data.DomainObjects.Persistence
       if (relationEndPointID.Definition.IsMandatory && oppositeDataContainers.Count == 0)
       {
         throw CreatePersistenceException (
-            "Collection for mandatory relation '{0}' (property: '{1}') contains no items.",
-            relationEndPointID.RelationDefinition.ID, relationEndPointID.PropertyName);
+            "Collection for mandatory relation '{0}' (property: '{1}', object: '{2}') contains no items.",
+            relationEndPointID.RelationDefinition.ID, relationEndPointID.PropertyName, relationEndPointID.ObjectID);
       }
 
       foreach (DataContainer oppositeDataContainer in oppositeDataContainers)

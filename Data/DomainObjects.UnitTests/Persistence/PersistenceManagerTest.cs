@@ -246,7 +246,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     [Test]
     [ExpectedException (typeof (PersistenceException), ExpectedMessage =
        "Collection for mandatory relation 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' "
-        + "(property: 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems') contains no items.")]
+       + "(property: 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems', object: 'Order|f4016f41-f4e4-429e-b8d1-659c8c480a67|System.Guid') contains no items.")]
     public void LoadEmptyRelatedDataContainersForMandatoryRelation ()
     {
       _persistenceManager.LoadRelatedDataContainers (

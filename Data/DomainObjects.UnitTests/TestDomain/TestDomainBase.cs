@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Development.UnitTesting;
 
@@ -74,6 +75,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     public new IEnumerable<DomainObject> GetAllRelatedObjects ()
     {
       return base.GetAllRelatedObjects ();
+    }
+
+    public new Set<DomainObject> GetFlattenedRelatedObjectGraph ()
+    {
+      return base.GetFlattenedRelatedObjectGraph();
     }
   }
 }

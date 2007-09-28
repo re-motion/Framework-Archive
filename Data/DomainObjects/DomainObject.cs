@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Reflection;
@@ -702,6 +703,11 @@ public class DomainObject
     return new TransactionalAccessor<T> (property);
   }
 
+  /// <summary>
+  /// Gets all related objects of this <see cref="DomainObject"/>.
+  /// </summary>
+  /// <returns>An enumeration of all <see cref="DomainObject"/> directly referenced by this <see cref="DomainObject"/> in the form of
+  /// <see cref="PropertyKind.RelatedObject"/> and <see cref="PropertyKind.RelatedObjectCollection"/> properties.</returns>
   protected IEnumerable<DomainObject> GetAllRelatedObjects ()
   {
     foreach (PropertyAccessor property in Properties)
@@ -720,6 +726,32 @@ public class DomainObject
           break;
       }
     }
+  }
+
+  /// <summary>
+  /// Provides a mechanism for retrieving all the <see cref="DomainObject"/> instances directly or indirectly referenced by this object via
+  /// <see cref="PropertyKind.RelatedObject"/> and <see cref="PropertyKind.RelatedObjectCollection"/> properties.
+  /// </summary>
+  /// <returns>A <see cref="Set{T}"/> of <see cref="DomainObject"/> instances containing this object and all objects directly or indirectly
+  /// referenced by it.</returns>
+  // Note: Implemented nonrecursively in order to support very large graphs.
+  protected Set<DomainObject> GetFlattenedRelatedObjectGraph ()
+  {
+    Set<DomainObject> resultSet = new Set<DomainObject> ();
+    Set<DomainObject> objectsToBeProcessed = new Set<DomainObject> (this);
+
+    while (objectsToBeProcessed.Count > 0)
+    {
+      DomainObject current = objectsToBeProcessed.GetAny ();
+      objectsToBeProcessed.Remove (current);
+      if (!resultSet.Contains (current))
+      {
+        resultSet.Add (current);
+        objectsToBeProcessed.AddRange (current.GetAllRelatedObjects ());
+      }
+    }
+
+    return resultSet;
   }
 
   #endregion
