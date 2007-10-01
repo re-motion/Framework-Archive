@@ -11,6 +11,12 @@ namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
       get { return null; }
     }
 
+    [Inherited]
+    protected virtual string ProtectedPropertyWithAttribute
+    {
+      get { return null; }
+    }
+
     [Multiple]
     public virtual string PropertyWithMultipleAttribute
     {

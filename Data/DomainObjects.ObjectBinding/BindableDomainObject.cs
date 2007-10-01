@@ -1,5 +1,7 @@
 using System;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Mixins;
+using Rubicon.ObjectBinding.BindableObject;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
@@ -13,5 +15,16 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
   [BindableDomainObject]
   public abstract class BindableDomainObject : DomainObject
   {
+    /// <summary>
+    /// Provides a possibility to override the display name of the bindable domain object.
+    /// </summary>
+    /// <value>The display name.</value>
+    /// <remarks>Override this property to replace the default display name provided by the <see cref="BindableObjectClass"/> with a custom one.
+    /// </remarks>
+    [Override]
+    public virtual string DisplayName
+    {
+      get { return Mixin.Get<BindableDomainObjectMixin> (this).BaseDisplayName; }
+    }
   }
 }

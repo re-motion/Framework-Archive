@@ -70,5 +70,27 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
 
       repository.VerifyAll ();
     }
+
+    [Test]
+    public void NamesOfNestedTypesAreFlattened ()
+    {
+      MockRepository repository = new MockRepository ();
+      INameProvider nameProviderMock = repository.CreateMock<INameProvider> ();
+      ConcreteTypeBuilder.Current.MixinTypeNameProvider = nameProviderMock;
+
+      MixinDefinition mixinDefinition =
+          TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
+      Assert.IsNotNull (mixinDefinition);
+
+      Expect.Call (nameProviderMock.GetNewTypeName (mixinDefinition)).Return ("Bra+Oof");
+
+      repository.ReplayAll ();
+
+      Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
+
+      Assert.AreEqual ("Bra/Oof", generatedType.FullName);
+
+      repository.VerifyAll ();
+    }
   }
 }

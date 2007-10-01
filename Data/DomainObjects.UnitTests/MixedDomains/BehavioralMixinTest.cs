@@ -5,6 +5,8 @@ using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Mixins;
 using Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes;
+using Rubicon.Mixins.CodeGeneration;
+using Rubicon.Mixins.Definitions;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
 {
@@ -52,6 +54,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
         Assert.AreEqual ("Text-MixinSetter-MixinGetter", instance.Property);
         Assert.AreEqual ("Something-MixinMethod", instance.GetSomething ());
       }
+    }
+
+    [DBTable]
+    [TestDomain]
+    [Uses (typeof (NullMixin))]
+    public class NestedDomainObject : DomainObject
+    {
+      public static NestedDomainObject NewObject ()
+      {
+        return DomainObject.NewObject<NestedDomainObject> ().With ();
+      }
+    }
+
+    [Test]
+    public void NestedDomainObjectDomainObjectsCanBeMixed ()
+    {
+      DomainObject domainObject = NestedDomainObject.NewObject ();
+      Assert.IsNotNull (Mixin.Get<NullMixin> (domainObject));
     }
   }
 }

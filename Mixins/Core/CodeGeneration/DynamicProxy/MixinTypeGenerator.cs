@@ -36,12 +36,13 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       _configuration = configuration;
 
       string typeName = nameProvider.GetNewTypeName (configuration);
+      typeName = CustomClassEmitter.FlattenTypeName (typeName);
+
       Type[] interfaces = new Type[] {typeof (ISerializable)};
       TypeAttributes flags = TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable;
 
       bool forceUnsigned = !StrongNameUtil.IsAssemblySigned (targetGenerator.TypeBuilder.Assembly);
-      ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces,
-          flags, forceUnsigned);
+      ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces, flags, forceUnsigned);
       _emitter = new CustomClassEmitter (classEmitter);
 
       _configurationField = classEmitter.CreateStaticField ("__configuration", typeof (MixinDefinition));

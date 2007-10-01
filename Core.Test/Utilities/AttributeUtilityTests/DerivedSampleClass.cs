@@ -7,6 +7,11 @@ namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
       get { return null; }
     }
 
+    protected override string ProtectedPropertyWithAttribute
+    {
+      get { return null; }
+    }
+
     [Multiple]
     public override string PropertyWithMultipleAttribute
     {

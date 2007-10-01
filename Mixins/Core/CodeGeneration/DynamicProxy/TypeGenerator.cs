@@ -43,6 +43,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       _configuration = configuration;
 
       string typeName = nameProvider.GetNewTypeName (configuration);
+      typeName = CustomClassEmitter.FlattenTypeName (typeName);
 
       List<Type> interfaces = GetInterfacesToImplement (true);
 

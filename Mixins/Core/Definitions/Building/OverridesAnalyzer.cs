@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Utilities;
 using Rubicon;
 using Rubicon.Collections;
+using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions.Building
 {
   public class OverridesAnalyzer<T> where T : MemberDefinition
   {
-    private Func<IEnumerable<T>> _baseMemberGetter;
+    private readonly Func<IEnumerable<T>> _baseMemberGetter;
     private MultiDictionary<string, T> _baseMembersByNameCache = null;
 
     public OverridesAnalyzer(Func<IEnumerable<T>> baseMemberGetter)
@@ -21,7 +21,7 @@ namespace Rubicon.Mixins.Definitions.Building
     {
       foreach (T member in overriderMembers)
       {
-        if (Attribute.IsDefined(member.MemberInfo, typeof (OverrideAttribute), true))
+        if (AttributeUtility.IsDefined(member.MemberInfo, typeof (OverrideAttribute), true))
         {
           T baseMember;
           if (BaseMembersByName.ContainsKey (member.Name))

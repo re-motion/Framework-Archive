@@ -149,6 +149,26 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     }
 
     [Test]
+    public void NamesOfNestedTypesAreFlattened ()
+    {
+      MockRepository repository = new MockRepository ();
+      INameProvider nameProviderMock = repository.CreateMock<INameProvider> ();
+      ConcreteTypeBuilder.Current.TypeNameProvider = nameProviderMock;
+
+      TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+
+      Expect.Call (nameProviderMock.GetNewTypeName (definition)).Return ("Foo+Bar");
+
+      repository.ReplayAll ();
+
+      Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType1));
+
+      Assert.AreEqual ("Foo/Bar", generatedType.FullName);
+
+      repository.VerifyAll ();
+    }
+
+    [Test]
     public void AbstractBaseTypesLeadToAbstractConcreteTypes ()
     {
       Type concreteType = CreateMixedType (typeof (AbstractBaseType), typeof (MixinOverridingClassMethod));

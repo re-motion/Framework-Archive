@@ -18,5 +18,10 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
     {
       get { return This.ID.ToString(); }
     }
+
+    public string BaseDisplayName
+    {
+      get { return base.DisplayName; }
+    }
   }
 }

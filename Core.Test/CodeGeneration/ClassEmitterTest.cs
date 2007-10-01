@@ -20,6 +20,12 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
         BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
     [Test]
+    public void FlattenTypeName ()
+    {
+      Assert.AreEqual ("Namespace.Parent/Nested", CustomClassEmitter.FlattenTypeName ("Namespace.Parent+Nested"));
+    }
+
+    [Test]
     public void EmitSimpleClass ()
     {
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "SimpleClass", typeof (ClassEmitterTest), new Type[] { typeof (IMarkerInterface) },

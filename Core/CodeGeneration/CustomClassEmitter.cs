@@ -13,6 +13,12 @@ namespace Rubicon.CodeGeneration
 {
   public class CustomClassEmitter : IAttributableEmitter
   {
+    public static string FlattenTypeName (string fullName)
+    {
+      ArgumentUtility.CheckNotNull ("fullName", fullName);
+      return fullName.Replace ("+", "/");
+    }
+
     private readonly AbstractTypeEmitter _innerEmitter;
     private readonly Cache<MethodInfo, CustomMethodEmitter> _publicMethodWrappers = new Cache<MethodInfo, CustomMethodEmitter> ();
     private bool _hasBeenBuilt = false;

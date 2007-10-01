@@ -48,7 +48,7 @@ namespace Rubicon.Mixins.Definitions.Building
       ApplyMixins (classDefinition, classContext);
       ApplyMethodRequirements (classDefinition);
 
-      ApplyOverrides (classDefinition);
+      AnalyzeOverrides (classDefinition);
       return classDefinition;
     }
 
@@ -124,7 +124,7 @@ namespace Rubicon.Mixins.Definitions.Building
         methodRequirementBuilder.Apply (requirement);
     }
 
-    private void ApplyOverrides (TargetClassDefinition definition)
+    private void AnalyzeOverrides (TargetClassDefinition definition)
     {
       OverridesAnalyzer<MethodDefinition> methodAnalyzer = new OverridesAnalyzer<MethodDefinition> (definition.GetAllMixinMethods);
       foreach (Tuple<MethodDefinition, MethodDefinition> methodOverride in methodAnalyzer.Analyze (definition.Methods))

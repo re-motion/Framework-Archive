@@ -11,6 +11,7 @@ namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
     private PropertyInfo _basePropertyWithSingleAttribute;
     private PropertyInfo _derivedPropertyWithSingleAttribute;
     private PropertyInfo _derivedPropertyWithMultipleAttribute;
+    private PropertyInfo _derivedProtectedProperty;
 
     [SetUp]
     public void SetUp ()
@@ -18,6 +19,8 @@ namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
       _basePropertyWithSingleAttribute = typeof (SampleClass).GetProperty ("PropertyWithSingleAttribute");
       _derivedPropertyWithSingleAttribute = typeof (DerivedSampleClass).GetProperty ("PropertyWithSingleAttribute");
       _derivedPropertyWithMultipleAttribute = typeof (DerivedSampleClass).GetProperty ("PropertyWithMultipleAttribute");
+      _derivedProtectedProperty = typeof (DerivedSampleClass).GetProperty ("ProtectedPropertyWithAttribute",
+          BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
     [Test]
@@ -84,6 +87,13 @@ namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
     public void Test_FromOverrideWithAttribute ()
     {
       Assert.IsNotNull (AttributeUtility.GetCustomAttribute (_derivedPropertyWithSingleAttribute, typeof (InheritedAttribute), true));
+    }
+
+    [Test]
+    [Ignore ("Not supported at the moment")]
+    public void Test_FromProtectedOverrideWithAttribute ()
+    {
+      Assert.IsNotNull (AttributeUtility.GetCustomAttribute (_derivedProtectedProperty, typeof (InheritedAttribute), true));
     }
 
     [Test]
