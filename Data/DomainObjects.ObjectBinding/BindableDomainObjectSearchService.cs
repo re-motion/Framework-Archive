@@ -1,5 +1,6 @@
 using System;
 using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.BindableObject;
 
@@ -14,10 +15,22 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
 
     public IBusinessObject[] Search (IBusinessObject referencingObject, IBusinessObjectReferenceProperty property, string searchStatement)
     {
-      DomainObjectCollection queriedObjects  = ClientTransaction.Current.QueryManager.GetCollection (new Query (searchStatement));
-      IBusinessObject[] result = new IBusinessObject[queriedObjects.Count];
-      queriedObjects.CopyTo (result, 0);
-      return result;
+      if (searchStatement == null || searchStatement == string.Empty)
+        return new IBusinessObjectWithIdentity[] { };
+
+      QueryDefinition definition = QueryConfiguration.Current.QueryDefinitions.GetMandatory (searchStatement);
+      if (definition.QueryType != QueryType.Collection)
+        throw new ArgumentException (string.Format ("The query '{0}' is not a collection query.", searchStatement), "searchStatement");
+
+      ClientTransaction clientTransaction = ClientTransactionScope.CurrentTransaction;
+
+      DomainObjectCollection result = clientTransaction.QueryManager.GetCollection (new Query (definition));
+      IBusinessObjectWithIdentity[] availableObjects = new IBusinessObjectWithIdentity[result.Count];
+
+      if (availableObjects.Length > 0)
+        result.CopyTo (availableObjects, 0);
+
+      return availableObjects;
     }
   }
 }

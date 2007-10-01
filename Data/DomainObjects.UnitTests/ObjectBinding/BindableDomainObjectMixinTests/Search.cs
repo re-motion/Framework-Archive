@@ -4,7 +4,6 @@ using Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.ObjectBinding;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 using NUnit.Framework.SyntaxHelpers;
@@ -16,49 +15,98 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
   [TestFixture]
   public class Search : ObjectBindingBaseTest
   {
+    private IBusinessObject _orderItem;
+    private IBusinessObjectReferenceProperty _property;
+
+    private IDisposable _mixinConfiguration1;
+    private IDisposable _mixinConfiguration2;
+
     public override void SetUp ()
     {
       base.SetUp ();
       BindableObjectProvider.Current.AddService (typeof (BindableDomainObjectSearchService), new BindableDomainObjectSearchService ());
+
+      _mixinConfiguration1 = MixinConfiguration.ScopedExtend (typeof (Order), typeof (BindableDomainObjectMixin));
+      _mixinConfiguration2 = MixinConfiguration.ScopedExtend (typeof (OrderItem), typeof (BindableDomainObjectMixin));
+
+      _orderItem = (IBusinessObject) OrderItem.NewObject();
+      _property = (IBusinessObjectReferenceProperty) _orderItem.BusinessObjectClass.GetPropertyDefinition ("Order");
+    }
+
+    public override void TearDown ()
+    {
+      _mixinConfiguration2.Dispose ();
+      _mixinConfiguration1.Dispose ();
+      base.TearDown ();
     }
 
     [Test]
     public void SearchServiceAttribute ()
     {
-      object domainObject = BindableSampleDomainObject.NewObject ();
-      Assert.IsTrue (domainObject.GetType ().IsDefined (typeof (SearchAvailableObjectsServiceTypeAttribute), true));
+      Assert.IsTrue (_orderItem.GetType ().IsDefined (typeof (SearchAvailableObjectsServiceTypeAttribute), true));
       Assert.AreEqual (typeof (BindableDomainObjectSearchService),
-          AttributeUtility.GetCustomAttribute<SearchAvailableObjectsServiceTypeAttribute> (domainObject.GetType (), true).Type);
+          AttributeUtility.GetCustomAttribute<SearchAvailableObjectsServiceTypeAttribute> (_orderItem.GetType (), true).Type);
     }
 
     [Test]
     public void SearchViaReferencePropertyWithIdentity ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (BindableDomainObjectMixin)))
-      using (MixinConfiguration.ScopedExtend (typeof (OrderItem), typeof (BindableDomainObjectMixin)))
-      {
-        IBusinessObject orderItem = (IBusinessObject) OrderItem.NewObject();
-        IBusinessObjectReferenceProperty property = (IBusinessObjectReferenceProperty) orderItem.BusinessObjectClass.GetPropertyDefinition ("Order");
-        Assert.IsTrue (property.SupportsSearchAvailableObjects (true));
-        IBusinessObject[] results = property.SearchAvailableObjects (orderItem, true, "QueryWithSpecificCollectionType");
-        Assert.That (results, Is.EqualTo (ClientTransactionMock.QueryManager.GetCollection (new Query ("QueryWithSpecificCollectionType"))));
-        foreach (IBusinessObject obj in results)
-          Assert.IsTrue (obj is IBusinessObjectWithIdentity);
-      }
+      Assert.IsTrue (_property.SupportsSearchAvailableObjects (true));
+      IBusinessObjectWithIdentity[] results = (IBusinessObjectWithIdentity[]) _property.SearchAvailableObjects (_orderItem, true, "QueryWithSpecificCollectionType");
+      Assert.That (results, Is.EqualTo (ClientTransactionMock.QueryManager.GetCollection (new Query ("QueryWithSpecificCollectionType"))));
     }
 
     [Test]
     public void SearchViaReferencePropertyWithoutIdentity ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (BindableDomainObjectMixin)))
-      using (MixinConfiguration.ScopedExtend (typeof (OrderItem), typeof (BindableDomainObjectMixin)))
+      Assert.IsTrue (_property.SupportsSearchAvailableObjects (false));
+      IBusinessObject[] results = _property.SearchAvailableObjects (_orderItem, false, "QueryWithSpecificCollectionType");
+      Assert.That (results, Is.EqualTo (ClientTransactionMock.QueryManager.GetCollection (new Query ("QueryWithSpecificCollectionType"))));
+    }
+
+    [Test]
+    public void SearchAvailableObjectsUsesCurrentTransaction ()
+    {
+      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
       {
-        IBusinessObject orderItem = (IBusinessObject) OrderItem.NewObject ();
-        IBusinessObjectReferenceProperty property = (IBusinessObjectReferenceProperty) orderItem.BusinessObjectClass.GetPropertyDefinition ("Order");
-        Assert.IsTrue (property.SupportsSearchAvailableObjects (false));
-        IBusinessObject[] results = property.SearchAvailableObjects (orderItem, false, "QueryWithSpecificCollectionType");
-        Assert.That (results, Is.EqualTo (ClientTransactionMock.QueryManager.GetCollection (new Query ("QueryWithSpecificCollectionType"))));
+        IBusinessObject[] results = _property.SearchAvailableObjects (_orderItem, true, "QueryWithSpecificCollectionType");
+
+        Assert.IsNotNull (results);
+        Assert.IsTrue (results.Length > 0);
+
+        Order order = (Order) results[0];
+        Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionMock));
+        Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
       }
+    }
+
+    [Test]
+    public void SearchAvailableObjectsWithDifferentObject ()
+    {
+      IBusinessObject[] businessObjects =
+          _property.SearchAvailableObjects ((IBusinessObject) Order.NewObject (),
+          true, "QueryWithSpecificCollectionType");
+
+      Assert.IsNotNull (businessObjects);
+      Assert.IsTrue (businessObjects.Length > 0);
+    }
+
+    [Test]
+    public void SearchAvailableObjectsWithNullQuery ()
+    {
+      IBusinessObject[] businessObjects = _property.SearchAvailableObjects (_orderItem, true, null);
+
+      Assert.IsNotNull (businessObjects);
+      Assert.AreEqual (0, businessObjects.Length);
+    }
+
+    [Test]
+    public void SearchAvailableObjectsWithEmptyQuery ()
+    {
+      IBusinessObject[] businessObjects = _property.SearchAvailableObjects (_orderItem, true, "");
+
+      Assert.IsNotNull (businessObjects);
+      Assert.AreEqual (0, businessObjects.Length);
     }
   }
 }
