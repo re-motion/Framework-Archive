@@ -37,6 +37,7 @@
     <Compile Include="BindableDomainObjectAttribute.cs" />
     <Compile Include="BindableDomainObjectMetadataFactory.cs" />
     <Compile Include="BindableDomainObjectPropertyReflector.cs" />
+    <Compile Include="BindableDomainObjectSearchService.cs" />
     <Compile Include="UseBindableDomainObjectMetadataFactoryAttribute.cs" />
     <Compile Include="BindableDomainObjectMixin.cs" />
     <Compile Include="BindableDomainObjectPropertyFinder.cs" />

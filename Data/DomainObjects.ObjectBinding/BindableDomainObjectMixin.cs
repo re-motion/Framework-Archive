@@ -6,6 +6,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
   [Serializable]
   [GetObjectServiceType (typeof (GetBindableDomainObjectService))]
+  [SearchAvailableObjectsServiceType (typeof (BindableDomainObjectSearchService))]
   [UseBindableDomainObjectMetadataFactory]
   public class BindableDomainObjectMixin : BindableObjectMixinBase<DomainObject>, IBusinessObjectWithIdentity
   {

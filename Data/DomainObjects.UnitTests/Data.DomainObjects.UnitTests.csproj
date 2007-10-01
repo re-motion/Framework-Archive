@@ -256,6 +256,7 @@
     <Compile Include="ObjectBinding\BindableDomainObjectMixinTests\GetDisplayName.cs" />
     <Compile Include="ObjectBinding\BindableDomainObjectMixinTests\Identity.cs" />
     <Compile Include="ObjectBinding\BindableDomainObjectMixinTests\PropertyIntegrationTest.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectMixinTests\Search.cs" />
     <Compile Include="ObjectBinding\BindableDomainObjectTest.cs" />
     <Compile Include="ObjectBinding\ObjectBindingBaseTest.cs" />
     <Compile Include="ObjectBinding\TestDomain\BindableBaseDomainObject.cs" />
