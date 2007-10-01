@@ -1,7 +1,5 @@
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="cc1" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" %>
 <%@ Page language="c#" Codebehind="UndefinedEnumTest.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.Data.DomainObjects.Web.Test.UndefinedEnumTestPage" %>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
   <HEAD>
@@ -18,25 +16,25 @@
       <TABLE id="SearchFormGrid" cellSpacing="0" cellPadding="0" width="300" border="0" runat="server">
         <TR>
           <TD style="WIDTH: 214px">Neues Objekt (1):</TD>
-          <TD style="WIDTH: 403px"><obw:bocenumvalue id="NewObjectEnumProperty" runat="server" DataSourceControl="NewObjectWithUndefinedEnumDataSource" PropertyIdentifier="UndefinedEnum">
+          <TD style="WIDTH: 403px"><rubicon:bocenumvalue id="NewObjectEnumProperty" runat="server" DataSourceControl="NewObjectWithUndefinedEnumDataSource" PropertyIdentifier="UndefinedEnum">
 <ListControlStyle RadioButtonListCellSpacing="" RadioButtonListCellPadding="">
 </ListControlStyle>
-            </obw:bocenumvalue></TD>
+            </rubicon:bocenumvalue></TD>
         </TR>
         <TR>
           <TD style="WIDTH: 214px"> Bestehendes Objekt (2):</TD>
-          <TD style="WIDTH: 403px"><obw:bocenumvalue id="ExistingObjectEnumProperty" runat="server" DataSourceControl="ExistingObjectWithUndefinedEnumDataSource" PropertyIdentifier="UndefinedEnum">
+          <TD style="WIDTH: 403px"><rubicon:bocenumvalue id="ExistingObjectEnumProperty" runat="server" DataSourceControl="ExistingObjectWithUndefinedEnumDataSource" PropertyIdentifier="UndefinedEnum">
 <ListControlStyle RadioButtonListCellSpacing="" RadioButtonListCellPadding="">
 </ListControlStyle>
-            </obw:bocenumvalue></TD>
+            </rubicon:bocenumvalue></TD>
         </TR>
         <TR>
           <TD style="WIDTH: 214px">
       <P>Search Objekt (3):</P></TD>
-          <TD style="WIDTH: 403px"><obw:bocenumvalue id="SearchObjectEnumProperty" runat="server" DataSourceControl="SearchObjectWithUndefinedEnumDataSource" PropertyIdentifier="UndefinedEnum" Required="False">
+          <TD style="WIDTH: 403px"><rubicon:bocenumvalue id="SearchObjectEnumProperty" runat="server" DataSourceControl="SearchObjectWithUndefinedEnumDataSource" PropertyIdentifier="UndefinedEnum" Required="False">
 <ListControlStyle RadioButtonListCellSpacing="" RadioButtonListCellPadding="">
 </ListControlStyle>
-            </obw:bocenumvalue></TD>
+            </rubicon:bocenumvalue></TD>
         </TR>
       </TABLE>
 <P>Visuelle Checks des gerenderten BocEnumValue 
@@ -54,7 +52,7 @@ Controls:</P>
 <P>Für den&nbsp;Abschluss des Tests muss "Value1" bei (1) ausgewählt werden und 
 beim Klicken auf "Test fortsetzen" darf keine Exception kommen.</P>
 <P>
-      <asp:button id="TestButton" runat="server" Text="Test fortsetzten"></asp:button><rubicon:formgridmanager id="FormGridManager" runat="server"></rubicon:formgridmanager><cc1:domainobjectdatasourcecontrol id="ExistingObjectWithUndefinedEnumDataSource" runat="server" TypeName="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithUndefinedEnum, Rubicon.Data.DomainObjects.Web.Test"></cc1:domainobjectdatasourcecontrol><cc1:domainobjectdatasourcecontrol id="NewObjectWithUndefinedEnumDataSource" runat="server" TypeName="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithUndefinedEnum, Rubicon.Data.DomainObjects.Web.Test"></cc1:domainobjectdatasourcecontrol>
-      <cc1:SearchObjectDataSourceControl id="SearchObjectWithUndefinedEnumDataSource" runat="server" TypeName="Rubicon.Data.DomainObjects.Web.Test.Domain.SearchObjectWithUndefinedEnum, Rubicon.Data.DomainObjects.Web.Test"></cc1:SearchObjectDataSourceControl></P></form>
+      <asp:button id="TestButton" runat="server" Text="Test fortsetzten"></asp:button><rubicon:formgridmanager id="FormGridManager" runat="server"></rubicon:formgridmanager><rubicon:domainobjectdatasourcecontrol id="ExistingObjectWithUndefinedEnumDataSource" runat="server" TypeName="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithUndefinedEnum, Rubicon.Data.DomainObjects.Web.Test"></rubicon:domainobjectdatasourcecontrol><rubicon:domainobjectdatasourcecontrol id="NewObjectWithUndefinedEnumDataSource" runat="server" TypeName="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithUndefinedEnum, Rubicon.Data.DomainObjects.Web.Test"></rubicon:domainobjectdatasourcecontrol>
+      <rubicon:SearchObjectDataSourceControl id="SearchObjectWithUndefinedEnumDataSource" runat="server" TypeName="Rubicon.Data.DomainObjects.Web.Test.Domain.SearchObjectWithUndefinedEnum, Rubicon.Data.DomainObjects.Web.Test"></rubicon:SearchObjectDataSourceControl></P></form>
   </body>
 </HTML>
