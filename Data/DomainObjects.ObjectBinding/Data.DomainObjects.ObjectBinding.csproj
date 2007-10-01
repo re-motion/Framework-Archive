@@ -33,6 +33,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BindableDomainObject.cs" />
     <Compile Include="BindableDomainObjectAttribute.cs" />
     <Compile Include="BindableDomainObjectMetadataFactory.cs" />
     <Compile Include="BindableDomainObjectPropertyReflector.cs" />
