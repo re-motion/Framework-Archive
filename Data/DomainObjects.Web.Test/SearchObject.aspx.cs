@@ -10,6 +10,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
 using Rubicon.Data.DomainObjects.Web.Test.Domain;
+using Rubicon.ObjectBinding;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Data.DomainObjects.Web.Test.WxeFunctions;
 
@@ -19,7 +20,7 @@ public class SearchObjectPage : WxePage
 {
   protected Rubicon.Web.UI.Controls.FormGridManager SearchFormGridManager;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue StringPropertyValue;
-  protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl FoundObjects;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl FoundObjects;
   protected System.Web.UI.WebControls.Button SearchButton;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocList ResultList;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue BytePropertyFromTextBox;
@@ -28,7 +29,7 @@ public class SearchObjectPage : WxePage
   protected System.Web.UI.HtmlControls.HtmlTable SearchFormGrid;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DatePropertyFromValue;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DatePropertyToValue;
-  protected Rubicon.Data.DomainObjects.ObjectBinding.Web.SearchObjectDataSourceControl CurrentSearchObject;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentSearchObject;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateTimeFromValue;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue BocDateTimeValue2;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
@@ -42,7 +43,7 @@ public class SearchObjectPage : WxePage
 	{
     ResultList.Value = MyFunction.Result;
 
-    CurrentSearchObject.BusinessObject = MyFunction.SearchObject;
+    CurrentSearchObject.BusinessObject = (IBusinessObject) MyFunction.SearchObject;
     CurrentSearchObject.LoadValues (IsPostBack);
 	}
 

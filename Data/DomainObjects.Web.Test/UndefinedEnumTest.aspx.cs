@@ -10,6 +10,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
 using Rubicon.Data.DomainObjects.Web.Test.Domain;
+using Rubicon.ObjectBinding;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Data.DomainObjects.Web.Test.WxeFunctions;
 
@@ -18,12 +19,12 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 public class UndefinedEnumTestPage : WxePage
 {
   protected System.Web.UI.HtmlControls.HtmlTable SearchFormGrid;
-  protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl ExistingObjectWithUndefinedEnumDataSource;
-  protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl NewObjectWithUndefinedEnumDataSource;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl ExistingObjectWithUndefinedEnumDataSource;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl NewObjectWithUndefinedEnumDataSource;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue ExistingObjectEnumProperty;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue NewObjectEnumProperty;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue SearchObjectEnumProperty;
-  protected Rubicon.Data.DomainObjects.ObjectBinding.Web.SearchObjectDataSourceControl SearchObjectWithUndefinedEnumDataSource;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl SearchObjectWithUndefinedEnumDataSource;
   protected System.Web.UI.WebControls.Button TestButton;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
@@ -35,9 +36,9 @@ public class UndefinedEnumTestPage : WxePage
 
   private void Page_Load(object sender, System.EventArgs e)
 	{
-    NewObjectWithUndefinedEnumDataSource.BusinessObject = MyFunction.NewObjectWithUndefinedEnum;
-    ExistingObjectWithUndefinedEnumDataSource.BusinessObject = MyFunction.ExistingObjectWithUndefinedEnum;
-    SearchObjectWithUndefinedEnumDataSource.BusinessObject = MyFunction.SearchObjectWithUndefinedEnum;
+    NewObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject) MyFunction.NewObjectWithUndefinedEnum;
+    ExistingObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject) MyFunction.ExistingObjectWithUndefinedEnum;
+    SearchObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject) MyFunction.SearchObjectWithUndefinedEnum;
 
     NewObjectWithUndefinedEnumDataSource.LoadValues (IsPostBack);
     ExistingObjectWithUndefinedEnumDataSource.LoadValues (IsPostBack);

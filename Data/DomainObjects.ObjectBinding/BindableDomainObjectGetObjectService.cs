@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
-  public class GetBindableDomainObjectService : IGetObjectService
+  public class BindableDomainObjectGetObjectService : IGetObjectService
   {
     public IBusinessObjectWithIdentity GetObject (BindableObjectClassWithIdentity classWithIdentity, string uniqueIdentifier)
     {

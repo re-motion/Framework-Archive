@@ -37,7 +37,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     }
 
     [ItemType (typeof (ClassWithAllDataTypes))]
-    [IsReadOnly]
+    [ObjectBinding (ReadOnly = true)]
     [StorageClassNone]
     public DomainObjectCollection ComputedList
     {
@@ -55,11 +55,11 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 
     [DBBidirectionalRelation ("ClassForRelationTestMandatory")]
     [Mandatory]
-    [IsReadOnly]
+    [ObjectBinding (ReadOnly = true)]
     public abstract ObjectList<ClassWithAllDataTypes> ClassesWithAllDataTypesMandatoryNavigateOnly { get; }
 
     [DBBidirectionalRelation ("ClassForRelationTestOptional")]
-    [IsReadOnly]
+    [ObjectBinding (ReadOnly = true)]
     public abstract ObjectList<ClassWithAllDataTypes> ClassesWithAllDataTypesOptionalNavigateOnly { get; }
   }
 }

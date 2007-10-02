@@ -9,83 +9,82 @@ using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
+using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Web.Test.Domain;
+using Rubicon.ObjectBinding.BindableObject;
 
-namespace Rubicon.Data.DomainObjects.Web.Test 
+namespace Rubicon.Data.DomainObjects.Web.Test
 {
-	/// <summary>
-	/// Summary description for Global.
-	/// </summary>
-	public class Global : System.Web.HttpApplication
-	{
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+  /// <summary>
+  /// Summary description for Global.
+  /// </summary>
+  public class Global : System.Web.HttpApplication
+  {
+    /// <summary>
+    /// Required designer variable.
+    /// </summary>
+    private System.ComponentModel.IContainer components = null;
 
-		public Global()
-		{
-			InitializeComponent();
-		}	
-		
-		protected void Application_Start(Object sender, EventArgs e)
-		{
-		  MappingConfiguration mappingConfiguration = MappingConfiguration.Current;
-		}
- 
-		protected void Session_Start(Object sender, EventArgs e)
-		{
-
-		}
-
-		protected void Application_BeginRequest(Object sender, EventArgs e)
-		{
+    public Global ()
+    {
+      InitializeComponent();
     }
 
-		protected void Application_EndRequest(Object sender, EventArgs e)
-		{
+    protected void Application_Start (Object sender, EventArgs e)
+    {
+      MappingConfiguration mappingConfiguration = MappingConfiguration.Current;
+      BindableObjectProvider.Current.AddService (typeof (BindableDomainObjectSearchService), new BindableDomainObjectSearchService ());
+      BindableObjectProvider.Current.AddService (typeof (BindableDomainObjectGetObjectService), new BindableDomainObjectGetObjectService ());
+    }
 
-		}
-
-		protected void Application_AuthenticateRequest(Object sender, EventArgs e)
-		{
-
-		}
-
-    protected virtual void Application_PreRequestHandlerExecute(Object sender, EventArgs e)
+    protected void Session_Start (Object sender, EventArgs e)
     {
     }
 
-    protected void Application_PostRequestHandlerExecute(Object sender, EventArgs e)
+    protected void Application_BeginRequest (Object sender, EventArgs e)
     {
     }
 
-		protected void Application_Error(Object sender, EventArgs e)
-		{
+    protected void Application_EndRequest (Object sender, EventArgs e)
+    {
+    }
 
-		}
+    protected void Application_AuthenticateRequest (Object sender, EventArgs e)
+    {
+    }
 
-		protected void Session_End(Object sender, EventArgs e)
-		{
+    protected virtual void Application_PreRequestHandlerExecute (Object sender, EventArgs e)
+    {
+    }
 
-		}
+    protected void Application_PostRequestHandlerExecute (Object sender, EventArgs e)
+    {
+    }
 
-		protected void Application_End(Object sender, EventArgs e)
-		{
+    protected void Application_Error (Object sender, EventArgs e)
+    {
+    }
 
-		}
-			
-		#region Web Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{    
-			this.components = new System.ComponentModel.Container();
-		}
-		#endregion
-	}
+    protected void Session_End (Object sender, EventArgs e)
+    {
+    }
+
+    protected void Application_End (Object sender, EventArgs e)
+    {
+    }
+
+    #region Web Form Designer generated code
+
+    /// <summary>
+    /// Required method for Designer support - do not modify
+    /// the contents of this method with the code editor.
+    /// </summary>
+    private void InitializeComponent ()
+    {
+      this.components = new System.ComponentModel.Container();
+    }
+
+    #endregion
+  }
 }
-

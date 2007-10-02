@@ -34,7 +34,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
     [Test]
     public void GetFromUniqueIdentifier ()
     {
-      BindableObjectProvider.Current.AddService (typeof (GetBindableDomainObjectService), new GetBindableDomainObjectService());
+      BindableObjectProvider.Current.AddService (typeof (BindableDomainObjectGetObjectService), new BindableDomainObjectGetObjectService());
       BindableSampleDomainObject original = BindableSampleDomainObject.NewObject ();
       BindableObjectClassWithIdentity boClass =
           (BindableObjectClassWithIdentity) BindableObjectProvider.Current.GetBindableObjectClass (typeof (BindableSampleDomainObject));

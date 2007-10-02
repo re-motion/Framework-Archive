@@ -1,6 +1,5 @@
 using System;
 using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 using Rubicon.Globalization;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
@@ -103,7 +102,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     public abstract byte ByteProperty { get; set; }
 
     [DBColumn ("Date")]
-    [DateType (DateTypeEnum.Date)]
+    [DateProperty]
     public abstract DateTime DateProperty { get; set; }
 
     [DBColumn ("DateTime")]
@@ -155,7 +154,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     public abstract byte? NaByteProperty { get; set; }
 
     [DBColumn ("NaDate")]
-    [DateType (DateTypeEnum.Date)]
+    [DateProperty]
     public abstract DateTime? NaDateProperty { get; set; }
 
     [DBColumn ("NaDateTime")]
@@ -196,7 +195,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     public abstract byte? NaByteWithNullValueProperty { get; set; }
 
     [DBColumn ("NaDateWithNullValue")]
-    [DateType (DateTypeEnum.Date)]
+    [DateProperty]
     public abstract DateTime? NaDateWithNullValueProperty { get; set; }
 
     [DBColumn ("NaDateTimeWithNullValue")]
@@ -239,12 +238,12 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     [DBBidirectionalRelation ("ClassesWithAllDataTypesOptionalNavigateOnly")]
     public abstract ClassForRelationTest ClassForRelationTestOptional { get; set; }
 
-    [IsReadOnly]
+    [ObjectBinding (ReadOnly = true)]
     [DBBidirectionalRelation ("ClassWithAllDataTypesMandatory")]
     [Mandatory]
     public abstract ObjectList<ClassForRelationTest> ClassesForRelationTestMandatoryNavigateOnly { get; }
 
-    [IsReadOnly]
+    [ObjectBinding (ReadOnly = true)]
     [DBBidirectionalRelation ("ClassWithAllDataTypesOptional")]
     public abstract ObjectList<ClassForRelationTest> ClassesForRelationTestOptionalNavigateOnly { get; }
   }

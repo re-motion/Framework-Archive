@@ -41,7 +41,7 @@
     <Compile Include="UseBindableDomainObjectMetadataFactoryAttribute.cs" />
     <Compile Include="BindableDomainObjectMixin.cs" />
     <Compile Include="BindableDomainObjectPropertyFinder.cs" />
-    <Compile Include="GetBindableDomainObjectService.cs" />
+    <Compile Include="BindableDomainObjectGetObjectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
   </ItemGroup>

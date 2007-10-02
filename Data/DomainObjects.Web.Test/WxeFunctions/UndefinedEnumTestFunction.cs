@@ -2,6 +2,7 @@ using System;
 
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 using Rubicon.Data.DomainObjects.Web.Test.Domain;
+using Rubicon.Mixins;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
  
@@ -47,7 +48,7 @@ public class UndefinedEnumTestFunction : WxeTransactedFunction
   {
     ExistingObjectWithUndefinedEnum = ClassWithUndefinedEnum.GetObject (DomainObjectIDs.ObjectWithUndefinedEnum);
     NewObjectWithUndefinedEnum = ClassWithUndefinedEnum.NewObject ();
-    SearchObjectWithUndefinedEnum = new SearchObjectWithUndefinedEnum ();
+    SearchObjectWithUndefinedEnum = ObjectFactory.Create<SearchObjectWithUndefinedEnum> ().With();
   }
 
   private WxePageStep Step2 = new WxePageStep ("UndefinedEnumTest.aspx");

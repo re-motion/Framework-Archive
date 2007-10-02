@@ -101,7 +101,7 @@
 </PersistedCommand>
 </rubicon:BocSimpleColumnDefinition>
 </FixedColumns>
-      </rubicon:boclist><rubicon:formgridmanager id="SearchFormGridManager" runat="server"></rubicon:formgridmanager><rubicon:domainobjectdatasourcecontrol id="FoundObjects" runat="server" TypeName="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.Web.Test"></rubicon:domainobjectdatasourcecontrol>
-      <rubicon:SearchObjectDataSourceControl id="CurrentSearchObject" runat="server" TypeName="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypesSearch, Rubicon.Data.DomainObjects.Web.Test"></rubicon:SearchObjectDataSourceControl></form>
+      </rubicon:boclist><rubicon:formgridmanager id="SearchFormGridManager" runat="server"></rubicon:formgridmanager><rubicon:BindableObjectDataSourceControl id="FoundObjects" runat="server" Type="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.Web.Test"></rubicon:BindableObjectDataSourceControl>
+      <rubicon:BindableObjectDataSourceControl id="CurrentSearchObject" runat="server" Type="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypesSearch, Rubicon.Data.DomainObjects.Web.Test"></rubicon:BindableObjectDataSourceControl></form>
   </body>
 </HTML>

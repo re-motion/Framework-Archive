@@ -1,7 +1,7 @@
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="ControlWithAllDataTypes.ascx.cs" Inherits="Rubicon.Data.DomainObjects.Web.Test.ControlWithAllDataTypes" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
 
 <rubicon:formgridmanager id="FormGridManager" runat="server" visible="true"></rubicon:formgridmanager>
-<rubicon:domainobjectdatasourcecontrol id="CurrentObject" runat="server" TypeName="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.Web.Test"></rubicon:domainobjectdatasourcecontrol>
+<rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.Web.Test"></rubicon:BindableObjectDataSourceControl>
 <P><STRONG><FONT color="#ff3333">Achtung: Auf dieser Seite befinden sich Controls, 
 die mehrfach auf die gleiche Porperty gebunden sind. Dadurch überschreiben sich 
 diese gegenseitig beim Zurückspeichern der Werte. Dies bitte bei Tests 

@@ -96,7 +96,7 @@ public class ControlWithAllDataTypes : System.Web.UI.UserControl
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocList BocList2;
   protected System.Web.UI.WebControls.Button SaveButton;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue Bocenumvalue5;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue BocMultilineTextValue1;
@@ -112,7 +112,7 @@ public class ControlWithAllDataTypes : System.Web.UI.UserControl
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
-		CurrentObject.BusinessObject = ObjectWithAllDataTypes;
+		CurrentObject.BusinessObject = (IBusinessObject) ObjectWithAllDataTypes;
     CurrentObject.LoadValues (IsPostBack);
 	}
 

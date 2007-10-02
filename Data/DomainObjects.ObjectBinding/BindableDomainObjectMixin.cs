@@ -5,7 +5,7 @@ using Rubicon.ObjectBinding.BindableObject;
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
   [Serializable]
-  [GetObjectServiceType (typeof (GetBindableDomainObjectService))]
+  [GetObjectServiceType (typeof (BindableDomainObjectGetObjectService))]
   [SearchAvailableObjectsServiceType (typeof (BindableDomainObjectSearchService))]
   [UseBindableDomainObjectMetadataFactory]
   public class BindableDomainObjectMixin : BindableObjectMixinBase<DomainObject>, IBusinessObjectWithIdentity

@@ -3,6 +3,7 @@ using System.Collections;
 
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 using Rubicon.Data.DomainObjects.Web.Test.Domain;
+using Rubicon.Mixins;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
  
@@ -45,7 +46,7 @@ public class SearchFunction : WxeTransactedFunction
 
   private void Step1 ()
   {
-    SearchObject = new ClassWithAllDataTypesSearch ();
+    SearchObject = ObjectFactory.Create<ClassWithAllDataTypesSearch> ().With();
     Requery ();
   }
 

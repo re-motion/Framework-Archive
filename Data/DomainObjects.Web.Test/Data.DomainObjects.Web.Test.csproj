@@ -95,6 +95,10 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
+    <ProjectReference Include="..\..\Mixins\Core\Mixins.csproj">
+      <Project>{18C1D36B-CC05-4334-BF29-DE5A886DA89D}</Project>
+      <Name>Mixins %28Mixins\Mixins%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.csproj">
       <Name>ObjectBinding %28ObjectBinding\ObjectBinding%29</Name>
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
@@ -105,23 +109,13 @@
       <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\DomainObjects.Legacy\Data.DomainObjects.Legacy.csproj">
-      <Project>{E6A8B6CE-2E19-4C01-9D41-63899FE52020}</Project>
-      <Name>Data.DomainObjects.Legacy</Name>
+    <ProjectReference Include="..\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
+      <Project>{B915A0FD-92E5-42C5-BEB9-EB4D382563D7}</Project>
+      <Name>Data.DomainObjects.ObjectBinding</Name>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
       <Name>Data.DomainObjects %28Data.DomainObjects\Data.DomainObjects%29</Name>
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\DomainObjects.Legacy.ObjectBinding\Data.DomainObjects.Legacy.ObjectBinding.csproj">
-      <Name>Data.DomainObjects.Legacy.ObjectBinding</Name>
-      <Project>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\DomainObjects.Legacy.ObjectBinding.Web\Data.DomainObjects.Legacy.ObjectBinding.Web.csproj">
-      <Name>Data.DomainObjects.Legacy.ObjectBinding.Web</Name>
-      <Project>{9246E440-009C-44BE-A801-C66D8DE04A8F}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects.Web\Data.DomainObjects.Web.csproj">
