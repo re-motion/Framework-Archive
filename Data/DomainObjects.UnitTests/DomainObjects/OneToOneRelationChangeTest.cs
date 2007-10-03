@@ -77,6 +77,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (StateType.Changed, _oldOrderTicket.State);
       Assert.AreEqual (StateType.Changed, _oldOrderOfNewOrderTicket.State);
 
+      Assert.AreEqual (StateType.Unchanged, _order.InternalDataContainer.State);
+      Assert.AreEqual (StateType.Changed, _newOrderTicket.InternalDataContainer.State);
+      Assert.AreEqual (StateType.Changed, _oldOrderTicket.InternalDataContainer.State);
+      Assert.AreEqual (StateType.Unchanged, _oldOrderOfNewOrderTicket.InternalDataContainer.State);
+
       Assert.AreSame (_newOrderTicket, _order.OrderTicket);
       Assert.AreSame (_order, _newOrderTicket.Order);
       Assert.IsNull (_oldOrderTicket.Order);

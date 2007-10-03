@@ -277,6 +277,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreSame (_newCustomer, _order.Customer);
       Assert.IsNull (_oldCustomer.Orders[_order.ID]);
       Assert.AreSame (_order, _newCustomer.Orders[_order.ID]);
+
+      Assert.AreEqual (StateType.Changed, _order.InternalDataContainer.State);
+      Assert.AreEqual (StateType.Unchanged, _newCustomer.InternalDataContainer.State);
+      Assert.AreEqual (StateType.Unchanged, _oldCustomer.InternalDataContainer.State);
     }
 
     [Test]
