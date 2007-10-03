@@ -265,7 +265,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       Assertion.IsTrue (parentDataContainer.DomainObject == dataContainer.DomainObject, "invariant");
 
       StateType previousState = parentDataContainer.State;
-      parentDataContainer.AssumeSameState (dataContainer, false);
+      parentDataContainer.MergeData (dataContainer);
 
       Assertion.IsTrue (
           (previousState == StateType.New && parentDataContainer.State == StateType.New)
@@ -317,7 +317,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
               + "contain end points for the same end point IDs. The only scenario in which the ParentTransaction doesn't know an end point known "
               + "to the child transaction is when the object was of state New in the ParentTransaction and its DataContainer was just discarded.");
         else
-          parentEndPoint.AssumeSameState (endPoint);
+          parentEndPoint.MergeData (endPoint);
       }
     }
   }

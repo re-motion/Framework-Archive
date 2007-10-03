@@ -115,6 +115,16 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
     _hasChanged = sourceObjectEndPoint._hasChanged;
   }
 
+  internal override void MergeData (RelationEndPoint source)
+  {
+    Assertion.IsTrue (Definition == source.Definition);
+
+    ObjectEndPoint sourceObjectEndPoint = (ObjectEndPoint) source;
+
+    _oppositeObjectID = sourceObjectEndPoint._oppositeObjectID;
+    _hasChanged |= sourceObjectEndPoint._hasChanged;
+  }
+
   internal override void RegisterWithMap (RelationEndPointMap map)
   {
     // nothing to do here

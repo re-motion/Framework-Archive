@@ -1,6 +1,8 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -289,6 +291,323 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Order orderInSub = Order.GetObject (DomainObjectIDs.Order1);
         Assert.AreEqual (4711, orderInSub.OrderNumber);
       }
+    }
+
+    [Test]
+    public void ObjectValuesCanBeChangedInParentAndChildSubTransactions ()
+    {
+      SetDatabaseModifyable ();
+
+      ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+      Assert.AreNotEqual (7, cwadt.Int32Property);
+      Assert.AreNotEqual (8, cwadt.Int16Property);
+
+      using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+      {
+        cwadt.Int32Property = 7;
+        using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+        {
+          Assert.AreEqual (7, cwadt.Int32Property);
+          cwadt.Int16Property = 8;
+          ClientTransaction.Current.Commit ();
+        }
+        Assert.AreEqual (7, cwadt.Int32Property);
+        Assert.AreEqual (8, cwadt.Int16Property);
+        ClientTransaction.Current.Commit ();
+      }
+      Assert.AreEqual (7, cwadt.Int32Property);
+      Assert.AreEqual (8, cwadt.Int16Property);
+      ClientTransactionMock.Commit ();
+
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        ClientTransaction.Current.EnlistDomainObject (cwadt);
+        Assert.AreEqual (7, cwadt.Int32Property);
+        Assert.AreEqual (8, cwadt.Int16Property);
+      }
+    }
+
+    [Test]
+    public void HasBeenMarkedChangedHandling_WithNestedSubTransactions ()
+    {
+      SetDatabaseModifyable ();
+
+      ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+      Assert.AreEqual (StateType.Unchanged, cwadt.InternalDataContainer.State);
+
+      using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+      {
+        Assert.AreEqual (StateType.Unchanged, cwadt.InternalDataContainer.State);
+
+        using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+        {
+          cwadt.MarkAsChanged ();
+          Assert.AreEqual (StateType.Changed, cwadt.InternalDataContainer.State);
+
+          using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+          {
+            Assert.AreEqual (StateType.Unchanged, cwadt.InternalDataContainer.State);
+            ++cwadt.Int32Property;
+            Assert.AreEqual (StateType.Changed, cwadt.InternalDataContainer.State);
+            ClientTransaction.Current.Commit ();
+            Assert.AreEqual (StateType.Unchanged, cwadt.InternalDataContainer.State);
+          }
+
+          ClientTransaction.Current.Commit ();
+
+          Assert.AreEqual (StateType.Unchanged, cwadt.InternalDataContainer.State);
+        }
+
+        Assert.AreEqual (StateType.Changed, cwadt.InternalDataContainer.State);
+        ClientTransaction.Current.Commit ();
+        Assert.AreEqual (StateType.Unchanged, cwadt.InternalDataContainer.State);
+      }
+
+      Assert.AreEqual (StateType.Changed, cwadt.InternalDataContainer.State);
+
+      ClientTransactionMock.Commit ();
+
+      Assert.AreEqual (StateType.Unchanged, cwadt.InternalDataContainer.State);
+    }
+
+    [Test]
+    public void PropertyValue_HasChangedHandling_WithNestedSubTransactions ()
+    {
+      SetDatabaseModifyable ();
+
+      ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+      Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
+      Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+      Assert.AreEqual (32767, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
+      Assert.AreEqual (2147483647, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
+
+      using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+      {
+        cwadt.Int32Property = 7;
+        Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
+        Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+        Assert.AreEqual (32767, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
+        Assert.AreEqual (2147483647, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
+
+        using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+        {
+          Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
+          Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+          Assert.AreEqual (32767, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
+          Assert.AreEqual (7, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
+
+          cwadt.Int16Property = 8;
+
+          Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
+          Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+
+          ClientTransaction.Current.Commit ();
+
+          Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
+          Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+          Assert.AreEqual (8, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
+          Assert.AreEqual (7, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
+        }
+
+        Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
+        Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+        Assert.AreEqual (32767, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
+        Assert.AreEqual (2147483647, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
+
+        ClientTransaction.Current.Commit ();
+
+        Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
+        Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+        Assert.AreEqual (8, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
+        Assert.AreEqual (7, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
+      }
+
+      Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
+      Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+      Assert.AreEqual (32767, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
+      Assert.AreEqual (2147483647, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
+
+      ClientTransactionMock.Commit ();
+
+      Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
+      Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+      Assert.AreEqual (8, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
+      Assert.AreEqual (7, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
+    }
+
+    [Test]
+    public void ObjectEndPoint_HasChangedHandling_WithNestedSubTransactions ()
+    {
+      SetDatabaseModifyable ();
+
+      OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+      Order oldOrder = orderTicket.Order;
+      
+      Order newOrder = Order.GetObject (DomainObjectIDs.Order2);
+      OrderTicket oldOrderTicket = newOrder.OrderTicket;
+
+      RelationEndPointID propertyID = new RelationEndPointID (orderTicket.ID, typeof (OrderTicket).FullName + ".Order");
+
+      using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+      {
+        orderTicket.Order = newOrder;
+        oldOrder.OrderTicket = oldOrderTicket;
+        Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+        Assert.AreEqual (oldOrder.ID, ((ObjectEndPoint)GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+
+        using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+        {
+          Assert.AreEqual (newOrder, orderTicket.Order);
+
+          Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+          Assert.AreEqual (newOrder.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+
+          orderTicket.Order = null;
+          orderTicket.Order = newOrder;
+
+          Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+          Assert.AreEqual (newOrder.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+
+          ClientTransaction.Current.Commit ();
+          Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+          Assert.AreEqual (newOrder.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+        }
+
+        Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+        Assert.AreEqual (oldOrder.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+
+        ClientTransaction.Current.Commit ();
+        Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+        Assert.AreEqual (newOrder.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+      }
+      Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+      Assert.AreEqual (oldOrder.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+
+      ClientTransaction.Current.Commit ();
+
+      Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+      Assert.AreEqual (newOrder.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+    }
+
+    [Test]
+    public void VirtualObjectEndPoint_HasChangedHandling_WithNestedSubTransactions ()
+    {
+      SetDatabaseModifyable ();
+
+      OrderTicket newOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+      Order oldOrder = newOrderTicket.Order;
+
+      Order newOrder = Order.GetObject (DomainObjectIDs.Order2);
+      OrderTicket oldOrderTicket = newOrder.OrderTicket;
+
+      RelationEndPointID propertyID = new RelationEndPointID (newOrder.ID, typeof (Order).FullName + ".OrderTicket");
+
+      using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+      {
+        newOrder.OrderTicket = newOrderTicket;
+        oldOrderTicket.Order = oldOrder;
+
+        Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+        Assert.AreEqual (oldOrderTicket.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+
+        using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+        {
+          Assert.AreEqual (newOrderTicket, newOrder.OrderTicket);
+
+          Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+          Assert.AreEqual (newOrderTicket.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+
+          newOrder.OrderTicket = null;
+          newOrder.OrderTicket = newOrderTicket;
+
+          Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+          Assert.AreEqual (newOrderTicket.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+
+          ClientTransaction.Current.Commit ();
+          Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+          Assert.AreEqual (newOrderTicket.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+        }
+
+        Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+        Assert.AreEqual (oldOrderTicket.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+
+        ClientTransaction.Current.Commit ();
+        Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+        Assert.AreEqual (newOrderTicket.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+      }
+      Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+      Assert.AreEqual (oldOrderTicket.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+
+      ClientTransaction.Current.Commit ();
+
+      Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+      Assert.AreEqual (newOrderTicket.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+    }
+
+    [Test]
+    public void CollectionEndPoint_HasChangedHandling_WithNestedSubTransactions ()
+    {
+      SetDatabaseModifyable ();
+
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      OrderItem newItem = OrderItem.NewObject ();
+      OrderItem firstItem = order.OrderItems[0];
+
+      RelationEndPointID propertyID = new RelationEndPointID (order.ID, typeof (Order).FullName + ".OrderItems");
+
+      using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+      {
+        order.OrderItems.Add (newItem);
+
+        Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+        Assert.IsFalse (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (newItem));
+        Assert.IsTrue (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (firstItem));
+
+        using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+        {
+          Assert.IsTrue (order.OrderItems.ContainsObject (newItem));
+
+          Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+          Assert.IsTrue (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (newItem));
+          Assert.IsTrue (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (firstItem));
+
+          order.OrderItems[0].Delete ();
+          Assert.IsTrue (order.OrderItems.ContainsObject (newItem));
+
+          Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+          Assert.IsTrue (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (newItem));
+          Assert.IsTrue (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (firstItem));
+
+          ClientTransaction.Current.Commit ();
+
+          Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+          Assert.IsTrue (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (newItem));
+          Assert.IsFalse (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (firstItem));
+        }
+
+        Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+        Assert.IsFalse (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (newItem));
+        Assert.IsTrue (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (firstItem));
+
+        ClientTransaction.Current.Commit ();
+        Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+        Assert.IsTrue (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (newItem));
+        Assert.IsFalse (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (firstItem));
+      }
+      Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+      Assert.IsFalse (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (newItem));
+      Assert.IsTrue (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (firstItem));
+
+      ClientTransaction.Current.Commit ();
+
+      Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
+      Assert.IsTrue (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (newItem));
+      Assert.IsFalse (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (firstItem));
+    }
+
+    private DataManager GetDataManager (ClientTransaction transaction)
+    {
+      return (DataManager) PrivateInvoke.GetNonPublicProperty (transaction, "DataManager");
     }
   }
 }

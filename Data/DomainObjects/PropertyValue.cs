@@ -432,11 +432,18 @@ public class PropertyValue
   internal void AssumeSameState (PropertyValue source)
   {
     Assertion.IsTrue (_definition == source._definition);
-
     _value = source._value;
     _originalValue = source._originalValue;
     _isDiscarded = source._isDiscarded;
     _hasChanged = source._hasChanged;
+  }
+
+  internal void MergeData (PropertyValue source)
+  {
+    Assertion.IsTrue (_definition == source._definition);
+    _value = source._value;
+    _isDiscarded = source._isDiscarded;
+    _hasChanged |= source._hasChanged;
   }
 }
 }

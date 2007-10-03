@@ -341,8 +341,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _order.OrderTicket = _newOrderTicket;
 
-			Assert.IsNull (_oldOrderTicket.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
-			Assert.AreEqual (_order.ID, _newOrderTicket.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      Assert.IsNull (_oldOrderTicket.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      Assert.AreEqual (_order.ID, _newOrderTicket.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
 
       Assert.AreSame (_newOrderTicket, _order.OrderTicket);
       Assert.AreSame (_order, _newOrderTicket.Order);
@@ -355,8 +355,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _newOrderTicket.Order = _order;
 
-			Assert.IsNull (_oldOrderTicket.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
-			Assert.AreEqual (_order.ID, _newOrderTicket.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      Assert.IsNull (_oldOrderTicket.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      Assert.AreEqual (_order.ID, _newOrderTicket.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
 
       Assert.AreSame (_order, _newOrderTicket.Order);
       Assert.AreSame (_newOrderTicket, _order.OrderTicket);
@@ -380,10 +380,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void NoPropertyValueEventForRelationChange ()
     {
       PropertyValueEventReceiver oldOrderTicketPropertyEventReceiver = new PropertyValueEventReceiver (
-					_oldOrderTicket.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
+          _oldOrderTicket.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
 
       PropertyValueEventReceiver newOrderTicketPropertyEventReceiver = new PropertyValueEventReceiver (
-					_newOrderTicket.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
+          _newOrderTicket.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
 
       _order.OrderTicket = _newOrderTicket;
 
@@ -401,6 +401,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       _order.OrderTicket = _oldOrderTicket;
       Assert.AreEqual (StateType.Changed, _order.State);
+    }
+
+    [Test]
+    [Ignore ("TODO: Fix")]
+    public void SetOriginalValue ()
+    {
+      _order.OrderTicket = _order.OrderTicket;
+      Assert.AreEqual (StateType.Changed, _order.State);
+      Assert.AreEqual (StateType.Changed, _order.OrderTicket.State);
+
+      Assert.AreEqual (StateType.Unchanged, _order.InternalDataContainer.State);
+      Assert.AreEqual (StateType.Changed, _order.OrderTicket.InternalDataContainer.State);
     }
 
     [Test]

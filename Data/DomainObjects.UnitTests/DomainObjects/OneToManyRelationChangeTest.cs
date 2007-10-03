@@ -59,6 +59,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreSame (_newCustomer, _order.Customer);
       Assert.IsNull (_oldCustomer.Orders[_order.ID]);
       Assert.AreSame (_order, _newCustomer.Orders[_order.ID]);
+
+      Assert.AreEqual (StateType.Changed, _order.InternalDataContainer.State);
+      Assert.AreEqual (StateType.Unchanged, _oldCustomer.InternalDataContainer.State);
+      Assert.AreEqual (StateType.Unchanged, _newCustomer.InternalDataContainer.State);
     }
 
     [Test]
@@ -295,6 +299,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (StateType.Changed, _order.State);
       Assert.AreEqual (StateType.Changed, _oldCustomer.State);
       Assert.AreEqual (StateType.Changed, _newCustomer.State);
+    }
+
+    [Test]
+    [Ignore ("TODO: Fix")]
+    public void SetOriginalValue ()
+    {
+      _order.Customer = _order.Customer;
+      Assert.AreEqual (StateType.Changed, _order.State);
+      Assert.AreEqual (StateType.Changed, _order.Customer.State);
+
+      Assert.AreEqual (StateType.Changed, _order.InternalDataContainer.State);
+      Assert.AreEqual (StateType.Unchanged, _order.Customer.InternalDataContainer.State);
     }
 
     [Test]

@@ -97,7 +97,7 @@ public class DataContainer
     }
 
     DataContainer dataContainer = CreateNew (id);
-    dataContainer.AssumeSameState (stateSource, true);
+    dataContainer.AssumeSameState (stateSource);
     return dataContainer;
   }
 
@@ -545,12 +545,11 @@ public class DataContainer
     return clone;
   }
 
-  internal void AssumeSameState (DataContainer sourceContainer, bool overwriteStateType)
+  private void AssumeSameState (DataContainer sourceContainer)
   {
     Assertion.IsTrue (sourceContainer.ClassDefinition == ClassDefinition);
 
-    if (overwriteStateType)
-      _state = sourceContainer._state;
+    _state = sourceContainer._state;
     _timestamp = sourceContainer._timestamp;
     _isDiscarded = sourceContainer._isDiscarded;
     _hasBeenMarkedChanged = sourceContainer._hasBeenMarkedChanged;
@@ -558,11 +557,26 @@ public class DataContainer
     Assertion.IsTrue (_domainObject == null || sourceContainer._domainObject == null || _domainObject == sourceContainer._domainObject,
         "State should only be copied between DataContainers referring to the same DomainObjects");
     _domainObject = sourceContainer._domainObject;
-   
-    _relationEndPointIDs = null;
+
+    _relationEndPointIDs = null; // reinitialize on next use
 
     for (int i = 0; i < _propertyValues.Count; ++i)
       _propertyValues[i].AssumeSameState (sourceContainer._propertyValues[i]);
+  }
+
+  internal void MergeData (DataContainer sourceContainer)
+  {
+    Assertion.IsTrue (sourceContainer.ClassDefinition == ClassDefinition);
+    Assertion.IsTrue (sourceContainer._domainObject == _domainObject || _domainObject == null);
+
+    _isDiscarded = sourceContainer._isDiscarded;
+    _timestamp = sourceContainer._timestamp;
+    _hasBeenMarkedChanged |= sourceContainer._hasBeenMarkedChanged;
+    _domainObject = sourceContainer._domainObject;
+    _relationEndPointIDs = null; // reinitialize on next use
+
+    for (int i = 0; i < _propertyValues.Count; ++i)
+      _propertyValues[i].MergeData (sourceContainer._propertyValues[i]);
   }
 }
 }

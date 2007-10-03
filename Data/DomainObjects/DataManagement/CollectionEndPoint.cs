@@ -136,6 +136,17 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     _hasChanged = sourceCollectionEndPoint._hasChanged;
   }
 
+  internal override void MergeData (RelationEndPoint source)
+  {
+    Assertion.IsTrue (Definition == source.Definition);
+
+    CollectionEndPoint sourceCollectionEndPoint = (CollectionEndPoint) source;
+
+    _oppositeDomainObjects = sourceCollectionEndPoint._oppositeDomainObjects.Clone ();
+    _oppositeDomainObjects.ChangeDelegate = this;
+    _hasChanged |= sourceCollectionEndPoint._hasChanged;
+  }
+
   internal override void RegisterWithMap (RelationEndPointMap map)
   {
     ChangeDelegate = map;
