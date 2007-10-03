@@ -551,5 +551,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
       function.Execute (Context);
       Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
     }
+
+    [Test]
+    public void ResetCopiesEventHandlersWhenToldTo ()
+    {
+      ResetTestTransactedFunction function = new ResetTestTransactedFunction ();
+      function.CopyEventHandlers = true;
+      function.Execute (Context);
+    }
+
+    [Test]
+    public void ResetDoesNotCopyEventHandlersWhenNotToldTo ()
+    {
+      ResetTestTransactedFunction function = new ResetTestTransactedFunction ();
+      function.CopyEventHandlers = false;
+      function.Execute (Context);
+    }
   }
 }

@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -776,6 +777,103 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.AreSame (newTransaction, ClientTransactionScope.CurrentTransaction);
         Assert.AreEqual (AutoRollbackBehavior.None, ClientTransactionScope.ActiveScope.AutoRollbackBehavior);
       }
+    }
+
+    [Test]
+    public void CopyCollectionEventHandlers ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      DomainObjectCollectionChangeEventHandler addedEventHandler = delegate { };
+      DomainObjectCollectionChangeEventHandler addingEventHandler = delegate { };
+      DomainObjectCollectionChangeEventHandler removedEventHandler = delegate { };
+      DomainObjectCollectionChangeEventHandler removingEventHandler = delegate { };
+
+      order.OrderItems.Added += addedEventHandler;
+      order.OrderItems.Adding += addingEventHandler;
+      order.OrderItems.Removed += removedEventHandler;
+      order.OrderItems.Removing += removingEventHandler;
+
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        ClientTransaction.Current.EnlistDomainObject (order);
+        ClientTransaction.Current.CopyCollectionEventHandlers (order, ClientTransactionMock);
+
+        Assert.IsTrue (HasEventHandler (order.OrderItems, "Added", addedEventHandler));
+        Assert.IsTrue (HasEventHandler (order.OrderItems, "Adding", addingEventHandler));
+        Assert.IsTrue (HasEventHandler (order.OrderItems, "Removed", removedEventHandler));
+        Assert.IsTrue (HasEventHandler (order.OrderItems, "Removing", removingEventHandler));
+      }
+    }
+
+    [Test]
+    public void CopyTransactionEventHandlers ()
+    {
+      ClientTransactionEventHandler committedHandler = delegate { };
+      ClientTransactionEventHandler committingHandler = delegate { };
+      ClientTransactionEventHandler loadedHandler = delegate { };
+      ClientTransactionEventHandler rolledBackHandler = delegate { };
+      ClientTransactionEventHandler rollingBackHandler = delegate { };
+      SubTransactionCreatedEventHandler subTransactionCreatedHandler1 = delegate { };
+      SubTransactionCreatedEventHandler subTransactionCreatedHandler2 = delegate { };
+
+      ClientTransaction.Current.Committed += committedHandler;
+      ClientTransaction.Current.Committing += committingHandler;
+      ClientTransaction.Current.Loaded += loadedHandler;
+      ClientTransaction.Current.RolledBack += rolledBackHandler;
+      ClientTransaction.Current.RollingBack += rollingBackHandler;
+      ClientTransaction.Current.SubTransactionCreated += subTransactionCreatedHandler1;
+      ClientTransaction.Current.SubTransactionCreated += subTransactionCreatedHandler2;
+
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        ClientTransaction.Current.CopyTransactionEventHandlers (ClientTransactionMock);
+        Assert.IsTrue (HasEventHandler (ClientTransaction.Current, "Committed", committedHandler));
+        Assert.IsTrue (HasEventHandler (ClientTransaction.Current, "Committing", committingHandler));
+        Assert.IsTrue (HasEventHandler (ClientTransaction.Current, "Loaded", loadedHandler));
+        Assert.IsTrue (HasEventHandler (ClientTransaction.Current, "RolledBack", rolledBackHandler));
+        Assert.IsTrue (HasEventHandler (ClientTransaction.Current, "RollingBack", rollingBackHandler));
+        Assert.IsTrue (HasEventHandler (ClientTransaction.Current, "SubTransactionCreated", subTransactionCreatedHandler1));
+        Assert.IsTrue (HasEventHandler (ClientTransaction.Current, "SubTransactionCreated", subTransactionCreatedHandler2));
+      }
+    }
+
+    [Test]
+    public void CopyTransactionEventHandlers_WithNoEventsDoesNotOverwriteOldHandlers ()
+    {
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        ClientTransactionEventHandler committedHandler = delegate { };
+        ClientTransactionEventHandler committingHandler = delegate { };
+        ClientTransactionEventHandler loadedHandler = delegate { };
+        ClientTransactionEventHandler rolledBackHandler = delegate { };
+        ClientTransactionEventHandler rollingBackHandler = delegate { };
+        SubTransactionCreatedEventHandler subTransactionCreatedHandler1 = delegate { };
+        SubTransactionCreatedEventHandler subTransactionCreatedHandler2 = delegate { };
+
+        ClientTransaction.Current.Committed += committedHandler;
+        ClientTransaction.Current.Committing += committingHandler;
+        ClientTransaction.Current.Loaded += loadedHandler;
+        ClientTransaction.Current.RolledBack += rolledBackHandler;
+        ClientTransaction.Current.RollingBack += rollingBackHandler;
+        ClientTransaction.Current.SubTransactionCreated += subTransactionCreatedHandler1;
+        ClientTransaction.Current.SubTransactionCreated += subTransactionCreatedHandler2;
+
+        ClientTransaction.Current.CopyTransactionEventHandlers (ClientTransactionMock);
+
+        Assert.IsTrue (HasEventHandler (ClientTransaction.Current, "Committed", committedHandler));
+        Assert.IsTrue (HasEventHandler (ClientTransaction.Current, "Committing", committingHandler));
+        Assert.IsTrue (HasEventHandler (ClientTransaction.Current, "Loaded", loadedHandler));
+        Assert.IsTrue (HasEventHandler (ClientTransaction.Current, "RolledBack", rolledBackHandler));
+        Assert.IsTrue (HasEventHandler (ClientTransaction.Current, "RollingBack", rollingBackHandler));
+        Assert.IsTrue (HasEventHandler (ClientTransaction.Current, "SubTransactionCreated", subTransactionCreatedHandler1));
+        Assert.IsTrue (HasEventHandler (ClientTransaction.Current, "SubTransactionCreated", subTransactionCreatedHandler2));
+      }
+    }
+
+    private bool HasEventHandler (object instance, string eventName, Delegate handler)
+    {
+      Delegate eventField = (Delegate) PrivateInvoke.GetNonPublicField (instance, eventName);
+      return eventField != null && Array.IndexOf (eventField.GetInvocationList (), handler) != -1;
     }
   }
 }

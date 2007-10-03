@@ -156,6 +156,44 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 
     /// <summary>
     /// Discards of the <see cref="MyTransaction"/> instance managed by this <see cref="WxeTransactedFunctionBase{TTransaction}"/> and replaces
+    /// it by a newly created instance of <see cref="ClientTransaction"/>, optionally copying event handlers. This method can only be called from
+    /// within <see cref="Execute"/>, when the current transaction has no open subtransaction, and when it holds no new or changed objects.
+    /// </summary>
+    /// <param name="copyEventHandlers">If true, the method will copy all event handlers registered on the old transaction to the new transaction.
+    /// Additionally, it will copy event handlers for <see cref="DomainObjectCollection"/> properties on <see cref="DomainObject"/> instances from
+    /// the old transaction to the new transaction. This ensures event listeners are still subscribed to the events even though the transaction is
+    /// replaced. Note that setting this parameter to true causes all the objects from the old transaction to be reloaded in the new one (if they
+    /// still exist); if you specify false, they will only be loaded on first access.</param>
+    /// <exception cref="InvalidOperationException">Execution of this <see cref="WxeTransactedFunctionBase{TTransaction}"/> hasn't started yet or
+    /// has already finished, or this function does not have its own <see cref="MyTransaction"/>, or <see cref="MyTransaction"/> is not the
+    /// <see cref="WxeTransactionBase{TTransaction}.CurrentTransaction"/>.</exception>
+    /// <remarks>
+    /// <para>
+    /// Use this method if you need to replace this <see cref="WxeTransactedFunctionBase{TTransaction}"/>'s transaction by a new, empty one while the
+    /// function is executing.
+    /// </para>
+    /// <para>
+    /// All <see cref="DomainObject"/> instances enlisted in this function's transaction prior to the call to this method are automatically enlisted
+    /// in the new transaction. To reset a transaction that contains new, changed, or deleted objects, first roll back or commit the transaction.
+    /// </para>
+    /// </remarks>
+    public void ResetTransaction (bool copyEventHandlers)
+    {
+      ClientTransaction oldTransaction = MyTransaction;
+
+      base.ResetTransaction ();
+
+      Assertion.IsNotNull (oldTransaction, "base method should have thrown if there was no transaction");
+      Assertion.IsNotNull (MyTransaction, "base method should have created a new transaction");
+      Assertion.IsFalse (oldTransaction.HasChanged (), "WxeTransaction should have thrown if the transaction had been changed");
+
+      MyTransaction.EnlistSameDomainObjects (oldTransaction, copyEventHandlers);
+      if (copyEventHandlers)
+        MyTransaction.CopyTransactionEventHandlers (oldTransaction);
+    }
+
+    // <summary>
+    /// Discards of the <see cref="MyTransaction"/> instance managed by this <see cref="WxeTransactedFunctionBase{TTransaction}"/> and replaces
     /// it by a newly created instance of <see cref="ClientTransaction"/>. This method can only be called from within <see cref="Execute"/>, when
     /// the current transaction has no open subtransaction, and when it holds no new or changed objects.
     /// </summary>
@@ -171,18 +209,14 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
     /// All <see cref="DomainObject"/> instances enlisted in this function's transaction prior to the call to this method are automatically enlisted
     /// in the new transaction. To reset a transaction that contains new, changed, or deleted objects, first roll back or commit the transaction.
     /// </para>
+    /// <para>
+    /// Note that event handlers registered directly on the old transaction or on <see cref="DomainObjectCollection"/> properties will not be copied
+    /// to the newly created transaction. Use the <see cref="ResetTransaction(bool)"/> overload to copy those event handlers.
+    /// </para>
     /// </remarks>
     public override void ResetTransaction ()
     {
-      ClientTransaction oldTransaction = MyTransaction;
-
-      base.ResetTransaction ();
-
-      Assertion.IsNotNull (oldTransaction, "base method should have thrown if there was no transaction");
-      Assertion.IsNotNull (MyTransaction, "base method should have created a new transaction");
-      Assertion.IsFalse (oldTransaction.HasChanged (), "WxeTransaction should have thrown if there was transaction");
-
-      MyTransaction.EnlistSameDomainObjects (oldTransaction);
+      ResetTransaction (false);
     }
 
     private void EnlistInParameters (ClientTransaction transaction)

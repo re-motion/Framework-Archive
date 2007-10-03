@@ -1097,5 +1097,14 @@ namespace Rubicon.Data.DomainObjects
     {
       return new ArgumentException (string.Format (message, args), argumentName);
     }
+
+    internal void CopyEventHandlersFrom (DomainObjectCollection source)
+    {
+      ArgumentUtility.CheckNotNull ("source", source);
+      Added += source.Added;
+      Adding += source.Adding;
+      Removed += source.Removed;
+      Removing += source.Removing;
+    }
   }
 }

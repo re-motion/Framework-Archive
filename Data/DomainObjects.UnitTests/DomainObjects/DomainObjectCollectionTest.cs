@@ -1,10 +1,14 @@
 using System;
 using System.Collections;
 using NUnit.Framework;
+using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
+
+using Mocks_Is = Rhino.Mocks.Constraints.Is;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -1055,6 +1059,67 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         Assert.AreSame (exptectedDomainObjects[i], domainObject);
         i++;
       }
+    }
+
+    public interface IEventHandlerReceiver
+    {
+      void Added (object sender, DomainObjectCollectionChangeEventArgs args);
+      void Adding (object sender, DomainObjectCollectionChangeEventArgs args);
+      void Removed (object sender, DomainObjectCollectionChangeEventArgs args);
+      void Removing (object sender, DomainObjectCollectionChangeEventArgs args);
+    }
+
+    [Test]
+    public void CopyEventHandlers ()
+    {
+      MockRepository mockRepository = new MockRepository ();
+      IEventHandlerReceiver eventReceiver1 = mockRepository.CreateMock<IEventHandlerReceiver> ();
+      IEventHandlerReceiver eventReceiver2 = mockRepository.CreateMock<IEventHandlerReceiver> ();
+
+      DomainObjectCollection source = new DomainObjectCollection ();
+      DomainObjectCollection destination = new DomainObjectCollection ();
+
+      source.Added += eventReceiver1.Added;
+      source.Added += eventReceiver2.Added;
+      source.Adding += eventReceiver1.Adding;
+      source.Adding += eventReceiver2.Adding;
+      source.Removed += eventReceiver1.Removed;
+      source.Removed += eventReceiver2.Removed;
+      source.Removing += eventReceiver1.Removing;
+      source.Removing += eventReceiver2.Removing;
+
+      using (mockRepository.Ordered ())
+      {
+        // expectations
+        eventReceiver1.Adding (null, null);
+        LastCall.Constraints (Mocks_Is.Same (destination), Mocks_Is.NotNull());
+        eventReceiver2.Adding (null, null);
+        LastCall.Constraints (Mocks_Is.Same (destination), Mocks_Is.NotNull ());
+
+        eventReceiver1.Added (null, null);
+        LastCall.Constraints (Mocks_Is.Same (destination), Mocks_Is.NotNull());
+        eventReceiver2.Added (null, null);
+        LastCall.Constraints (Mocks_Is.Same (destination), Mocks_Is.NotNull ());
+
+        eventReceiver1.Removing (null, null);
+        LastCall.Constraints (Mocks_Is.Same (destination), Mocks_Is.NotNull());
+        eventReceiver2.Removing (null, null);
+        LastCall.Constraints (Mocks_Is.Same (destination), Mocks_Is.NotNull ());
+
+        eventReceiver1.Removed (null, null);
+        LastCall.Constraints (Mocks_Is.Same (destination), Mocks_Is.NotNull());
+        eventReceiver2.Removed (null, null);
+        LastCall.Constraints (Mocks_Is.Same (destination), Mocks_Is.NotNull ());
+      }
+
+      mockRepository.ReplayAll ();
+
+      PrivateInvoke.InvokeNonPublicMethod (destination, "CopyEventHandlersFrom", source);
+
+      destination.Add (_customer1);
+      destination.Remove (_customer1);
+
+      mockRepository.VerifyAll ();
     }
   }
 }

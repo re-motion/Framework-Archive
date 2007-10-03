@@ -59,7 +59,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     }
 
     
-    protected internal override void DoEnlistDomainObject (DomainObject domainObject)
+    protected internal override bool DoEnlistDomainObject (DomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
@@ -70,7 +70,12 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         throw new InvalidOperationException (message);
       }
       else if (alreadyEnlistedObject == null)
+      {
         _enlistedObjects.Add (domainObject.ID, domainObject);
+        return true;
+      }
+      else
+        return false;
     }
 
     protected internal override bool IsEnlisted (DomainObject domainObject)

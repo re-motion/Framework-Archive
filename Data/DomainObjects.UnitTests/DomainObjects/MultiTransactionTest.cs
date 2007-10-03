@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -537,7 +538,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.IsFalse (order.CanBeUsedInTransaction (newTransaction));
       Assert.IsFalse (orderItem.CanBeUsedInTransaction (newTransaction));
 
-      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock, false);
 
       Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
       Assert.IsTrue (orderItem.CanBeUsedInTransaction (newTransaction));
@@ -557,7 +558,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.IsFalse (order.CanBeUsedInTransaction (newTransaction));
       Assert.IsFalse (orderItem.CanBeUsedInTransaction (newTransaction));
 
-      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock, false);
 
       Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
       Assert.IsTrue (orderItem.CanBeUsedInTransaction (newTransaction));
@@ -571,7 +572,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order.NewObject ();
       ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
-      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock, false);
     }
 
     [Test]
@@ -587,10 +588,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       }
 
       ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
-      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock, false);
 
       ClientTransaction newTransaction2 = ClientTransaction.NewTransaction ();
-      newTransaction2.EnlistSameDomainObjects (newTransaction);
+      newTransaction2.EnlistSameDomainObjects (newTransaction, false);
 
       Assert.IsTrue (cwadt.CanBeUsedInTransaction (newTransaction));
       Assert.IsTrue (cwadt.CanBeUsedInTransaction (newTransaction2));
@@ -605,7 +606,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
       order.ProtectedLoaded += delegate (object sender, EventArgs e) { Assert.AreSame (sender, ((Order) sender).OrderItems[0].Order); };
 
-      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock, false);
       Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
       Assert.IsTrue (orderItem.CanBeUsedInTransaction (newTransaction));
       Assert.AreSame (orderItem, order.OrderItems[0]);
@@ -620,10 +621,117 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
       orderItem.ProtectedLoaded += delegate (object sender, EventArgs e) { Assert.Contains (sender, ((OrderItem) sender).Order.OrderItems); };
 
-      newTransaction.EnlistSameDomainObjects (ClientTransactionMock);
+      newTransaction.EnlistSameDomainObjects (ClientTransactionMock, false);
       Assert.IsTrue (orderItem.CanBeUsedInTransaction (newTransaction));
       Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
       Assert.AreSame (order, orderItem.Order);
+    }
+
+    [Test]
+    public void EnlistWithNoCopyEventHandlers ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      bool orderItemAdded = false;
+      order.OrderItems.Added += delegate { orderItemAdded = true; };
+      Assert.IsFalse (orderItemAdded);
+      order.OrderItems.Add (OrderItem.NewObject ());
+      Assert.IsTrue (orderItemAdded);
+
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        orderItemAdded = false;
+        Assert.IsFalse (orderItemAdded);
+
+        ClientTransaction.Current.EnlistDomainObject (order);
+
+        order.OrderItems.Add (OrderItem.NewObject ());
+        Assert.IsFalse (orderItemAdded);
+      }
+    }
+
+    [Test]
+    public void EnlistWithCopyEventHandlers ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      bool orderItemAdded = false;
+      order.OrderItems.Added += delegate { orderItemAdded = true; };
+      Assert.IsFalse (orderItemAdded);
+      order.OrderItems.Add (OrderItem.NewObject ());
+      Assert.IsTrue (orderItemAdded);
+
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        orderItemAdded = false;
+        Assert.IsFalse (orderItemAdded);
+
+        ClientTransaction.Current.EnlistDomainObject (order);
+        ClientTransaction.Current.CopyCollectionEventHandlers (order, ClientTransactionMock);
+
+        order.OrderItems.Add (OrderItem.NewObject ());
+        Assert.IsTrue (orderItemAdded);
+      }
+    }
+
+    [Test]
+    public void EnlistSameWithoutCopyEventHandlers ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      bool orderItemAdded = false;
+      order.OrderItems.Added += delegate { orderItemAdded = true; };
+      Assert.IsFalse (orderItemAdded);
+      order.OrderItems.Add (OrderItem.NewObject ());
+      Assert.IsTrue (orderItemAdded);
+
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        ClientTransaction.Current.EnlistSameDomainObjects (ClientTransactionMock, false);
+        orderItemAdded = false;
+        Assert.IsFalse (orderItemAdded);
+        order.OrderItems.Add (OrderItem.NewObject ());
+        Assert.IsFalse (orderItemAdded);
+      }
+    }
+
+    [Test]
+    public void EnlistSameWithCopyEventHandlers ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      bool orderItemAdded = false;
+      order.OrderItems.Added += delegate { orderItemAdded = true; };
+      Assert.IsFalse (orderItemAdded);
+      order.OrderItems.Add (OrderItem.NewObject ());
+      Assert.IsTrue (orderItemAdded);
+
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        ClientTransaction.Current.EnlistSameDomainObjects (ClientTransactionMock, true);
+        orderItemAdded = false;
+        Assert.IsFalse (orderItemAdded);
+        order.OrderItems.Add (OrderItem.NewObject ());
+        Assert.IsTrue (orderItemAdded);
+      }
+    }
+
+    [Test]
+    public void EnlistSameWithCopyEventHandlers_CopiesOnlyOnEnlist ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      bool orderItemAdded = false;
+      order.OrderItems.Added += delegate { orderItemAdded = true; };
+      Assert.IsFalse (orderItemAdded);
+      order.OrderItems.Add (OrderItem.NewObject ());
+      Assert.IsTrue (orderItemAdded);
+
+      using (ClientTransaction.NewTransaction ().EnterScope ())
+      {
+        ClientTransaction.Current.EnlistDomainObject (order);
+        ClientTransaction.Current.EnlistSameDomainObjects (ClientTransactionMock, true);
+
+        orderItemAdded = false;
+        Assert.IsFalse (orderItemAdded);
+        order.OrderItems.Add (OrderItem.NewObject ());
+        Assert.IsFalse (orderItemAdded);
+      }
     }
   }
 }

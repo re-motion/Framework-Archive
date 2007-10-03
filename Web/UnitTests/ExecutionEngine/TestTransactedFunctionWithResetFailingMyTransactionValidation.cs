@@ -21,7 +21,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     {
       WxeTransactedFunctionBase<TestTransaction> parent = ParentFunction as WxeTransactedFunctionBase<TestTransaction>;
       Assert.IsNotNull (parent, "must be tested as a nested function");
-      parent.ResetTransaction();
+      parent.ResetTransaction ();
     }
   }
 }

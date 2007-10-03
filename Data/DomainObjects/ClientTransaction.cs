@@ -168,6 +168,7 @@ public abstract class ClientTransaction : ITransaction
   /// Enlists the given domain object in the current transaction.
   /// </summary>
   /// <param name="domainObject">The domain object to be enlisted.</param>
+  /// <returns>True if the object was newly enlisted; false if it had already been enlisted before this method was called.</returns>
   /// <exception cref="InvalidOperationException">Another <see cref="DomainObject"/> instance with the same <see cref="ObjectID"/> already exists
   /// in the transaction.</exception>
   /// <exception cref="ArgumentNullException">The <paramref name="domainObject"/> parameter is <see langword="null"/>.</exception>
@@ -176,7 +177,7 @@ public abstract class ClientTransaction : ITransaction
   /// instances currently registered in this transaction unless the <paramref name="domainObject"/> has already been enlisted. From within this
   /// method, the object's <see cref="DataContainer"/> must not be accessed (directly or indirectly).
   /// </remarks>
-  protected internal abstract void DoEnlistDomainObject (DomainObject domainObject);
+  protected internal abstract bool DoEnlistDomainObject (DomainObject domainObject);
 
   /// <summary>
   /// Determines whether the specified <paramref name="domainObject"/> is enlisted in this transaction.
@@ -437,15 +438,45 @@ public abstract class ClientTransaction : ITransaction
   /// <paramref name="sourceTransaction"/>.
   /// </summary>
   /// <param name="sourceTransaction">The source transaction.</param>
+  /// <param name="copyCollectionEventHandlers">If true, <see cref="CopyCollectionEventHandlers"/> will be used to copy any event handlers registered
+  /// with <see cref="DomainObjectCollection"/> properties of the objects being enlisted. Events are only copied for objects
+  /// that are newly enlisted by this method. Note that setting this parameter to true causes the enlisted objects to be loaded (if they exist);
+  /// otherwise they will only be loaded on first access.</param>
   /// <exception cref="ArgumentNullException">The <paramref name="sourceTransaction"/> parameter is <see langword="null"/>.</exception>
   /// <exception cref="InvalidOperationException">A domain object cannot be enlisted, because another <see cref="DomainObject"/> with the same
   /// <see cref="ObjectID"/> has already been associated with this transaction.</exception>
-  /// <remarks>This method also enlists objects that do not exist in the database; accessing such an object in the context of this transaction will
+  /// <remarks>
+  /// This method also enlists objects that do not exist in the database; accessing such an object in the context of this transaction will
   /// result in an <see cref="ObjectNotFoundException"/>.</remarks>
-  public void EnlistSameDomainObjects (ClientTransaction sourceTransaction)
+
+  public void EnlistSameDomainObjects (ClientTransaction sourceTransaction, bool copyCollectionEventHandlers)
   {
     ArgumentUtility.CheckNotNull ("sourceTransaction", sourceTransaction);
-    EnlistDomainObjects (sourceTransaction.EnlistedDomainObjects);
+    Set<DomainObject> enlistedObjects = new Set<DomainObject> ();
+
+    foreach (DomainObject domainObject in sourceTransaction.EnlistedDomainObjects)
+    {
+      bool enlisted = DoEnlistDomainObject (domainObject);
+      if (enlisted)
+        enlistedObjects.Add (domainObject);
+    }
+
+    if (copyCollectionEventHandlers)
+    {
+      foreach (DomainObject domainObject in enlistedObjects)
+        try
+        {
+          CopyCollectionEventHandlers (domainObject, sourceTransaction);
+        }
+        catch (ObjectNotFoundException)
+        {
+          // ignore
+        }
+        catch (ObjectDiscardedException)
+        {
+          // ignore
+        }
+    }
   }
 
   /// <summary>
@@ -479,6 +510,54 @@ public abstract class ClientTransaction : ITransaction
     ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
 
     EnlistDomainObjects ((IEnumerable<DomainObject>) domainObjects);
+  }
+
+  /// <summary>
+  /// Copies the event handlers defined on the given <see cref="DomainObject"/>'s collection properties from another transaction to this
+  /// transaction.
+  /// </summary>
+  /// <param name="domainObject">The domain object the event handlers of whose collection properties are to be copied.</param>
+  /// <param name="sourceTransaction">The transaction to copy the event handlers from.</param>
+  /// <remarks>
+  /// When a <see cref="DomainObject"/> instance is used in multiple transactions at the same time, its event handlers are shared across transactions,
+  /// because they are registered on the instance itself, not in the context of a transaction. However, the event handlers defined on
+  /// <see cref="DomainObjectCollection"/> properties of the <see cref="DomainObject"/> are not shared, because each collection instance is unique
+  /// to one transaction. To avoid having to manually re-register all such event handlers in all transactions after calling
+  /// <see cref="EnlistDomainObject"/>, this method copies all collection event handlers from a source transaction to this transaction.
+  /// </remarks>
+  /// <exception cref="ObjectNotFoundException">The <paramref name="domainObject"/> could not be found in either the current transaction or the
+  /// <paramref name="sourceTransaction"/>.</exception>
+  /// <exception cref="ObjectDiscardedException">The <paramref name="domainObject"/> was discarded in either the current transaction or the
+  /// <paramref name="sourceTransaction"/>.</exception>
+  public void CopyCollectionEventHandlers (DomainObject domainObject, ClientTransaction sourceTransaction)
+  {
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    ArgumentUtility.CheckNotNull ("sourceTransaction", sourceTransaction);
+
+    foreach (PropertyAccessor property in domainObject.Properties)
+    {
+      if (property.Kind == PropertyKind.RelatedObjectCollection)
+      {
+        ((DomainObjectCollection) property.GetValueWithoutTypeCheck ()).CopyEventHandlersFrom (
+            (DomainObjectCollection) property.GetValueWithoutTypeCheckTx (sourceTransaction));
+      }
+    }
+  }
+
+  /// <summary>
+  /// Copies the event handlers defined on the given <see cref="ClientTransaction"/> to this transaction.
+  /// </summary>
+  /// <param name="sourceTransaction">The transaction to copy the event handlers from.</param>
+  public void CopyTransactionEventHandlers (ClientTransaction sourceTransaction)
+  {
+    ArgumentUtility.CheckNotNull ("sourceTransaction", sourceTransaction);
+
+    Committed += sourceTransaction.Committed;
+    Committing += sourceTransaction.Committing;
+    Loaded += sourceTransaction.Loaded;
+    RolledBack += sourceTransaction.RolledBack;
+    RollingBack += sourceTransaction.RollingBack;
+    SubTransactionCreated += sourceTransaction.SubTransactionCreated;
   }
 
   /// <summary>

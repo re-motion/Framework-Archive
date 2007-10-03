@@ -79,9 +79,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       return true;
     }
 
-    protected internal override void DoEnlistDomainObject (DomainObject domainObject)
+    protected internal override bool DoEnlistDomainObject (DomainObject domainObject)
     {
-      ParentTransaction.DoEnlistDomainObject (domainObject);
+      return ParentTransaction.DoEnlistDomainObject (domainObject);
     }
 
     protected internal override bool IsEnlisted (DomainObject domainObject)
