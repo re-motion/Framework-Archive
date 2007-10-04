@@ -66,5 +66,16 @@ namespace Rubicon.Security.UnitTests.Core.Metadata.PermissionReflectorTests
       Assert.AreEqual (1, requiredAccessTypes.Length);
       Assert.Contains (TestAccessTypes.First, requiredAccessTypes);
     }
+
+    [Test]
+    public void Test_ExplicitInterfacePropertyWithOneAttribute ()
+    {
+      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredPropertyReadPermissions (typeof (SecurableObject),
+          typeof (IInterfaceWithProperty).FullName + ".InterfaceProperty");
+
+      Assert.IsNotNull (requiredAccessTypes);
+      Assert.AreEqual (1, requiredAccessTypes.Length);
+      Assert.Contains (TestAccessTypes.First, requiredAccessTypes);
+    }
   }
 }

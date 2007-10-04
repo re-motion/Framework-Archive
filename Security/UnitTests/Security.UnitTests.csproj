@@ -108,6 +108,7 @@
     <Compile Include="Core\NullSecurityClientTests\NullSecurityClientTestHelper.cs" />
     <Compile Include="Core\NullSecurityProviderTest.cs" />
     <Compile Include="Core\NullUserProviderTest.cs" />
+    <Compile Include="Core\SampleDomain\IInterfaceWithProperty.cs" />
     <Compile Include="Data.DomainObjects\DomainObjectSecurityStrategyTest.cs" />
     <Compile Include="Data.DomainObjects\SecurityClientTransactionExtensionTests\FilterQueryResultTest.cs" />
     <Compile Include="Data.DomainObjects\SecurityClientTransactionExtensionTests\InterfaceTest.cs" />

@@ -1,8 +1,9 @@
 using System;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Security.UnitTests.Core.SampleDomain
 {
-  public class SecurableObject : ISecurableObject
+  public class SecurableObject : ISecurableObject, IInterfaceWithProperty
   {
     public static void CheckPermissions ()
     {
@@ -31,7 +32,7 @@ namespace Rubicon.Security.UnitTests.Core.SampleDomain
       return null;
     }
 
-    private IObjectSecurityStrategy _securityStrategy;
+    private readonly IObjectSecurityStrategy _securityStrategy;
 
     public SecurableObject ()
     {
@@ -110,7 +111,7 @@ namespace Rubicon.Security.UnitTests.Core.SampleDomain
     public bool IsVisible
     {
       get { return true; }
-      set { }
+      set { Dev.Null = value; }
     }
 
     [DemandPropertyReadPermission (TestAccessTypes.First)]
@@ -118,8 +119,15 @@ namespace Rubicon.Security.UnitTests.Core.SampleDomain
     private object NonPublicProperty
     {
       get { return null; }
-      set {  }
+      set { Dev.Null = value; }
     }
-	
+
+    [DemandPropertyReadPermission (TestAccessTypes.First)]
+    [DemandPropertyWritePermission (TestAccessTypes.Second)]
+    object IInterfaceWithProperty.InterfaceProperty
+    {
+      get { return null; }
+      set { Dev.Null = value; }
+    }
   }
 }
