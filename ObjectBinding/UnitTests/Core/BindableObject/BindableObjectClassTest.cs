@@ -107,6 +107,24 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     }
 
     [Test]
+    [Ignore ("TODO: Fix issue with duplicate property names.")]
+    public void GetPropertyDefinition_ForMixedPropertyWithSameName ()
+    {
+      PropertyReflector propertyReflector1 =
+          new PropertyReflector (GetPropertyInfo (typeof (ClassWithMixedPropertyOfSameName),
+          "MixedProperty"), _bindableObjectProvider);
+      PropertyReflector propertyReflector2 =
+          new PropertyReflector (GetPropertyInfo (TypeUtility.GetConcreteType (typeof (ClassWithMixedPropertyOfSameName)),
+          typeof (IMixinAddingProperty).FullName + ".MixedProperty"), _bindableObjectProvider);
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithMixedPropertyOfSameName), _bindableObjectProvider, DefaultMetadataFactory.Instance);
+      BindableObjectClass bindableObjectClass = classReflector.GetMetadata ();
+
+      CheckPropertyBase (propertyReflector1.GetMetadata (), bindableObjectClass.GetPropertyDefinition ("MixedProperty"));
+      CheckPropertyBase (propertyReflector2.GetMetadata (),
+          bindableObjectClass.GetPropertyDefinition (typeof (IMixinAddingProperty).FullName + ".MixedProperty"));
+    }
+
+    [Test]
     [ExpectedException (typeof (KeyNotFoundException),
         ExpectedMessage =
         "The property 'Invalid' was not found on business object class "
@@ -136,6 +154,17 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       BindableObjectClass bindableObjectClass = classReflector.GetMetadata ();
 
       Assert.That (bindableObjectClass.HasPropertyDefinition ("MixedProperty"), Is.True);
+    }
+
+    [Test]
+    [Ignore ("TODO: Fix issue with duplicate property names.")]
+    public void HasPropertyDefinition_ForMixedPropertyOfSameName ()
+    {
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithMixedPropertyOfSameName), _bindableObjectProvider, DefaultMetadataFactory.Instance);
+      BindableObjectClass bindableObjectClass = classReflector.GetMetadata ();
+
+      Assert.That (bindableObjectClass.HasPropertyDefinition ("MixedProperty"), Is.True);
+      Assert.That (bindableObjectClass.HasPropertyDefinition (typeof (IMixinAddingProperty).FullName + ".MixedProperty"), Is.True);
     }
 
     [Test]
