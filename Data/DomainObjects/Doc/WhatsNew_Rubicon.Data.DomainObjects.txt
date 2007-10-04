@@ -1,3 +1,16 @@
+1.7.65.0
+========
+- COMMONS-291 FIXED  Adapt BindableDomainObjectMixin to exclude ID property and to get information from the mapping
+- COMMONS-303 FIXED  Add ClientTransaction.EnlistDomainObjects (IEnumerable<DomainObject>)
+- COMMONS-304 FIXED  Add feature to calculate graph of domain objects    
+  - COMMONS-318 FIXED  Add DomainObject.GetAllRelatedObjects      
+  - COMMONS-319 FIXED  Add DomainObject.GetFlattenedRelatedObjectGraph  
+- COMMONS-325 FIXED  Changing an object twice in a parent subtransaction and a child subtransaction loses the changes made in the parent subtransaction
+- COMMONS-311 FIXED  EnlistDomainObject (and related) should not cause the enlisted objects to be loaded; load should only occur on first access
+- COMMONS-322 FIXED  Implement ISearchAvailableObjectsService for bindable domain objects
+- COMMONS-320 FIXED  Provide feature to copy event handlers on ResetTransaction
+- COMMONS-312 FIXED  Re-add ClientTransaction.Current
+
 1.7.64.0
 ========
 - COMMONS-307 FIXED  EnlistSameDomainObjects throws on second call when object has been deleted in database
