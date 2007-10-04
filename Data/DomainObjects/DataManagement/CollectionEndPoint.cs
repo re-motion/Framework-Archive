@@ -27,7 +27,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   private DomainObjectCollection _originalOppositeDomainObjects;
   private DomainObjectCollection _oppositeDomainObjects;
-  private bool _hasChanged;
+  // TODO: private bool _hasBeenTouched;
 
   [NonSerialized]
   private CollectionEndPointChangeAgent _changeAgent;
@@ -105,12 +105,12 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     _originalOppositeDomainObjects = originalOppositeDomainObjects;
     _oppositeDomainObjects = oppositeDomainObjects;
     _oppositeDomainObjects.ChangeDelegate = this;
-    _hasChanged = false;
+    // TODO: _hasBeenTouched = false;
   }
 
   protected CollectionEndPoint (IRelationEndPointDefinition definition) : base (definition)
   {
-    _hasChanged = false;
+    // TODO: _hasBeenTouched = false;
   }
 
   // methods and properties
@@ -133,7 +133,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     _oppositeDomainObjects = sourceCollectionEndPoint._oppositeDomainObjects.Clone();
     _oppositeDomainObjects.ChangeDelegate = this;
     _originalOppositeDomainObjects = sourceCollectionEndPoint._originalOppositeDomainObjects.Clone();
-    _hasChanged = sourceCollectionEndPoint._hasChanged;
+    // TODO: _hasBeenTouched = sourceCollectionEndPoint._hasBeenTouched;
   }
 
   internal override void MergeData (RelationEndPoint source)
@@ -144,7 +144,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
     _oppositeDomainObjects = sourceCollectionEndPoint._oppositeDomainObjects.Clone ();
     _oppositeDomainObjects.ChangeDelegate = this;
-    _hasChanged |= sourceCollectionEndPoint._hasChanged;
+    // TODO: _hasBeenTouched |= sourceCollectionEndPoint._hasBeenTouched;
   }
 
   internal override void RegisterWithMap (RelationEndPointMap map)
@@ -157,7 +157,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     if (HasChanged)
     {
       _originalOppositeDomainObjects.Commit (_oppositeDomainObjects);
-      _hasChanged = false;
+      // TODO: _hasBeenTouched = false;
     }
   }
 
@@ -166,13 +166,13 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     if (HasChanged)
     {
       _oppositeDomainObjects.Rollback (_originalOppositeDomainObjects);
-      _hasChanged = false;
+      // TODO: _hasBeenTouched = false;
     }
   }
 
   public override bool HasChanged
   {
-    get { return _hasChanged; } 
+    get { return !DomainObjectCollection.Compare (_oppositeDomainObjects, _originalOppositeDomainObjects, true); } 
   }
 
   public override void CheckMandatory ()
@@ -235,13 +235,13 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new InvalidOperationException ("BeginRelationChange must be called before PerformRelationChange.");
 
     _changeAgent.PerformRelationChange ();
-    _hasChanged = true;
+    // TODO: _hasBeenTouched = true;
   }
 
   public override void PerformDelete ()
   {
     _oppositeDomainObjects.PerformDelete ();
-    _hasChanged = true;
+    // TODO: _hasBeenTouched = true;
   }
 
   public override void EndRelationChange ()
@@ -285,7 +285,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new DataManagementException ("Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.");
 
     _changeDelegate.PerformInsert (this, domainObject, index);
-    _hasChanged = true;
+    // TODO: _hasBeenTouched = true;
   }
 
   void ICollectionChangeDelegate.PerformReplace (DomainObjectCollection collection, DomainObject domainObject, int index)
@@ -294,7 +294,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new DataManagementException ("Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.");
 
     _changeDelegate.PerformReplace (this, domainObject, index);
-    _hasChanged = true;
+    // TODO: _hasBeenTouched = true;
   }
 
   void ICollectionChangeDelegate.PerformRemove (DomainObjectCollection collection, DomainObject domainObject)
@@ -303,7 +303,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new DataManagementException ("Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.");
 
     _changeDelegate.PerformRemove (this, domainObject);
-    _hasChanged = true;
+    // TODO: _hasBeenTouched = true;
   }
 
   #endregion

@@ -400,19 +400,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (StateType.Changed, _order.State);
 
       _order.OrderTicket = _oldOrderTicket;
-      Assert.AreEqual (StateType.Changed, _order.State);
+      Assert.AreEqual (StateType.Unchanged, _order.State);
     }
 
     [Test]
-    [Ignore ("TODO: Fix")]
-    public void SetOriginalValue ()
+    [Ignore ("TODO: HasBeenTouched")]
+    public void HasBeenTouched ()
     {
-      _order.OrderTicket = _order.OrderTicket;
-      Assert.AreEqual (StateType.Changed, _order.State);
-      Assert.AreEqual (StateType.Changed, _order.OrderTicket.State);
+      Assert.Fail ();
+    }
 
-      Assert.AreEqual (StateType.Unchanged, _order.InternalDataContainer.State);
-      Assert.AreEqual (StateType.Changed, _order.OrderTicket.InternalDataContainer.State);
+    [Test]
+    [Ignore ("TODO: HasBeenTouched")]
+    public void HasBeenTouched_SetOriginalValue ()
+    {
+      Assert.Fail ();
+    }
+
+    [Test]
+    [Ignore ("TODO: HasBeenTouched")]
+    public void HasBeenTouched_ChangeRelationBackToOriginalValue ()
+    {
+      Assert.Fail ();
     }
 
     [Test]

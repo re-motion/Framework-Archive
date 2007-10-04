@@ -33,14 +33,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
       Assert.IsFalse (propertyValue1.Equals (propertyValue2), "After changing first value.");
 
       propertyValue1.Value = 5;
-      Assert.IsFalse (propertyValue1.Equals (propertyValue2), "After changing first value back to initial value.");
+      Assert.IsTrue (propertyValue1.Equals (propertyValue2), "After changing first value back to initial value.");
 
       propertyValue1.Value = 10;
       propertyValue2.Value = 10;
       Assert.IsTrue (propertyValue1.Equals (propertyValue2), "After changing both values.");
 
       PropertyValue propertyValue3 = CreateIntPropertyValue ("test", 10);
-      propertyValue3.Value = 10;
       Assert.IsFalse (propertyValue1.Equals (propertyValue3), "Different original values.");
     }
 
@@ -55,14 +54,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
       Assert.IsFalse (propertyValue1.GetHashCode () == propertyValue2.GetHashCode (), "After changing first value.");
 
       propertyValue1.Value = 5;
-      Assert.IsTrue (propertyValue1.GetHashCode () != propertyValue2.GetHashCode (), "After changing first value back to initial value.");
+      Assert.IsTrue (propertyValue1.GetHashCode () == propertyValue2.GetHashCode (), "After changing first value back to initial value.");
 
       propertyValue1.Value = 10;
       propertyValue2.Value = 10;
       Assert.IsTrue (propertyValue1.GetHashCode () == propertyValue2.GetHashCode (), "After changing both values.");
 
       PropertyValue propertyValue3 = CreateIntPropertyValue ("test", 10);
-      propertyValue3.Value = 10;
       Assert.IsFalse (propertyValue1.GetHashCode () == propertyValue3.GetHashCode (), "Different original values.");
     }
 
@@ -81,7 +79,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
       Assert.AreEqual ("test", propertyValue.Name, "Name after change #1");
       Assert.AreEqual (5, propertyValue.Value, "Value after change #1");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue after change #1");
-      Assert.AreEqual (true, propertyValue.HasChanged, "HasChanged after change #1");
+      Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged after change #1");
 
       propertyValue.Value = 10;
 
@@ -102,7 +100,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
       Assert.AreEqual ("test", propertyValue.Name, "Name after change #4");
       Assert.AreEqual (5, propertyValue.Value, "Value after change #4");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue after change #4");
-      Assert.AreEqual (true, propertyValue.HasChanged, "HasChanged after change #4");
+      Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged after change #4");
     }
 
     [Test]
@@ -120,7 +118,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
       Assert.AreEqual ("test", propertyValue.Name, "Name after change #1");
       Assert.AreEqual (NaInt32.Null, propertyValue.Value, "Value after change #1");
       Assert.AreEqual (NaInt32.Null, propertyValue.OriginalValue, "OriginalValue after change #1");
-      Assert.AreEqual (true, propertyValue.HasChanged, "HasChanged after change #1");
+      Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged after change #1");
 
       propertyValue.Value = new NaInt32 (10);
 
@@ -134,7 +132,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
       Assert.AreEqual ("test", propertyValue.Name, "Name after change #3");
       Assert.AreEqual (NaInt32.Null, propertyValue.Value, "Value after change #3");
       Assert.AreEqual (NaInt32.Null, propertyValue.OriginalValue, "OriginalValue after change #3");
-      Assert.AreEqual (true, propertyValue.HasChanged, "HasChanged after change #3");
+      Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged after change #3");
     }
 
     [Test]
@@ -152,7 +150,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
       Assert.AreEqual ("test", propertyValue.Name, "Name after change #1");
       Assert.AreEqual (null, propertyValue.Value, "Value after change #1");
       Assert.AreEqual (null, propertyValue.OriginalValue, "OriginalValue after change #1");
-      Assert.AreEqual (true, propertyValue.HasChanged, "HasChanged after change #1");
+      Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged after change #1");
 
       propertyValue.Value = "Test Value";
 
@@ -166,7 +164,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
       Assert.AreEqual ("test", propertyValue.Name, "Name after change #3");
       Assert.AreEqual (null, propertyValue.Value, "Value after change #3");
       Assert.AreEqual (null, propertyValue.OriginalValue, "OriginalValue after change #3");
-      Assert.AreEqual (true, propertyValue.HasChanged, "HasChanged after change #3");
+      Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged after change #3");
     }
 
     [Test]
@@ -175,19 +173,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
       PropertyValue propertyValue = CreateIntPropertyValue ("test", 5);
       PropertyValueEventReceiver eventReceiver = new PropertyValueEventReceiver (propertyValue, false);
 
+      propertyValue.Value = 5;
+
       Assert.AreEqual (5, propertyValue.Value, "Value");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue");
       Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged");
       Assert.AreEqual (false, eventReceiver.HasChangingEventBeenCalled, "Changing event has been called.");
       Assert.AreEqual (false, eventReceiver.HasChangedEventBeenCalled, "Changed event has been called.");
-
-      propertyValue.Value = 5;
-
-      Assert.AreEqual (5, propertyValue.Value, "Value");
-      Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue");
-      Assert.AreEqual (true, propertyValue.HasChanged, "HasChanged");
-      Assert.AreEqual (true, eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
-      Assert.AreEqual (true, eventReceiver.HasChangedEventBeenCalled, "Changed event has not been called.");
 
       propertyValue.Value = 10;
 
@@ -206,19 +198,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
       PropertyValue propertyValue = CreateStringPropertyValue ("test", null);
       PropertyValueEventReceiver eventReceiver = new PropertyValueEventReceiver (propertyValue, false);
 
-      Assert.AreEqual (null, propertyValue.Value, "Value");
-      Assert.AreEqual (null, propertyValue.OriginalValue, "OriginalValue");
-      Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged");
-      Assert.AreEqual (false, eventReceiver.HasChangingEventBeenCalled, "Changing event has been called.");
-      Assert.AreEqual (false, eventReceiver.HasChangedEventBeenCalled, "Changed event has been called.");
-
       propertyValue.Value = null;
 
       Assert.AreEqual (null, propertyValue.Value, "Value");
       Assert.AreEqual (null, propertyValue.OriginalValue, "OriginalValue");
-      Assert.AreEqual (true, propertyValue.HasChanged, "HasChanged");
-      Assert.AreEqual (true, eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
-      Assert.AreEqual (true, eventReceiver.HasChangedEventBeenCalled, "Changed event has not been called.");
+      Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged");
+      Assert.AreEqual (false, eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
+      Assert.AreEqual (false, eventReceiver.HasChangedEventBeenCalled, "Changed event has not been called.");
 
       propertyValue.Value = "Test string";
 
@@ -236,6 +222,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
     {
       PropertyValue propertyValue = CreateIntPropertyValue ("test", 5);
       PropertyValueEventReceiver eventReceiver = new PropertyValueEventReceiver (propertyValue, true);
+
+      propertyValue.Value = 5;
 
       Assert.AreEqual (5, propertyValue.Value, "Value");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue");
@@ -265,6 +253,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
     {
       PropertyValue propertyValue = CreateStringPropertyValue ("test", null);
       PropertyValueEventReceiver eventReceiver = new PropertyValueEventReceiver (propertyValue, true);
+
+      propertyValue.Value = null;
 
       Assert.AreEqual (null, propertyValue.Value, "Value");
       Assert.AreEqual (null, propertyValue.OriginalValue, "OriginalValue");

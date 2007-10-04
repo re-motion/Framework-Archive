@@ -446,6 +446,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Order newOrder = Order.GetObject (DomainObjectIDs.Order2);
       OrderTicket oldOrderTicket = newOrder.OrderTicket;
 
+      Order newOrder2 = Order.GetObject (DomainObjectIDs.Order3);
+      OrderTicket oldOrderTicket2 = newOrder2.OrderTicket;
+
+
       RelationEndPointID propertyID = new RelationEndPointID (orderTicket.ID, typeof (OrderTicket).FullName + ".Order");
 
       using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
@@ -462,15 +466,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
           Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
           Assert.AreEqual (newOrder.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
 
-          orderTicket.Order = null;
-          orderTicket.Order = newOrder;
+          orderTicket.Order = newOrder2;
+          oldOrderTicket2.Order = newOrder;
 
           Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
           Assert.AreEqual (newOrder.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
 
           ClientTransaction.Current.Commit ();
           Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
-          Assert.AreEqual (newOrder.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+          Assert.AreEqual (newOrder2.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
         }
 
         Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
@@ -478,7 +482,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
         ClientTransaction.Current.Commit ();
         Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
-        Assert.AreEqual (newOrder.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+        Assert.AreEqual (newOrder2.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
       }
       Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
       Assert.AreEqual (oldOrder.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
@@ -486,7 +490,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClientTransaction.Current.Commit ();
 
       Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
-      Assert.AreEqual (newOrder.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+      Assert.AreEqual (newOrder2.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
     }
 
     [Test]
@@ -494,54 +498,57 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       SetDatabaseModifyable ();
 
-      OrderTicket newOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
-      Order oldOrder = newOrderTicket.Order;
+      OrderTicket orderTicket1 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+      Order order1 = orderTicket1.Order;
 
-      Order newOrder = Order.GetObject (DomainObjectIDs.Order2);
-      OrderTicket oldOrderTicket = newOrder.OrderTicket;
+      OrderTicket orderTicket2 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
+      Order order2 = orderTicket2.Order;
 
-      RelationEndPointID propertyID = new RelationEndPointID (newOrder.ID, typeof (Order).FullName + ".OrderTicket");
+      Order order3 = Order.GetObject (DomainObjectIDs.Order2);
+      OrderTicket orderTicket3 = order3.OrderTicket;
+
+      RelationEndPointID propertyID = new RelationEndPointID (order3.ID, typeof (Order).FullName + ".OrderTicket");
 
       using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
       {
-        newOrder.OrderTicket = newOrderTicket;
-        oldOrderTicket.Order = oldOrder;
+        order3.OrderTicket = orderTicket1;
+        orderTicket3.Order = order1;
 
         Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
-        Assert.AreEqual (oldOrderTicket.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+        Assert.AreEqual (orderTicket3.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
 
         using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
         {
-          Assert.AreEqual (newOrderTicket, newOrder.OrderTicket);
+          Assert.AreEqual (orderTicket1, order3.OrderTicket);
 
           Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
-          Assert.AreEqual (newOrderTicket.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+          Assert.AreEqual (orderTicket1.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
 
-          newOrder.OrderTicket = null;
-          newOrder.OrderTicket = newOrderTicket;
+          order3.OrderTicket = orderTicket2;
+          orderTicket1.Order = order2;
 
           Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
-          Assert.AreEqual (newOrderTicket.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+          Assert.AreEqual (orderTicket1.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
 
           ClientTransaction.Current.Commit ();
           Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
-          Assert.AreEqual (newOrderTicket.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+          Assert.AreEqual (orderTicket2.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
         }
 
         Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
-        Assert.AreEqual (oldOrderTicket.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+        Assert.AreEqual (orderTicket3.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
 
         ClientTransaction.Current.Commit ();
         Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
-        Assert.AreEqual (newOrderTicket.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+        Assert.AreEqual (orderTicket2.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
       }
       Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
-      Assert.AreEqual (oldOrderTicket.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+      Assert.AreEqual (orderTicket3.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
 
       ClientTransaction.Current.Commit ();
 
       Assert.IsFalse (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
-      Assert.AreEqual (newOrderTicket.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
+      Assert.AreEqual (orderTicket2.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
     }
 
     [Test]

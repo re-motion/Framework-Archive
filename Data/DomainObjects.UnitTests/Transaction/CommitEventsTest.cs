@@ -228,6 +228,30 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClientTransactionMock.Commit ();
 
       Assert.IsTrue (customerEventReceiver.HasCommittingEventBeenCalled);
+      Assert.IsFalse (customerEventReceiver.HasCommittedEventBeenCalled);
+
+      Assert.AreEqual (1, clientTransactionEventReceiver.CommittingDomainObjects.Count);
+      Assert.AreEqual (1, clientTransactionEventReceiver.CommittedDomainObjects.Count);
+
+      DomainObjectCollection committingDomainObjects = (DomainObjectCollection) clientTransactionEventReceiver.CommittingDomainObjects[0];
+      DomainObjectCollection committedDomainObjects = (DomainObjectCollection) clientTransactionEventReceiver.CommittedDomainObjects[0];
+
+      Assert.AreEqual (0, committingDomainObjects.Count);
+      Assert.AreEqual (0, committedDomainObjects.Count);
+    }
+
+    [Test]
+    public void CommittedEventForMarkAsChanged ()
+    {
+      _customer.MarkAsChanged ();
+
+      DomainObjectEventReceiver customerEventReceiver = new DomainObjectEventReceiver (_customer);
+      ClientTransactionEventReceiver clientTransactionEventReceiver = new ClientTransactionEventReceiver (ClientTransactionMock);
+      _customer.Committing += new EventHandler (Customer_CommittingForCommittedEventForObjectChangedBackToOriginal);
+
+      ClientTransactionMock.Commit ();
+
+      Assert.IsTrue (customerEventReceiver.HasCommittingEventBeenCalled);
       Assert.IsTrue (customerEventReceiver.HasCommittedEventBeenCalled);
 
       Assert.AreEqual (1, clientTransactionEventReceiver.CommittingDomainObjects.Count);
@@ -238,6 +262,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       Assert.AreEqual (1, committingDomainObjects.Count);
       Assert.AreEqual (1, committedDomainObjects.Count);
+
+      Assert.Contains (_customer, committedDomainObjects);
+      Assert.Contains (_customer, committingDomainObjects);
     }
 
     private void Customer_CommittingForModifyOtherObjectInDomainObjectCommitting (object sender, EventArgs e)

@@ -16,7 +16,7 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
   private ObjectID _originalOppositeObjectID;
   private ObjectID _oppositeObjectID;
   private IEndPoint _newEndPoint;
-  private bool _hasChanged;
+  // TODO: private bool _hasBeenTouched;
 
   // construction and disposing
 
@@ -87,12 +87,12 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
   {
     _oppositeObjectID = oppositeObjectID;
     _originalOppositeObjectID = originalOppositeObjectID;
-    _hasChanged = false;
+    // TODO: _hasBeenTouched = false;
   }
 
   protected ObjectEndPoint (IRelationEndPointDefinition definition) : base (definition)
   {
-    _hasChanged = false;
+    // TODO: _hasBeenTouched = false;
   }
 
   // methods and properties
@@ -112,7 +112,7 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
 
     _oppositeObjectID = sourceObjectEndPoint._oppositeObjectID;
     _originalOppositeObjectID = sourceObjectEndPoint._originalOppositeObjectID;
-    _hasChanged = sourceObjectEndPoint._hasChanged;
+    // TODO: _hasBeenTouched = sourceObjectEndPoint._hasBeenTouched;
   }
 
   internal override void MergeData (RelationEndPoint source)
@@ -122,7 +122,7 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
     ObjectEndPoint sourceObjectEndPoint = (ObjectEndPoint) source;
 
     _oppositeObjectID = sourceObjectEndPoint._oppositeObjectID;
-    _hasChanged |= sourceObjectEndPoint._hasChanged;
+    // TODO: _hasBeenTouched |= sourceObjectEndPoint._hasBeenTouched;
   }
 
   internal override void RegisterWithMap (RelationEndPointMap map)
@@ -135,7 +135,7 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
     if (HasChanged)
     {
       _originalOppositeObjectID = _oppositeObjectID;
-      _hasChanged = false;
+      // TODO: _hasBeenTouched = false;
     }
   }
 
@@ -144,7 +144,7 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
     if (HasChanged)
     {
       _oppositeObjectID = _originalOppositeObjectID;
-      _hasChanged = false;
+      // TODO: _hasBeenTouched = false;
     }
   }
 
@@ -152,7 +152,7 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
   {
     get
     {
-      return _hasChanged;
+      return !object.Equals (_oppositeObjectID, _originalOppositeObjectID);
     }
   }
 
@@ -223,7 +223,7 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
     set
     {
       _oppositeObjectID = value;
-      _hasChanged = true;
+      // TODO: _hasBeenTouched = true;
     }
   }
 }

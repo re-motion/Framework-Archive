@@ -634,25 +634,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       int orderNumber = _order1.OrderNumber;
 
-      DataContainer order1DC = _order1.GetInternalDataContainerForTransaction (_newTransaction);
-
       _mockRepository.BackToRecord (_extension);
-      _extension.PropertyValueChanging (_newTransaction, order1DC,
-            order1DC.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"],
-            orderNumber,
-            orderNumber);
-      _extension.PropertyValueChanged (_newTransaction, order1DC,
-            order1DC.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"],
-            orderNumber,
-            orderNumber);
-
       // Note: No method call on the extension is expected.
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
-      {
-        _order1.OrderNumber = orderNumber;
-      }
+      _order1.OrderNumber = orderNumber;
 
       _mockRepository.VerifyAll();
     }

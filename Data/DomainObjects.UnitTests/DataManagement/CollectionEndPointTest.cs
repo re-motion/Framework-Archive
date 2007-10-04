@@ -96,13 +96,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void HasChangedTrueEvenIfSameElements ()
+    public void HasChangedFalseWhenSameElements ()
     {
       Assert.IsFalse (_customerEndPoint.HasChanged);
       _customerEndPoint.OppositeDomainObjects.Add (Order.NewObject ());
       Assert.IsTrue (_customerEndPoint.HasChanged);
       _customerEndPoint.OppositeDomainObjects.RemoveAt (_customerEndPoint.OppositeDomainObjects.Count - 1);
-      Assert.IsTrue (_customerEndPoint.HasChanged);
+      Assert.IsFalse (_customerEndPoint.HasChanged);
+    }
+
+    [Test]
+    [Ignore ("TODO: HasBeenTouched")]
+    public void HasBeenTouched ()
+    {
+      Assert.Fail ();
     }
 
     [Test]

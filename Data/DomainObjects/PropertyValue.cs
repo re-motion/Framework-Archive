@@ -26,6 +26,12 @@ public class PropertyValue
     throw new InvalidEnumDefinitionException (propertyDefinition.PropertyType);
   }
 
+  private static bool AreValuesDifferent (object value1, object value2)
+  {
+    return !object.Equals (value1, value2);
+  }
+
+
   // member fields
 
   /// <summary>
@@ -43,8 +49,8 @@ public class PropertyValue
   private readonly ArrayList _accessObservers;
   private object _value;
   private object _originalValue;
+  // TODO: _hasBeenTouched
   private bool _isDiscarded;
-  private bool _hasChanged;
 
   // construction and disposing
 
@@ -80,8 +86,8 @@ public class PropertyValue
     _definition = definition;
     _value = value;
     _originalValue = originalValue;
-    _hasChanged = false;
     _isDiscarded = false;
+    // TODO: _hasBeenTouched = false;
     _accessObservers = new ArrayList ();
   }
 
@@ -150,14 +156,18 @@ public class PropertyValue
       CheckDiscarded ();
       CheckForRelationProperty ();
 
-      CheckValue (value, _definition);
-      BeginValueSet (value);
+      // TODO: _hasBeenTouched = true
 
-      object oldValue = _value;
-      _value = value;
-      _hasChanged = true;
+      if (AreValuesDifferent (_value, value))
+      {
+        CheckValue (value, _definition);
+        BeginValueSet (value);
 
-      EndValueSet (oldValue);
+        object oldValue = _value;
+        _value = value;
+
+        EndValueSet (oldValue);
+      }
     }
   }
 
@@ -215,7 +225,7 @@ public class PropertyValue
     get 
     {
       CheckDiscarded ();
-      return _hasChanged;
+      return AreValuesDifferent (_value, _originalValue);
     }
   }
 
@@ -304,8 +314,8 @@ public class PropertyValue
   {
     if (HasChanged)
     {
+      // TODO: hasBeenTouched = false
       _originalValue = _value;
-      _hasChanged = false;
     }
   }
 
@@ -313,16 +323,19 @@ public class PropertyValue
   {
     if (HasChanged)
     {
+      // TODO: hasBeenTouched = false
       _value = _originalValue;
-      _hasChanged = false;
     }
   }
 
   internal void SetRelationValue (ObjectID id)
   {
-    CheckValue (id, _definition);
-    _value = id;
-    _hasChanged = true;
+    if (AreValuesDifferent (_value, id))
+    {
+      CheckValue (id, _definition);
+      _value = id;
+      // TODO: _hasBeenTouched = true
+    }
   }
 
   internal void Discard ()
@@ -435,7 +448,7 @@ public class PropertyValue
     _value = source._value;
     _originalValue = source._originalValue;
     _isDiscarded = source._isDiscarded;
-    _hasChanged = source._hasChanged;
+    // TODO: _hasBeenTouched = source._hasBeenTouched
   }
 
   internal void MergeData (PropertyValue source)
@@ -443,7 +456,7 @@ public class PropertyValue
     Assertion.IsTrue (_definition == source._definition);
     _value = source._value;
     _isDiscarded = source._isDiscarded;
-    _hasChanged |= source._hasChanged;
+    // TODO: _hasBeenTouched |= source._hasBeenTouched
   }
 }
 }

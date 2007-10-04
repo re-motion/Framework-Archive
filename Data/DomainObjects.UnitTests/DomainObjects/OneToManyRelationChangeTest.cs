@@ -296,22 +296,43 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (StateType.Changed, _newCustomer.State);
 
       _order.Customer = _oldCustomer;
-      Assert.AreEqual (StateType.Changed, _order.State);
-      Assert.AreEqual (StateType.Changed, _oldCustomer.State);
-      Assert.AreEqual (StateType.Changed, _newCustomer.State);
+      Assert.AreEqual (StateType.Unchanged, _order.State);
+      Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
+      Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
     }
 
     [Test]
-    [Ignore ("TODO: Fix")]
     public void SetOriginalValue ()
     {
       _order.Customer = _order.Customer;
-      Assert.AreEqual (StateType.Changed, _order.State);
-      Assert.AreEqual (StateType.Changed, _order.Customer.State);
+      Assert.AreEqual (StateType.Unchanged, _order.State);
+      Assert.AreEqual (StateType.Unchanged, _order.Customer.State);
 
-      Assert.AreEqual (StateType.Changed, _order.InternalDataContainer.State);
+      Assert.AreEqual (StateType.Unchanged, _order.InternalDataContainer.State);
       Assert.AreEqual (StateType.Unchanged, _order.Customer.InternalDataContainer.State);
     }
+
+    [Test]
+    [Ignore ("TODO: HasBeenTouched")]
+    public void HasBeenTouched ()
+    {
+      Assert.Fail ();
+    }
+
+    [Test]
+    [Ignore ("TODO: HasBeenTouched")]
+    public void HasBeenTouched_SetOriginalValue ()
+    {
+      Assert.Fail ();
+    }
+
+    [Test]
+    [Ignore ("TODO: HasBeenTouched")]
+    public void HasBeenTouched_ChangeRelationBackToOriginalValue ()
+    {
+      Assert.Fail ();
+    }
+
 
     [Test]
     public void GetOriginalRelatedObject ()
