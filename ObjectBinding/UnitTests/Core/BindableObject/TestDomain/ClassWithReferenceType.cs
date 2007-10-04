@@ -3,10 +3,11 @@ using System;
 namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
 {
   [BindableObject]
-  public class ClassWithReferenceType<T>
+  public class ClassWithReferenceType<T> : IInterfaceWithReferenceType<T>
       where T: class
   {
     private T _scalar;
+    private T _explicitInterfaceScalar;
     private readonly T _readOnlyScalar = default (T);
     private T _readOnlyNonPublicSetterScalar;
     private T _notVisibleAttributeScalar;
@@ -22,6 +23,12 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
     {
       get { return _scalar; }
       set { _scalar = value; }
+    }
+
+    T IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar
+    {
+      get { return _explicitInterfaceScalar; }
+      set { _explicitInterfaceScalar = value; }
     }
 
     public T ReadOnlyScalar

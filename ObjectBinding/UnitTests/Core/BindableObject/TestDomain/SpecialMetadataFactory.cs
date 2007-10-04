@@ -19,22 +19,22 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
 
     private class SpecialPropertyFinder : IPropertyFinder
     {
-      private readonly Type _targetType;
+      private readonly Type _concreteType;
 
-      public SpecialPropertyFinder (Type targetType)
+      public SpecialPropertyFinder (Type concreteType)
       {
-        _targetType = targetType;
+        _concreteType = concreteType;
       }
 
       public IEnumerable<PropertyInfo> GetPropertyInfos ()
       {
-        return _targetType.GetProperties (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        return Mixins.TypeUtility.GetUnderlyingTargetType (_concreteType).GetProperties (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
       }
     }
 
-    public override IPropertyFinder CreatePropertyFinder (Type targetType)
+    public override IPropertyFinder CreatePropertyFinder (Type concreteType)
     {
-      return new SpecialPropertyFinder (targetType);
+      return new SpecialPropertyFinder (concreteType);
     }
   }
 }

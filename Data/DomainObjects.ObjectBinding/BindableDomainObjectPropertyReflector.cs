@@ -3,6 +3,7 @@ using System.Reflection;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.Utilities;
+using Rubicon.Mixins;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
@@ -11,18 +12,19 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
     private PropertyDefinition _propertyDefinition;
     private IRelationEndPointDefinition _relationEndPointDefinition;
 
-    public BindableDomainObjectPropertyReflector (Type targetType, PropertyInfo propertyInfo, BindableObjectProvider businessObjectProvider)
+    public BindableDomainObjectPropertyReflector (Type concreteType, PropertyInfo propertyInfo, BindableObjectProvider businessObjectProvider)
         : base (propertyInfo, businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
+      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
       ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
 
-      InitializeMappingDefinitions (targetType, propertyInfo);
+      InitializeMappingDefinitions (concreteType, propertyInfo);
     }
 
-    private void InitializeMappingDefinitions (Type targetType, PropertyInfo propertyInfo)
+    private void InitializeMappingDefinitions (Type concreteType, PropertyInfo propertyInfo)
     {
+      Type targetType = Mixins.TypeUtility.GetUnderlyingTargetType (concreteType);
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[targetType];
       if (classDefinition != null)
       {

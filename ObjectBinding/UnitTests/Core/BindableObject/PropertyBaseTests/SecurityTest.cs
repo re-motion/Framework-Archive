@@ -16,6 +16,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
     private BindableObjectProvider _businessObjectProvider;
     private IObjectSecurityAdapter _mockObjectSecurityAdapter;
     private IBusinessObjectProperty _securableProperty;
+    private IBusinessObjectProperty _securableExplicitInterfaceProperty;
     private IBusinessObjectProperty _nonSecurableProperty;
     private IBusinessObjectProperty _nonSecurablePropertyReadOnly;
     private IBusinessObject _securableObject;
@@ -39,6 +40,12 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
       _securableProperty = new StubPropertyBase (
           new PropertyBase.Parameters (
               _businessObjectProvider, GetPropertyInfo (typeof (SecurableClassWithReferenceType<SimpleReferenceType>), "Scalar"),
+              typeof (SimpleReferenceType), null, false, false));
+
+      _securableExplicitInterfaceProperty = new StubPropertyBase (
+          new PropertyBase.Parameters (
+              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>),
+              "Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar"),
               typeof (SimpleReferenceType), null, false, false));
       
       _nonSecurablePropertyReadOnly = new StubPropertyBase (
@@ -95,6 +102,21 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
     }
 
     [Test]
+    public void IsAccessibleOnExplicitInterfaceProperty ()
+    {
+      Expect.Call (
+          _mockObjectSecurityAdapter.HasAccessOnGetAccessor (
+              (ISecurableObject) _securableObject, ((StubPropertyBase) _securableExplicitInterfaceProperty).PropertyInfo.Name)).Return (true);
+
+      _mocks.ReplayAll ();
+
+      bool isAccessible = _securableExplicitInterfaceProperty.IsAccessible (_securableObject.BusinessObjectClass, _securableObject);
+
+      _mocks.VerifyAll ();
+      Assert.IsTrue (isAccessible);
+    }
+
+    [Test]
     public void IsAccessibleForNonSecurableType ()
     {
       _mocks.ReplayAll();
@@ -126,6 +148,21 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
       bool isReadOnly = _securableProperty.IsReadOnly (_securableObject);
 
       _mocks.VerifyAll();
+      Assert.IsTrue (isReadOnly);
+    }
+
+    [Test]
+    public void IsReadOnlyOnExplicitInterfaceProperty ()
+    {
+      Expect.Call (
+          _mockObjectSecurityAdapter.HasAccessOnSetAccessor (
+              (ISecurableObject) _securableObject, ((StubPropertyBase) _securableExplicitInterfaceProperty).PropertyInfo.Name)).Return (false);
+
+      _mocks.ReplayAll ();
+
+      bool isReadOnly = _securableExplicitInterfaceProperty.IsReadOnly (_securableObject);
+
+      _mocks.VerifyAll ();
       Assert.IsTrue (isReadOnly);
     }
 

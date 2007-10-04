@@ -12,16 +12,16 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
     }
 
-    public virtual IPropertyFinder CreatePropertyFinder (Type targetType)
+    public virtual IPropertyFinder CreatePropertyFinder (Type concreteType)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
+      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
 
-      return new ReflectionBasedPropertyFinder (targetType);
+      return new ReflectionBasedPropertyFinder (concreteType);
     }
 
-    public virtual PropertyReflector CreatePropertyReflector (Type targetType, PropertyInfo propertyInfo, BindableObjectProvider businessObjectProvider)
+    public virtual PropertyReflector CreatePropertyReflector (Type concreteType, PropertyInfo propertyInfo, BindableObjectProvider businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
+      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
       ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
 

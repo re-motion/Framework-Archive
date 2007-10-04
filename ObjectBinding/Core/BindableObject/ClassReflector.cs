@@ -60,12 +60,12 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     private List<PropertyBase> GetProperties ()
     {
-      IPropertyFinder propertyFinder = _metadataFactory.CreatePropertyFinder (_targetType);
+      IPropertyFinder propertyFinder = _metadataFactory.CreatePropertyFinder (_concreteType);
       
       List <PropertyBase> properties = new List<PropertyBase> ();
       foreach (PropertyInfo propertyInfo in propertyFinder.GetPropertyInfos ())
       {
-        PropertyReflector propertyReflector = _metadataFactory.CreatePropertyReflector (_targetType, propertyInfo, _businessObjectProvider);
+        PropertyReflector propertyReflector = _metadataFactory.CreatePropertyReflector (_concreteType, propertyInfo, _businessObjectProvider);
         properties.Add (propertyReflector.GetMetadata());
       }
 

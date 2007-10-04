@@ -91,10 +91,12 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
 
       ClassReflector otherClassReflector = new ClassReflector (_type, _businessObjectProvider, factoryMock);
 
-      Expect.Call (factoryMock.CreatePropertyFinder (_type)).Return (propertyFinderMock);
+      Type concreteType = Mixins.TypeUtility.GetConcreteType (_type);
+
+      Expect.Call (factoryMock.CreatePropertyFinder (concreteType)).Return (propertyFinderMock);
       Expect.Call (propertyFinderMock.GetPropertyInfos ()).Return (new PropertyInfo[] { dummyProperty1, dummyProperty2 });
-      Expect.Call (factoryMock.CreatePropertyReflector (_type, dummyProperty1, _businessObjectProvider)).Return (dummyReflector1);
-      Expect.Call (factoryMock.CreatePropertyReflector (_type, dummyProperty2, _businessObjectProvider)).Return (dummyReflector2);
+      Expect.Call (factoryMock.CreatePropertyReflector (concreteType, dummyProperty1, _businessObjectProvider)).Return (dummyReflector1);
+      Expect.Call (factoryMock.CreatePropertyReflector (concreteType, dummyProperty2, _businessObjectProvider)).Return (dummyReflector2);
 
       mockRepository.ReplayAll ();
 

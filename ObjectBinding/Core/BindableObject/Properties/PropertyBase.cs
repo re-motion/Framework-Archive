@@ -91,7 +91,13 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     /// <value> A <see cref="String"/> by which this property can be found within its <see cref="IBusinessObjectClass"/>. </value>
     public string Identifier
     {
-      get { return _propertyInfo.Name; }
+      get { return ShortenName (_propertyInfo.Name); }
+    }
+
+    // Truncates the name to the part to the right of the last '.', if any.
+    private string ShortenName (string name)
+    {
+      return name.Substring (name.LastIndexOf ('.') + 1);
     }
 
     /// <summary> Gets the property name as presented to the user. </summary>
@@ -103,7 +109,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
       {
         IBindableObjectGlobalizationService globalizationService = BusinessObjectProvider.GetService<IBindableObjectGlobalizationService> ();
         if (globalizationService == null)
-          return _propertyInfo.Name;
+          return Identifier;
         return globalizationService.GetPropertyDisplayName (_propertyInfo);
       }
     }

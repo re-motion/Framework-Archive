@@ -5,7 +5,7 @@ namespace Rubicon.ObjectBinding.BindableObject
 {
   public interface IMetadataFactory
   {
-    IPropertyFinder CreatePropertyFinder (Type targetType);
-    PropertyReflector CreatePropertyReflector (Type targetType, PropertyInfo propertyInfo, BindableObjectProvider businessObjectProvider);
+    IPropertyFinder CreatePropertyFinder (Type concreteType);
+    PropertyReflector CreatePropertyReflector (Type concreteType, PropertyInfo propertyInfo, BindableObjectProvider businessObjectProvider);
   }
 }

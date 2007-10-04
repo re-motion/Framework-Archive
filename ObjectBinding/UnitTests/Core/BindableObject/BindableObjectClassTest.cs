@@ -95,6 +95,18 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     }
 
     [Test]
+    public void GetPropertyDefinition_ForMixedProperty ()
+    {
+      PropertyReflector propertyReflector =
+          new PropertyReflector (GetPropertyInfo (TypeUtility.GetConcreteType (typeof (ClassWithMixedProperty)),
+          typeof (IMixinAddingProperty).FullName + ".MixedProperty"), _bindableObjectProvider);
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithMixedProperty), _bindableObjectProvider, DefaultMetadataFactory.Instance);
+      BindableObjectClass bindableObjectClass = classReflector.GetMetadata ();
+
+      CheckPropertyBase (propertyReflector.GetMetadata (), bindableObjectClass.GetPropertyDefinition ("MixedProperty"));
+    }
+
+    [Test]
     [ExpectedException (typeof (KeyNotFoundException),
         ExpectedMessage =
         "The property 'Invalid' was not found on business object class "
@@ -118,6 +130,15 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     }
 
     [Test]
+    public void HasPropertyDefinition_ForMixedProperty ()
+    {
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithMixedProperty), _bindableObjectProvider, DefaultMetadataFactory.Instance);
+      BindableObjectClass bindableObjectClass = classReflector.GetMetadata ();
+
+      Assert.That (bindableObjectClass.HasPropertyDefinition ("MixedProperty"), Is.True);
+    }
+
+    [Test]
     public void GetPropertyDefinitions ()
     {
       Type type = typeof (ClassWithReferenceType<SimpleReferenceType>);
@@ -127,7 +148,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
               CreateProperty (type, "ReadOnlyScalar"),
               CreateProperty (type, "ReadOnlyAttributeScalar"),
               CreateProperty (type, "ReadOnlyNonPublicSetterScalar"),
-              CreateProperty (type, "Array")
+              CreateProperty (type, "Array"),
+              CreateProperty (type, "Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar")
           };
 
       ClassReflector classReflector = new ClassReflector (type, _bindableObjectProvider, DefaultMetadataFactory.Instance);

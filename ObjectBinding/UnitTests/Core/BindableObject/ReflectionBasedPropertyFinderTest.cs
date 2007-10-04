@@ -4,6 +4,7 @@ using System.Reflection;
 using NUnit.Framework;
 using Rubicon.ObjectBinding.BindableObject;
 using NUnit.Framework.SyntaxHelpers;
+using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
 
 namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
 {
@@ -62,6 +63,69 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
                       typeof (TestTypeHidingProperties).GetProperty ("PublicInstanceProperty"),
                       typeof (TestTypeHidingProperties).GetProperty ("BasePublicInstanceProperty")
                   }));
+    }
+
+    public interface ITestInterface
+    {
+      int InterfaceProperty { get; }
+    }
+
+    public interface IExplicitTestInterface
+    {
+      int InterfaceProperty { get; }
+    }
+
+    public class TestTypeWithInterfaces : ITestInterface, IExplicitTestInterface
+    {
+      public int InterfaceProperty { get { return 0; } }
+      int IExplicitTestInterface.InterfaceProperty { get { return 0; } }
+    }
+
+    public class DerivedTypeWithInterfaces : TestTypeWithInterfaces
+    {
+    }
+
+    [Test]
+    public void FindsPropertiesFromImplicitInterfaceImplementations ()
+    {
+      ReflectionBasedPropertyFinder finder = new ReflectionBasedPropertyFinder (typeof (TestTypeWithInterfaces));
+      List<PropertyInfo> properties = new List<PropertyInfo> (finder.GetPropertyInfos ());
+      Assert.That (properties,
+          List.Contains (typeof (TestTypeWithInterfaces).GetProperty ("InterfaceProperty", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)));
+    }
+
+    [Test]
+    public void FindsPropertiesFromExplicitInterfaceImplementations ()
+    {
+      ReflectionBasedPropertyFinder finder = new ReflectionBasedPropertyFinder (typeof (TestTypeWithInterfaces));
+      List<PropertyInfo> properties = new List<PropertyInfo> (finder.GetPropertyInfos ());
+      Assert.That (properties,
+          List.Contains (typeof (TestTypeWithInterfaces).GetProperty (
+          typeof (ReflectionBasedPropertyFinderTest).FullName + ".IExplicitTestInterface.InterfaceProperty",
+          BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)));
+    }
+
+    [Test]
+    public void FindsPropertiesFromExplicitInterfaceImplementationsOnBase ()
+    {
+      ReflectionBasedPropertyFinder finder = new ReflectionBasedPropertyFinder (typeof (DerivedTypeWithInterfaces));
+      List<PropertyInfo> properties = new List<PropertyInfo> (finder.GetPropertyInfos ());
+      Assert.That (properties,
+          List.Contains (typeof (TestTypeWithInterfaces).GetProperty (
+          typeof (ReflectionBasedPropertyFinderTest).FullName + ".IExplicitTestInterface.InterfaceProperty",
+          BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)));
+    }
+
+    [Test]
+    public void NoPropertiesFromBindableObjectMixins ()
+    {
+      Type targetType = typeof (ClassWithIdentity);
+      Type concreteType = Mixins.TypeUtility.GetConcreteType (targetType);
+      
+      List<PropertyInfo> targetTypeProperties = new List<PropertyInfo> (new ReflectionBasedPropertyFinder(targetType).GetPropertyInfos ());
+      List<PropertyInfo> concreteTypeProperties = new List<PropertyInfo> (new ReflectionBasedPropertyFinder (concreteType).GetPropertyInfos ());
+
+      Assert.That (concreteTypeProperties, Is.EquivalentTo (targetTypeProperties));
     }
   }
 }

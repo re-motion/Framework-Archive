@@ -14,19 +14,19 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
     {
     }
 
-    public IPropertyFinder CreatePropertyFinder (Type targetType)
+    public IPropertyFinder CreatePropertyFinder (Type concreteType)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      return new BindableDomainObjectPropertyFinder (targetType);
+      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
+      return new BindableDomainObjectPropertyFinder (concreteType);
     }
 
-    public PropertyReflector CreatePropertyReflector (Type targetType, PropertyInfo propertyInfo, BindableObjectProvider businessObjectProvider)
+    public PropertyReflector CreatePropertyReflector (Type concreteType, PropertyInfo propertyInfo, BindableObjectProvider businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
+      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
       ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
 
-      return new BindableDomainObjectPropertyReflector (targetType, propertyInfo, businessObjectProvider);
+      return new BindableDomainObjectPropertyReflector (concreteType, propertyInfo, businessObjectProvider);
     }
   }
 }
