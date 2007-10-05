@@ -774,34 +774,7 @@ function Rubicon$UI$BocAutoCompleteReferenceValueBehavior$_showCompletionList (f
       Sys.Net.WebServiceProxy.invoke(this._serviceUrl, this._serviceMethod, false, params,
                                   Function.createDelegate(this, this._onMethodComplete),
                                   Function.createDelegate(this, this._onMethodFailed));
- 
-//      Sys.Net._WebMethod._invoke 
-//      (
-//        this._serviceUrl, this._serviceMethod, this._appUrl,
-//        { 
-//          prefixText : (ignorePrefix ? '' : this._currentPrefix), 
-//          count : this._completionSetCount,
-//          businessObjectClass : this._businessObjectClass,
-//          businessObjectProperty : this._businessObjectProperty,
-//          businessObjectID: this._businessObjectID,
-//          args : this._args
-//        },
-//        this._onMethodComplete, null, null, null,
-//        [ this, text ]);
-
-//        Sys.Net._WebMethod._invoke(this, this._serviceMethod, this._serviceMethod, false,
-//        { 
-//          prefixText : (ignorePrefix ? '' : this._currentPrefix), 
-//          count : this._completionSetCount,
-//          businessObjectClass : this._businessObjectClass,
-//          businessObjectProperty : this._businessObjectProperty,
-//          businessObjectID: this._businessObjectID,
-//          args : this._args
-//        },
-//        Function.createDelegate(this, this._onMethodComplete),
-//        Function.createDelegate(this, this._onMethodFailed),
-//        text);
-    }
+     }
   }
 }
 
@@ -894,20 +867,20 @@ function Rubicon$UI$BocAutoCompleteReferenceValueBehavior$_update (prefixText, c
   
 function Rubicon$UI$BocAutoCompleteReferenceValueBehavior$_repositionCompletionList ()
 {
-  var styleDisplayBackUp = this._completionListElement.style.display;
-  this._completionListElement.style.display = 'block';
+  this._popupBehavior.hide ();
+  this._popupBehavior.show ();
+
   document.recalc (true);
   var completionListTop = this._completionListElement.offsetTop;
   var completionListLeft = this._completionListElement.offsetLeft;
   var completionListHeight = this._completionListElement.offsetHeight;
   var completionListWidth = this._completionListElement.offsetWidth;
-  if (this._completionListElement.offsetHeight >= this._completionListElement.scrollHeight 
-      && this._completionListElement.clientHeight < this._completionListElement.scrollHeight)
+  if (this._completionListElement.scrollHeight < this._completionListElement.clientHeight)
   {
-    completionListHeight += this._completionListElement.scrollHeight - this._completionListElement.clientHeight;
-    this._completionListElement.style.height = completionListHeight;
+    this._completionListElement.style.height = 'auto';
+    completionListHeight = this._completionListElement.clientHeight;
   }
-  this._completionListElement.style.display = 'none';
+  this._popupBehavior.hide ();
 
   var totalBodyHeight = window.document.body.scrollHeight;
   var visibleBodyTop = window.document.body.scrollTop;
@@ -930,8 +903,6 @@ function Rubicon$UI$BocAutoCompleteReferenceValueBehavior$_repositionCompletionL
   {
     this._popupBehavior.set_positioningMode (AjaxControlToolkit.PositioningMode.BottomRight);
   }
-  
-  this._completionListElement.style.display = styleDisplayBackUp;    
 }
 
 function Rubicon$UI$BocAutoCompleteReferenceValueBehavior$_isCompletionListItemVisible (element)

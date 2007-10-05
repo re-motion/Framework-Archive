@@ -26,7 +26,7 @@
       <asp:Label ID="PartnerFieldValueLabel" runat="server" EnableViewState="False">#</asp:Label></td>
   </tr>
   <tr>
-    <td>
+    <td><br /><br /><br /><br /><br /><br />
     </td>
     <td>
       <rubicon:BocAutoCompleteReferenceValue ID="ReadOnlyPartnerField" runat="server" ReadOnly="True" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
