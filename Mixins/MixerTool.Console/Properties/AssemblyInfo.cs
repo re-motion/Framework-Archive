@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Rubicon.Mixins;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -14,7 +15,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright ("(c) 2003 - 2007 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
-[assembly: CLSCompliant (true)]
+
 //
 // Version information for an assembly consists of the following four values:
 //
@@ -26,7 +27,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion ("1.7.56.202")]
+[assembly: AssemblyVersion ("1.7.65.202")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -53,6 +54,7 @@ using System.Runtime.InteropServices;
 //   (*) Delay Signing is an advanced option - see the Microsoft .NET Framework
 //       documentation for more information on this.
 //
+
 #pragma warning disable 1699
 [assembly: AssemblyDelaySign (false)]
 [assembly: AssemblyKeyFile (@"\Development\global/rubicon.snk")]
