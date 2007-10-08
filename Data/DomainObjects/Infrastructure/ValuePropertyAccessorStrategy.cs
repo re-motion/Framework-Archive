@@ -30,23 +30,31 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public bool HasChanged (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
       return GetPropertyValue (propertyAccessor, transaction).HasChanged;
     }
 
-    public bool IsNull (PropertyAccessor propertyAccessor, ClientTransaction transaction)
-		{
-			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
+    public bool HasBeenTouched (PropertyAccessor propertyAccessor, ClientTransaction transaction)
+    {
+      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
-			return GetValueWithoutTypeCheck (propertyAccessor, transaction) == null;
-		}
+      return GetPropertyValue (propertyAccessor, transaction).HasBeenTouched;
+    }
+
+    public bool IsNull (PropertyAccessor propertyAccessor, ClientTransaction transaction)
+    {
+      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      return GetValueWithoutTypeCheck (propertyAccessor, transaction) == null;
+    }
 
     public object GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
       return GetPropertyValue (propertyAccessor, transaction).Value;
@@ -54,7 +62,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction, object value)
     {
-			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
       GetPropertyValue (propertyAccessor, transaction).Value = value;
@@ -62,7 +70,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public object GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
       return GetPropertyValue (propertyAccessor, transaction).OriginalValue;

@@ -416,6 +416,39 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    public void HasBeenTouchedSimple ()
+    {
+      IndustrialSector sector = IndustrialSector.GetObject (DomainObjectIDs.IndustrialSector1);
+      PropertyAccessor property = CreateAccessor (sector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name");
+
+      Assert.IsFalse (property.HasBeenTouched);
+      property.SetValueWithoutTypeCheck (property.GetValueWithoutTypeCheck ());
+      Assert.IsTrue (property.HasBeenTouched);
+    }
+
+    [Test]
+    public void HasBeenTouchedRelated ()
+    {
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
+      PropertyAccessor property = CreateAccessor (computer, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee");
+
+      Assert.IsFalse (property.HasBeenTouched);
+      property.SetValueWithoutTypeCheck (property.GetValueWithoutTypeCheck ());
+      Assert.IsTrue (property.HasBeenTouched);
+    }
+
+    [Test]
+    public void HasBeenTouchedRelatedCollection ()
+    {
+      IndustrialSector sector = IndustrialSector.GetObject (DomainObjectIDs.IndustrialSector1);
+      PropertyAccessor property = CreateAccessor (sector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies");
+
+      Assert.IsFalse (property.HasBeenTouched);
+      ((DomainObjectCollection) property.GetValueWithoutTypeCheck ())[0] = ((DomainObjectCollection) property.GetValueWithoutTypeCheck ())[0];
+      Assert.IsTrue (property.HasBeenTouched);
+    }
+
+    [Test]
     public void IsNullPropertyValue ()
     {
       ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.NewObject ();

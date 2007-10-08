@@ -46,6 +46,15 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       return endPoint != null && endPoint.HasChanged;
     }
 
+    public bool HasBeenTouched (PropertyAccessor propertyAccessor, ClientTransaction transaction)
+    {
+      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      RelationEndPoint endPoint = GetRelationEndPoint (propertyAccessor, transaction);
+      return endPoint != null && endPoint.HasBeenTouched;
+    }
+
     public bool IsNull (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
       ArgumentUtility.CheckNotNull ("accessor", propertyAccessor);

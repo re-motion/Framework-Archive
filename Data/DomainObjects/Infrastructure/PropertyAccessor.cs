@@ -253,6 +253,26 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     }
 
     /// <summary>
+    /// Indicates whether  the property's value (for simple and related object properties) or one of its elements (for related object collection
+    /// properties) has been assigned since instantiation, loading, commit or rollback, regardless of whether the current value differs from the
+    /// original value.
+    /// </summary>
+    /// <remarks>This property differs from <see cref="HasChanged"/> in that for <see cref="HasChanged"/> to be true, the property's value (or its
+    /// elements) actually must have changed in an assignment operation. <see cref="HasBeenTouched"/> is true also if a property gets assigned the
+    /// same value it originally had. This can be useful to determine whether the property has been written once since the last load, commit, or
+    /// rollback operation.
+    /// </remarks>
+    public bool HasBeenTouched
+    {
+      get
+      {
+        DomainObject.CheckIfObjectIsDiscarded ();
+        _domainObject.CheckIfRightTransaction (ClientTransactionScope.CurrentTransaction);
+        return _strategy.HasBeenTouched (this, ClientTransactionScope.CurrentTransaction);
+      }
+    }
+
+    /// <summary>
     /// Gets a value indicating whether the property's value is <see langword="null"/>.
     /// </summary>
     /// <value>True if this instance is null; otherwise, false.</value>

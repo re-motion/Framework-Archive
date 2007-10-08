@@ -17,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public RelationEndPointID CreateRelationEndPointID (PropertyAccessor propertyAccessor)
     {
-			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
       return RelatedObjectPropertyAccessorStrategy.Instance.CreateRelationEndPointID (propertyAccessor);
     }
 
@@ -28,23 +28,31 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public bool HasChanged (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
       return RelatedObjectPropertyAccessorStrategy.Instance.HasChanged (propertyAccessor, transaction);
     }
 
+    public bool HasBeenTouched (PropertyAccessor propertyAccessor, ClientTransaction transaction)
+    {
+      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      return RelatedObjectPropertyAccessorStrategy.Instance.HasBeenTouched (propertyAccessor, transaction);
+    }
+
     public bool IsNull (PropertyAccessor propertyAccessor, ClientTransaction transaction)
-  	{
-			ArgumentUtility.CheckNotNull ("accessor", propertyAccessor);
+    {
+      ArgumentUtility.CheckNotNull ("accessor", propertyAccessor);
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
       return false;
-  	}
+    }
 
     public object GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
       return transaction.GetRelatedObjects (CreateRelationEndPointID (propertyAccessor));
@@ -52,7 +60,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction, object value)
     {
-			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
       throw new InvalidOperationException ("Related object collections cannot be set.");
@@ -60,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public object GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
       return transaction.GetOriginalRelatedObjects (CreateRelationEndPointID (propertyAccessor));
