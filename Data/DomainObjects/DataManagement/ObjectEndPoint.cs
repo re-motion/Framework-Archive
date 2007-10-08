@@ -16,41 +16,9 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
   private ObjectID _originalOppositeObjectID;
   private ObjectID _oppositeObjectID;
   private IEndPoint _newEndPoint;
-  // TODO: private bool _hasBeenTouched;
+  private bool _hasBeenTouched;
 
   // construction and disposing
-
-  public ObjectEndPoint (
-      DomainObject domainObject, 
-      IRelationEndPointDefinition definition, 
-      ObjectID oppositeObjectID) 
-      : this (domainObject.GetDataContainer().ClientTransaction, domainObject.ID, definition, oppositeObjectID)
-  {
-  }
-
-  public ObjectEndPoint (
-      DataContainer dataContainer, 
-      IRelationEndPointDefinition definition, 
-      ObjectID oppositeObjectID) 
-      : this (dataContainer.ClientTransaction, dataContainer.ID, definition, oppositeObjectID)
-  {
-  }
-
-  public ObjectEndPoint ( 
-      DomainObject domainObject, 
-      string propertyName,
-      ObjectID oppositeObjectID) 
-      : this (domainObject.GetDataContainer().ClientTransaction, domainObject.ID, propertyName, oppositeObjectID)
-  {
-  }
-
-  public ObjectEndPoint (
-      DataContainer dataContainer, 
-      string propertyName,
-      ObjectID oppositeObjectID) 
-      : this (dataContainer.ClientTransaction, dataContainer.ID, propertyName, oppositeObjectID)
-  {
-  }
 
   public ObjectEndPoint (
       ClientTransaction clientTransaction,
@@ -87,12 +55,12 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
   {
     _oppositeObjectID = oppositeObjectID;
     _originalOppositeObjectID = originalOppositeObjectID;
-    // TODO: _hasBeenTouched = false;
+    _hasBeenTouched = false;
   }
 
   protected ObjectEndPoint (IRelationEndPointDefinition definition) : base (definition)
   {
-    // TODO: _hasBeenTouched = false;
+    _hasBeenTouched = false;
   }
 
   // methods and properties
@@ -112,17 +80,17 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
 
     _oppositeObjectID = sourceObjectEndPoint._oppositeObjectID;
     _originalOppositeObjectID = sourceObjectEndPoint._originalOppositeObjectID;
-    // TODO: _hasBeenTouched = sourceObjectEndPoint._hasBeenTouched;
+    _hasBeenTouched = sourceObjectEndPoint._hasBeenTouched;
   }
 
-  internal override void MergeData (RelationEndPoint source)
+  internal override void TakeOverCommittedData (RelationEndPoint source)
   {
     Assertion.IsTrue (Definition == source.Definition);
 
     ObjectEndPoint sourceObjectEndPoint = (ObjectEndPoint) source;
 
     _oppositeObjectID = sourceObjectEndPoint._oppositeObjectID;
-    // TODO: _hasBeenTouched |= sourceObjectEndPoint._hasBeenTouched;
+    _hasBeenTouched |= sourceObjectEndPoint._hasBeenTouched || HasChanged; // true if: we have been touched/source has been touched/we have changed
   }
 
   internal override void RegisterWithMap (RelationEndPointMap map)
@@ -135,7 +103,7 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
     if (HasChanged)
     {
       _originalOppositeObjectID = _oppositeObjectID;
-      // TODO: _hasBeenTouched = false;
+      _hasBeenTouched = false;
     }
   }
 
@@ -144,7 +112,7 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
     if (HasChanged)
     {
       _oppositeObjectID = _originalOppositeObjectID;
-      // TODO: _hasBeenTouched = false;
+      _hasBeenTouched = false;
     }
   }
 
@@ -154,6 +122,16 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
     {
       return !object.Equals (_oppositeObjectID, _originalOppositeObjectID);
     }
+  }
+
+  public override bool HasBeenTouched
+  {
+    get { return _hasBeenTouched; }
+  }
+
+  protected internal override void Touch ()
+  {
+    _hasBeenTouched = true;
   }
 
   public override void CheckMandatory ()
@@ -223,7 +201,7 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
     set
     {
       _oppositeObjectID = value;
-      // TODO: _hasBeenTouched = true;
+      _hasBeenTouched = true;
     }
   }
 }

@@ -378,6 +378,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
       Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
       Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+      Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasBeenTouched);
+      Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasBeenTouched);
       Assert.AreEqual (32767, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
       Assert.AreEqual (2147483647, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
 
@@ -386,6 +388,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         cwadt.Int32Property = 7;
         Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
         Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+        Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasBeenTouched);
+        Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasBeenTouched);
         Assert.AreEqual (32767, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
         Assert.AreEqual (2147483647, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
 
@@ -393,6 +397,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         {
           Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
           Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+          Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasBeenTouched);
+          Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasBeenTouched);
           Assert.AreEqual (32767, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
           Assert.AreEqual (7, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
 
@@ -400,17 +406,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
           Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
           Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+          Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasBeenTouched);
+          Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasBeenTouched);
 
           ClientTransaction.Current.Commit ();
 
           Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
           Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+          Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasBeenTouched);
+          Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasBeenTouched);
           Assert.AreEqual (8, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
           Assert.AreEqual (7, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
         }
 
         Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
         Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+        Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasBeenTouched);
+        Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasBeenTouched);
         Assert.AreEqual (32767, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
         Assert.AreEqual (2147483647, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
 
@@ -418,12 +430,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
         Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
         Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+        Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasBeenTouched);
+        Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasBeenTouched);
         Assert.AreEqual (8, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
         Assert.AreEqual (7, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
       }
 
       Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
       Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+      Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasBeenTouched);
+      Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasBeenTouched);
       Assert.AreEqual (32767, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
       Assert.AreEqual (2147483647, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
 
@@ -431,6 +447,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
       Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
+      Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasBeenTouched);
+      Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasBeenTouched);
       Assert.AreEqual (8, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
       Assert.AreEqual (7, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
     }

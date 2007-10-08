@@ -43,6 +43,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 
       Assert.AreEqual (expectedValue.HasChanged, actualValue.HasChanged,
           string.Format ("HasChanged, expected property name: '{0}'", expectedValue.Name));
+
+      Assert.AreEqual (expectedValue.HasBeenTouched, actualValue.HasBeenTouched,
+          string.Format ("HasBeenTouched, expected property name: '{0}'", expectedValue.Name));
     }
 
     private void AreValuesEqual (object expected, object actual, string message)

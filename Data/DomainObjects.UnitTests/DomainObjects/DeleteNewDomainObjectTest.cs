@@ -426,6 +426,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (ObjectDiscardedException))]
+    public void PropertyValueHasBeenTouched ()
+    {
+      _newOrder.Delete ();
+
+      bool hasBeenTouched = _orderNumberValue.HasBeenTouched;
+    }
+    [Test]
+    [ExpectedException (typeof (ObjectDiscardedException))]
     public void PropertyValueEquals ()
     {
       _newOrder.Delete ();

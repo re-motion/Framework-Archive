@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Utilities;
 
@@ -62,7 +63,7 @@ namespace Rubicon.Data.DomainObjects
   /// </list>
   /// </remarks>
   [Serializable]
-  public class DomainObjectCollection: CommonCollection, ICloneable, IList
+  public class DomainObjectCollection : CommonCollection, ICloneable, IList, IEnumerable<DomainObject>
   {
     // types
 
@@ -265,23 +266,19 @@ namespace Rubicon.Data.DomainObjects
     /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
     public DomainObjectCollection (DomainObjectCollection collection, bool makeCollectionReadOnly)
+        : this ((IEnumerable<DomainObject>) ArgumentUtility.CheckNotNull ("collection", collection), makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("collection", collection);
-
-      foreach (DomainObject domainObject in collection)
-        Add (domainObject);
-
-      this.SetIsReadOnly (makeCollectionReadOnly);
+      Assertion.IsTrue (base.Count == collection.Count);
       _requiredItemType = collection.RequiredItemType;
     }
 
     /// <summary>
-    /// Initializes a new <b>DomainObjectCollection</b> as a shallow copy of a given array of <see cref="DomainObject"/>s.
+    /// Initializes a new <b>DomainObjectCollection</b> as a shallow copy of a given enumeration of <see cref="DomainObject"/>s.
     /// </summary>
-    /// <param name="domainObjects">The array of <see cref="DomainObject"/>s to copy. Must not be <see langword="null"/>.</param>
+    /// <param name="domainObjects">The <see cref="DomainObject"/>s to copy. Must not be <see langword="null"/>.</param>
     /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="domainObjects"/> is <see langword="null"/>.</exception>
-    public DomainObjectCollection (DomainObject[] domainObjects, bool makeCollectionReadOnly)
+    public DomainObjectCollection (IEnumerable<DomainObject> domainObjects, bool makeCollectionReadOnly)
     {
       ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
 
@@ -298,13 +295,15 @@ namespace Rubicon.Data.DomainObjects
     /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="dataContainers"/> is <see langword="null"/>.</exception>
     public DomainObjectCollection (DataContainerCollection dataContainers, bool makeCollectionReadOnly)
+        : this (GetDomainObjectsFromDataContainers (ArgumentUtility.CheckNotNull ("dataContainers", dataContainers)), makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
+      Assertion.IsTrue (base.Count == dataContainers.Count);
+    }
 
+    private static IEnumerable<DomainObject> GetDomainObjectsFromDataContainers (DataContainerCollection dataContainers)
+    {
       foreach (DataContainer dataContainer in dataContainers)
-        Add (dataContainer.DomainObject);
-
-      this.SetIsReadOnly (makeCollectionReadOnly);
+        yield return dataContainer.DomainObject;
     }
 
     // methods and properties
@@ -337,6 +336,8 @@ namespace Rubicon.Data.DomainObjects
         if (!Contains (domainObject.ID))
           Add (domainObject);
       }
+
+      Touch ();
     }
 
     /// <summary>
@@ -458,8 +459,15 @@ namespace Rubicon.Data.DomainObjects
 
         // If old and new objects are the same: Perform no operation
         if (ReferenceEquals (this[index], value))
-          return;
+        {
+          if (_changeDelegate != null)
+            _changeDelegate.PerformSelfReplace (this, value, index);
+          else
+            Touch ();
 
+          return;
+        }
+        
         if (Contains (value.ID))
           throw CreateInvalidOperationException ("The object '{0}' is already part of this collection.", value.ID);
 
@@ -557,6 +565,8 @@ namespace Rubicon.Data.DomainObjects
       DomainObject domainObject = this[id];
       if (domainObject != null)
         Remove (domainObject);
+      else
+        Touch ();
     }
 
     /// <summary>
@@ -579,9 +589,12 @@ namespace Rubicon.Data.DomainObjects
       if (IsReadOnly)
         throw new NotSupportedException ("Cannot remove an item from a read-only collection.");
 
-      // Do not perform remove, if domain object is not part of this collection     
+      // Do not perform remove if domain object is not part of this collection     
       if (this[domainObject.ID] == null)
+      {
+        Touch();
         return;
+      }
 
       if (_changeDelegate != null)
         _changeDelegate.PerformRemove (this, domainObject);
@@ -604,6 +617,8 @@ namespace Rubicon.Data.DomainObjects
 
       for (int i = Count - 1; i >= 0; i--)
         Remove (this[i].ID);
+
+      Touch ();
     }
 
     /// <summary>
@@ -785,6 +800,15 @@ namespace Rubicon.Data.DomainObjects
 
     #endregion
 
+    #region IEnumerable<DomainObject> members
+    public new IEnumerator<DomainObject> GetEnumerator ()
+    {
+      foreach (DomainObject domainObject in (CommonCollection) this)
+        yield return domainObject;
+    }
+
+    #endregion
+
     #region ICloneable Members
 
     /// <summary>
@@ -842,6 +866,28 @@ namespace Rubicon.Data.DomainObjects
     }
 
     #endregion
+
+    internal void AssumeSameState (DomainObjectCollection source)
+    {
+      Assertion.IsTrue (_requiredItemType == source._requiredItemType);
+
+      SetIsReadOnly (false);
+      BaseClear ();
+      foreach (DomainObject domainObject in source)
+        BaseAdd (domainObject.ID, domainObject);
+      SetIsReadOnly (source.IsReadOnly);
+    }
+
+    internal void TakeOverCommittedData (DomainObjectCollection source)
+    {
+      Assertion.IsTrue (_requiredItemType == source._requiredItemType);
+
+      SetIsReadOnly (false);
+      BaseClear ();
+      foreach (DomainObject domainObject in source)
+        BaseAdd (domainObject.ID, domainObject);
+      SetIsReadOnly (source.IsReadOnly);
+    }
 
     internal void BeginAdd (DomainObject domainObject)
     {
@@ -906,6 +952,7 @@ namespace Rubicon.Data.DomainObjects
         PerformAdd (domainObject);
 
       SetIsReadOnly (isReadOnly);
+      Touch ();
     }
 
     /// <summary>
@@ -927,7 +974,9 @@ namespace Rubicon.Data.DomainObjects
         throw new NotSupportedException ("Cannot add an item to a read-only collection.");
       CheckItemType (domainObject, "domainObject");
 
-      return BaseAdd (domainObject.ID, domainObject);
+      int index = BaseAdd (domainObject.ID, domainObject);
+      Touch ();
+      return index;
     }
 
     /// <summary>
@@ -957,6 +1006,7 @@ namespace Rubicon.Data.DomainObjects
       CheckItemType (domainObject, "domainObject");
 
       BaseInsert (index, domainObject.ID, domainObject);
+      Touch ();
     }
 
     internal void EndAdd (DomainObject domainObject)
@@ -982,6 +1032,7 @@ namespace Rubicon.Data.DomainObjects
         throw new NotSupportedException ("Cannot remove an item from a read-only collection.");
 
       BaseRemove (domainObject.ID);
+      Touch ();
     }
 
     internal void EndRemove (DomainObject domainObject)
@@ -1000,7 +1051,8 @@ namespace Rubicon.Data.DomainObjects
 
       OnDeleting();
       BaseClear();
-      OnDeleted();
+      Touch ();
+      OnDeleted ();
     }
 
     /// <summary>
@@ -1105,6 +1157,12 @@ namespace Rubicon.Data.DomainObjects
       Adding += source.Adding;
       Removed += source.Removed;
       Removing += source.Removing;
+    }
+
+    private void Touch ()
+    {
+      if (_changeDelegate != null)
+        _changeDelegate.MarkAsTouched ();
     }
   }
 }

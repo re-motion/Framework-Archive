@@ -105,7 +105,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void ObjectEndPointTest ()
     {
-      ObjectEndPoint endPoint = new ObjectEndPoint (Company.GetObject (DomainObjectIDs.Company1), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector", DomainObjectIDs.IndustrialSector1);
+      ObjectEndPoint endPoint = CreateObjectEndPoint (Company.GetObject (DomainObjectIDs.Company1), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector", DomainObjectIDs.IndustrialSector1);
 
       ObjectEndPoint deserializedEndPoint = (ObjectEndPoint) SerializeAndDeserialize (endPoint);
 
@@ -116,7 +116,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void CollectionEndPointTest ()
     {
       DomainObjectCollection oppositeDomainObjects = new DomainObjectCollection ();
-      CollectionEndPoint endPoint = new CollectionEndPoint (Customer.GetObject (DomainObjectIDs.Customer1), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", oppositeDomainObjects);
+      CollectionEndPoint endPoint = new CollectionEndPoint (ClientTransaction.Current, new RelationEndPointID (DomainObjectIDs.Customer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"), oppositeDomainObjects);
 
       CollectionEndPoint deserializedEndPoint = (CollectionEndPoint) SerializeAndDeserialize (endPoint);
 
@@ -127,12 +127,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void RelationEndPointCollectionTest ()
     {
       RelationEndPointCollection collection = new RelationEndPointCollection ();
-      ObjectEndPoint endPoint = new ObjectEndPoint (Company.GetObject (DomainObjectIDs.Company1), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector", DomainObjectIDs.IndustrialSector1);
+      ObjectEndPoint endPoint = CreateObjectEndPoint (Company.GetObject (DomainObjectIDs.Company1), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector", DomainObjectIDs.IndustrialSector1);
       collection.Add (endPoint);
 
       RelationEndPointCollection deserializedCollection = (RelationEndPointCollection) SerializeAndDeserialize (collection);
 
       Assert.AreEqual (collection.Count, deserializedCollection.Count);
+    }
+
+    private ObjectEndPoint CreateObjectEndPoint (DomainObject domainObject, string propertyName, ObjectID oppositeObjectID)
+    {
+      return new ObjectEndPoint (ClientTransaction.Current, domainObject.ID, propertyName, oppositeObjectID);
     }
 
     [Test]

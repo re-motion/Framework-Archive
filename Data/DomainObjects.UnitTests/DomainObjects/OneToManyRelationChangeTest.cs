@@ -8,7 +8,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
-  public class OneToManyRelationChangeTest : ClientTransactionBaseTest
+  public class OneToManyRelationChangeTest : RelationChangeBaseTest
   {
     private Customer _oldCustomer;
     private Customer _newCustomer;
@@ -313,27 +313,71 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [Ignore ("TODO: HasBeenTouched")]
-    public void HasBeenTouched ()
+    public void HasBeenTouched_FromOneProperty ()
     {
-      Assert.Fail ();
+      CheckTouching (delegate { _order.Customer = _newCustomer; }, _order, "Customer", 
+        new RelationEndPointID (_order.ID, typeof (Order).FullName + ".Customer"),
+        new RelationEndPointID (_newCustomer.ID, typeof (Customer).FullName + ".Orders"),
+        new RelationEndPointID (_oldCustomer.ID, typeof (Customer).FullName + ".Orders"));
     }
 
     [Test]
-    [Ignore ("TODO: HasBeenTouched")]
-    public void HasBeenTouched_SetOriginalValue ()
+    public void HasBeenTouched_FromManyPropertyAdd ()
     {
-      Assert.Fail ();
+      CheckTouching (delegate { _newCustomer.Orders.Add (_order); }, _order, "Customer",
+          new RelationEndPointID (_order.ID, typeof (Order).FullName + ".Customer"),
+          new RelationEndPointID (_newCustomer.ID, typeof (Customer).FullName + ".Orders"),
+          new RelationEndPointID (_oldCustomer.ID, typeof (Customer).FullName + ".Orders"));
     }
 
     [Test]
-    [Ignore ("TODO: HasBeenTouched")]
-    public void HasBeenTouched_ChangeRelationBackToOriginalValue ()
+    public void HasBeenTouched_FromManyPropertyRemove ()
     {
-      Assert.Fail ();
+      CheckTouching (delegate { _oldCustomer.Orders.Remove (_order); }, _order, "Customer",
+          new RelationEndPointID (_order.ID, typeof (Order).FullName + ".Customer"),
+          new RelationEndPointID (_oldCustomer.ID, typeof (Customer).FullName + ".Orders"));
     }
 
+    [Test]
+    public void HasBeenTouched_FromManyPropertyReplaceWithNull ()
+    {
+      CheckTouching (delegate { _oldCustomer.Orders[_oldCustomer.Orders.IndexOf (_order)] = null; }, _order, "Customer",
+          new RelationEndPointID (_order.ID, typeof (Order).FullName + ".Customer"),
+          new RelationEndPointID (_oldCustomer.ID, typeof (Customer).FullName + ".Orders"));
+    }
 
+    [Test]
+    public void HasBeenTouched_FromManyPropertyReplaceWithNew ()
+    {
+      Order newOrder = Order.NewObject ();
+      
+      Assert.IsFalse (newOrder.InternalDataContainer.PropertyValues[typeof (Order).FullName + ".Customer"].HasBeenTouched, "newOrder ObjectID touched");
+
+      CheckTouching (delegate { _oldCustomer.Orders[_oldCustomer.Orders.IndexOf (_order)] = newOrder; }, _order, "Customer",
+        new RelationEndPointID (_order.ID, typeof (Order).FullName + ".Customer"),
+        new RelationEndPointID (newOrder.ID, typeof (Order).FullName + ".Customer"),
+        new RelationEndPointID (_oldCustomer.ID, typeof (Customer).FullName + ".Orders"));
+      
+      Assert.IsTrue (newOrder.InternalDataContainer.PropertyValues[typeof (Order).FullName + ".Customer"].HasBeenTouched, "newOrder ObjectID touched");
+    }
+
+    [Test]
+    public void HasBeenTouched_FromOneProperty_OriginalValue ()
+    {
+      CheckTouching (delegate { _order.Customer = _order.Customer; }, _order, "Customer",
+          new RelationEndPointID (_order.ID, typeof (Order).FullName + ".Customer"),
+          new RelationEndPointID (_oldCustomer.ID, typeof (Customer).FullName + ".Orders"));
+    }
+
+    [Test]
+    public void HasBeenTouched_FromManyPropertyReplace_OriginalValue ()
+    {
+      CheckTouching (delegate { _oldCustomer.Orders[_oldCustomer.Orders.IndexOf (_order)] = _order; }, _order, "Customer",
+          new RelationEndPointID (_order.ID, typeof (Order).FullName + ".Customer"),
+          new RelationEndPointID (_oldCustomer.ID, typeof (Customer).FullName + ".Orders"),
+          new RelationEndPointID (_oldCustomer.ID, typeof (Customer).FullName + ".Orders"));
+    }
+    
     [Test]
     public void GetOriginalRelatedObject ()
     {

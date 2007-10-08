@@ -256,6 +256,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       {
         Assert.AreSame (expected.PropertyValues[i].Definition, actual.PropertyValues[i].Definition);
         Assert.AreEqual (expected.PropertyValues[i].HasChanged, actual.PropertyValues[i].HasChanged);
+        Assert.AreEqual (expected.PropertyValues[i].HasBeenTouched, actual.PropertyValues[i].HasBeenTouched);
         Assert.AreEqual (expected.PropertyValues[i].IsDiscarded, actual.PropertyValues[i].IsDiscarded);
         Assert.AreEqual (expected.PropertyValues[i].OriginalValue, actual.PropertyValues[i].OriginalValue);
         Assert.AreEqual (expected.PropertyValues[i].Value, actual.PropertyValues[i].Value);
@@ -289,6 +290,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (4, original.PropertyValues.Count);
       Assert.IsNotNull (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Definition);
       Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasChanged);
+      Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasBeenTouched);
       Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].IsDiscarded);
       Assert.AreEqual (1, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].OriginalValue);
       Assert.AreEqual (1, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Value);
@@ -320,6 +322,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (4, original.PropertyValues.Count);
       Assert.IsNotNull (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Definition);
       Assert.IsTrue (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasChanged);
+      Assert.IsTrue (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasBeenTouched);
       Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].IsDiscarded);
       Assert.AreEqual (1, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].OriginalValue);
       Assert.AreEqual (75, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Value);
@@ -351,6 +354,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (4, original.PropertyValues.Count);
       Assert.IsNotNull (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Definition);
       Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasChanged);
+      Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasBeenTouched);
       Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].IsDiscarded);
       Assert.AreEqual (0, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].OriginalValue);
       Assert.AreEqual (0, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Value);

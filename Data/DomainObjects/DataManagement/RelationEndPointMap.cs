@@ -207,7 +207,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
           if (classDefinition.IsRelationEndPoint (endPointDefinition))
           {
             ObjectID oppositeObjectID = (ObjectID) dataContainer.GetFieldValue (endPointDefinition.PropertyName, ValueAccess.Current);
-            ObjectEndPoint endPoint = new ObjectEndPoint (dataContainer, endPointDefinition, oppositeObjectID);
+            ObjectEndPoint endPoint = new ObjectEndPoint (dataContainer.ClientTransaction, dataContainer.ID, endPointDefinition, oppositeObjectID);
             Add (endPoint);
 
             if (endPoint.OppositeEndPointDefinition.Cardinality == CardinalityType.One && endPoint.OppositeObjectID != null)
@@ -308,19 +308,40 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
   private void SetRelatedObjectForUnidirectionalRelation (RelationEndPoint endPoint, DomainObject newRelatedObject)
   {
     DomainObject oldRelatedObject = GetRelatedObject (endPoint.ID, true);
-    if (object.ReferenceEquals (newRelatedObject, oldRelatedObject))
-      return;
 
     AnonymousEndPoint newRelatedEndPoint = GetAnonymousEndPoint (newRelatedObject, endPoint.RelationDefinition);
     AnonymousEndPoint oldRelatedEndPoint = GetAnonymousEndPoint (oldRelatedObject, endPoint.RelationDefinition);
 
-    endPoint.NotifyClientTransactionOfBeginRelationChange (oldRelatedEndPoint, newRelatedEndPoint);
-    endPoint.BeginRelationChange (oldRelatedEndPoint, newRelatedEndPoint);
+    if (object.ReferenceEquals (newRelatedEndPoint.GetDomainObject (), oldRelatedEndPoint.GetDomainObject()))
+      SetRelatedObjectForEqualObjects (endPoint, null);
+    else
+    {
+      endPoint.NotifyClientTransactionOfBeginRelationChange (oldRelatedEndPoint, newRelatedEndPoint);
+      endPoint.BeginRelationChange (oldRelatedEndPoint, newRelatedEndPoint);
 
-    endPoint.PerformRelationChange();
+      endPoint.PerformRelationChange();
 
-    endPoint.NotifyClientTransactionOfEndRelationChange();
-    endPoint.EndRelationChange();
+      endPoint.NotifyClientTransactionOfEndRelationChange();
+      endPoint.EndRelationChange();
+    }
+  }
+
+  private void SetRelatedObjectForEqualObjects (RelationEndPoint endPoint, RelationEndPoint oppositeEndPoint)
+  {
+    Assertion.IsNotNull (endPoint);
+
+    RelationEndPoint realEndPoint = endPoint.Definition.IsVirtual ? oppositeEndPoint : endPoint;
+    RelationEndPoint virtualEndPoint = endPoint.Definition.IsVirtual ? endPoint : oppositeEndPoint;
+
+    Assertion.IsNotNull (realEndPoint);
+    realEndPoint.Touch ();
+
+    if (virtualEndPoint != null) // bidirectional?
+      virtualEndPoint.Touch ();
+
+    // touch foreign key property
+    if (!realEndPoint.IsNull) // null end points have no data container, so no foreign key needs to be touched
+      realEndPoint.GetDataContainer ().PropertyValues[realEndPoint.PropertyName].Touch ();
   }
 
   private void SetRelatedObjectForBidirectionalRelation (RelationEndPoint endPoint, DomainObject newRelatedObject)
@@ -330,10 +351,9 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
     RelationEndPoint newRelatedEndPoint = GetRelationEndPoint (newRelatedObject, endPoint.OppositeEndPointDefinition);
     RelationEndPoint oldRelatedEndPoint = GetRelationEndPoint (oldRelatedObject, newRelatedEndPoint.Definition);
 
-    if (object.ReferenceEquals (newRelatedEndPoint.GetDomainObject(), oldRelatedEndPoint.GetDomainObject()))
-      return;
-
-    if (newRelatedEndPoint.Definition.Cardinality == CardinalityType.One)
+    if (object.ReferenceEquals (newRelatedEndPoint.GetDomainObject (), oldRelatedEndPoint.GetDomainObject ()))
+      SetRelatedObjectForEqualObjects (endPoint, newRelatedEndPoint);
+    else if (newRelatedEndPoint.Definition.Cardinality == CardinalityType.One)
       SetRelatedObjectForOneToOneRelation ((ObjectEndPoint) endPoint, (ObjectEndPoint) newRelatedEndPoint, (ObjectEndPoint) oldRelatedEndPoint);
     else
       SetRelatedObjectForOneToManyRelation ((ObjectEndPoint) endPoint, newRelatedEndPoint, oldRelatedEndPoint);
@@ -652,6 +672,14 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
     newEndPoint.EndRelationChange();
     endPoint.EndRelationChange();
     oldEndPointOfNewEndPoint.EndRelationChange();
+  }
+
+  void ICollectionEndPointChangeDelegate.PerformSelfReplace (
+      CollectionEndPoint endPoint,
+      DomainObject domainObject,
+      int index)
+  {
+    SetRelatedObjectForEqualObjects (endPoint, GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition));
   }
 
   void ICollectionEndPointChangeDelegate.PerformRemove (CollectionEndPoint endPoint, DomainObject domainObject)

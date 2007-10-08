@@ -95,9 +95,11 @@ public abstract class RelationEndPoint : IEndPoint
 
   public abstract RelationEndPoint Clone ();
   internal abstract void AssumeSameState (RelationEndPoint source);
-  internal abstract void MergeData (RelationEndPoint source);
+  internal abstract void TakeOverCommittedData (RelationEndPoint source);
   internal abstract void RegisterWithMap (RelationEndPointMap map);
-  public abstract bool HasChanged { get; } 
+  public abstract bool HasChanged { get; }
+  public abstract bool HasBeenTouched { get; }
+  protected internal abstract void Touch ();
   public abstract void Commit ();
   public abstract void Rollback ();
   public abstract void CheckMandatory ();

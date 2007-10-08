@@ -25,64 +25,15 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   private ICollectionEndPointChangeDelegate _changeDelegate = null;
 
-  private DomainObjectCollection _originalOppositeDomainObjects;
-  private DomainObjectCollection _oppositeDomainObjects;
-  // TODO: private bool _hasBeenTouched;
+  private readonly DomainObjectCollection _originalOppositeDomainObjects;
+  private readonly DomainObjectCollection _oppositeDomainObjects;
+
+  private bool _hasBeenTouched;
 
   [NonSerialized]
   private CollectionEndPointChangeAgent _changeAgent;
 
   // construction and disposing
-
-  public CollectionEndPoint (
-      DomainObject domainObject, 
-      VirtualRelationEndPointDefinition definition, 
-      DomainObjectCollection oppositeDomainObjects) 
-      : this (domainObject.GetDataContainer().ClientTransaction, domainObject.ID, definition, oppositeDomainObjects)
-  {
-  }
-
-  public CollectionEndPoint (
-      DataContainer dataContainer, 
-      VirtualRelationEndPointDefinition definition, 
-      DomainObjectCollection oppositeDomainObjects) 
-      : this (dataContainer.ClientTransaction, dataContainer.ID, definition, oppositeDomainObjects)
-  {
-  }
-
-  public CollectionEndPoint (
-      DomainObject domainObject, 
-      string propertyName,
-      DomainObjectCollection oppositeDomainObjects) 
-      : this (domainObject.GetDataContainer().ClientTransaction, domainObject.ID, propertyName, oppositeDomainObjects)
-  {
-  }
-
-  public CollectionEndPoint (
-      DataContainer dataContainer, 
-      string propertyName,
-      DomainObjectCollection oppositeDomainObjects) 
-      : this (dataContainer.ClientTransaction, dataContainer.ID, propertyName, oppositeDomainObjects)
-  {
-  }
-
-  public CollectionEndPoint (
-      ClientTransaction clientTransaction,
-      ObjectID objectID, 
-      VirtualRelationEndPointDefinition definition, 
-      DomainObjectCollection oppositeDomainObjects) 
-      : this (clientTransaction, objectID, definition.PropertyName, oppositeDomainObjects)
-  {
-  }
-
-  public CollectionEndPoint (
-      ClientTransaction clientTransaction,
-      ObjectID objectID, 
-      string propertyName,
-      DomainObjectCollection oppositeDomainObjects) 
-      : this (clientTransaction, new RelationEndPointID (objectID, propertyName), oppositeDomainObjects)
-  {
-  }
 
   public CollectionEndPoint (
       ClientTransaction clientTransaction,
@@ -105,19 +56,20 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     _originalOppositeDomainObjects = originalOppositeDomainObjects;
     _oppositeDomainObjects = oppositeDomainObjects;
     _oppositeDomainObjects.ChangeDelegate = this;
-    // TODO: _hasBeenTouched = false;
+    _hasBeenTouched = false;
   }
 
   protected CollectionEndPoint (IRelationEndPointDefinition definition) : base (definition)
   {
-    // TODO: _hasBeenTouched = false;
+    _hasBeenTouched = false;
   }
 
   // methods and properties
 
   public override RelationEndPoint Clone ()
   {
-    CollectionEndPoint clone = new CollectionEndPoint (ClientTransaction, ID, s_emptyCollectionForCloning);
+    CollectionEndPoint clone = new CollectionEndPoint (
+        ClientTransaction, ID, DomainObjectCollection.Create (_oppositeDomainObjects.GetType(), _oppositeDomainObjects.RequiredItemType));
     clone.AssumeSameState (this);
     clone.ChangeDelegate = ChangeDelegate;
 
@@ -130,21 +82,19 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
     CollectionEndPoint sourceCollectionEndPoint = (CollectionEndPoint) source;
 
-    _oppositeDomainObjects = sourceCollectionEndPoint._oppositeDomainObjects.Clone();
-    _oppositeDomainObjects.ChangeDelegate = this;
-    _originalOppositeDomainObjects = sourceCollectionEndPoint._originalOppositeDomainObjects.Clone();
-    // TODO: _hasBeenTouched = sourceCollectionEndPoint._hasBeenTouched;
+    _oppositeDomainObjects.AssumeSameState (sourceCollectionEndPoint._oppositeDomainObjects);
+    _originalOppositeDomainObjects.AssumeSameState (sourceCollectionEndPoint._originalOppositeDomainObjects);
+    _hasBeenTouched = sourceCollectionEndPoint._hasBeenTouched;
   }
 
-  internal override void MergeData (RelationEndPoint source)
+  internal override void TakeOverCommittedData (RelationEndPoint source)
   {
     Assertion.IsTrue (Definition == source.Definition);
 
     CollectionEndPoint sourceCollectionEndPoint = (CollectionEndPoint) source;
 
-    _oppositeDomainObjects = sourceCollectionEndPoint._oppositeDomainObjects.Clone ();
-    _oppositeDomainObjects.ChangeDelegate = this;
-    // TODO: _hasBeenTouched |= sourceCollectionEndPoint._hasBeenTouched;
+    _oppositeDomainObjects.TakeOverCommittedData (sourceCollectionEndPoint._oppositeDomainObjects);
+    _hasBeenTouched |= sourceCollectionEndPoint._hasBeenTouched || HasChanged;
   }
 
   internal override void RegisterWithMap (RelationEndPointMap map)
@@ -155,24 +105,32 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   public override void Commit ()
   {
     if (HasChanged)
-    {
       _originalOppositeDomainObjects.Commit (_oppositeDomainObjects);
-      // TODO: _hasBeenTouched = false;
-    }
+
+    _hasBeenTouched = false;
   }
 
   public override void Rollback ()
   {
     if (HasChanged)
-    {
       _oppositeDomainObjects.Rollback (_originalOppositeDomainObjects);
-      // TODO: _hasBeenTouched = false;
-    }
+
+    _hasBeenTouched = false;
   }
 
   public override bool HasChanged
   {
     get { return !DomainObjectCollection.Compare (_oppositeDomainObjects, _originalOppositeDomainObjects, true); } 
+  }
+
+  public override bool HasBeenTouched
+  {
+    get { return _hasBeenTouched; }
+  }
+
+  protected internal override void Touch ()
+  {
+    _hasBeenTouched = true;
   }
 
   public override void CheckMandatory ()
@@ -235,13 +193,13 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new InvalidOperationException ("BeginRelationChange must be called before PerformRelationChange.");
 
     _changeAgent.PerformRelationChange ();
-    // TODO: _hasBeenTouched = true;
+    _hasBeenTouched = true;
   }
 
   public override void PerformDelete ()
   {
     _oppositeDomainObjects.PerformDelete ();
-    // TODO: _hasBeenTouched = true;
+    _hasBeenTouched = true;
   }
 
   public override void EndRelationChange ()
@@ -285,7 +243,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new DataManagementException ("Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.");
 
     _changeDelegate.PerformInsert (this, domainObject, index);
-    // TODO: _hasBeenTouched = true;
+    _hasBeenTouched = true;
   }
 
   void ICollectionChangeDelegate.PerformReplace (DomainObjectCollection collection, DomainObject domainObject, int index)
@@ -294,7 +252,16 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new DataManagementException ("Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.");
 
     _changeDelegate.PerformReplace (this, domainObject, index);
-    // TODO: _hasBeenTouched = true;
+    _hasBeenTouched = true;
+  }
+
+  void ICollectionChangeDelegate.PerformSelfReplace (DomainObjectCollection collection, DomainObject domainObject, int index)
+  {
+    if (_changeDelegate == null)
+      throw new DataManagementException ("Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.");
+
+    _changeDelegate.PerformSelfReplace (this, domainObject, index);
+    _hasBeenTouched = true;
   }
 
   void ICollectionChangeDelegate.PerformRemove (DomainObjectCollection collection, DomainObject domainObject)
@@ -303,7 +270,12 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       throw new DataManagementException ("Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.");
 
     _changeDelegate.PerformRemove (this, domainObject);
-    // TODO: _hasBeenTouched = true;
+    _hasBeenTouched = true;
+  }
+
+  void ICollectionChangeDelegate.MarkAsTouched ()
+  {
+    _hasBeenTouched = true;
   }
 
   #endregion

@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
-  public class UnidirectionalRelationTest : ClientTransactionBaseTest
+  public class UnidirectionalRelationTest : RelationChangeBaseTest
   {
     private Client _oldClient;
     private Client _newClient;
@@ -35,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       _location.Client = _newClient;
 
       Assert.AreSame (_newClient, _location.Client);
-			Assert.AreEqual (_newClient.ID, _location.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"]);
+      Assert.AreEqual (_newClient.ID, _location.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"]);
       Assert.AreEqual (StateType.Changed, _location.State);
       Assert.AreEqual (StateType.Unchanged, _oldClient.State);
       Assert.AreEqual (StateType.Unchanged, _newClient.State);
@@ -251,6 +251,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         Assert.IsNotNull (newClient2);
         Assert.AreSame (newClient1, newClient2.ParentClient);
       }
+    }
+
+    [Test]
+    public void HasBeenTouched ()
+    {
+      CheckTouching (delegate { _location.Client = _newClient; }, _location, "Client",
+          new RelationEndPointID (_location.ID, typeof (Location).FullName + ".Client"));
+    }
+
+    [Test]
+    public void HasBeenTouched_OriginalValue ()
+    {
+      CheckTouching (delegate { _location.Client = _location.Client; }, _location, "Client",
+          new RelationEndPointID (_location.ID, typeof (Location).FullName + ".Client"));
     }
   }
 }

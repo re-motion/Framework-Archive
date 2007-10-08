@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -73,6 +74,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (5, propertyValue.Value, "Value after initialization");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue after initialization");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after initialization");
+      Assert.IsFalse (propertyValue.HasBeenTouched, "HasBeenTouched after initialization");
 
       propertyValue.Value = 5;
 
@@ -80,7 +82,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (5, propertyValue.Value, "Value after change #1");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue after change #1");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after change #1");
-      // TODO: HasBeenTouched
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched after change #1");
 
       propertyValue.Value = 10;
 
@@ -88,6 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (10, propertyValue.Value, "Value after change #2");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue after change #2");
       Assert.IsTrue (propertyValue.HasChanged, "HasChanged after change #2");
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched after change #2");
 
       propertyValue.Value = 20;
 
@@ -95,6 +98,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (20, propertyValue.Value, "Value after change #3");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue after change #3");
       Assert.IsTrue (propertyValue.HasChanged, "HasChanged after change #3");
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched after change #3");
 
       propertyValue.Value = 5;
 
@@ -102,7 +106,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (5, propertyValue.Value, "Value after change #4");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue after change #4");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after change #4");
-      // TODO: HasBeenTouched
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched after change #4");
     }
 
     [Test]
@@ -114,6 +118,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNull (propertyValue.Value, "Value after initialization");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after initialization");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after initialization");
+      Assert.IsFalse (propertyValue.HasBeenTouched, "HasBeenTouched after initialization");
 
       propertyValue.Value = null;
 
@@ -121,7 +126,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNull (propertyValue.Value, "Value after change #1");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #1");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after change #1");
-      // TODO: HasBeenTouched
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched after change #1");
 
       propertyValue.Value = 10;
 
@@ -129,6 +134,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (10, propertyValue.Value, "Value after change #2");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #2");
       Assert.IsTrue (propertyValue.HasChanged, "HasChanged after change #2");
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched after change #2");
 
       propertyValue.Value = null;
 
@@ -136,7 +142,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNull (propertyValue.Value, "Value after change #3");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #3");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after change #3");
-      // TODO: HasBeenTouched
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched after change #3");
     }
 
     [Test]
@@ -148,6 +154,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNull (propertyValue.Value, "Value after initialization");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after initialization");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after initialization");
+      Assert.IsFalse (propertyValue.HasBeenTouched, "HasBeenTouched after initialization");
 
       propertyValue.Value = null;
 
@@ -155,7 +162,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNull (propertyValue.Value, "Value after change #1");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #1");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after change #1");
-      // TODO: HasBeenTouched
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched after change #1");
 
       propertyValue.Value = "Test Value";
 
@@ -163,6 +170,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual ("Test Value", propertyValue.Value, "Value after change #2");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #2");
       Assert.IsTrue (propertyValue.HasChanged, "HasChanged after change #2");
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched after change #2");
 
       propertyValue.Value = null;
 
@@ -170,23 +178,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNull (propertyValue.Value, "Value after change #3");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #3");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after change #3");
-      // TODO: HasBeenTouched
-    }
-
-    [Test]
-    public void HasChangedIsFalseWhenSetValueSameAsOriginalValue ()
-    {
-      PropertyValue propertyValue = CreateStringPropertyValue ("test", null);
-      Assert.IsFalse (propertyValue.HasChanged);
-      propertyValue.Value = propertyValue.Value;
-      Assert.IsFalse (propertyValue.HasChanged);
-    }
-
-    [Test]
-    [Ignore ("TODO: HasBeenTouched")]
-    public void HasBeenTouched ()
-    {
-      Assert.Fail ();
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched after change #3");
     }
 
     [Test]
@@ -198,6 +190,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (5, propertyValue.Value, "Value");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged");
+      Assert.IsFalse (propertyValue.HasBeenTouched, "HasBeenTouched");
       Assert.IsFalse (eventReceiver.HasChangingEventBeenCalled, "Changing event has been called.");
       Assert.IsFalse (eventReceiver.HasChangedEventBeenCalled, "Changed event has been called.");
 
@@ -206,7 +199,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (5, propertyValue.Value, "Value");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged");
-      // TODO: HasBeenTouched
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched");
       Assert.IsFalse (eventReceiver.HasChangingEventBeenCalled, "Changing event has been called.");
       Assert.IsFalse (eventReceiver.HasChangedEventBeenCalled, "Changed event has been called.");
 
@@ -217,6 +210,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (10, propertyValue.Value, "Value");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue");
       Assert.IsTrue (propertyValue.HasChanged, "HasChanged");
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched");
       Assert.IsTrue (eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
       Assert.IsTrue (eventReceiver.HasChangedEventBeenCalled, "Changed event has not been called.");
       Assert.AreEqual (5, eventReceiver.OldValue);
@@ -232,6 +226,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNull (propertyValue.Value, "Value");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged");
+      Assert.IsFalse (propertyValue.HasBeenTouched, "HasBeenTouched");
       Assert.IsFalse (eventReceiver.HasChangingEventBeenCalled, "Changing event has been called.");
       Assert.IsFalse (eventReceiver.HasChangedEventBeenCalled, "Changed event has been called.");
 
@@ -240,7 +235,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNull (propertyValue.Value, "Value");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged");
-      // TODO: HasBeenTouched
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched");
       Assert.IsFalse (eventReceiver.HasChangingEventBeenCalled, "Changing event has been called.");
       Assert.IsFalse (eventReceiver.HasChangedEventBeenCalled, "Changed event has been called.");
 
@@ -251,6 +246,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual ("Test string", propertyValue.Value, "Value");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue");
       Assert.IsTrue (propertyValue.HasChanged, "HasChanged");
+      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched");
       Assert.IsTrue (eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
       Assert.IsTrue (eventReceiver.HasChangedEventBeenCalled, "Changed event has not been called.");
       Assert.IsNull (eventReceiver.OldValue);
@@ -266,6 +262,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (5, propertyValue.Value, "Value");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged");
+      Assert.IsFalse (propertyValue.HasBeenTouched, "HasBeenTouched");
       Assert.IsFalse (eventReceiver.HasChangingEventBeenCalled, "Changing event must not be called.");
       Assert.IsFalse (eventReceiver.HasChangedEventBeenCalled, "Changed event must not be called.");
 
@@ -279,6 +276,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
         Assert.AreEqual (5, propertyValue.Value, "Value");
         Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue");
         Assert.IsFalse (propertyValue.HasChanged, "HasChanged");
+        Assert.IsFalse (propertyValue.HasBeenTouched, "HasBeenTouched");
         Assert.IsTrue (eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
         Assert.IsFalse (eventReceiver.HasChangedEventBeenCalled, "Changed event must not be called.");
         Assert.AreEqual (5, eventReceiver.OldValue);
@@ -295,6 +293,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNull (propertyValue.Value, "Value");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged");
+      Assert.IsFalse (propertyValue.HasBeenTouched, "HasBeenTouched");
       Assert.IsFalse (eventReceiver.HasChangingEventBeenCalled, "Changing event must not be called.");
       Assert.IsFalse (eventReceiver.HasChangedEventBeenCalled, "Changed event must not be called.");
 
@@ -308,6 +307,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
         Assert.IsNull (propertyValue.Value, "Value");
         Assert.IsNull (propertyValue.OriginalValue, "OriginalValue");
         Assert.IsFalse (propertyValue.HasChanged, "HasChanged");
+        Assert.IsFalse (propertyValue.HasBeenTouched, "HasBeenTouched");
         Assert.IsTrue (eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
         Assert.IsFalse (eventReceiver.HasChangedEventBeenCalled, "Changed event must not be called.");
         Assert.IsNull (eventReceiver.OldValue);
@@ -421,6 +421,236 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       PropertyValue propertyValue = new PropertyValue (definition, null);
 
       propertyValue.Value = DomainObjectIDs.Customer1;
+    }
+
+    [Test]
+    public void Commit ()
+    {
+      PropertyValue propertyValue = CreateIntPropertyValue ("testProperty", 0);
+      propertyValue.Value = 5;
+      Assert.AreEqual (0, propertyValue.OriginalValue);
+      Assert.AreEqual (5, propertyValue.Value);
+      Assert.IsTrue (propertyValue.HasChanged);
+      Assert.IsTrue (propertyValue.HasBeenTouched);
+
+      PrivateInvoke.InvokeNonPublicMethod (propertyValue, "Commit");
+
+      Assert.AreEqual (5, propertyValue.OriginalValue);
+      Assert.AreEqual (5, propertyValue.Value);
+      Assert.IsFalse (propertyValue.HasChanged);
+      Assert.IsFalse (propertyValue.HasBeenTouched);
+    }
+
+    [Test]
+    public void Rollback ()
+    {
+      PropertyValue propertyValue = CreateIntPropertyValue ("testProperty", 0);
+      propertyValue.Value = 5;
+      Assert.AreEqual (0, propertyValue.OriginalValue);
+      Assert.AreEqual (5, propertyValue.Value);
+      Assert.IsTrue (propertyValue.HasChanged);
+      Assert.IsTrue (propertyValue.HasBeenTouched);
+
+      PrivateInvoke.InvokeNonPublicMethod (propertyValue, "Rollback");
+
+      Assert.AreEqual (0, propertyValue.OriginalValue);
+      Assert.AreEqual (0, propertyValue.Value);
+      Assert.IsFalse (propertyValue.HasChanged);
+      Assert.IsFalse (propertyValue.HasBeenTouched);
+    }
+
+    [Test]
+    public void AssumeSameState_FromUnchangedToChanged ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 1);
+      PropertyValue propertyValue2 = new PropertyValue (definition, 0);
+
+      propertyValue.Value = 6;
+      
+      Assert.AreEqual (0, propertyValue2.OriginalValue);
+      Assert.AreEqual (0, propertyValue2.Value);
+      Assert.IsFalse (propertyValue2.HasChanged);
+      Assert.IsFalse (propertyValue2.HasBeenTouched);
+
+      PrivateInvoke.InvokeNonPublicMethod (propertyValue2, "AssumeSameState", propertyValue);
+
+      Assert.AreEqual (1, propertyValue2.OriginalValue);
+      Assert.AreEqual (6, propertyValue2.Value);
+      Assert.IsTrue (propertyValue2.HasChanged);
+      Assert.IsTrue (propertyValue2.HasBeenTouched);
+    }
+
+    [Test]
+    public void AssumeSameState_FromUnchangedToUnchanged ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 1);
+      PropertyValue propertyValue2 = new PropertyValue (definition, 0);
+
+      Assert.AreEqual (0, propertyValue2.OriginalValue);
+      Assert.AreEqual (0, propertyValue2.Value);
+      Assert.IsFalse (propertyValue2.HasChanged);
+      Assert.IsFalse (propertyValue2.HasBeenTouched);
+
+      PrivateInvoke.InvokeNonPublicMethod (propertyValue2, "AssumeSameState", propertyValue);
+
+      Assert.AreEqual (1, propertyValue2.OriginalValue);
+      Assert.AreEqual (1, propertyValue2.Value);
+      Assert.IsFalse (propertyValue2.HasChanged);
+      Assert.IsFalse (propertyValue2.HasBeenTouched);
+    }
+
+    [Test]
+    public void AssumeSameState_FromChangedToChanged ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 1);
+      PropertyValue propertyValue2 = new PropertyValue (definition, 0);
+
+      propertyValue.Value = 6;
+      propertyValue2.Value = 7;
+
+      Assert.AreEqual (0, propertyValue2.OriginalValue);
+      Assert.AreEqual (7, propertyValue2.Value);
+      Assert.IsTrue (propertyValue2.HasChanged);
+      Assert.IsTrue (propertyValue2.HasBeenTouched);
+
+      PrivateInvoke.InvokeNonPublicMethod (propertyValue2, "AssumeSameState", propertyValue);
+
+      Assert.AreEqual (1, propertyValue2.OriginalValue);
+      Assert.AreEqual (6, propertyValue2.Value);
+      Assert.IsTrue (propertyValue2.HasChanged);
+      Assert.IsTrue (propertyValue2.HasBeenTouched);
+    }
+
+    [Test]
+    public void AssumeSameState_FromChangedToUnchanged ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 1);
+      PropertyValue propertyValue2 = new PropertyValue (definition, 0);
+      
+      propertyValue2.Value = 7;
+
+      Assert.AreEqual (0, propertyValue2.OriginalValue);
+      Assert.AreEqual (7, propertyValue2.Value);
+      Assert.IsTrue (propertyValue2.HasChanged);
+      Assert.IsTrue (propertyValue2.HasBeenTouched);
+
+      PrivateInvoke.InvokeNonPublicMethod (propertyValue2, "AssumeSameState", propertyValue);
+
+      Assert.AreEqual (1, propertyValue2.OriginalValue);
+      Assert.AreEqual (1, propertyValue2.Value);
+      Assert.IsFalse (propertyValue2.HasChanged);
+      Assert.IsFalse (propertyValue2.HasBeenTouched);
+    }
+
+    [Test]
+    public void TakeOverCommittedData_ChangedIntoUnchanged ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 1);
+      PropertyValue propertyValue2 = new PropertyValue (definition, 0);
+
+      propertyValue.Value = 6;
+
+      Assert.AreEqual (0, propertyValue2.OriginalValue);
+      Assert.AreEqual (0, propertyValue2.Value);
+      Assert.IsFalse (propertyValue2.HasChanged);
+      Assert.IsFalse (propertyValue2.HasBeenTouched);
+
+      PrivateInvoke.InvokeNonPublicMethod (propertyValue2, "TakeOverCommittedData", propertyValue);
+
+      Assert.AreEqual (0, propertyValue2.OriginalValue);
+      Assert.AreEqual (6, propertyValue2.Value);
+      Assert.IsTrue (propertyValue2.HasChanged);
+      Assert.IsTrue (propertyValue2.HasBeenTouched);
+    }
+
+    [Test]
+    public void TakeOverCommittedData_UnchangedIntoUnchanged ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 1);
+      PropertyValue propertyValue2 = new PropertyValue (definition, 0);
+
+      Assert.AreEqual (0, propertyValue2.OriginalValue);
+      Assert.AreEqual (0, propertyValue2.Value);
+      Assert.IsFalse (propertyValue2.HasChanged);
+      Assert.IsFalse (propertyValue2.HasBeenTouched);
+
+      PrivateInvoke.InvokeNonPublicMethod (propertyValue2, "TakeOverCommittedData", propertyValue);
+
+      Assert.AreEqual (0, propertyValue2.OriginalValue);
+      Assert.AreEqual (1, propertyValue2.Value);
+      Assert.IsTrue (propertyValue2.HasChanged);
+      Assert.IsTrue (propertyValue2.HasBeenTouched);
+    }
+
+    [Test]
+    public void TakeOverCommittedData_ChangedIntoChanged ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 1);
+      PropertyValue propertyValue2 = new PropertyValue (definition, 0);
+
+      propertyValue.Value = 6;
+      propertyValue2.Value = 7;
+
+      Assert.AreEqual (0, propertyValue2.OriginalValue);
+      Assert.AreEqual (7, propertyValue2.Value);
+      Assert.IsTrue (propertyValue2.HasChanged);
+      Assert.IsTrue (propertyValue2.HasBeenTouched);
+
+      PrivateInvoke.InvokeNonPublicMethod (propertyValue2, "TakeOverCommittedData", propertyValue);
+
+      Assert.AreEqual (0, propertyValue2.OriginalValue);
+      Assert.AreEqual (6, propertyValue2.Value);
+      Assert.IsTrue (propertyValue2.HasChanged);
+      Assert.IsTrue (propertyValue2.HasBeenTouched);
+    }
+
+    [Test]
+    public void TakeOverCommittedData_UnchangedIntoChanged ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 1);
+      PropertyValue propertyValue2 = new PropertyValue (definition, 0);
+
+      propertyValue2.Value = 7;
+
+      Assert.AreEqual (0, propertyValue2.OriginalValue);
+      Assert.AreEqual (7, propertyValue2.Value);
+      Assert.IsTrue (propertyValue2.HasChanged);
+      Assert.IsTrue (propertyValue2.HasBeenTouched);
+
+      PrivateInvoke.InvokeNonPublicMethod (propertyValue2, "TakeOverCommittedData", propertyValue);
+
+      Assert.AreEqual (0, propertyValue2.OriginalValue);
+      Assert.AreEqual (1, propertyValue2.Value);
+      Assert.IsTrue (propertyValue2.HasChanged);
+      Assert.IsTrue (propertyValue2.HasBeenTouched);
+    }
+
+    [Test]
+    public void TakeOverCommittedData_UnchangedIntoEqual ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 0);
+      PropertyValue propertyValue2 = new PropertyValue (definition, 0);
+
+      Assert.AreEqual (0, propertyValue2.OriginalValue);
+      Assert.AreEqual (0, propertyValue2.Value);
+      Assert.IsFalse (propertyValue2.HasChanged);
+      Assert.IsFalse (propertyValue2.HasBeenTouched);
+
+      PrivateInvoke.InvokeNonPublicMethod (propertyValue2, "TakeOverCommittedData", propertyValue);
+
+      Assert.AreEqual (0, propertyValue2.OriginalValue);
+      Assert.AreEqual (0, propertyValue2.Value);
+      Assert.IsFalse (propertyValue2.HasChanged);
+      Assert.IsFalse (propertyValue2.HasBeenTouched);
     }
 
     private PropertyValue CreateIntPropertyValue (string name, int intValue)

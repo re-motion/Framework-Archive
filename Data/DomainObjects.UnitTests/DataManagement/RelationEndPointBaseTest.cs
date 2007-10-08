@@ -22,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
         string propertyName,
         ObjectID oppositeObjectID)
     {
-      return new ObjectEndPoint (domainObject, propertyName, oppositeObjectID);
+      return new ObjectEndPoint (ClientTransaction.Current, domainObject.ID, propertyName, oppositeObjectID);
     }
 
     protected ObjectEndPoint CreateObjectEndPoint (
@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
         string propertyName,
         ObjectID oppositeObjectID)
     {
-      return new ObjectEndPoint (dataContainer, propertyName, oppositeObjectID);
+      return new ObjectEndPoint (dataContainer.ClientTransaction, dataContainer.ID, propertyName, oppositeObjectID);
     }
 
     protected ObjectEndPoint CreateObjectEndPoint (

@@ -3,6 +3,8 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Utilities;
+using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -44,6 +46,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNotNull (_customerEndPoint.OriginalOppositeDomainObjects[_order2.ID]);
 
       Assert.AreSame (_orders, _customerEndPoint.OppositeDomainObjects);
+      Assert.AreNotSame (_customerEndPoint.OppositeDomainObjects, _customerEndPoint.OriginalOppositeDomainObjects);
     }
 
     [Test]
@@ -106,10 +109,80 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [Ignore ("TODO: HasBeenTouched")]
-    public void HasBeenTouched ()
+    public void HasBeenTouchedAddAndRemove_LeavingSameElements ()
     {
-      Assert.Fail ();
+      Assert.IsFalse (_customerEndPoint.HasBeenTouched);
+      _customerEndPoint.OppositeDomainObjects.Add (Order.NewObject ());
+      Assert.IsTrue (_customerEndPoint.HasBeenTouched);
+      _customerEndPoint.OppositeDomainObjects.RemoveAt (_customerEndPoint.OppositeDomainObjects.Count - 1);
+      Assert.IsTrue (_customerEndPoint.HasBeenTouched);
+    }
+
+    [Test]
+    public void HasBeenTouchedInsert ()
+    {
+      Assert.IsFalse (_customerEndPoint.HasBeenTouched);
+      _customerEndPoint.OppositeDomainObjects.Insert (0, Order.NewObject ());
+      Assert.IsTrue (_customerEndPoint.HasBeenTouched);
+    }
+
+    [Test]
+    public void HasBeenTouchedRemove ()
+    {
+      Assert.IsFalse (_customerEndPoint.HasBeenTouched);
+      _customerEndPoint.OppositeDomainObjects.Remove (_customerEndPoint.OppositeDomainObjects[0]);
+      Assert.IsTrue (_customerEndPoint.HasBeenTouched);
+    }
+
+    [Test]
+    public void HasBeenTouchedRemoveNonExisting ()
+    {
+      Assert.IsFalse (_customerEndPoint.HasBeenTouched);
+      _customerEndPoint.OppositeDomainObjects.Remove (Order.NewObject());
+      Assert.IsTrue (_customerEndPoint.HasBeenTouched);
+    }
+
+    [Test]
+    public void HasBeenTouchedClear ()
+    {
+      Assert.IsFalse (_customerEndPoint.HasBeenTouched);
+      _customerEndPoint.OppositeDomainObjects.Clear ();
+      Assert.IsTrue (_customerEndPoint.HasBeenTouched);
+    }
+
+    [Test]
+    public void HasBeenTouchedClearEmpty ()
+    {
+      _customerEndPoint.OppositeDomainObjects.Clear ();
+      _customerEndPoint.Commit ();
+
+      Assert.IsFalse (_customerEndPoint.HasBeenTouched);
+      _customerEndPoint.OppositeDomainObjects.Clear ();
+      Assert.IsTrue (_customerEndPoint.HasBeenTouched);
+    }
+
+    [Test]
+    public void HasBeenTouchedReplace ()
+    {
+      Assert.IsFalse (_customerEndPoint.HasBeenTouched);
+      _customerEndPoint.OppositeDomainObjects[0] = Order.NewObject();
+      Assert.IsTrue (_customerEndPoint.HasBeenTouched);
+    }
+
+    [Test]
+    public void HasBeenTouchedReplaceWithSame ()
+    {
+      Assert.IsFalse (_customerEndPoint.HasBeenTouched);
+      _customerEndPoint.OppositeDomainObjects[0] = _customerEndPoint.OppositeDomainObjects[0];
+      Assert.IsTrue (_customerEndPoint.HasBeenTouched);
+    }
+
+    [Test]
+    public void HasBeenTouchedPerformDelete ()
+    {
+      Assert.IsFalse (_customerEndPoint.HasBeenTouched);
+      _customerEndPoint.PerformDelete ();
+      Assert.IsTrue (_customerEndPoint.HasBeenTouched);
     }
 
     [Test]
@@ -160,6 +233,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreSame (expected.Definition, actual.Definition);
       Assert.AreSame (expected.GetDomainObject(), actual.GetDomainObject ());
       Assert.AreEqual (expected.HasChanged, actual.HasChanged);
+      Assert.AreEqual (expected.HasBeenTouched, actual.HasBeenTouched);
       Assert.AreEqual (expected.ID, actual.ID);
       Assert.AreEqual (expected.ObjectID, actual.ObjectID);
 
@@ -193,6 +267,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNotNull (endPoint.Definition);
       Assert.AreSame (order, endPoint.GetDomainObject());
       Assert.IsFalse (endPoint.HasChanged);
+      Assert.IsFalse (endPoint.HasBeenTouched);
       Assert.AreEqual (id, endPoint.ID);
       Assert.AreEqual (order.ID, endPoint.ObjectID);
       Assert.IsNotNull (endPoint.OppositeDomainObjects);
@@ -238,6 +313,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNotNull (endPoint.Definition);
       Assert.AreSame (order, endPoint.GetDomainObject ());
       Assert.IsTrue (endPoint.HasChanged);
+      Assert.IsTrue (endPoint.HasBeenTouched);
       Assert.AreEqual (id, endPoint.ID);
       Assert.AreEqual (order.ID, endPoint.ObjectID);
       Assert.IsNotNull (endPoint.OppositeDomainObjects);
@@ -258,6 +334,233 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNotNull (clone);
 
       CheckIfRelationEndPointsAreEqual (endPoint, clone);
+    }
+
+    [Test]
+    public void Commit ()
+    {
+      Order newOrder = Order.NewObject ();
+      _customerEndPoint.OppositeDomainObjects.Add (newOrder);
+
+      Assert.IsTrue (_customerEndPoint.HasChanged);
+      Assert.IsTrue (_customerEndPoint.HasBeenTouched);
+      Assert.IsTrue (_customerEndPoint.OppositeDomainObjects.ContainsObject (newOrder));
+      Assert.IsFalse (_customerEndPoint.OriginalOppositeDomainObjects.ContainsObject (newOrder));
+
+      DomainObjectCollection collectionBefore = _customerEndPoint.OppositeDomainObjects;
+      DomainObjectCollection originalCollectionBefore = _customerEndPoint.OriginalOppositeDomainObjects;
+
+      _customerEndPoint.Commit ();
+
+      Assert.IsFalse (_customerEndPoint.HasChanged);
+      Assert.IsFalse (_customerEndPoint.HasBeenTouched);
+      Assert.IsTrue (_customerEndPoint.OppositeDomainObjects.ContainsObject (newOrder));
+      Assert.IsTrue (_customerEndPoint.OriginalOppositeDomainObjects.ContainsObject (newOrder));
+
+      Assert.AreSame (collectionBefore, _customerEndPoint.OppositeDomainObjects);
+      Assert.AreSame (originalCollectionBefore, _customerEndPoint.OriginalOppositeDomainObjects);
+    }
+
+    [Test]
+    public void CommitTouchedUnchanged ()
+    {
+      _customerEndPoint.OppositeDomainObjects[0] = _customerEndPoint.OppositeDomainObjects[0];
+
+      Assert.IsFalse (_customerEndPoint.HasChanged);
+      Assert.IsTrue (_customerEndPoint.HasBeenTouched);
+
+      _customerEndPoint.Commit ();
+
+      Assert.IsFalse (_customerEndPoint.HasChanged);
+      Assert.IsFalse (_customerEndPoint.HasBeenTouched);
+    }
+
+    [Test]
+    public void Rollback ()
+    {
+      Order newOrder = Order.NewObject ();
+      _customerEndPoint.OppositeDomainObjects.Add (newOrder);
+
+      Assert.IsTrue (_customerEndPoint.HasChanged);
+      Assert.IsTrue (_customerEndPoint.HasBeenTouched);
+      Assert.IsTrue (_customerEndPoint.OppositeDomainObjects.ContainsObject (newOrder));
+      Assert.IsFalse (_customerEndPoint.OriginalOppositeDomainObjects.ContainsObject (newOrder));
+
+      DomainObjectCollection collectionBefore = _customerEndPoint.OppositeDomainObjects;
+      DomainObjectCollection originalCollectionBefore = _customerEndPoint.OriginalOppositeDomainObjects;
+
+      _customerEndPoint.Rollback ();
+
+      Assert.IsFalse (_customerEndPoint.HasChanged);
+      Assert.IsFalse (_customerEndPoint.HasBeenTouched);
+      Assert.IsFalse (_customerEndPoint.OppositeDomainObjects.ContainsObject (newOrder));
+      Assert.IsFalse (_customerEndPoint.OriginalOppositeDomainObjects.ContainsObject (newOrder));
+
+      Assert.AreSame (collectionBefore, _customerEndPoint.OppositeDomainObjects);
+      Assert.AreSame (originalCollectionBefore, _customerEndPoint.OriginalOppositeDomainObjects);
+    }
+
+    [Test]
+    public void RollbackTouchedUnchanged ()
+    {
+      _customerEndPoint.OppositeDomainObjects[0] = _customerEndPoint.OppositeDomainObjects[0];
+
+      Assert.IsFalse (_customerEndPoint.HasChanged);
+      Assert.IsTrue (_customerEndPoint.HasBeenTouched);
+
+      _customerEndPoint.Rollback();
+
+      Assert.IsFalse (_customerEndPoint.HasChanged);
+      Assert.IsFalse (_customerEndPoint.HasBeenTouched);
+    }
+
+    [Test]
+    public void TakeOverCommittedData_ChangedIntoUnchanged ()
+    {
+      DomainObjectCollection orders1 = new DomainObjectCollection (new DomainObject[] { _order1 }, false);
+      DomainObjectCollection orders2 = new DomainObjectCollection (new DomainObject[] { _order2 }, false);
+
+      CollectionEndPoint endPoint1 = CreateCollectionEndPoint (_customerEndPointID, orders1.Clone());
+      CollectionEndPoint endPoint2 = CreateCollectionEndPoint (_customerEndPointID, orders2.Clone ());
+
+      Order newOrder = Order.NewObject ();
+      endPoint2.OppositeDomainObjects.Add (newOrder);
+
+      Assert.IsFalse (endPoint1.HasChanged);
+      Assert.IsFalse (endPoint1.HasBeenTouched);
+      Assert.That (endPoint1.OppositeDomainObjects, Is.EquivalentTo (orders1));
+      Assert.That (endPoint1.OriginalOppositeDomainObjects, Is.EquivalentTo (orders1));
+
+      DomainObjectCollection collectionBefore = endPoint1.OppositeDomainObjects;
+      DomainObjectCollection originalCollectionBefore = endPoint1.OriginalOppositeDomainObjects;
+
+      PrivateInvoke.InvokeNonPublicMethod (endPoint1, "TakeOverCommittedData", endPoint2);
+
+      Assert.IsTrue (endPoint1.HasChanged);
+      Assert.IsTrue (endPoint1.HasBeenTouched);
+      Assert.That (endPoint1.OppositeDomainObjects, Is.EquivalentTo (endPoint2.OppositeDomainObjects));
+      Assert.That (endPoint1.OriginalOppositeDomainObjects, Is.EquivalentTo (orders1));
+
+      Assert.AreSame (collectionBefore, endPoint1.OppositeDomainObjects);
+      Assert.AreSame (originalCollectionBefore, endPoint1.OriginalOppositeDomainObjects);
+    }
+
+    [Test]
+    public void TakeOverCommittedData_UnchangedIntoUnchanged ()
+    {
+      DomainObjectCollection orders1 = new DomainObjectCollection (new DomainObject[] { _order1 }, false);
+      DomainObjectCollection orders2 = new DomainObjectCollection (new DomainObject[] { _order2 }, false);
+
+      CollectionEndPoint endPoint1 = CreateCollectionEndPoint (_customerEndPointID, orders1.Clone ());
+      CollectionEndPoint endPoint2 = CreateCollectionEndPoint (_customerEndPointID, orders2.Clone ());
+
+      Assert.IsFalse (endPoint1.HasChanged);
+      Assert.IsFalse (endPoint1.HasBeenTouched);
+      Assert.That (endPoint1.OppositeDomainObjects, Is.EquivalentTo (orders1));
+      Assert.That (endPoint1.OriginalOppositeDomainObjects, Is.EquivalentTo (orders1));
+
+      DomainObjectCollection collectionBefore = endPoint1.OppositeDomainObjects;
+      DomainObjectCollection originalCollectionBefore = endPoint1.OriginalOppositeDomainObjects;
+
+      PrivateInvoke.InvokeNonPublicMethod (endPoint1, "TakeOverCommittedData", endPoint2);
+
+      Assert.IsTrue (endPoint1.HasChanged);
+      Assert.IsTrue (endPoint1.HasBeenTouched);
+      Assert.That (endPoint1.OppositeDomainObjects, Is.EquivalentTo (orders2));
+      Assert.That (endPoint1.OriginalOppositeDomainObjects, Is.EquivalentTo (orders1));
+
+      Assert.AreSame (collectionBefore, endPoint1.OppositeDomainObjects);
+      Assert.AreSame (originalCollectionBefore, endPoint1.OriginalOppositeDomainObjects);
+    }
+
+    [Test]
+    public void TakeOverCommittedData_ChangedIntoChanged ()
+    {
+      DomainObjectCollection orders1 = new DomainObjectCollection (new DomainObject[] { _order1 }, false);
+      DomainObjectCollection orders2 = new DomainObjectCollection (new DomainObject[] { _order2 }, false);
+
+      CollectionEndPoint endPoint1 = CreateCollectionEndPoint (_customerEndPointID, orders1.Clone());
+      CollectionEndPoint endPoint2 = CreateCollectionEndPoint (_customerEndPointID, orders2.Clone ());
+
+      Order newOrder = Order.NewObject ();
+      endPoint2.OppositeDomainObjects.Add (newOrder);
+
+      endPoint1.OppositeDomainObjects.Clear ();
+
+      Assert.IsTrue (endPoint1.HasChanged);
+      Assert.IsTrue (endPoint1.HasBeenTouched);
+      Assert.That (endPoint1.OppositeDomainObjects, Is.EquivalentTo (new object[0]));
+      Assert.That (endPoint1.OriginalOppositeDomainObjects, Is.EquivalentTo (orders1));
+
+      DomainObjectCollection collectionBefore = endPoint1.OppositeDomainObjects;
+      DomainObjectCollection originalCollectionBefore = endPoint1.OriginalOppositeDomainObjects;
+
+      PrivateInvoke.InvokeNonPublicMethod (endPoint1, "TakeOverCommittedData", endPoint2);
+
+      Assert.IsTrue (endPoint1.HasChanged);
+      Assert.IsTrue (endPoint1.HasBeenTouched);
+      Assert.That (endPoint1.OppositeDomainObjects, Is.EquivalentTo (endPoint2.OppositeDomainObjects));
+      Assert.That (endPoint1.OriginalOppositeDomainObjects, Is.EquivalentTo (orders1));
+
+      Assert.AreSame (collectionBefore, endPoint1.OppositeDomainObjects);
+      Assert.AreSame (originalCollectionBefore, endPoint1.OriginalOppositeDomainObjects);
+    }
+
+    [Test]
+    public void TakeOverCommittedData_UnchangedIntoChanged ()
+    {
+      DomainObjectCollection orders1 = new DomainObjectCollection (new DomainObject[] { _order1 }, false);
+      DomainObjectCollection orders2 = new DomainObjectCollection (new DomainObject[] { _order2 }, false);
+
+      CollectionEndPoint endPoint1 = CreateCollectionEndPoint (_customerEndPointID, orders1.Clone ());
+      CollectionEndPoint endPoint2 = CreateCollectionEndPoint (_customerEndPointID, orders2.Clone ());
+
+      endPoint1.OppositeDomainObjects.Clear ();
+
+      Assert.IsTrue (endPoint1.HasChanged);
+      Assert.IsTrue (endPoint1.HasBeenTouched);
+      Assert.That (endPoint1.OppositeDomainObjects, Is.EquivalentTo (new object[0]));
+      Assert.That (endPoint1.OriginalOppositeDomainObjects, Is.EquivalentTo (orders1));
+
+      DomainObjectCollection collectionBefore = endPoint1.OppositeDomainObjects;
+      DomainObjectCollection originalCollectionBefore = endPoint1.OriginalOppositeDomainObjects;
+
+      PrivateInvoke.InvokeNonPublicMethod (endPoint1, "TakeOverCommittedData", endPoint2);
+
+      Assert.IsTrue (endPoint1.HasChanged);
+      Assert.IsTrue (endPoint1.HasBeenTouched);
+      Assert.That (endPoint1.OppositeDomainObjects, Is.EquivalentTo (orders2));
+      Assert.That (endPoint1.OriginalOppositeDomainObjects, Is.EquivalentTo (orders1));
+
+      Assert.AreSame (collectionBefore, endPoint1.OppositeDomainObjects);
+      Assert.AreSame (originalCollectionBefore, endPoint1.OriginalOppositeDomainObjects);
+    }
+
+    [Test]
+    public void TakeOverCommittedData_UnchangedIntoEqual ()
+    {
+      DomainObjectCollection orders1 = new DomainObjectCollection (new DomainObject[] {_order1}, false);
+
+      CollectionEndPoint endPoint1 = CreateCollectionEndPoint (_customerEndPointID, orders1.Clone ());
+      CollectionEndPoint endPoint2 = CreateCollectionEndPoint (_customerEndPointID, orders1.Clone ());
+
+      Assert.IsFalse (endPoint1.HasChanged);
+      Assert.IsFalse (endPoint1.HasBeenTouched);
+      Assert.That (endPoint1.OppositeDomainObjects, Is.EquivalentTo (orders1));
+      Assert.That (endPoint1.OriginalOppositeDomainObjects, Is.EquivalentTo (orders1));
+
+      DomainObjectCollection collectionBefore = endPoint1.OppositeDomainObjects;
+      DomainObjectCollection originalCollectionBefore = endPoint1.OriginalOppositeDomainObjects;
+
+      PrivateInvoke.InvokeNonPublicMethod (endPoint1, "TakeOverCommittedData", endPoint2);
+
+      Assert.IsFalse (endPoint1.HasChanged);
+      Assert.IsFalse (endPoint1.HasBeenTouched);
+      Assert.That (endPoint1.OppositeDomainObjects, Is.EquivalentTo (orders1));
+      Assert.That (endPoint1.OriginalOppositeDomainObjects, Is.EquivalentTo (orders1));
+
+      Assert.AreSame (collectionBefore, endPoint1.OppositeDomainObjects);
+      Assert.AreSame (originalCollectionBefore, endPoint1.OriginalOppositeDomainObjects);
     }
   }
 }

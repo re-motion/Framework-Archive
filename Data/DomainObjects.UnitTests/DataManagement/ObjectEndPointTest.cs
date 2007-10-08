@@ -4,6 +4,7 @@ using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Utilities;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -105,19 +106,55 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [Ignore ("TODO: HasBeenTouched")]
     public void HasBeenTouched ()
     {
+      Assert.IsFalse (_endPoint.HasBeenTouched);
+
+      _endPoint.OppositeObjectID = new ObjectID ("Order", Guid.NewGuid ());
+      Assert.IsTrue (_endPoint.HasBeenTouched);
+
+      _endPoint.OppositeObjectID = _oppositeObjectID;
+      Assert.IsTrue (_endPoint.HasBeenTouched);
     }
 
     [Test]
-    [Ignore ("TODO: HasBeenTouched")]
+    public void HasBeenTouchedWithInitializedWithNull ()
+    {
+      ObjectEndPoint endPoint = CreateObjectEndPoint (_endPointID, null);
+      Assert.IsFalse (endPoint.HasBeenTouched);
+    }
+
+    [Test]
+    public void HasBeenTouchedWithOldNullValue ()
+    {
+      ObjectEndPoint endPoint = CreateObjectEndPoint (_endPointID, null);
+      endPoint.OppositeObjectID = new ObjectID ("Order", Guid.NewGuid ());
+
+      Assert.IsTrue (endPoint.HasBeenTouched);
+    }
+
+    [Test]
+    public void HasBeenTouchedWithNewNullValue ()
+    {
+      _endPoint.OppositeObjectID = null;
+
+      Assert.IsTrue (_endPoint.HasBeenTouched);
+    }
+
+    [Test]
+    public void HasBeenTouchedWithSameValueSet ()
+    {
+      Assert.IsFalse (_endPoint.HasBeenTouched);
+      _endPoint.OppositeObjectID = _oppositeObjectID;
+      Assert.IsTrue (_endPoint.HasBeenTouched);
+    }
+
+    [Test]
     public void HasBeenTouchedWithPerformRelationChange ()
     {
-      Assert.Fail ();
-      Assert.IsFalse (_endPoint.HasChanged);
+      Assert.IsFalse (_endPoint.HasBeenTouched);
       _endPoint.PerformRelationChange (new NullObjectEndPoint(_endPoint.OppositeEndPointDefinition));
-      Assert.IsTrue (_endPoint.HasChanged);
+      Assert.IsTrue (_endPoint.HasBeenTouched);
     }
 
     [Test]
@@ -187,6 +224,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreSame (expected.ClientTransaction, actual.ClientTransaction);
       Assert.AreSame (expected.Definition, actual.Definition);
       Assert.AreEqual (expected.HasChanged, actual.HasChanged);
+      Assert.AreEqual (expected.HasBeenTouched, actual.HasBeenTouched);
       Assert.AreEqual (expected.ID, actual.ID);
       Assert.AreEqual (expected.ObjectID, actual.ObjectID);
       Assert.AreEqual (expected.OppositeObjectID, actual.OppositeObjectID);
@@ -205,6 +243,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreSame (ClientTransactionMock, endPoint.ClientTransaction);
       Assert.IsNotNull (endPoint.Definition);
       Assert.IsFalse (endPoint.HasChanged);
+      Assert.IsFalse (endPoint.HasBeenTouched);
       Assert.AreEqual (id, endPoint.ID);
       Assert.AreEqual (order.ID, endPoint.ObjectID);
       Assert.AreEqual (order.Official.ID, endPoint.OppositeObjectID);
@@ -233,6 +272,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreSame (ClientTransactionMock, endPoint.ClientTransaction);
       Assert.IsNotNull (endPoint.Definition);
       Assert.IsTrue (endPoint.HasChanged);
+      Assert.IsTrue (endPoint.HasBeenTouched);
       Assert.AreEqual (id, endPoint.ID);
       Assert.AreEqual (computer.ID, endPoint.ObjectID);
       Assert.AreEqual (computer.Employee.ID, endPoint.OppositeObjectID);
@@ -244,6 +284,141 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNotNull (endPoint);
 
       CheckIfRelationEndPointsAreEqual (endPoint, clone);
+    }
+
+    [Test]
+    public void Commit ()
+    {
+      ObjectID newOppositeID = new ObjectID ("Order", Guid.NewGuid ());
+      _endPoint.OppositeObjectID = newOppositeID;
+
+      Assert.IsTrue (_endPoint.HasBeenTouched);
+      Assert.IsTrue (_endPoint.HasChanged);
+      Assert.AreEqual (newOppositeID, _endPoint.OppositeObjectID);
+      Assert.AreEqual (_oppositeObjectID, _endPoint.OriginalOppositeObjectID);
+
+      _endPoint.Commit ();
+
+      Assert.IsFalse (_endPoint.HasBeenTouched);
+      Assert.IsFalse (_endPoint.HasChanged);
+      Assert.AreEqual (newOppositeID, _endPoint.OppositeObjectID);
+      Assert.AreEqual (newOppositeID, _endPoint.OriginalOppositeObjectID);
+    }
+
+    [Test]
+    public void Rollback ()
+    {
+      ObjectID newOppositeID = new ObjectID ("Order", Guid.NewGuid ());
+      _endPoint.OppositeObjectID = newOppositeID;
+
+      Assert.IsTrue (_endPoint.HasBeenTouched);
+      Assert.IsTrue (_endPoint.HasChanged);
+      Assert.AreEqual (newOppositeID, _endPoint.OppositeObjectID);
+      Assert.AreEqual (_oppositeObjectID, _endPoint.OriginalOppositeObjectID);
+
+      _endPoint.Rollback ();
+
+      Assert.IsFalse (_endPoint.HasBeenTouched);
+      Assert.IsFalse (_endPoint.HasChanged);
+      Assert.AreEqual (_oppositeObjectID, _endPoint.OppositeObjectID);
+      Assert.AreEqual (_oppositeObjectID, _endPoint.OriginalOppositeObjectID);
+    }
+
+    [Test]
+    public void TakeOverCommittedData_ChangedIntoUnchanged ()
+    {
+      ObjectEndPoint endPoint2 = CreateObjectEndPoint (_endPointID, DomainObjectIDs.Order2);
+
+      _endPoint.OppositeObjectID = DomainObjectIDs.Order4;
+
+      Assert.IsFalse (endPoint2.HasChanged);
+      Assert.IsFalse (endPoint2.HasBeenTouched);
+      Assert.AreEqual (DomainObjectIDs.Order2, endPoint2.OppositeObjectID);
+      Assert.AreEqual (DomainObjectIDs.Order2, endPoint2.OriginalOppositeObjectID);
+
+      PrivateInvoke.InvokeNonPublicMethod (endPoint2, "TakeOverCommittedData", _endPoint);
+
+      Assert.IsTrue (endPoint2.HasChanged);
+      Assert.IsTrue (endPoint2.HasBeenTouched);
+      Assert.AreEqual (DomainObjectIDs.Order4, endPoint2.OppositeObjectID);
+      Assert.AreEqual (DomainObjectIDs.Order2, endPoint2.OriginalOppositeObjectID);
+    }
+
+    [Test]
+    public void TakeOverCommittedData_UnchangedIntoUnchanged ()
+    {
+      ObjectEndPoint endPoint2 = CreateObjectEndPoint (_endPointID, DomainObjectIDs.Order2);
+
+      Assert.IsFalse (endPoint2.HasChanged);
+      Assert.IsFalse (endPoint2.HasBeenTouched);
+      Assert.AreEqual (DomainObjectIDs.Order2, endPoint2.OppositeObjectID);
+      Assert.AreEqual (DomainObjectIDs.Order2, endPoint2.OriginalOppositeObjectID);
+
+      PrivateInvoke.InvokeNonPublicMethod (endPoint2, "TakeOverCommittedData", _endPoint);
+
+      Assert.IsTrue (endPoint2.HasChanged);
+      Assert.IsTrue (endPoint2.HasBeenTouched);
+      Assert.AreEqual (_oppositeObjectID, endPoint2.OppositeObjectID);
+      Assert.AreEqual (DomainObjectIDs.Order2, endPoint2.OriginalOppositeObjectID);
+    }
+
+    [Test]
+    public void TakeOverCommittedData_UnchangedIntoChanged ()
+    {
+      ObjectEndPoint endPoint2 = CreateObjectEndPoint (_endPointID, DomainObjectIDs.Order2);
+
+      endPoint2.OppositeObjectID = DomainObjectIDs.Order3;
+
+      Assert.IsTrue (endPoint2.HasChanged);
+      Assert.IsTrue (endPoint2.HasBeenTouched);
+      Assert.AreEqual (DomainObjectIDs.Order3, endPoint2.OppositeObjectID);
+      Assert.AreEqual (DomainObjectIDs.Order2, endPoint2.OriginalOppositeObjectID);
+
+      PrivateInvoke.InvokeNonPublicMethod (endPoint2, "TakeOverCommittedData", _endPoint);
+
+      Assert.IsTrue (endPoint2.HasChanged);
+      Assert.IsTrue (endPoint2.HasBeenTouched);
+      Assert.AreEqual (_oppositeObjectID, endPoint2.OppositeObjectID);
+      Assert.AreEqual (DomainObjectIDs.Order2, endPoint2.OriginalOppositeObjectID);
+    }
+
+    [Test]
+    public void TakeOverCommittedData_ChangedIntoChanged ()
+    {
+      ObjectEndPoint endPoint2 = CreateObjectEndPoint (_endPointID, DomainObjectIDs.Order2);
+
+      _endPoint.OppositeObjectID = DomainObjectIDs.Order3;
+      endPoint2.OppositeObjectID = DomainObjectIDs.Order4;
+
+      Assert.IsTrue (endPoint2.HasChanged);
+      Assert.IsTrue (endPoint2.HasBeenTouched);
+      Assert.AreEqual (DomainObjectIDs.Order4, endPoint2.OppositeObjectID);
+      Assert.AreEqual (DomainObjectIDs.Order2, endPoint2.OriginalOppositeObjectID);
+
+      PrivateInvoke.InvokeNonPublicMethod (endPoint2, "TakeOverCommittedData", _endPoint);
+
+      Assert.IsTrue (endPoint2.HasChanged);
+      Assert.IsTrue (endPoint2.HasBeenTouched);
+      Assert.AreEqual (DomainObjectIDs.Order3, endPoint2.OppositeObjectID);
+      Assert.AreEqual (DomainObjectIDs.Order2, endPoint2.OriginalOppositeObjectID);
+    }
+
+    [Test]
+    public void TakeOverCommittedData_UnchangedIntoEqual ()
+    {
+      ObjectEndPoint endPoint2 = CreateObjectEndPoint (_endPointID, _endPoint.OppositeObjectID);
+
+      Assert.IsFalse (endPoint2.HasChanged);
+      Assert.IsFalse (endPoint2.HasBeenTouched);
+      Assert.AreEqual (_endPoint.OppositeObjectID, endPoint2.OppositeObjectID);
+      Assert.AreEqual (_endPoint.OppositeObjectID, endPoint2.OriginalOppositeObjectID);
+
+      PrivateInvoke.InvokeNonPublicMethod (endPoint2, "TakeOverCommittedData", _endPoint);
+
+      Assert.IsFalse (endPoint2.HasChanged);
+      Assert.IsFalse (endPoint2.HasBeenTouched);
+      Assert.AreEqual (_endPoint.OppositeObjectID, endPoint2.OppositeObjectID);
+      Assert.AreEqual (_endPoint.OppositeObjectID, endPoint2.OriginalOppositeObjectID);
     }
   }
 }

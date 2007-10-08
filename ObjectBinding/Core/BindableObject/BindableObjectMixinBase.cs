@@ -39,9 +39,12 @@ namespace Rubicon.ObjectBinding.BindableObject
 
       object nativeValue;
 
-      //TODO: catch and wrap the TargetException
+      //TODO: catch and unwrap the TargetException
       nativeValue = propertyBase.PropertyInfo.GetValue (This, new object[0]);
-
+      
+      // TODO: HasBeenTouched via Template Method
+      //if IsDefaultValue (property, nativevalue)
+      // return null;
       return propertyBase.ConvertFromNativePropertyType (nativeValue);
     }
 
@@ -78,7 +81,7 @@ namespace Rubicon.ObjectBinding.BindableObject
 
       object nativeValue = propertyBase.ConvertToNativePropertyType (value);
 
-      //TODO: catch and wrap the TargetException
+      //TODO: catch and unwrap the TargetException
       propertyBase.PropertyInfo.SetValue (This, nativeValue, new object[0]);
     }
 

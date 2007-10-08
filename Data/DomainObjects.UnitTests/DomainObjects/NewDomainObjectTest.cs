@@ -354,11 +354,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Employee employee = Employee.NewObject ();
       employee.Name = "Mr. Prosser";
 
-			Assert.IsTrue (employee.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name"].HasChanged);
+      Assert.IsTrue (employee.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name"].HasChanged);
 
       ClientTransactionMock.Commit ();
 
-			Assert.IsFalse (employee.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name"].HasChanged);
+      Assert.IsFalse (employee.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name"].HasChanged);
+    }
+
+    [Test]
+    public void PropertyValueHasBeenTouchedAfterCommit ()
+    {
+      Employee employee = Employee.NewObject ();
+      employee.Name = "Mr. Prosser";
+
+      Assert.IsTrue (employee.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name"].HasBeenTouched);
+
+      ClientTransactionMock.Commit ();
+
+      Assert.IsFalse (employee.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name"].HasBeenTouched);
     }
 
     [Test]

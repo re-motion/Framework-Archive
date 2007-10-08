@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain
       return DomainObject.NewObject<BindableSampleDomainObject> ().With ();
     }
 
-    public static BindableSampleDomainObject GetObject (ObjectID id)
+    public new static BindableSampleDomainObject GetObject (ObjectID id)
     {
       return DomainObject.GetObject<BindableSampleDomainObject> (id);
     }

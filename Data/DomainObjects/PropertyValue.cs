@@ -16,21 +16,10 @@ public class PropertyValue
 
   // static members and constants
 
-  private static object GetDefaultEnumValue (PropertyDefinition propertyDefinition)
-  {
-    Array enumValues = Enum.GetValues (propertyDefinition.PropertyType);
-
-    if (enumValues.Length > 0)
-      return enumValues.GetValue (0);
-  
-    throw new InvalidEnumDefinitionException (propertyDefinition.PropertyType);
-  }
-
   private static bool AreValuesDifferent (object value1, object value2)
   {
     return !object.Equals (value1, value2);
   }
-
 
   // member fields
 
@@ -49,7 +38,7 @@ public class PropertyValue
   private readonly ArrayList _accessObservers;
   private object _value;
   private object _originalValue;
-  // TODO: _hasBeenTouched
+  private bool _hasBeenTouched;
   private bool _isDiscarded;
 
   // construction and disposing
@@ -87,7 +76,7 @@ public class PropertyValue
     _value = value;
     _originalValue = originalValue;
     _isDiscarded = false;
-    // TODO: _hasBeenTouched = false;
+    _hasBeenTouched = false;
     _accessObservers = new ArrayList ();
   }
 
@@ -156,19 +145,29 @@ public class PropertyValue
       CheckDiscarded ();
       CheckForRelationProperty ();
 
-      // TODO: _hasBeenTouched = true
+      SetValueInternal (value, true);
+    }
+  }
 
-      if (AreValuesDifferent (_value, value))
-      {
-        CheckValue (value, _definition);
+  private void SetValueInternal (object value, bool raiseEvents)
+  {
+    if (AreValuesDifferent (_value, value))
+    {
+      CheckValue (value, _definition);
+
+      if (raiseEvents)
         BeginValueSet (value);
 
-        object oldValue = _value;
-        _value = value;
+      object oldValue = _value;
+      _value = value;
 
+      _hasBeenTouched = true;
+
+      if (raiseEvents)
         EndValueSet (oldValue);
-      }
     }
+    else
+      _hasBeenTouched = true;
   }
 
   /// <summary>
@@ -229,6 +228,24 @@ public class PropertyValue
     }
   }
 
+  /// <summary>
+  /// Indicates if the <see cref="Value"/> of the <see cref="PropertyValue"/> has been assigned since instantiation, loading, commit or rollback,
+  /// regardless of whether the current value differs from the <see cref="OriginalValue"/>.
+  /// </summary>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  public bool HasBeenTouched
+  {
+    get
+    {
+      CheckDiscarded ();
+      return _hasBeenTouched;
+    }
+  }
+
+  internal void Touch ()
+  {
+    _hasBeenTouched = true;
+  }
 
   /// <summary>
   /// Determines whether the specified <see cref="PropertyValue"/> is equal to the current <b>PropertyValue</b>.
@@ -314,8 +331,8 @@ public class PropertyValue
   {
     if (HasChanged)
     {
-      // TODO: hasBeenTouched = false
       _originalValue = _value;
+      _hasBeenTouched = false;
     }
   }
 
@@ -323,19 +340,14 @@ public class PropertyValue
   {
     if (HasChanged)
     {
-      // TODO: hasBeenTouched = false
       _value = _originalValue;
+      _hasBeenTouched = false;
     }
   }
 
   internal void SetRelationValue (ObjectID id)
   {
-    if (AreValuesDifferent (_value, id))
-    {
-      CheckValue (id, _definition);
-      _value = id;
-      // TODO: _hasBeenTouched = true
-    }
+    SetValueInternal (id, false);
   }
 
   internal void Discard ()
@@ -448,15 +460,15 @@ public class PropertyValue
     _value = source._value;
     _originalValue = source._originalValue;
     _isDiscarded = source._isDiscarded;
-    // TODO: _hasBeenTouched = source._hasBeenTouched
+    _hasBeenTouched = source._hasBeenTouched;
   }
 
-  internal void MergeData (PropertyValue source)
+  internal void TakeOverCommittedData (PropertyValue source)
   {
     Assertion.IsTrue (_definition == source._definition);
     _value = source._value;
     _isDiscarded = source._isDiscarded;
-    // TODO: _hasBeenTouched |= source._hasBeenTouched
+    _hasBeenTouched |= source._hasBeenTouched || HasChanged; // true if: we have been touched/source has been touched/we have changed
   }
 }
 }

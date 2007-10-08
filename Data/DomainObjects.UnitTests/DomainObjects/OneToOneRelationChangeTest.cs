@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
-  public class OneToOneRelationChangeTest : ClientTransactionBaseTest
+  public class OneToOneRelationChangeTest : RelationChangeBaseTest
   {
     private Order _order;
     private OrderTicket _oldOrderTicket;
@@ -404,24 +404,47 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [Ignore ("TODO: HasBeenTouched")]
-    public void HasBeenTouched ()
+    public void HasBeenTouched_VirtualSide ()
     {
-      Assert.Fail ();
+      Order oldOrder = _newOrderTicket.Order;
+
+      CheckTouching (delegate { _order.OrderTicket = _newOrderTicket; }, _newOrderTicket, "Order",
+          new RelationEndPointID (_order.ID, typeof (Order).FullName + ".OrderTicket"),
+          new RelationEndPointID (oldOrder.ID, typeof (Order).FullName + ".OrderTicket"),
+          new RelationEndPointID (_oldOrderTicket.ID, typeof (OrderTicket).FullName + ".Order"),
+          new RelationEndPointID (_newOrderTicket.ID, typeof (OrderTicket).FullName + ".Order"));
     }
 
     [Test]
-    [Ignore ("TODO: HasBeenTouched")]
-    public void HasBeenTouched_SetOriginalValue ()
+    public void HasBeenTouched_RealSide ()
     {
-      Assert.Fail ();
+      Order oldOrder = _newOrderTicket.Order;
+
+      Assert.IsFalse (_oldOrderTicket.InternalDataContainer.PropertyValues[typeof (OrderTicket).FullName + ".Order"].HasBeenTouched);
+
+      CheckTouching (delegate { _newOrderTicket.Order = _order; }, _newOrderTicket, "Order",
+          new RelationEndPointID (_order.ID, typeof (Order).FullName + ".OrderTicket"),
+          new RelationEndPointID (oldOrder.ID, typeof (Order).FullName + ".OrderTicket"),
+          new RelationEndPointID (_oldOrderTicket.ID, typeof (OrderTicket).FullName + ".Order"),
+          new RelationEndPointID (_newOrderTicket.ID, typeof (OrderTicket).FullName + ".Order"));
+
+      Assert.IsTrue (_oldOrderTicket.InternalDataContainer.PropertyValues[typeof (OrderTicket).FullName + ".Order"].HasBeenTouched);
     }
 
     [Test]
-    [Ignore ("TODO: HasBeenTouched")]
-    public void HasBeenTouched_ChangeRelationBackToOriginalValue ()
+    public void HasBeenTouched_VirtualSide_OriginalValue ()
     {
-      Assert.Fail ();
+      CheckTouching (delegate { _order.OrderTicket = _order.OrderTicket; }, _order.OrderTicket, "Order",
+          new RelationEndPointID (_order.ID, typeof (Order).FullName + ".OrderTicket"),
+          new RelationEndPointID (_oldOrderTicket.ID, typeof (OrderTicket).FullName + ".Order"));
+    }
+
+    [Test]
+    public void HasBeenTouched_RealSide_OriginalValue ()
+    {
+      CheckTouching (delegate { _oldOrderTicket.Order = _order; }, _oldOrderTicket, "Order",
+          new RelationEndPointID (_order.ID, typeof (Order).FullName + ".OrderTicket"),
+          new RelationEndPointID (_oldOrderTicket.ID, typeof (OrderTicket).FullName + ".Order"));
     }
 
     [Test]
@@ -501,6 +524,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _order.SetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", Ceo.NewObject ());
     }
-
   }
 }

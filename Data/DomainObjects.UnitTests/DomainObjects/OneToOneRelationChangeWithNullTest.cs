@@ -1,11 +1,12 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
-  public class OneToOneRelationChangeWithNullTest : ClientTransactionBaseTest
+  public class OneToOneRelationChangeWithNullTest : RelationChangeBaseTest
   {
     [Test]
     public void OldRelatedObjectOfNewRelatedObjectIsNull ()
@@ -87,6 +88,57 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.IsNull (employee.Computer);
       Assert.IsNull (computer.Employee);
+    }
+
+    [Test]
+    public void HasBeenTouchedWithNull_RealSide ()
+    {
+      Employee employee = Employee.GetObject (DomainObjectIDs.Employee3);
+      Computer computer = employee.Computer;
+
+      CheckTouching (delegate { computer.Employee = null; }, computer, "Employee",
+          new RelationEndPointID (employee.ID, typeof (Employee).FullName + ".Computer"),
+          new RelationEndPointID (computer.ID, typeof (Computer).FullName + ".Employee"));
+    }
+
+    [Test]
+    public void HasBeenTouchedWithNullTwice_RealSide ()
+    {
+      Employee employee = Employee.GetObject (DomainObjectIDs.Employee3);
+      Computer computer = employee.Computer;
+
+      computer.Employee = null;
+      
+      SetDatabaseModifyable ();
+      ClientTransactionMock.Commit ();
+
+      CheckTouching (delegate { computer.Employee = null; }, computer, "Employee",
+          new RelationEndPointID (computer.ID, typeof (Computer).FullName + ".Employee"));
+    }
+
+    [Test]
+    public void HasBeenTouchedWithNull_VirtualSide ()
+    {
+      Employee employee = Employee.GetObject (DomainObjectIDs.Employee3);
+      Computer computer = employee.Computer;
+
+      CheckTouching (delegate { employee.Computer = null; }, computer, "Employee",
+          new RelationEndPointID (employee.ID, typeof (Employee).FullName + ".Computer"),
+          new RelationEndPointID (computer.ID, typeof (Computer).FullName + ".Employee"));
+    }
+
+    [Test]
+    public void HasBeenTouchedWithNullTwice_VirtualSide ()
+    {
+      Employee employee = Employee.GetObject (DomainObjectIDs.Employee3);
+
+      employee.Computer = null;
+
+      SetDatabaseModifyable ();
+      ClientTransactionMock.Commit ();
+
+      CheckTouching (delegate { employee.Computer = null; }, null, null,
+          new RelationEndPointID (employee.ID, typeof (Employee).FullName + ".Computer"));
     }
   }
 }

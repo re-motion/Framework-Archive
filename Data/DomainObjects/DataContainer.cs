@@ -564,7 +564,7 @@ public class DataContainer
       _propertyValues[i].AssumeSameState (sourceContainer._propertyValues[i]);
   }
 
-  internal void MergeData (DataContainer sourceContainer)
+  internal void TakeOverCommittedData (DataContainer sourceContainer)
   {
     Assertion.IsTrue (sourceContainer.ClassDefinition == ClassDefinition);
     Assertion.IsTrue (sourceContainer._domainObject == _domainObject || _domainObject == null);
@@ -576,7 +576,7 @@ public class DataContainer
     _relationEndPointIDs = null; // reinitialize on next use
 
     for (int i = 0; i < _propertyValues.Count; ++i)
-      _propertyValues[i].MergeData (sourceContainer._propertyValues[i]);
+      _propertyValues[i].TakeOverCommittedData (sourceContainer._propertyValues[i]);
   }
 }
 }

@@ -32,6 +32,8 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 		private void Page_Load(object sender, System.EventArgs e)
 		{
       ControlWithAllDataTypesControl.ObjectWithAllDataTypes = MyFunction.ObjectWithAllDataTypes;
+      if (!IsPostBack)
+        MyFunction.ObjectWithAllDataTypes.ByteProperty = MyFunction.ObjectWithAllDataTypes.ByteProperty;
 		}
 
 		#region Web Form Designer generated code
