@@ -13,7 +13,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
 {
   [TestFixture]
-  public class Search : ObjectBindingBaseTest
+  public class SearchTest : ObjectBindingBaseTest
   {
     private IBusinessObject _orderItem;
     private IBusinessObjectReferenceProperty _property;

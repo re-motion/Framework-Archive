@@ -12,7 +12,7 @@ using Rubicon.Security;
 namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
 {
   [TestFixture]
-  public class GetDisplayName : ObjectBindingBaseTest
+  public class GetDisplayNameTest : ObjectBindingBaseTest
   {
     private MockRepository _mockRepository;
     private IObjectSecurityAdapter _mockObjectSecurityAdapter;

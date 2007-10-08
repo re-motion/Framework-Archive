@@ -4,6 +4,7 @@ using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain
 {
+  [Instantiable]
   public abstract class BindableDomainObjectWithProperties : BindableBaseDomainObject
   {
     [StorageClassNone]

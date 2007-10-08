@@ -8,7 +8,7 @@ using Rubicon.ObjectBinding.BindableObject;
 namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
 {
   [TestFixture]
-  public class Identity : ObjectBindingBaseTest
+  public class IdentityTest : ObjectBindingBaseTest
   {
     [Test]
     public void BindableDomainObjectsHaveIdentity ()

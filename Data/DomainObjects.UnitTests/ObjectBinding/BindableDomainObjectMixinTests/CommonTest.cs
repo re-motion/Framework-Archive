@@ -10,7 +10,7 @@ using Rubicon.ObjectBinding.BindableObject;
 namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
 {
   [TestFixture]
-  public class Common : ObjectBindingBaseTest
+  public class CommonTest : ObjectBindingBaseTest
   {
     [Test]
     public void InstantiateMixedType ()

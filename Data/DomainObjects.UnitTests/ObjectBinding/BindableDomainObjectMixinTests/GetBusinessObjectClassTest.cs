@@ -10,7 +10,7 @@ using Rubicon.ObjectBinding.BindableObject;
 namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
 {
   [TestFixture]
-  public class GetBusinessObjectClass : ObjectBindingBaseTest
+  public class GetBusinessObjectClassTest : ObjectBindingBaseTest
   {
     private BindableSampleDomainObject _bindableObject;
     private BindableDomainObjectMixin _bindableObjectMixin;

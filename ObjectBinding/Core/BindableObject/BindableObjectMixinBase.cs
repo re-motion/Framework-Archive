@@ -42,10 +42,24 @@ namespace Rubicon.ObjectBinding.BindableObject
       //TODO: catch and unwrap the TargetException
       nativeValue = propertyBase.PropertyInfo.GetValue (This, new object[0]);
       
-      // TODO: HasBeenTouched via Template Method
-      //if IsDefaultValue (property, nativevalue)
-      // return null;
-      return propertyBase.ConvertFromNativePropertyType (nativeValue);
+      if (IsDefaultValue (propertyBase, nativeValue))
+        return null;
+      else
+        return propertyBase.ConvertFromNativePropertyType (nativeValue);
+    }
+
+    /// <summary>
+    /// Determines whether the given <paramref name="property"/>, whose current value is <paramref name="nativeValue"/>, still has its default value.
+    /// </summary>
+    /// <param name="property">The property to be checked.</param>
+    /// <param name="nativeValue">The property's current value in its native form.</param>
+    /// <returns>
+    /// True if the <paramref name="property"/> still has its default value; otherwise, false.
+    /// </returns>
+    /// <remarks>The default implementation always returns false.</remarks>
+    protected virtual bool IsDefaultValue (PropertyBase property, object nativeValue)
+    {
+      return false;
     }
 
     /// <summary>

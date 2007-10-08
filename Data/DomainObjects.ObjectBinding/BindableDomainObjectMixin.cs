@@ -1,6 +1,9 @@
 using System;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.BindableObject;
+using Rubicon.ObjectBinding.BindableObject.Properties;
+using Rubicon.Utilities;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
@@ -8,8 +11,15 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
   [GetObjectServiceType (typeof (BindableDomainObjectGetObjectService))]
   [SearchAvailableObjectsServiceType (typeof (BindableDomainObjectSearchService))]
   [UseBindableDomainObjectMetadataFactory]
-  public class BindableDomainObjectMixin : BindableObjectMixinBase<DomainObject>, IBusinessObjectWithIdentity
+  public class BindableDomainObjectMixin : BindableObjectMixinBase<BindableDomainObjectMixin.IDomainObject>, IBusinessObjectWithIdentity
   {
+    public interface IDomainObject
+    {
+      Type GetPublicDomainObjectType ();
+      ObjectID ID { get; }
+      PropertyIndexer Properties { get; }
+    }
+
     protected override BindableObjectClass InitializeBindableObjectClass ()
     {
       return BindableObjectProvider.Current.GetBindableObjectClass (This.GetPublicDomainObjectType());
@@ -23,6 +33,17 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
     public string BaseDisplayName
     {
       get { return base.DisplayName; }
+    }
+
+    protected override bool IsDefaultValue (PropertyBase property, object nativeValue)
+    {
+      ArgumentUtility.CheckNotNull ("property", property);
+      
+      string propertyIdentifier = ReflectionUtility.GetPropertyName (property.PropertyInfo);
+      if (This.Properties.Contains (propertyIdentifier))
+        return !This.Properties[propertyIdentifier].HasBeenTouched;
+      else
+        return base.IsDefaultValue (property, nativeValue);
     }
   }
 }
