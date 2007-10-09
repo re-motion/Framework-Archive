@@ -339,8 +339,9 @@ public abstract class ClientTransaction : ITransaction
   }
 
   /// <summary>
-  /// Creates a new <see cref="ClientTransactionScope"/> for this transaction with an automatic <see cref="AutoRollbackBehavior.ReturnToParent"/>
-  /// behavior and enters it, setting it the <see cref="ClientTransactionScope.ActiveScope"/> for the current thread.
+  /// Creates a new <see cref="ClientTransactionScope"/> for this transaction and enters it, making it the
+  /// <see cref="ClientTransactionScope.ActiveScope"/> for the current thread. When the scope is left, an <see cref="AutoRollbackBehavior.ReturnToParent"/>
+  /// behavior is executed, re-activating this transaction's parent transaction (if any).
   /// </summary>
   /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction with an automatic <see cref="AutoRollbackBehavior.ReturnToParent"/>
   /// behavior.</returns>
@@ -361,7 +362,7 @@ public abstract class ClientTransaction : ITransaction
 
   /// <summary>
   /// Creates a new <see cref="ClientTransactionScope"/> for this transaction with the given automatic rollback behavior and enters it,
-  /// setting it the <see cref="ClientTransactionScope.ActiveScope"/> for the current thread.
+  /// making it the <see cref="ClientTransactionScope.ActiveScope"/> for the current thread.
   /// </summary>
   /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction.</returns>
   /// <param name="rollbackBehavior">The automatic rollback behavior to be performed when the scope's <see cref="ClientTransactionScope.Leave"/>
@@ -378,8 +379,9 @@ public abstract class ClientTransaction : ITransaction
   }
 
   /// <summary>
-  /// Creates a new <see cref="ClientTransactionScope"/> for this transaction with no automatic rollback behavior and enters it, setting it the
-  /// <see cref="ClientTransactionScope.ActiveScope"/> for the current thread.
+  /// Creates a new <see cref="ClientTransactionScope"/> for this transaction and enters it, making it the
+  /// <see cref="ClientTransactionScope.ActiveScope"/> for the current thread. When the scope is left, this transaction's parent transaction
+  /// (if any) is not reactivated and no automatic rollback behavior is executed.
   /// </summary>
   /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction with no automatic rollback behavior.</returns>
   /// <remarks>
