@@ -16,22 +16,9 @@ namespace Rubicon.Data.DomainObjects
 /// </summary>
 /// <remarks>
 /// <para>
-/// There are two ways a <see cref="ClientTransaction"/> can be used:<br />
-/// <list type="bullet">
-///   <item>
-///     <description>
-///       The transaction is initialized automatically through <see cref="ClientTransactionScope.CurrentTransaction"/> and is associated with the
-///       current <see cref="System.Threading.Thread"/>.
-///     </description>
-///   </item>
-///   <item>   
-///     <description>
-///       Multiple transactions can be instantiated with the constructor and used side-by-side. 
-///       Every <see cref="DomainObject"/> must then be associated with the current thread via <see cref="ClientTransactionScope"/>, e.g. by calling
-///       <see cref="EnterScope"/>.
-///     </description>
-///   </item>
-/// </list>
+/// When a <see cref="ClientTransaction"/> is manually instantiated, it has to be activated for the current thread by using a
+/// <see cref="ClientTransactionScope"/>, e.g. via calling <see cref="EnterScope()"/> or <see cref="EnterNonReturningScope"/>. The current transaction
+/// for a thread can be retrieved via <see cref="Current"/> or <see cref="ClientTransactionScope.ActiveScope"/>.
 /// </para>
 /// <para>
 /// <see cref="ClientTransaction">ClientTransaction's</see> methods temporarily set the <see cref="ClientTransactionScope"/> to this instance to
@@ -162,6 +149,21 @@ public abstract class ClientTransaction : ITransaction
   /// this transaction doesn't have a parent transaction, this method does nothing.
   /// </summary>
   /// <returns>True if control was returned to the parent transaction, false if this transaction has no parent transaction.</returns>
+  /// <remarks>
+  /// <para>
+  /// When a subtransaction is created via <see cref="CreateSubTransaction"/>, the parent transaction is made read-only and cannot be
+  /// used in potentially modifying operations until the subtransaction returns control to the parent transaction by calling this method.
+  /// </para>
+  /// <para>
+  /// Note that this method only affects writeability of the transactions, it does not influence the active <see cref="ClientTransactionScope"/> and
+  /// <see cref="ClientTransaction.Current"/> transaction. However, by default, the scope created by <see cref="EnterScope()"/> will automatically
+  /// execute this method when the scope is left (see <see cref="AutoRollbackBehavior.ReturnToParent"/>). In most cases,
+  /// <see cref="ReturnToParentTransaction"/> therefore doesn't have to be called explicity; leaving the scopes suffices.
+  /// </para>
+  /// <para>
+  /// Use <see cref="EnterNonReturningScope"/> instead of <see cref="EnterScope()"/> to avoid this method being called at the end of a scope.
+  /// </para>
+  /// </remarks>
   public abstract bool ReturnToParentTransaction ();
 
   /// <summary>
@@ -340,8 +342,8 @@ public abstract class ClientTransaction : ITransaction
 
   /// <summary>
   /// Creates a new <see cref="ClientTransactionScope"/> for this transaction and enters it, making it the
-  /// <see cref="ClientTransactionScope.ActiveScope"/> for the current thread. When the scope is left, an <see cref="AutoRollbackBehavior.ReturnToParent"/>
-  /// behavior is executed, re-activating this transaction's parent transaction (if any).
+  /// <see cref="ClientTransactionScope.ActiveScope"/> for the current thread. When the scope is left and this transaction has a parent transaction,
+  /// <see cref="ReturnToParentTransaction"/> is executed. This will discard this transaction and make the parent transaction writeable again.
   /// </summary>
   /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction with an automatic <see cref="AutoRollbackBehavior.ReturnToParent"/>
   /// behavior.</returns>
@@ -381,14 +383,16 @@ public abstract class ClientTransaction : ITransaction
   /// <summary>
   /// Creates a new <see cref="ClientTransactionScope"/> for this transaction and enters it, making it the
   /// <see cref="ClientTransactionScope.ActiveScope"/> for the current thread. When the scope is left, this transaction's parent transaction
-  /// (if any) is not reactivated and no automatic rollback behavior is executed.
+  /// (if any) is not made writeable and no automatic rollback behavior is executed.
   /// </summary>
   /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction with no automatic rollback behavior.</returns>
   /// <remarks>
   /// <para>
   /// The created scope will not perform any automatic rollback and it will not return control to the parent transaction at its end if this
   /// transaction is a subtransaction. You must explicitly call <see cref="ReturnToParentTransaction"/> if you want to continue working with
-  /// the parent transaction.
+  /// the parent transaction. This is useful if you want to temporarily open a scope for a subtransaction, then open a scope for another transaction,
+  /// then open a new scope for the subtransaction again. In this case, the first scope must be a non-returning scope, otherwise the subtransaction
+  /// will be discarded and cannot be used a second time.
   /// </para>
   /// <para>
   /// The new <see cref="ClientTransactionScope"/> stores the previous <see cref="ClientTransactionScope.ActiveScope"/>. When this scope's
@@ -565,6 +569,13 @@ public abstract class ClientTransaction : ITransaction
   /// <summary>
   /// Initializes a new subtransaction with this <see cref="ClientTransaction"/> as its <see cref="ParentTransaction"/>.
   /// </summary>
+  /// <remarks>
+  /// <para>
+  /// When a subtransaction is created, the parent transaction is automatically made read-only and cannot be modified until the subtransaction
+  /// returns control to it via <see cref="ReturnToParentTransaction"/>. <see cref="ReturnToParentTransaction"/> is automatically called when a
+  /// scope created by <see cref="EnterScope()"/> is left.
+  /// </para>
+  /// </remarks>
   public virtual ClientTransaction CreateSubTransaction ()
   {
     ClientTransaction subTransaction = ObjectFactory.Create<SubClientTransaction> ().With (this);
