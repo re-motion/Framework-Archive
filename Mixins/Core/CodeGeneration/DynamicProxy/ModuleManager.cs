@@ -75,7 +75,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       }
     }
 
-    internal ModuleScope Scope
+    public ModuleScope Scope
     {
       get
       {

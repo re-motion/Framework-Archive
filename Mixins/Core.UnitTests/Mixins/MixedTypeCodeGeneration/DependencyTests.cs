@@ -5,7 +5,7 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
 {
   [TestFixture]
-  public class DependencyTests
+  public class DependencyTests : MixinBaseTest
   {
     [Test]
     public void CircularThisDependenciesWork ()
