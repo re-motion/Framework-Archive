@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Rubicon.Collections;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
 
@@ -58,18 +59,26 @@ namespace Rubicon.ObjectBinding.BindableObject
       return bindableObjectClass;
     }
 
-    private List<PropertyBase> GetProperties ()
+    private IEnumerable<PropertyBase> GetProperties ()
     {
       IPropertyFinder propertyFinder = _metadataFactory.CreatePropertyFinder (_concreteType);
-      
-      List <PropertyBase> properties = new List<PropertyBase> ();
+
+      Dictionary<string, PropertyBase> propertiesByName = new Dictionary<string, PropertyBase> ();
       foreach (PropertyInfo propertyInfo in propertyFinder.GetPropertyInfos ())
       {
         PropertyReflector propertyReflector = _metadataFactory.CreatePropertyReflector (_concreteType, propertyInfo, _businessObjectProvider);
-        properties.Add (propertyReflector.GetMetadata());
+        PropertyBase property = propertyReflector.GetMetadata ();
+        if (propertiesByName.ContainsKey (property.Identifier))
+        {
+          string message = string.Format ("Type '{0}' has two properties called '{1}', this is currently not supported.", TargetType.FullName,
+              property.Identifier);
+          throw new NotSupportedException (message);
+        }
+        else
+          propertiesByName.Add (property.Identifier, property);
       }
 
-      return properties;
+      return propertiesByName.Values;
     }
   }
 }

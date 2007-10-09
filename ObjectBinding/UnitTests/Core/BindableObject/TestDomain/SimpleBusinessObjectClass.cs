@@ -17,5 +17,15 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
       get { return _string; }
       set { _string = value; }
     }
+
+    public string StringWithoutGetter
+    {
+      set { _string = value; }
+    }
+
+    public string StringWithoutSetter
+    {
+      set { _string = value; }
+    }
   }
 }

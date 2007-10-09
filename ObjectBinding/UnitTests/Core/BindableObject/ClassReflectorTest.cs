@@ -109,5 +109,17 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
 
       mockRepository.VerifyAll ();
     }
+
+
+    [Test]
+    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Type '.*ClassWithMixedPropertyOfSameName' has two properties called "
+        + "'MixedProperty', this is currently not supported.", MatchType = MessageMatch.Regex)]
+    public void GetMetadata_ForMixedPropertyWithSameName ()
+    {
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithMixedPropertyOfSameName), _businessObjectProvider,
+          DefaultMetadataFactory.Instance);
+      classReflector.GetMetadata ();
+    }
+
   }
 }

@@ -201,12 +201,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [Ignore ("TODO: HasBeenTouched")]
-    public void HasBeenTouched ()
-    {
-    }
-
-    [Test]
     public void SetValue ()
     {
       _existingDataContainer.PropertyValues.Add (_nameProperty);

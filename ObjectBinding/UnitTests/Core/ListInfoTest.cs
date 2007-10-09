@@ -66,13 +66,13 @@ namespace Rubicon.ObjectBinding.UnitTests.Core
 
     [Test]
     [Ignore ("TODO: implement and integrate with BocList")]
-    public void RemvoeItem ()
+    public void RemoveItem ()
     {
     }
 
     [Test]
     [Ignore ("TODO: test")]
-    public void Initialize_WithMissmatchedItemType ()
+    public void Initialize_WithMismatchedItemType ()
     {
     }
   }

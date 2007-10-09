@@ -11,9 +11,9 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
     {
     }
 
-    protected override bool PropertyFilter (MemberInfo memberInfo, object filterCriteria)
+    protected override bool IsInfrastructureProperty (PropertyInfo propertyInfo, MethodInfo accessorDeclaration)
     {
-      return base.PropertyFilter (memberInfo, filterCriteria) && memberInfo.DeclaringType != typeof (DomainObject);
+      return base.IsInfrastructureProperty (propertyInfo, accessorDeclaration) || accessorDeclaration.DeclaringType == typeof (DomainObject);
     }
   }
 }

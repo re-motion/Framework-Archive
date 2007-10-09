@@ -56,7 +56,6 @@ namespace Rubicon.ObjectBinding.BindableObject
         yield return currentType;
     }
 
-    //OPF Mapping
     protected virtual bool PropertyFilter (MemberInfo memberInfo, object filterCriteria)
     {
       ObjectBindingAttribute attribute = AttributeUtility.GetCustomAttribute<ObjectBindingAttribute> (memberInfo, true);
@@ -66,31 +65,32 @@ namespace Rubicon.ObjectBinding.BindableObject
       PropertyInfo propertyInfo = (PropertyInfo) memberInfo;
 
       // property can be an explicit interface implementation or property must have a public getter
-      if (HasPublicGetter (propertyInfo))
+      if (IsNonInfrastructurePublicProperty (propertyInfo))
         return true;
-      else return 
-        IsNonInfrastructureInterfaceProperty (propertyInfo);
+      else
+        return IsNonInfrastructureInterfaceProperty (propertyInfo);
+    }
+
+    private bool IsNonInfrastructurePublicProperty (PropertyInfo propertyInfo)
+    {
+      MethodInfo accessor = propertyInfo.GetGetMethod (false); // property must have public getter
+      return accessor != null
+          && !IsInfrastructureProperty (propertyInfo, accessor);
     }
 
     private bool IsNonInfrastructureInterfaceProperty (PropertyInfo propertyInfo)
     {
-      MethodInfo accessor = propertyInfo.GetGetMethod (true) ?? propertyInfo.GetSetMethod (true);
-      if (accessor == null || !_interfaceMethodImplementations.ContainsKey (accessor))
-        return false;
-      else
-        return !IsInfrastructureProperty (propertyInfo, accessor, _interfaceMethodImplementations[accessor]);
+      MethodInfo accessor = propertyInfo.GetGetMethod (true); // TODO: discuss whether property must have a getter
+      return accessor != null
+          && _interfaceMethodImplementations.ContainsKey (accessor)
+          && !IsInfrastructureProperty (propertyInfo, _interfaceMethodImplementations[accessor]);
     }
 
-    protected virtual bool IsInfrastructureProperty (PropertyInfo propertyInfo, MethodInfo accessor, MethodInfo interfaceAccessorDeclaration)
+    protected virtual bool IsInfrastructureProperty (PropertyInfo propertyInfo, MethodInfo accessorDeclaration)
     {
-      return interfaceAccessorDeclaration.DeclaringType.Assembly == typeof (IBusinessObject).Assembly
-          || interfaceAccessorDeclaration.DeclaringType.Assembly == typeof (BindableObjectClass).Assembly
-          || interfaceAccessorDeclaration.DeclaringType.Assembly == typeof (Mixins.IMixinTarget).Assembly;
-    }
-
-    private bool HasPublicGetter (PropertyInfo propertyInfo)
-    {
-      return propertyInfo.GetGetMethod (false) != null;
+      return accessorDeclaration.DeclaringType.Assembly == typeof (IBusinessObject).Assembly
+          || accessorDeclaration.DeclaringType.Assembly == typeof (BindableObjectClass).Assembly
+          || accessorDeclaration.DeclaringType.Assembly == typeof (Mixins.IMixinTarget).Assembly;
     }
   }
 }

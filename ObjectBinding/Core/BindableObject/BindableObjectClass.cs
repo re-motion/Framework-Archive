@@ -109,7 +109,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       get { return _concreteType; }
     }
 
-    internal void SetProperties (IList<PropertyBase> properties)
+    internal void SetProperties (IEnumerable<PropertyBase> properties)
     {
       ArgumentUtility.CheckNotNull ("properties", properties);
 

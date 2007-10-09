@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Mixins;
@@ -40,12 +41,13 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectMixi
     }
 
     [Test]
-    [Ignore ("TODO: test")]
-    [ExpectedException (typeof (Exception), ExpectedMessage = "")]
+    [ExpectedException (typeof (KeyNotFoundException), ExpectedMessage = "The property 'StringWithoutGetter' was not found on business object class "
+        + "'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleBusinessObjectClass, Rubicon.ObjectBinding.UnitTests'.")]
+    [Ignore ("TODO: discuss desired behavior")]
     public void WithoutGetter ()
     {
       IBusinessObject businessObject = Mixin.Get<BindableObjectMixin> (ObjectFactory.Create<SimpleBusinessObjectClass>().With());
-      businessObject.GetProperty ("String");
+      businessObject.GetProperty ("StringWithoutGetter");
     }
   }
 }
