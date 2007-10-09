@@ -4,7 +4,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Design.BindableObject
 {
-  public class SearchFieldController : ControllserBase
+  public class SearchFieldController : ControllerBase
   {
     public enum SearchIcons
     {
@@ -24,6 +24,9 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
       _searchButton = searchButton;
       _searchButton.ImageList = CreateImageList (SearchIcons.Search);
       _searchButton.ImageKey = SearchIcons.Search.ToString();
+
+      _searchField.Enabled = false;
+      _searchButton.Enabled = false;
     }
 
     public TextBox SearchField

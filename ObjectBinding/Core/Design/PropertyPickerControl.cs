@@ -129,6 +129,7 @@ namespace Rubicon.ObjectBinding.Design
       this.PropertiesList.Name = "PropertiesList";
       this.PropertiesList.Size = new System.Drawing.Size (284, 199);
       this.PropertiesList.TabIndex = 5;
+      this.PropertiesList.DoubleClick += new System.EventHandler (this.SelectButton_Click);
       // 
       // PropertyPickerControl
       // 

@@ -27,8 +27,7 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
 
     public List<Type> GetTypes (bool includeGac)
     {
-      IEnumerable allTypes = GetAllDesignerTypes (includeGac);
-      ApplicationContext applicationContext = GetApplicationContext (allTypes);
+      ApplicationContext applicationContext = GetApplicationContext (includeGac);
 
       List<Type> bindableTypes = new List<Type> ();
       foreach (ClassContext classContext in applicationContext.ClassContexts)
@@ -39,8 +38,10 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
       return bindableTypes;
     }
 
-    private ApplicationContext GetApplicationContext (IEnumerable typesToBeAnalyzed)
+    public ApplicationContext GetApplicationContext (bool includeGac)
     {
+      IEnumerable typesToBeAnalyzed = GetAllDesignerTypes (includeGac);
+
       ApplicationContextBuilder builder = new ApplicationContextBuilder (null);
       foreach (Type type in typesToBeAnalyzed)
         builder.AddType (type);

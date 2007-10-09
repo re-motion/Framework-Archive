@@ -91,6 +91,7 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
       this.TypeTreeView.Sorted = true;
       this.TypeTreeView.TabIndex = 20;
       this.TypeTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler (this.TypeTreeView_AfterSelect);
+      this.TypeTreeView.DoubleClick += new System.EventHandler (this.SelectButton_Click);
       // 
       // SearchButton
       // 

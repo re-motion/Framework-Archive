@@ -150,7 +150,7 @@
     </Compile>
     <Compile Include="Design\BindableObject\BindableObjectTypePickerEditor.cs">
     </Compile>
-    <Compile Include="Design\BindableObject\ControllserBase.cs" />
+    <Compile Include="Design\BindableObject\ControllerBase.cs" />
     <Compile Include="Design\BindableObject\SearchFieldController.cs" />
     <Compile Include="Design\BindableObject\TypeTreeViewController.cs" />
     <Compile Include="Design\ConcreteEditorControlBase.cs">

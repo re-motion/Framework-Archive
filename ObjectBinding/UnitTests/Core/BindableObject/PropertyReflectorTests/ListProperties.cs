@@ -201,6 +201,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
     [Ignore ("TODO: test")]
     public void GetMetadata_WithItemTypeAttributeOnOverride ()
     {
+      // expect exception
     }
   }
 }

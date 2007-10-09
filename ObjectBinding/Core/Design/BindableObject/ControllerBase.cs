@@ -6,9 +6,9 @@ using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Design.BindableObject
 {
-  public abstract class ControllserBase
+  public abstract class ControllerBase
   {
-    protected ControllserBase ()
+    protected ControllerBase ()
     {
     }
 

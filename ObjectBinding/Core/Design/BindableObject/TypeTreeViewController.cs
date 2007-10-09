@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Design.BindableObject
 {
-  public class TypeTreeViewController : ControllserBase
+  public class TypeTreeViewController : ControllerBase
   {
     public enum TreeViewIcons
     {

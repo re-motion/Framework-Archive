@@ -3,7 +3,10 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
-using Rubicon.Utilities;
+using Rubicon.Mixins;
+using Rubicon.ObjectBinding.Design.BindableObject;
+using Rubicon.Mixins.Context;
+using TypeUtility=Rubicon.Utilities.TypeUtility;
 
 namespace Rubicon.ObjectBinding.Web.UI.Design
 {
@@ -21,6 +24,10 @@ namespace Rubicon.ObjectBinding.Web.UI.Design
     public override void Initialize (System.ComponentModel.IComponent component)
     {
       base.Initialize (component);
+
+      BindableObjectTypeFinder typeFinder = new BindableObjectTypeFinder (component.Site);
+      ApplicationContext mixinConfiguration = typeFinder.GetApplicationContext (false);
+      MixinConfiguration.SetActiveContext (mixinConfiguration);
 
       IPropertyValueUIService propertyValueUIService = (IPropertyValueUIService) component.Site.GetService (typeof (IPropertyValueUIService));
       propertyValueUIService.AddPropertyValueUIHandler (PropertyValueUIHandler);
