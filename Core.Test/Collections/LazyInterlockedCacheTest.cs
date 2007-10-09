@@ -8,8 +8,13 @@ namespace Rubicon.Core.UnitTests.Collections
 {
   [TestFixture]
   [Obsolete ("LazyInterlockedCache is marked obsolete because it is still in prototype state.")]
-  public class InterlockedCacheTest
+  public class LazyInterlockedCacheTest : CacheTest
   {
+    protected override ICache<TKey, TValue> CreateCache<TKey, TValue> ()
+    {
+      return new LazyInterlockedCache<TKey, TValue> ();
+    }
+
     [Test]
     public void TestCreateAndTryGet ()
     {

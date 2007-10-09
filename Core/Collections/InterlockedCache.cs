@@ -10,6 +10,7 @@ namespace Rubicon.Collections
   /// <summary>
   /// A simple thread-safe cache.
   /// </summary>
+  [Serializable]
   public class InterlockedCache<TKey, TValue> : ICache<TKey, TValue>
   {
     private Dictionary<TKey, TValue> _cache;

@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Collections;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Core.UnitTests.Collections
 {
@@ -12,7 +13,12 @@ namespace Rubicon.Core.UnitTests.Collections
     [SetUp]
     public void SetUp ()
     {
-      _cache = new Cache<string, object> ();
+      _cache = CreateCache<string, object> ();
+    }
+
+    protected virtual ICache<TKey, TValue> CreateCache<TKey, TValue> ()
+    {
+      return new Cache<TKey, TValue> ();
     }
 
     [Test]
@@ -88,6 +94,41 @@ namespace Rubicon.Core.UnitTests.Collections
     public void GetIsNull()
     {
       Assert.IsFalse (_cache.IsNull);
+    }
+
+    [Test]
+    public void SerializeEmptyCache ()
+    {
+      ICache<string, object> deserializedCache = Serializer.SerializeAndDeserialize (_cache);
+      Assert.IsNotNull (deserializedCache);
+      
+      object result;
+      Assert.IsFalse (deserializedCache.TryGetValue ("bla", out result));
+      deserializedCache.GetOrCreateValue ("bla", delegate { return "foo"; });
+      Assert.IsTrue (deserializedCache.TryGetValue ("bla", out result));
+      
+      Assert.AreEqual ("foo", result);
+
+      Assert.IsFalse (_cache.TryGetValue ("bla", out result));
+    }
+
+    [Test]
+    public void SerializeNonEmptyCache ()
+    {
+      object result;
+
+      _cache.GetOrCreateValue ("bla", delegate { return "foo"; });
+      Assert.IsTrue (_cache.TryGetValue ("bla", out result));
+
+      ICache<string, object> deserializedCache = Serializer.SerializeAndDeserialize (_cache);
+      Assert.IsNotNull (deserializedCache);
+
+      Assert.IsTrue (deserializedCache.TryGetValue ("bla", out result));
+      Assert.AreEqual ("foo", result);
+
+      deserializedCache.Add ("whatever", "fred");
+      Assert.IsTrue (deserializedCache.TryGetValue ("whatever", out result));
+      Assert.IsFalse (_cache.TryGetValue ("whatever", out result));
     }
   }
 }
