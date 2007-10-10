@@ -21,9 +21,11 @@ namespace Rubicon.Mixins.Validation
     private readonly List<IValidationRule<EventDefinition>> _eventRules = new List<IValidationRule<EventDefinition>> ();
     private readonly List<IValidationRule<RequiredFaceTypeDefinition>> _requiredFaceTypeRules = new List<IValidationRule<RequiredFaceTypeDefinition>> ();
     private readonly List<IValidationRule<RequiredBaseCallTypeDefinition>> _requiredBaseCallTypeRules = new List<IValidationRule<RequiredBaseCallTypeDefinition>> ();
+    private readonly List<IValidationRule<RequiredMixinTypeDefinition>> _requiredMixinTypeRules = new List<IValidationRule<RequiredMixinTypeDefinition>> ();
     private readonly List<IValidationRule<RequiredMethodDefinition>> _requiredMethodRules = new List<IValidationRule<RequiredMethodDefinition>> ();
     private readonly List<IValidationRule<ThisDependencyDefinition>> _thisDependencyRules = new List<IValidationRule<ThisDependencyDefinition>> ();
     private readonly List<IValidationRule<BaseDependencyDefinition>> _baseDependencyRules = new List<IValidationRule<BaseDependencyDefinition>> ();
+    private readonly List<IValidationRule<MixinDependencyDefinition>> _mixinDependencyRules = new List<IValidationRule<MixinDependencyDefinition>> ();
     private readonly List<IValidationRule<AttributeDefinition>> _attributeRules = new List<IValidationRule<AttributeDefinition>> ();
     private readonly List<IValidationRule<AttributeIntroductionDefinition>> _attributeIntroductionRules = new List<IValidationRule<AttributeIntroductionDefinition>> ();
 
@@ -93,6 +95,11 @@ namespace Rubicon.Mixins.Validation
       get { return _requiredBaseCallTypeRules; }
     }
 
+    public IList<IValidationRule<RequiredMixinTypeDefinition>> RequiredMixinTypeRules
+    {
+      get { return _requiredMixinTypeRules; }
+    }
+
     public IList<IValidationRule<RequiredMethodDefinition>> RequiredMethodRules
     {
       get { return _requiredMethodRules; }
@@ -106,6 +113,11 @@ namespace Rubicon.Mixins.Validation
     public IList<IValidationRule<BaseDependencyDefinition>> BaseDependencyRules
     {
       get { return _baseDependencyRules; }
+    }
+
+    public IList<IValidationRule<MixinDependencyDefinition>> MixinDependencyRules
+    {
+      get { return _mixinDependencyRules; }
     }
 
     public IList<IValidationRule<AttributeDefinition>> AttributeRules
@@ -190,6 +202,12 @@ namespace Rubicon.Mixins.Validation
       CheckRules (_requiredBaseCallTypeRules, requiredBaseCallType);
     }
 
+    public void Visit (RequiredMixinTypeDefinition requiredMixinType)
+    {
+      ArgumentUtility.CheckNotNull ("requiredMixinType", requiredMixinType);
+      CheckRules (_requiredMixinTypeRules, requiredMixinType);
+    }
+
     public void Visit (RequiredMethodDefinition requiredMethod)
     {
       ArgumentUtility.CheckNotNull ("requiredMethod", requiredMethod);
@@ -206,6 +224,12 @@ namespace Rubicon.Mixins.Validation
     {
       ArgumentUtility.CheckNotNull ("dependency", dependency);
       CheckRules (_baseDependencyRules, dependency);
+    }
+
+    public void Visit (MixinDependencyDefinition dependency)
+    {
+      ArgumentUtility.CheckNotNull ("dependency", dependency);
+      CheckRules (_mixinDependencyRules, dependency);
     }
 
     public void Visit (AttributeDefinition attribute)

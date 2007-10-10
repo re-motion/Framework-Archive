@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Rubicon.Mixins.Definitions
 {
@@ -18,9 +16,11 @@ namespace Rubicon.Mixins.Definitions
     void Visit (EventDefinition eventDefintion);
     void Visit (RequiredFaceTypeDefinition requiredFaceType);
     void Visit (RequiredBaseCallTypeDefinition requiredBaseCallType);
+    void Visit (RequiredMixinTypeDefinition requiredMixinType);
     void Visit (RequiredMethodDefinition definition);
     void Visit (ThisDependencyDefinition thisDependency);
     void Visit (BaseDependencyDefinition baseDependency);
+    void Visit (MixinDependencyDefinition mixinDependency);
     void Visit (AttributeDefinition attribute);
     void Visit (AttributeIntroductionDefinition attributeIntroduction);
   }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Rubicon.Utilities;
@@ -18,6 +19,8 @@ namespace Rubicon.Mixins.Definitions
         new UniqueDefinitionCollection<Type, ThisDependencyDefinition> (delegate (ThisDependencyDefinition d) { return d.RequiredType.Type; });
     public readonly UniqueDefinitionCollection<Type, BaseDependencyDefinition> BaseDependencies =
         new UniqueDefinitionCollection<Type, BaseDependencyDefinition> (delegate (BaseDependencyDefinition d) { return d.RequiredType.Type; });
+    public readonly UniqueDefinitionCollection<Type, MixinDependencyDefinition> MixinDependencies =
+        new UniqueDefinitionCollection<Type, MixinDependencyDefinition> (delegate (MixinDependencyDefinition d) { return d.RequiredType.Type; });
 
     private readonly TargetClassDefinition _targetClass;
     private int _mixinIndex;
@@ -65,6 +68,15 @@ namespace Rubicon.Mixins.Definitions
       SuppressedInterfaceIntroductions.Accept (visitor);
       ThisDependencies.Accept (visitor);
       BaseDependencies.Accept (visitor);
+      MixinDependencies.Accept (visitor);
+    }
+
+    internal IEnumerable<DependencyDefinitionBase> GetOrderRelevantDependencies ()
+    {
+      foreach (BaseDependencyDefinition dependency in BaseDependencies)
+        yield return dependency;
+      foreach (MixinDependencyDefinition dependency in MixinDependencies)
+        yield return dependency;
     }
   }
 }

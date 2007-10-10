@@ -142,29 +142,36 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void ExplicitBaseCallDependenciesCorrectlyCopied ()
+    public void ExplicitMixinDependenciesCorrectlyCopied ()
     {
-      TargetClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
-      Assert.IsTrue (bt3.RequiredBaseCallTypes.ContainsKey (typeof (IBaseType32)));
-      Assert.IsTrue (bt3.Mixins[typeof (BT3Mixin5)].BaseDependencies.ContainsKey (typeof (IBaseType32)));
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (TargetClassWithAdditionalDependencies));
+      Assert.IsTrue (targetClass.RequiredMixinTypes.ContainsKey (typeof (MixinWithNoAdditionalDependency)));
+      Assert.IsTrue (targetClass.Mixins[typeof (MixinWithAdditionalClassDependency)].MixinDependencies.ContainsKey (typeof (MixinWithNoAdditionalDependency)));
     }
 
-    public class MixinWithDependency : Mixin<object, IMixinTargetWithExplicitDependencies>
+    public class MixinWithDependency : Mixin<object, IMixinBeingDependedUpon>
     {
     }
 
-    public interface IMixinTargetWithExplicitDependencies {}
+    public interface IMixinBeingDependedUpon { }
 
-    [Uses (typeof (MixinWithDependency), AdditionalDependencies = new Type[] {typeof (IMixinTargetWithExplicitDependencies)})]
-    public class MixinTargetWithExplicitDependencies : IMixinTargetWithExplicitDependencies
-    { }
+    public class MixinBeingDependedUpon : IMixinBeingDependedUpon
+    {
+    }
+
+    [Uses (typeof (MixinWithDependency), AdditionalDependencies = new Type[] { typeof (IMixinBeingDependedUpon) })]
+    [Uses (typeof (MixinBeingDependedUpon))]
+    public class MixinTargetWithExplicitDependencies { }
 
     [Test]
-    public void DuplicateExplicitDependenciesDontMatter ()
+    public void DuplicateDependenciesDontMatter ()
     {
       TargetClassDefinition mt = TypeFactory.GetActiveConfiguration (typeof (MixinTargetWithExplicitDependencies));
-      Assert.IsTrue (mt.RequiredBaseCallTypes.ContainsKey (typeof (IMixinTargetWithExplicitDependencies)));
-      Assert.IsTrue (mt.Mixins[typeof (MixinWithDependency)].BaseDependencies.ContainsKey (typeof (IMixinTargetWithExplicitDependencies)));
+      Assert.IsTrue (mt.RequiredBaseCallTypes.ContainsKey (typeof (IMixinBeingDependedUpon)));
+      Assert.IsTrue (mt.Mixins[typeof (MixinWithDependency)].BaseDependencies.ContainsKey (typeof (IMixinBeingDependedUpon)));
+      Assert.IsTrue (mt.Mixins[typeof (MixinWithDependency)].MixinDependencies.ContainsKey (typeof (IMixinBeingDependedUpon)));
+
+      // no exceptions occurred while ordering
     }
 
     [Test]

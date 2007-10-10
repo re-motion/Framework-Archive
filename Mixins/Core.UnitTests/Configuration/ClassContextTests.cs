@@ -133,11 +133,12 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
 
-      ClassContext classContext = context.GetClassContext (typeof (BaseType3));
+      ClassContext classContext = context.GetClassContext (typeof (TargetClassWithAdditionalDependencies));
       Assert.IsNotNull (classContext);
 
-      Assert.IsTrue (classContext.ContainsMixin (typeof (BT3Mixin5)));
-      Assert.IsTrue (classContext.GetOrAddMixinContext (typeof (BT3Mixin5)).ContainsExplicitDependency (typeof (IBaseType32)));
+      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinWithAdditionalClassDependency)));
+      Assert.IsTrue (
+          classContext.GetOrAddMixinContext (typeof (MixinWithAdditionalClassDependency)).ContainsExplicitDependency (typeof (MixinWithNoAdditionalDependency)));
     }
 
     [Test]

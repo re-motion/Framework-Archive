@@ -104,6 +104,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.IsTrue (visitedDefinitions.ContainsKey (bt1));
         TargetClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
         Assert.IsTrue (visitedDefinitions.ContainsKey (bt3));
+        TargetClassDefinition btWithAdditionalDependencies = TypeFactory.GetActiveConfiguration (typeof (TargetClassWithAdditionalDependencies));
+        Assert.IsTrue (visitedDefinitions.ContainsKey (btWithAdditionalDependencies));
 
         MixinDefinition bt1m1 = bt1.Mixins[typeof (BT1Mixin1)];
         Assert.IsTrue (visitedDefinitions.ContainsKey (bt1m1));
@@ -188,11 +190,19 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         RequiredMethodDefinition fm1 = ft1.Methods[typeof (IBaseType32).GetMethod ("IfcMethod")];
         Assert.IsTrue (visitedDefinitions.ContainsKey (fm1));
 
+        RequiredMixinTypeDefinition rmt1 = btWithAdditionalDependencies.RequiredMixinTypes[typeof (IMixinWithAdditionalClassDependency)];
+        Assert.IsTrue (visitedDefinitions.ContainsKey (rmt1));
+        RequiredMixinTypeDefinition rmt2 = btWithAdditionalDependencies.RequiredMixinTypes[typeof (MixinWithNoAdditionalDependency)];
+        Assert.IsTrue (visitedDefinitions.ContainsKey (rmt2));
+
         ThisDependencyDefinition td1 = bt3m1.ThisDependencies[typeof (IBaseType31)];
         Assert.IsTrue (visitedDefinitions.ContainsKey (td1));
 
         BaseDependencyDefinition bd1 = bt3m1.BaseDependencies[typeof (IBaseType31)];
         Assert.IsTrue (visitedDefinitions.ContainsKey (bd1));
+
+        MixinDependencyDefinition md1 = btWithAdditionalDependencies.Mixins[typeof (MixinWithAdditionalClassDependency)].MixinDependencies[typeof (MixinWithNoAdditionalDependency)];
+        Assert.IsTrue (visitedDefinitions.ContainsKey (md1));
       }
     }
 
@@ -425,6 +435,30 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       DefaultValidationLog log = Validator.Validate (definition);
 
       Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultBaseDependencyRules.DependencyMustBeSatisfied", log));
+    }
+
+    [Test]
+    public void FailsIfClassMixinDependencyNotFulfilled ()
+    {
+      ClassContext context = new ClassContext (typeof (TargetClassWithAdditionalDependencies), typeof (MixinWithAdditionalClassDependency));
+      context.GetOrAddMixinContext (typeof (MixinWithAdditionalClassDependency)).AddExplicitDependency (typeof (MixinWithNoAdditionalDependency));
+
+      TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (context);
+      DefaultValidationLog log = Validator.Validate (definition.Mixins[typeof (MixinWithAdditionalClassDependency)]);
+
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMixinDependencyRules.DependencyMustBeSatisfiedByAnotherMixin", log));
+    }
+
+    [Test]
+    public void FailsIfInterfaceMixinDependencyNotFulfilled ()
+    {
+      ClassContext context = new ClassContext (typeof (TargetClassWithAdditionalDependencies), typeof (MixinWithAdditionalInterfaceDependency));
+      context.GetOrAddMixinContext (typeof (MixinWithAdditionalInterfaceDependency)).AddExplicitDependency (typeof (IMixinWithAdditionalClassDependency));
+
+      TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (context);
+      DefaultValidationLog log = Validator.Validate (definition.Mixins[typeof (MixinWithAdditionalInterfaceDependency)]);
+
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMixinDependencyRules.DependencyMustBeSatisfiedByAnotherMixin", log));
     }
 
     [Test]

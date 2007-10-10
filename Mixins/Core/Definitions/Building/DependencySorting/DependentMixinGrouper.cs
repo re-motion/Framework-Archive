@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Rubicon.Collections;
 
@@ -77,7 +78,7 @@ namespace Rubicon.Mixins.Definitions.Building.DependencySorting
 
       foreach (MixinDefinition mixin in remainingMixinsClone)
       {
-        foreach (BaseDependencyDefinition dependency in mixin.BaseDependencies)
+        foreach (DependencyDefinitionBase dependency in mixin.GetOrderRelevantDependencies())
         {
           MixinDefinition implementer = dependency.GetImplementer () as MixinDefinition;
           if (implementer != null && group.Contains (implementer))

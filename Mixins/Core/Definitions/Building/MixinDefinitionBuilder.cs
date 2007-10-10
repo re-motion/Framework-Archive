@@ -112,7 +112,9 @@ namespace Rubicon.Mixins.Definitions.Building
 
       BaseDependencyDefinitionBuilder baseDependencyBuilder = new BaseDependencyDefinitionBuilder (mixin);
       baseDependencyBuilder.Apply (_baseRequirementsAnalyzer.Analyze (mixin));
-      baseDependencyBuilder.Apply (additionalDependencies);
+      
+      MixinDependencyDefinitionBuilder mixinDependencyBuilder = new MixinDependencyDefinitionBuilder (mixin);
+      mixinDependencyBuilder.Apply (additionalDependencies);
     }
   }
 }

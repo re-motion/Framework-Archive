@@ -7,6 +7,7 @@ using NUnit.Framework;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Utilities.DependencySort;
 using Rubicon.Collections;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Mixins.UnitTests.Configuration
 {
@@ -216,6 +217,33 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
         Assert.Contains (bt7.Mixins[typeof (BT7Mixin5)], smaller, "nothing");
         Assert.AreEqual (1, smaller.Count);
+      }
+    }
+
+    [Test]
+    public void SortingWithExplicitDependencies ()
+    {
+      CheckExplicitDependencyOrdering (new ClassContext (typeof (TargetClassWithAdditionalDependencies),
+        typeof (MixinWithAdditionalClassDependency), typeof (MixinWithNoAdditionalDependency), typeof (MixinWithAdditionalInterfaceDependency)));
+
+      CheckExplicitDependencyOrdering (new ClassContext (typeof (TargetClassWithAdditionalDependencies),
+        typeof (MixinWithNoAdditionalDependency), typeof (MixinWithAdditionalClassDependency), typeof (MixinWithAdditionalInterfaceDependency)));
+
+      CheckExplicitDependencyOrdering (new ClassContext (typeof (TargetClassWithAdditionalDependencies),
+        typeof (MixinWithNoAdditionalDependency), typeof (MixinWithAdditionalInterfaceDependency), typeof (MixinWithAdditionalClassDependency)));
+    }
+
+    private void CheckExplicitDependencyOrdering (ClassContext classContext)
+    {
+      classContext.GetOrAddMixinContext (typeof (MixinWithAdditionalClassDependency)).AddExplicitDependency (typeof (MixinWithNoAdditionalDependency));
+      classContext.GetOrAddMixinContext (typeof (MixinWithAdditionalInterfaceDependency)).AddExplicitDependency (typeof (IMixinWithAdditionalClassDependency));
+
+      using (MixinConfiguration.ScopedExtend (classContext))
+      {
+        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (TargetClassWithAdditionalDependencies));
+        Assert.AreEqual (0, targetClass.Mixins[typeof (MixinWithAdditionalInterfaceDependency)].MixinIndex);
+        Assert.AreEqual (1, targetClass.Mixins[typeof (MixinWithAdditionalClassDependency)].MixinIndex);
+        Assert.AreEqual (2, targetClass.Mixins[typeof (MixinWithNoAdditionalDependency)].MixinIndex);
       }
     }
   }

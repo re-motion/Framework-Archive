@@ -17,6 +17,8 @@ namespace Rubicon.Mixins.Definitions
         new UniqueDefinitionCollection<Type, RequiredFaceTypeDefinition> (delegate (RequiredFaceTypeDefinition t) { return t.Type; });
     public readonly UniqueDefinitionCollection<Type, RequiredBaseCallTypeDefinition> RequiredBaseCallTypes =
         new UniqueDefinitionCollection<Type, RequiredBaseCallTypeDefinition> (delegate (RequiredBaseCallTypeDefinition t) { return t.Type; });
+    public readonly UniqueDefinitionCollection<Type, RequiredMixinTypeDefinition> RequiredMixinTypes =
+        new UniqueDefinitionCollection<Type, RequiredMixinTypeDefinition> (delegate (RequiredMixinTypeDefinition t) { return t.Type; });
     public readonly UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> IntroducedInterfaces =
         new UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
     
@@ -69,6 +71,7 @@ namespace Rubicon.Mixins.Definitions
       Mixins.Accept (visitor);
       RequiredFaceTypes.Accept (visitor);
       RequiredBaseCallTypes.Accept (visitor);
+      RequiredMixinTypes.Accept (visitor);
       IntroducedAttributes.Accept (visitor);
     }
 

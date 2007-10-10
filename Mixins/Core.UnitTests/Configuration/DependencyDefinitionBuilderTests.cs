@@ -6,6 +6,8 @@ using Rubicon.Mixins.Definitions.Building;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using System.Reflection;
+using Rubicon.Mixins.Context;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace Rubicon.Mixins.UnitTests.Configuration
 {
@@ -397,10 +399,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.IsTrue (bt3.RequiredBaseCallTypes.ContainsKey (typeof (IBT3Mixin4)));
     }
 
-    public interface IMixinWithEmptyInterface {}
-    public class MixinWithEmptyInterface : IMixinWithEmptyInterface { }
-    public class MixinRequiringEmptyInterface : Mixin<object, IMixinWithEmptyInterface> { }
-
     [Test]
     public void EmptyInterface()
     {
@@ -500,6 +498,49 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.IsTrue (mixin.ThisDependencies.ContainsKey (typeof (ClassImplementingInternalInterface)));
       Assert.IsFalse (mixin.ThisDependencies.ContainsKey (typeof (IInternalInterface1)));
       Assert.IsFalse (mixin.ThisDependencies.ContainsKey (typeof (IInternalInterface2)));
+    }
+
+    [Test]
+    public void ExplicitDependenciesToInterfaceTypes ()
+    {
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (TargetClassWithAdditionalDependencies));
+      MixinDefinition mixin = targetClass.Mixins[typeof (MixinWithAdditionalInterfaceDependency)];
+      Assert.IsTrue (mixin.MixinDependencies.ContainsKey (typeof (IMixinWithAdditionalClassDependency)));
+      Assert.AreSame (targetClass.Mixins[typeof (MixinWithAdditionalClassDependency)],
+          mixin.MixinDependencies[typeof (IMixinWithAdditionalClassDependency)].GetImplementer ());
+      
+      Assert.AreSame (mixin, mixin.MixinDependencies[typeof (IMixinWithAdditionalClassDependency)].Depender);
+      Assert.AreSame (mixin, mixin.MixinDependencies[typeof (IMixinWithAdditionalClassDependency)].Parent);
+
+      Assert.IsTrue (targetClass.RequiredMixinTypes.ContainsKey (typeof (IMixinWithAdditionalClassDependency)));
+      RequiredMixinTypeDefinition requirement = targetClass.RequiredMixinTypes[typeof (IMixinWithAdditionalClassDependency)];
+      Assert.That (requirement.FindRequiringMixins (), List.Contains (mixin));
+      Assert.IsTrue (requirement.RequiringDependencies.ContainsKey (mixin.MixinDependencies[typeof (IMixinWithAdditionalClassDependency)]));
+      
+      Assert.AreEqual(0, requirement.Methods.Count, "mixin type requirements do not contain method requirements");
+
+      Assert.AreSame (requirement, mixin.MixinDependencies[typeof (IMixinWithAdditionalClassDependency)].RequiredType);
+    }
+
+    [Test]
+    public void ExplicitDependenciesToClassTypes ()
+    {
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (TargetClassWithAdditionalDependencies));
+      MixinDefinition mixin = targetClass.Mixins[typeof (MixinWithAdditionalClassDependency)];
+      Assert.IsTrue (mixin.MixinDependencies.ContainsKey (typeof (MixinWithNoAdditionalDependency)));
+      Assert.AreSame (targetClass.Mixins[typeof (MixinWithNoAdditionalDependency)], mixin.MixinDependencies[typeof (MixinWithNoAdditionalDependency)].GetImplementer ());
+
+      Assert.AreSame (mixin, mixin.MixinDependencies[typeof (MixinWithNoAdditionalDependency)].Depender);
+      Assert.AreSame (mixin, mixin.MixinDependencies[typeof (MixinWithNoAdditionalDependency)].Parent);
+
+      Assert.IsTrue (targetClass.RequiredMixinTypes.ContainsKey (typeof (MixinWithNoAdditionalDependency)));
+      RequiredMixinTypeDefinition requirement = targetClass.RequiredMixinTypes[typeof (MixinWithNoAdditionalDependency)];
+      Assert.That (requirement.FindRequiringMixins (), List.Contains (mixin));
+      Assert.IsTrue (requirement.RequiringDependencies.ContainsKey (mixin.MixinDependencies[typeof (MixinWithNoAdditionalDependency)]));
+
+      Assert.AreEqual (0, requirement.Methods.Count, "mixin type requirements do not contain method requirements");
+
+      Assert.AreSame (requirement, mixin.MixinDependencies[typeof (MixinWithNoAdditionalDependency)].RequiredType);
     }
   }
 }

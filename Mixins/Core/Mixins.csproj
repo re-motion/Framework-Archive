@@ -51,7 +51,10 @@
     <Compile Include="Context\InternalApplicationContextBuilder.cs" />
     <Compile Include="Context\MixinContext.cs" />
     <Compile Include="Definitions\AttributeIntroductionDefinition.cs" />
+    <Compile Include="Definitions\Building\MixinDependencyDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\MemberImplementationFinder.cs" />
+    <Compile Include="Definitions\MixinDependencyDefinition.cs" />
+    <Compile Include="Definitions\RequiredMixinTypeDefinition.cs" />
     <Compile Include="Definitions\TargetClassDefinitionCache.cs" />
     <Compile Include="Definitions\Building\AttributeIntroductionBuilder.cs" />
     <Compile Include="Definitions\Building\DependencySorting\MixinDependencyAnalyzer.cs" />
@@ -160,6 +163,8 @@
     <Compile Include="Utilities\MethodSignatureEqualityComparer.cs" />
     <Compile Include="Utilities\UncastableEnumerableWrapper.cs" />
     <Compile Include="Validation\ConsoleDumper.cs" />
+    <Compile Include="Validation\Rules\DefaultMixinDependencyRules.cs" />
+    <Compile Include="Validation\Rules\DefaultRequiredMixinTypeRules.cs" />
     <Compile Include="Validation\Rules\DefaultSuppressedInterfaceIntroductionRules.cs" />
     <Compile Include="Validation\Rules\DefaultAttributeIntroductionRules.cs" />
     <Compile Include="Validation\Rules\DefaultRequiredMethodRules.cs" />

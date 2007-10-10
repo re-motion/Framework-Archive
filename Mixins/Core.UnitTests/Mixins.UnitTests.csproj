@@ -49,6 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\AttributeIntroductionDefinitionBuilderTests.cs" />
+    <Compile Include="SampleTypes\MixinWithNoAdditionalDependency.cs" />
+    <Compile Include="SampleTypes\MixinWithAdditionalClassDependency.cs" />
+    <Compile Include="SampleTypes\MixinRequiringEmptyInterface.cs" />
+    <Compile Include="SampleTypes\MixinWithAdditionalInterfaceDependency.cs" />
+    <Compile Include="SampleTypes\MixinWithEmptyInterface.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\ClassWithVirtualMethod.cs" />
     <Compile Include="MixerTool\MixerRunnerTest.cs" />
     <Compile Include="MixerTool\MixerTest.cs" />
@@ -138,6 +143,7 @@
     <Compile Include="SampleTypes\MixinWithSingleAbstractMethod.cs" />
     <Compile Include="SampleTypes\DuckBaseMixin.cs" />
     <Compile Include="SampleTypes\ISimpleInterface.cs" />
+    <Compile Include="SampleTypes\TargetClassWithAdditionalDependencies.cs" />
     <Compile Include="Utilities\DependencySortTest.cs" />
     <Compile Include="Configuration\InheritanceDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\IntroductionDefinitionBuilderTests.cs" />
