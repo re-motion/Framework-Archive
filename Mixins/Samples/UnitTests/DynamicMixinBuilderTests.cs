@@ -33,11 +33,19 @@ namespace Rubicon.Mixins.Samples.UnitTests
       DynamicMixinBuilder.Scope = new ModuleScope (true, "DynamicMixinBuilder.Signed", Path.Combine (directory, "DynamicMixinBuilder.Signed.dll"),
         "DynamicMixinBuilder.Unsigned", Path.Combine (directory, "DynamicMixinBuilder.Unsigned.dll"));
 
+      Mixins.CodeGeneration.ConcreteTypeBuilder.SetCurrent (null);
+
+      AppDomain.CurrentDomain.AssemblyResolve += DynamicMixinBuilder.ResolveAssembly;
+
       _invocationHandler = delegate (object instance, MethodInfo method, object[] args, Func<object[], object> baseMethod)
       {
         _calls.Add (Tuple.NewTuple (instance, method, args));
-        return "Intercepted: " + baseMethod (args);
+        if (baseMethod != null)
+          return "Intercepted: " + baseMethod (args);
+        else
+          return "Intercepted";
       };
+      
       _calls.Clear ();
 
       _builder = new DynamicMixinBuilder (typeof (SampleTarget));
@@ -50,14 +58,22 @@ namespace Rubicon.Mixins.Samples.UnitTests
         Directory.Delete (directory, true);
       Directory.CreateDirectory (directory);
 
-      File.Copy (typeof (Mixin<,>).Assembly.ManifestModule.FullyQualifiedName,
-          Path.Combine (directory, typeof (Mixin<,>).Assembly.ManifestModule.Name));
+      CopyFile (typeof (Func<,>).Assembly.ManifestModule.FullyQualifiedName, directory);
+      CopyFile (typeof (Mixin<,>).Assembly.ManifestModule.FullyQualifiedName, directory);
+      CopyFile (typeof (MethodInvocationHandler).Assembly.ManifestModule.FullyQualifiedName, directory);
       return directory;
+    }
+
+    private void CopyFile (string sourcePath, string targetDirectory)
+    {
+      File.Copy (sourcePath, Path.Combine (targetDirectory, Path.GetFileName (sourcePath)));
     }
 
     [TearDown]
     public void TearDown ()
     {
+      AppDomain.CurrentDomain.AssemblyResolve -= DynamicMixinBuilder.ResolveAssembly;
+
       if (DynamicMixinBuilder.Scope.StrongNamedModule != null)
       {
         DynamicMixinBuilder.Scope.SaveAssembly (true);
@@ -104,7 +120,15 @@ namespace Rubicon.Mixins.Samples.UnitTests
     }
 
     [Test]
-    [Ignore ("TODO: Fix issue with generated mixin types")]
+    public void GeneratedTypeHoldsHandler ()
+    {
+      Type t = _builder.BuildMixinType (_invocationHandler);
+      FieldInfo handlerField = t.GetField ("InvocationHandler");
+      Assert.IsNotNull (handlerField);
+      Assert.AreSame (_invocationHandler, handlerField.GetValue (null));
+    }
+
+    [Test]
     public void GeneratedMethodIsIntercepted ()
     {
       _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("StringMethod"));
