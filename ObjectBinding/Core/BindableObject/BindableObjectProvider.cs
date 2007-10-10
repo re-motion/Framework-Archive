@@ -21,11 +21,6 @@ namespace Rubicon.ObjectBinding.BindableObject
       s_current.Value = provider;
     }
 
-    public static BindableObjectProvider CreateDesignModeBindableObjectProvider ()
-    {
-      return new DesignModeBindableObjectProvider();
-    }
-
     private static BindableObjectProvider CreateBindableObjectProvider ()
     {
       BindableObjectProvider provider = new BindableObjectProvider();

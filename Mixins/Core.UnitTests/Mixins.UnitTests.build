@@ -19,6 +19,7 @@
       </sources>
       <references failonempty="true">
         <include asis="true" name="${build.test.outputdir}/nunit.framework.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Castle.DynamicProxy.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rhino.Mocks.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rubicon.Core.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rubicon.Development.dll"/>

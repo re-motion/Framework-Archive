@@ -16,9 +16,11 @@
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <include asis="true" name="${build.test.outputdir}/nunit.framework.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Castle.DynamicProxy.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rubicon.Core.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Rubicon.Development.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rubicon.Mixins.dll"/>
+        <include asis="true" name="${build.test.outputdir}/nunit.framework.dll"/>
         <include asis="true" name="System.dll"/>
       </references>
     </csc>

@@ -34,7 +34,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectData
       _mockDesignerHost = _mockRepository.CreateMock<IDesignerHost>();
       SetupResult.For (_stubSite.GetService (typeof (IDesignerHost))).Return (_mockDesignerHost);
 
-      _provider = BindableObjectProvider.CreateDesignModeBindableObjectProvider ();
+      _provider = BindableObjectProvider.Current;
       BindableObjectProvider.SetCurrent (_provider);
     }
 
@@ -79,13 +79,13 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectData
 
       IBusinessObjectClass actual = _dataSource.BusinessObjectClass;
       Assert.That (actual, Is.Not.Null);
-      Assert.That (actual.BusinessObjectProvider, Is.Not.SameAs (_provider));
+      Assert.That (actual.BusinessObjectProvider, Is.SameAs (BindableObjectProvider.Current));
 
       _mockRepository.VerifyAll();
     }
 
     [Test]
-    public void GetBusinessObjectClass_NotSameTwice ()
+    public void GetBusinessObjectClass_SameTwice ()
     {
       SetupResult.For (
           _mockDesignerHost.GetType (
@@ -97,7 +97,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectData
 
       IBusinessObjectClass actual = _dataSource.BusinessObjectClass;
       Assert.That (actual, Is.Not.Null);
-      Assert.That (actual, Is.Not.SameAs (_dataSource.BusinessObjectClass));
+      Assert.That (actual, Is.SameAs (_dataSource.BusinessObjectClass));
 
       _mockRepository.VerifyAll();
     }
