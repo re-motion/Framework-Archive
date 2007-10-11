@@ -5,6 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security.Data.DomainObjects
 {
+  [Serializable]
   public class SecurityClientTransactionExtension : IClientTransactionExtension
   {
     // types
@@ -14,6 +15,7 @@ namespace Rubicon.Security.Data.DomainObjects
     // member fields
 
     private bool _isActive;
+    [NonSerialized]
     private SecurityClient _securityClient;
 
     // construction and disposing

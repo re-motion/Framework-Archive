@@ -1,11 +1,19 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
   [Instantiable]
-  public abstract class Customer : Company
+  public abstract class Customer : Company, IDeserializationCallback
   {
+    [NonSerialized]
+    public bool OnDeserializationCalled;
+    [NonSerialized]
+    public bool OnDeserializingAttributeCalled;
+    [NonSerialized]
+    public bool OnDeserializedAttributeCalled;
+
     public enum CustomerType
     {
       Standard = 0,
@@ -34,5 +42,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     [DBBidirectionalRelation ("Customer", SortExpression = "OrderNo asc")]
     public abstract OrderCollection Orders { get; }
+
+    public void OnDeserialization (object sender)
+    {
+      OnDeserializationCalled = true;
+    }
+
+    [OnDeserialized]
+    private void OnDeserializedAttribute (StreamingContext context)
+    {
+      OnDeserializedAttributeCalled = true;
+    }
+
+    [OnDeserializing]
+    private void OnOnDeserializingAttribute (StreamingContext context)
+    {
+      OnDeserializingAttributeCalled = true;
+    }
   }
 }

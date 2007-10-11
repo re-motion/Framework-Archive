@@ -1,5 +1,8 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Collections;
+using Rubicon.Data.DomainObjects.ObjectBinding;
+using Rubicon.ObjectBinding;
 using Rubicon.SecurityManager.Domain;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.Metadata;
@@ -53,8 +56,43 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       {
         t = (T) PrivateInvoke.InvokeNonPublicStaticMethod (typeof (T), "NewObject", args);
       }
-      T deserializedT = Serializer.SerializeAndDeserialize (t);
+      
+      Tuple<T, ClientTransaction> deserializedTuple = Serializer.SerializeAndDeserialize (Tuple.NewTuple (t, ClientTransaction.Current));
+      T deserializedT = deserializedTuple.A;
       Assert.IsNotNull (deserializedT);
+
+      IBusinessObject bindableOriginal = (IBusinessObject) t;
+      IBusinessObject bindableDeserialized = (IBusinessObject) deserializedT;
+
+      foreach (IBusinessObjectProperty property in bindableOriginal.BusinessObjectClass.GetPropertyDefinitions ())
+      {
+        Assert.IsNotNull (bindableDeserialized.BusinessObjectClass.GetPropertyDefinition (property.Identifier));
+        
+        object value = null;
+        bool propertyCanBeRetrieved;
+        try
+        {
+          value = bindableOriginal.GetProperty (property);
+          propertyCanBeRetrieved = true;
+        }
+        catch (Exception)
+        {
+          propertyCanBeRetrieved = false;
+        }
+
+        if (propertyCanBeRetrieved)
+        {
+          object newValue;
+          using (deserializedTuple.B.EnterScope())
+          {
+            newValue = bindableDeserialized.GetProperty (property);
+          }
+          if (value != null && typeof (DomainObject).IsAssignableFrom (property.PropertyType))
+            Assert.AreEqual (((DomainObject)value).ID, ((DomainObject)newValue).ID);
+          else
+            Assert.AreEqual (value, newValue);
+        }
+      }
     }
   }
 }

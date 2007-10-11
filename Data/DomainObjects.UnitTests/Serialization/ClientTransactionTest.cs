@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 {
@@ -76,6 +77,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       DomainObject deserializedDomainObject = (DomainObject) SerializeAndDeserialize (domainObject);
 
       Assert.AreEqual (domainObject.ID, deserializedDomainObject.ID);
+    }
+
+    [Test]
+    public void DomainObject_IDeserializationCallbackTest ()
+    {
+      Customer domainObject = Customer.GetObject (DomainObjectIDs.Customer1);
+
+      Customer deserializedDomainObject = Serializer.SerializeAndDeserialize (domainObject);
+      Assert.IsTrue (deserializedDomainObject.OnDeserializationCalled);
+    }
+
+    [Test]
+    [Ignore ("TODO: Fix this bug")]
+    public void DomainObject_DeserializationCallbackAttributesTest ()
+    {
+      Customer domainObject = Customer.GetObject (DomainObjectIDs.Customer1);
+
+      Customer deserializedDomainObject = Serializer.SerializeAndDeserialize (domainObject);
+      Assert.IsTrue (deserializedDomainObject.OnDeserializingAttributeCalled);
+      Assert.IsTrue (deserializedDomainObject.OnDeserializedAttributeCalled);
     }
 
     [Test]

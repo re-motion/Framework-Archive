@@ -119,6 +119,7 @@
     <Compile Include="Data.DomainObjects\SecurityClientTransactionExtensionTests\RelationChangingTest.cs" />
     <Compile Include="Data.DomainObjects\SecurityClientTransactionExtensionTests\RelationReadingTest.cs" />
     <Compile Include="Data.DomainObjects\SecurityClientTransactionExtensionTests\SecurityClientTransactionExtensionTestHelper.cs" />
+    <Compile Include="Data.DomainObjects\SecurityClientTransactionExtensionTests\SerializatiionTest.cs" />
     <Compile Include="Data.DomainObjects\SetupFixture.cs" />
     <Compile Include="Data.DomainObjects\TestDomain\NonSecurableObject.cs" />
     <Compile Include="Data.DomainObjects\TestDomain\SecurableObject.cs" />

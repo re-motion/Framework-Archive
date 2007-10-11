@@ -5,6 +5,7 @@ using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
 {
+  [Serializable]
   public abstract class FormFunction : BaseTransactedFunction
   {
     // types

@@ -7,6 +7,7 @@ using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure
 {
+  [Serializable]
   public class EditGroupFormFunction : FormFunction
   {
     // types

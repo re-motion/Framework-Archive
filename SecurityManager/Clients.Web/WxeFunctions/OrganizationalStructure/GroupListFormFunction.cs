@@ -7,6 +7,7 @@ using Rubicon.Web.ExecutionEngine;
 namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure
 {
   [WxeDemandTargetStaticMethodPermission (Group.Methods.Search)]
+  [Serializable]
   public class GroupListFormFunction : BaseTransactedFunction
   {
     // types

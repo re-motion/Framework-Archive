@@ -100,6 +100,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
           throw new SerializationException (message);
         }
       }
+
+      IDeserializationCallback objectAsDeserializationCallback = _realObject as IDeserializationCallback;
+      if (objectAsDeserializationCallback != null)
+        objectAsDeserializationCallback.OnDeserialization (sender);
     }
   }
 }

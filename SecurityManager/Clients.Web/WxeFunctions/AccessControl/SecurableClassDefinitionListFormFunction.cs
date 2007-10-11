@@ -5,6 +5,7 @@ using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.AccessControl
 {
+  [Serializable]
   public class SecurableClassDefinitionListFormFunction : FormFunction
   {
     // types
