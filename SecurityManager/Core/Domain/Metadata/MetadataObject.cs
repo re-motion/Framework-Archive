@@ -9,6 +9,7 @@ using Rubicon.Utilities;
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
   [SecurityManagerStorageGroup]
+  [Serializable]
   public abstract class MetadataObject : BaseSecurityManagerObject
   {
     // types

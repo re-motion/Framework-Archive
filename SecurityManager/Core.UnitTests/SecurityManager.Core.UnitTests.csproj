@@ -97,6 +97,7 @@
     <Compile Include="Domain\OrganizationalStructure\UserTest.cs" />
     <Compile Include="Domain\Metadata\SecurableClassValidationResultTest.cs" />
     <Compile Include="Domain\RevisionTest.cs" />
+    <Compile Include="Domain\SerializationTest.cs" />
     <Compile Include="Persistence\RevisionSqlProviderExtensionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityServiceTest.cs" />

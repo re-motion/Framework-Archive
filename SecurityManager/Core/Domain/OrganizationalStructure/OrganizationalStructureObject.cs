@@ -7,6 +7,7 @@ using Rubicon.Security.Data.DomainObjects;
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
   [PermanentGuid ("8DBA42FE-ECD9-4b10-8F79-48E7A1119414")]
+  [Serializable]
   public abstract class OrganizationalStructureObject : BaseSecurityManagerObject, ISecurableObject, IDomainObjectSecurityContextFactory
   {
     private DomainObjectSecurityStrategy _securityStrategy;
