@@ -4,7 +4,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
-  //TODO: Serializable
+  [Serializable]
   public class ObjectSecurityStrategy : IObjectSecurityStrategy
   {
     private ISecurityStrategy _securityStrategy;

@@ -5,8 +5,8 @@ using Rubicon.Utilities;
 namespace Rubicon.Security
 {
   //TODO: Hashcode basebase
-  //TODO Serializable
   /// <summary>Collects all security-specific information for an instance or type, and is passed as parameter during the permission check.</summary>
+  [Serializable]
   public sealed class SecurityContext : IEquatable<SecurityContext>
   {
     private readonly string _class;

@@ -57,6 +57,14 @@ namespace Rubicon.Security.UnitTests.Core
       Assert.AreEqual (wrapper.ToString (), accessType.ToString ());
     }
 
+    [Test]
+    public void Serialization ()
+    {
+      AccessType accessType = AccessType.Get (new EnumWrapper (TestAccessTypes.First));
+      AccessType deserializedAccessType = Serializer.SerializeAndDeserialize (accessType);
+
+      Assert.AreSame (accessType, deserializedAccessType);
+    }
 
     private void ClearAccessTypeCache ()
     {

@@ -4,7 +4,10 @@ using System.Security.Principal;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Collections;
+using Rubicon.Security.Configuration;
 using Rubicon.Security.UnitTests.Core.SampleDomain;
+using Rubicon.Development.UnitTesting;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace Rubicon.Security.UnitTests.Core.SecurityStrategyTests
 {
@@ -133,6 +136,25 @@ namespace Rubicon.Security.UnitTests.Core.SecurityStrategyTests
 
       _mocks.VerifyAll ();
       Assert.AreEqual (false, hasAccess);
+    }
+
+    [Test]
+    public void Serialization ()
+    {
+      SecurityStrategy strategy =
+          new SecurityStrategy (new Cache<string, AccessType[]> (), SecurityConfiguration.Current.GlobalAccessTypeCacheProvider);
+      AccessType[] accessTypes = new AccessType[] { AccessType.Get (GeneralAccessTypes.Find) };
+      strategy.LocalCache.Add ("foo", accessTypes);
+
+      SecurityStrategy deserializedStrategy = Serializer.SerializeAndDeserialize (strategy);
+      Assert.AreNotSame (strategy, deserializedStrategy);
+      Assert.AreSame (SecurityConfiguration.Current.GlobalAccessTypeCacheProvider, deserializedStrategy.GlobalCacheProvider);
+      
+      AccessType[] newAccessTypes;
+      bool result = deserializedStrategy.LocalCache.TryGetValue ("foo", out newAccessTypes);
+      Assert.IsTrue (result);
+      Assert.That (newAccessTypes, Is.EquivalentTo (accessTypes));
+
     }
   }
 }

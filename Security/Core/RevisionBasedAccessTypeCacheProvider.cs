@@ -4,10 +4,13 @@ using System.Runtime.Remoting.Messaging;
 using Rubicon.Collections;
 using Rubicon.Configuration;
 using Rubicon.Security.Configuration;
+using System.Runtime.Serialization;
 
 namespace Rubicon.Security
 {
-  //TODO: Serializable via ObjectReference, like OPF Mapping
+  using CacheType = InterlockedCache<Tuple<SecurityContext, string>, AccessType[]>;
+
+  [Serializable]
   public class RevisionBasedAccessTypeCacheProvider : ExtendedProviderBase, IGlobalAccessTypeCacheProvider
   {
     // constants
@@ -16,15 +19,14 @@ namespace Rubicon.Security
 
     // static members
 
-    private static string s_revisionKey = typeof (RevisionBasedAccessTypeCacheProvider).AssemblyQualifiedName + "_Revision";
+    private static readonly string s_revisionKey = typeof (RevisionBasedAccessTypeCacheProvider).AssemblyQualifiedName + "_Revision";
 
     // member fields
 
-    private InterlockedCache<Tuple<SecurityContext, string>, AccessType[]> _cache =
-        new InterlockedCache<Tuple<SecurityContext, string>, AccessType[]>();
+    private readonly object _syncRoot = new object ();
 
-    private int _revision = 0;
-    private object _syncRoot = new object();
+    private CacheType _cache;
+    private int _revision;
 
     // construction and disposing
 
@@ -33,13 +35,33 @@ namespace Rubicon.Security
     {
     }
 
-
     public RevisionBasedAccessTypeCacheProvider (string name, NameValueCollection config)
         : base (name, config)
     {
+      _revision = 0;
+      _cache = new CacheType ();
+    }
+
+    protected RevisionBasedAccessTypeCacheProvider (SerializationInfo info, StreamingContext context)
+        : base (info, context)
+    {
+      _revision = info.GetInt32 ("_revision");
+      _cache = (CacheType) info.GetValue ("_cache", typeof (CacheType));
     }
 
     // methods and properties
+
+    protected override void GetObjectData (SerializationInfo info, StreamingContext context)
+    {
+      if (this == SecurityConfiguration.Current.GlobalAccessTypeCacheProviders[Name])
+        GlobalAccessTypeCacheProviderObjectReference.DoGetObjectDataForWellKnownProvider (this, info, context);
+      else
+      {
+        base.GetObjectData (info, context);
+        info.AddValue ("_revision", _revision);
+        info.AddValue ("_cache", _cache);
+      }
+    }
 
     public ICache<Tuple<SecurityContext, string>, AccessType[]> GetCache()
     {

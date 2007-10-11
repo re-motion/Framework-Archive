@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Security.UnitTests.Core.SampleDomain;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Security.UnitTests.Core
 {
@@ -128,6 +129,14 @@ namespace Rubicon.Security.UnitTests.Core
     public void Parse_WithMissingTypeName ()
     {
       EnumWrapper.Parse ("Name|");
+    }
+
+    [Test]
+    public void Serialization ()
+    {
+      EnumWrapper wrapper = new EnumWrapper ("bla", "ble");
+      EnumWrapper deserializedWrapper = Serializer.SerializeAndDeserialize (wrapper);
+      Assert.AreEqual (wrapper, deserializedWrapper);
     }
   }
 }

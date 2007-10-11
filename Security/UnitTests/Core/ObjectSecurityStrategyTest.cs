@@ -5,6 +5,8 @@ using Rhino.Mocks;
 using Rubicon.Collections;
 using Rubicon.Security.Configuration;
 using Rubicon.Security.UnitTests.Core.Configuration;
+using Rubicon.Development.UnitTesting;
+using Rubicon.Security.UnitTests.Core.SampleDomain;
 
 namespace Rubicon.Security.UnitTests.Core
 {
@@ -94,6 +96,24 @@ namespace Rubicon.Security.UnitTests.Core
       _strategy.InvalidateLocalCache ();
 
       _mocks.VerifyAll ();
+    }
+
+    [Test]
+    public void Serialization ()
+    {
+      SecurityStrategy securityStrategy = new SecurityStrategy(new NullCache<string, AccessType[]>(), new NullGlobalAccessTypeCacheProvider());
+      ISecurityContextFactory factory = new FunctionalSecurityContextFactory (typeof (SecurableObject));
+
+      ObjectSecurityStrategy strategy = new ObjectSecurityStrategy (factory, securityStrategy);
+
+      ObjectSecurityStrategy deserializedStrategy = Serializer.SerializeAndDeserialize (strategy);
+      Assert.AreNotSame (strategy, deserializedStrategy);
+
+      Assert.IsNotNull (deserializedStrategy.SecurityContextFactory);
+      Assert.AreNotSame (strategy.SecurityContextFactory, deserializedStrategy.SecurityContextFactory);
+
+      Assert.IsNotNull (deserializedStrategy.SecurityStrategy);
+      Assert.AreNotSame (strategy.SecurityStrategy, deserializedStrategy.SecurityStrategy);
     }
   }
 }

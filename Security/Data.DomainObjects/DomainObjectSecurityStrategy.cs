@@ -16,6 +16,7 @@ namespace Rubicon.Security.Data.DomainObjects
     NewAndDeleted = 3
   }
 
+  [Serializable]
   public class DomainObjectSecurityStrategy : ObjectSecurityStrategy
   {
     // types

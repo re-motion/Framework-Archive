@@ -2,6 +2,7 @@ using System;
 
 namespace Rubicon.Security
 {
+  [Serializable]
   public class FunctionalSecurityContextFactory : ISecurityContextFactory
   {
     // types
@@ -10,7 +11,7 @@ namespace Rubicon.Security
 
     // member fields
 
-    private SecurityContext _context;
+    private readonly SecurityContext _context;
 
     // construction and disposing
 

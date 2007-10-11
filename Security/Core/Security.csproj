@@ -41,6 +41,7 @@
     <None Include="Security.build" />
     <Compile Include="BaseDemandPermissionAttribute.cs" />
     <Compile Include="Configuration\SecurityProviderHelper.cs" />
+    <Compile Include="GlobalAccessTypeCacheProviderObjectReference.cs" />
     <Compile Include="NullIdentity.cs" />
     <Compile Include="NullPrincipal.cs" />
     <Compile Include="NullSecurityClient.cs" />

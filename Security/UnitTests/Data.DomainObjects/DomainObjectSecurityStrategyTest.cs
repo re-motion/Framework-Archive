@@ -8,6 +8,7 @@ using Rhino.Mocks;
 using System.Security.Principal;
 using Rubicon.Security.Configuration;
 using Rubicon.Collections;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Security.UnitTests.Data.DomainObjects
 {
@@ -200,6 +201,36 @@ namespace Rubicon.Security.UnitTests.Data.DomainObjects
 
       _mocks.VerifyAll ();
       Assert.AreEqual (false, hasAccess);
+    }
+
+    [Serializable]
+    class SerializableFactory : IDomainObjectSecurityContextFactory
+    {
+      public bool IsDiscarded { get { return false; } }
+      public bool IsNew { get { return false; } }
+      public bool IsDeleted { get { return false; } }
+
+      public SecurityContext CreateSecurityContext ()
+      {
+        throw new NotImplementedException ();
+      }
+    }
+
+    [Test]
+    public void Serialize ()
+    {
+      IDomainObjectSecurityContextFactory factory = new SerializableFactory ();
+      ISecurityStrategy securityStrategy = new SecurityStrategy ();
+      
+      DomainObjectSecurityStrategy strategy = new DomainObjectSecurityStrategy (RequiredSecurityForStates.NewAndDeleted, factory, securityStrategy);
+      DomainObjectSecurityStrategy deserializedStrategy = Serializer.SerializeAndDeserialize (strategy);
+
+      Assert.AreNotSame (strategy, deserializedStrategy);
+      Assert.AreEqual (RequiredSecurityForStates.NewAndDeleted, deserializedStrategy.RequiredSecurityForStates);
+      Assert.AreNotSame (factory, deserializedStrategy.SecurityContextFactory);
+      Assert.IsInstanceOfType (typeof (SerializableFactory), deserializedStrategy.SecurityContextFactory);
+      Assert.AreNotSame (securityStrategy, deserializedStrategy.SecurityStrategy);
+      Assert.IsInstanceOfType (typeof (SecurityStrategy), deserializedStrategy.SecurityStrategy);
     }
   }
 }

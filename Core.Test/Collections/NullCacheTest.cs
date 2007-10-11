@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Collections;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Core.UnitTests.Collections
 {
@@ -51,5 +52,12 @@ namespace Rubicon.Core.UnitTests.Collections
       Assert.IsTrue (_cache.IsNull);
     }
 
+    [Test]
+    public void Serialization ()
+    {
+      ICache<string, object> deserializedCache = Serializer.SerializeAndDeserialize (_cache);
+      Assert.IsTrue (deserializedCache is NullCache<string, object>);
+      Assert.AreNotSame (_cache, deserializedCache);
+    }
   }
 }

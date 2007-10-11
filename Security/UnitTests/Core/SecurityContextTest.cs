@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rubicon.Security.UnitTests.Core.SampleDomain;
 using Rubicon.Security.UnitTests.TestDomain;
 using Rubicon.Utilities;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Security.UnitTests.Core
 {
@@ -323,6 +324,22 @@ namespace Rubicon.Security.UnitTests.Core
       SecurityContext right = new SecurityContext (typeof (File), "owner", "ownerGroup", "ownerTenant", rightStates, rightAbstractRoles);
 
       Assert.AreEqual (left.GetHashCode(), right.GetHashCode());
+    }
+
+    [Test]
+    public void Serialization ()
+    {
+      Dictionary<string, Enum> myStates = new Dictionary<string, Enum> ();
+      myStates.Add ("State", TestSecurityState.Public);
+      myStates.Add ("Confidentiality", TestSecurityState.Public);
+
+      Enum[] myRoles = new Enum[] { TestAbstractRoles.Developer, TestAbstractRoles.QualityEngineer };
+
+      SecurityContext context = new SecurityContext (typeof (SecurableObject), "myOwner", "myGroup", "myTenant", myStates, myRoles);
+      SecurityContext deserializedContext = Serializer.SerializeAndDeserialize (context);
+
+      Assert.AreNotSame (context, deserializedContext);
+      Assert.AreEqual (context, deserializedContext);
     }
 
     private static Dictionary<string, Enum> CreateTwoStates ()

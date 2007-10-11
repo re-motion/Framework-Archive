@@ -3,6 +3,8 @@ using System.Collections.Specialized;
 using NUnit.Framework;
 using Rubicon.Collections;
 using Rubicon.Configuration;
+using Rubicon.Development.UnitTesting;
+using Rubicon.Security.Configuration;
 
 namespace Rubicon.Security.UnitTests.Core
 {
@@ -39,6 +41,31 @@ namespace Rubicon.Security.UnitTests.Core
     public void GetIsNull ()
     {
       Assert.IsTrue (_provider.IsNull);
+    }
+
+    [Test]
+    public void SerializeInstanceNotInConfiguration ()
+    {
+      NameValueCollection config = new NameValueCollection ();
+      config.Add ("description", "The Description");
+
+      NullGlobalAccessTypeCacheProvider provider = new NullGlobalAccessTypeCacheProvider ("MyProvider", config);
+      NullGlobalAccessTypeCacheProvider deserializedProvider = Serializer.SerializeAndDeserialize (provider);
+
+      Assert.AreEqual ("MyProvider", deserializedProvider.Name);
+      Assert.AreEqual ("The Description", deserializedProvider.Description);
+      Assert.IsInstanceOfType (typeof (NullCache<Tuple<SecurityContext, string>, AccessType[]>), deserializedProvider.GetCache ());
+      Assert.IsTrue (((IGlobalAccessTypeCacheProvider) deserializedProvider).IsNull);
+    }
+
+    [Test]
+    public void SerializeInstanceFromConfiguration ()
+    {
+      NullGlobalAccessTypeCacheProvider provider =
+          (NullGlobalAccessTypeCacheProvider) SecurityConfiguration.Current.GlobalAccessTypeCacheProviders["None"];
+
+      NullGlobalAccessTypeCacheProvider deserializedProvider = Serializer.SerializeAndDeserialize (provider);
+      Assert.AreSame (provider, deserializedProvider);
     }
   }
 }

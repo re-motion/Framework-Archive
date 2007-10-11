@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Rubicon.Utilities;
+using System.Runtime.Serialization;
 
 namespace Rubicon.Security
 {
@@ -9,13 +10,14 @@ namespace Rubicon.Security
   /// Use the static <see cref="O:Rubicon.Security.AccessType.Get"/> methods to convert an enum to an access type.
   /// <note>For the set of basic access types see <see cref="T:Rubicon.Security.GeneralAccessTypes"/>.</note>
   /// </remarks>
-  public sealed class AccessType
+  [Serializable]
+  public sealed class AccessType : IObjectReference
   {
     // types
 
     // static members and constants
 
-    private static Dictionary<EnumWrapper, AccessType> s_cache = new Dictionary<EnumWrapper, AccessType> ();
+    private static readonly Dictionary<EnumWrapper, AccessType> s_cache = new Dictionary<EnumWrapper, AccessType> ();
 
     public static AccessType Get (Enum accessType)
     {
@@ -71,6 +73,10 @@ namespace Rubicon.Security
     {
       return _value.ToString ();
     }
-  }
 
+    object IObjectReference.GetRealObject (StreamingContext context)
+    {
+      return AccessType.Get (_value);
+    }
+  }
 }

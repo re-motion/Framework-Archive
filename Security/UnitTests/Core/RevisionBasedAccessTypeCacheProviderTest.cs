@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Specialized;
+using System.Configuration;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Collections;
@@ -7,6 +8,8 @@ using Rubicon.Configuration;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Security.Configuration;
 using Rubicon.Security.UnitTests.Core.Configuration;
+using Rubicon.Security.UnitTests.Core.SampleDomain;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace Rubicon.Security.UnitTests.Core
 {
@@ -105,6 +108,43 @@ namespace Rubicon.Security.UnitTests.Core
     public void GetIsNull()
     {
       Assert.IsFalse (_provider.IsNull);
+    }
+
+    [Test]
+    public void SerializeInstanceNotInConfiguration ()
+    {
+      NameValueCollection config = new NameValueCollection ();
+      config.Add ("description", "The Description");
+
+      RevisionBasedAccessTypeCacheProvider provider = new RevisionBasedAccessTypeCacheProvider ("MyProvider", config);
+      SecurityContext securityContext = new SecurityContext (typeof (SecurableObject));
+      AccessType[] accessTypes = new AccessType[] { AccessType.Get (TestAccessTypes.Fifth) };
+      provider.GetCache ().Add (Tuple.NewTuple (securityContext, "bla"), accessTypes);
+
+      RevisionBasedAccessTypeCacheProvider deserializedProvider = Serializer.SerializeAndDeserialize (provider);
+
+      Assert.AreEqual ("MyProvider", deserializedProvider.Name);
+      Assert.AreEqual ("The Description", deserializedProvider.Description);
+      Assert.IsInstanceOfType (typeof (InterlockedCache<Tuple<SecurityContext, string>, AccessType[]>), deserializedProvider.GetCache ());
+      Assert.AreNotSame (provider.GetCache(), deserializedProvider.GetCache ());
+      Assert.IsFalse (((IGlobalAccessTypeCacheProvider) deserializedProvider).IsNull);
+
+      AccessType[] newAccessTypes;
+      bool result = deserializedProvider.GetCache ().TryGetValue (Tuple.NewTuple (securityContext, "bla"), out newAccessTypes);
+      Assert.IsTrue (result);
+      Assert.AreNotSame (accessTypes, newAccessTypes);
+      Assert.AreEqual (1, newAccessTypes.Length);
+      Assert.That (newAccessTypes, Is.EquivalentTo (accessTypes));
+    }
+
+    [Test]
+    public void SerializeInstanceFromConfiguration ()
+    {
+      RevisionBasedAccessTypeCacheProvider provider =
+          (RevisionBasedAccessTypeCacheProvider) SecurityConfiguration.Current.GlobalAccessTypeCacheProviders["RevisionBased"];
+      
+      RevisionBasedAccessTypeCacheProvider deserializedProvider = Serializer.SerializeAndDeserialize (provider);
+      Assert.AreSame (provider, deserializedProvider);
     }
   }
 }

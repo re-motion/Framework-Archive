@@ -6,11 +6,11 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
-  //TODO: Serializable
+  [Serializable]
   public class SecurityStrategy : ISecurityStrategy
   {
-    private ICache<string, AccessType[]> _localCache;
-    private IGlobalAccessTypeCacheProvider _globalCacheProvider;
+    private readonly ICache<string, AccessType[]> _localCache;
+    private readonly IGlobalAccessTypeCacheProvider _globalCacheProvider;
 
     public SecurityStrategy ()
       : this (new Cache<string, AccessType[]> (), SecurityConfiguration.Current.GlobalAccessTypeCacheProvider)
