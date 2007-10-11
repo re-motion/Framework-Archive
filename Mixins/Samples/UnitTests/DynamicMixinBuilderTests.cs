@@ -143,7 +143,6 @@ namespace Rubicon.Mixins.Samples.UnitTests
     }
 
     [Test]
-    [Ignore ("TODO: Fix issue with generated mixin types")]
     public void GeneratedMethodIsIntercepted_WithRightParameters ()
     {
       _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("StringMethod"));
@@ -162,7 +161,7 @@ namespace Rubicon.Mixins.Samples.UnitTests
     }
 
     [Test]
-    [Ignore ("TODO: Fix issue with generated mixin types")]
+    [Ignore ("TODO: Implement base call delegate")]
     public void GeneratedMethodIsIntercepted_WithCorrectBase ()
     {
       _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("StringMethod"));

@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Utilities;
 using Rubicon.Utilities;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
 namespace Rubicon.Mixins.CodeGeneration
 {
@@ -49,6 +50,32 @@ namespace Rubicon.Mixins.CodeGeneration
       CustomAttributeBuilder builder = new CustomAttributeBuilder (s_attributeCtor,
           new object[] { attribute.TargetType, attribute.MixinTypes, attribute.CompleteInterfaces, attribute.ExplicitDependenciesPerMixin });
       return builder;
+    }
+
+    internal static Expression NewAttributeExpressionFromClassContext (ClassContext context, AbstractCodeBuilder codeBuilder)
+    {
+      Assertion.IsNotNull (s_attributeCtor);
+
+      ConcreteMixedTypeAttribute attribute = FromClassContext (context);
+
+      LocalReference mixinTypesArray = CreateArrayLocal (codeBuilder, attribute.MixinTypes);
+      LocalReference completeInterfacesArray = CreateArrayLocal (codeBuilder, attribute.CompleteInterfaces);
+      LocalReference explicitDependenciesPerMixinArray = CreateArrayLocal (codeBuilder, attribute.ExplicitDependenciesPerMixin);
+
+      return new NewInstanceExpression (s_attributeCtor,
+          new TypeTokenExpression (attribute.TargetType),
+          mixinTypesArray.ToExpression (),
+          completeInterfacesArray.ToExpression (),
+          explicitDependenciesPerMixinArray.ToExpression ());
+    }
+
+    private static LocalReference CreateArrayLocal (AbstractCodeBuilder codeBuilder, Type[] types)
+    {
+      LocalReference arrayLocal = codeBuilder.DeclareLocal (typeof (Type[]));
+      codeBuilder.AddStatement (new AssignStatement (arrayLocal, new NewArrayExpression (types.Length, typeof (Type))));
+      for (int i = 0; i < types.Length; ++i)
+        codeBuilder.AddStatement (new AssignArrayStatement (arrayLocal, i, new TypeTokenExpression (types[i])));
+      return arrayLocal;
     }
 
     private readonly Type _targetType;

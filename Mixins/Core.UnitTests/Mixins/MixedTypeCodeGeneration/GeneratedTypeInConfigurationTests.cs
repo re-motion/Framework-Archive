@@ -11,7 +11,6 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
   public class GeneratedTypeInConfigurationTests : MixinBaseTest
   {
     [Test]
-    [Ignore ("TODO: Fix issue with generated mixin types")]
     public void GeneratedMixinTypeWorks ()
     {
       CustomClassEmitter typeEmitter = new CustomClassEmitter (((ModuleManager)ConcreteTypeBuilder.Current.Scope).Scope,
@@ -26,7 +25,6 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     }
 
     [Test]
-    [Ignore ("TODO: Fix issue with generated mixin types")]
     public void GeneratedTargetTypeWorks ()
     {
       CustomClassEmitter typeEmitter = new CustomClassEmitter (((ModuleManager) ConcreteTypeBuilder.Current.Scope).Scope,

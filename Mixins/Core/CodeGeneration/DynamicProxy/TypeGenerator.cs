@@ -169,15 +169,15 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       ConstructorEmitter emitter = _emitter.CreateTypeConstructor ();
 
-      // TODO: GetCustomAttributes throws a FileNotFoundException if the attribute declaration contains a generated type. Therefore replace this by
-      // manually building the context in the constructor
-
-      LocalReference firstAttributeLocal = GetFirstAttributeLocal (emitter, typeof (ConcreteMixedTypeAttribute));
-
+      Expression attributeExpression =
+          ConcreteMixedTypeAttribute.NewAttributeExpressionFromClassContext (Configuration.ConfigurationContext, emitter.CodeBuilder);
+      LocalReference attributeLocal = emitter.CodeBuilder.DeclareLocal (typeof (ConcreteMixedTypeAttribute));
+      emitter.CodeBuilder.AddStatement (new AssignStatement (attributeLocal, attributeExpression));
+      
       MethodInfo getTargetClassDefinitionMethod = typeof (ConcreteMixedTypeAttribute).GetMethod ("GetTargetClassDefinition");
       Assertion.IsNotNull (getTargetClassDefinitionMethod);
       emitter.CodeBuilder.AddStatement (new AssignStatement (_configurationField,
-          new VirtualMethodInvocationExpression (firstAttributeLocal, getTargetClassDefinitionMethod)));
+          new VirtualMethodInvocationExpression (attributeLocal, getTargetClassDefinitionMethod)));
 
       emitter.CodeBuilder.AddStatement (new ReturnStatement ());
     }
