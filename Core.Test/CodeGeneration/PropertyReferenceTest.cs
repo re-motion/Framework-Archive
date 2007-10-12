@@ -24,6 +24,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
       
       LocalReference oldValueLocal = methodEmitter.DeclareLocal (typeof (string));
       PropertyReference propertyWithSelfOwner = new PropertyReference (propertyEmitter.PropertyBuilder);
+      Assert.AreEqual (typeof (string), propertyWithSelfOwner.Type);
       
       methodEmitter.AddStatement (new AssignStatement (oldValueLocal, propertyWithSelfOwner.ToExpression()));
       methodEmitter.AddStatement (new AssignStatement (propertyWithSelfOwner, new ConstReference ("New").ToExpression()));
@@ -48,6 +49,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
 
       LocalReference oldValueLocal = methodEmitter.DeclareLocal (typeof (string));
       PropertyReference propertyWithNoOwner = new PropertyReference (null, propertyEmitter.PropertyBuilder);
+      Assert.AreEqual (typeof (string), propertyWithNoOwner.Type);
 
       methodEmitter.AddStatement (new AssignStatement (oldValueLocal, propertyWithNoOwner.ToExpression ()));
       methodEmitter.AddStatement (new AssignStatement (propertyWithNoOwner, new ConstReference ("New").ToExpression ()));

@@ -7,17 +7,18 @@ using System.Reflection;
 
 namespace Rubicon.CodeGeneration.DPExtensions
 {
-  public class PropertyReference : Reference
+  public class PropertyReference : TypeReference
   {
-    private PropertyInfo _property;
+    private readonly PropertyInfo _property;
 
     public PropertyReference (PropertyInfo property)
+        : base (SelfReference.Self, property.PropertyType)
     {
       _property = property;
     }
 
     public PropertyReference(Reference owner, PropertyInfo property)
-      : base (owner)
+        : base (owner, property.PropertyType)
     {
       _property = property;
     }

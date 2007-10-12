@@ -7,6 +7,7 @@ using NUnit.Framework;
 using Rubicon.Collections;
 using Rubicon.Development.UnitTesting;
 using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Mixins.Samples.DynamicMixinBuilding;
 
 namespace Rubicon.Mixins.Samples.UnitTests
 {
@@ -15,13 +16,20 @@ namespace Rubicon.Mixins.Samples.UnitTests
   {
     public class SampleTarget
     {
+      public bool VoidMethodCalled = false;
+
       public virtual string StringMethod (int intArg)
       {
         return "SampleTarget.StringMethod (" + intArg + ")";
       }
+
+      public virtual void VoidMethod ()
+      {
+        VoidMethodCalled = true;
+      }
     }
 
-    private readonly List<Tuple<object, MethodInfo, object[]>> _calls = new List<Tuple<object, MethodInfo, object[]>> ();
+    private readonly List<Tuple<object, MethodInfo, object[], object>> _calls = new List<Tuple<object, MethodInfo, object[], object>> ();
     private MethodInvocationHandler _invocationHandler;
     private DynamicMixinBuilder _builder;
 
@@ -35,15 +43,11 @@ namespace Rubicon.Mixins.Samples.UnitTests
 
       Mixins.CodeGeneration.ConcreteTypeBuilder.SetCurrent (null);
 
-      AppDomain.CurrentDomain.AssemblyResolve += DynamicMixinBuilder.ResolveAssembly;
-
-      _invocationHandler = delegate (object instance, MethodInfo method, object[] args, Func<object[], object> baseMethod)
+      _invocationHandler = delegate (object instance, MethodInfo method, object[] args, BaseMethodInvoker baseMethod)
       {
-        _calls.Add (Tuple.NewTuple (instance, method, args));
-        if (baseMethod != null)
-          return "Intercepted: " + baseMethod (args);
-        else
-          return "Intercepted";
+        object result = baseMethod (args);
+        _calls.Add (Tuple.NewTuple (instance, method, args, result));
+        return "Intercepted: " + result;
       };
       
       _calls.Clear ();
@@ -72,8 +76,6 @@ namespace Rubicon.Mixins.Samples.UnitTests
     [TearDown]
     public void TearDown ()
     {
-      AppDomain.CurrentDomain.AssemblyResolve -= DynamicMixinBuilder.ResolveAssembly;
-
       if (DynamicMixinBuilder.Scope.StrongNamedModule != null)
       {
         DynamicMixinBuilder.Scope.SaveAssembly (true);
@@ -153,7 +155,7 @@ namespace Rubicon.Mixins.Samples.UnitTests
         SampleTarget target = ObjectFactory.Create<SampleTarget> ().With ();
         target.StringMethod (4);
 
-        Tuple<object, MethodInfo, object[]> callInfo = _calls[0];
+        Tuple<object, MethodInfo, object[], object> callInfo = _calls[0];
         Assert.AreSame (target, callInfo.A);
         Assert.AreEqual (typeof (SampleTarget).GetMethod ("StringMethod"), callInfo.B);
         Assert.That (callInfo.C, Is.EquivalentTo (new object[] { 4 } ));
@@ -161,7 +163,22 @@ namespace Rubicon.Mixins.Samples.UnitTests
     }
 
     [Test]
-    [Ignore ("TODO: Implement base call delegate")]
+    public void GeneratedMethodIsIntercepted_WithRightReturnValue ()
+    {
+      _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("StringMethod"));
+      Type t = _builder.BuildMixinType (_invocationHandler);
+
+      using (MixinConfiguration.ScopedExtend (typeof (SampleTarget), t))
+      {
+        SampleTarget target = ObjectFactory.Create<SampleTarget> ().With ();
+        target.StringMethod (4);
+
+        Tuple<object, MethodInfo, object[], object> callInfo = _calls[0];
+        Assert.AreEqual ("SampleTarget.StringMethod (4)", callInfo.D);
+      }
+    }
+
+    [Test]
     public void GeneratedMethodIsIntercepted_WithCorrectBase ()
     {
       _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("StringMethod"));
@@ -172,6 +189,23 @@ namespace Rubicon.Mixins.Samples.UnitTests
         SampleTarget target = ObjectFactory.Create<SampleTarget> ().With ();
         string result = target.StringMethod (4);
         Assert.AreEqual ("Intercepted: SampleTarget.StringMethod (4)", result);
+      }
+    }
+
+    [Test]
+    public void InterceptVoidMethod ()
+    {
+      _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("VoidMethod"));
+      Type t = _builder.BuildMixinType (_invocationHandler);
+
+      using (MixinConfiguration.ScopedExtend (typeof (SampleTarget), t))
+      {
+        SampleTarget target = ObjectFactory.Create<SampleTarget> ().With ();
+        target.VoidMethod ();
+        Assert.IsTrue (target.VoidMethodCalled);
+
+        Tuple<object, MethodInfo, object[], object> callInfo = _calls[0];
+        Assert.AreEqual (null, callInfo.D);
       }
     }
   }

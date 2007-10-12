@@ -48,9 +48,14 @@
     <Compile Include="Aktology\Mixins\TransportFahrzeugMixin.cs" />
     <Compile Include="Aktology\Mixins\PersonenMixin.cs" />
     <Compile Include="Aktology\Mixins\FahrzeugMixin.cs" />
+    <Compile Include="DynamicMixinBuilding\BaseRequirements.cs" />
     <Compile Include="DisposableMixin.cs" />
-    <Compile Include="DynamicMixinBuilder.cs" />
+    <Compile Include="DynamicMixinBuilding\DynamicMixinBuilder.cs" />
+    <Compile Include="DynamicMixinBuilding\DynamicMixinTypeGenerator.cs" />
+    <Compile Include="DynamicMixinBuilding\PopStatement.cs" />
     <Compile Include="EquatableMixin.cs" />
+    <Compile Include="DynamicMixinBuilding\InterfaceEmitter.cs" />
+    <Compile Include="DynamicMixinBuilding\LoadFunctionExpression.cs" />
     <Compile Include="PhotoStuff\DataObject.cs" />
     <Compile Include="PhotoStuff\IDataObject.cs" />
     <Compile Include="PhotoStuff\IDocument.cs" />
