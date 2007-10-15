@@ -6,7 +6,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes
 {
   public class ClassOverridingMixinEvent
   {
-    [Override]
+    [OverrideMixinMember]
     public virtual event EventHandler Event;
   }
 }

@@ -188,9 +188,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         ExpectedMessage = "is not fulfilled - public or protected method MethodImplementedOnBase could not be found", MatchType = MessageMatch.Regex)]
     public void ThrowsWhenUnfulfilledDuckFace()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (DuckFaceMixinWithoutOverrides)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (DuckFaceMixinWithoutOverrides)))
       {
-        TypeFactory.GetActiveConfiguration (typeof (object));
+        TypeFactory.GetActiveConfiguration (typeof (NullTarget));
       }
     }
 
@@ -228,9 +228,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         ExpectedMessage = "is not fulfilled - public or protected method MethodImplementedOnBase could not be found", MatchType = MessageMatch.Regex)]
     public void ThrowsWhenUnfulfilledDuckBase ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (DuckBaseMixinWithoutOverrides)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (DuckBaseMixinWithoutOverrides)))
       {
-        TypeFactory.GetActiveConfiguration (typeof (object));
+        TypeFactory.GetActiveConfiguration (typeof (NullTarget));
       }
     }
 

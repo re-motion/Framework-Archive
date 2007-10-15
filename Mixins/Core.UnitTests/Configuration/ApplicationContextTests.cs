@@ -269,7 +269,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedEmpty ())
       {
-        using (MixinConfiguration.ScopedExtend (typeof (object), typeof (NullMixin)))
+        using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
         {
           IValidationLog log = MixinConfiguration.ActiveContext.Validate();
           Assert.IsTrue (log.GetNumberOfSuccesses() > 0);
@@ -328,11 +328,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void GetContextWorksRecursively ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (NullMixin)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
       {
-        ClassContext context = MixinConfiguration.ActiveContext.GetClassContext (typeof (string));
+        ClassContext context = MixinConfiguration.ActiveContext.GetClassContext (typeof (DerivedNullTarget));
         Assert.IsNotNull (context);
-        Assert.AreEqual (typeof (string), context.Type);
+        Assert.AreEqual (typeof (DerivedNullTarget), context.Type);
         Assert.IsTrue (context.ContainsMixin (typeof (NullMixin)));
       }
     }
@@ -340,9 +340,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void GetContextNonRecursive ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (NullMixin)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
       {
-        ClassContext context = MixinConfiguration.ActiveContext.GetClassContextNonRecursive (typeof (string));
+        ClassContext context = MixinConfiguration.ActiveContext.GetClassContextNonRecursive (typeof (DerivedNullTarget));
         Assert.IsNull (context);
       }
     }

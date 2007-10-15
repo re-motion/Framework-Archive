@@ -17,9 +17,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
           "GeneratedType", typeof (object));
       Type generatedType = typeEmitter.BuildType ();
 
-      using (MixinConfiguration.ScopedExtend (typeof (object), generatedType))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), generatedType))
       {
-        object instance = ObjectFactory.Create (typeof (object)).With ();
+        object instance = ObjectFactory.Create (typeof (NullTarget)).With ();
         Assert.IsNotNull (Mixin.Get (generatedType, instance));
       }
     }

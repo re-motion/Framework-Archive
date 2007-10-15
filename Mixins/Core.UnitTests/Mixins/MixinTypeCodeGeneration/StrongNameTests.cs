@@ -7,6 +7,7 @@ using Rubicon.Mixins.Samples;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Collections.Generic;
 using Rubicon.Development.UnitTesting;
+using System.Collections;
 
 namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
 {
@@ -15,7 +16,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
   {
     public class UnsignedClass
     {
-      [Override]
+      [OverrideMixinMember]
       public new string ToString ()
       {
         return "Overridden";
@@ -34,9 +35,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
     [Test]
     public void SignedMixinWithSignedTargetClassGeneratedIntoSignedAssembly ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (EquatableMixin<>)))
+      using (MixinConfiguration.ScopedExtend (typeof (ArrayList), typeof (EquatableMixin<>)))
       {
-        MixinDefinition mixinDefinition = TypeFactory.GetActiveConfiguration (typeof (object)).GetMixinByConfiguredType (typeof (EquatableMixin<>));
+        MixinDefinition mixinDefinition = TypeFactory.GetActiveConfiguration (typeof (ArrayList)).GetMixinByConfiguredType (typeof (EquatableMixin<>));
         Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
         Assert.IsNotEmpty (generatedType.Assembly.GetName ().GetPublicKeyToken ());
       }
@@ -69,13 +70,13 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
     [Test]
     public void UnsignedMixinWithSignedTargetClassGeneratedIntoUnsignedAssembly ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (UnsignedMixin)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (UnsignedMixin)))
       {
-        MixinDefinition mixinDefinition = TypeFactory.GetActiveConfiguration (typeof (object)).Mixins[typeof (UnsignedMixin)];
+        MixinDefinition mixinDefinition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (UnsignedMixin)];
         Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
         Assert.IsEmpty (generatedType.Assembly.GetName ().GetPublicKeyToken ());
 
-        Assert.AreEqual ("Overridden", ObjectFactory.Create<object> ().With ().ToString ());
+        Assert.AreEqual ("Overridden", ObjectFactory.Create<NullTarget> ().With ().ToString ());
       }
     }
   }

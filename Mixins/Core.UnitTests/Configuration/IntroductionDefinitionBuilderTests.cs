@@ -267,9 +267,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void SuppressedInterfacedIsNotIntroduced ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinSuppressingSimpleInterface)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinSuppressingSimpleInterface)))
       {
-        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (object));
+        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget));
         Assert.IsFalse (definition.ImplementedInterfaces.Contains (typeof (ISimpleInterface)));
         Assert.IsFalse (definition.IntroducedInterfaces.ContainsKey (typeof (ISimpleInterface)));
         Assert.IsTrue (definition.Mixins[typeof (MixinSuppressingSimpleInterface)].SuppressedInterfaceIntroductions.ContainsKey (
@@ -280,9 +280,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void ExplicitlySuppressedInterfaceIntroduction ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinSuppressingSimpleInterface)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinSuppressingSimpleInterface)))
       {
-        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (object));
+        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget));
         SuppressedInterfaceIntroductionDefinition suppressedDefinition =
             definition.Mixins[typeof (MixinSuppressingSimpleInterface)].SuppressedInterfaceIntroductions[typeof (ISimpleInterface)];
         Assert.IsTrue (suppressedDefinition.IsExplicitlySuppressed);
@@ -310,7 +310,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void MultipleSimilarInterfaces ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (List<>)))
+      using (MixinConfiguration.ScopedExtend (typeof (ClassImplementingSimpleInterface), typeof (List<>)))
       {
         TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassImplementingSimpleInterface));
         MixinDefinition mixinDefinition = definition.GetMixinByConfiguredType (typeof (List<>));
@@ -318,14 +318,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.IsTrue (definition.IntroducedInterfaces.ContainsKey (typeof (IList)));
         Assert.AreSame (mixinDefinition, definition.IntroducedInterfaces[typeof (IList)].Implementer);
 
-        Assert.IsTrue (definition.IntroducedInterfaces.ContainsKey (typeof (ICollection<object>)));
-        Assert.AreSame (mixinDefinition, definition.IntroducedInterfaces[typeof (ICollection<object>)].Implementer);
+        Assert.IsTrue (definition.IntroducedInterfaces.ContainsKey (typeof (ICollection<ClassImplementingSimpleInterface>)));
+        Assert.AreSame (mixinDefinition, definition.IntroducedInterfaces[typeof (ICollection<ClassImplementingSimpleInterface>)].Implementer);
 
         Assert.IsTrue (definition.IntroducedInterfaces[typeof (IList)].IntroducedProperties.ContainsKey (typeof (IList).GetProperty ("IsReadOnly")));
-        Assert.IsTrue (definition.IntroducedInterfaces[typeof (ICollection<object>)].IntroducedProperties.ContainsKey (typeof (ICollection<object>).GetProperty ("IsReadOnly")));
+        Assert.IsTrue (definition.IntroducedInterfaces[typeof (ICollection<ClassImplementingSimpleInterface>)].IntroducedProperties.ContainsKey (typeof (ICollection<ClassImplementingSimpleInterface>).GetProperty ("IsReadOnly")));
 
         Assert.AreNotEqual (definition.IntroducedInterfaces[typeof (IList)].IntroducedProperties[typeof (IList).GetProperty ("IsReadOnly")].ImplementingMember,
-            definition.IntroducedInterfaces[typeof (ICollection<object>)].IntroducedProperties[typeof (ICollection<object>).GetProperty ("IsReadOnly")].ImplementingMember);
+            definition.IntroducedInterfaces[typeof (ICollection<ClassImplementingSimpleInterface>)].IntroducedProperties[typeof (ICollection<ClassImplementingSimpleInterface>).GetProperty ("IsReadOnly")].ImplementingMember);
       }
     }
   }

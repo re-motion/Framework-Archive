@@ -41,10 +41,10 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       Assert.AreSame (TypeFactory.GetConcreteType (typeof (BaseType1)), TypeUtility.GetConcreteType (typeof (BaseType1)));
       Assert.AreSame (TypeFactory.GetConcreteType (typeof (BaseType2)), TypeUtility.GetConcreteType (typeof (BaseType2)));
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (NullMixin)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
       {
-        Assert.AreNotSame (typeof (object), TypeUtility.GetConcreteType (typeof (object)));
-        Assert.AreSame (TypeFactory.GetConcreteType (typeof (object)), TypeUtility.GetConcreteType (typeof (object)));
+        Assert.AreNotSame (typeof (NullTarget), TypeUtility.GetConcreteType (typeof (NullTarget)));
+        Assert.AreSame (TypeFactory.GetConcreteType (typeof (NullTarget)), TypeUtility.GetConcreteType (typeof (NullTarget)));
       }
     }
 
@@ -110,32 +110,32 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void IsAssignableTypeToMixedType ()
     {
-      Assert.IsFalse (TypeUtility.IsAssignableFrom (CreateMixedType(typeof (object), typeof (NullMixin)), typeof (object)));
+      Assert.IsFalse (TypeUtility.IsAssignableFrom (CreateMixedType (typeof (NullTarget), typeof (NullMixin)), typeof (NullTarget)));
     }
 
     [Test]
     public void IsAssignableMixedTypeToType ()
     {
-      Assert.IsTrue (TypeUtility.IsAssignableFrom (typeof (object), CreateMixedType (typeof (object), typeof (NullMixin))));
+      Assert.IsTrue (TypeUtility.IsAssignableFrom (typeof (NullTarget), CreateMixedType (typeof (NullTarget), typeof (NullMixin))));
     }
 
     [Test]
     public void IsAssignableRightParameterIsMadeConcrete ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (NullMixin)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
       {
-        Assert.IsTrue (TypeUtility.IsAssignableFrom (typeof (object), typeof (object)));
-        Assert.IsTrue (TypeUtility.IsAssignableFrom (CreateMixedType (typeof (object), typeof (NullMixin)), typeof (object)));
+        Assert.IsTrue (TypeUtility.IsAssignableFrom (typeof (NullTarget), typeof (NullTarget)));
+        Assert.IsTrue (TypeUtility.IsAssignableFrom (CreateMixedType (typeof (NullTarget), typeof (NullMixin)), typeof (NullTarget)));
       }
     }
 
     [Test]
     public void IsAssignableInterfaceImplementedViaMixin ()
     {
-      Assert.IsFalse (TypeUtility.IsAssignableFrom (typeof (IMixinIII4), typeof (object)));
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinIntroducingInheritedInterface)))
+      Assert.IsFalse (TypeUtility.IsAssignableFrom (typeof (IMixinIII4), typeof (NullTarget)));
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIntroducingInheritedInterface)))
       {
-        Assert.IsTrue (TypeUtility.IsAssignableFrom (typeof (IMixinIII4), typeof (object)));
+        Assert.IsTrue (TypeUtility.IsAssignableFrom (typeof (IMixinIII4), typeof (NullTarget)));
       }
     }
 

@@ -8,19 +8,19 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   [Serializable]
   public class ClassOverridingMixinMembers
   {
-    [Override]
+    [OverrideMixinMember]
     public string AbstractMethod(int i)
     {
       return "ClassOverridingMixinMembers.AbstractMethod-" + i;
     }
 
-    [Override]
+    [OverrideMixinMember]
     public string AbstractProperty
     {
       get { return "ClassOverridingMixinMembers.AbstractProperty"; }
     }
 
-    [Override]
+    [OverrideMixinMember]
     public string RaiseEvent ()
     {
       return _abstractEvent ();
@@ -28,7 +28,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
 
     private Func<string> _abstractEvent;
 
-    [Override]
+    [OverrideMixinMember]
     public event Func<string> AbstractEvent
     {
       add { _abstractEvent += value; }

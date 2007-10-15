@@ -20,7 +20,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       InitializeFirstProxy (mixinTarget);
 
       object[] extensions = PrepareExtensionsWithGivenMixinInstances (configuration, mixinInstances);
-      FillUpExtensionsWithNewMixinInstances (extensions, configuration, mixinTarget);
+      FillUpExtensionsWithNewMixinInstances (extensions, configuration);
 
       SetExtensionsField (mixinTarget, extensions);
       InitializeMixinInstances (extensions, configuration, mixinTarget);
@@ -111,8 +111,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         return targetClassDefinition.Mixins[mixinType];
     }
 
-    private static void FillUpExtensionsWithNewMixinInstances (
-        object[] extensions, TargetClassDefinition configuration, IMixinTarget targetInstance)
+    private static void FillUpExtensionsWithNewMixinInstances (object[] extensions, TargetClassDefinition configuration)
     {
       foreach (MixinDefinition mixinDefinition in configuration.Mixins)
       {
@@ -132,7 +131,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       object mixinInstance;
       try
       {
-        mixinInstance = Activator.CreateInstance (mixinType);
+        mixinInstance = ObjectFactory.Create (mixinType).With ();
       }
       catch (MissingMethodException ex)
       {

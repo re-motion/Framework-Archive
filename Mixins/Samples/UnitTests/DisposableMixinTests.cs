@@ -18,13 +18,13 @@ namespace Rubicon.Mixins.Samples.UnitTests
     {
       public Data Data = new Data();
 
-      [Override]
+      [OverrideMixinMember]
       public void CleanupManagedResources()
       {
         Data.ManagedCalled = true;
       }
 
-      [Override]
+      [OverrideMixinMember]
       public void CleanupUnmanagedResources ()
       {
         Data.UnmanagedCalled = true;

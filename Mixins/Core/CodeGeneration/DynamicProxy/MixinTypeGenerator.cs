@@ -62,13 +62,17 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       ConstructorEmitter emitter = _emitter.CreateTypeConstructor ();
 
-      LocalReference firstAttributeLocal = TypeGenerator.GetFirstAttributeLocal (emitter, typeof (ConcreteMixinTypeAttribute));
+      Expression attributeExpression =
+          ConcreteMixinTypeAttribute.NewAttributeExpressionFromClassContext (Configuration.MixinIndex, Configuration.TargetClass.ConfigurationContext,
+          emitter.CodeBuilder);
+      LocalReference attributeLocal = emitter.CodeBuilder.DeclareLocal (typeof (ConcreteMixinTypeAttribute));
+      emitter.CodeBuilder.AddStatement (new AssignStatement (attributeLocal, attributeExpression));
       
       MethodInfo getMixinDefinitionMethod = typeof (ConcreteMixinTypeAttribute).GetMethod ("GetMixinDefinition");
       Assertion.IsNotNull (getMixinDefinitionMethod);
 
-      emitter.CodeBuilder.AddStatement (new AssignStatement (_configurationField, 
-          new VirtualMethodInvocationExpression (firstAttributeLocal, getMixinDefinitionMethod)));
+      emitter.CodeBuilder.AddStatement (new AssignStatement (_configurationField,
+          new VirtualMethodInvocationExpression (attributeLocal, getMixinDefinitionMethod)));
 
       emitter.CodeBuilder.AddStatement (new ReturnStatement ());
     }

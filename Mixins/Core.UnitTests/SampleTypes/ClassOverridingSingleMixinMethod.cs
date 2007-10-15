@@ -8,7 +8,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   [Serializable]
   public class ClassOverridingSingleMixinMethod
   {
-    [Override]
+    [OverrideMixinMember]
     public string AbstractMethod(int i)
     {
       return "ClassOverridingSingleMixinMethod.AbstractMethod-" + i;

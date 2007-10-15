@@ -9,19 +9,27 @@ namespace Rubicon.Mixins.Definitions.Building
 {
   public class OverridesAnalyzer<T> where T : MemberDefinition
   {
-    private readonly Func<IEnumerable<T>> _baseMemberGetter;
+    private readonly Type _attributeType = null;
+    private readonly IEnumerable<T> _baseMembers;
+
     private MultiDictionary<string, T> _baseMembersByNameCache = null;
 
-    public OverridesAnalyzer(Func<IEnumerable<T>> baseMemberGetter)
+    public OverridesAnalyzer (Type attributeType, IEnumerable<T> baseMembers)
     {
-      _baseMemberGetter = baseMemberGetter;
+      ArgumentUtility.CheckNotNull ("attributeType", attributeType);
+      ArgumentUtility.CheckNotNull ("baseMembers", baseMembers);
+
+      _attributeType = attributeType;
+      _baseMembers = baseMembers;
     }
 
     public IEnumerable<Tuple<T, T>> Analyze (IEnumerable<T> overriderMembers)
     {
+      ArgumentUtility.CheckNotNull ("overriderMembers", overriderMembers);
+
       foreach (T member in overriderMembers)
       {
-        if (AttributeUtility.IsDefined(member.MemberInfo, typeof (OverrideAttribute), true))
+        if (AttributeUtility.IsDefined(member.MemberInfo, _attributeType, true))
         {
           T baseMember;
           if (BaseMembersByName.ContainsKey (member.Name))
@@ -56,7 +64,7 @@ namespace Rubicon.Mixins.Definitions.Building
       if (_baseMembersByNameCache == null)
       {
         _baseMembersByNameCache = new MultiDictionary<string, T> ();
-        foreach (T member in _baseMemberGetter())
+        foreach (T member in _baseMembers)
           _baseMembersByNameCache.Add (member.Name, member);
       }
     }

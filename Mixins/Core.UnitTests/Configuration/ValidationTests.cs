@@ -241,6 +241,22 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
+    public void FailsIfMixinAppliedToItself ()
+    {
+      TargetClassDefinition bc = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (object), typeof (object));
+      DefaultValidationLog log = Validator.Validate (bc);
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMixinRules.MixinCannotMixItself", log));
+    }
+
+    [Test]
+    public void FailsIfMixinAppliedToItsBase ()
+    {
+      TargetClassDefinition bc = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (object), typeof (NullMixin));
+      DefaultValidationLog log = Validator.Validate (bc);
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMixinRules.MixinCannotMixItsBase", log));
+    }
+
+    [Test]
     public void FailsIfOverriddenMethodNotVirtual ()
     {
       TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType4), typeof (BT4Mixin1));
@@ -422,7 +438,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void SucceedsIfEmptyAggregateThisDependencyIsNotAvailable ()
     {
-      TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (object), typeof (MixinWithUnsatisfiedEmptyAggregateThisDependency));
+      TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (NullTarget), typeof (MixinWithUnsatisfiedEmptyAggregateThisDependency));
       DefaultValidationLog log = Validator.Validate (definition);
 
       AssertSuccess (log);
@@ -431,7 +447,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void FailsIfEmptyAggregateBaseDependencyIsNotAvailable ()
     {
-      TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (object), typeof (MixinWithUnsatisfiedEmptyAggregateBaseDependency));
+      TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (NullTarget), typeof (MixinWithUnsatisfiedEmptyAggregateBaseDependency));
       DefaultValidationLog log = Validator.Validate (definition);
 
       Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultBaseDependencyRules.DependencyMustBeSatisfied", log));
@@ -679,7 +695,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void SucceedsIfNoPublicOrProtectedDefaultCtorInMixinClassWithoutOverriddenMembers ()
     {
-      TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (object),
+      TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (NullTarget),
           typeof (MixinWithPrivateCtorAndVirtualMethod));
       DefaultValidationLog log = Validator.Validate (definition);
 
@@ -696,7 +712,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.AreEqual ("Some parts of the mixin configuration could not be validated." + Environment.NewLine + "Rubicon.Mixins.UnitTests.Configuration."
           + "ValidationSampleTypes.AbstractMixinWithoutBase.AbstractMethod (Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes."
           + "AbstractMixinWithoutBase -> Rubicon.Mixins.UnitTests.SampleTypes.ClassOverridingSingleMixinMethod): There were 1 errors, 0 warnings, and 0 unexpected "
-          + "exceptions. First error: OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase" + Environment.NewLine + "See Log.GetResults() "
+          + "exceptions. First error: Overriding mixin methods only possible when mixin derived from mixin base" + Environment.NewLine + "See Log.GetResults() "
           + "for a full list of issues.", exception.Message);
 
       Assert.AreSame (log, exception.ValidationLog);

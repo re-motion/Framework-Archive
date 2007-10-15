@@ -70,7 +70,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void ExplicitlySuppressedInterfaceIntroduction ()
     {
-      object o = CreateMixedObject<object> (typeof (MixinSuppressingSimpleInterface)).With();
+      object o = CreateMixedObject<NullTarget> (typeof (MixinSuppressingSimpleInterface)).With();
       Assert.IsFalse (o is ISimpleInterface);
       Assert.IsTrue (Mixin.Get<MixinSuppressingSimpleInterface> (o) is ISimpleInterface);
     }
@@ -86,10 +86,10 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void MultipleSimilarInterfaces ()
     {
-      object o = CreateMixedObject<object> (typeof (List<>)).With();
-      Assert.IsTrue (o is IList<object>);
-      Assert.IsTrue (o is ICollection<object>);
-      Assert.IsTrue (o is IEnumerable<object>);
+      object o = CreateMixedObject<NullTarget> (typeof (List<>)).With ();
+      Assert.IsTrue (o is IList<NullTarget>);
+      Assert.IsTrue (o is ICollection<NullTarget>);
+      Assert.IsTrue (o is IEnumerable<NullTarget>);
       Assert.IsTrue (o is IList);
       Assert.IsTrue (o is ICollection);
       Assert.IsTrue (o is IEnumerable);

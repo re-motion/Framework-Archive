@@ -17,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain
       return DomainObject.GetObject<BindableDomainObjectWithOverriddenDisplayName> (id);
     }
 
-    [Override]
+    [OverrideMixinMember]
     public string DisplayName
     {
       get { return "TheDisplayName"; }

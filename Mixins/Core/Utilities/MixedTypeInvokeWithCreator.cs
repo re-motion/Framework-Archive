@@ -55,10 +55,10 @@ namespace Rubicon.Mixins.Utilities
 
                         const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
                         ConstructorInfo ctor = concreteType.GetConstructor (bindingFlags, null, CallingConventions.Any, realArgumentTypes, null);
-                        if (ctor == null)
+                        if (ctor == null || !ctor.IsPublic)
                         {
                           string message = string.Format (
-                              "Type {0} does not contain a constructor with signature ({1}).",
+                              "Type {0} does not contain a public constructor with signature ({1}).",
                               typeToBeCreated.FullName,
                               SeparatedStringBuilder.Build (",", realArgumentTypes, delegate (Type t) { return t.FullName; }));
                           throw new MissingMethodException (message);

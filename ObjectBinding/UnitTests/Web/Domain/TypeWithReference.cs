@@ -67,13 +67,13 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.Domain
       set { _secondValue = value; }
     }
 
-    [Override]
+    [OverrideMixinMember]
     public string DisplayName
     {
       get { return _displayName ?? UniqueIdentifier; }
     }
 
-    [Override]
+    [OverrideMixinMember]
     public string UniqueIdentifier
     {
       get { return _id.ToString(); }

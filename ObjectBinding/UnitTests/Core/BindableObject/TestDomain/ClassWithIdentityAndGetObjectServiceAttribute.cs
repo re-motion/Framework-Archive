@@ -15,7 +15,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
       _uniqueIdentifier = uniqueIdentifier;
     }
 
-    [Override]
+    [OverrideMixinMember]
     public string UniqueIdentifier
     {
       get { return _uniqueIdentifier; }

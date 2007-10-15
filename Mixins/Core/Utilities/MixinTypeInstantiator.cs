@@ -8,7 +8,7 @@ namespace Rubicon.Mixins.Utilities
   [Serializable]
   public class MixinTypeInstantiator
   {
-    private Type _targetClass;
+    private readonly Type _targetClass;
 
     public MixinTypeInstantiator(Type targetClass)
     {
@@ -17,7 +17,7 @@ namespace Rubicon.Mixins.Utilities
       _targetClass = targetClass;
     }
 
-    public Type GetConcreteMixinType (Type configuredMixinType)
+    public Type GetClosedMixinType (Type configuredMixinType)
     {
       if (configuredMixinType.ContainsGenericParameters)
       {
@@ -36,9 +36,9 @@ namespace Rubicon.Mixins.Utilities
       {
         if (genericArgument.IsGenericParameter)
         {
-          Type suggestion = null;
-          if (ReflectionUtility.IsGenericParameterAssociatedWithAttribute (genericArgument, typeof (ThisAttribute)))
-            suggestion = _targetClass;
+          Type suggestion = _targetClass;
+          if (ReflectionUtility.IsGenericParameterAssociatedWithAttribute (genericArgument, typeof (BaseAttribute)))
+            suggestion = null; // cannot use the target class for a parameter bound to base argument
 
           Type instantiation;
           try

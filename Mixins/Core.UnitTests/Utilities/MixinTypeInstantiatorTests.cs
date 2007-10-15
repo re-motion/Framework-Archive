@@ -13,7 +13,7 @@ namespace Rubicon.Mixins.UnitTests.Utilities
     public void InstantiateNonGenericMixin()
     {
       MixinTypeInstantiator instantiator = new MixinTypeInstantiator (typeof (BaseType3));
-      Type t = instantiator.GetConcreteMixinType (typeof (object));
+      Type t = instantiator.GetClosedMixinType (typeof (object));
       Assert.AreEqual (typeof (object), t);
     }
 
@@ -21,7 +21,7 @@ namespace Rubicon.Mixins.UnitTests.Utilities
     public void InstantiateGenericMixinSimpleConstraints ()
     {
       MixinTypeInstantiator instantiator = new MixinTypeInstantiator (typeof (BaseType3));
-      Type t = instantiator.GetConcreteMixinType (typeof (BT3Mixin6<,>));
+      Type t = instantiator.GetClosedMixinType (typeof (BT3Mixin6<,>));
       Assert.AreEqual (typeof (BT3Mixin6<IBT3Mixin6ThisDependencies, IBT3Mixin6BaseDependencies>), t);
     }
 
@@ -29,7 +29,7 @@ namespace Rubicon.Mixins.UnitTests.Utilities
     public void InstantiateGenericMixinWithBaseType ()
     {
       MixinTypeInstantiator instantiator = new MixinTypeInstantiator (typeof (BaseType3));
-      Type t = instantiator.GetConcreteMixinType (typeof (BT3Mixin3<,>));
+      Type t = instantiator.GetClosedMixinType (typeof (BT3Mixin3<,>));
       Assert.AreEqual (typeof (BT3Mixin3<BaseType3, IBaseType33>), t);
     }
 
@@ -38,7 +38,7 @@ namespace Rubicon.Mixins.UnitTests.Utilities
     public void MixinWithUnsatisfiableGenericConstraintsThrows ()
     {
       MixinTypeInstantiator instantiator = new MixinTypeInstantiator (typeof (BaseType3));
-      instantiator.GetConcreteMixinType (typeof (GenericTypeInstantiatorTests.IncompatibleConstraints1<>));
+      instantiator.GetClosedMixinType (typeof (GenericTypeInstantiatorTests.IncompatibleConstraints1<>));
     }
 
     class MixinIntroducingGenericInterfaceWithUnclearThisType<T> : Mixin<T>, IEquatable<T>
@@ -56,7 +56,7 @@ namespace Rubicon.Mixins.UnitTests.Utilities
     public void ThrowsIfGenericInterfaceArgumentMightBeUnexpected ()
     {
       MixinTypeInstantiator instantiator = new MixinTypeInstantiator (typeof (BaseType1));
-      instantiator.GetConcreteMixinType (typeof (MixinIntroducingGenericInterfaceWithUnclearThisType<>));
+      instantiator.GetClosedMixinType (typeof (MixinIntroducingGenericInterfaceWithUnclearThisType<>));
     }
 
     class MixinIntroducingNonGenericInterface<T> : Mixin<T>, IEquatable<BaseType1>
@@ -72,7 +72,7 @@ namespace Rubicon.Mixins.UnitTests.Utilities
     public void ConstraintsAllowedWhenNoGenericInterfaceBoundToThem ()
     {
       MixinTypeInstantiator instantiator = new MixinTypeInstantiator (typeof (BaseType1));
-      Type t = instantiator.GetConcreteMixinType (typeof (MixinIntroducingNonGenericInterface<>));
+      Type t = instantiator.GetClosedMixinType (typeof (MixinIntroducingNonGenericInterface<>));
       Assert.IsTrue (typeof (IEquatable<BaseType1>).IsAssignableFrom(t));
       Assert.AreEqual (typeof (ICloneable), t.GetGenericArguments ()[0]);
     }

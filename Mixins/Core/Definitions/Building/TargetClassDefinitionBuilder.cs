@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Mixins.Context;
 using System.Reflection;
-using Rubicon.Mixins.Definitions.Building.DependencySorting;
-using Rubicon.Mixins.Utilities;
-using Rubicon.Mixins.Utilities.DependencySort;
 using Rubicon.Collections;
+using Rubicon.Mixins.Context;
+using Rubicon.Mixins.Definitions.Building.DependencySorting;
+using Rubicon.Mixins.Utilities.DependencySort;
 using Rubicon.Text;
 using Rubicon.Utilities;
 using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
@@ -14,8 +13,8 @@ namespace Rubicon.Mixins.Definitions.Building
 {
   public class TargetClassDefinitionBuilder
   {
-    private DependentObjectSorter<MixinDefinition> _sorter = new DependentObjectSorter<MixinDefinition> (new MixinDependencyAnalyzer());
-    private DependentMixinGrouper _grouper = new DependentMixinGrouper();
+    private readonly DependentObjectSorter<MixinDefinition> _sorter = new DependentObjectSorter<MixinDefinition> (new MixinDependencyAnalyzer());
+    private readonly DependentMixinGrouper _grouper = new DependentMixinGrouper();
 
     public TargetClassDefinitionBuilder ()
     {
@@ -64,7 +63,8 @@ namespace Rubicon.Mixins.Definitions.Building
       ArgumentUtility.CheckNotNull ("classContext", classContext);
 
       MixinDefinitionBuilder mixinDefinitionBuilder = new MixinDefinitionBuilder (classDefinition);
-      IEnumerator<MixinContext> enumerator = classContext.Mixins.GetEnumerator();
+      
+      IEnumerator<MixinContext> enumerator = classContext.Mixins.GetEnumerator ();
       for (int i = 0; enumerator.MoveNext (); ++i)
         mixinDefinitionBuilder.Apply (enumerator.Current, i);
 
@@ -126,15 +126,15 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private void AnalyzeOverrides (TargetClassDefinition definition)
     {
-      OverridesAnalyzer<MethodDefinition> methodAnalyzer = new OverridesAnalyzer<MethodDefinition> (definition.GetAllMixinMethods);
+      OverridesAnalyzer<MethodDefinition> methodAnalyzer = new OverridesAnalyzer<MethodDefinition> (typeof (OverrideMixinMemberAttribute), definition.GetAllMixinMethods());
       foreach (Tuple<MethodDefinition, MethodDefinition> methodOverride in methodAnalyzer.Analyze (definition.Methods))
         InitializeOverride (methodOverride.A, methodOverride.B);
 
-      OverridesAnalyzer<PropertyDefinition> propertyAnalyzer = new OverridesAnalyzer<PropertyDefinition> (definition.GetAllMixinProperties);
+      OverridesAnalyzer<PropertyDefinition> propertyAnalyzer = new OverridesAnalyzer<PropertyDefinition> (typeof (OverrideMixinMemberAttribute), definition.GetAllMixinProperties());
       foreach (Tuple<PropertyDefinition, PropertyDefinition> propertyOverride in propertyAnalyzer.Analyze (definition.Properties))
         InitializeOverride (propertyOverride.A, propertyOverride.B);
 
-      OverridesAnalyzer<EventDefinition> eventAnalyzer = new OverridesAnalyzer<EventDefinition> (definition.GetAllMixinEvents);
+      OverridesAnalyzer<EventDefinition> eventAnalyzer = new OverridesAnalyzer<EventDefinition> (typeof (OverrideMixinMemberAttribute), definition.GetAllMixinEvents());
       foreach (Tuple<EventDefinition, EventDefinition> eventOverride in eventAnalyzer.Analyze (definition.Events))
         InitializeOverride (eventOverride.A, eventOverride.B);
     }

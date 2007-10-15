@@ -61,9 +61,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void SignedBaseClassUnsignedMixinGeneratedIntoUnsignedAssembly ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (NullMixin)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
       {
-        Type concreteType = TypeFactory.GetConcreteType (typeof (object), GenerationPolicy.ForceGeneration);
+        Type concreteType = TypeFactory.GetConcreteType (typeof (NullTarget), GenerationPolicy.ForceGeneration);
         Assert.IsEmpty (concreteType.Assembly.GetName ().GetPublicKeyToken ());
       }
     }
@@ -71,9 +71,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void SignedBaseClassUnsignedMixinWithOverride ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinOverridingToString)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinOverridingToString)))
       {
-        object instance = ObjectFactory.Create<object> ().With();
+        object instance = ObjectFactory.Create<NullTarget> ().With ();
         Assert.AreEqual ("Overridden", instance.ToString ());
       }
     }

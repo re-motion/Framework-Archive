@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Validation
@@ -6,7 +7,21 @@ namespace Rubicon.Mixins.Validation
   [Serializable]
   public struct ValidationResultItem : IDefaultValidationResultItem
   {
-    private IValidationRule _rule;
+    private static string FormatMessage (string message)
+    {
+      StringBuilder sb = new StringBuilder ();
+
+      for (int i = 0; i < message.Length; ++i)
+      {
+        if (i > 0 && char.IsUpper (message[i]))
+          sb.Append (' ').Append (char.ToLower (message[i]));
+        else
+          sb.Append (message[i]);
+      }
+      return sb.ToString ();
+    }
+
+    private readonly IValidationRule _rule;
 
     public ValidationResultItem (IValidationRule rule)
     {
@@ -21,7 +36,7 @@ namespace Rubicon.Mixins.Validation
 
     public string Message
     {
-      get { return Rule.Message; }
+      get { return FormatMessage (Rule.Message); }
     }
   }
 }

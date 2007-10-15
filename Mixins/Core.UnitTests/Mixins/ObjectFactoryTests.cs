@@ -249,10 +249,10 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void MixinWithoutPublicCtor ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinWithPrivateCtorAndVirtualMethod)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithPrivateCtorAndVirtualMethod)))
       {
         MixinWithPrivateCtorAndVirtualMethod mixin = MixinWithPrivateCtorAndVirtualMethod.Create ();
-        object o = ObjectFactory.CreateWithMixinInstances<object> (mixin).With ();
+        object o = ObjectFactory.CreateWithMixinInstances<NullTarget> (mixin).With ();
         Assert.IsNotNull (o);
         Assert.IsNotNull (Mixin.Get<MixinWithPrivateCtorAndVirtualMethod> (o));
         Assert.AreSame (mixin, Mixin.Get<MixinWithPrivateCtorAndVirtualMethod> (o));
@@ -264,9 +264,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         + "ValidationSampleTypes.MixinWithPrivateCtorAndVirtualMethod, there is no public default constructor.")]
     public void ThrowsWhenMixinWithoutPublicDefaultCtorShouldBeInstantiated ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinWithPrivateCtorAndVirtualMethod)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithPrivateCtorAndVirtualMethod)))
       {
-        ObjectFactory.CreateWithMixinInstances<object> ().With ();
+        ObjectFactory.CreateWithMixinInstances<NullTarget> ().With ();
       }
     }
 
@@ -322,9 +322,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [ExpectedException (typeof (TargetInvocationException))]
     public void TargetInvocationExceptionWhenMixinOnInitializedThrows ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinThrowingInOnInitialized)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinThrowingInOnInitialized)))
       {
-        ObjectFactory.Create<object> ().With ();
+        ObjectFactory.Create<NullTarget> ().With ();
       }
     }
 
@@ -337,12 +337,12 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [ExpectedException (typeof (TargetInvocationException))]
+    [ExpectedException (typeof (NotSupportedException))]
     public void TargetInvocationExceptionWhenMixinCtorThrows ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinThrowingInCtor)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinThrowingInCtor)))
       {
-        ObjectFactory.Create<object> ().With ();
+        ObjectFactory.Create<NullTarget> ().With ();
       }
     }
 

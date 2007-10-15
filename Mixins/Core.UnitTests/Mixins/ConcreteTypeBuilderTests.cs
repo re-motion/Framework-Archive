@@ -362,7 +362,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
     public class BaseOverridingMixinMember
     {
-      [Override]
+      [OverrideMixinMember]
       protected void Foo ()
       {
       }
@@ -391,13 +391,14 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "No concrete mixin type is required for the given configuration "
-        + "(mixin Rubicon.Mixins.UnitTests.Mixins.ConcreteTypeBuilderTests+MixinWithOverridableMember and target class System.Object).",
+        + "(mixin Rubicon.Mixins.UnitTests.Mixins.ConcreteTypeBuilderTests+MixinWithOverridableMember and target class "
+        + "Rubicon.Mixins.UnitTests.SampleTypes.NullTarget).",
         MatchType = MessageMatch.Contains)]
     public void GetConcreteMixinTypeThrowsIfNoMixinTypeGenerated ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinWithOverridableMember)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithOverridableMember)))
       {
-        ConcreteTypeBuilder.Current.GetConcreteMixinType (TypeFactory.GetActiveConfiguration (typeof (object)).Mixins[0]);
+        ConcreteTypeBuilder.Current.GetConcreteMixinType (TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[0]);
       }
     }
 

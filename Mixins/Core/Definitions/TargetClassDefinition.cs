@@ -77,13 +77,13 @@ namespace Rubicon.Mixins.Definitions
 
     public bool HasMixinWithConfiguredType(Type configuredType)
     {
-      Type realType = _mixinTypeInstantiator.GetConcreteMixinType (configuredType);
+      Type realType = _mixinTypeInstantiator.GetClosedMixinType (configuredType);
       return Mixins.ContainsKey (realType);
     }
 
     public MixinDefinition GetMixinByConfiguredType(Type configuredType)
     {
-      Type realType = _mixinTypeInstantiator.GetConcreteMixinType (configuredType);
+      Type realType = _mixinTypeInstantiator.GetClosedMixinType (configuredType);
       return Mixins[realType];
     }
 

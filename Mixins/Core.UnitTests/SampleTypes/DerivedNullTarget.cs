@@ -3,5 +3,5 @@ using System;
 namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
   [Serializable]
-  public class NullMixin { }
+  public class DerivedNullTarget : NullTarget { }
 }

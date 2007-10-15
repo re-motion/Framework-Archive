@@ -10,9 +10,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void CircularThisDependenciesWork ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinWithCircularThisDependency1), typeof (MixinWithCircularThisDependency2)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithCircularThisDependency1), typeof (MixinWithCircularThisDependency2)))
       {
-        object o = ObjectFactory.Create<object> ().With ();
+        object o = ObjectFactory.Create<NullTarget> ().With ();
         ICircular2 c1 = (ICircular2) o;
         Assert.AreEqual ("MixinWithCircularThisDependency2.Circular12-MixinWithCircularThisDependency1.Circular1-"
             + "MixinWithCircularThisDependency2.Circular2", c1.Circular12 ());

@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
+using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
+using Rubicon.CodeGeneration.DPExtensions;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Utilities;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
 namespace Rubicon.Mixins.CodeGeneration
 {
@@ -13,7 +16,7 @@ namespace Rubicon.Mixins.CodeGeneration
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
   public class ConcreteMixinTypeAttribute : ConcreteMixedTypeAttribute
   {
-    private static ConstructorInfo s_attributeCtor =
+    private static readonly ConstructorInfo s_attributeCtor =
         typeof (ConcreteMixinTypeAttribute).GetConstructor (
             new Type[] {typeof (int), typeof (Type), typeof (Type[]), typeof (Type[]), typeof (Type[])});
 
@@ -32,6 +35,22 @@ namespace Rubicon.Mixins.CodeGeneration
       CustomAttributeBuilder builder = new CustomAttributeBuilder (s_attributeCtor, new object[] { attribute.MixinIndex, attribute.TargetType,
           attribute.MixinTypes, attribute.CompleteInterfaces, attribute.ExplicitDependenciesPerMixin });
       return builder;
+    }
+
+    internal static Expression NewAttributeExpressionFromClassContext (int mixinIndex, ClassContext context, AbstractCodeBuilder codeBuilder)
+    {
+      Assertion.IsNotNull (s_attributeCtor);
+
+      Expression mixedTypeAttributeExpression = ConcreteMixedTypeAttribute.NewAttributeExpressionFromClassContext (context, codeBuilder);
+      Reference mixedTypeAttributeReference = codeBuilder.DeclareLocal(typeof (ConcreteMixedTypeAttribute));
+      codeBuilder.AddStatement (new AssignStatement (mixedTypeAttributeReference, mixedTypeAttributeExpression));
+
+      return new NewInstanceExpression (s_attributeCtor,
+          new ConstReference (mixinIndex).ToExpression (),
+          new PropertyReference (mixedTypeAttributeReference, typeof (ConcreteMixedTypeAttribute).GetProperty ("TargetType")).ToExpression (),
+          new PropertyReference (mixedTypeAttributeReference, typeof (ConcreteMixedTypeAttribute).GetProperty ("MixinTypes")).ToExpression (),
+          new PropertyReference (mixedTypeAttributeReference, typeof (ConcreteMixedTypeAttribute).GetProperty ("CompleteInterfaces")).ToExpression (),
+          new PropertyReference (mixedTypeAttributeReference, typeof (ConcreteMixedTypeAttribute).GetProperty ("ExplicitDependenciesPerMixin")).ToExpression ());
     }
 
     private readonly int _mixinIndex;

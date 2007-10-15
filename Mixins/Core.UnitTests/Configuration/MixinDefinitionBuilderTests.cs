@@ -6,8 +6,6 @@ using Rubicon.Mixins.Context;
 using System.Reflection;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.SampleTypes;
-using System.Runtime.Serialization;
-using Rubicon.Mixins.UnitTests.Utilities;
 
 namespace Rubicon.Mixins.UnitTests.Configuration
 {

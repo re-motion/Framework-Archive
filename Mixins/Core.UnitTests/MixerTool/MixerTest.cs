@@ -52,7 +52,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
     public void MixerToolGeneratesSignedAssemblyFiles ()
     {
       Assert.IsFalse (File.Exists (SignedAssemblyPath));
-      using (MixinConfiguration.ScopedExtend (typeof (object)))
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget)))
       {
         Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
         mixer.Execute();
