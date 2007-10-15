@@ -12,6 +12,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
   [TestFixture]
   public class PropertyFinderBaseTest
   {
+    // TODO: persistent mixins
     private class StubPropertyFinderBase : PropertyFinderBase
     {
       public StubPropertyFinderBase (Type type, bool includeBaseProperties)

@@ -43,6 +43,11 @@ namespace Rubicon.Data.DomainObjects
       return (ObjectList<T>) base.Clone();
     }
 
+    public new ObjectList<T> Clone (bool makeCloneReadOnly)
+    {
+      return (ObjectList<T>) base.Clone (makeCloneReadOnly);
+    }
+
     public void Add (T item)
     {
       base.Add (item);

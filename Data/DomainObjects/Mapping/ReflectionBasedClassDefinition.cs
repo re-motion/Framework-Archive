@@ -11,6 +11,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
   {
     private readonly bool _isAbstract;
     private readonly Type _classType;
+    // TODO: persistent mixins - TBD: store mixin configuration at mapping creation time, check when instantiating mixin
 
     public ReflectionBasedClassDefinition (string id, string entityName, string storageProviderID, Type classType, bool isAbstract)
         : this (id, entityName, storageProviderID, classType, isAbstract, null)

@@ -47,6 +47,10 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       }
 
       propertyInfos.AddRange (FindPropertyInfosInternal (classDefinition));
+      // TODO: persistent mixins
+      // iterate over _type's mixins using 
+      //   mixinPropertyFinder = TypesafeActivator.CreateInstance (GetType()).With (MixinType, false);
+      //   propertyInfos.AddRange (mixinPropertyFinder.FindPropertyInfosInternal (classDefinition));
 
       return propertyInfos.ToArray();
     }
