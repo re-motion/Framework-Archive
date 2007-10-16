@@ -316,6 +316,19 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     }
 
     /// <summary>
+    /// Gets the ID of the related object for related object properties.
+    /// </summary>
+    /// <returns>The ID of the related object stored in the encapsulated property.</returns>
+    /// <exception cref="InvalidOperationException">The property type is not <see cref="PropertyKind.RelatedObject"/> or the property is a virtual
+    /// relation end point (i.e. the other side of the relation holds the foreign key).</exception>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="ClientTransaction"/>.</exception>
+    /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
+    public ObjectID GetRelatedObjectID ()
+    {
+      return GetRelatedObjectIDTx (ClientTransactionScope.CurrentTransaction);
+    }
+
+    /// <summary>
     /// Gets the property's value for a given <see cref="ClientTransaction"/>.
     /// </summary>
     /// <typeparam name="T">
@@ -344,6 +357,29 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
           PropertyIdentifier);
       Assertion.DebugAssert (value == null || value is T);
       return (T) value;
+    }
+
+    /// <summary>
+    /// Gets the ID of the related object for related object properties for a given <see cref="ClientTransaction"/>.
+    /// </summary>
+    /// <param name="transaction">The <see cref="ClientTransaction"/> to get the value for.</param>
+    /// <returns>The ID of the related object stored in the encapsulated property in the given transaction.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="transaction"/> parameter is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidOperationException">The property type is not <see cref="PropertyKind.RelatedObject"/> or the property is a virtual
+    /// relation end point (i.e. the other side of the relation holds the foreign key).</exception>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the given <see cref="ClientTransaction"/>.</exception>
+    /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
+    public ObjectID GetRelatedObjectIDTx (ClientTransaction transaction)
+    {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      if (Kind != PropertyKind.RelatedObject)
+        throw new InvalidOperationException ("This operation can only be used on related object properties.");
+
+      if (RelationEndPointDefinition.IsVirtual)
+        throw new InvalidOperationException ("ObjectIDs only exist on the real side of a relation, not on the virtual side.");
+
+      return (ObjectID) ValuePropertyAccessorStrategy.Instance.GetValueWithoutTypeCheck (this, transaction);
     }
 
     /// <summary>
@@ -531,6 +567,42 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       _domainObject.CheckIfObjectIsDiscarded ();
       _domainObject.CheckIfRightTransaction (transaction);
       return _strategy.GetOriginalValueWithoutTypeCheck (this, transaction);
+    }
+
+    /// <summary>
+    /// Gets the original ID of the related object for related object properties.
+    /// </summary>
+    /// <returns>The ID of the related object originally stored in the encapsulated property.</returns>
+    /// <exception cref="InvalidOperationException">The property type is not <see cref="PropertyKind.RelatedObject"/> or the property is a virtual
+    /// relation end point (i.e. the other side of the relation holds the foreign key).</exception>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="ClientTransaction"/>.</exception>
+    /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
+    public ObjectID GetOriginalRelatedObjectID ()
+    {
+      return GetOriginalRelatedObjectIDTx (ClientTransactionScope.CurrentTransaction);
+    }
+
+    /// <summary>
+    /// Gets the ID of the original related object for related object properties for a given <see cref="ClientTransaction"/>.
+    /// </summary>
+    /// <param name="transaction">The <see cref="ClientTransaction"/> to get the value for.</param>
+    /// <returns>The ID of the related object originally stored in the encapsulated property in the given transaction.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="transaction"/> parameter is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidOperationException">The property type is not <see cref="PropertyKind.RelatedObject"/> or the property is a virtual
+    /// relation end point (i.e. the other side of the relation holds the foreign key).</exception>
+    /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the given <see cref="ClientTransaction"/>.</exception>
+    /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
+    public ObjectID GetOriginalRelatedObjectIDTx (ClientTransaction transaction)
+    {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      if (Kind != PropertyKind.RelatedObject)
+        throw new InvalidOperationException ("This operation can only be used on related object properties.");
+
+      if (RelationEndPointDefinition.IsVirtual)
+        throw new InvalidOperationException ("ObjectIDs only exist on the real side of a relation, not on the virtual side.");
+
+      return (ObjectID) ValuePropertyAccessorStrategy.Instance.GetOriginalValueWithoutTypeCheck (this, transaction);
     }
   }
 }

@@ -17,8 +17,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class PropertyAccessorTest : ClientTransactionBaseTest
   {
-    private int _prop;
-
     private static PropertyAccessor CreateAccessor (DomainObject domainObject, string propertyIdentifier)
     {
       ConstructorInfo ctor =
@@ -989,6 +987,166 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
             ClientTransactionScope.CurrentTransaction, "1");
     }
 
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This operation can only be used on related object properties.")]
+    public void GetRelatedObjectIDSimple ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetRelatedObjectID ();
+    }
 
+    [Test]
+    public void GetRelatedObjectIDRelatedRealEndPoint ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Assert.AreEqual (order.Customer.ID, order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].GetRelatedObjectID ());
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException),
+        ExpectedMessage = "ObjectIDs only exist on the real side of a relation, not on the virtual side.")]
+    public void GetRelatedObjectIDRelatedVirtualEndPoint ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetRelatedObjectID ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This operation can only be used on related object properties.")]
+    public void GetRelatedObjectIDRelatedCollection ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetRelatedObjectID ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This operation can only be used on related object properties.")]
+    public void GetRelatedObjectIDTxSimple ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetRelatedObjectIDTx (ClientTransactionMock);
+      }
+    }
+
+    [Test]
+    public void GetRelatedObjectIDTxRelatedRealEndPoint ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      ObjectID customerID = order.Customer.ID;
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        Assert.AreEqual (customerID, order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].GetRelatedObjectIDTx (ClientTransactionMock));
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException),
+        ExpectedMessage = "ObjectIDs only exist on the real side of a relation, not on the virtual side.")]
+    public void GetRelatedObjectIDTxRelatedVirtualEndPoint ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetRelatedObjectIDTx (ClientTransactionMock);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException),
+        ExpectedMessage = "ObjectIDs only exist on the real side of a relation, not on the virtual side.")]
+    public void GetRelatedObjectTxIDRelatedVirtualEndPoint ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetRelatedObjectIDTx (ClientTransactionMock);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This operation can only be used on related object properties.")]
+    public void GetOriginalRelatedObjectIDSimple ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetOriginalRelatedObjectID ();
+    }
+
+    [Test]
+    public void GetOriginalRelatedObjectIDRelatedRealEndPoint ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      ObjectID originalID = order.Customer.ID;
+      order.Customer = Customer.NewObject ();
+      Assert.AreNotEqual (order.Customer.ID, order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].GetOriginalRelatedObjectID ());
+      Assert.AreEqual (originalID, order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].GetOriginalRelatedObjectID ());
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException),
+        ExpectedMessage = "ObjectIDs only exist on the real side of a relation, not on the virtual side.")]
+    public void GetOriginalRelatedObjectIDRelatedVirtualEndPoint ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetOriginalRelatedObjectID ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This operation can only be used on related object properties.")]
+    public void GetOriginalRelatedObjectIDRelatedCollection ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetOriginalRelatedObjectID ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This operation can only be used on related object properties.")]
+    public void GetOriginalRelatedObjectIDTxSimple ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetOriginalRelatedObjectIDTx (ClientTransactionMock);
+      }
+    }
+
+    [Test]
+    public void GetOriginalRelatedObjectIDTxRelatedRealEndPoint ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      ObjectID originalCustomerID = order.Customer.ID;
+      order.Customer = Customer.NewObject ();
+      ObjectID customerID = order.Customer.ID;
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        Assert.AreNotEqual (customerID, order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].GetOriginalRelatedObjectIDTx (ClientTransactionMock));
+        Assert.AreEqual (originalCustomerID, order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].GetOriginalRelatedObjectIDTx (ClientTransactionMock));
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException),
+        ExpectedMessage = "ObjectIDs only exist on the real side of a relation, not on the virtual side.")]
+    public void GetOriginalRelatedObjectIDTxRelatedVirtualEndPoint ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetOriginalRelatedObjectIDTx (ClientTransactionMock);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException),
+        ExpectedMessage = "ObjectIDs only exist on the real side of a relation, not on the virtual side.")]
+    public void GetOriginalRelatedObjectTxIDRelatedVirtualEndPoint ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetOriginalRelatedObjectIDTx (ClientTransactionMock);
+      }
+    }
   }
 }
