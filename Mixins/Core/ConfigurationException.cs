@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace Rubicon.Mixins
 {
   /// <summary>
-  /// Thrown when there is a profound error in the mixin configuration which is detected during configuration analysis. The problem prevents
+  /// Thrown when there is a severe error in the mixin configuration which is detected during configuration analysis. The problem prevents
   /// the configuration from being fully analyzed. See also <see cref="ValidationException"/>.
   /// </summary>
   [Serializable]

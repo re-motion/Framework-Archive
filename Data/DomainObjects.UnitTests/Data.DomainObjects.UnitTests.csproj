@@ -242,10 +242,12 @@
     <Compile Include="Interception\InterceptedDomainObjectFactoryTest.cs" />
     <Compile Include="Factories\BaseConfiguration.cs" />
     <Compile Include="MixedDomains\BehavioralMixinTest.cs" />
+    <Compile Include="MixedDomains\DomainObjectMixinBaseClassTest.cs" />
     <Compile Include="MixedDomains\DomainObjectMixinHookTest.cs" />
     <Compile Include="MixedDomains\SampleTypes\DOWithVirtualPropertiesAndMethods.cs" />
     <Compile Include="MixedDomains\SampleTypes\HookedDomainObjectMixin.cs" />
     <Compile Include="MixedDomains\SampleTypes\IInterfaceAddedByMixin.cs" />
+    <Compile Include="MixedDomains\SampleTypes\MixinWithAccessToDomainObjectProperties.cs" />
     <Compile Include="MixedDomains\SampleTypes\MixinAddingInterface.cs" />
     <Compile Include="MixedDomains\SampleTypes\MixinOverridingPropertiesAndMethods.cs" />
     <Compile Include="MixedDomains\SampleTypes\MixinWithState.cs" />

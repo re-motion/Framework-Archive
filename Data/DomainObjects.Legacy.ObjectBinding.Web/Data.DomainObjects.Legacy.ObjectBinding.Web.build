@@ -23,6 +23,7 @@
         <include asis="true" name="${build.outputdir}/Rubicon.Data.DomainObjects.dll"/>
         <include asis="true" name="${build.outputdir}/Rubicon.Data.DomainObjects.Legacy.dll"/>
         <include asis="true" name="${build.outputdir}/Rubicon.Data.DomainObjects.Legacy.ObjectBinding.dll"/>
+        <include asis="true" name="${build.outputdir}/Rubicon.Mixins.dll"/>
         <include asis="true" name="${build.outputdir}/Rubicon.ObjectBinding.dll"/>
         <include asis="true" name="${build.outputdir}/Rubicon.ObjectBinding.Web.dll"/>
         <include asis="true" name="${build.outputdir}/Rubicon.Web.dll"/>

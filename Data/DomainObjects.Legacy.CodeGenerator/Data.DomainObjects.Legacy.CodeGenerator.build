@@ -25,6 +25,7 @@
         <include asis="true" name="${build.outputdir}/Rubicon.Core.dll"/>
         <include asis="true" name="${build.outputdir}/Rubicon.Data.DomainObjects.dll"/>
         <include asis="true" name="${build.outputdir}/Rubicon.Data.DomainObjects.Legacy.dll"/>
+        <include asis="true" name="${build.outputdir}/Rubicon.Mixins.dll"/>
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Data.dll"/>

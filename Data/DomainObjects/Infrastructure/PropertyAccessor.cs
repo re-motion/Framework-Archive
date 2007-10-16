@@ -138,16 +138,16 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       return classDefinition.GetPropertyDefinition (propertyID) != null || classDefinition.GetRelationEndPointDefinition (propertyID) != null;
     }
 
-    private DomainObject _domainObject;
-    private string _propertyIdentifier;
-    private PropertyKind _kind;
+    private readonly DomainObject _domainObject;
+    private readonly string _propertyIdentifier;
+    private readonly PropertyKind _kind;
 
-    private PropertyDefinition _propertyDefinition;
-    private IRelationEndPointDefinition _relationEndPointDefinition;
-    private ClassDefinition _classDefinition;
-    private Type _propertyType;
+    private readonly PropertyDefinition _propertyDefinition;
+    private readonly IRelationEndPointDefinition _relationEndPointDefinition;
+    private readonly ClassDefinition _classDefinition;
+    private readonly Type _propertyType;
 
-    private IPropertyAccessorStrategy _strategy;
+    private readonly IPropertyAccessorStrategy _strategy;
 
     /// <summary>
     /// Initializes the <see cref="PropertyAccessor"/> object.
@@ -163,16 +163,15 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
       _domainObject = domainObject;
       _propertyIdentifier = propertyIdentifier;
-      _classDefinition = _domainObject.GetDataContainer().ClassDefinition;
-      _kind = PropertyAccessor.GetPropertyKind (_classDefinition, _propertyIdentifier);
-
-      _strategy = PropertyAccessor.GetStrategy (_kind);
+      _classDefinition = _domainObject.ID.ClassDefinition;
 
       Tuple<PropertyDefinition, IRelationEndPointDefinition> propertyObjects =
-          PropertyAccessor.GetPropertyDefinitionObjects (_classDefinition, propertyIdentifier);
-
+        PropertyAccessor.GetPropertyDefinitionObjects (_classDefinition, propertyIdentifier);
       _propertyDefinition = propertyObjects.A;
       _relationEndPointDefinition = propertyObjects.B;
+
+      _kind = PropertyAccessor.GetPropertyKind (_relationEndPointDefinition);
+      _strategy = PropertyAccessor.GetStrategy (_kind);
 
       _propertyType = _strategy.GetPropertyType (_propertyDefinition, _relationEndPointDefinition);
     }

@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   /// </summary>
   public struct PropertyIndexer : IEnumerable<PropertyAccessor>
   {
-    private DomainObject _domainObject;
+    private readonly DomainObject _domainObject;
     
     /// <summary>
     /// Initializes a new <see cref="PropertyIndexer"/> instance. This is usually not called from the outside; instead, <see cref="PropertyIndexer"/>

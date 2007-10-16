@@ -86,6 +86,10 @@
       <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
       <Name>Development.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Mixins\Core\Mixins.csproj">
+      <Project>{18C1D36B-CC05-4334-BF29-DE5A886DA89D}</Project>
+      <Name>Mixins %28Mixins\Mixins%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DomainObjects.RdbmsTools\Data.DomainObjects.RdbmsTools.csproj">
       <Project>{C5E0C110-5BC5-4E30-B3CF-4C6012FEE1EF}</Project>
       <Name>Data.DomainObjects.RdbmsTools</Name>
