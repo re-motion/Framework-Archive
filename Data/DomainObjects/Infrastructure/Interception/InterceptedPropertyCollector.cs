@@ -49,10 +49,13 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
       foreach (ReflectionBasedPropertyDefinition propertyDefinition in _classDefinition.GetPropertyDefinitions ())
       {
-        string propertyIdentifier = propertyDefinition.PropertyName;
-        PropertyInfo property = propertyDefinition.PropertyInfo;
+        if (propertyDefinition.PropertyInfo.DeclaringType.IsAssignableFrom (_baseType)) // we cannot intercept properties added from another class (mixin)
+        {
+          string propertyIdentifier = propertyDefinition.PropertyName;
+          PropertyInfo property = propertyDefinition.PropertyInfo;
 
-        AnalyzeAndValidateProperty (property, propertyIdentifier);
+          AnalyzeAndValidateProperty (property, propertyIdentifier);
+        }
       }
 
       foreach (IRelationEndPointDefinition endPointDefinition in _classDefinition.GetRelationEndPointDefinitions ())

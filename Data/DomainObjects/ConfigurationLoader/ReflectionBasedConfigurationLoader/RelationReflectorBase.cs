@@ -70,7 +70,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private void CheckClassDefinitionType (ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo)
     {
-      if (!PropertyInfo.DeclaringType.IsAssignableFrom (classDefinition.ClassType))
+      if (!PropertyInfo.DeclaringType.IsAssignableFrom (classDefinition.ClassType)
+          && !Mixins.TypeUtility.HasAscribableMixin (classDefinition.ClassType, PropertyInfo.DeclaringType))
       {
         string message = string.Format (
             "The classDefinition's class type '{0}' is not assignable to the property's declaring type.\r\nDeclaring type: {1}, property: {2}",

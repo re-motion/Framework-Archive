@@ -5,6 +5,8 @@ using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
+using Rubicon.Mixins;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
@@ -18,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     protected PropertyFinderBase (Type type, bool includeBaseProperties)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (DomainObject));
+      ArgumentUtility.CheckNotNull ("type", type);
 
       _type = type;
       _includeBaseProperties = includeBaseProperties;
@@ -47,12 +49,30 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       }
 
       propertyInfos.AddRange (FindPropertyInfosInternal (classDefinition));
-      // TODO: persistent mixins
-      // iterate over _type's mixins using 
-      //   mixinPropertyFinder = TypesafeActivator.CreateInstance (GetType()).With (MixinType, false);
-      //   propertyInfos.AddRange (mixinPropertyFinder.FindPropertyInfosInternal (classDefinition));
+
+      FindPropertyInfosOnMixins(classDefinition, propertyInfos);
 
       return propertyInfos.ToArray();
+    }
+
+    private void FindPropertyInfosOnMixins (ReflectionBasedClassDefinition classDefinition, List<PropertyInfo> propertyInfos)
+    {
+      ClassContext mixinConfiguration = TypeFactory.GetContext (_type, MixinConfiguration.ActiveContext, GenerationPolicy.GenerateOnlyIfConfigured);
+      if (mixinConfiguration != null)
+      {
+        bool parentClassHasMixins =
+            TypeFactory.GetContext (_type.BaseType, MixinConfiguration.ActiveContext, GenerationPolicy.GenerateOnlyIfConfigured) != null;
+
+        foreach (MixinContext mixin in mixinConfiguration.Mixins)
+        {
+          if (Utilities.ReflectionUtility.CanAscribe (mixin.MixinType, typeof (DomainObjectMixin<,>))
+            && (!parentClassHasMixins || !Mixins.TypeUtility.HasAscribableMixin (_type.BaseType, mixin.MixinType)))
+          {
+            PropertyFinderBase mixinPropertyFinder = (PropertyFinderBase) TypesafeActivator.CreateInstance (GetType()).With (mixin.MixinType, false);
+            propertyInfos.AddRange (mixinPropertyFinder.FindPropertyInfosInternal (classDefinition));
+          }
+        }
+      }
     }
 
     protected virtual bool FindPropertiesFilter (ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo)

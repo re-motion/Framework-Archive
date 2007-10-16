@@ -9,6 +9,7 @@ namespace Rubicon.Data.DomainObjects
   {
   }
 
+  [NonIntroduced (typeof (IDomainObjectMixin))]
   public class DomainObjectMixin<TDomainObject, TBaseCallRequirements>
       : Mixin<TDomainObject, TBaseCallRequirements>, IDomainObjectMixin
       where TDomainObject : DomainObject

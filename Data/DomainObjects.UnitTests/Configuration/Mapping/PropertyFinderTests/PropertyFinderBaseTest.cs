@@ -7,20 +7,11 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
+namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFinderTests
 {
   [TestFixture]
-  public class PropertyFinderBaseTest
+  public class PropertyFinderBaseTest : PropertyFinderBaseTestBase
   {
-    // TODO: persistent mixins
-    private class StubPropertyFinderBase : PropertyFinderBase
-    {
-      public StubPropertyFinderBase (Type type, bool includeBaseProperties)
-          : base (type, includeBaseProperties)
-      {
-      }
-    }
-
     [Test]
     public void Initialize ()
     {
@@ -98,20 +89,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       PropertyFinderBase propertyFinder = new StubPropertyFinderBase (type, false);
 
       propertyFinder.FindPropertyInfos (CreateReflectionBasedClassDefinition (type));
-    }
-
-    private PropertyInfo GetProperty (Type type, string propertyName)
-    {
-      PropertyInfo propertyInfo =
-          type.GetProperty (propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-      Assert.That (propertyInfo, Is.Not.Null, "Property '{0}' was not found on type '{1}'.", propertyName, type);
-
-      return propertyInfo;
-    }
-
-    private ReflectionBasedClassDefinition CreateReflectionBasedClassDefinition (Type type)
-    {
-      return new ReflectionBasedClassDefinition (type.Name, type.Name, "TestDomain", type, false);
     }
   }
 }

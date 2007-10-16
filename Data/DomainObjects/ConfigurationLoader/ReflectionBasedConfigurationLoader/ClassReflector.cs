@@ -202,14 +202,12 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     private PropertyInfo[] GetPropertyInfos (ReflectionBasedClassDefinition classDefinition)
     {
       PropertyFinder propertyFinder = new PropertyFinder (_type, IsInheritenceRoot ());
-      // TODO: Mixins
       return propertyFinder.FindPropertyInfos (classDefinition);
     }
 
     private PropertyInfo[] GetRelationPropertyInfos (ReflectionBasedClassDefinition classDefinition)
     {
       RelationPropertyFinder relationPropertyFinder = new RelationPropertyFinder (_type, IsInheritenceRoot ());
-      // TODO: Mixins
       return relationPropertyFinder.FindPropertyInfos (classDefinition);
     }
   }

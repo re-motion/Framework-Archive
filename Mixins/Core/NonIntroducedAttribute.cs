@@ -3,6 +3,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins
 {
+  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
   public class NonIntroducedAttribute : Attribute
   {
     private readonly Type _suppressedInterface;

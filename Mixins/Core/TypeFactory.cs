@@ -230,6 +230,42 @@ namespace Rubicon.Mixins
       ArgumentUtility.CheckNotNull ("applicationContext", applicationContext);
 
       ClassContext context;
+      context = GetContext(targetType, applicationContext, generationPolicy);
+
+      if (context == null)
+        return null;
+      else
+        return TargetClassDefinitionCache.Current.GetTargetClassDefinition (context);
+    }
+
+    /// <summary>
+    /// Returns a <see cref="ClassContext"/> for the a given target type.
+    /// </summary>
+    /// <param name="targetType">Base type for which a context should be returned.</param>
+    /// <param name="applicationContext">The <see cref="ApplicationContext"/> to use.</param>
+    /// <param name="generationPolicy">Defines whether to return <see langword="null"/> or generate an empty default configuration if no mixin
+    /// configuration is available for the given <paramref name="targetType"/>.</param>
+    /// <returns>A <see cref="ClassContext"/> for the a given target type, or <see langword="null"/>.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="targetType"/> parameter is <see langword="null"/>.</exception>
+    /// <remarks>
+    /// <para>
+    /// Use this to extract a class context for a given target type from an application context as it would be used to create the
+    /// <see cref="TargetClassDefinition"/> object for the target type. Besides looking up the target type in the given application context, this
+    /// includes generating a default context if <see cref="GenerationPolicy.ForceGeneration"/> is specified and the specialization of generic
+    /// arguments in the class context, if any.
+    /// </para>
+    /// <para>
+    /// Use the <paramref name="generationPolicy"/> parameter to configure whether this method should return an empty but valid
+    /// <see cref="ClassContext"/> for types that do not have a mixin configuration in the <paramref name="applicationContext"/>.
+    /// </para>
+    /// <para>
+    /// If <paramref name="targetType"/> is already a generated type, the <see cref="ClassContext"/> used for its generation is returned unless
+    /// <see cref="GenerationPolicy.ForceGeneration"/> is specified.
+    /// </para>
+    /// </remarks>
+    public static ClassContext GetContext (Type targetType, ApplicationContext applicationContext, GenerationPolicy generationPolicy)
+    {
+      ClassContext context;
       if (generationPolicy != GenerationPolicy.ForceGeneration && TypeUtility.IsGeneratedType (targetType))
         context = Mixin.GetMixinConfigurationFromConcreteType (targetType);
       else
@@ -238,18 +274,12 @@ namespace Rubicon.Mixins
       if (context == null && generationPolicy == GenerationPolicy.ForceGeneration)
         context = new ClassContext (targetType);
 
-      if (context == null)
-        return null;
-      else
+      if (context != null && targetType.IsGenericType)
       {
-        if (targetType.IsGenericType)
-        {
-          Assertion.IsTrue (context.Type.IsGenericTypeDefinition);
-          context = context.SpecializeWithTypeArguments (targetType.GetGenericArguments());
-        }
-
-        return TargetClassDefinitionCache.Current.GetTargetClassDefinition (context);
+        Assertion.IsTrue (context.Type.IsGenericTypeDefinition);
+        context = context.SpecializeWithTypeArguments (targetType.GetGenericArguments());
       }
+      return context;
     }
 
     /// <summary>
