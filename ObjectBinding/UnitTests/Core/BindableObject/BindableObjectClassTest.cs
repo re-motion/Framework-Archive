@@ -149,7 +149,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
               CreateProperty (type, "ReadOnlyAttributeScalar"),
               CreateProperty (type, "ReadOnlyNonPublicSetterScalar"),
               CreateProperty (type, "Array"),
-              CreateProperty (type, "Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar")
+              CreateProperty (type, "Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar"),
+              CreateProperty (type, "Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceReadOnlyScalar")
           };
 
       ClassReflector classReflector = new ClassReflector (type, _bindableObjectProvider, DefaultMetadataFactory.Instance);

@@ -4,5 +4,6 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
       where T : class
   {
     T ExplicitInterfaceScalar { get; set; }
+    T ExplicitInterfaceReadOnlyScalar { get; }
   }
 }

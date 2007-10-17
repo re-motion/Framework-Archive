@@ -31,6 +31,11 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
       set { _explicitInterfaceScalar = value; }
     }
 
+    T IInterfaceWithReferenceType<T>.ExplicitInterfaceReadOnlyScalar
+    {
+      get { return _explicitInterfaceScalar; }
+    }
+
     public T ReadOnlyScalar
     {
       get { return _readOnlyScalar; }

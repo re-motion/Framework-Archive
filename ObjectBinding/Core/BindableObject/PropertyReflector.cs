@@ -136,13 +136,24 @@ namespace Rubicon.ObjectBinding.BindableObject
       if (ReflectionUtility.CanAscribe (_propertyInfo.PropertyType, typeof (ReadOnlyCollection<>)))
         return true;
 
-      if (_propertyInfo.GetSetMethod (false) != null)
+      if (GetHasAccessibleSetter())
         return false;
 
       if (IsListProperty() && !_propertyInfo.PropertyType.IsArray)
         return false;
 
       return true;
+    }
+
+    protected virtual bool GetHasAccessibleSetter()
+    {
+      // if there is one public accessor, the set accessor must also be public
+      // if there is no public accessor, we can assume that the whole property is an explicit interface implementation (we don't do non-public
+      // properties) and the setter therefore needn't be public
+      if (_propertyInfo.GetAccessors (false).Length > 0)
+        return _propertyInfo.GetSetMethod (false) != null;
+      else
+        return _propertyInfo.GetSetMethod (true) != null;
     }
 
     protected virtual int? GetMaxLength ()
