@@ -70,7 +70,7 @@ namespace Rubicon.SecurityManager
         return new AccessType[0];
       }
 
-      using (transaction.EnterScope())
+      using (transaction.EnterNonDiscardingScope())
       {
         AccessTypeDefinition[] accessTypes = acl.GetAccessTypes (token);
         return Array.ConvertAll<AccessTypeDefinition, AccessType> (accessTypes, ConvertToAccessType);
@@ -79,7 +79,7 @@ namespace Rubicon.SecurityManager
 
     public int GetRevision ()
     {
-      using (ClientTransaction.NewTransaction().EnterNonReturningScope())
+      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
       {
         return Revision.GetRevision ();
       }

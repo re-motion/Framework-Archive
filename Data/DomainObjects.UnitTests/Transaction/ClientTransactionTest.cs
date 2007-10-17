@@ -484,7 +484,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void GetObjectByNewIndependentTransaction ()
     {
       ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
-      using (clientTransaction.EnterScope())
+      using (clientTransaction.EnterDiscardingScope())
       {
         Order order = Order.GetObject (DomainObjectIDs.Order1);
 
@@ -497,7 +497,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void GetDeletedObjectByNewIndependentTransaction ()
     {
       ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
-      using (clientTransaction.EnterScope())
+      using (clientTransaction.EnterDiscardingScope())
       {
         Order order = Order.GetObject (DomainObjectIDs.Order1);
 
@@ -517,14 +517,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClientTransaction clientTransaction2 = ClientTransaction.NewTransaction();
 
       Order order1;
-      using (clientTransaction1.EnterScope())
+      using (clientTransaction1.EnterNonDiscardingScope())
       {
         order1 = Order.GetObject (DomainObjectIDs.Order1);
         order1.OrderNumber = 50;
       }
 
       Order order2;
-      using (clientTransaction2.EnterScope())
+      using (clientTransaction2.EnterNonDiscardingScope ())
       {
         order2 = Order.GetObject (DomainObjectIDs.Order2);
         order2.OrderNumber = 60;
@@ -534,7 +534,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       clientTransaction2.Commit ();
 
       ClientTransaction clientTransaction3 = ClientTransaction.NewTransaction();
-      using (clientTransaction3.EnterScope ())
+      using (clientTransaction3.EnterNonDiscardingScope ())
       {
         Order changedOrder1 = Order.GetObject (DomainObjectIDs.Order1);
         Order changedOrder2 = Order.GetObject (DomainObjectIDs.Order2);
@@ -595,10 +595,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       Assert.AreSame (ClientTransactionScope.CurrentTransaction, ClientTransaction.Current);
 
-      using (clientTransaction1.EnterScope ())
+      using (clientTransaction1.EnterDiscardingScope ())
       {
         Assert.AreSame (ClientTransactionScope.CurrentTransaction, ClientTransaction.Current);
-        using (clientTransaction2.EnterScope ())
+        using (clientTransaction2.EnterDiscardingScope ())
         {
           Assert.AreSame (ClientTransactionScope.CurrentTransaction, ClientTransaction.Current);
         }
@@ -680,7 +680,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
       Assert.IsTrue (order.CanBeUsedInTransaction (clientTransactionMock));
 
-      using (clientTransactionMock.EnterScope ())
+      using (clientTransactionMock.EnterDiscardingScope ())
       {
         Assert.IsTrue (order.OrderTicket.CanBeUsedInTransaction (clientTransactionMock));
         Assert.IsTrue (order.Official.CanBeUsedInTransaction (clientTransactionMock));
@@ -722,9 +722,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void ReturnToParentTransactionReturnsFalse ()
+    public void DiscardReturnsFalse ()
     {
-      Assert.IsFalse (ClientTransactionMock.ReturnToParentTransaction ());
+      Assert.IsFalse (ClientTransactionMock.Discard ());
     }
 
     [Test]
@@ -734,15 +734,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The transaction can no longer be used because it has been discarded.")]
+    public void DiscardRendersTransactionUnusable ()
+    {
+      ClientTransactionMock.Discard ();
+      Assert.IsTrue (ClientTransactionMock.IsDiscarded);
+      ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
+    }
+
+    [Test]
     public void DefaultEnterScope ()
     {
       ClientTransactionScope outerScope = ClientTransactionScope.ActiveScope;
       ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
-      using (newTransaction.EnterScope ())
+      using (newTransaction.EnterDiscardingScope ())
       {
         Assert.AreNotSame (outerScope, ClientTransactionScope.ActiveScope);
         Assert.AreSame (newTransaction, ClientTransactionScope.CurrentTransaction);
-        Assert.AreEqual (AutoRollbackBehavior.ReturnToParent, ClientTransactionScope.ActiveScope.AutoRollbackBehavior);
+        Assert.AreEqual (AutoRollbackBehavior.Discard, ClientTransactionScope.ActiveScope.AutoRollbackBehavior);
       }
     }
 
@@ -767,11 +776,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void EnterNonReturningScope ()
+    public void EnterNonDiscardingScope ()
     {
       ClientTransactionScope outerScope = ClientTransactionScope.ActiveScope;
       ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
-      using (newTransaction.EnterNonReturningScope ())
+      using (newTransaction.EnterNonDiscardingScope ())
       {
         Assert.AreNotSame (outerScope, ClientTransactionScope.ActiveScope);
         Assert.AreSame (newTransaction, ClientTransactionScope.CurrentTransaction);
@@ -793,7 +802,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       order.OrderItems.Removed += removedEventHandler;
       order.OrderItems.Removing += removingEventHandler;
 
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         ClientTransaction.Current.EnlistDomainObject (order);
         ClientTransaction.Current.CopyCollectionEventHandlers (order, ClientTransactionMock);
@@ -824,7 +833,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClientTransaction.Current.SubTransactionCreated += subTransactionCreatedHandler1;
       ClientTransaction.Current.SubTransactionCreated += subTransactionCreatedHandler2;
 
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         ClientTransaction.Current.CopyTransactionEventHandlers (ClientTransactionMock);
         Assert.IsTrue (HasEventHandler (ClientTransaction.Current, "Committed", committedHandler));
@@ -840,7 +849,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CopyTransactionEventHandlers_WithNoEventsDoesNotOverwriteOldHandlers ()
     {
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         ClientTransactionEventHandler committedHandler = delegate { };
         ClientTransactionEventHandler committingHandler = delegate { };

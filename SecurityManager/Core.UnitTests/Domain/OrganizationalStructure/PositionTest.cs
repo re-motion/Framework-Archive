@@ -17,7 +17,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         DomainObjectCollection positions = Position.FindAll ();
 
@@ -29,7 +29,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void DeletePosition_WithAccessControlEntry ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         Position position = testHelper.CreatePosition ("Position");
         AccessControlEntry ace = testHelper.CreateAceWithPosition (position, GroupSelection.All);
@@ -44,7 +44,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void DeletePosition_WithRole ()
     {
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         Tenant tenant = testHelper.CreateTenant ("TestTenant", "UID: testTenant");
         Group userGroup = testHelper.CreateGroup ("UserGroup", Guid.NewGuid().ToString(), null, tenant);
@@ -63,7 +63,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void DeletePosition_WithGroupTypePosition ()
     {
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         GroupType groupType = testHelper.CreateGroupType ("GroupType");
         Position position = testHelper.CreatePosition ("Position");
@@ -79,7 +79,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void GetDisplayName ()
     {
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         Position position = testHelper.CreatePosition ("PositionName");
 
@@ -91,7 +91,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void GetSecurityStrategy ()
     {
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         ISecurableObject position = testHelper.CreatePosition ("PositionName");
 
@@ -107,7 +107,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void GetSecurityStrategy_SameTwice ()
     {
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         ISecurableObject position = testHelper.CreatePosition ("PositionName");
 
@@ -119,7 +119,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void GetSecurableType ()
     {
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         ISecurableObject position = testHelper.CreatePosition ("PositionName");
 
@@ -131,7 +131,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void DomainObjectSecurityContextFactoryImplementation ()
     {
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         Position position = testHelper.CreatePosition ("PositionName");
         IDomainObjectSecurityContextFactory factory = position;
@@ -150,7 +150,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void CreateSecurityContext ()
     {
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         Position position = testHelper.CreatePosition ("PositionName");
         position.Delegation = Delegation.Enabled;

@@ -32,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       _clientID = new ObjectID ("Client", new Guid ("6F20355F-FA99-4c4e-B432-02C41F7BD390"));
       _fileID = new ObjectID ("File", Guid.NewGuid());
 
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         Client.NewObject();
         File.NewObject();

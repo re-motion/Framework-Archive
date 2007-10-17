@@ -24,7 +24,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
       base.OnLoad (e);
 
       _clientTransaction = ClientTransaction.NewTransaction();
-      _clientTransaction.EnterScope();
+      _clientTransaction.EnterDiscardingScope();
       if (!IsPostBack)
       {
         using (new SecurityFreeSection())
@@ -41,7 +41,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
 
     protected override void OnPreRender (EventArgs e)
     {
-      _clientTransaction.EnterScope ();
+      _clientTransaction.EnterDiscardingScope ();
       base.OnPreRender (e);
     }
 

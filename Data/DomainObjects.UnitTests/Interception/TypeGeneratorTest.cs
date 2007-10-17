@@ -384,7 +384,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
           Serializer.SerializeAndDeserialize (
               new Tuple<ClientTransaction, DOWithVirtualProperties> (ClientTransactionScope.CurrentTransaction, instance));
 
-      using (data.A.EnterScope ())
+      using (data.A.EnterDiscardingScope ())
       {
         Assert.AreEqual (17, data.B.PropertyWithGetterAndSetter);
       }
@@ -402,7 +402,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
           Serializer.SerializeAndDeserialize (
               new Tuple<ClientTransaction, DOImplementingISerializable> (ClientTransactionScope.CurrentTransaction, instance));
 
-      using (data.A.EnterScope ())
+      using (data.A.EnterDiscardingScope ())
       {
         Assert.AreEqual (23, data.B.PropertyWithGetterAndSetter);
         Assert.AreEqual ("Start-GetObjectData-Ctor", data.B.MemberHeldAsField);

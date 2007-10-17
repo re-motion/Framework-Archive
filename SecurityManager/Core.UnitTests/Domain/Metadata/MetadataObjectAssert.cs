@@ -69,7 +69,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       string expectedName;
       int expectedIndex;
-      using (expectedObjectTransaction.EnterScope ())
+      using (expectedObjectTransaction.EnterNonDiscardingScope ())
       {
         expectedName = expected.Name;
         expectedIndex = expected.Index;

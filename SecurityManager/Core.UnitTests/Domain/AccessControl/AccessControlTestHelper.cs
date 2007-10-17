@@ -52,7 +52,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public SecurableClassDefinition CreateClassDefinition (string name, SecurableClassDefinition baseClass)
     {
-      using (_transaction.EnterScope ())
+      using (_transaction.EnterNonDiscardingScope ())
       {
         SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject ();
         classDefinition.Name = name;
@@ -73,7 +73,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlList CreateAcl (SecurableClassDefinition classDefinition, params StateDefinition[] states)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         AccessControlList acl = AccessControlList.NewObject ();
         acl.Class = classDefinition;
@@ -88,7 +88,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public StateCombination CreateStateCombination (AccessControlList acl)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         StateCombination stateCombination = StateCombination.NewObject ();
         stateCombination.AccessControlList = acl;
@@ -100,7 +100,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public StateCombination CreateStateCombination (SecurableClassDefinition classDefinition, params StateDefinition[] states)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         AccessControlList acl = CreateAcl (classDefinition, states);
         return (StateCombination) acl.StateCombinations[0];
@@ -109,7 +109,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public StatePropertyDefinition CreateStateProperty (string name)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         return StatePropertyDefinition.NewObject (Guid.NewGuid(), name);
       }
@@ -117,7 +117,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public StatePropertyDefinition CreateOrderStateProperty (SecurableClassDefinition classDefinition)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         StatePropertyDefinition orderStateProperty = CreateStateProperty ("State");
         orderStateProperty.AddState ("Received", 0);
@@ -130,7 +130,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public StatePropertyDefinition CreatePaymentStateProperty (SecurableClassDefinition classDefinition)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         StatePropertyDefinition paymentStateProperty = CreateStateProperty ("Payment");
         paymentStateProperty.AddState ("None", 0);
@@ -143,7 +143,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public StatePropertyDefinition CreateDeliveryStateProperty (SecurableClassDefinition classDefinition)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         StatePropertyDefinition deliveryStateProperty = CreateStateProperty ("Delivery");
         deliveryStateProperty.AddState ("Dhl", 0);
@@ -156,7 +156,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public List<StateCombination> CreateStateCombinationsForOrder ()
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = CreateOrderClassDefinition();
         return CreateOrderStateAndPaymentStateCombinations (orderClass);
@@ -165,7 +165,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public List<StateCombination> CreateOrderStateAndPaymentStateCombinations (SecurableClassDefinition classDefinition)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         StatePropertyDefinition orderState = CreateOrderStateProperty (classDefinition);
         StatePropertyDefinition paymentState = CreatePaymentStateProperty (classDefinition);
@@ -183,7 +183,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public StateCombination GetStateCombinationForDeliveredAndUnpaidOrder ()
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         List<StateCombination> stateCombinations = CreateStateCombinationsForOrder();
         return stateCombinations[2];
@@ -192,7 +192,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public StateCombination GetStateCombinationWithoutStates ()
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         List<StateCombination> stateCombinations = CreateStateCombinationsForOrder();
         return stateCombinations[4];
@@ -201,7 +201,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public List<AccessControlList> CreateAclsForOrderAndPaymentStates (SecurableClassDefinition classDefinition)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         StatePropertyDefinition orderState = CreateOrderStateProperty (classDefinition);
         StatePropertyDefinition paymentState = CreatePaymentStateProperty (classDefinition);
@@ -219,7 +219,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public List<AccessControlList> CreateAclsForOrderAndPaymentAndDeliveryStates (SecurableClassDefinition classDefinition)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         StatePropertyDefinition orderState = CreateOrderStateProperty (classDefinition);
         StatePropertyDefinition paymentState = CreatePaymentStateProperty (classDefinition);
@@ -242,7 +242,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlList GetAclForDeliveredAndUnpaidAndDhlStates (SecurableClassDefinition classDefinition)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         List<AccessControlList> acls = CreateAclsForOrderAndPaymentAndDeliveryStates (classDefinition);
         return acls[2];
@@ -251,7 +251,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlList GetAclForDeliveredAndUnpaidStates (SecurableClassDefinition classDefinition)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         List<AccessControlList> acls = CreateAclsForOrderAndPaymentStates (classDefinition);
         return acls[2];
@@ -260,7 +260,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlList GetAclForStateless (SecurableClassDefinition classDefinition)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         List<AccessControlList> acls = CreateAclsForOrderAndPaymentStates (classDefinition);
         return acls[4];
@@ -269,7 +269,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public List<StateDefinition> GetDeliveredAndUnpaidStateList (SecurableClassDefinition classDefinition)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         List<StateDefinition> states = new List<StateDefinition>();
 
@@ -288,7 +288,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public StatePropertyDefinition CreateTestProperty ()
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         StatePropertyDefinition property = CreateStateProperty ("Test");
         property.AddState ("Test1", 0);
@@ -300,7 +300,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessTypeDefinition AttachAccessType (SecurableClassDefinition classDefinition, Guid metadataItemID, string name, int value)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         AccessTypeDefinition accessType = AccessTypeDefinition.NewObject (metadataItemID, name, value);
         classDefinition.AddAccessType (accessType);
@@ -311,7 +311,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessTypeDefinition AttachJournalizeAccessType (SecurableClassDefinition classDefinition)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         AccessTypeDefinition accessType = CreateJournalizeAccessType();
         classDefinition.AddAccessType (accessType);
@@ -322,7 +322,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessTypeDefinition CreateJournalizeAccessType ()
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         return AccessTypeDefinition.NewObject (Guid.NewGuid(), "Journalize", 42);
       }
@@ -369,7 +369,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AbstractRoleDefinition CreateAbstractRoleDefinition (string name, int value)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         return AbstractRoleDefinition.NewObject (Guid.NewGuid(), name, value);
       }
@@ -377,7 +377,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithOwningTenant ()
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         AccessControlEntry entry = AccessControlEntry.NewObject ();
         entry.Tenant = TenantSelection.OwningTenant;
@@ -388,7 +388,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithSpecficTenant (Tenant tenant)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         AccessControlEntry entry = AccessControlEntry.NewObject ();
         entry.Tenant = TenantSelection.SpecificTenant;
@@ -400,7 +400,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithAbstractRole ()
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         AccessControlEntry entry = AccessControlEntry.NewObject ();
         entry.SpecificAbstractRole = CreateTestAbstractRole();
@@ -411,7 +411,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithPosition (Position position, GroupSelection groupSelection)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         AccessControlEntry entry = AccessControlEntry.NewObject ();
         entry.User = UserSelection.SpecificPosition;
@@ -424,7 +424,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlList CreateAcl (params AccessControlEntry[] aces)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         AccessControlList acl = AccessControlList.NewObject ();
 
@@ -437,7 +437,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public void AttachAccessType (AccessControlEntry ace, AccessTypeDefinition accessType, bool? allowed)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         ace.AttachAccessType (accessType);
         if (allowed.HasValue && allowed.Value)
@@ -462,7 +462,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessTypeDefinition CreateAccessTypeForAce (AccessControlEntry ace, bool? allowAccess, Guid metadataItemID, string name, int value)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         AccessTypeDefinition accessType = AccessTypeDefinition.NewObject (metadataItemID, name, value);
         AttachAccessType (ace, accessType, allowAccess);
@@ -473,7 +473,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public Tenant CreateTenant (string name)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         Tenant tenant = _factory.CreateTenant ();
         tenant.Name = name;
@@ -484,7 +484,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public Group CreateGroup (string name, Group parent, Tenant tenant)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         Group group = _factory.CreateGroup ();
         group.Name = name;
@@ -497,7 +497,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public User CreateUser (string userName, string firstName, string lastName, string title, Group owningGroup, Tenant tenant)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         User user = _factory.CreateUser ();
         user.UserName = userName;
@@ -513,7 +513,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public Position CreatePosition (string name)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         Position position = _factory.CreatePosition ();
         position.Name = name;
@@ -524,7 +524,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public Role CreateRole (User user, Group group, Position position)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         Role role = Role.NewObject ();
         role.User = user;

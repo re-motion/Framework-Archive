@@ -1,16 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using NUnit.Framework;
 using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -607,7 +603,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       newOrder.OrderItems.Add (DomainObject.GetObject (DomainObjectIDs.OrderItem1));
       newOrder.OrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValue (10);
         newOrder.OrderItems.Clear();
@@ -649,7 +645,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.NewObject ();
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         accessor.GetValueTx<int> (ClientTransactionScope.CurrentTransaction);
       }
@@ -661,7 +657,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         accessor.GetValueTx<int> (ClientTransactionScope.CurrentTransaction);
       }
@@ -676,7 +672,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       newOrder.OrderItems.Add (DomainObject.GetObject (DomainObjectIDs.OrderItem1));
       newOrder.OrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValue (10);
         newOrder.OrderItems.Clear ();
@@ -718,7 +714,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.NewObject ();
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         accessor.GetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
       }
@@ -730,7 +726,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         accessor.GetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
       }
@@ -749,7 +745,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       newOrder.Official = Official.NewObject ();
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.Commit();
         
@@ -788,7 +784,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.NewObject ();
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         accessor.GetOriginalValueTx<int> (ClientTransactionScope.CurrentTransaction);
       }
@@ -800,7 +796,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         accessor.GetOriginalValueTx<int> (ClientTransactionScope.CurrentTransaction);
       }
@@ -819,7 +815,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       newOrder.Official = Official.NewObject ();
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.Commit ();
 
@@ -858,7 +854,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.NewObject ();
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         accessor.GetOriginalValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
       }
@@ -870,7 +866,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         accessor.GetOriginalValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
       }
@@ -882,7 +878,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order order = Order.GetObject(DomainObjectIDs.Order1);
       OrderTicket orderTicket2 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
 
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
         OrderTicket orderTicket1 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
@@ -909,7 +905,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.NewObject ();
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         accessor.SetValueTx (ClientTransactionScope.CurrentTransaction, 1);
       }
@@ -921,7 +917,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         accessor.SetValueTx (ClientTransactionScope.CurrentTransaction, 2);
       }
@@ -933,7 +929,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       OrderTicket orderTicket2 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
 
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
         OrderTicket orderTicket1 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
@@ -960,7 +956,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.NewObject ();
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         accessor.SetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction, 1);
       }
@@ -972,7 +968,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         accessor.SetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction, 2);
       }
@@ -1024,7 +1020,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void GetRelatedObjectIDTxSimple ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetRelatedObjectIDTx (ClientTransactionMock);
       }
@@ -1035,7 +1031,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       ObjectID customerID = order.Customer.ID;
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.AreEqual (customerID, order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].GetRelatedObjectIDTx (ClientTransactionMock));
       }
@@ -1047,7 +1043,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void GetRelatedObjectIDTxRelatedVirtualEndPoint ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetRelatedObjectIDTx (ClientTransactionMock);
       }
@@ -1059,7 +1055,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void GetRelatedObjectTxIDRelatedVirtualEndPoint ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetRelatedObjectIDTx (ClientTransactionMock);
       }
@@ -1105,7 +1101,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void GetOriginalRelatedObjectIDTxSimple ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetOriginalRelatedObjectIDTx (ClientTransactionMock);
       }
@@ -1118,7 +1114,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ObjectID originalCustomerID = order.Customer.ID;
       order.Customer = Customer.NewObject ();
       ObjectID customerID = order.Customer.ID;
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.AreNotEqual (customerID, order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].GetOriginalRelatedObjectIDTx (ClientTransactionMock));
         Assert.AreEqual (originalCustomerID, order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].GetOriginalRelatedObjectIDTx (ClientTransactionMock));
@@ -1131,7 +1127,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void GetOriginalRelatedObjectIDTxRelatedVirtualEndPoint ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetOriginalRelatedObjectIDTx (ClientTransactionMock);
       }
@@ -1143,7 +1139,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void GetOriginalRelatedObjectTxIDRelatedVirtualEndPoint ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetOriginalRelatedObjectIDTx (ClientTransactionMock);
       }

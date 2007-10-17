@@ -26,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
       value.Name = "Earl";
       Tuple<ClientTransactionMock, BindableSampleDomainObject> deserialized = Serializer.SerializeAndDeserialize (Tuple.NewTuple (ClientTransactionMock, value));
 
-      using (deserialized.A.EnterScope ())
+      using (deserialized.A.EnterDiscardingScope ())
       {
         Assert.That (deserialized.B.Name, Is.EqualTo ("Earl"));
         Assert.That (((IBusinessObject) deserialized.B).BusinessObjectClass, Is.SameAs (((IBusinessObject) value).BusinessObjectClass));
@@ -41,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
       BindableObjectProvider.SetCurrent (null);
       Tuple<ClientTransactionMock, BindableSampleDomainObject> deserialized = (Tuple<ClientTransactionMock, BindableSampleDomainObject>) Serializer.Deserialize (serialized);
 
-      using (deserialized.A.EnterScope ())
+      using (deserialized.A.EnterDiscardingScope ())
       {
         Assert.That (((IBusinessObject) deserialized.B).BusinessObjectClass, Is.Not.SameAs (((IBusinessObject) value).BusinessObjectClass));
       }

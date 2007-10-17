@@ -76,7 +76,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public void Import (XmlDocument metadataXmlDocument)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         SecurityMetadataSchema metadataSchema = new SecurityMetadataSchema();
         if (!metadataXmlDocument.Schemas.Contains (metadataSchema.SchemaUri))

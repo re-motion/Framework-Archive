@@ -36,7 +36,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 
     public new static ClassWithAllDataTypes GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      using (clientTransaction.EnterNonReturningScope())
+      using (clientTransaction.EnterNonDiscardingScope())
       {
         return DomainObject.GetObject<ClassWithAllDataTypes> (id);
       }

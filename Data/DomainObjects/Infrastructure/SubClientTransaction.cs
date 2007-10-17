@@ -18,7 +18,6 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   public class SubClientTransaction : ClientTransaction
   {
     private readonly ClientTransaction _parentTransaction;
-    private bool _isDiscarded;
 
     private SubQueryManager _queryManager;
 
@@ -33,7 +32,6 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       DiscardDeletedDataContainers (_parentTransaction.DataManager.DataContainerMap);
 
       parentTransaction.NotifyOfSubTransactionCreated (this);
-      _isDiscarded = false;
     }
 
     private void DiscardDeletedDataContainers (DataContainerMap source)
@@ -55,11 +53,6 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       get { return ParentTransaction.RootTransaction; }
     }
 
-    public override bool IsDiscarded
-    {
-      get { return _isDiscarded; }
-    }
-
     public override IQueryManager QueryManager
     {
       get
@@ -69,14 +62,6 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
         return _queryManager;
       }
-    }
-
-    public override bool ReturnToParentTransaction ()
-    {
-      ParentTransaction.IsReadOnly = false;
-      _isDiscarded = true;
-      AddListener (new InvalidatedSubTransactionListener());
-      return true;
     }
 
     protected internal override bool DoEnlistDomainObject (DomainObject domainObject)
@@ -145,7 +130,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         domainObject.GetDataContainerForTransaction (ParentTransaction);
       }
 
-      using (EnterNonReturningScope ())
+      using (EnterNonDiscardingScope ())
       {
         DataContainer dataContainer = LoadDataContainer (domainObject.ID);
         Assertion.IsTrue (dataContainer.DomainObject == domainObject);

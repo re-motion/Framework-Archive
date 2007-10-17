@@ -21,7 +21,7 @@ namespace Rubicon.Security.UnitTests.Data.DomainObjects.SecurityClientTransactio
       _extension = new SecurityClientTransactionExtension ();
 
       _testHelper.SetupSecurityConfiguration ();
-      _testHelper.Transaction.EnterScope ();
+      _testHelper.Transaction.EnterDiscardingScope ();
     }
 
     [TearDown]

@@ -927,7 +927,7 @@
     <Compile Include="Transaction\SubTransactionExtensionTest.cs" />
     <Compile Include="Transaction\SubTransactionCommitDataTest.cs" />
     <Compile Include="Transaction\SubTransactionCommitStateTransitionTest.cs" />
-    <Compile Include="Transaction\InvalidatedSubTransactionListenerTest.cs" />
+    <Compile Include="Transaction\InvalidatedTransactionListenerTest.cs" />
     <Compile Include="Transaction\ReadOnlyClientTransactionTest.cs" />
     <Compile Include="Transaction\RollbackEventsWithExistingObjectTest.cs" />
     <Compile Include="Transaction\RollbackEventsWithNewObjectTest.cs" />

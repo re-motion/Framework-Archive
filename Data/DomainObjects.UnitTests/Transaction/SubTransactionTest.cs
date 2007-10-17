@@ -55,11 +55,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void EnterScopeEnablesReturnToParentBehavior ()
+    public void EnterDiscardingScopeEnablesDiscardBehavior ()
     {
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
-        Assert.AreEqual (AutoRollbackBehavior.ReturnToParent, ClientTransactionScope.ActiveScope.AutoRollbackBehavior);
+        Assert.AreEqual (AutoRollbackBehavior.Discard, ClientTransactionScope.ActiveScope.AutoRollbackBehavior);
       }
     }
 
@@ -90,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void SubTransactionCanBeUsedToCreateAndLoadNewObjects ()
     {
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
-      using (subTransaction.EnterScope())
+      using (subTransaction.EnterDiscardingScope())
       {
         Assert.AreSame (subTransaction, ClientTransactionScope.CurrentTransaction);
         Order order = Order.NewObject ();
@@ -126,7 +126,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void DomainObjectsCreatedInSubTransactionCanBeUsedInParent ()
     {
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
-      using (subTransaction.EnterScope ())
+      using (subTransaction.EnterDiscardingScope ())
       {
         Order order = Order.NewObject();
         Assert.IsTrue (order.CanBeUsedInTransaction (subTransaction));
@@ -147,7 +147,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void DomainObjectsLoadedInSubTransactionCanBeUsedInParent ()
     {
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
-      using (subTransaction.EnterScope ())
+      using (subTransaction.EnterDiscardingScope ())
       {
         Order order = Order.GetObject (DomainObjectIDs.Order1);
         Assert.IsTrue (order.CanBeUsedInTransaction (subTransaction));
@@ -160,7 +160,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       Order order = Order.NewObject ();
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
-      using (subTransaction.EnterScope ())
+      using (subTransaction.EnterDiscardingScope ())
       {
         order.OrderNumber = 5;
         order.OrderTicket = OrderTicket.NewObject ();
@@ -173,7 +173,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
       Order order;
-      using (subTransaction.EnterScope ())
+      using (subTransaction.EnterDiscardingScope ())
       {
         order = Order.NewObject ();
       }
@@ -185,7 +185,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
-      using (subTransaction.EnterScope ())
+      using (subTransaction.EnterDiscardingScope ())
       {
         ++order.OrderNumber;
         OrderTicket oldTicket = order.OrderTicket;
@@ -198,7 +198,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
       Order order;
-      using (subTransaction.EnterScope ())
+      using (subTransaction.EnterDiscardingScope ())
       {
         order = Order.GetObject (DomainObjectIDs.Order1);
       }
@@ -210,7 +210,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
       Order order;
-      using (subTransaction.EnterScope ())
+      using (subTransaction.EnterDiscardingScope ())
       {
         order = Order.GetObject (DomainObjectIDs.Order1);
       }
@@ -223,7 +223,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
       Order order;
       OrderTicket orderTicket;
-      using (subTransaction.EnterScope ())
+      using (subTransaction.EnterDiscardingScope ())
       {
         order = Order.GetObject (DomainObjectIDs.Order1);
         orderTicket = order.OrderTicket;
@@ -238,7 +238,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
       Computer computer;
       Employee employee;
-      using (subTransaction.EnterScope ())
+      using (subTransaction.EnterDiscardingScope ())
       {
         computer = Computer.GetObject (DomainObjectIDs.Computer4);
         Assert.IsNull (computer.Employee);
@@ -257,7 +257,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
       Order order;
       Set<OrderItem> orderItems = new Set<OrderItem> ();
-      using (subTransaction.EnterScope ())
+      using (subTransaction.EnterDiscardingScope ())
       {
         order = Order.GetObject (DomainObjectIDs.Order1);
         orderItems.Add (order.OrderItems[0]);
@@ -289,7 +289,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       client.Delete ();
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope())
       {
         Client clientAfterDelete = location.Client;
       }
@@ -314,7 +314,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       location.Client = Client.NewObject ();
       location.Client.Delete ();
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Client clientAfterDelete = location.Client;
       }
@@ -336,7 +336,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       location.Client = Client.NewObject ();
       location.Client.Delete ();
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         location.Client = Client.NewObject ();
       }
@@ -358,7 +358,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       location.Client = Client.GetObject (DomainObjectIDs.Client1);
       location.Client.Delete ();
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         location.Client = Client.NewObject();
       }
@@ -371,7 +371,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       Assert.AreEqual (StateType.New, newOrder.State);
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.AreEqual (StateType.Unchanged, newOrder.State);
 
@@ -398,7 +398,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Order loadedChangedOrder = Order.GetObject (DomainObjectIDs.Order2);
       loadedChangedOrder.OrderNumber = 13;
 
-      using (ClientTransactionMock.CreateSubTransaction().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterDiscardingScope ())
       {
         Assert.AreSame (loadedUnchangedOrder, Order.GetObject (DomainObjectIDs.Order1));
         Assert.AreSame (loadedChangedOrder, Order.GetObject (DomainObjectIDs.Order2));
@@ -419,12 +419,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Order loadedChangedOrder = Order.GetObject (DomainObjectIDs.Order2);
       loadedChangedOrder.OrderNumber = 13;
 
-      using (ClientTransactionMock.CreateSubTransaction().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterDiscardingScope ())
       {
         newChangedOrder.OrderNumber = 17;
         loadedChangedOrder.OrderNumber = 4;
 
-        using (ClientTransactionMock.EnterScope ())
+        using (ClientTransactionMock.EnterDiscardingScope ())
         {
           Assert.AreEqual (4711, newChangedOrder.OrderNumber);
           Assert.AreEqual (13, loadedChangedOrder.OrderNumber);
@@ -456,7 +456,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       newItem3.Product = "FooBar, the energy bar with extra Foo";
       newOrder.OrderItems.Add (newItem3);
 
-      using (ClientTransactionMock.CreateSubTransaction().EnterScope())
+      using (ClientTransactionMock.CreateSubTransaction().EnterDiscardingScope())
       {
         Assert.AreSame (loadedOrder, Order.GetObject (DomainObjectIDs.Order1));
         Assert.AreNotSame (loadedItems, loadedOrder.OrderItems);
@@ -484,7 +484,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void SubTransactionCanGetRelatedObjectCollectionEvenWhenObjectsHaveBeenDiscarded ()
     {
       Order loadedOrder = Order.GetObject (DomainObjectIDs.Order1);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         OrderItem orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
         orderItem1.Delete();
@@ -508,12 +508,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       Order newOrder = Order.NewObject ();
 
-      using (ClientTransactionMock.CreateSubTransaction().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterDiscardingScope ())
       {
         loadedOrder.OrderItems.Clear ();
         newOrder.OrderItems.Add (OrderItem.NewObject ());
 
-        using (ClientTransactionMock.EnterScope ())
+        using (ClientTransactionMock.EnterDiscardingScope ())
         {
           Assert.AreEqual (2, loadedOrder.OrderItems.Count);
           Assert.AreSame (loadedItem1, loadedOrder.OrderItems[0]);
@@ -538,7 +538,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Employee newEmployee = Employee.NewObject ();
       newEmployee.Computer = newComputer;
 
-      using (ClientTransactionMock.CreateSubTransaction().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterDiscardingScope ())
       {
         Assert.AreSame (loadedComputer, Computer.GetObject (DomainObjectIDs.Computer1));
         Assert.AreSame (loadedEmployee, Employee.GetObject (DomainObjectIDs.Employee1));
@@ -561,7 +561,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Employee newEmployee = Employee.NewObject ();
       newEmployee.Computer = newComputer;
 
-      using (ClientTransactionMock.CreateSubTransaction().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterDiscardingScope ())
       {
         loadedComputer.Employee = Employee.NewObject ();
         loadedEmployee.Computer = Computer.NewObject ();
@@ -569,7 +569,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         newComputer.Employee = Employee.NewObject ();
         newEmployee.Computer = Computer.NewObject ();
 
-        using (ClientTransactionMock.EnterScope ())
+        using (ClientTransactionMock.EnterDiscardingScope ())
         {
           Assert.AreSame (loadedComputer, loadedEmployee.Computer);
           Assert.AreSame (loadedEmployee, loadedComputer.Employee);

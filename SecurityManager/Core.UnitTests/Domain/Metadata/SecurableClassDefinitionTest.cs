@@ -16,7 +16,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void AddAccessType_TwoNewAccessTypes ()
     {
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         AccessTypeDefinition accessType0 = AccessTypeDefinition.NewObject();
         AccessTypeDefinition accessType1 = AccessTypeDefinition.NewObject();
@@ -41,7 +41,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void AddStateProperty ()
     {
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         StatePropertyDefinition stateProperty = StatePropertyDefinition.NewObject();
         SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
@@ -57,7 +57,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void FindStateCombination_ValidStates ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         StateCombination expectedCombination = testHelper.GetStateCombinationForDeliveredAndUnpaidOrder();
         SecurableClassDefinition orderClass = expectedCombination.Class;
@@ -72,7 +72,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void StateProperties_Empty ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      using (testHelper.Transaction.EnterScope ())
+      using (testHelper.Transaction.EnterNonDiscardingScope ())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
 
@@ -84,7 +84,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void StateProperties_OrderStateAndPaymentState ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinitionWithProperties();
 
@@ -96,7 +96,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void StateProperties_IsCached ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinitionWithProperties();
 
@@ -111,7 +111,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void StateProperties_IsReadOnly ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinitionWithProperties();
 
@@ -123,7 +123,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void StateProperties_IsResetByAddStateProperty ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinitionWithProperties();
 
@@ -139,7 +139,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void AccessTypes_Empty ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
 
@@ -151,7 +151,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void AccessTypes_OneAccessType ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
         testHelper.AttachJournalizeAccessType (orderClass);
@@ -164,7 +164,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void AccessTypes_IsCached ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
         testHelper.AttachJournalizeAccessType (orderClass);
@@ -180,7 +180,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void AccessTypes_IsReadOnly ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
         testHelper.AttachJournalizeAccessType (orderClass);
@@ -193,7 +193,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void AccessTypes_IsResetByAddAccessType ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      using (testHelper.Transaction.EnterScope ())
+      using (testHelper.Transaction.EnterNonDiscardingScope ())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
 
@@ -213,14 +213,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
       SecurableClassDefinition invoiceClass;
-      using (testHelper.Transaction.EnterScope ())
+      using (testHelper.Transaction.EnterNonDiscardingScope ())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
         invoiceClass = testHelper.CreateInvoiceClassDefinition();
         testHelper.Transaction.Commit();
       }
 
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         SecurableClassDefinition foundClass =
             SecurableClassDefinition.FindByName ("Rubicon.SecurityManager.UnitTests.TestDomain.Invoice");
@@ -236,14 +236,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       dbFixtures.CreateEmptyDomain ();
 
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      using (testHelper.Transaction.EnterScope ())
+      using (testHelper.Transaction.EnterNonDiscardingScope ())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
         SecurableClassDefinition invoiceClass = testHelper.CreateInvoiceClassDefinition();
         testHelper.Transaction.Commit();
       }
 
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName ("Invce");
 
@@ -257,7 +257,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       dbFixtures.CreateEmptyDomain();
 
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         DomainObjectCollection result = SecurableClassDefinition.FindAll ();
 
@@ -270,12 +270,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       SecurableClassDefinition[] expectedClassDefinitions;
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
        expectedClassDefinitions = dbFixtures.CreateAndCommitSecurableClassDefinitions (10, ClientTransactionScope.CurrentTransaction);
       }
 
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         DomainObjectCollection result = SecurableClassDefinition.FindAll ();
 
@@ -290,12 +290,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       SecurableClassDefinition[] expectedClassDefinitions;
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         expectedClassDefinitions = dbFixtures.CreateAndCommitSecurableClassDefinitionsWithSubClassesEach (10, 10, ClientTransactionScope.CurrentTransaction);
       }
 
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         DomainObjectCollection result = SecurableClassDefinition.FindAllBaseClasses ();
 
@@ -311,14 +311,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       SecurableClassDefinition expectedBaseClassDefinition;
       ObjectList<SecurableClassDefinition> expectedDerivedClasses;
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         SecurableClassDefinition[] expectedBaseClassDefinitions = dbFixtures.CreateAndCommitSecurableClassDefinitionsWithSubClassesEach (10, 10, ClientTransactionScope.CurrentTransaction);
         expectedBaseClassDefinition = expectedBaseClassDefinitions[4];
         expectedDerivedClasses = expectedBaseClassDefinition.DerivedClasses;
       }
 
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         SecurableClassDefinition actualBaseClassDefinition = SecurableClassDefinition.GetObject (expectedBaseClassDefinition.ID);
 
@@ -331,7 +331,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void CreateAccessControlList ()
     {
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
         DateTime changedAt = classDefinition.ChangedAt;
@@ -349,7 +349,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void CreateAccessControlList_TwoNewAcls ()
     {
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
         DateTime changedAt = classDefinition.ChangedAt;
@@ -373,13 +373,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       SecurableClassDefinition expectedClassDefinition;
       ObjectList<AccessTypeDefinition> expectedAccessTypes;
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         expectedClassDefinition = dbFixtures.CreateAndCommitSecurableClassDefinitionWithAccessTypes (10, ClientTransactionScope.CurrentTransaction);
         expectedAccessTypes = expectedClassDefinition.AccessTypes;
       }
 
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         SecurableClassDefinition actualClassDefinition = SecurableClassDefinition.GetObject (expectedClassDefinition.ID);
 
@@ -396,13 +396,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       SecurableClassDefinition expectedClassDefinition;
       ObjectList<AccessControlList> expectedAcls;
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         expectedClassDefinition = dbFixtures.CreateAndCommitSecurableClassDefinitionWithAccessControlLists (10, ClientTransactionScope.CurrentTransaction);
         expectedAcls = expectedClassDefinition.AccessControlLists;
       }
 
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         SecurableClassDefinition actualClassDefinition = SecurableClassDefinition.GetObject (expectedClassDefinition.ID);
 
@@ -417,7 +417,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void GetChangedAt_AfterCreation ()
     {
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
 
@@ -428,7 +428,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void Touch_AfterCreation ()
     {
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
 
@@ -445,7 +445,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void Validate_Valid ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
         List<StateCombination> stateCombinations = testHelper.CreateOrderStateAndPaymentStateCombinations (orderClass);
@@ -460,7 +460,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void Validate_DoubleStateCombination ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
         List<StateCombination> stateCombinations = testHelper.CreateOrderStateAndPaymentStateCombinations (orderClass);
@@ -478,7 +478,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void ValidateUniqueStateCombinations_NoStateCombinations ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
 
@@ -493,7 +493,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void ValidateUniqueStateCombinations_TwoStatelessCombinations ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
         StateCombination statelessCombination1 = testHelper.CreateStateCombination (orderClass);
@@ -512,7 +512,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void ValidateUniqueStateCombinations_TwoStateCombinations ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
         StatePropertyDefinition paymentProperty = testHelper.CreatePaymentStateProperty (orderClass);
@@ -536,7 +536,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void Commit_TwoStateCombinations ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
         StatePropertyDefinition paymentProperty = testHelper.CreatePaymentStateProperty (orderClass);

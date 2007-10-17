@@ -19,9 +19,9 @@ namespace Rubicon.Data.DomainObjects
     /// </summary>
     Rollback,
     /// <summary>
-    /// Indicates that <see cref="ClientTransactionScope"/> should automatically call <see cref="ClientTransaction.ReturnToParentTransaction"/> at
+    /// Indicates that <see cref="ClientTransactionScope"/> should automatically call <see cref="ClientTransaction.Discard"/> at
     /// its end.
     /// </summary>
-    ReturnToParent
+    Discard
   }
 }

@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void RootToSubUnchanged ()
     {
       DomainObject obj = GetUnchanged ();
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.AreEqual (StateType.Unchanged, obj.State);
       }
@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void RootToSubChangedThroughPropertyValue ()
     {
       Order obj = GetChangedThroughPropertyValue ();
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.AreEqual (StateType.Unchanged, obj.State);
         Assert.AreEqual (obj.OrderNumber,
@@ -38,7 +38,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void RootToSubChangedThroughRelatedObjects ()
     {
       Order obj = GetChangedThroughRelatedObjects ();
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.AreEqual (StateType.Unchanged, obj.State);
         Assert.AreEqual (obj.OrderItems.Count,
@@ -51,7 +51,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void RootToSubChangedThroughRelatedObjectRealSide ()
     {
       Computer obj = GetChangedThroughRelatedObjectRealSide ();
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.AreEqual (StateType.Unchanged, obj.State);
         Assert.AreEqual (obj.Employee,
@@ -64,7 +64,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void RootToSubChangedThroughRelatedObjectVirtualSide ()
     {
       Employee obj = GetChangedThroughRelatedObjectVirtualSide ();
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.AreEqual (StateType.Unchanged, obj.State);
         Assert.AreEqual (obj.Computer,
@@ -77,7 +77,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void RootToSubNewUnchanged ()
     {
       DomainObject obj = GetNewUnchanged ();
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.AreEqual (StateType.Unchanged, obj.State);
       }
@@ -88,7 +88,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void RootToSubNewChanged ()
     {
       DomainObject obj = GetNewChanged ();
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.AreEqual (StateType.Unchanged, obj.State);
       }
@@ -99,7 +99,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void RootToSubDeleted ()
     {
       Order obj = GetDeleted ();
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.IsTrue (obj.IsDiscarded);
       }
@@ -113,7 +113,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       Order obj = GetDeleted ();
       ObjectID id = obj.ID;
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.IsTrue (obj.IsDiscarded);
         Order.GetObject (id);
@@ -126,7 +126,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Client deleted = Client.GetObject (DomainObjectIDs.Client1);
       Location obj = GetUnidirectionalWithDeleted ();
       Assert.AreEqual (StateType.Deleted, deleted.State);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.AreEqual (StateType.Unchanged, obj.State);
         Assert.IsTrue (deleted.IsDiscarded);
@@ -141,7 +141,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void RootToSubUnidirectionalWithDeletedThrowsWhenAccessingTheObject ()
     {
       Location obj = GetUnidirectionalWithDeleted ();
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Client client = obj.Client;
       }
@@ -151,7 +151,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void RootToSubUnidirectionalWithDeletedNew ()
     {
       Location obj = GetUnidirectionalWithDeletedNew ();
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.AreEqual (StateType.Unchanged, obj.State);
       }
@@ -164,7 +164,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void RootToSubUnidirectionalWithDeletedNewThrowsWhenAccessingTheObject ()
     {
       Location obj = GetUnidirectionalWithDeletedNew ();
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Client client = obj.Client;
       }
@@ -174,7 +174,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void RootToSubDiscarded ()
     {
       DomainObject obj = GetDiscarded ();
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.IsTrue (obj.IsDiscarded);
       }

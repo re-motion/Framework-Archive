@@ -17,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void SetUp ()
     {
       ClientTransactionScope.ResetActiveScope ();
-      _outermostScope = ClientTransaction.NewTransaction().EnterScope();
+      _outermostScope = ClientTransaction.NewTransaction().EnterNonDiscardingScope();
     }
 
     [TearDown]
@@ -35,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
       Assert.AreNotSame (clientTransaction, ClientTransactionScope.CurrentTransaction);
-      using (clientTransaction.EnterScope())
+      using (clientTransaction.EnterNonDiscardingScope ())
       {
         Assert.AreSame (clientTransaction, ClientTransactionScope.CurrentTransaction);
       }
@@ -45,7 +45,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void EnterNullScopeSetsNullTransaction ()
     {
-      using (ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
         using (ClientTransactionScope.EnterNullScope ())
@@ -61,7 +61,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       _outermostScope.Leave();
       Assert.IsNull (ClientTransactionScope.ActiveScope);
-      using (ClientTransactionScope scope = ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransactionScope scope = ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         Assert.IsNotNull (ClientTransactionScope.ActiveScope);
         Assert.AreSame (scope, ClientTransactionScope.ActiveScope);
@@ -80,12 +80,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreNotSame (clientTransaction2, original);
       Assert.IsNotNull (original);
 
-      using (ClientTransactionScope scope1 = clientTransaction1.EnterScope())
+      using (ClientTransactionScope scope1 = clientTransaction1.EnterNonDiscardingScope ())
       {
         Assert.AreSame (clientTransaction1, ClientTransactionScope.CurrentTransaction);
         Assert.AreSame (scope1, ClientTransactionScope.ActiveScope);
 
-        using (ClientTransactionScope scope2 = clientTransaction2.EnterScope())
+        using (ClientTransactionScope scope2 = clientTransaction2.EnterNonDiscardingScope ())
         {
           Assert.AreSame (scope2, ClientTransactionScope.ActiveScope);
           Assert.AreSame (clientTransaction2, ClientTransactionScope.CurrentTransaction);
@@ -103,7 +103,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (ClientTransactionScope.EnterNullScope ())
       {
         Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
-        using (ClientTransaction.NewTransaction().EnterScope())
+        using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
         {
           Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
         }
@@ -115,7 +115,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void ScopeCreatesTransactionWithDefaultCtor ()
     {
       ClientTransaction original = ClientTransactionScope.CurrentTransaction;
-      using (ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         Assert.IsNotNull (ClientTransactionScope.CurrentTransaction);
         Assert.AreNotSame (original, ClientTransactionScope.CurrentTransaction);
@@ -128,9 +128,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       ClientTransaction outerTransaction = ClientTransaction.NewTransaction();
       ClientTransaction innerTransaction = ClientTransaction.NewTransaction();
-      using (ClientTransactionScope outer = outerTransaction.EnterScope())
+      using (ClientTransactionScope outer = outerTransaction.EnterNonDiscardingScope ())
       {
-        using (ClientTransactionScope inner = innerTransaction.EnterScope())
+        using (ClientTransactionScope inner = innerTransaction.EnterNonDiscardingScope ())
         {
           Assert.AreSame (innerTransaction, inner.ScopedTransaction);
           Assert.AreSame (outerTransaction, outer.ScopedTransaction);
@@ -141,16 +141,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ScopeHasAutoRollbackBehavior ()
     {
-      using (ClientTransactionScope scope = ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransactionScope scope = ClientTransaction.NewTransaction().EnterDiscardingScope())
       {
-        Assert.AreEqual (AutoRollbackBehavior.ReturnToParent, scope.AutoRollbackBehavior);
+        Assert.AreEqual (AutoRollbackBehavior.Discard, scope.AutoRollbackBehavior);
         scope.AutoRollbackBehavior = AutoRollbackBehavior.None;
         Assert.AreEqual (AutoRollbackBehavior.None, scope.AutoRollbackBehavior);
       }
 
-      using (ClientTransactionScope scope = ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransactionScope scope = ClientTransaction.NewTransaction().EnterDiscardingScope())
       {
-        Assert.AreEqual (AutoRollbackBehavior.ReturnToParent, scope.AutoRollbackBehavior);
+        Assert.AreEqual (AutoRollbackBehavior.Discard, scope.AutoRollbackBehavior);
       }
 
       using (ClientTransactionScope scope = ClientTransaction.NewTransaction().EnterScope (AutoRollbackBehavior.None))
@@ -285,7 +285,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       ClientTransaction transaction = ClientTransaction.NewTransaction();
       TransactionEventCounter eventCounter = new TransactionEventCounter (transaction);
-      using (ClientTransactionScope scope = transaction.EnterScope())
+      using (ClientTransactionScope scope = transaction.EnterNonDiscardingScope ())
       {
         Assert.AreEqual (0, eventCounter.Commits);
         Assert.AreEqual (0, eventCounter.Rollbacks);
@@ -316,7 +316,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The ClientTransactionScope has already been left.")]
     public void LeaveTwiceThrows ()
     {
-      ClientTransactionScope scope = ClientTransaction.NewTransaction().EnterScope();
+      ClientTransactionScope scope = ClientTransaction.NewTransaction ().EnterNonDiscardingScope ();
       scope.Leave ();
       scope.Leave ();
     }
@@ -325,7 +325,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The ClientTransactionScope has already been left.")]
     public void LeaveAndDisposeThrows ()
     {
-      using (ClientTransactionScope scope = ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransactionScope scope = ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         scope.Leave();
       }
@@ -336,7 +336,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       Order order = Order.GetObject (new DomainObjectIDs ().Order1);
       Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
-      using (ClientTransactionScope scope = ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransactionScope scope = ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         Assert.IsFalse (scope.AutoEnlistDomainObjects);
         Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
@@ -352,7 +352,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.IsTrue (order1.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
       ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
 
-      using (ClientTransactionScope scope = clientTransaction.EnterScope())
+      using (ClientTransactionScope scope = clientTransaction.EnterNonDiscardingScope ())
       {
         scope.AutoEnlistDomainObjects = true;
         Assert.IsTrue (order1.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
@@ -361,7 +361,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.IsFalse (order2.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
       }
 
-      using (ClientTransactionScope scope = clientTransaction.EnterScope ())
+      using (ClientTransactionScope scope = clientTransaction.EnterNonDiscardingScope ())
       {
         Assert.IsFalse (scope.AutoEnlistDomainObjects);
         Assert.IsFalse (order2.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
@@ -375,7 +375,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ResetScope ()
     {
-      ClientTransactionScope scope = ClientTransaction.NewTransaction().EnterScope();
+      ClientTransactionScope scope = ClientTransaction.NewTransaction ().EnterNonDiscardingScope ();
       Assert.IsNotNull (ClientTransactionScope.ActiveScope);
       Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
       ClientTransactionScope.ResetActiveScope ();
@@ -384,20 +384,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void AutoReturnToParentBehavior ()
+    public void AutoDiscardBehavior ()
     {
       MockRepository mockRepository = new MockRepository();
 
       ClientTransaction subTransaction =
           mockRepository.CreateMock<ClientTransaction> (new Dictionary<Enum, object>(), new ClientTransactionExtensionCollection());
 
-      Expect.Call (subTransaction.EnterScope(AutoRollbackBehavior.ReturnToParent))
-          .Return (PrivateInvoke.CreateInstanceNonPublicCtor (typeof (ClientTransactionScope), subTransaction, AutoRollbackBehavior.ReturnToParent));
-      Expect.Call (subTransaction.ReturnToParentTransaction ()).Return (true);
+      Expect.Call (subTransaction.EnterScope(AutoRollbackBehavior.Discard))
+          .Return (PrivateInvoke.CreateInstanceNonPublicCtor (typeof (ClientTransactionScope), subTransaction, AutoRollbackBehavior.Discard));
+      Expect.Call (subTransaction.Discard ()).Return (true);
 
       mockRepository.ReplayAll ();
 
-      using (subTransaction.EnterScope (AutoRollbackBehavior.ReturnToParent))
+      using (subTransaction.EnterScope (AutoRollbackBehavior.Discard))
       {
       }
 
@@ -413,7 +413,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         using (ClientTransaction.NewTransaction().EnterScope (AutoRollbackBehavior.Rollback))
         {
-          ClientTransaction.NewTransaction().EnterScope();
+          ClientTransaction.NewTransaction().EnterNonDiscardingScope();
         }
       }
       finally

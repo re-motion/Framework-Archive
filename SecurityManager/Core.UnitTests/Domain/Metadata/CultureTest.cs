@@ -20,7 +20,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       base.SetUp ();
 
-      ClientTransaction.NewTransaction ().EnterNonReturningScope ();
+      ClientTransaction.NewTransaction ().EnterNonDiscardingScope ();
     }
 
     [Test]

@@ -27,11 +27,6 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       _enlistedObjects = new Dictionary<ObjectID, DomainObject>();
     }
 
-    public override bool IsDiscarded
-    {
-      get { return false; }
-    }
-
     public override ClientTransaction ParentTransaction
     {
       get { return null; }
@@ -53,12 +48,6 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       }
     }
 
-    public override bool ReturnToParentTransaction ()
-    {
-      return false;
-    }
-
-    
     protected internal override bool DoEnlistDomainObject (DomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -141,7 +130,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     internal protected override DataContainer LoadDataContainerForExistingObject (DomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      using (EnterNonReturningScope ())
+      using (EnterNonDiscardingScope ())
       {
         DataContainer dataContainer = LoadDataContainer (domainObject.ID);
         dataContainer.SetDomainObject (domainObject);
@@ -156,7 +145,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     internal protected override DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)
     {
       ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-      using (EnterNonReturningScope())
+      using (EnterNonDiscardingScope())
       {
         DomainObject domainObject = GetObject (relationEndPointID.ObjectID, false);
 
@@ -186,7 +175,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     internal protected override DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID)
     {
       ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-      using (EnterNonReturningScope())
+      using (EnterNonDiscardingScope())
       {
         using (PersistenceManager persistenceManager = new PersistenceManager())
         {

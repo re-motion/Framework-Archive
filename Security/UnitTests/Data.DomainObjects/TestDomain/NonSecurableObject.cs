@@ -10,7 +10,7 @@ namespace Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain
   {
     public static NonSecurableObject NewObject (ClientTransaction clientTransaction)
     {
-      using (clientTransaction.EnterNonReturningScope())
+      using (clientTransaction.EnterNonDiscardingScope())
       {
         return DomainObject.NewObject<NonSecurableObject>().With();
       }

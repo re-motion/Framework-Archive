@@ -4,7 +4,6 @@ using Rubicon.Reflection;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
-  // Assists the DomainObject factory methods in creating domain objects.
   /// <summary>
   /// Provides a common interface for classes creating new instances of <see cref="DomainObject"/> types.
   /// </summary>
@@ -28,7 +27,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <summary>
     /// Gets a typesafe constructor invoker for the given <see cref="DomainObject"/> type <paramref name="domainObjectType"/>.
     /// </summary>
-    /// <param name="domainObjectType"/>The <see cref="DomainObject"/> type to construct by the returned object.</param>
+    /// <param name="domainObjectType">The <see cref="DomainObject"/> type to construct by the returned object.</param>
     /// <returns>An object that allows construction of an instance of type <paramref name="domainObjectType"/>. The <see cref="DomainObject"/>
     /// constructed by this object will be a completely new instance, with no reference to an existing <see cref="DataContainer"/>.</returns>
     IFuncInvoker<DomainObject> GetTypesafeConstructorInvoker (Type domainObjectType);

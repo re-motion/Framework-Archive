@@ -25,7 +25,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     {
       CreateEmptyDomain ();
 
-      using (transaction.EnterScope ())
+      using (transaction.EnterNonDiscardingScope ())
       {
         SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition ();
 
@@ -44,7 +44,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     {
       CreateEmptyDomain ();
 
-      using (transaction.EnterScope ())
+      using (transaction.EnterNonDiscardingScope ())
       {
         AbstractRoleDefinition qualityManagerRole = AbstractRoleDefinition.NewObject (
             Guid.NewGuid (),
@@ -119,7 +119,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     public SecurableClassDefinition[] CreateAndCommitSecurableClassDefinitionsWithSubClassesEach (int classDefinitionCount, int derivedClassDefinitionCount, ClientTransaction transaction)
     {
       CreateEmptyDomain ();
-      using (transaction.EnterScope ())
+      using (transaction.EnterNonDiscardingScope ())
       {
         SecurableClassDefinition[] classDefinitions = CreateSecurableClassDefinitions (classDefinitionCount, derivedClassDefinitionCount);
 
@@ -132,7 +132,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     public SecurableClassDefinition[] CreateAndCommitSecurableClassDefinitions (int classDefinitionCount, ClientTransaction transaction)
     {
       CreateEmptyDomain ();
-      using (transaction.EnterScope ())
+      using (transaction.EnterNonDiscardingScope ())
       {
         SecurableClassDefinition[] classDefinitions = CreateSecurableClassDefinitions (classDefinitionCount, 0);
 
@@ -145,7 +145,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     public SecurableClassDefinition CreateAndCommitSecurableClassDefinitionWithStates (ClientTransaction transaction)
     {
       CreateEmptyDomain ();
-      using (transaction.EnterScope ())
+      using (transaction.EnterNonDiscardingScope ())
       {
         SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition ();
 
@@ -161,7 +161,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     public SecurableClassDefinition CreateAndCommitSecurableClassDefinitionWithAccessTypes (int accessTypes, ClientTransaction transaction)
     {
       CreateEmptyDomain ();
-      using (transaction.EnterScope ())
+      using (transaction.EnterNonDiscardingScope ())
       {
         SecurableClassDefinition classDefinition = CreateSecurableClassDefinitionWithAccessTypes (accessTypes);
 
@@ -175,7 +175,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     {
       CreateEmptyDomain ();
 
-      using (transaction.EnterScope ())
+      using (transaction.EnterNonDiscardingScope ())
       {
         SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition ();
         for (int i = 0; i < accessControlLists; i++)
@@ -199,7 +199,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     {
       CreateEmptyDomain ();
 
-      using (transaction.EnterScope ())
+      using (transaction.EnterNonDiscardingScope ())
       {
         SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition ();
         AccessControlList acl = AccessControlList.NewObject ();
@@ -218,7 +218,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     public AccessControlList CreateAndCommitAccessControlListWithStateCombinations (int stateCombinations, ClientTransaction transaction)
     {
       CreateEmptyDomain ();
-      using (transaction.EnterScope ())
+      using (transaction.EnterNonDiscardingScope ())
       {
         SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition ();
         AccessControlList acl = AccessControlList.NewObject ();
@@ -243,7 +243,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     {
       CreateEmptyDomain ();
 
-      using (transaction.EnterScope ())
+      using (transaction.EnterNonDiscardingScope ())
       {
         Guid metadataItemID = new Guid ("00000004-0001-0000-0000-000000000000");
         string abstractRoleName = "Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRoles, Rubicon.Security.UnitTests.TestDomain";
@@ -257,7 +257,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     {
       CreateEmptyDomain ();
 
-      using (transaction.EnterScope ())
+      using (transaction.EnterNonDiscardingScope ())
       {
         SecurableClassDefinition classDefinition = CreateSecurableClassDefinitionWithAccessTypes (permissions);
         AccessControlList acl = classDefinition.CreateAccessControlList ();
@@ -379,7 +379,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
 
     private SecurableClassDefinition CreateSecurableClassDefinition (ClientTransaction transaction, Guid metadataItemID, string name)
     {
-      using (transaction.EnterScope ())
+      using (transaction.EnterNonDiscardingScope ())
       {
         SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject ();
         classDefinition.MetadataItemID = metadataItemID;
@@ -391,7 +391,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
 
     private StatePropertyDefinition CreateFileStateProperty (ClientTransaction transaction)
     {
-      using (transaction.EnterScope ())
+      using (transaction.EnterNonDiscardingScope ())
       {
         StatePropertyDefinition fileStateProperty = StatePropertyDefinition.NewObject (new Guid ("9e689c4c-3758-436e-ac86-23171289fa5e"), "FileState");
         fileStateProperty.AddState ("Open", 0);

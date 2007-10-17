@@ -41,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _extension = _mockRepository.CreateMock<IClientTransactionExtension> ();
 
       _subTransaction = ClientTransactionMock.CreateSubTransaction ();
-      _subTransactionScope = _subTransaction.EnterScope ();
+      _subTransactionScope = _subTransaction.EnterDiscardingScope ();
 
       _order1 = Order.GetObject (DomainObjectIDs.Order1);
 
@@ -663,7 +663,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       }
 
       _mockRepository.ReplayAll ();
-      using (_subTransaction.EnterScope ())
+      using (_subTransaction.EnterDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
 

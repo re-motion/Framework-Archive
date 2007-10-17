@@ -34,7 +34,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public AbstractRoleDefinition CreateClerkAbstractRole (int index)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (
             new Guid ("00000003-0001-0000-0000-000000000000"),
@@ -48,7 +48,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public AbstractRoleDefinition CreateSecretaryAbstractRole (int index)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (
             new Guid ("00000003-0002-0000-0000-000000000000"),
@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public AbstractRoleDefinition CreateAdministratorAbstractRole (int index)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (
             new Guid ("00000004-0001-0000-0000-000000000000"),
@@ -76,7 +76,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public AccessTypeDefinition CreateAccessTypeCreate (int index)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         AccessTypeDefinition type = AccessTypeDefinition.NewObject (
             new Guid ("1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"),
@@ -90,7 +90,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public AccessTypeDefinition CreateAccessTypeRead (int index)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         AccessTypeDefinition type = AccessTypeDefinition.NewObject (
             new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a"),
@@ -104,7 +104,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public AccessTypeDefinition CreateAccessTypeEdit (int index)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         AccessTypeDefinition type = AccessTypeDefinition.NewObject (
             new Guid ("11186122-6de0-4194-b434-9979230c41fd"),
@@ -118,7 +118,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public StatePropertyDefinition CreateConfidentialityProperty (int index)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         StatePropertyDefinition property = StatePropertyDefinition.NewObject (new Guid ("00000000-0000-0000-0001-000000000001"), "Confidentiality");
         property.Index = index;
@@ -132,7 +132,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public StatePropertyDefinition CreateFileStateProperty (int index)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         StatePropertyDefinition property = StatePropertyDefinition.NewObject (new Guid ("00000000-0000-0000-0002-000000000001"), "State");
         property.Index = index;
@@ -156,7 +156,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public StatePropertyDefinition CreateNewStateProperty (string name)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         return StatePropertyDefinition.NewObject (Guid.NewGuid(), name);
       }
@@ -164,7 +164,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public StateDefinition CreateState (string name, int value)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         StateDefinition state = StateDefinition.NewObject (name, value);
         state.Index = value;

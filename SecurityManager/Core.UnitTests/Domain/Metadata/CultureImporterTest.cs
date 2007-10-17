@@ -39,7 +39,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (cultureXml));
 
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         Assert.AreEqual (0, _importer.LocalizedNames.Count, "LocalizedNames count");
         Assert.IsNotNull (_importer.Cultures, "Cultures");
@@ -61,7 +61,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (cultureXml));
 
-      using (_transaction.EnterScope ())
+      using (_transaction.EnterNonDiscardingScope ())
       {
         Assert.AreEqual (1, _importer.LocalizedNames.Count, "LocalizedNames count");
         Assert.AreEqual ("Beamter", _importer.LocalizedNames[0].Text);
@@ -122,7 +122,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (cultureXml));
 
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         Assert.AreEqual (3, _importer.LocalizedNames.Count, "LocalizedNames count");
         Assert.AreEqual ("Beamter", _importer.LocalizedNames[0].Text);
@@ -168,7 +168,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       ObjectID clerkNameID;
       ObjectID confidentialityNameID;
       _importer.Import (GetXmlDocument (cultureXml));
-      using (_transaction.EnterScope ())
+      using (_transaction.EnterNonDiscardingScope ())
       {
         clerkNameID = _importer.LocalizedNames[0].ID;
         confidentialityNameID = _importer.LocalizedNames[1].ID;
@@ -192,7 +192,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (cultureXml));
 
-      using (_transaction.EnterScope ())
+      using (_transaction.EnterNonDiscardingScope ())
       {
         Assert.AreEqual (3, _importer.LocalizedNames.Count, "LocalizedNames count");
         Assert.AreEqual ("Beamter", _importer.LocalizedNames[0].Text);

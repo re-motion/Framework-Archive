@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       ArgumentUtility.CheckNotNull ("principal", principal);
       ArgumentUtility.CheckNotNull ("context", context);
 
-      using (transaction.EnterScope())
+      using (transaction.EnterNonDiscardingScope())
       {
         User user = GetUser (principal.Identity.Name);
         Tenant owningTenant = GetTenant (context.OwnerTenant);

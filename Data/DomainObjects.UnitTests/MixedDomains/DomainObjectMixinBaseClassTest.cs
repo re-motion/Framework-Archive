@@ -110,7 +110,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
       Assert.AreEqual (LoadMode.WholeDomainObjectInitialized, _loadedOrderMixin.OnDomainObjectLoadedLoadMode);
 
       _loadedOrderMixin.OnDomainObjectLoadedCalled = false;
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         ClientTransaction.Current.EnlistDomainObject (_loadedOrder);
         ++_loadedOrder.OrderNumber;

@@ -31,7 +31,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.SetUp ();
 
       _testHelper = new OrganizationalStructureTestHelper ();
-      _testHelper.Transaction.EnterScope();
+      _testHelper.Transaction.EnterNonDiscardingScope();
     }
 
     [Test]

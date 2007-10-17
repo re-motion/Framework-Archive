@@ -12,7 +12,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     {
       base.SetUp ();
 
-      ClientTransaction.NewTransaction ().EnterNonReturningScope ();
+      ClientTransaction.NewTransaction ().EnterNonDiscardingScope ();
     }
 
     [Test]

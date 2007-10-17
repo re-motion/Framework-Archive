@@ -27,7 +27,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public Tenant CreateTenant (ClientTransaction transaction, string name, string uniqueIdentifier)
     {
-      using (transaction.EnterScope())
+      using (transaction.EnterNonDiscardingScope())
       {
         Tenant tenant = _factory.CreateTenant ();
         tenant.UniqueIdentifier = uniqueIdentifier;
@@ -44,7 +44,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public Group CreateGroup (ClientTransaction transaction, string name, string uniqueIdentifier, Group parent, Tenant tenant)
     {
-      using (transaction.EnterScope())
+      using (transaction.EnterNonDiscardingScope())
       {
         Group group = _factory.CreateGroup ();
         group.Name = name;
@@ -58,7 +58,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public User CreateUser (string userName, string firstName, string lastName, string title, Group owningGroup, Tenant tenant)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         User user = _factory.CreateUser ();
         user.UserName = userName;
@@ -74,7 +74,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public Position CreatePosition (string name)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         Position position = _factory.CreatePosition ();
         position.Name = name;
@@ -85,7 +85,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public Role CreateRole (User user, Group group, Position position)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         Role role = Role.NewObject();
         role.User = user;
@@ -98,7 +98,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public GroupType CreateGroupType (string name)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         GroupType groupType = GroupType.NewObject();
         groupType.Name = name;
@@ -109,7 +109,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public GroupTypePosition CreateGroupTypePosition (GroupType groupType, Position position)
     {
-      using (_transaction.EnterScope ())
+      using (_transaction.EnterNonDiscardingScope ())
       {
         GroupTypePosition concretePosition = GroupTypePosition.NewObject();
         concretePosition.GroupType = groupType;

@@ -60,7 +60,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
     {
       base.SetUp ();
       MappingConfiguration.SetCurrent (s_mappingConfiguration);
-      _clientTransactionScope = ClientTransaction.NewTransaction ().EnterNonReturningScope ();
+      _clientTransactionScope = ClientTransaction.NewTransaction ().EnterNonDiscardingScope ();
     }
 
     public override void TearDown ()

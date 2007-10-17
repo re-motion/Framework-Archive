@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _newTransaction = new ClientTransactionMock ();
       _newTransaction.Extensions.Add ("TestExtension", _extension);
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         Dev.Null = _order1.OrderNumber; // preload _order1
@@ -68,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll ();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         Order.NewObject();
       }
@@ -90,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         Dev.Null = Order.GetObject (DomainObjectIDs.Order2);
         Dev.Null = Order.GetObject (DomainObjectIDs.Order2);
@@ -151,7 +151,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _mockRepository.BackToRecordAll ();
       RecordObjectLoadingCalls (_newTransaction, expectedMainObjectID, expectCollection, expectLoadedEvent, expectedRelatedIDs);
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         _mockRepository.ReplayAll ();
 
@@ -259,7 +259,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
       }
@@ -276,7 +276,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         Order order = Order.GetObject (DomainObjectIDs.Order2);
       }
@@ -303,7 +303,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
       }
@@ -316,7 +316,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       Computer computer;
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         computer = Computer.GetObject (DomainObjectIDs.Computer4);
       }
@@ -334,7 +334,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope())
+      using (_newTransaction.EnterNonDiscardingScope())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         computer.Delete();
@@ -354,7 +354,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       OrderCollection customerOrders;
       DomainObjectCollection officialOrders;
       Order preloadedOrder1;
-      using (_newTransaction.EnterScope())
+      using (_newTransaction.EnterNonDiscardingScope())
       {
         orderItem1 = (OrderItem) _order1.OrderItems[0];
         orderItem2 = (OrderItem) _order1.OrderItems[1];
@@ -435,7 +435,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       }
 
       _mockRepository.ReplayAll();
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         _order1.Delete();
@@ -452,7 +452,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         location = Location.GetObject (DomainObjectIDs.Location1);
         deletedClient = location.Client;
@@ -470,7 +470,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll ();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         location.Client = newClient;
       }
@@ -487,7 +487,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         location = Location.GetObject (DomainObjectIDs.Location1);
         location.Client = Client.NewObject();
@@ -508,7 +508,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll ();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         location.Client = newClient;
       }
@@ -521,7 +521,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       Computer computer;
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         computer = Computer.GetObject (DomainObjectIDs.Computer4);
       }
@@ -535,7 +535,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         computer.Delete();
@@ -573,7 +573,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       }
 
       _mockRepository.ReplayAll();
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
 
@@ -620,7 +620,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
 
@@ -681,7 +681,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       }
 
       _mockRepository.ReplayAll();
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
 
@@ -717,7 +717,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         _order1.OrderNumber = oldOrderNumber + 1;
@@ -787,7 +787,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         _order1.OrderNumber = oldOrderNumber + 1;
@@ -842,7 +842,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       OrderTicket orderTicket;
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         orderTicket = _order1.OrderTicket;
       }
@@ -857,7 +857,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         Dev.Null = _order1.OrderTicket;
@@ -870,7 +870,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void GetOriginalRelatedObject ()
     {
       OrderTicket originalOrderTicket;
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         originalOrderTicket =
@@ -886,7 +886,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         Dev.Null = (OrderTicket) _order1.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
@@ -899,7 +899,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void GetRelatedObjects ()
     {
       DomainObjectCollection orderItems;
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         orderItems = _order1.OrderItems;
@@ -921,7 +921,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         Dev.Null = _order1.OrderItems;
@@ -934,7 +934,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void GetOriginalRelatedObjects ()
     {
       DomainObjectCollection originalOrderItems;
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         originalOrderItems = _order1.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
@@ -957,7 +957,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         Dev.Null = _order1.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
@@ -989,7 +989,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       }
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         Dev.Null = _order1.OrderTicket;
@@ -1021,7 +1021,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       }
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         Dev.Null = _order1.OrderItems;
@@ -1054,7 +1054,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       }
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         Dev.Null = _order1.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
@@ -1087,7 +1087,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       }
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         Dev.Null = _order1.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
@@ -1100,7 +1100,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       Query query = new Query ("OrderQuery");
       query.Parameters.Add ("@customerID", DomainObjectIDs.Customer1);
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
       }
@@ -1112,7 +1112,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
       }
@@ -1141,7 +1141,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
       }
@@ -1188,7 +1188,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         DomainObjectCollection queryResult = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
         Assert.AreEqual (1, queryResult.Count);
@@ -1201,7 +1201,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void CommitWithChangedPropertyValue ()
     {
       Computer computer;
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         computer = Computer.GetObject (DomainObjectIDs.Computer4);
         computer.SerialNumber = "newSerialNumber";
@@ -1219,7 +1219,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.Commit();
       }
@@ -1232,7 +1232,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       Computer computer;
       Employee employee ;
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         computer = Computer.GetObject (DomainObjectIDs.Computer4);
         employee = Employee.GetObject (DomainObjectIDs.Employee1);
@@ -1250,7 +1250,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.Commit();
       }
@@ -1262,7 +1262,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       Customer oldCustomer;
       Customer newCustomer;
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects = true;
         oldCustomer = _order1.Customer;
@@ -1283,7 +1283,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.Commit();
       }
@@ -1296,7 +1296,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       SetDatabaseModifyable();
 
       Computer computer;
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         computer = Computer.GetObject (DomainObjectIDs.Computer4);
         computer.SerialNumber = "newSerialNumber";
@@ -1333,7 +1333,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.Commit();
       }
@@ -1374,7 +1374,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void Rollback ()
     {
       Computer computer;
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         computer = Computer.GetObject (DomainObjectIDs.Computer4);
         computer.SerialNumber = "newSerialNumber";
@@ -1393,7 +1393,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.Rollback();
       }
@@ -1413,7 +1413,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll ();
 
-      using (_newTransaction.EnterScope ())
+      using (_newTransaction.EnterNonDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.CreateSubTransaction ();
       }

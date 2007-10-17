@@ -22,7 +22,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
     {
       base.SetUp ();
 
-      ClientTransaction.NewTransaction ().EnterNonReturningScope ();
+      ClientTransaction.NewTransaction ().EnterNonDiscardingScope ();
 
       _metadataObject = SecurableClassDefinition.NewObject();
       _metadataObject.Name = "Technical Name";

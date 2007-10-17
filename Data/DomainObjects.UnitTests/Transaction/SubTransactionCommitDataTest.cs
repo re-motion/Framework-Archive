@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void CommitPropagatesChangesToLoadedObjectsToParentTransaction ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      using (ClientTransactionMock.CreateSubTransaction().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterDiscardingScope ())
       {
         order.OrderNumber = 5;
 
@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void CommitPropagatesChangesToNewObjectsToParentTransaction ()
     {
       ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.NewObject ();
-      using (ClientTransactionMock.CreateSubTransaction().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterDiscardingScope ())
       {
         classWithAllDataTypes.Int32Property = 7;
 
@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void CommitLeavesUnchangedObjectsLoadedInSub ()
     {
       Order order;
-      using (ClientTransactionMock.CreateSubTransaction().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterDiscardingScope ())
       {
         order = Order.GetObject (DomainObjectIDs.Order1);
 
@@ -59,7 +59,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void CommitLeavesUnchangedObjectsLoadedInRoot ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      using (ClientTransactionMock.CreateSubTransaction().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.Commit ();
         Assert.AreEqual (1, order.OrderNumber);
@@ -72,7 +72,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void CommitLeavesUnchangedNewObjects ()
     {
       Order order = Order.NewObject ();
-      using (ClientTransactionMock.CreateSubTransaction().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.Commit ();
         Assert.AreEqual (0, order.OrderNumber);
@@ -90,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       loadedOrder.OrderNumber = 5;
       newClassWithAllDataTypes.Int16Property = 7;
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         loadedOrder.OrderNumber = 13;
         newClassWithAllDataTypes.Int16Property = 47;
@@ -130,7 +130,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       OrderItem newOrderItem;
       OrderTicket newOrderTicket;
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         newOrderItem = OrderItem.NewObject ();
 
@@ -183,7 +183,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Client newClient1 = Client.NewObject ();
       Client newClient2;
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         newEmployee = Employee.NewObject ();
         computer.Employee = newEmployee;
@@ -222,7 +222,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Customer newCustomer;
       Ceo newCeo;
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         order = Order.NewObject ();
         
@@ -263,7 +263,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitObjectInSubTransactionAndReloadInParent ()
     {
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Order orderInSub = Order.GetObject (DomainObjectIDs.Order1);
         Assert.AreNotEqual (4711, orderInSub.OrderNumber);
@@ -278,7 +278,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitObjectInSubTransactionAndReloadInNewSub ()
     {
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Order orderInSub = Order.GetObject (DomainObjectIDs.Order1);
         Assert.AreNotEqual (4711, orderInSub.OrderNumber);
@@ -286,7 +286,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         ClientTransactionScope.CurrentTransaction.Commit ();
       }
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Order orderInSub = Order.GetObject (DomainObjectIDs.Order1);
         Assert.AreEqual (4711, orderInSub.OrderNumber);
@@ -302,10 +302,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreNotEqual (7, cwadt.Int32Property);
       Assert.AreNotEqual (8, cwadt.Int16Property);
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
       {
         cwadt.Int32Property = 7;
-        using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+        using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
         {
           Assert.AreEqual (7, cwadt.Int32Property);
           cwadt.Int16Property = 8;
@@ -319,7 +319,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreEqual (8, cwadt.Int16Property);
       ClientTransactionMock.Commit ();
 
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         ClientTransaction.Current.EnlistDomainObject (cwadt);
         Assert.AreEqual (7, cwadt.Int32Property);
@@ -335,16 +335,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
       Assert.AreEqual (StateType.Unchanged, cwadt.InternalDataContainer.State);
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.AreEqual (StateType.Unchanged, cwadt.InternalDataContainer.State);
 
-        using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+        using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
         {
           cwadt.MarkAsChanged ();
           Assert.AreEqual (StateType.Changed, cwadt.InternalDataContainer.State);
 
-          using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+          using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
           {
             Assert.AreEqual (StateType.Unchanged, cwadt.InternalDataContainer.State);
             ++cwadt.Int32Property;
@@ -383,7 +383,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreEqual (32767, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
       Assert.AreEqual (2147483647, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
       {
         cwadt.Int32Property = 7;
         Assert.IsTrue (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
@@ -393,7 +393,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.AreEqual (32767, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].OriginalValue);
         Assert.AreEqual (2147483647, cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].OriginalValue);
 
-        using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+        using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
         {
           Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int32Property"].HasChanged);
           Assert.IsFalse (cwadt.InternalDataContainer.PropertyValues[typeof (ClassWithAllDataTypes).FullName + ".Int16Property"].HasChanged);
@@ -470,14 +470,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       RelationEndPointID propertyID = new RelationEndPointID (orderTicket.ID, typeof (OrderTicket).FullName + ".Order");
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
       {
         orderTicket.Order = newOrder;
         oldOrder.OrderTicket = oldOrderTicket;
         Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
         Assert.AreEqual (oldOrder.ID, ((ObjectEndPoint)GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
 
-        using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+        using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
         {
           Assert.AreEqual (newOrder, orderTicket.Order);
 
@@ -527,7 +527,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       RelationEndPointID propertyID = new RelationEndPointID (order3.ID, typeof (Order).FullName + ".OrderTicket");
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
       {
         order3.OrderTicket = orderTicket1;
         orderTicket3.Order = order1;
@@ -535,7 +535,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.IsTrue (GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID].HasChanged);
         Assert.AreEqual (orderTicket3.ID, ((ObjectEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeObjectID);
 
-        using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+        using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
         {
           Assert.AreEqual (orderTicket1, order3.OrderTicket);
 
@@ -580,7 +580,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       RelationEndPointID propertyID = new RelationEndPointID (order.ID, typeof (Order).FullName + ".OrderItems");
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
       {
         order.OrderItems.Add (newItem);
 
@@ -588,7 +588,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.IsFalse (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (newItem));
         Assert.IsTrue (((CollectionEndPoint) GetDataManager (ClientTransaction.Current).RelationEndPointMap[propertyID]).OriginalOppositeDomainObjects.ContainsObject (firstItem));
 
-        using (ClientTransaction.Current.CreateSubTransaction ().EnterScope ())
+        using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
         {
           Assert.IsTrue (order.OrderItems.ContainsObject (newItem));
 

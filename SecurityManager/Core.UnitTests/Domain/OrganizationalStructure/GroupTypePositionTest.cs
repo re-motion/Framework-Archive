@@ -11,7 +11,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public override void SetUp ()
     {
       base.SetUp ();
-      ClientTransaction.NewTransaction ().EnterNonReturningScope ();
+      ClientTransaction.NewTransaction ().EnterNonDiscardingScope ();
     }
 
     [Test]

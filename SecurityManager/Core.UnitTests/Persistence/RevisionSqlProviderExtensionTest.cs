@@ -16,7 +16,7 @@ namespace Rubicon.SecurityManager.UnitTests.Persistence
     {
       base.SetUp ();
 
-      ClientTransaction.NewTransaction ().EnterNonReturningScope ();
+      ClientTransaction.NewTransaction ().EnterNonDiscardingScope ();
 
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateEmptyDomain ();

@@ -99,7 +99,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
     protected override void SetCurrentTransaction (ClientTransaction transaction)
     {
       ScopeStack.Push (ClientTransactionScope.ActiveScope);
-      ClientTransactionScope newScope = transaction.EnterNonReturningScope(); // set new scope and store old one
+      ClientTransactionScope newScope = transaction.EnterNonDiscardingScope(); // set new scope and store old one
       Assertion.IsTrue (ClientTransactionScope.ActiveScope == newScope);
     }
 
@@ -125,7 +125,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
         // there was a Thread transition during execution of this function, we need to restore the transaction that was active when this whole thing
         // started
         // we cannot restore the same scope we had on the other thread, but we can restore the transaction
-        previousTransaction.EnterNonReturningScope();
+        previousTransaction.EnterNonDiscardingScope();
       }
 
       Assertion.IsTrue ((previousTransaction == null && !ClientTransactionScope.HasCurrentTransaction)

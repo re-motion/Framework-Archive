@@ -6,13 +6,13 @@ using Rubicon.Data.DomainObjects.Infrastructure;
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
   [TestFixture]
-  public class InvalidatedSubTransactionListenerTest
+  public class InvalidatedTransactionListenerTest
   {
     [Test]
     public void AllMethodsMustThrow ()
     {
-      InvalidatedSubTransactionListener listener = new InvalidatedSubTransactionListener();
-      MethodInfo[] methods = typeof (InvalidatedSubTransactionListener).GetMethods (BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+      InvalidatedTransactionListener listener = new InvalidatedTransactionListener();
+      MethodInfo[] methods = typeof (InvalidatedTransactionListener).GetMethods (BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
       Assert.AreEqual (33, methods.Length);
 
       foreach (MethodInfo method in methods)
@@ -20,12 +20,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         object[] arguments =
             Array.ConvertAll<ParameterInfo, object> (method.GetParameters(), delegate (ParameterInfo p) { return GetDefaultValue (p.ParameterType); });
 
-        ExpectException (typeof (InvalidOperationException), "The subtransaction can no longer be used because control has "
-            + "returned to its parent transaction.", listener, method, arguments);
+        ExpectException (typeof (InvalidOperationException), "The transaction can no longer be used because it has been discarded.",
+            listener, method, arguments);
       }
     }
 
-    private void ExpectException (Type expectedExceptionType, string expectedMessage, InvalidatedSubTransactionListener listener,
+    private void ExpectException (Type expectedExceptionType, string expectedMessage, InvalidatedTransactionListener listener,
         MethodInfo method, object[] arguments)
     {
       try

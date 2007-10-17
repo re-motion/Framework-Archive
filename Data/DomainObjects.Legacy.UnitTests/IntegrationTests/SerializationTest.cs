@@ -194,7 +194,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
       DomainObjectCollection[] deserializedCollections = (DomainObjectCollection[]) deserializedObjects[1];
       ClientTransaction deserializedClientTransaction = (ClientTransaction) deserializedObjects[2];
 
-      using (deserializedClientTransaction.EnterNonReturningScope())
+      using (deserializedClientTransaction.EnterNonDiscardingScope())
       {
         SequenceEventReceiver deserializedEventReceiver = (SequenceEventReceiver) deserializedObjects[3];
 
@@ -493,7 +493,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
       Employee deserializedEmployee6 = deserializedEmployees[5];
       Employee deserializedEmployee7 = deserializedEmployees[6];
 
-      using (deserializedTransaction.EnterScope ())
+      using (deserializedTransaction.EnterDiscardingScope ())
       {
         DomainObjectCollection deserializedEmployee1Subordinates = deserializedEmployee1.Subordinates;
         Employee deserializedEmployee1Supervisor = deserializedEmployee1.Supervisor;
@@ -561,7 +561,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
       Location deserializedLocation2 = deserializedLocations[1];
       Location deserializedLocation3 = deserializedLocations[2];
 
-      using (deserializedTransaction.EnterScope ())
+      using (deserializedTransaction.EnterDiscardingScope ())
       {
         Assert.AreEqual (location1.ID, deserializedLocation1.ID);
         AreEqual (location1Client, deserializedLocation1.Client);

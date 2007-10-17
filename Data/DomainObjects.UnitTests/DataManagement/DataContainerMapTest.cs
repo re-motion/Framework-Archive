@@ -83,7 +83,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void RollbackForDeletedObject ()
     {
-      using (ClientTransactionMock.EnterScope ())
+      using (ClientTransactionMock.EnterDiscardingScope ())
       {
         _map.Register (_existingOrder);
 
@@ -116,7 +116,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
         MatchType = MessageMatch.Regex)]
     public void PerformDeleteWithOtherClientTransaction ()
     {
-      using (ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
       {
         Order order1 = Order.GetObject (DomainObjectIDs.Order1);
 
@@ -168,7 +168,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       Order newOrder;
 
-      using (sourceTransaction.EnterScope ())
+      using (sourceTransaction.EnterNonDiscardingScope ())
       {
         newOrder = Order.NewObject ();
       }

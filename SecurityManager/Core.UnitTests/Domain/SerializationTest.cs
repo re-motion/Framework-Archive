@@ -18,7 +18,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     [Test]
     public void DomainObjectsAreSerializable ()
     {
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         CheckDomainObjectSerializability<AccessControlEntry>();
         CheckDomainObjectSerializability<AccessControlList>();
@@ -83,7 +83,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
         if (propertyCanBeRetrieved)
         {
           object newValue;
-          using (deserializedTuple.B.EnterScope())
+          using (deserializedTuple.B.EnterNonDiscardingScope())
           {
             newValue = bindableDeserialized.GetProperty (property);
           }

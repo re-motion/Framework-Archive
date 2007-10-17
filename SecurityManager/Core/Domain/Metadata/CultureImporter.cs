@@ -42,7 +42,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public void Import (XmlDocument document)
     {
-      using (_transaction.EnterScope())
+      using (_transaction.EnterNonDiscardingScope())
       {
         SecurityMetadataLocalizationSchema schema = new SecurityMetadataLocalizationSchema();
         if (!document.Schemas.Contains (schema.SchemaUri))

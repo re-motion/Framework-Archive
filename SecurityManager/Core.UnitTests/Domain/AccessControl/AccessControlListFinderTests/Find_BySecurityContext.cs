@@ -26,14 +26,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
     public override void SetUp ()
     {
       base.SetUp ();
-      _currentClassDefinitionTransaction.EnterNonReturningScope();
+      _currentClassDefinitionTransaction.EnterNonDiscardingScope();
     }
 
     [Test]
     public void Succeed_WithValidSecurityContext ()
     {
       AccessControlList expectedAccessControlList;
-      using (_currentClassDefinitionTransaction.EnterScope ())
+      using (_currentClassDefinitionTransaction.EnterNonDiscardingScope ())
       {
         expectedAccessControlList = _currentClassDefinition.AccessControlLists[0];
       }

@@ -4,11 +4,11 @@ using Rubicon.Data.DomainObjects.Queries;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
-  public class InvalidatedSubTransactionListener : IClientTransactionListener
+  public class InvalidatedTransactionListener : IClientTransactionListener
   {
     private Exception CreateException ()
     {
-      return new InvalidOperationException ("The subtransaction can no longer be used because control has returned to its parent transaction.");
+      return new InvalidOperationException ("The transaction can no longer be used because it has been discarded.");
     }
 
     public void SubTransactionCreating ()

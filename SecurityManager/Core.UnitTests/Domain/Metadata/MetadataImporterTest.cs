@@ -18,7 +18,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _testHelper = new MetadataTestHelper ();
       _importer = new MetadataImporter (_testHelper.Transaction);
-      _testHelper.Transaction.EnterScope ();
+      _testHelper.Transaction.EnterNonDiscardingScope ();
     }
 
     [Test]
@@ -35,7 +35,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      using (_testHelper.Transaction.EnterScope ())
+      using (_testHelper.Transaction.EnterNonDiscardingScope ())
       {
         Assert.AreEqual (0, _importer.Classes.Count, "Class count");
         Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
@@ -61,7 +61,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      using (_testHelper.Transaction.EnterScope())
+      using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
         Assert.AreEqual (1, _importer.Classes.Count, "Class count");
         Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
@@ -92,7 +92,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      using (_testHelper.Transaction.EnterScope())
+      using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
         Assert.AreEqual (2, _importer.Classes.Count, "Class count");
         Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
@@ -128,7 +128,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      using (_testHelper.Transaction.EnterScope())
+      using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
         Assert.AreEqual (0, _importer.Classes.Count, "Class count");
         Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
@@ -165,7 +165,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      using (_testHelper.Transaction.EnterScope())
+      using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
         Assert.AreEqual (0, _importer.Classes.Count, "Class count");
         Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
@@ -210,7 +210,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      using (_testHelper.Transaction.EnterScope())
+      using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
         Assert.AreEqual (0, _importer.Classes.Count, "Class count");
         Assert.AreEqual (2, _importer.StateProperties.Count, "State property count");
@@ -246,7 +246,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      using (_testHelper.Transaction.EnterScope())
+      using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
         Assert.AreEqual (2, _importer.Classes.Count, "Class count");
         Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
@@ -298,7 +298,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      using (_testHelper.Transaction.EnterScope())
+      using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
         Assert.AreEqual (1, _importer.Classes.Count, "Class count");
         Assert.AreEqual (2, _importer.StateProperties.Count, "State property count");
@@ -346,7 +346,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      using (_testHelper.Transaction.EnterScope())
+      using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
         Assert.AreEqual (1, _importer.Classes.Count, "Class count");
         Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
@@ -436,7 +436,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _importer.Import (GetXmlDocument (metadataXml));
 
-      using (_testHelper.Transaction.EnterScope())
+      using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
         Assert.AreEqual (2, _importer.Classes.Count, "Class count");
         Assert.AreEqual (2, _importer.StateProperties.Count, "State property count");

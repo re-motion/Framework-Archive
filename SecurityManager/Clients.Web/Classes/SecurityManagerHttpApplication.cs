@@ -132,7 +132,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
     {
       if (HasSessionState)
       {
-        using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+        using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
         {
           SecurityManagerUser user = LoadUserFromSession ();
           if (user == null && Context.User.Identity.IsAuthenticated)

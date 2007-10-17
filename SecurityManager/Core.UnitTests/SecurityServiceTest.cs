@@ -51,7 +51,7 @@ namespace Rubicon.SecurityManager.UnitTests
      _context = new SecurityContext (typeof (Order), "Owner", "UID: OwnerGroup", "OwnerTenant", null, null);
 
       _clientTransaction = ClientTransaction.NewTransaction ();
-      using (_clientTransaction.EnterScope ())
+      using (_clientTransaction.EnterNonDiscardingScope ())
       {
         _ace = CreateAce();
       }
@@ -91,7 +91,7 @@ namespace Rubicon.SecurityManager.UnitTests
     [Test]
     public void GetAccess_WithoutAccess ()
     {
-      using (_clientTransaction.EnterScope ())
+      using (_clientTransaction.EnterNonDiscardingScope ())
       {
         SecurityToken token = new SecurityToken (null, null, new List<Group>(), new List<AbstractRoleDefinition>());
 
@@ -109,7 +109,7 @@ namespace Rubicon.SecurityManager.UnitTests
     [Test]
     public void GetAccess_WithReadAccess ()
     {
-      using (_clientTransaction.EnterScope ())
+      using (_clientTransaction.EnterNonDiscardingScope ())
       {
         List<AbstractRoleDefinition> roles = new List<AbstractRoleDefinition>();
         roles.Add (_ace.SpecificAbstractRole);
@@ -130,7 +130,7 @@ namespace Rubicon.SecurityManager.UnitTests
     [Test]
     public void GetAccess_WithReadAccessFromInterface ()
     {
-      using (_clientTransaction.EnterScope ())
+      using (_clientTransaction.EnterNonDiscardingScope ())
       {
         List<AbstractRoleDefinition> roles = new List<AbstractRoleDefinition>();
         roles.Add (_ace.SpecificAbstractRole);
@@ -157,7 +157,7 @@ namespace Rubicon.SecurityManager.UnitTests
     public void GetAccess_WithAccessControlExcptionFromAccessControlListFinder ()
     {
       AccessControlException expectedException = new AccessControlException();
-      using (_clientTransaction.EnterScope ())
+      using (_clientTransaction.EnterNonDiscardingScope ())
       {
         Expect.Call (_mockAclFinder.Find (ClientTransactionScope.CurrentTransaction, _context)).Throw (expectedException);
       }
@@ -177,7 +177,7 @@ namespace Rubicon.SecurityManager.UnitTests
     public void GetAccess_WithAccessControlExcptionFromSecurityTokenBuilder ()
     {
       AccessControlException expectedException = new AccessControlException();
-      using (_clientTransaction.EnterScope ())
+      using (_clientTransaction.EnterNonDiscardingScope ())
       {
         Expect.Call (_mockAclFinder.Find (ClientTransactionScope.CurrentTransaction, _context)).Return (CreateAcl (_ace));
         Expect.Call (_mockTokenBuilder.CreateToken (ClientTransactionScope.CurrentTransaction, _principal, _context)).Throw (expectedException);

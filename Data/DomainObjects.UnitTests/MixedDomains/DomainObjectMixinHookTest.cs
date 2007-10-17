@@ -54,7 +54,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
 
         Assert.IsFalse (mixinInstance.OnLoadedCalled);
 
-        using (newTransaction.EnterScope ())
+        using (newTransaction.EnterDiscardingScope ())
         {
           ++order.OrderNumber;
         }
@@ -78,7 +78,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
 
         using (new MixedTypeInstantiationScope (mixinInstance))
         {
-          using (ClientTransactionMock.CreateSubTransaction().EnterScope())
+          using (ClientTransactionMock.CreateSubTransaction().EnterDiscardingScope())
           {
             Order.GetObject (DomainObjectIDs.Order1);
           }
@@ -108,7 +108,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
           Assert.AreEqual (1, mixinInstance.OnLoadedCount);
           Assert.AreEqual (LoadMode.WholeDomainObjectInitialized, mixinInstance.OnLoadedLoadMode);
 
-          using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+          using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
           {
             Order.GetObject (DomainObjectIDs.Order1);
           }

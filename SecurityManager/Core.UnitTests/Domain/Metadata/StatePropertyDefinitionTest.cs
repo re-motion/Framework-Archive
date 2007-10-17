@@ -15,7 +15,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       base.SetUp ();
 
       _testHelper = new MetadataTestHelper ();
-      _testHelper.Transaction.EnterScope();
+      _testHelper.Transaction.EnterNonDiscardingScope();
     }
 
     [Test]
@@ -130,7 +130,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       ObjectList<StateDefinition> expectedStateDefinitions = expectdPropertyDefinition.DefinedStates;
       _testHelper.Transaction.Commit();
 
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         StatePropertyDefinition actualStatePropertyDefinition = StatePropertyDefinition.GetObject (expectdPropertyDefinition.ID);
 

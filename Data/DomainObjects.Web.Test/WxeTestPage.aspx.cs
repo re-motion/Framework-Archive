@@ -65,7 +65,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
     private void WxeTransactedFunctionCreateNewButton_Click (object sender, EventArgs e)
     {
       // TODO: cheange to Remember/CheckActiveClientTransactionScope
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         RememberCurrentClientTransaction();
 
@@ -79,7 +79,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 
     private void WxeTransactedFunctionNoneButton_Click (object sender, EventArgs e)
     {
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         RememberCurrentClientTransaction();
 
@@ -91,7 +91,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 
     private void WxeTransactedFunctionCreateNewAutoCommitButton_Click (object sender, EventArgs e)
     {
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         RememberCurrentClientTransaction();
         SetInt32Property (5, ClientTransaction.NewTransaction());
@@ -108,7 +108,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 
     private void WxeTransactedFunctionCreateNewNoAutoCommitButton_Click (object sender, EventArgs e)
     {
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         RememberCurrentClientTransaction();
         SetInt32Property (5, ClientTransaction.NewTransaction());
@@ -126,7 +126,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
     private void WxeTransactedFunctionNoneAutoCommitButton_Click (object sender, EventArgs e)
     {
       SetInt32Property (5, ClientTransaction.NewTransaction());
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         RememberCurrentClientTransaction();
 
@@ -147,7 +147,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
     private void WxeTransactedFunctionNoneNoAutoCommitButton_Click (object sender, EventArgs e)
     {
       SetInt32Property (5, ClientTransaction.NewTransaction());
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         RememberCurrentClientTransaction();
 
@@ -169,7 +169,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
     {
       if (!IsReturningPostBack)
       {
-        using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+        using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
         {
           RememberCurrentClientTransaction();
           ExecuteFunction (new ParentPageStepTestTransactedFunction());
@@ -189,7 +189,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
     
     private void SetInt32Property (int value, ClientTransaction clientTransaction)
     {
-      using (clientTransaction.EnterScope ())
+      using (clientTransaction.EnterDiscardingScope ())
       {
         ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ObjectWithAllDataTypes1);
 
@@ -201,7 +201,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 
     private int GetInt32Property (ClientTransaction clientTransaction)
     {
-      using (clientTransaction.EnterScope ())
+      using (clientTransaction.EnterDiscardingScope ())
       {
         ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ObjectWithAllDataTypes1);
 

@@ -21,7 +21,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void IsValid_InvalidStateCombination ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
         StateCombination stateCombination = testHelper.CreateStateCombination (orderClass);
@@ -46,7 +46,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void InvalidStateCombinations_OneInvalidStateCombination ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
         StateCombination stateCombination = testHelper.CreateStateCombination (orderClass);
@@ -64,7 +64,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void InvalidStateCombinations_TwoInvalidStateCombinations ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper();
-      using (testHelper.Transaction.EnterScope())
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
         StatePropertyDefinition paymentProperty = testHelper.CreatePaymentStateProperty (orderClass);

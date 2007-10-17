@@ -159,7 +159,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Queries
     public void QueriedObjectsMightNotBeEnlistableInOtherTransaction ()
     {
       ClientTransactionMock newTransaction = new ClientTransactionMock ();
-      using (newTransaction.EnterScope ())
+      using (newTransaction.EnterDiscardingScope ())
       {
         Order.GetObject (DomainObjectIDs.Order1); // ensure Order1 already exists in newTransaction
       }
@@ -167,7 +167,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Queries
       OrderCollection orders = (OrderCollection) _queryManager.GetCollection (new Query ("StoredProcedureQuery"));
       Assert.AreEqual (2, orders.Count, "Order count");
 
-      using (newTransaction.EnterScope ())
+      using (newTransaction.EnterDiscardingScope ())
       {
         foreach (Order order in orders)
         {

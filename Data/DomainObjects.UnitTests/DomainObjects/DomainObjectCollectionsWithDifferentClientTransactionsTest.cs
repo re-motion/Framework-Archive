@@ -40,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       _secondClientTransaction = ClientTransaction.NewTransaction();
       _secondCollection = new DomainObjectCollection ();
-      using (_secondClientTransaction.EnterScope ())
+      using (_secondClientTransaction.EnterDiscardingScope ())
       {
         _secondCustomer1 = Customer.GetObject (DomainObjectIDs.Customer1);
       }

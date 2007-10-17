@@ -18,7 +18,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
     {
       base.SetUp ();
       _testHelper = new AccessControlTestHelper ();
-      _testHelper.Transaction.EnterScope ();
+      _testHelper.Transaction.EnterNonDiscardingScope ();
     }
 
     [Test]

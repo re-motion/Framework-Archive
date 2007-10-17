@@ -28,7 +28,7 @@ public class SerializationTest : DatabaseTest
   public override void SetUp ()
   {
     base.SetUp ();
-    _transactionScope = ClientTransaction.NewTransaction ().EnterNonReturningScope ();
+    _transactionScope = ClientTransaction.NewTransaction ().EnterNonDiscardingScope ();
   }
 
   public override void TearDown ()
@@ -59,7 +59,7 @@ public class SerializationTest : DatabaseTest
     Order deserializedOrder = (Order) deserializedItems[0];
     ClientTransaction deserializedTransaction = (ClientTransaction) deserializedItems[1];
 
-    using (deserializedTransaction.EnterScope ())
+    using (deserializedTransaction.EnterDiscardingScope ())
     {
       Assert.AreEqual (previousOrderNumber, ((IBusinessObject) deserializedOrder).GetProperty ("OrderNumber"));
     }

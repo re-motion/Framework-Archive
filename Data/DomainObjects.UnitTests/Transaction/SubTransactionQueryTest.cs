@@ -12,7 +12,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ScalarQueryInSubTransaction ()
     {
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Query query = new Query ("QueryWithoutParameter");
 
@@ -23,7 +23,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ObjectQueryInSubTransaction ()
     {
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Query query = new Query ("CustomerTypeQuery");
         query.Parameters.Add ("@customerType", Customer.CustomerType.Standard);
@@ -43,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ObjectQueryWithObjectListInSubTransaction ()
     {
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Query query = new Query ("CustomerTypeQuery");
         query.Parameters.Add ("@customerType", Customer.CustomerType.Standard);
@@ -64,7 +64,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void ObjectQueryInSubAndRootTransaction ()
     {
       DomainObjectCollection queriedObjectsInSub;
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Query query = new Query ("CustomerTypeQuery");
         query.Parameters.Add ("@customerType", Customer.CustomerType.Standard);
@@ -84,7 +84,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       DomainObjectCollection queriedObjects;
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Query query = new Query ("CustomerTypeQuery");
         query.Parameters.Add ("@customerType", Customer.CustomerType.Standard);
@@ -109,7 +109,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Customer queriedObject;
 
       Order newOrder;
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Query query = new Query ("CustomerTypeQuery");
         query.Parameters.Add ("@customerType", Customer.CustomerType.Standard);

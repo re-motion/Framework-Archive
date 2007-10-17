@@ -16,7 +16,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     {
       base.SetUp ();
       _testHelper = new AccessControlTestHelper ();
-      _testHelper.Transaction.EnterScope ();
+      _testHelper.Transaction.EnterNonDiscardingScope ();
     }
 
     [Test]
@@ -341,7 +341,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       AccessControlList expectedAcl = dbFixtures.CreateAndCommitAccessControlListWithAccessControlEntries (10, ClientTransactionScope.CurrentTransaction);
       ObjectList<AccessControlEntry> expectedAces = expectedAcl.AccessControlEntries;
 
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         AccessControlList actualAcl = AccessControlList.GetObject (expectedAcl.ID);
 
@@ -358,7 +358,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       AccessControlList expectedAcl = dbFixtures.CreateAndCommitAccessControlListWithStateCombinations (10, ClientTransactionScope.CurrentTransaction);
       ObjectList<StateCombination> expectedStateCombinations = expectedAcl.StateCombinations;
 
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         AccessControlList actualAcl = AccessControlList.GetObject (expectedAcl.ID);
 

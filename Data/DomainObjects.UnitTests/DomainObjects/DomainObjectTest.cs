@@ -166,7 +166,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       newTransaction.EnlistDomainObject (classWithAllDataTypes);
 
-      using (newTransaction.EnterScope ())
+      using (newTransaction.EnterDiscardingScope ())
       {
         classWithAllDataTypes.Int32Property = 5;
       }
@@ -181,7 +181,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       ObjectID id = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (id);
 
@@ -201,7 +201,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (1, classWithAllDataTypes.OnLoadedCallCount);
       Assert.AreEqual (LoadMode.WholeDomainObjectInitialized, classWithAllDataTypes.OnLoadedLoadMode);
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         ClassWithAllDataTypes.GetObject (id);
 
@@ -641,7 +641,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order order;
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-      using (clientTransactionMock.EnterScope())
+      using (clientTransactionMock.EnterDiscardingScope())
       {
         order = Order.GetObject (DomainObjectIDs.Order1);
       }
@@ -654,7 +654,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order order;
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-      using (clientTransactionMock.EnterScope())
+      using (clientTransactionMock.EnterDiscardingScope())
       {
         order = Order.GetObject (DomainObjectIDs.Order1);
 
@@ -673,7 +673,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
       Order order;
-      using (clientTransactionMock.EnterScope())
+      using (clientTransactionMock.EnterDiscardingScope())
       {
         order = Order.NewObject ();
       }

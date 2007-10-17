@@ -290,7 +290,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 
     private void LoadAllEnlistedObjects (ClientTransaction transaction, IEnumerable<Tuple<WxeParameterDeclaration, DomainObject>> objectsToLoad)
     {
-      using (transaction.EnterNonReturningScope ())
+      using (transaction.EnterNonDiscardingScope ())
       {
         foreach (Tuple<WxeParameterDeclaration, DomainObject> objectToLoad in objectsToLoad)
         {

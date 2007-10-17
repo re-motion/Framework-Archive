@@ -358,7 +358,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
       Order order1;
-      using (ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
       {
         order1 = Order.GetObject (DomainObjectIDs.Order1);
       }
@@ -396,7 +396,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void DeleteLoadedDiscardsOnCommit ()
     {
-      using (ClientTransactionMock.EnterScope ())
+      using (ClientTransactionMock.EnterDiscardingScope ())
       {
         SetDatabaseModifyable();
 
@@ -414,7 +414,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void DeleteNewDiscardsImmediatelyOnCommit ()
     {
-      using (ClientTransactionMock.EnterScope ())
+      using (ClientTransactionMock.EnterDiscardingScope ())
       {
         OrderItem orderItem1 = OrderItem.NewObject();
 
@@ -449,7 +449,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void CopyFromNonEmpty ()
     {
       ClientTransactionMock nonEmptyTransaction = new ClientTransactionMock ();
-      using (nonEmptyTransaction .EnterScope ())
+      using (nonEmptyTransaction.EnterNonDiscardingScope ())
       {
         Order order = Order.GetObject (DomainObjectIDs.Order1);
         OrderItem item = order.OrderItems[0];

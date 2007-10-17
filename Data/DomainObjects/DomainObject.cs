@@ -212,7 +212,7 @@ public class DomainObject
   protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-    using (clientTransaction.EnterNonReturningScope())
+    using (clientTransaction.EnterNonDiscardingScope())
     {
       return GetObject<DomainObject> (id);
     }
@@ -236,7 +236,7 @@ public class DomainObject
   protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-    using (clientTransaction.EnterNonReturningScope())
+    using (clientTransaction.EnterNonDiscardingScope())
     {
       return GetObject<DomainObject> (id, includeDeleted);
     }

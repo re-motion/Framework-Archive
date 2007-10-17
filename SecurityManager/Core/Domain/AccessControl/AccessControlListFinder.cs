@@ -22,7 +22,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       ArgumentUtility.CheckNotNull ("context", context);
 
       SecurableClassDefinition classDefinition;
-      using (transaction.EnterScope ())
+      using (transaction.EnterNonDiscardingScope ())
       {
         classDefinition = SecurableClassDefinition.FindByName (context.Class);
       }
@@ -43,7 +43,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("context", context);
 
-      using (transaction.EnterScope())
+      using (transaction.EnterNonDiscardingScope())
       {
         StateCombination foundStateCombination = null;
 

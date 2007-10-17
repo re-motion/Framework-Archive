@@ -52,7 +52,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
         Tuple<ClientTransaction, Order> deserializedObjects =
             Serializer.SerializeAndDeserialize (new Tuple<ClientTransaction, Order> (ClientTransactionScope.CurrentTransaction, order));
 
-        using (deserializedObjects.A.EnterScope ())
+        using (deserializedObjects.A.EnterDiscardingScope ())
         {
           Assert.AreEqual (5, deserializedObjects.B.OrderNumber);
           Assert.IsTrue (deserializedObjects.B.OrderItems.Contains (DomainObjectIDs.OrderItem4));

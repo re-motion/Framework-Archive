@@ -32,7 +32,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.SetUp ();
 
       _testHelper = new OrganizationalStructureTestHelper ();
-      _testHelper.Transaction.EnterScope();
+      _testHelper.Transaction.EnterNonDiscardingScope();
     }
 
     [Test]
@@ -99,7 +99,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Tenant.Current = tenant;
       Assert.AreSame (tenant, Tenant.Current);
 
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         Assert.AreEqual(tenant.ID, Tenant.Current.ID);
         Assert.AreNotSame (tenant, Tenant.Current);
@@ -123,7 +123,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
             Assert.IsNull (Tenant.Current);
             Tenant.Current = otherTenant;
-            using (_testHelper.Transaction.EnterScope())
+            using (_testHelper.Transaction.EnterNonDiscardingScope())
             {
               Assert.AreSame (otherTenant, Tenant.Current);
             }

@@ -22,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     [Test]
     public void WxeTransactedFunctionCreateRoot ()
     {
-      using (ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
         new CreateRootTestTransactedFunction (originalScope).Execute (Context);
@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     [Test]
     public void WxeTransactedFunctionCreateChildIfParent ()
     {
-      using (ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
         new CreateRootWithChildTestTransactedFunction (originalScope.ScopedTransaction, new CreateChildIfParentTestTransactedFunction ()).Execute (Context);
@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     [Test]
     public void WxeTransactedFunctionNone ()
     {
-      using (ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope originalScope  = ClientTransactionScope.ActiveScope;
         new CreateNoneTestTransactedFunction (originalScope).Execute (Context);
@@ -56,7 +56,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     public void WxeTransactedFunctionCreateNewAutoCommit ()
     {
       SetDatabaseModifyable ();
-      using (ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
         SetInt32Property (5, ClientTransaction.NewTransaction ());
@@ -72,7 +72,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     public void WxeTransactedFunctionCreateNewNoAutoCommit()
     {
       SetDatabaseModifyable ();
-      using (ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
         SetInt32Property (5, ClientTransaction.NewTransaction ());
@@ -90,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     {
       SetDatabaseModifyable ();
       SetInt32Property (5, ClientTransaction.NewTransaction ());
-      using (ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
 
@@ -109,7 +109,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     {
       SetDatabaseModifyable ();
       SetInt32Property (5, ClientTransaction.NewTransaction ());
-      using (ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
 
@@ -147,7 +147,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     {
       try
       {
-        ClientTransaction.NewTransaction().EnterScope();
+        ClientTransaction.NewTransaction().EnterDiscardingScope();
         new RemoveCurrentTransactionScopeFunction ().Execute (Context);
       }
       catch (WxeUnhandledException ex)
@@ -158,7 +158,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
 
     private void SetInt32Property (int value, ClientTransaction clientTransaction)
     {
-      using (clientTransaction.EnterScope ())
+      using (clientTransaction.EnterDiscardingScope ())
       {
         ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
 
@@ -170,7 +170,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
 
     private int GetInt32Property (ClientTransaction clientTransaction)
     {
-      using (clientTransaction.EnterScope ())
+      using (clientTransaction.EnterDiscardingScope ())
       {
         ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
 
@@ -181,7 +181,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     [Test]
     public void AutoEnlistingCreateNone ()
     {
-      using (ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
       {
         ClassWithAllDataTypes inParameter = ClassWithAllDataTypes.NewObject();
         ClassWithAllDataTypes[] inParameterArray = new ClassWithAllDataTypes[] { ClassWithAllDataTypes.NewObject () };
@@ -208,7 +208,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     {
       SetDatabaseModifyable ();
 
-      using (ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
       {
         ClassWithAllDataTypes inParameter = ClassWithAllDataTypes.NewObject ();
         inParameter.DateTimeProperty = DateTime.Now;
@@ -247,7 +247,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
         + "function's transaction. Maybe it was newly created and has not yet been committed, or it was deleted.", MatchType =  MessageMatch.Regex)]
     public void AutoEnlistingCreateRootThrowsWhenInvalidInParameter ()
     {
-      using (ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
       {
         ClassWithAllDataTypes inParameter = ClassWithAllDataTypes.NewObject ();
         ClassWithAllDataTypes[] inParameterArray = new ClassWithAllDataTypes[] { ClassWithAllDataTypes.NewObject () };
@@ -278,7 +278,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
         + "function's transaction. Maybe it was newly created and has not yet been committed, or it was deleted.", MatchType = MessageMatch.Regex)]
     public void AutoEnlistingCreateRootThrowsWhenInvalidOutParameter ()
     {
-      using (ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
       {
         DomainObjectParameterInvalidOutTestTransactedFunction function =
             new DomainObjectParameterInvalidOutTestTransactedFunction (WxeTransactionMode.CreateRoot);
@@ -403,7 +403,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     public void ThreadAbortExceptionInNestedFunction ()
     {
       ThreadAbortTestTransactedFunction nestedFunction = new ThreadAbortTestTransactedFunction ();
-      ClientTransactionScope originalScope = ClientTransaction.NewTransaction().EnterScope();
+      ClientTransactionScope originalScope = ClientTransaction.NewTransaction().EnterDiscardingScope();
       CreateRootWithChildTestTransactedFunction parentFunction =
           new CreateRootWithChildTestTransactedFunction (ClientTransactionScope.CurrentTransaction, nestedFunction);
 
@@ -436,7 +436,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     public void ThreadAbortExceptionInNestedFunctionWithThreadMigration ()
     {
       ThreadAbortTestTransactedFunction nestedFunction = new ThreadAbortTestTransactedFunction ();
-      ClientTransactionScope originalScope = ClientTransaction.NewTransaction().EnterScope();
+      ClientTransactionScope originalScope = ClientTransaction.NewTransaction().EnterDiscardingScope();
       CreateRootWithChildTestTransactedFunction parentFunction =
           new CreateRootWithChildTestTransactedFunction (ClientTransactionScope.CurrentTransaction, nestedFunction);
 
@@ -472,7 +472,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     [Test]
     public void TransactionResettableWhenNotReadOnly ()
     {
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         WxeTransaction tx = new WxeTransaction();
         PrivateInvoke.InvokeNonPublicMethod (tx, "CheckCurrentTransactionResettable");
@@ -484,7 +484,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
         + "The reason might be an open child transaction.")]
     public void TransactionNotResettableWhenReadOnly ()
     {
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.CreateSubTransaction ();
 
@@ -509,7 +509,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
         + "needs to be committed or rolled back.")]
     public void TransactionNotResettableWhenNewObject ()
     {
-      using (ClientTransaction.NewTransaction().EnterScope())
+      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
       {
         WxeTransaction tx = new WxeTransaction ();
         Order.NewObject ();
@@ -522,7 +522,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
         + "needs to be committed or rolled back.")]
     public void TransactionNotResettableWhenChangedObject ()
     {
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         WxeTransaction tx = new WxeTransaction ();
         ++Order.GetObject (DomainObjectIDs.Order1).OrderNumber;
@@ -535,7 +535,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
         + "needs to be committed or rolled back.")]
     public void TransactionNotResettableWhenChangedRelation ()
     {
-      using (ClientTransaction.NewTransaction ().EnterScope ())
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
         WxeTransaction tx = new WxeTransaction ();
         Order.GetObject (DomainObjectIDs.Order1).OrderItems.Clear();

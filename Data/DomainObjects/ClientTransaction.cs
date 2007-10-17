@@ -17,7 +17,7 @@ namespace Rubicon.Data.DomainObjects
 /// <remarks>
 /// <para>
 /// When a <see cref="ClientTransaction"/> is manually instantiated, it has to be activated for the current thread by using a
-/// <see cref="ClientTransactionScope"/>, e.g. via calling <see cref="EnterScope()"/> or <see cref="EnterNonReturningScope"/>. The current transaction
+/// <see cref="ClientTransactionScope"/>, e.g. via calling <see cref="EnterDiscardingScope"/> or <see cref="EnterNonDiscardingScope"/>. The current transaction
 /// for a thread can be retrieved via <see cref="Current"/> or <see cref="ClientTransactionScope.ActiveScope"/>.
 /// </para>
 /// <para>
@@ -100,6 +100,7 @@ public abstract class ClientTransaction : ITransaction
   private readonly ClientTransactionExtensionCollection _extensions;
 
   private bool _isReadOnly;
+  private bool _isDiscarded;
   
   // construction and disposing
 
@@ -109,6 +110,7 @@ public abstract class ClientTransaction : ITransaction
     ArgumentUtility.CheckNotNull ("extensions", extensions);
 
     _isReadOnly = false;
+    _isDiscarded = false;
     _extensions = extensions;
    
     _listeners = new CompoundClientTransactionListener ();
@@ -130,41 +132,12 @@ public abstract class ClientTransaction : ITransaction
   public abstract ClientTransaction ParentTransaction { get; }
 
   /// <summary>
-  /// Returns whether this <see cref="ClientTransaction"/> has been discarded. A transaction is discarded when it is a subtransaction
-  /// and control is returned to its <see cref="ParentTransaction"/>. Root transactions are never discarded.
-  /// </summary>
-  /// <value>True if control has been returned to the <see cref="ParentTransaction"/>.</value>
-  public abstract bool IsDiscarded { get; }
-
-  /// <summary>
   /// Gets the root transaction of this <see cref="ClientTransaction"/>, i.e. the top-level parent transaction in a row of subtransactions.
   /// </summary>
   /// <value>The root transaction of this <see cref="ClientTransaction"/>.</value>
   /// <remarks>When this transaction is an instance of <see cref="RootClientTransaction"/>, this property returns the transaction itself. If it
   /// is an instance of <see cref="SubClientTransaction"/>, it returns the parent's root transaction. </remarks>
   public abstract ClientTransaction RootTransaction { get; }
-
-  /// <summary>
-  /// Returns control to the parent transaction and discards this transaction (rendering it unusable) if a parent transaction exists. If
-  /// this transaction doesn't have a parent transaction, this method does nothing.
-  /// </summary>
-  /// <returns>True if control was returned to the parent transaction, false if this transaction has no parent transaction.</returns>
-  /// <remarks>
-  /// <para>
-  /// When a subtransaction is created via <see cref="CreateSubTransaction"/>, the parent transaction is made read-only and cannot be
-  /// used in potentially modifying operations until the subtransaction returns control to the parent transaction by calling this method.
-  /// </para>
-  /// <para>
-  /// Note that this method only affects writeability of the transactions, it does not influence the active <see cref="ClientTransactionScope"/> and
-  /// <see cref="ClientTransaction.Current"/> transaction. However, by default, the scope created by <see cref="EnterScope()"/> will automatically
-  /// execute this method when the scope is left (see <see cref="AutoRollbackBehavior.ReturnToParent"/>). In most cases,
-  /// <see cref="ReturnToParentTransaction"/> therefore doesn't have to be called explicity; leaving the scopes suffices.
-  /// </para>
-  /// <para>
-  /// Use <see cref="EnterNonReturningScope"/> instead of <see cref="EnterScope()"/> to avoid this method being called at the end of a scope.
-  /// </para>
-  /// </remarks>
-  public abstract bool ReturnToParentTransaction ();
 
   /// <summary>
   /// Enlists the given domain object in the current transaction.
@@ -303,6 +276,16 @@ public abstract class ClientTransaction : ITransaction
   }
 
   /// <summary>
+  /// Returns whether this <see cref="ClientTransaction"/> has been discarded. A transaction is discarded when its <see cref="Discard"/> or
+  /// <see cref="ITransaction.Release"/> methods are called or when it has been used in a discarding scope.
+  /// </summary>
+  /// <value>True if this transaction has been discarded.</value>
+  public bool IsDiscarded
+  {
+    get { return _isDiscarded; }
+  }
+
+  /// <summary>
   /// Gets the collection of <see cref="IClientTransactionExtension"/>s of this <see cref="ClientTransaction"/> hierarchy.
   /// </summary>
   /// <remarks>
@@ -341,11 +324,40 @@ public abstract class ClientTransaction : ITransaction
   }
 
   /// <summary>
-  /// Creates a new <see cref="ClientTransactionScope"/> for this transaction and enters it, making it the
-  /// <see cref="ClientTransactionScope.ActiveScope"/> for the current thread. When the scope is left and this transaction has a parent transaction,
-  /// <see cref="ReturnToParentTransaction"/> is executed. This will discard this transaction and make the parent transaction writeable again.
+  /// Discards this transaction (rendering it unusable) and, if this transaction is a subtransaction, returns control to the parent transaction.
   /// </summary>
-  /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction with an automatic <see cref="AutoRollbackBehavior.ReturnToParent"/>
+  /// <returns>True if control was returned to the parent transaction, false if this transaction has no parent transaction.</returns>
+  /// <remarks>
+  /// <para>
+  /// When a subtransaction is created via <see cref="CreateSubTransaction"/>, the parent transaction is made read-only and cannot be
+  /// used in potentially modifying operations until the subtransaction returns control to the parent transaction by calling this method.
+  /// </para>
+  /// <para>
+  /// Note that this method only affects writeability of the transactions, it does not influence the active <see cref="ClientTransactionScope"/> and
+  /// <see cref="ClientTransaction.Current"/> transaction. However, by default, the scope created by <see cref="EnterDiscardingScope"/> will automatically
+  /// execute this method when the scope is left (see <see cref="AutoRollbackBehavior.Discard"/>). In most cases,
+  /// <see cref="Discard"/> therefore doesn't have to be called explicity; leaving the scopes suffices.
+  /// </para>
+  /// <para>
+  /// Use <see cref="EnterNonDiscardingScope"/> instead of <see cref="EnterDiscardingScope"/> to avoid this method being called at the end of a scope.
+  /// </para>
+  /// </remarks>
+  public virtual bool Discard ()
+  {
+    if (ParentTransaction != null)
+      ParentTransaction.IsReadOnly = false;
+
+    _isDiscarded = true;
+    AddListener (new InvalidatedTransactionListener ());
+    return ParentTransaction != null;
+  }
+
+  /// <summary>
+  /// Creates a new <see cref="ClientTransactionScope"/> for this transaction and enters it, making it the
+  /// <see cref="ClientTransactionScope.ActiveScope"/> for the current thread. When the scope is left, <see cref="Discard"/> is executed. This will
+  /// discard this transaction and make the parent transaction (if any) writeable again.
+  /// </summary>
+  /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction with an automatic <see cref="AutoRollbackBehavior.Discard"/>
   /// behavior.</returns>
   /// <remarks>
   /// <para>
@@ -357,9 +369,9 @@ public abstract class ClientTransaction : ITransaction
   /// <see cref="ClientTransactionScope.Leave"/> method is called or the scope is disposed of, the previous scope is reactivated.
   /// </para>
   /// </remarks>
-  public virtual ClientTransactionScope EnterScope ()
+  public virtual ClientTransactionScope EnterDiscardingScope ()
   {
-    return EnterScope (AutoRollbackBehavior.ReturnToParent);
+    return EnterScope (AutoRollbackBehavior.Discard);
   }
 
   /// <summary>
@@ -382,24 +394,24 @@ public abstract class ClientTransaction : ITransaction
 
   /// <summary>
   /// Creates a new <see cref="ClientTransactionScope"/> for this transaction and enters it, making it the
-  /// <see cref="ClientTransactionScope.ActiveScope"/> for the current thread. When the scope is left, this transaction's parent transaction
-  /// (if any) is not made writeable and no automatic rollback behavior is executed.
+  /// <see cref="ClientTransactionScope.ActiveScope"/> for the current thread. When the scope is left, this transaction is not discarded and the
+  /// parent transaction (if any) is not made writeable.
   /// </summary>
   /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction with no automatic rollback behavior.</returns>
   /// <remarks>
   /// <para>
   /// The created scope will not perform any automatic rollback and it will not return control to the parent transaction at its end if this
-  /// transaction is a subtransaction. You must explicitly call <see cref="ReturnToParentTransaction"/> if you want to continue working with
-  /// the parent transaction. This is useful if you want to temporarily open a scope for a subtransaction, then open a scope for another transaction,
-  /// then open a new scope for the subtransaction again. In this case, the first scope must be a non-returning scope, otherwise the subtransaction
-  /// will be discarded and cannot be used a second time.
+  /// transaction is a subtransaction. You must explicitly call <see cref="Discard"/> if you want to continue working with
+  /// the parent transaction. This method is useful if you want to temporarily open a scope for a transaction, then open a scope for another
+  /// transaction, then open a new scope for the first transaction again. In this case, the first scope must be a non-discarding scope, otherwise the
+  /// transaction will be discarded and cannot be used for a second time.
   /// </para>
   /// <para>
   /// The new <see cref="ClientTransactionScope"/> stores the previous <see cref="ClientTransactionScope.ActiveScope"/>. When this scope's
   /// <see cref="ClientTransactionScope.Leave"/> method is called or the scope is disposed of, the previous scope is reactivated.
   /// </para>
   /// </remarks>
-  public virtual ClientTransactionScope EnterNonReturningScope ()
+  public virtual ClientTransactionScope EnterNonDiscardingScope ()
   {
     return EnterScope (AutoRollbackBehavior.None);
   }
@@ -572,8 +584,8 @@ public abstract class ClientTransaction : ITransaction
   /// <remarks>
   /// <para>
   /// When a subtransaction is created, the parent transaction is automatically made read-only and cannot be modified until the subtransaction
-  /// returns control to it via <see cref="ReturnToParentTransaction"/>. <see cref="ReturnToParentTransaction"/> is automatically called when a
-  /// scope created by <see cref="EnterScope()"/> is left.
+  /// returns control to it via <see cref="Discard"/>. <see cref="Discard"/> is automatically called when a
+  /// scope created by <see cref="EnterDiscardingScope"/> is left.
   /// </para>
   /// </remarks>
   public virtual ClientTransaction CreateSubTransaction ()
@@ -588,7 +600,7 @@ public abstract class ClientTransaction : ITransaction
   /// <returns><see langword="true"/> if at least one <see cref="DomainObject"/> in this <b>ClientTransaction</b> has been changed; otherwise, <see langword="false"/>.</returns>
   public virtual bool HasChanged ()
   {
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects();
       return changedDomainObjects.Count > 0;
@@ -602,7 +614,7 @@ public abstract class ClientTransaction : ITransaction
   /// <exception cref="Persistence.StorageProviderException">An error occurred while committing the changes to the datasource.</exception>
   public virtual void Commit ()
   {
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       BeginCommit();
       DomainObjectCollection changedButNotDeletedDomainObjects = _dataManager.GetDomainObjects (new StateType[] {StateType.Changed, StateType.New});
@@ -620,7 +632,7 @@ public abstract class ClientTransaction : ITransaction
   /// </summary>
   public virtual void Rollback ()
   {
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       BeginRollback();
       DomainObjectCollection changedButNotNewDomainObjects = _dataManager.GetDomainObjects (new StateType[] {StateType.Changed, StateType.Deleted});
@@ -685,7 +697,7 @@ public abstract class ClientTransaction : ITransaction
   internal DataContainer CreateNewDataContainer (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (type);
 
@@ -709,7 +721,7 @@ public abstract class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.GetDataContainer());
     }
@@ -726,7 +738,7 @@ public abstract class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
@@ -748,7 +760,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual DomainObject GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
@@ -770,7 +782,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual DomainObjectCollection GetRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
@@ -792,7 +804,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual DomainObjectCollection GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
@@ -821,7 +833,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual void SetRelatedObject (RelationEndPointID relationEndPointID, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       _dataManager.RelationEndPointMap.SetRelatedObject (relationEndPointID, newRelatedObject);
     }
@@ -838,7 +850,7 @@ public abstract class ClientTransaction : ITransaction
   protected internal virtual void Delete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       _dataManager.Delete (domainObject);
     }
@@ -861,7 +873,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual DomainObject LoadObject (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       DataContainer dataContainer = LoadDataContainer (id);
 
@@ -928,7 +940,7 @@ public abstract class ClientTransaction : ITransaction
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
     ArgumentUtility.CheckNotNull ("collectionType", collectionType);
 
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       DataContainerCollection newLoadedDataContainers = _dataManager.DataContainerMap.GetNotRegisteredDataContainers (dataContainers);
       NotifyOfLoading (newLoadedDataContainers);
@@ -985,7 +997,7 @@ public abstract class ClientTransaction : ITransaction
 
   private void OnSubTransactionCreating ()
   {
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       TransactionEventSink.SubTransactionCreating();
     }
@@ -998,7 +1010,7 @@ public abstract class ClientTransaction : ITransaction
 
   protected virtual void OnSubTransactionCreated (SubTransactionCreatedEventArgs args)
   {
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       TransactionEventSink.SubTransactionCreated (args.SubTransaction);
 
@@ -1013,7 +1025,7 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnLoaded (ClientTransactionEventArgs args)
   {
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       foreach (DomainObject loadedDomainObject in args.DomainObjects)
         loadedDomainObject.EndObjectLoading();
@@ -1034,7 +1046,7 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnCommitting (ClientTransactionEventArgs args)
   {
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       TransactionEventSink.TransactionCommitting (args.DomainObjects);
 
@@ -1050,7 +1062,7 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnCommitted (ClientTransactionEventArgs args)
   {
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       if (Committed != null)
         Committed (this, args);
@@ -1065,7 +1077,7 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnRollingBack (ClientTransactionEventArgs args)
   {
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       TransactionEventSink.TransactionRollingBack (args.DomainObjects);
 
@@ -1080,7 +1092,7 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnRolledBack (ClientTransactionEventArgs args)
   {
-    using (EnterNonReturningScope ())
+    using (EnterNonDiscardingScope ())
     {
       if (RolledBack != null)
         RolledBack (this, args);
@@ -1270,7 +1282,7 @@ public abstract class ClientTransaction : ITransaction
   /// </summary>
   void ITransaction.Release ()
   {
-    ReturnToParentTransaction ();
+    Discard ();
   }
 
   /// <summary>

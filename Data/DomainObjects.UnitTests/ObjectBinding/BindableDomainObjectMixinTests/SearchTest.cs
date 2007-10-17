@@ -67,7 +67,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
     [Test]
     public void SearchAvailableObjectsUsesCurrentTransaction ()
     {
-      using (ClientTransaction.NewTransaction ().EnterNonReturningScope ())
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         IBusinessObject[] results = _property.SearchAvailableObjects (_orderItem, true, "QueryWithSpecificCollectionType");
 

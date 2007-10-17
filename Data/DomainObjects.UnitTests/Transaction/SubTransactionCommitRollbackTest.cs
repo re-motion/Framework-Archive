@@ -17,28 +17,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void ReturnToParentTransactionReturnsTrue ()
+    public void DiscardReturnsTrue ()
     {
-      Assert.AreEqual (true, _subTransaction.ReturnToParentTransaction ());
+      Assert.AreEqual (true, _subTransaction.Discard ());
     }
 
     [Test]
-    public void ReturnToParentTransactionMakesParentWriteable ()
+    public void DiscardMakesParentWriteable ()
     {
       Assert.IsTrue (_subTransaction.ParentTransaction.IsReadOnly);
       Assert.IsFalse (_subTransaction.IsDiscarded);
-      _subTransaction.ReturnToParentTransaction ();
+      _subTransaction.Discard ();
       Assert.IsTrue (_subTransaction.IsDiscarded);
       Assert.IsFalse (_subTransaction.ParentTransaction.IsReadOnly);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The subtransaction can no longer be used because control has "
-        + "returned to its parent transaction.")]
-    public void ReturnToParentTransactionRendersSubTransactionUnusable ()
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The transaction can no longer be used because it has been discarded.")]
+    public void DiscardRendersSubTransactionUnusable ()
     {
-      _subTransaction.ReturnToParentTransaction ();
-      using (_subTransaction.EnterScope ())
+      _subTransaction.Discard ();
+      using (_subTransaction.EnterDiscardingScope ())
       {
         Order.NewObject ();
       }
@@ -49,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       _subTransaction.Rollback ();
       Assert.IsFalse (_subTransaction.IsDiscarded);
-      using (_subTransaction.EnterScope ())
+      using (_subTransaction.EnterDiscardingScope ())
       {
         Order order = Order.NewObject ();
         Assert.IsNotNull (order);
@@ -61,7 +60,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       _subTransaction.Commit ();
       Assert.IsFalse (_subTransaction.IsDiscarded);
-      using (_subTransaction.EnterScope ())
+      using (_subTransaction.EnterDiscardingScope ())
       {
         Order order = Order.NewObject ();
         Assert.IsNotNull (order);
@@ -72,7 +71,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [ExpectedException (typeof (ObjectDiscardedException), ExpectedMessage = "Object 'Order.*' is already discarded.", MatchType = MessageMatch.Regex)]
     public void RollbackResetsNewedObjects ()
     {
-      using (_subTransaction.EnterScope ())
+      using (_subTransaction.EnterDiscardingScope ())
       {
         Order order = Order.NewObject();
         _subTransaction.Rollback();
@@ -83,7 +82,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void RollbackResetsLoadedObjects ()
     {
-      using (_subTransaction.EnterScope ())
+      using (_subTransaction.EnterDiscardingScope ())
       {
         Order order = Order.GetObject (DomainObjectIDs.Order1);
         order.OrderNumber = 5;
@@ -97,11 +96,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void SubRollbackDoesNotRollbackParent ()
     {
-      _subTransaction.ReturnToParentTransaction ();
+      _subTransaction.Discard ();
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       Assert.AreEqual (1, order.OrderNumber);
       order.OrderNumber = 3;
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         order.OrderNumber = 5;
         ClientTransactionScope.CurrentTransaction.Rollback ();
@@ -116,7 +115,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ParentTransactionStillReadOnlyAfterCommit ()
     {
-      using (_subTransaction.EnterScope ())
+      using (_subTransaction.EnterDiscardingScope ())
       {
         Assert.IsTrue (ClientTransactionMock.IsReadOnly);
         ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.NewObject ();
@@ -131,7 +130,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void CommitPropagatesNewObjectsToParentTransaction ()
     {
       ClassWithAllDataTypes classWithAllDataTypes;
-      using (_subTransaction.EnterScope ())
+      using (_subTransaction.EnterDiscardingScope ())
       {
         classWithAllDataTypes = ClassWithAllDataTypes.NewObject ();
         Assert.AreNotEqual (7, classWithAllDataTypes.Int32Property);
@@ -147,7 +146,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void CommitPropagatesChangedObjectsToParentTransaction ()
     {
       Order order;
-      using (_subTransaction.EnterScope ())
+      using (_subTransaction.EnterDiscardingScope ())
       {
         order = Order.GetObject (DomainObjectIDs.Order1);
         order.OrderNumber = 5;
@@ -164,9 +163,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void SubCommitDoesNotCommitParent ()
     {
-      _subTransaction.ReturnToParentTransaction ();
+      _subTransaction.Discard ();
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         order.OrderNumber = 5;
         ClientTransactionScope.CurrentTransaction.Commit ();

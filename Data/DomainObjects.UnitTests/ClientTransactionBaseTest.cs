@@ -68,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
       DisposeTransaction ();
 
       _clientTransactionMock = new ClientTransactionMock ();
-      _transactionScope = _clientTransactionMock.EnterScope();
+      _transactionScope = _clientTransactionMock.EnterDiscardingScope();
       _testDataContainerFactory = new TestDataContainerFactory (_clientTransactionMock);
     }
 
