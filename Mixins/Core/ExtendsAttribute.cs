@@ -28,6 +28,7 @@ namespace Rubicon.Mixins
   {
     private readonly Type _targetType;
     private Type[] _additionalDependencies = Type.EmptyTypes;
+    private Type[] _mixinTypeArguments = Type.EmptyTypes;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ExtendsAttribute"/> class.
@@ -61,6 +62,24 @@ namespace Rubicon.Mixins
       {
         ArgumentUtility.CheckNotNull ("value", value);
         _additionalDependencies = value;
+      }
+    }
+
+    /// <summary>
+    /// Gets or sets the generic type arguments to be used when applying a generic mixin to the given target type. This is useful when the
+    /// <see cref="ExtendsAttribute"/> is to be applied to a generic mixin class, but the default generic type specialization algorithm of the
+    /// mixin engine does not give the desired results.
+    /// </summary>
+    /// <value>The generic type arguments to close the generic mixin type with.</value>
+    /// <remarks>If this attribute is applied to a non-generic mixin class or if the types supplied don't match the mixin's generic parameters,
+    /// a <see cref="ConfigurationException"/> is thrown when the mixin configuration is analyzed.</remarks>
+    public Type[] MixinTypeArguments
+    {
+      get { return _mixinTypeArguments; }
+      set
+      {
+        ArgumentUtility.CheckNotNull ("value", value);
+        _mixinTypeArguments = value;
       }
     }
   }

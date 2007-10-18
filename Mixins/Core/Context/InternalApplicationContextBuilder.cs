@@ -48,7 +48,23 @@ namespace Rubicon.Mixins.Context
     private void AnalyzeExtender (Type extender)
     {
       foreach (ExtendsAttribute mixinAttribute in extender.GetCustomAttributes (typeof (ExtendsAttribute), false))
-        ApplyMixinToClassContext (_builtContext.GetOrAddClassContext (mixinAttribute.TargetType), extender, mixinAttribute.AdditionalDependencies);
+      {
+        Type mixinType = extender;
+        if (mixinAttribute.MixinTypeArguments.Length > 0)
+        {
+          try
+          {
+            mixinType = mixinType.MakeGenericType (mixinAttribute.MixinTypeArguments);
+          }
+          catch (Exception ex)
+          {
+            string message = string.Format ("The ExtendsAttribute for target class {0} applied to mixin type {1} specified invalid generic type "
+              + "arguments.", mixinAttribute.TargetType.FullName, extender.FullName);
+            throw new ConfigurationException (message, ex);
+          }
+        }
+        ApplyMixinToClassContext (_builtContext.GetOrAddClassContext (mixinAttribute.TargetType), mixinType, mixinAttribute.AdditionalDependencies);
+      }
     }
 
     private void AnalyzeUser (Type user)

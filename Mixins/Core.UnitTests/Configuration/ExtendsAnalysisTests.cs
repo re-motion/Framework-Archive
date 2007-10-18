@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Rubicon.Mixins.Context;
 using NUnit.Framework;
+using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.UnitTests.Configuration
 {
@@ -119,6 +121,42 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.IsTrue (context.GetClassContext (typeof (ExtendsTargetBase)).ContainsMixin (typeof (MixinExtendingBaseAndDerived)));
       Assert.IsTrue (context.GetClassContext (typeof (ExtendsTargetDerivedWithoutExtends)).ContainsMixin (typeof (MixinExtendingBaseAndDerived)));
       Assert.AreEqual (1, context.GetClassContext (typeof (ExtendsTargetDerivedWithoutExtends)).MixinCount);
+    }
+
+    [Extends (typeof (ExtendsTargetBase), MixinTypeArguments = new Type[] { typeof (List<int>), typeof (IList<int>) })]
+    [IgnoreForMixinConfiguration]
+    public class GenericMixin<TThis, TBase> : Mixin<TThis, TBase>
+      where TThis : class
+      where TBase : class
+    {
+    }
+
+    [Test]
+    public void ExtendsCanSpecializeGenericMixin ()
+    {
+      ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (GenericMixin<,>)).BuildContext ();
+      MixinContext mixinContext = new List<MixinContext> (context.GetClassContext (typeof (ExtendsTargetBase)).Mixins)[0];
+      Assert.IsTrue (ReflectionUtility.CanAscribe (mixinContext.MixinType, typeof (GenericMixin<,>)));
+      Assert.IsFalse (mixinContext.MixinType.IsGenericTypeDefinition);
+      Assert.IsFalse (mixinContext.MixinType.ContainsGenericParameters);
+      Assert.AreEqual (new Type[] {typeof (List<int>), typeof (IList<int>)}, mixinContext.MixinType.GetGenericArguments());
+    }
+
+    [Extends (typeof (ExtendsTargetBase), MixinTypeArguments = new Type[] { typeof (List<int>) })]
+    [IgnoreForMixinConfiguration]
+    public class InvalidGenericMixin<TThis, TBase> : Mixin<TThis, TBase>
+      where TThis : class
+      where TBase : class
+    {
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The ExtendsAttribute for target class "
+        + "Rubicon.Mixins.UnitTests.Configuration.ExtendsAnalysisTests+ExtendsTargetBase applied to mixin type "
+        + "Rubicon.Mixins.UnitTests.Configuration.ExtendsAnalysisTests+InvalidGenericMixin`2 specified invalid generic type arguments.")]
+    public void InvalidTypeParametersThrowConfigurationException ()
+    {
+      new ApplicationContextBuilder (null).AddType (typeof (InvalidGenericMixin<,>)).BuildContext ();
     }
   }
 }
