@@ -3,6 +3,7 @@ using System.Reflection;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
@@ -20,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
       return new BindableDomainObjectPropertyFinder (concreteType);
     }
 
-    public PropertyReflector CreatePropertyReflector (Type concreteType, PropertyInfo propertyInfo, BindableObjectProvider businessObjectProvider)
+    public PropertyReflector CreatePropertyReflector (Type concreteType, IPropertyInformation propertyInfo, BindableObjectProvider businessObjectProvider)
     {
       ArgumentUtility.CheckNotNull ("concreteType", concreteType);
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);

@@ -23,11 +23,11 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
     [Test]
     public void Initialize ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithAllDataTypes), "String");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithAllDataTypes), "String");
 
-      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
+      PropertyReflector propertyReflector = new PropertyReflector (IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (propertyReflector.PropertyInfo, Is.SameAs (propertyInfo));
+      Assert.That (propertyReflector.PropertyInfo, Is.SameAs (IPropertyInformation));
       Assert.That (propertyReflector.BusinessObjectProvider, Is.SameAs (_businessObjectProvider));
     }
 
@@ -106,8 +106,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
     [Test]
     public void GetMetadata_WithEnumBase ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<Enum>), "Scalar");
-      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
+      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithReferenceType<Enum>), "Scalar");
+      PropertyReflector propertyReflector = new PropertyReflector (IPropertyInformation, _businessObjectProvider);
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
 
@@ -183,8 +183,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
 
     private IBusinessObjectProperty GetMetadataFromPropertyReflector (string propertyName)
     {
-      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithAllDataTypes), propertyName);
-      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
+      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithAllDataTypes), propertyName);
+      PropertyReflector propertyReflector = new PropertyReflector (IPropertyInformation, _businessObjectProvider);
 
       return propertyReflector.GetMetadata ();
     }

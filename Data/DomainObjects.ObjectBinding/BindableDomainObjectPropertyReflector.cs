@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.ObjectBinding.BindableObject;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
 using Rubicon.Mixins;
 
@@ -12,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
     private PropertyDefinition _propertyDefinition;
     private IRelationEndPointDefinition _relationEndPointDefinition;
 
-    public BindableDomainObjectPropertyReflector (Type concreteType, PropertyInfo propertyInfo, BindableObjectProvider businessObjectProvider)
+    public BindableDomainObjectPropertyReflector (Type concreteType, IPropertyInformation propertyInfo, BindableObjectProvider businessObjectProvider)
         : base (propertyInfo, businessObjectProvider)
     {
       ArgumentUtility.CheckNotNull ("concreteType", concreteType);
@@ -22,13 +23,13 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
       InitializeMappingDefinitions (concreteType, propertyInfo);
     }
 
-    private void InitializeMappingDefinitions (Type concreteType, PropertyInfo propertyInfo)
+    private void InitializeMappingDefinitions (Type concreteType, IPropertyInformation propertyInfo)
     {
       Type targetType = Mixins.TypeUtility.GetUnderlyingTargetType (concreteType);
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[targetType];
       if (classDefinition != null)
       {
-        string propertyName = ReflectionUtility.GetPropertyName (propertyInfo);
+        string propertyName = ReflectionUtility.GetPropertyName (propertyInfo.GetOriginalDeclaringType(), propertyInfo.Name);
         _propertyDefinition = classDefinition.GetPropertyDefinition (propertyName);
         _relationEndPointDefinition = classDefinition.GetRelationEndPointDefinition (propertyName);
       }

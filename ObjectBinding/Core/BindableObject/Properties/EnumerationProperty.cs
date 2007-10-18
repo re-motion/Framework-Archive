@@ -162,7 +162,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
 
     private IEnumerationValueFilter GetEnumerationValueFilter ()
     {
-      DisableEnumValuesAttribute disableEnumValuesAttribute = AttributeUtility.GetCustomAttribute<DisableEnumValuesAttribute> (PropertyInfo, true);
+      DisableEnumValuesAttribute disableEnumValuesAttribute = PropertyInfo.GetCustomAttribute<DisableEnumValuesAttribute> (true);
 
       if (disableEnumValuesAttribute == null)
         disableEnumValuesAttribute = AttributeUtility.GetCustomAttribute<DisableEnumValuesAttribute> (PropertyInfo.DeclaringType, true);

@@ -27,12 +27,12 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
     [Test]
     public void Initialize ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
-      PropertyBase propertyBase = new StubPropertyBase (new PropertyBase.Parameters (_bindableObjectProvider, propertyInfo, propertyInfo.PropertyType,
+      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
+      PropertyBase propertyBase = new StubPropertyBase (new PropertyBase.Parameters (_bindableObjectProvider, IPropertyInformation, IPropertyInformation.PropertyType,
           null, true, true));
 
-      Assert.That (propertyBase.PropertyInfo, Is.SameAs (propertyInfo));
-      Assert.That (propertyBase.PropertyType, Is.SameAs (propertyInfo.PropertyType));
+      Assert.That (propertyBase.PropertyInfo, Is.SameAs (IPropertyInformation));
+      Assert.That (propertyBase.PropertyType, Is.SameAs (IPropertyInformation.PropertyType));
       Assert.That (propertyBase.IsRequired, Is.True);
       Assert.That (propertyBase.IsReadOnly (null), Is.True);
       Assert.That (propertyBase.BusinessObjectProvider, Is.SameAs (_bindableObjectProvider));
@@ -93,14 +93,14 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
     [Test]
     public void GetDisplayName_WithGlobalizationSerivce ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
       PropertyBase property = new StubPropertyBase (
           new PropertyBase.Parameters (
-              _bindableObjectProvider, propertyInfo, typeof (string), null, false, false));
+              _bindableObjectProvider, IPropertyInformation, typeof (string), null, false, false));
       IBindableObjectGlobalizationService mockGlobalizationService = _mockRepository.CreateMock<IBindableObjectGlobalizationService> ();
       _bindableObjectProvider.AddService (typeof (IBindableObjectGlobalizationService), mockGlobalizationService);
 
-      Expect.Call (mockGlobalizationService.GetPropertyDisplayName (propertyInfo)).Return ("MockString");
+      Expect.Call (mockGlobalizationService.GetPropertyDisplayName (IPropertyInformation)).Return ("MockString");
       _mockRepository.ReplayAll ();
 
       string actual = property.DisplayName;

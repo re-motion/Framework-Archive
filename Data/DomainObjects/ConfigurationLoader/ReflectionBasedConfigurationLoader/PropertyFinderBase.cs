@@ -107,7 +107,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
-      Type originalDeclaringType = ReflectionUtility.GetOriginalDeclaringType (propertyInfo);
+      Type originalDeclaringType = Rubicon.Utilities.ReflectionUtility.GetOriginalDeclaringType (propertyInfo);
       if (originalDeclaringType.IsGenericType && propertyInfo.DeclaringType.IsGenericType)
         return originalDeclaringType.GetGenericTypeDefinition() == propertyInfo.DeclaringType.GetGenericTypeDefinition();
       return originalDeclaringType == propertyInfo.DeclaringType;

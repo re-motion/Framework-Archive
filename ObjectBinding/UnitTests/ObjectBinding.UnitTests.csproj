@@ -71,6 +71,7 @@
     <Compile Include="Core\BindableObject\EnumerationPropertyTests\GetValueInfoByIdentifier.cs" />
     <Compile Include="Core\BindableObject\EnumerationPropertyTests\GetValueInfoByValue.cs" />
     <Compile Include="Core\BindableObject\EnumerationTestBase.cs" />
+    <Compile Include="Core\BindableObject\PropertyInfoAdapterTest.cs" />
     <Compile Include="Core\BindableObject\ReflectionBasedPropertyFinderTest.cs" />
     <Compile Include="Core\BindableObject\TestDomain\ClassWithIdentityAndGetObjectServiceAttribute.cs" />
     <Compile Include="Core\BindableObject\PropertyBaseTests\SecurityTest.cs" />

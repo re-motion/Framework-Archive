@@ -1,5 +1,5 @@
 using System;
-using System.Reflection;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject
@@ -19,7 +19,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       return new ReflectionBasedPropertyFinder (concreteType);
     }
 
-    public virtual PropertyReflector CreatePropertyReflector (Type concreteType, PropertyInfo propertyInfo, BindableObjectProvider businessObjectProvider)
+    public virtual PropertyReflector CreatePropertyReflector (Type concreteType, IPropertyInformation propertyInfo, BindableObjectProvider businessObjectProvider)
     {
       ArgumentUtility.CheckNotNull ("concreteType", concreteType);
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);

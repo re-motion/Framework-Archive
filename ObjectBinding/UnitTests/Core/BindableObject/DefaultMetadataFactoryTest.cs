@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using Rubicon.ObjectBinding.BindableObject;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 
 namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
 {
@@ -19,13 +20,13 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     {
       IPropertyFinder finder = DefaultMetadataFactory.Instance.CreatePropertyFinder (typeof (TestClass));
       Assert.AreSame (typeof (ReflectionBasedPropertyFinder), finder.GetType());
-      Assert.AreSame (typeof (TestClass), new List<PropertyInfo> (finder.GetPropertyInfos ())[0].DeclaringType);
+      Assert.AreSame (typeof (TestClass), new List<IPropertyInformation> (finder.GetPropertyInfos ())[0].DeclaringType);
     }
 
     [Test]
     public void CreatePropertyReflector ()
     {
-      PropertyInfo property = typeof (TestClass).GetProperty ("Property");
+      IPropertyInformation property = new PropertyInfoAdapter (typeof (TestClass).GetProperty ("Property"));
       PropertyReflector propertyReflector = DefaultMetadataFactory.Instance.CreatePropertyReflector (typeof (TestClass), property, BindableObjectProvider.Current);
       Assert.AreSame (typeof (PropertyReflector), propertyReflector.GetType ());
       Assert.AreSame (property, propertyReflector.PropertyInfo);

@@ -12,87 +12,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     [Test]
     public void GetPropertyName ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithMixedProperties> ("Int32");
+      PropertyInfo propertyInfo = typeof (DerivedClassWithMixedProperties).GetProperty ("Int32");
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.Int32",
           ReflectionUtility.GetPropertyName (propertyInfo));
     }
 
-    [Test]
-    public void GetOriginalDeclaringType_ForPropertyOnBaseClass ()
-    {
-      PropertyInfo propertyInfo = GetPropertyInfo<ClassWithMixedProperties> ("String");
-
-      Assert.AreSame (
-          typeof (ClassWithMixedProperties),
-          ReflectionUtility.GetOriginalDeclaringType (propertyInfo));
-    }
-
-    [Test]
-    public void GetOriginalDeclaringType_ForPropertyOnDerivedClass ()
-    {
-      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithMixedProperties> ("OtherString");
-
-      Assert.AreSame (
-          typeof (DerivedClassWithMixedProperties),
-          ReflectionUtility.GetOriginalDeclaringType (propertyInfo));
-    }
-
-    [Test]
-    public void GetOriginalDeclaringType_ForNewPropertyOnDerivedClass ()
-    {
-      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithMixedProperties> ("String");
-
-      Assert.AreSame (
-          typeof (DerivedClassWithMixedProperties),
-          ReflectionUtility.GetOriginalDeclaringType (propertyInfo));
-    }
-
-    [Test]
-    public void GetOriginalDeclaringType_ForOverriddenPropertyOnBaseClass ()
-    {
-      PropertyInfo propertyInfo = GetPropertyInfo<ClassWithMixedProperties> ("Int32");
-
-      Assert.AreSame (
-          typeof (ClassWithMixedProperties),
-          ReflectionUtility.GetOriginalDeclaringType (propertyInfo));
-    }
-
-    [Test]
-    public void GetOriginalDeclaringType_ForOverriddenPropertyOnDerivedClass ()
-    {
-      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithMixedProperties> ("Int32");
-
-      Assert.AreSame (
-          typeof (ClassWithMixedProperties),
-          ReflectionUtility.GetOriginalDeclaringType (propertyInfo));
-    }
-
-    protected PropertyInfo GetPropertyInfo<T> (string property)
-    {
-      return typeof (T).GetProperty (property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-    }
-
-    [Test]
-    public void IsPropertyAccessor ()
-    {
-      Assert.IsFalse (ReflectionUtility.IsPropertyAccessor (typeof (object).GetConstructor (Type.EmptyTypes)));
-      Assert.IsFalse (ReflectionUtility.IsPropertyGetter (typeof (object).GetConstructor (Type.EmptyTypes)));
-      Assert.IsFalse (ReflectionUtility.IsPropertySetter (typeof (object).GetConstructor (Type.EmptyTypes)));
-
-      Assert.IsFalse (ReflectionUtility.IsPropertyAccessor (typeof (object).GetMethod ("ToString")));
-      Assert.IsFalse (ReflectionUtility.IsPropertyGetter (typeof (object).GetMethod ("ToString")));
-      Assert.IsFalse (ReflectionUtility.IsPropertySetter (typeof (object).GetMethod ("ToString")));
-
-      Assert.IsTrue (ReflectionUtility.IsPropertyAccessor (typeof (Order).GetMethod ("get_Number")));
-      Assert.IsTrue (ReflectionUtility.IsPropertyAccessor (typeof (Order).GetMethod ("set_Number")));
-      Assert.IsTrue (ReflectionUtility.IsPropertyGetter (typeof (Order).GetMethod ("get_Number")));
-      Assert.IsFalse (ReflectionUtility.IsPropertySetter (typeof (Order).GetMethod ("get_Number")));
-      Assert.IsFalse (ReflectionUtility.IsPropertyGetter (typeof (Order).GetMethod ("set_Number")));
-      Assert.IsTrue (ReflectionUtility.IsPropertySetter (typeof (Order).GetMethod ("set_Number")));
-    }
-
+   
     private int TestProperty
     {
       get { return 0; }
@@ -156,5 +83,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests
       Assert.AreEqual (mixedVisibilityProperty, ReflectionUtility.GetPropertyForMethod (mixedVisibilityProperty.GetGetMethod (true)));
       Assert.AreEqual (mixedVisibilityProperty, ReflectionUtility.GetPropertyForMethod (mixedVisibilityProperty.GetSetMethod (true)));
     }
-  }
+ }
 }

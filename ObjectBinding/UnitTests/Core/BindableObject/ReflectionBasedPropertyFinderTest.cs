@@ -4,6 +4,7 @@ using System.Reflection;
 using NUnit.Framework;
 using Rubicon.ObjectBinding.BindableObject;
 using NUnit.Framework.SyntaxHelpers;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
 
 namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
@@ -33,7 +34,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     public void ReturnsPublicInstancePropertiesFromThisAndBase ()
     {
       ReflectionBasedPropertyFinder finder = new ReflectionBasedPropertyFinder (typeof (TestType));
-      List<PropertyInfo> properties = new List<PropertyInfo> (finder.GetPropertyInfos ());
+      List<PropertyInfo> properties = new List<PropertyInfo> (PropertyInfoAdapter.UnwrapCollection (finder.GetPropertyInfos ()));
       Assert.That (
           properties,
           Is.EquivalentTo (
@@ -54,7 +55,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     public void IgnoresBasePropertiesWithSameName ()
     {
       ReflectionBasedPropertyFinder finder = new ReflectionBasedPropertyFinder (typeof (TestTypeHidingProperties));
-      List<PropertyInfo> properties = new List<PropertyInfo> (finder.GetPropertyInfos ());
+      List<PropertyInfo> properties = new List<PropertyInfo> (PropertyInfoAdapter.UnwrapCollection (finder.GetPropertyInfos ()));
       Assert.That (
           properties,
           Is.EquivalentTo (
@@ -89,7 +90,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     public void FindsPropertiesFromImplicitInterfaceImplementations ()
     {
       ReflectionBasedPropertyFinder finder = new ReflectionBasedPropertyFinder (typeof (TestTypeWithInterfaces));
-      List<PropertyInfo> properties = new List<PropertyInfo> (finder.GetPropertyInfos ());
+      List<PropertyInfo> properties = new List<PropertyInfo> (PropertyInfoAdapter.UnwrapCollection (finder.GetPropertyInfos ()));
       Assert.That (properties,
           List.Contains (typeof (TestTypeWithInterfaces).GetProperty ("InterfaceProperty", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)));
     }
@@ -98,7 +99,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     public void FindsPropertiesFromExplicitInterfaceImplementations ()
     {
       ReflectionBasedPropertyFinder finder = new ReflectionBasedPropertyFinder (typeof (TestTypeWithInterfaces));
-      List<PropertyInfo> properties = new List<PropertyInfo> (finder.GetPropertyInfos ());
+      List<PropertyInfo> properties = new List<PropertyInfo> (PropertyInfoAdapter.UnwrapCollection (finder.GetPropertyInfos ()));
       Assert.That (properties,
           List.Contains (typeof (TestTypeWithInterfaces).GetProperty (
           typeof (ReflectionBasedPropertyFinderTest).FullName + ".IExplicitTestInterface.InterfaceProperty",
@@ -109,7 +110,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     public void FindsPropertiesFromExplicitInterfaceImplementationsOnBase ()
     {
       ReflectionBasedPropertyFinder finder = new ReflectionBasedPropertyFinder (typeof (DerivedTypeWithInterfaces));
-      List<PropertyInfo> properties = new List<PropertyInfo> (finder.GetPropertyInfos ());
+      List<PropertyInfo> properties = new List<PropertyInfo> (PropertyInfoAdapter.UnwrapCollection (finder.GetPropertyInfos ()));
       Assert.That (properties,
           List.Contains (typeof (TestTypeWithInterfaces).GetProperty (
           typeof (ReflectionBasedPropertyFinderTest).FullName + ".IExplicitTestInterface.InterfaceProperty",
@@ -121,9 +122,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     {
       Type targetType = typeof (ClassWithIdentity);
       Type concreteType = Mixins.TypeUtility.GetConcreteType (targetType);
-      
-      List<PropertyInfo> targetTypeProperties = new List<PropertyInfo> (new ReflectionBasedPropertyFinder(targetType).GetPropertyInfos ());
-      List<PropertyInfo> concreteTypeProperties = new List<PropertyInfo> (new ReflectionBasedPropertyFinder (concreteType).GetPropertyInfos ());
+
+      List<IPropertyInformation> targetTypeProperties = new List<IPropertyInformation> (new ReflectionBasedPropertyFinder (targetType).GetPropertyInfos ());
+      List<IPropertyInformation> concreteTypeProperties = new List<IPropertyInformation> (new ReflectionBasedPropertyFinder (concreteType).GetPropertyInfos ());
 
       Assert.That (concreteTypeProperties, Is.EquivalentTo (targetTypeProperties));
     }

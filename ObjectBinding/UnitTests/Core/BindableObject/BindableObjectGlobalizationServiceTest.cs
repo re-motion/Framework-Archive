@@ -5,6 +5,7 @@ using System.Threading;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.ObjectBinding.BindableObject;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
 
 namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
@@ -67,22 +68,22 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [Test]
     public void GetPropertyDisplayName ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithResources), "Value1");
-      Assert.That (_globalizationService.GetPropertyDisplayName (propertyInfo), Is.EqualTo ("Value 1"));
+      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithResources), "Value1");
+      Assert.That (_globalizationService.GetPropertyDisplayName (IPropertyInformation), Is.EqualTo ("Value 1"));
     }
 
     [Test]
     public void GetPropertyDisplayName_WithoutMultiLingualResourcesAttribute ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
-      Assert.That (_globalizationService.GetPropertyDisplayName (propertyInfo), Is.EqualTo ("String"));
+      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
+      Assert.That (_globalizationService.GetPropertyDisplayName (IPropertyInformation), Is.EqualTo ("String"));
     }
 
     [Test]
     public void GetPropertyDisplayName_WithoutResourceForProperty ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithResources), "ValueWithoutResource");
-      Assert.That (_globalizationService.GetPropertyDisplayName (propertyInfo), Is.EqualTo ("ValueWithoutResource"));
+      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithResources), "ValueWithoutResource");
+      Assert.That (_globalizationService.GetPropertyDisplayName (IPropertyInformation), Is.EqualTo ("ValueWithoutResource"));
     }
   }
 }

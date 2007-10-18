@@ -11,13 +11,13 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     public struct Parameters
     {
       public readonly BindableObjectProvider BusinessObjectProvider;
-      public readonly PropertyInfo PropertyInfo;
+      public readonly IPropertyInformation PropertyInfo;
       public readonly Type UnderlyingType;
       public readonly IListInfo ListInfo;
       public readonly bool IsRequired;
       public readonly bool IsReadOnly;
 
-      public Parameters (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, Type underlyingType, IListInfo listInfo,
+      public Parameters (BindableObjectProvider businessObjectProvider, IPropertyInformation propertyInfo, Type underlyingType, IListInfo listInfo,
           bool isRequired, bool isReadOnly)
       {
         ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
@@ -33,7 +33,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     }
 
     private readonly BindableObjectProvider _businessObjectProvider;
-    private readonly PropertyInfo _propertyInfo;
+    private readonly IPropertyInformation _propertyInfo;
     private readonly IListInfo _listInfo;
     private readonly bool _isRequired;
     private readonly Type _underlyingType;
@@ -174,7 +174,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
       get { return BusinessObjectProvider; }
     }
 
-    public PropertyInfo PropertyInfo
+    public IPropertyInformation PropertyInfo
     {
       get { return _propertyInfo; }
     }

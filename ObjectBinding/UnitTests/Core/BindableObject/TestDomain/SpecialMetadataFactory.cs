@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.ObjectBinding.BindableObject;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 
 namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
 {
@@ -26,9 +27,10 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
         _concreteType = concreteType;
       }
 
-      public IEnumerable<PropertyInfo> GetPropertyInfos ()
+      public IEnumerable<IPropertyInformation> GetPropertyInfos ()
       {
-        return Mixins.TypeUtility.GetUnderlyingTargetType (_concreteType).GetProperties (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        return PropertyInfoAdapter.AdaptCollection (Mixins.TypeUtility.GetUnderlyingTargetType (_concreteType)
+            .GetProperties (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance));
       }
     }
 

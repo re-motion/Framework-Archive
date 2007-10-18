@@ -163,7 +163,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     private Type GetSearchServiceType ()
     {
       SearchAvailableObjectsServiceTypeAttribute attribute;
-      attribute = AttributeUtility.GetCustomAttribute<SearchAvailableObjectsServiceTypeAttribute> (PropertyInfo, true);
+      attribute = PropertyInfo.GetCustomAttribute<SearchAvailableObjectsServiceTypeAttribute> (true);
       if (attribute == null)
         attribute = AttributeUtility.GetCustomAttribute<SearchAvailableObjectsServiceTypeAttribute> (_concreteType, true);
       if (attribute == null)

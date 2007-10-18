@@ -39,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
     {
       ArgumentUtility.CheckNotNull ("property", property);
       
-      string propertyIdentifier = ReflectionUtility.GetPropertyName (property.PropertyInfo);
+      string propertyIdentifier = ReflectionUtility.GetPropertyName (property.PropertyInfo.GetOriginalDeclaringType(), property.PropertyInfo.Name);
       if (This.Properties.Contains (propertyIdentifier))
         return !This.Properties[propertyIdentifier].HasBeenTouched;
       else

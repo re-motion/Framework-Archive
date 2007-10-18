@@ -335,6 +335,7 @@
     <Compile Include="Utilities\ReflectionUtilityTests\GetAscribedGenericArguments_WithGenericInterface.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\GetAscribedGenericArguments_WithNonGenericClass.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\GetAscribedGenericArguments_WithNonGenericInterface.cs" />
+    <Compile Include="Utilities\ReflectionUtilityTests\GetOriginalDeclaringType.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\SampleTypes.cs" />
     <Compile Include="Utilities\StubStringUtility.cs">
       <SubType>Code</SubType>

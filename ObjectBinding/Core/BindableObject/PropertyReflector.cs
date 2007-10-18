@@ -11,10 +11,10 @@ namespace Rubicon.ObjectBinding.BindableObject
 {
   public class PropertyReflector
   {
-    private readonly PropertyInfo _propertyInfo;
+    private readonly IPropertyInformation _propertyInfo;
     private readonly BindableObjectProvider _businessObjectProvider;
 
-    public PropertyReflector (PropertyInfo propertyInfo, BindableObjectProvider businessObjectProvider)
+    public PropertyReflector (IPropertyInformation propertyInfo, BindableObjectProvider businessObjectProvider)
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
       ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
@@ -23,7 +23,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       _businessObjectProvider = businessObjectProvider;
     }
 
-    public PropertyInfo PropertyInfo
+    public IPropertyInformation PropertyInfo
     {
       get { return _propertyInfo; }
     } 
@@ -42,7 +42,7 @@ namespace Rubicon.ObjectBinding.BindableObject
         return new BooleanProperty (parameters);
       else if (underlyingType == typeof (Byte))
         return new ByteProperty (parameters);
-      else if (underlyingType == typeof (DateTime) && AttributeUtility.IsDefined<DatePropertyAttribute> (_propertyInfo, true))
+      else if (underlyingType == typeof (DateTime) && _propertyInfo.IsDefined<DatePropertyAttribute> (true))
         return new DateProperty (parameters);
       else if (underlyingType == typeof (DateTime))
         return new DateTimeProperty (parameters);
@@ -103,7 +103,7 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     private Type GetItemTypeFromAttribute ()
     {
-      ItemTypeAttribute itemTypeAttribute = AttributeUtility.GetCustomAttribute<ItemTypeAttribute> (_propertyInfo, true);
+      ItemTypeAttribute itemTypeAttribute = _propertyInfo.GetCustomAttribute<ItemTypeAttribute> (true);
       if (itemTypeAttribute == null)
         throw new Exception ("ItemTypeAttribute is required for properties of type IList.");
 
@@ -129,31 +129,20 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     protected virtual bool GetIsReadOnly ()
     {
-      ObjectBindingAttribute attribute = AttributeUtility.GetCustomAttribute<ObjectBindingAttribute>(_propertyInfo, true);
+      ObjectBindingAttribute attribute = _propertyInfo.GetCustomAttribute<ObjectBindingAttribute> (true);
       if (attribute != null && attribute.ReadOnly)
         return true;
 
       if (ReflectionUtility.CanAscribe (_propertyInfo.PropertyType, typeof (ReadOnlyCollection<>)))
         return true;
 
-      if (GetHasAccessibleSetter())
+      if (_propertyInfo.CanBeSetFromOutside)
         return false;
 
       if (IsListProperty() && !_propertyInfo.PropertyType.IsArray)
         return false;
 
       return true;
-    }
-
-    protected virtual bool GetHasAccessibleSetter()
-    {
-      // if there is one public accessor, the set accessor must also be public
-      // if there is no public accessor, we can assume that the whole property is an explicit interface implementation (we don't do non-public
-      // properties) and the setter therefore needn't be public
-      if (_propertyInfo.GetAccessors (false).Length > 0)
-        return _propertyInfo.GetSetMethod (false) != null;
-      else
-        return _propertyInfo.GetSetMethod (true) != null;
     }
 
     protected virtual int? GetMaxLength ()

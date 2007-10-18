@@ -64,7 +64,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       IPropertyFinder propertyFinder = _metadataFactory.CreatePropertyFinder (_concreteType);
 
       Dictionary<string, PropertyBase> propertiesByName = new Dictionary<string, PropertyBase> ();
-      foreach (PropertyInfo propertyInfo in propertyFinder.GetPropertyInfos ())
+      foreach (IPropertyInformation propertyInfo in propertyFinder.GetPropertyInfos ())
       {
         PropertyReflector propertyReflector = _metadataFactory.CreatePropertyReflector (_concreteType, propertyInfo, _businessObjectProvider);
         PropertyBase property = propertyReflector.GetMetadata ();

@@ -80,12 +80,12 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     {
       MockRepository mockRepository = new MockRepository ();
       IMetadataFactory factoryMock = mockRepository.CreateMock<IMetadataFactory> ();
-      
-      PropertyInfo dummyProperty1 = typeof (DateTime).GetProperty ("Now");
-      PropertyInfo dummyProperty2 = typeof (Environment).GetProperty ("TickCount");
 
-      PropertyReflector dummyReflector1 = new PropertyReflector (typeof (DateTime).GetProperty ("Ticks"), _businessObjectProvider);
-      PropertyReflector dummyReflector2 = new PropertyReflector (typeof (Environment).GetProperty ("NewLine"), _businessObjectProvider);
+      IPropertyInformation dummyProperty1 = GetPropertyInfo (typeof (DateTime), "Now");
+      IPropertyInformation dummyProperty2 = GetPropertyInfo (typeof (Environment), "TickCount");
+
+      PropertyReflector dummyReflector1 = new PropertyReflector (GetPropertyInfo (typeof (DateTime), "Ticks"), _businessObjectProvider);
+      PropertyReflector dummyReflector2 = new PropertyReflector (GetPropertyInfo (typeof (Environment), "NewLine"), _businessObjectProvider);
 
       IPropertyFinder propertyFinderMock = mockRepository.CreateMock<IPropertyFinder> ();
 
@@ -94,7 +94,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       Type concreteType = Mixins.TypeUtility.GetConcreteType (_type);
 
       Expect.Call (factoryMock.CreatePropertyFinder (concreteType)).Return (propertyFinderMock);
-      Expect.Call (propertyFinderMock.GetPropertyInfos ()).Return (new PropertyInfo[] { dummyProperty1, dummyProperty2 });
+      Expect.Call (propertyFinderMock.GetPropertyInfos ()).Return (new IPropertyInformation[] { dummyProperty1, dummyProperty2 });
       Expect.Call (factoryMock.CreatePropertyReflector (concreteType, dummyProperty1, _businessObjectProvider)).Return (dummyReflector1);
       Expect.Call (factoryMock.CreatePropertyReflector (concreteType, dummyProperty2, _businessObjectProvider)).Return (dummyReflector2);
 

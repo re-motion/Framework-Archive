@@ -23,12 +23,12 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       BindableObjectProvider.SetCurrent (null);      
     }
 
-    protected PropertyInfo GetPropertyInfo (Type type, string propertyName)
+    protected IPropertyInformation GetPropertyInfo (Type type, string propertyName)
     {
-      PropertyInfo propertyInfo = type.GetProperty (propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance );
+      PropertyInfo propertyInfo = type.GetProperty (propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
       Assert.IsNotNull (propertyInfo, "Property '{0}' was not found on type '{1}'.", propertyName, type);
 
-      return propertyInfo;
+      return new PropertyInfoAdapter (propertyInfo);
     }
 
     protected Type GetUnderlyingType (PropertyReflector reflector)
@@ -36,7 +36,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       return (Type) PrivateInvoke.InvokeNonPublicMethod (reflector, "GetUnderlyingType");
     }
 
-    protected PropertyBase.Parameters GetPropertyParameters (PropertyInfo property, BindableObjectProvider provider)
+    protected PropertyBase.Parameters GetPropertyParameters (IPropertyInformation property, BindableObjectProvider provider)
     {
       PropertyReflector reflector = new PropertyReflector (property, provider);
       return (PropertyBase.Parameters) PrivateInvoke.InvokeNonPublicMethod (reflector, "CreateParameters", GetUnderlyingType (reflector));

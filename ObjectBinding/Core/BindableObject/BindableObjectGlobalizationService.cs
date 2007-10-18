@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using Rubicon.Collections;
 using Rubicon.Globalization;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject
@@ -35,7 +36,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       return resourceManager.GetString (value ? ResourceIdentifier.True : ResourceIdentifier.False);
     }
 
-    public string GetPropertyDisplayName (PropertyInfo propertyInfo)
+    public string GetPropertyDisplayName (IPropertyInformation propertyInfo)
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 

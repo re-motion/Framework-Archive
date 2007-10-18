@@ -84,46 +84,6 @@ namespace Rubicon.Data.DomainObjects
     }
 
     /// <summary>
-    /// Checks whether a given member is a property accessor method.
-    /// </summary>
-    /// <param name="memberInfo">The member to be checked.</param>
-    /// <returns>True if the given member is either a getter or a setter method, false otherwise.</returns>
-    /// <exception cref="ArgumentNullException">The argument <paramref name="memberInfo"/> is null.</exception>
-    public static bool IsPropertyAccessor (MethodBase memberInfo)
-    {
-      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
-      return IsPropertyGetter (memberInfo) || IsPropertySetter (memberInfo);
-    }
-
-    /// <summary>
-    /// Checks whether a given member is a property getter method.
-    /// </summary>
-    /// <param name="memberInfo">The member to be checked.</param>
-    /// <returns>True if the given member is a property's getter method, false otherwise.</returns>
-    /// <exception cref="ArgumentNullException">The argument <paramref name="memberInfo"/> is null.</exception>
-    public static bool IsPropertyGetter (MethodBase memberInfo)
-    {
-      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
-      return memberInfo.MemberType == MemberTypes.Method
-             && memberInfo.IsSpecialName
-             && memberInfo.Name.StartsWith ("get_");
-    }
-
-    /// <summary>
-    /// Checks whether a given member is a property setter method.
-    /// </summary>
-    /// <param name="memberInfo">The member to be checked.</param>
-    /// <returns>True if the given member is a property's setter method, false otherwise.</returns>
-    /// <exception cref="ArgumentNullException">The argument <paramref name="memberInfo"/> is null.</exception>
-    public static bool IsPropertySetter (MethodBase memberInfo)
-    {
-      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
-      return memberInfo.MemberType == MemberTypes.Method
-             && memberInfo.IsSpecialName
-             && memberInfo.Name.StartsWith ("set_");
-    }
-
-    /// <summary>
     /// Returns the property name for a given property accessor method name, or null if the method name is not the name of a property accessor method.
     /// </summary>
     /// <param name="methodName">The name of the presumed property accessor method.</param>
@@ -197,48 +157,21 @@ namespace Rubicon.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
-      Type originalDeclaringType = GetOriginalDeclaringType (propertyInfo);
+      Type originalDeclaringType = Rubicon.Utilities.ReflectionUtility.GetOriginalDeclaringType (propertyInfo);
       if (originalDeclaringType.IsGenericType)
         return GetPropertyName (originalDeclaringType.GetGenericTypeDefinition (), propertyInfo.Name);
       else
         return GetPropertyName (originalDeclaringType, propertyInfo.Name);
     }
 
-    /// <summary>Returns the property name scoped for a specific <paramref name="type"/>.</summary>
+    /// <summary>Returns the property name scoped for a specific <paramref name="originalDeclaringType"/>.</summary>
     // TODO: Move to reflection based mapping
-    public static string GetPropertyName (Type type, string propertyName)
+    public static string GetPropertyName (Type originalDeclaringType, string propertyName)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull ("type", originalDeclaringType);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
-      return type.FullName + "." + propertyName;
-    }
-
-    /// <summary>
-    /// Returns the <see cref="Type"/> where the property was initially decelared.
-    /// </summary>
-    /// <param name="propertyInfo">The property whose identifier should be returned. Must not be <see langword="null" />.</param>
-    /// <returns>The <see cref="Type"/> where the property was declared for the first time.</returns>
-    public static Type GetOriginalDeclaringType (PropertyInfo propertyInfo)
-    {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-      
-      MethodInfo[] accessors = propertyInfo.GetAccessors (true);
-      if (accessors.Length == 0)
-      {
-        throw new ArgumentException (
-            string.Format ("The property does not define any accessors.\r\n  Type: {0}, property: {1}", propertyInfo.DeclaringType, propertyInfo.Name),
-            "propertyInfo");
-      }
-
-      Type baseDeclaringType = accessors[0].GetBaseDefinition().DeclaringType;
-      for (int i = 1; i < accessors.Length; i++)
-      {
-        if (accessors[i].GetBaseDefinition().DeclaringType.IsSubclassOf (baseDeclaringType))
-          baseDeclaringType = accessors[i].GetBaseDefinition().DeclaringType;
-      }
-
-      return baseDeclaringType;
+      return originalDeclaringType.FullName + "." + propertyName;
     }
 
     /// <summary>

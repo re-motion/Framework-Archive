@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Collections;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject
@@ -34,7 +35,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       return cache;
     }
 
-    public IEnumerable<PropertyInfo> GetPropertyInfos ()
+    public IEnumerable<IPropertyInformation> GetPropertyInfos ()
     {
       PropertyInfoCollection propertyInfos = new PropertyInfoCollection ();
       
@@ -44,7 +45,7 @@ namespace Rubicon.ObjectBinding.BindableObject
             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly, PropertyFilter, null))
         {
           if (!propertyInfos.Contains (propertyInfo.Name))
-            propertyInfos.Add (propertyInfo);
+            propertyInfos.Add (new PropertyInfoAdapter (propertyInfo));
         }
       }
       return propertyInfos;

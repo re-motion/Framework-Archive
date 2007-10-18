@@ -273,5 +273,32 @@ namespace Rubicon.Utilities
       else
         throw new ArgumentTypeException ("type", ascribeeType, type);
     }
+
+    /// <summary>
+    /// Returns the <see cref="Type"/> where the property was initially decelared.
+    /// </summary>
+    /// <param name="propertyInfo">The property whose identifier should be returned. Must not be <see langword="null" />.</param>
+    /// <returns>The <see cref="Type"/> where the property was declared for the first time.</returns>
+    public static Type GetOriginalDeclaringType (PropertyInfo propertyInfo)
+    {
+      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+
+      MethodInfo[] accessors = propertyInfo.GetAccessors (true);
+      if (accessors.Length == 0)
+      {
+        throw new ArgumentException (
+            string.Format ("The property does not define any accessors.\r\n  Type: {0}, property: {1}", propertyInfo.DeclaringType, propertyInfo.Name),
+            "propertyInfo");
+      }
+
+      Type baseDeclaringType = accessors[0].GetBaseDefinition ().DeclaringType;
+      for (int i = 1; i < accessors.Length; i++)
+      {
+        if (accessors[i].GetBaseDefinition ().DeclaringType.IsSubclassOf (baseDeclaringType))
+          baseDeclaringType = accessors[i].GetBaseDefinition ().DeclaringType;
+      }
+
+      return baseDeclaringType;
+    }
   }
 }
