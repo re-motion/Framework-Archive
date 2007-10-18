@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Mixins.Context;
@@ -34,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
 
     private void CheckPersistentMixins (Type targetType, params Type[] expectedTypes)
     {
-      List<Type> mixinTypes = ClassReflector.GetPersistentMixins (targetType);
+      List<Type> mixinTypes = ReflectionBasedClassDefinition.GetPersistentMixins (targetType);
       Assert.That (mixinTypes, Is.EquivalentTo (expectedTypes));
     }
   }

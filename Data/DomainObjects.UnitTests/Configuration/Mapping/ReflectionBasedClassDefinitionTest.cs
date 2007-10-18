@@ -7,9 +7,10 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Mixins.Context;
 using Rubicon.Utilities;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain;
+using Rubicon.Mixins;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
@@ -906,6 +907,52 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           typeof (ReflectionBasedClassDefinition).Assembly.GetType ("Rubicon.Data.DomainObjects.Infrastructure.FactoryBasedDomainObjectCreator", true),
           "Instance");
       Assert.AreEqual (creatorInstance, PrivateInvoke.InvokeNonPublicMethod (_orderClass, "GetDomainObjectCreator"));
+    }
+
+    [Test]
+    public void ValidateCurrentMixinConfiguration_OkWhenNoPersistentChanges ()
+    {
+      ClassDefinition classDefinition = new ReflectionBasedClassDefinition ("x", "xx", "xxx", typeof (Order), false,
+          new Type[] { typeof (MixinA) });
+      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (MixinA)))
+      {
+        classDefinition.ValidateCurrentMixinConfiguration (); // ok, no changes
+      }
+
+      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (NonDomainObjectMixin), typeof (MixinA)))
+      {
+        classDefinition.ValidateCurrentMixinConfiguration (); // ok, no persistence-related changes
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "A persistence-related mixin was removed from the domain object type "
+        + "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order after the mapping information was built: "
+        + "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain.MixinA.")]
+    public void ValidateCurrentMixinConfiguration_ThrowsWhenPersistentMixisMissing ()
+    {
+      ClassDefinition classDefinition = new ReflectionBasedClassDefinition ("x", "xx", "xxx", typeof (Order), false,
+          new Type[] { typeof (MixinA) });
+      using (MixinConfiguration.ScopedExtend (typeof (Order)))
+      {
+        classDefinition.ValidateCurrentMixinConfiguration ();
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "One or more persistence-related mixins were added to the domain object type "
+        + "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order after the mapping information was built: "
+        + "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain.MixinB, "
+        + "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain.MixinC.")]
+    public void ValidateCurrentMixinConfiguration_ThrowsWhenPersistentMixinsAdded ()
+    {
+      ClassDefinition classDefinition = new ReflectionBasedClassDefinition ("x", "xx", "xxx", typeof (Order), false,
+          new Type[] { typeof (MixinA) });
+      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (NonDomainObjectMixin), typeof (MixinA), typeof (MixinB), typeof (MixinC)))
+      {
+        classDefinition.ValidateCurrentMixinConfiguration ();
+        Assert.Fail ();
+      }
     }
   }
 }

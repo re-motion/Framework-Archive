@@ -47,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       if (_includeBaseProperties && _type.BaseType != typeof (DomainObject))
       {
         PropertyFinderBase propertyFinder = (PropertyFinderBase) TypesafeActivator.CreateInstance (GetType()).With (_type.BaseType, true,
-            (IEnumerable<Type>) ClassReflector.GetPersistentMixins (_type.BaseType));
+            (IEnumerable<Type>) ReflectionBasedClassDefinition.GetPersistentMixins (_type.BaseType));
         propertyInfos.AddRange (propertyFinder.FindPropertyInfos (classDefinition));
       }
 

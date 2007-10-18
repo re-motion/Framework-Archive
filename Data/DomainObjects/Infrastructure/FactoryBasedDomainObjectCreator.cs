@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 using Rubicon.Data.DomainObjects.Configuration;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
 
@@ -17,6 +18,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public DomainObject CreateWithDataContainer (DataContainer dataContainer)
     {
       ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+      Assertion.IsTrue (dataContainer.ClassDefinition is ReflectionBasedClassDefinition);
+
+      dataContainer.ClassDefinition.ValidateCurrentMixinConfiguration ();
+
       IDomainObjectFactory factory = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory;
       Type concreteType = factory.GetConcreteDomainObjectType(dataContainer.DomainObjectType);
       DomainObject instance = (DomainObject) FormatterServices.GetSafeUninitializedObject (concreteType);
@@ -41,6 +46,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         where TMinimal : DomainObject
     {
       ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);
+      
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (domainObjectType);
+      classDefinition.ValidateCurrentMixinConfiguration ();
+
       IDomainObjectFactory factory = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory;
       Type concreteType = factory.GetConcreteDomainObjectType(domainObjectType);
       return factory.GetTypesafeConstructorInvoker<TMinimal> (concreteType);

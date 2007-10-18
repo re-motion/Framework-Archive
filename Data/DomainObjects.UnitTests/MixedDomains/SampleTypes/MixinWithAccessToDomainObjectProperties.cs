@@ -1,8 +1,11 @@
 using System;
 using Rubicon.Data.DomainObjects.Infrastructure;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Mixins;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
 {
+  [Extends (typeof (ClassWithAllDataTypes))]
   public class MixinWithAccessToDomainObjectProperties<TDomainObject> : DomainObjectMixin<TDomainObject>
       where TDomainObject : DomainObject
   {
@@ -10,6 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
     public bool OnDomainObjectLoadedCalled = false;
     public LoadMode OnDomainObjectLoadedLoadMode;
 
+    [StorageClassNone]
     public new ObjectID ID
     {
       get { return base.ID; }
@@ -20,21 +24,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
       return base.GetPublicDomainObjectType ();
     }
 
+    [StorageClassNone]
     public new StateType State
     {
       get { return base.State; }
     }
 
+    [StorageClassNone]
     public new bool IsDiscarded
     {
       get { return base.IsDiscarded; }
     }
 
+    [StorageClassNone]
     public new PropertyIndexer Properties
     {
       get { return base.Properties; }
     }
 
+    [StorageClassNone]
     public new TDomainObject This
     {
       get { return base.This; }

@@ -25,27 +25,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return new RdbmsClassReflector (type);
     }
 
-    // gets the DomainObjectMixin<,>-derived mixins for a given type, does not check for inheritance root
-    public static List<Type> GetPersistentMixins (Type type)
-    {
-      ClassContext mixinConfiguration = TypeFactory.GetContext (type, MixinConfiguration.ActiveContext, GenerationPolicy.GenerateOnlyIfConfigured);
-      List<Type> persistentMixins = new List<Type> ();
-      if (mixinConfiguration != null)
-      {
-        ClassContext parentClassContext =
-            TypeFactory.GetContext (type.BaseType, MixinConfiguration.ActiveContext, GenerationPolicy.GenerateOnlyIfConfigured);
-
-        foreach (MixinContext mixin in mixinConfiguration.Mixins)
-        {
-          if (Utilities.ReflectionUtility.CanAscribe (mixin.MixinType, typeof (DomainObjectMixin<,>))
-              && (parentClassContext == null || !parentClassContext.ContainsAssignableMixin (mixin.MixinType)))
-            persistentMixins.Add (mixin.MixinType);
-        }
-      }
-      return persistentMixins;
-    }
-
-    private Type _type;
+    private readonly Type _type;
 
     public ClassReflector (Type type)
     {
@@ -116,7 +96,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
           _type,
           IsAbstract(),
           GetBaseClassDefinition (classDefinitions),
-          GetPersistentMixins (_type));
+          ReflectionBasedClassDefinition.GetPersistentMixins (_type));
 
       CreatePropertyDefinitions (classDefinition, GetPropertyInfos (classDefinition));
 

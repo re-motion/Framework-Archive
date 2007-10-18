@@ -467,6 +467,12 @@ namespace Rubicon.Data.DomainObjects.Mapping
         derivedClassDefinition.ValidateInheritanceHierarchy (allPropertyDefinitionsInInheritanceHierarchy);
     }
 
+    public virtual void ValidateCurrentMixinConfiguration ()
+    {
+      // do nothing by default, implementations supporting mixins can add validation code checking that the current mixin configuration is compatible
+      // with the mixin information stored in the class definition
+    }
+
     internal static void SetClassDefinition (ClassDefinition classDefinition, PropertyDefinition propertyDefinition)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);

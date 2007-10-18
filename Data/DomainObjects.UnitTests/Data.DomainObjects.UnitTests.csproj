@@ -263,7 +263,7 @@
     <Compile Include="MixedDomains\SampleTypes\HookedDomainObjectMixin.cs" />
     <Compile Include="MixedDomains\SampleTypes\IInterfaceAddedByMixin.cs" />
     <Compile Include="MixedDomains\SampleTypes\IMixinAddingPeristentProperties.cs" />
-    <Compile Include="MixedDomains\SampleTypes\MixinAddingPeristentProperties.cs" />
+    <Compile Include="MixedDomains\SampleTypes\MixinAddingPersistentProperties.cs" />
     <Compile Include="MixedDomains\SampleTypes\MixinWithAccessToDomainObjectProperties.cs" />
     <Compile Include="MixedDomains\SampleTypes\MixinAddingInterface.cs" />
     <Compile Include="MixedDomains\SampleTypes\MixinOverridingPropertiesAndMethods.cs" />

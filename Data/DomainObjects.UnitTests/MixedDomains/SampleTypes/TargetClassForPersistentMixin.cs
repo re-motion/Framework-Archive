@@ -4,7 +4,8 @@ using Rubicon.Mixins;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
 {
-  [Uses (typeof (MixinAddingPeristentProperties))]
+  [Uses (typeof (MixinAddingPersistentProperties))]
+  [Uses (typeof (NullMixin))]
   [DBTable]
   [StorageProviderStub]
   public class TargetClassForPersistentMixin : DomainObject

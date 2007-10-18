@@ -10,116 +10,113 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
   [TestFixture]
   public class DomainObjectMixinBaseClassTest : ClientTransactionBaseTest
   {
-    private Order _loadedOrder;
-    private Order _newOrder;
-    private MixinWithAccessToDomainObjectProperties<Order> _loadedOrderMixin;
-    private MixinWithAccessToDomainObjectProperties<Order> _newOrderMixin;
+    private ClassWithAllDataTypes _loadedClassWithAllDataTypes;
+    private ClassWithAllDataTypes _newClassWithAllDataTypes;
+    private MixinWithAccessToDomainObjectProperties<ClassWithAllDataTypes> _loadedClassWithAllDataTypesMixin;
+    private MixinWithAccessToDomainObjectProperties<ClassWithAllDataTypes> _newClassWithAllDataTypesMixin;
 
     public override void SetUp ()
     {
       base.SetUp ();
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (MixinWithAccessToDomainObjectProperties<>)))
-      {
-        _loadedOrder = Order.GetObject (DomainObjectIDs.Order1);
-        _newOrder = Order.NewObject ();
-        _loadedOrderMixin = Mixin.Get<MixinWithAccessToDomainObjectProperties<Order>> (_loadedOrder);
-        _newOrderMixin = Mixin.Get<MixinWithAccessToDomainObjectProperties<Order>> (_newOrder);
-      }
+      _loadedClassWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+      _newClassWithAllDataTypes = ClassWithAllDataTypes.NewObject ();
+      _loadedClassWithAllDataTypesMixin = Mixin.Get<MixinWithAccessToDomainObjectProperties<ClassWithAllDataTypes>> (_loadedClassWithAllDataTypes);
+      _newClassWithAllDataTypesMixin = Mixin.Get<MixinWithAccessToDomainObjectProperties<ClassWithAllDataTypes>> (_newClassWithAllDataTypes);
     }
 
     [Test]
     public void MixinIsApplied ()
     {
-      Assert.IsNotNull (_loadedOrderMixin);
-      Assert.IsNotNull (_newOrderMixin);
+      Assert.IsNotNull (_loadedClassWithAllDataTypesMixin);
+      Assert.IsNotNull (_newClassWithAllDataTypesMixin);
     }
 
     [Test]
     [ExpectedException (typeof (ValidationException))]
     public void InvalidMixinConfiguration ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (MixinWithAccessToDomainObjectProperties<Official>)))
+      using (MixinConfiguration.ScopedExtend (typeof (ClassWithAllDataTypes), typeof (MixinWithAccessToDomainObjectProperties<Official>)))
       {
-        Order.NewObject ();
+        TypeFactory.GetActiveConfiguration (typeof (ClassWithAllDataTypes));
       }
     }
 
     [Test]
     public void This ()
     {
-      Assert.AreSame (_loadedOrder, _loadedOrderMixin.This);
-      Assert.AreSame (_newOrder, _newOrderMixin.This);
+      Assert.AreSame (_loadedClassWithAllDataTypes, _loadedClassWithAllDataTypesMixin.This);
+      Assert.AreSame (_newClassWithAllDataTypes, _newClassWithAllDataTypesMixin.This);
     }
 
     [Test]
     public void ID ()
     {
-      Assert.AreSame (_loadedOrder.ID, _loadedOrderMixin.ID);
-      Assert.AreSame (_newOrder.ID, _newOrderMixin.ID);
+      Assert.AreSame (_loadedClassWithAllDataTypes.ID, _loadedClassWithAllDataTypesMixin.ID);
+      Assert.AreSame (_newClassWithAllDataTypes.ID, _newClassWithAllDataTypesMixin.ID);
     }
 
     [Test]
     public void GetPublicDomainObjectType ()
     {
-      Assert.AreSame (_loadedOrder.GetPublicDomainObjectType (), _loadedOrderMixin.GetPublicDomainObjectType ());
-      Assert.AreSame (_newOrder.GetPublicDomainObjectType (), _newOrderMixin.GetPublicDomainObjectType ());
+      Assert.AreSame (_loadedClassWithAllDataTypes.GetPublicDomainObjectType (), _loadedClassWithAllDataTypesMixin.GetPublicDomainObjectType ());
+      Assert.AreSame (_newClassWithAllDataTypes.GetPublicDomainObjectType (), _newClassWithAllDataTypesMixin.GetPublicDomainObjectType ());
     }
 
     [Test]
     public void State ()
     {
-      Assert.AreEqual (_loadedOrder.State, _loadedOrderMixin.State);
-      Assert.AreEqual (_newOrder.State, _newOrderMixin.State);
+      Assert.AreEqual (_loadedClassWithAllDataTypes.State, _loadedClassWithAllDataTypesMixin.State);
+      Assert.AreEqual (_newClassWithAllDataTypes.State, _newClassWithAllDataTypesMixin.State);
 
-      ++_loadedOrder.OrderNumber;
-      Assert.AreEqual (_loadedOrder.State, _loadedOrderMixin.State);
+      ++_loadedClassWithAllDataTypes.Int32Property;
+      Assert.AreEqual (_loadedClassWithAllDataTypes.State, _loadedClassWithAllDataTypesMixin.State);
 
-      _loadedOrder.Delete ();
-      Assert.AreEqual (_loadedOrder.State, _loadedOrderMixin.State);
+      _loadedClassWithAllDataTypes.Delete ();
+      Assert.AreEqual (_loadedClassWithAllDataTypes.State, _loadedClassWithAllDataTypesMixin.State);
     }
 
     [Test]
     public void IsDiscarded()
     {
-      Assert.AreEqual (_loadedOrder.IsDiscarded, _loadedOrderMixin.IsDiscarded);
-      Assert.AreEqual (_newOrder.IsDiscarded, _newOrderMixin.IsDiscarded);
+      Assert.AreEqual (_loadedClassWithAllDataTypes.IsDiscarded, _loadedClassWithAllDataTypesMixin.IsDiscarded);
+      Assert.AreEqual (_newClassWithAllDataTypes.IsDiscarded, _newClassWithAllDataTypesMixin.IsDiscarded);
 
-      _newOrder.Delete ();
+      _newClassWithAllDataTypes.Delete ();
 
-      Assert.AreEqual (_newOrder.IsDiscarded, _newOrderMixin.IsDiscarded);
+      Assert.AreEqual (_newClassWithAllDataTypes.IsDiscarded, _newClassWithAllDataTypesMixin.IsDiscarded);
     }
 
     [Test]
     public void Properties ()
     {
-      Assert.AreEqual (_loadedOrder.Properties, _loadedOrderMixin.Properties);
-      Assert.AreEqual (_newOrder.Properties, _newOrderMixin.Properties);
+      Assert.AreEqual (_loadedClassWithAllDataTypes.Properties, _loadedClassWithAllDataTypesMixin.Properties);
+      Assert.AreEqual (_newClassWithAllDataTypes.Properties, _newClassWithAllDataTypesMixin.Properties);
     }
 
     [Test]
     public void OnDomainObjectCreated ()
     {
-      Assert.IsFalse (_loadedOrderMixin.OnDomainObjectCreatedCalled);
-      Assert.IsTrue (_newOrderMixin.OnDomainObjectCreatedCalled);
+      Assert.IsFalse (_loadedClassWithAllDataTypesMixin.OnDomainObjectCreatedCalled);
+      Assert.IsTrue (_newClassWithAllDataTypesMixin.OnDomainObjectCreatedCalled);
     }
 
     [Test]
     public void OnDomainObjectLoaded ()
     {
-      Assert.IsTrue (_loadedOrderMixin.OnDomainObjectLoadedCalled);
-      Assert.AreEqual (LoadMode.WholeDomainObjectInitialized, _loadedOrderMixin.OnDomainObjectLoadedLoadMode);
+      Assert.IsTrue (_loadedClassWithAllDataTypesMixin.OnDomainObjectLoadedCalled);
+      Assert.AreEqual (LoadMode.WholeDomainObjectInitialized, _loadedClassWithAllDataTypesMixin.OnDomainObjectLoadedLoadMode);
 
-      _loadedOrderMixin.OnDomainObjectLoadedCalled = false;
+      _loadedClassWithAllDataTypesMixin.OnDomainObjectLoadedCalled = false;
       using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
       {
-        ClientTransaction.Current.EnlistDomainObject (_loadedOrder);
-        ++_loadedOrder.OrderNumber;
+        ClientTransaction.Current.EnlistDomainObject (_loadedClassWithAllDataTypes);
+        ++_loadedClassWithAllDataTypes.Int32Property;
       }
 
-      Assert.IsTrue (_loadedOrderMixin.OnDomainObjectLoadedCalled);
-      Assert.AreEqual (LoadMode.DataContainerLoadedOnly, _loadedOrderMixin.OnDomainObjectLoadedLoadMode);
+      Assert.IsTrue (_loadedClassWithAllDataTypesMixin.OnDomainObjectLoadedCalled);
+      Assert.AreEqual (LoadMode.DataContainerLoadedOnly, _loadedClassWithAllDataTypesMixin.OnDomainObjectLoadedLoadMode);
 
-      Assert.IsFalse (_newOrderMixin.OnDomainObjectLoadedCalled);
+      Assert.IsFalse (_newClassWithAllDataTypesMixin.OnDomainObjectLoadedCalled);
     }
   }
 }

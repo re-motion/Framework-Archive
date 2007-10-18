@@ -22,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFin
 
     protected ReflectionBasedClassDefinition CreateReflectionBasedClassDefinition (Type type)
     {
-      return new ReflectionBasedClassDefinition (type.Name, type.Name, "TestDomain", type, false, ClassReflector.GetPersistentMixins (type));
+      return new ReflectionBasedClassDefinition (type.Name, type.Name, "TestDomain", type, false, ReflectionBasedClassDefinition.GetPersistentMixins (type));
     }
   }
 }
