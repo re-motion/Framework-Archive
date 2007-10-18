@@ -1,0 +1,36 @@
+using System;
+using System.Collections.Generic;
+using Rubicon.Mixins;
+using Rubicon.Mixins.Context;
+
+namespace Rubicon.Data.DomainObjects.Mapping
+{
+  public static class PersistentMixinFinder
+  {
+    public static List<Type> GetPersistentMixins (Type type)
+    {
+      ClassContext mixinConfiguration = TypeFactory.GetContext (type, MixinConfiguration.ActiveContext, GenerationPolicy.GenerateOnlyIfConfigured);
+      List<Type> persistentMixins = new List<Type> ();
+      if (mixinConfiguration != null)
+      {
+        ClassContext parentClassContext =
+            TypeFactory.GetContext (type.BaseType, MixinConfiguration.ActiveContext, GenerationPolicy.GenerateOnlyIfConfigured);
+
+        foreach (MixinContext mixin in mixinConfiguration.Mixins)
+        {
+          if (mixin.MixinType.ContainsGenericParameters)
+          {
+            string message = string.Format ("The persistence-relevant mixin {0} applied to class {1} has open generic type parameters. All type "
+                + "parameters of the mixin must be specified when it is applied to a DomainObject.", mixin.MixinType.FullName, type.FullName);
+            throw new MappingException (message);
+          }
+
+          if (Utilities.ReflectionUtility.CanAscribe (mixin.MixinType, typeof (DomainObjectMixin<,>))
+              && (parentClassContext == null || !parentClassContext.ContainsAssignableMixin (mixin.MixinType)))
+            persistentMixins.Add (mixin.MixinType);
+        }
+      }
+      return persistentMixins;
+    }
+  }
+}

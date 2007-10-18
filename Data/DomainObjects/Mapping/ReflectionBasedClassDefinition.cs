@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Mixins;
-using Rubicon.Mixins.Context;
 using Rubicon.Text;
 using Rubicon.Utilities;
 using Rubicon.Collections;
@@ -14,25 +12,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
   [Serializable]
   public class ReflectionBasedClassDefinition: ClassDefinition
   {
-    public static List<Type> GetPersistentMixins (Type type)
-    {
-      ClassContext mixinConfiguration = TypeFactory.GetContext (type, MixinConfiguration.ActiveContext, GenerationPolicy.GenerateOnlyIfConfigured);
-      List<Type> persistentMixins = new List<Type> ();
-      if (mixinConfiguration != null)
-      {
-        ClassContext parentClassContext =
-            TypeFactory.GetContext (type.BaseType, MixinConfiguration.ActiveContext, GenerationPolicy.GenerateOnlyIfConfigured);
-
-        foreach (MixinContext mixin in mixinConfiguration.Mixins)
-        {
-          if (Utilities.ReflectionUtility.CanAscribe (mixin.MixinType, typeof (DomainObjectMixin<,>))
-              && (parentClassContext == null || !parentClassContext.ContainsAssignableMixin (mixin.MixinType)))
-            persistentMixins.Add (mixin.MixinType);
-        }
-      }
-      return persistentMixins;
-    }
-
     private readonly bool _isAbstract;
     private readonly Type _classType;
     private readonly ICollection<Type> _persistentMixins;
@@ -100,7 +79,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
     public override void ValidateCurrentMixinConfiguration ()
     {
       base.ValidateCurrentMixinConfiguration ();
-      Set<Type> currentMixins = new Set<Type> (GetPersistentMixins (ClassType));
+      Set<Type> currentMixins = new Set<Type> (PersistentMixinFinder.GetPersistentMixins (ClassType));
       foreach (Type t in _persistentMixins)
       {
         if (!currentMixins.Contains (t))

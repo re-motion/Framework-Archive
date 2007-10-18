@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       AssemblyCompiler compiler = new AssemblyCompiler (
           sourceDirectory,
           outputAssembly,
-          ArrayUtility.Combine (new string[] { "Rubicon.Core.dll", "Rubicon.Data.DomainObjects.dll" }, referencedAssemblies));
+          ArrayUtility.Combine (new string[] { "Rubicon.Core.dll", "Rubicon.Data.DomainObjects.dll", "Rubicon.Mixins.dll" }, referencedAssemblies));
 
       compiler.Compile ();
       return compiler.CompiledAssembly;

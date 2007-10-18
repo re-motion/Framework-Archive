@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Mixins.Context;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFinderTests
 {
@@ -22,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFin
 
     protected ReflectionBasedClassDefinition CreateReflectionBasedClassDefinition (Type type)
     {
-      return new ReflectionBasedClassDefinition (type.Name, type.Name, "TestDomain", type, false, ReflectionBasedClassDefinition.GetPersistentMixins (type));
+      return new ReflectionBasedClassDefinition (type.Name, type.Name, "TestDomain", type, false, PersistentMixinFinder.GetPersistentMixins (type));
     }
   }
 }

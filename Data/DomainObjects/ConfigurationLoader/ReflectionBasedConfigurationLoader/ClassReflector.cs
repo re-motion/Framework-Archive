@@ -5,8 +5,6 @@ using System.Text;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Mixins;
-using Rubicon.Mixins.Context;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
 using TypeUtility=Rubicon.Utilities.TypeUtility;
@@ -96,7 +94,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
           _type,
           IsAbstract(),
           GetBaseClassDefinition (classDefinitions),
-          ReflectionBasedClassDefinition.GetPersistentMixins (_type));
+          PersistentMixinFinder.GetPersistentMixins (_type));
 
       CreatePropertyDefinitions (classDefinition, GetPropertyInfos (classDefinition));
 

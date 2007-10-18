@@ -139,7 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidUnidirectionalRelation.cs" />
-    <Compile Include="Configuration\Mapping\ClassReflectorTests\GetPersistentMixins.cs" />
+    <Compile Include="Configuration\Mapping\PersistentMixinFinderTest.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\GetRelationDefinitionsForClosedGeneric.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\GetClassDefinitionForHierarchyWithoutStorageGroup.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\TestBaseForHierarchyWithoutStorageGroup.cs" />
