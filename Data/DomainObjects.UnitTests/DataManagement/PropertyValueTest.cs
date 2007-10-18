@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
@@ -6,6 +7,7 @@ using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -18,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       base.SetUp ();
 
-      _classDefinition = new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order), false);
+      _classDefinition = new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order), false, new List<Type> ());
     }
     
     [Test]

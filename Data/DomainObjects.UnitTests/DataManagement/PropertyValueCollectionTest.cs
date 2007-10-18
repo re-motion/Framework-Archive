@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -169,7 +171,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       int? maxLength = (propertyType == typeof (string)) ? (int?) 100 : null;
 
       ReflectionBasedClassDefinition classDefinition =
-          new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order), false);
+          new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order), false, new List<Type> ());
       PropertyDefinition definition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(classDefinition, name, name, propertyType, isNullable, maxLength, true);
       return new PropertyValue (definition, value);
     }

@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer;
 using Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlServer
 {
@@ -41,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
       base.SetUp();
 
       _tableBuilder = new TableBuilder();
-      _classDefintion = new ReflectionBasedClassDefinition ("ClassID", "Table", "StorageProvider", typeof (Order), false);
+      _classDefintion = new ReflectionBasedClassDefinition ("ClassID", "Table", "StorageProvider", typeof (Order), false, new List<Type>());
     }
 [Test]
     public void GetSqlDataType ()
@@ -161,17 +163,17 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
     public void AddToCreateTableScriptWithTwoAbstractBaseClasses ()
     {
       ReflectionBasedClassDefinition abstractClass =
-          new ReflectionBasedClassDefinition ("AbstractClass", null, "FirstStorageProvider", typeof (AbstractClass), false);
+          new ReflectionBasedClassDefinition ("AbstractClass", null, "FirstStorageProvider", typeof (AbstractClass), false, new List<Type>());
       abstractClass.MyPropertyDefinitions.Add (
           CreatePropertyDefinition (abstractClass, "PropertyInAbstractClass", "PropertyInAbstractClass", typeof (string), true, 100, true));
 
       ReflectionBasedClassDefinition derivedAbstractClass =
-          new ReflectionBasedClassDefinition ("DerivedAbstractClass", null, "FirstStorageProvider", typeof (DerivedAbstractClass), false, abstractClass);
+          new ReflectionBasedClassDefinition ("DerivedAbstractClass", null, "FirstStorageProvider", typeof (DerivedAbstractClass), false, abstractClass, new List<Type>());
       derivedAbstractClass.MyPropertyDefinitions.Add (
           CreatePropertyDefinition (derivedAbstractClass, "PropertyInAbstractDerivedClass", "PropertyInAbstractDerivedClass", typeof (string), false, 101, true));
 
       ReflectionBasedClassDefinition derivedConcreteClass = new ReflectionBasedClassDefinition (
-          "DerivedConcreteClass", "EntityName", "FirstStorageProvider", typeof (DerivedConcreteClass), false, derivedAbstractClass);
+          "DerivedConcreteClass", "EntityName", "FirstStorageProvider", typeof (DerivedConcreteClass), false, derivedAbstractClass, new List<Type>());
       derivedConcreteClass.MyPropertyDefinitions.Add (
           CreatePropertyDefinition (derivedConcreteClass, "PropertyInDerivedConcreteClass", "PropertyInDerivedConcreteClass", typeof (string), true, 102, true));
 

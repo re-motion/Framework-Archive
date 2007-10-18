@@ -5,7 +5,6 @@ using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
-using Rubicon.Mixins;
 using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
@@ -17,12 +16,15 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     private readonly Type _type;
     private readonly bool _includeBaseProperties;
     private readonly Set<MethodInfo> _explicitInterfaceImplementations;
+    private readonly IEnumerable<Type> _persistentMixins;
 
-    protected PropertyFinderBase (Type type, bool includeBaseProperties)
+    protected PropertyFinderBase (Type type, bool includeBaseProperties, IEnumerable<Type> persistentMixins)
     {
       ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull ("persistentMixins", persistentMixins);
 
       _type = type;
+      _persistentMixins = persistentMixins;
       _includeBaseProperties = includeBaseProperties;
       _explicitInterfaceImplementations = GetExplicitInterfaceImplementations (type);
     }
@@ -44,7 +46,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
       if (_includeBaseProperties && _type.BaseType != typeof (DomainObject))
       {
-        PropertyFinderBase propertyFinder = (PropertyFinderBase) TypesafeActivator.CreateInstance (GetType()).With (_type.BaseType, true);
+        PropertyFinderBase propertyFinder = (PropertyFinderBase) TypesafeActivator.CreateInstance (GetType()).With (_type.BaseType, true,
+            (IEnumerable<Type>) ClassReflector.GetPersistentMixins (_type.BaseType));
         propertyInfos.AddRange (propertyFinder.FindPropertyInfos (classDefinition));
       }
 
@@ -57,21 +60,11 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private void FindPropertyInfosOnMixins (ReflectionBasedClassDefinition classDefinition, List<PropertyInfo> propertyInfos)
     {
-      ClassContext mixinConfiguration = TypeFactory.GetContext (_type, MixinConfiguration.ActiveContext, GenerationPolicy.GenerateOnlyIfConfigured);
-      if (mixinConfiguration != null)
+      foreach (Type mixin in _persistentMixins)
       {
-        bool parentClassHasMixins =
-            TypeFactory.GetContext (_type.BaseType, MixinConfiguration.ActiveContext, GenerationPolicy.GenerateOnlyIfConfigured) != null;
-
-        foreach (MixinContext mixin in mixinConfiguration.Mixins)
-        {
-          if (Utilities.ReflectionUtility.CanAscribe (mixin.MixinType, typeof (DomainObjectMixin<,>))
-            && (!parentClassHasMixins || !Mixins.TypeUtility.HasAscribableMixin (_type.BaseType, mixin.MixinType)))
-          {
-            PropertyFinderBase mixinPropertyFinder = (PropertyFinderBase) TypesafeActivator.CreateInstance (GetType()).With (mixin.MixinType, false);
-            propertyInfos.AddRange (mixinPropertyFinder.FindPropertyInfosInternal (classDefinition));
-          }
-        }
+        PropertyFinderBase mixinPropertyFinder = (PropertyFinderBase) TypesafeActivator.CreateInstance (GetType())
+            .With (mixin, false, (IEnumerable<Type>) Type.EmptyTypes);
+        propertyInfos.AddRange (mixinPropertyFinder.FindPropertyInfosInternal (classDefinition));
       }
     }
 

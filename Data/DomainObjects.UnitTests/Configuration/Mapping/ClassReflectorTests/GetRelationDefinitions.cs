@@ -5,6 +5,7 @@ using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflectorTests
 {
@@ -109,7 +110,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           "ClassWithOneSideRelationProperties",
           c_testDomainProviderID,
           typeof (ClassWithOneSideRelationProperties),
-          false);
+          false, new List<Type> ());
 
       return classDefinition;
     }
@@ -121,7 +122,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           "ClassWithManySideRelationProperties",
           c_testDomainProviderID,
           typeof (ClassWithManySideRelationProperties),
-          false);
+          false, new List<Type> ());
 
       CreatePropertyDefinitionsForClassWithManySideRelationProperties (classDefinition);
 
@@ -135,7 +136,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           "ClassWithMixedProperties",
           c_testDomainProviderID,
           typeof (ClassWithMixedProperties),
-          false);
+          false, new List<Type> ());
 
       CreatePropertyDefinitionsForClassWithMixedProperties (classDefinition);
 

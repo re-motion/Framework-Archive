@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Rubicon.Data.DomainObjects.Infrastructure;
+using Rubicon.Mixins.Context;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
@@ -11,22 +13,23 @@ namespace Rubicon.Data.DomainObjects.Mapping
   {
     private readonly bool _isAbstract;
     private readonly Type _classType;
-    // TODO: persistent mixins - TBD: store mixin configuration at mapping creation time, check when instantiating mixin
+    private readonly ICollection<Type> _persistentMixins;
 
-    public ReflectionBasedClassDefinition (string id, string entityName, string storageProviderID, Type classType, bool isAbstract)
-        : this (id, entityName, storageProviderID, classType, isAbstract, null)
+    public ReflectionBasedClassDefinition (string id, string entityName, string storageProviderID, Type classType, bool isAbstract, ICollection<Type> persistentMixins)
+        : this (id, entityName, storageProviderID, classType, isAbstract, null, persistentMixins)
     {
     }
 
-    public ReflectionBasedClassDefinition (
-        string id, string entityName, string storageProviderID, Type classType, bool isAbstract, ReflectionBasedClassDefinition baseClass)
+    public ReflectionBasedClassDefinition (string id, string entityName, string storageProviderID, Type classType, bool isAbstract, ReflectionBasedClassDefinition baseClass, ICollection<Type> persistentMixins)
         : base (id, entityName, storageProviderID, true)
     {
       ArgumentUtility.CheckNotNull ("classType", classType);
+      ArgumentUtility.CheckNotNull ("persistentMixins", persistentMixins);
       if (!classType.IsSubclassOf (typeof (DomainObject)))
         throw CreateMappingException ("Type '{0}' of class '{1}' is not derived from 'Rubicon.Data.DomainObjects.DomainObject'.", classType, ID);
      
       _classType = classType;
+      _persistentMixins = persistentMixins;
       _isAbstract = isAbstract;
 
       if (baseClass != null)
@@ -40,6 +43,11 @@ namespace Rubicon.Data.DomainObjects.Mapping
     public new ReflectionBasedClassDefinition BaseClass
     {
       get { return (ReflectionBasedClassDefinition) base.BaseClass; }
+    }
+
+    public IEnumerable<Type> PersistentMixins
+    {
+      get { return _persistentMixins; }
     }
 
     public override bool IsAbstract
@@ -75,6 +83,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
       if (!IsPartOfMappingConfiguration)
       {
         _classType = (Type) info.GetValue ("ClassType", typeof (Type));
+        _persistentMixins = (List<Type>) info.GetValue ("PersistentMixins", typeof (List<Type>));
       }
     }
 
@@ -82,6 +91,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
     {
       base.GetObjectData (info, context);
       info.AddValue ("ClassType", _classType);
+      info.AddValue ("PersistentMixins", _persistentMixins);
     }
 
     #endregion

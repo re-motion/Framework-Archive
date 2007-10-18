@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer;
 using Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlServer
 {
@@ -62,7 +64,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
     public void AddConstraintWithTwoConstraints ()
     {
       ReflectionBasedClassDefinition firstClass = new ReflectionBasedClassDefinition (
-          "FirstClass", "FirstEntity", "FirstStorageProvider", typeof (Company), false);
+          "FirstClass", "FirstEntity", "FirstStorageProvider", typeof (Company), false, new List<Type>());
 
       firstClass.MyPropertyDefinitions.Add (
           CreatePropertyDefinition(firstClass, "SecondClass", "SecondClassID", typeof (ObjectID), true, null, true));
@@ -71,10 +73,10 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
           CreatePropertyDefinition(firstClass, "ThirdClass", "ThirdClassID", typeof (ObjectID), true, null, true));
 
       ReflectionBasedClassDefinition secondClass = new ReflectionBasedClassDefinition (
-          "SecondClass", "SecondEntity", "FirstStorageProvider", typeof (Address), false);
+          "SecondClass", "SecondEntity", "FirstStorageProvider", typeof (Address), false, new List<Type>());
 
       ReflectionBasedClassDefinition thirdClass = new ReflectionBasedClassDefinition (
-          "ThirdClass", "ThirdEntity", "FirstStorageProvider", typeof (Employee), false);
+          "ThirdClass", "ThirdEntity", "FirstStorageProvider", typeof (Employee), false, new List<Type>());
 
       RelationDefinition relationDefinition1 = new RelationDefinition (
           "FirstClassToSecondClass",
@@ -119,16 +121,16 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
     public void AddConstraintWithRelationInDerivedClass ()
     {
       ReflectionBasedClassDefinition baseClass = new ReflectionBasedClassDefinition (
-          "BaseClass", "BaseClassEntity", "FirstStorageProvider", typeof (Company), false);
+          "BaseClass", "BaseClassEntity", "FirstStorageProvider", typeof (Company), false, new List<Type>());
 
       ReflectionBasedClassDefinition derivedClass = new ReflectionBasedClassDefinition (
-          "DerivedClass", "BaseClassEntity", "FirstStorageProvider", typeof (Customer), false, baseClass);
+          "DerivedClass", "BaseClassEntity", "FirstStorageProvider", typeof (Customer), false, baseClass, new List<Type>());
 
       derivedClass.MyPropertyDefinitions.Add (
           CreatePropertyDefinition(derivedClass, "OtherClass", "OtherClassID", typeof (ObjectID), true, null, true));
 
       ReflectionBasedClassDefinition otherClass = new ReflectionBasedClassDefinition (
-          "OtherClass", "OtherClassEntity", "FirstStorageProvider", typeof (DevelopmentPartner), false);
+          "OtherClass", "OtherClassEntity", "FirstStorageProvider", typeof (DevelopmentPartner), false, new List<Type>());
 
       RelationDefinition relationDefinition1 = new RelationDefinition (
           "OtherClassToDerivedClass",

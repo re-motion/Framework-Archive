@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
@@ -16,7 +18,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      _classDefinition = new ReflectionBasedClassDefinition ("Order", "OrderTable", c_testDomainProviderID, typeof (Order), false);
+      _classDefinition = new ReflectionBasedClassDefinition ("Order", "OrderTable", c_testDomainProviderID, typeof (Order), false, new List<Type> ());
     }
 
     [Test]

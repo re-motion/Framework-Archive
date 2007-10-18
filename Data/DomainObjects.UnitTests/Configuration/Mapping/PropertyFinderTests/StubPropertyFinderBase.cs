@@ -1,12 +1,19 @@
 using System;
+using System.Collections.Generic;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFinderTests
 {
   public class StubPropertyFinderBase : PropertyFinderBase
   {
     public StubPropertyFinderBase (Type type, bool includeBaseProperties)
-        : base (type, includeBaseProperties)
+      : this (type, includeBaseProperties, ClassReflector.GetPersistentMixins (type))
+    {
+    }
+
+    public StubPropertyFinderBase (Type type, bool includeBaseProperties, IEnumerable<Type> persistentMixins)
+      : base (type, includeBaseProperties, persistentMixins)
     {
     }
   }

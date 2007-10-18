@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidUnidirectionalRelation.cs" />
+    <Compile Include="Configuration\Mapping\ClassReflectorTests\GetPersistentMixins.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\GetRelationDefinitionsForClosedGeneric.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\GetClassDefinitionForHierarchyWithoutStorageGroup.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\TestBaseForHierarchyWithoutStorageGroup.cs" />
@@ -146,16 +147,16 @@
     <Compile Include="Configuration\Mapping\PropertyFinderTests\PropertyFinderBaseTest.cs" />
     <Compile Include="Configuration\Mapping\PropertyFinderTests\PropertyFinderBaseTestBase.cs" />
     <Compile Include="Configuration\Mapping\PropertyFinderTests\StubPropertyFinderBase.cs" />
-    <Compile Include="Configuration\Mapping\PropertyFinderTests\TestDomain\MixinBase.cs" />
-    <Compile Include="Configuration\Mapping\PropertyFinderTests\TestDomain\NonDomainObjectMixin.cs" />
-    <Compile Include="Configuration\Mapping\PropertyFinderTests\TestDomain\TargetClassBase.cs" />
-    <Compile Include="Configuration\Mapping\PropertyFinderTests\TestDomain\MixinE.cs" />
-    <Compile Include="Configuration\Mapping\PropertyFinderTests\TestDomain\MixinC.cs" />
-    <Compile Include="Configuration\Mapping\PropertyFinderTests\TestDomain\MixinD.cs" />
-    <Compile Include="Configuration\Mapping\PropertyFinderTests\TestDomain\MixinB.cs" />
-    <Compile Include="Configuration\Mapping\PropertyFinderTests\TestDomain\MixinA.cs" />
-    <Compile Include="Configuration\Mapping\PropertyFinderTests\TestDomain\TargetClassB.cs" />
-    <Compile Include="Configuration\Mapping\PropertyFinderTests\TestDomain\TargetClassA.cs" />
+    <Compile Include="Configuration\Mapping\MixinTestDomain\MixinBase.cs" />
+    <Compile Include="Configuration\Mapping\MixinTestDomain\NonDomainObjectMixin.cs" />
+    <Compile Include="Configuration\Mapping\MixinTestDomain\TargetClassBase.cs" />
+    <Compile Include="Configuration\Mapping\MixinTestDomain\MixinE.cs" />
+    <Compile Include="Configuration\Mapping\MixinTestDomain\MixinC.cs" />
+    <Compile Include="Configuration\Mapping\MixinTestDomain\MixinD.cs" />
+    <Compile Include="Configuration\Mapping\MixinTestDomain\MixinB.cs" />
+    <Compile Include="Configuration\Mapping\MixinTestDomain\MixinA.cs" />
+    <Compile Include="Configuration\Mapping\MixinTestDomain\TargetClassB.cs" />
+    <Compile Include="Configuration\Mapping\MixinTestDomain\TargetClassA.cs" />
     <Compile Include="Configuration\Mapping\ReflectionBasedPropertyDefinitionFactory.cs" />
     <Compile Include="Configuration\Mapping\ReflectionBasedVirtualRelationEndPointDefinitionFactory.cs" />
     <Compile Include="Configuration\Mapping\ReflectionBasedVirtualRelationEndPointDefinitionTest.cs" />

@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
@@ -30,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      _classDefinition = new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order), false);
+      _classDefinition = new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order), false, new List<Type> ());
       _collection = new ClassDefinitionCollection ();
     }
 
@@ -57,7 +59,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       try
       {
-        _collection.Add (new ReflectionBasedClassDefinition ("OtherID", "OtherTable", c_testDomainProviderID, typeof (Order), false));
+        _collection.Add (new ReflectionBasedClassDefinition ("OtherID", "OtherTable", c_testDomainProviderID, typeof (Order), false, new List<Type>()));
         Assert.Fail ("Expected an ArgumentException.");
       }
       catch (ArgumentException e)
@@ -76,7 +78,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       _collection.Add (_classDefinition);
       try
       {
-        _collection.Add (new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Customer), false));
+        _collection.Add (new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Customer), false, new List<Type>()));
         Assert.Fail ("Expected an ArgumentException.");
       }
       catch (ArgumentException)
@@ -126,7 +128,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       _collection.Add (_classDefinition);
 
       ReflectionBasedClassDefinition copy = new ReflectionBasedClassDefinition (
-          _classDefinition.ID, _classDefinition.MyEntityName, _classDefinition.StorageProviderID, _classDefinition.ClassType, false, _classDefinition.BaseClass);
+          _classDefinition.ID, _classDefinition.MyEntityName, _classDefinition.StorageProviderID, _classDefinition.ClassType, false, _classDefinition.BaseClass, new List<Type>());
 
       Assert.IsFalse (_collection.Contains (copy));
     }

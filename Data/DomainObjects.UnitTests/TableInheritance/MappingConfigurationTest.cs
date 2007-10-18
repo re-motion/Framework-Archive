@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
@@ -14,7 +16,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [ExpectedException (typeof (MappingException))]
     public void Validate ()
     {
-      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, TableInheritanceTestDomainProviderID, typeof (Person), false);
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, TableInheritanceTestDomainProviderID, typeof (Person), false, new List<Type> ());
 
       MappingConfiguration mappingConfiguration = 
           new MappingConfiguration (new MappingReflector (TestDomainFactory.ConfigurationMappingTestDomainEmpty));
@@ -25,7 +27,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void SetCurrentValidates ()
     {
-      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, TableInheritanceTestDomainProviderID, typeof (Person), false);
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, TableInheritanceTestDomainProviderID, typeof (Person), false, new List<Type> ());
 
       MappingConfiguration mappingConfiguration = 
           new MappingConfiguration (new MappingReflector (TestDomainFactory.ConfigurationMappingTestDomainEmpty));

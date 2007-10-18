@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
@@ -8,7 +10,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
   {
     public static ReflectionBasedClassDefinition CreateOrderDefinition()
     {
-      return new ReflectionBasedClassDefinition ("Order", "OrderTable", "StorageProviderID", typeof (Order), false);
+      return new ReflectionBasedClassDefinition ("Order", "OrderTable", "StorageProviderID", typeof (Order), false,
+          new List<Type> ());
     }
 
     public static ReflectionBasedClassDefinition CreateOrderDefinitionWithResolvedCustomerProperty()

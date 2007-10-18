@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Mixins.Context;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
@@ -11,8 +13,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   /// </summary>
   public class RelationPropertyFinder : PropertyFinderBase
   {
-    public RelationPropertyFinder (Type type, bool includeBaseProperties)
-        : base (type, includeBaseProperties)
+    public RelationPropertyFinder (Type type, bool includeBaseProperties, IEnumerable<Type> persistentMixins)
+        : base (type, includeBaseProperties, persistentMixins)
     {
     }
 

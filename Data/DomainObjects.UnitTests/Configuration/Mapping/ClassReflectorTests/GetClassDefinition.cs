@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 
@@ -83,6 +85,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
       Assert.AreSame (actual, _classDefinitions.GetMandatory (typeof (DerivedClassWithMixedProperties)));
       Assert.AreSame (expected, actual);
       Assert.AreSame (expectedBaseClass, actual.BaseClass);
+    }
+
+    [Test]
+    public void GetClassDefinition_ForMixedClass ()
+    {
+      ClassReflector classReflector = new ClassReflector (typeof (TargetClassA));
+      ReflectionBasedClassDefinition actual = classReflector.GetClassDefinition (_classDefinitions);
+      Assert.That (actual.PersistentMixins, Is.EquivalentTo (new Type[] { typeof (MixinA), typeof (MixinC), typeof (MixinD)}));
+    }
+
+    [Test]
+    public void GetClassDefinition_ForDerivedMixedClass ()
+    {
+      ClassReflector classReflector = new ClassReflector (typeof (TargetClassB));
+      ReflectionBasedClassDefinition actual = classReflector.GetClassDefinition (_classDefinitions);
+      Assert.That (actual.PersistentMixins, Is.EquivalentTo (new Type[] { typeof (MixinB), typeof (MixinE) }));
     }
 
     [Test]
@@ -206,7 +224,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           "ClassWithMixedProperties",
           c_testDomainProviderID,
           typeof (ClassWithMixedProperties),
-          false);
+          false,
+          new  List<Type>());
 
       CreatePropertyDefinitionsForClassWithMixedProperties (classDefinition);
 
@@ -221,7 +240,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           c_testDomainProviderID,
           typeof (DerivedClassWithMixedProperties),
           false,
-          CreateClassWithMixedPropertiesClassDefinition());
+          CreateClassWithMixedPropertiesClassDefinition(),
+          new List<Type> ());
 
       CreatePropertyDefinitionsForDerivedClassWithMixedProperties (classDefinition);
 
@@ -235,7 +255,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           "ClassWithOneSideRelationProperties",
           c_testDomainProviderID,
           typeof (ClassWithOneSideRelationProperties),
-          false);
+          false,
+          new List<Type> ());
 
       return classDefinition;
     }
@@ -247,7 +268,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           "BaseClassWithoutStorageSpecificIdentifierAttribute",
           c_testDomainProviderID,
           typeof (BaseClassWithoutStorageSpecificIdentifierAttribute),
-          true);
+          true,
+          new List<Type> ());
 
       return classDefinition;
     }
@@ -260,7 +282,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           c_testDomainProviderID,
           typeof (DerivedClassWithStorageSpecificIdentifierAttribute),
           false,
-          CreateBaseClassWithoutStorageSpecificIdentifierAttributeDefinition());
+          CreateBaseClassWithoutStorageSpecificIdentifierAttributeDefinition (),
+          new List<Type> ());
 
       return classDefinition;
     }

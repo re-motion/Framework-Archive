@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFinderTests
 {
@@ -14,7 +16,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFin
     [Test]
     public void Initialize ()
     {
-      RelationPropertyFinder propertyFinder = new RelationPropertyFinder (typeof (DerivedClassWithMixedProperties), true);
+      RelationPropertyFinder propertyFinder = new RelationPropertyFinder (typeof (DerivedClassWithMixedProperties), true, new List<Type> ());
 
       Assert.That (propertyFinder.Type, Is.SameAs (typeof (DerivedClassWithMixedProperties)));
       Assert.That (propertyFinder.IncludeBaseProperties, Is.True);
@@ -23,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFin
     [Test]
     public void FindPropertyInfos_ForClassWithMixedProperties ()
     {
-      RelationPropertyFinder propertyFinder = new RelationPropertyFinder (typeof (ClassWithMixedProperties), true);
+      RelationPropertyFinder propertyFinder = new RelationPropertyFinder (typeof (ClassWithMixedProperties), true, new List<Type> ());
 
       Assert.That (
           propertyFinder.FindPropertyInfos (CreateReflectionBasedClassDefinition (typeof (ClassWithMixedProperties))),
@@ -39,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFin
     [Test]
     public void FindPropertyInfos_ForClassWithOneSideRelationProperties ()
     {
-      RelationPropertyFinder propertyFinder = new RelationPropertyFinder (typeof (ClassWithOneSideRelationProperties), true);
+      RelationPropertyFinder propertyFinder = new RelationPropertyFinder (typeof (ClassWithOneSideRelationProperties), true, new List<Type> ());
 
       Assert.That (
           propertyFinder.FindPropertyInfos (CreateReflectionBasedClassDefinition (typeof (ClassWithOneSideRelationProperties))),
@@ -68,7 +70,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFin
 
     private ReflectionBasedClassDefinition CreateReflectionBasedClassDefinition (Type type)
     {
-      return new ReflectionBasedClassDefinition (type.Name, type.Name, "TestDomain", type, false);
+      return new ReflectionBasedClassDefinition (type.Name, type.Name, "TestDomain", type, false, new List<Type>());
     }
   }
 }

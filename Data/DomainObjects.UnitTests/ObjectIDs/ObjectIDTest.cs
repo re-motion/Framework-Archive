@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Mixins.Context;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
@@ -267,7 +269,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
     [ExpectedException (typeof (MappingException))]
     public void InitializeWithUnknownClassDefinitionID ()
     {
-      ReflectionBasedClassDefinition unknownDefinition = new ReflectionBasedClassDefinition ("UnknownClass", "UnknownTable", "TestDomain", typeof (Order), false);
+      ReflectionBasedClassDefinition unknownDefinition = new ReflectionBasedClassDefinition ("UnknownClass", "UnknownTable", "TestDomain", typeof (Order), false, new List<Type>());
       Guid value = new Guid ("{5682F032-2F0B-494b-A31C-C97F02B89C36}");
 
       ObjectID id = new ObjectID (unknownDefinition, value);
@@ -279,7 +281,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
         + " do not refer to the same ClassDefinition in the mapping configuration.\r\nParameter name: classDefinition")]
     public void InitializeWithUnknownClassDefinitionType ()
     {
-      ReflectionBasedClassDefinition unknownDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (InvalidDomainObject), false);
+      ReflectionBasedClassDefinition unknownDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (InvalidDomainObject), false, new List<Type>());
       Guid value = new Guid ("{5682F032-2F0B-494b-A31C-C97F02B89C36}");
 
       ObjectID id = new ObjectID (unknownDefinition, value);
@@ -305,7 +307,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
         + " do not refer to the same ClassDefinition in the mapping configuration.\r\nParameter name: classDefinition")]
     public void InitializeWithInvalidClassDefinition ()
     {
-      ReflectionBasedClassDefinition invalidDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Customer), false);
+      ReflectionBasedClassDefinition invalidDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Customer), false, new List<Type>());
       ObjectID id = new ObjectID (invalidDefinition, Guid.NewGuid ());
     }
 
@@ -314,7 +316,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
         ExpectedMessage = "The provided ClassDefinition 'Order' is not the same reference as the ClassDefinition found in the mapping configuration.\r\nParameter name: classDefinition")]
     public void InitializeWithClassDefinitionNotPartOfMappingConfiguration ()
     {
-      ReflectionBasedClassDefinition invalidDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order), false);
+      ReflectionBasedClassDefinition invalidDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order), false, new List<Type>());
       ObjectID id = new ObjectID (invalidDefinition, Guid.NewGuid ());
     }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -7,6 +8,7 @@ using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Mixins.Context;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
@@ -25,7 +27,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       Guid idValue = Guid.NewGuid ();
       ReflectionBasedClassDefinition orderClass =
-          new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order), false);
+          new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order), false, new List<Type> ());
 
       _newDataContainer = DataContainer.CreateNew (new ObjectID ("Order", idValue));
       _existingDataContainer = DataContainer.CreateForExisting (new ObjectID ("Order", idValue), null);

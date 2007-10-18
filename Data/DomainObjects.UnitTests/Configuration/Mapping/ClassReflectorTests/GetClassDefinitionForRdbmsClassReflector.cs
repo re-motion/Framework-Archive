@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflectorTests
 {
@@ -171,7 +173,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           "ClassWithMixedProperties",
           c_testDomainProviderID,
           typeof (ClassWithMixedProperties),
-          false);
+          false, new List<Type>());
 
       CreatePropertyDefinitionsForClassWithMixedProperties (classDefinition);
 
@@ -186,7 +188,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           c_testDomainProviderID,
           typeof (DerivedClassWithMixedProperties),
           false,
-          CreateClassWithMixedPropertiesClassDefinition());
+          CreateClassWithMixedPropertiesClassDefinition(), new List<Type>());
 
       CreatePropertyDefinitionsForDerivedClassWithMixedProperties (classDefinition);
 
@@ -200,7 +202,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           "ClassWithOneSideRelationProperties",
           c_testDomainProviderID,
           typeof (ClassWithOneSideRelationProperties),
-          false);
+          false, new List<Type>());
 
       return classDefinition;
     }
@@ -212,7 +214,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           null,
           c_testDomainProviderID,
           typeof (BaseClassWithoutStorageSpecificIdentifierAttribute),
-          true);
+          true, new List<Type>());
 
       return classDefinition;
     }
@@ -225,7 +227,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           c_testDomainProviderID,
           typeof (DerivedClassWithStorageSpecificIdentifierAttribute),
           false,
-          CreateBaseClassWithoutStorageSpecificIdentifierAttributeDefinition ());
+          CreateBaseClassWithoutStorageSpecificIdentifierAttributeDefinition (), new List<Type>());
 
       return classDefinition;
     }

@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflectorTests
 {
@@ -90,7 +92,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           "ClassWithoutStorageGroupWithMixedProperties",
           DefaultStorageProviderID,
           typeof (ClassWithoutStorageGroupWithMixedProperties),
-          false);
+          false, new List<Type> ());
 
       CreatePropertyDefinitionsForClassWithoutStorageGroupWithMixedProperties (classDefinition);
 
@@ -105,7 +107,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           DefaultStorageProviderID,
           typeof (DerivedClassWithoutStorageGroupWithMixedProperties),
           false,
-          CreateClassWithoutStorageGroupWithMixedPropertiesClassDefinition ());
+          CreateClassWithoutStorageGroupWithMixedPropertiesClassDefinition (), new List<Type> ());
 
       CreatePropertyDefinitionsForDerivedClassWithoutStorageGroupWithMixedProperties (classDefinition);
 
