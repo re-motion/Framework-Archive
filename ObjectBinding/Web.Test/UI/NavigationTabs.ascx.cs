@@ -22,8 +22,8 @@ namespace OBWTest.UI
 		{
       Type itemType = typeof (WcagConfiguration);
       PropertyInfo propertyInfo = itemType.GetProperty ("ConformanceLevel");
-			EnumerationProperty property = 
-          new EnumerationProperty(new PropertyBase.Parameters(BindableObjectProvider.Current, propertyInfo, propertyInfo.PropertyType, null, false,
+			EnumerationProperty property =
+          new EnumerationProperty (new PropertyBase.Parameters (BindableObjectProvider.Current, new PropertyInfoAdapter (propertyInfo), propertyInfo.PropertyType, null, false,
           false));
 
       WaiConformanceLevelField.Property = property;
