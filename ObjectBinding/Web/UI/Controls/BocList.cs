@@ -3357,7 +3357,7 @@ public class BocList:
           EndListEditMode (true);
       }
 
-      if (IsDirty)
+      if (IsDirty && Property.ListInfo.RequiresWriteBack)
         DataSource.BusinessObject.SetProperty (Property, Value);
       
       if (! interim)
