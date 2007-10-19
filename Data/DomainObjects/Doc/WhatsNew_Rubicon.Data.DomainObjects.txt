@@ -1,3 +1,22 @@
+1.7.66.0
+========
+- COMMONS-330 FIXED  Add PropertyAccessor.HasBeenTouched      
+  - COMMONS-333 FIXED  Add PropertyValue.HasBeenTouched      
+  - COMMONS-334 FIXED  Add ObjectEndPoint.HasBeenTouched      
+  - COMMONS-335 FIXED  Add CollectionEndPoint.HasBeenTouched w/ DomainObjectCollection.HasBeenTouched      
+  - COMMONS-336 FIXED  Integrate HasBeenTocued to PropertyAccessor.HasBeenTouched      
+- COMMONS-327 FIXED  Change property set behavior: HasChanged should be false when property is set back to original value      
+- COMMONS-358 FIXED  Explicitly forbid open generic domain object mixins      
+- COMMONS-329 FIXED  Persistence for mixed properties in a static configuration      
+  - COMMONS-346 FIXED  Provide DomainObjectMixin<T>      
+  - COMMONS-347 FIXED  Make reflection-based mapping include properties of mixins derived from DomainObjectMixin      
+  - COMMONS-348 FIXED  Add mixin configuration check at DomainObject instantiation time      
+- COMMONS-351 FIXED  PropertyAccessor.GetRelatedObjectID      
+- COMMONS-354 FIXED  Remove EnterScope ambiguities      
+  - COMMONS-355 FIXED  Rename ReturnToParent, EnterScope, and EnterNonReturningScope to Discard, EnterDiscardingScope, and EnterNonDiscardingScope      
+  - COMMONS-356 FIXED  Change EnterDiscardingScope to also discard root transactions for consistency      
+- COMMONS-331 FIXED  Use HasBeenTouched on BindableDomainObjectMixin and Legacy.BindableDomainObject to determine whether a property still has its default value      
+
 1.7.65.0
 ========
 - COMMONS-291 FIXED  Adapt BindableDomainObjectMixin to exclude ID property and to get information from the mapping
