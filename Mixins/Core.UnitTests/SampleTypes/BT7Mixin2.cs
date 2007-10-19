@@ -17,25 +17,25 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   [Extends (typeof (BaseType7))]
   public class BT7Mixin2 : Mixin<BaseType7, IBT7Mixin2Reqs>, IBT7Mixin2
   {
-    [Override]
+    [OverrideTarget]
     public virtual string One<T> (T t)
     {
       return "BT7Mixin2.One(" + t + ")-" + ((IBaseType7) Base).One (t) + "-" + ((IBT7Mixin3) Base).One (t) + "-" + Base.Two() + "-" + This.Two();
     }
 
-    [Override]
+    [OverrideTarget]
     public virtual string Two()
     {
       return "BT7Mixin2.Two";
     }
 
-    [Override]
+    [OverrideTarget]
     public virtual string Three ()
     {
       return "BT7Mixin2.Three-" + Base.Three ();
     }
 
-    [Override]
+    [OverrideTarget]
     public virtual string Four ()
     {
       return "BT7Mixin2.Four-" + Base.Four() + "-" + Base.NotOverridden();

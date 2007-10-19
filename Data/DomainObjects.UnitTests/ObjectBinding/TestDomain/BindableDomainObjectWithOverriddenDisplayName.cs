@@ -12,12 +12,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain
       return DomainObject.NewObject<BindableDomainObjectWithOverriddenDisplayName> ().With ();
     }
 
-    public static BindableDomainObjectWithOverriddenDisplayName GetObject (ObjectID id)
+    public static new BindableDomainObjectWithOverriddenDisplayName GetObject (ObjectID id)
     {
       return DomainObject.GetObject<BindableDomainObjectWithOverriddenDisplayName> (id);
     }
 
-    [OverrideMixinMember]
+    [OverrideMixin]
     public string DisplayName
     {
       get { return "TheDisplayName"; }

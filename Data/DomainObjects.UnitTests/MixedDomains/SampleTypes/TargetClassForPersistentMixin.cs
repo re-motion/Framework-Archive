@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
       return DomainObject.NewObject<TargetClassForPersistentMixin> ().With ();
     }
 
-    public static TargetClassForPersistentMixin GetObject (ObjectID id)
+    public static new TargetClassForPersistentMixin GetObject (ObjectID id)
     {
       return DomainObject.GetObject<TargetClassForPersistentMixin> (id);
     }

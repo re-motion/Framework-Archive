@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain
       return DomainObject.NewObject<SecurableBindableDomainObjectWithOverriddenDisplayName> ().With (objectSecurityStrategy);
     }
 
-    public static SecurableBindableDomainObjectWithOverriddenDisplayName GetObject (ObjectID id)
+    public static new SecurableBindableDomainObjectWithOverriddenDisplayName GetObject (ObjectID id)
     {
       return DomainObject.GetObject<SecurableBindableDomainObjectWithOverriddenDisplayName> (id);
     }

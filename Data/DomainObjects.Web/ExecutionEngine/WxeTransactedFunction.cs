@@ -192,7 +192,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
         MyTransaction.CopyTransactionEventHandlers (oldTransaction);
     }
 
-    // <summary>
+    /// <summary>
     /// Discards of the <see cref="MyTransaction"/> instance managed by this <see cref="WxeTransactedFunctionBase{TTransaction}"/> and replaces
     /// it by a newly created instance of <see cref="ClientTransaction"/>. This method can only be called from within <see cref="Execute"/>, when
     /// the current transaction has no open subtransaction, and when it holds no new or changed objects.

@@ -6,7 +6,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes
 {
   public class MixinOverridingSameClassMethod
   {
-    [Override]
+    [OverrideTarget]
     public virtual string AbstractMethod(int i)
     {
       return "MixinOverridingSameClassMethod.AbstractMethod-" + i;

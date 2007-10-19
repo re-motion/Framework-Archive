@@ -11,13 +11,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       void Rollback ();
     }
 
-    [Override]
+    [OverrideTarget]
     public void Commit ()
     {
       Base.Rollback (); // okay, this is not really realistic
     }
 
-    [Override]
+    [OverrideTarget]
     public void Rollback ()
     {
       Base.Commit ();

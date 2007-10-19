@@ -40,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       get { return This; }
     }
 
-    [Override]
+    [OverrideTarget]
     public new string ToString ()
     {
       return ID.ToString ();

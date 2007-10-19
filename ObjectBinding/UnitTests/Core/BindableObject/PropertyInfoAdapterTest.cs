@@ -150,14 +150,14 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     }
 
     [Test]
-    public void Equals ()
+    public void Equals_ChecksPropertyInfo ()
     {
       Assert.AreEqual (new PropertyInfoAdapter (_property), _adapter);
       Assert.AreNotEqual (_explicitInterfaceAdapter, _adapter);
     }
 
     [Test]
-    public void GetHashCode ()
+    public void GetHashCode_UsesPropertyInfo ()
     {
       Assert.AreEqual (new PropertyInfoAdapter (_property).GetHashCode (), _adapter.GetHashCode ());
       Assert.AreNotEqual (_explicitInterfaceAdapter.GetHashCode (), _adapter.GetHashCode ());

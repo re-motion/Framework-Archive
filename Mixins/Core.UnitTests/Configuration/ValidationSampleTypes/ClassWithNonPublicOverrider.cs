@@ -3,19 +3,19 @@ namespace Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes
 {
   public class ClassWithNonPublicOverrider
   {
-    [OverrideMixinMember]
+    [OverrideMixin]
     private string AbstractMethod (int i)
     {
       return null;
     }
 
-    [OverrideMixinMember]
+    [OverrideMixin]
     private string AbstractProperty
     {
       get { return null; }
     }
 
-    [OverrideMixinMember]
+    [OverrideMixin]
     private event Func<string> AbstractEvent
     {
       add { }

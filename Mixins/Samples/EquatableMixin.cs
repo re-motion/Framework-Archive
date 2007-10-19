@@ -31,13 +31,13 @@ namespace Rubicon.Mixins.Samples
       return true;
     }
 
-    [Override]
+    [OverrideTarget]
     protected new bool Equals (object other)
     {
       return ((IEquatable<T>)this).Equals (other as T);
     }
 
-    [Override]
+    [OverrideTarget]
     protected new int GetHashCode ()
     {
       object[] fieldValues = new object[_targetFields.Length];

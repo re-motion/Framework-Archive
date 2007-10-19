@@ -23,7 +23,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
     /// <value>The display name.</value>
     /// <remarks>Override this property to replace the default display name provided by the <see cref="BindableObjectClass"/> with a custom one.
     /// </remarks>
-    [OverrideMixinMember]
+    [OverrideMixin]
     [StorageClassNone]
     public virtual string DisplayName
     {

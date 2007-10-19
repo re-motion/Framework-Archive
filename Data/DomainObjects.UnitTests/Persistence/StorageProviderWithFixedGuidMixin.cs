@@ -8,7 +8,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
   {
     private Guid _fixedGuid = Guid.NewGuid ();
 
-    [Override]
+    [OverrideTarget]
     public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       return new ObjectID (classDefinition, FixedGuid);

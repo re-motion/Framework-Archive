@@ -11,19 +11,19 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
       string PublicInheritedMethod ();
     }
 
-    [Override]
+    [OverrideTarget]
     public string ProtectedInheritedMethod ()
     {
       return "MixinOverridingInheritedMethod.ProtectedInheritedMethod-" + Base.ProtectedInheritedMethod ();
     }
 
-    [Override]
+    [OverrideTarget]
     public string ProtectedInternalInheritedMethod ()
     {
       return "MixinOverridingInheritedMethod.ProtectedInternalInheritedMethod-" + Base.ProtectedInternalInheritedMethod ();
     }
 
-    [Override]
+    [OverrideTarget]
     public string PublicInheritedMethod ()
     {
       return "MixinOverridingInheritedMethod.PublicInheritedMethod-" + Base.PublicInheritedMethod ();

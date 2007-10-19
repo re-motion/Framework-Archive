@@ -16,7 +16,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   [BT1M1Attribute]
   public class BT1Mixin1 : IBT1Mixin1
   {
-    [Override]
+    [OverrideTarget]
     [BT1M1Attribute]
     public string VirtualMethod ()
     {
@@ -25,7 +25,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
 
     public string BackingField = "BT1Mixin1.BackingField";
 
-    [Override]
+    [OverrideTarget]
     [BT1M1Attribute]
     public virtual string VirtualProperty
     {
@@ -35,7 +35,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
     public bool VirtualEventAddCalled = false;
     public bool VirtualEventRemoveCalled = false;
 
-    [Override]
+    [OverrideTarget]
     [BT1M1Attribute]
     public virtual event EventHandler VirtualEvent
     {

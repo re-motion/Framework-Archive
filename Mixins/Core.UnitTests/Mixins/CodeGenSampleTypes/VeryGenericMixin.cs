@@ -54,7 +54,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.CodeGenSampleTypes
   [Uses (typeof (BT3Mixin4))]
   public class ClassOverridingUltraGenericStuff : BaseType3
   {
-    [OverrideMixinMember]
+    [OverrideMixin]
     public string AbstractGenericMethod<T> ()
     {
       return typeof (T).Name;

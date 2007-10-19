@@ -7,7 +7,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   // no attributes
   public class BT5Mixin1
   {
-    [Override]
+    [OverrideTarget]
     public void Method ()
     {
     }

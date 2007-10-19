@@ -126,15 +126,15 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private void AnalyzeOverrides (TargetClassDefinition definition)
     {
-      OverridesAnalyzer<MethodDefinition> methodAnalyzer = new OverridesAnalyzer<MethodDefinition> (typeof (OverrideMixinMemberAttribute), definition.GetAllMixinMethods());
+      OverridesAnalyzer<MethodDefinition> methodAnalyzer = new OverridesAnalyzer<MethodDefinition> (typeof (OverrideMixinAttribute), definition.GetAllMixinMethods());
       foreach (Tuple<MethodDefinition, MethodDefinition> methodOverride in methodAnalyzer.Analyze (definition.Methods))
         InitializeOverride (methodOverride.A, methodOverride.B);
 
-      OverridesAnalyzer<PropertyDefinition> propertyAnalyzer = new OverridesAnalyzer<PropertyDefinition> (typeof (OverrideMixinMemberAttribute), definition.GetAllMixinProperties());
+      OverridesAnalyzer<PropertyDefinition> propertyAnalyzer = new OverridesAnalyzer<PropertyDefinition> (typeof (OverrideMixinAttribute), definition.GetAllMixinProperties());
       foreach (Tuple<PropertyDefinition, PropertyDefinition> propertyOverride in propertyAnalyzer.Analyze (definition.Properties))
         InitializeOverride (propertyOverride.A, propertyOverride.B);
 
-      OverridesAnalyzer<EventDefinition> eventAnalyzer = new OverridesAnalyzer<EventDefinition> (typeof (OverrideMixinMemberAttribute), definition.GetAllMixinEvents());
+      OverridesAnalyzer<EventDefinition> eventAnalyzer = new OverridesAnalyzer<EventDefinition> (typeof (OverrideMixinAttribute), definition.GetAllMixinEvents());
       foreach (Tuple<EventDefinition, EventDefinition> eventOverride in eventAnalyzer.Analyze (definition.Events))
         InitializeOverride (eventOverride.A, eventOverride.B);
     }

@@ -14,7 +14,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
   {
     public class ClassOverridingMixinMethod
     {
-      [OverrideMixinMember]
+      [OverrideMixin]
       public new string ToString ()
       {
         return "Overridden!";
@@ -47,7 +47,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
       typeEmitter.CreateMethod ("ToString", MethodAttributes.Public)
           .SetReturnType (typeof (string))
           .ImplementByReturning (new ConstReference ("Generated _and_ overridden").ToExpression ())
-          .AddCustomAttribute (new CustomAttributeBuilder (typeof (OverrideMixinMemberAttribute).GetConstructor (Type.EmptyTypes), new object[0]));
+          .AddCustomAttribute (new CustomAttributeBuilder (typeof (OverrideMixinAttribute).GetConstructor (Type.EmptyTypes), new object[0]));
       Type generatedType = typeEmitter.BuildType ();
 
       using (MixinConfiguration.ScopedExtend (generatedType, typeof (SimpleMixin)))

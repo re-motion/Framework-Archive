@@ -6,7 +6,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
   public class ClassOverridingMixinMethodWrongSig
   {
-    [OverrideMixinMember]
+    [OverrideMixin]
     public string AbstractMethod(string s)
     {
       return "ClassOverridingMixinMethod.AbstractMethod" + s;

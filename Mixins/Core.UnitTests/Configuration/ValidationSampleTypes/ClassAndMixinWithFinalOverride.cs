@@ -14,7 +14,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes
 
   public class MixinForFinalMethod
   {
-    [Override]
+    [OverrideTarget]
     public new string ToString ()
     {
       return "";

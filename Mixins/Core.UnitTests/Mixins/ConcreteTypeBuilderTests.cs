@@ -362,7 +362,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
     public class BaseOverridingMixinMember
     {
-      [OverrideMixinMember]
+      [OverrideMixin]
       protected void Foo ()
       {
       }

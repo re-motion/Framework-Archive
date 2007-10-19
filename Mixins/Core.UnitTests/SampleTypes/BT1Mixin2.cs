@@ -8,13 +8,13 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   [Serializable]
   public class BT1Mixin2
   {
-    [Override]
+    [OverrideTarget]
     public string VirtualMethod ()
     {
       return "Mixin2ForBT1.VirtualMethod";
     }
 
-    [Override]
+    [OverrideTarget]
     public string VirtualProperty
     {
       get { return "Mixin2ForBT1.VirtualProperty"; }
@@ -23,7 +23,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
 
     public EventHandler BackingEventField;
 
-    [Override]
+    [OverrideTarget]
     public virtual event EventHandler VirtualEvent
     {
       add { BackingEventField += value; }

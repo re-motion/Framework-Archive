@@ -16,7 +16,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
   {
     public class UnsignedClass
     {
-      [OverrideMixinMember]
+      [OverrideMixin]
       public new string ToString ()
       {
         return "Overridden";
@@ -25,7 +25,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
 
     public class UnsignedMixin : Mixin<object>
     {
-      [Override]
+      [OverrideTarget]
       protected new string ToString ()
       {
         return "Overridden";

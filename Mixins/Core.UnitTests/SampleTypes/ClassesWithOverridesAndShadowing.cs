@@ -17,19 +17,19 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   
   public class BaseWithOverrideAttributes
   {
-    [Override]
+    [OverrideTarget]
     public virtual void Method(int i)
     {
     }
 
-    [Override]
+    [OverrideTarget]
     public virtual int Property
     {
       get { return 0; }
       set { }
     }
 
-    [Override]
+    [OverrideTarget]
     public virtual event EventHandler Event;
   }
 
@@ -50,19 +50,19 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
 
   public class DerivedNewWithAdditionalOverrideAttributes : BaseWithOverrideAttributes
   {
-    [Override]
+    [OverrideTarget]
     public new void Method (int i)
     {
     }
 
-    [Override]
+    [OverrideTarget]
     public new int Property
     {
       get { return 0; }
       set { }
     }
 
-    [Override]
+    [OverrideTarget]
     public new event EventHandler Event;
   }
 
@@ -83,19 +83,19 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
 
   public class DerivedNewWithOverrideAttributes : BaseWithoutOverrideAttributes
   {
-    [Override]
+    [OverrideTarget]
     public new void Method (int i)
     {
     }
 
-    [Override]
+    [OverrideTarget]
     public new int Property
     {
       get { return 0; }
       set { }
     }
 
-    [Override]
+    [OverrideTarget]
     public new event EventHandler Event;
   }
 

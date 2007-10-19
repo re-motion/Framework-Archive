@@ -10,7 +10,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
     {
     }
 
-    [OverrideMixinMember]
+    [OverrideMixin]
     public string DisplayName
     {
       get { return "TheDisplayName"; }

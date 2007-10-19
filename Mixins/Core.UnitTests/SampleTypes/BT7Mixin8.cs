@@ -7,7 +7,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   // no attributes
   public class BT7Mixin8 : Mixin<object, IBaseType7>, IBT7Mixin8
   {
-    [Override]
+    [OverrideTarget]
     public string Five()
     {
       return "BT7Mixin8.Five-" + Base.Five();

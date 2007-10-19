@@ -110,7 +110,7 @@ namespace Rubicon.Mixins.Samples.UnitTests
 
       MethodInfo overriderMethod = t.GetMethod ("StringMethod");
       Assert.IsNotNull (overriderMethod);
-      Assert.IsTrue (overriderMethod.IsDefined (typeof (OverrideAttribute), false));
+      Assert.IsTrue (overriderMethod.IsDefined (typeof (OverrideTargetAttribute), false));
     }
 
     [Test]

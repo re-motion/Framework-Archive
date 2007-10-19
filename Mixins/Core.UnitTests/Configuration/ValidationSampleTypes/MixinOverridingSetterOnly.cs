@@ -2,7 +2,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes
 {
   public class MixinOverridingSetterOnly
   {
-    [Override]
+    [OverrideTarget]
     public virtual int Property
     {
       set { }

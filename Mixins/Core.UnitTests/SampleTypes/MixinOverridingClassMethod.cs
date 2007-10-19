@@ -17,7 +17,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
     public new object Base { get { return base.Base; } }
     public new MixinDefinition Configuration { get { return base.Configuration; } }
 
-    [Override]
+    [OverrideTarget]
     public string OverridableMethod (int i)
     {
       return "MixinOverridingClassMethod.OverridableMethod-" + i;

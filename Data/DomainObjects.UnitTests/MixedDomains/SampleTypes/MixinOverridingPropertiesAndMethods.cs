@@ -7,14 +7,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
       : Mixin<MixinOverridingPropertiesAndMethods.IBaseRequirements, MixinOverridingPropertiesAndMethods.IBaseRequirements>
   {
 
-    [Override]
+    [OverrideTarget]
     public virtual string Property
     {
       get { return Base.Property + "-MixinGetter"; }
       set { Base.Property = value + "-MixinSetter"; }
     }
 
-    [Override]
+    [OverrideTarget]
     public virtual string GetSomething ()
     {
       return Base.GetSomething () + "-MixinMethod";

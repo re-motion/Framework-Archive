@@ -12,13 +12,13 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
 
   public class DuckBaseMixin : Mixin<object, IDuckBaseRequirements>
   {
-    [Override]
+    [OverrideTarget]
     public string MethodImplementedOnBase ()
     {
       return "DuckBaseMixin.MethodImplementedOnBase-" + Base.MethodImplementedOnBase ();
     }
 
-    [Override]
+    [OverrideTarget]
     public string ProtectedMethodImplementedOnBase ()
     {
       return "DuckBaseMixin.ProtectedMethodImplementedOnBase-" + Base.ProtectedMethodImplementedOnBase ();

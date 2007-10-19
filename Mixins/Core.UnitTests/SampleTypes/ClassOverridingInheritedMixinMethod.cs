@@ -5,19 +5,19 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   [Uses (typeof (MixinWithInheritedMethod))]
   public class ClassOverridingInheritedMixinMethod
   {
-    [OverrideMixinMember]
+    [OverrideMixin]
     public string ProtectedInheritedMethod ()
     {
       return "ClassOverridingInheritedMixinMethod.ProtectedInheritedMethod";
     }
 
-    [OverrideMixinMember]
+    [OverrideMixin]
     public string ProtectedInternalInheritedMethod ()
     {
       return "ClassOverridingInheritedMixinMethod.ProtectedInternalInheritedMethod";
     }
 
-    [OverrideMixinMember]
+    [OverrideMixin]
     public string PublicInheritedMethod ()
     {
       return "ClassOverridingInheritedMixinMethod.PublicInheritedMethod";

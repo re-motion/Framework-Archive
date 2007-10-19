@@ -66,6 +66,10 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
       }
     }
 
+    /// <summary>
+    /// Checks whether <see cref="CurrentTransaction"/> can be reset and throws an exception if it can't.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">There is no current transaction or it is read-only or needs to be committed or rolled back.</exception>
     protected override void CheckCurrentTransactionResettable ()
     {
       if (CurrentTransaction == null)

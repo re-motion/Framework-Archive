@@ -12,7 +12,7 @@ namespace Rubicon.Mixins.Samples.DynamicMixinBuilding
 {
   internal class DynamicMixinTypeGenerator
   {
-    private static readonly ConstructorInfo s_attributeConstructor = typeof (OverrideAttribute).GetConstructor (Type.EmptyTypes);
+    private static readonly ConstructorInfo s_attributeConstructor = typeof (OverrideTargetAttribute).GetConstructor (Type.EmptyTypes);
     private static readonly MethodInfo s_handlerInvokeMethod = typeof (MethodInvocationHandler).GetMethod ("Invoke");
 
     private readonly CustomClassEmitter _emitter;

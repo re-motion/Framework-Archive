@@ -1,6 +1,5 @@
 using System;
 using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
@@ -10,8 +9,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [Instantiable]
   public abstract class OrderItem : TestDomainBase
   {
-    private object _OriginalOrder;
-
     public static OrderItem NewObject ()
     {
       return NewObject<OrderItem> ().With();

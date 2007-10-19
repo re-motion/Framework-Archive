@@ -4,7 +4,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
   public class MixinAddingBT1AttributeToMember
   {
-    [Override]
+    [OverrideTarget]
     [BT1]
     public string VirtualMethod ()
     {

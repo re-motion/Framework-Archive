@@ -11,7 +11,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   [Extends (typeof (BaseType7))]
   public class BT7Mixin1 : Mixin<BaseType7, IBaseType7> , IBT7Mixin1
   {
-    [Override]
+    [OverrideTarget]
     public virtual string One<T> (T t)
     {
       return "BT7Mixin1.One(" + t + ")-" + Base.One(t);

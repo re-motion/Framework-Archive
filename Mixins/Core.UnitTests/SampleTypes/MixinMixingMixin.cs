@@ -10,7 +10,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
       string StringMethod (int i);
     }
 
-    [Override]
+    [OverrideTarget]
     public virtual string StringMethod (int i)
     {
       return "MixinMixingMixin-" + Base.StringMethod (i);

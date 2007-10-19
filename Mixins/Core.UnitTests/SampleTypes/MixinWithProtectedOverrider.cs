@@ -11,19 +11,19 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
       event EventHandler VirtualEvent;
     }
 
-    [Override]
+    [OverrideTarget]
     protected string VirtualMethod ()
     {
       return "MixinWithProtectedOverrider.VirtualMethod-" + Base.VirtualMethod ();
     }
 
-    [Override]
+    [OverrideTarget]
     protected string VirtualProperty
     {
       get { return "MixinWithProtectedOverrider.VirtualProperty-" + Base.VirtualProperty; }
     }
 
-    [Override]
+    [OverrideTarget]
     protected event EventHandler VirtualEvent
     {
       add

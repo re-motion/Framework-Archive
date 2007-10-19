@@ -52,7 +52,7 @@
     <Compile Include="Context\ApplicationConctextBuilderAssemblyFinderFilter.cs" />
     <Compile Include="Context\InternalApplicationContextBuilder.cs" />
     <Compile Include="Context\MixinContext.cs" />
-    <Compile Include="OverrideMixinMemberAttribute.cs" />
+    <Compile Include="OverrideMixinAttribute.cs" />
     <Compile Include="Definitions\AttributeIntroductionDefinition.cs" />
     <Compile Include="Definitions\Building\MixinDependencyDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\MemberImplementationFinder.cs" />
@@ -161,7 +161,7 @@
     <Compile Include="Mixin.cs" />
     <Compile Include="ExtendsAttribute.cs" />
     <Compile Include="MixinParameterAttributes.cs" />
-    <Compile Include="OverrideAttribute.cs" />
+    <Compile Include="OverrideTargetAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\MethodSignatureEqualityComparer.cs" />
     <Compile Include="Utilities\UncastableEnumerableWrapper.cs" />

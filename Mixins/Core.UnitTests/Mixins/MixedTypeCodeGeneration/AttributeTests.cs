@@ -174,20 +174,20 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [MultiInherited, MultiNonInherited, NonMultiInherited, NonMultiNonInherited]
     public class MixinWithAttributes
     {
-      [Override]
+      [OverrideTarget]
       [MultiInherited, MultiNonInherited, NonMultiInherited, NonMultiNonInherited]
       public virtual void Method ()
       {
       }
 
-      [Override]
+      [OverrideTarget]
       [MultiInherited, MultiNonInherited, NonMultiInherited, NonMultiNonInherited]
       public virtual int Property
       {
         get { return 0; }
       }
 
-      [Override]
+      [OverrideTarget]
       [MultiInherited, MultiNonInherited, NonMultiInherited, NonMultiNonInherited]
       public virtual event EventHandler Event;
     }

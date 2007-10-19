@@ -17,7 +17,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
       return "DuckFaceMixin.CallMethodsOnThis-" + This.MethodImplementedOnBase ();
     }
 
-    [Override]
+    [OverrideTarget]
     public string MethodImplementedOnBase ()
     {
       return "DuckFaceMixin.MethodImplementedOnBase-" + This.ProtectedMethodImplementedOnBase ();

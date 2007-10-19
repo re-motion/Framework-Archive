@@ -7,7 +7,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   // no attributes
   public class BT5Mixin4
   {
-    [Override]
+    [OverrideTarget]
     public string Property
     {
       set { }

@@ -43,14 +43,14 @@ namespace Rubicon.ObjectBinding.Sample
     }
 
     [XmlIgnore]
-    [OverrideMixinMember]
+    [OverrideMixin]
     public virtual string DisplayName
     {
       get { return GetType().FullName; }
     }
 
     [XmlIgnore]
-    [OverrideMixinMember]
+    [OverrideMixin]
     [ObjectBinding (Visible = false)]
     public string UniqueIdentifier
     {

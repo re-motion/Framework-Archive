@@ -7,7 +7,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.CodeGenSampleTypes
 {
   public class MixinWithThisAsBase : Mixin<BaseType3, IBaseType31>
   {
-    [Override]
+    [OverrideTarget]
     public string IfcMethod()
     {
       return "MixinWithThisAsBase.IfcMethod-" + Base.IfcMethod();

@@ -5,7 +5,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   [Extends (typeof (TargetClassWithAdditionalDependencies), AdditionalDependencies = new Type[] { typeof ( IMixinWithAdditionalClassDependency ) })]
   public class MixinWithAdditionalInterfaceDependency : Mixin<object, ITargetClassWithAdditionalDependencies>
   {
-    [Override]
+    [OverrideTarget]
     public string GetString ()
     {
       return "MixinWithAdditionalInterfaceDependency-" + Base.GetString ();

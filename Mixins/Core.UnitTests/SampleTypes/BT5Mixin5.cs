@@ -7,7 +7,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   // no attributes
   public class BT5Mixin5
   {
-    [Override]
+    [OverrideTarget]
     public event EventHandler Event;
   }
 }

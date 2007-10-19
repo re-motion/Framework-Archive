@@ -3,7 +3,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   [Multi]
   public class MixinAddingAllowMultipleToClassAndMember
   {
-    [Override]
+    [OverrideTarget]
     [Multi]
     public void Foo ()
     {

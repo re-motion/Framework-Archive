@@ -111,7 +111,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     public void OverrideAttributeIsIgnored ()
     {
       MixinDefinition bt1m1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins[typeof (BT1Mixin1)];
-      Assert.IsFalse (bt1m1.Methods[typeof (BT1Mixin1).GetMethod("VirtualMethod")].CustomAttributes.ContainsKey (typeof (OverrideAttribute)));
+      Assert.IsFalse (bt1m1.Methods[typeof (BT1Mixin1).GetMethod("VirtualMethod")].CustomAttributes.ContainsKey (typeof (OverrideTargetAttribute)));
     }
 
     class InternalStuffAttribute : Attribute { }
