@@ -1,6 +1,7 @@
 using System;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Mixins;
+using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.BindableObject;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
@@ -13,7 +14,8 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
   /// <see cref="BindableDomainObjectAttribute"/> to the derived class.
   /// </remarks>
   [BindableDomainObject]
-  public abstract class BindableDomainObject : DomainObject
+  [Serializable]
+  public abstract class BindableDomainObject : DomainObject, IBusinessObjectWithIdentity
   {
     /// <summary>
     /// Provides a possibility to override the display name of the bindable domain object.
@@ -26,6 +28,57 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
     public virtual string DisplayName
     {
       get { return Mixin.Get<BindableDomainObjectMixin> (this).BaseDisplayName; }
+    }
+
+    [StorageClassNone]
+    private IBusinessObjectWithIdentity BindableDomainObjectMixin
+    {
+      get { return Mixin.Get<BindableDomainObjectMixin> (this); }
+    }
+
+    string IBusinessObjectWithIdentity.UniqueIdentifier
+    {
+      get { return BindableDomainObjectMixin.UniqueIdentifier; }
+    }
+
+    object IBusinessObject.GetProperty (IBusinessObjectProperty property)
+    {
+      return BindableDomainObjectMixin.GetProperty (property);
+    }
+
+    object IBusinessObject.GetProperty (string propertyIdentifier)
+    {
+      return BindableDomainObjectMixin.GetProperty (propertyIdentifier);
+    }
+
+    void IBusinessObject.SetProperty (IBusinessObjectProperty property, object value)
+    {
+      BindableDomainObjectMixin.SetProperty (property, value);
+    }
+
+    void IBusinessObject.SetProperty (string propertyIdentifier, object value)
+    {
+      BindableDomainObjectMixin.SetProperty (propertyIdentifier, value);
+    }
+
+    string IBusinessObject.GetPropertyString (IBusinessObjectProperty property, string format)
+    {
+      return BindableDomainObjectMixin.GetPropertyString (property, format);
+    }
+
+    string IBusinessObject.GetPropertyString (string propertyIdentifier)
+    {
+      return BindableDomainObjectMixin.GetPropertyString (propertyIdentifier);
+    }
+
+    string IBusinessObject.DisplayNameSafe
+    {
+      get { return BindableDomainObjectMixin.DisplayNameSafe; }
+    }
+
+    IBusinessObjectClass IBusinessObject.BusinessObjectClass
+    {
+      get { return BindableDomainObjectMixin.BusinessObjectClass; }
     }
   }
 }

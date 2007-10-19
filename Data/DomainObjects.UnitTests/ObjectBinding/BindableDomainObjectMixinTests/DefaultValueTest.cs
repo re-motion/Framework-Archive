@@ -11,30 +11,59 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
   [TestFixture]
   public class DefaultValueTest : ObjectBindingBaseTest
   {
-    private Order _order;
-    private IBusinessObject _businessOrder;
+    private Order _loadedOrder;
+    private Order _newOrder;
+    private IBusinessObject _loadedBusinessOrder;
+    private IBusinessObject _newBusinessOrder;
 
     public override void SetUp ()
     {
       base.SetUp ();
       using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (BindableDomainObjectMixin)))
       {
-        _order = Order.GetObject (DomainObjectIDs.Order1);
-        _businessOrder = (IBusinessObject) _order;
+        _loadedOrder = Order.GetObject (DomainObjectIDs.Order1);
+        _loadedBusinessOrder = (IBusinessObject) _loadedOrder;
+
+        _newOrder = Order.NewObject ();
+        _newBusinessOrder = (IBusinessObject) _newOrder;
       }
     }
 
     [Test]
-    public void GetPropertyReturnsNullIfDefaultValue ()
+    public void GetPropertyReturnsNonNullIfDefaultValue_OnExistingObject ()
     {
-      Assert.IsNull (_businessOrder.GetProperty ("OrderNumber"));
+      Assert.IsNotNull (_loadedBusinessOrder.GetProperty ("OrderNumber"));
+      Assert.AreEqual (_loadedOrder.OrderNumber, _loadedBusinessOrder.GetProperty ("OrderNumber"));
     }
 
     [Test]
-    public void GetPropertyReturnsNonNullIfNonDefaultValue ()
+    public void GetPropertyReturnsNullIfDefaultValue_OnNewObject ()
     {
-      _order.OrderNumber = _order.OrderNumber;
-      Assert.IsNotNull (_businessOrder.GetProperty ("OrderNumber"));
+      Assert.IsNull (_newBusinessOrder.GetProperty ("OrderNumber"));
+    }
+
+    [Test]
+    public void GetPropertyReturnsNonNullIfDefaultValue_OnNewObjectInSubtransaction ()
+    {
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
+      {
+        Assert.IsNotNull (_newBusinessOrder.GetProperty ("OrderNumber"));
+        Assert.AreEqual (_newOrder.OrderNumber, _newBusinessOrder.GetProperty ("OrderNumber"));
+      }
+    }
+
+    [Test]
+    public void GetPropertyReturnsNonNullIfNonDefaultValue_OnExistingObject ()
+    {
+      _loadedOrder.OrderNumber = _loadedOrder.OrderNumber;
+      Assert.IsNotNull (_loadedBusinessOrder.GetProperty ("OrderNumber"));
+    }
+
+    [Test]
+    public void GetPropertyReturnsNonNullIfNonDefaultValue_OnNewObject ()
+    {
+      _newOrder.OrderNumber = _newOrder.OrderNumber;
+      Assert.IsNotNull (_newBusinessOrder.GetProperty ("OrderNumber"));
     }
 
     [Test]

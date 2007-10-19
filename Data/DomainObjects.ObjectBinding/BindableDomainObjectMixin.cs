@@ -18,6 +18,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
       Type GetPublicDomainObjectType ();
       ObjectID ID { get; }
       PropertyIndexer Properties { get; }
+      StateType State { get; }
     }
 
     protected override BindableObjectClass InitializeBindableObjectClass ()
@@ -38,12 +39,17 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
     protected override bool IsDefaultValue (PropertyBase property, object nativeValue)
     {
       ArgumentUtility.CheckNotNull ("property", property);
-      
-      string propertyIdentifier = ReflectionUtility.GetPropertyName (property.PropertyInfo.GetOriginalDeclaringType(), property.PropertyInfo.Name);
-      if (This.Properties.Contains (propertyIdentifier))
-        return !This.Properties[propertyIdentifier].HasBeenTouched;
+
+      if (This.State != StateType.New)
+        return false;
       else
-        return base.IsDefaultValue (property, nativeValue);
+      {
+        string propertyIdentifier = ReflectionUtility.GetPropertyName (property.PropertyInfo.GetOriginalDeclaringType(), property.PropertyInfo.Name);
+        if (This.Properties.Contains (propertyIdentifier))
+          return !This.Properties[propertyIdentifier].HasBeenTouched;
+        else
+          return base.IsDefaultValue (property, nativeValue);
+      }
     }
   }
 }

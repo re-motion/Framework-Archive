@@ -21,5 +21,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain
     }
 
     public abstract string Name { get; set; }
+    public abstract int Int32 { get; set; }
   }
 }

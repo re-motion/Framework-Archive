@@ -2,8 +2,10 @@ using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
+using Rubicon.Mixins;
 using Rubicon.ObjectBinding;
-using Rubicon.Utilities;
+using TypeUtility=Rubicon.Utilities.TypeUtility;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding
 {
@@ -18,8 +20,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding
 
     [DBTable]
     [TestDomain]
+    [Serializable]
     public class SampleBindableDomainObjectWithOverriddenDisplayName : BindableDomainObject
     {
+      private int _test;
+
+      [StorageClassNone]
+      public int Test
+      {
+        get { return _test; }
+        set { _test = value; }
+      }
+
       public override string DisplayName
       {
         get { return "CustomName"; }
@@ -49,9 +61,39 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding
     public void OverriddenDisplayName ()
     {
       IBusinessObject businessObject = (IBusinessObject) DomainObject.NewObject (typeof (SampleBindableDomainObjectWithOverriddenDisplayName));
-      Assert.AreNotEqual (TypeUtility.GetPartialAssemblyQualifiedName (typeof (SampleBindableDomainObjectWithOverriddenDisplayName)),
+      Assert.AreNotEqual (
+          TypeUtility.GetPartialAssemblyQualifiedName (typeof (SampleBindableDomainObjectWithOverriddenDisplayName)),
           businessObject.DisplayName);
       Assert.AreEqual ("CustomName", businessObject.DisplayName);
+    }
+
+    [Test]
+    public void VerifyInterfaceImplementation ()
+    {
+      IBusinessObjectWithIdentity businessObject =
+          (SampleBindableDomainObjectWithOverriddenDisplayName) DomainObject.NewObject (typeof (SampleBindableDomainObjectWithOverriddenDisplayName));
+      IBusinessObjectWithIdentity businessObjectMixin = Mixin.Get<BindableDomainObjectMixin> (businessObject);
+
+      Assert.AreSame (businessObjectMixin.BusinessObjectClass, businessObject.BusinessObjectClass);
+      Assert.AreEqual (businessObjectMixin.DisplayName, businessObject.DisplayName);
+      Assert.AreEqual (businessObjectMixin.DisplayNameSafe, businessObject.DisplayNameSafe);
+      businessObject.SetProperty ("Test", 1);
+      Assert.AreEqual (1, businessObject.GetProperty ("Test"));
+      Assert.AreEqual (1, businessObject.GetProperty (businessObjectMixin.BusinessObjectClass.GetPropertyDefinition ("Test")));
+      Assert.AreEqual ("001", businessObject.GetPropertyString (businessObjectMixin.BusinessObjectClass.GetPropertyDefinition ("Test"), "000"));
+      Assert.AreEqual ("1", businessObject.GetPropertyString ("Test"));
+      Assert.AreEqual (businessObjectMixin.UniqueIdentifier, businessObject.UniqueIdentifier);
+      businessObject.SetProperty (businessObjectMixin.BusinessObjectClass.GetPropertyDefinition ("Test"), 2);
+      Assert.AreEqual (2, businessObject.GetProperty ("Test"));
+    }
+
+    [Test]
+    public void SerializeAndDeserialize ()
+    {
+      SampleBindableDomainObjectWithOverriddenDisplayName domainObject =
+          (SampleBindableDomainObjectWithOverriddenDisplayName) DomainObject.NewObject (typeof (SampleBindableDomainObjectWithOverriddenDisplayName));
+
+      Serializer.SerializeAndDeserialize (domainObject);
     }
   }
 }

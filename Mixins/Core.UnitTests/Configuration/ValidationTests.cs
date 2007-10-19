@@ -321,15 +321,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void WarnsIfIntroducedInterfaceIsShadowed ()
-    {
-      TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType2), typeof (DoubleImplementer));
-      DefaultValidationLog log = Validator.Validate (definition);
-
-      Assert.IsTrue (HasWarning ("Rubicon.Mixins.Validation.Rules.DefaultSuppressedInterfaceIntroductionRules.InterfaceIsShadowedByTargetClass", log));
-    }
-
-    [Test]
     public void FailsIfIntroducedInterfaceNotVisible ()
     {
       TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType2), typeof (MixinIntroducingInternalInterface));
