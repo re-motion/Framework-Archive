@@ -21,26 +21,26 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
       {
         CheckDomainObjectSerializability<AccessControlEntry>();
-        CheckDomainObjectSerializability<AccessControlList>();
-        CheckDomainObjectSerializability<Permission>();
-        CheckDomainObjectSerializability<StateCombination>();
-        CheckDomainObjectSerializability<StateUsage>();
-        CheckDomainObjectSerializability<AbstractRoleDefinition>();
-        CheckDomainObjectSerializability<AccessTypeDefinition>();
-        CheckDomainObjectSerializability<AccessTypeReference>();
+        CheckDomainObjectSerializability<AccessControlList> ();
+        CheckDomainObjectSerializability<Permission> ();
+        CheckDomainObjectSerializability<StateCombination> ();
+        CheckDomainObjectSerializability<StateUsage> ();
+        CheckDomainObjectSerializability<AbstractRoleDefinition> ();
+        CheckDomainObjectSerializability<AccessTypeDefinition> ();
+        CheckDomainObjectSerializability<AccessTypeReference> ();
         CheckDomainObjectSerializability<Culture> ("DE-DE");
-        CheckDomainObjectSerializability<LocalizedName> ("foo", Culture.NewObject ("DE-DE"), SecurableClassDefinition.NewObject());
-        CheckDomainObjectSerializability<SecurableClassDefinition>();
-        CheckDomainObjectSerializability<StateDefinition>();
-        CheckDomainObjectSerializability<StatePropertyDefinition>();
-        CheckDomainObjectSerializability<StatePropertyReference>();
-        CheckDomainObjectSerializability<Group>();
-        CheckDomainObjectSerializability<GroupType>();
-        CheckDomainObjectSerializability<GroupTypePosition>();
-        CheckDomainObjectSerializability<Position>();
-        CheckDomainObjectSerializability<Role>();
-        CheckDomainObjectSerializability<Tenant>();
-        CheckDomainObjectSerializability<User>();
+        CheckDomainObjectSerializability<LocalizedName> ("foo", Culture.NewObject ("DE-DE"), SecurableClassDefinition.NewObject ());
+        CheckDomainObjectSerializability<SecurableClassDefinition> ();
+        CheckDomainObjectSerializability<StateDefinition> ();
+        CheckDomainObjectSerializability<StatePropertyDefinition> ();
+        CheckDomainObjectSerializability<StatePropertyReference> ();
+        CheckDomainObjectSerializability<Group> ();
+        CheckDomainObjectSerializability<GroupType> ();
+        CheckDomainObjectSerializability<GroupTypePosition> ();
+        CheckDomainObjectSerializability<Position> ();
+        CheckDomainObjectSerializability<Role> ();
+        CheckDomainObjectSerializability<Tenant> ();
+        CheckDomainObjectSerializability<User> ();
       }
     }
 

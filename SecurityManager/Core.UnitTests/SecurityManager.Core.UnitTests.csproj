@@ -115,9 +115,9 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core %28Core\Core%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Data\DomainObjects.Legacy.ObjectBinding\Data.DomainObjects.Legacy.ObjectBinding.csproj">
-      <Project>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</Project>
-      <Name>Data.DomainObjects.Legacy.ObjectBinding</Name>
+    <ProjectReference Include="..\..\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
+      <Project>{B915A0FD-92E5-42C5-BEB9-EB4D382563D7}</Project>
+      <Name>Data.DomainObjects.ObjectBinding</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Data\DomainObjects\Data.DomainObjects.csproj">
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
@@ -130,6 +130,10 @@
     <ProjectReference Include="..\..\Mixins\Core\Mixins.csproj">
       <Project>{18C1D36B-CC05-4334-BF29-DE5A886DA89D}</Project>
       <Name>Mixins %28Mixins\Mixins%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.csproj">
+      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
+      <Name>ObjectBinding %28ObjectBinding\ObjectBinding%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Security\Core\Security.csproj">
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>

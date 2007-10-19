@@ -6,12 +6,12 @@
 <%@ Register TagPrefix="securityManager" Src="EditAccessControlListControl.ascx" TagName="EditAccessControlListControl" %>
 
 <asp:Content ID="ActualHeaderControlsPlaceHolder" runat="server" ContentPlaceHolderID="HeaderControlsPlaceHolder">
-  <rubicon:DomainObjectDataSourceControl ID="CurrentObjectHeaderControls" runat="server" TypeName="Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition, Rubicon.SecurityManager" Mode="Read" />
+  <rubicon:BindableObjectDataSourceControl ID="CurrentObjectHeaderControls" runat="server" Type="Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition, Rubicon.SecurityManager" Mode="Read" />
   <h1><rubicon:BocTextValue ID="NameField" runat="server" DataSourceControl="CurrentObjectHeaderControls" PropertyIdentifier="DisplayName" /></h1>
 </asp:Content>
 <asp:Content ID="ActualTopControlsPlaceHolder" runat="server" ContentPlaceHolderID="TopControlsPlaceHolder" />
 <asp:Content ID="ActaulMainContentPlaceHolder" runat="server" ContentPlaceHolderID="MainContentPlaceHolder">
-  <rubicon:DomainObjectDataSourceControl ID="CurrentObject" runat="server" TypeName="Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition, Rubicon.SecurityManager" />
+  <rubicon:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition, Rubicon.SecurityManager" />
   <asp:CustomValidator ID="DuplicateStateCombinationsValidator" runat="server" ErrorMessage="<%$ res:DuplicateStateCombinationsValidatorErrorMessage %>" OnServerValidate="DuplicateStateCombinationsValidator_ServerValidate"/>
   <asp:PlaceHolder ID="AccessControlListsPlaceHolder" runat="server"/>
   <%-- 

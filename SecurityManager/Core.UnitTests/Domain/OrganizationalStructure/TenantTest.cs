@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Development.UnitTesting;
 using Rubicon.ObjectBinding;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Security;
 using Rubicon.Security.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
@@ -305,7 +306,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       IBusinessObjectProperty[] properties = businessObject.BusinessObjectClass.GetPropertyDefinitions ();
 
       bool isFound = false;
-      foreach (BaseProperty property in properties)
+      foreach (PropertyBase property in properties)
       {
         if (property.Identifier == "UniqueIdentifier" && property.PropertyInfo.DeclaringType == typeof (Tenant))
         {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Mixins;
@@ -281,7 +282,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void MixedUserTest ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (User), typeof (TestMixin)))
+      using (MixinConfiguration.ScopedExtend (typeof (User), typeof (TestMixin), typeof(BindableDomainObjectMixin)))
       {
         User user = CreateUser ();
         Assert.IsNotNull (Mixin.Get<TestMixin> (user));

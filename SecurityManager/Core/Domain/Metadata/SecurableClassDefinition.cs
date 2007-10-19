@@ -159,7 +159,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     }
 
     [DBBidirectionalRelation ("Class")]
-    [IsReadOnly]
+    [ObjectBinding (ReadOnly = true)]
     public abstract ObjectList<StateCombination> StateCombinations { get; }
 
     [DBBidirectionalRelation ("Class", SortExpression = "[Index] ASC")]

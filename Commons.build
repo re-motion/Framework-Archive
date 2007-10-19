@@ -401,7 +401,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="SecurityManager.Core" depends="Core, ObjectBinding, Data.DomainObjects, Data.DomainObjects.Legacy.ObjectBinding">
+  <target name="SecurityManager.Core" depends="Core, ObjectBinding, Data.DomainObjects, Data.DomainObjects.ObjectBinding">
     <property name="project.name" value="SecurityManager.Core" />
     <property name="project.dir" value="SecurityManager/Core" />
     <property name="project.output" value="Rubicon.SecurityManager" />
@@ -409,7 +409,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="SecurityManager.Metadata.Importer" depends="Core, Data.DomainObjects, Data.DomainObjects.Legacy.ObjectBinding, SecurityManager.Core">
+  <target name="SecurityManager.Metadata.Importer" depends="Core, Data.DomainObjects, Data.DomainObjects.ObjectBinding, SecurityManager.Core">
     <property name="project.name" value="SecurityManager.Metadata.Importer" />
     <property name="project.dir" value="SecurityManager/Metadata.Importer" />
     <property name="project.output" value="Rubicon.SecurityManager.Metadata.Importer" />
@@ -418,8 +418,7 @@
   </target>
 
   <target name="SecurityManager.Clients.Web" depends="Core, ObjectBinding, ObjectBinding.Web, Web, 
-        Data.DomainObjects, Data.DomainObjects.Legacy.ObjectBinding, Data.DomainObjects.Web, Data.DomainObjects.Legacy.ObjectBinding.Web, 
-        SecurityManager.Core">
+          Data.DomainObjects, Data.DomainObjects.Web, Data.DomainObjects.ObjectBinding, SecurityManager.Core">
     <property name="project.name" value="SecurityManager.Clients.Web" />
     <property name="project.dir" value="SecurityManager/Clients.Web" />
     <property name="project.output" value="Rubicon.SecurityManager.Clients.Web" />
@@ -595,8 +594,9 @@
   <target name="SecurityManager.Core.UnitTests">
     <call target="Core" cascade="false"/>
     <call target="Data.DomainObjects" cascade="false"/>
-    <call target="Data.DomainObjects.Legacy.ObjectBinding" cascade="false"/>
+    <call target="Data.DomainObjects.ObjectBinding" cascade="false"/>
     <call target="Development.Core" cascade="false"/>
+    <call target="ObjectBinding" cascade="false"/>
     <call target="Security" cascade="false"/>
     <call target="Security.Data.DomainObjects" cascade="false"/>
     <call target="SecurityManager.Core" cascade="false"/>

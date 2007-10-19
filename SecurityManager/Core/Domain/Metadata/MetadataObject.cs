@@ -43,8 +43,8 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     [StringProperty (IsNullable = false, MaximumLength = 200)]
     public abstract string Name { get; set; }
 
-    [IsReadOnly]
     [DBBidirectionalRelation ("MetadataObject")]
+    [ObjectBinding (ReadOnly = true)]
     public abstract ObjectList<LocalizedName> LocalizedNames { get; }
 
     public override string DisplayName

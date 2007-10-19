@@ -3,7 +3,7 @@
 <%@ Register TagPrefix="securityManager" Src="EditStateCombinationControl.ascx" TagName="EditStateCombinationControl" %>
 <%@ Register TagPrefix="securityManager" Src="EditAccessControlEntryControl.ascx" TagName="EditAccessControlEntryControl" %>
 
-<rubicon:DomainObjectDataSourceControl ID="CurrentObject" runat="server" TypeName="Rubicon.SecurityManager.Domain.AccessControl.AccessControlList, Rubicon.SecurityManager" />
+<rubicon:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Rubicon.SecurityManager.Domain.AccessControl.AccessControlList, Rubicon.SecurityManager" />
 <table class="accessControlList">
   <tr>
   <td class="accessControlListTitleCell" colspan="2">

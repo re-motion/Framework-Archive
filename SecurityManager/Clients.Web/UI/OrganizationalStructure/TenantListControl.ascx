@@ -1,6 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TenantListControl.ascx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.TenantListControl" %>
 
-<rubicon:DomainObjectDataSourceControl ID="CurrentObject" runat="server" TypeName="Rubicon.SecurityManager.Domain.OrganizationalStructure.Tenant, Rubicon.SecurityManager" />
+<rubicon:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Rubicon.SecurityManager.Domain.OrganizationalStructure.Tenant, Rubicon.SecurityManager" />
 <rubicon:FormGridManager ID="FormGridManager" runat="server" ValidatorVisibility="HideValidators" />
 <table cellpadding="0" cellspacing="0" style="width: 100%; height: 100%;">
   <tr>

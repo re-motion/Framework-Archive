@@ -11,9 +11,9 @@
 namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
     
     public partial class EditPermissionsForm {
-        protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObjectHeaderControls;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObjectHeaderControls;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue NameField;
-        protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
         protected System.Web.UI.WebControls.CustomValidator DuplicateStateCombinationsValidator;
         protected System.Web.UI.WebControls.PlaceHolder AccessControlListsPlaceHolder;
         protected Rubicon.Web.UI.Controls.WebButton SaveButton;

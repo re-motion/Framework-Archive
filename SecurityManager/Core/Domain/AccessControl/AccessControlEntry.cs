@@ -112,7 +112,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     public abstract AccessControlList AccessControlList { get; set; }
 
     [DBBidirectionalRelation ("AccessControlEntry", SortExpression = "[Index] ASC")]
-    [IsReadOnly]
+    [ObjectBinding (ReadOnly = true)]
     public virtual ObjectList<Permission> Permissions
     {
       get { return new ObjectList<Permission> (CurrentProperty.GetValue<ObjectList<Permission>> (), true); }

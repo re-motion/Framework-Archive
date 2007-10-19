@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
+        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
         
         /// <summary>
         /// AccessType control.

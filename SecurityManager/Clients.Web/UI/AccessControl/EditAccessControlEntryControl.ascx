@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" Codebehind="EditAccessControlEntryControl.ascx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl" %>
 <%@ Register TagPrefix="securityManager" Assembly="Rubicon.SecurityManager.Clients.Web" Namespace="Rubicon.SecurityManager.Clients.Web.Classes" %>
 <%@ Register TagPrefix="securityManager" Src="EditPermissionControl.ascx" TagName="EditPermissionControl" %>
-<rubicon:DomainObjectDataSourceControl ID="CurrentObject" runat="server" TypeName="Rubicon.SecurityManager.Domain.AccessControl.AccessControlEntry, Rubicon.SecurityManager" />
+<rubicon:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Rubicon.SecurityManager.Domain.AccessControl.AccessControlEntry, Rubicon.SecurityManager" />
 <rubicon:FormGridManager ID="FormGridManager" runat="server" ShowHelpProviders="False" ShowRequiredMarkers="False" />
 <table id="FormGrid" runat="server" class="accessControlEntry">
   <tr>

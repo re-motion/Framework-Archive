@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="EditRoleControl.ascx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditRoleControl" %>
 
 <rubicon:FormGridManager ID="FormGridManager" runat="server" ValidatorVisibility="HideValidators" />
-<rubicon:domainobjectdatasourcecontrol id="CurrentObject" runat="server" TypeName="Rubicon.SecurityManager.Domain.OrganizationalStructure.Role, Rubicon.SecurityManager" />
+<rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Rubicon.SecurityManager.Domain.OrganizationalStructure.Role, Rubicon.SecurityManager" />
 <table id="FormGrid" runat="server" cellpadding="0" cellspacing="0">
   <tr class="underlinedMarkerCellRow">
     <td class="formGridTitleCell" style="white-space: nowrap;" colspan="2">
