@@ -6,7 +6,6 @@ using System.Text;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   [DebuggerDisplay ("Count = {Count}")]
   public class CovariantDefinitionCollectionWrapper<TKey, TValue, TValueBase> : IDefinitionCollection<TKey, TValueBase>
       where TValue : class, TValueBase

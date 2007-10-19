@@ -3,7 +3,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   public class MixinDependencyDefinition : DependencyDefinitionBase
   {
     public MixinDependencyDefinition (RequiredMixinTypeDefinition requiredType, MixinDefinition depender, MixinDependencyDefinition aggregator)

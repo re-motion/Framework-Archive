@@ -7,6 +7,8 @@ namespace Rubicon.Mixins.Utilities
 {
   public class MixinReflector
   {
+    public enum InitializationMode { Construction, Deserialization }
+
     public static TMixin Get<TMixin> (object mixinTarget) where TMixin : class
     {
       ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
@@ -75,7 +77,7 @@ namespace Rubicon.Mixins.Utilities
         return mixinBaseType.GetProperty ("Configuration", BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
-    public static MethodInfo GetInitializationMethod (Type concreteMixinType)
+    public static MethodInfo GetInitializationMethod (Type concreteMixinType, InitializationMode initializationMode)
     {
       ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);
 
@@ -83,7 +85,10 @@ namespace Rubicon.Mixins.Utilities
       if (mixinBaseType == null)
         return null;
       else
-        return mixinBaseType.GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+      {
+        string methodName = initializationMode == InitializationMode.Construction ? "Initialize" : "Deserialize";
+        return mixinBaseType.GetMethod (methodName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+      }
     }
 
     public static Type GetBaseCallProxyType (object mixinTargetInstance)

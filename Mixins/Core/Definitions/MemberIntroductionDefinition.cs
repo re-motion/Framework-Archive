@@ -5,7 +5,6 @@ using System.Reflection;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   [DebuggerDisplay ("{InterfaceMember}")]
   public abstract class MemberIntroductionDefinition<TMemberInfo, TMemberDefinition>: IVisitableDefinition
       where TMemberInfo : MemberInfo

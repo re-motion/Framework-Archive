@@ -19,6 +19,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   {
     private readonly ClientTransaction _parentTransaction;
 
+    [NonSerialized]
     private SubQueryManager _queryManager;
 
     public SubClientTransaction (ClientTransaction parentTransaction)

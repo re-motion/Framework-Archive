@@ -4,7 +4,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   public class EventIntroductionDefinition : MemberIntroductionDefinition<EventInfo, EventDefinition>
   {
     public EventIntroductionDefinition (InterfaceIntroductionDefinition declaringInterface, EventInfo interfaceMember, EventDefinition implementingMember)

@@ -6,7 +6,6 @@ using System.Reflection;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   public class RequiredBaseCallTypeDefinition : RequirementDefinitionBase
   {
     public RequiredBaseCallTypeDefinition (TargetClassDefinition targetClass, Type type)

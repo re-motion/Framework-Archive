@@ -5,7 +5,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   [DebuggerDisplay("{AttributeType}")]
   public class AttributeDefinition: IVisitableDefinition
   {

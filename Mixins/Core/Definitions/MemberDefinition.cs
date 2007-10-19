@@ -6,7 +6,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   [DebuggerDisplay ("{MemberInfo}, DeclaringClass = {DeclaringClass.Type}")]
   public abstract class MemberDefinition : IAttributeIntroductionTargetDefinition, IVisitableDefinition
   {

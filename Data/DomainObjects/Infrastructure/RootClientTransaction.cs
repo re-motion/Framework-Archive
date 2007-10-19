@@ -16,6 +16,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   public class RootClientTransaction : ClientTransaction
   {
     private readonly Dictionary<ObjectID, DomainObject> _enlistedObjects;
+    [NonSerialized]
     private RootQueryManager _queryManager;
 
     /// <summary>

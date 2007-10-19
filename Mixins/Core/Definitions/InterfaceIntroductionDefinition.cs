@@ -5,7 +5,6 @@ using System.Diagnostics;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   [DebuggerDisplay ("{_type.FullName} introduced via {_implementer.FullName}")]
   public class InterfaceIntroductionDefinition : IVisitableDefinition
   {

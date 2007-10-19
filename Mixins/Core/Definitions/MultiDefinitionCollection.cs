@@ -6,7 +6,6 @@ using Rubicon.Collections;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   [DebuggerDisplay ("Count = {Count}")]
   public class MultiDefinitionCollection<TKey, TValue> : DefinitionCollectionBase<TKey, TValue>
       where TValue : IVisitableDefinition

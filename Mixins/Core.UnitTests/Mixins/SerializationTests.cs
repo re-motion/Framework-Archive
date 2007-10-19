@@ -78,6 +78,40 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
       bt1.I = 25;
       Serializer.SerializeAndDeserialize (bt1);
+      Assert.AreEqual (25, bt1.I);
+    }
+
+    [Serializable]
+    public class OverridableBaseType
+    {
+      public virtual string OverridableMethod (int i)
+      {
+        return "OverridableBaseType.OverridableMethod(" + i + ")";
+      }
+    }
+
+    [Test]
+    public void GeneratedTypeWithReferenceToMixinBaseIsDeserializable ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (OverridableBaseType), typeof (MixinOverridingClassMethod)))
+      {
+        OverridableBaseType instance = ObjectFactory.Create<OverridableBaseType> ().With ();
+        Assert.IsTrue (instance.GetType().IsSerializable);
+
+        Assert.AreEqual ("MixinOverridingClassMethod.OverridableMethod-85", instance.OverridableMethod (85));
+
+        OverridableBaseType deserialiedInstance = Serializer.SerializeAndDeserialize (instance);
+
+        Assert.AreEqual ("MixinOverridingClassMethod.OverridableMethod-85", deserialiedInstance.OverridableMethod (85));
+        Assert.AreSame (deserialiedInstance, Mixin.Get<MixinOverridingClassMethod> (deserialiedInstance).This);
+
+        Assert.IsNotNull (Mixin.Get<MixinOverridingClassMethod> (deserialiedInstance).Base);
+        Assert.AreEqual ("OverridableBaseType.OverridableMethod(84)",
+            ((MixinOverridingClassMethod.IRequirements) Mixin.Get<MixinOverridingClassMethod> (deserialiedInstance).Base).OverridableMethod(84));
+
+        Assert.AreSame (TypeFactory.GetActiveConfiguration (typeof (OverridableBaseType)).Mixins[typeof (MixinOverridingClassMethod)],
+            Mixin.Get<MixinOverridingClassMethod> (deserialiedInstance).Configuration);
+      }
     }
 
     [Test]
@@ -184,6 +218,48 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       ClassWithoutDefaultCtor c2 = Serializer.SerializeAndDeserialize (c);
       Assert.AreNotEqual (c, c2);
       Assert.AreEqual ("35", c2.S);
+    }
+
+    [Serializable]
+    public class MixinWithOnInitializedAndOnDeserialized : Mixin<object, object>
+    {
+      [NonSerialized]
+      public bool OnInitializedCalled;
+      [NonSerialized]
+      public bool OnDeserializedCalled;
+
+      protected override void OnInitialized ()
+      {
+        OnInitializedCalled = true;
+        Assert.IsNotNull (This);
+        Assert.IsNotNull (Base);
+        Assert.IsNotNull (Configuration);
+        base.OnInitialized ();
+      }
+
+      protected override void OnDeserialized ()
+      {
+        OnDeserializedCalled = true;
+        Assert.IsNotNull (This);
+        Assert.IsNotNull (Base);
+        Assert.IsNotNull (Configuration);
+        base.OnDeserialized ();
+      }
+    }
+
+    [Test]
+    public void OnInitializedNotCalledOnDeserialization ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithOnInitializedAndOnDeserialized)))
+      {
+        NullTarget instance = ObjectFactory.Create<NullTarget> ().With ();
+        Assert.IsTrue (Mixin.Get<MixinWithOnInitializedAndOnDeserialized> (instance).OnInitializedCalled);
+        Assert.IsFalse (Mixin.Get<MixinWithOnInitializedAndOnDeserialized> (instance).OnDeserializedCalled);
+
+        NullTarget deserializedInstance = Serializer.SerializeAndDeserialize (instance);
+        Assert.IsFalse (Mixin.Get<MixinWithOnInitializedAndOnDeserialized> (deserializedInstance).OnInitializedCalled);
+        Assert.IsTrue (Mixin.Get<MixinWithOnInitializedAndOnDeserialized> (deserializedInstance).OnDeserializedCalled);
+      }
     }
   }
 }

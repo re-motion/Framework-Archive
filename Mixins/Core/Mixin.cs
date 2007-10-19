@@ -163,6 +163,14 @@ namespace Rubicon.Mixins
       _base = @base;
       base.Initialize (@this, configuration);
     }
+
+    internal void Deserialize ([This] TThis @this, [Base] TBase @base, [Configuration] MixinDefinition configuration)
+    {
+      Assertion.IsNotNull (@this);
+      Assertion.IsNotNull (@base);
+      _base = @base;
+      base.Deserialize (@this, configuration);
+    }
   }
 
   /// <summary>
@@ -214,7 +222,9 @@ namespace Rubicon.Mixins
   public class Mixin<[This]TThis>
       where TThis: class
   {
+    [NonSerialized]
     private TThis _this;
+    [NonSerialized]
     private MixinDefinition _configuration;
 
     /// <summary>
@@ -267,6 +277,22 @@ namespace Rubicon.Mixins
     /// Called when the mixin has been initialized and its properties can be safely accessed.
     /// </summary>
     protected virtual void OnInitialized()
+    {
+      // nothing
+    }
+
+    internal void Deserialize ([This] TThis @this, [Configuration] MixinDefinition configuration)
+    {
+      Assertion.IsNotNull (@this);
+      _this = @this;
+      _configuration = @configuration;
+      OnDeserialized ();
+    }
+
+    /// <summary>
+    /// Called when the mixin has been deserialized and its properties can be safely accessed.
+    /// </summary>
+    protected virtual void OnDeserialized ()
     {
       // nothing
     }

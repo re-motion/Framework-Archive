@@ -41,6 +41,8 @@
   <ItemGroup>
     <Compile Include="CodeGeneration\ConcreteMixinTypeAttribute.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallMethodGenerator.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\BaseCallProxyInitializer.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\MixinInstanceInitializer.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\MixinSerializationHelper.cs" />
     <Compile Include="CodeGeneration\GuidNameProvider.cs" />
     <Compile Include="CodeGeneration\INameProvider.cs" />

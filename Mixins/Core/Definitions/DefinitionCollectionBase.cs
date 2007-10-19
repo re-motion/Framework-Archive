@@ -6,7 +6,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   public abstract class DefinitionCollectionBase<TKey, TValue> : IEnumerable<TValue>
       where TValue : IVisitableDefinition
   {

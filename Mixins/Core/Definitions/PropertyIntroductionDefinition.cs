@@ -4,7 +4,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   public class PropertyIntroductionDefinition : MemberIntroductionDefinition<PropertyInfo, PropertyDefinition>
   {
     private bool _introducesGetMethod;

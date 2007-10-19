@@ -3,7 +3,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   public class AttributeIntroductionDefinition : IVisitableDefinition
   {
     public readonly IAttributeIntroductionTargetDefinition Target;

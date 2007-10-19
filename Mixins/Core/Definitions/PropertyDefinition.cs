@@ -6,7 +6,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   public class PropertyDefinition : MemberDefinition, IVisitableDefinition
   {
     private static readonly SignatureChecker s_signatureChecker = new SignatureChecker();

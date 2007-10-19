@@ -10,6 +10,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   }
 
   [Extends (typeof (BaseType3))]
+  [Serializable]
   public class BT3Mixin4 : BT3Mixin3<BaseType3, IBaseType34>, IBT3Mixin4
   {
     public string Foo ()

@@ -3,7 +3,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   public class RequiredFaceTypeDefinition : RequirementDefinitionBase
   {
     public RequiredFaceTypeDefinition (TargetClassDefinition targetClass, Type type)

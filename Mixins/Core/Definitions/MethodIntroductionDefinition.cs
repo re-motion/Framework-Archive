@@ -4,7 +4,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   public class MethodIntroductionDefinition : MemberIntroductionDefinition<MethodInfo, MethodDefinition>
   {
     public MethodIntroductionDefinition (InterfaceIntroductionDefinition declaringInterface, MethodInfo interfaceMember, MethodDefinition implementingMember)

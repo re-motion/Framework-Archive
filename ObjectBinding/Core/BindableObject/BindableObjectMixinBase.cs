@@ -207,9 +207,10 @@ namespace Rubicon.ObjectBinding.BindableObject
       _bindableObjectClass = InitializeBindableObjectClass ();
     }
 
-    [OnDeserialized]
-    private void OnDeserialization (StreamingContext context)
+    protected override void OnDeserialized ()
     {
+      base.OnDeserialized ();
+
       _bindableObjectClass = InitializeBindableObjectClass ();
     }
 

@@ -1,12 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   [DebuggerDisplay ("{Type}, TargetClass = {TargetClass.Type}")]
   public class MixinDefinition : ClassDefinitionBase, IVisitableDefinition
   {

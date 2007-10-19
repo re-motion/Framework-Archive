@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
+  [Serializable]
   public class BT3Mixin5
   {
 

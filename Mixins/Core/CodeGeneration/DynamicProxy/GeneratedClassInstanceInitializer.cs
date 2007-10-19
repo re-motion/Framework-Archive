@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
 using Rubicon.Mixins.Definitions;
-using Rubicon.Utilities;
-using System.Reflection;
-using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 using Rubicon.Mixins.Utilities;
+using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
@@ -17,13 +14,13 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       object[] mixinInstances = MixedTypeInstantiationScope.Current.SuppliedMixinInstances;
       TargetClassDefinition configuration = mixinTarget.Configuration;
 
-      InitializeFirstProxy (mixinTarget);
+      BaseCallProxyInitializer.InitializeFirstProxy (mixinTarget);
 
       object[] extensions = PrepareExtensionsWithGivenMixinInstances (configuration, mixinInstances);
       FillUpExtensionsWithNewMixinInstances (extensions, configuration);
 
       SetExtensionsField (mixinTarget, extensions);
-      InitializeMixinInstances (extensions, configuration, mixinTarget);
+      InitializeMixinInstances (extensions, configuration, mixinTarget, MixinReflector.InitializationMode.Construction);
     }
 
     public static void InitializeDeserializedMixinTarget (IMixinTarget mixinTarget, object[] mixinInstances)
@@ -33,38 +30,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
       TargetClassDefinition configuration = mixinTarget.Configuration;
 
-      InitializeFirstProxy (mixinTarget);
+      BaseCallProxyInitializer.InitializeFirstProxy (mixinTarget);
       SetExtensionsField (mixinTarget, mixinInstances);
-      InitializeMixinInstances (mixinInstances, configuration, mixinTarget);
-    }
-
-
-    private static void InitializeFirstProxy (IMixinTarget mixinTarget)
-    {
-      Type type = mixinTarget.GetType ();
-      Type baseCallProxyType = FindBaseCallProxyType (type);
-      Assertion.IsNotNull (baseCallProxyType);
-
-      object firstBaseCallProxy = InstantiateBaseCallProxy (baseCallProxyType, mixinTarget, 0);
-      type.GetField ("__first").SetValue (mixinTarget, firstBaseCallProxy);
-    }
-
-    private static Type FindBaseCallProxyType (Type type)
-    {
-      Assertion.IsNotNull (type);
-      Type baseCallProxyType;
-      do
-      {
-        baseCallProxyType = type.GetNestedType ("BaseCallProxy");
-        type = type.BaseType;
-      } while (baseCallProxyType == null && type != null);
-      return baseCallProxyType;
-    }
-
-    private static object InstantiateBaseCallProxy (Type baseCallProxyType, IMixinTarget targetInstance, int depth)
-    {
-      Assertion.IsNotNull (baseCallProxyType);
-      return Activator.CreateInstance (baseCallProxyType, new object[] { targetInstance, depth });
+      InitializeMixinInstances (mixinInstances, configuration, mixinTarget, MixinReflector.InitializationMode.Deserialization);
     }
 
     private static object[] PrepareExtensionsWithGivenMixinInstances (TargetClassDefinition configuration, object[] mixinInstances)
@@ -149,48 +117,12 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       type.GetField ("__extensions").SetValue (mixinTarget, extensions);
     }
 
-    private static void InitializeMixinInstances (object[] mixins, TargetClassDefinition configuration, IMixinTarget mixinTargetInstance)
+    private static void InitializeMixinInstances (object[] mixins, TargetClassDefinition configuration, IMixinTarget mixinTargetInstance,
+        MixinReflector.InitializationMode mode)
     {
       Assertion.IsTrue (mixins.Length == configuration.Mixins.Count);
       for (int i = 0; i < mixins.Length; ++i)
-        InitializeMixinInstance (configuration.Mixins[i], mixins[i], mixinTargetInstance);
-    }
-
-    private static void InitializeMixinInstance (MixinDefinition mixinDefinition, object mixinInstance, IMixinTarget mixinTargetInstance)
-    {
-      Type baseCallProxyType = MixinReflector.GetBaseCallProxyType (mixinTargetInstance);
-      object baseCallProxyInstance = InstantiateBaseCallProxy (baseCallProxyType, mixinTargetInstance, mixinDefinition.MixinIndex + 1);
-      InvokeMixinInitializationMethod (mixinDefinition, mixinInstance, mixinTargetInstance, baseCallProxyInstance);
-    }
-
-    private static void InvokeMixinInitializationMethod (MixinDefinition mixinDefinition, object mixinInstance, IMixinTarget mixinTargetInstance,
-        object baseCallProxyInstance)
-    {
-      MethodInfo initializationMethod = MixinReflector.GetInitializationMethod (mixinInstance.GetType ());
-      if (initializationMethod != null)
-      {
-        Assertion.IsFalse (initializationMethod.ContainsGenericParameters);
-
-        ParameterInfo[] methodArguments = initializationMethod.GetParameters ();
-        object[] argumentValues = new object[methodArguments.Length];
-        for (int i = 0; i < argumentValues.Length; ++i)
-          argumentValues[i] = GetMixinInitializationArgument (methodArguments[i], mixinTargetInstance, baseCallProxyInstance, mixinDefinition);
-
-        initializationMethod.Invoke (mixinInstance, argumentValues);
-      }
-    }
-
-    private static object GetMixinInitializationArgument (ParameterInfo parameter, IMixinTarget mixinTargetInstance, object baseCallProxyInstance,
-        MixinDefinition mixinDefinition)
-    {
-      if (parameter.IsDefined (typeof (ThisAttribute), false))
-        return mixinTargetInstance;
-      else if (parameter.IsDefined (typeof (BaseAttribute), false))
-        return baseCallProxyInstance;
-      else if (parameter.IsDefined (typeof (ConfigurationAttribute), false))
-        return mixinDefinition;
-      else
-        throw new NotSupportedException ("Initialization methods can only contain this or base arguments.");
+        MixinInstanceInitializer.InitializeMixinInstance (configuration.Mixins[i], mixins[i], mixinTargetInstance, mode);
     }
   }
 }

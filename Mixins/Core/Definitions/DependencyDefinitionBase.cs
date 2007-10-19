@@ -4,7 +4,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   [DebuggerDisplay ("{RequiredType.Type}, Depender = {Depender.Type}")]
   public abstract class DependencyDefinitionBase : IVisitableDefinition
   {

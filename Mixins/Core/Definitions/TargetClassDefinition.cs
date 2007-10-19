@@ -7,7 +7,6 @@ using Rubicon.Mixins.Context;
 
 namespace Rubicon.Mixins.Definitions
 {
-  [Serializable]
   [DebuggerDisplay ("{Type}")]
   public class TargetClassDefinition : ClassDefinitionBase, IAttributeIntroductionTargetDefinition
   {
