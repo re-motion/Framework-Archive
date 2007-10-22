@@ -125,7 +125,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Extends (typeof (ExtendsTargetBase), MixinTypeArguments = new Type[] { typeof (List<int>), typeof (IList<int>) })]
     [IgnoreForMixinConfiguration]
-    public class GenericMixin<TThis, TBase> : Mixin<TThis, TBase>
+    public class GenericMixinWithSpecialization<TThis, TBase> : Mixin<TThis, TBase>
       where TThis : class
       where TBase : class
     {
@@ -134,9 +134,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void ExtendsCanSpecializeGenericMixin ()
     {
-      ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (GenericMixin<,>)).BuildContext ();
+      ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (GenericMixinWithSpecialization<,>)).BuildContext ();
       MixinContext mixinContext = new List<MixinContext> (context.GetClassContext (typeof (ExtendsTargetBase)).Mixins)[0];
-      Assert.IsTrue (ReflectionUtility.CanAscribe (mixinContext.MixinType, typeof (GenericMixin<,>)));
+      Assert.IsTrue (ReflectionUtility.CanAscribe (mixinContext.MixinType, typeof (GenericMixinWithSpecialization<,>)));
       Assert.IsFalse (mixinContext.MixinType.IsGenericTypeDefinition);
       Assert.IsFalse (mixinContext.MixinType.ContainsGenericParameters);
       Assert.AreEqual (new Type[] {typeof (List<int>), typeof (IList<int>)}, mixinContext.MixinType.GetGenericArguments());
@@ -157,6 +157,114 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     public void InvalidTypeParametersThrowConfigurationException ()
     {
       new ApplicationContextBuilder (null).AddType (typeof (InvalidGenericMixin<,>)).BuildContext ();
+    }
+
+    [Extends (typeof (ExtendsTargetBase), SuppressedMixins = new Type[] { typeof (ExtendingMixin) })]
+    [IgnoreForMixinConfiguration]
+    public class SuppressingExtender { }
+
+    [Test]
+    public void SuppressedMixins ()
+    {
+      ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (ExtendingMixin)).AddType (typeof (SuppressingExtender))
+          .BuildContext ();
+      ClassContext classContext = context.GetClassContext (typeof (ExtendsTargetBase));
+      Assert.IsTrue (classContext.ContainsMixin (typeof (SuppressingExtender)));
+      Assert.IsFalse (classContext.ContainsMixin (typeof (ExtendingMixin)));
+    }
+
+    [Extends (typeof (ExtendsTargetBase), SuppressedMixins = new Type[] { typeof (CircularSuppressingExtender2) })]
+    [IgnoreForMixinConfiguration]
+    public class CircularSuppressingExtender1 { }
+
+    [Extends (typeof (ExtendsTargetBase), SuppressedMixins = new Type[] { typeof (CircularSuppressingExtender1) })]
+    [IgnoreForMixinConfiguration]
+    public class CircularSuppressingExtender2 { }
+
+    [Test]
+    public void CircularSuppressingMixins ()
+    {
+      ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (CircularSuppressingExtender1))
+          .AddType (typeof (CircularSuppressingExtender2)).BuildContext ();
+      ClassContext classContext = context.GetClassContext (typeof (ExtendsTargetBase));
+      Assert.IsFalse (classContext.ContainsMixin (typeof (CircularSuppressingExtender1)));
+      Assert.IsFalse (classContext.ContainsMixin (typeof (CircularSuppressingExtender2)));
+    }
+
+    [Extends (typeof (ExtendsTargetBase), SuppressedMixins = new Type[] { typeof (SelfSuppressingExtender2) })]
+    [IgnoreForMixinConfiguration]
+    public class SelfSuppressingExtender2 { }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Mixin type "
+        + "Rubicon.Mixins.UnitTests.Configuration.ExtendsAnalysisTests+SelfSuppressingExtender2 applied to target class "
+        + "Rubicon.Mixins.UnitTests.Configuration.ExtendsAnalysisTests+ExtendsTargetBase suppresses itself.")]
+    public void SelfSuppressingMixin ()
+    {
+      new ApplicationContextBuilder (null).AddType (typeof (SelfSuppressingExtender2)).BuildContext ();
+    }
+
+    [Extends (typeof (ExtendsTargetBase))]
+    [IgnoreForMixinConfiguration]
+    public class GenericMixinWithoutSpecialization<TThis, TBase> : Mixin<TThis, TBase>
+      where TThis : class
+      where TBase : class
+    {
+    }
+
+    [Extends (typeof (ExtendsTargetBase), SuppressedMixins = new Type[] { typeof (GenericMixinWithoutSpecialization<,>),
+        typeof (GenericMixinWithSpecialization<,>) })]
+    [IgnoreForMixinConfiguration]
+    public class GenericSuppressingExtender { }
+
+    [Test]
+    public void GenericSuppressingMixinWithSpecialization ()
+    {
+      ApplicationContext context = new ApplicationContextBuilder (null)
+          .AddType (typeof (GenericMixinWithSpecialization<,>))
+          .AddType (typeof (GenericSuppressingExtender))
+          .BuildContext ();
+      ClassContext classContext = context.GetClassContext (typeof (ExtendsTargetBase));
+      Assert.IsFalse (classContext.ContainsMixin (typeof (GenericMixinWithSpecialization<List<int>, IList<int>>)));
+    }
+
+    [Test]
+    public void GenericSuppressingMixinWithoutSpecialization ()
+    {
+      ApplicationContext context = new ApplicationContextBuilder (null)
+          .AddType (typeof (GenericMixinWithoutSpecialization<,>))
+          .AddType (typeof (GenericSuppressingExtender))
+          .BuildContext ();
+      ClassContext classContext = context.GetClassContext (typeof (ExtendsTargetBase));
+      Assert.IsFalse (classContext.ContainsMixin (typeof (GenericMixinWithoutSpecialization<,>)));
+    }
+
+    [Extends (typeof (ExtendsTargetBase), SuppressedMixins = new Type[] { typeof (GenericMixinWithSpecialization<List<int>, IList<int>>) })]
+    [IgnoreForMixinConfiguration]
+    public class ClosedGenericSuppressingExtender { }
+
+    [Test]
+    public void ClosedGenericSuppressingMixin ()
+    {
+      ApplicationContext context = new ApplicationContextBuilder (null)
+          .AddType (typeof (GenericMixinWithSpecialization<,>))
+          .AddType (typeof (ClosedGenericSuppressingExtender)).BuildContext ();
+      ClassContext classContext = context.GetClassContext (typeof (ExtendsTargetBase));
+      Assert.IsFalse (classContext.ContainsMixin (typeof (GenericMixinWithSpecialization<List<int>, IList<int>>)));
+    }
+
+    [Extends (typeof (ExtendsTargetBase), SuppressedMixins = new Type[] { typeof (GenericMixinWithSpecialization<object, string>) })]
+    [IgnoreForMixinConfiguration]
+    public class ClosedGenericSuppressingExtender_WithWrongParameterTypes { }
+
+    [Test]
+    public void ClosedGenericSuppressingMixin_WithWrongParameterTypes ()
+    {
+      ApplicationContext context = new ApplicationContextBuilder (null)
+          .AddType (typeof (GenericMixinWithSpecialization<,>))
+          .AddType (typeof (ClosedGenericSuppressingExtender_WithWrongParameterTypes)).BuildContext ();
+      ClassContext classContext = context.GetClassContext (typeof (ExtendsTargetBase));
+      Assert.IsTrue (classContext.ContainsMixin (typeof (GenericMixinWithSpecialization<List<int>, IList<int>>)));
     }
   }
 }

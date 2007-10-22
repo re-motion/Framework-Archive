@@ -15,7 +15,7 @@ namespace Rubicon.Mixins.Context
   /// <para>The instance methods of this class are synchronized with the instance methods of the associated <see cref="ClassContext"/>.</para>
   /// </threadsafety>
   /// <remarks>Instances of this class are not created directly, but via <see cref="ClassContext.AddMixin"/> and
-  /// <see cref="ClassContext.GetOrAddMixinContext"/>.</remarks>
+  /// <see cref="TargetClassContext"/>.</remarks>
   public class MixinContext
   {
     internal static MixinContext DeserializeFromFlatStructure (ClassContext classContext, object lockObject, string key, SerializationInfo info)
@@ -35,11 +35,11 @@ namespace Rubicon.Mixins.Context
       return newContext;
     }
 
-    private ClassContext _classContext;
+    private readonly ClassContext _classContext;
     public readonly Type MixinType;
-    private Set<Type> _explicitDependencies;
-    private UncastableEnumerableWrapper<Type> _explicitDependenciesForOutside;
-    private object _lockObject;
+    private readonly Set<Type> _explicitDependencies;
+    private readonly UncastableEnumerableWrapper<Type> _explicitDependenciesForOutside;
+    private readonly object _lockObject;
     
     internal MixinContext (ClassContext classContext, Type mixinType, object lockObject)
     {
@@ -111,10 +111,10 @@ namespace Rubicon.Mixins.Context
     }
 
     /// <summary>
-    /// Adds a copy of this <see cref="MixinContext"/> to another <see cref="ClassContext"/>.
+    /// Adds a copy of this <see cref="MixinContext"/> to another <see cref="TargetClassContext"/>.
     /// </summary>
-    /// <param name="targetForClone">The target <see cref="ClassContext"/> to add the new <see cref="MixinContext"/> to.</param>
-    /// <returns>The newly created context added to the target <see cref="ClassContext"/> and holding equivalent configuration data to
+    /// <param name="targetForClone">The target <see cref="TargetClassContext"/> to add the new <see cref="MixinContext"/> to.</param>
+    /// <returns>The newly created context added to the target <see cref="TargetClassContext"/> and holding equivalent configuration data to
     /// this <see cref="MixinContext"/>.</returns>
     public MixinContext CloneAndAddTo (ClassContext targetForClone)
     {
@@ -124,6 +124,15 @@ namespace Rubicon.Mixins.Context
         clone.AddExplicitDependency (dependency);
       Assertion.DebugAssert (clone.Equals (this));
       return clone;
+    }
+
+    /// <summary>
+    /// Gets the class context this mixin was defined for.
+    /// </summary>
+    /// <value>The class context.</value>
+    public ClassContext TargetClassContext
+    {
+      get { return _classContext; }
     }
 
     /// <summary>
@@ -185,7 +194,7 @@ namespace Rubicon.Mixins.Context
     /// <remarks>An explicit dependency is a base call dependency which should be considered for a mixin even though it is not expressed in the
     /// mixin's class declaration. This can be used to define the ordering of mixins in specific mixin configurations.</remarks>
     /// <exception cref="ArgumentNullException">The <paramref name="interfaceType"/> parameter is <see langword="null"/>.</exception>
-    /// <exception cref="InvalidOperationException">The associated <see cref="ClassContext"/> is frozen.</exception>
+    /// <exception cref="InvalidOperationException">The associated <see cref="TargetClassContext"/> is frozen.</exception>
     public void AddExplicitDependency (Type interfaceType)
     {
       ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
@@ -204,7 +213,7 @@ namespace Rubicon.Mixins.Context
     /// <remarks>An explicit dependency is a base call dependency which should be considered for a mixin even though it is not expressed in the
     /// mixin's class declaration. This can be used to define the ordering of mixins in specific mixin configurations.</remarks>
     /// <exception cref="ArgumentNullException">The <paramref name="interfaceType"/> parameter is <see langword="null"/>.</exception>
-    /// <exception cref="InvalidOperationException">The associated <see cref="ClassContext"/> is frozen.</exception>
+    /// <exception cref="InvalidOperationException">The associated <see cref="TargetClassContext"/> is frozen.</exception>
     public bool RemoveExplicitDependency (Type interfaceType)
     {
       ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);

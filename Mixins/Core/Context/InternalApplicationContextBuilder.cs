@@ -12,6 +12,7 @@ namespace Rubicon.Mixins.Context
     private readonly Set<Type> _users;
     private readonly Set<Type> _potentialTargets;
     private readonly Set<Type> _completeInterfaces;
+    private readonly Set<Tuple<ClassContext, Type>> _suppressedMixins;
 
     private ApplicationContext _builtContext;
 
@@ -23,6 +24,7 @@ namespace Rubicon.Mixins.Context
       _completeInterfaces = completeInterfaces;
       _potentialTargets = potentialTargets;
       _users = users;
+      _suppressedMixins = new Set<Tuple<ClassContext, Type>> ();
 
       Analyze ();
     }
@@ -43,6 +45,8 @@ namespace Rubicon.Mixins.Context
         AnalyzeCompleteInterface (completeInterface);
       foreach (Type type in _potentialTargets)
         AnalyzeInheritedMixins (type);
+      foreach (Tuple<ClassContext, Type> suppressedMixin in _suppressedMixins)
+        ApplySuppressedMixin (suppressedMixin.A, suppressedMixin.B);
     }
 
     private void AnalyzeExtender (Type extender)
@@ -63,7 +67,8 @@ namespace Rubicon.Mixins.Context
             throw new ConfigurationException (message, ex);
           }
         }
-        ApplyMixinToClassContext (_builtContext.GetOrAddClassContext (mixinAttribute.TargetType), mixinType, mixinAttribute.AdditionalDependencies);
+        ApplyMixinToClassContext (_builtContext.GetOrAddClassContext (mixinAttribute.TargetType), mixinType, mixinAttribute.AdditionalDependencies,
+            mixinAttribute.SuppressedMixins);
       }
     }
 
@@ -71,10 +76,11 @@ namespace Rubicon.Mixins.Context
     {
       ClassContext classContext = _builtContext.GetOrAddClassContext (user);
       foreach (UsesAttribute usesAttribute in user.GetCustomAttributes (typeof (UsesAttribute), false))
-        ApplyMixinToClassContext (classContext, usesAttribute.MixinType, usesAttribute.AdditionalDependencies);
+        ApplyMixinToClassContext (classContext, usesAttribute.MixinType, usesAttribute.AdditionalDependencies, usesAttribute.SuppressedMixins);
     }
 
-    private void ApplyMixinToClassContext (ClassContext classContext, Type mixinType, IEnumerable<Type> explicitDependencies)
+    private void ApplyMixinToClassContext (ClassContext classContext, Type mixinType, IEnumerable<Type> explicitDependencies,
+        IEnumerable<Type> suppressedMixins)
     {
       if (AlreadyAppliedSame (mixinType, classContext))
       {
@@ -89,6 +95,18 @@ namespace Rubicon.Mixins.Context
         MixinContext mixinContext = classContext.AddMixin (mixinType);
         foreach (Type additionalDependency in explicitDependencies)
           mixinContext.AddExplicitDependency (additionalDependency);
+
+        foreach (Type suppressedMixinType in suppressedMixins)
+        {
+          if (Rubicon.Utilities.ReflectionUtility.CanAscribe (mixinType, suppressedMixinType))
+          {
+            string message = string.Format ("Mixin type {0} applied to target class {1} suppresses itself.", mixinType.FullName,
+                classContext.Type.FullName);
+            throw new ConfigurationException (message);
+          }
+          else
+            _suppressedMixins.Add (Tuple.NewTuple (classContext, suppressedMixinType));
+        }
       }
     }
 
@@ -146,6 +164,18 @@ namespace Rubicon.Mixins.Context
           return true;
       }
       return false;
+    }
+
+    private void ApplySuppressedMixin (ClassContext classContext, Type suppressedType)
+    {
+      Set<Type> concreteTypes = new Set<Type> ();
+      foreach (MixinContext mixin in classContext.Mixins)
+      {
+        if (Rubicon.Utilities.ReflectionUtility.CanAscribe (mixin.MixinType, suppressedType))
+          concreteTypes.Add (mixin.MixinType);
+      }
+      foreach (Type concreteType in concreteTypes)
+        classContext.RemoveMixin (concreteType);
     }
   }
 }

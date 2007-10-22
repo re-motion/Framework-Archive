@@ -283,5 +283,38 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       new ApplicationContextBuilder (null).AddType (typeof (DuplicateWithGenerics3)).BuildContext ();
     }
+
+    [Uses (typeof (NullMixin), SuppressedMixins = new Type[] { typeof (SuppressedExtender) })]
+    [IgnoreForMixinConfiguration]
+    public class SuppressingUser { }
+
+    [Extends (typeof (SuppressingUser))]
+    public class SuppressedExtender
+    {
+    }
+
+    [Test]
+    public void SuppressedMixins ()
+    {
+      ApplicationContext context = new ApplicationContextBuilder (null)
+          .AddType (typeof (SuppressingUser))
+          .AddType (typeof (SuppressedExtender))
+          .BuildContext ();
+      ClassContext classContext = context.GetClassContext (typeof (SuppressingUser));
+      Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin)));
+      Assert.IsFalse (classContext.ContainsMixin (typeof (SuppressedExtender)));
+    }
+
+    [Uses (typeof (NullMixin), SuppressedMixins = new Type[] { typeof (NullMixin) })]
+    [IgnoreForMixinConfiguration]
+    public class SelfSuppressingUser { }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Mixin type Rubicon.Mixins.UnitTests.SampleTypes.NullMixin applied to "
+        + "target class Rubicon.Mixins.UnitTests.Configuration.UsesAnalysisTests+SelfSuppressingUser suppresses itself.")]
+    public void SelfSuppresser ()
+    {
+      new ApplicationContextBuilder (null).AddType (typeof (SelfSuppressingUser)).BuildContext ();
+    }
   }
 }

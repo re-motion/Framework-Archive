@@ -5,7 +5,7 @@
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{DFAEF7A9-2127-41D7-8D5B-BC71724EB8AB}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rubicon.Mixins.UnitTests</RootNamespace>
     <AssemblyName>Rubicon.Mixins.UnitTests</AssemblyName>

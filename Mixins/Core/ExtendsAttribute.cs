@@ -27,8 +27,10 @@ namespace Rubicon.Mixins
   public class ExtendsAttribute : Attribute
   {
     private readonly Type _targetType;
+
     private Type[] _additionalDependencies = Type.EmptyTypes;
     private Type[] _mixinTypeArguments = Type.EmptyTypes;
+    private Type[] _suppressedMixins = Type.EmptyTypes;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ExtendsAttribute"/> class.
@@ -80,6 +82,23 @@ namespace Rubicon.Mixins
       {
         ArgumentUtility.CheckNotNull ("value", value);
         _mixinTypeArguments = value;
+      }
+    }
+
+    /// <summary>
+    /// Gets or sets the mixins suppressed by this mixin.
+    /// </summary>
+    /// <value>The mixins suppressed by this mixin.</value>
+    /// <remarks>Use this attribute to actively remove another mixin from this mixin's target type. The list of suppressed mixins cannot contain 
+    /// this mixin itself, but it can contain mixins which themselves suppress this mixin. Such circular suppressions result in both mixins being
+    /// removed from the configuration.</remarks>
+    public Type[] SuppressedMixins
+    {
+      get { return _suppressedMixins; }
+      set
+      {
+        ArgumentUtility.CheckNotNull ("value", value);
+        _suppressedMixins = value;
       }
     }
   }

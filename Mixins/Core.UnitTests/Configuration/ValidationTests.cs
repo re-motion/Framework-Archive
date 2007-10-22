@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Definitions.Building;
 using Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes;
-using Rubicon.Mixins.UnitTests.Mixins;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Mixins.Validation;
 using NUnit.Framework;
@@ -15,11 +13,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration
   [TestFixture]
   public class ValidationTests
   {
-    public static void Main ()
-    {
-      new MixinSerializationTests().RespectsISerializable();
-    }
-
     public static bool HasFailure (string ruleName, IValidationLog log)
     {
       foreach (ValidationResult result in log.GetResults())
