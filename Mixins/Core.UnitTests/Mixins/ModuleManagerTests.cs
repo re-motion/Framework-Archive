@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.Serialization;
 using NUnit.Framework;
 using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.Definitions;
@@ -270,5 +271,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       _moduleManager.SaveAssemblies ();
     }
+
+    
   }
 }

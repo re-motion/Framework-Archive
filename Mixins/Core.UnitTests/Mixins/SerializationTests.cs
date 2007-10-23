@@ -254,12 +254,38 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       {
         NullTarget instance = ObjectFactory.Create<NullTarget> ().With ();
         Assert.IsTrue (Mixin.Get<MixinWithOnInitializedAndOnDeserialized> (instance).OnInitializedCalled);
-        Assert.IsFalse (Mixin.Get<MixinWithOnInitializedAndOnDeserialized> (instance).OnDeserializedCalled);
 
         NullTarget deserializedInstance = Serializer.SerializeAndDeserialize (instance);
         Assert.IsFalse (Mixin.Get<MixinWithOnInitializedAndOnDeserialized> (deserializedInstance).OnInitializedCalled);
+      }
+    }
+
+    [Test]
+    public void OnDeserializedCalledOnDeserialization ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithOnInitializedAndOnDeserialized)))
+      {
+        NullTarget instance = ObjectFactory.Create<NullTarget> ().With ();
+        Assert.IsFalse (Mixin.Get<MixinWithOnInitializedAndOnDeserialized> (instance).OnDeserializedCalled);
+
+        NullTarget deserializedInstance = Serializer.SerializeAndDeserialize (instance);
         Assert.IsTrue (Mixin.Get<MixinWithOnInitializedAndOnDeserialized> (deserializedInstance).OnDeserializedCalled);
       }
+    }
+
+    [Test]
+    public void MixinConfigurationCanDifferAtDeserializationTime ()
+    {
+      byte[] serializedData;
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
+      {
+        NullTarget instance = ObjectFactory.Create<NullTarget> ().With ();
+        Assert.IsNotNull (Mixin.Get<NullMixin> (instance));
+        serializedData = Serializer.Serialize (instance);
+      }
+
+      NullTarget deserializedInstance = (NullTarget) Serializer.Deserialize (serializedData);
+      Assert.IsNotNull (Mixin.Get<NullMixin> (deserializedInstance));
     }
   }
 }

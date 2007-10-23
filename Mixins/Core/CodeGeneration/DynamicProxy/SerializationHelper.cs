@@ -38,19 +38,27 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private readonly TargetClassDefinition _targetClassDefinition;
 
     public SerializationHelper (SerializationInfo info, StreamingContext context)
-        : this (null, info, context)
+        : this (delegate (Type t) { return t; }, info, context)
     {
     }
 
-    public SerializationHelper (Type concreteType, SerializationInfo info, StreamingContext context)
+    public SerializationHelper (Func<Type, Type> typeTransformer, SerializationInfo info, StreamingContext context)
     {
+      ArgumentUtility.CheckNotNull ("typeTransformer", typeTransformer);
+      ArgumentUtility.CheckNotNull ("info", info);
+
       ClassContext configurationContext = (ClassContext) info.GetValue ("__configuration.ConfigurationContext", typeof (ClassContext));
       _targetClassDefinition = TargetClassDefinitionCache.Current.GetTargetClassDefinition (configurationContext);
 
-      if (concreteType == null)
-        concreteType = ConcreteTypeBuilder.Current.GetConcreteType (_targetClassDefinition);
-      else
-        ArgumentUtility.CheckTypeIsAssignableFrom ("concreteType", concreteType, _targetClassDefinition.Type);
+      Type concreteType = ConcreteTypeBuilder.Current.GetConcreteType (_targetClassDefinition);
+      concreteType = typeTransformer (concreteType);
+
+      if (!_targetClassDefinition.Type.IsAssignableFrom (concreteType))
+      {
+        string message = string.Format ("TypeTransformer returned type {0}, which is not compatible with the serialized mixin configuration. The "
+            + "configuration requires a type assignable to {1}.", concreteType.FullName, _targetClassDefinition.Type.FullName);
+        throw new ArgumentException (message, "typeTransformer");
+      }
 
       _extensions = (object[]) info.GetValue ("__extensions", typeof (object[]));
       Assertion.IsNotNull (_extensions);

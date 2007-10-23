@@ -74,5 +74,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
         Assert.AreEqual ("Sto stas stat stamus statis stant", Mixin.Get<MixinWithState> (deserializedObjects.B).State);
       }
     }
+
+    [Test]
+    public void MixinConfigurationIsRestored ()
+    {
+      byte[] serializedData;
+      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (MixinWithState)))
+      {
+        Order order = Order.NewObject ();
+        Assert.IsNotNull (Mixin.Get<MixinWithState> (order));
+        serializedData = Serializer.Serialize (order);
+      }
+
+      Order deserializedOrder1 = (Order) Serializer.Deserialize (serializedData);
+      Assert.IsNotNull (Mixin.Get<MixinWithState> (deserializedOrder1));
+
+      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (NullMixin)))
+      {
+        Order deserializedOrder2 = (Order) Serializer.Deserialize (serializedData);
+        Assert.IsNotNull (Mixin.Get<MixinWithState> (deserializedOrder2));
+        Assert.IsNull (Mixin.Get<NullMixin> (deserializedOrder2));
+      }
+    }
   }
 }

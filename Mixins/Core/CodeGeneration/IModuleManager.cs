@@ -25,7 +25,7 @@ namespace Rubicon.Mixins.CodeGeneration
     void InitializeMixinTarget (IMixinTarget target);
     void InitializeDeserializedMixinTarget (IMixinTarget instance, object[] mixinInstances);
 
-    IObjectReference BeginDeserialization (Type concreteDeserializedType, SerializationInfo info, StreamingContext context);
+    IObjectReference BeginDeserialization (Func<Type, Type> typeTransformer, SerializationInfo info, StreamingContext context);
     void FinishDeserialization (IObjectReference objectReference);
   }
 }

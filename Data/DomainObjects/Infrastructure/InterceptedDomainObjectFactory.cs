@@ -65,27 +65,53 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <returns>A domain object type which intercepts property calls.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="baseType"/> is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentTypeException"><paramref name="baseType"/> cannot be assigned to <see cref="DomainObject"/>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="baseType"/> is an abstract, non-instantiable type.</exception>
     /// <exception cref="MappingException">The given <paramref name="baseType"/> is not part of the mapping.</exception>
     public Type GetConcreteDomainObjectType (Type baseType)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("baseType", baseType, typeof (DomainObject));
 
-      if (MappingConfiguration.Current.ClassDefinitions.GetMandatory (baseType).IsAbstract)
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (baseType);
+      Type concreteBaseType = DomainObjectMixinCodeGenerationBridge.GetConcreteType (baseType);
+      
+      return GetConcreteDomainObjectType (classDefinition, concreteBaseType, "baseType");
+    }
+
+    /// <summary>
+    /// Gets a domain object type assignable to the given base type which intercepts property calls.
+    /// </summary>
+    /// <param name="baseTypeClassDefinition">The base domain object type whose properties should be intercepted.</param>
+    /// <param name="concreteBaseType">The base domain object type whose properties should be intercepted.</param>
+    /// <returns>A domain object type which intercepts property calls.</returns>
+    /// <exception cref="ArgumentNullException">One of the parameters passed to this method is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentTypeException"><paramref name="concreteBaseType"/> cannot be assigned to the type specified by <paramref name="baseTypeClassDefinition"/>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="baseTypeClassDefinition"/> denotes an abstract, non-instantiable type.</exception>
+    public Type GetConcreteDomainObjectType (ClassDefinition baseTypeClassDefinition, Type concreteBaseType)
+    {
+      ArgumentUtility.CheckNotNull ("baseTypeClassDefinition", baseTypeClassDefinition);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("concreteBaseType", concreteBaseType, baseTypeClassDefinition.ClassType);
+
+      return GetConcreteDomainObjectType(baseTypeClassDefinition, concreteBaseType, "baseTypeClassDefinition");
+    }
+
+    private Type GetConcreteDomainObjectType (ClassDefinition baseTypeClassDefinition, Type concreteBaseType, string argumentNameForExceptions)
+    {
+      if (baseTypeClassDefinition.IsAbstract)
       {
         string message = string.Format (
           "Cannot instantiate type {0} as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.",
-          baseType.FullName);
-        throw new ArgumentException (message, "baseType");
+          baseTypeClassDefinition.ClassType.FullName);
+        throw new ArgumentException (message, argumentNameForExceptions);
       }
 
-      Type concreteBaseType = DomainObjectMixinCodeGenerationBridge.GetConcreteType (baseType);
       try
       {
-        return _typeCache.GetOrCreateValue (new CodeGenerationKeys (baseType, concreteBaseType), CreateConcreteDomainObjectType);
+        return _typeCache.GetOrCreateValue (new CodeGenerationKeys (baseTypeClassDefinition.ClassType, concreteBaseType),
+            CreateConcreteDomainObjectType);
       }
       catch (NonInterceptableTypeException ex)
       {
-        throw new ArgumentException (ex.Message, "baseType", ex);
+        throw new ArgumentException (ex.Message, argumentNameForExceptions, ex);
       }
     }
 

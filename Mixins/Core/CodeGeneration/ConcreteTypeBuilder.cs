@@ -228,30 +228,32 @@ namespace Rubicon.Mixins.CodeGeneration
     /// <summary>
     /// Begins deserialization of a mixed object.
     /// </summary>
-    /// <param name="concreteDeserializedType">Target type of the object to be deserialized.</param>
+    /// <param name="typeTransformer">A transformation object that is given a chance to modify the deserialized type before it is instantiated.</param>
     /// <param name="info">The <see cref="SerializationInfo"/> object provided by the .NET serialization infrastructure.</param>
     /// <param name="context">The <see cref="StreamingContext"/> object provided by the .NET serialization infrastructure.</param>
     /// <returns>An <see cref="IObjectReference"/> object containing a partially deserialized mixed object. Be sure to call
     /// <see cref="FinishDeserialization"/> from an implementation of <see cref="IDeserializationCallback.OnDeserialization"/> to finish the
     /// deserialization process.</returns>
     /// <exception cref="ArgumentNullException">One or more of the parameters passed to this method are <see langword="null"/>.</exception>
+    /// <exception cref="SerializationException">The serialization data does not hold the expected values.</exception>
     /// <remarks>
     /// <para>
     /// This method is useful when the mixin engine is combined with other code generation mechanisms. In such a case, the default
     /// <see cref="IObjectReference"/> implementation provided by the mixin code generation can be extended by a custom <see cref="IObjectReference"/>
-    /// object by calling this method.
+    /// object by calling this method. This method instantiates the real object to be returned by the deserialization process, but the caller
+    /// specifies a <paramref name="typeTransformer"/> delegate that gets the chance to modify the type of object before it is instantiated. The
+    /// parameter passed to <paramref name="typeTransformer"/> is the type deducted from the deserialized mixin configuration-
     /// </para>
     /// <para>
-    /// If the given <paramref name="concreteDeserializedType"/> is not a mixed type, this method will use the deserialization constructor
-    /// to instantiate it. If the type does not have a deserialization constructor, an exception is thrown.
+    /// This method expects that the deserialized data is from a mixed object, calling it for an unmixed object will yield an exception.
     /// </para>
     /// </remarks>
-    public IObjectReference BeginDeserialization (Type concreteDeserializedType, SerializationInfo info, StreamingContext context)
+    public IObjectReference BeginDeserialization (Func<Type, Type> typeTransformer, SerializationInfo info, StreamingContext context)
     {
-      ArgumentUtility.CheckNotNull ("concreteDeserializedType", concreteDeserializedType);
+      ArgumentUtility.CheckNotNull ("typeTransformer", typeTransformer);
       ArgumentUtility.CheckNotNull ("info", info);
 
-      return Scope.BeginDeserialization (concreteDeserializedType, info, context);
+      return Scope.BeginDeserialization (typeTransformer, info, context);
     }
 
     /// <summary>
@@ -274,8 +276,7 @@ namespace Rubicon.Mixins.CodeGeneration
     public void FinishDeserialization (IObjectReference objectReference)
     {
       ArgumentUtility.CheckNotNull ("objectReference", objectReference);
-      if (! (objectReference is DummyObjectReference))
-        Scope.FinishDeserialization (objectReference);
+      Scope.FinishDeserialization (objectReference);
     }
   }
 }

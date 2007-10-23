@@ -109,7 +109,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     {
       SerializationHelper.GetObjectDataForGeneratedTypes (_info, _context, _serializableInstance, true);
 
-      Assert.AreEqual (typeof (SerializableClass).AssemblyQualifiedName, _info.GetString ("BaseType.AssemblyQualifiedName"));
+      Assert.AreEqual (typeof (SerializableClass).AssemblyQualifiedName, _info.GetString ("PublicDomainObjectType.AssemblyQualifiedName"));
     }
 
     [Test]
@@ -117,7 +117,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     {
       _serializableInstance.I = 0x400dd00d;
       SerializationHelper.GetObjectDataForGeneratedTypes (_info, _context, _serializableInstance, true);
-      object[] members = (object[]) _info.GetValue ("BaseType.Data", typeof (object[]));
+      object[] members = (object[]) _info.GetValue ("baseMemberValues", typeof (object[]));
       Assert.IsNotNull (members);
       Assert.Contains (0x400dd00d, members);
     }
@@ -127,7 +127,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     {
       _serializableInstance.I = 0x400dd00d;
       SerializationHelper.GetObjectDataForGeneratedTypes (_info, _context, _serializableInstance, false);
-      object[] members = (object[]) _info.GetValue ("BaseType.Data", typeof (object[]));
+      object[] members = (object[]) _info.GetValue ("baseMemberValues", typeof (object[]));
       Assert.IsNull (members);
       ObjectID id = (ObjectID) _info.GetValue ("DomainObject.ID", typeof (ObjectID));
       Assert.AreEqual (_serializableInstance.ID, id);

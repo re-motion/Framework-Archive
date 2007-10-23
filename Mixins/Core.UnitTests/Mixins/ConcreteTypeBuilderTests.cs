@@ -437,11 +437,13 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       ConcreteTypeBuilder builder = new ConcreteTypeBuilder ();
       builder.Scope = mockScope;
 
-      Expect.Call (mockScope.BeginDeserialization (deserializedType, info, context)).Return (objectReference);
+      Func<Type, Type> transformer = delegate { return null; };
+
+      Expect.Call (mockScope.BeginDeserialization (transformer, info, context)).Return (objectReference);
 
       mockRepository.ReplayAll ();
 
-      Assert.AreSame (objectReference, builder.BeginDeserialization (deserializedType, info, context));
+      Assert.AreSame (objectReference, builder.BeginDeserialization (transformer, info, context));
 
       mockRepository.VerifyAll ();
     }

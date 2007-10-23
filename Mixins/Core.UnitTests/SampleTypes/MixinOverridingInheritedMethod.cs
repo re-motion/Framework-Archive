@@ -30,6 +30,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
     }
   }
 
+  [Serializable]
   public class BaseClassWithInheritedMethod
   {
     protected internal virtual string ProtectedInternalInheritedMethod ()

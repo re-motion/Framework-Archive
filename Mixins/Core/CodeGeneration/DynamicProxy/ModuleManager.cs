@@ -123,12 +123,12 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       GeneratedClassInstanceInitializer.InitializeDeserializedMixinTarget (instance, mixinInstances);
     }
 
-    public IObjectReference BeginDeserialization (Type concreteDeserializedType, SerializationInfo info, StreamingContext context)
+    public IObjectReference BeginDeserialization (Func<Type, Type> typeTransformer, SerializationInfo info, StreamingContext context)
     {
-      ArgumentUtility.CheckNotNull ("concreteDeserializedType", concreteDeserializedType);
+      ArgumentUtility.CheckNotNull ("typeTransformer", typeTransformer);
       ArgumentUtility.CheckNotNull ("info", info);
 
-      return new SerializationHelper (concreteDeserializedType, info, context);
+      return new SerializationHelper (typeTransformer, info, context);
     }
 
     public void FinishDeserialization (IObjectReference objectReference)

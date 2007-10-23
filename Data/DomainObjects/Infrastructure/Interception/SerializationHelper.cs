@@ -12,7 +12,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
     private readonly DomainObject _realObject;
     private readonly IObjectReference _nestedObjectReference;
     private readonly object[] _baseMemberValues;
-    private readonly Type _baseType;
+    private readonly Type _publicDomainObjectType;
     private readonly ObjectID _id;
 
     // Always remember: the whole configuration must be serialized as one single, flat object (or SerializationInfo), we cannot rely on any
@@ -26,46 +26,44 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
       info.SetType (typeof (SerializationHelper));
 
-      Type baseType = concreteObject.GetPublicDomainObjectType();
-      info.AddValue ("BaseType.AssemblyQualifiedName", baseType.AssemblyQualifiedName);
+      Type publicDomainObjectType = concreteObject.GetPublicDomainObjectType();
+      info.AddValue ("PublicDomainObjectType.AssemblyQualifiedName", publicDomainObjectType.AssemblyQualifiedName);
       
       object[] baseMemberValues = null;
       if (serializeBaseMembers)
       {
-        MemberInfo[] baseMembers = FormatterServices.GetSerializableMembers (baseType);
+        MemberInfo[] baseMembers = FormatterServices.GetSerializableMembers (publicDomainObjectType);
         baseMemberValues = FormatterServices.GetObjectData (concreteObject, baseMembers);
       }
-      info.AddValue ("BaseType.Data", baseMemberValues);
+      info.AddValue ("baseMemberValues", baseMemberValues);
 
       if (!serializeBaseMembers)
         info.AddValue ("DomainObject.ID", concreteObject.ID);
+
+      DomainObjectMixinCodeGenerationBridge.SerializeMetadata (concreteObject, info, context);
     }
 
     public SerializationHelper (SerializationInfo info, StreamingContext context)
     {
-      string baseTypeName = info.GetString ("BaseType.AssemblyQualifiedName");
-      _baseMemberValues = (object[]) info.GetValue ("BaseType.Data", typeof (object[]));
-      _baseType = Type.GetType (baseTypeName);
-
-      // TODO: This doesn't hold true if the MixinConfiguration changes between serialization and deserialization. This is likely not supported,
-      // but should throw a nicer exception than this assertion error.
-      Assertion.IsTrue (_baseMemberValues == null || DomainObjectMixinCodeGenerationBridge.GetConcreteType (_baseType) == _baseType,
-          "If a DomainObject has mixins, we certainly haven't serialized its base members.");
+      string publicDomainObjectTypeName = info.GetString ("PublicDomainObjectType.AssemblyQualifiedName");
+      _baseMemberValues = (object[]) info.GetValue ("baseMemberValues", typeof (object[]));
+      _publicDomainObjectType = Type.GetType (publicDomainObjectTypeName);
 
       IDomainObjectFactory factory = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory;
-      Type concreteDomainObjectType = factory.GetConcreteDomainObjectType (_baseType);
 
       // Usually, instantiate a deserialized object using GetSafeUninitializedObject.
       // However, _baseMemberValues being null means that the object itself manages its member deserialization via ISerializable. In such a case, we
-      // need to use the deserialization constructor to instantiate the object.
+      // need to use the deserialization constructor to instantiate the object. Of course, it might also be a mixed type, so we better delegate
+      // to the DomainObjectMixinCodeGenerationBridge.
       if (_baseMemberValues != null)
       {
+        Type concreteDomainObjectType = factory.GetConcreteDomainObjectType (_publicDomainObjectType);
         _realObject = (DomainObject) FormatterServices.GetSafeUninitializedObject (concreteDomainObjectType);
         factory.PrepareUnconstructedInstance (_realObject);
       }
       else
       {
-        _nestedObjectReference = DomainObjectMixinCodeGenerationBridge.BeginDeserialization (concreteDomainObjectType, info, context);
+        _nestedObjectReference = DomainObjectMixinCodeGenerationBridge.BeginDeserialization (_publicDomainObjectType, info, context);
         _realObject = (DomainObject) _nestedObjectReference.GetRealObject (context);
         _id = (ObjectID) info.GetValue ("DomainObject.ID", typeof (ObjectID));
       }
@@ -85,7 +83,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
     {
       if (_baseMemberValues != null)
       {
-        MemberInfo[] baseMembers = FormatterServices.GetSerializableMembers (_baseType);
+        MemberInfo[] baseMembers = FormatterServices.GetSerializableMembers (_publicDomainObjectType);
         FormatterServices.PopulateObjectMembers (_realObject, baseMembers, _baseMemberValues);
       }
       else
@@ -96,7 +94,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
         if (!object.Equals (_realObject.ID, _id))
         {
           string message = string.Format (
-              "The deserialization constructor on type {0} did not call DomainObject's base deserialization constructor.", _baseType.FullName);
+              "The deserialization constructor on type {0} did not call DomainObject's base deserialization constructor.", _publicDomainObjectType.FullName);
           throw new SerializationException (message);
         }
       }

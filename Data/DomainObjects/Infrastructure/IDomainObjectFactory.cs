@@ -1,6 +1,7 @@
 ﻿using System;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Reflection;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
@@ -30,6 +31,17 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     Type GetConcreteDomainObjectType (Type baseType);
 
     /// <summary>
+    /// Gets a domain object type assignable to the given base type which intercepts property calls.
+    /// </summary>
+    /// <param name="baseTypeClassDefinition">The base domain object type whose properties should be intercepted.</param>
+    /// <param name="concreteBaseType">The base domain object type whose properties should be intercepted.</param>
+    /// <returns>A domain object type which intercepts property calls.</returns>
+    /// <exception cref="ArgumentNullException">One of the parameters passed to this method is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentTypeException"><paramref name="concreteBaseType"/> cannot be assigned to the type specified by <paramref name="baseTypeClassDefinition"/>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="baseTypeClassDefinition"/> denotes an abstract, non-instantiable type.</exception>
+    Type GetConcreteDomainObjectType (ClassDefinition baseTypeClassDefinition, Type concreteBaseType);
+
+    /// <summary>
     /// Checkes whether a given domain object type was created by this factory implementation (but not necessarily the same factory instance).
     /// </summary>
     /// <param name="type">The type to be checked.</param>
@@ -41,7 +53,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// Returns a construction object that can be used to instantiate objects of a given interceptable type.
     /// </summary>
     /// <typeparam name="TMinimal">The type statically returned by the construction object.</typeparam>
-    /// <param name="type">The exatct interceptable type to be constructed; this must be a type returned by <see cref="GetConcreteDomainObjectType"/>.
+    /// <param name="type">The exatct interceptable type to be constructed; this must be a type returned by <see cref="GetConcreteDomainObjectType(Type)"/>.
     /// <typeparamref name="TMinimal"/> must be assignable from this type.</param>
     /// <returns>A construction object, which instantiates <paramref name="type"/> and returns <typeparamref name="TMinimal"/>.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="type"/> argument is null.</exception>

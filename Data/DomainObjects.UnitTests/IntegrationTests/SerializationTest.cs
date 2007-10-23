@@ -12,7 +12,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
   [TestFixture]
   public class SerializationTest : SerializationBaseTest
   {
-
     public override void TestFixtureSetUp ()
     {
       base.TestFixtureSetUp ();

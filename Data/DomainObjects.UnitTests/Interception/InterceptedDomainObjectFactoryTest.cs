@@ -5,6 +5,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Infrastructure;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
@@ -42,6 +43,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       Assert.AreNotEqual (typeof (Order), concreteType);
     }
 
+    public abstract class SpecificDerivedDO : DerivedDO
+    {
+    }
+
+    [Test]
+    public void GetConcreteDomainObjectTypeForSpecificBaseType ()
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (DerivedDO));
+      Type concreteType = _factory.GetConcreteDomainObjectType (classDefinition, typeof (SpecificDerivedDO));
+      Assert.AreNotEqual (typeof (DerivedDO), concreteType.BaseType);
+      Assert.AreEqual (typeof (SpecificDerivedDO), concreteType.BaseType);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage = "Argument concreteBaseType is a "
+        + "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Official, which cannot be assigned to type "
+        + "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.\r\nParameter name: concreteBaseType")]
+    public void GetConcreteDomainObjectTypeForSpecificBaseType_ThrowsOnInvalidSpecificType ()
+    {
+      ClassDefinition orderDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Order));
+      _factory.GetConcreteDomainObjectType (orderDefinition, typeof (Official));
+    }
+
     [Test]
     public void FactoryCachesGeneratedTypes ()
     {
@@ -76,6 +100,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public void AbstractWithoutInstantiableAttributeCannotBeInstantiated ()
     {
       _factory.GetConcreteDomainObjectType (typeof (AbstractClass));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
+        + "AbstractClass as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.\r\nParameter name: baseTypeClassDefinition")]
+    public void AbstractWithoutInstantiableAttributeCannotBeInstantiated_WithSpecificType ()
+    {
+      _factory.GetConcreteDomainObjectType (MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (AbstractClass)), typeof (AbstractClass));
     }
 
     [Test]

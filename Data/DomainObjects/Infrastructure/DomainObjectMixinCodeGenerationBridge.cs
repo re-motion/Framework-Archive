@@ -1,5 +1,8 @@
 using System;
+using System.Reflection;
 using System.Runtime.Serialization;
+using Rubicon.Data.DomainObjects.Configuration;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Mixins;
 using Rubicon.Utilities;
 
@@ -12,6 +15,33 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   /// type (or object) is passed to them rather than throwing exceptions.</remarks>
   public static class DomainObjectMixinCodeGenerationBridge
   {
+    internal class DummyObjectReference : IObjectReference
+    {
+      private readonly object _realObject;
+
+      public DummyObjectReference (Type concreteDeserializedType, SerializationInfo info, StreamingContext context)
+      {
+        try
+        {
+          _realObject = Activator.CreateInstance (
+              concreteDeserializedType,
+              BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+              null,
+              new object[] { info, context },
+              null);
+        }
+        catch (MissingMethodException ex)
+        {
+          throw new MissingMethodException ("No deserialization constructor was found on type " + concreteDeserializedType.FullName + ".", ex);
+        }
+      }
+
+      public object GetRealObject (StreamingContext context)
+      {
+        return _realObject;
+      }
+    }
+
     public static Type GetConcreteType (Type domainObjectType)
     {
       ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);
@@ -27,22 +57,46 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         TypeFactory.InitializeUnconstructedInstance (instanceAsMixinTarget);
     }
 
-    public static IObjectReference BeginDeserialization (Type baseType, SerializationInfo info, StreamingContext context)
+    public static void SerializeMetadata (DomainObject instance, SerializationInfo info, StreamingContext context)
     {
-      ArgumentUtility.CheckNotNull ("baseType", baseType);
+      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull ("info", info);
+      info.AddValue ("IsMixed", instance is IMixinTarget);
+    }
+
+    public static IObjectReference BeginDeserialization (Type publicDomainObjectType, SerializationInfo info, StreamingContext context)
+    {
+      ArgumentUtility.CheckNotNull ("baseType", publicDomainObjectType);
       ArgumentUtility.CheckNotNull ("info", info);
 
-      IObjectReference objectReference = ObjectFactory.BeginDeserialization (baseType, info, context);
+      IObjectReference objectReference;
+      bool containsMixins = info.GetBoolean ("IsMixed");
+      if (!containsMixins)
+      {
+        Type concreteType = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.GetConcreteDomainObjectType (publicDomainObjectType);
+        objectReference = new DummyObjectReference (concreteType, info, context);
+      }
+      else
+      {
+        ClassDefinition baseTypeClassDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (publicDomainObjectType);
+        Func<Type, Type> transformer = delegate (Type mixedType)
+        {
+          return DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.GetConcreteDomainObjectType (baseTypeClassDefinition, mixedType);
+        };
+
+        objectReference = Mixins.CodeGeneration.ConcreteTypeBuilder.Current.BeginDeserialization (transformer, info, context);
+      }
 
       Assertion.IsNotNull (objectReference);
-      Assertion.IsTrue (baseType.IsAssignableFrom (objectReference.GetRealObject(context).GetType ()));
+      Assertion.IsTrue (publicDomainObjectType.IsAssignableFrom (objectReference.GetRealObject(context).GetType ()));
       return objectReference;
     }
 
     public static void FinishDeserialization (IObjectReference objectReference)
     {
       ArgumentUtility.CheckNotNull ("objectReference", objectReference);
-      ObjectFactory.FinishDeserialization (objectReference);
+      if (! (objectReference is DummyObjectReference))
+        Mixins.CodeGeneration.ConcreteTypeBuilder.Current.FinishDeserialization (objectReference);
     }
 
     public static void OnDomainObjectCreated (DomainObject instance)
