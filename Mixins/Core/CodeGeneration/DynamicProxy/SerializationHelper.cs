@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Utilities;
+using Rubicon.CodeGeneration;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
@@ -36,6 +37,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private readonly object[] _extensions;
     private readonly object[] _baseMemberValues;
     private readonly TargetClassDefinition _targetClassDefinition;
+    private readonly StreamingContext _context;
 
     public SerializationHelper (SerializationInfo info, StreamingContext context)
         : this (delegate (Type t) { return t; }, info, context)
@@ -46,6 +48,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       ArgumentUtility.CheckNotNull ("typeTransformer", typeTransformer);
       ArgumentUtility.CheckNotNull ("info", info);
+
+      _context = context;
 
       ClassContext configurationContext = (ClassContext) info.GetValue ("__configuration.ConfigurationContext", typeof (ClassContext));
       _targetClassDefinition = TargetClassDefinitionCache.Current.GetTargetClassDefinition (configurationContext);
@@ -75,6 +79,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         Assertion.IsTrue (typeof (ISerializable).IsAssignableFrom (concreteType));
         _deserializedObject = (IMixinTarget) Activator.CreateInstance (concreteType, new object[] {info, context});
       }
+
+      SerializationImplementer.RaiseOnDeserializing (_deserializedObject, context);
     }
 
     public object GetRealObject (StreamingContext context)
@@ -97,6 +103,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       }
 
       ConcreteTypeBuilder.Current.Scope.InitializeDeserializedMixinTarget (_deserializedObject, _extensions);
+
+      SerializationImplementer.RaiseOnDeserialized (_deserializedObject, _context);
+      SerializationImplementer.RaiseOnDeserialization (_deserializedObject, sender);
     }
   }
 }

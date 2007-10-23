@@ -97,5 +97,40 @@ namespace Rubicon.CodeGeneration
       else
         return null;
     }
+
+    public static void RaiseOnDeserialization (object deserializedObject, object sender)
+    {
+      ArgumentUtility.CheckNotNull ("deserializedObject", deserializedObject);
+
+      IDeserializationCallback objectAsDeserializationCallback = deserializedObject as IDeserializationCallback;
+      if (objectAsDeserializationCallback != null)
+        objectAsDeserializationCallback.OnDeserialization (sender);
+    }
+
+    public static void RaiseOnDeserializing (object deserializedObject, StreamingContext context)
+    {
+      ArgumentUtility.CheckNotNull ("deserializedObject", deserializedObject);
+      RaiseDeserializationEvent (deserializedObject, typeof (OnDeserializingAttribute), context);
+    }
+
+    public static void RaiseOnDeserialized (object deserializedObject, StreamingContext context)
+    {
+      ArgumentUtility.CheckNotNull ("deserializedObject", deserializedObject);
+      RaiseDeserializationEvent (deserializedObject, typeof (OnDeserializedAttribute), context);
+    }
+
+    private static void RaiseDeserializationEvent (object deserializedObject, Type attributeType, StreamingContext context)
+    {
+      for (Type currentType = deserializedObject.GetType (); currentType != null; currentType = currentType.BaseType)
+      {
+        foreach (
+            MethodInfo method in
+                currentType.GetMethods (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+        {
+          if (method.IsDefined (attributeType, false))
+            method.Invoke (deserializedObject, new object[] {context});
+        }
+      }
+    }
   }
 }

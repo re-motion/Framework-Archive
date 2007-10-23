@@ -178,5 +178,130 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
       Assert.AreEqual (info, instance.Info);
       Assert.AreEqual (context, instance.Context);
     }
+
+    [Serializable]
+    class BaseClassWithDeserializationEvents
+    {
+      [NonSerialized]
+      public bool OnBaseDeserializedCalled;
+      [NonSerialized]
+      public bool OnBaseDeserializingCalled;
+
+      [OnDeserializing]
+      private void OnDeserializing (StreamingContext context)
+      {
+        OnBaseDeserializingCalled = true;
+      }
+
+      [OnDeserialized]
+      private void OnDeserialized (StreamingContext context)
+      {
+        OnBaseDeserializedCalled = true;
+      }
+    }
+
+    [Serializable]
+    class ClassWithDeserializationEvents : BaseClassWithDeserializationEvents, IDeserializationCallback
+    {
+      [NonSerialized]
+      public bool OnDeserializationCalled;
+      [NonSerialized]
+      public bool OnDeserializedCalled;
+      [NonSerialized]
+      public bool OnDeserializingCalled;
+
+      public void OnDeserialization (object sender)
+      {
+        OnDeserializationCalled = true;
+      }
+
+      [OnDeserializing]
+      private void OnDeserializing (StreamingContext context)
+      {
+        OnDeserializingCalled = true;
+      }
+
+      [OnDeserialized]
+      private void OnDeserialized (StreamingContext context)
+      {
+        OnDeserializedCalled = true;
+      }
+    }
+
+    [Test]
+    public void OnDeserializationWithFormatter ()
+    {
+      ClassWithDeserializationEvents instance = new ClassWithDeserializationEvents ();
+      Assert.IsFalse (instance.OnBaseDeserializingCalled);
+      Assert.IsFalse (instance.OnBaseDeserializedCalled);
+      Assert.IsFalse (instance.OnDeserializingCalled);
+      Assert.IsFalse (instance.OnDeserializedCalled);
+      Assert.IsFalse (instance.OnDeserializationCalled);
+
+      instance = Serializer.SerializeAndDeserialize (instance);
+
+      Assert.IsTrue (instance.OnBaseDeserializingCalled);
+      Assert.IsTrue (instance.OnBaseDeserializedCalled);
+      Assert.IsTrue (instance.OnDeserializingCalled);
+      Assert.IsTrue (instance.OnDeserializedCalled);
+      Assert.IsTrue (instance.OnDeserializationCalled);
+    }
+
+    [Test]
+    public void RaiseOnDeserialization ()
+    {
+      ClassWithDeserializationEvents instance = new ClassWithDeserializationEvents ();
+      Assert.IsFalse (instance.OnBaseDeserializingCalled);
+      Assert.IsFalse (instance.OnBaseDeserializedCalled);
+      Assert.IsFalse (instance.OnDeserializingCalled);
+      Assert.IsFalse (instance.OnDeserializedCalled);
+      Assert.IsFalse (instance.OnDeserializationCalled);
+
+      SerializationImplementer.RaiseOnDeserialization (instance, null);
+
+      Assert.IsFalse (instance.OnBaseDeserializingCalled);
+      Assert.IsFalse (instance.OnBaseDeserializedCalled);
+      Assert.IsFalse (instance.OnDeserializingCalled);
+      Assert.IsFalse (instance.OnDeserializedCalled);
+      Assert.IsTrue (instance.OnDeserializationCalled);
+    }
+
+    [Test]
+    public void RaiseOnDeserializing ()
+    {
+      ClassWithDeserializationEvents instance = new ClassWithDeserializationEvents ();
+      Assert.IsFalse (instance.OnBaseDeserializingCalled);
+      Assert.IsFalse (instance.OnBaseDeserializedCalled);
+      Assert.IsFalse (instance.OnDeserializingCalled);
+      Assert.IsFalse (instance.OnDeserializedCalled);
+      Assert.IsFalse (instance.OnDeserializationCalled);
+
+      SerializationImplementer.RaiseOnDeserializing (instance, new StreamingContext());
+
+      Assert.IsTrue (instance.OnBaseDeserializingCalled);
+      Assert.IsFalse (instance.OnBaseDeserializedCalled);
+      Assert.IsTrue(instance.OnDeserializingCalled);
+      Assert.IsFalse (instance.OnDeserializedCalled);
+      Assert.IsFalse (instance.OnDeserializationCalled);
+    }
+
+    [Test]
+    public void RaiseOnDeserialized ()
+    {
+      ClassWithDeserializationEvents instance = new ClassWithDeserializationEvents ();
+      Assert.IsFalse (instance.OnBaseDeserializingCalled);
+      Assert.IsFalse (instance.OnBaseDeserializedCalled);
+      Assert.IsFalse (instance.OnDeserializingCalled);
+      Assert.IsFalse (instance.OnDeserializedCalled);
+      Assert.IsFalse (instance.OnDeserializationCalled);
+
+      SerializationImplementer.RaiseOnDeserialized (instance, new StreamingContext ());
+
+      Assert.IsFalse (instance.OnBaseDeserializingCalled);
+      Assert.IsTrue (instance.OnBaseDeserializedCalled);
+      Assert.IsFalse (instance.OnDeserializingCalled);
+      Assert.IsTrue (instance.OnDeserializedCalled);
+      Assert.IsFalse (instance.OnDeserializationCalled);
+    }
   }
 }
