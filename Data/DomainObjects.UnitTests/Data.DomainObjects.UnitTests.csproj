@@ -293,6 +293,8 @@
     <Compile Include="Persistence\Rdbms\UpdateCommandBuilderTest.cs" />
     <Compile Include="Persistence\Rdbms\InsertCommandBuilderTest.cs" />
     <Compile Include="Persistence\Rdbms\QueryCommandBuilderTest.cs" />
+    <Compile Include="TestDomain\ClassWithSerializationCallbacks.cs" />
+    <Compile Include="Serialization\SerializationCallbackTest.cs" />
     <Compile Include="StandardMappingTest.cs" />
     <Compile Include="Interception\InterceptedPropertyIntegrationTest.cs" />
     <Compile Include="Configuration\StorageProviders\StorageProviderConfigurationTest.cs" />

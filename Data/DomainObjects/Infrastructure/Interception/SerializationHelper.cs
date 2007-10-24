@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 using System.Reflection;
+using Rubicon.CodeGeneration;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Utilities;
 
@@ -14,6 +15,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
     private readonly object[] _baseMemberValues;
     private readonly Type _publicDomainObjectType;
     private readonly ObjectID _id;
+    private readonly StreamingContext _context;
 
     // Always remember: the whole configuration must be serialized as one single, flat object (or SerializationInfo), we cannot rely on any
     // nested objects to be deserialized in the right order
@@ -45,6 +47,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     public SerializationHelper (SerializationInfo info, StreamingContext context)
     {
+      ArgumentUtility.CheckNotNull ("info", info);
+
+      _context = context;
+
       string publicDomainObjectTypeName = info.GetString ("PublicDomainObjectType.AssemblyQualifiedName");
       _baseMemberValues = (object[]) info.GetValue ("baseMemberValues", typeof (object[]));
       _publicDomainObjectType = Type.GetType (publicDomainObjectTypeName);
@@ -67,6 +73,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
         _realObject = (DomainObject) _nestedObjectReference.GetRealObject (context);
         _id = (ObjectID) info.GetValue ("DomainObject.ID", typeof (ObjectID));
       }
+
+      SerializationImplementer.RaiseOnDeserializing (_realObject, _context);
     }
 
     public object GetRealObject (StreamingContext context)
@@ -99,9 +107,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
         }
       }
 
-      IDeserializationCallback objectAsDeserializationCallback = _realObject as IDeserializationCallback;
-      if (objectAsDeserializationCallback != null)
-        objectAsDeserializationCallback.OnDeserialization (sender);
+      SerializationImplementer.RaiseOnDeserialized (_realObject, _context);
+      SerializationImplementer.RaiseOnDeserialization (_realObject, sender);
     }
   }
 }

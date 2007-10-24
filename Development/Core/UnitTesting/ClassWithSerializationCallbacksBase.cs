@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Rubicon.Development.UnitTesting
 {
   [Serializable]
-  public abstract class ClassWithSerializationCallbacksBase : IDeserializationCallback
+  public abstract class ClassWithSerializationCallbacksBase
   {
     protected abstract ISerializationEventReceiver StaticReceiver { get; }
 
