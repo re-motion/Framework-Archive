@@ -10,7 +10,7 @@ namespace Rubicon.ObjectBinding.BindableObject
   public class ReflectionBasedPropertyFinder : IPropertyFinder
   {
     private readonly Type _concreteType;
-    private readonly Dictionary<MethodInfo, MethodInfo> _interfaceMethodImplementations; // from implementation to declaration
+    private readonly MultiDictionary<MethodInfo, MethodInfo> _interfaceMethodImplementations; // from implementation to declaration
 
     public ReflectionBasedPropertyFinder (Type concreteType)
     {
@@ -20,9 +20,9 @@ namespace Rubicon.ObjectBinding.BindableObject
       _interfaceMethodImplementations = GetInterfaceMethodImplementationCache ();
     }
 
-    private Dictionary<MethodInfo, MethodInfo> GetInterfaceMethodImplementationCache ()
+    private MultiDictionary<MethodInfo, MethodInfo> GetInterfaceMethodImplementationCache ()
     {
-      Dictionary<MethodInfo, MethodInfo> cache = new Dictionary<MethodInfo, MethodInfo> ();
+      MultiDictionary<MethodInfo, MethodInfo> cache = new MultiDictionary<MethodInfo, MethodInfo> ();
       foreach (Type currentType in GetInheritanceHierarchy ())
       {
         foreach (Type interfaceType in currentType.GetInterfaces ())
@@ -81,10 +81,10 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     private bool IsNonInfrastructureInterfaceProperty (PropertyInfo propertyInfo)
     {
-      MethodInfo accessor = propertyInfo.GetGetMethod (true); // TODO: discuss whether property must have a getter
+      MethodInfo accessor = propertyInfo.GetGetMethod (true);
       return accessor != null
           && _interfaceMethodImplementations.ContainsKey (accessor)
-          && !IsInfrastructureProperty (propertyInfo, _interfaceMethodImplementations[accessor]);
+          && !_interfaceMethodImplementations[accessor].TrueForAll (delegate (MethodInfo m) { return IsInfrastructureProperty (propertyInfo, m); });
     }
 
     protected virtual bool IsInfrastructureProperty (PropertyInfo propertyInfo, MethodInfo accessorDeclaration)

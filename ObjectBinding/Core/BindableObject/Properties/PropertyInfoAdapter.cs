@@ -19,18 +19,6 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
         yield return adapter.PropertyInfo;
     }
 
-    // Checks whether the property has private virtual final accessors. This is used as a heuristic to find explicit interface properties without
-    // having to check InterfaceMaps for every interface on info.DeclaringType. With C# and VB.NET, the heuristic should be alright.
-    private static bool GuessIsExplicitInterfaceProperty (PropertyInfo info)
-    {
-      foreach (MethodInfo accessor in info.GetAccessors (true))
-      {
-        if (accessor.IsPrivate && accessor.IsVirtual && accessor.IsFinal)
-          return true;
-      }
-      return false;
-    }
-
     private readonly PropertyInfo _propertyInfo;
     private readonly bool _isExplicitInterfaceProperty;
 
@@ -38,7 +26,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
       _propertyInfo = propertyInfo;
-      _isExplicitInterfaceProperty = GuessIsExplicitInterfaceProperty (propertyInfo);
+      _isExplicitInterfaceProperty = ReflectionUtility.GuessIsExplicitInterfaceProperty (propertyInfo);
     }
 
     public PropertyInfo PropertyInfo

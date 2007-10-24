@@ -300,5 +300,24 @@ namespace Rubicon.Utilities
 
       return baseDeclaringType;
     }
+
+    /// <summary>
+    /// Guesses whether the given property is an explicit interface implementation by checking whether it has got private virtual final accessors.
+    /// This can be used as a heuristic to find explicit interface properties without having to check InterfaceMaps for every interface on
+    /// info.DeclaringType. With C# and VB.NET, the heuristic should always be right.
+    /// </summary>
+    /// <param name="info">The property to check.</param>
+    /// <returns>True, if the property is very likely an explicit interface implementation (at least in C# and VB.NET code); otherwise, false.</returns>
+    public static bool GuessIsExplicitInterfaceProperty (PropertyInfo info)
+    {
+      ArgumentUtility.CheckNotNull ("info", info);
+
+      foreach (MethodInfo accessor in info.GetAccessors (true))
+      {
+        if (accessor.IsPrivate && accessor.IsVirtual && accessor.IsFinal)
+          return true;
+      }
+      return false;
+    }
   }
 }

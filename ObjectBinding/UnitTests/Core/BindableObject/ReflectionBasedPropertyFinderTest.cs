@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
+using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.ObjectBinding.BindableObject.Properties;
@@ -127,6 +128,32 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       List<IPropertyInformation> concreteTypeProperties = new List<IPropertyInformation> (new ReflectionBasedPropertyFinder (concreteType).GetPropertyInfos ());
 
       Assert.That (concreteTypeProperties, Is.EquivalentTo (targetTypeProperties));
+    }
+
+    public interface I1
+    {
+      string DisplayName { get; }
+    }
+
+    public interface I2
+    {
+      string DisplayName { get; }
+    }
+
+    public class ClassWithDoubleInterfaceMethod : I1, I2
+    {
+      public string DisplayName
+      {
+        get { return ""; }
+      }
+    }
+
+    [Test]
+    public void PropertyWithDoubleInterfaceMethod ()
+    {
+      List<IPropertyInformation> propertyInfos = new List<IPropertyInformation> (new ReflectionBasedPropertyFinder (typeof (ClassWithDoubleInterfaceMethod)).GetPropertyInfos ());
+      Assert.AreEqual (1, propertyInfos.Count);
+      Assert.AreEqual ("DisplayName", propertyInfos[0].Name);
     }
   }
 }
