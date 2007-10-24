@@ -79,6 +79,10 @@
       <Name>nunit.framework</Name>
       <HintPath>..\..\prereq\Assemblies\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Rhino.Mocks, Version=3.1.0.584, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -106,6 +110,7 @@
     <Compile Include="UnitTesting\DevNullTest.cs" />
     <Compile Include="UnitTesting\IO\TempFileTest.cs" />
     <Compile Include="UnitTesting\PEVerifierTest.cs" />
+    <Compile Include="UnitTesting\SerializationCallbackTesterTest.cs" />
     <Compile Include="UnitTesting\SerializerTest.cs" />
     <Compile Include="UnitTesting\TestCreateInstance.cs">
       <SubType>Code</SubType>

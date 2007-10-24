@@ -59,7 +59,7 @@
     <Compile Include="Definitions\MixinDependencyDefinition.cs" />
     <Compile Include="Definitions\RequiredMixinTypeDefinition.cs" />
     <Compile Include="Definitions\TargetClassDefinitionCache.cs" />
-    <Compile Include="Definitions\Building\AttributeIntroductionBuilder.cs" />
+    <Compile Include="Definitions\Building\AttributeIntroductionDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\DependencySorting\MixinDependencyAnalyzer.cs" />
     <Compile Include="Definitions\Building\DependencySorting\DependentMixinGrouper.cs" />
     <Compile Include="Definitions\Building\RequiredMethodDefinitionBuilder.cs" />
@@ -124,7 +124,7 @@
     <Compile Include="ConfigurationException.cs" />
     <Compile Include="Definitions\Building\BaseDependencyDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\DependencyDefinitionBuilderBase.cs" />
-    <Compile Include="Definitions\Building\InterfaceIntroductionBuilder.cs" />
+    <Compile Include="Definitions\Building\InterfaceIntroductionDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\MixinDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\OverridesAnalyzer.cs" />
     <Compile Include="Definitions\Building\RequirementsAnalyzer.cs" />

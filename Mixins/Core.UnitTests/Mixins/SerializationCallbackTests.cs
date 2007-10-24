@@ -1,7 +1,5 @@
 using System;
-using System.Runtime.Serialization;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Mixins.UnitTests.Mixins
@@ -9,197 +7,119 @@ namespace Rubicon.Mixins.UnitTests.Mixins
   [TestFixture]
   public class SerializationCallbackTests
   {
-    private MockRepository _mockRepository;
-    private ISerializationEventReceiver _receiver;
+    private TargetTypeWithSerializationCallbacks _instance;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository ();
-      _receiver = _mockRepository.CreateMock<ISerializationEventReceiver> ();
-
-      TargetTypeWithSerializationCallbacks.StaticReceiver = null;
-      MixinWithSerializationCallbacks.StaticReceiver = null;
-    }
-
-    public interface ISerializationEventReceiver
-    {
-      void OnDeserialization (object sender);
-      void OnDeserialized (StreamingContext context);
-      void OnDeserializing (StreamingContext context);
-      void OnSerialized (StreamingContext context);
-      void OnSerializing (StreamingContext context);
-    }
-
-    [Serializable]
-    public abstract class SerializationCallbackBase : IDeserializationCallback
-    {
-      protected abstract ISerializationEventReceiver Receiver { get; }
-
-      public void OnDeserialization (object sender)
-      {
-        if (Receiver != null)
-          Receiver.OnDeserialization (sender);
-      }
-
-      [OnDeserialized]
-      public void OnDeserialized (StreamingContext context)
-      {
-        if (Receiver != null)
-          Receiver.OnDeserialized (context);
-      }
-
-      [OnDeserializing]
-      public void OnDeserializing (StreamingContext context)
-      {
-        if (Receiver != null)
-          Receiver.OnDeserializing (context);
-      }
-
-      [OnSerialized]
-      public void OnSerialized (StreamingContext context)
-      {
-        if (Receiver != null)
-          Receiver.OnSerialized (context);
-      }
-
-      [OnSerializing]
-      public void OnSerializing (StreamingContext context)
-      {
-        if (Receiver != null)
-          Receiver.OnSerializing (context);
-      }
+      _instance = ObjectFactory.Create<TargetTypeWithSerializationCallbacks> ().With ();
     }
 
     [Serializable]
     [Uses (typeof (MixinWithSerializationCallbacks))]
-    public class TargetTypeWithSerializationCallbacks : SerializationCallbackBase
+    public class TargetTypeWithSerializationCallbacks : ClassWithSerializationCallbacksBase
     {
-      public static ISerializationEventReceiver StaticReceiver;
+      private static ISerializationEventReceiver s_receiver;
 
-      protected override ISerializationEventReceiver Receiver
+      public static void SetStaticReceiver (ISerializationEventReceiver receiver)
       {
-        get { return StaticReceiver; }
+        s_receiver = receiver;
+      }
+
+      protected override ISerializationEventReceiver StaticReceiver
+      {
+        get { return s_receiver; }
       }
     }
 
     [Serializable]
-    public class MixinWithSerializationCallbacks : SerializationCallbackBase
+    public class MixinWithSerializationCallbacks : ClassWithSerializationCallbacksBase
     {
-      public static ISerializationEventReceiver StaticReceiver;
+      private static ISerializationEventReceiver s_receiver;
 
-      protected override ISerializationEventReceiver Receiver
+      public static void SetStaticReceiver (ISerializationEventReceiver receiver)
       {
-        get { return StaticReceiver; }
+        s_receiver = receiver;
       }
-    }
 
-    [Test]
-    public void SerializationCallbacks_ViaFormatter ()
-    {
-      TargetTypeWithSerializationCallbacks instance = new TargetTypeWithSerializationCallbacks ();
-      TargetTypeWithSerializationCallbacks.StaticReceiver = _receiver;
-
-      CheckSerialization(instance);
-    }
-
-    [Test]
-    public void DeserializationCallbacks_ViaFormatter ()
-    {
-      TargetTypeWithSerializationCallbacks instance = new TargetTypeWithSerializationCallbacks();
-      byte[] bytes = Serializer.Serialize (instance);
-      TargetTypeWithSerializationCallbacks.StaticReceiver = _receiver;
-
-      CheckDeserialization(bytes);
+      protected override ISerializationEventReceiver StaticReceiver
+      {
+        get { return s_receiver; }
+      }
     }
 
     [Test]
     public void SerializationCallbacks_AreInvokedOnTargetClass ()
     {
-      TargetTypeWithSerializationCallbacks instance = ObjectFactory.Create<TargetTypeWithSerializationCallbacks> ().With ();
-      TargetTypeWithSerializationCallbacks.StaticReceiver = _receiver;
-
-      CheckSerialization (instance);
+      new SerializationCallbackTester<TargetTypeWithSerializationCallbacks> (_instance, TargetTypeWithSerializationCallbacks.SetStaticReceiver)
+          .Test_SerializationCallbacks ();
     }
 
     [Test]
     public void DeserializationCallbacks_AreInvokedOnTargetClass ()
     {
-      TargetTypeWithSerializationCallbacks instance = ObjectFactory.Create<TargetTypeWithSerializationCallbacks> ().With ();
-      byte[] bytes = Serializer.Serialize (instance);
-      TargetTypeWithSerializationCallbacks.StaticReceiver = _receiver;
-
-      CheckDeserialization (bytes);
+      new SerializationCallbackTester<TargetTypeWithSerializationCallbacks> (_instance, TargetTypeWithSerializationCallbacks.SetStaticReceiver)
+          .Test_DeserializationCallbacks ();
     }
 
     [Test]
     public void SerializationCallbacks_AreInvokedOnMixinClass ()
     {
-      TargetTypeWithSerializationCallbacks instance = ObjectFactory.Create<TargetTypeWithSerializationCallbacks> ().With ();
-      MixinWithSerializationCallbacks.StaticReceiver = _receiver;
-
-      CheckSerialization (instance);
+      new SerializationCallbackTester<TargetTypeWithSerializationCallbacks> (_instance, MixinWithSerializationCallbacks.SetStaticReceiver)
+          .Test_SerializationCallbacks ();
     }
 
     [Test]
     public void DeserializationCallbacks_AreInvokedOnMixinClass ()
     {
-      TargetTypeWithSerializationCallbacks instance = ObjectFactory.Create<TargetTypeWithSerializationCallbacks> ().With ();
-      byte[] bytes = Serializer.Serialize (instance);
-      MixinWithSerializationCallbacks.StaticReceiver = _receiver;
-
-      CheckDeserialization (bytes);
- }
-
-    private void CheckSerialization (TargetTypeWithSerializationCallbacks instance)
-    {
-      ExpectSerializationCallbacks ();
-
-      _mockRepository.ReplayAll ();
-
-      Serializer.Serialize (instance);
-
-      _mockRepository.VerifyAll ();
+      new SerializationCallbackTester<TargetTypeWithSerializationCallbacks> (_instance, MixinWithSerializationCallbacks.SetStaticReceiver)
+          .Test_DeserializationCallbacks ();
     }
 
-    private void CheckDeserialization (byte[] bytes)
+    [Uses (typeof (AbstractMixinWithSerializationCallbacks))]
+    [Serializable]
+    public class TargetClassForAbstractMixinWithSerializationCallbacks
     {
-      ExpectDeserializationCallbacks ();
-
-      _mockRepository.ReplayAll ();
-
-      Serializer.Deserialize (bytes);
-
-      _mockRepository.VerifyAll ();
     }
 
-    private void ExpectSerializationCallbacks ()
+    [Serializable]
+    public abstract class AbstractMixinWithSerializationCallbacks : ClassWithSerializationCallbacksBase
     {
-      using (_mockRepository.Ordered ())
+      private static ISerializationEventReceiver s_receiver;
+
+      public static void SetStaticReceiver (ISerializationEventReceiver receiver)
       {
-        StreamingContext context = new StreamingContext ();
-        _receiver.OnSerializing (context);
-        LastCall.IgnoreArguments ();
+        s_receiver = receiver;
+      }
 
-        _receiver.OnSerialized (context);
-        LastCall.IgnoreArguments ();
+      protected override ISerializationEventReceiver StaticReceiver
+      {
+        get { return s_receiver; }
+      }
+
+      [OverrideTarget]
+      protected new string ToString () // protected overrider to force class to be derived
+      {
+        return "";
       }
     }
 
-    private void ExpectDeserializationCallbacks ()
+    [Test]
+    public void SerializationCallbacks_AreInvokedOnGeneratedMixinClass ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        StreamingContext context = new StreamingContext ();
-        _receiver.OnDeserializing (context);
-        LastCall.IgnoreArguments ();
+      TargetClassForAbstractMixinWithSerializationCallbacks instance =
+          ObjectFactory.Create<TargetClassForAbstractMixinWithSerializationCallbacks> ().With ();
+      new SerializationCallbackTester<TargetClassForAbstractMixinWithSerializationCallbacks> (instance, AbstractMixinWithSerializationCallbacks.SetStaticReceiver)
+          .Test_SerializationCallbacks ();
+    }
 
-        _receiver.OnDeserialized (context);
-        LastCall.IgnoreArguments ();
-
-        _receiver.OnDeserialization (null);
-        LastCall.IgnoreArguments ();
-      }
+    [Test]
+    public void DeserializationCallbacks_AreInvokedOnGeneratedMixinClass ()
+    {
+      TargetClassForAbstractMixinWithSerializationCallbacks instance =
+          ObjectFactory.Create<TargetClassForAbstractMixinWithSerializationCallbacks> ().With ();
+      new SerializationCallbackTester<TargetClassForAbstractMixinWithSerializationCallbacks> (instance, AbstractMixinWithSerializationCallbacks.SetStaticReceiver)
+          .Test_DeserializationCallbacks ();
     }
   }
 }

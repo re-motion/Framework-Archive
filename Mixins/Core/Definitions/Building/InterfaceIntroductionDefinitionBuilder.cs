@@ -5,15 +5,15 @@ using Rubicon.Collections;
 
 namespace Rubicon.Mixins.Definitions.Building
 {
-  public class InterfaceIntroductionBuilder
+  public class InterfaceIntroductionDefinitionBuilder
   {
     private readonly MixinDefinition _mixin;
     private readonly Set<Type> _suppressedInterfaces;
 
-    public InterfaceIntroductionBuilder (MixinDefinition mixin)
+    public InterfaceIntroductionDefinitionBuilder (MixinDefinition mixin)
     {
       _mixin = mixin;
-      _suppressedInterfaces = new Set<Type> (typeof (ISerializable));
+      _suppressedInterfaces = new Set<Type> (typeof (ISerializable), typeof (IDeserializationCallback));
       AnalyzeSuppressedInterfaces ();
     }
 

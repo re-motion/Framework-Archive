@@ -156,7 +156,7 @@
     <Compile Include="SampleTypes\TargetClassWithAdditionalDependencies.cs" />
     <Compile Include="Utilities\DependencySortTest.cs" />
     <Compile Include="Configuration\InheritanceDefinitionBuilderTests.cs" />
-    <Compile Include="Configuration\IntroductionDefinitionBuilderTests.cs" />
+    <Compile Include="Configuration\InterfaceIntroductionDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\MemberChainTests.cs" />
     <Compile Include="Configuration\MemberDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\MixinConfigurationTests.cs" />

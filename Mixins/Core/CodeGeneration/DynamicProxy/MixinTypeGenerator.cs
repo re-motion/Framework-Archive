@@ -86,7 +86,18 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementOverrides ()
     {
-      PropertyReference targetReference = new PropertyReference (SelfReference.Self, MixinReflector.GetTargetProperty (TypeBuilder.BaseType));
+      if (!_configuration.HasOverriddenMembers())
+        return;
+
+      PropertyInfo targetProperty = MixinReflector.GetTargetProperty (TypeBuilder.BaseType);
+      PropertyReference targetReference = new PropertyReference (SelfReference.Self, targetProperty);
+
+      if (targetProperty == null)
+      {
+        throw new NotSupportedException (
+            "The code generator does not support mixin methods being overridden if the mixin doesn't derive from the Mixin base classes.");
+      }
+
       foreach (MethodDefinition method in _configuration.GetAllMethods())
       {
         if (method.Overrides.Count > 1)
@@ -94,7 +105,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         else if (method.Overrides.Count == 1)
         {
           if (method.Overrides[0].DeclaringClass != Configuration.TargetClass)
-            throw new NotSupportedException ("The code generator only supports mixin methods to be overridden by the mixin's base class.");
+            throw new NotSupportedException ("The code generator only supports mixin methods to be overridden by the mixin's target class.");
 
           CustomMethodEmitter methodOverride = _emitter.CreateMethodOverride (method.MethodInfo);
           MethodDefinition overrider = method.Overrides[0];

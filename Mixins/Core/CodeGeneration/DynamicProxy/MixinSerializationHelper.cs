@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
+using Rubicon.CodeGeneration;
 using Rubicon.Mixins;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Definitions.Building;
@@ -38,12 +39,17 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       info.AddValue ("__baseMemberValues", baseMemberValues);
     }
 
-    private MixinDefinition _mixinDefinition;
-    private object[] _baseMemberValues;
-    private object _deserializedObject;
+    private readonly MixinDefinition _mixinDefinition;
+    private readonly object[] _baseMemberValues;
+    private readonly object _deserializedObject;
+    private readonly StreamingContext _context;
 
     public MixinSerializationHelper (SerializationInfo info, StreamingContext context)
     {
+      ArgumentUtility.CheckNotNull ("info", info);
+
+      _context = context;
+
       ClassContext targetClassContext = (ClassContext) info.GetValue ("__configuration.TargetClass.ConfigurationContext", typeof (ClassContext));
       TargetClassDefinition targetClassDefinition = TargetClassDefinitionCache.Current.GetTargetClassDefinition (targetClassContext);
 
@@ -63,6 +69,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         Assertion.IsTrue (typeof (ISerializable).IsAssignableFrom (concreteType));
         _deserializedObject = Activator.CreateInstance (concreteType, new object[] { info, context });
       }
+      SerializationImplementer.RaiseOnDeserializing (_deserializedObject, _context);
     }
 
     public object GetRealObject (StreamingContext context)
@@ -83,6 +90,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         MemberInfo[] baseMembers = FormatterServices.GetSerializableMembers (_deserializedObject.GetType ().BaseType);
         FormatterServices.PopulateObjectMembers (_deserializedObject, baseMembers, _baseMemberValues);
       }
+
+      SerializationImplementer.RaiseOnDeserialized (_deserializedObject, _context);
+      SerializationImplementer.RaiseOnDeserialization (_deserializedObject, sender);
     }
   }
 }

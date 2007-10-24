@@ -13,7 +13,7 @@ namespace Rubicon.Mixins.Definitions.Building
     private readonly TargetClassDefinition _targetClass;
     private readonly RequirementsAnalyzer _faceRequirementsAnalyzer; 
     private readonly RequirementsAnalyzer _baseRequirementsAnalyzer;
-    private readonly AttributeIntroductionBuilder _attributeIntroductionBuilder;
+    private readonly AttributeIntroductionDefinitionBuilder _attributeIntroductionBuilder;
 
     public MixinDefinitionBuilder (TargetClassDefinition targetClass)
     {
@@ -21,7 +21,7 @@ namespace Rubicon.Mixins.Definitions.Building
       _targetClass = targetClass;
       _faceRequirementsAnalyzer = new RequirementsAnalyzer (targetClass, typeof (ThisAttribute));
       _baseRequirementsAnalyzer = new RequirementsAnalyzer (targetClass, typeof (BaseAttribute));
-      _attributeIntroductionBuilder = new AttributeIntroductionBuilder (_targetClass);
+      _attributeIntroductionBuilder = new AttributeIntroductionDefinitionBuilder (_targetClass);
     }
 
     public TargetClassDefinition TargetClass
@@ -60,7 +60,7 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private void AnalyzeInterfaceIntroductions (MixinDefinition mixin)
     {
-      InterfaceIntroductionBuilder introductionBuilder = new InterfaceIntroductionBuilder (mixin);
+      InterfaceIntroductionDefinitionBuilder introductionBuilder = new InterfaceIntroductionDefinitionBuilder (mixin);
       introductionBuilder.Apply ();
     }
 
@@ -99,7 +99,7 @@ namespace Rubicon.Mixins.Definitions.Building
       {
         if (mixinMember.BaseAsMember != null)
         {
-          AttributeIntroductionBuilder introductionBuilder = new AttributeIntroductionBuilder (mixinMember.BaseAsMember);
+          AttributeIntroductionDefinitionBuilder introductionBuilder = new AttributeIntroductionDefinitionBuilder (mixinMember.BaseAsMember);
           introductionBuilder.Apply (mixinMember);
         }
       }

@@ -3,11 +3,11 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions.Building
 {
-  public class AttributeIntroductionBuilder
+  public class AttributeIntroductionDefinitionBuilder
   {
     private readonly IAttributeIntroductionTargetDefinition _target;
 
-    public AttributeIntroductionBuilder (IAttributeIntroductionTargetDefinition target)
+    public AttributeIntroductionDefinitionBuilder (IAttributeIntroductionTargetDefinition target)
     {
       _target = target;
     }
