@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Rubicon.Collections;
@@ -15,6 +16,7 @@ namespace Rubicon.Data.DomainObjects
 /// Base class for all objects that are persisted by the framework.
 /// </summary>
 [Serializable]
+[DebuggerDisplay("{GetPublicDomainObjectType().FullName}: {ID.ToString()}")]
 public class DomainObject
 {
   // types
