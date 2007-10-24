@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Rubicon.CodeGeneration;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Mixins;
@@ -123,6 +124,31 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
             notifier (mixinAsDomainObjectMixin);
         }
       }
+    }
+
+    public static void RaiseOnDeserializing (DomainObject instance, StreamingContext context)
+    {
+      ArgumentUtility.CheckNotNull ("instance", instance);
+       
+      // Only raise event if the mixin infrastructure hasn't already done it
+      if (!(instance is IMixinTarget))
+        SerializationImplementer.RaiseOnDeserializing (instance, context);
+    }
+
+    public static void RaiseOnDeserialized (DomainObject instance, StreamingContext context)
+    {
+      ArgumentUtility.CheckNotNull ("instance", instance);
+
+      // Only raise event if the mixin infrastructure hasn't already done it
+      if (!(instance is IMixinTarget))
+        SerializationImplementer.RaiseOnDeserialized (instance, context);
+    }
+
+    public static void RaiseOnDeserialization (DomainObject instance, object sender)
+    {
+      // Only raise event if the mixin infrastructure hasn't already done it
+      if (!(instance is IMixinTarget))
+        SerializationImplementer.RaiseOnDeserialization (instance, sender);
     }
   }
 }

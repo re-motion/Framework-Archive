@@ -80,7 +80,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         _deserializedObject = (IMixinTarget) Activator.CreateInstance (concreteType, new object[] {info, context});
       }
 
-      SerializationImplementer.RaiseOnDeserializing (_deserializedObject, context);
+      SerializationImplementer.RaiseOnDeserializing (_deserializedObject, _context);
     }
 
     public object GetRealObject (StreamingContext context)

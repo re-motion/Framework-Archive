@@ -270,6 +270,7 @@
     <Compile Include="MixedDomains\SampleTypes\MixinWithState.cs" />
     <Compile Include="MixedDomains\SampleTypes\NullMixin.cs" />
     <Compile Include="MixedDomains\SampleTypes\TargetClassForPersistentMixin.cs" />
+    <Compile Include="MixedDomains\SerializationCallbackTest.cs" />
     <Compile Include="MixedDomains\SerializationTest.cs" />
     <Compile Include="ObjectBinding\BindableDomainObjectMixinTests\CommonTest.cs" />
     <Compile Include="ObjectBinding\BindableDomainObjectMixinTests\DefaultValueTest.cs" />

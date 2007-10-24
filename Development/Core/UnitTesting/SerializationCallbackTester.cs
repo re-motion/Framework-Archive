@@ -23,22 +23,34 @@ namespace Rubicon.Development.UnitTesting
     public void Test_SerializationCallbacks ()
       {
         _receiverSetter (null);
-        ISerializationEventReceiver receiver = _mockRepository.CreateMock<ISerializationEventReceiver> ();
+        try
+        {
+          ISerializationEventReceiver receiver = _mockRepository.CreateMock<ISerializationEventReceiver> ();
 
-        _receiverSetter (receiver);
-        CheckSerialization (receiver);
-        _receiverSetter (null);
+          _receiverSetter (receiver);
+          CheckSerialization (receiver);
+        }
+        finally
+        {
+          _receiverSetter (null);
+        }
       }
 
       public void Test_DeserializationCallbacks ()
       {
         _receiverSetter (null);
-        byte[] bytes = Serializer.Serialize (_instance);
-        ISerializationEventReceiver receiver = _mockRepository.CreateMock<ISerializationEventReceiver> ();
-        _receiverSetter (receiver);
+        try
+        {
+          byte[] bytes = Serializer.Serialize (_instance);
+          ISerializationEventReceiver receiver = _mockRepository.CreateMock<ISerializationEventReceiver>();
+          _receiverSetter (receiver);
 
-        CheckDeserialization (bytes, receiver);
-        _receiverSetter (null);
+          CheckDeserialization (bytes, receiver);
+        }
+        finally
+        {
+          _receiverSetter (null);
+        }
       }
 
       private void CheckSerialization (ISerializationEventReceiver receiver)

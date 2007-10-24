@@ -74,7 +74,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
         _id = (ObjectID) info.GetValue ("DomainObject.ID", typeof (ObjectID));
       }
 
-      SerializationImplementer.RaiseOnDeserializing (_realObject, _context);
+      DomainObjectMixinCodeGenerationBridge.RaiseOnDeserializing (_realObject, _context);
     }
 
     public object GetRealObject (StreamingContext context)
@@ -107,8 +107,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
         }
       }
 
-      SerializationImplementer.RaiseOnDeserialized (_realObject, _context);
-      SerializationImplementer.RaiseOnDeserialization (_realObject, sender);
+      DomainObjectMixinCodeGenerationBridge.RaiseOnDeserialized (_realObject, _context);
+      DomainObjectMixinCodeGenerationBridge.RaiseOnDeserialization (_realObject, sender);
     }
   }
 }

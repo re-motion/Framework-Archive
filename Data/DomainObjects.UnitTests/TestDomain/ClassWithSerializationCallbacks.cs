@@ -6,7 +6,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [DBTable]
   [Serializable]
-  public class ClassWithSerializationCallbacks : DomainObject, IDeserializationCallback
+  [Instantiable]
+  public abstract class ClassWithSerializationCallbacks : DomainObject, IDeserializationCallback
   {
     private static ISerializationEventReceiver s_receiver;
 
