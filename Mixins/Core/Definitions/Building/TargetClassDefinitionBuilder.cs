@@ -40,7 +40,7 @@ namespace Rubicon.Mixins.Definitions.Building
       membersBuilder.Apply (classDefinition.Type);
 
       AttributeDefinitionBuilder attributesBuilder = new AttributeDefinitionBuilder (classDefinition);
-      attributesBuilder.Apply (CustomAttributeData.GetCustomAttributes (classDefinition.Type));
+      attributesBuilder.Apply (classDefinition.Type);
 
       ApplyExplicitFaceInterfaces(classDefinition, classContext);
 

@@ -128,5 +128,157 @@ namespace Rubicon.Mixins.UnitTests.Configuration
             TypeFactory.GetActiveConfiguration (typeof (ClassWithInternalAttribute)).CustomAttributes.ContainsKey (typeof (InternalStuffAttribute)));
       }
     }
+
+    [Test]
+    public void CopyAttributes_OnClass ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingAttribute)))
+      {
+        MixinDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinIndirectlyAddingAttribute)];
+        Assert.IsFalse (definition.CustomAttributes.ContainsKey (typeof (CopyCustomAttributesAttribute)));
+        Assert.IsTrue (definition.CustomAttributes.ContainsKey (typeof (AttributeWithParameters)));
+
+        List<AttributeDefinition> attributes =
+            new List<AttributeDefinition> (definition.CustomAttributes[typeof (AttributeWithParameters)]);
+
+        Assert.AreEqual (1, attributes.Count);
+        Assert.AreEqual (typeof (AttributeWithParameters), attributes[0].AttributeType);
+        Assert.AreEqual (typeof (AttributeWithParameters).GetConstructor (new Type[] { typeof (int), typeof (string) }),
+            attributes[0].Data.Constructor);
+        Assert.AreEqual (definition, attributes[0].DeclaringDefinition);
+
+        Assert.AreEqual (2, attributes[0].Data.ConstructorArguments.Count);
+        Assert.AreEqual (typeof (int), attributes[0].Data.ConstructorArguments[0].ArgumentType);
+        Assert.AreEqual (1, attributes[0].Data.ConstructorArguments[0].Value);
+        Assert.AreEqual (typeof (string), attributes[0].Data.ConstructorArguments[1].ArgumentType);
+        Assert.AreEqual ("bla", attributes[0].Data.ConstructorArguments[1].Value);
+
+        Assert.AreEqual (2, attributes[0].Data.NamedArguments.Count);
+
+        Assert.AreEqual (typeof (AttributeWithParameters).GetField ("Field"), attributes[0].Data.NamedArguments[0].MemberInfo);
+        Assert.AreEqual (typeof (int), attributes[0].Data.NamedArguments[0].TypedValue.ArgumentType);
+        Assert.AreEqual (5, attributes[0].Data.NamedArguments[0].TypedValue.Value);
+
+        Assert.AreEqual (typeof (AttributeWithParameters).GetProperty ("Property"), attributes[0].Data.NamedArguments[1].MemberInfo);
+        Assert.AreEqual (typeof (int), attributes[0].Data.NamedArguments[1].TypedValue.ArgumentType);
+        Assert.AreEqual (4, attributes[0].Data.NamedArguments[1].TypedValue.Value);
+      }
+    }
+
+    [Test]
+    public void CopyAttributes_OnMember ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingAttribute)))
+      {
+        MethodDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinIndirectlyAddingAttribute)]
+            .Methods[typeof (MixinIndirectlyAddingAttribute).GetMethod ("ToString")];
+
+        Assert.IsFalse (definition.CustomAttributes.ContainsKey (typeof (CopyCustomAttributesAttribute)));
+        Assert.IsTrue (definition.CustomAttributes.ContainsKey (typeof (AttributeWithParameters)));
+
+        List<AttributeDefinition> attributes =
+            new List<AttributeDefinition> (definition.CustomAttributes[typeof (AttributeWithParameters)]);
+
+        Assert.AreEqual (1, attributes.Count);
+        Assert.AreEqual (typeof (AttributeWithParameters), attributes[0].AttributeType);
+        Assert.AreEqual (typeof (AttributeWithParameters).GetConstructor (new Type[] { typeof (int) }), attributes[0].Data.Constructor);
+
+        Assert.AreEqual (1, attributes[0].Data.ConstructorArguments.Count);
+        Assert.AreEqual (typeof (int), attributes[0].Data.ConstructorArguments[0].ArgumentType);
+        Assert.AreEqual (4, attributes[0].Data.ConstructorArguments[0].Value);
+
+        Assert.AreEqual (0, attributes[0].Data.NamedArguments.Count);
+      }
+    }
+
+    [IgnoreForMixinConfiguration]
+    public class MixinWithAmbiguousSource
+    {
+      private void Source () { }
+      private void Source (int i) { }
+
+      [OverrideTarget]
+      [CopyCustomAttributes (typeof (MixinWithAmbiguousSource), "Source")]
+      protected new string ToString()
+      {
+        return "";
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The CopyCustomAttributes attribute on "
+        + "Rubicon.Mixins.UnitTests.Configuration.AttributeDefinitionBuilderTests+MixinWithAmbiguousSource.ToString specifies an ambiguous attribute "
+        + "source: The source member string Source matches several members on type "
+        + "Rubicon.Mixins.UnitTests.Configuration.AttributeDefinitionBuilderTests+MixinWithAmbiguousSource.")]
+    public void CopyAttributes_Ambiguous ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithAmbiguousSource)))
+      {
+        TypeFactory.GetActiveConfiguration (typeof (NullTarget));
+      }
+    }
+
+    [IgnoreForMixinConfiguration]
+    public class MixinWithUnknownSource
+    {
+      [OverrideTarget]
+      [CopyCustomAttributes (typeof (MixinWithUnknownSource), "Source")]
+      protected new string ToString ()
+      {
+        return "";
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The CopyCustomAttributes attribute on "
+        + "Rubicon.Mixins.UnitTests.Configuration.AttributeDefinitionBuilderTests+MixinWithUnknownSource.ToString specifies an unknown attribute "
+        + "source Rubicon.Mixins.UnitTests.Configuration.AttributeDefinitionBuilderTests+MixinWithUnknownSource.Source.")]
+    public void CopyAttributes_Unknown ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithUnknownSource)))
+      {
+        TypeFactory.GetActiveConfiguration (typeof (NullTarget));
+      }
+    }
+
+    [IgnoreForMixinConfiguration]
+    public class MixinWithInvalidSourceType
+    {
+      [OverrideTarget]
+      [CopyCustomAttributes (typeof (MixinWithInvalidSourceType))]
+      protected new string ToString ()
+      {
+        return "";
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The CopyCustomAttributes attribute on "
+        + "Rubicon.Mixins.UnitTests.Configuration.AttributeDefinitionBuilderTests+MixinWithInvalidSourceType.ToString specifies an attribute source "
+        + "Rubicon.Mixins.UnitTests.Configuration.AttributeDefinitionBuilderTests+MixinWithInvalidSourceType of a different member kind.")]
+    public void CopyAttributes_Invalid ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithInvalidSourceType)))
+      {
+        TypeFactory.GetActiveConfiguration (typeof (NullTarget));
+      }
+    }
+
+    [IgnoreForMixinConfiguration]
+    [CopyCustomAttributes(typeof (MixinWithSelfSource))]
+    public class MixinWithSelfSource
+    {
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The CopyCustomAttributes attribute on "
+        + "Rubicon.Mixins.UnitTests.Configuration.AttributeDefinitionBuilderTests.MixinWithSelfSource specifies itself as an attribute source.")]
+    public void CopyAttributes_Self ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithSelfSource)))
+      {
+        TypeFactory.GetActiveConfiguration (typeof (NullTarget));
+      }
+    }
   }
 }

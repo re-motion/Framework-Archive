@@ -7,7 +7,7 @@ using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 
 namespace Rubicon.Mixins.Definitions
 {
-  public abstract class ClassDefinitionBase : IAttributableDefinition
+  public abstract class ClassDefinitionBase : IAttributableDefinition, IVisitableDefinition
   {
     public readonly UniqueDefinitionCollection<MethodInfo, MethodDefinition> Methods =
         new UniqueDefinitionCollection<MethodInfo, MethodDefinition> (delegate (MethodDefinition m) { return m.MethodInfo; });

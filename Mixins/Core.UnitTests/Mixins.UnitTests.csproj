@@ -54,8 +54,10 @@
     <Compile Include="Mixins\MixinTypeCodeGeneration\GeneratedTypeInConfigurationTests.cs" />
     <Compile Include="Mixins\ModuleManagerSerializationExtensionTests.cs" />
     <Compile Include="Mixins\SerializationCallbackTests.cs" />
+    <Compile Include="SampleTypes\AttributeWithParameters.cs" />
     <Compile Include="SampleTypes\ClassWithMixedMixin.cs" />
     <Compile Include="SampleTypes\DerivedNullTarget.cs" />
+    <Compile Include="SampleTypes\MixinIndirectlyAddingAttribute.cs" />
     <Compile Include="SampleTypes\NullTarget.cs" />
     <Compile Include="SampleTypes\MixinMixingClass.cs" />
     <Compile Include="SampleTypes\MixinMixingMixin.cs" />

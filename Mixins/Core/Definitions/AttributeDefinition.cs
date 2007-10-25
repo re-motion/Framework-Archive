@@ -40,7 +40,7 @@ namespace Rubicon.Mixins.Definitions
 
     public IVisitableDefinition Parent
     {
-      get { return DeclaringDefinition; }
+      get { return DeclaringDefinition as IVisitableDefinition; }
     }
 
     public IAttributableDefinition DeclaringDefinition

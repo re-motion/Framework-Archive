@@ -64,7 +64,7 @@ namespace Rubicon.Mixins.Definitions.Building
         {
           PropertyDefinition definition = new PropertyDefinition (property, _classDefinition, getMethodDefinition, setMethodDefinition);
           AttributeDefinitionBuilder attributeBuilder = new AttributeDefinitionBuilder (definition);
-          attributeBuilder.Apply (CustomAttributeData.GetCustomAttributes (property));
+          attributeBuilder.Apply (property);
           _classDefinition.Properties.Add (definition);
         }
       }
@@ -84,7 +84,7 @@ namespace Rubicon.Mixins.Definitions.Building
         {
           EventDefinition definition = new EventDefinition (eventInfo, _classDefinition, addMethodDefinition, removeMethodDefinition, _classDefinition);
           AttributeDefinitionBuilder attributeBuilder = new AttributeDefinitionBuilder (definition);
-          attributeBuilder.Apply (CustomAttributeData.GetCustomAttributes (eventInfo));
+          attributeBuilder.Apply (eventInfo);
           _classDefinition.Events.Add (definition);
         }
       }
@@ -98,7 +98,7 @@ namespace Rubicon.Mixins.Definitions.Building
         {
           MethodDefinition definition = new MethodDefinition (method, _classDefinition);
           AttributeDefinitionBuilder attributeBuilder = new AttributeDefinitionBuilder (definition);
-          attributeBuilder.Apply (CustomAttributeData.GetCustomAttributes (method));
+          attributeBuilder.Apply (method);
           _classDefinition.Methods.Add (definition);
         }
       }
@@ -110,7 +110,7 @@ namespace Rubicon.Mixins.Definitions.Building
       {
         MethodDefinition methodDefinition = new MethodDefinition (methodInfo, _classDefinition);
         AttributeDefinitionBuilder attributeBuilder = new AttributeDefinitionBuilder (methodDefinition);
-        attributeBuilder.Apply (CustomAttributeData.GetCustomAttributes (methodInfo));
+        attributeBuilder.Apply (methodInfo);
         _specialMethods.Add (methodInfo);
         return methodDefinition;
       }

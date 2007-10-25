@@ -7,7 +7,7 @@ namespace Rubicon.Mixins.Definitions.Building
 {
   public class AttributeDefinitionBuilder
   {
-    private IAttributableDefinition _attributableDefinition;
+    private readonly IAttributableDefinition _attributableDefinition;
 
     public AttributeDefinitionBuilder (IAttributableDefinition attributableDefinition)
     {
@@ -15,19 +15,96 @@ namespace Rubicon.Mixins.Definitions.Building
       _attributableDefinition = attributableDefinition;
     }
 
-    public void Apply (IEnumerable<CustomAttributeData> attributes)
+    public void Apply (MemberInfo attributeSource)
     {
+      ArgumentUtility.CheckNotNull ("attributeSource", attributeSource);
+
+      Apply (attributeSource, CustomAttributeData.GetCustomAttributes (attributeSource));
+    }
+
+    public void Apply (MemberInfo attributeSource, IEnumerable<CustomAttributeData> attributes)
+    {
+      ArgumentUtility.CheckNotNull ("attributeSource", attributeSource);
+      ArgumentUtility.CheckNotNull ("attributes", attributes);
+
       foreach (CustomAttributeData attributeData in attributes)
       {
         Type attributeType = attributeData.Constructor.DeclaringType;
-        if (attributeType.IsVisible && !IsIgnoredAttributeType (attributeType))
+        if (attributeType == typeof (CopyCustomAttributesAttribute))
+          Copy (attributeSource, attributeData);
+        else if (attributeType.IsVisible && !IsIgnoredAttributeType (attributeType))
           _attributableDefinition.CustomAttributes.Add (new AttributeDefinition (_attributableDefinition, attributeData));
       }
     }
 
+
     private bool IsIgnoredAttributeType (Type type)
     {
       return type == typeof (SerializableAttribute) || type.Assembly.Equals (typeof (Mixin).Assembly);
+    }
+
+    private void Copy (MemberInfo attributeSource, CustomAttributeData copyAttributeData)
+    {
+      Assertion.IsTrue (copyAttributeData.Constructor.DeclaringType == typeof (CopyCustomAttributesAttribute));
+      string sourceName = GetFullMemberName (attributeSource);
+      
+      object[] constructorArguments = new object[copyAttributeData.ConstructorArguments.Count];
+      for (int i = 0; i < copyAttributeData.ConstructorArguments.Count; ++i)
+        constructorArguments[i] = copyAttributeData.ConstructorArguments[i].Value;
+
+      CopyCustomAttributesAttribute copyAttribute = (CopyCustomAttributesAttribute) copyAttributeData.Constructor.Invoke (constructorArguments);
+
+      MemberInfo copySource;
+      try
+      {
+        copySource = copyAttribute.GetAttributeSource (UnifyTypeMemberTypes (attributeSource.MemberType));
+      }
+      catch (AmbiguousMatchException ex)
+      {
+        string message = string.Format ("The CopyCustomAttributes attribute on {0} specifies an ambiguous attribute source: {1}",
+            sourceName, ex.Message);
+        throw new ConfigurationException (message, ex);
+      }
+      
+      if (copySource == null)
+      {
+        string message = string.Format ("The CopyCustomAttributes attribute on {0} specifies an unknown attribute source {1}.",
+            sourceName, copyAttribute.AttributeSourceName);
+        throw new ConfigurationException (message);
+      }
+
+      if (!AreCompatibleMemberTypes (copySource.MemberType, attributeSource.MemberType))
+      {
+        string message = string.Format ("The CopyCustomAttributes attribute on {0} specifies an attribute source {1} of a different member kind.",
+            sourceName, copyAttribute.AttributeSourceName);
+        throw new ConfigurationException (message);
+      }
+
+      if (copySource.Equals (attributeSource))
+      {
+        string message = string.Format ("The CopyCustomAttributes attribute on {0} specifies itself as an attribute source.", sourceName);
+        throw new ConfigurationException (message);
+      }
+
+      Apply (copySource);
+    }
+
+    private bool AreCompatibleMemberTypes (MemberTypes one, MemberTypes two)
+    {
+      return UnifyTypeMemberTypes (one) == UnifyTypeMemberTypes (two);
+    }
+
+    private MemberTypes UnifyTypeMemberTypes (MemberTypes memberType)
+    {
+      if (memberType == MemberTypes.NestedType || memberType == MemberTypes.TypeInfo)
+        return MemberTypes.NestedType | MemberTypes.TypeInfo;
+      else
+        return memberType;
+    }
+
+    private string GetFullMemberName (MemberInfo attributeSource)
+    {
+      return attributeSource.DeclaringType != null ? attributeSource.DeclaringType.FullName + "." + attributeSource.Name : attributeSource.Name;
     }
   }
 }

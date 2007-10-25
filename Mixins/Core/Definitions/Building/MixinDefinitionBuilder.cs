@@ -43,7 +43,7 @@ namespace Rubicon.Mixins.Definitions.Building
       membersBuilder.Apply (mixin.Type);
 
       AttributeDefinitionBuilder attributesBuilder = new AttributeDefinitionBuilder (mixin);
-      attributesBuilder.Apply (CustomAttributeData.GetCustomAttributes (mixin.Type));
+      attributesBuilder.Apply (mixin.Type);
 
       _attributeIntroductionBuilder.Apply (mixin);
 

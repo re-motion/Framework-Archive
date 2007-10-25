@@ -125,5 +125,48 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.AreEqual (0, definition.IntroducedAttributes.GetItemCount (typeof (BT1Attribute)));
       Assert.AreEqual (1, definition.CustomAttributes.GetItemCount (typeof (BT1Attribute)));
     }
+
+    [Test]
+    public void IndirectAttributeIntroduction_ViaCopy ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingAttribute)))
+      {
+        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget));
+        Assert.IsFalse (definition.IntroducedAttributes.ContainsKey (typeof (CopyCustomAttributesAttribute)));
+        Assert.IsTrue (definition.IntroducedAttributes.ContainsKey (typeof (AttributeWithParameters)));
+
+        List<AttributeIntroductionDefinition> introductions =
+            new List<AttributeIntroductionDefinition> (definition.IntroducedAttributes[typeof (AttributeWithParameters)]);
+        List<AttributeDefinition> attributes =
+            new List<AttributeDefinition> (definition.Mixins[typeof (MixinIndirectlyAddingAttribute)].CustomAttributes[typeof (AttributeWithParameters)]);
+
+        Assert.AreEqual (1, introductions.Count);
+        Assert.AreEqual (1, attributes.Count);
+
+        Assert.AreSame (attributes[0], introductions[0].Attribute);
+      }
+    }
+
+    [Test]
+    public void IndirectAttributeIntroduction_ViaCopy_OnMember ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingAttribute)))
+      {
+        MethodDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Methods[typeof (object).GetMethod ("ToString")];
+        Assert.IsFalse (definition.IntroducedAttributes.ContainsKey (typeof (CopyCustomAttributesAttribute)));
+        Assert.IsTrue (definition.IntroducedAttributes.ContainsKey (typeof (AttributeWithParameters)));
+
+        List<AttributeIntroductionDefinition> introductions =
+            new List<AttributeIntroductionDefinition> (definition.IntroducedAttributes[typeof (AttributeWithParameters)]);
+        List<AttributeDefinition> attributes = new List<AttributeDefinition> (
+            definition.Overrides[typeof (MixinIndirectlyAddingAttribute)].DeclaringClass
+            .Methods[typeof (MixinIndirectlyAddingAttribute).GetMethod ("ToString")].CustomAttributes[typeof (AttributeWithParameters)]);
+
+        Assert.AreEqual (1, introductions.Count);
+        Assert.AreEqual (1, attributes.Count);
+
+        Assert.AreSame (attributes[0], introductions[0].Attribute);
+      }
+    }
   }
 }

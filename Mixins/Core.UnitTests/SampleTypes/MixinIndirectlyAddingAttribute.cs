@@ -1,0 +1,24 @@
+using System;
+
+namespace Rubicon.Mixins.UnitTests.SampleTypes
+{
+  [CopyCustomAttributes (typeof (AttributeSource))]
+  public class MixinIndirectlyAddingAttribute : Mixin<object>
+  {
+    [AttributeWithParameters (1, "bla", Property = 4, Field = 5)]
+    public class AttributeSource : Attribute
+    {
+      [AttributeWithParameters (4)]
+      public void AttributeSourceMethod ()
+      {
+      }
+    }
+
+    [OverrideTarget]
+    [CopyCustomAttributes (typeof (AttributeSource), "AttributeSourceMethod")]
+    public new string ToString ()
+    {
+      return "";
+    }
+  }
+}

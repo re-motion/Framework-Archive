@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CopyCustomAttributesAttribute.cs" />
     <Compile Include="CodeGeneration\ConcreteMixinTypeAttribute.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallMethodGenerator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallProxyInitializer.cs" />

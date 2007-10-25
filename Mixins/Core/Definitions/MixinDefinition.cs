@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Mixins.Definitions
 {
   [DebuggerDisplay ("{Type}, TargetClass = {TargetClass.Type}")]
-  public class MixinDefinition : ClassDefinitionBase, IVisitableDefinition
+  public class MixinDefinition : ClassDefinitionBase
   {
     public readonly UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> InterfaceIntroductions =
         new UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
