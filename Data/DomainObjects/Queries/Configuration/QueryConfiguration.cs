@@ -1,150 +1,66 @@
 using System;
+using System.Configuration;
+using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Queries.Configuration
 {
-/// <summary>
-/// Represents the current query configuration.
-/// </summary>
-// TODO: Handle property ResolveType! => Push down property from ConfigurationBase, if StorageProviderConfiguration does not use it.
-public class QueryConfiguration : ConfigurationBase
-{
-  // types
-
-  // static members and constants
-
-  private static QueryConfiguration s_queryConfiguration;
-
   /// <summary>
-  /// Gets the current query configuration.
+  /// Represents the current query configuration.
   /// </summary>
-  /// <remarks>
-  /// <para>If there is no current query configuration a new one is created.</para>
-  /// <para>The file containing the query configuration is determined as follows:
-  /// <list type="bullet">
-  ///   <item>
-  ///     <description>
-  ///       If the application configuration file (e.g. web.config, app.config) contains the key 
-  ///       <b>Rubicon.Data.DomainObjects.Queries.Configuration.ConfigurationFile</b> specifying the configuration file this is used.
-  ///     </description>  
-  ///   </item>
-  ///   <item>
-  ///     <description>The file <b>queries.xml</b>  must be present in the same directory as the assemblies reside.</description>
-  ///   </item>  
-  /// </list>
-  /// </para>
-  /// </remarks>
-  public static QueryConfiguration Current
+  public class QueryConfiguration : ExtendedConfigurationSection
   {
-    get 
+    private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
+    private readonly ConfigurationProperty _queryFilesProperty;
+
+    private readonly DoubleCheckedLockingContainer<QueryConfigurationLoader> _loader;
+    private readonly DoubleCheckedLockingContainer<QueryDefinitionCollection> _queries;
+
+    public QueryConfiguration ()
     {
-      if (s_queryConfiguration == null)
+      _queries = new DoubleCheckedLockingContainer<QueryDefinitionCollection> (delegate { return _loader.Value.GetQueryDefinitions (); });
+
+      _queryFilesProperty = new ConfigurationProperty (
+          "queryFiles",
+          typeof (ConfigurationElementCollection<QueryFileElement>),
+          null,
+          ConfigurationPropertyOptions.None);
+
+      _properties.Add (_queryFilesProperty);
+
+      // TODO: support multiple files in this delegate
+      _loader = new DoubleCheckedLockingContainer<QueryConfigurationLoader> (delegate
       {
-        lock (typeof (QueryConfiguration))
-        {
-          if (s_queryConfiguration == null)
-            s_queryConfiguration = new QueryConfiguration (QueryConfigurationLoader.Create ());
-        }
-      }
-
-      return s_queryConfiguration;
+        if (QueryFiles.Count > 0)
+          return new QueryConfigurationLoader (QueryFiles[0].FileName);
+        else
+          return QueryConfigurationLoader.Create ();
+      });
     }
-  }
 
-  /// <summary>
-  /// Sets the current query configuration.
-  /// </summary>
-  /// <param name="queryConfiguration">The <b>QueryConfiguration</b> to which the current <b>QueryConfiguration</b> is set.</param>
-  public static void SetCurrent (QueryConfiguration queryConfiguration)
-  {
-    // TODO: SetCurrent must not accept queryConfiguration with ResolveType = true as soon as QueryConfiguration handles ResolveTypes! 
-    lock (typeof (QueryConfiguration))
+    public QueryConfiguration (string configurationFile) : this()
     {
-      s_queryConfiguration = queryConfiguration;
+      ArgumentUtility.CheckNotNull ("configurationFile", configurationFile);
+
+      QueryFileElement element = new QueryFileElement (configurationFile, configurationFile);
+      QueryFiles.Add (element);
     }
-  }
 
-  // member fields
-
-  private QueryDefinitionCollection _queryDefinitions;
-
-  // construction and disposing
-
-  /// <summary>
-  /// Initializes a new instance of the <b>QueryConfiguration</b> class from an XML configuration file and an XML schema file.
-  /// </summary>
-  /// <param name="configurationFile">Configuration information is read from this file.</param>
-  /// <exception cref="QueryConfigurationException">The query configuration could not be read from the specified <paramref name="configurationFile"/>.</exception>
-  public QueryConfiguration (string configurationFile) 
-      : this (new QueryConfigurationLoader (configurationFile))
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <b>QueryConfiguration</b> class from the specified <see cref="QueryConfigurationLoader"/>.
-  /// </summary>
-  /// <param name="loader">The <see cref="QueryConfigurationLoader"/> to be used for reading the <b>QueryConfiguration</b>. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><paramref name="loader"/> is <see langword="null"/>.</exception>
-  /// <exception cref="QueryConfigurationException">The query configuration could not be read from the configuration file.</exception>
-  public QueryConfiguration (QueryConfigurationLoader loader) : base (loader)
-  {
-    ArgumentUtility.CheckNotNull ("loader", loader);
-
-    _queryDefinitions = loader.GetQueryDefinitions ();
-  }
-
-  // methods and properties
-
-  /// <summary>
-  /// Gets the <see cref="QueryDefinition"/> through its unique ID.
-  /// </summary>
-  /// <param name="queryID">The name of the query. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><paramref name="queryID"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="queryID"/> is an empty string.</exception>
-  public QueryDefinition this [string queryID]
-  {
-    get 
+    public ConfigurationElementCollection<QueryFileElement> QueryFiles
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("queryID", queryID);
-      return _queryDefinitions[queryID]; 
+      get { return (ConfigurationElementCollection<QueryFileElement>) this[_queryFilesProperty]; }
+    }
+
+    protected override ConfigurationPropertyCollection Properties
+    {
+      get { return _properties; }
+    }
+
+    public QueryDefinitionCollection QueryDefinitions
+    {
+      get { return _queries.Value; }
     }
   }
-
-  /// <summary>
-  /// Gets the <see cref="QueryDefinition"/> through its index.
-  /// </summary>
-  /// <param name="index">The index of the requested object.</param>
-  /// <exception cref="System.ArgumentOutOfRangeException">
-  ///   <paramref name="index"/> is less than zero.<br /> -or- <br />
-  ///   <paramref name="index"/> is equal to or greater than the number of items in the configuration.
-  /// </exception>
-  public QueryDefinition this [int index]
-  {
-    get { return _queryDefinitions[index]; }
-  }
-
-  /// <summary>
-  /// Gets all configured <see cref="QueryDefinition"/>s.
-  /// </summary>
-  public QueryDefinitionCollection QueryDefinitions
-  {
-    get { return _queryDefinitions; }
-  }
-
-  /// <summary>
-  /// Determines whether the <see cref="QueryConfiguration"/> contains a specific <see cref="QueryDefinition"/>.
-  /// </summary>
-  /// <param name="queryDefinition">The object to locate in the <see cref="QueryConfiguration"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><see langword="true"/> if the <see cref="QueryConfiguration"/> contains the <paramref name="queryDefinition"/>; otherwise <see langword="false"/>.</returns>
-  /// <exception cref="System.ArgumentNullException"><paramref name="queryDefinition"/> is <see langword="null"/>.</exception>
-  /// <remarks>This method only returns true, if the same reference is found in the collection.</remarks>
-  public bool Contains (QueryDefinition queryDefinition)
-  {
-    ArgumentUtility.CheckNotNull ("queryDefinition", queryDefinition);
-
-    return _queryDefinitions.Contains (queryDefinition);
-  }
-}
 }

@@ -34,9 +34,8 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
       PersistenceConfiguration persistenceConfiguration =
           new PersistenceConfiguration (storageProviderDefinitionCollection, storageProviderDefinitionCollection["TestDomain"]);
 
-      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration));
+      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration, new QueryConfiguration (GetFullPath (@"DataDomainObjectsObjectBinding_Queries.xml"))));
       MappingConfiguration.SetCurrent (XmlBasedMappingConfiguration.Create (GetFullPath (@"DataDomainObjectsObjectBinding_Mapping.xml")));
-      QueryConfiguration.SetCurrent (new QueryConfiguration (GetFullPath (@"DataDomainObjectsObjectBinding_Queries.xml")));
 
       SqlConnection.ClearAllPools();
 

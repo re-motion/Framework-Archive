@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
@@ -15,7 +16,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Queries
       QueryParameterCollection parameters = new QueryParameterCollection ();
       Query query = new Query ("OrderQuery", parameters);
 
-      QueryDefinition definition = QueryConfiguration.Current["OrderQuery"];
+      QueryDefinition definition = DomainObjectsConfiguration.Current.Query.QueryDefinitions["OrderQuery"];
       Assert.AreSame (definition, query.Definition);
       Assert.AreEqual (definition.ID, query.ID);
       Assert.AreEqual (definition.CollectionType, query.CollectionType);

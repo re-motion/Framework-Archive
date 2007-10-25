@@ -8,6 +8,7 @@ using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration;
 using Rubicon.Utilities;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 
 namespace Rubicon.Data.DomainObjects.RdbmsTools
 {
@@ -58,7 +59,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools
     protected virtual void InitializeConfiguration ()
     {
       DomainObjectsConfiguration.SetCurrent (
-          new FakeDomainObjectsConfiguration (DomainObjectsConfiguration.Current.MappingLoader, GetPersistenceConfiguration()));
+          new FakeDomainObjectsConfiguration (DomainObjectsConfiguration.Current.MappingLoader, GetPersistenceConfiguration(), new QueryConfiguration()));
 
       MappingConfiguration.SetCurrent (new MappingConfiguration (DomainObjectsConfiguration.Current.MappingLoader.CreateMappingLoader()));
     }

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 
@@ -45,7 +46,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void QueryDefinitionInQueryConfiguration ()
     {
-      QueryDefinition queryDefinition = QueryConfiguration.Current["OrderQuery"];
+      QueryDefinition queryDefinition = DomainObjectsConfiguration.Current.Query.QueryDefinitions["OrderQuery"];
 
       QueryDefinition deserializedQueryDefinition = (QueryDefinition) SerializeAndDeserialize (queryDefinition);
 
@@ -57,12 +58,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void UnknownQueryDefinitionInQueryConfiguration ()
     {
       QueryDefinition unknownQueryDefinition = new QueryDefinition ("UnknownQuery", "TestDomain", "select 42", QueryType.Scalar);
-      QueryConfiguration.Current.QueryDefinitions.Add (unknownQueryDefinition);
+      DomainObjectsConfiguration.Current.Query.QueryDefinitions.Add (unknownQueryDefinition);
 
       using (MemoryStream stream = new MemoryStream ())
       {
         Serialize (stream, unknownQueryDefinition);
-        QueryConfiguration.SetCurrent (null);
+        DomainObjectsConfiguration.SetCurrent (null);
         Deserialize (stream);
       }
     }
@@ -71,13 +72,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void QueryDefinitionCollection ()
     {
       QueryDefinitionCollection queryDefinitions = new QueryDefinitionCollection ();
-      queryDefinitions.Add (QueryConfiguration.Current.QueryDefinitions[0]);
-      queryDefinitions.Add (QueryConfiguration.Current.QueryDefinitions[1]);
+      queryDefinitions.Add (DomainObjectsConfiguration.Current.Query.QueryDefinitions[0]);
+      queryDefinitions.Add (DomainObjectsConfiguration.Current.Query.QueryDefinitions[1]);
 
       QueryDefinitionCollection deserializedQueryDefinitions = (QueryDefinitionCollection) SerializeAndDeserialize (queryDefinitions);
       AreEqual (queryDefinitions, deserializedQueryDefinitions);
-      Assert.AreSame (deserializedQueryDefinitions[0], QueryConfiguration.Current.QueryDefinitions[0]);
-      Assert.AreSame (deserializedQueryDefinitions[1], QueryConfiguration.Current.QueryDefinitions[1]);
+      Assert.AreSame (deserializedQueryDefinitions[0], DomainObjectsConfiguration.Current.Query.QueryDefinitions[0]);
+      Assert.AreSame (deserializedQueryDefinitions[1], DomainObjectsConfiguration.Current.Query.QueryDefinitions[1]);
     }
 
     [Test]
@@ -88,7 +89,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       Query deserializedQuery = (Query) SerializeAndDeserialize (query);
       AreEqual (query, deserializedQuery);
-      Assert.AreSame (QueryConfiguration.Current["OrderQuery"], deserializedQuery.Definition);
+      Assert.AreSame (DomainObjectsConfiguration.Current.Query.QueryDefinitions["OrderQuery"], deserializedQuery.Definition);
     }
 
     private void AreEqual (Query expected, Query actual)

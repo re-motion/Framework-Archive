@@ -1,5 +1,7 @@
 using System;
 using System.Runtime.Serialization;
+using Rubicon.Data.DomainObjects.Configuration;
+using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Queries.Configuration
@@ -8,9 +10,9 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
 /// Represents the definition of a query.
 /// </summary>
 /// <remarks>
-/// During the serialization process the object determines if it is part of <see cref="QueryConfiguration.Current"/> 
+/// During the serialization process the object determines if it is part of <see cref="Query"/> 
 /// and serializes this information. If it was then the deserialized object will be the reference from 
-/// <see cref="QueryConfiguration.Current"/> with the same <see cref="ID"/> again. Otherwise, a new object will be instantiated.
+/// <see cref="Query"/> with the same <see cref="ID"/> again. Otherwise, a new object will be instantiated.
 /// </remarks>
 [Serializable]
 public class QueryDefinition : ISerializable, IObjectReference
@@ -195,7 +197,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   {
     info.AddValue ("ID", _id);
 
-    bool isPartOfQueryConfiguration = QueryConfiguration.Current.Contains (this);
+    bool isPartOfQueryConfiguration = DomainObjectsConfiguration.Current.Query.QueryDefinitions.Contains (this);
     info.AddValue ("IsPartOfQueryConfiguration", isPartOfQueryConfiguration);
 
     if (!isPartOfQueryConfiguration)
@@ -220,7 +222,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   object IObjectReference.GetRealObject (StreamingContext context)
   {
     if (_ispartOfQueryConfiguration)
-      return QueryConfiguration.Current.QueryDefinitions.GetMandatory (_id);
+      return DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory (_id);
     else
       return this;
   }

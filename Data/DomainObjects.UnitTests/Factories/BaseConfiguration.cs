@@ -8,6 +8,7 @@ using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.TableInheritance;
 using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 {
@@ -15,6 +16,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
   {
     private readonly PersistenceConfiguration _persistenceConfiguration;
     private readonly MappingLoaderConfiguration _mappingLoaderConfiguration;
+    private readonly QueryConfiguration _queryConfiguration;
     private readonly MappingConfiguration _mappingConfiguration;
 
     protected BaseConfiguration ()
@@ -26,7 +28,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       _persistenceConfiguration.StorageGroups.Add (new StorageGroupElement (new TableInheritanceTestDomainAttribute (), TableInheritanceMappingTest.TableInheritanceTestDomainProviderID));
 
       _mappingLoaderConfiguration = new MappingLoaderConfiguration ();
-      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (_mappingLoaderConfiguration, _persistenceConfiguration));
+      _queryConfiguration = new QueryConfiguration ();
+      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (_mappingLoaderConfiguration, _persistenceConfiguration, _queryConfiguration));
 
       _mappingConfiguration = new MappingConfiguration (new MappingReflector (GetType().Assembly));
       MappingConfiguration.SetCurrent (_mappingConfiguration);
@@ -44,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
     public FakeDomainObjectsConfiguration GetDomainObjectsConfiguration()
     {
-      return new FakeDomainObjectsConfiguration (_mappingLoaderConfiguration, _persistenceConfiguration);
+      return new FakeDomainObjectsConfiguration (_mappingLoaderConfiguration, _persistenceConfiguration, _queryConfiguration);
     }
   }
 }

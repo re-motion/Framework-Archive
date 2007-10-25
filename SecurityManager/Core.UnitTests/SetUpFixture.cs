@@ -31,10 +31,13 @@ namespace Rubicon.SecurityManager.UnitTests
       PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration (providers, providers["SecurityManager"]);
       persistenceConfiguration.StorageGroups.Add (new StorageGroupElement (new SecurityManagerStorageGroupAttribute(), "SecurityManager"));
 
-      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration));
+      DomainObjectsConfiguration.SetCurrent (
+          new FakeDomainObjectsConfiguration (
+              new MappingLoaderConfiguration(),
+              persistenceConfiguration,
+              new QueryConfiguration (GetFullPath (@"SecurityManagerQueries.xml"))));
 
       MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (typeof (BaseSecurityManagerObject).Assembly)));
-      QueryConfiguration.SetCurrent (new QueryConfiguration (GetFullPath (@"SecurityManagerQueries.xml")));
 
       SqlConnection.ClearAllPools();
 

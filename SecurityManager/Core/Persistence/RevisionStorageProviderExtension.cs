@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.SecurityManager.Domain;
@@ -49,7 +50,7 @@ namespace Rubicon.SecurityManager.Persistence
       using (IDbCommand command = connection.CreateCommand ())
       {
         command.Transaction = transaction;
-        QueryDefinition queryDefintion = QueryConfiguration.Current.QueryDefinitions.GetMandatory ("Rubicon.SecurityManager.Domain.Revision.IncrementRevision");
+        QueryDefinition queryDefintion = DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory ("Rubicon.SecurityManager.Domain.Revision.IncrementRevision");
         command.CommandText = queryDefintion.Statement;
 
         command.ExecuteNonQuery ();

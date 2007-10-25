@@ -1,10 +1,14 @@
 using System;
+using System.Configuration;
 using System.IO;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting.Configuration;
+using Rubicon.Data.DomainObjects.Configuration;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
 {
@@ -53,39 +57,72 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
     }
 
     [Test]
-    public void InitializeWithFileNames ()
+    public void Deserialize_WithQueryFiles ()
     {
-      try
-      {
-        QueryConfiguration.SetCurrent (new QueryConfiguration (@"QueriesForLoaderTest.xml"));
+      string xmlFragment =
+          @"<query>
+              <queryFiles>
+                <add name=""unique1"" filename=""../../myqueries1.xml""/>
+                <add name=""unique2"" filename=""../../myqueries2.xml""/>
+              </queryFiles>
+            </query>";
 
-        Assert.AreEqual (4, QueryConfiguration.Current.QueryDefinitions.Count);
-        Assert.IsNotNull (QueryConfiguration.Current.QueryDefinitions["OrderQueryWithCustomCollectionType"]);
-      }
-      finally
-      {
-        QueryConfiguration.SetCurrent (null);
-      }
+      QueryConfiguration configuration = new QueryConfiguration ();
+
+      ConfigurationHelper.DeserializeSection (configuration, xmlFragment);
+
+      Assert.That (configuration.QueryFiles.Count, Is.EqualTo (2));
+      Assert.That (configuration.QueryFiles[0].Name, Is.EqualTo ("unique1"));
+      Assert.That (configuration.QueryFiles[0].FileName, Is.EqualTo ("../../myqueries1.xml"));
+      Assert.That (configuration.QueryFiles[1].Name, Is.EqualTo ("unique2"));
+      Assert.That (configuration.QueryFiles[1].FileName, Is.EqualTo ("../../myqueries2.xml"));
     }
 
     [Test]
-    public void NumericIndexer ()
+    [ExpectedException (typeof (ConfigurationErrorsException), ExpectedMessage = "The entry 'unique' has already been added.")]
+    public void Deserialize_WithNonUniqueNames ()
     {
-      Assert.IsNotNull (QueryConfiguration.Current[0]);
+      string xmlFragment =
+          @"<query>
+              <queryFiles>
+                <add name=""unique"" filename=""../../myqueries1.xml""/>
+                <add name=""unique"" filename=""../../myqueries2.xml""/>
+              </queryFiles>
+            </query>";
+
+      QueryConfiguration configuration = new QueryConfiguration ();
+
+      ConfigurationHelper.DeserializeSection (configuration, xmlFragment);
+      Assert.Fail ("Expected exception.");
     }
 
     [Test]
-    public void Contains ()
+    public void QueryConfigurationWithFileName ()
     {
-      Assert.IsFalse (QueryConfiguration.Current.Contains (QueryFactory.CreateCustomerTypeQueryDefinition ()));
-      Assert.IsTrue (QueryConfiguration.Current.Contains (QueryConfiguration.Current["OrderNoSumByCustomerNameQuery"]));
+      QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml");
+
+      Assert.AreEqual (1, configuration.QueryFiles.Count);
+      Assert.AreEqual ("QueriesForLoaderTest.xml", configuration.QueryFiles[0].Name);
+      Assert.AreEqual ("QueriesForLoaderTest.xml", configuration.QueryFiles[0].FileName);
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
-    public void ContainsNull ()
+    public void GetDefinitions ()
     {
-      QueryConfiguration.Current.Contains (null);
+      QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml");
+
+      QueryConfigurationLoader loader = new QueryConfigurationLoader (@"QueriesForLoaderTest.xml");
+      QueryDefinitionCollection expectedQueries = loader.GetQueryDefinitions ();
+
+      QueryDefinitionChecker checker = new QueryDefinitionChecker ();
+      checker.Check (expectedQueries, configuration.QueryDefinitions);
+    }
+
+    [Test]
+    public void CollectionTypeSupportsTypeUtilityNotation ()
+    {
+      QueryDefinitionCollection queries = DomainObjectsConfiguration.Current.Query.QueryDefinitions;
+      Assert.AreSame (typeof (SpecificOrderCollection), queries["QueryWithSpecificCollectionType"].CollectionType);
     }
 
     private QueryDefinitionCollection CreateExpectedQueryDefinitions ()
@@ -98,12 +135,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
       queries.Add (QueryFactory.CreateOrderSumQueryDefinition ());
 
       return queries;
-    }
-
-    [Test]
-    public void CollectionTypeSupportsTypeUtilityNotation ()
-    {
-      Assert.AreSame (typeof (SpecificOrderCollection), QueryConfiguration.Current["QueryWithSpecificCollectionType"].CollectionType);
     }
   }
 }

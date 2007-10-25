@@ -2,6 +2,7 @@ using System;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Development
@@ -12,16 +13,19 @@ namespace Rubicon.Data.DomainObjects.Development
   /// </summary>
   public class FakeDomainObjectsConfiguration: IDomainObjectsConfiguration
   {
-    private PersistenceConfiguration _storage;
-    private MappingLoaderConfiguration _mappingLoader;
+    private readonly PersistenceConfiguration _storage;
+    private readonly MappingLoaderConfiguration _mappingLoader;
+    private readonly QueryConfiguration _query;
 
-    public FakeDomainObjectsConfiguration (MappingLoaderConfiguration mappingLoader, PersistenceConfiguration storage)
+    public FakeDomainObjectsConfiguration (MappingLoaderConfiguration mappingLoader, PersistenceConfiguration storage, QueryConfiguration query)
     {
       ArgumentUtility.CheckNotNull ("mappingLoader", mappingLoader);
       ArgumentUtility.CheckNotNull ("storage", storage);
+      ArgumentUtility.CheckNotNull ("query", query);
 
       _mappingLoader = mappingLoader;
       _storage = storage;
+      _query = query;
     }
 
     public MappingLoaderConfiguration MappingLoader
@@ -32,6 +36,11 @@ namespace Rubicon.Data.DomainObjects.Development
     public PersistenceConfiguration Storage
     {
       get { return _storage; }
+    }
+
+    public QueryConfiguration Query
+    {
+      get { return _query; }
     }
   }
 }

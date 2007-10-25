@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 
@@ -33,7 +34,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       // Have all xml files loaded, so if the code is instrumented by a profiler, 
       // the loading does not falsify the method run times during the first call of GetObject.
       MappingConfiguration mapping = MappingConfiguration.Current;
-      QueryConfiguration queryConfiguration = QueryConfiguration.Current;
+      QueryConfiguration queryConfiguration = DomainObjectsConfiguration.Current.Query;
 
       test.SetUp();
       test.LoadObjectsOverRelationTest();

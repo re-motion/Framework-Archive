@@ -5,6 +5,7 @@ using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Development;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -21,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public override void SetUp ()
     {
       base.SetUp ();
-      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), DomainObjectsConfiguration.Current.Storage));
+      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), DomainObjectsConfiguration.Current.Storage, new QueryConfiguration()));
     }
 
     [TearDown]

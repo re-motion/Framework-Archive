@@ -1,6 +1,7 @@
 using System.Configuration;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 
 namespace Rubicon.Data.DomainObjects.Configuration
 {
@@ -13,5 +14,7 @@ namespace Rubicon.Data.DomainObjects.Configuration
     MappingLoaderConfiguration MappingLoader { get; }
 
     PersistenceConfiguration Storage { get; }
+
+    QueryConfiguration Query { get; }
   }
 }

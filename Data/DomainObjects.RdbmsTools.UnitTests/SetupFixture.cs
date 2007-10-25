@@ -9,6 +9,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests
@@ -42,7 +43,8 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests
       persistenceConfiguration.StorageGroups.Add (new StorageGroupElement (new SecondStorageGroupAttribute(), c_secondStorageProvider));
       persistenceConfiguration.StorageGroups.Add (new StorageGroupElement (new InternalStorageGroupAttribute (), c_internalStorageProvider));
 
-      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration(), persistenceConfiguration));
+      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration(), persistenceConfiguration,
+          new QueryConfiguration()));
       MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (typeof (Ceo).Assembly)));
     }
   }

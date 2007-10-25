@@ -23,10 +23,10 @@ namespace Rubicon.Security.UnitTests.Data.DomainObjects
       ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition>();
       providers.Add (new RdbmsProviderDefinition ("StorageProvider", typeof (StubStorageProvider), "NonExistingRdbms"));
       PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration (providers, providers["StorageProvider"]);
-      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration));
+      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration,
+          new QueryConfiguration (GetFullPath (@"Rubicon.Security.UnitTests.Data.DomainObjects.Queries.xml"))));
 
       MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (GetType().Assembly)));
-      QueryConfiguration.SetCurrent (new QueryConfiguration (GetFullPath (@"Rubicon.Security.UnitTests.Data.DomainObjects.Queries.xml")));
     }
 
     private string GetFullPath (string fileName)

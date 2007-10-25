@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Utilities;
 
@@ -40,7 +41,7 @@ public class Query : IQuery
   ///   <paramref name="parameters"/> is <see langword="null"/>.
   /// </exception>
   public Query (string queryID, QueryParameterCollection parameters) 
-      : this (QueryConfiguration.Current.QueryDefinitions.GetMandatory (queryID), parameters)
+      : this (DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory (queryID), parameters)
   {
   }
 

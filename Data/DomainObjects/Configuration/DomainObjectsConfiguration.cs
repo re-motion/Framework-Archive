@@ -3,6 +3,7 @@ using System.Configuration;
 using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 
 namespace Rubicon.Data.DomainObjects.Configuration
 {
@@ -13,6 +14,7 @@ namespace Rubicon.Data.DomainObjects.Configuration
   {
     private const string MappingLoaderPropertyName = "mapping";
     private const string StoragePropertyName = "storage";
+    private const string QueryPropertyName = "query";
 
     private static readonly DoubleCheckedLockingContainer<IDomainObjectsConfiguration> s_current =
         new DoubleCheckedLockingContainer<IDomainObjectsConfiguration> (delegate { return new DomainObjectsConfiguration(); });
@@ -34,10 +36,14 @@ namespace Rubicon.Data.DomainObjects.Configuration
 
       _persistenceConfiguration =
           new DoubleCheckedLockingContainer<PersistenceConfiguration> (delegate { return GetPersistenceConfiguration(); });
+
+      _queryConfiguration =
+          new DoubleCheckedLockingContainer<QueryConfiguration> (delegate { return GetQueryConfiguration (); });
     }
 
-    private DoubleCheckedLockingContainer<MappingLoaderConfiguration> _mappingLoaderConfiguration;
-    private DoubleCheckedLockingContainer<PersistenceConfiguration> _persistenceConfiguration;
+    private readonly DoubleCheckedLockingContainer<MappingLoaderConfiguration> _mappingLoaderConfiguration;
+    private readonly DoubleCheckedLockingContainer<PersistenceConfiguration> _persistenceConfiguration;
+    private readonly DoubleCheckedLockingContainer<QueryConfiguration> _queryConfiguration;
 
     [ConfigurationProperty (MappingLoaderPropertyName)]
     public MappingLoaderConfiguration MappingLoader
@@ -49,6 +55,12 @@ namespace Rubicon.Data.DomainObjects.Configuration
     public PersistenceConfiguration Storage
     {
       get { return _persistenceConfiguration.Value; }
+    }
+
+    [ConfigurationProperty (QueryPropertyName)]
+    public QueryConfiguration Query
+    {
+      get { return _queryConfiguration.Value; }
     }
 
     private MappingLoaderConfiguration GetMappingLoaderConfiguration()
@@ -63,6 +75,13 @@ namespace Rubicon.Data.DomainObjects.Configuration
       return
           (PersistenceConfiguration) ConfigurationWrapper.Current.GetSection (ConfigKey + "/" + StoragePropertyName, false) 
           ?? new PersistenceConfiguration();
+    }
+
+    private QueryConfiguration GetQueryConfiguration ()
+    {
+      return
+          (QueryConfiguration) ConfigurationWrapper.Current.GetSection (ConfigKey + "/" + QueryPropertyName, false)
+          ?? new QueryConfiguration ();
     }
 
     private string ConfigKey

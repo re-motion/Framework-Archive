@@ -9,6 +9,7 @@ using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Development.UnitTesting.Data.SqlClient;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
@@ -49,7 +50,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
       PersistenceConfiguration persistenceConfiguration =
           new PersistenceConfiguration (storageProviderDefinitionCollection, storageProviderDefinitionCollection[DatabaseTest.c_testDomainProviderID]);
 
-      _domainObjectsConfiguration = new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration);
+      _domainObjectsConfiguration = new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration, new QueryConfiguration ());
       DomainObjectsConfiguration.SetCurrent (_domainObjectsConfiguration);
 
       MappingConfiguration.SetCurrent (s_mappingConfiguration);
