@@ -389,7 +389,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       foreach (AttributeDefinition attribute in targetConfiguration.CustomAttributes)
       {
         // only replicate those attributes from the base which are not inherited anyway
-        if (!CanInheritAttributesFromBase (targetConfiguration) || !AttributeUtility.IsAttributeInherited (attribute.AttributeType))
+        if (!attribute.IsCopyTemplate
+            && (!CanInheritAttributesFromBase (targetConfiguration) || !AttributeUtility.IsAttributeInherited (attribute.AttributeType)))
           AttributeReplicator.ReplicateAttribute (targetEmitter, attribute.Data);
       }
 

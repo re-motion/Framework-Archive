@@ -117,13 +117,5 @@ namespace Rubicon.Mixins.Definitions.Building
       else
         return null;
     }
-
-    public static void InitializeAttributes (ClassDefinitionBase classDefinition)
-    {
-      foreach (CustomAttributeData attributeData in CustomAttributeData.GetCustomAttributes(classDefinition.Type))
-      {
-        classDefinition.CustomAttributes.Add (new AttributeDefinition (classDefinition, attributeData));
-      }
-    }
   }
 }

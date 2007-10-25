@@ -19,10 +19,10 @@ namespace Rubicon.Mixins.Definitions.Building
     {
       ArgumentUtility.CheckNotNull ("attributeSource", attributeSource);
 
-      Apply (attributeSource, CustomAttributeData.GetCustomAttributes (attributeSource));
+      Apply (attributeSource, CustomAttributeData.GetCustomAttributes (attributeSource), false);
     }
 
-    public void Apply (MemberInfo attributeSource, IEnumerable<CustomAttributeData> attributes)
+    public void Apply (MemberInfo attributeSource, IEnumerable<CustomAttributeData> attributes, bool isCopyTemplate)
     {
       ArgumentUtility.CheckNotNull ("attributeSource", attributeSource);
       ArgumentUtility.CheckNotNull ("attributes", attributes);
@@ -33,10 +33,9 @@ namespace Rubicon.Mixins.Definitions.Building
         if (attributeType == typeof (CopyCustomAttributesAttribute))
           Copy (attributeSource, attributeData);
         else if (attributeType.IsVisible && !IsIgnoredAttributeType (attributeType))
-          _attributableDefinition.CustomAttributes.Add (new AttributeDefinition (_attributableDefinition, attributeData));
+          _attributableDefinition.CustomAttributes.Add (new AttributeDefinition (_attributableDefinition, attributeData, isCopyTemplate));
       }
     }
-
 
     private bool IsIgnoredAttributeType (Type type)
     {
@@ -86,7 +85,7 @@ namespace Rubicon.Mixins.Definitions.Building
         throw new ConfigurationException (message);
       }
 
-      Apply (copySource);
+      Apply (copySource, CustomAttributeData.GetCustomAttributes (copySource), true);
     }
 
     private bool AreCompatibleMemberTypes (MemberTypes one, MemberTypes two)

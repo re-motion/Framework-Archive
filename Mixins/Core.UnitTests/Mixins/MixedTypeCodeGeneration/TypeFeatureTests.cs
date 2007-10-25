@@ -5,6 +5,7 @@ using Rhino.Mocks;
 using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.UnitTests.Mixins.CodeGenSampleTypes;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework.SyntaxHelpers;
 using System.Runtime.Serialization;
@@ -188,6 +189,14 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
           null, new Type[] {typeof (SerializationInfo), typeof (StreamingContext)}, null));
       Assert.IsNotNull (concreteType.GetConstructor (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
           null, new Type[] { typeof (SerializationInfo), typeof (StreamingContext) }, null));
+    }
+
+    [Test]
+    public void CopiedAttributesAreNotReplicated ()
+    {
+      Type concreteType = CreateMixedType (typeof (ClassWithCopyCustomAttributes));
+      Assert.AreNotSame (typeof (ClassWithCopyCustomAttributes), concreteType);
+      Assert.IsEmpty (concreteType.GetCustomAttributes (typeof (SampleCopyTemplateAttribute), true));
     }
   }
 }

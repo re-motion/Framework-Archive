@@ -158,7 +158,11 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private void ReplicateAttributes (IEnumerable<AttributeDefinition> attributes, IAttributableEmitter target)
     {
       foreach (AttributeDefinition attribute in attributes)
-        AttributeReplicator.ReplicateAttribute (target, attribute.Data);
+      {
+        // only replicate those attributes from the base which are not inherited anyway
+        if (!attribute.IsCopyTemplate && !AttributeUtility.IsAttributeInherited (attribute.AttributeType))
+          AttributeReplicator.ReplicateAttribute (target, attribute.Data);
+      }
     }
 
     private void ImplementGetObjectData ()

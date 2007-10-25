@@ -64,6 +64,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
             return a.Data.Constructor.Equals (typeof (TagAttribute).GetConstructor (Type.EmptyTypes));
           });
       Assert.IsNotNull (attribute1);
+      Assert.IsFalse (attribute1.IsCopyTemplate);
       Assert.AreEqual (0, attribute1.Data.ConstructorArguments.Count);
       Assert.AreEqual (0, attribute1.Data.NamedArguments.Count);
       Assert.AreSame (attributableDefinition, attribute1.DeclaringDefinition);
@@ -75,6 +76,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
             return a.Data.Constructor.Equals (typeof (TagAttribute).GetConstructor (new Type[] { typeof (string) }));
           });
       Assert.IsNotNull (attribute2);
+      Assert.IsFalse (attribute2.IsCopyTemplate);
       Assert.AreEqual (1, attribute2.Data.ConstructorArguments.Count);
       Assert.AreEqual (typeof (string), attribute2.Data.ConstructorArguments[0].ArgumentType);
       Assert.AreEqual ("Class!", attribute2.Data.ConstructorArguments[0].Value);
@@ -142,6 +144,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
             new List<AttributeDefinition> (definition.CustomAttributes[typeof (AttributeWithParameters)]);
 
         Assert.AreEqual (1, attributes.Count);
+        Assert.IsTrue (attributes[0].IsCopyTemplate);
+
         Assert.AreEqual (typeof (AttributeWithParameters), attributes[0].AttributeType);
         Assert.AreEqual (typeof (AttributeWithParameters).GetConstructor (new Type[] { typeof (int), typeof (string) }),
             attributes[0].Data.Constructor);
@@ -183,6 +187,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.AreEqual (typeof (AttributeWithParameters), attributes[0].AttributeType);
         Assert.AreEqual (typeof (AttributeWithParameters).GetConstructor (new Type[] { typeof (int) }), attributes[0].Data.Constructor);
 
+        Assert.IsTrue (attributes[0].IsCopyTemplate);
         Assert.AreEqual (1, attributes[0].Data.ConstructorArguments.Count);
         Assert.AreEqual (typeof (int), attributes[0].Data.ConstructorArguments[0].ArgumentType);
         Assert.AreEqual (4, attributes[0].Data.ConstructorArguments[0].Value);

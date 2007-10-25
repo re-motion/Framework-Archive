@@ -50,6 +50,8 @@
   <ItemGroup>
     <Compile Include="Configuration\AttributeIntroductionDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\MixedMixinTests.cs" />
+    <Compile Include="Mixins\CodeGenSampleTypes\ClassWithCopyCustomAttributes.cs" />
+    <Compile Include="Mixins\CodeGenSampleTypes\SampleCopyTemplateAttribute.cs" />
     <Compile Include="Mixins\MixedTypeCodeGeneration\MixedMixinTests.cs" />
     <Compile Include="Mixins\MixinTypeCodeGeneration\GeneratedTypeInConfigurationTests.cs" />
     <Compile Include="Mixins\ModuleManagerSerializationExtensionTests.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="SampleTypes\ClassWithMixedMixin.cs" />
     <Compile Include="SampleTypes\DerivedNullTarget.cs" />
     <Compile Include="SampleTypes\MixinIndirectlyAddingAttribute.cs" />
+    <Compile Include="Mixins\CodeGenSampleTypes\MixinWithProtectedOverriderAndAttributes.cs" />
     <Compile Include="SampleTypes\NullTarget.cs" />
     <Compile Include="SampleTypes\MixinMixingClass.cs" />
     <Compile Include="SampleTypes\MixinMixingMixin.cs" />

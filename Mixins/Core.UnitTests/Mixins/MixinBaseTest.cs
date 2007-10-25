@@ -57,13 +57,13 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public Type CreateMixedType (Type targetType, params Type[] mixinTypes)
     {
       using (MixinConfiguration.ScopedExtend (targetType, mixinTypes))
-        return TypeFactory.GetConcreteType (targetType);
+        return TypeFactory.GetConcreteType (targetType, GenerationPolicy.ForceGeneration);
     }
 
     public FuncInvokerWrapper<T> CreateMixedObject<T> (params Type[] mixinTypes)
     {
       using (MixinConfiguration.ScopedExtend (typeof (T), mixinTypes))
-        return ObjectFactory.Create<T>();
+        return ObjectFactory.Create<T>(GenerationPolicy.ForceGeneration);
     }
   }
 }

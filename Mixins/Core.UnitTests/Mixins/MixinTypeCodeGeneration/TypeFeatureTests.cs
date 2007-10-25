@@ -4,7 +4,9 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.UnitTests.Mixins.CodeGenSampleTypes;
 using Rubicon.Mixins.UnitTests.SampleTypes;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
 {
@@ -91,6 +93,44 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
       Assert.AreEqual ("Bra/Oof", generatedType.FullName);
 
       repository.VerifyAll ();
+    }
+
+    [Test]
+    public void AttributesAreReplicatedIfNecessary ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithProtectedOverriderAndAttributes)))
+      {
+        MixinDefinition mixinDefinition =
+            TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinWithProtectedOverriderAndAttributes)];
+        Assert.IsNotNull (mixinDefinition);
+        Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
+        Assert.AreNotSame (typeof (MixinWithProtectedOverrider), generatedType);
+
+        object[] inheritableAttributes = generatedType.GetCustomAttributes (typeof (InheritableAttribute), true);
+        object[] nonInheritableAttributes = generatedType.GetCustomAttributes (typeof (NonInheritableAttribute), true);
+        
+        Assert.AreEqual (1, inheritableAttributes.Length);
+        Assert.That (inheritableAttributes, Is.EquivalentTo (typeof (MixinWithProtectedOverriderAndAttributes).GetCustomAttributes (typeof (InheritableAttribute), true)));
+
+        Assert.AreEqual (1, nonInheritableAttributes.Length);
+        Assert.That (nonInheritableAttributes, Is.EquivalentTo (typeof (MixinWithProtectedOverriderAndAttributes).GetCustomAttributes (typeof (NonInheritableAttribute), true)));
+      }
+    }
+
+    [Test]
+    public void CopyTemplatesAreNotReplicated ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithProtectedOverriderAndAttributes)))
+      {
+        MixinDefinition mixinDefinition =
+            TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinWithProtectedOverriderAndAttributes)];
+        Assert.IsNotNull (mixinDefinition);
+        Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
+        Assert.AreNotSame (typeof (MixinWithProtectedOverrider), generatedType);
+
+        object[] copiedAttributes = generatedType.GetCustomAttributes (typeof (SampleCopyTemplateAttribute), true);
+        Assert.AreEqual (0, copiedAttributes.Length);
+      }
     }
   }
 }

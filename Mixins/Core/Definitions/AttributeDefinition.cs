@@ -8,13 +8,15 @@ namespace Rubicon.Mixins.Definitions
   [DebuggerDisplay("{AttributeType}")]
   public class AttributeDefinition: IVisitableDefinition
   {
-    private IAttributableDefinition _declaringDefinition;
-    private CustomAttributeData _data;
+    private readonly IAttributableDefinition _declaringDefinition;
+    private readonly CustomAttributeData _data;
+    private readonly bool _isCopyTemplate;
 
-    public AttributeDefinition (IAttributableDefinition declaringDefinition, CustomAttributeData data)
+    public AttributeDefinition (IAttributableDefinition declaringDefinition, CustomAttributeData data, bool isCopyTemplate)
     {
       _declaringDefinition = declaringDefinition;
       _data = data;
+      _isCopyTemplate = isCopyTemplate;
     }
 
     public CustomAttributeData Data
@@ -46,6 +48,11 @@ namespace Rubicon.Mixins.Definitions
     public IAttributableDefinition DeclaringDefinition
     {
       get { return _declaringDefinition; }
+    }
+
+    public bool IsCopyTemplate
+    {
+      get { return _isCopyTemplate; }
     }
   }
 }
