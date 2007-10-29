@@ -20,6 +20,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Reflection;
 
 namespace Rubicon.ObjectBinding.Web.CodeGenerator
@@ -74,7 +75,7 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
           assemblies.Add (asm);
       }
       DomainObjectsConfiguration.SetCurrent (
-          new FakeDomainObjectsConfiguration (DomainObjectsConfiguration.Current.MappingLoader, GetPersistenceConfiguration ()));
+          new FakeDomainObjectsConfiguration (DomainObjectsConfiguration.Current.MappingLoader, GetPersistenceConfiguration (), new QueryConfiguration()));
 
       MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector(assemblies.ToArray())));
     }

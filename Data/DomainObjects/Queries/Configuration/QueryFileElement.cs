@@ -8,8 +8,9 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
 {
   public class QueryFileElement : ConfigurationElement, INamedConfigurationElement
   {
-    private static string GetRootedPath (string path)
+    public static string GetRootedPath (string path)
     {
+      ArgumentUtility.CheckNotNull ("path", path);
       if (Path.IsPathRooted (path))
         return Path.GetFullPath (path);
       else

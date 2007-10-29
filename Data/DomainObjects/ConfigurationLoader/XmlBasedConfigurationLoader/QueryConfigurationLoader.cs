@@ -13,14 +13,6 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLo
 
     // static members and constants
 
-    public const string ConfigurationAppSettingKey = "Rubicon.Data.DomainObjects.Queries.Configuration.ConfigurationFile";
-    public const string DefaultConfigurationFile = "queries.xml";
-
-    public static QueryConfigurationLoader Create ()
-    {
-      return new QueryConfigurationLoader (LoaderUtility.GetConfigurationFileName (ConfigurationAppSettingKey, DefaultConfigurationFile));
-    }
-
     // member fields
 
     // construction and disposing

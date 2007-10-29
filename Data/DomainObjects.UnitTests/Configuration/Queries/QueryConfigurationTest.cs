@@ -81,6 +81,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
     }
 
     [Test]
+    public void DefaultQueryFile ()
+    {
+      QueryConfiguration configuration = new QueryConfiguration ();
+
+      Assert.That (configuration.QueryFiles.Count, Is.EqualTo (0));
+      Assert.That (configuration.QueryDefinitions.Count, Is.GreaterThan (0));
+
+      Assert.That (QueryConfiguration.DefaultConfigurationFile, Is.EqualTo (Path.Combine (Environment.CurrentDirectory, "queries.xml")));
+
+      QueryConfigurationLoader loader = new QueryConfigurationLoader (QueryConfiguration.DefaultConfigurationFile);
+      QueryDefinitionChecker checker = new QueryDefinitionChecker ();
+      checker.Check (loader.GetQueryDefinitions (), configuration.QueryDefinitions);
+    }
+
+    [Test]
     [ExpectedException (typeof (ConfigurationErrorsException), ExpectedMessage = "The entry 'unique' has already been added.")]
     public void Deserialize_WithNonUniqueNames ()
     {
