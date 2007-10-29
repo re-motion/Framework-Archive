@@ -75,5 +75,55 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
     {
       _collection.GetMandatory ("OrderQuery");
     }
+
+    [Test]
+    public void Merge ()
+    {
+      QueryDefinition query1 = new QueryDefinition ("id1", "bla", "bla", QueryType.Collection);
+      QueryDefinition query2 = new QueryDefinition ("id2", "bla", "bla", QueryType.Collection);
+      QueryDefinition query3 = new QueryDefinition ("id3", "bla", "bla", QueryType.Collection);
+      QueryDefinition query4 = new QueryDefinition ("id4", "bla", "bla", QueryType.Collection);
+      QueryDefinition query5 = new QueryDefinition ("id5", "bla", "bla", QueryType.Collection);
+
+      QueryDefinitionCollection source = new QueryDefinitionCollection ();
+      source.Add (query1);
+      source.Add (query2);
+
+      QueryDefinitionCollection target = new QueryDefinitionCollection ();
+      target.Add (query3);
+      target.Add (query4);
+      target.Add (query5);
+
+      target.Merge (source);
+
+      Assert.AreEqual (2, source.Count);
+      Assert.AreSame (query1, source[0]);
+      Assert.AreSame (query2, source[1]);
+
+      Assert.AreEqual (5, target.Count);
+      Assert.AreSame (query3, target[0]);
+      Assert.AreSame (query4, target[1]);
+      Assert.AreSame (query5, target[2]);
+      Assert.AreSame (query1, target[3]);
+      Assert.AreSame (query2, target[4]);
+    }
+
+    [Test]
+    public void Merge_IgnoresDuplicates ()
+    {
+      QueryDefinition query1 = new QueryDefinition ("id1", "bla", "bla", QueryType.Collection);
+      QueryDefinition query2 = new QueryDefinition ("id1", "bla", "bla", QueryType.Collection);
+
+      QueryDefinitionCollection source = new QueryDefinitionCollection ();
+      source.Add (query1);
+
+      QueryDefinitionCollection target = new QueryDefinitionCollection ();
+      target.Add (query2);
+
+      target.Merge (source);
+
+      Assert.AreEqual (1, target.Count);
+      Assert.AreSame (query2, target[0]);
+    }
   }
 }

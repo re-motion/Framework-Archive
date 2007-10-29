@@ -62,8 +62,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
       string xmlFragment =
           @"<query>
               <queryFiles>
-                <add name=""unique1"" filename=""../../myqueries1.xml""/>
-                <add name=""unique2"" filename=""../../myqueries2.xml""/>
+                <add name=""unique1"" filename=""..\..\myqueries1.xml""/>
+                <add name=""unique2"" filename=""..\..\myqueries2.xml""/>
               </queryFiles>
             </query>";
 
@@ -73,9 +73,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
 
       Assert.That (configuration.QueryFiles.Count, Is.EqualTo (2));
       Assert.That (configuration.QueryFiles[0].Name, Is.EqualTo ("unique1"));
-      Assert.That (configuration.QueryFiles[0].FileName, Is.EqualTo ("../../myqueries1.xml"));
+      Assert.That (configuration.QueryFiles[0].FileName, Is.EqualTo (@"..\..\myqueries1.xml"));
+      Assert.That (configuration.QueryFiles[0].RootedFileName, Is.EqualTo (Path.GetFullPath (@"..\..\myqueries1.xml")));
       Assert.That (configuration.QueryFiles[1].Name, Is.EqualTo ("unique2"));
-      Assert.That (configuration.QueryFiles[1].FileName, Is.EqualTo ("../../myqueries2.xml"));
+      Assert.That (configuration.QueryFiles[1].FileName, Is.EqualTo (@"..\..\myqueries2.xml"));
+      Assert.That (configuration.QueryFiles[1].RootedFileName, Is.EqualTo (Path.GetFullPath (@"..\..\myqueries2.xml")));
     }
 
     [Test]
@@ -85,8 +87,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
       string xmlFragment =
           @"<query>
               <queryFiles>
-                <add name=""unique"" filename=""../../myqueries1.xml""/>
-                <add name=""unique"" filename=""../../myqueries2.xml""/>
+                <add name=""unique"" filename=""..\..\myqueries1.xml""/>
+                <add name=""unique"" filename=""..\..\myqueries2.xml""/>
               </queryFiles>
             </query>";
 
@@ -97,13 +99,38 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
     }
 
     [Test]
-    public void QueryConfigurationWithFileName ()
+    public void QueryConfiguration_WithFileName ()
     {
       QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml");
 
       Assert.AreEqual (1, configuration.QueryFiles.Count);
       Assert.AreEqual ("QueriesForLoaderTest.xml", configuration.QueryFiles[0].Name);
       Assert.AreEqual ("QueriesForLoaderTest.xml", configuration.QueryFiles[0].FileName);
+      Assert.AreEqual (Path.Combine (Environment.CurrentDirectory, "QueriesForLoaderTest.xml"), configuration.QueryFiles[0].RootedFileName);
+    }
+
+    [Test]
+    public void QueryConfiguration_WithRootedFileName ()
+    {
+      QueryConfiguration configuration = new QueryConfiguration (@"c:\QueriesForLoaderTest.xml");
+
+      Assert.AreEqual (1, configuration.QueryFiles.Count);
+      Assert.AreEqual (@"c:\QueriesForLoaderTest.xml", configuration.QueryFiles[0].Name);
+      Assert.AreEqual (@"c:\QueriesForLoaderTest.xml", configuration.QueryFiles[0].FileName);
+    }
+
+    [Test]
+    public void QueryConfiguration_WithMultipleFileNames ()
+    {
+      QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml", "Query.xml");
+
+      Assert.AreEqual (2, configuration.QueryFiles.Count);
+      Assert.AreEqual ("QueriesForLoaderTest.xml", configuration.QueryFiles[0].Name);
+      Assert.AreEqual ("QueriesForLoaderTest.xml", configuration.QueryFiles[0].FileName);
+      Assert.AreEqual (Path.Combine (Environment.CurrentDirectory, "QueriesForLoaderTest.xml"), configuration.QueryFiles[0].RootedFileName);
+      Assert.AreEqual ("Query.xml", configuration.QueryFiles[1].Name);
+      Assert.AreEqual ("Query.xml", configuration.QueryFiles[1].FileName);
+      Assert.AreEqual (Path.Combine (Environment.CurrentDirectory, "Query.xml"), configuration.QueryFiles[1].RootedFileName);
     }
 
     [Test]
@@ -116,6 +143,38 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
 
       QueryDefinitionChecker checker = new QueryDefinitionChecker ();
       checker.Check (expectedQueries, configuration.QueryDefinitions);
+    }
+
+    [Test]
+    public void GetDefinitions_WithMultipleFiles ()
+    {
+      QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml", "Queries.xml");
+
+      QueryConfigurationLoader loader1 = new QueryConfigurationLoader (@"QueriesForLoaderTest.xml");
+      QueryConfigurationLoader loader2 = new QueryConfigurationLoader (@"Queries.xml");
+      QueryDefinitionCollection expectedQueries = loader1.GetQueryDefinitions ();
+      expectedQueries.Merge (loader2.GetQueryDefinitions());
+
+      Assert.IsTrue (expectedQueries.Count > loader1.GetQueryDefinitions ().Count);
+
+      QueryDefinitionChecker checker = new QueryDefinitionChecker ();
+      checker.Check (expectedQueries, configuration.QueryDefinitions);
+    }
+
+    [Test]
+    public void GetDefinitions_UsesRootedPath ()
+    {
+      QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml");
+      string oldDirectory = Environment.CurrentDirectory;
+      try
+      {
+        Environment.CurrentDirectory = @"c:\";
+        Assert.IsNotEmpty (configuration.QueryDefinitions);
+      }
+      finally
+      {
+        Environment.CurrentDirectory = oldDirectory;
+      }
     }
 
     [Test]

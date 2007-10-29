@@ -231,6 +231,9 @@
     <Content Include="ControlWithAllDataTypes.ascx">
       <SubType>UserControl</SubType>
     </Content>
+    <Content Include="Queries2.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Database\CreateDB.sql" />
     <Content Include="Database\CreateTestData.sql" />
     <Content Include="Database\SetupDB.sql" />
@@ -248,7 +251,7 @@
     <Content Include="NewObject.aspx">
       <SubType>Form</SubType>
     </Content>
-    <Content Include="Queries.xml">
+    <Content Include="Queries1.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SearchObject.aspx">

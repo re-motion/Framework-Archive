@@ -1,5 +1,6 @@
 using System;
 using System.Configuration;
+using System.IO;
 using Rubicon.Configuration;
 using Rubicon.Utilities;
 
@@ -7,6 +8,14 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
 {
   public class QueryFileElement : ConfigurationElement, INamedConfigurationElement
   {
+    private static string GetRootedPath (string path)
+    {
+      if (Path.IsPathRooted (path))
+        return Path.GetFullPath (path);
+      else
+        return Path.GetFullPath (Path.Combine (ReflectionUtility.GetExecutingAssemblyPath (), path));
+    }
+
     private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
 
     private readonly ConfigurationProperty _queryFileNameProperty;
@@ -49,6 +58,11 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
     {
       get { return (string) this[_queryFileFilenameProperty]; }
       protected set { this[_queryFileFilenameProperty] = value; }
+    }
+
+    public string RootedFileName
+    {
+      get { return GetRootedPath (FileName); }
     }
 
     protected override ConfigurationPropertyCollection Properties

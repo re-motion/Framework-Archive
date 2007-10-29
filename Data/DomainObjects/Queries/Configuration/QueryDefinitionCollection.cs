@@ -3,151 +3,160 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Queries.Configuration
 {
-/// <summary>
-/// Represents a collection of <see cref="QueryDefinition"/>s.
-/// </summary>
-[Serializable]
-public class QueryDefinitionCollection : CommonCollection
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  // construction and disposing
-
   /// <summary>
-  /// Initializes a new instance of the <b>QueryDefinitionCollection</b> class.
+  /// Represents a collection of <see cref="QueryDefinition"/>s.
   /// </summary>
-  public QueryDefinitionCollection ()
+  [Serializable]
+  public class QueryDefinitionCollection : CommonCollection
   {
-  }
+    // types
 
-  // standard constructor for collections
+    // static members and constants
 
-  /// <summary>
-  /// Initializes a new <b>QueryDefinitionCollection</b> as a shallow copy of a given <see cref="QueryDefinitionCollection"/>.
-  /// </summary>
-  /// <remarks>The new <b>QueryDefinitionCollection</b> has the same items as the given <paramref name="collection"/>.</remarks>
-  /// <param name="collection">The <see cref="QueryDefinitionCollection"/> to copy. Must not be <see langword="null"/>.</param>
-  /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
-  /// <exception cref="System.ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-  public QueryDefinitionCollection (
-      QueryDefinitionCollection collection,
-      bool makeCollectionReadOnly)
-  {
-    ArgumentUtility.CheckNotNull ("collection", collection);
+    // member fields
 
-    foreach (QueryDefinition queryDefinition in collection)  
+    // construction and disposing
+
+    /// <summary>
+    /// Initializes a new instance of the <b>QueryDefinitionCollection</b> class.
+    /// </summary>
+    public QueryDefinitionCollection ()
     {
-      Add (queryDefinition);
     }
 
-    this.SetIsReadOnly (makeCollectionReadOnly);
-  }
+    // standard constructor for collections
 
-  // methods and properties
+    /// <summary>
+    /// Initializes a new <b>QueryDefinitionCollection</b> as a shallow copy of a given <see cref="QueryDefinitionCollection"/>.
+    /// </summary>
+    /// <remarks>The new <b>QueryDefinitionCollection</b> has the same items as the given <paramref name="collection"/>.</remarks>
+    /// <param name="collection">The <see cref="QueryDefinitionCollection"/> to copy. Must not be <see langword="null"/>.</param>
+    /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
+    /// <exception cref="System.ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
+    public QueryDefinitionCollection (
+        QueryDefinitionCollection collection,
+        bool makeCollectionReadOnly)
+    {
+      ArgumentUtility.CheckNotNull ("collection", collection);
 
-  /// <summary>
-  /// Returns the <see cref="QueryDefinition"/> identified through <paramref name="queryID"/>. If no <see cref="QueryDefinition"/> can be found an exception is thrown.
-  /// </summary>
-  /// <param name="queryID">The <see cref="QueryDefinition.ID"/> of the <see cref="QueryDefinition"/> to be found.</param>
-  /// <returns>The <see cref="QueryDefinition"/> identified through <paramref name="queryID"/>.</returns>
-  /// <exception cref="QueryConfigurationException">The <see cref="QueryDefinition"/> identified through <paramref name="queryID"/> could not be found.</exception>
-  public QueryDefinition GetMandatory (string queryID)
-  {
-    if (!Contains (queryID))
-      throw CreateQueryConfigurationException ("QueryDefinition '{0}' does not exist.", queryID);
+      foreach (QueryDefinition queryDefinition in collection)
+        Add (queryDefinition);
 
-    return this[queryID];
-  }
+      this.SetIsReadOnly (makeCollectionReadOnly);
+    }
 
-  private ArgumentException CreateArgumentException (string message, string parameterName, params object[] args)
-  {
-    return new ArgumentException (string.Format (message, args), parameterName);
-  }
+    // methods and properties
 
-  private QueryConfigurationException CreateQueryConfigurationException (
-      string message, 
-      params object[] args)
-  {
-    return new QueryConfigurationException (string.Format (message, args));
-  }
+    /// <summary>
+    /// Returns the <see cref="QueryDefinition"/> identified through <paramref name="queryID"/>. If no <see cref="QueryDefinition"/> can be found an exception is thrown.
+    /// </summary>
+    /// <param name="queryID">The <see cref="QueryDefinition.ID"/> of the <see cref="QueryDefinition"/> to be found.</param>
+    /// <returns>The <see cref="QueryDefinition"/> identified through <paramref name="queryID"/>.</returns>
+    /// <exception cref="QueryConfigurationException">The <see cref="QueryDefinition"/> identified through <paramref name="queryID"/> could not be found.</exception>
+    public QueryDefinition GetMandatory (string queryID)
+    {
+      if (!Contains (queryID))
+        throw CreateQueryConfigurationException ("QueryDefinition '{0}' does not exist.", queryID);
 
-  #region Standard implementation for "add-only" collections
+      return this[queryID];
+    }
 
-  /// <summary>
-  /// Determines whether an item is in the <see cref="QueryDefinitionCollection"/>.
-  /// </summary>
-  /// <param name="queryDefinition">The <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><see langword="true"/> if <paramref name="queryDefinition"/> is found in the <see cref="QueryDefinitionCollection"/>; otherwise, false;</returns>
-  /// <exception cref="System.ArgumentNullException"><paramref name="queryDefinition"/> is <see langword="null"/></exception>
-  /// <remarks>This method only returns true, if the same reference is found in the collection.</remarks>
-  public bool Contains (QueryDefinition queryDefinition)
-  {
-    ArgumentUtility.CheckNotNull ("queryDefinition", queryDefinition);
+    private ArgumentException CreateArgumentException (string message, string parameterName, params object[] args)
+    {
+      return new ArgumentException (string.Format (message, args), parameterName);
+    }
 
-    return BaseContains (queryDefinition.ID, queryDefinition);
-  }
+    private QueryConfigurationException CreateQueryConfigurationException (
+        string message,
+        params object[] args)
+    {
+      return new QueryConfigurationException (string.Format (message, args));
+    }
 
-  /// <summary>
-  /// Determines whether an item is in the <see cref="QueryDefinitionCollection"/>.
-  /// </summary>
-  /// <param name="queryID">The <see cref="QueryDefinition.ID"/> of the <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><see langword="true"/> if the <see cref="QueryDefinition"/> with the <paramref name="queryID"/> is found in the <see cref="QueryDefinitionCollection"/>; otherwise, false;</returns>
-  /// <exception cref="System.ArgumentNullException"><paramref name="queryID"/> is <see langword="null"/></exception>
-  public bool Contains (string queryID)
-  {
-    ArgumentUtility.CheckNotNullOrEmpty ("queryID", queryID);
-    return BaseContainsKey (queryID);
-  }
+    public void Merge (QueryDefinitionCollection source)
+    {
+      ArgumentUtility.CheckNotNull ("source", source);
 
-  /// <summary>
-  /// Gets or sets the <see cref="QueryDefinition"/> with a given <paramref name="index"/> in the <see cref="QueryDefinitionCollection"/>.
-  /// </summary>
-  /// <exception cref="System.ArgumentOutOfRangeException">
-  ///   <paramref name="index"/> is less than zero.<br /> -or- <br />
-  ///   <paramref name="index"/> is equal to or greater than the number of items in the collection.
-  /// </exception>
-  public QueryDefinition this [int index]  
-  {
-    get { return (QueryDefinition) BaseGetObject (index); }
-  }
+      foreach (QueryDefinition query in source)
+      {
+        if (!Contains (query.ID))
+          Add (query);
+      }
+    }
 
-  /// <summary>
-  /// Gets the <see cref="QueryDefinition"/> with a given <see cref="QueryDefinition.ID"/> from the <see cref="QueryDefinitionCollection"/>.
-  /// </summary>
-  /// <remarks>The indexer returns <see langword="null"/> if the given <paramref name="queryID"/> was not found.</remarks>
-  public QueryDefinition this [string queryID]  
-  {
-    get 
+    #region Standard implementation for "add-only" collections
+
+    /// <summary>
+    /// Determines whether an item is in the <see cref="QueryDefinitionCollection"/>.
+    /// </summary>
+    /// <param name="queryDefinition">The <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>. Must not be <see langword="null"/>.</param>
+    /// <returns><see langword="true"/> if <paramref name="queryDefinition"/> is found in the <see cref="QueryDefinitionCollection"/>; otherwise, false;</returns>
+    /// <exception cref="System.ArgumentNullException"><paramref name="queryDefinition"/> is <see langword="null"/></exception>
+    /// <remarks>This method only returns true, if the same reference is found in the collection.</remarks>
+    public bool Contains (QueryDefinition queryDefinition)
+    {
+      ArgumentUtility.CheckNotNull ("queryDefinition", queryDefinition);
+
+      return BaseContains (queryDefinition.ID, queryDefinition);
+    }
+
+    /// <summary>
+    /// Determines whether an item is in the <see cref="QueryDefinitionCollection"/>.
+    /// </summary>
+    /// <param name="queryID">The <see cref="QueryDefinition.ID"/> of the <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>. Must not be <see langword="null"/>.</param>
+    /// <returns><see langword="true"/> if the <see cref="QueryDefinition"/> with the <paramref name="queryID"/> is found in the <see cref="QueryDefinitionCollection"/>; otherwise, false;</returns>
+    /// <exception cref="System.ArgumentNullException"><paramref name="queryID"/> is <see langword="null"/></exception>
+    public bool Contains (string queryID)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("queryID", queryID);
-      return (QueryDefinition) BaseGetObject (queryID); 
+      return BaseContainsKey (queryID);
     }
-  }
 
-  /// <summary>
-  /// Adds a <see cref="QueryDefinition"/> to the collection.
-  /// </summary>
-  /// <param name="queryDefinition">The <see cref="QueryDefinition"/> to add. Must not be <see langword="null"/>.</param>
-  /// <returns>The zero-based index where the <paramref name="queryDefinition"/> has been added.</returns>
-  /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
-  /// <exception cref="System.ArgumentNullException"><paramref name="queryDefinition"/> is <see langword="null"/>.</exception>
-  public int Add (QueryDefinition queryDefinition)  
-  {
-    ArgumentUtility.CheckNotNull ("queryDefinition", queryDefinition);
-
-    if (Contains (queryDefinition.ID))
+    /// <summary>
+    /// Gets or sets the <see cref="QueryDefinition"/> with a given <paramref name="index"/> in the <see cref="QueryDefinitionCollection"/>.
+    /// </summary>
+    /// <exception cref="System.ArgumentOutOfRangeException">
+    ///   <paramref name="index"/> is less than zero.<br /> -or- <br />
+    ///   <paramref name="index"/> is equal to or greater than the number of items in the collection.
+    /// </exception>
+    public QueryDefinition this [int index]
     {
-      throw CreateArgumentException (
-          "QueryDefinition '{0}' already exists in collection.", "queryDefinition", queryDefinition.ID);
+      get { return (QueryDefinition) BaseGetObject (index); }
     }
 
-    return BaseAdd (queryDefinition.ID, queryDefinition);
-  }
+    /// <summary>
+    /// Gets the <see cref="QueryDefinition"/> with a given <see cref="QueryDefinition.ID"/> from the <see cref="QueryDefinitionCollection"/>.
+    /// </summary>
+    /// <remarks>The indexer returns <see langword="null"/> if the given <paramref name="queryID"/> was not found.</remarks>
+    public QueryDefinition this [string queryID]
+    {
+      get
+      {
+        ArgumentUtility.CheckNotNullOrEmpty ("queryID", queryID);
+        return (QueryDefinition) BaseGetObject (queryID);
+      }
+    }
 
-  #endregion
-}
+    /// <summary>
+    /// Adds a <see cref="QueryDefinition"/> to the collection.
+    /// </summary>
+    /// <param name="queryDefinition">The <see cref="QueryDefinition"/> to add. Must not be <see langword="null"/>.</param>
+    /// <returns>The zero-based index where the <paramref name="queryDefinition"/> has been added.</returns>
+    /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
+    /// <exception cref="System.ArgumentNullException"><paramref name="queryDefinition"/> is <see langword="null"/>.</exception>
+    public int Add (QueryDefinition queryDefinition)
+    {
+      ArgumentUtility.CheckNotNull ("queryDefinition", queryDefinition);
+
+      if (Contains (queryDefinition.ID))
+      {
+        throw CreateArgumentException (
+            "QueryDefinition '{0}' already exists in collection.", "queryDefinition", queryDefinition.ID);
+      }
+
+      return BaseAdd (queryDefinition.ID, queryDefinition);
+    }
+
+    #endregion
+  }
 }

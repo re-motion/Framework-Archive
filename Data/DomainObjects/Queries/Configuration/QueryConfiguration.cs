@@ -1,9 +1,11 @@
 using System;
 using System.Configuration;
+using System.IO;
 using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Rubicon.Utilities;
+using System.Reflection;
 
 namespace Rubicon.Data.DomainObjects.Queries.Configuration
 {
@@ -15,12 +17,11 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
     private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
     private readonly ConfigurationProperty _queryFilesProperty;
 
-    private readonly DoubleCheckedLockingContainer<QueryConfigurationLoader> _loader;
     private readonly DoubleCheckedLockingContainer<QueryDefinitionCollection> _queries;
 
     public QueryConfiguration ()
     {
-      _queries = new DoubleCheckedLockingContainer<QueryDefinitionCollection> (delegate { return _loader.Value.GetQueryDefinitions (); });
+      _queries = new DoubleCheckedLockingContainer<QueryDefinitionCollection> (delegate { return LoadAllQueryDefinitions (); });
 
       _queryFilesProperty = new ConfigurationProperty (
           "queryFiles",
@@ -29,23 +30,35 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
           ConfigurationPropertyOptions.None);
 
       _properties.Add (_queryFilesProperty);
-
-      // TODO: support multiple files in this delegate
-      _loader = new DoubleCheckedLockingContainer<QueryConfigurationLoader> (delegate
-      {
-        if (QueryFiles.Count > 0)
-          return new QueryConfigurationLoader (QueryFiles[0].FileName);
-        else
-          return QueryConfigurationLoader.Create ();
-      });
     }
 
-    public QueryConfiguration (string configurationFile) : this()
+    public QueryConfiguration (params string[] configurationFiles) : this()
     {
-      ArgumentUtility.CheckNotNull ("configurationFile", configurationFile);
+      ArgumentUtility.CheckNotNull ("configurationFiles", configurationFiles);
 
-      QueryFileElement element = new QueryFileElement (configurationFile, configurationFile);
-      QueryFiles.Add (element);
+      for (int i = 0; i < configurationFiles.Length; i++)
+      {
+        string configurationFile = configurationFiles[i];
+        QueryFileElement element = new QueryFileElement (configurationFile, configurationFile);
+        QueryFiles.Add (element);
+      }
+    }
+
+    private QueryDefinitionCollection LoadAllQueryDefinitions ()
+    {
+      if (QueryFiles.Count == 0)
+        return QueryConfigurationLoader.Create ().GetQueryDefinitions ();
+      else
+      {
+        QueryDefinitionCollection result = new QueryDefinitionCollection ();
+
+        for (int i = 0; i < QueryFiles.Count; i++)
+        {
+          QueryConfigurationLoader loader = new QueryConfigurationLoader (QueryFiles[i].RootedFileName);
+          result.Merge (loader.GetQueryDefinitions ());
+        }
+        return result;
+      }
     }
 
     public ConfigurationElementCollection<QueryFileElement> QueryFiles
