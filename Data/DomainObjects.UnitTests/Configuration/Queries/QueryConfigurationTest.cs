@@ -195,9 +195,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = @"File "
-        + @"'C:\Development\libraries\Commons\trunk\Data\DomainObjects.UnitTests\bin\Debug\QueriesForLoaderTestDuplicate.xml' defines a duplicate "
-        + @"for query definition 'OrderQueryWithCustomCollectionType'.")]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = @"File '.*QueriesForLoaderTestDuplicate.xml' defines a duplicate "
+        + @"for query definition 'OrderQueryWithCustomCollectionType'.", MatchType = MessageMatch.Regex)]
     public void DifferentQueryFiles_SpecifyingDuplicates ()
     {
       QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml", "QueriesForLoaderTestDuplicate.xml");
