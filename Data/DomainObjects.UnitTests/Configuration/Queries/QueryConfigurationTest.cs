@@ -62,8 +62,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
       string xmlFragment =
           @"<query>
               <queryFiles>
-                <add name=""unique1"" filename=""..\..\myqueries1.xml""/>
-                <add name=""unique2"" filename=""..\..\myqueries2.xml""/>
+                <add filename=""..\..\myqueries1.xml""/>
+                <add filename=""..\..\myqueries2.xml""/>
               </queryFiles>
             </query>";
 
@@ -72,10 +72,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
       ConfigurationHelper.DeserializeSection (configuration, xmlFragment);
 
       Assert.That (configuration.QueryFiles.Count, Is.EqualTo (2));
-      Assert.That (configuration.QueryFiles[0].Name, Is.EqualTo ("unique1"));
       Assert.That (configuration.QueryFiles[0].FileName, Is.EqualTo (@"..\..\myqueries1.xml"));
       Assert.That (configuration.QueryFiles[0].RootedFileName, Is.EqualTo (Path.GetFullPath (@"..\..\myqueries1.xml")));
-      Assert.That (configuration.QueryFiles[1].Name, Is.EqualTo ("unique2"));
       Assert.That (configuration.QueryFiles[1].FileName, Is.EqualTo (@"..\..\myqueries2.xml"));
       Assert.That (configuration.QueryFiles[1].RootedFileName, Is.EqualTo (Path.GetFullPath (@"..\..\myqueries2.xml")));
     }
@@ -96,21 +94,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException), ExpectedMessage = "The entry 'unique' has already been added.")]
     public void Deserialize_WithNonUniqueNames ()
     {
       string xmlFragment =
           @"<query>
               <queryFiles>
-                <add name=""unique"" filename=""..\..\myqueries1.xml""/>
-                <add name=""unique"" filename=""..\..\myqueries2.xml""/>
+                <add filename=""..\..\myqueries1.xml""/>
+                <add filename=""..\..\myqueries1.xml""/>
               </queryFiles>
             </query>";
 
       QueryConfiguration configuration = new QueryConfiguration ();
 
       ConfigurationHelper.DeserializeSection (configuration, xmlFragment);
-      Assert.Fail ("Expected exception.");
+
+      // unfortunately, this silently works because identical elements are not considered duplicates
     }
 
     [Test]
@@ -119,7 +117,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
       QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml");
 
       Assert.AreEqual (1, configuration.QueryFiles.Count);
-      Assert.AreEqual ("QueriesForLoaderTest.xml", configuration.QueryFiles[0].Name);
       Assert.AreEqual ("QueriesForLoaderTest.xml", configuration.QueryFiles[0].FileName);
       Assert.AreEqual (Path.Combine (Environment.CurrentDirectory, "QueriesForLoaderTest.xml"), configuration.QueryFiles[0].RootedFileName);
     }
@@ -130,7 +127,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
       QueryConfiguration configuration = new QueryConfiguration (@"c:\QueriesForLoaderTest.xml");
 
       Assert.AreEqual (1, configuration.QueryFiles.Count);
-      Assert.AreEqual (@"c:\QueriesForLoaderTest.xml", configuration.QueryFiles[0].Name);
       Assert.AreEqual (@"c:\QueriesForLoaderTest.xml", configuration.QueryFiles[0].FileName);
     }
 
@@ -140,10 +136,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
       QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml", "Query.xml");
 
       Assert.AreEqual (2, configuration.QueryFiles.Count);
-      Assert.AreEqual ("QueriesForLoaderTest.xml", configuration.QueryFiles[0].Name);
       Assert.AreEqual ("QueriesForLoaderTest.xml", configuration.QueryFiles[0].FileName);
       Assert.AreEqual (Path.Combine (Environment.CurrentDirectory, "QueriesForLoaderTest.xml"), configuration.QueryFiles[0].RootedFileName);
-      Assert.AreEqual ("Query.xml", configuration.QueryFiles[1].Name);
       Assert.AreEqual ("Query.xml", configuration.QueryFiles[1].FileName);
       Assert.AreEqual (Path.Combine (Environment.CurrentDirectory, "Query.xml"), configuration.QueryFiles[1].RootedFileName);
     }

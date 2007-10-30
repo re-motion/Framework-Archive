@@ -46,7 +46,7 @@
           </xs:complexType>
           <xs:unique name="uniqueNames">
             <xs:selector xpath="c:queryFiles/c:add"/>
-            <xs:field xpath="@name"/>
+            <xs:field xpath="@filename"/>
           </xs:unique>      
         </xs:element>
       </xs:all>
@@ -114,13 +114,12 @@
     <xs:choice minOccurs="1" maxOccurs="unbounded">
       <xs:element name="add">
         <xs:complexType>
-          <xs:attribute name="name" type="c:RequiredStringType" use="required"/>
           <xs:attribute name="filename" type="c:RequiredStringType" use="required"/>
         </xs:complexType>
       </xs:element>
       <xs:element name="remove">
         <xs:complexType>
-          <xs:attribute name="name" type="c:RequiredStringType" use="required"/>
+          <xs:attribute name="filename" type="c:RequiredStringType" use="required"/>
         </xs:complexType>
       </xs:element>
       <xs:element name="clear">

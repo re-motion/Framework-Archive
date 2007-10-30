@@ -14,7 +14,6 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
   /// </summary>
   public class QueryConfiguration : ExtendedConfigurationSection
   {
-    // public const string DefaultConfigurationFile = "queries.xml";
     public static readonly string DefaultConfigurationFile = QueryFileElement.GetRootedPath ("queries.xml");
 
     private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
@@ -42,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
       for (int i = 0; i < configurationFiles.Length; i++)
       {
         string configurationFile = configurationFiles[i];
-        QueryFileElement element = new QueryFileElement (configurationFile, configurationFile);
+        QueryFileElement element = new QueryFileElement (configurationFile);
         QueryFiles.Add (element);
       }
     }

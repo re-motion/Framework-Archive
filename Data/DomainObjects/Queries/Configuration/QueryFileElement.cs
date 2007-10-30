@@ -19,46 +19,30 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
 
     private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
 
-    private readonly ConfigurationProperty _queryFileNameProperty;
-    private readonly ConfigurationProperty _queryFileFilenameProperty;
+    private readonly ConfigurationProperty _queryFileFileNameProperty;
 
     public QueryFileElement ()
     {
-      _queryFileNameProperty = new ConfigurationProperty (
-          "name",
+      _queryFileFileNameProperty = new ConfigurationProperty (
+          "filename",
           typeof (string),
           null,
           ConfigurationPropertyOptions.IsRequired | ConfigurationPropertyOptions.IsKey);
 
-      _queryFileFilenameProperty = new ConfigurationProperty (
-          "filename",
-          typeof (string),
-          null,
-          ConfigurationPropertyOptions.IsRequired);
-
-      _properties.Add (_queryFileNameProperty);
-      _properties.Add (_queryFileFilenameProperty);
+      _properties.Add (_queryFileFileNameProperty);
     }
 
-    public QueryFileElement (string name, string fileName) : this()
+    public QueryFileElement (string fileName) : this()
     {
-      ArgumentUtility.CheckNotNull ("name", name);
       ArgumentUtility.CheckNotNull ("fileName", fileName);
 
-      Name = name;
       FileName = fileName;
-    }
-
-    public string Name
-    {
-      get { return (string) this[_queryFileNameProperty]; }
-      protected set { this[_queryFileNameProperty] = value; }
     }
 
     public string FileName
     {
-      get { return (string) this[_queryFileFilenameProperty]; }
-      protected set { this[_queryFileFilenameProperty] = value; }
+      get { return (string) this[_queryFileFileNameProperty]; }
+      protected set { this[_queryFileFileNameProperty] = value; }
     }
 
     public string RootedFileName
@@ -69,6 +53,11 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
     protected override ConfigurationPropertyCollection Properties
     {
       get { return _properties; }
+    }
+
+    string INamedConfigurationElement.Name
+    {
+      get { return FileName; }
     }
   }
 }
