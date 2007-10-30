@@ -58,9 +58,15 @@
     <Compile Include="Mixins\SerializationCallbackTests.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters.cs" />
     <Compile Include="SampleTypes\ClassWithMixedMixin.cs" />
+    <Compile Include="SampleTypes\ClassOverridingSpecificMixinMember.cs" />
+    <Compile Include="SampleTypes\ClassOverridingSpecificGenericMixinMember.cs" />
+    <Compile Include="SampleTypes\GenericMixinWithVirtualMethod2.cs" />
+    <Compile Include="SampleTypes\GenericMixinWithVirtualMethod.cs" />
+    <Compile Include="SampleTypes\MixinWithVirtualMethod2.cs" />
     <Compile Include="SampleTypes\DerivedNullTarget.cs" />
     <Compile Include="SampleTypes\MixinIndirectlyAddingAttribute.cs" />
     <Compile Include="Mixins\CodeGenSampleTypes\MixinWithProtectedOverriderAndAttributes.cs" />
+    <Compile Include="SampleTypes\MixinWithVirtualMethod.cs" />
     <Compile Include="SampleTypes\NullTarget.cs" />
     <Compile Include="SampleTypes\MixinMixingClass.cs" />
     <Compile Include="SampleTypes\MixinMixingMixin.cs" />
@@ -165,7 +171,7 @@
     <Compile Include="Configuration\MemberChainTests.cs" />
     <Compile Include="Configuration\MemberDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\MixinConfigurationTests.cs" />
-    <Compile Include="Configuration\OverrideAttributeHierarchyDefinitionBuilderTests.cs" />
+    <Compile Include="Configuration\OverrideAttributeHierarchyTests.cs" />
     <Compile Include="Configuration\OverrideDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\UnvalidatedDefinitionBuilder.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinIntroducingInternalInterface.cs" />

@@ -1,16 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Definitions.Building;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 
 namespace Rubicon.Mixins.UnitTests.Configuration
 {
   [TestFixture]
-  public class OverrideAttributeHierarchyDefinitionBuilderTests
+  public class OverrideAttributeHierarchyTests
   {
     [Test]
     public void BaseWithOverrideAttributes ()

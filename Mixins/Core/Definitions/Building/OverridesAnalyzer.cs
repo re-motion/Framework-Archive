@@ -1,56 +1,57 @@
 using System;
 using System.Collections.Generic;
 using Rubicon.Mixins.Definitions;
-using Rubicon;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions.Building
 {
-  public class OverridesAnalyzer<T> where T : MemberDefinition
+  public class OverridesAnalyzer<TMember>
+      where TMember : MemberDefinition
   {
-    private readonly Type _attributeType = null;
-    private readonly IEnumerable<T> _baseMembers;
+    private readonly Type _attributeType;
+    private readonly IEnumerable<TMember> _baseMembers;
 
-    private MultiDictionary<string, T> _baseMembersByNameCache = null;
+    private MultiDictionary<string, TMember> _baseMembersByNameCache = null;
 
-    public OverridesAnalyzer (Type attributeType, IEnumerable<T> baseMembers)
+    public OverridesAnalyzer (Type attributeType, IEnumerable<TMember> baseMembers)
     {
-      ArgumentUtility.CheckNotNull ("attributeType", attributeType);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("attributeType", attributeType, typeof (IOverrideAttribute));
       ArgumentUtility.CheckNotNull ("baseMembers", baseMembers);
 
       _attributeType = attributeType;
       _baseMembers = baseMembers;
     }
 
-    public IEnumerable<Tuple<T, T>> Analyze (IEnumerable<T> overriderMembers)
+    public IEnumerable<Tuple<TMember, TMember>> Analyze (IEnumerable<TMember> overriderMembers)
     {
       ArgumentUtility.CheckNotNull ("overriderMembers", overriderMembers);
 
-      foreach (T member in overriderMembers)
+      foreach (TMember member in overriderMembers)
       {
-        if (AttributeUtility.IsDefined(member.MemberInfo, _attributeType, true))
+        IOverrideAttribute overrideAttribute = (IOverrideAttribute) AttributeUtility.GetCustomAttribute (member.MemberInfo, _attributeType, true);
+        if (overrideAttribute != null)
         {
-          T baseMember;
+          TMember baseMember;
           if (BaseMembersByName.ContainsKey (member.Name))
           {
-            IEnumerable<T> candidates = BaseMembersByName[member.Name];
-            baseMember = FindBaseMember (member, candidates);
+            IEnumerable<TMember> candidates = BaseMembersByName[member.Name];
+            baseMember = FindBaseMember (overrideAttribute, member, candidates);
           }
           else
             baseMember = null;
 
           if (baseMember == null)
           {
-            string message = string.Format ("Could not find base member for overrider {0}.", member.FullName);
+            string message = string.Format ("The member overridden by '{0}' could not be found.", member.FullName);
             throw new ConfigurationException (message);
           }
-          yield return new Tuple<T, T> (member, baseMember);
+          yield return new Tuple<TMember, TMember> (member, baseMember);
         }
       }
     }
 
-    private MultiDictionary<string, T> BaseMembersByName
+    private MultiDictionary<string, TMember> BaseMembersByName
     {
       get
       {
@@ -63,23 +64,24 @@ namespace Rubicon.Mixins.Definitions.Building
     {
       if (_baseMembersByNameCache == null)
       {
-        _baseMembersByNameCache = new MultiDictionary<string, T> ();
-        foreach (T member in _baseMembers)
+        _baseMembersByNameCache = new MultiDictionary<string, TMember> ();
+        foreach (TMember member in _baseMembers)
           _baseMembersByNameCache.Add (member.Name, member);
       }
     }
 
-    private T FindBaseMember (T overrider, IEnumerable<T> candidates)
+    private TMember FindBaseMember (IOverrideAttribute attribute, TMember overrider, IEnumerable<TMember> candidates)
     {
-      T result = null;
-      foreach (T candidate in candidates)
+      TMember result = null;
+      foreach (TMember candidate in candidates)
       {
-        if (candidate.Name == overrider.Name && candidate.CanBeOverriddenBy (overrider))
+        if (candidate.Name == overrider.Name && candidate.CanBeOverriddenBy (overrider)
+            && (attribute.OverriddenType == null || ReflectionUtility.CanAscribe (candidate.DeclaringClass.Type, attribute.OverriddenType)))
         {
           if (result != null)
           {
             string message = string.Format (
-                "Ambiguous override: Member {0} has possible base members {1} and {2}.",
+                "Ambiguous override: Member {0} could override {1} and {2}.",
                 overrider.FullName,
                 result.FullName,
                 candidate.FullName);

@@ -15,7 +15,11 @@ namespace Rubicon.Mixins
   /// </para>
   /// </remarks>
   [AttributeUsage (AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event, AllowMultiple = false, Inherited = true)]
-  public class OverrideTargetAttribute : Attribute
+  public class OverrideTargetAttribute : Attribute, IOverrideAttribute
   {
+    Type IOverrideAttribute.OverriddenType
+    {
+      get { return null; }
+    }
   }
 }

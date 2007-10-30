@@ -178,7 +178,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Could not find base member for overrider .*BT5Mixin1.Method.",
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The member overridden by '.*BT5Mixin1.Method' could not be found.",
        MatchType = MessageMatch.Regex)]
     public void ThrowsWhenInexistingOverrideBaseMethod ()
     {
@@ -186,7 +186,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Could not find base member for overrider .*BT5Mixin4.Property.",
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The member overridden by '.*BT5Mixin4.Property' could not be found.",
        MatchType = MessageMatch.Regex)]
     public void ThrowsWhenInexistingOverrideBaseProperty ()
     {
@@ -194,7 +194,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Could not find base member for overrider .*BT5Mixin5.Event.",
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The member overridden by '.*BT5Mixin5.Event' could not be found.",
         MatchType = MessageMatch.Regex)]
     public void ThrowsWhenInexistingOverrideBaseEvent ()
     {
@@ -208,6 +208,39 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       using (MixinConfiguration.ScopedExtend(typeof (ClassOverridingMixinMembers), typeof (MixinWithAbstractMembers), typeof(MixinWithSingleAbstractMethod2)))
       {
         TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers));
+      }
+    }
+
+    [Test]
+    public void TargetClassOverridingSpecificMixinMethod ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (ClassOverridingSpecificMixinMember), typeof (MixinWithVirtualMethod), typeof (MixinWithVirtualMethod2)))
+      {
+        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingSpecificMixinMember));
+        MethodDefinition method = definition.Methods[typeof (ClassOverridingSpecificMixinMember).GetMethod ("VirtualMethod")];
+        Assert.AreSame (method.Base.DeclaringClass, definition.Mixins[typeof (MixinWithVirtualMethod)]);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The member overridden by "
+        + "'Rubicon.Mixins.UnitTests.SampleTypes.ClassOverridingSpecificMixinMember.VirtualMethod' could not be found.")]
+    public void TargetClassOverridingSpecificUnconfiguredMixinMethod ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (ClassOverridingSpecificMixinMember), typeof (MixinWithVirtualMethod2)))
+      {
+        TypeFactory.GetActiveConfiguration (typeof (ClassOverridingSpecificMixinMember));
+      }
+    }
+
+    [Test]
+    public void TargetClassOverridingSpecificGenericMethod ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (ClassOverridingSpecificGenericMixinMember), typeof (GenericMixinWithVirtualMethod<>), typeof (GenericMixinWithVirtualMethod2<>)))
+      {
+        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingSpecificGenericMixinMember));
+        MethodDefinition method = definition.Methods[typeof (ClassOverridingSpecificGenericMixinMember).GetMethod ("VirtualMethod")];
+        Assert.AreSame (method.Base.DeclaringClass, definition.GetMixinByConfiguredType (typeof (GenericMixinWithVirtualMethod<>)));
       }
     }
 

@@ -53,6 +53,7 @@
     <Compile Include="Context\ApplicationConctextBuilderAssemblyFinderFilter.cs" />
     <Compile Include="Context\InternalApplicationContextBuilder.cs" />
     <Compile Include="Context\MixinContext.cs" />
+    <Compile Include="IOverrideAttribute.cs" />
     <Compile Include="OverrideMixinAttribute.cs" />
     <Compile Include="Definitions\AttributeIntroductionDefinition.cs" />
     <Compile Include="Definitions\Building\MixinDependencyDefinitionBuilder.cs" />
