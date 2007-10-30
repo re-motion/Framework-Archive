@@ -64,10 +64,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <MappingFiles Include="Queries.xml">
-    </MappingFiles>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core %28Core\Core%29</Name>
@@ -114,6 +110,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <MappingFiles Include="..\Core\Domain\SecurityManagerQueries.xml" />
     <Content Include="Global.asax" />
     <Content Include="WxeHandler.ashx" />
   </ItemGroup>
@@ -129,6 +126,7 @@
   -->
   <Target Name="AfterBuild">
     <Delete Files="@(MappingFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+    <Copy SourceFiles="@(MappingFiles->'%(Fullpath)')" DestinationFiles="@(MappingFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
   </Target>
   <ProjectExtensions>
     <VisualStudio>
