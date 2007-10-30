@@ -57,7 +57,17 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
         for (int i = 0; i < QueryFiles.Count; i++)
         {
           QueryConfigurationLoader loader = new QueryConfigurationLoader (QueryFiles[i].RootedFileName);
-          result.Merge (loader.GetQueryDefinitions ());
+            QueryDefinitionCollection queryDefinitions = loader.GetQueryDefinitions ();
+          try
+          {
+            result.Merge (queryDefinitions);
+          }
+          catch (DuplicateQueryDefinitionException ex)
+          {
+            string message = string.Format ("File '{0}' defines a duplicate for query definition '{1}'.", QueryFiles[i].RootedFileName,
+              ex.QueryDefinition.ID);
+            throw new ConfigurationException (message);
+          }
         }
         return result;
       }

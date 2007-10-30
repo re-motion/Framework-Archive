@@ -971,6 +971,12 @@
     <EmbeddedResource Include="Resources\DomainObjectsConfigurationWithFakeMappingLoader.xml" />
     <EmbeddedResource Include="Resources\DomainObjectsConfigurationWithMinimumSettings.xml" />
     <EmbeddedResource Include="Resources\DomainObjectsConfigurationWithCustomSectionGroupName.xml" />
+    <Content Include="QueriesForLoaderTest2.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="QueriesForLoaderTestDuplicate.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Database\DataDomainObjects_CreateTableInheritanceTestData.sql" />
     <Content Include="Database\DataDomainObjects_CreateDB.sql" />
     <Content Include="Database\DataDomainObjects_CreateTestData.sql">

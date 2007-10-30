@@ -79,7 +79,9 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
 
       foreach (QueryDefinition query in source)
       {
-        if (!Contains (query.ID))
+        if (Contains (query.ID))
+          throw new DuplicateQueryDefinitionException (this[query.ID], query);
+        else
           Add (query);
       }
     }

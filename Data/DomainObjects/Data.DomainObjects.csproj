@@ -169,6 +169,7 @@
     <Compile Include="Persistence\Configuration\StorageGroupElement.cs" />
     <Compile Include="Persistence\Configuration\TypeProvider.cs" />
     <Compile Include="Infrastructure\PropertyAccessor.cs" />
+    <Compile Include="Queries\Configuration\DuplicateQueryDefinitionException.cs" />
     <Compile Include="Queries\Configuration\QueryFileElement.cs" />
     <Compile Include="Queries\IQueryManager.cs" />
     <Compile Include="Queries\SubQueryManager.cs" />

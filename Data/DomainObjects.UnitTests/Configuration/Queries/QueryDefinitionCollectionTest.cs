@@ -109,7 +109,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
     }
 
     [Test]
-    public void Merge_IgnoresDuplicates ()
+    [ExpectedException (typeof (DuplicateQueryDefinitionException), ExpectedMessage = "The query with ID 'id1' has a duplicate.")]
+    public void Merge_ThrowsOnDuplicates ()
     {
       QueryDefinition query1 = new QueryDefinition ("id1", "bla", "bla", QueryType.Collection);
       QueryDefinition query2 = new QueryDefinition ("id1", "bla", "bla", QueryType.Collection);
@@ -124,6 +125,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
 
       Assert.AreEqual (1, target.Count);
       Assert.AreSame (query2, target[0]);
+
+      Assert.Fail ();
     }
   }
 }

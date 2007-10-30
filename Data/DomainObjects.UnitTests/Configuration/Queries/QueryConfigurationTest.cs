@@ -7,6 +7,7 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
 using Rubicon.Development.UnitTesting.Configuration;
 using Rubicon.Data.DomainObjects.Configuration;
 
@@ -157,10 +158,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
     [Test]
     public void GetDefinitions_WithMultipleFiles ()
     {
-      QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml", "Queries.xml");
+      QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml", "QueriesForLoaderTest2.xml");
 
       QueryConfigurationLoader loader1 = new QueryConfigurationLoader (@"QueriesForLoaderTest.xml");
-      QueryConfigurationLoader loader2 = new QueryConfigurationLoader (@"Queries.xml");
+      QueryConfigurationLoader loader2 = new QueryConfigurationLoader (@"QueriesForLoaderTest2.xml");
       QueryDefinitionCollection expectedQueries = loader1.GetQueryDefinitions ();
       expectedQueries.Merge (loader2.GetQueryDefinitions());
 
@@ -187,10 +188,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
     }
 
     [Test]
-    public void CollectionTypeSupportsTypeUtilityNotation ()
+    public void CollectionType_SupportsTypeUtilityNotation ()
     {
       QueryDefinitionCollection queries = DomainObjectsConfiguration.Current.Query.QueryDefinitions;
       Assert.AreSame (typeof (SpecificOrderCollection), queries["QueryWithSpecificCollectionType"].CollectionType);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = @"File "
+        + @"'C:\Development\libraries\Commons\trunk\Data\DomainObjects.UnitTests\bin\Debug\QueriesForLoaderTestDuplicate.xml' defines a duplicate "
+        + @"for query definition 'OrderQueryWithCustomCollectionType'.")]
+    public void DifferentQueryFiles_SpecifyingDuplicates ()
+    {
+      QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml", "QueriesForLoaderTestDuplicate.xml");
+
+      Dev.Null = configuration.QueryDefinitions;
     }
 
     private QueryDefinitionCollection CreateExpectedQueryDefinitions ()
