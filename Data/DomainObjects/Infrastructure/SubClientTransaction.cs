@@ -85,6 +85,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       get { return ParentTransaction.EnlistedDomainObjects; }
     }
 
+    protected internal override int EnlistedDomainObjectCount
+    {
+      get { return ParentTransaction.EnlistedDomainObjectCount; }
+    }
+
     protected internal override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);

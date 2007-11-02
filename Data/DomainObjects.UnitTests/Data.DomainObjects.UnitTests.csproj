@@ -940,6 +940,7 @@
     <Compile Include="Transaction\SubTransactionQueryTest.cs" />
     <Compile Include="Transaction\SubTransactionRollbackDataTest.cs" />
     <Compile Include="Transaction\SubTransactionTest.cs" />
+    <Compile Include="Transport\DomainObjectTransporterTest.cs" />
     <Compile Include="UnitTestStorageProviderStub.cs">
       <SubType>Code</SubType>
     </Compile>

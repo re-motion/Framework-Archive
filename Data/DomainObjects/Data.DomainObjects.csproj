@@ -112,6 +112,7 @@
     <Compile Include="Design\DesignModeMappingLoaderAttribute.cs" />
     <Compile Include="Design\DesignModeMappingReflector.cs" />
     <Compile Include="DomainObjectMixin.cs" />
+    <Compile Include="DomainObjectTransporter.cs" />
     <Compile Include="IDomainObjectMixin.cs" />
     <Compile Include="Infrastructure\ClientTransactionReadOnlyException.cs" />
     <Compile Include="Infrastructure\CompoundClientTransactionListener.cs" />

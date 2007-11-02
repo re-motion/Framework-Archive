@@ -181,6 +181,12 @@ public abstract class ClientTransaction : ITransaction
   protected internal abstract IEnumerable<DomainObject> EnlistedDomainObjects { get; }
 
   /// <summary>
+  /// Gets the number of domain objects enlisted in this transaction.
+  /// </summary>
+  /// <value>The number of elements in <see cref="EnlistedDomainObjects"/>.</value>
+  protected internal abstract int EnlistedDomainObjectCount { get; }
+
+  /// <summary>
   /// Persists changed data in the couse of a <see cref="Commit"/> operation.
   /// </summary>
   /// <param name="changedDataContainers">The data containers for any object that was changed in this transaction.</param>

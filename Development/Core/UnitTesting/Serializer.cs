@@ -25,7 +25,7 @@ namespace Rubicon.Development.UnitTesting
       {
         BinaryFormatter formatter = new BinaryFormatter ();
         formatter.Serialize (stream, o);
-        return stream.GetBuffer ();
+        return stream.ToArray();
       }
     }
 

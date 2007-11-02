@@ -710,7 +710,7 @@ public class DomainObject
   /// </summary>
   /// <returns>An enumeration of all <see cref="DomainObject"/> directly referenced by this <see cref="DomainObject"/> in the form of
   /// <see cref="PropertyKind.RelatedObject"/> and <see cref="PropertyKind.RelatedObjectCollection"/> properties.</returns>
-  protected IEnumerable<DomainObject> GetAllRelatedObjects ()
+  protected internal IEnumerable<DomainObject> GetAllRelatedObjects ()
   {
     foreach (PropertyAccessor property in Properties)
     {
@@ -737,7 +737,7 @@ public class DomainObject
   /// <returns>A <see cref="Set{T}"/> of <see cref="DomainObject"/> instances containing this object and all objects directly or indirectly
   /// referenced by it.</returns>
   // Note: Implemented nonrecursively in order to support very large graphs.
-  protected Set<DomainObject> GetFlattenedRelatedObjectGraph ()
+  protected internal Set<DomainObject> GetFlattenedRelatedObjectGraph ()
   {
     Set<DomainObject> resultSet = new Set<DomainObject> ();
     Set<DomainObject> objectsToBeProcessed = new Set<DomainObject> (this);

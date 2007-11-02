@@ -88,6 +88,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       get { return _enlistedObjects.Values; }
     }
 
+    protected internal override int EnlistedDomainObjectCount
+    {
+      get { return _enlistedObjects.Count; }
+    }
+
     protected override void PersistData (DataContainerCollection changedDataContainers)
     {
       ArgumentUtility.CheckNotNull ("changedDataContainers", changedDataContainers);
