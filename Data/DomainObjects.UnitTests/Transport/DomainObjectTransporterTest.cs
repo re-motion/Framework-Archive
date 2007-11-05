@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Data.DomainObjects.Transport;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Collections;
 
@@ -79,6 +80,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       Assert.AreEqual (5, _transporter.ObjectCount);
       Assert.That (GetIDList (), Is.EquivalentTo (new ObjectID[] { DomainObjectIDs.Employee1, DomainObjectIDs.Employee4, DomainObjectIDs.Computer2,
           DomainObjectIDs.Employee5, DomainObjectIDs.Computer3 }));
+    }
+
+    [Test]
+    public void LoadTransportData ()
+    {
+      _transporter.Load (DomainObjectIDs.Employee1);
+      _transporter.Load (DomainObjectIDs.Employee2);
+      TransportedDomainObjects transportedObjects = DomainObjectTransporter.LoadTransportData (_transporter.GetBinaryTransportData ());
+      Assert.IsNotNull (transportedObjects);
+      List<DomainObject> domainObjects = new List<DomainObject> (transportedObjects.TransportedObjects);
+      Assert.AreEqual (2, domainObjects.Count);
+      Assert.That (domainObjects.ConvertAll<ObjectID> (delegate (DomainObject obj) { return obj.ID; }),
+          Is.EquivalentTo (new ObjectID[] { DomainObjectIDs.Employee1, DomainObjectIDs.Employee2 }));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Invalid data specified: End of Stream encountered before parsing was completed."
+        + "\r\nParameter name: data")]
+    public void LoadTransportData_InvalidData ()
+    {
+      byte[] data = new byte[] { 1, 2, 3 };
+      DomainObjectTransporter.LoadTransportData (data);
     }
 
     /*[Test]

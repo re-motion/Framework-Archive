@@ -235,6 +235,12 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       get { return _domainObject; }
     }
 
+    private void CheckTransactionalStatus (ClientTransaction transaction)
+    {
+      _domainObject.CheckIfObjectIsDiscarded (transaction);
+      _domainObject.CheckIfRightTransaction (transaction);
+    }
+
     /// <summary>
     /// Indicates whether the property's value has been changed in its current transaction.
     /// </summary>
@@ -245,8 +251,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       get
       {
-        DomainObject.CheckIfObjectIsDiscarded();
-        _domainObject.CheckIfRightTransaction (ClientTransactionScope.CurrentTransaction);
+        CheckTransactionalStatus (ClientTransactionScope.CurrentTransaction);
         return _strategy.HasChanged (this, ClientTransactionScope.CurrentTransaction);
       }
     }
@@ -265,8 +270,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       get
       {
-        DomainObject.CheckIfObjectIsDiscarded ();
-        _domainObject.CheckIfRightTransaction (ClientTransactionScope.CurrentTransaction);
+        CheckTransactionalStatus (ClientTransactionScope.CurrentTransaction);
         return _strategy.HasBeenTouched (this, ClientTransactionScope.CurrentTransaction);
       }
     }
@@ -283,8 +287,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       get
       {
-        DomainObject.CheckIfObjectIsDiscarded ();
-        DomainObject.CheckIfRightTransaction (ClientTransactionScope.CurrentTransaction);
+        CheckTransactionalStatus (ClientTransactionScope.CurrentTransaction);
         return _strategy.IsNull (this, ClientTransactionScope.CurrentTransaction);
       }
     }
@@ -373,6 +376,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
+      CheckTransactionalStatus (transaction);
+
       if (Kind != PropertyKind.RelatedObject)
         throw new InvalidOperationException ("This operation can only be used on related object properties.");
 
@@ -441,7 +446,6 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public void SetValueWithoutTypeCheck (object value)
     {
-      _domainObject.CheckIfObjectIsDiscarded ();
       SetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction, value);
     }
 
@@ -462,8 +466,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
-      _domainObject.CheckIfObjectIsDiscarded ();
-      _domainObject.CheckIfRightTransaction (transaction);
+      CheckTransactionalStatus (transaction);
       _strategy.SetValueWithoutTypeCheck (this, transaction, value);
     }
 
@@ -475,7 +478,6 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public object GetValueWithoutTypeCheck ()
     {
-      _domainObject.CheckIfObjectIsDiscarded();
       return GetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
     }
 
@@ -491,8 +493,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
-      _domainObject.CheckIfObjectIsDiscarded ();
-      _domainObject.CheckIfRightTransaction (transaction);
+      CheckTransactionalStatus (transaction);
       return _strategy.GetValueWithoutTypeCheck (this, transaction);
     }
 
@@ -564,8 +565,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
-      _domainObject.CheckIfObjectIsDiscarded ();
-      _domainObject.CheckIfRightTransaction (transaction);
+      CheckTransactionalStatus (transaction);
       return _strategy.GetOriginalValueWithoutTypeCheck (this, transaction);
     }
 
@@ -595,6 +595,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public ObjectID GetOriginalRelatedObjectIDTx (ClientTransaction transaction)
     {
       ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      CheckTransactionalStatus (transaction);
 
       if (Kind != PropertyKind.RelatedObject)
         throw new InvalidOperationException ("This operation can only be used on related object properties.");

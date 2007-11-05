@@ -29,6 +29,7 @@
         <include name="Properties/**/*.cs" />
         <include name="Queries/**/*.cs"/>
         <include name="Schemas/**/*.cs"/>
+        <include name="Transport/**/*.cs"/>
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">

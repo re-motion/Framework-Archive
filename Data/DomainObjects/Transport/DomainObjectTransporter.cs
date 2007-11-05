@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects
+namespace Rubicon.Data.DomainObjects.Transport
 {
   /// <summary>
   /// Constitutes a collection of domain objects to be transported to another system.
@@ -23,7 +25,13 @@ namespace Rubicon.Data.DomainObjects
     public delegate bool TraversionController (ObjectID currentObject, ref bool continueTraversion);
     */
 
-    private ClientTransaction _transportTransaction = ClientTransaction.NewTransaction ();
+    public static TransportedDomainObjects LoadTransportData (byte[] data)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("data", data);
+      return new DomainObjectImporter (data).GetImportedObjects ();
+    }
+
+    private readonly ClientTransaction _transportTransaction = ClientTransaction.NewTransaction ();
 
     public int ObjectCount
     {
@@ -44,11 +52,14 @@ namespace Rubicon.Data.DomainObjects
 
     public void Load (ObjectID objectID)
     {
+      ArgumentUtility.CheckNotNull ("objectID", objectID);
       _transportTransaction.GetObject (objectID, false);
     }
 
     public void LoadWithRelatedObjects (ObjectID objectID)
     {
+      ArgumentUtility.CheckNotNull ("objectID", objectID);
+
       DomainObject sourceObject = _transportTransaction.GetObject (objectID, false);
       using (_transportTransaction.EnterNonDiscardingScope ())
       {
@@ -59,6 +70,8 @@ namespace Rubicon.Data.DomainObjects
 
     public void LoadRecursive (ObjectID objectID)
     {
+      ArgumentUtility.CheckNotNull ("objectID", objectID);
+
       DomainObject sourceObject = _transportTransaction.GetObject (objectID, false);
       using (_transportTransaction.EnterNonDiscardingScope ())
       {

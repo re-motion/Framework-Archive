@@ -7,6 +7,7 @@ using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -1142,6 +1143,99 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetOriginalRelatedObjectIDTx (ClientTransactionMock);
+      }
+    }
+
+    [Test]
+    public void GetSetValueTx_WithNoScope ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      using (ClientTransactionScope.EnterNullScope ())
+      {
+        int orderNumber = order.Properties[typeof (Order), "OrderNumber"].GetValueTx<int> (ClientTransactionMock);
+        order.Properties[typeof (Order), "OrderNumber"].SetValueTx (ClientTransactionMock, orderNumber + 1);
+        Assert.AreEqual (orderNumber + 1, order.Properties[typeof (Order), "OrderNumber"].GetValueTx<int> (ClientTransactionMock));
+      }
+    }
+
+    [Test]
+    public void DiscardCheck ()
+    {
+      Order order = Order.NewObject ();
+      order.Delete ();
+
+      PropertyAccessor property = order.Properties[typeof (Order), "OrderNumber"];
+
+      ExpectDiscarded (delegate { Dev.Null = property.HasChanged; });
+      ExpectDiscarded (delegate { Dev.Null = property.HasBeenTouched; });
+      ExpectDiscarded (delegate { Dev.Null = property.IsNull; });
+      ExpectDiscarded (delegate { Dev.Null = property.GetOriginalRelatedObjectID(); });
+      ExpectDiscarded (delegate { Dev.Null = property.GetOriginalValue<int> (); });
+      ExpectDiscarded (delegate { Dev.Null = property.GetOriginalValueWithoutTypeCheck(); });
+      ExpectDiscarded (delegate { Dev.Null = property.GetRelatedObjectID (); });
+      ExpectDiscarded (delegate { Dev.Null = property.GetValue<int> (); });
+      ExpectDiscarded (delegate { Dev.Null = property.GetValueWithoutTypeCheck (); });
+      ExpectDiscarded (delegate { property.SetValue (0); });
+      ExpectDiscarded (delegate { property.SetValueWithoutTypeCheck (0); });
+      
+      // no exceptions
+      Dev.Null = property.Kind;
+      Dev.Null = property.PropertyDefinition;
+      Dev.Null = property.PropertyIdentifier;
+      Dev.Null = property.PropertyType;
+      Dev.Null = property.RelationEndPointDefinition;
+      Dev.Null = property.ClassDefinition;
+      Dev.Null = property.DomainObject;
+    }
+
+    [Test]
+    public void DiscardCheck_Tx ()
+    {
+      ClassWithAllDataTypes instance = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+      ClientTransaction otherTransaction = ClientTransaction.NewTransaction ();
+      using (otherTransaction.EnterNonDiscardingScope ())
+      {
+        otherTransaction.EnlistDomainObject (instance);
+        instance.Delete();
+        SetDatabaseModifyable ();
+        otherTransaction.Commit ();
+        Assert.IsTrue (instance.IsDiscarded);
+      }
+
+      Assert.IsFalse (instance.IsDiscarded);
+
+      PropertyAccessor property = instance.Properties[typeof (ClassWithAllDataTypes), "Int32Property"];
+
+      ExpectDiscarded (delegate { Dev.Null = property.GetOriginalRelatedObjectIDTx (otherTransaction); });
+      ExpectDiscarded (delegate { Dev.Null = property.GetOriginalValueTx<int> (otherTransaction); });
+      ExpectDiscarded (delegate { Dev.Null = property.GetOriginalValueWithoutTypeCheckTx (otherTransaction); });
+      ExpectDiscarded (delegate { Dev.Null = property.GetRelatedObjectIDTx (otherTransaction); });
+      ExpectDiscarded (delegate { Dev.Null = property.GetValueTx<int> (otherTransaction); });
+      ExpectDiscarded (delegate { Dev.Null = property.GetValueWithoutTypeCheckTx (otherTransaction); });
+      ExpectDiscarded (delegate { property.SetValueTx (otherTransaction, 0); });
+      ExpectDiscarded (delegate { property.SetValueWithoutTypeCheckTx (otherTransaction, 0); });
+
+      try { Dev.Null = property.GetOriginalRelatedObjectIDTx (ClientTransaction.Current); } catch (InvalidOperationException) { }
+      Dev.Null = property.GetOriginalValueTx<int> (ClientTransaction.Current);
+      Dev.Null = property.GetOriginalValueWithoutTypeCheckTx (ClientTransaction.Current);
+      try { Dev.Null = property.GetRelatedObjectIDTx (ClientTransaction.Current); } catch (InvalidOperationException) { }
+      Dev.Null = property.GetValueTx<int> (ClientTransaction.Current);
+      Dev.Null = property.GetValueWithoutTypeCheckTx (ClientTransaction.Current);
+      property.SetValueTx (ClientTransaction.Current, 0);
+      property.SetValueWithoutTypeCheckTx (ClientTransaction.Current, 0);
+    }
+
+
+    private void ExpectDiscarded (Proc action)
+    {
+      try
+      {
+        action ();
+        Assert.Fail ("Expected ObjectDiscardedException.");
+      }
+      catch (ObjectDiscardedException)
+      {
+        // ok
       }
     }
   }

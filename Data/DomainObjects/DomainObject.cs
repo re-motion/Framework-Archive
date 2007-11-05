@@ -481,7 +481,7 @@ public class DomainObject
   /// <exception cref="ObjectDiscardedException">The object has already been discarded.</exception>
   public void MarkAsChanged ()
   {
-    CheckIfObjectIsDiscarded ();
+    CheckIfObjectIsDiscarded (ClientTransaction.Current);
 
     DataContainer dataContainer = GetDataContainer ();
     try
@@ -495,19 +495,33 @@ public class DomainObject
   }
 
   /// <summary>
-  /// Gets a value indicating the discarded status of the object.
+  /// Gets a value indicating the discarded status of the object in the <see cref="ClientTransactionScope.CurrentTransaction"/>.
   /// </summary>
   /// <remarks>
   /// For more information why and when an object is discarded see <see cref="Rubicon.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
   /// </remarks>
   public bool IsDiscarded
   {
-    get { return ClientTransactionScope.CurrentTransaction.DataManager.IsDiscarded (ID); }
+    get { return IsDiscardedInTransaction (ClientTransaction.Current); }
   }
 
-  protected internal void CheckIfObjectIsDiscarded ()
+  /// <summary>
+  /// Gets a value indicating the discarded status of the object in the given <see cref="ClientTransaction"/>.
+  /// </summary>
+  /// <param name="transaction">The transaction to check.</param>
+  /// <returns>True if this object is discarded in the given <paramref name="transaction"/>; otherwise, false.</returns>
+  /// <remarks>
+  /// For more information why and when an object is discarded see <see cref="Rubicon.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
+  /// </remarks>
+  public bool IsDiscardedInTransaction (ClientTransaction transaction)
   {
-    if (IsDiscarded)
+    ArgumentUtility.CheckNotNull ("transaction", transaction);
+    return transaction.DataManager.IsDiscarded (ID);
+  }
+
+  protected internal void CheckIfObjectIsDiscarded (ClientTransaction transaction)
+  {
+    if (IsDiscardedInTransaction (transaction))
       throw new ObjectDiscardedException (ID);
   }
 
@@ -519,8 +533,8 @@ public class DomainObject
 	{
 		get
     {
-      CheckIfObjectIsDiscarded ();
-      CheckIfRightTransaction ();
+      CheckIfObjectIsDiscarded (ClientTransaction.Current);
+      CheckIfRightTransaction (ClientTransaction.Current);
       return new DataContainerIndirection (this);
     }
 	}
@@ -531,15 +545,14 @@ public class DomainObject
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   internal DataContainer GetDataContainer()
   {
-    CheckIfRightTransaction ();
+    CheckIfRightTransaction (ClientTransaction.Current);
 
     return GetDataContainerForTransaction (ClientTransactionScope.CurrentTransaction);
   }
 
   internal DataContainer GetDataContainerForTransaction (ClientTransaction transaction)
   {
-    if (transaction.DataManager.IsDiscarded (ID))
-      throw new ObjectDiscardedException (ID);
+    CheckIfObjectIsDiscarded (transaction);
 
     DataContainer dataContainer = transaction.DataManager.DataContainerMap[ID];
     if (dataContainer == null)
@@ -556,8 +569,8 @@ public class DomainObject
   /// <remarks>To perform custom actions when a <see cref="DomainObject"/> is deleted <see cref="OnDeleting"/> and <see cref="OnDeleted"/> should be overridden.</remarks>
   protected void Delete ()
   {
-    CheckIfObjectIsDiscarded ();
-    CheckIfRightTransaction ();
+    CheckIfObjectIsDiscarded (ClientTransaction.Current);
+    CheckIfRightTransaction (ClientTransaction.Current);
 
     ClientTransactionScope.CurrentTransaction.Delete (this);
   }
@@ -584,12 +597,6 @@ public class DomainObject
     }
     else
       return false;
-  }
-
-  private void CheckIfRightTransaction ()
-  {
-    ClientTransaction transaction = ClientTransactionScope.CurrentTransaction;
-    CheckIfRightTransaction(transaction);
   }
 
   internal void CheckIfRightTransaction (ClientTransaction transaction)
@@ -623,7 +630,6 @@ public class DomainObject
   protected internal virtual void PreparePropertyAccess (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    CheckIfObjectIsDiscarded();
     if (!PropertyAccessor.IsValidProperty (GetDataContainer().ClassDefinition, propertyName))
     {
       string message = string.Format (
@@ -694,8 +700,6 @@ public class DomainObject
   {
     get
     {
-      CheckIfObjectIsDiscarded ();
-      CheckIfRightTransaction ();
       return new PropertyIndexer (this);
     }
   }

@@ -344,6 +344,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    public void IsDiscardedInTransaction ()
+    {
+      ClientTransaction otherTransaction = ClientTransaction.NewTransaction ();
+      ClassWithAllDataTypes loadedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+      using (otherTransaction.EnterNonDiscardingScope ())
+      {
+        otherTransaction.EnlistDomainObject (loadedObject);
+        loadedObject.Delete ();
+        otherTransaction.Commit ();
+        Assert.IsTrue (loadedObject.IsDiscarded);
+      }
+      Assert.IsFalse (loadedObject.IsDiscarded);
+
+      Assert.IsTrue (loadedObject.IsDiscardedInTransaction (otherTransaction));
+      Assert.IsFalse (loadedObject.IsDiscardedInTransaction (ClientTransaction.Current));
+    }
+
+    [Test]
     public void MarkAsChanged ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
