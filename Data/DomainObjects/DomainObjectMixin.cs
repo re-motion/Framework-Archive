@@ -4,12 +4,14 @@ using Rubicon.Mixins;
 
 namespace Rubicon.Data.DomainObjects
 {
+  [Serializable]
   public class DomainObjectMixin<TDomainObject> : DomainObjectMixin<TDomainObject, IDomainObjectBaseCallRequirements>
     where TDomainObject : DomainObject
   {
   }
 
   [NonIntroduced (typeof (IDomainObjectMixin))]
+  [Serializable]
   public class DomainObjectMixin<TDomainObject, TBaseCallRequirements>
       : Mixin<TDomainObject, TBaseCallRequirements>, IDomainObjectMixin
       where TDomainObject : DomainObject

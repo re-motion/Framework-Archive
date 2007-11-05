@@ -6,6 +6,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [DBTable ("TableWithAllDataTypes")]
   [TestDomain]
   [Instantiable]
+  [Serializable]
   public abstract class ClassWithAllDataTypes : TestDomainBase
   {
     public enum EnumType

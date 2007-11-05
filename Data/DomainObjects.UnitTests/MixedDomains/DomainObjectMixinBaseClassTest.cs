@@ -4,6 +4,7 @@ using Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Mixins;
 using Rubicon.Mixins.Validation;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
 {
@@ -117,6 +118,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
       Assert.AreEqual (LoadMode.DataContainerLoadedOnly, _loadedClassWithAllDataTypesMixin.OnDomainObjectLoadedLoadMode);
 
       Assert.IsFalse (_newClassWithAllDataTypesMixin.OnDomainObjectLoadedCalled);
+    }
+
+    [Test]
+    public void Serializable ()
+    {
+      Serializer.SerializeAndDeserialize (_loadedClassWithAllDataTypesMixin);
+      // no exception
     }
   }
 }
