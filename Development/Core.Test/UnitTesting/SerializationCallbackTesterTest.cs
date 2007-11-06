@@ -28,14 +28,14 @@ namespace Rubicon.Development.UnitTests.UnitTesting
     [Test]
     public void TestSerializationCallbacks_ViaOrdinaryInstance ()
     {
-      new SerializationCallbackTester<OrdinaryClass> (new OrdinaryClass(), OrdinaryClass.SetReceiver)
+      new SerializationCallbackTester<OrdinaryClass> (new RhinoMocksRepositoryAdapter(), new OrdinaryClass(), OrdinaryClass.SetReceiver)
           .Test_SerializationCallbacks ();
     }
 
     [Test]
     public void TestDeserializationCallbacks_ViaOrdinaryInstance ()
     {
-      new SerializationCallbackTester<OrdinaryClass> (new OrdinaryClass (), OrdinaryClass.SetReceiver)
+      new SerializationCallbackTester<OrdinaryClass> (new RhinoMocksRepositoryAdapter (), new OrdinaryClass (), OrdinaryClass.SetReceiver)
           .Test_DeserializationCallbacks ();
     }
 
@@ -64,7 +64,7 @@ namespace Rubicon.Development.UnitTests.UnitTesting
     [ExpectedException (typeof (ExpectationViolationException), ExpectedMessage = "ISerializationEventReceiver.OnDeserialization(any); Expected #1, Actual #0.")]
     public void TestDeserializationCallbacks_ViaBrokenInstance ()
     {
-      new SerializationCallbackTester<BrokenClass> (new BrokenClass (), BrokenClass.SetReceiver)
+      new SerializationCallbackTester<BrokenClass> (new RhinoMocksRepositoryAdapter (), new BrokenClass (), BrokenClass.SetReceiver)
           .Test_DeserializationCallbacks ();
     }
   }

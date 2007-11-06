@@ -51,28 +51,28 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void SerializationCallbacks_AreInvokedOnTargetClass ()
     {
-      new SerializationCallbackTester<TargetTypeWithSerializationCallbacks> (_instance, TargetTypeWithSerializationCallbacks.SetStaticReceiver)
+      new SerializationCallbackTester<TargetTypeWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter(), _instance, TargetTypeWithSerializationCallbacks.SetStaticReceiver)
           .Test_SerializationCallbacks ();
     }
 
     [Test]
     public void DeserializationCallbacks_AreInvokedOnTargetClass ()
     {
-      new SerializationCallbackTester<TargetTypeWithSerializationCallbacks> (_instance, TargetTypeWithSerializationCallbacks.SetStaticReceiver)
+      new SerializationCallbackTester<TargetTypeWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter (), _instance, TargetTypeWithSerializationCallbacks.SetStaticReceiver)
           .Test_DeserializationCallbacks ();
     }
 
     [Test]
     public void SerializationCallbacks_AreInvokedOnMixinClass ()
     {
-      new SerializationCallbackTester<TargetTypeWithSerializationCallbacks> (_instance, MixinWithSerializationCallbacks.SetStaticReceiver)
+      new SerializationCallbackTester<TargetTypeWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter (), _instance, MixinWithSerializationCallbacks.SetStaticReceiver)
           .Test_SerializationCallbacks ();
     }
 
     [Test]
     public void DeserializationCallbacks_AreInvokedOnMixinClass ()
     {
-      new SerializationCallbackTester<TargetTypeWithSerializationCallbacks> (_instance, MixinWithSerializationCallbacks.SetStaticReceiver)
+      new SerializationCallbackTester<TargetTypeWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter (), _instance, MixinWithSerializationCallbacks.SetStaticReceiver)
           .Test_DeserializationCallbacks ();
     }
 
@@ -109,7 +109,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       TargetClassForAbstractMixinWithSerializationCallbacks instance =
           ObjectFactory.Create<TargetClassForAbstractMixinWithSerializationCallbacks> ().With ();
-      new SerializationCallbackTester<TargetClassForAbstractMixinWithSerializationCallbacks> (instance, AbstractMixinWithSerializationCallbacks.SetStaticReceiver)
+      new SerializationCallbackTester<TargetClassForAbstractMixinWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter (), instance, AbstractMixinWithSerializationCallbacks.SetStaticReceiver)
           .Test_SerializationCallbacks ();
     }
 
@@ -118,7 +118,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       TargetClassForAbstractMixinWithSerializationCallbacks instance =
           ObjectFactory.Create<TargetClassForAbstractMixinWithSerializationCallbacks> ().With ();
-      new SerializationCallbackTester<TargetClassForAbstractMixinWithSerializationCallbacks> (instance, AbstractMixinWithSerializationCallbacks.SetStaticReceiver)
+      new SerializationCallbackTester<TargetClassForAbstractMixinWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter (), instance, AbstractMixinWithSerializationCallbacks.SetStaticReceiver)
           .Test_DeserializationCallbacks ();
     }
   }

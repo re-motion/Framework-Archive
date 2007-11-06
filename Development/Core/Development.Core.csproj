@@ -73,10 +73,6 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Rhino.Mocks, Version=3.1.0.584, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\prereq\Assemblies\Rhino.Mocks.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -106,6 +102,7 @@
     <Compile Include="UnitTesting\Data\SqlClient\DatabaseAgent.cs" />
     <Compile Include="UnitTesting\Dev.cs" />
     <Compile Include="UnitTesting\Configuration\FakeInternalConfigSystem.cs" />
+    <Compile Include="UnitTesting\IMockRepository.cs" />
     <Compile Include="UnitTesting\IO\TempFile.cs" />
     <Compile Include="UnitTesting\ISerializationEventReceiver.cs" />
     <Compile Include="UnitTesting\PEVerifier.cs" />

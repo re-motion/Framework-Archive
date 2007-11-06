@@ -55,6 +55,7 @@
     <Compile Include="Mixins\MixedTypeCodeGeneration\MixedMixinTests.cs" />
     <Compile Include="Mixins\MixinTypeCodeGeneration\GeneratedTypeInConfigurationTests.cs" />
     <Compile Include="Mixins\ModuleManagerSerializationExtensionTests.cs" />
+    <Compile Include="Mixins\RhinoMocksRepositoryAdapter.cs" />
     <Compile Include="Mixins\SerializationCallbackTests.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters.cs" />
     <Compile Include="SampleTypes\ClassWithMixedMixin.cs" />

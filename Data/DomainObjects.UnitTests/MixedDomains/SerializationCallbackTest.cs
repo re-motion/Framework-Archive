@@ -36,7 +36,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
         Assert.AreNotSame (typeof (ClassWithSerializationCallbacks), ((object) instance).GetType());
         Assert.IsTrue (instance is IMixinTarget);
 
-        new SerializationCallbackTester<ClassWithSerializationCallbacks> (instance, ClassWithSerializationCallbacks.SetReceiver)
+        new SerializationCallbackTester<ClassWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter(), instance, ClassWithSerializationCallbacks.SetReceiver)
             .Test_SerializationCallbacks();
       }
     }
@@ -52,7 +52,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
         Assert.AreNotSame (typeof (ClassWithSerializationCallbacks), ((object) instance).GetType());
         Assert.IsTrue (instance is IMixinTarget);
 
-        new SerializationCallbackTester<ClassWithSerializationCallbacks> (instance, ClassWithSerializationCallbacks.SetReceiver)
+        new SerializationCallbackTester<ClassWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter (), instance, ClassWithSerializationCallbacks.SetReceiver)
             .Test_DeserializationCallbacks();
       }
     }
@@ -68,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
         Assert.AreNotSame (typeof (ClassWithSerializationCallbacks), ((object) instance).GetType ());
         Assert.IsTrue (instance is IMixinTarget);
 
-        new SerializationCallbackTester<ClassWithSerializationCallbacks> (instance, MixinWithSerializationCallbacks.SetReceiver)
+        new SerializationCallbackTester<ClassWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter (), instance, MixinWithSerializationCallbacks.SetReceiver)
             .Test_SerializationCallbacks ();
       }
     }
@@ -84,7 +84,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
         Assert.AreNotSame (typeof (ClassWithSerializationCallbacks), ((object) instance).GetType ());
         Assert.IsTrue (instance is IMixinTarget);
 
-        new SerializationCallbackTester<ClassWithSerializationCallbacks> (instance, MixinWithSerializationCallbacks.SetReceiver)
+        new SerializationCallbackTester<ClassWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter (), instance, MixinWithSerializationCallbacks.SetReceiver)
             .Test_DeserializationCallbacks ();
       }
     }

@@ -16,7 +16,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       Assert.AreNotSame (typeof (ClassWithSerializationCallbacks), ((object)instance).GetType ());
 
-      new SerializationCallbackTester<ClassWithSerializationCallbacks> (instance, ClassWithSerializationCallbacks.SetReceiver)
+      new SerializationCallbackTester<ClassWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter (), instance, ClassWithSerializationCallbacks.SetReceiver)
           .Test_SerializationCallbacks ();
     }
 
@@ -28,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       Assert.AreNotSame (typeof (ClassWithSerializationCallbacks), ((object) instance).GetType ());
 
-      new SerializationCallbackTester<ClassWithSerializationCallbacks> (instance, ClassWithSerializationCallbacks.SetReceiver)
+      new SerializationCallbackTester<ClassWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter (), instance, ClassWithSerializationCallbacks.SetReceiver)
           .Test_DeserializationCallbacks ();
     }
   }
