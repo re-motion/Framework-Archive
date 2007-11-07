@@ -170,6 +170,13 @@ public class ClassDefinitionCollection : CommonCollection
         throw new ArgumentException (string.Format ("A ClassDefinition with Type '{0}' is already part of this collection.", value.ClassType), "value");
     }
 
+    if (Contains (value.ID))
+    {
+      throw CreateMappingException ("Class '{0}' and '{1}' both have the same class ID '{2}'. Use the ClassIDAttribute to define unique IDs for these "
+          + "classes. The assemblies involved are '{3}' and '{4}'.", this[value.ID].ClassType.FullName, value.ClassType.FullName, value.ID,
+          this[value.ID].ClassType.Assembly.FullName, value.ClassType.Assembly.FullName);
+    }
+
     int position = BaseAdd (value.ID, value);
 
     if (_areResolvedTypesRequired)

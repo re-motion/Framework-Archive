@@ -73,19 +73,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order' and "
+        + "'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer' both have the same class ID 'Order'. Use the ClassIDAttribute to define "
+        + "unique IDs for these classes. The assemblies involved are 'Rubicon.Data.DomainObjects.UnitTests, Version=1.7.65.202, Culture=neutral, "
+        + "PublicKeyToken=ad97c3e83e217fcd' and 'Rubicon.Data.DomainObjects.UnitTests, Version=1.7.65.202, Culture=neutral, "
+        + "PublicKeyToken=ad97c3e83e217fcd'.")]
     public void AddTwiceWithSameClassID ()
     {
       _collection.Add (_classDefinition);
-      try
-      {
-        _collection.Add (new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Customer), false, new List<Type>()));
-        Assert.Fail ("Expected an ArgumentException.");
-      }
-      catch (ArgumentException)
-      {
-        // Note: Do not check exception message here, because it's raised by the .NET Framework (Hashtable.Add).
-        Assert.IsFalse (_collection.Contains (typeof (Customer)));
-      }
+      _collection.Add (new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Customer), false, new List<Type>()));
     }
 
     [Test]

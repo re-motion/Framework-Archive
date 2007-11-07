@@ -217,6 +217,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
       classReflector.GetClassDefinition (_classDefinitions);
     }
 
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping."
+        + "TestDomain.Errors.ClassWithSameClassID' and 'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors."
+        + "OtherClassWithSameClassID' both have the same class ID 'DefinedID'. Use the ClassIDAttribute to define unique IDs for these "
+        + "classes. The assemblies involved are 'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors, "
+        + "Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' and 'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain."
+        + "Errors, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null'.")]
+    public void GetClassDefinition_ForClassesWithSameClassID ()
+    {
+      Type type1 = GetTypeFromDomainWithErrors ("ClassWithSameClassID");
+      Type type2 = GetTypeFromDomainWithErrors ("OtherClassWithSameClassID");
+
+      ClassReflector classReflector1 = new ClassReflector (type1);
+      ClassReflector classReflector2 = new ClassReflector (type2);
+
+      classReflector1.GetClassDefinition (_classDefinitions);
+      classReflector2.GetClassDefinition (_classDefinitions);
+    }
+
     private ReflectionBasedClassDefinition CreateClassWithMixedPropertiesClassDefinition ()
     {
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
