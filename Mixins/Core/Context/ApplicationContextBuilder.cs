@@ -102,8 +102,8 @@ namespace Rubicon.Mixins.Context
     /// <remarks>This method performs the following steps (see also <see cref="AssemblyFinder"/>):
     /// <list type="number">
     /// <item>Retrieve all assemblies from the current <see cref="AppDomain">AppDomain's</see> bin directory.</item>
-    /// <item>Analyze each of them which is not excluded by the <see cref="NonSystemAssemblyFinderFilter"/> for mixin configuration information.</item>
-    /// <item>Load the referenced assemblies of those assemblies if they aren't excluded by the <see cref="NonSystemAssemblyFinderFilter"/>.</item>
+    /// <item>Analyze each of them which is not excluded by the <see cref="ApplicationAssemblyFinderFilter"/> for mixin configuration information.</item>
+    /// <item>Load the referenced assemblies of those assemblies if they aren't excluded by the <see cref="ApplicationAssemblyFinderFilter"/>.</item>
     /// <item>If the loaded assemblies haven't already been analyzed, treat them according to steps 2-4.</item>
     /// </list>
     /// </remarks>
