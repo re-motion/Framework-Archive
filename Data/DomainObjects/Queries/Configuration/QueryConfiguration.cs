@@ -1,11 +1,9 @@
 using System;
 using System.Configuration;
-using System.IO;
 using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Rubicon.Utilities;
-using System.Reflection;
 
 namespace Rubicon.Data.DomainObjects.Queries.Configuration
 {
@@ -15,6 +13,12 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
   public class QueryConfiguration : ExtendedConfigurationSection
   {
     public static readonly string DefaultConfigurationFile = QueryFileElement.GetRootedPath ("queries.xml");
+
+    [Obsolete ("This property is obsolete, use DomainObjectsConfiguration.Current.Query instead.")]
+    public static QueryConfiguration Current
+    {
+      get { return DomainObjectsConfiguration.Current.Query; }
+    }
 
     private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
     private readonly ConfigurationProperty _queryFilesProperty;

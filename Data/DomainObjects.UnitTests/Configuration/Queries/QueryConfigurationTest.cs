@@ -36,6 +36,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
       loader.GetQueryDefinitions ();
     }
 
+    [Obsolete]
+    [Test]
+    public void ObsoleteCurrent ()
+    {
+      Assert.AreSame (DomainObjectsConfiguration.Current.Query, QueryConfiguration.Current);
+    }
+
     [Test]
     public void QueryConfigurationWithInvalidNamespace ()
     {
