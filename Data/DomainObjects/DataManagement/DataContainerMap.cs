@@ -101,11 +101,16 @@ public class DataContainerMap : IEnumerable
     {
       DataContainer dataContainer = _dataContainers[i];
 
-      if (dataContainer.State == StateType.New)
-        Remove (dataContainer);
-
-      dataContainer.Rollback ();
+      Rollback(dataContainer);
     }
+  }
+
+  public void Rollback (DataContainer dataContainer)
+  {
+    if (dataContainer.State == StateType.New)
+      Remove (dataContainer);
+
+    dataContainer.Rollback ();
   }
 
   public DomainObjectCollection GetByState (StateType state)

@@ -109,6 +109,36 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       Dev.Null = _newOrder.Timestamp;
     }
+
+    [Test]
+    public void Rollback_SingleDeletedObject ()
+    {
+      using (ClientTransactionMock.EnterDiscardingScope ())
+      {
+        _map.Register (_existingOrder);
+
+        Order order = (Order) _existingOrder.DomainObject;
+        order.Delete ();
+        Assert.AreEqual (StateType.Deleted, _existingOrder.State);
+
+        _map.Rollback (_existingOrder);
+
+        _existingOrder = _map[_existingOrder.ID];
+        Assert.IsNotNull (_existingOrder);
+        Assert.AreEqual (StateType.Unchanged, _existingOrder.State);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ObjectDiscardedException))]
+    public void Rollback_SingleNewObject ()
+    {
+      _map.Register (_newOrder);
+
+      _map.Rollback (_newOrder);
+
+      Dev.Null = _newOrder.Timestamp;
+    }
     
     [Test]
     [ExpectedException (typeof (ClientTransactionsDifferException),

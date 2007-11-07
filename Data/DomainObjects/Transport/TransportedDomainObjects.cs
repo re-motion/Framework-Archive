@@ -10,8 +10,8 @@ namespace Rubicon.Data.DomainObjects.Transport
   /// </summary>
   public struct TransportedDomainObjects
   {
-    private readonly ClientTransaction _dataTransaction;
-    private readonly List<DomainObject> _transportedObjects;
+    private ClientTransaction _dataTransaction;
+    private List<DomainObject> _transportedObjects;
 
     public TransportedDomainObjects (ClientTransaction dataTransaction, List<DomainObject> transportedObjects)
     {
@@ -29,6 +29,25 @@ namespace Rubicon.Data.DomainObjects.Transport
     public IEnumerable<DomainObject> TransportedObjects
     {
       get { return _transportedObjects; }
+    }
+
+    public void FinishTransport ()
+    {
+      FinishTransport (delegate { return true; });
+    }
+
+    public void FinishTransport (Func<DomainObject, bool> filter)
+    {
+      ArgumentUtility.CheckNotNull ("filter", filter);
+
+      if (DataTransaction == null)
+        throw new InvalidOperationException ("FinishTransport can only be called once.");
+
+      DataTransaction.AddListener (new TransportFinishTransactionListener (DataTransaction, filter));
+      DataTransaction.Commit ();
+
+      _dataTransaction = null;
+      _transportedObjects = null;
     }
   }
 }
