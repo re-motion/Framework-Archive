@@ -9,6 +9,7 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Reflection.Emit;
 using System.IO;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Reflection;
 using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.UnitTests.Mixins
@@ -29,13 +30,13 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       _moduleManager.UnsignedAssemblyName = "Rubicon.Mixins.Generated.Unsigned";
       _moduleManager.SignedModulePath = c_signedAssemblyFileName;
       _moduleManager.UnsignedModulePath = c_unsignedAssemblyFileName;
-      DeleteSavedAssemblies ();
+      DeleteSavedAssemblies();
     }
 
     [TearDown]
     public void TearDown ()
     {
-      DeleteSavedAssemblies ();
+      DeleteSavedAssemblies();
     }
 
     private void DeleteSavedAssemblies ()
@@ -53,7 +54,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
       ITypeGenerator generator = _moduleManager.CreateTypeGenerator (bt1, GuidNameProvider.Instance, GuidNameProvider.Instance);
       Assert.IsNotNull (generator);
-      Assert.IsTrue (bt1.Type.IsAssignableFrom (generator.GetBuiltType ()));
+      Assert.IsTrue (bt1.Type.IsAssignableFrom (generator.GetBuiltType()));
     }
 
     [Test]
@@ -62,9 +63,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.IsFalse (_moduleManager.HasUnsignedAssembly);
       Assert.IsFalse (_moduleManager.HasSignedAssembly);
       Assert.IsFalse (_moduleManager.HasAssemblies);
-      
-      TypeFactory.GetConcreteType (typeof (BaseType1)); // type from unsigned assembly
-      
+
+      GetUnsignedConcreteType(); // type from unsigned assembly
+
       Assert.IsTrue (_moduleManager.HasUnsignedAssembly);
       Assert.IsFalse (_moduleManager.HasSignedAssembly);
       Assert.IsTrue (_moduleManager.HasAssemblies);
@@ -77,7 +78,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.IsFalse (_moduleManager.HasSignedAssembly);
       Assert.IsFalse (_moduleManager.HasAssemblies);
 
-      TypeFactory.GetConcreteType (typeof (List<int>), GenerationPolicy.ForceGeneration); // type from signed assembly
+      GetSignedConcreteType(); // type from signed assembly
 
       Assert.IsFalse (_moduleManager.HasUnsignedAssembly);
       Assert.IsTrue (_moduleManager.HasSignedAssembly);
@@ -87,18 +88,18 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void SaveAssemblies ()
     {
-      TypeFactory.GetConcreteType (typeof (BaseType1), GenerationPolicy.ForceGeneration);
-      TypeFactory.GetConcreteType (typeof (List<int>), GenerationPolicy.ForceGeneration);
+      GetUnsignedConcreteType();
+      GetSignedConcreteType();
 
       Assert.IsFalse (File.Exists (c_signedAssemblyFileName));
       Assert.IsFalse (File.Exists (c_unsignedAssemblyFileName));
-      
-      string[] paths = _moduleManager.SaveAssemblies ();
+
+      string[] paths = _moduleManager.SaveAssemblies();
 
       Assert.AreEqual (2, paths.Length);
       Assert.AreEqual (Path.Combine (Environment.CurrentDirectory, c_signedAssemblyFileName), paths[0]);
       Assert.AreEqual (Path.Combine (Environment.CurrentDirectory, c_unsignedAssemblyFileName), paths[1]);
-      
+
       Assert.IsTrue (File.Exists (c_signedAssemblyFileName));
       Assert.IsTrue (File.Exists (c_unsignedAssemblyFileName));
     }
@@ -111,11 +112,11 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       _moduleManager.UnsignedModulePath = path;
       File.Delete (path);
 
-      TypeFactory.GetConcreteType (typeof (BaseType1));
+      GetUnsignedConcreteType();
 
       Assert.IsFalse (File.Exists (path));
-      string[] actualPaths = _moduleManager.SaveAssemblies ();
-      
+      string[] actualPaths = _moduleManager.SaveAssemblies();
+
       Assert.AreEqual (1, actualPaths.Length);
       Assert.AreEqual (Path.Combine (Environment.CurrentDirectory, path), actualPaths[0]);
 
@@ -136,14 +137,14 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void SaveSignedAssemblyWithDifferentNameAndPath ()
     {
       _moduleManager.SignedAssemblyName = "Bar";
-      string path = Path.GetTempFileName ();
+      string path = Path.GetTempFileName();
       _moduleManager.SignedModulePath = path;
       File.Delete (path);
 
-      TypeFactory.GetConcreteType (typeof (List<int>), GenerationPolicy.ForceGeneration);
+      GetSignedConcreteType();
 
       Assert.IsFalse (File.Exists (path));
-      string[] actualPaths = _moduleManager.SaveAssemblies ();
+      string[] actualPaths = _moduleManager.SaveAssemblies();
 
       Assert.AreEqual (1, actualPaths.Length);
       Assert.AreEqual (Path.Combine (Environment.CurrentDirectory, path), actualPaths[0]);
@@ -164,60 +165,59 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The name can only be set before the first type is built.")]
     public void SettingSignedNameThrowsWhenTypeGenerated ()
     {
-      TypeFactory.GetConcreteType (typeof (BaseType1));
+      GetUnsignedConcreteType();
       _moduleManager.SignedAssemblyName = "Foo";
     }
 
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The module path can only be set before the first type is built.")]
     public void SettingSignedPathThrowsWhenTypeGenerated ()
     {
-      TypeFactory.GetConcreteType (typeof (BaseType1));
+      GetUnsignedConcreteType();
       _moduleManager.SignedModulePath = "Foo.dll";
     }
 
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The name can only be set before the first type is built.")]
     public void SettingUnsignedNameThrowsWhenTypeGenerated ()
     {
-      TypeFactory.GetConcreteType (typeof (BaseType1));
+      GetUnsignedConcreteType();
       _moduleManager.UnsignedAssemblyName = "Foo";
     }
 
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The module path can only be set before the first type is built.")]
     public void SettingUnsignedPathThrowsWhenTypeGenerated ()
     {
-      TypeFactory.GetConcreteType (typeof (BaseType1));
+      GetUnsignedConcreteType();
       _moduleManager.UnsignedModulePath = "Foo.dll";
     }
 
     [Test]
     public void SavedSignedAssemblyHasStrongName ()
     {
-      TypeFactory.GetConcreteType (typeof (List<int>), GenerationPolicy.ForceGeneration);
+      GetSignedConcreteType();
 
-      _moduleManager.SaveAssemblies ();
+      _moduleManager.SaveAssemblies();
       AssemblyName assemblyName = AssemblyName.GetAssemblyName (c_signedAssemblyFileName);
-      
-      Assert.IsNotNull (assemblyName.GetPublicKey ());
-      Assert.AreNotEqual (0, assemblyName.GetPublicKey ().Length);
+
+      Assert.IsTrue (Rubicon.Mixins.Utilities.ReflectionUtility.IsAssemblySigned (assemblyName));
     }
 
     [Test]
     public void SavedUnsignedAssemblyHasWeakName ()
     {
-      TypeFactory.GetConcreteType (typeof (BaseType1));
+      GetUnsignedConcreteType();
 
-      _moduleManager.SaveAssemblies ();
+      _moduleManager.SaveAssemblies();
       AssemblyName assemblyName = AssemblyName.GetAssemblyName (c_unsignedAssemblyFileName);
 
-      Assert.IsNull (assemblyName.GetPublicKey ());
+      Assert.IsFalse (Rubicon.Mixins.Utilities.ReflectionUtility.IsAssemblySigned (assemblyName));
     }
 
     [Test]
     public void SavedUnsignedAssemblyHasMixinAssemblyName ()
     {
-      TypeFactory.GetConcreteType (typeof (BaseType1));
+      GetUnsignedConcreteType();
 
-      _moduleManager.SaveAssemblies ();
+      _moduleManager.SaveAssemblies();
       AssemblyName assemblyName = AssemblyName.GetAssemblyName (c_unsignedAssemblyFileName);
 
       Assert.AreEqual ("Rubicon.Mixins.Generated.Unsigned", assemblyName.Name);
@@ -226,41 +226,28 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void SavedSignedAssemblyHasMixinAssemblyName ()
     {
-      TypeFactory.GetConcreteType (typeof (List<int>), GenerationPolicy.ForceGeneration);
+      GetSignedConcreteType();
 
-      _moduleManager.SaveAssemblies ();
+      _moduleManager.SaveAssemblies();
       AssemblyName assemblyName = AssemblyName.GetAssemblyName (c_signedAssemblyFileName);
 
       Assert.AreEqual ("Rubicon.Mixins.Generated.Signed", assemblyName.Name);
     }
 
-    private void CheckForTypeInAssembly (string typeName, AssemblyName assemblyName)
-    {
-      AppDomainRunner.Run (delegate (object[] args)
-      {
-        AssemblyName assemblyToLoad = (AssemblyName) args[0];
-        string typeToFind = (string) args[1];
-
-        Assembly loadedAssembly = Assembly.Load (assemblyToLoad);
-        Assert.IsNotNull (loadedAssembly.GetType (typeToFind));
-      }, assemblyName, typeName);
-    }
-
     [Test]
     public void SavedUnsignedAssemblyContainsGeneratedType ()
     {
-      Type concreteType = TypeFactory.GetConcreteType (typeof (BaseType1));
-      _moduleManager.SaveAssemblies ();
+      Type concreteType = GetUnsignedConcreteType();
+      _moduleManager.SaveAssemblies();
 
       CheckForTypeInAssembly (concreteType.FullName, AssemblyName.GetAssemblyName (c_unsignedAssemblyFileName));
     }
 
-
     [Test]
     public void SavedSignedAssemblyContainsGeneratedType ()
     {
-      Type concreteType = TypeFactory.GetConcreteType (typeof (List<int>), GenerationPolicy.ForceGeneration);
-      _moduleManager.SaveAssemblies ();
+      Type concreteType = GetSignedConcreteType();
+      _moduleManager.SaveAssemblies();
 
       CheckForTypeInAssembly (concreteType.FullName, AssemblyName.GetAssemblyName (c_signedAssemblyFileName));
     }
@@ -269,9 +256,72 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No types have been built, so no assembly has been generated.")]
     public void SaveThrowsWhenNoTypeCreated ()
     {
-      _moduleManager.SaveAssemblies ();
+      _moduleManager.SaveAssemblies();
     }
 
-    
+    [Test]
+    public void GeneratedAssemblies_NonApplicationAssemblyAttribute ()
+    {
+      Type t1 = GetUnsignedConcreteType();
+      Type t2 = GetSignedConcreteType();
+
+      Assert.IsTrue (t1.Assembly.IsDefined (typeof (NonApplicationAssemblyAttribute), false));
+      Assert.IsTrue (t2.Assembly.IsDefined (typeof (NonApplicationAssemblyAttribute), false));
+    }
+
+    [Test]
+    public void SavedAssemblies_NonApplicationAssemblyAttribute ()
+    {
+      GetUnsignedConcreteType();
+      GetSignedConcreteType();
+
+      string[] assemblyPaths = _moduleManager.SaveAssemblies();
+      CheckForAttributeOnAssembly (typeof (NonApplicationAssemblyAttribute), AssemblyName.GetAssemblyName (assemblyPaths[0]));
+      CheckForAttributeOnAssembly (typeof (NonApplicationAssemblyAttribute), AssemblyName.GetAssemblyName (assemblyPaths[1]));
+    }
+
+    private Type GetUnsignedConcreteType ()
+    {
+      Type t = TypeFactory.GetConcreteType (typeof (BaseType1), GenerationPolicy.ForceGeneration);
+      Assert.IsFalse (Rubicon.Mixins.Utilities.ReflectionUtility.IsAssemblySigned (t.Assembly));
+      return t;
+    }
+
+    private Type GetSignedConcreteType ()
+    {
+      Type t = TypeFactory.GetConcreteType (typeof (List<int>), GenerationPolicy.ForceGeneration);
+      Assert.IsTrue (Rubicon.Mixins.Utilities.ReflectionUtility.IsAssemblySigned (t.Assembly));
+      return t;
+    }
+
+    private void CheckForTypeInAssembly (string typeName, AssemblyName assemblyName)
+    {
+      AppDomainRunner.Run (
+          delegate (object[] args)
+          {
+            AssemblyName assemblyToLoad = (AssemblyName) args[0];
+            string typeToFind = (string) args[1];
+
+            Assembly loadedAssembly = Assembly.Load (assemblyToLoad);
+            Assert.IsNotNull (loadedAssembly.GetType (typeToFind));
+          },
+          assemblyName,
+          typeName);
+    }
+
+    private void CheckForAttributeOnAssembly (Type attributeType, AssemblyName assemblyName)
+    {
+      AppDomainRunner.Run (
+          delegate (object[] args)
+          {
+            AssemblyName assemblyToLoad = (AssemblyName) args[0];
+            Type attributeToFind = (Type) args[1];
+
+            Assembly loadedAssembly = Assembly.Load (assemblyToLoad);
+            Assert.IsTrue (loadedAssembly.IsDefined (attributeToFind, false));
+          },
+          assemblyName,
+          attributeType);
+    }
   }
 }

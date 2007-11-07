@@ -8,6 +8,7 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Collections.Generic;
 using Rubicon.Development.UnitTesting;
 using System.Collections;
+using Rubicon.Mixins.Utilities;
 
 namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
 {
@@ -39,7 +40,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
       {
         MixinDefinition mixinDefinition = TypeFactory.GetActiveConfiguration (typeof (ArrayList)).GetMixinByConfiguredType (typeof (EquatableMixin<>));
         Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
-        Assert.IsNotEmpty (generatedType.Assembly.GetName ().GetPublicKeyToken ());
+        Assert.IsTrue (ReflectionUtility.IsAssemblySigned (generatedType.Assembly));
       }
     }
 
@@ -50,7 +51,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
       {
         MixinDefinition mixinDefinition = TypeFactory.GetActiveConfiguration (typeof (BaseType1)).GetMixinByConfiguredType (typeof (UnsignedMixin));
         Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
-        Assert.IsEmpty (generatedType.Assembly.GetName ().GetPublicKeyToken ());
+        Assert.IsFalse (ReflectionUtility.IsAssemblySigned (generatedType.Assembly));
       }
     }
 
@@ -59,11 +60,12 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
     {
       using (MixinConfiguration.ScopedExtend (typeof (UnsignedClass), typeof (EquatableMixin<>)))
       {
-        MixinDefinition mixinDefinition = TypeFactory.GetActiveConfiguration (typeof (UnsignedClass)).GetMixinByConfiguredType (typeof (EquatableMixin<>));
+        MixinDefinition mixinDefinition =
+            TypeFactory.GetActiveConfiguration (typeof (UnsignedClass)).GetMixinByConfiguredType (typeof (EquatableMixin<>));
         Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
-        Assert.IsEmpty (generatedType.Assembly.GetName().GetPublicKeyToken());
+        Assert.IsFalse (ReflectionUtility.IsAssemblySigned (generatedType.Assembly));
 
-        Assert.AreEqual ("Overridden", Mixin.Get<EquatableMixin<UnsignedClass>> (ObjectFactory.Create<UnsignedClass> ().With ()).ToString ());
+        Assert.AreEqual ("Overridden", Mixin.Get<EquatableMixin<UnsignedClass>> (ObjectFactory.Create<UnsignedClass>().With()).ToString());
       }
     }
 
@@ -74,11 +76,10 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
       {
         MixinDefinition mixinDefinition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (UnsignedMixin)];
         Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
-        Assert.IsEmpty (generatedType.Assembly.GetName ().GetPublicKeyToken ());
+        Assert.IsFalse (ReflectionUtility.IsAssemblySigned (generatedType.Assembly));
 
-        Assert.AreEqual ("Overridden", ObjectFactory.Create<NullTarget> ().With ().ToString ());
+        Assert.AreEqual ("Overridden", ObjectFactory.Create<NullTarget>().With().ToString());
       }
     }
   }
-  
 }

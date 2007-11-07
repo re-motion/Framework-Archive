@@ -12,6 +12,7 @@ using Rubicon.Mixins.MixerTool;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Reflection;
 using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Reflection;
 
 namespace Rubicon.Mixins.UnitTests.MixerTool
 {
@@ -192,6 +193,30 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
                 Assert.Contains (generatedType, theAssembly.GetTypes());
               }
             }
+          });
+    }
+
+    [Test]
+    public void AssemblyGeneratedByMixerToolHasNonApplicationAssemblyAttribute ()
+    {
+      AppDomainRunner.Run (
+          delegate
+          {
+            Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
+            using (MixinConfiguration.ScopedEmpty ())
+            {
+              using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin1)))
+              {
+                mixer.Execute ();
+              }
+            }
+          });
+
+      AppDomainRunner.Run (
+          delegate
+          {
+            Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
+            Assert.IsTrue (theAssembly.IsDefined (typeof (NonApplicationAssemblyAttribute), false));
           });
     }
 

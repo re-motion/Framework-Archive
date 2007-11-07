@@ -221,5 +221,35 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       Assert.IsFalse (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("Private", bf)));
       Assert.IsTrue (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("Rubicon.Mixins.UnitTests.Utilities.ReflectionUtilityTests.IInterface.Explicit", bf)));
     }
+
+    [Test]
+    public void IsAssemblySigned_Assembly ()
+    {
+      Assert.IsTrue (ReflectionUtility.IsAssemblySigned (typeof (object).Assembly));
+      Assert.IsTrue (ReflectionUtility.IsAssemblySigned (typeof (Uri).Assembly));
+      Assert.IsTrue (ReflectionUtility.IsAssemblySigned (typeof (Mixin).Assembly));
+
+      Assert.IsFalse (ReflectionUtility.IsAssemblySigned (typeof (ReflectionUtilityTests).Assembly));
+    }
+
+    [Test]
+    public void IsAssemblySigned_Name ()
+    {
+      Assert.IsTrue (ReflectionUtility.IsAssemblySigned (typeof (object).Assembly.GetName()));
+      Assert.IsTrue (ReflectionUtility.IsAssemblySigned (typeof (Uri).Assembly.GetName ()));
+      Assert.IsTrue (ReflectionUtility.IsAssemblySigned (typeof (Mixin).Assembly.GetName ()));
+
+      Assert.IsFalse (ReflectionUtility.IsAssemblySigned (typeof (ReflectionUtilityTests).Assembly.GetName ()));
+    }
+
+    [Test]
+    public void IsAssemblySigned_StringName ()
+    {
+      string fullName = typeof (object).Assembly.FullName;
+      Assert.IsTrue (ReflectionUtility.IsAssemblySigned (new AssemblyName (fullName)));
+
+      fullName = typeof (ReflectionUtilityTests).Assembly.FullName;
+      Assert.IsFalse (ReflectionUtility.IsAssemblySigned (new AssemblyName (fullName)));
+    }
   }
 }

@@ -1,8 +1,11 @@
 using System;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.Serialization;
 using Castle.DynamicProxy;
 using Rubicon.CodeGeneration.DPExtensions;
 using Rubicon.Mixins.Definitions;
+using Rubicon.Reflection;
 using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
@@ -29,6 +32,27 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       ArgumentUtility.CheckNotNull ("mixinNameProvider", mixinNameProvider);
 
       return new TypeGenerator (this, configuration, nameProvider, mixinNameProvider);
+    }
+
+    // should be called when a type was generated with the scope from this module
+    public void OnTypeGenerated (Type generatedType)
+    {
+      ArgumentUtility.CheckNotNull ("generatedType", generatedType);
+
+      EnsureAttributes (generatedType.Module);
+    }
+
+    private void EnsureAttributes (Module module)
+    {
+      if (module != Scope.StrongNamedModule && module != Scope.WeakNamedModule)
+        throw new ArgumentException ("The module specified is not from this ModuleManager's Scope.");
+
+      if (!module.Assembly.IsDefined (typeof (NonApplicationAssemblyAttribute), false))
+      {
+        AssemblyBuilder assemblyBuilder = (AssemblyBuilder) module.Assembly;
+        assemblyBuilder.SetCustomAttribute (new CustomAttributeBuilder (typeof (NonApplicationAssemblyAttribute).GetConstructor(Type.EmptyTypes),
+            new object[0]));
+      }
     }
 
     public string SignedAssemblyName
@@ -105,7 +129,14 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       if (!HasSignedAssembly && !HasUnsignedAssembly)
         throw new InvalidOperationException ("No types have been built, so no assembly has been generated.");
       else
+      {
+        if (HasSignedAssembly)
+          EnsureAttributes (Scope.StrongNamedModule);
+        if (HasUnsignedAssembly)
+          EnsureAttributes (Scope.WeakNamedModule);
+
         return AssemblySaver.SaveAssemblies (_scope);
+      }
     }
 
     public void InitializeMixinTarget (IMixinTarget target)

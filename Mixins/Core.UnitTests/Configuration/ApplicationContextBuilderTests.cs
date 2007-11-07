@@ -4,6 +4,7 @@ using System.Reflection;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
+using Rubicon.Mixins.Utilities;
 
 namespace Rubicon.Mixins.UnitTests.Configuration
 {
@@ -79,8 +80,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     public void FilterExcludesGeneratedAssemblies ()
     {
       ApplicationConctextBuilderAssemblyFinderFilter filter = new ApplicationConctextBuilderAssemblyFinderFilter ();
-      Assert.IsFalse (filter.ShouldConsiderAssembly (new AssemblyName ("Rubicon.Mixins.Generated.Unsigned")));
-      Assert.IsFalse (filter.ShouldConsiderAssembly (new AssemblyName ("Rubicon.Mixins.Generated.Signed")));
+      
+      Assembly signedAssembly = TypeFactory.GetConcreteType (typeof (object), GenerationPolicy.ForceGeneration).Assembly;
+      Assembly unsignedAssembly = TypeFactory.GetConcreteType (typeof (BaseType1), GenerationPolicy.ForceGeneration).Assembly;
+
+      Assert.IsTrue (ReflectionUtility.IsAssemblySigned (signedAssembly));
+      Assert.IsFalse (ReflectionUtility.IsAssemblySigned (unsignedAssembly));
+
+      Assert.IsFalse (filter.ShouldIncludeAssembly (signedAssembly));
+      Assert.IsFalse (filter.ShouldIncludeAssembly (unsignedAssembly));
     }
 
     [Test]

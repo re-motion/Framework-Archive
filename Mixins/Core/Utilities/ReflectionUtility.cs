@@ -205,5 +205,18 @@ namespace Rubicon.Mixins.Utilities
 
       return IsSameTypeIgnoreGenerics (potentialDerivedType, potentialBaseType) || IsSubclassIgnoreGenerics (potentialDerivedType, potentialBaseType);
     }
+
+    public static bool IsAssemblySigned (Assembly assembly)
+    {
+      ArgumentUtility.CheckNotNull ("assembly", assembly);
+      return IsAssemblySigned (assembly.GetName ());
+    }
+
+    public static bool IsAssemblySigned (AssemblyName assemblyName)
+    {
+      ArgumentUtility.CheckNotNull ("assemblyName", assemblyName);
+      byte[] publicKeyOrToken = assemblyName.GetPublicKey () ?? assemblyName.GetPublicKeyToken ();
+      return publicKeyOrToken != null && publicKeyOrToken.Length > 0;
+    }
   }
 }

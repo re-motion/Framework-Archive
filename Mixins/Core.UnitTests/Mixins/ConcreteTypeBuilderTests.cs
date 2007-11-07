@@ -189,9 +189,6 @@ namespace Rubicon.Mixins.UnitTests.Mixins
             IModuleManager moduleManagerMock = repository.CreateMock<IModuleManager> ();
             ConcreteTypeBuilder.Current.Scope = moduleManagerMock;
 
-            Expect.Call (moduleManagerMock.SignedAssemblyName).Return ("whatever");
-            Expect.Call (moduleManagerMock.UnsignedAssemblyName).Return ("whatever");
-
             // expecting _no_ other actions on the scope when loading and accessing types from saved module
 
             repository.ReplayAll ();
@@ -247,9 +244,6 @@ namespace Rubicon.Mixins.UnitTests.Mixins
             MockRepository repository = new MockRepository ();
             IModuleManager moduleManagerMock = repository.CreateMock<IModuleManager> ();
             ConcreteTypeBuilder.Current.Scope = moduleManagerMock;
-
-            Expect.Call (moduleManagerMock.SignedAssemblyName).Return ("whatever");
-            Expect.Call (moduleManagerMock.UnsignedAssemblyName).Return ("whatever");
 
             // expecting _no_ other actions on the scope when loading and accessing types from saved module
 

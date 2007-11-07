@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Collections.Generic;
+using Rubicon.Mixins.Utilities;
 
 namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
 {
@@ -14,7 +15,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
       using (MixinConfiguration.ScopedExtend (typeof (object)))
       {
         Type concreteType = TypeFactory.GetConcreteType (typeof (object), GenerationPolicy.ForceGeneration);
-        Assert.IsNotEmpty (concreteType.Assembly.GetName ().GetPublicKeyToken ());
+        Assert.IsTrue (ReflectionUtility.IsAssemblySigned (concreteType.Assembly));
       }
     }
 
@@ -24,7 +25,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
       using (MixinConfiguration.ScopedExtend (typeof (BaseType1)))
       {
         Type concreteType = TypeFactory.GetConcreteType (typeof (BaseType1), GenerationPolicy.ForceGeneration);
-        Assert.IsEmpty (concreteType.Assembly.GetName ().GetPublicKeyToken ());
+        Assert.IsFalse (ReflectionUtility.IsAssemblySigned (concreteType.Assembly));
       }
     }
 
@@ -34,7 +35,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
       using (MixinConfiguration.ScopedExtend (typeof (List<int>), typeof (object)))
       {
         Type concreteType = TypeFactory.GetConcreteType (typeof (List<int>), GenerationPolicy.ForceGeneration);
-        Assert.IsNotEmpty (concreteType.Assembly.GetName ().GetPublicKeyToken ());
+        Assert.IsTrue (ReflectionUtility.IsAssemblySigned (concreteType.Assembly));
       }
     }
 
@@ -44,7 +45,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
       using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin1)))
       {
         Type concreteType = TypeFactory.GetConcreteType (typeof (BaseType1), GenerationPolicy.ForceGeneration);
-        Assert.IsEmpty (concreteType.Assembly.GetName ().GetPublicKeyToken ());
+        Assert.IsFalse (ReflectionUtility.IsAssemblySigned (concreteType.Assembly));
       }
     }
 
@@ -54,7 +55,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
       using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (object)))
       {
         Type concreteType = TypeFactory.GetConcreteType (typeof (BaseType1), GenerationPolicy.ForceGeneration);
-        Assert.IsEmpty (concreteType.Assembly.GetName ().GetPublicKeyToken ());
+        Assert.IsFalse (ReflectionUtility.IsAssemblySigned (concreteType.Assembly));
       }
     }
 
@@ -64,7 +65,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
       using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
       {
         Type concreteType = TypeFactory.GetConcreteType (typeof (NullTarget), GenerationPolicy.ForceGeneration);
-        Assert.IsEmpty (concreteType.Assembly.GetName ().GetPublicKeyToken ());
+        Assert.IsFalse (ReflectionUtility.IsAssemblySigned (concreteType.Assembly));
       }
     }
 
@@ -73,10 +74,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     {
       using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinOverridingToString)))
       {
-        object instance = ObjectFactory.Create<NullTarget> ().With ();
-        Assert.AreEqual ("Overridden", instance.ToString ());
+        object instance = ObjectFactory.Create<NullTarget>().With();
+        Assert.AreEqual ("Overridden", instance.ToString());
       }
     }
   }
-  
 }

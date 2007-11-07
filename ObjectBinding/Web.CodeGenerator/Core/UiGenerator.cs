@@ -65,7 +65,7 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 
     protected virtual void InitializeConfiguration (string assemblyDirectory)
     {
-      NonSystemAssemblyFinderFilter filter = new NonSystemAssemblyFinderFilter ();
+      ApplicationAssemblyFinderFilter filter = ApplicationAssemblyFinderFilter.Instance;
       List<Assembly> assemblies = new List<Assembly>();
       DirectoryInfo dir = new DirectoryInfo (assemblyDirectory);
       foreach (FileInfo file in dir.GetFiles ("*.dll"))

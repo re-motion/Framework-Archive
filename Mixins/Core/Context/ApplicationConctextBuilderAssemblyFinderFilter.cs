@@ -6,22 +6,18 @@ namespace Rubicon.Mixins.Context
 {
   public class ApplicationConctextBuilderAssemblyFinderFilter : IAssemblyFinderFilter
   {
-    private readonly RegexAssemblyFinderFilter _generatedAssemblyFinderFilter;
     private readonly ApplicationAssemblyFinderFilter _assemblyFinderFilter;
 
     public ApplicationConctextBuilderAssemblyFinderFilter ()
     {
-      string matchExpression =
-          string.Format (
-              @"^({0})|({1})$", ConcreteTypeBuilder.Current.Scope.SignedAssemblyName, ConcreteTypeBuilder.Current.Scope.UnsignedAssemblyName);
-      _generatedAssemblyFinderFilter = new RegexAssemblyFinderFilter (matchExpression, RegexAssemblyFinderFilter.MatchTargetKind.SimpleName);
+      // Note: ApplicationAssemblyFinderFilter automatically excludes the generated assemblies because they have the NonApplicationAssemblyAttribute
+      // applied to them. No additional logic is required.
       _assemblyFinderFilter = ApplicationAssemblyFinderFilter.Instance;
     }
 
     public bool ShouldConsiderAssembly (AssemblyName assemblyName)
     {
-      return !_generatedAssemblyFinderFilter.ShouldConsiderAssembly (assemblyName)
-             && _assemblyFinderFilter.ShouldConsiderAssembly (assemblyName);
+      return _assemblyFinderFilter.ShouldConsiderAssembly (assemblyName);
     }
 
     public bool ShouldIncludeAssembly (Assembly assembly)
