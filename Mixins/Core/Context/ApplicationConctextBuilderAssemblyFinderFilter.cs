@@ -15,7 +15,7 @@ namespace Rubicon.Mixins.Context
           string.Format (
               @"^({0})|({1})$", ConcreteTypeBuilder.Current.Scope.SignedAssemblyName, ConcreteTypeBuilder.Current.Scope.UnsignedAssemblyName);
       _generatedAssemblyFinderFilter = new RegexAssemblyFinderFilter (matchExpression, RegexAssemblyFinderFilter.MatchTargetKind.SimpleName);
-      _assemblyFinderFilter = new ApplicationAssemblyFinderFilter ();
+      _assemblyFinderFilter = ApplicationAssemblyFinderFilter.Instance;
     }
 
     public bool ShouldConsiderAssembly (AssemblyName assemblyName)
