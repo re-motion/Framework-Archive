@@ -25,6 +25,7 @@ public class TestTransaction: ITransaction
   private bool _isChild;
   private bool _throwOnCommit;
   private bool _throwOnRollback;
+  private bool _throwOnRelease;
 
   public event EventHandler Committed;
   public event EventHandler RolledBack;
@@ -76,6 +77,9 @@ public class TestTransaction: ITransaction
 
   public void Release()
   {
+    if (ThrowOnRelease)
+      throw new ReleaseException ();
+
     if (_child != null)
     { 
       _child._parent = null;
@@ -114,6 +118,12 @@ public class TestTransaction: ITransaction
   {
     get { return _throwOnRollback; }
     set { _throwOnRollback = value; }
+  }
+
+  public bool ThrowOnRelease
+  {
+    get { return _throwOnRelease; }
+    set { _throwOnRelease = value; }
   }
 }
 

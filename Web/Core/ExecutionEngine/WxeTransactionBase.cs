@@ -284,13 +284,24 @@ namespace Rubicon.Web.ExecutionEngine
       {
         if (e is System.Threading.ThreadAbortException)
         {
-          RestorePreviousCurrentTransaction (); // leave stack in good order
+          // TODO: TBD - what should we do when RestorePreviousCurrentTransaction throws an exception?
+          RestorePreviousCurrentTransaction(); // leave stack in good order
           throw;
         }
 
-        RollbackAndReleaseTransaction ();
-        RestorePreviousCurrentTransaction ();
-        s_log.Debug ("Aborted execution of " + this.GetType ().Name + " because of exception: \"" + e.Message + "\" (" + e.GetType ().FullName + ").");
+        try
+        {
+          RollbackAndReleaseTransaction ();
+          RestorePreviousCurrentTransaction ();
+          s_log.Debug ("Aborted execution of " + this.GetType ().Name + " because of exception: \"" + e.Message + "\" (" + e.GetType ().FullName + ").");
+        }
+        catch (Exception transactionException)
+        {
+          s_log.Debug ("Non-recoverable transaction exception " + transactionException.GetType ().FullName + " hiding original exception "
+              + e.GetType().FullName + ". Original message: \"" + e.Message + "\" Transaction exception message:\"" + transactionException.Message
+              + "\"");
+          throw new WxeNonRecoverableTransactionException (e, transactionException);
+        }
 
         throw;
       }

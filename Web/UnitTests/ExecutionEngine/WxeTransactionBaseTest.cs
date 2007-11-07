@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Authentication;
 using NUnit.Framework;
 using Rubicon.Data;
 using Rubicon.Development.UnitTesting;
@@ -408,6 +409,58 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       WxeTransactionMock wxeTransaction = new WxeTransactionMock (null, false, false);
       wxeTransaction.Execute ();
       PrivateInvoke.InvokeNonPublicMethod (wxeTransaction, "Reset");
+    }
+
+    [Test]
+    public void OriginalExceptionRetainedOnRollbackException ()
+    {
+      TestTransaction currentTransaction = new TestTransaction ();
+      TestTransaction.Current = currentTransaction;
+
+      TestTransaction transaction = (TestTransaction) _rootWxeTransaction.Transaction;
+      transaction.ThrowOnRollback = true;
+
+      _rootWxeTransaction.Add (new WxeDelegateStep (delegate { throw new AuthenticationException ("testo."); }));
+
+      try
+      {
+        _rootWxeTransaction.Execute ();
+        Assert.Fail ("Expected exception");
+      }
+      catch (WxeNonRecoverableTransactionException ex)
+      {
+        Assert.AreEqual ("An exception of type AuthenticationException caused a non-recoverable RollbackException.\r\nThe original exception message "
+            + "was: 'testo.'\r\nThe transaction error message was: 'Exception of type 'Rubicon.Web.UnitTests.ExecutionEngine.RollbackException' was "
+            + "thrown.'", ex.Message);
+        Assert.IsInstanceOfType (typeof (AuthenticationException), ex.InnerException);
+        Assert.IsInstanceOfType (typeof (RollbackException), ex.TransactionException);
+      }
+    }
+
+    [Test]
+    public void OriginalExceptionRetainedOnReleaseException ()
+    {
+      TestTransaction currentTransaction = new TestTransaction ();
+      TestTransaction.Current = currentTransaction;
+
+      TestTransaction transaction = (TestTransaction) _rootWxeTransaction.Transaction;
+      transaction.ThrowOnRelease = true;
+
+      _rootWxeTransaction.Add (new WxeDelegateStep (delegate { throw new AuthenticationException ("testo."); }));
+
+      try
+      {
+        _rootWxeTransaction.Execute ();
+        Assert.Fail ("Expected exception");
+      }
+      catch (WxeNonRecoverableTransactionException ex)
+      {
+        Assert.AreEqual ("An exception of type AuthenticationException caused a non-recoverable ReleaseException.\r\nThe original exception message "
+            + "was: 'testo.'\r\nThe transaction error message was: 'Exception of type 'Rubicon.Web.UnitTests.ExecutionEngine.ReleaseException' was "
+            + "thrown.'", ex.Message);
+        Assert.IsInstanceOfType (typeof (AuthenticationException), ex.InnerException);
+        Assert.IsInstanceOfType (typeof (ReleaseException), ex.TransactionException);
+      }
     }
   }
 }
