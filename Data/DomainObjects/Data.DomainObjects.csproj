@@ -112,6 +112,10 @@
     <Compile Include="Design\DesignModeMappingLoaderAttribute.cs" />
     <Compile Include="Design\DesignModeMappingReflector.cs" />
     <Compile Include="DomainObjectMixin.cs" />
+    <Compile Include="Persistence\Rdbms\DataContainerLoader.cs" />
+    <Compile Include="Persistence\Rdbms\DataContainerLoaderHelper.cs" />
+    <Compile Include="Persistence\Rdbms\IDataContainerLoaderHelper.cs" />
+    <Compile Include="Persistence\Rdbms\ObjectIDLoader.cs" />
     <Compile Include="Transport\DomainObjectImporter.cs" />
     <Compile Include="Transport\DomainObjectTransporter.cs" />
     <Compile Include="IDomainObjectMixin.cs" />

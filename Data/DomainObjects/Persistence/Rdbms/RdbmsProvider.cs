@@ -26,12 +26,14 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 
     private IDbConnection _connection;
     private IDbTransaction _transaction;
+    private readonly DataContainerLoader _dataContainerLoader;
 
     // construction and disposing
 
     protected RdbmsProvider (RdbmsProviderDefinition definition)
         : base (definition)
     {
+      _dataContainerLoader = new DataContainerLoader (this);
     }
 
     protected override void Dispose (bool disposing)
@@ -206,6 +208,25 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
+    public override DataContainer LoadDataContainer (ObjectID id)
+    {
+      CheckDisposed ();
+      ArgumentUtility.CheckNotNull ("id", id);
+      CheckStorageProviderID (id, "id");
+
+      Connect ();
+
+      return _dataContainerLoader.LoadDataContainerFromID (id);
+    }
+
+    protected internal virtual DataContainerCollection LoadDataContainers (CommandBuilder commandBuilder)
+    {
+      CheckDisposed ();
+      ArgumentUtility.CheckNotNull ("commandBuilder", commandBuilder);
+
+      return _dataContainerLoader.LoadDataContainersFromCommandBuilder (commandBuilder);
+    }
+
     public override DataContainerCollection LoadDataContainersByRelatedID (ClassDefinition classDefinition, string propertyName, ObjectID relatedID)
     {
       CheckDisposed();
@@ -216,41 +237,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 
       Connect();
 
-      PropertyDefinition propertyDefinition = classDefinition.GetPropertyDefinition (propertyName);
-      if (propertyDefinition == null)
-        throw CreateRdbmsProviderException ("Class '{0}' does not contain property '{1}'.", classDefinition.ID, propertyName);
-
-      if (classDefinition.GetEntityName() != null)
-      {
-        SelectCommandBuilder commandBuilder = SelectCommandBuilder.CreateForRelatedIDLookup (this, classDefinition, propertyDefinition, relatedID);
-        return LoadDataContainers (commandBuilder);
-      }
-      else
-      {
-        ConcreteTableInheritanceRelationLoader loader = new ConcreteTableInheritanceRelationLoader (
-            this, classDefinition, propertyDefinition, relatedID);
-
-        return loader.LoadDataContainers();
-      }
-    }
-
-    public override DataContainer LoadDataContainer (ObjectID id)
-    {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNull ("id", id);
-      CheckStorageProviderID (id, "id");
-
-      Connect();
-
-      SelectCommandBuilder commandBuilder = SelectCommandBuilder.CreateForIDLookup (this, "*", id.ClassDefinition.GetEntityName(), id);
-      using (IDbCommand command = commandBuilder.Create())
-      {
-        using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleRow))
-        {
-          DataContainerFactory dataContainerFactory = new DataContainerFactory (this, reader);
-          return dataContainerFactory.CreateDataContainer();
-        }
-      }
+      return _dataContainerLoader.LoadDataContainersByRelatedID (classDefinition, propertyName, relatedID);
     }
 
     public override void Save (DataContainerCollection dataContainers)
@@ -321,19 +308,9 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
-    protected virtual DataContainerCollection LoadDataContainers (CommandBuilder commandBuilder)
+    public virtual DataContainerLoader DataContainerLoader
     {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNull ("commandBuilder", commandBuilder);
-
-      using (IDbCommand command = commandBuilder.Create())
-      {
-        using (IDataReader dataReader = ExecuteReader (command, CommandBehavior.SingleResult))
-        {
-          DataContainerFactory dataContainerFactory = new DataContainerFactory (this, dataReader);
-          return dataContainerFactory.CreateCollection();
-        }
-      }
+      get { return _dataContainerLoader; }
     }
 
     public override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
@@ -428,7 +405,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       return command;
     }
 
-    protected RdbmsProviderException CreateRdbmsProviderException (
+    protected internal RdbmsProviderException CreateRdbmsProviderException (
         string formatString,
         params object[] args)
     {

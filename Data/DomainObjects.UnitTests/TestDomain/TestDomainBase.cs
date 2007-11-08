@@ -68,9 +68,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     [StorageClassNone]
     public new PropertyIndexer Properties
-		{
-			get { return base.Properties; }
-		}
+    {
+      get { return base.Properties; }
+    }
 
     public new IEnumerable<DomainObject> GetAllRelatedObjects ()
     {

@@ -15,10 +15,12 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 
     // member fields
 
-    private RdbmsProvider _provider;
-    private ClassDefinition _classDefinition;
-    private PropertyDefinition _propertyDefinition;
-    private ObjectID _relatedID;
+    private readonly RdbmsProvider _provider;
+    private readonly ClassDefinition _classDefinition;
+    private readonly PropertyDefinition _propertyDefinition;
+    private readonly ObjectID _relatedID;
+    private readonly DataContainerLoader _dataContainerLoader;
+    private readonly ObjectIDLoader _objectIDLoader;
 
     // construction and disposing
 
@@ -37,6 +39,8 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       _classDefinition = classDefinition;
       _propertyDefinition = propertyDefinition;
       _relatedID = relatedID;
+      _dataContainerLoader = new DataContainerLoader (_provider);
+      _objectIDLoader = new ObjectIDLoader (_provider);
     }
 
     // methods and properties
@@ -52,12 +56,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       if (objectIDsInCorrectOrder.Count == 0)
         return new DataContainerCollection ();
 
-      Dictionary<string, List<ObjectID>> objectIDsPerEntityName = GetObjectIDsPerEntityName (objectIDsInCorrectOrder);
-      DataContainerCollection allDataContainers = new DataContainerCollection ();
-      foreach (string entityName in objectIDsPerEntityName.Keys)
-        allDataContainers = DataContainerCollection.Join (allDataContainers, GetDataContainers (entityName, objectIDsPerEntityName[entityName]));
-
-      return GetOrderedDataContainers (objectIDsInCorrectOrder, allDataContainers);
+      return _dataContainerLoader.LoadDataContainersFromIDs (objectIDsInCorrectOrder);
     }
 
     private List<ObjectID> GetObjectIDsInCorrectOrder ()
@@ -65,61 +64,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       UnionSelectCommandBuilder builder = UnionSelectCommandBuilder.CreateForRelatedIDLookup (
           _provider, _classDefinition, _propertyDefinition, _relatedID);
 
-      using (IDbCommand command = builder.Create ())
-      {
-        if (command == null)
-          return new List<ObjectID> ();
-           
-        using (IDataReader reader = Provider.ExecuteReader (command, CommandBehavior.SingleResult))
-        {
-          List<ObjectID> objectIDsInCorrectOrder = new List<ObjectID> ();
-
-          ValueConverter valueConverter = _provider.CreateValueConverter();
-          while (reader.Read ())
-          {
-            objectIDsInCorrectOrder.Add (valueConverter.GetID (reader));
-          }
-
-          return objectIDsInCorrectOrder;
-        }
-      } 
-    }
-
-    private DataContainerCollection GetOrderedDataContainers (List<ObjectID> objectIDsInCorrectOrder, DataContainerCollection unorderedDataContainers)
-    {
-      DataContainerCollection orderedDataContainers = new DataContainerCollection ();
-      foreach (ObjectID objectID in objectIDsInCorrectOrder)
-        orderedDataContainers.Add (unorderedDataContainers[objectID]);
-
-      return orderedDataContainers;
-    }
-
-    private DataContainerCollection GetDataContainers (string entityName, List<ObjectID> objectIDs)
-    {
-      SelectCommandBuilder commandBuilder = SelectCommandBuilder.CreateForIDLookup (Provider, entityName, objectIDs.ToArray ());
-
-      using (IDbCommand command = commandBuilder.Create ())
-      {
-        using (IDataReader reader = Provider.ExecuteReader (command, CommandBehavior.SingleResult))
-        {
-          DataContainerFactory dataContainerFactory = new DataContainerFactory (Provider, reader);
-          return dataContainerFactory.CreateCollection ();
-        }
-      }
-    }
-
-    private Dictionary<string, List<ObjectID>> GetObjectIDsPerEntityName (List<ObjectID> objectIDsInCorrectOrder)
-    {
-      Dictionary<string, List<ObjectID>> objectIDsPerEntityName = new Dictionary<string, List<ObjectID>> ();
-      foreach (ObjectID objectID in objectIDsInCorrectOrder)
-      {
-        string entityName = objectID.ClassDefinition.GetEntityName ();
-        if (!objectIDsPerEntityName.ContainsKey (entityName))
-          objectIDsPerEntityName.Add (entityName, new List<ObjectID> ());
-
-        objectIDsPerEntityName[entityName].Add (objectID);
-      }
-      return objectIDsPerEntityName;
+      return _objectIDLoader.LoadObjectIDsFromCommandBuilder (builder);
     }
   }
 }
