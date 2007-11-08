@@ -75,9 +75,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order' and "
         + "'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer' both have the same class ID 'Order'. Use the ClassIDAttribute to define "
-        + "unique IDs for these classes. The assemblies involved are 'Rubicon.Data.DomainObjects.UnitTests, Version=1.7.65.202, Culture=neutral, "
-        + "PublicKeyToken=ad97c3e83e217fcd' and 'Rubicon.Data.DomainObjects.UnitTests, Version=1.7.65.202, Culture=neutral, "
-        + "PublicKeyToken=ad97c3e83e217fcd'.")]
+        + "unique IDs for these classes. The assemblies involved are 'Rubicon.Data.DomainObjects.UnitTests, Version=.*, Culture=neutral, "
+        + "PublicKeyToken=.*' and 'Rubicon.Data.DomainObjects.UnitTests, Version=.*, Culture=neutral, "
+        + "PublicKeyToken=.*'.", MatchType = MessageMatch.Regex)]
     public void AddTwiceWithSameClassID ()
     {
       _collection.Add (_classDefinition);
