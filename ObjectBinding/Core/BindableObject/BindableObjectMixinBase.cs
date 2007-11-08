@@ -42,7 +42,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       //TODO: catch and unwrap the TargetException
       nativeValue = propertyBase.PropertyInfo.GetValue (This, new object[0]);
       
-      if (IsDefaultValue (propertyBase, nativeValue))
+      if (!propertyBase.IsList && IsDefaultValue (propertyBase, nativeValue))
         return null;
       else
         return propertyBase.ConvertFromNativePropertyType (nativeValue);

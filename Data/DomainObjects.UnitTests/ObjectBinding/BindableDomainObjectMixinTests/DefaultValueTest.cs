@@ -43,6 +43,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
     }
 
     [Test]
+    public void GetPropertyReturnsNonNullIfDefaultListValue_OnNewObject ()
+    {
+      Assert.IsNotNull (_newBusinessOrder.GetProperty ("OrderItems"));
+    }
+
+    [Test]
     public void GetPropertyReturnsNonNullIfDefaultValue_OnNewObjectInSubtransaction ()
     {
       using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())

@@ -148,7 +148,17 @@ namespace Rubicon.Mixins.UnitTests.Configuration
           }
         }
       }
+    }
+
+    [Test]
+    public void ScopedExtends_CausesDefaultConfigurationToBeAnalyzed ()
+    {
       Assert.IsFalse (MixinConfiguration.HasActiveContext);
+      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin1), typeof (BT1Mixin2)))
+      {
+        Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType3)));
+      }
+      Assert.IsTrue (MixinConfiguration.HasActiveContext);
     }
 
     [Test]

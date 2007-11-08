@@ -50,6 +50,7 @@
     <Compile Include="Core\BindableObject\BindableObjectDataSourceTests\RunTime.cs" />
     <Compile Include="Core\BindableObject\BindableObjectGlobalizationServiceTest.cs" />
     <Compile Include="Core\BindableObject\BindableObjectMixinTests\Common.cs" />
+    <Compile Include="Core\BindableObject\BindableObjectMixinTests\DefaultValueTest.cs" />
     <Compile Include="Core\BindableObject\BindableObjectMixinTests\GetDisplayName.cs" />
     <Compile Include="Core\BindableObject\BindableObjectMixinTests\GetBusinessObjectClass.cs" />
     <Compile Include="Core\BindableObject\BindableObjectMixinTests\SetProperty.cs" />

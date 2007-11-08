@@ -171,7 +171,7 @@ namespace Rubicon.Mixins
     {
       ArgumentUtility.CheckNotNull ("classContexts", classContexts);
 
-      ApplicationContext newContext = ApplicationContextBuilder.BuildContextFromClasses (MixinConfiguration.PeekActiveContext, classContexts);
+      ApplicationContext newContext = ApplicationContextBuilder.BuildContextFromClasses (MixinConfiguration.ActiveContext, classContexts);
       return ScopedReplace (newContext);
     }
 
@@ -188,7 +188,7 @@ namespace Rubicon.Mixins
     {
       ArgumentUtility.CheckNotNull ("assemblies", assemblies);
 
-      ApplicationContext newContext = ApplicationContextBuilder.BuildContextFromAssemblies (MixinConfiguration.PeekActiveContext, assemblies);
+      ApplicationContext newContext = ApplicationContextBuilder.BuildContextFromAssemblies (MixinConfiguration.ActiveContext, assemblies);
       return ScopedReplace (newContext);
     }
 

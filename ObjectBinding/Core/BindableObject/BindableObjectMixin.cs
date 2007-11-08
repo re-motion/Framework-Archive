@@ -1,7 +1,4 @@
 using System;
-using Rubicon.Mixins;
-using Rubicon.Mixins.Context;
-using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {

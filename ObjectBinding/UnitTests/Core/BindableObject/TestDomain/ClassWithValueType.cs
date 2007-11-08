@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
 {
@@ -14,6 +15,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
     private T _readOnlyAttributeScalar;
     private T[] _array;
     private T?[] _nullableArray;
+    private List<T> _list = new List<T> ();
 
     public ClassWithValueType ()
     {
@@ -66,6 +68,11 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
     {
       get { return _nullableArray; }
       set { _nullableArray = value; }
+    }
+
+    public List<T> List
+    {
+      get { return _list; }
     }
   }
 }

@@ -70,6 +70,7 @@ namespace Rubicon.Mixins.Samples.UnitTests
 
     private void CopyFile (string sourcePath, string targetDirectory)
     {
+      Assertion.Assert (Directory.Exists (targetDirectory));
       File.Copy (sourcePath, Path.Combine (targetDirectory, Path.GetFileName (sourcePath)));
     }
 
