@@ -405,18 +405,27 @@ namespace Rubicon.Web.UI.Controls
 
       writer.RenderBeginTag (HtmlTextWriterTag.Table);
 
+      writer.RenderBeginTag (HtmlTextWriterTag.Tr);
       RenderTopControls (writer);
+      writer.RenderEndTag ();
+
+      writer.RenderBeginTag (HtmlTextWriterTag.Tr);
       RenderTabStrip (writer);
+      writer.RenderEndTag ();
+
+      writer.RenderBeginTag (HtmlTextWriterTag.Tr);
       RenderActiveView (writer);
+      writer.RenderEndTag ();
+     
+      writer.RenderBeginTag (HtmlTextWriterTag.Tr);
       RenderBottomControls (writer);
+      writer.RenderEndTag ();
 
       writer.RenderEndTag ();
     }
 
     protected virtual void RenderTabStrip (HtmlTextWriter writer)
     {
-      writer.RenderBeginTag (HtmlTextWriterTag.Tr); // begin tr
-
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabStrip);
       writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
 
@@ -424,13 +433,10 @@ namespace Rubicon.Web.UI.Controls
       _tabStrip.RenderControl (writer);
 
       writer.RenderEndTag (); // end td
-      writer.RenderEndTag (); // end tr
     }
 
     protected virtual void RenderActiveView (HtmlTextWriter writer)
     {
-      writer.RenderBeginTag (HtmlTextWriterTag.Tr); // begin tr
-
       if (ControlHelper.IsDesignMode (this, Context))
         writer.AddStyleAttribute ("border", "solid 1px black");
       _activeViewStyle.AddAttributesToRender (writer);
@@ -465,7 +471,6 @@ namespace Rubicon.Web.UI.Controls
       writer.RenderEndTag (); // end outer div
 
       writer.RenderEndTag (); // end td
-      writer.RenderEndTag (); // end tr
     }
 
     protected virtual void RenderTopControls (HtmlTextWriter writer)
@@ -486,7 +491,6 @@ namespace Rubicon.Web.UI.Controls
 
     private void RenderPlaceHolder (HtmlTextWriter writer, Style style, PlaceHolder placeHolder, string cssClass)
     {
-      writer.RenderBeginTag (HtmlTextWriterTag.Tr); // begin tr
       if (StringUtility.IsNullOrEmpty (style.CssClass))
       {
         if (placeHolder.Controls.Count > 0)
@@ -518,7 +522,6 @@ namespace Rubicon.Web.UI.Controls
       writer.RenderEndTag (); // end outer div
 
       writer.RenderEndTag (); // end td
-      writer.RenderEndTag (); // end tr
     }
 
     protected string ActiveViewClientID
