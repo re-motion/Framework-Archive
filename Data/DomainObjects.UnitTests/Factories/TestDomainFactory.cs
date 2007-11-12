@@ -20,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
         @"Configuration\Mapping\TestDomain\Errors",
         @"Configuration.Dlls\Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.dll");
 
-    private static Assembly Compile (string sourceDirectory, string outputAssembly, params string[] referencedAssemblies)
+    public static Assembly Compile (string sourceDirectory, string outputAssembly, params string[] referencedAssemblies)
     {
       string outputAssemblyDirectory = Path.GetDirectoryName (Path.GetFullPath (outputAssembly));
       if (!Directory.Exists (outputAssemblyDirectory))

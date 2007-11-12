@@ -124,25 +124,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     }
 
     [Test]
-    [ExpectedException (typeof (InconsistentClientTransactionScopeException),
-        ExpectedMessage = "Somebody else has removed ClientTransactionScope.ActiveScope.")]
     public void RemoveCurrentScopeFromWithinFunctionThrows ()
     {
-      ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
       try
       {
         new RemoveCurrentTransactionScopeFunction ().Execute (Context);
       }
       catch (WxeUnhandledException ex)
       {
-        throw ex.InnerException;
+        Assert.IsTrue (ex.InnerException is WxeNonRecoverableTransactionException);
+        Assert.IsTrue (ex.InnerException.InnerException is InconsistentClientTransactionScopeException);
+        Assert.AreEqual ("Somebody else has removed ClientTransactionScope.ActiveScope.", ex.InnerException.InnerException.Message);
       }
-      Assert.AreSame (originalScope, ClientTransactionScope.ActiveScope);
     }
 
     [Test]
-    [ExpectedException (typeof (InconsistentClientTransactionScopeException),
-        ExpectedMessage = "ClientTransactionScope.ActiveScope does not contain the expected transaction scope.")]
     public void RemoveCurrentScopeFromWithinFunctionThrowsWithPreviouslyExistingScope ()
     {
       try
@@ -152,7 +148,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
       }
       catch (WxeUnhandledException ex)
       {
-        throw ex.InnerException;
+        Assert.IsTrue (ex.InnerException is WxeNonRecoverableTransactionException);
+        Assert.IsTrue (ex.InnerException.InnerException is InconsistentClientTransactionScopeException);
+        Assert.AreEqual ("ClientTransactionScope.ActiveScope does not contain the expected transaction scope.", ex.InnerException.InnerException.Message);
       }
     }
 

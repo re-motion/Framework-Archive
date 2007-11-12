@@ -15,6 +15,7 @@
         <include name="**/*.cs"/>
         <exclude name="bin/**" />
         <exclude name="Configuration/Mapping/TestDomain/**" />
+        <exclude name="Design/DelaySignAssembly/**" />
         <exclude name="Properties/AssemblyInfoTemplate.cs" />   
       </sources>
       <references failonempty="true">
@@ -53,6 +54,7 @@
     <copy todir="${build.test.outputdir}" overwrite="true">
       <fileset>
         <include name="Configuration/Mapping/TestDomain/**/*.cs" />
+        <include name="Design/DelaySignAssembly/**/*.cs" />
       </fileset>
     </copy>
     
