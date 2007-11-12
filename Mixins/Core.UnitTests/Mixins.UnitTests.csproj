@@ -61,6 +61,8 @@
     <Compile Include="SampleTypes\ClassWithMixedMixin.cs" />
     <Compile Include="SampleTypes\ClassOverridingSpecificMixinMember.cs" />
     <Compile Include="SampleTypes\ClassOverridingSpecificGenericMixinMember.cs" />
+    <Compile Include="SampleTypes\NonInheritedAttribute.cs" />
+    <Compile Include="SampleTypes\MixinIndirectlyAddingNonInheritedAttribute.cs" />
     <Compile Include="SampleTypes\GenericMixinWithVirtualMethod2.cs" />
     <Compile Include="SampleTypes\GenericMixinWithVirtualMethod.cs" />
     <Compile Include="SampleTypes\MixinWithVirtualMethod2.cs" />

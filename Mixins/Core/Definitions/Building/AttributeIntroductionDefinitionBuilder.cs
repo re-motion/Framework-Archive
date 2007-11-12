@@ -23,7 +23,7 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private bool ShouldBeIntroduced (AttributeDefinition attribute)
     {
-      return AttributeUtility.IsAttributeInherited (attribute.AttributeType)
+      return (AttributeUtility.IsAttributeInherited (attribute.AttributeType) || attribute.IsCopyTemplate)
           && (AttributeUtility.IsAttributeAllowMultiple (attribute.AttributeType) || !_target.CustomAttributes.ContainsKey (attribute.AttributeType));
     }
   }

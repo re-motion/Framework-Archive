@@ -170,6 +170,17 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
+    public void CopyNonInheritedAttributes ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingNonInheritedAttribute)))
+      {
+        MixinDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinIndirectlyAddingNonInheritedAttribute)];
+        Assert.IsFalse (definition.CustomAttributes.ContainsKey (typeof (CopyCustomAttributesAttribute)));
+        Assert.IsTrue (definition.CustomAttributes.ContainsKey (typeof (NonInheritedAttribute)));
+      }
+    }
+
+    [Test]
     public void CopyAttributes_OnMember ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingAttribute)))

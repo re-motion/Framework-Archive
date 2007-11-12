@@ -90,11 +90,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.That (attributes, Is.EquivalentTo (new AttributeDefinition[] { mixinMember1.CustomAttributes[0], mixinMember2.CustomAttributes[0] }));
     }
 
-    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public class NonInheritedAttribute : Attribute
-    {
-    }
-
     [NonInherited]
     class MixinAddingNonInheritedAttribute
     {
@@ -144,6 +139,17 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.AreEqual (1, attributes.Count);
 
         Assert.AreSame (attributes[0], introductions[0].Attribute);
+      }
+    }
+
+    [Test]
+    public void IndirectAttributeIntroduction_OfNonInheritedAttribute_ViaCopy ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingNonInheritedAttribute)))
+      {
+        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget));
+        Assert.IsFalse (definition.IntroducedAttributes.ContainsKey (typeof (CopyCustomAttributesAttribute)));
+        Assert.IsTrue (definition.IntroducedAttributes.ContainsKey (typeof (NonInheritedAttribute)));
       }
     }
 

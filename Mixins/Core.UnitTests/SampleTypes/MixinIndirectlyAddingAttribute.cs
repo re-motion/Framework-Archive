@@ -6,7 +6,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   public class MixinIndirectlyAddingAttribute : Mixin<object>
   {
     [AttributeWithParameters (1, "bla", Property = 4, Field = 5)]
-    public class AttributeSource : Attribute
+    public class AttributeSource
     {
       [AttributeWithParameters (4)]
       public void AttributeSourceMethod ()
