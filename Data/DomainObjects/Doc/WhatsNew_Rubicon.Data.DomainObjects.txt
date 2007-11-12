@@ -1,3 +1,19 @@
+1.7.71.0
+========
+- COMMONS-400 FIXED  Make WhereClauseBuilder mixable
+- COMMONS-403 FIXED  Designer should not cause MixinConfiguration to load files in VS directory, which leads to an exception
+
+1.7.70.0
+========
+- COMMONS-391 FIXED  Refactor ConcreteTableInheritanceRelationLoader, extract features to load data containers from a command and from a list of
+  ObjectIDs  
+
+1.7.69.0
+========
+- COMMONS-394 FIXED  Provide better error message when two domain object classes have the same simple name
+- COMMONS-397 FIXED  Re-add obsolete QueryConfiguration.Current
+- COMMONS-399 FIXED  Provide TransportedDomainObjects.FinishTransport
+
 1.7.68.0
 ========
 - COMMONS-374 Fixed  Data Allow for multiple queries.xml files per application
