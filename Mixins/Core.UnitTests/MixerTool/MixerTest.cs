@@ -297,5 +297,19 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
             Assert.AreEqual ("Foo", GetFirstMixedType (theAssembly).FullName);
           });
     }
+
+    [Test]
+    [Explicit ("This test can only be executed in isolation because it requires that the assemblies are not locked.")]
+    public void SameInputAndOutputDirectory ()
+    {
+      Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, AppDomain.CurrentDomain.BaseDirectory);
+      mixer.Execute ();
+      MixinConfiguration.SetActiveContext (null);
+      MixinConfiguration.ResetMasterConfiguration ();
+      mixer.Execute ();
+
+      File.Delete (Parameters.UnsignedAssemblyName);
+      File.Delete (Parameters.SignedAssemblyName);
+    }
   }
 }
