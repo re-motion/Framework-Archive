@@ -33,7 +33,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
       _rootWxeTransaction = new WxeTransactionMock (null, false, true);
       _rootWxeTransaction.Transaction = new TestTransaction ();
-      _rootWxeTransaction.PublicSetCurrentTransaction (_rootWxeTransaction.Transaction);
+      _rootWxeTransaction.PublicCheckAndSetCurrentTransaction (_rootWxeTransaction.Transaction);
       ((TestTransaction) _rootWxeTransaction.Transaction).CanCreateChild = true;
       _rootWxeTransaction.TransactionCommitting += delegate { _events += " committing"; };
       _rootWxeTransaction.TransactionCommitted += delegate { _events += " committed"; };
@@ -44,7 +44,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       _parentTransaction = new TestTransaction ();
       _parentTransaction.CanCreateChild = true;
       _parentWxeTransaction.Transaction = _parentTransaction;
-      _parentWxeTransaction.PublicSetCurrentTransaction (_parentTransaction);
+      _parentWxeTransaction.PublicCheckAndSetCurrentTransaction (_parentTransaction);
 
       _childWxeTransaction = new WxeTransactionMock (null, true, false);
       _parentWxeTransaction.Add (_childWxeTransaction);
@@ -330,11 +330,12 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       TestTransaction previousCurrentTransaction = new TestTransaction ();
       TestTransaction.Current = previousCurrentTransaction;
       _wxeTransaction.PublicSetPreviousTransaction (previousCurrentTransaction);
-      _wxeTransaction.PublicSetCurrentTransaction (null);
+      _wxeTransaction.IsPreviousCurrentTransactionRestored = false;
+      _wxeTransaction.PublicCheckAndSetCurrentTransaction (null);
 
       Assert.AreNotSame (previousCurrentTransaction, TestTransaction.Current);
       
-      _wxeTransaction.RestorePreviousCurrentTransaction ();
+      _wxeTransaction.PublicCheckAndRestorePreviousCurrentTransaction ();
 
       Assert.AreSame (previousCurrentTransaction, TestTransaction.Current);
       Assert.IsNull (_wxeTransaction.Transaction);
@@ -347,12 +348,12 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
       TestTransaction.Current = new TestTransaction ();
       _wxeTransaction.PublicSetPreviousTransaction (TestTransaction.Current);
-      _wxeTransaction.PublicSetCurrentTransaction (null);
-      _wxeTransaction.RestorePreviousCurrentTransaction ();
+      _wxeTransaction.PublicCheckAndSetCurrentTransaction (null);
+      _wxeTransaction.PublicCheckAndRestorePreviousCurrentTransaction ();
 
       TestTransaction currentTransaction = new TestTransaction ();
       TestTransaction.Current = currentTransaction;
-      _wxeTransaction.RestorePreviousCurrentTransaction (); // should not do anything
+      _wxeTransaction.PublicCheckAndRestorePreviousCurrentTransaction (); // should not do anything
 
       Assert.AreSame (currentTransaction, TestTransaction.Current);
     }
@@ -460,6 +461,48 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
             + "thrown.'", ex.Message);
         Assert.IsInstanceOfType (typeof (AuthenticationException), ex.InnerException);
         Assert.IsInstanceOfType (typeof (ReleaseException), ex.TransactionException);
+      }
+    }
+
+    [Test]
+    public void AbortOnFunctionNotYetExecuted ()
+    {
+      TestTransaction currentTransaction = new TestTransaction ();
+      TestTransaction.Current = currentTransaction;
+      _rootWxeTransaction.Abort ();
+      Assert.AreSame (currentTransaction, TestTransaction.Current);
+    }
+
+    [Test]
+    public void ExceptionThrownBySetCurrentTransactionIsWrapped ()
+    {
+      _rootWxeTransaction.ThrowOnSetCurrent = true;
+      try
+      {
+        _rootWxeTransaction.PublicCheckAndSetCurrentTransaction (new TestTransaction ());
+        Assert.Fail ("Expected WxeNonRecoverableTransactionException.");
+      }
+      catch (WxeNonRecoverableTransactionException ex)
+      {
+        Assert.IsTrue (ex.InnerException is SetCurrentException);
+        Assert.AreEqual ("WxeTransactionMock.SetCurrentTransaction threw an exception. See InnerException property.", ex.Message);
+      }
+    }
+
+    [Test]
+    public void ExceptionThrownByRestorePreviousCurrentTransactionIsWrapped ()
+    {
+      _rootWxeTransaction.ThrowOnSetPrevious = true;
+      _rootWxeTransaction.IsPreviousCurrentTransactionRestored = false;
+      try
+      {
+        _rootWxeTransaction.PublicCheckAndRestorePreviousCurrentTransaction ();
+        Assert.Fail ("Expected WxeNonRecoverableTransactionException.");
+      }
+      catch (WxeNonRecoverableTransactionException ex)
+      {
+        Assert.IsTrue (ex.InnerException is SetPreviousCurrentException);
+        Assert.AreEqual ("WxeTransactionMock.SetPreviousCurrentTransaction threw an exception. See InnerException property.", ex.Message);
       }
     }
   }

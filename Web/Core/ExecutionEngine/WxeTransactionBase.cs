@@ -29,7 +29,7 @@ namespace Rubicon.Web.ExecutionEngine
 
     private TTransaction _transaction = null;
     private TTransaction _previousCurrentTransaction = null;
-    private bool _isPreviousCurrentTransactionRestored = false;
+    private bool _isPreviousCurrentTransactionRestored = true; // start with true, in the beginning, there is no previous transaction to be restored
 
     /// <summary> Creates a new instance. </summary>
     /// <param name="steps"> Initial step list. Can be <see langword="null"/>. </param>
@@ -67,6 +67,9 @@ namespace Rubicon.Web.ExecutionEngine
     /// for later restoration. </summary>
     /// <param name="transaction"> The new current transaction. </param>
     /// <remarks> 
+    ///  <note type="caution">
+    ///    This method must not throw an exception.
+    ///  </note>
     ///   <note type="inotes">
     ///     It the <typeparamref name="TTransaction"/> implementation does not support the concept of a current transaction,
     ///     it is valid to implement an empty method.
@@ -84,6 +87,9 @@ namespace Rubicon.Web.ExecutionEngine
     /// <see cref="SetCurrentTransaction"/>.</summary>
     /// <param name="previousTransaction"> The transaction previously replaced by <see cref="SetCurrentTransaction"/>. </param>
     /// <remarks> 
+    ///  <note type="caution">
+    ///    This method must not throw an exception.
+    ///  </note>
     ///   <note type="inotes">
     ///     It the <typeparamref name="TTransaction"/> implementation does not support the concept of a current transaction,
     ///     it is valid to implement an empty method.
@@ -252,7 +258,7 @@ namespace Rubicon.Web.ExecutionEngine
 
       CheckCurrentTransactionResettable ();
 
-      RestorePreviousCurrentTransaction ();
+      CheckAndRestorePreviousCurrentTransaction ();
       _transaction = null;
       InitializeTransaction ();
     }
@@ -284,15 +290,14 @@ namespace Rubicon.Web.ExecutionEngine
       {
         if (e is System.Threading.ThreadAbortException)
         {
-          // TODO: TBD - what should we do when RestorePreviousCurrentTransaction throws an exception?
-          RestorePreviousCurrentTransaction(); // leave stack in good order
+          CheckAndRestorePreviousCurrentTransaction(); // leave stack in good order
           throw;
         }
 
         try
         {
           RollbackAndReleaseTransaction ();
-          RestorePreviousCurrentTransaction ();
+          CheckAndRestorePreviousCurrentTransaction ();
           s_log.Debug ("Aborted execution of " + this.GetType ().Name + " because of exception: \"" + e.Message + "\" (" + e.GetType ().FullName + ").");
         }
         catch (Exception transactionException)
@@ -310,7 +315,7 @@ namespace Rubicon.Web.ExecutionEngine
         CommitAndReleaseTransaction ();
       else
         RollbackAndReleaseTransaction ();
-      RestorePreviousCurrentTransaction ();
+      CheckAndRestorePreviousCurrentTransaction ();
 
       s_log.Debug ("Ending execution of " + this.GetType ().Name);
     }
@@ -325,7 +330,7 @@ namespace Rubicon.Web.ExecutionEngine
 
     private void MakeTransactionCurrent ()
     {
-      SetCurrentTransaction (_transaction);
+      CheckAndSetCurrentTransaction (_transaction);
       _isPreviousCurrentTransactionRestored = false; // we've just set the current transaction, so we need the old one to be restored later on
     }
 
@@ -333,8 +338,10 @@ namespace Rubicon.Web.ExecutionEngine
     {
       s_log.Debug ("Aborting " + this.GetType ().Name);
       base.AbortRecursive ();
+      
+      // TODO: ExecutionStarted might not be true here
       RollbackAndReleaseTransaction ();
-      RestorePreviousCurrentTransaction ();
+      CheckAndRestorePreviousCurrentTransaction ();
     }
 
     /// <summary> Commits encasulated <typeparamref name="TTransaction"/> and releases it afterwards. </summary>
@@ -344,7 +351,7 @@ namespace Rubicon.Web.ExecutionEngine
       {
         s_log.Debug ("Committing " + _transaction.GetType ().Name + ".");
         TTransaction previousTransaction = CurrentTransaction;
-        SetCurrentTransaction (_transaction);
+        CheckAndSetCurrentTransaction (_transaction);
         try
         {
           CommitTransaction (_transaction);
@@ -398,7 +405,7 @@ namespace Rubicon.Web.ExecutionEngine
       {
         s_log.Debug ("Rolling back " + _transaction.GetType ().Name + ".");
         TTransaction previousTransaction = CurrentTransaction;
-        SetCurrentTransaction (_transaction);
+        CheckAndSetCurrentTransaction (_transaction);
         try
         {
           RollbackTransaction (_transaction);
@@ -446,13 +453,35 @@ namespace Rubicon.Web.ExecutionEngine
     }
 
     /// <summary> Sets the backed up transaction as the old and new current transaction. </summary>
-    protected void RestorePreviousCurrentTransaction ()
+    protected void CheckAndSetCurrentTransaction (TTransaction transaction)
     {
-      Assertion.IsTrue (ExecutionStarted);
+      try
+      {
+        SetCurrentTransaction (transaction);
+      }
+      catch (Exception ex)
+      {
+        s_log.Fatal ("SetCurrentTransaction threw an exception.", ex);
+        throw new WxeNonRecoverableTransactionException (
+            this.GetType().Name + ".SetCurrentTransaction threw an exception. See InnerException property.", ex);
+      }
+    }
 
+    /// <summary> Sets the backed up transaction as the old and new current transaction. </summary>
+    protected void CheckAndRestorePreviousCurrentTransaction ()
+    {
       if (!_isPreviousCurrentTransactionRestored)
       {
-        SetPreviousCurrentTransaction (_previousCurrentTransaction);
+        try
+        {
+          SetPreviousCurrentTransaction (_previousCurrentTransaction);
+        }
+        catch (Exception ex)
+        {
+          s_log.Fatal ("SetPreviousCurrentTransaction threw an exception.", ex);
+          throw new WxeNonRecoverableTransactionException (
+              this.GetType().Name + ".SetPreviousCurrentTransaction threw an exception. See InnerException property.", ex);
+        }
         Assertion.IsTrue (_previousCurrentTransaction == CurrentTransaction);
         // Note: do not set _previousCurrentTransaction to null, we might need it again later
         _isPreviousCurrentTransactionRestored = true;

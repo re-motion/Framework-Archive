@@ -204,7 +204,7 @@ namespace Rubicon.Web.Test.ExecutionEngine
         Var2 = "SubFunction Step1";
       }
 
-      private WxeStep Step2 = new WxePageStep ("WebForm1.aspx");
+      private WxeStep Step2 = new WxePageStep (@"~\ExecutionEngine\WebForm1.aspx");
 
       private static int counter = 0;
       private void Step3 (WxeContext context)

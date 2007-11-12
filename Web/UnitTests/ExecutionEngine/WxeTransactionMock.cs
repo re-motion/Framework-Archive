@@ -14,6 +14,8 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
   {
     private bool _hasCreatedRootTransaction;
     private Stack<TestTransaction> _previousTransactions = new Stack<TestTransaction> ();
+    private bool _throwOnSetCurrent = false;
+    private bool _throwOnSetPrevious;
 
     public WxeTransactionMock (WxeStepList steps, bool autoCommit, bool forceRoot)
       : base (steps, autoCommit, forceRoot)
@@ -38,20 +40,31 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
     protected override void SetCurrentTransaction (TestTransaction transaction)
     {
+      if (ThrowOnSetCurrent)
+        throw new SetCurrentException ();
+
       _previousTransactions.Push (TestTransaction.Current);
       TestTransaction.Current = transaction;
     }
 
-    public void PublicSetCurrentTransaction (TestTransaction transaction)
+    public void PublicCheckAndSetCurrentTransaction (TestTransaction transaction)
     {
-      SetCurrentTransaction (transaction);
+      CheckAndSetCurrentTransaction (transaction);
     }
 
     protected override void SetPreviousCurrentTransaction (TestTransaction previousTransaction)
     {
+      if (ThrowOnSetPrevious)
+        throw new SetPreviousCurrentException ();
+
       Assert.IsNotEmpty (_previousTransactions);
       Assert.AreSame (_previousTransactions.Pop (), previousTransaction);
       TestTransaction.Current = previousTransaction;
+    }
+
+    public void PublicCheckAndRestorePreviousCurrentTransaction ()
+    {
+      CheckAndRestorePreviousCurrentTransaction ();
     }
 
     public ArrayList Steps
@@ -113,6 +126,18 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       get { return _previousTransactions; }
     }
 
+    public bool ThrowOnSetCurrent
+    {
+      get { return _throwOnSetCurrent; }
+      set { _throwOnSetCurrent = value; }
+    }
+
+    public bool ThrowOnSetPrevious
+    {
+      get { return _throwOnSetPrevious; }
+      set { _throwOnSetPrevious = value; }
+    }
+
     public new void OnTransactionCommitting ()
     {
       base.OnTransactionCommitting ();
@@ -153,15 +178,9 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       base.RollbackAndReleaseTransaction ();
     }
 
-    public new void RestorePreviousCurrentTransaction ()
-    {
-      base.RestorePreviousCurrentTransaction ();
-    }
-
     public void PublicSetPreviousTransaction (TestTransaction transaction)
     {
       PrivateInvoke.SetNonPublicField (this, "_previousCurrentTransaction", transaction);
     }
   }
-
 }
