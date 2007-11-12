@@ -48,7 +48,7 @@ public class UpdateCommandBuilder : CommandBuilder
       return null;
     }
 
-    WhereClauseBuilder whereClauseBuilder = new WhereClauseBuilder (this, command);
+    WhereClauseBuilder whereClauseBuilder = WhereClauseBuilder.Create (this, command);
     whereClauseBuilder.Add ("ID", _dataContainer.ID.Value);
 
     if (_dataContainer.State != StateType.New)

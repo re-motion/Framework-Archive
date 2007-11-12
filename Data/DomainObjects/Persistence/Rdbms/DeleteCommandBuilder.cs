@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
     {
       IDbCommand command = Provider.CreateDbCommand();
 
-      WhereClauseBuilder whereClauseBuilder = new WhereClauseBuilder (this, command);
+      WhereClauseBuilder whereClauseBuilder = WhereClauseBuilder.Create (this, command);
       whereClauseBuilder.Add ("ID", _dataContainer.ID.Value);
 
       if (MustAddTimestampToWhereClause())

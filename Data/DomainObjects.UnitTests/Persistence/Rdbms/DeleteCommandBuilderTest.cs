@@ -3,6 +3,7 @@ using System.Data;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Mixins;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -72,6 +73,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       Provider.Connect ();
       new DeleteCommandBuilder (Provider, TestDataContainerFactory.CreateOrder1DataContainer ());
+    }
+
+    [Test]
+    public void WhereClauseBuilder_CanBeMixed ()
+    {
+      ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+      classWithAllDataTypes.Delete ();
+      using (MixinConfiguration.ScopedExtend (typeof (WhereClauseBuilder), typeof (WhereClauseBuilderMixin)))
+      {
+        DataContainer deletedContainer = classWithAllDataTypes.InternalDataContainer;
+
+        Provider.Connect();
+        CommandBuilder commandBuilder = new DeleteCommandBuilder (Provider, deletedContainer);
+
+        using (IDbCommand deleteCommand = commandBuilder.Create())
+        {
+          Assert.IsTrue (deleteCommand.CommandText.Contains ("Mixed!"));
+        }
+      }
     }
   }
 }

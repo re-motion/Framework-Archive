@@ -93,7 +93,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
     public override IDbCommand Create()
     {
       IDbCommand command = Provider.CreateDbCommand();
-      WhereClauseBuilder whereClauseBuilder = new WhereClauseBuilder (this, command);
+      WhereClauseBuilder whereClauseBuilder = WhereClauseBuilder.Create (this, command);
 
       if (_whereClauseIDs.Length == 1)
         whereClauseBuilder.Add (_whereClauseColumnName, GetObjectIDValueForParameter (_whereClauseIDs[0]));

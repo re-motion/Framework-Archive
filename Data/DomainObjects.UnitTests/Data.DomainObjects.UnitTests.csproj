@@ -294,6 +294,7 @@
     <Compile Include="Persistence\MixedStorageProviderTest.cs" />
     <Compile Include="Persistence\Rdbms\DataContainerLoaderTest.cs" />
     <Compile Include="Persistence\Rdbms\ObjectIDLoaderTest.cs" />
+    <Compile Include="Persistence\Rdbms\WhereClauseBuilderMixin.cs" />
     <Compile Include="Persistence\StorageProviderWithFixedGuidMixin.cs" />
     <Compile Include="Persistence\Rdbms\UpdateCommandBuilderTest.cs" />
     <Compile Include="Persistence\Rdbms\InsertCommandBuilderTest.cs" />

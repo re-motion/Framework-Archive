@@ -1,8 +1,10 @@
 using System;
+using System.Data;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Mixins;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -14,7 +16,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void ConstructorChecksForConnectedProvider ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-			new UpdateCommandBuilder (Provider, order.InternalDataContainer);
+      new UpdateCommandBuilder (Provider, order.InternalDataContainer);
     }
 
     [Test]
@@ -25,7 +27,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Order order = Order.GetObject (DomainObjectIDs.Order1);
 
       Provider.Connect ();
-			new UpdateCommandBuilder (Provider, order.InternalDataContainer);
+      new UpdateCommandBuilder (Provider, order.InternalDataContainer);
+    }
+
+    [Test]
+    public void WhereClauseBuilder_CanBeMixed ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      ++order.OrderNumber;
+      Provider.Connect ();
+      using (MixinConfiguration.ScopedExtend (typeof (WhereClauseBuilder), typeof (WhereClauseBuilderMixin)))
+      {
+        CommandBuilder commandBuilder = new UpdateCommandBuilder (Provider, order.InternalDataContainer);
+        using (IDbCommand command = commandBuilder.Create())
+        {
+          Assert.IsTrue (command.CommandText.Contains ("Mixed!"));
+        }
+      }
     }
   }
 }

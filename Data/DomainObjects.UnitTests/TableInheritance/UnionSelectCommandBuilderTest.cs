@@ -7,7 +7,9 @@ using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
+using Rubicon.Mixins;
 using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
@@ -93,5 +95,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       }
     }
 
+    [Test]
+    public void WhereClauseBuilder_CanBeMixed ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (WhereClauseBuilder), typeof (WhereClauseBuilderMixin)))
+      {
+        using (IDbCommand command = _builder.Create())
+        {
+          Assert.IsTrue (command.CommandText.Contains ("Mixed!"));
+        }
+      }
+    }
   }
 }

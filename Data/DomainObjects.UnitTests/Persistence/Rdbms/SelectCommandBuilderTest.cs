@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Mixins;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -37,6 +38,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
           orderDefinition, 
           orderDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"), 
           DomainObjectIDs.Customer1);
+    }
+
+    [Test]
+    public void WhereClauseBuilder_CanBeMixed ()
+    {
+      ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
+
+      Provider.Connect ();
+      using (MixinConfiguration.ScopedExtend (typeof (WhereClauseBuilder), typeof (WhereClauseBuilderMixin)))
+      {
+        SelectCommandBuilder builder = SelectCommandBuilder.CreateForRelatedIDLookup (
+            Provider,
+            orderDefinition,
+            orderDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"),
+            DomainObjectIDs.Customer1);
+
+        using (IDbCommand command = builder.Create())
+        {
+          Assert.IsTrue (command.CommandText.Contains ("Mixed!"));
+        }
+      }
     }
   }
 }
