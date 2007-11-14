@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
@@ -27,9 +28,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
 
         MockRepository mockRepository = new MockRepository();
         IDesignModeHelper mockDesignModeHelper = mockRepository.CreateMock<IDesignModeHelper>();
-        ISite stubSite = mockRepository.CreateMock<ISite>();
+        IDesignerHost stubDesignerHost = mockRepository.CreateMock<IDesignerHost> ();
         Expect.Call (mockDesignModeHelper.GetConfiguration ()).Return (configuration);
-        SetupResult.For (mockDesignModeHelper.Site).Return (stubSite);
+        SetupResult.For (mockDesignModeHelper.DesignerHost).Return (stubDesignerHost);
 
         mockRepository.ReplayAll();
 

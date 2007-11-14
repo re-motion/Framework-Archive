@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Rubicon.Data.DomainObjects.Design;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.BindableObject.Properties;
@@ -26,6 +27,13 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
     private void InitializeMappingDefinitions (Type concreteType, IPropertyInformation propertyInfo)
     {
       Type targetType = Mixins.TypeUtility.GetUnderlyingTargetType (concreteType);
+
+      if (DesignerUtility.IsDesignMode)
+      {
+        DomainObjectsDesignModeHelper domainObjectsDesignModeHelper = new DomainObjectsDesignModeHelper (DesignerUtility.DesignModeHelper);
+        domainObjectsDesignModeHelper.InitializeConfiguration();
+      }
+
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[targetType];
       if (classDefinition != null)
       {

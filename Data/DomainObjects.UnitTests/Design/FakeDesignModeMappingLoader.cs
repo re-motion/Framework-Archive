@@ -1,32 +1,31 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.ComponentModel.Design;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Design
 {
   public class FakeDesignModeMappingLoader : IMappingLoader
   {
-    private readonly ISite _site;
+    private readonly IDesignerHost _designerHost;
 
-    public FakeDesignModeMappingLoader (ISite site)
+    public FakeDesignModeMappingLoader (IDesignerHost site)
     {
-      _site = site;
+      _designerHost = site;
     }
 
-    public ISite Site
+    public IDesignerHost DesignerHost
     {
-      get { return _site; }
+      get { return _designerHost; }
     }
 
-    public ClassDefinitionCollection GetClassDefinitions()
+    public ClassDefinitionCollection GetClassDefinitions ()
     {
       ClassDefinitionCollection classDefinitionCollection = new ClassDefinitionCollection();
       classDefinitionCollection.Add (
-          new ReflectionBasedClassDefinition ("Fake", "Fake", "Fake", typeof (Company), false, new List<Type> ()));
+          new ReflectionBasedClassDefinition ("Fake", "Fake", "Fake", typeof (Company), false, new List<Type>()));
 
       return classDefinitionCollection;
     }

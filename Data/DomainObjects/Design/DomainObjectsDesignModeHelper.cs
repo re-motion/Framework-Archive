@@ -45,7 +45,7 @@ namespace Rubicon.Data.DomainObjects.Design
           designModeMappingLoaderAttribute, 
           "'{0}' does not have the '{1}' applied.", mappingLoaderType.FullName, typeof (DesignModeMappingLoaderAttribute).FullName);
 
-      return designModeMappingLoaderAttribute.CreateInstance (_designModeHelper.Site);
+      return designModeMappingLoaderAttribute.CreateInstance (_designModeHelper.DesignerHost);
     }
 
     private Type GetMappingLoaderType()

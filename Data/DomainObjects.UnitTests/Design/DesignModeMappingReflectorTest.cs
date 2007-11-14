@@ -1,15 +1,11 @@
 using System;
-using System.ComponentModel;
 using System.ComponentModel.Design;
-using System.Reflection;
-using Castle.DynamicProxy;
+using System.IO;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.CodeGeneration;
 using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Design;
 using Rubicon.Data.DomainObjects.Development;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -17,15 +13,9 @@ using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.TableInheritance;
-using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
-using System.IO;
 using Rubicon.Mixins;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
-using Order=Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order;
 using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Design
@@ -42,16 +32,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
     }
 
     [Test]
-    public void Initialize()
+    public void Initialize ()
     {
       MockRepository mockRepository = new MockRepository();
-      ISite mockSite = mockRepository.CreateMock<ISite>();
+      IDesignerHost mockDesignerHost = mockRepository.CreateMock<IDesignerHost>();
       ITypeDiscoveryService stubTypeDiscoveryService = mockRepository.CreateMock<ITypeDiscoveryService>();
-      Expect.Call (mockSite.GetService (typeof (ITypeDiscoveryService))).Return (stubTypeDiscoveryService);
+      Expect.Call (mockDesignerHost.GetService (typeof (ITypeDiscoveryService))).Return (stubTypeDiscoveryService);
 
       mockRepository.ReplayAll();
 
-      new DesignModeMappingReflector (mockSite);
+      new DesignModeMappingReflector (mockDesignerHost);
 
       mockRepository.VerifyAll();
     }
@@ -59,17 +49,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
     [Test]
     public void GetClassDefinitions ()
     {
-      MockRepository mockRepository = new MockRepository ();
-      ISite stubSite = mockRepository.CreateMock<ISite> ();
-      ITypeDiscoveryService mockTypeDiscoveryService = mockRepository.CreateMock<ITypeDiscoveryService> ();
-      SetupResult.For (stubSite.GetService (typeof (ITypeDiscoveryService))).Return (mockTypeDiscoveryService);
+      MockRepository mockRepository = new MockRepository();
+      IDesignerHost stubDesignerHost = mockRepository.CreateMock<IDesignerHost>();
+      ITypeDiscoveryService mockTypeDiscoveryService = mockRepository.CreateMock<ITypeDiscoveryService>();
+      SetupResult.For (stubDesignerHost.GetService (typeof (ITypeDiscoveryService))).Return (mockTypeDiscoveryService);
       Expect.Call (mockTypeDiscoveryService.GetTypes (typeof (DomainObject), false)).Return (new Type[] {typeof (Company)});
-      mockRepository.ReplayAll ();
+      mockRepository.ReplayAll();
 
-      DesignModeMappingReflector mappingReflector = new DesignModeMappingReflector (stubSite);
+      DesignModeMappingReflector mappingReflector = new DesignModeMappingReflector (stubDesignerHost);
       ClassDefinitionCollection classDefinitionCollection = mappingReflector.GetClassDefinitions();
 
-      mockRepository.VerifyAll ();
+      mockRepository.VerifyAll();
 
       Assert.That (classDefinitionCollection.Count, Is.EqualTo (1));
       Assert.That (classDefinitionCollection.Contains (typeof (Company)));
@@ -78,11 +68,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
     [Test]
     public void DesignModeMappingReflector_SetsEmptyMixinConfigurationIfNoneExists ()
     {
-      ISite mockSite = GetMockSite();
+      IDesignerHost mockDesignerHost = GetMockDesignerHost();
 
       MixinConfiguration.SetActiveContext (null);
-      DesignModeMappingReflector mappingReflector = new DesignModeMappingReflector (mockSite);
-      mappingReflector.GetClassDefinitions ();
+      DesignModeMappingReflector mappingReflector = new DesignModeMappingReflector (mockDesignerHost);
+      mappingReflector.GetClassDefinitions();
 
       Assert.IsTrue (MixinConfiguration.HasActiveContext);
       Assert.AreEqual (0, MixinConfiguration.ActiveContext.ClassContextCount);
@@ -91,13 +81,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
     [Test]
     public void DesignModeMappingReflector_KeepsExistingMixinConfiguration ()
     {
-      ISite mockSite = GetMockSite ();
+      IDesignerHost mockDesignerHost = GetMockDesignerHost();
 
-      ApplicationContext context = new ApplicationContext ();
+      ApplicationContext context = new ApplicationContext();
       MixinConfiguration.SetActiveContext (context);
 
-      DesignModeMappingReflector mappingReflector = new DesignModeMappingReflector (mockSite);
-      mappingReflector.GetClassDefinitions ();
+      DesignModeMappingReflector mappingReflector = new DesignModeMappingReflector (mockDesignerHost);
+      mappingReflector.GetClassDefinitions();
 
       Assert.IsTrue (MixinConfiguration.HasActiveContext);
       Assert.AreSame (context, MixinConfiguration.ActiveContext);
@@ -106,44 +96,51 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
     [Test]
     public void DesignModeMappingReflectorWorksFine_WithDelaySignAssemblyInAppBase ()
     {
-      AppDomainRunner.Run (delegate
-      {
-        try
-        {
-          Compile (@"Design\DelaySignAssembly", @"Design.Dlls\Rubicon.Data.DomainObjects.UnitTests.Design.DelaySignAssembly.dll");
-          Assert.Fail ("Expected FileLoadException");
-        }
-        catch (FileLoadException)
-        {
-          // expected
-        }
-        catch (AssemblyCompilationException)
-        {
-          // file gets locked on multiple executions
-          Assert.IsTrue (System.IO.File.Exists (@"Design.Dlls\Rubicon.Data.DomainObjects.UnitTests.Design.DelaySignAssembly.dll"));
-        }
-      });
+      AppDomainRunner.Run (
+          delegate
+          {
+            try
+            {
+              Compile (@"Design\DelaySignAssembly", @"Design.Dlls\Rubicon.Data.DomainObjects.UnitTests.Design.DelaySignAssembly.dll");
+              Assert.Fail ("Expected FileLoadException");
+            }
+            catch (FileLoadException)
+            {
+              // expected
+            }
+            catch (AssemblyCompilationException)
+            {
+              // file gets locked on multiple executions
+              Assert.IsTrue (System.IO.File.Exists (@"Design.Dlls\Rubicon.Data.DomainObjects.UnitTests.Design.DelaySignAssembly.dll"));
+            }
+          });
 
       AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
       setup.ApplicationBase = @"Design.Dlls";
-      setup.DynamicBase = Path.GetTempPath ();
-      new AppDomainRunner (setup, delegate
-      {
-        ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = StorageProviderDefinitionFactory.Create ();
-        
-        PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration (storageProviderDefinitionCollection, storageProviderDefinitionCollection[DatabaseTest.DefaultStorageProviderID]);
-        persistenceConfiguration.StorageGroups.Add (new StorageGroupElement (new TestDomainAttribute (), DatabaseTest.c_testDomainProviderID));
+      setup.DynamicBase = Path.GetTempPath();
+      new AppDomainRunner (
+          setup,
+          delegate
+          {
+            ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = StorageProviderDefinitionFactory.Create();
 
-        MappingLoaderConfiguration mappingLoaderConfiguration = new MappingLoaderConfiguration ();
-        QueryConfiguration queryConfiguration = new QueryConfiguration ();
-        DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (mappingLoaderConfiguration, persistenceConfiguration, queryConfiguration));
+            PersistenceConfiguration persistenceConfiguration =
+                new PersistenceConfiguration (
+                    storageProviderDefinitionCollection, storageProviderDefinitionCollection[DatabaseTest.DefaultStorageProviderID]);
+            persistenceConfiguration.StorageGroups.Add (new StorageGroupElement (new TestDomainAttribute(), DatabaseTest.c_testDomainProviderID));
 
-        Assert.IsFalse (MixinConfiguration.HasActiveContext);
+            MappingLoaderConfiguration mappingLoaderConfiguration = new MappingLoaderConfiguration();
+            QueryConfiguration queryConfiguration = new QueryConfiguration();
+            DomainObjectsConfiguration.SetCurrent (
+                new FakeDomainObjectsConfiguration (mappingLoaderConfiguration, persistenceConfiguration, queryConfiguration));
 
-        ISite mockSite = GetMockSite ();
-        DesignModeMappingReflector mappingReflector = new DesignModeMappingReflector (mockSite);
-        mappingReflector.GetClassDefinitions ();
-      }, new object[0]).Run ();
+            Assert.IsFalse (MixinConfiguration.HasActiveContext);
+
+            IDesignerHost mockDesignerHost = GetMockDesignerHost();
+            DesignModeMappingReflector mappingReflector = new DesignModeMappingReflector (mockDesignerHost);
+            mappingReflector.GetClassDefinitions();
+          },
+          new object[0]).Run();
     }
 
     private static void Compile (string sourceDirectory, string outputAssembly)
@@ -155,22 +152,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
       AssemblyCompiler compiler = new AssemblyCompiler (
           sourceDirectory,
           outputAssembly,
-          new string[] { "Rubicon.Core.dll", "Rubicon.Data.DomainObjects.dll", "Rubicon.Mixins.dll" });
+          new string[] {"Rubicon.Core.dll", "Rubicon.Data.DomainObjects.dll", "Rubicon.Mixins.dll"});
 
-      compiler.Compile ();
+      compiler.Compile();
     }
 
-    private static ISite GetMockSite ()
+    private static IDesignerHost GetMockDesignerHost ()
     {
-      MockRepository mockRepository = new MockRepository ();
-      ISite mockSite = mockRepository.CreateMock<ISite> ();
+      MockRepository mockRepository = new MockRepository();
+      IDesignerHost mockDesignerHost = mockRepository.CreateMock<IDesignerHost>();
 
-      ITypeDiscoveryService stubTypeDiscoveryService = mockRepository.CreateMock<ITypeDiscoveryService> ();
-      Expect.Call (mockSite.GetService (typeof (ITypeDiscoveryService))).Return (stubTypeDiscoveryService);
-      Expect.Call (stubTypeDiscoveryService.GetTypes (typeof (DomainObject), false)).Return (new Type[] { typeof (Order) });
+      ITypeDiscoveryService stubTypeDiscoveryService = mockRepository.CreateMock<ITypeDiscoveryService>();
+      Expect.Call (mockDesignerHost.GetService (typeof (ITypeDiscoveryService))).Return (stubTypeDiscoveryService);
+      Expect.Call (stubTypeDiscoveryService.GetTypes (typeof (DomainObject), false)).Return (new Type[] {typeof (Order)});
 
-      mockRepository.ReplayAll ();
-      return mockSite;
+      mockRepository.ReplayAll();
+      return mockDesignerHost;
     }
   }
 }

@@ -57,12 +57,6 @@ namespace Rubicon.ObjectBinding.BindableObject
       if (Type == null)
         return null;
 
-      //if (IsDesignMode)
-      //{
-      //  BindableObjectProvider designModeProvider = BindableObjectProvider.CreateDesignModeBindableObjectProvider();
-      //  return designModeProvider.GetBindableObjectClass (Type);
-      //}
-
       return BindableObjectProvider.Current.GetBindableObjectClass (Type);
     }
 

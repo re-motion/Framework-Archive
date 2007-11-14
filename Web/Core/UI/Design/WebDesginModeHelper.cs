@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Web.UI.Design;
 using Rubicon.Design;
 using Rubicon.Utilities;
@@ -11,8 +12,8 @@ namespace Rubicon.Web.UI.Design
   /// </summary>
   public class WebDesginModeHelper: DesignModeHelperBase
   {
-    public WebDesginModeHelper (ISite site):
-      base (site)
+    public WebDesginModeHelper (IDesignerHost designerHost)
+        : base (designerHost)
     {
     }
 
@@ -28,7 +29,7 @@ namespace Rubicon.Web.UI.Design
 
     private IWebApplication GetWebApplication()
     {
-      IWebApplication webApplication = (IWebApplication) Site.GetService (typeof (IWebApplication));
+      IWebApplication webApplication = (IWebApplication) DesignerHost.GetService (typeof (IWebApplication));
       Assertion.IsNotNull(webApplication, "The 'IServiceProvider' failed to return an 'IWebApplication' service.");
 
       return webApplication;

@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Configuration;
 using System.IO;
 using System.Reflection;
 using Rubicon.Design;
 using Rubicon.Utilities;
 
-namespace Rubicon.Web.UI.Design
+namespace Rubicon.Design
 {
   /// <summary>
   /// Implementation of the <see cref="IDesignModeHelper"/> interface for the <b>EnvDTE</b> (i.e. Visual Studio) designer.
@@ -17,8 +18,8 @@ namespace Rubicon.Web.UI.Design
   /// </remarks>
   public abstract class EnvDteDesignModeHelper: DesignModeHelperBase
   {
-    protected EnvDteDesignModeHelper (ISite site)
-        : base (site)
+    protected EnvDteDesignModeHelper (IDesignerHost designerHost)
+        : base (designerHost)
     {
     }
 
@@ -58,7 +59,7 @@ namespace Rubicon.Web.UI.Design
       {
         //EnvDTE._DTE environment = (EnvDTE._DTE) ((IServiceProvider)site).GetService (typeof (EnvDTE._DTE));
         Type _DTEType = Type.GetType ("EnvDTE._DTE, EnvDTE");
-        object environment = Site.GetService (_DTEType);
+        object environment = DesignerHost.GetService (_DTEType);
 
         if (environment != null)
         {

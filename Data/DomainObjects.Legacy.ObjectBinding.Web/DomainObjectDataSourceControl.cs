@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Drawing.Design;
 using System.Web.UI;
 using Rubicon.Data.DomainObjects.Design;
@@ -9,6 +10,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding.Web.Design;
 using Rubicon.Design;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.UI.Controls;
+using Rubicon.Utilities;
 using Rubicon.Web.UI.Design;
 using Rubicon.Web.Utilities;
 using Rubicon.Data.DomainObjects.ObjectBinding.Infrastructure;
@@ -49,7 +51,10 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.Web
       {
         try
         {
-          DomainObjectsDesignModeHelper domainObjectsDesignModeHelper = new DomainObjectsDesignModeHelper (new WebDesginModeHelper (Site));
+          IDesignerHost designerHost = (IDesignerHost) Site.GetService (typeof (IDesignerHost));
+          Assertion.IsNotNull (designerHost, "No IDesignerHost found.");
+
+          DomainObjectsDesignModeHelper domainObjectsDesignModeHelper = new DomainObjectsDesignModeHelper (new WebDesginModeHelper (designerHost));
           domainObjectsDesignModeHelper.InitializeConfiguration();
         }
         catch (Exception e)

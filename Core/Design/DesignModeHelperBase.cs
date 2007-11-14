@@ -1,6 +1,5 @@
 using System;
-using System.ComponentModel;
-using Rubicon.Design;
+using System.ComponentModel.Design;
 using Rubicon.Utilities;
 
 namespace Rubicon.Design
@@ -8,26 +7,24 @@ namespace Rubicon.Design
   /// <summary>
   /// Base implementation of the <see cref="IDesignModeHelper"/> interface.
   /// </summary>
-  public abstract class DesignModeHelperBase: IDesignModeHelper
+  public abstract class DesignModeHelperBase : IDesignModeHelper
   {
-    private ISite _site;
+    private readonly IDesignerHost _designerHost;
 
-    protected DesignModeHelperBase (ISite site)
+    protected DesignModeHelperBase (IDesignerHost designerHost)
     {
-      ArgumentUtility.CheckNotNull ("site", site);
-      if (!site.DesignMode)
-        throw new ArgumentException (string.Format ("The '{0}' requires that DesignMode is active for the site.", GetType().Name), "site");
+      ArgumentUtility.CheckNotNull ("designerHost", designerHost);
 
-      _site = site;
+      _designerHost = designerHost;
     }
 
-    public abstract string GetProjectPath();
+    public abstract string GetProjectPath ();
 
-    public abstract System.Configuration.Configuration GetConfiguration();
+    public abstract System.Configuration.Configuration GetConfiguration ();
 
-    public ISite Site
+    public IDesignerHost DesignerHost
     {
-      get { return _site; }
+      get { return _designerHost; }
     }
   }
 }

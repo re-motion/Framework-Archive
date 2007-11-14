@@ -1,13 +1,14 @@
 using System;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using Rubicon.Design;
 
 namespace Rubicon.Core.UnitTests.Design
 {
   public class StubDesignModeHelper: DesignModeHelperBase
   {
-    public StubDesignModeHelper (ISite site)
-        : base (site)
+    public StubDesignModeHelper (IDesignerHost designerHost)
+        : base (designerHost)
     {
     }
 

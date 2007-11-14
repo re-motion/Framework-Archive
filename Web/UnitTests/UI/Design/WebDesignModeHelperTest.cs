@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Configuration;
 using System.Web.UI.Design;
 using NUnit.Framework;
@@ -13,17 +14,15 @@ namespace Rubicon.Web.UnitTests.UI.Design
   public class WebDesignModeHelperTest
   {
     private MockRepository _mockRepository;
-    private ISite _mockSite;
+    private IDesignerHost _mockDesignerHost;
     private IWebApplication _mockWebApplication;
 
     [SetUp]
     public void SetUp()
     {
       _mockRepository = new MockRepository();
-      _mockSite = _mockRepository.CreateMock<ISite>();
+      _mockDesignerHost = _mockRepository.CreateMock<IDesignerHost> ();
       _mockWebApplication = _mockRepository.CreateMock<IWebApplication>();
-
-      SetupResult.For (_mockSite.DesignMode).Return (true);
     }
 
     [Test]
@@ -31,21 +30,21 @@ namespace Rubicon.Web.UnitTests.UI.Design
     {
       _mockRepository.ReplayAll();
 
-      WebDesginModeHelper webDesginModeHelper = new WebDesginModeHelper (_mockSite);
+      WebDesginModeHelper webDesginModeHelper = new WebDesginModeHelper (_mockDesignerHost);
 
       _mockRepository.VerifyAll();
-      Assert.That (webDesginModeHelper.Site, Is.SameAs (_mockSite));
+      Assert.That (webDesginModeHelper.DesignerHost, Is.SameAs (_mockDesignerHost));
     }
 
     [Test]
     public void GetConfiguration()
     {
       System.Configuration.Configuration expected = ConfigurationManager.OpenExeConfiguration (ConfigurationUserLevel.None);
-      Expect.Call (_mockSite.GetService (typeof (IWebApplication))).Return (_mockWebApplication);
+      Expect.Call (_mockDesignerHost.GetService (typeof (IWebApplication))).Return (_mockWebApplication);
       Expect.Call (_mockWebApplication.OpenWebConfiguration (true)).Return (expected);
       _mockRepository.ReplayAll();
 
-      WebDesginModeHelper webDesginModeHelper = new WebDesginModeHelper (_mockSite);
+      WebDesginModeHelper webDesginModeHelper = new WebDesginModeHelper (_mockDesignerHost);
 
       System.Configuration.Configuration actual = webDesginModeHelper.GetConfiguration();
 
@@ -58,12 +57,12 @@ namespace Rubicon.Web.UnitTests.UI.Design
     {
       IProjectItem mockProjectItem = _mockRepository.CreateMock<IProjectItem>();
 
-      Expect.Call (_mockSite.GetService (typeof (IWebApplication))).Return (_mockWebApplication);
+      Expect.Call (_mockDesignerHost.GetService (typeof (IWebApplication))).Return (_mockWebApplication);
       SetupResult.For (_mockWebApplication.RootProjectItem).Return (mockProjectItem);
       Expect.Call (mockProjectItem.PhysicalPath).Return ("TheProjectPath");
       _mockRepository.ReplayAll();
 
-      WebDesginModeHelper webDesginModeHelper = new WebDesginModeHelper (_mockSite);
+      WebDesginModeHelper webDesginModeHelper = new WebDesginModeHelper (_mockDesignerHost);
 
       string actual = webDesginModeHelper.GetProjectPath();
 

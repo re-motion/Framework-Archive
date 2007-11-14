@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
@@ -32,10 +33,10 @@ namespace Rubicon.Data.DomainObjects.Design
       get { return _type; }
     }
 
-    public IMappingLoader CreateInstance (ISite site)
+    public IMappingLoader CreateInstance (IDesignerHost designerHost)
     {
-      ArgumentUtility.CheckNotNull ("site", site);
-      return (IMappingLoader) TypesafeActivator.CreateInstance (_type).With (site);
+      ArgumentUtility.CheckNotNull ("designerHost", designerHost);
+      return (IMappingLoader) TypesafeActivator.CreateInstance (_type).With (designerHost);
     }
   }
 }

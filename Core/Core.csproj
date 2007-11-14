@@ -388,6 +388,7 @@
     <Compile Include="Utilities\AppDomainRunnerBase.cs" />
     <Compile Include="Utilities\AttributeUtility.cs" />
     <Compile Include="Utilities\Assertion.cs" />
+    <Compile Include="Utilities\DesignerUtility.cs" />
     <Compile Include="Utilities\EnumerableUtility.cs" />
     <Compile Include="Utilities\EqualityUtility.cs" />
     <Compile Include="Utilities\FileUtility.cs" />

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
@@ -23,12 +24,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
     public void CreateInstance ()
     {
       MockRepository mockRepository = new MockRepository ();
-      ISite stubSite = mockRepository.CreateMock<ISite> ();
+      IDesignerHost stubDesignerHost = mockRepository.CreateMock<IDesignerHost> ();
       DesignModeMappingLoaderAttribute attribute = new DesignModeMappingLoaderAttribute (typeof (FakeDesignModeMappingLoader));
 
-      IMappingLoader mappingLoader = attribute.CreateInstance (stubSite);
+      IMappingLoader mappingLoader = attribute.CreateInstance (stubDesignerHost);
       Assert.That (mappingLoader, Is.InstanceOfType (typeof (FakeDesignModeMappingLoader)));
-      Assert.That (((FakeDesignModeMappingLoader) mappingLoader).Site, Is.SameAs (stubSite));
+      Assert.That (((FakeDesignModeMappingLoader) mappingLoader).DesignerHost, Is.SameAs (stubDesignerHost));
     }
   }
 }

@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.ComponentModel.Design;
 
 namespace Rubicon.Design
 {
@@ -8,7 +9,7 @@ namespace Rubicon.Design
   /// </summary>
   public interface IDesignModeHelper
   {
-    ISite Site { get; }
+    IDesignerHost DesignerHost { get; }
     string GetProjectPath();
     System.Configuration.Configuration GetConfiguration();
   }

@@ -40,7 +40,7 @@
     <Compile Include="ConfigurationLoader\XmlBasedConfigurationLoader\MappingLoader.cs" />
     <Compile Include="ConfigurationLoader\XmlBasedConfigurationLoader\LegacyPrefixNamespace.cs" />
     <Compile Include="ConfigurationLoader\XmlBasedConfigurationLoader\RelationDefinitionLoader.cs" />
-    <Compile Include="Design\DesignModeMappingLoader.cs" />
+    <Compile Include="Design\DesignModeXmlBasedMappingLoader.cs" />
     <Compile Include="Infrastructure\DirectDomainObjectCreator.cs" />
     <Compile Include="Mapping\MandatoryMappingTypeNotFoundException.cs" />
     <Compile Include="Mapping\TypeInfo.cs" />

@@ -18,12 +18,12 @@ namespace Rubicon.Data.DomainObjects.Design
   {
     private readonly ITypeDiscoveryService _typeDiscoveryService;
 
-    public DesignModeMappingReflector (ISite site)
+    public DesignModeMappingReflector (IDesignerHost designerHost)
     {
-      ArgumentUtility.CheckNotNull ("site", site);
+      ArgumentUtility.CheckNotNull ("designerHost", designerHost);
 
-      _typeDiscoveryService = (ITypeDiscoveryService) site.GetService (typeof (ITypeDiscoveryService));
-      Assertion.IsNotNull(_typeDiscoveryService, "Look-up of 'ITypeDiscoveryService' via site.GetService(...) failed.");
+      _typeDiscoveryService = (ITypeDiscoveryService) designerHost.GetService (typeof (ITypeDiscoveryService));
+      Assertion.IsNotNull (_typeDiscoveryService, "Look-up of 'ITypeDiscoveryService' via designerHost.GetService(...) failed.");
     }
 
     protected override Type[] GetDomainObjectTypes()
