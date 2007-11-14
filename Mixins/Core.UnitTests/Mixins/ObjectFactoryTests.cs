@@ -345,5 +345,62 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         ObjectFactory.Create<NullTarget> ().With ();
       }
     }
+
+    public class TargetClassWithProtectedCtors
+    {
+      protected TargetClassWithProtectedCtors ()
+      {
+      }
+
+      protected TargetClassWithProtectedCtors (int i)
+      {
+      }
+    }
+
+    [Test]
+    [Ignore ("TODO - COMMONS-414")]
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Mixins.UnitTests.Mixins.ObjectFactoryTests+"
+        + "TargetClassWithProtectedCtors does not contain a public constructor with signature ().")]
+    public void ProtectedDefaultConstructor_Mixed ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (TargetClassWithProtectedCtors), typeof (NullMixin)))
+      {
+        ObjectFactory.Create<TargetClassWithProtectedCtors> ().With ();
+      }
+    }
+
+    [Test]
+    [Ignore ("TODO - COMMONS-414")]
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Mixins.UnitTests.Mixins.ObjectFactoryTests+"
+        + "TargetClassWithProtectedCtors does not contain a public constructor with signature (System.Int32).")]
+    public void ProtectedNonDefaultConstructor_Mixed ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (TargetClassWithProtectedCtors), typeof (NullMixin)))
+      {
+        ObjectFactory.Create<TargetClassWithProtectedCtors> ().With (1);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Mixins.UnitTests.Mixins.ObjectFactoryTests+"
+        + "TargetClassWithProtectedCtors does not contain a public constructor with signature ().")]
+    public void ProtectedDefaultConstructor_NonMixed ()
+    {
+      using (MixinConfiguration.ScopedEmpty ())
+      {
+        ObjectFactory.Create<TargetClassWithProtectedCtors> ().With ();
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Mixins.UnitTests.Mixins.ObjectFactoryTests+"
+        + "TargetClassWithProtectedCtors does not contain a public constructor with signature (System.Int32).")]
+    public void ProtectedNonDefaultConstructor_NonMixed ()
+    {
+      using (MixinConfiguration.ScopedEmpty ())
+      {
+        ObjectFactory.Create<TargetClassWithProtectedCtors> ().With (1);
+      }
+    }
   }
 }
