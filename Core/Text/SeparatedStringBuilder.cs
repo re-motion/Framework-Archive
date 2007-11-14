@@ -83,6 +83,11 @@ public class SeparatedStringBuilder
       _stringBuilder.Append (_separator);
   }
 
+  public int Length
+  {
+    get { return _stringBuilder.Length; }
+  }
+
   public override string ToString()
   {
     return _stringBuilder.ToString();
