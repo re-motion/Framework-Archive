@@ -35,11 +35,12 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     }
 
     // should be called when a type was generated with the scope from this module
-    public void OnTypeGenerated (Type generatedType)
+    public void OnTypeGenerated (Type generatedType, TypeBuilder typeBuilder)
     {
       ArgumentUtility.CheckNotNull ("generatedType", generatedType);
+      ArgumentUtility.CheckNotNull ("typeBuilder", typeBuilder);
 
-      EnsureAttributes (generatedType.Module);
+      EnsureAttributes (typeBuilder.Module);
     }
 
     private void EnsureAttributes (Module module)

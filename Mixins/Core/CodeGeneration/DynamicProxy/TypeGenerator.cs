@@ -148,7 +148,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     public Type GetBuiltType ()
     {
       Type builtType = Emitter.BuildType();
-      _module.OnTypeGenerated (builtType);
+      _module.OnTypeGenerated (builtType, TypeBuilder);
       return builtType;
     }
 
