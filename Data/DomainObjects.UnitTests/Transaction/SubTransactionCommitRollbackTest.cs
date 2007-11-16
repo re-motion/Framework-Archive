@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -173,6 +174,76 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreEqual (5, order.OrderNumber);
       ClientTransactionMock.Rollback ();
       Assert.AreEqual (1, order.OrderNumber);
+    }
+
+    [Test]
+    [Ignore ("TODO: FS: deleting-bug test.")]
+    public void SubCommit_OfDeletedObject_DoesNotRaiseDeletedEvent ()
+    {
+      using (_subTransaction.EnterDiscardingScope ())
+      {
+        ClassWithAllDataTypes domainObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+
+        MockRepository repository = new MockRepository();
+
+        IClientTransactionExtension extensionMock = repository.CreateMock<IClientTransactionExtension>();
+        _subTransaction.Extensions.Add ("Mock", extensionMock);
+
+        extensionMock.ObjectDeleting (_subTransaction, domainObject);
+        extensionMock.ObjectDeleted (_subTransaction, domainObject);
+
+        repository.ReplayAll();
+        domainObject.Delete();
+        repository.VerifyAll();
+
+        repository.BackToRecordAll();
+        extensionMock.Committing (null, null);
+        LastCall.IgnoreArguments();
+        extensionMock.Committed (null, null);
+        LastCall.IgnoreArguments ();
+        repository.ReplayAll ();
+       
+        _subTransaction.Commit();
+        repository.VerifyAll ();
+      }
+    }
+
+    [Test]
+    [Ignore ("TODO: FS: deleting-bug test.")]
+    public void SubCommit_OfDeletedObject_DoesNotRaiseDeletedEvent_WithRelations ()
+    {
+      using (_subTransaction.EnterDiscardingScope ())
+      {
+        Order domainObject = Order.GetObject (DomainObjectIDs.Order1);
+        domainObject.OrderItems[0].Delete();
+
+        MockRepository repository = new MockRepository ();
+
+        IClientTransactionExtension extensionMock = repository.CreateMock<IClientTransactionExtension> ();
+        _subTransaction.Extensions.Add ("Mock", extensionMock);
+
+        using (repository.Ordered ())
+        {
+          extensionMock.Committing (null, null);
+          LastCall.IgnoreArguments ();
+          //extensionMock.ObjectDeleting (null, null);
+          //LastCall.IgnoreArguments ();
+          //extensionMock.RelationChanging (null, null, null, null, null);
+          //LastCall.IgnoreArguments ();
+          //extensionMock.RelationChanged (null, null, null);
+          //LastCall.IgnoreArguments ();
+          //extensionMock.ObjectDeleted (null, null);
+          //LastCall.IgnoreArguments ();
+          extensionMock.Committed (null, null);
+          LastCall.IgnoreArguments ();
+        }
+
+        repository.ReplayAll ();
+
+        _subTransaction.Commit ();
+        
+        repository.VerifyAll ();
+      }
     }
   }
 }
