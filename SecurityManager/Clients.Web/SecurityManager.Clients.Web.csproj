@@ -99,8 +99,8 @@
     <Compile Include="Classes\ObjectBoundRepeater.cs" />
     <Compile Include="Classes\SecurityManagerHttpApplication.cs" />
     <Compile Include="default.aspx.cs">
-      <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
