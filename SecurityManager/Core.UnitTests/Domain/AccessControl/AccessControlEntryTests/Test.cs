@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.AccessControl;
@@ -34,8 +33,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     {
       AccessControlEntry ace = AccessControlEntry.NewObject();
       AccessTypeDefinition readAccessType = _testHelper.CreateReadAccessType (ace, true);
-      AccessTypeDefinition writeAccessType = _testHelper.CreateWriteAccessType (ace, null);
-      AccessTypeDefinition deleteAccessType = _testHelper.CreateDeleteAccessType (ace, null);
+      _testHelper.CreateWriteAccessType (ace, null);
+      _testHelper.CreateDeleteAccessType (ace, null);
 
       AccessTypeDefinition[] accessTypes = ace.GetAllowedAccessTypes();
 
@@ -58,11 +57,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The access type 'Test' is not assigned to this access control entry.\r\nParameter name: accessType")]
+                                                    "The access type 'Test' is not assigned to this access control entry.\r\nParameter name: accessType"
+        )]
     public void AllowAccess_InvalidAccessType ()
     {
       AccessControlEntry ace = AccessControlEntry.NewObject();
-      AccessTypeDefinition accessType = AccessTypeDefinition.NewObject  (Guid.NewGuid(), "Test", 42);
+      AccessTypeDefinition accessType = AccessTypeDefinition.NewObject (Guid.NewGuid(), "Test", 42);
 
       ace.AllowAccess (accessType);
     }
@@ -83,31 +83,34 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     public void AttachAccessType_TwoNewAccessType ()
     {
       AccessControlEntry ace = AccessControlEntry.NewObject();
-      AccessTypeDefinition accessType0 = AccessTypeDefinition.NewObject  (Guid.NewGuid(), "Access Type 0", 0);
-      AccessTypeDefinition accessType1 = AccessTypeDefinition.NewObject  (Guid.NewGuid(), "Access Type 1", 1);
-      DateTime changedAt = ace.ChangedAt;
-      Thread.Sleep (50);
+      AccessTypeDefinition accessType0 = AccessTypeDefinition.NewObject (Guid.NewGuid(), "Access Type 0", 0);
+      AccessTypeDefinition accessType1 = AccessTypeDefinition.NewObject (Guid.NewGuid(), "Access Type 1", 1);
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+      {
+        Assert.AreEqual (StateType.Unchanged, ace.State);
 
-      ace.AttachAccessType (accessType0);
-      ace.AttachAccessType (accessType1);
+        ace.AttachAccessType (accessType0);
+        ace.AttachAccessType (accessType1);
 
-      Assert.AreEqual (2, ace.Permissions.Count);
-      Permission permission0 = ace.Permissions[0];
-      Assert.AreSame (accessType0, permission0.AccessType);
-      Assert.AreEqual (0, permission0.Index);
-      Permission permission1 = (Permission) ace.Permissions[1];
-      Assert.AreSame (accessType1, permission1.AccessType);
-      Assert.AreEqual (1, permission1.Index);
-      Assert.Greater ((decimal) ace.ChangedAt.Ticks, (decimal) changedAt.Ticks);
+        Assert.AreEqual (2, ace.Permissions.Count);
+        Permission permission0 = ace.Permissions[0];
+        Assert.AreSame (accessType0, permission0.AccessType);
+        Assert.AreEqual (0, permission0.Index);
+        Permission permission1 = ace.Permissions[1];
+        Assert.AreSame (accessType1, permission1.AccessType);
+        Assert.AreEqual (1, permission1.Index);
+        Assert.AreEqual (StateType.Changed, ace.State);
+      }
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The access type 'Test' has already been attached to this access control entry.\r\nParameter name: accessType")]
+                                                    "The access type 'Test' has already been attached to this access control entry.\r\nParameter name: accessType"
+        )]
     public void AttachAccessType_ExistingAccessType ()
     {
       AccessControlEntry ace = AccessControlEntry.NewObject();
-      AccessTypeDefinition accessType = AccessTypeDefinition.NewObject  (Guid.NewGuid(), "Test", 42);
+      AccessTypeDefinition accessType = AccessTypeDefinition.NewObject (Guid.NewGuid(), "Test", 42);
 
       ace.AttachAccessType (accessType);
       ace.AttachAccessType (accessType);
@@ -131,7 +134,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     {
       AccessControlEntry ace = AccessControlEntry.NewObject();
 
-      Assert.AreNotEqual (DateTime.MinValue, ace.ChangedAt);
+      Assert.AreEqual (StateType.New, ace.State);
     }
 
     [Test]
@@ -139,12 +142,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     {
       AccessControlEntry ace = AccessControlEntry.NewObject();
 
-      DateTime creationDate = ace.ChangedAt;
+      Assert.AreEqual (StateType.New, ace.State);
 
-      Thread.Sleep (50);
       ace.Touch();
 
-      Assert.Greater ((decimal) ace.ChangedAt.Ticks, (decimal) creationDate.Ticks);
+      Assert.AreEqual (StateType.New, ace.State);
     }
 
     [Test]
@@ -159,15 +161,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void ClearSpecificTenantOnCommit ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
       ObjectID aceID = dbFixtures.CreateAndCommitAccessControlEntryWithPermissions (0, ClientTransaction.NewTransaction());
       AccessControlEntry ace = AccessControlEntry.GetObject (aceID);
       ace.Tenant = TenantSelection.OwningTenant;
       ace.SpecificTenant = _testHelper.CreateTenant ("TestTenant");
 
       Assert.IsNotNull (ace.SpecificTenant);
-      ClientTransactionScope.CurrentTransaction.Commit ();
-      Assert.IsNull (ace.SpecificTenant);      
+      ClientTransactionScope.CurrentTransaction.Commit();
+      Assert.IsNull (ace.SpecificTenant);
     }
 
     [Test]
@@ -179,14 +181,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
       ace.Tenant = TenantSelection.SpecificTenant;
       ace.SpecificTenant = _testHelper.CreateTenant ("TestTenant");
       ClientTransactionScope.CurrentTransaction.Commit();
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
       {
         AccessControlEntry aceActual = AccessControlEntry.GetObject (aceID);
         aceActual.Tenant = TenantSelection.OwningTenant;
 
         Assert.IsNotNull (aceActual.SpecificTenant);
         aceActual.Delete();
-        ClientTransactionScope.CurrentTransaction.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit();
       }
     }
   }

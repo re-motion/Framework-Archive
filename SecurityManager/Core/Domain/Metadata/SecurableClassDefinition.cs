@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.ObjectBinding;
 using Rubicon.SecurityManager.Domain.AccessControl;
@@ -64,7 +63,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     protected  SecurableClassDefinition ()
     {
-      Touch ();
       Initialize ();
     }
 
@@ -80,7 +78,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     private void Initialize ()
     {
-      AccessControlLists.Added += new DomainObjectCollectionChangeEventHandler (AccessControlLists_Added);
+      AccessControlLists.Added += AccessControlLists_Added;
     }
 
     private void AccessControlLists_Added (object sender, DomainObjectCollectionChangeEventArgs args)
@@ -101,15 +99,10 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     [DBBidirectionalRelation ("BaseClass", SortExpression = "[Index] ASC")]
     public abstract ObjectList<SecurableClassDefinition> DerivedClasses { get; }
 
-    public virtual DateTime ChangedAt 
-    {
-      get { return CurrentProperty.GetValue<DateTime> (); }
-      private set { Properties["Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.ChangedAt"].SetValue (value); }
-    }
-
     public void Touch ()
     {
-      ChangedAt = DateTime.Now;
+      if (State == StateType.Unchanged)
+        MarkAsChanged ();
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]

@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.AccessControl;
@@ -14,9 +13,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      _testHelper = new AccessControlTestHelper ();
-      _testHelper.Transaction.EnterNonDiscardingScope ();
+      base.SetUp();
+      _testHelper = new AccessControlTestHelper();
+      _testHelper.Transaction.EnterNonDiscardingScope();
     }
 
     [Test]
@@ -24,7 +23,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     {
       AccessControlEntry entry = AccessControlEntry.NewObject();
       AccessControlList acl = _testHelper.CreateAcl (entry);
-      SecurityToken token = _testHelper.CreateEmptyToken ();
+      SecurityToken token = _testHelper.CreateEmptyToken();
 
       AccessControlEntry[] foundEntries = acl.FindMatchingEntries (token);
 
@@ -35,8 +34,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void FindMatchingEntries_WithoutMatchingAce ()
     {
-      AccessControlList acl = _testHelper.CreateAcl (_testHelper.CreateAceWithAbstractRole ());
-      SecurityToken token = _testHelper.CreateEmptyToken ();
+      AccessControlList acl = _testHelper.CreateAcl (_testHelper.CreateAceWithAbstractRole());
+      SecurityToken token = _testHelper.CreateEmptyToken();
 
       AccessControlEntry[] foundEntries = acl.FindMatchingEntries (token);
 
@@ -51,7 +50,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       AccessTypeDefinition writeAccessType = _testHelper.CreateWriteAccessType (ace1, null);
       AccessTypeDefinition deleteAccessType = _testHelper.CreateDeleteAccessType (ace1, null);
 
-      AbstractRoleDefinition role2 = AbstractRoleDefinition.NewObject (Guid.NewGuid (), "SoftwareDeveloper", 1);
+      AbstractRoleDefinition role2 = AbstractRoleDefinition.NewObject (Guid.NewGuid(), "SoftwareDeveloper", 1);
       AccessControlEntry ace2 = AccessControlEntry.NewObject();
       ace2.SpecificAbstractRole = role2;
       _testHelper.AttachAccessType (ace2, readAccessType, null);
@@ -73,10 +72,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     {
       AccessControlEntry ace = AccessControlEntry.NewObject();
       AccessTypeDefinition readAccessType = _testHelper.CreateReadAccessType (ace, true);
-      AccessTypeDefinition writeAccessType = _testHelper.CreateWriteAccessType (ace, null);
-      AccessTypeDefinition deleteAccessType = _testHelper.CreateDeleteAccessType (ace, null);
+      _testHelper.CreateWriteAccessType (ace, null);
+      _testHelper.CreateDeleteAccessType (ace, null);
       AccessControlList acl = _testHelper.CreateAcl (ace);
-      SecurityToken token = _testHelper.CreateEmptyToken ();
+      SecurityToken token = _testHelper.CreateEmptyToken();
 
       AccessTypeDefinition[] accessTypes = acl.GetAccessTypes (token);
 
@@ -87,12 +86,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetAccessTypes_WithoutMatchingAce ()
     {
-      AccessControlEntry ace = _testHelper.CreateAceWithAbstractRole ();
-      AccessTypeDefinition readAccessType = _testHelper.CreateReadAccessType (ace, true);
-      AccessTypeDefinition writeAccessType = _testHelper.CreateWriteAccessType (ace, null);
-      AccessTypeDefinition deleteAccessType = _testHelper.CreateDeleteAccessType (ace, null);
+      AccessControlEntry ace = _testHelper.CreateAceWithAbstractRole();
+      _testHelper.CreateReadAccessType (ace, true);
+      _testHelper.CreateWriteAccessType (ace, null);
+      _testHelper.CreateDeleteAccessType (ace, null);
       AccessControlList acl = _testHelper.CreateAcl (ace);
-      SecurityToken token = _testHelper.CreateEmptyToken ();
+      SecurityToken token = _testHelper.CreateEmptyToken();
 
       AccessTypeDefinition[] accessTypes = acl.GetAccessTypes (token);
 
@@ -102,14 +101,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetAccessTypes_WithMultipleMatchingAces ()
     {
-      AbstractRoleDefinition role1 = AbstractRoleDefinition.NewObject (Guid.NewGuid (), "QualityManager", 0);
+      AbstractRoleDefinition role1 = AbstractRoleDefinition.NewObject (Guid.NewGuid(), "QualityManager", 0);
       AccessControlEntry ace1 = AccessControlEntry.NewObject();
       ace1.SpecificAbstractRole = role1;
       AccessTypeDefinition readAccessType = _testHelper.CreateReadAccessType (ace1, true);
       AccessTypeDefinition writeAccessType = _testHelper.CreateWriteAccessType (ace1, null);
       AccessTypeDefinition deleteAccessType = _testHelper.CreateDeleteAccessType (ace1, null);
 
-      AbstractRoleDefinition role2 = AbstractRoleDefinition.NewObject (Guid.NewGuid (), "SoftwareDeveloper", 1);
+      AbstractRoleDefinition role2 = AbstractRoleDefinition.NewObject (Guid.NewGuid(), "SoftwareDeveloper", 1);
       AccessControlEntry ace2 = AccessControlEntry.NewObject();
       ace2.SpecificAbstractRole = role2;
       _testHelper.AttachAccessType (ace2, readAccessType, true);
@@ -129,14 +128,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetAccessTypes_WithMultipleMatchingAcesButDifferentPriorities ()
     {
-      AbstractRoleDefinition role1 = AbstractRoleDefinition.NewObject (Guid.NewGuid (), "QualityManager", 0);
+      AbstractRoleDefinition role1 = AbstractRoleDefinition.NewObject (Guid.NewGuid(), "QualityManager", 0);
       AccessControlEntry ace1 = AccessControlEntry.NewObject();
       ace1.SpecificAbstractRole = role1;
       AccessTypeDefinition readAccessType = _testHelper.CreateReadAccessType (ace1, true);
       AccessTypeDefinition writeAccessType = _testHelper.CreateWriteAccessType (ace1, null);
       AccessTypeDefinition deleteAccessType = _testHelper.CreateDeleteAccessType (ace1, null);
 
-      AbstractRoleDefinition role2 = AbstractRoleDefinition.NewObject (Guid.NewGuid (), "SoftwareDeveloper", 1);
+      AbstractRoleDefinition role2 = AbstractRoleDefinition.NewObject (Guid.NewGuid(), "SoftwareDeveloper", 1);
       AccessControlEntry ace2 = AccessControlEntry.NewObject();
       ace2.SpecificAbstractRole = role2;
       ace2.Priority = 42;
@@ -156,7 +155,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void FilterAcesByPriority_Empty ()
     {
-      AccessControlList acl = _testHelper.CreateAcl ();
+      AccessControlList acl = _testHelper.CreateAcl();
       AccessControlEntry[] aces = new AccessControlEntry[0];
 
       AccessControlEntry[] entries = acl.FilterAcesByPriority (aces);
@@ -170,7 +169,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       AccessControlEntry ace1 = AccessControlEntry.NewObject();
 
       AccessControlList acl = _testHelper.CreateAcl (ace1);
-      AccessControlEntry[] aces = new AccessControlEntry[] { ace1 };
+      AccessControlEntry[] aces = new AccessControlEntry[] {ace1};
 
       AccessControlEntry[] entries = acl.FilterAcesByPriority (aces);
 
@@ -187,7 +186,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       ace2.Priority = 42;
 
       AccessControlList acl = _testHelper.CreateAcl (ace1, ace2);
-      AccessControlEntry[] aces = new AccessControlEntry[] { ace1, ace2 };
+      AccessControlEntry[] aces = new AccessControlEntry[] {ace1, ace2};
 
       AccessControlEntry[] entries = acl.FilterAcesByPriority (aces);
 
@@ -206,7 +205,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       ace3.Priority = 42;
 
       AccessControlList acl = _testHelper.CreateAcl (ace1, ace2, ace3);
-      AccessControlEntry[] aces = new AccessControlEntry[] { ace1, ace2, ace3 };
+      AccessControlEntry[] aces = new AccessControlEntry[] {ace1, ace2, ace3};
 
       AccessControlEntry[] entries = acl.FilterAcesByPriority (aces);
 
@@ -220,29 +219,33 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateClassDefinition ("SecurableClass");
       AccessControlList acl = _testHelper.CreateAcl (classDefinition);
-      DateTime aclChangedAt = acl.ChangedAt;
-      DateTime classDefinitionChangedAt = classDefinition.ChangedAt;
-      Thread.Sleep (50);
+      using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
+      {
+        Assert.AreEqual (StateType.Unchanged, classDefinition.State);
+        Assert.AreEqual (StateType.Unchanged, acl.State);
 
-      StateCombination stateCombination = acl.CreateStateCombination ();
+        StateCombination stateCombination = acl.CreateStateCombination();
 
-      Assert.AreSame (acl, stateCombination.AccessControlList);
-      Assert.AreEqual (acl.Class, stateCombination.Class);
-      Assert.IsEmpty (stateCombination.StateUsages);
-      Assert.Greater ((decimal) acl.ChangedAt.Ticks, (decimal) aclChangedAt.Ticks);
-      Assert.Greater ((decimal) classDefinition.ChangedAt.Ticks, (decimal) classDefinitionChangedAt.Ticks);
+        Assert.AreSame (acl, stateCombination.AccessControlList);
+        Assert.AreEqual (acl.Class, stateCombination.Class);
+        Assert.IsEmpty (stateCombination.StateUsages);
+        Assert.AreEqual (StateType.Changed, classDefinition.State);
+        Assert.AreEqual (StateType.Changed, acl.State);
+      }
     }
 
     [Test]
     public void CreateStateCombination_WithoutClassDefinition ()
     {
       AccessControlList acl = _testHelper.CreateAcl ((SecurableClassDefinition) null);
-      DateTime aclChangedAt = acl.ChangedAt;
-      Thread.Sleep (50);
+      using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
+      {
+        Assert.AreEqual (StateType.Unchanged, acl.State);
 
-      acl.StateCombinations.Add (StateCombination.NewObject ());
+        acl.StateCombinations.Add (StateCombination.NewObject());
 
-      Assert.Greater ((decimal) acl.ChangedAt.Ticks, (decimal) aclChangedAt.Ticks);
+        Assert.AreEqual (StateType.Changed, acl.State);
+      }
     }
 
     [Test]
@@ -250,39 +253,43 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     {
       AccessControlList acl = AccessControlList.NewObject();
       acl.Class = _testHelper.CreateClassDefinition ("SecurableClass");
-      DateTime changedAt = acl.ChangedAt;
-      Thread.Sleep (50);
+      using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
+      {
+        Assert.AreEqual (StateType.Unchanged, acl.State);
 
-      StateCombination stateCombination0 = acl.CreateStateCombination ();
-      StateCombination stateCombination1 = acl.CreateStateCombination ();
+        StateCombination stateCombination0 = acl.CreateStateCombination();
+        StateCombination stateCombination1 = acl.CreateStateCombination();
 
-      Assert.AreEqual (2, acl.StateCombinations.Count);
-      Assert.AreSame (stateCombination0, acl.StateCombinations[0]);
-      Assert.AreEqual (0, stateCombination0.Index);
-      Assert.AreSame (stateCombination1, acl.StateCombinations[1]);
-      Assert.AreEqual (1, stateCombination1.Index);
-      Assert.Greater ((decimal) acl.ChangedAt.Ticks, (decimal) changedAt.Ticks);
+        Assert.AreEqual (2, acl.StateCombinations.Count);
+        Assert.AreSame (stateCombination0, acl.StateCombinations[0]);
+        Assert.AreEqual (0, stateCombination0.Index);
+        Assert.AreSame (stateCombination1, acl.StateCombinations[1]);
+        Assert.AreEqual (1, stateCombination1.Index);
+        Assert.AreEqual (StateType.Changed, acl.State);
+      }
     }
 
     [Test]
     public void CreateAccessControlEntry ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateClassDefinition ("SecurableClass");
-      AccessTypeDefinition readAccessType = _testHelper.AttachAccessType (classDefinition, Guid.NewGuid (), "Read", 0);
-      AccessTypeDefinition deleteAccessType = _testHelper.AttachAccessType (classDefinition, Guid.NewGuid (), "Delete", 1);
+      AccessTypeDefinition readAccessType = _testHelper.AttachAccessType (classDefinition, Guid.NewGuid(), "Read", 0);
+      AccessTypeDefinition deleteAccessType = _testHelper.AttachAccessType (classDefinition, Guid.NewGuid(), "Delete", 1);
       AccessControlList acl = _testHelper.CreateAcl (classDefinition);
-      DateTime changedAt = acl.ChangedAt;
-      Thread.Sleep (50);
+      using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
+      {
+        Assert.AreEqual (StateType.Unchanged, acl.State);
 
-      AccessControlEntry entry = acl.CreateAccessControlEntry ();
+        AccessControlEntry entry = acl.CreateAccessControlEntry();
 
-      Assert.AreSame (acl, entry.AccessControlList);
-      Assert.AreEqual (2, entry.Permissions.Count);
-      Assert.AreSame (readAccessType, ((Permission) entry.Permissions[0]).AccessType);
-      Assert.AreSame (entry, ((Permission) entry.Permissions[0]).AccessControlEntry);
-      Assert.AreSame (deleteAccessType, ((Permission) entry.Permissions[1]).AccessType);
-      Assert.AreSame (entry, ((Permission) entry.Permissions[1]).AccessControlEntry);
-      Assert.Greater ((decimal) acl.ChangedAt.Ticks, (decimal) changedAt.Ticks);
+        Assert.AreSame (acl, entry.AccessControlList);
+        Assert.AreEqual (2, entry.Permissions.Count);
+        Assert.AreSame (readAccessType, (entry.Permissions[0]).AccessType);
+        Assert.AreSame (entry, (entry.Permissions[0]).AccessControlEntry);
+        Assert.AreSame (deleteAccessType, (entry.Permissions[1]).AccessType);
+        Assert.AreSame (entry, (entry.Permissions[1]).AccessControlEntry);
+        Assert.AreEqual (StateType.Changed, acl.State);
+      }
     }
 
     [Test]
@@ -290,39 +297,39 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateClassDefinition ("SecurableClass");
       AccessControlList acl = _testHelper.CreateAcl (classDefinition);
-      DateTime changedAt = acl.ChangedAt;
-      Thread.Sleep (50);
+      using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
+      {
+        Assert.AreEqual (StateType.Unchanged, acl.State);
 
-      AccessControlEntry ace0 = acl.CreateAccessControlEntry ();
-      AccessControlEntry acel = acl.CreateAccessControlEntry ();
+        AccessControlEntry ace0 = acl.CreateAccessControlEntry();
+        AccessControlEntry acel = acl.CreateAccessControlEntry();
 
-      Assert.AreEqual (2, acl.AccessControlEntries.Count);
-      Assert.AreSame (ace0, acl.AccessControlEntries[0]);
-      Assert.AreEqual (0, ace0.Index);
-      Assert.AreSame (acel, acl.AccessControlEntries[1]);
-      Assert.AreEqual (1, acel.Index);
-      Assert.Greater ((decimal) acl.ChangedAt.Ticks, (decimal) changedAt.Ticks);
+        Assert.AreEqual (2, acl.AccessControlEntries.Count);
+        Assert.AreSame (ace0, acl.AccessControlEntries[0]);
+        Assert.AreEqual (0, ace0.Index);
+        Assert.AreSame (acel, acl.AccessControlEntries[1]);
+        Assert.AreEqual (1, acel.Index);
+        Assert.AreEqual (StateType.Changed, acl.State);
+      }
     }
 
     [Test]
     public void GetChangedAt_AfterCreation ()
     {
-      AccessControlList acl = _testHelper.CreateAcl (_testHelper.CreateOrderClassDefinitionWithProperties ());
+      AccessControlList acl = _testHelper.CreateAcl (_testHelper.CreateOrderClassDefinitionWithProperties());
 
-      Assert.AreNotEqual (DateTime.MinValue, acl.ChangedAt);
+      Assert.AreEqual (StateType.New, acl.State);
     }
 
     [Test]
     public void Touch_AfterCreation ()
     {
-      AccessControlList acl = _testHelper.CreateAcl (_testHelper.CreateOrderClassDefinitionWithProperties ());
+      AccessControlList acl = _testHelper.CreateAcl (_testHelper.CreateOrderClassDefinitionWithProperties());
 
-      DateTime creationDate = acl.ChangedAt;
+      Assert.AreEqual (StateType.New, acl.State);
+      acl.Touch();
 
-      Thread.Sleep (50);
-      acl.Touch ();
-
-      Assert.Greater ((decimal) acl.ChangedAt.Ticks, (decimal) creationDate.Ticks);
+      Assert.AreEqual (StateType.New, acl.State);
     }
 
     [Test]
@@ -338,10 +345,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void Get_AccessControlEntriesFromDatabase ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
-      AccessControlList expectedAcl = dbFixtures.CreateAndCommitAccessControlListWithAccessControlEntries (10, ClientTransactionScope.CurrentTransaction);
+      AccessControlList expectedAcl =
+          dbFixtures.CreateAndCommitAccessControlListWithAccessControlEntries (10, ClientTransactionScope.CurrentTransaction);
       ObjectList<AccessControlEntry> expectedAces = expectedAcl.AccessControlEntries;
 
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
       {
         AccessControlList actualAcl = AccessControlList.GetObject (expectedAcl.ID);
 
@@ -358,7 +366,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       AccessControlList expectedAcl = dbFixtures.CreateAndCommitAccessControlListWithStateCombinations (10, ClientTransactionScope.CurrentTransaction);
       ObjectList<StateCombination> expectedStateCombinations = expectedAcl.StateCombinations;
 
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
       {
         AccessControlList actualAcl = AccessControlList.GetObject (expectedAcl.ID);
 
@@ -369,19 +377,21 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot create StateCombination if no SecurableClassDefinition is assigned to this AccessControlList.")]
+    [ExpectedException (typeof (InvalidOperationException),
+        ExpectedMessage = "Cannot create StateCombination if no SecurableClassDefinition is assigned to this AccessControlList.")]
     public void CreateStateCombination_BeforeClassIsSet ()
     {
       AccessControlList acl = AccessControlList.NewObject();
-      acl.CreateStateCombination ();
+      acl.CreateStateCombination();
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot create AccessControlEntry if no SecurableClassDefinition is assigned to this AccessControlList.")]
+    [ExpectedException (typeof (InvalidOperationException),
+        ExpectedMessage = "Cannot create AccessControlEntry if no SecurableClassDefinition is assigned to this AccessControlList.")]
     public void CreateAccessControlEntry_BeforeClassIsSet ()
     {
       AccessControlList acl = AccessControlList.NewObject();
-      acl.CreateAccessControlEntry ();      
+      acl.CreateAccessControlEntry();
     }
   }
 }

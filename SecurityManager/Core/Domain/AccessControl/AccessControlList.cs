@@ -35,7 +35,6 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     protected AccessControlList ()
     {
-      Touch();
       Initialize();
     }
 
@@ -51,8 +50,8 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     private void Initialize ()
     {
-      StateCombinations.Added += new DomainObjectCollectionChangeEventHandler (StateCombinations_Added);
-      AccessControlEntries.Added += new DomainObjectCollectionChangeEventHandler (AccessControlEntries_Added);
+      StateCombinations.Added += StateCombinations_Added;
+      AccessControlEntries.Added += AccessControlEntries_Added;
     }
 
     private void StateCombinations_Added (object sender, DomainObjectCollectionChangeEventArgs args)
@@ -79,15 +78,10 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       Touch();
     }
 
-    public virtual DateTime ChangedAt
-    {
-      get { return CurrentProperty.GetValue<DateTime> (); }
-      private set { Properties["Rubicon.SecurityManager.Domain.AccessControl.AccessControlList.ChangedAt"].SetValue (value); }
-    }
-
     public void Touch ()
     {
-      ChangedAt = DateTime.Now;
+      if (State == StateType.Unchanged)
+        MarkAsChanged ();
     }
 
     public abstract int Index { get; set; }
@@ -133,7 +127,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
       int highestPriority = sortedAces[0].ActualPriority;
 
-      return Array.FindAll<AccessControlEntry> (
+      return Array.FindAll (
           sortedAces,
           delegate (AccessControlEntry current) { return current.ActualPriority == highestPriority; });
     }

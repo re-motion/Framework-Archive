@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects;
+using Rubicon.Development.UnitTesting;
 using Rubicon.SecurityManager.Domain;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.Metadata;
@@ -15,16 +16,16 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      _testHelper = new AccessControlTestHelper ();
+      base.SetUp();
+      _testHelper = new AccessControlTestHelper();
       _testHelper.Transaction.EnterNonDiscardingScope();
     }
 
     [Test]
     public void MatchesStates_StatelessAndWithoutDemandedStates ()
     {
-      StateCombination combination = _testHelper.GetStateCombinationWithoutStates ();
-      List<StateDefinition> states = CreateEmptyStateList ();
+      StateCombination combination = _testHelper.GetStateCombinationWithoutStates();
+      List<StateDefinition> states = CreateEmptyStateList();
 
       Assert.IsTrue (combination.MatchesStates (states));
     }
@@ -32,8 +33,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void MatchesStates_StatefulAndWithoutDemandedStates ()
     {
-      StateCombination combination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder ();
-      List<StateDefinition> states = CreateEmptyStateList ();
+      StateCombination combination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder();
+      List<StateDefinition> states = CreateEmptyStateList();
 
       Assert.IsFalse (combination.MatchesStates (states));
     }
@@ -41,8 +42,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void MatchesStates_DeliveredAndUnpaid ()
     {
-      StateCombination combination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder ();
-      List<StateDefinition> states = combination.GetStates ();
+      StateCombination combination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder();
+      List<StateDefinition> states = combination.GetStates();
 
       Assert.IsTrue (combination.MatchesStates (states));
     }
@@ -50,8 +51,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void MatchesStates_StatelessAndDemandDeliveredAndUnpaid ()
     {
-      StateCombination deliverdAndUnpaidCombination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder ();
-      List<StateDefinition> states = deliverdAndUnpaidCombination.GetStates ();
+      StateCombination deliverdAndUnpaidCombination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder();
+      List<StateDefinition> states = deliverdAndUnpaidCombination.GetStates();
       StateCombination statelessCombination = GetStatelessCombinationForClass (deliverdAndUnpaidCombination.Class);
 
       Assert.IsFalse (statelessCombination.MatchesStates (states));
@@ -60,25 +61,27 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void AttachState_NewState ()
     {
-      SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
+      SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition();
       StateCombination combination = _testHelper.CreateStateCombination (classDefinition);
-      StatePropertyDefinition property = _testHelper.CreateTestProperty ();
-      DateTime changedAt = classDefinition.ChangedAt;
-      Thread.Sleep (50);
-   
-      combination.AttachState (property["Test1"]);
+      StatePropertyDefinition property = _testHelper.CreateTestProperty();
+      using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
+      {
+        Assert.AreEqual (StateType.Unchanged, classDefinition.State);
 
-      Assert.AreEqual (1, combination.StateUsages.Count);
-      StateUsage stateUsage = (StateUsage) combination.StateUsages[0];
-      Assert.AreSame (property["Test1"], stateUsage.StateDefinition);
-      Assert.Greater ((decimal) classDefinition.ChangedAt.Ticks, (decimal) changedAt.Ticks);
+        combination.AttachState (property["Test1"]);
+
+        Assert.AreEqual (1, combination.StateUsages.Count);
+        StateUsage stateUsage = (StateUsage) combination.StateUsages[0];
+        Assert.AreSame (property["Test1"], stateUsage.StateDefinition);
+        Assert.AreEqual (StateType.Changed, classDefinition.State);
+      }
     }
 
     [Test]
     public void AttachState_WithoutClassDefinition ()
     {
-      StateCombination combination = StateCombination.NewObject ();
-      StatePropertyDefinition property = _testHelper.CreateTestProperty ();
+      StateCombination combination = StateCombination.NewObject();
+      StatePropertyDefinition property = _testHelper.CreateTestProperty();
 
       combination.AttachState (property["Test1"]);
 
@@ -88,10 +91,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetStates_Empty ()
     {
-      SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
+      SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition();
       StateCombination combination = _testHelper.CreateStateCombination (classDefinition);
 
-      List<StateDefinition> states = combination.GetStates ();
+      List<StateDefinition> states = combination.GetStates();
 
       Assert.AreEqual (0, states.Count);
     }
@@ -99,12 +102,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetStates_OneState ()
     {
-      SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
+      SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition();
       StatePropertyDefinition property = _testHelper.CreatePaymentStateProperty (classDefinition);
       StateDefinition state = (StateDefinition) property.DefinedStates[1];
       StateCombination combination = _testHelper.CreateStateCombination (classDefinition, state);
 
-      List<StateDefinition> states = combination.GetStates ();
+      List<StateDefinition> states = combination.GetStates();
 
       Assert.AreEqual (1, states.Count);
       Assert.AreSame (state, states[0]);
@@ -113,14 +116,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetStates_MultipleStates ()
     {
-      SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
+      SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition();
       StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (classDefinition);
       StateDefinition paidState = (StateDefinition) paymentProperty.DefinedStates[1];
       StatePropertyDefinition orderStateProperty = _testHelper.CreateOrderStateProperty (classDefinition);
       StateDefinition deliveredState = (StateDefinition) orderStateProperty.DefinedStates[1];
       StateCombination combination = _testHelper.CreateStateCombination (classDefinition, paidState, deliveredState);
 
-      List<StateDefinition> states = combination.GetStates ();
+      List<StateDefinition> states = combination.GetStates();
 
       Assert.AreEqual (2, states.Count);
       Assert.Contains (paidState, states);
@@ -129,57 +132,68 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     [Test]
     [ExpectedException (typeof (ConstraintViolationException),
-       ExpectedMessage = "The securable class definition 'Rubicon.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice.")]
+        ExpectedMessage =
+        "The securable class definition 'Rubicon.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice."
+        )]
     public void ValidateDuringCommit_ByTouchOnClassForChangedStateUsagesCollection ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateEmptyDomain ();
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
+      dbFixtures.CreateEmptyDomain();
 
-      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();
       StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
       StateDefinition paidState = paymentProperty["Paid"];
       StateDefinition notPaidState = paymentProperty["None"];
       StateCombination combination1 = _testHelper.CreateStateCombination (orderClass, paidState);
       StateCombination combination2 = _testHelper.CreateStateCombination (orderClass, notPaidState);
       StateCombination combination3 = _testHelper.CreateStateCombination (orderClass);
-      combination1.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject ());
-      combination2.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject ());
-      combination3.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject ());
+      combination1.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject());
+      combination2.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject());
+      combination3.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject());
 
-      _testHelper.Transaction.Commit ();
+      _testHelper.Transaction.Commit();
 
       combination2.StateUsages.Remove (combination2.StateUsages[0]);
       combination2.AttachState (paidState);
 
-      _testHelper.Transaction.Commit ();
+      _testHelper.Transaction.Commit();
     }
 
     [Test]
+    [Ignore ("TODO: FS: Reactivate this test when deleting-bug in SubClientTransaction is resolved.")]
     public void Commit_DeletedStateCombination ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateEmptyDomain ();
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
+      dbFixtures.CreateEmptyDomain();
 
-      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();
       StateCombination combination = _testHelper.CreateStateCombination (orderClass);
-      combination.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject ());
+      combination.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject());
 
-      _testHelper.Transaction.Commit ();
+      _testHelper.Transaction.Commit();
 
-      DateTime creationDate = orderClass.ChangedAt;
-      Thread.Sleep (50);
-      combination.AccessControlList.Delete ();
-      Assert.IsNull (combination.Class);
-      
-      _testHelper.Transaction.Commit ();
+      Assert.AreEqual (StateType.Unchanged, GetStateFromDataContainer(orderClass));
+      using (_testHelper.Transaction.CreateSubTransaction ().EnterDiscardingScope ())
+      {
+        Assert.AreEqual (StateType.Unchanged, GetStateFromDataContainer (orderClass));
+        combination.AccessControlList.Delete();
+        Assert.IsNull (combination.Class);
 
-      Assert.AreEqual ((decimal) orderClass.ChangedAt.Ticks, (decimal) creationDate.Ticks);
+        Assert.AreEqual (StateType.Unchanged, GetStateFromDataContainer (orderClass));
+        ClientTransaction.Current.Commit();
+      }
+      Assert.AreEqual (StateType.Changed, GetStateFromDataContainer (orderClass));
+    }
+
+    private StateType GetStateFromDataContainer (DomainObject orderClass)
+    {
+      return ((DataContainer)PrivateInvoke.InvokeNonPublicMethod (orderClass, "GetDataContainer")).State;
     }
 
     [Test]
     public void SetAndGet_Index ()
     {
-      StateCombination stateCombination = StateCombination.NewObject ();
+      StateCombination stateCombination = StateCombination.NewObject();
 
       stateCombination.Index = 1;
       Assert.AreEqual (1, stateCombination.Index);
@@ -198,7 +212,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private static List<StateDefinition> CreateEmptyStateList ()
     {
-      return new List<StateDefinition> ();
+      return new List<StateDefinition>();
     }
   }
 }

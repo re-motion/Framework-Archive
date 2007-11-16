@@ -308,4 +308,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>cd ..\..\
+.\GenerateSetupDBScript.ps1</PostBuildEvent>
+  </PropertyGroup>
 </Project>

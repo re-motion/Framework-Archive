@@ -65,8 +65,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public SecurableClassDefinition CreateOrderClassDefinitionWithProperties ()
     {
       SecurableClassDefinition classDefinition = CreateOrderClassDefinition ();
-      StatePropertyDefinition orderStateProperty = CreateOrderStateProperty (classDefinition);
-      StatePropertyDefinition paymentStateProperty = CreatePaymentStateProperty (classDefinition);
+      CreateOrderStateProperty (classDefinition);
+      CreatePaymentStateProperty (classDefinition);
 
       return classDefinition;
     }
@@ -103,7 +103,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       using (_transaction.EnterNonDiscardingScope())
       {
         AccessControlList acl = CreateAcl (classDefinition, states);
-        return (StateCombination) acl.StateCombinations[0];
+        return acl.StateCombinations[0];
       }
     }
 
