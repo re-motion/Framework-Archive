@@ -76,10 +76,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding", "..\Core\Ob
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.ObjectBinding", "..\..\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj", "{B915A0FD-92E5-42C5-BEB9-EB4D382563D7}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
-	GlobalSection(TextTemplating) = postSolution
-		TextTemplating = 1
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -113,11 +116,18 @@ Global
 		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDCCDB1E-0962-41DA-99A1-2DB390C48748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B915A0FD-92E5-42C5-BEB9-EB4D382563D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B915A0FD-92E5-42C5-BEB9-EB4D382563D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B915A0FD-92E5-42C5-BEB9-EB4D382563D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B915A0FD-92E5-42C5-BEB9-EB4D382563D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8FE7DEF5-877F-4E34-BF7C-A65C714269D0} = {F5218EE9-D800-4ABC-9B6B-8926475FCC5B}
+	EndGlobalSection
+	GlobalSection(TextTemplating) = postSolution
+		TextTemplating = 1
 	EndGlobalSection
 EndGlobal

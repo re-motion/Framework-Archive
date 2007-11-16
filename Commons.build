@@ -331,7 +331,7 @@
   </target>
 
   <target name="ObjectBinding.Web.CodeGenerator" 
-      depends="Core, Mixins, Web, ObjectBinding, ObjectBinding.Web, Data.DomainObjects, Data.DomainObjects.Legacy, Data.DomainObjects.Legacy.ObjectBinding">
+      depends="Core, Mixins, Web, ObjectBinding, ObjectBinding.Web, Data.DomainObjects, Data.DomainObjects.ObjectBinding">
     <property name="project.name" value="ObjectBinding.Web.CodeGenerator" />
     <property name="project.dir" value="ObjectBinding/Web.CodeGenerator/Core" />
     <property name="project.output" value="UIGen" />

@@ -21,7 +21,10 @@ using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Rubicon.ObjectBinding.BindableObject;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Reflection;
+using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.CodeGenerator
 {
@@ -141,7 +144,7 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 					ClassInfo classInfo = new ClassInfo();
 
 					classInfo.type = classDefinition.ClassType;
-					classInfo.objectClass = new DomainObjectClass(classDefinition.ClassType);
+					classInfo.objectClass = BindableObjectProvider.Current.GetBindableObjectClass (classDefinition.ClassType);
 					classInfo.properties = GetProperties(classInfo.objectClass.GetPropertyDefinitions());
 
 					classInfoList.Add(classInfo);
@@ -451,11 +454,8 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 
 		private string GetName(string identifier)
 		{
-			if (identifier.IndexOf('.') == -1)
-				throw new CodeGeneratorException(ErrorCode.AssemblyFormatInvalid, string.Format("Invalid identifier: {0} (expected format: namespace.name)", identifier));
-
-			string[] names = identifier.Split('.');
-			return names[names.Length - 1];
+      //MK: Hack requires BindableObject-implementation. Possible since GetClassInfos requires BindableObject-class
+		  return TypeUtility.GetType (identifier, true, false).Name;
 		}
 
 		// TODO: remove
@@ -564,12 +564,13 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 		{
 			ArrayList replaceInfosArrayList = new ArrayList();
 
-			foreach (IBusinessObjectProperty property in properties)
+			foreach (PropertyBase property in properties)
 			{
 				if (! HasInterface(property.GetType(), "Rubicon.ObjectBinding.IBusinessObjectReferenceProperty") || isList != property.IsList)
 					continue;
 
-				string[] referencedClassNameInfo = ((BaseProperty)property).UnderlyingType.FullName.Split('.');
+			  Type itemType = property.IsList ? property.ListInfo.ItemType : property.PropertyType;
+        string[] referencedClassNameInfo = itemType.FullName.Split ('.');
 				string referencedClassName = referencedClassNameInfo[referencedClassNameInfo.Length - 1];
 
 				Replacer.ReplaceInfo replaceInfo = new Replacer.ReplaceInfo();
