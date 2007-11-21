@@ -1359,5 +1359,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _subTransaction.CreateSubTransaction ();
     }
+
+    [Test]
+    public void GetObjects ()
+    {
+      using (_mockRepository.Ordered ())
+      {
+        _extension.ObjectLoading (_subTransaction, DomainObjectIDs.Order2);
+        _extension.ObjectLoading (_subTransaction, DomainObjectIDs.Order3);
+        _extension.ObjectLoading (_subTransaction.ParentTransaction, DomainObjectIDs.Order2);
+        _extension.ObjectLoading (_subTransaction.ParentTransaction, DomainObjectIDs.Order3);
+
+        _extension.ObjectsLoaded (null, null);
+        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_List.Count (Mocks_Is.Equal (2)));
+        _extension.ObjectsLoaded (null, null);
+        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_List.Count (Mocks_Is.Equal (2)));
+      }
+
+      _mockRepository.ReplayAll ();
+
+      using (_subTransaction.EnterNonDiscardingScope ())
+      {
+        _subTransaction.GetObjects<DomainObject> (DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.Order3);
+      }
+    }
   }
 }

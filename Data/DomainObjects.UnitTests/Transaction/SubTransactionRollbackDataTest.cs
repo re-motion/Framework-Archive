@@ -5,7 +5,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
   [TestFixture]
-  public class SubTransactionRollbackDataTest : ClientTransactionTest
+  public class SubTransactionRollbackDataTest : ClientTransactionBaseTest
   {
     [Test]
     public void RollbackResetsPropertyValuesToThoseOfParentTransaction ()

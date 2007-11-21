@@ -556,7 +556,7 @@ public class DomainObject
 
     DataContainer dataContainer = transaction.DataManager.DataContainerMap[ID];
     if (dataContainer == null)
-      dataContainer = transaction.LoadDataContainerForExistingObject (this);
+      dataContainer = transaction.LoadExistingObject (this);
     Assertion.IsNotNull (dataContainer);
 
     return dataContainer;

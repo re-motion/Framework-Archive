@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
@@ -42,6 +45,11 @@ namespace Rubicon.Data.DomainObjects.Persistence
     #endregion
 
     // methods and properties
+
+    public StorageProviderManager StorageProviderManager
+    {
+      get { return _storageProviderManager; }
+    }
 
     public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
@@ -99,22 +107,83 @@ namespace Rubicon.Data.DomainObjects.Persistence
       StorageProvider provider = _storageProviderManager.GetMandatory (id.StorageProviderID);
       DataContainer dataContainer = provider.LoadDataContainer (id);
 
+      Exception exception = CheckLoadedDataContainer(id, dataContainer);
+      if (exception != null)
+        throw exception;
+
+      return dataContainer;
+    }
+
+    private Exception CheckLoadedDataContainer (ObjectID id, DataContainer dataContainer)
+    {
       if (dataContainer != null)
       {
         if (id.ClassID != dataContainer.ID.ClassID)
         {
-          throw CreatePersistenceException (
+          return CreatePersistenceException (
               "The ClassID of the provided ObjectID '{0}' and the ClassID of the loaded DataContainer '{1}' differ.",
               id,
               dataContainer.ID);
         }
+        else
+          return null;
       }
       else
       {
-        throw new ObjectNotFoundException (id);
+        return new ObjectNotFoundException (id);
+      }
+    }
+
+    public DataContainerCollection LoadDataContainers (IEnumerable<ObjectID> ids)
+    {
+      CheckDisposed ();
+      ArgumentUtility.CheckNotNull ("ids", ids);
+
+      MultiDictionary<string, ObjectID> idsByProvider = GroupIDsByProvider (ids);
+
+      List<Exception> exceptions = new List<Exception>();
+
+      DataContainerCollection unorderedResultCollection = new DataContainerCollection();
+      foreach (KeyValuePair<string, List<ObjectID>> idGroup in idsByProvider)
+      {
+        StorageProvider provider = _storageProviderManager.GetMandatory (idGroup.Key);
+        DataContainerCollection dataContainers = provider.LoadDataContainers (idGroup.Value);
+        
+        foreach (ObjectID id in idGroup.Value)
+        {
+          DataContainer dataContainer = dataContainers[id];
+          Exception exception = CheckLoadedDataContainer (id, dataContainer);
+          if (exception != null)
+            exceptions.Add (exception);
+          else
+            unorderedResultCollection.Add (dataContainer);
+        }
       }
 
-      return dataContainer;
+      if (exceptions.Count > 0)
+        throw new BulkLoadException (exceptions);
+
+      return SortDataContainers(unorderedResultCollection, ids);
+    }
+
+    private DataContainerCollection SortDataContainers (DataContainerCollection dataContainers, IEnumerable<ObjectID> orderedIDs)
+    {
+      DataContainerCollection orderedResultCollection = new DataContainerCollection();
+      foreach (ObjectID id in orderedIDs)
+      {
+        DataContainer dataContainer = dataContainers[id];
+        if (dataContainer != null)
+          orderedResultCollection.Add (dataContainer);
+      }
+      return orderedResultCollection;
+    }
+
+    private MultiDictionary<string, ObjectID> GroupIDsByProvider (IEnumerable<ObjectID> ids)
+    {
+      MultiDictionary<string, ObjectID> result = new MultiDictionary<string, ObjectID>();
+      foreach (ObjectID id in ids)
+        result[id.StorageProviderID].Add (id);
+      return result;
     }
 
     public DataContainerCollection LoadRelatedDataContainers (RelationEndPointID relationEndPointID)

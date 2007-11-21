@@ -60,7 +60,11 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
     {
       DataContainerCollection orderedDataContainers = new DataContainerCollection ();
       foreach (ObjectID objectID in objectIDsInCorrectOrder)
-        orderedDataContainers.Add (unorderedDataContainers[objectID]);
+      {
+        DataContainer dataContainer = unorderedDataContainers[objectID];
+        if (dataContainer != null)
+          orderedDataContainers.Add (dataContainer);
+      }
 
       return orderedDataContainers;
     }

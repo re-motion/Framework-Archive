@@ -45,6 +45,11 @@ public class DataContainerMap : IEnumerable
   {
     ArgumentUtility.CheckNotNull ("id", id);
 
+    return GetObjectWithoutLoading (id, includeDeleted) ?? _clientTransaction.LoadObject (id);
+  }
+
+  public DomainObject GetObjectWithoutLoading (ObjectID id, bool includeDeleted)
+  {
     if (_dataContainers.Contains (id))
     {
       DataContainer dataContainer = this[id];
@@ -54,8 +59,8 @@ public class DataContainerMap : IEnumerable
 
       return dataContainer.DomainObject;
     }
-
-    return _clientTransaction.LoadObject (id);
+    else
+      return null;
   }
 
   public void Register (DataContainer dataContainer)

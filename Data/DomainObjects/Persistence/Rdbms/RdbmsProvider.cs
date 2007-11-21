@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -217,6 +218,18 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       Connect ();
 
       return _dataContainerLoader.LoadDataContainerFromID (id);
+    }
+
+    public override DataContainerCollection LoadDataContainers (IEnumerable<ObjectID> ids)
+    {
+      CheckDisposed ();
+      ArgumentUtility.CheckNotNull ("ids", ids);
+      foreach (ObjectID id in ids)
+        CheckStorageProviderID (id, "ids");
+
+      Connect ();
+
+      return _dataContainerLoader.LoadDataContainersFromIDs (ids);
     }
 
     protected internal virtual DataContainerCollection LoadDataContainers (CommandBuilder commandBuilder)
@@ -458,8 +471,9 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       {
         throw CreateArgumentException (
             argumentName,
-            "The StorageProviderID '{0}' of the provided ObjectID does not match with this StorageProvider's ID '{1}'.",
+            "The StorageProviderID '{0}' of the provided ObjectID '{1}' does not match with this StorageProvider's ID '{2}'.",
             id.StorageProviderID,
+            id,
             ID);
       }
     }

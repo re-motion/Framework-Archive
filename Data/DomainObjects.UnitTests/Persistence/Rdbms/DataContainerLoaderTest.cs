@@ -88,6 +88,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
+    public void LoadDataContainersFromIDs_NonExistingID ()
+    {
+      IEnumerable<ObjectID> objectIDs = new ObjectID[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2,
+          new ObjectID (typeof (Order), Guid.NewGuid()), DomainObjectIDs.Order3 };
+      DataContainerCollection dataContainers = _loader.LoadDataContainersFromIDs (objectIDs);
+      Assert.AreEqual (3, dataContainers.Count);
+
+      Assert.AreEqual (DomainObjectIDs.Order1, dataContainers[0].ID);
+      Assert.AreEqual (DomainObjectIDs.Order2, dataContainers[1].ID);
+      Assert.AreEqual (DomainObjectIDs.Order3, dataContainers[2].ID);
+    }
+
+    [Test]
     public void LoadDataContainersFromIDs_DifferentEntities_Ordering ()
     {
       IEnumerable<ObjectID> objectIDs = new ObjectID[] { DomainObjectIDs.Order1, DomainObjectIDs.OrderItem1, DomainObjectIDs.Order2,

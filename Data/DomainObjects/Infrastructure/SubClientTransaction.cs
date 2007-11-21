@@ -112,17 +112,35 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         using (TransactionUnlocker.MakeWriteable (ParentTransaction))
         {
           DomainObject parentObject = ParentTransaction.GetObject (id);
-          DataContainer parentDataContainer = parentObject.GetDataContainerForTransaction (ParentTransaction);
-
-          DataContainer thisDataContainer = TransferParentContainer (parentDataContainer);
-
-          thisDataContainer.SetClientTransaction (this);
-          thisDataContainer.SetDomainObject (parentObject);
-
-          DataManager.RegisterExistingDataContainer (thisDataContainer);
-
+          DataContainer thisDataContainer = TransferParentDomainObject (parentObject);
           return thisDataContainer;
         }
+      }
+    }
+
+    protected override DataContainerCollection LoadDataContainers (IEnumerable<ObjectID> objectIDs)
+    {
+      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+
+      foreach (ObjectID id in objectIDs)
+      {
+        if (DataManager.IsDiscarded (id))
+          throw new ObjectDiscardedException (id);
+      }
+
+      foreach (ObjectID id in objectIDs)
+        TransactionEventSink.ObjectLoading (id);
+
+      using (TransactionUnlocker.MakeWriteable (ParentTransaction))
+      {
+        ObjectList<DomainObject> parentObjects = ParentTransaction.GetObjects<DomainObject> (new List<ObjectID> (objectIDs).ToArray());
+        DataContainerCollection loadedDataContainers = new DataContainerCollection();
+        foreach (DomainObject parentObject in parentObjects)
+        {
+          DataContainer thisDataContainer = TransferParentDomainObject(parentObject);
+          loadedDataContainers.Add (thisDataContainer);
+        }
+        return loadedDataContainers;
       }
     }
 
@@ -141,11 +159,20 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         DataContainer dataContainer = LoadDataContainer (domainObject.ID);
         Assertion.IsTrue (dataContainer.DomainObject == domainObject);
 
-        DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] { dataContainer.DomainObject }, true);
-        OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
-
         return dataContainer;
       }
+    }
+
+    private DataContainer TransferParentDomainObject (DomainObject parentObject)
+    {
+      DataContainer parentDataContainer = parentObject.GetDataContainerForTransaction (ParentTransaction);
+      DataContainer thisDataContainer = TransferParentContainer (parentDataContainer);
+
+      thisDataContainer.SetClientTransaction (this);
+      thisDataContainer.SetDomainObject (parentObject);
+
+      DataManager.RegisterExistingDataContainer (thisDataContainer);
+      return thisDataContainer;
     }
 
     private DataContainer TransferParentContainer (DataContainer parentDataContainer)

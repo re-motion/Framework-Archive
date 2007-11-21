@@ -204,13 +204,42 @@ public abstract class ClientTransaction : ITransaction
   /// </summary>
   /// <param name="id">The id of the <see cref="DataContainer"/> to load.</param>
   /// <returns>A <see cref="DataContainer"/> with the given <paramref name="id"/>.</returns>
+  /// <remarks>
+  /// <para>
+  /// This method raises the <see cref="IClientTransactionListener.ObjectLoading"/> event on the <see cref="TransactionEventSink"/>, sets the
+  /// <see cref="ClientTransaction"/> of the loaded data container, and registers the container in the <see cref="DataContainerMap"/>. It does
+  /// not raise the <see cref="IClientTransactionListener.ObjectsLoaded"/> event.
+  /// </para>
+  /// </remarks>
   protected abstract DataContainer LoadDataContainer (ObjectID id);
+
+  /// <summary>
+  /// Loads a number of data containers from the underlying storage or the <see cref="ParentTransaction"/>.
+  /// </summary>
+  /// <param name="objectIDs">The ids of the <see cref="DataContainer"/> objects to load.</param>
+  /// <returns>A <see cref="DataContainerCollection"/> with the loaded containers in the same order as in <paramref name="objectIDs"/>.</returns>
+  /// <remarks>
+  /// <para>
+  /// If one of the IDs in <paramref name="objectIDs"/> cannot be loaded, this method does not throw an exception; instead it should
+  /// proceed as if the invalid ID hadn't been given.
+  /// </para>
+  /// <para>
+  /// This method raises the <see cref="IClientTransactionListener.ObjectLoading"/> event on the <see cref="TransactionEventSink"/>, sets the
+  /// <see cref="ClientTransaction"/> of the loaded data containers, and registers the containers in the <see cref="DataContainerMap"/>. It does
+  /// not raise the <see cref="IClientTransactionListener.ObjectsLoaded"/> event.
+  /// </para>
+  /// </remarks>
+  protected abstract DataContainerCollection LoadDataContainers (IEnumerable<ObjectID> objectIDs);
 
   /// <summary>
   /// Loads a <see cref="DataContainer"/> from the datasource for an existing <see cref="DomainObject"/>.
   /// </summary>
   /// <remarks>
-  /// This method raises the <see cref="Loaded"/> event.
+  /// <para>
+  /// This method raises the <see cref="IClientTransactionListener.ObjectLoading"/> event on the <see cref="TransactionEventSink"/>, sets the
+  /// <see cref="ClientTransaction"/> of the loaded data container, and registers the container in the <see cref="DataContainerMap"/>. It does
+  /// not raise the <see cref="IClientTransactionListener.ObjectsLoaded"/> event.
+  /// </para>
   /// </remarks>
   /// <param name="domainObject">The <see cref="DomainObject"/> to load the <see cref="DataContainer"/> for. Must not be <see langword="null"/>.</param>
   /// <returns>The <see cref="DataContainer"/> that was loaded.</returns>
@@ -700,6 +729,57 @@ public abstract class ClientTransaction : ITransaction
     return _dataManager.DataContainerMap.GetObject (id, includeDeleted);
   }
 
+  public virtual ObjectList<T> GetObjects<T> (params ObjectID[] objectIDs) where T : DomainObject
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("objectIDs", objectIDs);
+
+    using (EnterNonDiscardingScope())
+    {
+      DomainObject[] loadedObjects = new DomainObject[objectIDs.Length];
+      List<ObjectID> idsToBeLoaded = new List<ObjectID> ();
+
+      for (int i = 0; i < objectIDs.Length; i++)
+      {
+        DomainObject alreadyLoadedObject = DataManager.DataContainerMap.GetObjectWithoutLoading (objectIDs[i], false);
+        if (alreadyLoadedObject != null)
+          loadedObjects[i] = alreadyLoadedObject;
+        else
+          idsToBeLoaded.Add (objectIDs[i]);
+      }
+
+      if (idsToBeLoaded.Count > 0)
+      {
+        DataContainerCollection additionalDataContainers = LoadDataContainers (idsToBeLoaded);
+        DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (additionalDataContainers, true);
+        OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
+
+        for (int i = 0; i < objectIDs.Length; i++)
+        {
+          if (loadedObjects[i] == null)
+          {
+            DataContainer dataContainer = additionalDataContainers[objectIDs[i]];
+            if (dataContainer != null)
+              loadedObjects[i] = dataContainer.DomainObject;
+          }
+        }
+      }
+
+      ObjectList<T> objectList = MakeObjectList<T> (loadedObjects);
+      return objectList;
+    }
+  }
+
+  private ObjectList<T> MakeObjectList<T> (DomainObject[] loadedObjects) where T : DomainObject
+  {
+    ObjectList <T> objectList = new ObjectList<T> ();
+    foreach (DomainObject domainObject in loadedObjects)
+    {
+      if (domainObject != null)
+        objectList.Add (domainObject);
+    }
+    return objectList;
+  }
+
   internal DataContainer CreateNewDataContainer (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
@@ -897,12 +977,40 @@ public abstract class ClientTransaction : ITransaction
   }
 
   /// <summary>
+  /// Loads the data of an existing object from the datasource.
+  /// </summary>
+  /// <remarks>
+  /// This method raises the <see cref="Loaded"/> event.
+  /// </remarks>
+  /// <param name="domainObject">A <see cref="DomainObject"/> reference indicating the <see cref="DomainObject"/> whose <see cref="DataContainer"/>
+  /// to load. Must not be <see langword="null"/>.</param>
+  /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Persistence.StorageProviderException">
+  ///   The Mapping does not contain a class definition for the given <paramref name="domainObject"/>.<br /> -or- <br />
+  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occurred while accessing the datasource.
+  /// </exception>
+  internal protected virtual DataContainer LoadExistingObject (DomainObject domainObject)
+  {
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    using (EnterNonDiscardingScope ())
+    {
+      DataContainer dataContainer = LoadDataContainerForExistingObject (domainObject);
+
+      DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] { dataContainer.DomainObject }, true);
+      OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
+
+      return dataContainer;
+    }
+  }
+
+  /// <summary>
   /// Creates a new <see cref="DomainObjectCollection"/>, registers the <see cref="DataContainer"/>s with this <b>ClientTransaction</b>, discards already loaded <see cref="DataContainer"/>s, raises the <see cref="Loaded"/> event and optionally registers the relation with the specified <see cref="DataManagement.RelationEndPointID"/>.
   /// </summary>
   /// <param name="dataContainers">The newly loaded <see cref="DataContainer"/>s.</param>
-  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated. <paramref name="relationEndPoint"/> must refer to a <see cref="CollectionEndPoint"/>.</param>
+  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated. <paramref name="relationEndPointID"/> must refer to a <see cref="CollectionEndPoint"/>.</param>
   /// <returns>A <see cref="DomainObjectCollection"/>.</returns>
-  /// <exception cref="System.InvalidCastException"><paramref name="collectionType"/> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
+  /// <exception cref="System.InvalidCastException">The relation property's type cannot be cast to <see cref="DomainObjectCollection"/>.</exception>
   internal DomainObjectCollection MergeLoadedDomainObjects (
       DataContainerCollection dataContainers, 
       RelationEndPointID relationEndPointID)
@@ -984,7 +1092,7 @@ public abstract class ClientTransaction : ITransaction
       SetClientTransaction (dataContainer);
   }
 
-  private void NotifyOfLoading (DataContainerCollection loadedDataContainers)
+  protected void NotifyOfLoading (DataContainerCollection loadedDataContainers)
   {
     foreach (DataContainer dataContainer in loadedDataContainers)
       TransactionEventSink.ObjectLoading (dataContainer.ID);

@@ -1,10 +1,12 @@
 using System;
 using NUnit.Framework;
+using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Mocks_List = Rhino.Mocks.Constraints.List;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 {
@@ -31,6 +33,54 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     {
       DataContainer actualDataContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.Order1);
       Assert.AreEqual (DomainObjectIDs.Order1, actualDataContainer.ID);
+    }
+
+    [Test]
+    public void LoadDataContainers ()
+    {
+      Assert.AreNotEqual (DomainObjectIDs.Order1.StorageProviderID, DomainObjectIDs.Official1, "Different storage providers");
+      UnitTestStorageProviderStub officialStorageProvider =
+          (UnitTestStorageProviderStub) _persistenceManager.StorageProviderManager.GetMandatory (DomainObjectIDs.Official1.StorageProviderID);
+
+      MockRepository mockRepository = new MockRepository();
+      StorageProvider mockProvider = mockRepository.CreateMock<StorageProvider> (officialStorageProvider.Definition);
+
+      DataContainer officialDC1 = DataContainer.CreateNew (DomainObjectIDs.Official1);
+      DataContainer officialDC2 = DataContainer.CreateNew (DomainObjectIDs.Official2);
+      
+      DataContainerCollection officialDCs = new DataContainerCollection();
+      officialDCs.Add (officialDC1);
+      officialDCs.Add (officialDC2);
+
+      Expect.Call (mockProvider.LoadDataContainers (null)).Constraints (Mocks_List.Equal (new object[] {DomainObjectIDs.Official1,
+          DomainObjectIDs.Official2})).Return (officialDCs);
+
+      mockRepository.ReplayAll();
+
+      officialStorageProvider.InnerProvider = mockProvider;
+
+      DataContainerCollection actualDataContainers =
+          _persistenceManager.LoadDataContainers (new ObjectID[] { DomainObjectIDs.Order1, DomainObjectIDs.Official1, DomainObjectIDs.Order2,
+              DomainObjectIDs.Official2 });
+
+      mockRepository.VerifyAll ();
+
+      Assert.AreEqual (4, actualDataContainers.Count);
+      Assert.AreEqual (DomainObjectIDs.Order1, actualDataContainers[0].ID);
+      Assert.AreSame (officialDC1, actualDataContainers[1]);
+      Assert.AreEqual (DomainObjectIDs.Order2, actualDataContainers[2].ID);
+      Assert.AreSame (officialDC2, actualDataContainers[3]);
+    }
+
+    [Test]
+    [ExpectedException (typeof (BulkLoadException), ExpectedMessage = "There were errors when loading a bulk of DomainObjects:\r\n"
+          + "Object 'Order|11111111-1111-1111-1111-111111111111|System.Guid' could not be found.\r\n"
+          + "Object 'Order|22222222-2222-2222-2222-222222222222|System.Guid' could not be found.\r\n")]
+    public void LoadDataContainers_ObjectNotFound ()
+    {
+      Guid guid1 = new Guid ("11111111111111111111111111111111");
+      Guid guid2 = new Guid ("22222222222222222222222222222222");
+      _persistenceManager.LoadDataContainers (new ObjectID[] { new ObjectID (typeof (Order), guid1), new ObjectID (typeof (Order), guid2)});
     }
 
     [Test]

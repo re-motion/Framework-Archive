@@ -133,6 +133,27 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       }
     }
 
+    protected override DataContainerCollection LoadDataContainers (IEnumerable<ObjectID> objectIDs)
+    {
+      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+
+      foreach (ObjectID id in objectIDs)
+      {
+        if (DataManager.IsDiscarded (id))
+          throw new ObjectDiscardedException (id);
+      }
+
+      using (PersistenceManager persistenceManager = new PersistenceManager ())
+      {
+        DataContainerCollection newLoadedDataContainers = persistenceManager.LoadDataContainers (objectIDs);
+        NotifyOfLoading (newLoadedDataContainers);
+        SetClientTransaction (newLoadedDataContainers);
+        
+        DataManager.RegisterExistingDataContainers (newLoadedDataContainers);
+        return newLoadedDataContainers;
+      }
+    }
+
     internal protected override DataContainer LoadDataContainerForExistingObject (DomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -140,9 +161,6 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       {
         DataContainer dataContainer = LoadDataContainer (domainObject.ID);
         dataContainer.SetDomainObject (domainObject);
-
-        DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] { dataContainer.DomainObject }, true);
-        OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
 
         return dataContainer;
       }

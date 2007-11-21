@@ -47,8 +47,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public override void TearDown ()
     {
       string[] paths = _scope.SaveAssemblies ();
+#if !NO_PEVERIFY
       foreach (string path in paths)
         PEVerifier.VerifyPEFile (path);
+#endif
+      base.TearDown();
     }
 
     private TypeGenerator CreateTypeGenerator (Type baseType)

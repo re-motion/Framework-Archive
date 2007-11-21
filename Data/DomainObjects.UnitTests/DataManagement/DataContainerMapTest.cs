@@ -218,5 +218,35 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreNotSame (sourceMap[newOrder.ID], destinationMap[newOrder.ID]);
       Assert.AreSame (destinationTransaction, destinationMap[newOrder.ID].ClientTransaction);
     }
+
+    [Test]
+    public void GetObjectWithoutLoading_LoadedObject ()
+    {
+      ClassWithAllDataTypes loadedOrder = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+      Assert.AreSame (loadedOrder, ClientTransactionMock.DataManager.DataContainerMap.GetObjectWithoutLoading (DomainObjectIDs.ClassWithAllDataTypes1, false));
+    }
+
+    [Test]
+    public void GetObjectWithoutLoading_NonLoadedObject ()
+    {
+      Assert.IsNull (ClientTransactionMock.DataManager.DataContainerMap.GetObjectWithoutLoading (DomainObjectIDs.ClassWithAllDataTypes1, false));
+    }
+
+    [Test]
+    public void GetObjectWithoutLoading_IncludeDeletedTrue ()
+    {
+      Order deletedOrder = Order.GetObject (DomainObjectIDs.Order1);
+      deletedOrder.Delete ();
+      Assert.AreSame (deletedOrder, ClientTransactionMock.DataManager.DataContainerMap.GetObjectWithoutLoading (DomainObjectIDs.Order1, true));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ObjectDeletedException))]
+    public void GetObjectWithoutLoading_IncludeDeletedFalse ()
+    {
+      Order deletedOrder = Order.GetObject (DomainObjectIDs.Order1);
+      deletedOrder.Delete ();
+      ClientTransactionMock.DataManager.DataContainerMap.GetObjectWithoutLoading (DomainObjectIDs.Order1, false);
+    }
   }
 }

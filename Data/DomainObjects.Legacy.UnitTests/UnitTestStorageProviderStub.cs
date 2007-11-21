@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -76,6 +77,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
     public new object GetFieldValue (DataContainer dataContainer, string propertyName, ValueAccess valueAccess)
     {
       return base.GetFieldValue (dataContainer, propertyName, valueAccess);
+    }
+
+    public override DataContainerCollection LoadDataContainers (IEnumerable<ObjectID> ids)
+    {
+      throw new NotImplementedException();
     }
   }
 }

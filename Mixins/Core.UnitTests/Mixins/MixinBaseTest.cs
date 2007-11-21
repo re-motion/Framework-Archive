@@ -47,8 +47,10 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         return;
       }
 
+#if !NO_PEVERIFY
       foreach (string path in paths)
         PEVerifier.VerifyPEFile (path);
+#endif
 
       ResetGeneratedAssemblies (); // delete assemblies if everything went fine
       ConcreteTypeBuilder.SetCurrent (null);

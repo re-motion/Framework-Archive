@@ -6,6 +6,8 @@ using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
+using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -335,6 +337,104 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       DomainObject company = ClientTransactionMock.GetObject (DomainObjectIDs.Company1);
 
       ClientTransactionMock.SetRelatedObject (new RelationEndPointID (person.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany"), company);
+    }
+
+    [Test]
+    public void GetObjects_UnloadedObjects ()
+    {
+      ObjectList<DomainObject> objects = ClientTransactionMock.GetObjects<DomainObject> (DomainObjectIDs.Order1, DomainObjectIDs.Order2,
+          DomainObjectIDs.OrderItem1);
+      object[] expectedObjects = new object[] {Order.GetObject (DomainObjectIDs.Order1), Order.GetObject (DomainObjectIDs.Order2),
+          OrderItem.GetObject (DomainObjectIDs.OrderItem1)};
+      Assert.That (objects, Is.EqualTo (expectedObjects));
+    }
+
+    [Test]
+    public void GetObjects_UnloadedObjects_Events ()
+    {
+      ObjectList<DomainObject> objects = ClientTransactionMock.GetObjects<DomainObject> (DomainObjectIDs.Order1, DomainObjectIDs.Order2,
+          DomainObjectIDs.OrderItem1);
+      Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
+      Assert.That (_eventReceiver.LoadedDomainObjects[0], Is.EqualTo (objects));
+    }
+
+    [Test]
+    public void GetObjects_LoadedObjects ()
+    {
+      object[] expectedObjects = new object[] {Order.GetObject (DomainObjectIDs.Order1), Order.GetObject (DomainObjectIDs.Order2),
+          OrderItem.GetObject (DomainObjectIDs.OrderItem1)};
+      ObjectList<DomainObject> objects = ClientTransactionMock.GetObjects<DomainObject> (DomainObjectIDs.Order1, DomainObjectIDs.Order2,
+          DomainObjectIDs.OrderItem1);
+      Assert.That (objects, Is.EqualTo (expectedObjects));
+    }
+
+    [Test]
+    public void GetObjects_LoadedObjects_Events ()
+    {
+      Order.GetObject (DomainObjectIDs.Order1);
+      Order.GetObject (DomainObjectIDs.Order2);
+      OrderItem.GetObject (DomainObjectIDs.OrderItem1);
+
+      _eventReceiver.Clear ();
+
+      ClientTransactionMock.GetObjects<DomainObject> (DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.OrderItem1);
+      Assert.That (_eventReceiver.LoadedDomainObjects, Is.Empty);
+    }
+
+    [Test]
+    public void GetObjects_NewObjects ()
+    {
+      DomainObject[] expectedObjects = new DomainObject[] { Order.NewObject (), OrderItem.NewObject () };
+      ObjectList<DomainObject> objects = ClientTransactionMock.GetObjects<DomainObject> (expectedObjects[0].ID, expectedObjects[1].ID);
+      Assert.That (objects, Is.EqualTo (expectedObjects));
+    }
+
+    [Test]
+    public void GetObjects_NewObjects_Events ()
+    {
+      DomainObject[] expectedObjects = new DomainObject[] { Order.NewObject (), OrderItem.NewObject () };
+      _eventReceiver.Clear ();
+
+      ClientTransactionMock.GetObjects<DomainObject> (expectedObjects[0].ID, expectedObjects[1].ID);
+      Assert.That (_eventReceiver.LoadedDomainObjects, Is.Empty);
+    }
+
+    [Test]
+    [ExpectedException (typeof (BulkLoadException), ExpectedMessage = "There were errors when loading a bulk of DomainObjects:\r\n"
+        + "Object 'Order|33333333-3333-3333-3333-333333333333|System.Guid' could not be found.\r\n")]
+    public void GetObjects_NotFound ()
+    {
+      Guid guid = new Guid("33333333333333333333333333333333");
+      ClientTransactionMock.GetObjects<DomainObject> (new ObjectID(typeof (Order), guid));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage = "Values of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order' "
+      + "cannot be added to this collection. Values must be of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem' or derived from "
+      + "'Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.\r\nParameter name: domainObject")]
+    public void GetObjects_InvalidType ()
+    {
+      ClientTransactionMock.GetObjects<OrderItem> (DomainObjectIDs.Order1);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ObjectDeletedException),
+        ExpectedMessage = "Object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is already deleted.")]
+    public void GetObjects_Deleted ()
+    {
+      Order.GetObject (DomainObjectIDs.Order1).Delete ();
+      ClientTransactionMock.GetObjects<OrderItem> (DomainObjectIDs.Order1);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ObjectDiscardedException),
+        ExpectedMessage = "Object 'ClassWithAllDataTypes|3f647d79-0caf-4a53-baa7-a56831f8ce2d|System.Guid' is already discarded.")]
+    public void GetObjects_Discarded ()
+    {
+      SetDatabaseModifyable();
+      ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1).Delete ();
+      ClientTransactionMock.Commit ();
+      ClientTransactionMock.GetObjects<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
     }
 
     [Test]

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -27,6 +28,11 @@ namespace Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain
     // methods and properties
 
     public override DataContainer LoadDataContainer (ObjectID id)
+    {
+      throw new NotImplementedException ();
+    }
+
+    public override DataContainerCollection LoadDataContainers (IEnumerable<ObjectID> ids)
     {
       throw new NotImplementedException ();
     }

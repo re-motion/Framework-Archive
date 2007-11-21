@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
 
 namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
@@ -68,6 +69,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
     }
 
     public override object ExecuteScalarQuery (Rubicon.Data.DomainObjects.Queries.IQuery query)
+    {
+      throw new NotSupportedException ("The method or operation is not supported.");
+    }
+
+    public override DataContainerCollection LoadDataContainers (IEnumerable<ObjectID> ids)
     {
       throw new NotSupportedException ("The method or operation is not supported.");
     }
