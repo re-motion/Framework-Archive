@@ -190,37 +190,37 @@ namespace Rubicon.Mixins.Context
     /// <summary>
     /// Adds the given type as an explicit dependency unless it has already been added to this <see cref="MixinContext"/>.
     /// </summary>
-    /// <param name="interfaceType">Interface type for the explicit dependency to add.</param>
+    /// <param name="mixinOrInterfaceType">Mixin type or interface type for the explicit dependency to add.</param>
     /// <remarks>An explicit dependency is a base call dependency which should be considered for a mixin even though it is not expressed in the
-    /// mixin's class declaration. This can be used to define the ordering of mixins in specific mixin configurations.</remarks>
-    /// <exception cref="ArgumentNullException">The <paramref name="interfaceType"/> parameter is <see langword="null"/>.</exception>
+    /// mixin's class declaration. This can be used to define the ordering of mixins that override the same target class methods.</remarks>
+    /// <exception cref="ArgumentNullException">The <paramref name="mixinOrInterfaceType"/> parameter is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The associated <see cref="TargetClassContext"/> is frozen.</exception>
-    public void AddExplicitDependency (Type interfaceType)
+    public void AddExplicitDependency (Type mixinOrInterfaceType)
     {
-      ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
+      ArgumentUtility.CheckNotNull ("mixinOrInterfaceType", mixinOrInterfaceType);
       lock (_lockObject)
       {
         _classContext.EnsureNotFrozen ();
-        _explicitDependencies.Add (interfaceType);
+        _explicitDependencies.Add (mixinOrInterfaceType);
       }
     }
 
     /// <summary>
     /// Removes the given type from the set of explicit dependencies of this <see cref="MixinContext"/>.
     /// </summary>
-    /// <param name="interfaceType">Interface type of the dependency to remove.</param>
+    /// <param name="mixinOrInterfaceType">Mixin type or interface type of the dependency to remove.</param>
     /// <returns>True if the dependency was successfully removed; false if the type wasn't added as a dependency.</returns>
     /// <remarks>An explicit dependency is a base call dependency which should be considered for a mixin even though it is not expressed in the
-    /// mixin's class declaration. This can be used to define the ordering of mixins in specific mixin configurations.</remarks>
-    /// <exception cref="ArgumentNullException">The <paramref name="interfaceType"/> parameter is <see langword="null"/>.</exception>
+    /// mixin's class declaration. This can be used to define the ordering of mixins that override the same target class methods.</remarks>
+    /// <exception cref="ArgumentNullException">The <paramref name="mixinOrInterfaceType"/> parameter is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The associated <see cref="TargetClassContext"/> is frozen.</exception>
-    public bool RemoveExplicitDependency (Type interfaceType)
+    public bool RemoveExplicitDependency (Type mixinOrInterfaceType)
     {
-      ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
+      ArgumentUtility.CheckNotNull ("mixinOrInterfaceType", mixinOrInterfaceType);
       lock (_lockObject)
       {
         _classContext.EnsureNotFrozen ();
-        return _explicitDependencies.Remove (interfaceType);
+        return _explicitDependencies.Remove (mixinOrInterfaceType);
       }
     }
   }

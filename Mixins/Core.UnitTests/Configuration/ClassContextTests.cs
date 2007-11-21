@@ -153,7 +153,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void ExplicitMixinDependencies ()
+    public void ExplicitInterfaceDependencies ()
     {
       ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (BaseType7));
@@ -185,6 +185,25 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.AreEqual (0, deps.Count);
 
       Assert.IsFalse (mixinContext.RemoveExplicitDependency (typeof (IBaseType2)));
+    }
+
+    [Test]
+    public void ExplicitMixinDependencies ()
+    {
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      ClassContext classContext = context.GetClassContext (typeof (BaseType7));
+      MixinContext mixinContext = classContext.GetOrAddMixinContext (typeof (BT7Mixin1));
+
+      Assert.AreEqual (0, mixinContext.ExplicitDependencyCount);
+      Assert.IsFalse (mixinContext.ContainsExplicitDependency (typeof (BT7Mixin2)));
+
+      List<Type> deps = new List<Type> (mixinContext.ExplicitDependencies);
+      Assert.AreEqual (0, deps.Count);
+
+      mixinContext.AddExplicitDependency (typeof (BT7Mixin2));
+
+      Assert.AreEqual (1, mixinContext.ExplicitDependencyCount);
+      Assert.IsTrue (mixinContext.ContainsExplicitDependency (typeof (BT7Mixin2)));
     }
 
     [Test]
