@@ -133,7 +133,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       }
     }
 
-    protected override DataContainerCollection LoadDataContainers (IEnumerable<ObjectID> objectIDs)
+    protected override DataContainerCollection LoadDataContainers (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
@@ -145,7 +145,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
       using (PersistenceManager persistenceManager = new PersistenceManager ())
       {
-        DataContainerCollection newLoadedDataContainers = persistenceManager.LoadDataContainers (objectIDs);
+        DataContainerCollection newLoadedDataContainers = persistenceManager.LoadDataContainers (objectIDs, throwOnNotFound);
         NotifyOfLoading (newLoadedDataContainers);
         SetClientTransaction (newLoadedDataContainers);
         

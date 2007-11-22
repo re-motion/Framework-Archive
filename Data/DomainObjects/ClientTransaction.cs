@@ -229,7 +229,7 @@ public abstract class ClientTransaction : ITransaction
   /// not raise the <see cref="IClientTransactionListener.ObjectsLoaded"/> event.
   /// </para>
   /// </remarks>
-  protected abstract DataContainerCollection LoadDataContainers (IEnumerable<ObjectID> objectIDs);
+  protected abstract DataContainerCollection LoadDataContainers (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound);
 
   /// <summary>
   /// Loads a <see cref="DataContainer"/> from the datasource for an existing <see cref="DomainObject"/>.
@@ -729,11 +729,64 @@ public abstract class ClientTransaction : ITransaction
     return _dataManager.DataContainerMap.GetObject (id, includeDeleted);
   }
 
-  public virtual ObjectList<T> GetObjects<T> (params ObjectID[] objectIDs) where T : DomainObject
+  /// <summary>
+  /// Gets a number of objects that are already loaded or attempts to load them from the data source. If an object cannot be found, an exception is
+  /// thrown.
+  /// </summary>
+  /// <typeparam name="T">The type of objects expected to be returned. Specify <see cref="DomainObject"/> if no specific type is expected.</typeparam>
+  /// <param name="objectIDs">The IDs of the objects to be retrieved.</param>
+  /// <returns>A list of objects of type <typeparamref name="T"/> corresponding to (and in the same order as) the IDs specified in <paramref name="objectIDs"/>.</returns>
+  /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null"/>.</exception>
+  /// <exception cref="ArgumentTypeException">One of the retrieved objects doesn't fit the specified type <typeparamref name="T"/>.</exception>
+  /// <exception cref="ObjectDiscardedException">One of the retrieved objects has already been discarded.</exception>
+  /// <exception cref="ObjectDeletedException">One of the retrieved objects has already been deleted.</exception>
+  /// <exception cref="BulkLoadException">The data source found one or more errors when loading the objects. The exceptions can be accessed via the
+  /// <see cref="BulkLoadException.Exceptions"/> property.</exception>
+  public ObjectList<T> GetObjects<T> (params ObjectID[] objectIDs) where T : DomainObject
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("objectIDs", objectIDs);
+    return GetObjects<T> (objectIDs, true);
+  }
+
+  /// <summary>
+  /// Gets a number of objects that are already loaded or attempts to load them from the data source. If an object cannot be found, it is simply not
+  /// included in the results list.
+  /// </summary>
+  /// <typeparam name="T">The type of objects expected to be returned. Specify <see cref="DomainObject"/> if no specific type is expected.</typeparam>
+  /// <param name="objectIDs">The IDs of the objects to be retrieved.</param>
+  /// <returns>A list of objects of type <typeparamref name="T"/> corresponding to (and in the same order as) the IDs specified in <paramref name="objectIDs"/>.</returns>
+  /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null"/>.</exception>
+  /// <exception cref="ArgumentTypeException">One of the retrieved objects doesn't fit the specified type <typeparamref name="T"/>.</exception>
+  /// <exception cref="ObjectDiscardedException">One of the retrieved objects has already been discarded.</exception>
+  /// <exception cref="ObjectDeletedException">One of the retrieved objects has already been deleted.</exception>
+  /// <exception cref="BulkLoadException">The data source found one or more errors when loading the objects. The exceptions can be accessed via the
+  /// <see cref="BulkLoadException.Exceptions"/> property.</exception>
+  public ObjectList<T> TryGetObjects<T> (params ObjectID[] objectIDs) where T : DomainObject
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("objectIDs", objectIDs);
+    return GetObjects<T> (objectIDs, false);
+  }
+
+  /// <summary>
+  /// Gets a number of objects that are already loaded or attempts to load them from the data source.
+  /// </summary>
+  /// <typeparam name="T">The type of objects expected to be returned. Specify <see cref="DomainObject"/> if no specific type is expected.</typeparam>
+  /// <param name="objectIDs">The IDs of the objects to be retrieved.</param>
+  /// <param name="throwOnNotFound">Specifies whether an <see cref="ObjectNotFoundException"/> is raised (and encapsulated in a
+  /// <see cref="BulkLoadException"/>) when an object cannot be found in the data source. If this parameter is set to false, such objects are
+  /// ignored.</param>
+  /// <returns>A list of objects of type <typeparamref name="T"/> corresponding to (and in the same order as) the IDs specified in <paramref name="objectIDs"/>.</returns>
+  /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null"/>.</exception>
+  /// <exception cref="ArgumentTypeException">One of the retrieved objects doesn't fit the specified type <typeparamref name="T"/>.</exception>
+  /// <exception cref="ObjectDiscardedException">One of the retrieved objects has already been discarded.</exception>
+  /// <exception cref="ObjectDeletedException">One of the retrieved objects has already been deleted.</exception>
+  /// <exception cref="BulkLoadException">The data source found one or more errors when loading the objects. The exceptions can be accessed via the
+  /// <see cref="BulkLoadException.Exceptions"/> property.</exception>
+  protected internal virtual ObjectList<T> GetObjects<T> (ObjectID[] objectIDs, bool throwOnNotFound) where T : DomainObject
   {
     ArgumentUtility.CheckNotNullOrEmpty ("objectIDs", objectIDs);
 
-    using (EnterNonDiscardingScope())
+    using (EnterNonDiscardingScope ())
     {
       DomainObject[] loadedObjects = new DomainObject[objectIDs.Length];
       List<ObjectID> idsToBeLoaded = new List<ObjectID> ();
@@ -749,7 +802,7 @@ public abstract class ClientTransaction : ITransaction
 
       if (idsToBeLoaded.Count > 0)
       {
-        DataContainerCollection additionalDataContainers = LoadDataContainers (idsToBeLoaded);
+        DataContainerCollection additionalDataContainers = LoadDataContainers (idsToBeLoaded, throwOnNotFound);
         DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (additionalDataContainers, true);
         OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
 

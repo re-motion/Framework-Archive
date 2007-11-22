@@ -17,11 +17,28 @@ namespace Rubicon.Data.DomainObjects.Transport
   public class DomainObjectImporter
   {
     private readonly ClientTransaction _sourceTransaction;
+    private readonly DomainObjectCollection _transportedObjects;
+    private readonly ObjectID[] _transportedObjectIDs;
 
     public DomainObjectImporter (byte[] data)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("data", data);
       _sourceTransaction = DeserializeData (data);
+      _transportedObjects = ExtractTransportedObjects (_sourceTransaction);
+      _transportedObjectIDs = GetObjectIDs (_transportedObjects);
+    }
+
+    private DomainObjectCollection ExtractTransportedObjects (ClientTransaction transaction)
+    {
+      return new DomainObjectCollection (transaction.EnlistedDomainObjects, true);
+    }
+
+    private ObjectID[] GetObjectIDs (DomainObjectCollection domainObjects)
+    {
+      ObjectID[] ids = new ObjectID[domainObjects.Count];
+      for (int i = 0; i < domainObjects.Count; ++i)
+        ids[i] = domainObjects[i].ID;
+      return ids;
     }
 
     private ClientTransaction DeserializeData (byte[] data)
@@ -55,24 +72,30 @@ namespace Rubicon.Data.DomainObjects.Transport
     private List<Tuple<DataContainer, DataContainer>> GetTargetDataContainersForSourceObjects (ClientTransaction targetTransaction)
     {
       List<Tuple<DataContainer, DataContainer>> result = new List<Tuple<DataContainer, DataContainer>> ();
-      using (targetTransaction.EnterNonDiscardingScope ())
+      if (_transportedObjects.Count > 0)
       {
-        foreach (DomainObject sourceObject in _sourceTransaction.EnlistedDomainObjects)
+        using (targetTransaction.EnterNonDiscardingScope())
         {
-          DataContainer sourceDataContainer = sourceObject.GetDataContainerForTransaction (_sourceTransaction);
-          DataContainer targetDataContainer;
+          ObjectList<DomainObject> existingObjects = targetTransaction.TryGetObjects<DomainObject> (_transportedObjectIDs);
 
-          try
+          for (int i = 0; i < _transportedObjects.Count; ++i)
           {
-            targetDataContainer = DomainObject.GetObject (sourceObject.ID).GetDataContainer();
-          }
-          catch (ObjectNotFoundException)
-          {
-            targetDataContainer = targetTransaction.CreateNewDataContainer (sourceObject.ID);
-            targetTransaction.EnlistDomainObject (targetDataContainer.DomainObject);
-          }
+            DomainObject sourceObject = _transportedObjects[i];
+            DataContainer sourceDataContainer = sourceObject.GetDataContainerForTransaction (_sourceTransaction);
 
-          result.Add (Tuple.NewTuple (sourceDataContainer, targetDataContainer));
+            DomainObject existingObject = existingObjects[sourceObject.ID];
+            DataContainer targetDataContainer;
+            
+            if (existingObject != null)
+              targetDataContainer = existingObject.GetDataContainerForTransaction (targetTransaction);
+            else
+            {
+              targetDataContainer = targetTransaction.CreateNewDataContainer (sourceObject.ID);
+              targetTransaction.EnlistDomainObject (targetDataContainer.DomainObject);
+            }
+
+            result.Add (Tuple.NewTuple (sourceDataContainer, targetDataContainer));
+          }
         }
       }
       return result;

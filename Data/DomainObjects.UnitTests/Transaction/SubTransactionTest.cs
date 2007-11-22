@@ -610,10 +610,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void GetObjects_UnloadedObjects_PropagatedToParent ()
     {
       MockRepository mockRepository = new MockRepository();
-      ClientTransaction mockParent = mockRepository.PartialMock<RootClientTransaction>();
+      ClientTransactionMock mockParent = mockRepository.PartialMock<ClientTransactionMock>();
 
-      Expect.Call (mockParent.GetObjects<DomainObject> (null)).Constraints (Mocks_List.Count (Mocks_Is.Equal (3))).CallOriginalMethod (
-        OriginalCallOptions.CreateExpectation);
+      Expect.Call (mockParent.MockableGetObjects<DomainObject> (null, true)).Constraints (Mocks_List.Count (Mocks_Is.Equal (3)),
+          Mocks_Is.Equal (true)).CallOriginalMethod (OriginalCallOptions.CreateExpectation);
 
       mockRepository.ReplayAll ();
 
@@ -639,7 +639,32 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
             };
         Assert.That (objects, Is.EqualTo (expectedObjects));
       }
+    }
 
+    [Test]
+    public void TryObjects_UnloadedObjects_PropagatedToParent ()
+    {
+      MockRepository mockRepository = new MockRepository ();
+      ClientTransactionMock mockParent = mockRepository.PartialMock<ClientTransactionMock> ();
+
+      Expect.Call (mockParent.MockableGetObjects<DomainObject> (null, false)).Constraints (Mocks_List.Count (Mocks_Is.Equal (3)),
+          Mocks_Is.Equal (false)).CallOriginalMethod (OriginalCallOptions.CreateExpectation);
+
+      mockRepository.ReplayAll ();
+
+      ClientTransaction subTransaction = new SubClientTransaction (mockParent);
+
+      using (subTransaction.EnterDiscardingScope ())
+      {
+        ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+        subTransaction.TryGetObjects<DomainObject> (
+            DomainObjectIDs.Order1,
+            DomainObjectIDs.ClassWithAllDataTypes1,
+            DomainObjectIDs.Order2,
+            DomainObjectIDs.OrderItem1);
+
+        mockRepository.VerifyAll ();
+      }
     }
 
     [Test]
@@ -733,6 +758,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (subTransaction.EnterDiscardingScope ())
       {
         subTransaction.GetObjects<DomainObject> (new ObjectID (typeof (Order), guid));
+      }
+    }
+
+    [Test]
+    public void TryGetObjects_NotFound ()
+    {
+      Guid guid = new Guid ("33333333333333333333333333333333");
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
+      using (subTransaction.EnterDiscardingScope ())
+      {
+        Order newObject = Order.NewObject();
+        ObjectList<Order> objects = subTransaction.TryGetObjects<Order> (
+            DomainObjectIDs.Order1,
+            newObject.ID,
+            new ObjectID (typeof (Order), guid),
+            DomainObjectIDs.Order2);
+        DomainObject[] expectedObjects =
+            new DomainObject[] {Order.GetObject (DomainObjectIDs.Order1), newObject, Order.GetObject (DomainObjectIDs.Order2)};
+        Assert.That (objects, Is.EqualTo (expectedObjects));
       }
     }
 

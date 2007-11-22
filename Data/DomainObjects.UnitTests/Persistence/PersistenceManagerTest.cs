@@ -61,7 +61,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 
       DataContainerCollection actualDataContainers =
           _persistenceManager.LoadDataContainers (new ObjectID[] { DomainObjectIDs.Order1, DomainObjectIDs.Official1, DomainObjectIDs.Order2,
-              DomainObjectIDs.Official2 });
+              DomainObjectIDs.Official2 }, true);
 
       mockRepository.VerifyAll ();
 
@@ -76,11 +76,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     [ExpectedException (typeof (BulkLoadException), ExpectedMessage = "There were errors when loading a bulk of DomainObjects:\r\n"
           + "Object 'Order|11111111-1111-1111-1111-111111111111|System.Guid' could not be found.\r\n"
           + "Object 'Order|22222222-2222-2222-2222-222222222222|System.Guid' could not be found.\r\n")]
-    public void LoadDataContainers_ObjectNotFound ()
+    public void LoadDataContainers_ThrowOnNotFound ()
     {
       Guid guid1 = new Guid ("11111111111111111111111111111111");
       Guid guid2 = new Guid ("22222222222222222222222222222222");
-      _persistenceManager.LoadDataContainers (new ObjectID[] { new ObjectID (typeof (Order), guid1), new ObjectID (typeof (Order), guid2)});
+      _persistenceManager.LoadDataContainers (
+          new ObjectID[] { new ObjectID (typeof (Order), guid1), new ObjectID (typeof (Order), guid2), DomainObjectIDs.Order1}, true);
+    }
+
+    [Test]
+    public void LoadDataContainers_NoThrowOnNotFound ()
+    {
+      Guid guid1 = new Guid ("11111111111111111111111111111111");
+      Guid guid2 = new Guid ("22222222222222222222222222222222");
+      DataContainerCollection dataContainers = _persistenceManager.LoadDataContainers (
+          new ObjectID[] { new ObjectID (typeof (Order), guid1), new ObjectID (typeof (Order), guid2), DomainObjectIDs.Order1 }, false);
+      Assert.AreEqual (1, dataContainers.Count);
+      Assert.AreEqual (DomainObjectIDs.Order1, dataContainers[0].ID);
     }
 
     [Test]

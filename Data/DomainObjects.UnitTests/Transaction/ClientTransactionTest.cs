@@ -409,6 +409,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
+    public void TryGetObjects_NotFound ()
+    {
+      Order newObject = Order.NewObject();
+      Guid guid = new Guid ("33333333333333333333333333333333");
+      ObjectList<Order> objects = ClientTransactionMock.TryGetObjects<Order> (
+          DomainObjectIDs.Order1,
+          newObject.ID,
+          new ObjectID (typeof (Order), guid),
+          DomainObjectIDs.Order2);
+      DomainObject[] expectedObjects =
+          new DomainObject[] { Order.GetObject (DomainObjectIDs.Order1), newObject, Order.GetObject (DomainObjectIDs.Order2) };
+      Assert.That (objects, Is.EqualTo (expectedObjects));
+    }
+    
+    [Test]
     [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage = "Values of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order' "
       + "cannot be added to this collection. Values must be of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem' or derived from "
       + "'Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.\r\nParameter name: domainObject")]

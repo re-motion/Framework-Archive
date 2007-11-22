@@ -107,14 +107,14 @@ namespace Rubicon.Data.DomainObjects.Persistence
       StorageProvider provider = _storageProviderManager.GetMandatory (id.StorageProviderID);
       DataContainer dataContainer = provider.LoadDataContainer (id);
 
-      Exception exception = CheckLoadedDataContainer(id, dataContainer);
+      Exception exception = CheckLoadedDataContainer(id, dataContainer, true);
       if (exception != null)
         throw exception;
 
       return dataContainer;
     }
 
-    private Exception CheckLoadedDataContainer (ObjectID id, DataContainer dataContainer)
+    private Exception CheckLoadedDataContainer (ObjectID id, DataContainer dataContainer, bool throwOnNotFound)
     {
       if (dataContainer != null)
       {
@@ -128,13 +128,13 @@ namespace Rubicon.Data.DomainObjects.Persistence
         else
           return null;
       }
-      else
-      {
+      else if (throwOnNotFound)
         return new ObjectNotFoundException (id);
-      }
+      else
+        return null;
     }
 
-    public DataContainerCollection LoadDataContainers (IEnumerable<ObjectID> ids)
+    public DataContainerCollection LoadDataContainers (IEnumerable<ObjectID> ids, bool throwOnNotFound)
     {
       CheckDisposed ();
       ArgumentUtility.CheckNotNull ("ids", ids);
@@ -152,10 +152,10 @@ namespace Rubicon.Data.DomainObjects.Persistence
         foreach (ObjectID id in idGroup.Value)
         {
           DataContainer dataContainer = dataContainers[id];
-          Exception exception = CheckLoadedDataContainer (id, dataContainer);
+          Exception exception = CheckLoadedDataContainer (id, dataContainer, throwOnNotFound);
           if (exception != null)
             exceptions.Add (exception);
-          else
+          else if (dataContainer != null)
             unorderedResultCollection.Add (dataContainer);
         }
       }
