@@ -16,7 +16,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     //TODO: Test
     public MappingReflector ()
     {
-      _assemblyFinder = new AssemblyFinder (ApplicationAssemblyFinderFilter.Instance);
+      _assemblyFinder = new AssemblyFinder (ApplicationAssemblyFinderFilter.Instance, false);
     }
 
     public MappingReflector (params Assembly[] rootAssemblies)

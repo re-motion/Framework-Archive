@@ -110,7 +110,7 @@ namespace Rubicon.Mixins.Context
     /// <seealso cref="AssemblyFinder"/>
     public static ApplicationContext BuildDefaultContext ()
     {
-      AssemblyFinder finder = new AssemblyFinder (new ApplicationConctextBuilderAssemblyFinderFilter ());
+      AssemblyFinder finder = new AssemblyFinder (new ApplicationConctextBuilderAssemblyFinderFilter (), false);
       Assembly[] assembliesToBeScanned = finder.FindAssemblies();
       return BuildContextFromAssemblies (assembliesToBeScanned);
     }
