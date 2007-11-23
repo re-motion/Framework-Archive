@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Utilities;
+using System.Collections;
 
 namespace Rubicon.Mixins
 {
@@ -13,21 +15,40 @@ namespace Rubicon.Mixins
   {
     private readonly Type _attributeSourceType;
     private readonly string _attributeSourceMemberName;
+    
+    private Type[] _copiedAttributeTypes;
 
+    // For CLS compatibility...
     public CopyCustomAttributesAttribute (Type attributeSourceType)
+      : this (attributeSourceType, Type.EmptyTypes)
     {
-      ArgumentUtility.CheckNotNull ("attributeSource", attributeSourceType);
-      _attributeSourceType = attributeSourceType;
-      _attributeSourceMemberName = null;
     }
 
+    // For CLS compatibility...
     public CopyCustomAttributesAttribute (Type attributeSourceType, string attributeSourceMemberName)
+      : this (attributeSourceType, attributeSourceMemberName, Type.EmptyTypes)
+    {
+    }
+
+    public CopyCustomAttributesAttribute (Type attributeSourceType, params Type[] copiedAttributeTypes)
+    {
+      ArgumentUtility.CheckNotNull ("attributeSource", attributeSourceType);
+      ArgumentUtility.CheckNotNull ("copiedAttributeTypes", copiedAttributeTypes);
+
+      _attributeSourceType = attributeSourceType;
+      _attributeSourceMemberName = null;
+      _copiedAttributeTypes = copiedAttributeTypes;
+    }
+
+    public CopyCustomAttributesAttribute (Type attributeSourceType, string attributeSourceMemberName, params Type[] copiedAttributeTypes)
     {
       ArgumentUtility.CheckNotNull ("attributeSource", attributeSourceType);
       ArgumentUtility.CheckNotNullOrEmpty ("attributeSourceMemberName", attributeSourceMemberName);
+      ArgumentUtility.CheckNotNull ("copiedAttributeTypes", copiedAttributeTypes);
 
       _attributeSourceType = attributeSourceType;
       _attributeSourceMemberName = attributeSourceMemberName;
+      _copiedAttributeTypes = copiedAttributeTypes;
     }
 
     public Type AttributeSourceType
@@ -48,8 +69,16 @@ namespace Rubicon.Mixins
       }
     }
 
+    public Type[] CopiedAttributeTypes
+    {
+      get { return _copiedAttributeTypes; }
+      set { _copiedAttributeTypes = value; }
+    }
+
     public MemberInfo GetAttributeSource (MemberTypes memberType)
     {
+      ArgumentUtility.CheckNotNull ("memberType", memberType);
+
       if (AttributeSourceMemberName == null)
         return AttributeSourceType;
       else
@@ -70,6 +99,12 @@ namespace Rubicon.Mixins
                   AttributeSourceType.FullName));
         }
       }
+    }
+
+    public bool IsCopiedAttributeType (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      return CopiedAttributeTypes.Length == 0 || ((IList) CopiedAttributeTypes).Contains (type);
     }
   }
 }

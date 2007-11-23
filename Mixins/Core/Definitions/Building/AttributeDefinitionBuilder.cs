@@ -46,12 +46,9 @@ namespace Rubicon.Mixins.Definitions.Building
     {
       Assertion.IsTrue (copyAttributeData.Constructor.DeclaringType == typeof (CopyCustomAttributesAttribute));
       string sourceName = GetFullMemberName (attributeSource);
-      
-      object[] constructorArguments = new object[copyAttributeData.ConstructorArguments.Count];
-      for (int i = 0; i < copyAttributeData.ConstructorArguments.Count; ++i)
-        constructorArguments[i] = copyAttributeData.ConstructorArguments[i].Value;
 
-      CopyCustomAttributesAttribute copyAttribute = (CopyCustomAttributesAttribute) copyAttributeData.Constructor.Invoke (constructorArguments);
+      CopyCustomAttributesAttribute copyAttribute =
+          (CopyCustomAttributesAttribute) AttributeUtility.InstantiateCustomAttributeData (copyAttributeData);
 
       MemberInfo copySource;
       try
@@ -79,13 +76,25 @@ namespace Rubicon.Mixins.Definitions.Building
         throw new ConfigurationException (message);
       }
 
-      if (copySource.Equals (attributeSource))
-      {
-        string message = string.Format ("The CopyCustomAttributes attribute on {0} specifies itself as an attribute source.", sourceName);
-        throw new ConfigurationException (message);
-      }
+      bool parseCopyAttributes = !copySource.Equals (attributeSource);
+      bool parseInheritedAttributes = !copySource.Equals (attributeSource);
+      Apply (copySource, GetFilteredAttributeData(copySource, copyAttribute, parseCopyAttributes, parseInheritedAttributes), true);
+    }
 
-      Apply (copySource, CustomAttributeData.GetCustomAttributes (copySource), true);
+    private IEnumerable<CustomAttributeData> GetFilteredAttributeData (MemberInfo copySource, CopyCustomAttributesAttribute filterAttribute,
+        bool includeCopyAttributes, bool includeInheritedAttributes)
+    {
+      foreach (CustomAttributeData attributeData in CustomAttributeData.GetCustomAttributes (copySource))
+      {
+        Type attributeType = attributeData.Constructor.DeclaringType;
+        if (typeof (CopyCustomAttributesAttribute).IsAssignableFrom (attributeType))
+        {
+          if (includeCopyAttributes)
+            yield return attributeData;
+        }
+        else if (filterAttribute.IsCopiedAttributeType (attributeType) && (includeInheritedAttributes || !AttributeUtility.IsAttributeInherited (attributeType)))
+          yield return attributeData;
+      }
     }
 
     private bool AreCompatibleMemberTypes (MemberTypes one, MemberTypes two)

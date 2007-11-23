@@ -170,6 +170,26 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
+    public void CopyFilteredAttributes_OnClass ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingFilteredAttributes)))
+      {
+        MixinDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinIndirectlyAddingFilteredAttributes)];
+        Assert.IsFalse (definition.CustomAttributes.ContainsKey (typeof (CopyCustomAttributesAttribute)));
+        Assert.IsFalse (definition.CustomAttributes.ContainsKey (typeof (AttributeWithParameters)));
+        Assert.IsTrue (definition.CustomAttributes.ContainsKey (typeof (AttributeWithParameters2)));
+        Assert.IsTrue (definition.CustomAttributes.ContainsKey (typeof (AttributeWithParameters3)));
+
+        List<AttributeDefinition> attributes =
+            new List<AttributeDefinition> (definition.CustomAttributes[typeof (AttributeWithParameters2)]);
+        Assert.AreEqual (2, attributes.Count);
+
+        attributes = new List<AttributeDefinition> (definition.CustomAttributes[typeof (AttributeWithParameters3)]);
+        Assert.AreEqual (1, attributes.Count);
+      }
+    }
+
+    [Test]
     public void CopyNonInheritedAttributes ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingNonInheritedAttribute)))
@@ -177,6 +197,30 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         MixinDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinIndirectlyAddingNonInheritedAttribute)];
         Assert.IsFalse (definition.CustomAttributes.ContainsKey (typeof (CopyCustomAttributesAttribute)));
         Assert.IsTrue (definition.CustomAttributes.ContainsKey (typeof (NonInheritedAttribute)));
+      }
+    }
+
+    [Test]
+    public void CopyNonInheritedAttributesFromSelf ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingNonInheritedAttributeFromSelf)))
+      {
+        MixinDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget))
+            .Mixins[typeof (MixinIndirectlyAddingNonInheritedAttributeFromSelf)];
+        Assert.IsFalse (definition.CustomAttributes.ContainsKey (typeof (CopyCustomAttributesAttribute)));
+        Assert.IsTrue (definition.CustomAttributes.ContainsKey (typeof (NonInheritedAttribute)));
+      }
+    }
+
+    [Test]
+    public void CopyNonInheritedAttributesFromSelf_DosntIntroduceDuplicates ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingInheritedAttributeFromSelf)))
+      {
+        MixinDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget))
+            .Mixins[typeof (MixinIndirectlyAddingInheritedAttributeFromSelf)];
+        Assert.IsTrue (definition.CustomAttributes.ContainsKey (typeof (AttributeWithParameters)));
+        Assert.AreEqual (1, new List<AttributeDefinition> (definition.CustomAttributes[typeof (AttributeWithParameters)]).Count);
       }
     }
 
@@ -204,6 +248,28 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.AreEqual (4, attributes[0].Data.ConstructorArguments[0].Value);
 
         Assert.AreEqual (0, attributes[0].Data.NamedArguments.Count);
+      }
+    }
+
+    [Test]
+    public void CopyFilteredAttributes_OnMember ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingFilteredAttributes)))
+      {
+        MethodDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinIndirectlyAddingFilteredAttributes)]
+            .Methods[typeof (MixinIndirectlyAddingFilteredAttributes).GetMethod ("ToString")];
+
+        Assert.IsFalse (definition.CustomAttributes.ContainsKey (typeof (CopyCustomAttributesAttribute)));
+        Assert.IsFalse (definition.CustomAttributes.ContainsKey (typeof (AttributeWithParameters)));
+        Assert.IsTrue (definition.CustomAttributes.ContainsKey (typeof (AttributeWithParameters2)));
+        Assert.IsTrue (definition.CustomAttributes.ContainsKey (typeof (AttributeWithParameters3)));
+
+        List<AttributeDefinition> attributes =
+            new List<AttributeDefinition> (definition.CustomAttributes[typeof (AttributeWithParameters2)]);
+        Assert.AreEqual (2, attributes.Count);
+
+        attributes = new List<AttributeDefinition> (definition.CustomAttributes[typeof (AttributeWithParameters3)]);
+        Assert.AreEqual (1, attributes.Count);
       }
     }
 
@@ -284,17 +350,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [CopyCustomAttributes(typeof (MixinWithSelfSource))]
     public class MixinWithSelfSource
     {
-    }
-
-    [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The CopyCustomAttributes attribute on "
-        + "Rubicon.Mixins.UnitTests.Configuration.AttributeDefinitionBuilderTests.MixinWithSelfSource specifies itself as an attribute source.")]
-    public void CopyAttributes_Self ()
-    {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithSelfSource)))
-      {
-        TypeFactory.GetActiveConfiguration (typeof (NullTarget));
-      }
     }
   }
 }

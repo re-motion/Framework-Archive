@@ -114,7 +114,7 @@ namespace Rubicon.Web.ExecutionEngine
 
     /// <summary> Creates a new transaction. </summary>
     /// <returns> A new instance of type <typeparamref name="TTransaction"/>. </returns>
-    /// <exception cref="InvalidOperationException"> Thrown if <see langword="null"/> where to be returned as the child transaction. </exception>
+    /// <exception cref="InvalidOperationException"> Thrown if <see langword="null"/> were to be returned as the child transaction. </exception>
     protected TTransaction CreateTransaction ()
     {
       WxeTransactionBase<TTransaction> parentTransaction = GetParentTransaction ();
@@ -259,6 +259,7 @@ namespace Rubicon.Web.ExecutionEngine
       CheckCurrentTransactionResettable ();
 
       CheckAndRestorePreviousCurrentTransaction ();
+      // TODO !! Release transaction !!
       _transaction = null;
       InitializeTransaction ();
     }
