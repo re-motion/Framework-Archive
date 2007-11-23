@@ -299,6 +299,8 @@
     </Compile>
     <Compile Include="Utilities\AssertionTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\AttributeUsageTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\ComplexAttributeTarget.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\InstantiateAttributeDataTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\NotInheritedNotMultipleAttribute.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\ImplicitUsageAttribute.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\IsDefinedFromMemberInfoTest.cs" />
@@ -312,6 +314,7 @@
     <Compile Include="Utilities\BidirectionalStringConverterTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\AttributeUtilityTests\ComplexAttribute.cs" />
     <Compile Include="Utilities\EnumDescriptionTest.cs">
       <SubType>Code</SubType>
     </Compile>
