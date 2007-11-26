@@ -145,6 +145,11 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
     }    
   }
 
+  public override RelationEndPointModification CreateModification (IEndPoint oldEndPoint, IEndPoint newEndPoint)
+  {
+    return new ObjectEndPointModification (this, oldEndPoint, newEndPoint);
+  }
+
   public override void BeginRelationChange (IEndPoint oldEndPoint, IEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);

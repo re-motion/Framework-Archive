@@ -146,24 +146,50 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     }
   }
 
+  public override RelationEndPointModification CreateModification (IEndPoint oldEndPoint, IEndPoint newEndPoint)
+  {
+    return new CollectionEndPointModification (this, GetAddRemoveChangeAgent (oldEndPoint, newEndPoint));
+  }
+
+  public virtual CollectionEndPointModification CreateInsertModification (IEndPoint oldEndPoint, IEndPoint newEndPoint, int index)
+  {
+    return new CollectionEndPointModification (this,
+        CollectionEndPointChangeAgent.CreateForInsert (_oppositeDomainObjects, oldEndPoint, newEndPoint, index));
+  }
+
+  public virtual CollectionEndPointModification CreateReplaceModification (IEndPoint oldEndPoint, IEndPoint newEndPoint)
+  {
+    return new CollectionEndPointModification (this,
+        CollectionEndPointChangeAgent.CreateForReplace (
+        _oppositeDomainObjects, oldEndPoint, newEndPoint, _oppositeDomainObjects.IndexOf (oldEndPoint.GetDomainObject ())));
+  }
+
   public override void BeginRelationChange (IEndPoint oldEndPoint, IEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
-    if (oldEndPoint.IsNull && newEndPoint.IsNull)
-      throw new ArgumentException ("Both endPoints cannot be NullEndPoints.", "oldEndPoint, newEndPoint");
+    CollectionEndPointChangeAgent changeAgent;
 
-    if (!oldEndPoint.IsNull && !newEndPoint.IsNull)
-      throw new ArgumentException ("One endPoint must be a NullEndPoint.", "oldEndPoint, newEndPoint");
-
-    if (!oldEndPoint.IsNull && newEndPoint.IsNull)
-       _changeAgent = CollectionEndPointChangeAgent.CreateForRemove (_oppositeDomainObjects, oldEndPoint, newEndPoint);
-
-    if (!newEndPoint.IsNull && oldEndPoint.IsNull)
-      _changeAgent = CollectionEndPointChangeAgent.CreateForAdd (_oppositeDomainObjects, oldEndPoint, newEndPoint);
+    changeAgent = GetAddRemoveChangeAgent(oldEndPoint, newEndPoint);
+    _changeAgent = changeAgent;
 
     BeginRelationChange ();
+  }
+
+  private CollectionEndPointChangeAgent GetAddRemoveChangeAgent (IEndPoint oldEndPoint, IEndPoint newEndPoint)
+  {
+    if (oldEndPoint.IsNull && newEndPoint.IsNull)
+      throw new ArgumentException ("Both endPoints cannot be NullEndPoints.", "oldEndPoint, newEndPoint");
+    else if (!oldEndPoint.IsNull && !newEndPoint.IsNull)
+      throw new ArgumentException ("One endPoint must be a NullEndPoint.", "oldEndPoint, newEndPoint");
+    else if (!oldEndPoint.IsNull && newEndPoint.IsNull)
+      return CollectionEndPointChangeAgent.CreateForRemove (_oppositeDomainObjects, oldEndPoint, newEndPoint);
+    else
+    {
+      Assertion.IsTrue (!newEndPoint.IsNull && oldEndPoint.IsNull);
+      return CollectionEndPointChangeAgent.CreateForAdd (_oppositeDomainObjects, oldEndPoint, newEndPoint);
+    }
   }
 
   public virtual void BeginInsert (IEndPoint oldEndPoint, IEndPoint newEndPoint, int index)

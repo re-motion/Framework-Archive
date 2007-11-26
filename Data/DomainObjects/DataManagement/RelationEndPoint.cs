@@ -105,6 +105,7 @@ public abstract class RelationEndPoint : IEndPoint
   public abstract void CheckMandatory ();
   public abstract void PerformRelationChange ();
   public abstract void PerformDelete ();
+  public abstract RelationEndPointModification CreateModification (IEndPoint oldEndPoint, IEndPoint newEndPoint);
 
   // methods and properties
 

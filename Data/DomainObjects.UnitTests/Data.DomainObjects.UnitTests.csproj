@@ -178,6 +178,8 @@
     <Compile Include="Configuration\StorageProviders\RdbmsProviderDefinitionTest.cs" />
     <Compile Include="Configuration\StorageProviders\TypeProviderTest.cs" />
     <TestDomain Include="Design\DelaySignAssembly\DelaySignClass.cs" />
+    <Compile Include="DataManagement\CollectionEndPointModificationTest.cs" />
+    <Compile Include="DataManagement\ObjectEndPointModificationTest.cs" />
     <Compile Include="DomainObjects\GraphTest.cs" />
     <Compile Include="DomainObjects\MultiTransactionTest.cs" />
     <Compile Include="DomainObjects\ObjectListIListTest.cs" />

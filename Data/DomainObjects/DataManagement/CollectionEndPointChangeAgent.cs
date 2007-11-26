@@ -105,7 +105,7 @@ public class CollectionEndPointChangeAgent
     
   // methods and properties
 
-  public void BeginRelationChange ()
+  public virtual void BeginRelationChange ()
   {
     if (MustRemoveObject)
       _oppositeDomainObjects.BeginRemove (OldRelatedObject);
@@ -114,7 +114,7 @@ public class CollectionEndPointChangeAgent
       _oppositeDomainObjects.BeginAdd (NewRelatedObject);
   }
 
-  public void PerformRelationChange ()
+  public virtual void PerformRelationChange ()
   {
     switch (_operation)
     {
@@ -137,7 +137,7 @@ public class CollectionEndPointChangeAgent
     }
   }
 
-  public void EndRelationChange ()
+  public virtual void EndRelationChange ()
   {
     if (MustRemoveObject)
       _oppositeDomainObjects.EndRemove (OldRelatedObject);
