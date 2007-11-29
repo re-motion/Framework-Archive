@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Rubicon.Mixins.Context;
 using NUnit.Framework;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.UnitTests.Configuration
@@ -265,6 +267,19 @@ namespace Rubicon.Mixins.UnitTests.Configuration
           .AddType (typeof (ClosedGenericSuppressingExtender_WithWrongParameterTypes)).BuildContext ();
       ClassContext classContext = context.GetClassContext (typeof (ExtendsTargetBase));
       Assert.IsTrue (classContext.ContainsMixin (typeof (GenericMixinWithSpecialization<List<int>, IList<int>>)));
+    }
+
+    [Test]
+    public void ExtendsAppliedToSpecificGenericClass ()
+    {
+      ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (MixinExtendingSpecificGenericClass)).BuildContext();
+      Assert.IsTrue (context.ContainsClassContext (typeof (GenericClassExtendedByMixin<int>)));
+      Assert.IsFalse (context.ContainsClassContext (typeof (GenericClassExtendedByMixin<string>)));
+      Assert.IsFalse (context.ContainsClassContext (typeof (GenericClassExtendedByMixin<>)));
+
+      Assert.IsNotNull (context.GetClassContext (typeof (GenericClassExtendedByMixin<int>)));
+      Assert.IsNull (context.GetClassContext (typeof (GenericClassExtendedByMixin<string>)));
+      Assert.IsNull (context.GetClassContext (typeof (GenericClassExtendedByMixin<>)));
     }
   }
 }

@@ -348,34 +348,134 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void GenericTypesTransparentlyConvertedToTypeDefinitions ()
+    public void GenericTypesNotTransparentlyConvertedToTypeDefinitions ()
     {
       ApplicationContext context = new ApplicationContext ();
       context.AddClassContext (new ClassContext (typeof (List<int>)));
       Assert.IsTrue (context.ContainsClassContext (typeof (List<int>)));
+      Assert.IsFalse (context.ContainsClassContext (typeof (List<>)));
+
+      context.AddClassContext (new ClassContext (typeof (List<string>)));
+
+      Assert.AreEqual (2, context.ClassContextCount);
+      context.AddOrReplaceClassContext (new ClassContext (typeof (List<double>)));
+      Assert.AreEqual (3, context.ClassContextCount);
+
+      ClassContext classContext1 = context.GetClassContext (typeof (List<int>));
+      ClassContext classContext2 = context.GetClassContextNonRecursive (typeof (List<string>));
+      Assert.AreNotSame (classContext1, classContext2);
+
+      ClassContext classContext3 = context.GetClassContext (typeof (List<List<int>>));
+      Assert.IsNull (classContext3);
+
+      Assert.IsFalse (context.RemoveClassContext (typeof (List<bool>)));
+      Assert.AreEqual (3, context.ClassContextCount);
+      Assert.IsTrue (context.RemoveClassContext (typeof (List<int>)));
+      Assert.AreEqual (2, context.ClassContextCount);
+      Assert.IsFalse (context.RemoveClassContext (typeof (List<int>)));
+    }
+
+    [Test]
+    public void AddContextForGenericSpecialization ()
+    {
+      ApplicationContext context = new ApplicationContext ();
+      context.AddClassContext (new ClassContext (typeof (List<>)));
+
+      Assert.AreEqual (1, context.ClassContextCount);
+      Assert.IsTrue (context.ContainsClassContext (typeof (List<int>)));
       Assert.IsTrue (context.ContainsClassContext (typeof (List<>)));
 
-      try
-      {
-        context.AddClassContext (new ClassContext (typeof (List<string>)));
-        Assert.Fail ("Expected InvalidOperationException");
-      }
-      catch (InvalidOperationException) { }
+      Assert.AreSame (context.GetClassContext (typeof (List<>)), context.GetClassContext (typeof (List<int>)));
+
+      context.AddClassContext (new ClassContext (typeof (List<int>)));
+
+      Assert.AreEqual (2, context.ClassContextCount);
+      Assert.IsTrue (context.ContainsClassContext (typeof (List<int>)));
+      Assert.IsTrue (context.ContainsClassContext (typeof (List<>)));
+
+      Assert.AreNotSame (context.GetClassContext (typeof (List<>)), context.GetClassContext (typeof (List<int>)));
+    }
+
+    [Test]
+    public void AddOrReplaceContextForGenericSpecialization ()
+    {
+      ApplicationContext context = new ApplicationContext ();
+      context.AddClassContext (new ClassContext (typeof (List<>)));
 
       Assert.AreEqual (1, context.ClassContextCount);
-      context.AddOrReplaceClassContext (new ClassContext (typeof (List<double>)));
-      Assert.AreEqual (1, context.ClassContextCount);
+      Assert.IsTrue (context.ContainsClassContext (typeof (List<int>)));
+      Assert.IsTrue (context.ContainsClassContext (typeof (List<>)));
+
+      Assert.AreSame (context.GetClassContext (typeof (List<>)), context.GetClassContext (typeof (List<int>)));
+
+      ClassContext listIntContext = new ClassContext (typeof (List<int>));
+      context.AddOrReplaceClassContext (listIntContext);
+
+      Assert.AreEqual (2, context.ClassContextCount);
+      Assert.IsTrue (context.ContainsClassContext (typeof (List<int>)));
+      Assert.IsTrue (context.ContainsClassContext (typeof (List<>)));
+
+      Assert.AreNotSame (context.GetClassContext (typeof (List<>)), context.GetClassContext (typeof (List<int>)));
+      Assert.AreSame (listIntContext, context.GetClassContext (typeof (List<int>)));
+
+      ClassContext newListIntContext = new ClassContext (typeof (List<int>));
+      context.AddOrReplaceClassContext (newListIntContext);
+      Assert.AreEqual (2, context.ClassContextCount);
+
+      Assert.AreSame (newListIntContext, context.GetClassContext (typeof (List<int>)));
+    }
+
+    [Test]
+    public void GetContextForGenericTypeDefinitions ()
+    {
+      ApplicationContext context = new ApplicationContext ();
+      context.AddClassContext (new ClassContext (typeof (List<>)));
+      Assert.IsTrue (context.ContainsClassContext (typeof (List<int>)));
+      Assert.IsTrue (context.ContainsClassContext (typeof (List<>)));
 
       ClassContext classContext1 = context.GetClassContext (typeof (List<int>));
       ClassContext classContext2 = context.GetClassContextNonRecursive (typeof (List<>));
       Assert.AreSame (classContext1, classContext2);
+    }
 
-      ClassContext classContext3 = context.GetOrAddClassContext (typeof (List<List<int>>));
-      Assert.AreSame (classContext1, classContext3);
+    [Test]
+    public void GetOrAddContextForGenericTypeDefinitions ()
+    {
+      ApplicationContext context = new ApplicationContext ();
+      ClassContext genericListContext = new ClassContext (typeof (List<>));
+      context.AddClassContext (genericListContext);
 
-      Assert.IsTrue (context.RemoveClassContext (typeof (List<bool>)));
+      ClassContext listIntContext = context.GetClassContext (typeof (List<int>));
+      ClassContext listListContext = context.GetOrAddClassContext (typeof (List<List<int>>));
+      Assert.AreNotSame (listIntContext, listListContext);
+
+      ClassContext listListContext2 = context.GetOrAddClassContext (typeof (List<List<int>>));
+      Assert.AreSame (listListContext, listListContext2);
+
+      ClassContext genericListContext2 = context.GetOrAddClassContext (typeof (List<>));
+      Assert.AreSame (genericListContext, genericListContext2);
+    }
+
+    [Test]
+    public void RemoveClassContextForGenericTypeDefinitions ()
+    {
+      ApplicationContext context = new ApplicationContext ();
+      context.AddClassContext (new ClassContext (typeof (List<>)));
+      Assert.IsFalse (context.RemoveClassContext (typeof (List<int>)));
+      Assert.AreEqual (1, context.ClassContextCount);
+      
+      context.AddClassContext (new ClassContext (typeof (List<int>)));
+      Assert.AreEqual (2, context.ClassContextCount);
+      
+      Assert.IsTrue (context.RemoveClassContext (typeof (List<int>)));
+      Assert.AreEqual (1, context.ClassContextCount);
+      Assert.IsFalse (context.RemoveClassContext (typeof (List<int>)));
+      Assert.AreEqual (1, context.ClassContextCount);
+
+      Assert.IsTrue (context.RemoveClassContext (typeof (List<>)));
       Assert.AreEqual (0, context.ClassContextCount);
-      Assert.IsFalse (context.RemoveClassContext (typeof (List<bool>)));
+      Assert.IsFalse (context.RemoveClassContext (typeof (List<>)));
+      Assert.AreEqual (0, context.ClassContextCount);
     }
   }
 }

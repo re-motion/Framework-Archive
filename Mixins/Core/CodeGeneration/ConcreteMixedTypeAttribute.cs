@@ -133,11 +133,9 @@ namespace Rubicon.Mixins.CodeGeneration
           context.GetOrAddMixinContext (currentMixin).AddExplicitDependency (type);
       }
 
-      if (TargetType.IsGenericType)
-      {
-        Assertion.IsTrue (context.Type.IsGenericTypeDefinition);
+      if (TargetType.IsGenericType && context.Type.IsGenericTypeDefinition)
         context = context.SpecializeWithTypeArguments (TargetType.GetGenericArguments ());
-      }
+
       return context;
     }
 

@@ -274,11 +274,9 @@ namespace Rubicon.Mixins
       if (context == null && generationPolicy == GenerationPolicy.ForceGeneration)
         context = new ClassContext (targetType);
 
-      if (context != null && targetType.IsGenericType)
-      {
-        Assertion.IsTrue (context.Type.IsGenericTypeDefinition);
-        context = context.SpecializeWithTypeArguments (targetType.GetGenericArguments());
-      }
+      if (context != null && targetType.IsGenericType && context.Type.IsGenericTypeDefinition)
+        context = context.SpecializeWithTypeArguments (targetType.GetGenericArguments ());
+
       return context;
     }
 

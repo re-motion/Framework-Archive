@@ -586,11 +586,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void GenericTypesTransparentlyConvertedToTypeDefinitions ()
+    public void GenericTypesNotTransparentlyConvertedToTypeDefinitions ()
     {
       ClassContext context = new ClassContext (typeof (List<int>));
-      Assert.AreNotEqual (typeof (List<int>), context.Type);
-      Assert.AreEqual (typeof (List<>), context.Type);
+      Assert.AreEqual (typeof (List<int>), context.Type);
     }
 
     [Test]

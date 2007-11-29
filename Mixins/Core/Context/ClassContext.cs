@@ -32,21 +32,14 @@ namespace Rubicon.Mixins.Context
     /// </summary>
     /// <param name="type">The mixin target type to be represented by this context.</param>
     /// <exception cref="ArgumentNullException">The <paramref name="type"/> parameter is <see langword="null"/>.</exception>
-    public ClassContext (Type type) : this (type, true)
-    {
-    }
-
-    private ClassContext (Type type, bool forceGenericTypeDefinition)
+    public ClassContext (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      if (forceGenericTypeDefinition && type.IsGenericType && !type.IsGenericTypeDefinition)
-        type = type.GetGenericTypeDefinition ();
-
       _type = type;
-      _mixins = new Dictionary<Type, MixinContext>();
+      _mixins = new Dictionary<Type, MixinContext> ();
       _mixinWrapperForOutside = new UncastableEnumerableWrapper<MixinContext> (_mixins.Values);
-      _completeInterfaces = new List<Type>();
+      _completeInterfaces = new List<Type> ();
       _completeInterfaceWrapperForOutside = new UncastableEnumerableWrapper<Type> (_completeInterfaces);
     }
 
@@ -424,21 +417,16 @@ namespace Rubicon.Mixins.Context
     /// <returns>A new <see cref="ClassContext"/> holding equivalent configuration data as this <see cref="ClassContext"/> does.</returns>
     public ClassContext Clone ()
     {
-      ClassContext newInstance = CloneForSpecificType (Type, false);
+      ClassContext newInstance = CloneForSpecificType (Type);
       Assertion.DebugAssert (newInstance.Equals (this));
       return newInstance;
     }
 
     internal ClassContext CloneForSpecificType (Type type)
     {
-      return CloneForSpecificType (type, true);
-    }
-
-    private ClassContext CloneForSpecificType (Type type, bool forceGenericTypeDefinition)
-    {
       lock (_lockObject)
       {
-        ClassContext newInstance = new ClassContext (type, forceGenericTypeDefinition);
+        ClassContext newInstance = new ClassContext (type);
 
         foreach (MixinContext mixinContext in Mixins)
           mixinContext.CloneAndAddTo (newInstance);
@@ -490,7 +478,7 @@ namespace Rubicon.Mixins.Context
       
       lock (_lockObject)
       {
-        ClassContext newInstance = new ClassContext (Type.MakeGenericType (genericArguments), false);
+        ClassContext newInstance = new ClassContext (Type.MakeGenericType (genericArguments));
 
         foreach (MixinContext mixinContext in Mixins)
           mixinContext.CloneAndAddTo (newInstance);

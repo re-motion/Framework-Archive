@@ -67,6 +67,21 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
+    public void MixinExtendingSpecificGenericType ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (GenericClassExtendedByMixin<int>), typeof (MixinExtendingSpecificGenericClass)))
+      {
+        TargetClassDefinition targetClassDefinition =
+            TypeFactory.GetActiveConfiguration (typeof (GenericClassExtendedByMixin<int>), GenerationPolicy.GenerateOnlyIfConfigured);
+        Assert.IsNotNull (targetClassDefinition);
+        Assert.IsTrue (targetClassDefinition.Mixins.ContainsKey (typeof (MixinExtendingSpecificGenericClass)));
+
+        Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (GenericClassExtendedByMixin<string>), GenerationPolicy.GenerateOnlyIfConfigured));
+        Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (GenericClassExtendedByMixin<>), GenerationPolicy.GenerateOnlyIfConfigured));
+      }
+    }
+
+    [Test]
     public void NoDefinitionGeneratedIfNoConfigByDefault()
     {
       Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));

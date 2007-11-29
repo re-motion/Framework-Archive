@@ -63,6 +63,8 @@
     <Compile Include="SampleTypes\ClassOverridingSpecificGenericMixinMember.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters2.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters3.cs" />
+    <Compile Include="SampleTypes\GenericClassExtendedByMixin.cs" />
+    <Compile Include="SampleTypes\MixinExtendingSpecificGenericClass.cs" />
     <Compile Include="SampleTypes\MixinIndirectlyAddingInheritedAttributeFromSelf.cs" />
     <Compile Include="SampleTypes\MixinIndirectlyAddingNonInheritedAttributeFromSelf.cs" />
     <Compile Include="SampleTypes\MixinIndirectlyAddingFilteredAttributes.cs" />

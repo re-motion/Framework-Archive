@@ -66,7 +66,7 @@ namespace Rubicon.Mixins.Context
     {
       ArgumentUtility.CheckNotNull ("classContext", classContext);
 
-      if (ContainsClassContext (classContext.Type))
+      if (_classContexts.ContainsKey (classContext.Type))
       {
         string message = string.Format ("There is already a class context for type {0}.", classContext.Type.FullName);
         throw new InvalidOperationException (message);
@@ -110,10 +110,13 @@ namespace Rubicon.Mixins.Context
     public ClassContext GetClassContextNonRecursive (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      if (type.IsGenericType && !type.IsGenericTypeDefinition)
-        type = type.GetGenericTypeDefinition ();
 
-      return ContainsClassContext (type) ? _classContexts[type] : null;
+      if (_classContexts.ContainsKey (type))
+        return _classContexts[type];
+      else if (type.IsGenericType && !type.IsGenericTypeDefinition)
+        return GetClassContextNonRecursive (type.GetGenericTypeDefinition());
+      else
+        return null;
     }
 
     /// <summary>
@@ -125,10 +128,12 @@ namespace Rubicon.Mixins.Context
     public bool ContainsClassContext (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      if (type.IsGenericType && !type.IsGenericTypeDefinition)
-        type = type.GetGenericTypeDefinition ();
-
-      return _classContexts.ContainsKey (type);
+      if (_classContexts.ContainsKey (type))
+        return true;
+      else if (type.IsGenericType && !type.IsGenericTypeDefinition)
+        return ContainsClassContext (type.GetGenericTypeDefinition());
+      else
+        return false;
     }
 
     /// <summary>
@@ -140,7 +145,7 @@ namespace Rubicon.Mixins.Context
     {
       ArgumentUtility.CheckNotNull ("type", type);
       ClassContext classContext = GetClassContextNonRecursive (type);
-      if (classContext == null)
+      if (classContext == null || !classContext.Type.Equals (type))
       {
         classContext = new ClassContext (type);
         AddClassContext (classContext);
@@ -157,7 +162,7 @@ namespace Rubicon.Mixins.Context
     {
       ArgumentUtility.CheckNotNull ("type", type);
       ClassContext context = GetClassContextNonRecursive (type);
-      if (context != null)
+      if (context != null && context.Type.Equals (type))
       {
         List<Type> interfacesToRemove = new List<Type>();
         foreach (Type registeredInterface in _registeredInterfaces.Keys)
