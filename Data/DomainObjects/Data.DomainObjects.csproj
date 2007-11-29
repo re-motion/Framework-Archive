@@ -108,6 +108,7 @@
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\PropertyFinderBase.cs" />
     <Compile Include="ClientTransactionScope.cs" />
     <Compile Include="DataManagement\CollectionEndPointModification.cs" />
+    <Compile Include="DataManagement\NullEndPointModification.cs" />
     <Compile Include="DataManagement\ObjectEndPointModification.cs" />
     <Compile Include="DataManagement\RelationEndPointModification.cs" />
     <Compile Include="DBStorageGroupAttribute.cs" />

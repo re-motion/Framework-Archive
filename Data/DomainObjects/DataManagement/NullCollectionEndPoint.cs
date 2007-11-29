@@ -20,6 +20,11 @@ public class NullCollectionEndPoint : CollectionEndPoint
 
   // methods and properties
 
+  public override RelationEndPointModification CreateModification (IEndPoint oldEndPoint, IEndPoint newEndPoint)
+  {
+    return new NullEndPointModification (this, oldEndPoint, newEndPoint);
+  }
+
   public override void NotifyClientTransactionOfBeginRelationChange (IEndPoint oldEndPoint, IEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
