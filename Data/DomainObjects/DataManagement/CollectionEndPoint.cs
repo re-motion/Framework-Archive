@@ -30,9 +30,6 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   private bool _hasBeenTouched;
 
-  [NonSerialized]
-  private CollectionEndPointChangeAgent _changeAgent;
-
   // construction and disposing
 
   public CollectionEndPoint (
@@ -164,19 +161,6 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
         _oppositeDomainObjects, oldEndPoint, newEndPoint, _oppositeDomainObjects.IndexOf (oldEndPoint.GetDomainObject ())));
   }
 
-  public override void BeginRelationChange (IEndPoint oldEndPoint, IEndPoint newEndPoint)
-  {
-    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
-    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
-
-    CollectionEndPointChangeAgent changeAgent;
-
-    changeAgent = GetAddRemoveChangeAgent(oldEndPoint, newEndPoint);
-    _changeAgent = changeAgent;
-
-    BeginRelationChange ();
-  }
-
   private CollectionEndPointChangeAgent GetAddRemoveChangeAgent (IEndPoint oldEndPoint, IEndPoint newEndPoint)
   {
     if (oldEndPoint.IsNull && newEndPoint.IsNull)
@@ -190,36 +174,6 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       Assertion.IsTrue (!newEndPoint.IsNull && oldEndPoint.IsNull);
       return CollectionEndPointChangeAgent.CreateForAdd (_oppositeDomainObjects, oldEndPoint, newEndPoint);
     }
-  }
-
-  public virtual void BeginInsert (IEndPoint oldEndPoint, IEndPoint newEndPoint, int index)
-  {
-    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
-    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
-
-    _changeAgent = CollectionEndPointChangeAgent.CreateForInsert (_oppositeDomainObjects, oldEndPoint, newEndPoint, index);
-
-    BeginRelationChange ();
-  }
-
-  public virtual void BeginReplace (IEndPoint oldEndPoint, IEndPoint newEndPoint)
-  {
-    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
-    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
-
-    _changeAgent = CollectionEndPointChangeAgent.CreateForReplace (
-        _oppositeDomainObjects, oldEndPoint, newEndPoint, _oppositeDomainObjects.IndexOf (oldEndPoint.GetDomainObject ()));
-
-    BeginRelationChange ();
-  }
-
-  public override void PerformRelationChange ()
-  {
-    if (_changeAgent == null)
-      throw new InvalidOperationException ("BeginRelationChange must be called before PerformRelationChange.");
-
-    _changeAgent.PerformRelationChange ();
-    _hasBeenTouched = true;
   }
 
   public virtual void PerformRelationChange (CollectionEndPointModification modification)
@@ -236,17 +190,6 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     _hasBeenTouched = true;
   }
 
-  public override void EndRelationChange ()
-  {
-    if (_changeAgent == null)
-      throw new InvalidOperationException ("BeginRelationChange must be called before EndRelationChange.");
-
-    _changeAgent.EndRelationChange ();
-    _changeAgent = null;
-
-    base.EndRelationChange ();
-  }
-
   public DomainObjectCollection OriginalOppositeDomainObjects
   {
     get { return _originalOppositeDomainObjects; }
@@ -261,12 +204,6 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   {
     get { return _changeDelegate; }
     set { _changeDelegate = value; }
-  }
-
-  private void BeginRelationChange ()
-  {
-    _changeAgent.BeginRelationChange ();
-    base.BeginRelationChange (_changeAgent.OldEndPoint, _changeAgent.NewEndPoint);
   }
 
   #region ICollectionChangeDelegate Members

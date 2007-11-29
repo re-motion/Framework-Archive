@@ -2,7 +2,6 @@ using System;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
@@ -88,6 +87,44 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       _mockRepository.ReplayAll ();
 
       _modification.End ();
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void NotifyClientTransactionOfBeginDoesNothing ()
+    {
+      _mockRepository.ReplayAll ();
+
+      _modification.NotifyClientTransactionOfBegin ();
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void NotifyClientTransactionOfEndDoesNothing ()
+    {
+      _mockRepository.ReplayAll ();
+
+      _modification.NotifyClientTransactionOfEnd ();
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void ExecuteAllSteps ()
+    {
+      NullEndPointModification modificationMock = _mockRepository.CreateMock<NullEndPointModification> (_endPointMock, _oldEndPointMock, _newEndPointMock);
+
+      modificationMock.NotifyClientTransactionOfBegin ();
+      modificationMock.Begin ();
+      modificationMock.Perform ();
+      modificationMock.NotifyClientTransactionOfEnd ();
+      modificationMock.End ();
+
+      _mockRepository.ReplayAll ();
+
+      modificationMock.ExecuteAllSteps ();
 
       _mockRepository.VerifyAll ();
     }

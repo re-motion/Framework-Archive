@@ -35,28 +35,9 @@ public class NullObjectEndPoint : ObjectEndPoint
   {
   }
 
-  public override void BeginRelationChange (IEndPoint oldEndPoint, IEndPoint newEndPoint)
-  {
-    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
-    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
-  }
-
-  public override void PerformRelationChange ()
-  {
-  }
-
-  public override void PerformRelationChange (IEndPoint endPoint)
-  {
-    ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-  }
-
   public override void PerformDelete ()
   {
     throw new InvalidOperationException ("PerformDelete cannot be called on a NullObjectEndPoint.");    
-  }
-
-  public override void EndRelationChange ()
-  {
   }
 
   public override void CheckMandatory ()

@@ -201,9 +201,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       Assert.AreEqual (_customerEndPoint.OriginalOppositeDomainObjects.Count, _customerEndPoint.OppositeDomainObjects.Count);
 
-      _customerEndPoint.BeginRelationChange (CreateObjectEndPoint (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _customerEndPoint.ObjectID));
-      _customerEndPoint.PerformRelationChange ();
-      _customerEndPoint.EndRelationChange ();
+      RelationEndPointModification modification = _customerEndPoint.CreateModification (CreateObjectEndPoint (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _customerEndPoint.ObjectID));
+      modification.Begin ();
+      modification.Perform ();
+      modification.End ();
+
+      Assert.IsTrue (_customerEndPoint.OriginalOppositeDomainObjects.Count != _customerEndPoint.OppositeDomainObjects.Count);
+    }
+
+    [Test]
+    public void PerformWithoutBegin ()
+    {
+      Assert.AreEqual (_customerEndPoint.OriginalOppositeDomainObjects.Count, _customerEndPoint.OppositeDomainObjects.Count);
+
+      RelationEndPointModification modification =
+          _customerEndPoint.CreateModification (
+              CreateObjectEndPoint (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _customerEndPoint.ObjectID));
+      modification.Perform();
 
       Assert.IsTrue (_customerEndPoint.OriginalOppositeDomainObjects.Count != _customerEndPoint.OppositeDomainObjects.Count);
     }
@@ -213,9 +227,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       Assert.AreEqual (_customerEndPoint.OriginalOppositeDomainObjects.Count, _customerEndPoint.OppositeDomainObjects.Count);
 
-      _customerEndPoint.BeginRelationChange (CreateObjectEndPoint (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _customerEndPoint.ObjectID));
+      RelationEndPointModification modification = _customerEndPoint.CreateModification (CreateObjectEndPoint (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _customerEndPoint.ObjectID));
+      modification.Begin ();
       _customerEndPoint.PerformDelete ();
-      _customerEndPoint.EndRelationChange ();
+      modification.End ();
 
       Assert.IsTrue (_customerEndPoint.OriginalOppositeDomainObjects.Count != _customerEndPoint.OppositeDomainObjects.Count);
       Assert.AreEqual (0, _customerEndPoint.OppositeDomainObjects.Count);

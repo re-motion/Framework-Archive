@@ -102,5 +102,47 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsFalse (eventReceiver.HasRelationChangingEventBeenCalled);
       Assert.IsTrue (eventReceiver.HasRelationChangedEventBeenCalled);
     }
+
+    [Test]
+    public void NotifyClientTransactionOfBegin ()
+    {
+      _endPointMock.NotifyClientTransactionOfBeginRelationChange (_oldEndPointMock, _newEndPointMock);
+
+      _mockRepository.ReplayAll();
+
+      _modification.NotifyClientTransactionOfBegin();
+
+      _mockRepository.VerifyAll();
+    }
+
+    [Test]
+    public void NotifyClientTransactionOfEnd ()
+    {
+      _endPointMock.NotifyClientTransactionOfEndRelationChange ();
+
+      _mockRepository.ReplayAll ();
+
+      _modification.NotifyClientTransactionOfEnd ();
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void ExecuteAllSteps ()
+    {
+      ObjectEndPointModification modificationMock = _mockRepository.CreateMock<ObjectEndPointModification> (_endPointMock, _oldEndPointMock, _newEndPointMock);
+
+      modificationMock.NotifyClientTransactionOfBegin ();
+      modificationMock.Begin ();
+      modificationMock.Perform ();
+      modificationMock.NotifyClientTransactionOfEnd ();
+      modificationMock.End();
+
+      _mockRepository.ReplayAll();
+
+      modificationMock.ExecuteAllSteps();
+
+      _mockRepository.VerifyAll();
+    }
   }
 }

@@ -72,7 +72,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
     }
   }
 
-  public void PerformDelete (DomainObject domainObject)
+  public void PerformDelete (DomainObject domainObject, RelationEndPointModificationCollection oppositeEndPointModifications)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
@@ -84,17 +84,28 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
     {
       RelationEndPoint endPoint = GetRelationEndPointWithLazyLoad (endPointID);
 
-      RelationEndPointCollection allOppositeEndPoints = 
-          _relationEndPoints.GetOppositeRelationEndPoints (endPoint);
-
-      foreach (RelationEndPoint oppositeEndPoint in allOppositeEndPoints)
-        oppositeEndPoint.PerformRelationChange ();
-
+      oppositeEndPointModifications.Perform();
       endPoint.PerformDelete ();
 
       if (domainObject.State == StateType.New)
         Remove (endPointID);
     }
+  }
+
+  public RelationEndPointModificationCollection GetOppositeEndPointModificationsForDelete (DomainObject domainObject)
+  {
+    RelationEndPointCollection allAffectedRelationEndPoints = GetAllRelationEndPointsWithLazyLoad (domainObject);
+    RelationEndPointCollection allOppositeRelationEndPoints = allAffectedRelationEndPoints.GetOppositeRelationEndPoints (domainObject);
+
+    RelationEndPointModificationCollection modifications = new RelationEndPointModificationCollection ();
+    foreach (RelationEndPoint oppositeEndPoint in allOppositeRelationEndPoints)
+    {
+      IRelationEndPointDefinition endPointDefinition = oppositeEndPoint.OppositeEndPointDefinition;
+      RelationEndPoint oldEndPoint = allAffectedRelationEndPoints[new RelationEndPointID (domainObject.ID, endPointDefinition)];
+
+      modifications.Add (oppositeEndPoint.CreateModification (oldEndPoint));
+    }
+    return modifications;
   }
 
   public DomainObject GetRelatedObject (RelationEndPointID endPointID, bool includeDeleted)
@@ -316,13 +327,8 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
       SetRelatedObjectForEqualObjects (endPoint, null);
     else
     {
-      endPoint.NotifyClientTransactionOfBeginRelationChange (oldRelatedEndPoint, newRelatedEndPoint);
-      endPoint.BeginRelationChange (oldRelatedEndPoint, newRelatedEndPoint);
-
-      endPoint.PerformRelationChange();
-
-      endPoint.NotifyClientTransactionOfEndRelationChange();
-      endPoint.EndRelationChange();
+      RelationEndPointModification modification = endPoint.CreateModification (oldRelatedEndPoint, newRelatedEndPoint);
+      modification.ExecuteAllSteps ();
     }
   }
 
@@ -385,30 +391,13 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
       oldRelatedEndPointOfNewRelatedEndPoint = (ObjectEndPoint) GetRelationEndPoint (oldRelatedObject, endPoint.Definition);
     }
 
-    endPoint.NotifyClientTransactionOfBeginRelationChange (oldRelatedEndPoint, newRelatedEndPoint);
-    oldRelatedEndPoint.NotifyClientTransactionOfBeginRelationChange (endPoint);
-    newRelatedEndPoint.NotifyClientTransactionOfBeginRelationChange (oldRelatedEndPointOfNewRelatedEndPoint, endPoint);
-    oldRelatedEndPointOfNewRelatedEndPoint.NotifyClientTransactionOfBeginRelationChange (newRelatedEndPoint);
+    RelationEndPointModificationCollection modifications = new RelationEndPointModificationCollection (
+        endPoint.CreateModification(oldRelatedEndPoint, newRelatedEndPoint),
+        oldRelatedEndPoint.CreateModification (endPoint),
+        newRelatedEndPoint.CreateModification (oldRelatedEndPointOfNewRelatedEndPoint, endPoint),
+        oldRelatedEndPointOfNewRelatedEndPoint.CreateModification (newRelatedEndPoint));
 
-    endPoint.BeginRelationChange (oldRelatedEndPoint, newRelatedEndPoint);
-    oldRelatedEndPoint.BeginRelationChange (endPoint);
-    newRelatedEndPoint.BeginRelationChange (oldRelatedEndPointOfNewRelatedEndPoint, endPoint);
-    oldRelatedEndPointOfNewRelatedEndPoint.BeginRelationChange (newRelatedEndPoint);
-
-    endPoint.PerformRelationChange();
-    oldRelatedEndPoint.PerformRelationChange();
-    newRelatedEndPoint.PerformRelationChange();
-    oldRelatedEndPointOfNewRelatedEndPoint.PerformRelationChange();
-
-    endPoint.NotifyClientTransactionOfEndRelationChange();
-    oldRelatedEndPoint.NotifyClientTransactionOfEndRelationChange();
-    newRelatedEndPoint.NotifyClientTransactionOfEndRelationChange();
-    oldRelatedEndPointOfNewRelatedEndPoint.NotifyClientTransactionOfEndRelationChange();
-
-    endPoint.EndRelationChange();
-    oldRelatedEndPoint.EndRelationChange();
-    newRelatedEndPoint.EndRelationChange();
-    oldRelatedEndPointOfNewRelatedEndPoint.EndRelationChange();
+    modifications.ExecuteAllSteps();
   }
 
   private void SetRelatedObjectForOneToManyRelation (
@@ -608,25 +597,12 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
 
     RelationEndPoint oldRelatedNullEndPoint = RelationEndPoint.CreateNullRelationEndPoint (addingEndPoint.Definition);
 
-    addingEndPoint.NotifyClientTransactionOfBeginRelationChange (oldRelatedOfAddingEndPoint, endPoint);
-    endPoint.NotifyClientTransactionOfBeginRelationChange (oldRelatedNullEndPoint, addingEndPoint);
-    oldRelatedOfAddingEndPoint.NotifyClientTransactionOfBeginRelationChange (addingEndPoint);
+    RelationEndPointModificationCollection modifications = new RelationEndPointModificationCollection (
+        addingEndPoint.CreateModification (oldRelatedOfAddingEndPoint, endPoint),
+        endPoint.CreateInsertModification (oldRelatedNullEndPoint, addingEndPoint, index),
+        oldRelatedOfAddingEndPoint.CreateModification (addingEndPoint));
 
-    addingEndPoint.BeginRelationChange (oldRelatedOfAddingEndPoint, endPoint);
-    endPoint.BeginInsert (oldRelatedNullEndPoint, addingEndPoint, index);
-    oldRelatedOfAddingEndPoint.BeginRelationChange (addingEndPoint);
-
-    addingEndPoint.PerformRelationChange();
-    endPoint.PerformRelationChange();
-    oldRelatedOfAddingEndPoint.PerformRelationChange();
-
-    addingEndPoint.NotifyClientTransactionOfEndRelationChange();
-    endPoint.NotifyClientTransactionOfEndRelationChange();
-    oldRelatedOfAddingEndPoint.NotifyClientTransactionOfEndRelationChange();
-
-    addingEndPoint.EndRelationChange();
-    endPoint.EndRelationChange();
-    oldRelatedOfAddingEndPoint.EndRelationChange();
+    modifications.ExecuteAllSteps();
   }
 
   void ICollectionEndPointChangeDelegate.PerformReplace (
@@ -648,30 +624,13 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
                                                                            GetRelatedObject (newEndPoint.ID, false),
                                                                            newEndPoint.OppositeEndPointDefinition);
 
-    oldEndPoint.NotifyClientTransactionOfBeginRelationChange (endPoint);
-    newEndPoint.NotifyClientTransactionOfBeginRelationChange (oldEndPointOfNewEndPoint, endPoint);
-    endPoint.NotifyClientTransactionOfBeginRelationChange (oldEndPoint, newEndPoint);
-    oldEndPointOfNewEndPoint.NotifyClientTransactionOfBeginRelationChange (newEndPoint);
+    RelationEndPointModificationCollection modifications = new RelationEndPointModificationCollection (
+        oldEndPoint.CreateModification (endPoint),
+        newEndPoint.CreateModification (oldEndPointOfNewEndPoint, endPoint),
+        endPoint.CreateReplaceModification (oldEndPoint, newEndPoint),
+        oldEndPointOfNewEndPoint.CreateModification (newEndPoint));
 
-    oldEndPoint.BeginRelationChange (endPoint);
-    newEndPoint.BeginRelationChange (oldEndPointOfNewEndPoint, endPoint);
-    endPoint.BeginReplace (oldEndPoint, newEndPoint);
-    oldEndPointOfNewEndPoint.BeginRelationChange (newEndPoint);
-
-    oldEndPoint.PerformRelationChange();
-    newEndPoint.PerformRelationChange();
-    endPoint.PerformRelationChange();
-    oldEndPointOfNewEndPoint.PerformRelationChange();
-
-    oldEndPoint.NotifyClientTransactionOfEndRelationChange();
-    newEndPoint.NotifyClientTransactionOfEndRelationChange();
-    endPoint.NotifyClientTransactionOfEndRelationChange();
-    oldEndPointOfNewEndPoint.NotifyClientTransactionOfEndRelationChange();
-
-    oldEndPoint.EndRelationChange();
-    newEndPoint.EndRelationChange();
-    endPoint.EndRelationChange();
-    oldEndPointOfNewEndPoint.EndRelationChange();
+    modifications.ExecuteAllSteps ();
   }
 
   void ICollectionEndPointChangeDelegate.PerformSelfReplace (
@@ -690,20 +649,11 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
 
     ObjectEndPoint removingEndPoint = (ObjectEndPoint) GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition);
 
-    removingEndPoint.NotifyClientTransactionOfBeginRelationChange (endPoint);
-    endPoint.NotifyClientTransactionOfBeginRelationChange (removingEndPoint);
+    RelationEndPointModificationCollection modifications = new RelationEndPointModificationCollection (
+        removingEndPoint.CreateModification (endPoint),
+        endPoint.CreateModification (removingEndPoint));
 
-    removingEndPoint.BeginRelationChange (endPoint);
-    endPoint.BeginRelationChange (removingEndPoint);
-
-    removingEndPoint.PerformRelationChange();
-    endPoint.PerformRelationChange();
-
-    removingEndPoint.NotifyClientTransactionOfEndRelationChange();
-    endPoint.NotifyClientTransactionOfEndRelationChange();
-
-    removingEndPoint.EndRelationChange();
-    endPoint.EndRelationChange();
+    modifications.ExecuteAllSteps ();
   }
 
   #endregion

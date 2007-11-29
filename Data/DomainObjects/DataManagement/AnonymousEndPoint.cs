@@ -12,10 +12,10 @@ public class AnonymousEndPoint : IEndPoint
 
   // member fields
 
-  private RelationDefinition _relationDefinition;
-  private AnonymousRelationEndPointDefinition _definition;
-  private ClientTransaction _clientTransaction;
-  private DomainObject _domainObject;
+  private readonly RelationDefinition _relationDefinition;
+  private readonly AnonymousRelationEndPointDefinition _definition;
+  private readonly ClientTransaction _clientTransaction;
+  private readonly DomainObject _domainObject;
 
   // construction and disposing
 

@@ -23,5 +23,15 @@ namespace Rubicon.Data.DomainObjects.DataManagement
     {
       // do nothing
     }
+
+    public override void NotifyClientTransactionOfBegin ()
+    {
+      // do nothing
+    }
+
+    public override void NotifyClientTransactionOfEnd ()
+    {
+      // do nothing
+    }
   }
 }

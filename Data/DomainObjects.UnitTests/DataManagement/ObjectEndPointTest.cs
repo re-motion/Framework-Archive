@@ -153,8 +153,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void HasBeenTouchedWithPerformRelationChange ()
     {
       Assert.IsFalse (_endPoint.HasBeenTouched);
-      _endPoint.PerformRelationChange (new NullObjectEndPoint(_endPoint.OppositeEndPointDefinition));
+      _endPoint.PerformRelationChange (
+          (ObjectEndPointModification) _endPoint.CreateModification (new NullObjectEndPoint (_endPoint.OppositeEndPointDefinition)));
       Assert.IsTrue (_endPoint.HasBeenTouched);
+    }
+
+    [Test]
+    public void PerformWithoutBegin ()
+    {
+      _endPoint.OppositeObjectID = DomainObjectIDs.Order1;
+      Assert.IsNotNull (_endPoint.OppositeObjectID);
+      _endPoint.CreateModification (ObjectEndPoint.CreateNullRelationEndPoint (_endPoint.OppositeEndPointDefinition)).Perform();
+      Assert.IsNull (_endPoint.OppositeObjectID);
     }
 
     [Test]

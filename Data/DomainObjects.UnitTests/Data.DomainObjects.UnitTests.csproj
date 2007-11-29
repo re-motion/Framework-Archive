@@ -303,6 +303,7 @@
     <Compile Include="Persistence\Rdbms\UpdateCommandBuilderTest.cs" />
     <Compile Include="Persistence\Rdbms\InsertCommandBuilderTest.cs" />
     <Compile Include="Persistence\Rdbms\QueryCommandBuilderTest.cs" />
+    <Compile Include="DataManagement\RelationEndPointModificationCollectionTest.cs" />
     <Compile Include="RhinoMocksRepositoryAdapter.cs" />
     <Compile Include="TestDomain\ClassWithSerializationCallbacks.cs" />
     <Compile Include="Serialization\SerializationCallbackTest.cs" />

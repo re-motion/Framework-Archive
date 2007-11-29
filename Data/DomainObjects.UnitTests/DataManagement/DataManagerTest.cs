@@ -7,6 +7,9 @@ using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
+  /// <summary>
+  /// 
+  /// </summary>
   [TestFixture]
   public class DataManagerTest : ClientTransactionBaseTest
   {
@@ -477,8 +480,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (nonEmptyTransaction.DataManager.DiscardedObjectCount, _dataManager.DiscardedObjectCount);
       Assert.AreEqual (nonEmptyTransaction.DataManager.DataContainerMap.Count, _dataManager.DataContainerMap.Count);
       Assert.AreEqual (nonEmptyTransaction.DataManager.RelationEndPointMap.Count, _dataManager.RelationEndPointMap.Count);
-
-
     }
   }
 }

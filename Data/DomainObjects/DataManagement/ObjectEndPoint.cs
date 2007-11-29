@@ -15,7 +15,6 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
 
   private ObjectID _originalOppositeObjectID;
   private ObjectID _oppositeObjectID;
-  private IEndPoint _newEndPoint;
   private bool _hasBeenTouched;
 
   // construction and disposing
@@ -150,62 +149,26 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
     return new ObjectEndPointModification (this, oldEndPoint, newEndPoint);
   }
 
-  public override void BeginRelationChange (IEndPoint oldEndPoint, IEndPoint newEndPoint)
-  {
-    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
-    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
-
-    base.BeginRelationChange (oldEndPoint, newEndPoint);
-    _newEndPoint = newEndPoint;
-  }
-
-  public override void PerformRelationChange ()
-  {
-    if (_newEndPoint == null)
-      throw new InvalidOperationException ("BeginRelationChange must be called before PerformRelationChange.");
-
-    PerformRelationChange (_newEndPoint);
-  }
-
-  public virtual void PerformRelationChange (IEndPoint endPoint)
-  {
-    ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-
-    OppositeObjectID = endPoint.ObjectID;
-
-    if (!IsVirtual)
-    {
-      DataContainer dataContainer = GetDataContainer ();
-      dataContainer.PropertyValues[PropertyName].SetRelationValue (endPoint.ObjectID);
-    }
-  }
-
   public virtual void PerformRelationChange (ObjectEndPointModification modification)
   {
     ArgumentUtility.CheckNotNull ("modification", modification);
+    PerformRelationChange (modification.NewEndPoint);
+  }
 
-    OppositeObjectID = modification.NewEndPoint.ObjectID;
+  private void PerformRelationChange (IEndPoint newEndPoint)
+  {
+    OppositeObjectID = newEndPoint.ObjectID;
 
     if (!IsVirtual)
     {
       DataContainer dataContainer = GetDataContainer ();
-      dataContainer.PropertyValues[PropertyName].SetRelationValue (modification.NewEndPoint.ObjectID);
+      dataContainer.PropertyValues[PropertyName].SetRelationValue (newEndPoint.ObjectID);
     }
   }
 
   public override void PerformDelete ()
   {
     PerformRelationChange (RelationEndPoint.CreateNullRelationEndPoint (OppositeEndPointDefinition));
-  }
-
-  public override void EndRelationChange ()
-  {
-    if (_newEndPoint == null)
-      throw new InvalidOperationException ("BeginRelationChange must be called before EndRelationChange.");
-
-    _newEndPoint = null;
-
-    base.EndRelationChange ();
   }
 
   public ObjectID OriginalOppositeObjectID

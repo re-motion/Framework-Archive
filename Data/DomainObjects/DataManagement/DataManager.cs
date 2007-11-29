@@ -162,83 +162,40 @@ public class DataManager
     if (domainObject.State == StateType.Deleted)
       return;
 
-    RelationEndPointCollection allAffectedRelationEndPoints = _relationEndPointMap.GetAllRelationEndPointsWithLazyLoad (domainObject);
-    RelationEndPointCollection allOppositeRelationEndPoints = allAffectedRelationEndPoints.GetOppositeRelationEndPoints (domainObject);
+    RelationEndPointModificationCollection oppositeEndPointModifications =
+        _relationEndPointMap.GetOppositeEndPointModificationsForDelete (domainObject);
 
-    BeginDelete (domainObject, allAffectedRelationEndPoints, allOppositeRelationEndPoints);
-    PerformDelete (domainObject);
-    EndDelete (domainObject, allOppositeRelationEndPoints);
+    BeginDelete (domainObject, oppositeEndPointModifications);
+    PerformDelete (domainObject, oppositeEndPointModifications);
+    EndDelete (domainObject, oppositeEndPointModifications);
   }
 
-  private void PerformDelete (DomainObject domainObject)
+  private void PerformDelete (DomainObject domainObject, RelationEndPointModificationCollection oppositeEndPointModifications)
   {
     DataContainer dataContainer = domainObject.GetDataContainer ();  // rescue dataContainer before the map deletes is
 
-    _relationEndPointMap.PerformDelete (domainObject);
+    _relationEndPointMap.PerformDelete (domainObject, oppositeEndPointModifications);
     _dataContainerMap.PerformDelete (dataContainer);
     
     dataContainer.Delete ();
   }
 
-  private void BeginDelete (
-      DomainObject domainObject, 
-      RelationEndPointCollection allAffectedRelationEndPoints, 
-      RelationEndPointCollection allOppositeRelationEndPoints)
+  private void BeginDelete (DomainObject domainObject, RelationEndPointModificationCollection oppositeEndPointModifications)
   {
     _transactionEventSink.ObjectDeleting (domainObject);
-    NotifyClientTransactionOfBeginRelationChange (domainObject, allAffectedRelationEndPoints, allOppositeRelationEndPoints);
+    oppositeEndPointModifications.NotifyClientTransactionOfBegin();
 
     domainObject.BeginDelete ();
-    NotifyOppositeEndPointsOfBeginRelationChange (domainObject, allAffectedRelationEndPoints, allOppositeRelationEndPoints);
+    oppositeEndPointModifications.Begin();
   }
 
-  private void NotifyClientTransactionOfBeginRelationChange (
-      DomainObject domainObject, 
-      RelationEndPointCollection allAffectedRelationEndPoints, 
-      RelationEndPointCollection allOppositeRelationEndPoints)
+  private void EndDelete (DomainObject domainObject, RelationEndPointModificationCollection oppositeEndPointModifications)
   {
-    foreach (RelationEndPoint oppositeEndPoint in allOppositeRelationEndPoints)
-    {
-      IRelationEndPointDefinition endPointDefinition = oppositeEndPoint.OppositeEndPointDefinition;
-      RelationEndPoint oldEndPoint = allAffectedRelationEndPoints[new RelationEndPointID (domainObject.ID, endPointDefinition)];
-
-      oppositeEndPoint.NotifyClientTransactionOfBeginRelationChange (oldEndPoint);
-    }
-  }
-
-  private void NotifyOppositeEndPointsOfBeginRelationChange (
-      DomainObject domainObject, 
-      RelationEndPointCollection allAffectedRelationEndPoints, 
-      RelationEndPointCollection allOppositeRelationEndPoints)
-  {
-    foreach (RelationEndPoint oppositeEndPoint in allOppositeRelationEndPoints)
-    {
-      IRelationEndPointDefinition endPointDefinition = oppositeEndPoint.OppositeEndPointDefinition;
-      RelationEndPoint oldEndPoint = allAffectedRelationEndPoints[new RelationEndPointID (domainObject.ID, endPointDefinition)];
-
-      oppositeEndPoint.BeginRelationChange (oldEndPoint);
-    }
-  }
-
-  private void EndDelete (DomainObject domainObject, RelationEndPointCollection allOppositeRelationEndPoints)
-  {
-    NotifyClientTransactionOfEndRelationChange (allOppositeRelationEndPoints);
+    oppositeEndPointModifications.NotifyClientTransactionOfEnd();
     _transactionEventSink.ObjectDeleted (domainObject);
 
-    NotifyOppositeEndPointsOfEndRelationChange (allOppositeRelationEndPoints);
+    oppositeEndPointModifications.End ();
     domainObject.EndDelete ();
-  }
-
-  private void NotifyClientTransactionOfEndRelationChange (RelationEndPointCollection allOppositeRelationEndPoints)
-  {
-    foreach (RelationEndPoint endPoint in allOppositeRelationEndPoints)
-      endPoint.NotifyClientTransactionOfEndRelationChange ();
-  }
-
-  private void NotifyOppositeEndPointsOfEndRelationChange (RelationEndPointCollection allOppositeRelationEndPoints)
-  {
-    foreach (RelationEndPoint endPoint in allOppositeRelationEndPoints)
-      endPoint.EndRelationChange ();
   }
 
   private void CheckClientTransactionForDeletion (DomainObject domainObject)

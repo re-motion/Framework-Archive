@@ -33,5 +33,24 @@ namespace Rubicon.Data.DomainObjects.DataManagement
       DomainObject domainObject = AffectedEndPoint.GetDomainObject ();
       domainObject.EndRelationChange (AffectedEndPoint.PropertyName);
     }
+
+    public virtual void NotifyClientTransactionOfBegin ()
+    {
+      AffectedEndPoint.NotifyClientTransactionOfBeginRelationChange (OldEndPoint, NewEndPoint);
+    }
+
+    public virtual void NotifyClientTransactionOfEnd ()
+    {
+      AffectedEndPoint.NotifyClientTransactionOfEndRelationChange ();
+    }
+
+    public void ExecuteAllSteps ()
+    {
+      NotifyClientTransactionOfBegin();
+      Begin ();
+      Perform();
+      NotifyClientTransactionOfEnd ();
+      End();
+    }
   }
 }

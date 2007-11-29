@@ -103,7 +103,6 @@ public abstract class RelationEndPoint : IEndPoint
   public abstract void Commit ();
   public abstract void Rollback ();
   public abstract void CheckMandatory ();
-  public abstract void PerformRelationChange ();
   public abstract void PerformDelete ();
   public abstract RelationEndPointModification CreateModification (IEndPoint oldEndPoint, IEndPoint newEndPoint);
 
@@ -113,11 +112,6 @@ public abstract class RelationEndPoint : IEndPoint
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     return CreateModification (oldEndPoint, RelationEndPoint.CreateNullRelationEndPoint (oldEndPoint.Definition));
-  }
-
-  public void NotifyClientTransactionOfBeginRelationChange (IEndPoint oldEndPoint)
-  {
-    NotifyClientTransactionOfBeginRelationChange (oldEndPoint, RelationEndPoint.CreateNullRelationEndPoint (oldEndPoint.Definition));
   }
 
   public virtual void NotifyClientTransactionOfBeginRelationChange (IEndPoint oldEndPoint, IEndPoint newEndPoint)
@@ -135,28 +129,6 @@ public abstract class RelationEndPoint : IEndPoint
   public virtual void NotifyClientTransactionOfEndRelationChange ()
   {
     _clientTransaction.TransactionEventSink.RelationChanged (GetDomainObject (), _definition.PropertyName);
-  }
-
-  public void BeginRelationChange (IEndPoint oldEndPoint)
-  {
-    BeginRelationChange (oldEndPoint, RelationEndPoint.CreateNullRelationEndPoint (oldEndPoint.Definition));    
-  }
-
-  public virtual void BeginRelationChange (IEndPoint oldEndPoint, IEndPoint newEndPoint)
-  {
-    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
-    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
-
-    DomainObject domainObject = GetDomainObject ();
-
-    domainObject.BeginRelationChange (
-        PropertyName, oldEndPoint.GetDomainObject (), newEndPoint.GetDomainObject ());
-  }
-
-  public virtual void EndRelationChange ()
-  {
-    DomainObject domainObject = GetDomainObject (); 
-    domainObject.EndRelationChange (PropertyName);
   }
 
   public virtual DomainObject GetDomainObject ()

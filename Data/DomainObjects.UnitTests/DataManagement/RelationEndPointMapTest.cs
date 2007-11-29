@@ -23,7 +23,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Order newOrder = Order.NewObject ();
       Assert.IsTrue (_map.Count > 0);
 
-      _map.PerformDelete (newOrder);
+      _map.PerformDelete (newOrder, _map.GetOppositeEndPointModificationsForDelete (newOrder));
       Assert.AreEqual (0, _map.Count);
     }
 
@@ -270,7 +270,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
         order1 = Order.GetObject (DomainObjectIDs.Order1);
       }
 
-      _map.PerformDelete (order1);
+      _map.PerformDelete (order1, new RelationEndPointModificationCollection());
     }
 
     [Test]

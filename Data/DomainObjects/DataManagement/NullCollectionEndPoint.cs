@@ -35,35 +35,9 @@ public class NullCollectionEndPoint : CollectionEndPoint
   {
   }
 
-  public override void BeginRelationChange (IEndPoint oldEndPoint, IEndPoint newEndPoint)
-  {
-    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
-    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
-  }
-
-  public override void BeginInsert (IEndPoint oldEndPoint, IEndPoint newEndPoint, int index)
-  {
-    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
-    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
-  }
-
-  public override void BeginReplace (IEndPoint oldEndPoint, IEndPoint newEndPoint)
-  {
-    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
-    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
-  }
-
-  public override void PerformRelationChange ()
-  {
-  }
-
   public override void PerformDelete ()
   {
     throw new InvalidOperationException ("PerformDelete cannot be called on a NullCollectionEndPoint.");    
-  }
-
-  public override void EndRelationChange ()
-  {
   }
 
   public override void CheckMandatory ()
