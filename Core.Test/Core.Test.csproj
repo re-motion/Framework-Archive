@@ -156,6 +156,8 @@
     <Compile Include="Collections\InterlockedCacheTest.cs" />
     <Compile Include="Collections\SetTest.cs" />
     <Compile Include="Collections\AutoInitDictionaryTest.cs" />
+    <Compile Include="Configuration\ConstructorException.cs" />
+    <Compile Include="Configuration\ThrowingFakeProvider.cs" />
     <Compile Include="Configuration\ExtendedProviderBaseTest.cs" />
     <Compile Include="Configuration\FakeWellKnownProvider.cs" />
     <Compile Include="Configuration\IFakeProvider.cs" />

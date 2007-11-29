@@ -190,6 +190,26 @@ namespace Rubicon.Core.UnitTests.Configuration
       Assert.AreEqual ("The Description", providerBase.Description);
     }
 
+
+    [Test]
+    public void InstantiateProvider_WithConstructorException ()
+    {
+      ProviderSettings providerSettings = new ProviderSettings ("Custom", "Rubicon.Core.UnitTests::Configuration.ThrowingFakeProvider");
+      providerSettings.Parameters.Add ("description", "The Description");
+
+      try
+      {
+        _providerHelper.InstantiateProvider (providerSettings, typeof (FakeProviderBase), typeof (IFakeProvider));
+        Assert.Fail ("Expected ConfigurationErrorsException.");
+      }
+      catch (ConfigurationErrorsException ex)
+      {
+        Assert.IsInstanceOfType (typeof (TargetInvocationException), ex.InnerException);
+        Assert.IsInstanceOfType (typeof (ConstructorException), ex.InnerException.InnerException);
+        Assert.AreEqual ("A message from the constructor.", ex.Message);
+      }
+    }
+
     [Test]
     [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), ExpectedMessage = "Type name must be specified for this provider.")]
     public void InstantiateProvider_WithMissingTypeName ()

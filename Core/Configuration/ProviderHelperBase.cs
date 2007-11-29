@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Configuration.Provider;
 using System.IO;
 using System.Reflection;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Rubicon.Utilities;
 
 namespace Rubicon.Configuration
@@ -14,7 +15,7 @@ namespace Rubicon.Configuration
     /// <summary>Initializes properties and adds them to the given <see cref="ConfigurationPropertyCollection"/>.</summary>
     public abstract void InitializeProperties (ConfigurationPropertyCollection properties);
 
-    public abstract void PostDeserialze();
+    public abstract void PostDeserialze ();
   }
 
   /// <summary>Base for helper classes that load specific providers from the <see cref="System.Configuration.ConfigurationSection"/> section.</summary>
@@ -22,7 +23,7 @@ namespace Rubicon.Configuration
   ///   <see cref="ProviderHelperBase{T}"/> is designed to work with providers deriving from <see cref="ExtendedProviderBase"/> and
   ///   having a constructor with the following signature: <c>public ctor (<see cref="string"/>, <see cref="NameValueCollection"/>)</c>.
   /// </remarks>
-  public abstract class ProviderHelperBase<TProvider>: ProviderHelperBase where TProvider: class
+  public abstract class ProviderHelperBase<TProvider> : ProviderHelperBase where TProvider: class
   {
     private readonly ExtendedConfigurationSection _configurationSection;
     private readonly DoubleCheckedLockingContainer<TProvider> _provider;
@@ -46,9 +47,9 @@ namespace Rubicon.Configuration
       _providers = new DoubleCheckedLockingContainer<ProviderCollection<TProvider>> (delegate { return GetProvidersFromConfiguration(); });
     }
 
-    protected abstract ConfigurationProperty CreateDefaultProviderNameProperty();
+    protected abstract ConfigurationProperty CreateDefaultProviderNameProperty ();
 
-    protected abstract ConfigurationProperty CreateProviderSettingsProperty();
+    protected abstract ConfigurationProperty CreateProviderSettingsProperty ();
 
     /// <summary>Initializes properties and adds them to the given <see cref="ConfigurationPropertyCollection"/>.</summary>
     public override void InitializeProperties (ConfigurationPropertyCollection properties)
@@ -62,7 +63,7 @@ namespace Rubicon.Configuration
       properties.Add (_defaultProviderNameProperty);
     }
 
-    public override void PostDeserialze()
+    public override void PostDeserialze ()
     {
     }
 
@@ -217,13 +218,21 @@ namespace Rubicon.Configuration
             providerSettings.Name,
             NameValueCollectionUtility.Clone (providerSettings.Parameters));
       }
+      catch (ConfigurationException)
+      {
+        throw;
+      }
       catch (Exception e)
       {
-        if (e is ConfigurationException)
-          throw;
+        string message;
+        if (e is TargetInvocationException)
+          message = e.InnerException.Message;
+        else
+          message = e.Message;
 
         throw new ConfigurationErrorsException (
-            e.Message,
+            message,
+            e,
             providerSettings.ElementInformation.Properties["type"].Source,
             providerSettings.ElementInformation.Properties["type"].LineNumber);
       }
@@ -253,7 +262,7 @@ namespace Rubicon.Configuration
       return (ExtendedProviderBase) Activator.CreateInstance (actualType, new object[] {name, collection});
     }
 
-    private TProvider GetProviderFromConfiguration()
+    private TProvider GetProviderFromConfiguration ()
     {
       if (DefaultProviderName == null)
         return null;
@@ -271,7 +280,7 @@ namespace Rubicon.Configuration
       return (TProvider) (object) Providers[DefaultProviderName];
     }
 
-    private ProviderCollection<TProvider> GetProvidersFromConfiguration()
+    private ProviderCollection<TProvider> GetProvidersFromConfiguration ()
     {
       ProviderCollection<TProvider> collection = new ProviderCollection<TProvider>();
       EnsureWellKownProviders (collection);
