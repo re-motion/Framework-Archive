@@ -4,6 +4,7 @@ using Rubicon.Data.DomainObjects.Queries;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
+  [Serializable]
   public class InvalidatedTransactionListener : IClientTransactionListener
   {
     private Exception CreateException ()

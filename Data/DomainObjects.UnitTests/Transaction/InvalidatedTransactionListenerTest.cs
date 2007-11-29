@@ -2,12 +2,21 @@ using System;
 using NUnit.Framework;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Infrastructure;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
   [TestFixture]
   public class InvalidatedTransactionListenerTest
   {
+    [Test]
+    public void ListenerIsSerializable ()
+    {
+      InvalidatedTransactionListener listener = new InvalidatedTransactionListener();
+      InvalidatedTransactionListener deserializedListener = Serializer.SerializeAndDeserialize (listener);
+      Assert.IsNotNull (deserializedListener);
+    }
+
     [Test]
     public void AllMethodsMustThrow ()
     {
