@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
@@ -52,21 +53,30 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void BeginInvokesBeginRelationChange ()
+    public void BeginInvokesBeginRelationChange_OnDomainObject ()
     {
-      _endPointMock.BeginRelationChange (_oldEndPointMock, _newEndPointMock);
+      DomainObject domainObject = Order.GetObject (DomainObjectIDs.Order1);
+      DomainObject otherDomainObject = Order.GetObject (DomainObjectIDs.Order2);
+      DomainObjectEventReceiver eventReceiver = new DomainObjectEventReceiver (domainObject);
+      
+      Expect.Call (_endPointMock.GetDomainObject()).Return (domainObject);
+      Expect.Call (_oldEndPointMock.GetDomainObject ()).Return (otherDomainObject);
+      Expect.Call (_newEndPointMock.GetDomainObject ()).Return (otherDomainObject);
 
       _mockRepository.ReplayAll();
 
       _modification.Begin();
 
       _mockRepository.VerifyAll();
+
+      Assert.IsTrue (eventReceiver.HasRelationChangingEventBeenCalled);
+      Assert.IsFalse (eventReceiver.HasRelationChangedEventBeenCalled);
     }
 
     [Test]
     public void PerformInvokesPerformRelationChange ()
     {
-      _endPointMock.PerformRelationChange (_newEndPointMock);
+      _endPointMock.PerformRelationChange (_modification);
 
       _mockRepository.ReplayAll();
 
@@ -76,15 +86,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void EndInvokesEndRelationChange ()
+    public void EndInvokesEndRelationChange_OnDomainObject ()
     {
-      _endPointMock.EndRelationChange();
+      DomainObject domainObject = Order.GetObject (DomainObjectIDs.Order1);
+      DomainObjectEventReceiver eventReceiver = new DomainObjectEventReceiver (domainObject);
+
+      Expect.Call (_endPointMock.GetDomainObject ()).Return (domainObject);
 
       _mockRepository.ReplayAll();
 
       _modification.End();
 
       _mockRepository.VerifyAll();
+
+      Assert.IsFalse (eventReceiver.HasRelationChangingEventBeenCalled);
+      Assert.IsTrue (eventReceiver.HasRelationChangedEventBeenCalled);
     }
   }
 }

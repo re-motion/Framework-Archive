@@ -180,6 +180,19 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
     }
   }
 
+  public virtual void PerformRelationChange (ObjectEndPointModification modification)
+  {
+    ArgumentUtility.CheckNotNull ("modification", modification);
+
+    OppositeObjectID = modification.NewEndPoint.ObjectID;
+
+    if (!IsVirtual)
+    {
+      DataContainer dataContainer = GetDataContainer ();
+      dataContainer.PropertyValues[PropertyName].SetRelationValue (modification.NewEndPoint.ObjectID);
+    }
+  }
+
   public override void PerformDelete ()
   {
     PerformRelationChange (RelationEndPoint.CreateNullRelationEndPoint (OppositeEndPointDefinition));

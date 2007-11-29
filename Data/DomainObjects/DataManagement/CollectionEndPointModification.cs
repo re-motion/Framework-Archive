@@ -18,18 +18,18 @@ namespace Rubicon.Data.DomainObjects.DataManagement
     public override void Begin ()
     {
       ChangeAgent.BeginRelationChange();
-      _affectedEndPoint.BeginRelationChange (OldEndPoint, NewEndPoint);
+      base.Begin();
     }
 
     public override void Perform ()
     {
-      _affectedEndPoint.PerformRelationChange();
+      _affectedEndPoint.PerformRelationChange (this);
     }
 
     public override void End ()
     {
       ChangeAgent.EndRelationChange();
-      _affectedEndPoint.EndRelationChange();
+      base.End();
     }
   }
 }

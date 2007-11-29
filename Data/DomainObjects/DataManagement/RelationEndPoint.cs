@@ -109,6 +109,12 @@ public abstract class RelationEndPoint : IEndPoint
 
   // methods and properties
 
+  public RelationEndPointModification CreateModification (IEndPoint oldEndPoint)
+  {
+    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
+    return CreateModification (oldEndPoint, RelationEndPoint.CreateNullRelationEndPoint (oldEndPoint.Definition));
+  }
+
   public void NotifyClientTransactionOfBeginRelationChange (IEndPoint oldEndPoint)
   {
     NotifyClientTransactionOfBeginRelationChange (oldEndPoint, RelationEndPoint.CreateNullRelationEndPoint (oldEndPoint.Definition));

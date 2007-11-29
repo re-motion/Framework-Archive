@@ -12,19 +12,9 @@ namespace Rubicon.Data.DomainObjects.DataManagement
       _affectedEndPoint = affectedEndPoint;
     }
 
-    public override void Begin ()
-    {
-      _affectedEndPoint.BeginRelationChange (OldEndPoint, NewEndPoint);
-    }
-
     public override void Perform ()
     {
-      _affectedEndPoint.PerformRelationChange (NewEndPoint);
-    }
-
-    public override void End ()
-    {
-      _affectedEndPoint.EndRelationChange();
+      _affectedEndPoint.PerformRelationChange (this);
     }
   }
 }

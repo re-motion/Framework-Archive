@@ -20,8 +20,18 @@ namespace Rubicon.Data.DomainObjects.DataManagement
       NewEndPoint = newEndPoint;
     }
 
-    public abstract void Begin ();
     public abstract void Perform ();
-    public abstract void End ();
+
+    public virtual void Begin ()
+    {
+      AffectedEndPoint.GetDomainObject().BeginRelationChange (
+          AffectedEndPoint.PropertyName, OldEndPoint.GetDomainObject(), NewEndPoint.GetDomainObject());
+    }
+
+    public virtual void End ()
+    {
+      DomainObject domainObject = AffectedEndPoint.GetDomainObject ();
+      domainObject.EndRelationChange (AffectedEndPoint.PropertyName);
+    }
   }
 }

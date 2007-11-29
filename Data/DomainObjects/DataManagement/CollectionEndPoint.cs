@@ -222,6 +222,14 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     _hasBeenTouched = true;
   }
 
+  public virtual void PerformRelationChange (CollectionEndPointModification modification)
+  {
+    ArgumentUtility.CheckNotNull ("modification", modification);
+
+    modification.ChangeAgent.PerformRelationChange ();
+    _hasBeenTouched = true;
+  }
+
   public override void PerformDelete ()
   {
     _oppositeDomainObjects.PerformDelete ();
