@@ -223,8 +223,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
       {
-        SecurableClassDefinition foundClass =
-            SecurableClassDefinition.FindByName ("Rubicon.SecurityManager.UnitTests.TestDomain.Invoice");
+        SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName ("Rubicon.SecurityManager.UnitTests.TestDomain.Invoice");
 
         MetadataObjectAssert.AreEqual (invoiceClass, testHelper.Transaction, foundClass);
       }

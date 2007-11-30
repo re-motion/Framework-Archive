@@ -82,8 +82,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
         Group rootGroup = CreateGroup ("rootGroup", "UID: rootGroup", null, tenant1);
         for (int i = 0; i < 2; i++)
         {
-          Group parentGroup =
-              CreateGroup (string.Format ("parentGroup{0}", i), string.Format ("UID: parentGroup{0}", i), rootGroup, tenant1);
+          Group parentGroup = CreateGroup (string.Format ("parentGroup{0}", i), string.Format ("UID: parentGroup{0}", i), rootGroup, tenant1);
           parentGroup.GroupType = groupType1;
 
           Group group = CreateGroup (string.Format ("group{0}", i), string.Format ("UID: group{0}", i), parentGroup, tenant1);

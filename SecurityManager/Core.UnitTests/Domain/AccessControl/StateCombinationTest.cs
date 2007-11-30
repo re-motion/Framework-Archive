@@ -137,9 +137,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
         )]
     public void ValidateDuringCommit_ByTouchOnClassForChangedStateUsagesCollection ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures();
-      dbFixtures.CreateEmptyDomain();
-
       SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();
       StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
       StateDefinition paidState = paymentProperty["Paid"];
@@ -151,43 +148,41 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       combination2.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject());
       combination3.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject());
 
-      _testHelper.Transaction.Commit();
+      using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
+      {
+        combination2.StateUsages.Remove (combination2.StateUsages[0]);
+        combination2.AttachState (paidState);
 
-      combination2.StateUsages.Remove (combination2.StateUsages[0]);
-      combination2.AttachState (paidState);
-
-      _testHelper.Transaction.Commit();
+        ClientTransaction.Current.Commit ();
+      }
     }
 
     [Test]
-    [Ignore ("TODO: MK - check this test")]
     public void Commit_DeletedStateCombination ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures();
-      dbFixtures.CreateEmptyDomain();
-
       SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();
       StateCombination combination = _testHelper.CreateStateCombination (orderClass);
       combination.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject());
-
-      _testHelper.Transaction.Commit();
-
-      Assert.AreEqual (StateType.Unchanged, GetStateFromDataContainer(orderClass));
-      using (_testHelper.Transaction.CreateSubTransaction ().EnterDiscardingScope ())
+      
+      using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
       {
         Assert.AreEqual (StateType.Unchanged, GetStateFromDataContainer (orderClass));
-        combination.AccessControlList.Delete();
-        Assert.IsNull (combination.Class);
+        using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+        {
+          Assert.AreEqual (StateType.Unchanged, GetStateFromDataContainer (orderClass));
+          combination.AccessControlList.Delete();
+          Assert.IsNull (combination.Class);
 
+          Assert.AreEqual (StateType.Unchanged, GetStateFromDataContainer (orderClass));
+          ClientTransaction.Current.Commit();
+        }
         Assert.AreEqual (StateType.Unchanged, GetStateFromDataContainer (orderClass));
-        ClientTransaction.Current.Commit();
       }
-      Assert.AreEqual (StateType.Changed, GetStateFromDataContainer (orderClass));
     }
 
     private StateType GetStateFromDataContainer (DomainObject orderClass)
     {
-      return ((DataContainer)PrivateInvoke.InvokeNonPublicMethod (orderClass, typeof (DomainObject), "GetDataContainer")).State;
+      return ((DataContainer) PrivateInvoke.InvokeNonPublicMethod (orderClass, typeof (DomainObject), "GetDataContainer")).State;
     }
 
     [Test]

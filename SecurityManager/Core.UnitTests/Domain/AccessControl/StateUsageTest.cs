@@ -25,10 +25,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
        ExpectedMessage = "The securable class definition 'Rubicon.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice.")]
     public void ValidateDuringCommit_ByTouchOnClass ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateEmptyDomain ();
-
-      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();
       StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
       StateDefinition paidState = paymentProperty["Paid"];
       StateDefinition notPaidState = paymentProperty["None"];
@@ -39,12 +36,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       combination2.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject());
       combination3.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject());
 
-      ClientTransactionScope.CurrentTransaction.Commit ();
+      using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
+      {
+        StateUsage stateUsage = combination2.StateUsages[0];
+        stateUsage.StateDefinition = paidState;
 
-      StateUsage stateUsage = combination2.StateUsages[0];
-      stateUsage.StateDefinition = paidState;
-
-      ClientTransactionScope.CurrentTransaction.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit();
+      }
     }
 
     private StateCombination GetStatelessCombinationForClass (SecurableClassDefinition classDefinition)
