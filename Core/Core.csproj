@@ -308,6 +308,7 @@
     </Compile>
     <Compile Include="PermanentGuidAttribute.cs" />
     <Compile Include="Reflection\AssemblyFinder.cs" />
+    <Compile Include="Reflection\AssemblyFinderTypeDiscoveryService.cs" />
     <Compile Include="Reflection\AttributeAssemblyFinderFilter.cs" />
     <Compile Include="Reflection\ConstructorWrapper.cs" />
     <Compile Include="Reflection\IAssemblyFinderFilter.cs" />
