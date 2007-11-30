@@ -1,3 +1,16 @@
+1.7.73.0
+========
+- COMMONS-390	Fixed	ClientTransaction.GetObjects
+- COMMONS-392	Fixed	"COMMONS-243
+  Provide more efficient import"
+- COMMONS-423	Fixed	SubClientTransaction.Commit triggers delete/relation change events in parent transaction
+- COMMONS-428	Fixed	"COMMONS-423
+  Make RelationEndPoint.PerformRelationChange callable independently of Begin/EndRelationChange"
+
+1.7.72.0
+========
+- COMMONS-416 FIXED  DesignMode Support for BindableDomainObjects  
+
 1.7.71.0
 ========
 - COMMONS-400 FIXED  Make WhereClauseBuilder mixable
