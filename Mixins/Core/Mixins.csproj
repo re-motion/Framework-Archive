@@ -92,7 +92,6 @@
     <Compile Include="Utilities\DependencySort\DependentObjectSorterAlgorithm.cs" />
     <Compile Include="Utilities\DependencySort\IDependencyAnalyzer.cs" />
     <Compile Include="Utilities\MixedTypeInvokeWithCreator.cs" />
-    <Compile Include="Utilities\Singleton\CallContextSingleton.cs" />
     <Compile Include="Utilities\Singleton\CallContextSingletonBase.cs" />
     <Compile Include="Utilities\Singleton\ThreadSafeSingletonBase.cs" />
     <Compile Include="Utilities\Singleton\ThreadSafeSingleton.cs" />

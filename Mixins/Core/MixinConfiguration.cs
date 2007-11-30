@@ -1,7 +1,6 @@
 using System;
 using System.Reflection;
 using System.Runtime.Remoting.Messaging;
-using Rubicon.Mixins.Utilities.Singleton;
 using Rubicon.Mixins.Context;
 using Rubicon.Utilities;
 

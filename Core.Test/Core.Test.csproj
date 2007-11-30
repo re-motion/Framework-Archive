@@ -113,6 +113,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CallContextSingletonTest.cs" />
     <Compile Include="CodeGeneration\AssemblySaverTest.cs" />
     <Compile Include="CodeGeneration\AttributeReplicatorTest.cs" />
     <Compile Include="CodeGeneration\ClassEmitterGenericsTest.cs" />
@@ -262,6 +263,7 @@
     <TestAssembly Include="Reflection\TestAssemblies\MarkedAssemblyInDynamicDirectory\AssemblyInfo.cs" />
     <TestAssembly Include="Reflection\TestAssemblies\MarkedExeAssemblyInDynamicDirectory\AssemblyInfo.cs" />
     <Compile Include="Reflection\AssemblyFinderTypeDiscoveryServiceTest.cs" />
+    <Compile Include="Reflection\ContextAwareTypeDiscoveryServiceTest.cs" />
     <Compile Include="Reflection\FuncInvokerWrapperTest.cs" />
     <Compile Include="Reflection\InheritanceHierarchyFilterTest.cs" />
     <TestAssembly Include="Reflection\TestAssemblies\MarkedAssemblyWithOtherFileNameInRelativeSearchPath\AssemblyInfo.cs" />

@@ -93,6 +93,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CallContextSingleton.cs" />
     <Compile Include="CodeGeneration\CustomClassEmitter.cs" />
     <Compile Include="CodeGeneration\CustomEventEmitter.cs" />
     <Compile Include="CodeGeneration\CustomMethodEmitter.cs" />
@@ -311,6 +312,7 @@
     <Compile Include="Reflection\AssemblyFinderTypeDiscoveryService.cs" />
     <Compile Include="Reflection\AttributeAssemblyFinderFilter.cs" />
     <Compile Include="Reflection\ConstructorWrapper.cs" />
+    <Compile Include="Reflection\ContextAwareTypeDiscoveryService.cs" />
     <Compile Include="Reflection\IAssemblyFinderFilter.cs" />
     <Compile Include="Reflection\NonApplicationAssemblyAttribute.cs" />
     <Compile Include="Reflection\RegexAssemblyFinderFilter.cs" />

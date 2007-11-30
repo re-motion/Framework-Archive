@@ -1,16 +1,15 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
-using System.Text;
 using Rubicon;
 using Rubicon.Utilities;
 
-namespace Rubicon.Mixins.Utilities.Singleton
+namespace Rubicon
 {
   public class CallContextSingleton<T>
   {
+    private readonly object _callContextLock = new object ();
     private readonly string _callContextKey;
-    private Func<T> _creator;
+    private readonly Func<T> _creator;
 
     public CallContextSingleton(string callContextKey, Func<T> creator)
     {
@@ -23,23 +22,35 @@ namespace Rubicon.Mixins.Utilities.Singleton
 
     public bool HasCurrent
     {
-      get { return GetCurrentInternal () != null; }
+      get
+      {
+        lock (_callContextLock)
+        {
+          return GetCurrentInternal() != null;
+        }
+      }
     }
 
     public T Current
     {
       get
       {
-        if (!HasCurrent)
-          SetCurrent (_creator());
+        lock (_callContextLock)
+        {
+          if (!HasCurrent)
+            SetCurrent (_creator());
 
-        return GetCurrentInternal ();
+          return GetCurrentInternal();
+        }
       }
     }
 
     public void SetCurrent (T value)
     {
-      CallContext.SetData (_callContextKey, value);
+      lock (_callContextLock)
+      {
+        CallContext.SetData (_callContextKey, value);
+      }
     }
 
     private T GetCurrentInternal ()
