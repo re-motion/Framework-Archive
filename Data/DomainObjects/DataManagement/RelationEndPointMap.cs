@@ -29,7 +29,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
 
     _clientTransaction = clientTransaction;
     _transactionEventSink = clientTransaction.TransactionEventSink;
-    _relationEndPoints = new RelationEndPointCollection ();
+    _relationEndPoints = new RelationEndPointCollection (_clientTransaction);
   }
 
   // methods and properties
@@ -53,7 +53,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
 
     foreach (DomainObject deletedDomainObject in deletedDomainObjects)
     {
-      foreach (RelationEndPointID endPointID in deletedDomainObject.GetDataContainer ().RelationEndPointIDs)
+      foreach (RelationEndPointID endPointID in deletedDomainObject.GetDataContainerForTransaction (_clientTransaction).RelationEndPointIDs)
         Remove (endPointID);
     }
   }
@@ -67,7 +67,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
 
     foreach (DomainObject newDomainObject in newDomainObjects)
     {
-      foreach (RelationEndPointID endPointID in newDomainObject.GetDataContainer().RelationEndPointIDs)
+      foreach (RelationEndPointID endPointID in newDomainObject.GetDataContainerForTransaction (_clientTransaction).RelationEndPointIDs)
         Remove (endPointID);
     }
   }
@@ -76,7 +76,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    RelationEndPointID[] relationEndPointIDs = domainObject.GetDataContainer ().RelationEndPointIDs;
+    RelationEndPointID[] relationEndPointIDs = domainObject.GetDataContainerForTransaction (_clientTransaction).RelationEndPointIDs;
     CheckClientTransactionForDeletion (domainObject);
     _transactionEventSink.RelationEndPointMapPerformingDelete (relationEndPointIDs);
 
@@ -87,7 +87,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
       oppositeEndPointModifications.Perform();
       endPoint.PerformDelete ();
 
-      if (domainObject.State == StateType.New)
+      if (domainObject.GetStateForTransaction (_clientTransaction) == StateType.New)
         Remove (endPointID);
     }
   }
@@ -261,9 +261,9 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    RelationEndPointCollection allRelationEndPoints = new RelationEndPointCollection();
+    RelationEndPointCollection allRelationEndPoints = new RelationEndPointCollection(_clientTransaction);
 
-    foreach (RelationEndPointID endPointID in domainObject.GetDataContainer().RelationEndPointIDs)
+    foreach (RelationEndPointID endPointID in domainObject.GetDataContainerForTransaction (_clientTransaction).RelationEndPointIDs)
     {
       RelationEndPoint endPoint = GetRelationEndPointWithLazyLoad (endPointID);
 
@@ -291,7 +291,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    foreach (RelationEndPointID endPointID in domainObject.GetDataContainer().RelationEndPointIDs)
+    foreach (RelationEndPointID endPointID in domainObject.GetDataContainerForTransaction (_clientTransaction).RelationEndPointIDs)
     {
       if (endPointID.Definition.IsMandatory)
       {
@@ -372,7 +372,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
 
   private void CheckDeleted (DomainObject domainObject)
   {
-    if (domainObject != null && domainObject.State == StateType.Deleted)
+    if (domainObject != null && domainObject.GetStateForTransaction (_clientTransaction) == StateType.Deleted)
       throw new ObjectDeletedException (domainObject.ID);
   }
 
@@ -483,7 +483,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
 
   private void CheckClientTransactionForInsertionIntoCollectionEndPoint (RelationEndPointID endPointID, DomainObject newRelatedObject, int index)
   {
-    if (newRelatedObject != null && newRelatedObject.GetDataContainer().ClientTransaction != _clientTransaction)
+    if (newRelatedObject != null && !newRelatedObject.CanBeUsedInTransaction (_clientTransaction))
     {
       throw CreateClientTransactionsDifferException (
           "Cannot insert DomainObject '{0}' at position {1} into collection of property '{2}' of DomainObject '{3}',"
@@ -497,7 +497,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
 
   private void CheckClientTransactionForRemovalFromCollectionEndPoint (RelationEndPointID endPointID, DomainObject relatedObject)
   {
-    if (relatedObject != null && relatedObject.GetDataContainer().ClientTransaction != _clientTransaction)
+    if (relatedObject != null && !relatedObject.CanBeUsedInTransaction (_clientTransaction))
     {
       throw CreateClientTransactionsDifferException (
           "Cannot remove DomainObject '{0}' from collection of property '{1}' of DomainObject '{2}',"
@@ -510,7 +510,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
 
   private void CheckClientTransactionForObjectEndPoint (RelationEndPointID endPointID, DomainObject newRelatedObject)
   {
-    if (newRelatedObject != null && newRelatedObject.GetDataContainer().ClientTransaction != _clientTransaction)
+    if (newRelatedObject != null && !newRelatedObject.CanBeUsedInTransaction (_clientTransaction))
     {
       throw CreateClientTransactionsDifferException (
           "Property '{0}' of DomainObject '{1}' cannot be set to DomainObject '{2}',"
@@ -523,7 +523,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
 
   private void CheckClientTransactionForReplacementInCollectionEndPoint (RelationEndPointID endPointID, DomainObject newRelatedObject, int index)
   {
-    if (newRelatedObject != null && newRelatedObject.GetDataContainer().ClientTransaction != _clientTransaction)
+    if (newRelatedObject != null && !newRelatedObject.CanBeUsedInTransaction (_clientTransaction))
     {
       throw CreateClientTransactionsDifferException (
           "Cannot replace DomainObject at position {0} with DomainObject '{1}'"
@@ -538,7 +538,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
 
   private void CheckClientTransactionForDeletion (DomainObject domainObject)
   {
-    if (domainObject.GetDataContainer().ClientTransaction != _clientTransaction)
+    if (!domainObject.CanBeUsedInTransaction (_clientTransaction))
     {
       throw CreateClientTransactionsDifferException (
           "Cannot remove DomainObject '{0}' from RelationEndPointMap, because it belongs to a different ClientTransaction.",

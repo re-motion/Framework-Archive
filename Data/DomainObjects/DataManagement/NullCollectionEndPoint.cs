@@ -25,6 +25,16 @@ public class NullCollectionEndPoint : CollectionEndPoint
     return new NullEndPointModification (this, oldEndPoint, newEndPoint);
   }
 
+  public override RelationEndPointModification CreateInsertModification (IEndPoint oldEndPoint, IEndPoint newEndPoint, int index)
+  {
+    return new NullEndPointModification (this, oldEndPoint, newEndPoint);
+  }
+
+  public override RelationEndPointModification CreateReplaceModification (IEndPoint oldEndPoint, IEndPoint newEndPoint)
+  {
+    return new NullEndPointModification (this, oldEndPoint, newEndPoint);
+  }
+
   public override void NotifyClientTransactionOfBeginRelationChange (IEndPoint oldEndPoint, IEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);

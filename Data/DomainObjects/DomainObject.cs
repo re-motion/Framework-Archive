@@ -452,23 +452,32 @@ public class DomainObject
   /// </summary>
   public StateType State
   {
-    get
-    {
-      if (IsDiscarded)
-        return StateType.Discarded;
-      else
-      {
-        DataContainer dataContainer = GetDataContainer();
-        if (dataContainer.State == StateType.Unchanged)
-        {
-          if (ClientTransactionScope.CurrentTransaction.HasRelationChanged (this))
-            return StateType.Changed;
-          else
-            return StateType.Unchanged;
-        }
+    get { return GetStateForTransaction (ClientTransaction.Current); }
+  }
 
-        return dataContainer.State;
+  /// <summary>
+  /// Gets the state of this object in a given <see cref="ClientTransaction"/>.
+  /// </summary>
+  /// <param name="clientTransaction">The client transaction to retrieve the object's state from.</param>
+  /// <returns>The state of this object in the given transaction.</returns>
+  public StateType GetStateForTransaction (ClientTransaction clientTransaction)
+  {
+    ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+    
+    if (IsDiscardedInTransaction (clientTransaction))
+      return StateType.Discarded;
+    else
+    {
+      DataContainer dataContainer = GetDataContainerForTransaction (clientTransaction);
+      if (dataContainer.State == StateType.Unchanged)
+      {
+        if (clientTransaction.HasRelationChanged (this))
+          return StateType.Changed;
+        else
+          return StateType.Unchanged;
       }
+
+      return dataContainer.State;
     }
   }
 
@@ -543,7 +552,7 @@ public class DomainObject
   /// Gets the <see cref="DomainObjects.DataContainer"/> of the <see cref="DomainObject"/> in the <see cref="ClientTransactionScope.CurrentTransaction"/>.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  internal DataContainer GetDataContainer()
+  private DataContainer GetDataContainer()
   {
     CheckIfRightTransaction (ClientTransaction.Current);
 

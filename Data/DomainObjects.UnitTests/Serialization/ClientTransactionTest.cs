@@ -147,7 +147,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void RelationEndPointCollectionTest ()
     {
-      RelationEndPointCollection collection = new RelationEndPointCollection ();
+      RelationEndPointCollection collection = new RelationEndPointCollection (ClientTransactionMock);
       ObjectEndPoint endPoint = CreateObjectEndPoint (Company.GetObject (DomainObjectIDs.Company1), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector", DomainObjectIDs.IndustrialSector1);
       collection.Add (endPoint);
 

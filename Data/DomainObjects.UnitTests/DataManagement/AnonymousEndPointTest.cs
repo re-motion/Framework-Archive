@@ -50,5 +50,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       RelationDefinition invalidRelationDefinition = MappingConfiguration.Current.RelationDefinitions.GetMandatory ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
       AnonymousEndPoint endPoint = new AnonymousEndPoint (ClientTransactionMock, Order.GetObject (DomainObjectIDs.Order1), invalidRelationDefinition);
     }
+
+    [Test]
+    public void GetDataContainerUsesStoredTransaction ()
+    {
+      AnonymousEndPoint endPoint = new AnonymousEndPoint (ClientTransactionMock, _client, _clientToLocationDefinition);
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      {
+        Assert.AreSame (ClientTransactionMock, endPoint.GetDataContainer ().ClientTransaction);
+      }
+    }
   }
 }

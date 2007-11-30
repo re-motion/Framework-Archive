@@ -304,7 +304,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
           + "be discarded or deleted in the ParentTransaction");
       Assertion.IsTrue (parentDataContainer.DomainObject == dataContainer.DomainObject, "invariant");
 
-      ParentTransaction.Delete (parentDataContainer.DomainObject);
+      DomainObject domainObject = dataContainer.DomainObject;
+      ParentTransaction.DataManager.PerformDelete (
+          domainObject, ParentTransaction.DataManager.RelationEndPointMap.GetOppositeEndPointModificationsForDelete (domainObject));
     }
 
     private DataContainer GetParentDataContainerWithoutLoading (ObjectID id)

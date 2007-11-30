@@ -866,10 +866,7 @@ public abstract class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    using (EnterNonDiscardingScope ())
-    {
-      return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.GetDataContainer());
-    }
+    return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.GetDataContainerForTransaction (this));
   }
 
   /// <summary>

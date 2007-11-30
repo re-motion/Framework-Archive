@@ -75,7 +75,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void Initialization_FromEndPoint_Insert ()
     {
       CollectionEndPoint endPoint = new CollectionEndPoint (ClientTransactionMock, _id, new DomainObjectCollection ());
-      CollectionEndPointModification modification = endPoint.CreateInsertModification (_oldEndPointMock,_newEndPointMock, 3);
+      CollectionEndPointModification modification = (CollectionEndPointModification) endPoint.CreateInsertModification (_oldEndPointMock, _newEndPointMock, 3);
       Assert.AreSame (endPoint, modification.AffectedEndPoint);
       Assert.AreSame (_oldEndPointMock, modification.OldEndPoint);
       Assert.AreSame (modification.OldEndPoint, modification.ChangeAgent.OldEndPoint);
@@ -89,7 +89,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void Initialization_FromEndPoint_Replace ()
     {
       CollectionEndPoint endPoint = new CollectionEndPoint (ClientTransactionMock, _id, new DomainObjectCollection ());
-      CollectionEndPointModification modification = endPoint.CreateReplaceModification (_oldEndPointMock, _newEndPointMock);
+      CollectionEndPointModification modification = (CollectionEndPointModification) endPoint.CreateReplaceModification (_oldEndPointMock, _newEndPointMock);
       Assert.AreSame (endPoint, modification.AffectedEndPoint);
       Assert.AreSame (_oldEndPointMock, modification.OldEndPoint);
       Assert.AreSame (modification.OldEndPoint, modification.ChangeAgent.OldEndPoint);

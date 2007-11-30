@@ -17,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
       _orderTicketEndPoint = CreateObjectEndPoint (orderTicket, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", DomainObjectIDs.Order1);
-      _endPoints = new RelationEndPointCollection ();
+      _endPoints = new RelationEndPointCollection (ClientTransactionMock);
     }
 
     [Test]

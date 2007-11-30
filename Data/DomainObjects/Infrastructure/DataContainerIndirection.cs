@@ -19,19 +19,26 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 			_domainObject = domainObject;
 		}
 
+    private DataContainer GetDataContainer ()
+    {
+      _domainObject.CheckIfRightTransaction (ClientTransaction);
+      return _domainObject.GetDataContainerForTransaction (ClientTransaction);
+    }
+
+
 		public PropertyValueCollection PropertyValues
 		{
-			get { return _domainObject.GetDataContainer ().PropertyValues; }
+			get { return GetDataContainer ().PropertyValues; }
 		}
 
-		public ClassDefinition ClassDefinition
+	  public ClassDefinition ClassDefinition
 		{
-			get { return _domainObject.GetDataContainer ().ClassDefinition; }
+			get { return GetDataContainer ().ClassDefinition; }
 		}
 
 		public ClientTransaction ClientTransaction
 		{
-      get { return _domainObject.GetDataContainer ().ClientTransaction; }
+      get { return ClientTransaction.Current; }
 		}
 
 		public DomainObject DomainObject
@@ -41,23 +48,23 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
 		public object Timestamp
 		{
-			get { return _domainObject.GetDataContainer().Timestamp; }
+			get { return GetDataContainer().Timestamp; }
 		}
 
 		public object GetValue (string propertyIdentifier)
 		{
-			return _domainObject.GetDataContainer ().GetValue (propertyIdentifier);
+			return GetDataContainer ().GetValue (propertyIdentifier);
 		}
 
 		public void SetValue (string propertyIdentifier, object value)
 		{
-			_domainObject.GetDataContainer ().SetValue (propertyIdentifier, value);
+			GetDataContainer ().SetValue (propertyIdentifier, value);
 		}
 
 		public object this[string propertyIdentifier]
 		{
-			get { return _domainObject.GetDataContainer()[propertyIdentifier]; }
-			set { _domainObject.GetDataContainer ()[propertyIdentifier] = value; }
+			get { return GetDataContainer()[propertyIdentifier]; }
+			set { GetDataContainer ()[propertyIdentifier] = value; }
 		}
 	}
 }

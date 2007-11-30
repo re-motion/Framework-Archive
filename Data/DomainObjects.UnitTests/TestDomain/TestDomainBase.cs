@@ -28,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     [StorageClassNone]
     public DataContainer InternalDataContainer
     {
-      get { return (DataContainer) PrivateInvoke.InvokeNonPublicMethod (this, "GetDataContainer"); }
+      get { return (DataContainer) PrivateInvoke.InvokeNonPublicMethod (this, typeof (DomainObject), "GetDataContainer"); }
     }
 
     public DataContainer GetInternalDataContainerForTransaction(ClientTransaction transaction)

@@ -320,6 +320,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    public void StateInDifferentTransactions ()
+    {
+      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+      customer.Name = "New name";
+
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      {
+        ClientTransaction.Current.EnlistDomainObject (customer);
+        Assert.AreEqual (StateType.Unchanged, customer.GetStateForTransaction (ClientTransaction.Current));
+        Assert.AreEqual (StateType.Changed, customer.GetStateForTransaction (ClientTransactionMock));
+
+        using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+        {
+          Assert.AreEqual (StateType.Changed, customer.GetStateForTransaction (ClientTransactionMock)); // must not throw a ClientTransactionDiffersException
+        }
+      }
+    }
+
+    [Test]
     public void DiscardedStateType ()
     {
       ClassWithAllDataTypes newObject = ClassWithAllDataTypes.NewObject ();

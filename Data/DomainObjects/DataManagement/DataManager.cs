@@ -43,11 +43,12 @@ public class DataManager
     DataContainerCollection changedDataContainers = new DataContainerCollection ();
     foreach (DomainObject domainObject in GetChangedDomainObjects ())
     {
-      if (domainObject.State != StateType.Deleted)
+      if (domainObject.GetStateForTransaction (_clientTransaction) != StateType.Deleted)
         _relationEndPointMap.CheckMandatoryRelations (domainObject);
 
-      if (domainObject.GetDataContainer().State != StateType.Unchanged)
-        changedDataContainers.Add (domainObject.GetDataContainer());
+      DataContainer dataContainer = domainObject.GetDataContainerForTransaction(_clientTransaction);
+      if (dataContainer.State != StateType.Unchanged)
+        changedDataContainers.Add (dataContainer);
     }
 
     return changedDataContainers;
@@ -76,16 +77,17 @@ public class DataManager
 
     foreach (DataContainer dataContainer in _dataContainerMap)
     {
-      if (includeChanged && dataContainer.DomainObject.State == StateType.Changed)
+      StateType domainObjectState = dataContainer.DomainObject.GetStateForTransaction (_clientTransaction);
+      if (includeChanged && domainObjectState == StateType.Changed)
         domainObjects.Add (dataContainer.DomainObject);
 
-      if (includeDeleted && dataContainer.DomainObject.State == StateType.Deleted)
+      if (includeDeleted && domainObjectState == StateType.Deleted)
         domainObjects.Add (dataContainer.DomainObject);
 
-      if (includeNew && dataContainer.DomainObject.State == StateType.New)
+      if (includeNew && domainObjectState == StateType.New)
         domainObjects.Add (dataContainer.DomainObject);
 
-      if (includeUnchanged && dataContainer.DomainObject.State == StateType.Unchanged)
+      if (includeUnchanged && domainObjectState == StateType.Unchanged)
         domainObjects.Add (dataContainer.DomainObject);
     }
 
@@ -159,7 +161,7 @@ public class DataManager
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
     CheckClientTransactionForDeletion (domainObject);
 
-    if (domainObject.State == StateType.Deleted)
+    if (domainObject.GetStateForTransaction (_clientTransaction) == StateType.Deleted)
       return;
 
     RelationEndPointModificationCollection oppositeEndPointModifications =
@@ -170,9 +172,14 @@ public class DataManager
     EndDelete (domainObject, oppositeEndPointModifications);
   }
 
-  private void PerformDelete (DomainObject domainObject, RelationEndPointModificationCollection oppositeEndPointModifications)
+  internal void PerformDelete (DomainObject domainObject, RelationEndPointModificationCollection oppositeEndPointModifications)
   {
-    DataContainer dataContainer = domainObject.GetDataContainer ();  // rescue dataContainer before the map deletes is
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    ArgumentUtility.CheckNotNull ("oppositeEndPointModifications", oppositeEndPointModifications);
+
+    DataContainer dataContainer = domainObject.GetDataContainerForTransaction (_clientTransaction);  // rescue dataContainer before the map deletes is
+    if (dataContainer.State == StateType.Deleted)
+      return;
 
     _relationEndPointMap.PerformDelete (domainObject, oppositeEndPointModifications);
     _dataContainerMap.PerformDelete (dataContainer);
@@ -200,7 +207,7 @@ public class DataManager
 
   private void CheckClientTransactionForDeletion (DomainObject domainObject)
   {
-    if (domainObject.GetDataContainer().ClientTransaction != _clientTransaction)
+    if (!domainObject.CanBeUsedInTransaction (_clientTransaction))
     {
       throw CreateClientTransactionsDifferException (
           "Cannot delete DomainObject '{0}', because it belongs to a different ClientTransaction.",

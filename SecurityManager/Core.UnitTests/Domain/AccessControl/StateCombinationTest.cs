@@ -160,7 +160,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [Ignore ("TODO: FS: Reactivate this test when deleting-bug in SubClientTransaction is resolved.")]
+    [Ignore ("TODO: MK - check this test")]
     public void Commit_DeletedStateCombination ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
@@ -187,7 +187,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private StateType GetStateFromDataContainer (DomainObject orderClass)
     {
-      return ((DataContainer)PrivateInvoke.InvokeNonPublicMethod (orderClass, "GetDataContainer")).State;
+      return ((DataContainer)PrivateInvoke.InvokeNonPublicMethod (orderClass, typeof (DomainObject), "GetDataContainer")).State;
     }
 
     [Test]

@@ -50,6 +50,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    public void GetDataContainerUsesStoredTransaction ()
+    {
+      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      {
+        Assert.AreSame (ClientTransactionMock, _customerEndPoint.GetDataContainer ().ClientTransaction);
+      }
+    }
+
+    [Test]
     [ExpectedException (typeof (ArgumentNullException))]
     public void InitializeWithInvalidRelationEndPointID ()
     {

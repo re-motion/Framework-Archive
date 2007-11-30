@@ -53,12 +53,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void Initialization_FromNullCollectionEndPoint ()
     {
-      RelationEndPoint endPoint = new NullCollectionEndPoint (_id.Definition);
+      NullCollectionEndPoint endPoint = new NullCollectionEndPoint (_id.Definition);
       RelationEndPointModification modification = endPoint.CreateModification (_oldEndPointMock, _newEndPointMock);
       Assert.IsInstanceOfType (typeof (NullEndPointModification), modification);
       Assert.AreSame (endPoint, modification.AffectedEndPoint);
       Assert.AreSame (_oldEndPointMock, modification.OldEndPoint);
       Assert.AreSame (_newEndPointMock, modification.NewEndPoint);
+
+      modification = endPoint.CreateInsertModification (_oldEndPointMock, _newEndPointMock, 0);
+      Assert.IsInstanceOfType (typeof (NullEndPointModification), modification);
+
+      modification = endPoint.CreateReplaceModification (_oldEndPointMock, _newEndPointMock);
+      Assert.IsInstanceOfType (typeof (NullEndPointModification), modification);
     }
 
     [Test]

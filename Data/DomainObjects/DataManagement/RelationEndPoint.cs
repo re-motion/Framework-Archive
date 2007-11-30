@@ -139,7 +139,7 @@ public abstract class RelationEndPoint : IEndPoint
   public virtual DataContainer GetDataContainer ()
   {
     DomainObject domainObject = GetDomainObject ();
-    return domainObject.GetDataContainer();
+    return domainObject.GetDataContainerForTransaction (_clientTransaction);
   }
 
   public virtual ObjectID ObjectID

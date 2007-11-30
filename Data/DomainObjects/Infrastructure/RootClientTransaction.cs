@@ -175,7 +175,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
         using (PersistenceManager persistenceManager = new PersistenceManager())
         {
-          DataContainer relatedDataContainer = persistenceManager.LoadRelatedDataContainer (domainObject.GetDataContainer(), relationEndPointID);
+          DataContainer relatedDataContainer = persistenceManager.LoadRelatedDataContainer (domainObject.GetDataContainerForTransaction(this), relationEndPointID);
           if (relatedDataContainer != null)
           {
             TransactionEventSink.ObjectLoading (relatedDataContainer.ID);

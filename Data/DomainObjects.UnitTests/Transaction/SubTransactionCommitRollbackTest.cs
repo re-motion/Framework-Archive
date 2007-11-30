@@ -177,7 +177,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    [Ignore ("TODO: FS: deleting-bug test.")]
     public void SubCommit_OfDeletedObject_DoesNotRaiseDeletedEvent ()
     {
       using (_subTransaction.EnterDiscardingScope ())
@@ -209,7 +208,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    [Ignore ("TODO: FS: deleting-bug test.")]
     public void SubCommit_OfDeletedObject_DoesNotRaiseDeletedEvent_WithRelations ()
     {
       using (_subTransaction.EnterDiscardingScope ())
@@ -226,14 +224,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         {
           extensionMock.Committing (null, null);
           LastCall.IgnoreArguments ();
-          //extensionMock.ObjectDeleting (null, null);
-          //LastCall.IgnoreArguments ();
-          //extensionMock.RelationChanging (null, null, null, null, null);
-          //LastCall.IgnoreArguments ();
-          //extensionMock.RelationChanged (null, null, null);
-          //LastCall.IgnoreArguments ();
-          //extensionMock.ObjectDeleted (null, null);
-          //LastCall.IgnoreArguments ();
           extensionMock.Committed (null, null);
           LastCall.IgnoreArguments ();
         }
