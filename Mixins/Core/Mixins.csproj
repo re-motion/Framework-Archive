@@ -50,7 +50,6 @@
     <Compile Include="CodeGeneration\ConcreteMixedTypeAttribute.cs" />
     <Compile Include="CodeGeneration\NamespaceChangingNameProvider.cs" />
     <Compile Include="CompleteInterfaceAttribute.cs" />
-    <Compile Include="Context\ApplicationConctextBuilderAssemblyFinderFilter.cs" />
     <Compile Include="Context\InternalApplicationContextBuilder.cs" />
     <Compile Include="Context\MixinContext.cs" />
     <Compile Include="IOverrideAttribute.cs" />

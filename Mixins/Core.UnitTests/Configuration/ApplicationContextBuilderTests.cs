@@ -1,10 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Reflection;
+using Rhino.Mocks;
+using Rubicon.Design;
+using Rubicon.Development.UnitTesting;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Utilities;
+using Rubicon.Reflection;
+using Rubicon.Utilities;
+using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 
 namespace Rubicon.Mixins.UnitTests.Configuration
 {
@@ -71,15 +77,19 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void FilterExcludesSystemAssemblies ()
     {
-      ApplicationConctextBuilderAssemblyFinderFilter filter = new ApplicationConctextBuilderAssemblyFinderFilter ();
-      Assert.IsFalse (filter.ShouldConsiderAssembly (typeof (object).Assembly.GetName()));
-      Assert.IsFalse (filter.ShouldConsiderAssembly (typeof (Uri).Assembly.GetName()));
+      AssemblyFinderTypeDiscoveryService service =
+          (AssemblyFinderTypeDiscoveryService)
+          PrivateInvoke.InvokeNonPublicStaticMethod (typeof (ApplicationContextBuilder), "GetTypeDiscoveryService");
+      Assert.IsFalse (service.AssemblyFinder.Filter.ShouldConsiderAssembly (typeof (object).Assembly.GetName ()));
+      Assert.IsFalse (service.AssemblyFinder.Filter.ShouldConsiderAssembly (typeof (Uri).Assembly.GetName ()));
     }
 
     [Test]
     public void FilterExcludesGeneratedAssemblies ()
     {
-      ApplicationConctextBuilderAssemblyFinderFilter filter = new ApplicationConctextBuilderAssemblyFinderFilter ();
+      AssemblyFinderTypeDiscoveryService service =
+          (AssemblyFinderTypeDiscoveryService)
+          PrivateInvoke.InvokeNonPublicStaticMethod (typeof (ApplicationContextBuilder), "GetTypeDiscoveryService");
       
       Assembly signedAssembly = TypeFactory.GetConcreteType (typeof (object), GenerationPolicy.ForceGeneration).Assembly;
       Assembly unsignedAssembly = TypeFactory.GetConcreteType (typeof (BaseType1), GenerationPolicy.ForceGeneration).Assembly;
@@ -87,20 +97,56 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.IsTrue (ReflectionUtility.IsAssemblySigned (signedAssembly));
       Assert.IsFalse (ReflectionUtility.IsAssemblySigned (unsignedAssembly));
 
-      Assert.IsFalse (filter.ShouldIncludeAssembly (signedAssembly));
-      Assert.IsFalse (filter.ShouldIncludeAssembly (unsignedAssembly));
+      Assert.IsFalse (service.AssemblyFinder.Filter.ShouldIncludeAssembly (signedAssembly));
+      Assert.IsFalse (service.AssemblyFinder.Filter.ShouldIncludeAssembly (unsignedAssembly));
     }
 
     [Test]
     public void FilterIncludesAllNormalAssemblies ()
     {
-      ApplicationConctextBuilderAssemblyFinderFilter filter = new ApplicationConctextBuilderAssemblyFinderFilter ();
-      Assert.IsTrue (filter.ShouldConsiderAssembly (typeof (ApplicationContextBuilderTests).Assembly.GetName()));
-      Assert.IsTrue (filter.ShouldConsiderAssembly (typeof (ApplicationContextBuilder).Assembly.GetName()));
-      Assert.IsTrue (filter.ShouldConsiderAssembly (new AssemblyName ("whatever")));
+      AssemblyFinderTypeDiscoveryService service =
+          (AssemblyFinderTypeDiscoveryService)
+          PrivateInvoke.InvokeNonPublicStaticMethod (typeof (ApplicationContextBuilder), "GetTypeDiscoveryService");
 
-      Assert.IsTrue (filter.ShouldIncludeAssembly (typeof (ApplicationContextBuilderTests).Assembly));
-      Assert.IsTrue (filter.ShouldIncludeAssembly (typeof (ApplicationContextBuilder).Assembly));
+      Assert.IsTrue (service.AssemblyFinder.Filter.ShouldConsiderAssembly (typeof (ApplicationContextBuilderTests).Assembly.GetName ()));
+      Assert.IsTrue (service.AssemblyFinder.Filter.ShouldConsiderAssembly (typeof (ApplicationContextBuilder).Assembly.GetName ()));
+      Assert.IsTrue (service.AssemblyFinder.Filter.ShouldConsiderAssembly (new AssemblyName ("whatever")));
+
+      Assert.IsTrue (service.AssemblyFinder.Filter.ShouldIncludeAssembly (typeof (ApplicationContextBuilderTests).Assembly));
+      Assert.IsTrue (service.AssemblyFinder.Filter.ShouldIncludeAssembly (typeof (ApplicationContextBuilder).Assembly));
+    }
+
+    [Test]
+    public void DesignModeIsDetected ()
+    {
+      ITypeDiscoveryService service =
+          (ITypeDiscoveryService) PrivateInvoke.InvokeNonPublicStaticMethod (typeof (ApplicationContextBuilder), "GetTypeDiscoveryService");
+      Assert.IsInstanceOfType (typeof (AssemblyFinderTypeDiscoveryService), service);
+
+      MockRepository repository = new MockRepository();
+      IDesignModeHelper designModeHelperMock = repository.CreateMock<IDesignModeHelper> ();
+      IDesignerHost designerHostMock = repository.CreateMock<IDesignerHost>();
+      ITypeDiscoveryService designerServiceMock = repository.CreateMock<ITypeDiscoveryService> ();
+
+      Expect.Call (designModeHelperMock.DesignerHost).Return (designerHostMock);
+      Expect.Call (designerHostMock.GetService (typeof (ITypeDiscoveryService))).Return (designerServiceMock);
+
+      repository.ReplayAll();
+      
+      DesignerUtility.SetDesignMode (designModeHelperMock);
+      try
+      {
+        service = (ITypeDiscoveryService) PrivateInvoke.InvokeNonPublicStaticMethod (typeof (ApplicationContextBuilder), "GetTypeDiscoveryService");
+
+        Assert.IsNotInstanceOfType (typeof (AssemblyFinderTypeDiscoveryService), service);
+        Assert.AreSame (designerServiceMock, service);
+      }
+      finally
+      {
+        DesignerUtility.ClearDesignMode();
+      }
+
+      repository.VerifyAll ();
     }
   }
 }

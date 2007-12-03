@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Rubicon.Utilities
@@ -67,6 +68,13 @@ namespace Rubicon.Utilities
         return array;
       else
         return new List<T> (source).ToArray();
+    }
+
+    public static IEnumerable<T> Cast<T> (IEnumerable sourceEnumerable)
+    {
+      ArgumentUtility.CheckNotNull ("sourceEnumerable", sourceEnumerable);
+      foreach (object o in sourceEnumerable)
+        yield return (T) o;
     }
   }
 }

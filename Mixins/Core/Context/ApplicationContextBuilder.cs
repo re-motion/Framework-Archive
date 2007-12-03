@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Reflection;
 using Rubicon.Mixins;
 using Rubicon.Collections;
@@ -30,18 +32,28 @@ namespace Rubicon.Mixins.Context
     {
       ArgumentUtility.CheckNotNull ("assemblies", assemblies);
 
-      // ApplicationContextBuilder will not overwrite any existing class contexts, but instead augment them with any new definitions.
-      // This is exactly what we want for the assemblies, since all of these are of equal priority. However, we want to replace any conflicting
-      // contexts inherited from the parent context.
+      return BuildDerivedContext (parentContext, delegate (ApplicationContextBuilder builder)
+      {
+        foreach (Assembly assembly in assemblies)
+          builder.AddAssembly (assembly);
+      });
+    }
 
-      // Therefore, first analyze the assemblies into a temporary context without replacements:
+    private static ApplicationContext BuildDerivedContext (ApplicationContext parentContext, Action<ApplicationContextBuilder> overrideGenerator)
+    {
+      ArgumentUtility.CheckNotNull ("overrideGenerator", overrideGenerator);
+      
+      // ApplicationContextBuilder will not overwrite any existing class contexts, but instead augment them with any new definitions.
+      // This is exactly what we want for the generated overrides, since all of these are of equal priority. However, we want to replace any
+      // conflicting contexts inherited from the parent context.
+
+      // Therefore, we first analyze all overrides into a temporary context without replacements:
       ApplicationContextBuilder tempContextBuilder = new ApplicationContextBuilder (null);
-      foreach (Assembly assembly in assemblies)
-        tempContextBuilder.AddAssembly (assembly);
+      overrideGenerator (tempContextBuilder);
 
       ApplicationContext tempContext = tempContextBuilder.BuildContext ();
 
-      // Then, add them to the resulting context, replacing the respective inherited class contexts:
+      // Then, we add the analyzed data to the result context, replacing the respective inherited class contexts:
       ApplicationContext fullContext = new ApplicationContext (parentContext);
       tempContext.CopyTo (fullContext);
       return fullContext;
@@ -95,6 +107,28 @@ namespace Rubicon.Mixins.Context
     }
 
     /// <summary>
+    /// Builds a new <see cref="ApplicationContext"/> from the declarative configuration information in the given types.
+    /// </summary>
+    /// <param name="parentContext">The parent context to derive the new context from (can be <see langword="null"/>).</param>
+    /// <param name="types">The types to be scanned for declarative mixin information.</param>
+    /// <returns>An application context inheriting from <paramref name="parentContext"/> and incorporating the configuration information
+    /// held by the given types.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="types"/> parameter is <see langword="null"/>.</exception>
+    private static ApplicationContext BuildContextFromTypes (ApplicationContext parentContext, IEnumerable<Type> types)
+    {
+      ArgumentUtility.CheckNotNull ("types", types);
+
+      return BuildDerivedContext (parentContext, delegate (ApplicationContextBuilder builder)
+      {
+        foreach (Type type in types)
+        {
+          if (!type.IsDefined (typeof (IgnoreForMixinConfigurationAttribute), false))
+            builder.AddType (type);
+        }
+      });
+    }
+
+    /// <summary>
     /// Builds the default application context by analyzing all assemblies in the application bin directory and their (directly or indirectly)
     /// referenced assemblies for mixin configuration information. System assemblies are not scanned.
     /// </summary>
@@ -110,9 +144,13 @@ namespace Rubicon.Mixins.Context
     /// <seealso cref="AssemblyFinder"/>
     public static ApplicationContext BuildDefaultContext ()
     {
-      AssemblyFinder finder = new AssemblyFinder (new ApplicationConctextBuilderAssemblyFinderFilter (), false);
-      Assembly[] assembliesToBeScanned = finder.FindAssemblies();
-      return BuildContextFromAssemblies (assembliesToBeScanned);
+      ICollection types = GetTypeDiscoveryService().GetTypes (null, false);
+      return BuildContextFromTypes (null, EnumerableUtility.Cast<Type> (types));
+    }
+
+    private static ITypeDiscoveryService GetTypeDiscoveryService ()
+    {
+      return ContextAwareTypeDiscoveryService.GetInstance();
     }
 
     private readonly ApplicationContext _parentContext;
