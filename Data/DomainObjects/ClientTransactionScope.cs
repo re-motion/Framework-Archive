@@ -99,7 +99,7 @@ namespace Rubicon.Data.DomainObjects
     private readonly ClientTransaction _scopedTransaction;
 
     private bool _hasBeenLeft = false;
-    private bool _autoEnlistDomainObjects = false;
+    private bool _autoEnlistDomainObjects;
     private AutoRollbackBehavior _autoRollbackBehavior;
 
     /// <summary>
@@ -121,6 +121,8 @@ namespace Rubicon.Data.DomainObjects
 
       ClientTransactionScope.SetActiveScope (this);
       _scopedTransaction = scopedCurrentTransaction;
+
+      _autoEnlistDomainObjects = _previousScope != null ? _previousScope.AutoEnlistDomainObjects : false;
     }
 
     /// <summary>

@@ -373,6 +373,35 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
+    public void InitialAutoEnlistValueIsInherited ()
+    {
+      ClientTransaction clientTransaction = ClientTransaction.NewTransaction ();
+
+      using (ClientTransactionScope scope1 = clientTransaction.EnterNonDiscardingScope ())
+      {
+        Assert.IsFalse (scope1.AutoEnlistDomainObjects);
+        scope1.AutoEnlistDomainObjects = true;
+        Assert.IsTrue (scope1.AutoEnlistDomainObjects);
+
+        using (ClientTransactionScope scope2 = clientTransaction.EnterNonDiscardingScope ())
+        {
+          Assert.IsTrue (scope2.AutoEnlistDomainObjects);
+          
+          scope1.AutoEnlistDomainObjects = false;
+          Assert.IsTrue (scope2.AutoEnlistDomainObjects);
+          scope1.AutoEnlistDomainObjects = true;
+          Assert.IsTrue (scope2.AutoEnlistDomainObjects);
+
+          scope2.AutoEnlistDomainObjects = false;
+          Assert.IsFalse (scope2.AutoEnlistDomainObjects);
+          Assert.IsTrue (scope1.AutoEnlistDomainObjects);
+        }
+
+        Assert.IsTrue (scope1.AutoEnlistDomainObjects);
+      }
+    }
+
+    [Test]
     public void ResetScope ()
     {
       ClientTransactionScope scope = ClientTransaction.NewTransaction ().EnterNonDiscardingScope ();
