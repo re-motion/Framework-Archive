@@ -531,12 +531,12 @@ public class WxePageStep: WxeStep
   
   /// <summary> 
   ///   Aborts the <see cref="WxePageStep"/>. Aborting will cascade to any <see cref="WxeFunction"/> executed
-  ///   in the scope of this step.
+  ///   in the scope of this step if they are part of the same hierarchy, i.e. share a common <see cref="WxeFunction.RootFunction"/>.
   /// </summary>
   protected override void AbortRecursive()
   {
     base.AbortRecursive ();
-    if (_function != null)
+    if (_function != null && _function.RootFunction == this.RootFunction)
       _function.Abort();
   }
 }
