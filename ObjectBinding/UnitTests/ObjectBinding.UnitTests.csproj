@@ -93,6 +93,7 @@
     <Compile Include="Core\BindableObject\TestDomain\ClassWithManualIdentity.cs" />
     <Compile Include="Core\BindableObject\TestDomain\ClassWithSpecialFactory.cs" />
     <Compile Include="Core\BindableObject\TestDomain\ClassWithMixedPropertyOfSameName.cs" />
+    <Compile Include="Core\BindableObject\TestDomain\ClassWithIdentityAndDisplayName.cs" />
     <Compile Include="Core\BindableObject\TestDomain\DerivedBusinessObjectClass.cs" />
     <Compile Include="Core\BindableObject\TestDomain\BaseBusinessObjectClass.cs" />
     <Compile Include="Core\BindableObject\TestDomain\ICustomGetObjectService.cs" />

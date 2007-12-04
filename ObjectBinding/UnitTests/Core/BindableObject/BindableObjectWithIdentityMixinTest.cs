@@ -30,6 +30,16 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     }
 
     [Test]
+    public void DisplayName ()
+    {
+      BindableObjectWithIdentityMixin mixin =
+          Mixin.Get<BindableObjectWithIdentityMixin> (ObjectFactory.Create<ClassWithIdentityAndDisplayName> ().With ("TheUniqueIdentifier"));
+      IBusinessObjectWithIdentity businessObjectWithIdentity = mixin;
+
+      Assert.That (businessObjectWithIdentity.DisplayName, Is.SameAs ("TheUniqueIdentifier"));
+    }
+
+    [Test]
     public void SerializeAndDeserialize ()
     {
       ClassWithIdentity value = ObjectFactory.Create<ClassWithIdentity> ().With ();

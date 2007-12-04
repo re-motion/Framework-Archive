@@ -2,6 +2,8 @@ using System;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.UnitTests.Configuration
 {
@@ -46,6 +48,24 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.IsTrue (context.GetClassContext (typeof (DerivedWithoutUses)).ContainsMixin (typeof (NullMixin)));
       Assert.IsTrue (context.GetClassContext (typeof (DerivedWithoutUses)).GetOrAddMixinContext (typeof (NullMixin)).ContainsExplicitDependency (typeof (object)));
       Assert.AreEqual (1, context.GetClassContext (typeof (DerivedWithoutUses)).MixinCount);
+    }
+
+    public class DedicatedMixin {}
+
+    [Uses( typeof (DedicatedMixin))]
+    [IgnoreForMixinConfiguration]
+    public class DerivedWithOwnUses : BaseWithUses { }
+
+    [Test]
+    [Ignore ("TODO: COMMONS-444")]
+    public void UsesAttributeIsInherited_AndAugmentedWithOwn ()
+    {
+      ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (DerivedWithOwnUses)).BuildContext ();
+      Assert.IsTrue (context.GetClassContext (typeof (DerivedWithOwnUses)).ContainsMixin (typeof (NullMixin)));
+      Assert.IsTrue (context.GetClassContext (typeof (DerivedWithOwnUses)).ContainsMixin (typeof (DedicatedMixin)));
+      Assert.That (EnumerableUtility.ToArray (EnumerableUtility.Select<MixinContext, Type> (context.GetClassContext (typeof (DerivedWithoutUses)).Mixins,
+          delegate (MixinContext mixin) { return mixin.MixinType; })), Is.EquivalentTo (new Type[] {typeof (NullMixin), typeof (DedicatedMixin)}));
+      Assert.AreEqual (2, context.GetClassContext (typeof (DerivedWithoutUses)).MixinCount);
     }
 
     [Uses (typeof (NullMixin))]
