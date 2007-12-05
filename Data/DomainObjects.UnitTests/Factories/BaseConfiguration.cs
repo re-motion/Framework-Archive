@@ -9,11 +9,18 @@ using Rubicon.Data.DomainObjects.UnitTests.TableInheritance;
 using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Rubicon.Reflection;
+using System.Reflection;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 {
   public abstract class BaseConfiguration
   {
+    public static AssemblyFinderTypeDiscoveryService GetTypeDiscoveryService (params Assembly[] rootAssemblies)
+    {
+      return new AssemblyFinderTypeDiscoveryService (new AssemblyFinder (ApplicationAssemblyFinderFilter.Instance, rootAssemblies));
+    }
+
     private readonly PersistenceConfiguration _persistenceConfiguration;
     private readonly MappingLoaderConfiguration _mappingLoaderConfiguration;
     private readonly QueryConfiguration _queryConfiguration;
@@ -31,7 +38,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       _queryConfiguration = new QueryConfiguration ();
       DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (_mappingLoaderConfiguration, _persistenceConfiguration, _queryConfiguration));
 
-      _mappingConfiguration = new MappingConfiguration (new MappingReflector (GetType().Assembly));
+      _mappingConfiguration = new MappingConfiguration (new MappingReflector (BaseConfiguration.GetTypeDiscoveryService (GetType ().Assembly)));
       MappingConfiguration.SetCurrent (_mappingConfiguration);
     }
 

@@ -133,15 +133,16 @@ namespace Rubicon.Mixins.Context
     /// referenced assemblies for mixin configuration information. System assemblies are not scanned.
     /// </summary>
     /// <returns>An application context holding the default mixin configuration information for this application.</returns>
-    /// <remarks>This method performs the following steps (see also <see cref="AssemblyFinder"/>):
+    /// <remarks>This method uses the <see cref="ContextAwareTypeDiscoveryService"/> to discover the types to be used in the mixin configuration.
+    /// In design mode, this will use the types returned by the designer, but in ordinary application scenarios, the following steps are performed:
     /// <list type="number">
-    /// <item>Retrieve all assemblies from the current <see cref="AppDomain">AppDomain's</see> bin directory.</item>
-    /// <item>Analyze each of them which is not excluded by the <see cref="ApplicationAssemblyFinderFilter"/> for mixin configuration information.</item>
+    /// <item>Retrieve all types assemblies from the current <see cref="AppDomain">AppDomain's</see> bin directory.</item>
+    /// <item>Analyze each of them that is included by the <see cref="ApplicationAssemblyFinderFilter"/> for mixin configuration information.</item>
     /// <item>Load the referenced assemblies of those assemblies if they aren't excluded by the <see cref="ApplicationAssemblyFinderFilter"/>.</item>
     /// <item>If the loaded assemblies haven't already been analyzed, treat them according to steps 2-4.</item>
     /// </list>
     /// </remarks>
-    /// <seealso cref="AssemblyFinder"/>
+    /// <seealso cref="ContextAwareTypeDiscoveryService"/>
     public static ApplicationContext BuildDefaultContext ()
     {
       ICollection types = GetTypeDiscoveryService().GetTypes (null, false);

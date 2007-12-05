@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Design;
@@ -11,31 +12,28 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   [DesignModeMappingLoader (typeof (DesignModeMappingReflector))]
   public class MappingReflector : MappingReflectorBase
   {
-    private readonly AssemblyFinder _assemblyFinder;
+    private readonly ITypeDiscoveryService _typeDiscoveryService;
 
     //TODO: Test
     public MappingReflector ()
     {
-      _assemblyFinder = new AssemblyFinder (ApplicationAssemblyFinderFilter.Instance, false);
+      _typeDiscoveryService = ContextAwareTypeDiscoveryService.GetInstance();
     }
 
-    public MappingReflector (params Assembly[] rootAssemblies)
+    public MappingReflector (ITypeDiscoveryService typeDiscoveryService)
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("rootAssemblies", rootAssemblies);
+      ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
 
-      _assemblyFinder = new AssemblyFinder (ApplicationAssemblyFinderFilter.Instance, rootAssemblies);
+      _typeDiscoveryService = typeDiscoveryService;
     }
 
     protected override Type[] GetDomainObjectTypes ()
     {
       List<Type> domainObjectClasses = new List<Type>();
-      foreach (Assembly assembly in _assemblyFinder.FindAssemblies ())
+      foreach (Type type in _typeDiscoveryService.GetTypes (null, false))
       {
-        foreach (Type type in assembly.GetTypes())
-        {
-          if (typeof (DomainObject).IsAssignableFrom (type) && !domainObjectClasses.Contains (type))
-            domainObjectClasses.Add (type);
-        }
+        if (typeof (DomainObject).IsAssignableFrom (type) && !domainObjectClasses.Contains (type))
+          domainObjectClasses.Add (type);
       }
 
       return domainObjectClasses.ToArray();

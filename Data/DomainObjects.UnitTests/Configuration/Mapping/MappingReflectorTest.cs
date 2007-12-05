@@ -15,14 +15,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetResolveTypes()
     {
-      IMappingLoader mappingReflector = new MappingReflector (GetType().Assembly);
+      IMappingLoader mappingReflector = new MappingReflector (BaseConfiguration.GetTypeDiscoveryService (GetType().Assembly));
       Assert.IsTrue (mappingReflector.ResolveTypes);
     }
 
     [Test]
     public void GetClassDefinitions ()
     {
-      MappingReflector mappingReflector = new MappingReflector (GetType().Assembly);
+      MappingReflector mappingReflector = new MappingReflector (BaseConfiguration.GetTypeDiscoveryService (GetType().Assembly));
 
       ClassDefinitionCollection actualClassDefinitions = mappingReflector.GetClassDefinitions();
 
@@ -35,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetRelationDefinitions()
     {
-      MappingReflector mappingReflector = new MappingReflector (GetType().Assembly);
+      MappingReflector mappingReflector = new MappingReflector (BaseConfiguration.GetTypeDiscoveryService (GetType().Assembly));
 
       ClassDefinitionCollection actualClassDefinitions = mappingReflector.GetClassDefinitions();
       RelationDefinitionCollection actualRelationDefinitions = mappingReflector.GetRelationDefinitions (actualClassDefinitions);
@@ -51,11 +51,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void Get_WithDuplicateAssembly ()
     {
       Assembly assembly = GetType ().Assembly;
-      MappingReflector expectedMappingReflector = new MappingReflector (assembly);
+      MappingReflector expectedMappingReflector = new MappingReflector (BaseConfiguration.GetTypeDiscoveryService (assembly));
       ClassDefinitionCollection expectedClassDefinitions = expectedMappingReflector.GetClassDefinitions ();
       RelationDefinitionCollection expectedRelationDefinitions = expectedMappingReflector.GetRelationDefinitions (expectedClassDefinitions);
       
-      MappingReflector mappingReflector = new MappingReflector (assembly, assembly);
+      MappingReflector mappingReflector = new MappingReflector (BaseConfiguration.GetTypeDiscoveryService (assembly, assembly));
       ClassDefinitionCollection actualClassDefinitions = mappingReflector.GetClassDefinitions ();
 
       ClassDefinitionChecker classDefinitionChecker = new ClassDefinitionChecker ();

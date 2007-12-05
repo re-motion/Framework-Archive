@@ -19,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, TableInheritanceTestDomainProviderID, typeof (Person), false, new List<Type> ());
 
       MappingConfiguration mappingConfiguration = 
-          new MappingConfiguration (new MappingReflector (TestDomainFactory.ConfigurationMappingTestDomainEmpty));
+          new MappingConfiguration (new MappingReflector (BaseConfiguration.GetTypeDiscoveryService (TestDomainFactory.ConfigurationMappingTestDomainEmpty)));
       mappingConfiguration.ClassDefinitions.Add (personClass);
       mappingConfiguration.Validate ();
     }
@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, TableInheritanceTestDomainProviderID, typeof (Person), false, new List<Type> ());
 
       MappingConfiguration mappingConfiguration = 
-          new MappingConfiguration (new MappingReflector (TestDomainFactory.ConfigurationMappingTestDomainEmpty));
+          new MappingConfiguration (new MappingReflector (BaseConfiguration.GetTypeDiscoveryService (TestDomainFactory.ConfigurationMappingTestDomainEmpty)));
       mappingConfiguration.ClassDefinitions.Add (personClass);
 
       try
@@ -52,7 +52,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void TableInheritanceMapping ()
     {
-      MappingConfiguration mappingConfiguration = new MappingConfiguration (new MappingReflector (GetType().Assembly));
+      MappingConfiguration mappingConfiguration = new MappingConfiguration (new MappingReflector (BaseConfiguration.GetTypeDiscoveryService (GetType().Assembly)));
       ClassDefinition domainBaseClass = mappingConfiguration.ClassDefinitions.GetMandatory (typeof (DomainBase));
       Assert.IsNull (domainBaseClass.MyEntityName);
     }
