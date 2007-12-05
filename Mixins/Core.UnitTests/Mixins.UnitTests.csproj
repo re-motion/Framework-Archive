@@ -48,6 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\Context\ApplicationContextTests\ApplicationContextInheritanceTests.cs" />
+    <Compile Include="Configuration\Context\ApplicationContextTests\ApplicationContextCompleteInterfaceTests.cs" />
+    <Compile Include="Configuration\Context\ApplicationContextTests\ApplicationContextValidationTests.cs" />
+    <Compile Include="Configuration\Context\ApplicationContextTests\ApplicationContextGeneralTests.cs" />
     <Compile Include="Configuration\Definitions\AttributeIntroductionDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\Definitions\MixedMixinTests.cs" />
     <Compile Include="Mixins\CodeGenSampleTypes\ClassWithCopyCustomAttributes.cs" />

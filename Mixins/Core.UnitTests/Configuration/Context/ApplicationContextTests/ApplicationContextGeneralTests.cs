@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Validation;
-using System.Runtime.Serialization;
 
-namespace Rubicon.Mixins.UnitTests.Configuration.Context
+namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
 {
   [TestFixture]
-  public class ApplicationContextTestsx
+  public class ApplicationContextGeneralTests
   {
     [Test]
     public void CompletelyNewApplicationContextDoesNotKnowAnyClasses()
@@ -67,153 +65,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     }
 
     [Test]
-    public void InheritingApplicationContextKnowsClassesFromBasePlusOwn ()
-    {
-      ApplicationContext ac = new ApplicationContext ();
-      Assert.AreEqual (0, ac.ClassContextCount);
-      ac.AddClassContext (new ClassContext (typeof (BaseType1)));
-      ac.AddClassContext (new ClassContext (typeof (BaseType2)));
-      Assert.AreEqual (2, ac.ClassContextCount);
-
-      ApplicationContext ac2 = new ApplicationContext (ac);
-      Assert.AreEqual (2, ac2.ClassContextCount);
-      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
-      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType2)));
-      Assert.IsFalse (ac2.ContainsClassContext (typeof (BaseType3)));
-
-      Assert.IsNotNull (ac2.GetClassContext (typeof (BaseType1)));
-      Assert.IsNotNull (ac2.GetClassContext (typeof (BaseType2)));
-      Assert.IsNull (ac2.GetClassContext (typeof (BaseType3)));
-
-      ac2.AddClassContext (new ClassContext (typeof (BaseType3)));
-      Assert.AreEqual (3, ac2.ClassContextCount);
-      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
-      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType2)));
-      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType3)));
-
-      Assert.IsNotNull (ac2.GetClassContext (typeof (BaseType1)));
-      Assert.IsNotNull (ac2.GetClassContext (typeof (BaseType2)));
-      Assert.IsNotNull (ac2.GetClassContext (typeof (BaseType3)));
-
-      List<ClassContext> contexts = new List<ClassContext> (ac2.ClassContexts);
-      Assert.AreEqual (3, contexts.Count);
-      Assert.Contains (ac.GetClassContext (typeof (BaseType1)), contexts);
-      Assert.Contains (ac.GetClassContext (typeof (BaseType2)), contexts);
-      Assert.Contains (ac2.GetClassContext (typeof (BaseType3)), contexts);
-    }
-
-    [Test]
-    public void OverridingClassContextsFromParent ()
-    {
-      ApplicationContext ac = new ApplicationContext ();
-      Assert.AreEqual (0, ac.ClassContextCount);
-      ac.AddClassContext (new ClassContext (typeof (BaseType1)));
-      ac.AddClassContext (new ClassContext (typeof (BaseType2)));
-      Assert.AreEqual (2, ac.ClassContextCount);
-      
-      ApplicationContext ac2 = new ApplicationContext (ac);
-      Assert.AreEqual (2, ac2.ClassContextCount);
-      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
-      Assert.AreEqual (ac.GetClassContext (typeof (BaseType1)), ac2.GetClassContext (typeof (BaseType1)));
-
-      ClassContext newContext = new ClassContext (typeof (BaseType1));
-      ac2.AddOrReplaceClassContext (newContext);
-      Assert.AreEqual (2, ac2.ClassContextCount);
-
-      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
-      Assert.AreNotSame (ac.GetClassContext (typeof (BaseType1)), ac2.GetClassContext (typeof (BaseType1)));
-    }
-
-    [Test]
-    public void RegisterAndResolveCompleteInterface ()
-    {
-      ApplicationContext ac = new ApplicationContext ();
-      ClassContext cc = new ClassContext (typeof (BaseType2));
-      ac.AddClassContext (cc);
-      cc.AddCompleteInterface (typeof (IBaseType2));
-      Assert.IsNull (ac.ResolveInterface (typeof (IBaseType2)));
-      ac.RegisterInterface (typeof (IBaseType2), cc);
-      Assert.AreSame (cc, ac.ResolveInterface (typeof (IBaseType2)));
-
-      ac.GetOrAddClassContext (typeof (BaseType3));
-      ac.RegisterInterface (typeof (IBaseType31), typeof (BaseType3));
-      Assert.AreSame (ac.GetClassContext (typeof (BaseType3)), ac.ResolveInterface (typeof (IBaseType31)));
-    }
-
-    [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The argument is not an interface.", MatchType = MessageMatch.Contains)]
-    public void RegisterCompleteInterfaceThrowsOnNonInterface ()
-    {
-      ApplicationContext ac = new ApplicationContext ();
-      ClassContext cc = new ClassContext (typeof (BaseType2));
-      ac.AddClassContext (cc);
-      ac.RegisterInterface (typeof (BaseType2), cc);
-    }
-
-    [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The class context hasn't been added to this application context.",
-        MatchType = MessageMatch.Contains)]
-    public void RegisterCompleteInterfaceThrowsOnInvalidClassContext1 ()
-    {
-      ApplicationContext ac = new ApplicationContext ();
-      ClassContext cc = new ClassContext (typeof (BaseType2));
-      ac.RegisterInterface (typeof (IBaseType2), cc);
-    }
-
-    [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The class context hasn't been added to this application context.",
-        MatchType = MessageMatch.Contains)]
-    public void RegisterCompleteInterfaceThrowsOnInvalidClassContext2 ()
-    {
-      ApplicationContext ac = new ApplicationContext ();
-      ClassContext cc = new ClassContext (typeof (BaseType2));
-      ac.AddClassContext (cc);
-      ac.RegisterInterface (typeof (IBaseType2), new ClassContext (typeof (BaseType2)));
-    }
-
-    [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "There is no class context for the given type",
-        MatchType = MessageMatch.Contains)]
-    public void RegisterCompleteInterfaceThrowsOnInvalidClassContext3 ()
-    {
-      ApplicationContext ac = new ApplicationContext ();
-      ac.RegisterInterface (typeof (IBaseType2), typeof (BaseType2));
-    }
-
-    [Test]
-    public void RemoveClassContextCausesInterfaceRegistrationToBeRemoved ()
-    {
-      ApplicationContext ac = new ApplicationContext ();
-      ClassContext cc = new ClassContext (typeof (BaseType2));
-      ac.AddClassContext (cc);
-      ac.RegisterInterface (typeof (IBaseType2), cc);
-      Assert.IsNotNull (ac.ResolveInterface (typeof (IBaseType2)));
-      Assert.AreSame (cc, ac.ResolveInterface (typeof (IBaseType2)));
-      ac.RemoveClassContext (typeof (BaseType2));
-      Assert.IsNull (ac.ResolveInterface (typeof (IBaseType2)));
-    }
-
-    [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "already been associated with a class context",
-        MatchType = MessageMatch.Contains)]
-    public void RegisterCompleteInterfaceThrowsOnDuplicateInterface ()
-    {
-      ApplicationContext ac = new ApplicationContext ();
-      ClassContext cc = new ClassContext (typeof (BaseType2));
-      ac.AddClassContext (cc);
-      ac.RegisterInterface (typeof (IBaseType2), cc);
-      ac.RegisterInterface (typeof (IBaseType2), cc);
-    }
-
-    [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The argument is not an interface.", MatchType = MessageMatch.Contains)]
-    public void ResolveCompleteInterfaceThrowsOnNonInterface ()
-    {
-      ApplicationContext ac = new ApplicationContext ();
-      ac.ResolveInterface (typeof (BaseType2));
-    }
-
-    [Test]
     public void CopyTo ()
     {
       ApplicationContext parent = new ApplicationContext();
@@ -262,67 +113,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       source.GetClassContext (typeof (BaseType2)).RemoveMixin (typeof (BT2Mixin1));
       Assert.IsFalse (source.GetClassContext (typeof (BaseType2)).ContainsMixin (typeof (BT2Mixin1)));
       Assert.IsTrue (destination.GetClassContext (typeof (BaseType2)).ContainsMixin (typeof (BT2Mixin1)));
-    }
-
-    [Test]
-    public void ValidateWithNoErrors ()
-    {
-      using (MixinConfiguration.ScopedEmpty ())
-      {
-        using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
-        {
-          IValidationLog log = MixinConfiguration.ActiveContext.Validate();
-          Assert.IsTrue (log.GetNumberOfSuccesses() > 0);
-          Assert.AreEqual (0, log.GetNumberOfFailures());
-        }
-      }
-    }
-
-    [Test]
-    public void ValidateWithErrors ()
-    {
-      using (MixinConfiguration.ScopedEmpty ())
-      {
-        using (MixinConfiguration.ScopedExtend (typeof (int), typeof (NullMixin)))
-        {
-          IValidationLog log = MixinConfiguration.ActiveContext.Validate ();
-          Assert.IsTrue (log.GetNumberOfFailures () > 0);
-        }
-      }
-    }
-
-    [Test]
-    public void ValidateWithGenerics ()
-    {
-      using (MixinConfiguration.ScopedEmpty ())
-      {
-        using (MixinConfiguration.ScopedExtend (typeof (KeyValuePair<,>), typeof (NullMixin)))
-        {
-          IValidationLog log = MixinConfiguration.ActiveContext.Validate ();
-          Assert.IsTrue (log.GetNumberOfFailures () > 0);
-        }
-      }
-    }
-
-    class UninstantiableGeneric<T>
-        where T : ISerializable, IServiceProvider
-    {
-    }
-
-    [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "The ApplicationContext contains a ClassContext for the generic type "
-        + ".*UninstantiableGeneric\\`1\\[T\\], of which it cannot make a closed type. "
-        + "Because closed types are needed for validation, the ApplicationContext cannot be validated as a whole. The configuration might still "
-        + "be correct, but validation must be deferred to TypeFactory.GetActiveConfiguration.", MatchType = MessageMatch.Regex)]
-    public void ValidationThrowsWhenGenericsCannotBeSpecialized ()
-    {
-      using (MixinConfiguration.ScopedEmpty())
-      {
-        using (MixinConfiguration.ScopedExtend (typeof (UninstantiableGeneric<>), typeof (NullMixin)))
-        {
-          MixinConfiguration.ActiveContext.Validate();
-        }
-      }
     }
 
     [Test]
