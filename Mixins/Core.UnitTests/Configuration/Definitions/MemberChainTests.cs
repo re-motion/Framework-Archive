@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Rubicon.Mixins.Definitions.Building;
 using NUnit.Framework;
 using System.Reflection;
 
-namespace Rubicon.Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
 {
   [TestFixture]
   public class MemberChainTests

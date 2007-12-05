@@ -5,7 +5,7 @@ using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Reflection;
 
-namespace Rubicon.Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
 {
   [TestFixture]
   public class RequiredMethodDefinitionBuilderTests
@@ -148,9 +148,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException),
-        ExpectedMessage = "The dependency IRequirement (mixins Rubicon.Mixins.UnitTests.Configuration.RequiredMethodDefinitionBuilderTests+"
-        + "MixinRequiringSingleMethod applied to class Rubicon.Mixins.UnitTests.SampleTypes.NullTarget) is not fulfilled - public or protected method "
-        + "Method could not be found on the base class.")]
+        ExpectedMessage = "The dependency IRequirement \\(mixins .*MixinRequiringSingleMethod applied to class .*NullTarget\\) is not fulfilled - "
+        + "public or protected method Method could not be found on the base class.", MatchType = MessageMatch.Regex)]
     public void ThrowsIfMethodRequirementIsNotFulfilled ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinRequiringSingleMethod)))
@@ -170,9 +169,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException),
-        ExpectedMessage = "The dependency IRequirement (mixins Rubicon.Mixins.UnitTests.Configuration.RequiredMethodDefinitionBuilderTests+"
-        + "MixinRequiringSingleProperty applied to class Rubicon.Mixins.UnitTests.SampleTypes.NullTarget) is not fulfilled - public or protected "
-        + "property Property could not be found on the base class.")]
+        ExpectedMessage = "The dependency IRequirement \\(mixins .*MixinRequiringSingleProperty applied to class .*NullTarget\\) is not fulfilled - "
+        + "public or protected property Property could not be found on the base class.", MatchType = MessageMatch.Regex)]
     public void ThrowsIfPropertyRequirementIsNotFulfilled ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinRequiringSingleProperty)))
@@ -192,9 +190,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException),
-        ExpectedMessage = "The dependency IRequirement (mixins Rubicon.Mixins.UnitTests.Configuration.RequiredMethodDefinitionBuilderTests+"
-        + "MixinRequiringSingleEvent applied to class Rubicon.Mixins.UnitTests.SampleTypes.NullTarget) is not fulfilled - public or protected event "
-        + "Event could not be found on the base class.")]
+        ExpectedMessage = "The dependency IRequirement \\(mixins .*MixinRequiringSingleEvent applied to class .*NullTarget\\) is not fulfilled - public "
+        + "or protected event Event could not be found on the base class.", MatchType = MessageMatch.Regex)]
     public void ThrowsIfEventRequirementIsNotFulfilled ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinRequiringSingleEvent)))
@@ -221,10 +218,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The dependency IMixinRequiringAllMembersRequirements (mixins "
-      + "Rubicon.Mixins.UnitTests.SampleTypes.MixinRequiringAllMembersFace applied to class "
-      + "Rubicon.Mixins.UnitTests.Configuration.RequiredMethodDefinitionBuilderTests+ClassFulfillingPrivately) is not fulfilled - "
-      + "public or protected method Method could not be found on the base class.")]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The dependency IMixinRequiringAllMembersRequirements \\(mixins "
+        + ".*MixinRequiringAllMembersFace applied to class .*ClassFulfillingPrivately\\) is not fulfilled - "
+        + "public or protected method Method could not be found on the base class.", MatchType = MessageMatch.Regex)]
     public void ThrowsIfRequiredMethodIsPrivate ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (ClassFulfillingPrivately), typeof (MixinRequiringAllMembersFace)))
@@ -250,10 +246,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The dependency IMixinRequiringAllMembersRequirements (mixins "
-      + "Rubicon.Mixins.UnitTests.SampleTypes.MixinRequiringAllMembersFace applied to class "
-      + "Rubicon.Mixins.UnitTests.Configuration.RequiredMethodDefinitionBuilderTests+ClassFulfillingInternally) is not fulfilled - "
-      + "public or protected method Method could not be found on the base class.")]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The dependency IMixinRequiringAllMembersRequirements \\(mixins "
+        + ".*MixinRequiringAllMembersFace applied to class .*ClassFulfillingInternally\\) is not fulfilled - "
+        + "public or protected method Method could not be found on the base class.", MatchType = MessageMatch.Regex)]
     public void ThrowsIfRequiredMethodIsInternal ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (ClassFulfillingInternally), typeof (MixinRequiringAllMembersFace)))

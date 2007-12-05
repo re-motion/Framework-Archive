@@ -4,7 +4,7 @@ using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 
-namespace Rubicon.Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
 {
   [TestFixture]
   public class OverrideAttributeHierarchyTests

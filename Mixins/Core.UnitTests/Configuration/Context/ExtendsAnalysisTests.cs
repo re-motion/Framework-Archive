@@ -6,7 +6,7 @@ using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Utilities;
 
-namespace Rubicon.Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration.Context
 {
   [TestFixture]
   public class ExtendsAnalysisTests
@@ -105,7 +105,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin .*DoubleExtendingMixin are "
-        + "configured for target type .*ExtendsTargetBase.", MatchType = MessageMatch.Regex)]
+                                                                           + "configured for target type .*ExtendsTargetBase.", MatchType = MessageMatch.Regex)]
     public void ThrowsOnDuplicateExtendsForSameClass ()
     {
       new ApplicationContextBuilder (null).AddType (typeof (DoubleExtendingMixin)).BuildContext ();
@@ -128,8 +128,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Extends (typeof (ExtendsTargetBase), MixinTypeArguments = new Type[] { typeof (List<int>), typeof (IList<int>) })]
     [IgnoreForMixinConfiguration]
     public class GenericMixinWithSpecialization<TThis, TBase> : Mixin<TThis, TBase>
-      where TThis : class
-      where TBase : class
+        where TThis : class
+        where TBase : class
     {
     }
 
@@ -147,15 +147,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Extends (typeof (ExtendsTargetBase), MixinTypeArguments = new Type[] { typeof (List<int>) })]
     [IgnoreForMixinConfiguration]
     public class InvalidGenericMixin<TThis, TBase> : Mixin<TThis, TBase>
-      where TThis : class
-      where TBase : class
+        where TThis : class
+        where TBase : class
     {
     }
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The ExtendsAttribute for target class "
-        + "Rubicon.Mixins.UnitTests.Configuration.ExtendsAnalysisTests+ExtendsTargetBase applied to mixin type "
-        + "Rubicon.Mixins.UnitTests.Configuration.ExtendsAnalysisTests+InvalidGenericMixin`2 specified invalid generic type arguments.")]
+        + ".*ExtendsTargetBase applied to mixin type "
+        + ".*InvalidGenericMixin`2 specified invalid generic type arguments.", MatchType = MessageMatch.Regex)]
     public void InvalidTypeParametersThrowConfigurationException ()
     {
       new ApplicationContextBuilder (null).AddType (typeof (InvalidGenericMixin<,>)).BuildContext ();
@@ -199,8 +199,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Mixin type "
-        + "Rubicon.Mixins.UnitTests.Configuration.ExtendsAnalysisTests+SelfSuppressingExtender2 applied to target class "
-        + "Rubicon.Mixins.UnitTests.Configuration.ExtendsAnalysisTests+ExtendsTargetBase suppresses itself.")]
+        + ".*SelfSuppressingExtender2 applied to target class .*ExtendsTargetBase suppresses itself.", MatchType = MessageMatch.Regex)]
     public void SelfSuppressingMixin ()
     {
       new ApplicationContextBuilder (null).AddType (typeof (SelfSuppressingExtender2)).BuildContext ();
@@ -209,8 +208,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Extends (typeof (ExtendsTargetBase))]
     [IgnoreForMixinConfiguration]
     public class GenericMixinWithoutSpecialization<TThis, TBase> : Mixin<TThis, TBase>
-      where TThis : class
-      where TBase : class
+        where TThis : class
+        where TBase : class
     {
     }
 

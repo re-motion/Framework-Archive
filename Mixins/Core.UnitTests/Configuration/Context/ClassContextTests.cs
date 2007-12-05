@@ -9,7 +9,7 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Mixins.Definitions;
 
-namespace Rubicon.Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration.Context
 {
   [TestFixture]
   public class ClassContextTests

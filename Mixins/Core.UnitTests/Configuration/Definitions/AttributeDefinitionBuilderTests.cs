@@ -5,7 +5,7 @@ using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 
-namespace Rubicon.Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
 {
   [TestFixture]
   public class AttributeDefinitionBuilderTests
@@ -289,9 +289,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The CopyCustomAttributes attribute on "
-        + "Rubicon.Mixins.UnitTests.Configuration.AttributeDefinitionBuilderTests+MixinWithAmbiguousSource.ToString specifies an ambiguous attribute "
+        + ".*MixinWithAmbiguousSource.ToString specifies an ambiguous attribute "
         + "source: The source member string Source matches several members on type "
-        + "Rubicon.Mixins.UnitTests.Configuration.AttributeDefinitionBuilderTests+MixinWithAmbiguousSource.")]
+        + ".*MixinWithAmbiguousSource.", MatchType = MessageMatch.Regex)]
     public void CopyAttributes_Ambiguous ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithAmbiguousSource)))
@@ -313,8 +313,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The CopyCustomAttributes attribute on "
-        + "Rubicon.Mixins.UnitTests.Configuration.AttributeDefinitionBuilderTests+MixinWithUnknownSource.ToString specifies an unknown attribute "
-        + "source Rubicon.Mixins.UnitTests.Configuration.AttributeDefinitionBuilderTests+MixinWithUnknownSource.Source.")]
+        + ".*MixinWithUnknownSource.ToString specifies an unknown attribute "
+        + "source .*MixinWithUnknownSource.Source.", MatchType = MessageMatch.Regex)]
     public void CopyAttributes_Unknown ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithUnknownSource)))
@@ -336,8 +336,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The CopyCustomAttributes attribute on "
-        + "Rubicon.Mixins.UnitTests.Configuration.AttributeDefinitionBuilderTests+MixinWithInvalidSourceType.ToString specifies an attribute source "
-        + "Rubicon.Mixins.UnitTests.Configuration.AttributeDefinitionBuilderTests+MixinWithInvalidSourceType of a different member kind.")]
+        + ".*MixinWithInvalidSourceType.ToString specifies an attribute source "
+        + ".*MixinWithInvalidSourceType of a different member kind.", MatchType = MessageMatch.Regex)]
     public void CopyAttributes_Invalid ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithInvalidSourceType)))

@@ -12,7 +12,7 @@ using Rubicon.Reflection;
 using Rubicon.Utilities;
 using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 
-namespace Rubicon.Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration.Context
 {
   [TestFixture]
   public class ApplicationContextBuilderTests

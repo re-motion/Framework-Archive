@@ -5,7 +5,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Utilities;
 
-namespace Rubicon.Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration.Context
 {
   [TestFixture]
   public class UsesAnalysisTests
@@ -130,13 +130,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     public class BaseGenericMixin<TThis, TBase> : Mixin<TThis, TBase>
-      where TThis : class
-      where TBase : class
+        where TThis : class
+        where TBase : class
     { }
 
     public class DerivedGenericMixin<TThis, TBase> : BaseGenericMixin<TThis, TBase>
-      where TThis : class
-      where TBase : class
+        where TThis : class
+        where TBase : class
     {
     }
 
@@ -253,7 +253,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin .*NullMixin are configured for target type "
-        + ".*DerivedWithDuplicateUses.", MatchType = MessageMatch.Regex)]
+                                                                           + ".*DerivedWithDuplicateUses.", MatchType = MessageMatch.Regex)]
     public void ThrowsOnUsesDuplicateOnSameClass ()
     {
       new ApplicationContextBuilder (null).AddType (typeof (DerivedWithDuplicateUses)).BuildContext ();
@@ -282,7 +282,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin .*BaseGenericMixin`2 are configured for target "
-        + "type .*DuplicateWithGenerics1.", MatchType = MessageMatch.Regex)]
+                                                                           + "type .*DuplicateWithGenerics1.", MatchType = MessageMatch.Regex)]
     public void DuplicateDetectionAlsoWorksForGenerics1 ()
     {
       new ApplicationContextBuilder (null).AddType (typeof (DuplicateWithGenerics1)).BuildContext ();
@@ -290,7 +290,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin .*BaseGenericMixin`2 are configured for target "
-        + "type .*DuplicateWithGenerics2.", MatchType = MessageMatch.Regex)]
+                                                                           + "type .*DuplicateWithGenerics2.", MatchType = MessageMatch.Regex)]
     public void DuplicateDetectionAlsoWorksForGenerics2 ()
     {
       new ApplicationContextBuilder (null).AddType (typeof (DuplicateWithGenerics2)).BuildContext ();
@@ -298,7 +298,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin .*BaseGenericMixin`2 are configured for target "
-        + "type .*DuplicateWithGenerics3.", MatchType = MessageMatch.Regex)]
+                                                                           + "type .*DuplicateWithGenerics3.", MatchType = MessageMatch.Regex)]
     public void DuplicateDetectionAlsoWorksForGenerics3 ()
     {
       new ApplicationContextBuilder (null).AddType (typeof (DuplicateWithGenerics3)).BuildContext ();
@@ -331,7 +331,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Mixin type Rubicon.Mixins.UnitTests.SampleTypes.NullMixin applied to "
-        + "target class Rubicon.Mixins.UnitTests.Configuration.UsesAnalysisTests+SelfSuppressingUser suppresses itself.")]
+        + "target class .*SelfSuppressingUser suppresses itself.", MatchType = MessageMatch.Regex)]
     public void SelfSuppresser ()
     {
       new ApplicationContextBuilder (null).AddType (typeof (SelfSuppressingUser)).BuildContext ();

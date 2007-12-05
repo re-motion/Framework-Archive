@@ -6,7 +6,7 @@ using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
 {
   [TestFixture]
   public class AttributeIntroductionDefinitionBuilderTests
@@ -66,7 +66,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       TargetClassDefinition bt1 =
           UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseTypeWithAllowMultiple),
-          typeof (MixinAddingAllowMultipleToClassAndMember), typeof (MixinAddingAllowMultipleToClassAndMember2));
+              typeof (MixinAddingAllowMultipleToClassAndMember), typeof (MixinAddingAllowMultipleToClassAndMember2));
       MethodDefinition member = bt1.Methods[typeof (BaseTypeWithAllowMultiple).GetMethod ("Foo")];
 
       Assert.AreEqual (1, member.CustomAttributes.Count);
@@ -86,7 +86,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
       List<AttributeDefinition> attributes =
           new List<AttributeIntroductionDefinition> (member.IntroducedAttributes[typeof (MultiAttribute)])
-          .ConvertAll<AttributeDefinition> (delegate (AttributeIntroductionDefinition intro) { return intro.Attribute; });
+              .ConvertAll<AttributeDefinition> (delegate (AttributeIntroductionDefinition intro) { return intro.Attribute; });
       Assert.That (attributes, Is.EquivalentTo (new AttributeDefinition[] { mixinMember1.CustomAttributes[0], mixinMember2.CustomAttributes[0] }));
     }
 
@@ -166,7 +166,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
             new List<AttributeIntroductionDefinition> (definition.IntroducedAttributes[typeof (AttributeWithParameters)]);
         List<AttributeDefinition> attributes = new List<AttributeDefinition> (
             definition.Overrides[typeof (MixinIndirectlyAddingAttribute)].DeclaringClass
-            .Methods[typeof (MixinIndirectlyAddingAttribute).GetMethod ("ToString")].CustomAttributes[typeof (AttributeWithParameters)]);
+                .Methods[typeof (MixinIndirectlyAddingAttribute).GetMethod ("ToString")].CustomAttributes[typeof (AttributeWithParameters)]);
 
         Assert.AreEqual (1, introductions.Count);
         Assert.AreEqual (1, attributes.Count);

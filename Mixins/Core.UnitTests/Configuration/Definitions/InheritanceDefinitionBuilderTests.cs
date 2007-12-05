@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
-using ConsoleDumper=Rubicon.Mixins.Validation.ConsoleDumper;
 
-namespace Rubicon.Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
 {
   [TestFixture]
   public class InheritanceDefinitionBuilderTests
@@ -27,7 +24,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       TargetClassDefinition bt1 =
           UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinFaceDependingOnInheritedInterface),
-          typeof (MixinIntroducingInheritedInterface));
+              typeof (MixinIntroducingInheritedInterface));
       Assert.IsTrue (bt1.RequiredFaceTypes.ContainsKey (typeof (IMixinIII1)));
       Assert.IsTrue (bt1.RequiredFaceTypes.ContainsKey (typeof (IMixinIII2)));
       Assert.IsTrue (bt1.RequiredFaceTypes.ContainsKey (typeof (IMixinIII3)));

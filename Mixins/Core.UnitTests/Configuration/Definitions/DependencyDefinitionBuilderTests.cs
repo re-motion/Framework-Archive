@@ -9,7 +9,7 @@ using System.Reflection;
 using Rubicon.Mixins.Context;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
 {
   [TestFixture]
   public class DependencyDefinitionBuilderTests
@@ -68,7 +68,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     [ExpectedException (typeof (ConfigurationException),
         ExpectedMessage = "The dependency IBT3Mixin4 (mixins Rubicon.Mixins.UnitTests.SampleTypes.BT3Mixin7Face applied to class "
-        + "Rubicon.Mixins.UnitTests.SampleTypes.BaseType3) is not fulfilled - public or protected method Foo could not be found on the base class.")]
+                          + "Rubicon.Mixins.UnitTests.SampleTypes.BaseType3) is not fulfilled - public or protected method Foo could not be found on the base class.")]
     public void ThrowsIfAggregateThisDependencyIsNotFullyImplemented ()
     {
       UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Face));
@@ -77,7 +77,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     [ExpectedException (typeof (ConfigurationException),
         ExpectedMessage = "The dependency IBT3Mixin4 (mixins Rubicon.Mixins.UnitTests.SampleTypes.BT3Mixin7Base applied to class "
-       + "Rubicon.Mixins.UnitTests.SampleTypes.BaseType3) is not fulfilled - public or protected method Foo could not be found on the base class.")]
+                          + "Rubicon.Mixins.UnitTests.SampleTypes.BaseType3) is not fulfilled - public or protected method Foo could not be found on the base class.")]
     public void ThrowsIfAggregateBaseDependencyIsNotFullyImplemented ()
     {
       UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Base));
@@ -345,9 +345,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.IsTrue (d1.IsAggregate);
       Assert.IsTrue (d1.AggregatedDependencies[typeof (ICBaseType3)].IsAggregate);
       Assert.IsFalse (d1.AggregatedDependencies[typeof (ICBaseType3)]
-                          .AggregatedDependencies[typeof (IBaseType31)].IsAggregate);
+          .AggregatedDependencies[typeof (IBaseType31)].IsAggregate);
       Assert.AreSame (bt3, d1.AggregatedDependencies[typeof (ICBaseType3)]
-                               .AggregatedDependencies[typeof (IBaseType31)].GetImplementer ());
+          .AggregatedDependencies[typeof (IBaseType31)].GetImplementer ());
 
       Assert.IsFalse (d1.AggregatedDependencies[typeof (IBT3Mixin4)].IsAggregate);
       Assert.AreSame (m4, d1.AggregatedDependencies[typeof (IBT3Mixin4)].GetImplementer ());
@@ -381,9 +381,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.AreSame (d2, d2.AggregatedDependencies[typeof (ICBaseType3)].Parent);
 
       Assert.IsFalse (d2.AggregatedDependencies[typeof (ICBaseType3)]
-                          .AggregatedDependencies[typeof (IBaseType31)].IsAggregate);
+          .AggregatedDependencies[typeof (IBaseType31)].IsAggregate);
       Assert.AreSame (bt3, d2.AggregatedDependencies[typeof (ICBaseType3)]
-                               .AggregatedDependencies[typeof (IBaseType31)].GetImplementer ());
+          .AggregatedDependencies[typeof (IBaseType31)].GetImplementer ());
 
       Assert.IsFalse (d2.AggregatedDependencies[typeof (IBT3Mixin4)].IsAggregate);
       Assert.AreSame (m4, d2.AggregatedDependencies[typeof (IBT3Mixin4)].GetImplementer ());

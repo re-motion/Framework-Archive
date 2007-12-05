@@ -6,7 +6,7 @@ using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Validation;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration.Context
 {
   [TestFixture]
   public class ApplicationContextTests
@@ -311,16 +311,16 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "The ApplicationContext contains a ClassContext for the generic type "
-        + "Rubicon.Mixins.UnitTests.Configuration.ApplicationContextTests+UninstantiableGeneric`1[T], of which it cannot make a closed type. "
+        + ".*UninstantiableGeneric\\`1\\[T\\], of which it cannot make a closed type. "
         + "Because closed types are needed for validation, the ApplicationContext cannot be validated as a whole. The configuration might still "
-        + "be correct, but validation must be deferred to TypeFactory.GetActiveConfiguration.")]
+        + "be correct, but validation must be deferred to TypeFactory.GetActiveConfiguration.", MatchType = MessageMatch.Regex)]
     public void ValidationThrowsWhenGenericsCannotBeSpecialized ()
     {
-      using (MixinConfiguration.ScopedEmpty ())
+      using (MixinConfiguration.ScopedEmpty())
       {
         using (MixinConfiguration.ScopedExtend (typeof (UninstantiableGeneric<>), typeof (NullMixin)))
         {
-          MixinConfiguration.ActiveContext.Validate ();
+          MixinConfiguration.ActiveContext.Validate();
         }
       }
     }

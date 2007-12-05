@@ -9,7 +9,7 @@ using Rubicon.Mixins.Utilities.DependencySort;
 using Rubicon.Collections;
 using Rubicon.Mixins.Context;
 
-namespace Rubicon.Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
 {
   [TestFixture]
   public class MixinDependencySortTests
@@ -82,9 +82,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = @"The following mixins are applied to the same base class .*BaseType7 and "
-       + "require a clear base call ordering, but do not provide enough dependency information: "
-       + @"((.*BT7Mixin0)|(.*BT7Mixin4)|(.*BT7Mixin6)|(.*BT7Mixin7)){4}\.",
-      MatchType = MessageMatch.Regex)]
+                                                                           + "require a clear base call ordering, but do not provide enough dependency information: "
+                                                                           + @"((.*BT7Mixin0)|(.*BT7Mixin4)|(.*BT7Mixin6)|(.*BT7Mixin7)){4}\.",
+        MatchType = MessageMatch.Regex)]
     public void ThrowsIfConnectedMixinsCannotBeSorted()
     {
       using (MixinConfiguration.ScopedExtend(typeof (BaseType7), typeof (BT7Mixin0), typeof (BT7Mixin4), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin2), typeof (BT7Mixin5)))
@@ -224,13 +224,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     public void SortingWithExplicitDependencies ()
     {
       CheckExplicitDependencyOrdering (new ClassContext (typeof (TargetClassWithAdditionalDependencies),
-        typeof (MixinWithAdditionalClassDependency), typeof (MixinWithNoAdditionalDependency), typeof (MixinWithAdditionalInterfaceDependency)));
+          typeof (MixinWithAdditionalClassDependency), typeof (MixinWithNoAdditionalDependency), typeof (MixinWithAdditionalInterfaceDependency)));
 
       CheckExplicitDependencyOrdering (new ClassContext (typeof (TargetClassWithAdditionalDependencies),
-        typeof (MixinWithNoAdditionalDependency), typeof (MixinWithAdditionalClassDependency), typeof (MixinWithAdditionalInterfaceDependency)));
+          typeof (MixinWithNoAdditionalDependency), typeof (MixinWithAdditionalClassDependency), typeof (MixinWithAdditionalInterfaceDependency)));
 
       CheckExplicitDependencyOrdering (new ClassContext (typeof (TargetClassWithAdditionalDependencies),
-        typeof (MixinWithNoAdditionalDependency), typeof (MixinWithAdditionalInterfaceDependency), typeof (MixinWithAdditionalClassDependency)));
+          typeof (MixinWithNoAdditionalDependency), typeof (MixinWithAdditionalInterfaceDependency), typeof (MixinWithAdditionalClassDependency)));
     }
 
     private void CheckExplicitDependencyOrdering (ClassContext classContext)

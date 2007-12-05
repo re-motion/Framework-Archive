@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Definitions.Building;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 
-namespace Rubicon.Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
 {
   [TestFixture]
   public class OverrideDefinitionBuilderTests
@@ -179,7 +177,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The member overridden by '.*BT5Mixin1.Method' could not be found.",
-       MatchType = MessageMatch.Regex)]
+        MatchType = MessageMatch.Regex)]
     public void ThrowsWhenInexistingOverrideBaseMethod ()
     {
       UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType5), typeof (BT5Mixin1));
@@ -187,7 +185,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The member overridden by '.*BT5Mixin4.Property' could not be found.",
-       MatchType = MessageMatch.Regex)]
+        MatchType = MessageMatch.Regex)]
     public void ThrowsWhenInexistingOverrideBaseProperty ()
     {
       UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType5), typeof (BT5Mixin4));
@@ -224,7 +222,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The member overridden by "
-        + "'Rubicon.Mixins.UnitTests.SampleTypes.ClassOverridingSpecificMixinMember.VirtualMethod' could not be found.")]
+                                                                           + "'Rubicon.Mixins.UnitTests.SampleTypes.ClassOverridingSpecificMixinMember.VirtualMethod' could not be found.")]
     public void TargetClassOverridingSpecificUnconfiguredMixinMethod ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (ClassOverridingSpecificMixinMember), typeof (MixinWithVirtualMethod2)))

@@ -6,7 +6,7 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using System.Reflection;
 
-namespace Rubicon.Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
 {
   [TestFixture]
   public class ClassDefinitionTests

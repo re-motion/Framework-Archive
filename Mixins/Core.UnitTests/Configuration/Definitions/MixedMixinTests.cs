@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Context;
 
-namespace Rubicon.Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
 {
   [TestFixture]
   public class MixedMixinTests
