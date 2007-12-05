@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.Design;
 using System.Data.SqlClient;
 using System.IO;
 using NUnit.Framework;
@@ -12,6 +13,7 @@ using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Development.UnitTesting.Data.SqlClient;
+using Rubicon.Reflection;
 using Rubicon.SecurityManager.Domain;
 using Rubicon.SecurityManager.Persistence;
 
@@ -37,7 +39,9 @@ namespace Rubicon.SecurityManager.UnitTests
               persistenceConfiguration,
               new QueryConfiguration (GetFullPath (@"SecurityManagerQueries.xml"))));
 
-      MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (typeof (BaseSecurityManagerObject).Assembly)));
+      ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService (
+            new AssemblyFinder (ApplicationAssemblyFinderFilter.Instance, typeof (BaseSecurityManagerObject).Assembly));
+      MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (typeDiscoveryService)));
 
       SqlConnection.ClearAllPools();
 

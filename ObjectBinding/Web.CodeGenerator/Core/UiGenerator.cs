@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Collections;
 using System.Reflection;
@@ -80,7 +81,9 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
       DomainObjectsConfiguration.SetCurrent (
           new FakeDomainObjectsConfiguration (DomainObjectsConfiguration.Current.MappingLoader, GetPersistenceConfiguration (), new QueryConfiguration()));
 
-      MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector(assemblies.ToArray())));
+      ITypeDiscoveryService typeDiscoveryService =
+          new AssemblyFinderTypeDiscoveryService (new AssemblyFinder (ApplicationAssemblyFinderFilter.Instance, assemblies.ToArray()));
+      MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (typeDiscoveryService)));
     }
 
     protected PersistenceConfiguration GetPersistenceConfiguration ()

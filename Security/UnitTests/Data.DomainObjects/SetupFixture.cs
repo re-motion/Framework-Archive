@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.Design;
 using System.IO;
 using NUnit.Framework;
 using Rubicon.Configuration;
@@ -10,6 +11,7 @@ using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Rubicon.Reflection;
 using Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain;
 
 namespace Rubicon.Security.UnitTests.Data.DomainObjects
@@ -26,7 +28,9 @@ namespace Rubicon.Security.UnitTests.Data.DomainObjects
       DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration,
           new QueryConfiguration (GetFullPath (@"Rubicon.Security.UnitTests.Data.DomainObjects.Queries.xml"))));
 
-      MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (GetType().Assembly)));
+      ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService (
+            new AssemblyFinder (ApplicationAssemblyFinderFilter.Instance, GetType().Assembly));
+      MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (typeDiscoveryService)));
     }
 
     private string GetFullPath (string fileName)

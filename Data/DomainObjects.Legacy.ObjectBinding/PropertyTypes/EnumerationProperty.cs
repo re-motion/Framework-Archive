@@ -99,6 +99,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
     /// <param name="value">
     ///   An enum value that belongs to the enum identified by <see cref="BaseProperty.PropertyType"/>.
     /// </param>
+    /// <param name="businessObject">The business object to get information for.</param>
     public IEnumerationValueInfo GetValueInfoByValue (object value, IBusinessObject businessObject)
     {
       if (value == null)

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.Design;
 using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Configuration;
@@ -11,6 +12,7 @@ using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain;
+using Rubicon.Reflection;
 
 namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests
 {
@@ -45,7 +47,10 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests
 
       DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration(), persistenceConfiguration,
           new QueryConfiguration()));
-      MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (typeof (Ceo).Assembly)));
+
+      ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService (
+            new AssemblyFinder (ApplicationAssemblyFinderFilter.Instance, typeof (Ceo).Assembly));
+      MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (typeDiscoveryService)));
     }
   }
 }

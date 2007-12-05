@@ -1,7 +1,9 @@
 using System;
+using System.ComponentModel.Design;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Reflection;
 using Rubicon.Security.Metadata;
 using Rubicon.SecurityManager.Domain;
 using Rubicon.SecurityManager.Domain.Metadata;
@@ -59,7 +61,9 @@ namespace Rubicon.SecurityManager.Metadata.Importer
     {
       try
       {
-        MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (typeof (BaseSecurityManagerObject).Assembly)));
+        ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService (
+            new AssemblyFinder (ApplicationAssemblyFinderFilter.Instance, typeof (BaseSecurityManagerObject).Assembly));
+        MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (typeDiscoveryService)));
 
         ClientTransaction transaction = ClientTransaction.NewTransaction();
         
