@@ -96,27 +96,6 @@ public class DomainObject
     return (T) RepositoryAccessor.GetObject (id, includeDeleted);
   }
 
-  /// <summary>
-  /// Loads a DomainObject into another transaction.
-  /// </summary>
-  /// <typeparam name="T">The type of domain object to load.</typeparam>
-  /// <param name="sourceObject">The source object to load in the destination transaction.</param>
-  /// <param name="destinationTransaction">The destination transaction to load the source object in.</param>
-  /// <returns>A <typeparamref name="T"/> reference which constitutes the same domain object as <paramref name="sourceObject"/>, but loaded
-  /// into <paramref name="destinationTransaction"/>.</returns>
-  /// <remarks>
-  /// This method is the equivalent of opening a <see cref="ClientTransactionScope"/> for the <paramref name="destinationTransaction"/> and
-  /// calling <see cref="DomainObject.GetObject{T}(ObjectID)"/> with <paramref name="sourceObject">sourceObject's</paramref> <see cref="ID"/>.
-  /// </remarks>
-  public static T LoadIntoTransaction<T> (T sourceObject, ClientTransaction destinationTransaction)
-      where T : DomainObject
-  {
-    using (new ClientTransactionScope (destinationTransaction, AutoRollbackBehavior.None))
-    {
-      return DomainObject.GetObject<T> (sourceObject.ID);
-    }
-  }
-
   #endregion
 
   #region Obsolete GetObject legacy methods
