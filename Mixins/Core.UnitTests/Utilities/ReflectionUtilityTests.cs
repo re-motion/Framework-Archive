@@ -133,55 +133,6 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       Assert.IsTrue (ReflectionUtility.IsSameTypeIgnoreGenerics (typeof (object), typeof (object)));
     }
 
-    [Test]
-    public void IsSubclassIgnoreGenerics ()
-    {
-      Assert.IsFalse (ReflectionUtility.IsSubclassIgnoreGenerics (typeof (GenericBase<>), typeof (GenericBase<>)));
-      Assert.IsFalse (ReflectionUtility.IsSubclassIgnoreGenerics (typeof (GenericBase<>), typeof (GenericBase<string>)));
-      Assert.IsFalse (ReflectionUtility.IsSubclassIgnoreGenerics (typeof (GenericBase<int>), typeof (GenericBase<string>)));
-
-      Assert.IsTrue (ReflectionUtility.IsSubclassIgnoreGenerics (typeof (GenericSub<>), typeof (GenericBase<>)));
-      Assert.IsTrue (ReflectionUtility.IsSubclassIgnoreGenerics (typeof (GenericSub<>), typeof (GenericBase<string>)));
-      Assert.IsTrue (ReflectionUtility.IsSubclassIgnoreGenerics (typeof (GenericSub<int>), typeof (GenericBase<string>)));
-
-      Assert.IsTrue (ReflectionUtility.IsSubclassIgnoreGenerics (typeof (GenericSub<>), typeof (object)));
-      Assert.IsTrue (ReflectionUtility.IsSubclassIgnoreGenerics (typeof (GenericSub<int>), typeof (object)));
-
-      Assert.IsFalse (ReflectionUtility.IsSubclassIgnoreGenerics (typeof (GenericBase<>), typeof (GenericSub<>)));
-      Assert.IsFalse (ReflectionUtility.IsSubclassIgnoreGenerics (typeof (GenericBase<>), typeof (GenericSub<string>)));
-      Assert.IsFalse (ReflectionUtility.IsSubclassIgnoreGenerics (typeof (GenericBase<int>), typeof (GenericSub<string>)));
-
-      Assert.IsFalse (ReflectionUtility.IsSubclassIgnoreGenerics (typeof (object), typeof (GenericSub<>)));
-      Assert.IsFalse (ReflectionUtility.IsSubclassIgnoreGenerics (typeof (object), typeof (GenericSub<string>)));
-      Assert.IsFalse (ReflectionUtility.IsSubclassIgnoreGenerics (typeof (object), typeof (GenericSub<string>)));
-    }
-
-    [Test]
-    public void IsSameOrSubclassIgnoreGenerics ()
-    {
-      Assert.IsTrue (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (GenericBase<>), typeof (GenericBase<>)));
-      Assert.IsTrue (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (GenericBase<>), typeof (GenericBase<string>)));
-      Assert.IsTrue (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (GenericBase<int>), typeof (GenericBase<string>)));
-
-      Assert.IsTrue (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (GenericSub<>), typeof (GenericBase<>)));
-      Assert.IsTrue (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (GenericSub<>), typeof (GenericBase<string>)));
-      Assert.IsTrue (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (GenericSub<int>), typeof (GenericBase<string>)));
-
-      Assert.IsTrue (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (GenericSub<>), typeof (object)));
-      Assert.IsTrue (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (GenericSub<int>), typeof (object)));
-
-      Assert.IsTrue (ReflectionUtility.IsSameTypeIgnoreGenerics (typeof (object), typeof (object)));
-      Assert.IsTrue (ReflectionUtility.IsSameTypeIgnoreGenerics (typeof (object), typeof (object)));
-
-      Assert.IsFalse (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (GenericBase<>), typeof (GenericSub<>)));
-      Assert.IsFalse (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (GenericBase<>), typeof (GenericSub<string>)));
-      Assert.IsFalse (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (GenericBase<int>), typeof (GenericSub<string>)));
-
-      Assert.IsFalse (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (object), typeof (GenericSub<>)));
-      Assert.IsFalse (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (object), typeof (GenericSub<string>)));
-      Assert.IsFalse (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (object), typeof (GenericSub<string>)));
-    }
-
     interface IInterface
     {
       void Explicit ();

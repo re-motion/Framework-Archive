@@ -241,20 +241,6 @@ namespace Rubicon.Mixins.Context
       }
     }
 
-    private MixinContext GetAscribableMixin (Type baseMixinType)
-    {
-      ArgumentUtility.CheckNotNull ("baseMixinType", baseMixinType);
-      lock (_lockObject)
-      {
-        foreach (MixinContext mixin in Mixins)
-        {
-          if (ReflectionUtility.CanAscribe (mixin.MixinType, baseMixinType))
-            return mixin;
-        }
-        return null;
-      }
-    }
-
     /// <summary>
     /// Associates a mixin type with this <see cref="ClassContext"/>.
     /// </summary>
@@ -522,21 +508,7 @@ namespace Rubicon.Mixins.Context
       lock (_lockObject)
       lock (baseContext._lockObject)
       {
-        foreach (MixinContext mixin in Mixins)
-        {
-          MixinContext baseMixin;
-          if (!baseContext.ContainsMixin (mixin.MixinType) && (baseMixin = baseContext.GetAscribableMixin (mixin.MixinType)) != null)
-          {
-            string message = string.Format (
-                "The class {0} inherits the mixin {1} from class {2}, but it is explicitly "
-                    + "configured for the less specific mixin {3}.",
-                Type.FullName,
-                baseMixin.MixinType.FullName,
-                baseContext.Type.FullName,
-                mixin.MixinType);
-            throw new ConfigurationException (message);
-          }
-        }
+        CheckThatBaseContextDoesntOverrideUs(baseContext);
 
         foreach (MixinContext inheritedMixin in baseContext.Mixins)
         {
@@ -552,6 +524,25 @@ namespace Rubicon.Mixins.Context
       }
     }
 
+    private void CheckThatBaseContextDoesntOverrideUs (ClassContext baseContext)
+    {
+      foreach (MixinContext mixin in Mixins)
+      {
+        MixinContext baseMixin;
+        if ((baseMixin = baseContext.GetOverrideForMixin (mixin.MixinType)) != null && !ContainsOverrideForMixin (baseMixin.MixinType))
+        {
+          string message = string.Format (
+              "The class {0} inherits the mixin {1} from class {2}, but it is explicitly "
+                  + "configured for the less specific mixin {3}.",
+              Type.FullName,
+              baseMixin.MixinType.FullName,
+              baseContext.Type.FullName,
+              mixin.MixinType);
+          throw new ConfigurationException (message);
+        }
+      }
+    }
+
     /// <summary>
     /// Determines whether a mixin configured with this <see cref="ClassContext"/> overrides the given <paramref name="mixinType"/>.
     /// </summary>
@@ -562,7 +553,24 @@ namespace Rubicon.Mixins.Context
     public bool ContainsOverrideForMixin (Type mixinType)
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      return GetAscribableMixin (mixinType) != null;
+      return GetOverrideForMixin (mixinType) != null;
+    }
+
+    private MixinContext GetOverrideForMixin (Type mixinType)
+    {
+      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      Type typeToSearchFor = mixinType.IsGenericType ? mixinType.GetGenericTypeDefinition() : mixinType;
+
+      lock (_lockObject)
+      {
+        foreach (MixinContext mixin in Mixins)
+        {
+          if (ReflectionUtility.CanAscribe (mixin.MixinType, typeToSearchFor))
+            return mixin;
+        }
+        return null;
+      }
+
     }
   }
 }

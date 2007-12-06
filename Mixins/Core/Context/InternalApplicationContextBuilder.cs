@@ -134,16 +134,11 @@ namespace Rubicon.Mixins.Context
 
     private void AnalyzeInheritedMixins (Type targetType, Type baseType)
     {
-#warning TODO: Use ClassContext.InheritFrom
       ClassContext baseTypeContext = _builtContext.GetClassContextNonRecursive (baseType);
       if (baseTypeContext != null)
       {
-        foreach (MixinContext baseMixinContext in baseTypeContext.Mixins)
-        {
-          ClassContext targetContext = _builtContext.GetOrAddClassContext (targetType);
-          if (!AlreadyAppliedSameOrDerived (baseMixinContext.MixinType, targetContext))
-            baseMixinContext.CloneAndAddTo (targetContext);
-        }
+        ClassContext targetContext = _builtContext.GetOrAddClassContext (targetType);
+        targetContext.InheritFrom (baseTypeContext);
       }
     }
 
@@ -152,16 +147,6 @@ namespace Rubicon.Mixins.Context
       foreach (MixinContext mixin in contextToCheck.Mixins)
       {
         if (ReflectionUtility.IsSameTypeIgnoreGenerics (mixinType, mixin.MixinType))
-          return true;
-      }
-      return false;
-    }
-
-    private bool AlreadyAppliedSameOrDerived (Type mixinType, ClassContext contextToCheck)
-    {
-      foreach (MixinContext mixin in contextToCheck.Mixins)
-      {
-        if (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (mixin.MixinType, mixinType))
           return true;
       }
       return false;

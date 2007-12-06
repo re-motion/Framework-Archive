@@ -19,7 +19,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
 
       Assert.IsFalse (context.ContainsOverrideForMixin (typeof (int))); // completely unrelated
       Assert.IsFalse (context.ContainsOverrideForMixin (typeof (DerivedNullTarget))); // subtype
-      Assert.IsFalse (context.ContainsOverrideForMixin (typeof (GenericClassExtendedByMixin<object>))); // more specialized
+      Assert.IsTrue (context.ContainsOverrideForMixin (typeof (GenericClassExtendedByMixin<object>))); // specialization doesn't matter
       Assert.IsFalse (context.ContainsOverrideForMixin (typeof (DerivedGenericMixin<>))); // subtype
     }
 
@@ -56,9 +56,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       Assert.IsTrue (context.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<object>)));
       Assert.IsTrue (context.ContainsOverrideForMixin (typeof (DerivedGenericMixin<>)));
       Assert.IsTrue (context.ContainsOverrideForMixin (typeof (DerivedGenericMixin<object>)));
-
-      Assert.IsFalse (context.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<string>))); // unrelated
-      Assert.IsFalse (context.ContainsOverrideForMixin (typeof (DerivedGenericMixin<string>))); // unrelated
+      Assert.IsTrue (context.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<string>))); // different type arguments don't matter
+      Assert.IsTrue (context.ContainsOverrideForMixin (typeof (DerivedGenericMixin<string>))); // different specialization doesn't matter
     }
 
     [Test]
@@ -195,7 +194,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
 
     [Test]
     [ExpectedException (typeof (ConfigurationException))]
-    public void InheritedSpecializedGenericMixin_Throws ()
+    public void InheritedSpecializedDerivedGenericMixin_Throws ()
     {
       ClassContext baseContext = new ClassContext (typeof (string));
       baseContext.AddMixin (typeof (DerivedGenericMixin<object>)).AddExplicitDependency (typeof (int));
@@ -208,12 +207,12 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The class System.Double inherits the mixin "
-        + ".*GenericMixinWithVirtualMethod\\`1\\[\\[System.Object.*\\]\\] from class System.String, but it is explicitly configured for the less "
+       + ".*DerivedGenericMixin\\`1 from class System.String, but it is explicitly configured for the less "
         + "specific mixin .*GenericMixinWithVirtualMethod\\`1\\[T\\].", MatchType = MessageMatch.Regex)]
-    public void InheritedSpecializedDerivedGenericMixin_Throws ()
+    public void InheritedUnspecializedDerivedGenericMixin_Throws ()
     {
       ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixin (typeof (GenericMixinWithVirtualMethod<object>)).AddExplicitDependency (typeof (int));
+      baseContext.AddMixin (typeof (DerivedGenericMixin<>)).AddExplicitDependency (typeof (int));
 
       ClassContext inheritor = new ClassContext (typeof (double));
       inheritor.AddMixin (typeof (GenericMixinWithVirtualMethod<>)).AddExplicitDependency (typeof (decimal));

@@ -57,15 +57,17 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     public class DerivedWithOwnUses : BaseWithUses { }
 
     [Test]
-    [Ignore ("TODO: COMMONS-444")]
     public void UsesAttributeIsInherited_AndAugmentedWithOwn ()
     {
       ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (DerivedWithOwnUses)).BuildContext ();
       Assert.IsTrue (context.GetClassContext (typeof (DerivedWithOwnUses)).ContainsMixin (typeof (NullMixin)));
       Assert.IsTrue (context.GetClassContext (typeof (DerivedWithOwnUses)).ContainsMixin (typeof (DedicatedMixin)));
-      Assert.That (EnumerableUtility.ToArray (EnumerableUtility.Select<MixinContext, Type> (context.GetClassContext (typeof (DerivedWithoutUses)).Mixins,
-          delegate (MixinContext mixin) { return mixin.MixinType; })), Is.EquivalentTo (new Type[] {typeof (NullMixin), typeof (DedicatedMixin)}));
-      Assert.AreEqual (2, context.GetClassContext (typeof (DerivedWithoutUses)).MixinCount);
+
+      Type[] mixinTypes = EnumerableUtility.SelectToArray<MixinContext, Type> (
+        context.GetClassContext (typeof (DerivedWithOwnUses)).Mixins, delegate (MixinContext mixin) { return mixin.MixinType; });
+      
+      Assert.That (mixinTypes, Is.EquivalentTo (new Type[] {typeof (NullMixin), typeof (DedicatedMixin)}));
+      Assert.AreEqual (2, context.GetClassContext (typeof (DerivedWithOwnUses)).MixinCount);
     }
 
     [Uses (typeof (NullMixin))]
