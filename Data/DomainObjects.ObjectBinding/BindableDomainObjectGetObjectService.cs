@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.Utilities;
@@ -12,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
       ArgumentUtility.CheckNotNull ("classWithIdentity", classWithIdentity);
       ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
 
-      return (IBusinessObjectWithIdentity) DomainObject.GetObject (ObjectID.Parse (uniqueIdentifier));
+      return (IBusinessObjectWithIdentity) RepositoryAccessor.GetObject (ObjectID.Parse (uniqueIdentifier), false);
     }
   }
 }

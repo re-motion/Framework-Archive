@@ -12,7 +12,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return NewObject<Folder>().With();
     }
 
-    public new static Folder GetObject (ObjectID id)
+    public static Folder GetObject (ObjectID id)
     {
       return DomainObject.GetObject<Folder> (id);
     }

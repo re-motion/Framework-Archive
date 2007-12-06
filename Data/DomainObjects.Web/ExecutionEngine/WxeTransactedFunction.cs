@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Rubicon.Collections;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 using System.Collections;
@@ -297,7 +298,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
           DomainObject loadedObject;
           try
           {
-            loadedObject = DomainObject.GetObject (objectToLoad.B.ID);
+            loadedObject = RepositoryAccessor.GetObject (objectToLoad.B.ID, false);
           }
           catch (Exception ex)
           {

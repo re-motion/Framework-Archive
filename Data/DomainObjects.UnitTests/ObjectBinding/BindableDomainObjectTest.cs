@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
@@ -53,14 +54,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding
     [Test]
     public void DefaultDisplayName ()
     {
-      IBusinessObject businessObject = (IBusinessObject) DomainObject.NewObject (typeof (SampleBindableDomainObject));
+      IBusinessObject businessObject = (IBusinessObject) RepositoryAccessor.NewObject (typeof (SampleBindableDomainObject)).With();
       Assert.AreEqual (TypeUtility.GetPartialAssemblyQualifiedName (typeof (SampleBindableDomainObject)), businessObject.DisplayName);
     }
 
     [Test]
     public void OverriddenDisplayName ()
     {
-      IBusinessObject businessObject = (IBusinessObject) DomainObject.NewObject (typeof (SampleBindableDomainObjectWithOverriddenDisplayName));
+      IBusinessObject businessObject = (IBusinessObject) RepositoryAccessor.NewObject (typeof (SampleBindableDomainObjectWithOverriddenDisplayName)).With();
       Assert.AreNotEqual (
           TypeUtility.GetPartialAssemblyQualifiedName (typeof (SampleBindableDomainObjectWithOverriddenDisplayName)),
           businessObject.DisplayName);
@@ -71,7 +72,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding
     public void VerifyInterfaceImplementation ()
     {
       IBusinessObjectWithIdentity businessObject =
-          (SampleBindableDomainObjectWithOverriddenDisplayName) DomainObject.NewObject (typeof (SampleBindableDomainObjectWithOverriddenDisplayName));
+          (SampleBindableDomainObjectWithOverriddenDisplayName) RepositoryAccessor.NewObject (typeof (SampleBindableDomainObjectWithOverriddenDisplayName)).With();
       IBusinessObjectWithIdentity businessObjectMixin = Mixin.Get<BindableDomainObjectMixin> (businessObject);
 
       Assert.AreSame (businessObjectMixin.BusinessObjectClass, businessObject.BusinessObjectClass);
@@ -91,7 +92,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding
     public void SerializeAndDeserialize ()
     {
       SampleBindableDomainObjectWithOverriddenDisplayName domainObject =
-          (SampleBindableDomainObjectWithOverriddenDisplayName) DomainObject.NewObject (typeof (SampleBindableDomainObjectWithOverriddenDisplayName));
+          (SampleBindableDomainObjectWithOverriddenDisplayName) RepositoryAccessor.NewObject (typeof (SampleBindableDomainObjectWithOverriddenDisplayName)).With();
 
       Serializer.SerializeAndDeserialize (domainObject);
     }

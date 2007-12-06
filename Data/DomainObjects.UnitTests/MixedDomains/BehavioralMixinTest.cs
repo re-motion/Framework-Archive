@@ -1,12 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Mixins;
 using Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.Definitions;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
 {
@@ -49,7 +46,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     {
       using (MixinConfiguration.ScopedExtend (typeof (DOWithVirtualPropertiesAndMethods), typeof (MixinOverridingPropertiesAndMethods)))
       {
-        DOWithVirtualPropertiesAndMethods instance = (DOWithVirtualPropertiesAndMethods) DomainObject.NewObject (typeof (DOWithVirtualPropertiesAndMethods));
+        DOWithVirtualPropertiesAndMethods instance = (DOWithVirtualPropertiesAndMethods) RepositoryAccessor.NewObject (typeof (DOWithVirtualPropertiesAndMethods)).With();
         instance.Property = "Text";
         Assert.AreEqual ("Text-MixinSetter-MixinGetter", instance.Property);
         Assert.AreEqual ("Something-MixinMethod", instance.GetSomething ());

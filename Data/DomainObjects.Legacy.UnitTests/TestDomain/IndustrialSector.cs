@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
 {
@@ -8,9 +9,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
 
     // static members and constants
 
-    public static new IndustrialSector GetObject (ObjectID id)
+    public static IndustrialSector GetObject (ObjectID id)
     {
-      return (IndustrialSector) DomainObject.GetObject (id);
+      return (IndustrialSector) RepositoryAccessor.GetObject (id, false);
     }
 
     // member fields

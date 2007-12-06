@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<Official> ().With();
     }
 
-    public static new Official GetObject (ObjectID id)
+    public static Official GetObject (ObjectID id)
     {
       return DomainObject.GetObject<Official> (id);
     }

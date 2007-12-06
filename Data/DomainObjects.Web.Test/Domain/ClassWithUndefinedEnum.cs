@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
       return DomainObject.NewObject<ClassWithUndefinedEnum> ().With ();
     }
 
-    public new static ClassWithUndefinedEnum GetObject (ObjectID id)
+    public static ClassWithUndefinedEnum GetObject (ObjectID id)
     {
       return DomainObject.GetObject<ClassWithUndefinedEnum> (id);
     }

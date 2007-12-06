@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return NewObject<Order>().With();
     }
 
-    public new static Order GetObject (ObjectID id)
+    public static Order GetObject (ObjectID id)
     {
       return DomainObject.GetObject<Order> (id);
     }

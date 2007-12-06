@@ -11,9 +11,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
 
     // static members and constants
 
-    public static new TestDomainBase GetObject (ObjectID id, bool includeDeleted)
+    public static TestDomainBase GetObject (ObjectID id, bool includeDeleted)
     {
-      return (TestDomainBase) DomainObject.GetObject (id, includeDeleted);
+      return (TestDomainBase) RepositoryAccessor.GetObject (id, includeDeleted);
     }
 
     // member fields

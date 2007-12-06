@@ -11,12 +11,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [Serializable]
   public abstract class TestDomainBase : DomainObject
   {
-    public new static TestDomainBase GetObject (ObjectID id)
+    public static TestDomainBase GetObject (ObjectID id)
     {
       return DomainObject.GetObject<TestDomainBase> (id);
     }
 
-    public new static TestDomainBase GetObject (ObjectID id, bool includeDeleted)
+    public static TestDomainBase GetObject (ObjectID id, bool includeDeleted)
     {
       return DomainObject.GetObject<TestDomainBase> (id, includeDeleted);
     }

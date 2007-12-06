@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
@@ -19,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
 
     public static new Customer GetObject (ObjectID id)
     {
-      return (Customer) DomainObject.GetObject (id);
+      return (Customer) RepositoryAccessor.GetObject (id, false);
     }
 
     // member fields

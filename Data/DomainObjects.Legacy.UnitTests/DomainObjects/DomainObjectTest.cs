@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Configuration;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
@@ -587,7 +588,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DomainObjects
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
       using (clientTransactionMock.EnterNonDiscardingScope())
       {
-        Order order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1);
+        Order order = (Order) RepositoryAccessor.GetObject (DomainObjectIDs.Order1, false);
 
         Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
         Assert.IsFalse (object.ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
@@ -600,7 +601,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DomainObjects
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
       using (clientTransactionMock.EnterNonDiscardingScope ())
       {
-        Order order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1);
+        Order order = (Order) RepositoryAccessor.GetObject (DomainObjectIDs.Order1, false);
 
         order.Delete ();
 

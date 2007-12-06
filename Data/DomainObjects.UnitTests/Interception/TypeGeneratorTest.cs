@@ -7,7 +7,6 @@ using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Infrastructure.Interception;
 using Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
 using File=System.IO.File;
 
@@ -197,9 +196,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       try
       {
         Dev.Null = instance.PropertyThrowing;
+        Assert.Fail ("Expected exception");
       }
       catch
       {
+        Dev.Null = new object();
       }
       instance.GetAndCheckCurrentPropertyName ();
     }
@@ -214,9 +215,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       try
       {
         instance.PropertyThrowing = DateTime.Now;
+        Assert.Fail ("Expected exception");
       }
       catch
       {
+        Dev.Null = new object ();
       }
       instance.GetAndCheckCurrentPropertyName ();
     }
@@ -440,7 +443,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       Assert.IsNotNull (type.GetMethod (typeof (DOWithRealRelationEndPoint).FullName + ".get_RelatedObject", _declaredInstanceFlags));
 
       DOWithRealRelationEndPoint instance = (DOWithRealRelationEndPoint) Activator.CreateInstance (type);
-      DOWithVirtualRelationEndPoint relatedObject = (DOWithVirtualRelationEndPoint) DomainObject.NewObject (typeof (DOWithVirtualRelationEndPoint));
+      DOWithVirtualRelationEndPoint relatedObject = (DOWithVirtualRelationEndPoint) RepositoryAccessor.NewObject (typeof (DOWithVirtualRelationEndPoint)).With();
       instance.RelatedObject = relatedObject;
       Assert.AreSame (relatedObject, instance.RelatedObject);
     }
@@ -452,7 +455,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       Assert.IsNotNull (type.GetMethod (typeof (DOWithVirtualRelationEndPoint).FullName + ".get_RelatedObject", _declaredInstanceFlags));
 
       DOWithVirtualRelationEndPoint instance = (DOWithVirtualRelationEndPoint) Activator.CreateInstance (type);
-      DOWithRealRelationEndPoint relatedObject = (DOWithRealRelationEndPoint) DomainObject.NewObject (typeof (DOWithRealRelationEndPoint));
+      DOWithRealRelationEndPoint relatedObject = (DOWithRealRelationEndPoint) RepositoryAccessor.NewObject (typeof (DOWithRealRelationEndPoint)).With();
       instance.RelatedObject = relatedObject;
       Assert.AreSame (relatedObject, instance.RelatedObject);
     }
@@ -464,7 +467,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       Assert.IsNotNull (type.GetMethod (typeof (DOWithUnidirectionalRelationEndPoint).FullName + ".get_RelatedObject", _declaredInstanceFlags));
 
       DOWithUnidirectionalRelationEndPoint instance = (DOWithUnidirectionalRelationEndPoint) Activator.CreateInstance (type);
-      DOWithVirtualProperties relatedObject = (DOWithVirtualProperties) DomainObject.NewObject (typeof (DOWithVirtualProperties));
+      DOWithVirtualProperties relatedObject = (DOWithVirtualProperties) RepositoryAccessor.NewObject (typeof (DOWithVirtualProperties)).With();
       instance.RelatedObject = relatedObject;
       Assert.AreSame (relatedObject, instance.RelatedObject);
     }

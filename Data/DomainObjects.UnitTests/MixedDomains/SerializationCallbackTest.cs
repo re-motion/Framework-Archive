@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Mixins;
@@ -31,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
       using (MixinConfiguration.ScopedExtend (typeof (ClassWithSerializationCallbacks), typeof (MixinWithSerializationCallbacks)))
       {
         ClassWithSerializationCallbacks instance =
-            (ClassWithSerializationCallbacks) DomainObject.NewObject (typeof (ClassWithSerializationCallbacks));
+            (ClassWithSerializationCallbacks) RepositoryAccessor.NewObject (typeof (ClassWithSerializationCallbacks)).With();
 
         Assert.AreNotSame (typeof (ClassWithSerializationCallbacks), ((object) instance).GetType());
         Assert.IsTrue (instance is IMixinTarget);
@@ -47,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
       using (MixinConfiguration.ScopedExtend (typeof (ClassWithSerializationCallbacks), typeof (MixinWithSerializationCallbacks)))
       {
         ClassWithSerializationCallbacks instance =
-            (ClassWithSerializationCallbacks) DomainObject.NewObject (typeof (ClassWithSerializationCallbacks));
+            (ClassWithSerializationCallbacks) RepositoryAccessor.NewObject (typeof (ClassWithSerializationCallbacks)).With();
 
         Assert.AreNotSame (typeof (ClassWithSerializationCallbacks), ((object) instance).GetType());
         Assert.IsTrue (instance is IMixinTarget);
@@ -63,7 +64,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
       using (MixinConfiguration.ScopedExtend (typeof (ClassWithSerializationCallbacks), typeof (MixinWithSerializationCallbacks)))
       {
         ClassWithSerializationCallbacks instance =
-            (ClassWithSerializationCallbacks) DomainObject.NewObject (typeof (ClassWithSerializationCallbacks));
+            (ClassWithSerializationCallbacks) RepositoryAccessor.NewObject (typeof (ClassWithSerializationCallbacks)).With();
 
         Assert.AreNotSame (typeof (ClassWithSerializationCallbacks), ((object) instance).GetType ());
         Assert.IsTrue (instance is IMixinTarget);
@@ -79,7 +80,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
       using (MixinConfiguration.ScopedExtend (typeof (ClassWithSerializationCallbacks), typeof (MixinWithSerializationCallbacks)))
       {
         ClassWithSerializationCallbacks instance =
-            (ClassWithSerializationCallbacks) DomainObject.NewObject (typeof (ClassWithSerializationCallbacks));
+            (ClassWithSerializationCallbacks) RepositoryAccessor.NewObject (typeof (ClassWithSerializationCallbacks)).With();
 
         Assert.AreNotSame (typeof (ClassWithSerializationCallbacks), ((object) instance).GetType ());
         Assert.IsTrue (instance is IMixinTarget);

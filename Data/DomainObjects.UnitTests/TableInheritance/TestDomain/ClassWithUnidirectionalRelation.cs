@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return NewObject<ClassWithUnidirectionalRelation> ().With();
     }
 
-    public new static ClassWithUnidirectionalRelation GetObject (ObjectID id)
+    public static ClassWithUnidirectionalRelation GetObject (ObjectID id)
     {
       return DomainObject.GetObject<ClassWithUnidirectionalRelation> (id);
     }

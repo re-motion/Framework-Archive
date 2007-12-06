@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain
 {
@@ -10,7 +11,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomai
 
     public static new Folder GetObject (ObjectID id)
     {
-      return (Folder) DomainObject.GetObject (id);
+      return (Folder) RepositoryAccessor.GetObject (id, false);
     }
 
     // member fields

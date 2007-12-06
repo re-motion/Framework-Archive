@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
 {
@@ -8,14 +9,14 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
 
     // static members and constants
 
-    public static new FileSystemItem GetObject (ObjectID id)
+    public static FileSystemItem GetObject (ObjectID id)
     {
-      return (FileSystemItem) DomainObject.GetObject (id);
+      return (FileSystemItem) RepositoryAccessor.GetObject (id, false);
     }
 
     public static new FileSystemItem GetObject (ObjectID id, bool includeDeleted)
     {
-      return (FileSystemItem) DomainObject.GetObject (id, includeDeleted);
+      return (FileSystemItem) RepositoryAccessor.GetObject (id, includeDeleted);
     }
 
     // member fields

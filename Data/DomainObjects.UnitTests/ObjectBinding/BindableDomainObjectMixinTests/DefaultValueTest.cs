@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Mixins;
@@ -75,7 +76,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
     [Test]
     public void GetPropertyDefaultForNonMappingProperties ()
     {
-      IBusinessObject businessObject = (IBusinessObject) DomainObject.NewObject (typeof (BindableDomainObjectWithProperties));
+      IBusinessObject businessObject = (IBusinessObject) RepositoryAccessor.NewObject (typeof (BindableDomainObjectWithProperties)).With();
       Assert.IsNotNull (businessObject.GetProperty ("RequiredPropertyNotInMapping"));
       Assert.AreEqual (true, businessObject.GetProperty ("RequiredPropertyNotInMapping"));
     }

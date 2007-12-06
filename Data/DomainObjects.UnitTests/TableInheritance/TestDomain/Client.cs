@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return NewObject<Client> ().With();
     }
 
-    public new static Client GetObject (ObjectID id)
+    public static Client GetObject (ObjectID id)
     {
       return DomainObject.GetObject<Client> (id);
     }

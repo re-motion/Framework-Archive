@@ -110,7 +110,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void ShortNameAndTypeWithShadowedProperties ()
     {
       DerivedClassWithMixedProperties classWithMixedProperties =
-          (DerivedClassWithMixedProperties) DomainObject.NewObject (typeof (DerivedClassWithMixedProperties));
+          (DerivedClassWithMixedProperties) RepositoryAccessor.NewObject (typeof (DerivedClassWithMixedProperties)).With();
 
       PropertyIndexer indexer = new PropertyIndexer(classWithMixedProperties);
       Assert.AreEqual (indexer[typeof (DerivedClassWithMixedProperties).FullName + ".String"],
@@ -139,7 +139,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void FindWithShadowedProperty ()
     {
       DerivedClassWithMixedProperties classWithMixedProperties =
-          (DerivedClassWithMixedProperties) DomainObject.NewObject (typeof (DerivedClassWithMixedProperties));
+          (DerivedClassWithMixedProperties) RepositoryAccessor.NewObject (typeof (DerivedClassWithMixedProperties)).With();
       
       PropertyIndexer indexer = new PropertyIndexer (classWithMixedProperties);
       Assert.AreEqual (indexer[typeof (DerivedClassWithMixedProperties).FullName + ".String"],
@@ -152,7 +152,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void FindWithShadowedPropertyAndInferredType ()
     {
       DerivedClassWithMixedProperties classWithMixedProperties =
-          (DerivedClassWithMixedProperties) DomainObject.NewObject (typeof (DerivedClassWithMixedProperties));
+          (DerivedClassWithMixedProperties) RepositoryAccessor.NewObject (typeof (DerivedClassWithMixedProperties)).With();
 
       PropertyIndexer indexer = new PropertyIndexer (classWithMixedProperties);
       Assert.AreEqual (indexer[typeof (DerivedClassWithMixedProperties).FullName + ".String"],

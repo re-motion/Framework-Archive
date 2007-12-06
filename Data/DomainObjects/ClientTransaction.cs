@@ -218,11 +218,9 @@ public abstract class ClientTransaction : ITransaction
   /// </summary>
   /// <param name="objectIDs">The ids of the <see cref="DataContainer"/> objects to load.</param>
   /// <returns>A <see cref="DataContainerCollection"/> with the loaded containers in the same order as in <paramref name="objectIDs"/>.</returns>
+  /// <param name="throwOnNotFound">If true, this method should throw an <see cref="ObjectNotFoundException"/> if a data container cannot be found
+  /// for an <see cref="ObjectID"/>. If false, the method should proceed as if the invalid ID hadn't been given.</param>
   /// <remarks>
-  /// <para>
-  /// If one of the IDs in <paramref name="objectIDs"/> cannot be loaded, this method does not throw an exception; instead it should
-  /// proceed as if the invalid ID hadn't been given.
-  /// </para>
   /// <para>
   /// This method raises the <see cref="IClientTransactionListener.ObjectLoading"/> event on the <see cref="TransactionEventSink"/>, sets the
   /// <see cref="ClientTransaction"/> of the loaded data containers, and registers the containers in the <see cref="DataContainerMap"/>. It does
@@ -459,7 +457,8 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="domainObject">The object to be enlisted in this transaction.</param>
   /// <remarks>
   /// <para>
-  /// Unlike <see cref="DomainObject.LoadIntoTransaction{T}"/>, this method does not create a new <see cref="DomainObject"/> reference, but instead
+  /// Unlike <see cref="DomainObject.GetObject{T}(ObjectID)"/>, this method does not create a new <see cref="DomainObject"/> reference if the object
+  /// hasn't been loaded yet, but instead
   /// marks the given <see cref="DomainObject"/> for use in this transaction. After this, the same object reference can be used in both the
   /// transaction it was originally created in and the transactions it has been enlisted in.
   /// </para>
@@ -691,7 +690,7 @@ public abstract class ClientTransaction : ITransaction
     if (enlistedObject != null)
       return enlistedObject;
     else
-      return DomainObject.CreateWithDataContainer (dataContainer);
+      return RepositoryAccessor.NewObjectFromDataContainer (dataContainer);
   }
 
   /// <summary>

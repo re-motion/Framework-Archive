@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
       return DomainObject.NewObject<ClassWithAllDataTypes> ().With();
     }
 
-    public new static ClassWithAllDataTypes GetObject (ObjectID id)
+    public static ClassWithAllDataTypes GetObject (ObjectID id)
     {
       return DomainObject.GetObject<ClassWithAllDataTypes> (id);
     }

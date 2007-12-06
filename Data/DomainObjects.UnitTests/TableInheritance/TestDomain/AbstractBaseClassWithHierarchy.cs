@@ -11,7 +11,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
     }
 
-    public new static AbstractBaseClassWithHierarchy GetObject (ObjectID id)
+    public static AbstractBaseClassWithHierarchy GetObject (ObjectID id)
     {
       return DomainObject.GetObject<AbstractBaseClassWithHierarchy> (id);
     }

@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Collections;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.ObjectBinding;
 using Rubicon.SecurityManager.Domain;
@@ -32,13 +33,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       CheckDomainObjectSerializability<StateDefinition> (delegate { return StateDefinition.NewObject (); });
       CheckDomainObjectSerializability<StatePropertyDefinition> (delegate { return StatePropertyDefinition.NewObject (); });
       CheckDomainObjectSerializability<StatePropertyReference> (delegate { return StatePropertyReference.NewObject (); });
-      CheckDomainObjectSerializability<Group> (delegate { return (Group) DomainObject.NewObject (typeof (Group)); });
-      CheckDomainObjectSerializability<GroupType> (delegate { return (GroupType) DomainObject.NewObject (typeof (GroupType)); });
+      CheckDomainObjectSerializability<Group> (delegate { return (Group) RepositoryAccessor.NewObject (typeof (Group)).With (); });
+      CheckDomainObjectSerializability<GroupType> (delegate { return (GroupType) RepositoryAccessor.NewObject (typeof (GroupType)).With (); });
       CheckDomainObjectSerializability<GroupTypePosition> (delegate { return GroupTypePosition.NewObject (); });
-      CheckDomainObjectSerializability<Position> (delegate { return (Position) DomainObject.NewObject (typeof (Position)); });
+      CheckDomainObjectSerializability<Position> (delegate { return (Position) RepositoryAccessor.NewObject (typeof (Position)).With (); });
       CheckDomainObjectSerializability<Role> (delegate { return Role.NewObject (); });
-      CheckDomainObjectSerializability<Tenant> (delegate { return (Tenant) DomainObject.NewObject (typeof (Tenant)); });
-      CheckDomainObjectSerializability<User> (delegate { return (User) DomainObject.NewObject (typeof (User)); });
+      CheckDomainObjectSerializability<Tenant> (delegate { return (Tenant) RepositoryAccessor.NewObject (typeof (Tenant)).With (); });
+      CheckDomainObjectSerializability<User> (delegate { return (User) RepositoryAccessor.NewObject (typeof (User)).With(); });
     }
 
     private void CheckDomainObjectSerializability<T> (Func<T> creator)

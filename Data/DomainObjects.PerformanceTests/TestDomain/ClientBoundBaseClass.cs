@@ -11,7 +11,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests.TestDomain
 
     // static members and constants
 
-    public static new ClientBoundBaseClass GetObject (ObjectID id)
+    public static ClientBoundBaseClass GetObject (ObjectID id)
     {
       return DomainObject.GetObject<ClientBoundBaseClass> (id);
     }

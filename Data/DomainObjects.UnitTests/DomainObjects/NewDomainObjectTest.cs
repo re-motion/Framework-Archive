@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -26,29 +27,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void Creation_NonGenericWithDefaultConstructor ()
-    {
-      Order order = (Order) DomainObject.NewObject (typeof (Order));
-
-      Assert.IsNotNull (order.ID);
-      Assert.AreEqual (StateType.New, order.State);
-			Assert.AreSame (order, order.InternalDataContainer.DomainObject);
-    }
-
-    [Test]
     public void GetObject_Generic ()
     {
       Order order = Order.NewObject ();
       Order sameOrder = Order.GetObject (order.ID);
-
-      Assert.AreSame (order, sameOrder);
-    }
-
-    [Test]
-    public void GetObject_NonGeneric ()
-    {
-      Order order = (Order) DomainObject.NewObject (typeof (Order));
-      Order sameOrder = (Order) DomainObject.GetObject (order.ID);
 
       Assert.AreSame (order, sameOrder);
     }

@@ -1,0 +1,89 @@
+using System;
+using NUnit.Framework;
+using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Infrastructure;
+using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+
+namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+{
+  [TestFixture]
+  public class RepositoryAccessorTest : ClientTransactionBaseTest
+  {
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Mapping does not contain class 'System.Object'.")]
+    public void NewObject_InvalidType ()
+    {
+      RepositoryAccessor.NewObject (typeof (object));
+    }
+
+    [Test]
+    public void NewObject_NoCtorArgs ()
+    {
+      Order instance = RepositoryAccessor.NewObject (typeof (Order)).With() as Order;
+      Assert.IsNotNull (instance);
+      Assert.IsTrue (instance.CtorCalled);
+    }
+
+    [Test]
+    public void NewObject_WithCtorArgs ()
+    {
+      Order order = Order.NewObject();
+      OrderItem instance = RepositoryAccessor.NewObject (typeof (OrderItem)).With (order) as OrderItem;
+      Assert.IsNotNull (instance);
+      Assert.AreSame (order, instance.Order);
+    }
+
+    [Test]
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
+        + "OrderItem does not support the requested constructor with signature (System.String).")]
+    public void NewObject_WrongCtorArgs ()
+    {
+      RepositoryAccessor.NewObject (typeof (OrderItem)).With ("foo");
+    }
+
+    [Test]
+    public void GetObject ()
+    {
+      Order order = RepositoryAccessor.GetObject (DomainObjectIDs.Order1, false) as Order;
+      Assert.IsNotNull (order);
+      Assert.AreEqual (DomainObjectIDs.Order1, order.ID);
+      Assert.IsFalse (order.CtorCalled);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ObjectDeletedException))]
+    public void GetObject_IncludeDeleted_False ()
+    {
+      Order.GetObject (DomainObjectIDs.Order1).Delete();
+      RepositoryAccessor.GetObject (DomainObjectIDs.Order1, false);
+    }
+
+    [Test]
+    public void GetObject_IncludeDeleted_True ()
+    {
+      Order.GetObject (DomainObjectIDs.Order1).Delete ();
+      Order order = RepositoryAccessor.GetObject (DomainObjectIDs.Order1, true) as Order;
+      Assert.IsNotNull (order);
+      Assert.AreEqual (DomainObjectIDs.Order1, order.ID);
+      Assert.AreEqual (StateType.Deleted, order.State);
+    }
+
+    [Test]
+    public void DeleteObject ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Assert.AreNotEqual (StateType.Deleted, order.State);
+      RepositoryAccessor.DeleteObject (order);
+      Assert.AreEqual (StateType.Deleted, order.State);
+    }
+
+    [Test]
+    public void DeleteObject_Twice ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      RepositoryAccessor.DeleteObject (order);
+      RepositoryAccessor.DeleteObject (order);
+    }
+  }
+}

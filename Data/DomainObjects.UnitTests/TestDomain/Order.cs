@@ -26,8 +26,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     public event EventHandler ProtectedLoaded;
 
+    public readonly bool CtorCalled = false;
+
     protected Order ()
     {
+      CtorCalled = true;
     }
 
     [DBColumn ("OrderNo")]

@@ -32,7 +32,7 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   ///   The loaded object with the given <paramref name="id"/> cannot be casted to <b>BindableDomainObject</b>
   /// </exception>
   //TODO: [Obsolete("Use DomainObject.GetObject<> instead.")]
-  internal protected static new BindableDomainObject GetObject (ObjectID id)
+  internal protected static BindableDomainObject GetObject (ObjectID id)
   {
     return DomainObject.GetObject<BindableDomainObject> (id);
   }
@@ -53,7 +53,7 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   ///   The loaded object with the given <paramref name="id"/> cannot be casted to <b>BindableDomainObject</b>
   /// </exception>
   // TODO: [Obsolete("Use DomainObject.GetObject<> instead.")]
-  internal protected static new BindableDomainObject GetObject (ObjectID id, bool includeDeleted)
+  internal protected static BindableDomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     return DomainObject.GetObject<BindableDomainObject> (id, includeDeleted);
   }

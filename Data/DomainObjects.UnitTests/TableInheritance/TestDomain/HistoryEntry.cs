@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return NewObject<HistoryEntry>().With();
     }
 
-    public new static HistoryEntry GetObject (ObjectID id)
+    public static HistoryEntry GetObject (ObjectID id)
     {
       return DomainObject.GetObject<HistoryEntry> (id);
     }

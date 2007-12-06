@@ -601,14 +601,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order newOrder = Order.NewObject ();
       
       newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValue(9);
-      newOrder.OrderItems.Add (DomainObject.GetObject (DomainObjectIDs.OrderItem1));
+      newOrder.OrderItems.Add (RepositoryAccessor.GetObject (DomainObjectIDs.OrderItem1, false));
       newOrder.OrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
 
       using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValue (10);
         newOrder.OrderItems.Clear();
-        newOrder.OrderItems.Add (DomainObject.GetObject (DomainObjectIDs.OrderItem2));
+        newOrder.OrderItems.Add (RepositoryAccessor.GetObject (DomainObjectIDs.OrderItem2, false));
         newOrder.OrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
 
         Assert.AreEqual (
@@ -621,20 +621,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
                 ClientTransactionScope.CurrentTransaction.ParentTransaction));
 
         Assert.AreEqual (
-            DomainObject.GetObject (DomainObjectIDs.OrderItem2),
+            RepositoryAccessor.GetObject (DomainObjectIDs.OrderItem2, false),
             newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetValueTx<ObjectList<OrderItem>> (
                 ClientTransactionScope.CurrentTransaction)[0]);
         Assert.AreEqual (
-            DomainObject.GetObject (DomainObjectIDs.OrderItem1),
+            RepositoryAccessor.GetObject (DomainObjectIDs.OrderItem1, false),
             newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetValueTx<ObjectList<OrderItem>> (
                 ClientTransactionScope.CurrentTransaction.ParentTransaction)[0]);
 
         Assert.AreEqual (
-            DomainObject.GetObject (DomainObjectIDs.OrderTicket2),
+            RepositoryAccessor.GetObject (DomainObjectIDs.OrderTicket2, false),
             newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetValueTx<OrderTicket> (
                 ClientTransactionScope.CurrentTransaction));
         Assert.AreEqual (
-            DomainObject.GetObject (DomainObjectIDs.OrderTicket1),
+            RepositoryAccessor.GetObject (DomainObjectIDs.OrderTicket1, false),
             newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetValueTx<OrderTicket> (
                 ClientTransactionScope.CurrentTransaction.ParentTransaction));
       }
@@ -670,14 +670,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order newOrder = Order.NewObject ();
 
       newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValue (9);
-      newOrder.OrderItems.Add (DomainObject.GetObject (DomainObjectIDs.OrderItem1));
+      newOrder.OrderItems.Add (RepositoryAccessor.GetObject (DomainObjectIDs.OrderItem1, false));
       newOrder.OrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
 
       using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
       {
         newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].SetValue (10);
         newOrder.OrderItems.Clear ();
-        newOrder.OrderItems.Add (DomainObject.GetObject (DomainObjectIDs.OrderItem2));
+        newOrder.OrderItems.Add (RepositoryAccessor.GetObject (DomainObjectIDs.OrderItem2, false));
         newOrder.OrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
 
         Assert.AreEqual (
@@ -690,20 +690,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
                 ClientTransactionScope.CurrentTransaction.ParentTransaction));
 
         Assert.AreEqual (
-            DomainObject.GetObject (DomainObjectIDs.OrderItem2),
+            RepositoryAccessor.GetObject (DomainObjectIDs.OrderItem2, false),
             ((DomainObjectCollection)newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetValueWithoutTypeCheckTx (
                 ClientTransactionScope.CurrentTransaction))[0]);
         Assert.AreEqual (
-            DomainObject.GetObject (DomainObjectIDs.OrderItem1),
+            RepositoryAccessor.GetObject (DomainObjectIDs.OrderItem1, false),
             ((DomainObjectCollection)newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetValueWithoutTypeCheckTx (
                 ClientTransactionScope.CurrentTransaction.ParentTransaction))[0]);
 
         Assert.AreEqual (
-            DomainObject.GetObject (DomainObjectIDs.OrderTicket2),
+            RepositoryAccessor.GetObject (DomainObjectIDs.OrderTicket2, false),
             newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetValueWithoutTypeCheckTx (
                 ClientTransactionScope.CurrentTransaction));
         Assert.AreEqual (
-            DomainObject.GetObject (DomainObjectIDs.OrderTicket1),
+            RepositoryAccessor.GetObject (DomainObjectIDs.OrderTicket1, false),
             newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetValueWithoutTypeCheckTx (
                 ClientTransactionScope.CurrentTransaction.ParentTransaction));
       }

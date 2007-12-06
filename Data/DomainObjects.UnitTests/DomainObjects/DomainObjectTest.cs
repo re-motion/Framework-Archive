@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -749,8 +750,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void MultiplePropertiesWithSameShortName ()
     {
       DerivedClassWithMixedProperties derivedClass =
-          (DerivedClassWithMixedProperties) DomainObject.NewObject (typeof (DerivedClassWithMixedProperties));
-      ClassWithMixedProperties baseClass = (ClassWithMixedProperties) derivedClass;
+          (DerivedClassWithMixedProperties) RepositoryAccessor.NewObject (typeof (DerivedClassWithMixedProperties)).With();
+      ClassWithMixedProperties baseClass = derivedClass;
 
       derivedClass.String = "Derived";
       baseClass.String = "Base";

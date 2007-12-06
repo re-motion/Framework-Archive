@@ -11,7 +11,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests.TestDomain
       return NewObject<Client>().With();
     }
 
-    public new static Client GetObject (ObjectID id)
+    public static Client GetObject (ObjectID id)
     {
       return DomainObject.GetObject<Client> (id);
     }
