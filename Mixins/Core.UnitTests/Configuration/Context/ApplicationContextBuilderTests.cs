@@ -57,6 +57,31 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     }
 
     [Test]
+    public void DoubleAssembliesAreIgnored ()
+    {
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly (), Assembly.GetExecutingAssembly ());
+
+      ClassContext classContext = context.GetClassContext (typeof (BaseType1));
+      Assert.AreEqual (2, classContext.MixinCount);
+
+      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin1)));
+      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin2)));
+    }
+
+    [Test]
+    public void DoubleTypesAreIgnored ()
+    {
+      ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (BaseType1)).AddType (typeof (BaseType1))
+          .AddType (typeof (BT1Mixin1)).AddType (typeof (BT1Mixin1)).AddType (typeof (BT1Mixin2)).AddType (typeof (BT1Mixin2)).BuildContext ();
+
+      ClassContext classContext = context.GetClassContext (typeof (BaseType1));
+      Assert.AreEqual (2, classContext.MixinCount);
+
+      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin1)));
+      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin2)));
+    }
+
+    [Test]
     public void BuildDefault()
     {
       ApplicationContext ac = ApplicationContextBuilder.BuildDefaultContext();
@@ -148,5 +173,44 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
 
       repository.VerifyAll ();
     }
+
+    [Test]
+    public void MixinAttributeOnTargetClass ()
+    {
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+
+      ClassContext classContext = context.GetClassContext (typeof (TargetClassWithAdditionalDependencies));
+      Assert.IsNotNull (classContext);
+
+      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinWithAdditionalClassDependency)));
+      Assert.IsTrue (
+          classContext.GetOrAddMixinContext (typeof (MixinWithAdditionalClassDependency)).ContainsExplicitDependency (typeof (MixinWithNoAdditionalDependency)));
+    }
+
+    [Test]
+    public void MixinAttributeOnMixinClass ()
+    {
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+
+      ClassContext classContext = context.GetClassContext (typeof (BaseType1));
+      Assert.IsNotNull (classContext);
+
+      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin1)));
+    }
+
+    [Test]
+    public void CompleteInterfaceConfiguredViaAttribute ()
+    {
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+
+      ClassContext classContext = context.GetClassContext (typeof (BaseType6));
+      Assert.IsNotNull (classContext);
+
+      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (ICBT6Mixin1)));
+      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (ICBT6Mixin2)));
+      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (ICBT6Mixin3)));
+    }
+
+
   }
 }

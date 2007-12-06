@@ -8,6 +8,7 @@ using Rubicon.Mixins.Utilities.Serialization;
 using Rubicon.Utilities;
 using System.Runtime.Serialization;
 using System.Text;
+using ReflectionUtility=Rubicon.Utilities.ReflectionUtility;
 
 namespace Rubicon.Mixins.Context
 {
@@ -237,6 +238,20 @@ namespace Rubicon.Mixins.Context
             return true;
         }
         return false;
+      }
+    }
+
+    private MixinContext GetAscribableMixin (Type baseMixinType)
+    {
+      ArgumentUtility.CheckNotNull ("baseMixinType", baseMixinType);
+      lock (_lockObject)
+      {
+        foreach (MixinContext mixin in Mixins)
+        {
+          if (ReflectionUtility.CanAscribe (mixin.MixinType, baseMixinType))
+            return mixin;
+        }
+        return null;
       }
     }
 
@@ -488,6 +503,66 @@ namespace Rubicon.Mixins.Context
 
         return newInstance;
       }
+    }
+
+    /// <summary>
+    /// Inherits all data from the given <paramref name="baseContext"/> and applies overriding rules for mixins and concrete
+    /// interfaces already defined for this <see cref="ClassContext"/>.
+    /// </summary>
+    /// <param name="baseContext">The base context to inherit data from.</param>
+    /// <exception cref="ConfigurationException">The <paramref name="baseContext"/> contains mixins whose base types or generic
+    /// type definitions are already defined on this mixin. The derived context cannot have concrete mixins whose base types
+    /// are defined on the parent context.
+    /// </exception>
+    public void InheritFrom (ClassContext baseContext)
+    {
+      ArgumentUtility.CheckNotNull ("baseContext", baseContext);
+      EnsureNotFrozen();
+
+      lock (_lockObject)
+      lock (baseContext._lockObject)
+      {
+        foreach (MixinContext mixin in Mixins)
+        {
+          MixinContext baseMixin;
+          if (!baseContext.ContainsMixin (mixin.MixinType) && (baseMixin = baseContext.GetAscribableMixin (mixin.MixinType)) != null)
+          {
+            string message = string.Format (
+                "The class {0} inherits the mixin {1} from class {2}, but it is explicitly "
+                    + "configured for the less specific mixin {3}.",
+                Type.FullName,
+                baseMixin.MixinType.FullName,
+                baseContext.Type.FullName,
+                mixin.MixinType);
+            throw new ConfigurationException (message);
+          }
+        }
+
+        foreach (MixinContext inheritedMixin in baseContext.Mixins)
+        {
+          if (!ContainsOverrideForMixin (inheritedMixin.MixinType))
+            inheritedMixin.CloneAndAddTo (this);
+        }
+
+        foreach (Type inheritedInterface in baseContext.CompleteInterfaces)
+        {
+          if (!ContainsCompleteInterface (inheritedInterface))
+            AddCompleteInterface (inheritedInterface);
+        }
+      }
+    }
+
+    /// <summary>
+    /// Determines whether a mixin configured with this <see cref="ClassContext"/> overrides the given <paramref name="mixinType"/>.
+    /// </summary>
+    /// <param name="mixinType">The mixin type which is to be checked for overriders.</param>
+    /// <returns>
+    /// True if the specified mixin type is overridden in this class context; otherwise, false.
+    /// </returns>
+    public bool ContainsOverrideForMixin (Type mixinType)
+    {
+      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      return GetAscribableMixin (mixinType) != null;
     }
   }
 }

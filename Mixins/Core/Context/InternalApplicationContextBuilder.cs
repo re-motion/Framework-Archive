@@ -134,6 +134,7 @@ namespace Rubicon.Mixins.Context
 
     private void AnalyzeInheritedMixins (Type targetType, Type baseType)
     {
+#warning TODO: Use ClassContext.InheritFrom
       ClassContext baseTypeContext = _builtContext.GetClassContextNonRecursive (baseType);
       if (baseTypeContext != null)
       {

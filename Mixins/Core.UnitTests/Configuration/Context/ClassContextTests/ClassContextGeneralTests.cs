@@ -2,53 +2,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.Mixins.Validation;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins.Definitions;
 
-namespace Rubicon.Mixins.UnitTests.Configuration.Context
+namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
 {
   [TestFixture]
-  public class ClassContextTests
+  public class ClassContextGeneralTests
   {
     [Test]
-    public void NewContextHasNoDefinitions ()
+    public void NewApplicationContextDoesNotKnowAnyClasses ()
     {
       ApplicationContext context = new ApplicationContext ();
-      Assert.IsFalse (context.ContainsClassContext (typeof (BaseType1)));
+      Assert.AreEqual (0, context.ClassContextCount);
       List<ClassContext> classContexts = new List<ClassContext> (context.ClassContexts);
       Assert.AreEqual (0, classContexts.Count);
-    }
-
-    [Test]
-    public void BuildFromTestAssembly ()
-    {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
-      CheckContext(context);
-    }
-
-    [Test]
-    public void BuildFromTestAssemblies ()
-    {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (null, AppDomain.CurrentDomain.GetAssemblies ());
-      CheckContext (context);
-    }
-
-    private static void CheckContext(ApplicationContext context)
-    {
-      Assert.IsTrue (context.ContainsClassContext (typeof (BaseType1)));
-      
-      List<ClassContext> classContexts = new List<ClassContext> (context.ClassContexts);
-      Assert.IsTrue (classContexts.Count > 0);
-
-      ClassContext contextForBaseType1 = context.GetClassContext (typeof (BaseType1));
-      Assert.AreEqual (2, contextForBaseType1.MixinCount);
-
-      Assert.IsTrue (contextForBaseType1.ContainsMixin(typeof (BT1Mixin1)));
-      Assert.IsTrue (contextForBaseType1.ContainsMixin(typeof (BT1Mixin2)));
+      Assert.IsFalse (context.ContainsClassContext (typeof (BaseType1)));
     }
 
     [Test]
@@ -67,53 +38,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
-    public void AppContextThrowsOnDuplicateClassContexts ()
-    {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
-      context.AddClassContext (new ClassContext (typeof (BaseType1)));
-    }
-
-    [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Object was tried to be added twice", MatchType = MessageMatch.Contains)]
-    public void ClassContextThrowsOnDuplicateMixinContextsInCtor ()
+    public void ConstructorThrowsOnDuplicateMixinContexts ()
     {
       new ClassContext (typeof (string), typeof (object), typeof (object));
-    }
-
-    [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
-    public void ClassContextThrowsOnDuplicateMixinContextsInAdd ()
-    {
-      ClassContext context = new ClassContext (typeof (string));
-      context.AddMixin (typeof (object));
-      context.AddMixin (typeof (object));
-    }
-
-    [Test]
-    public void DoubleAssembliesAreIgnored ()
-    {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly (), Assembly.GetExecutingAssembly ());
-
-      ClassContext classContext = context.GetClassContext (typeof (BaseType1));
-      Assert.AreEqual (2, classContext.MixinCount);
-
-      Assert.IsTrue (classContext.ContainsMixin(typeof (BT1Mixin1)));
-      Assert.IsTrue (classContext.ContainsMixin(typeof (BT1Mixin2)));
-    }
-
-    [Test]
-    public void DoubleTypesAreIgnored ()
-    {
-      ApplicationContext context = new ApplicationContextBuilder(null).AddType (typeof (BaseType1)).AddType (typeof (BaseType1))
-          .AddType (typeof (BT1Mixin1)).AddType (typeof (BT1Mixin1)).AddType (typeof (BT1Mixin2)).AddType (typeof (BT1Mixin2)).BuildContext();
-
-      ClassContext classContext = context.GetClassContext (typeof (BaseType1));
-      Assert.AreEqual (2, classContext.MixinCount);
-
-      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin2)));
-
     }
 
     [Test]
@@ -129,84 +57,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     }
 
     [Test]
-    public void MixinAttributeOnTargetClass ()
-    {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
-
-      ClassContext classContext = context.GetClassContext (typeof (TargetClassWithAdditionalDependencies));
-      Assert.IsNotNull (classContext);
-
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinWithAdditionalClassDependency)));
-      Assert.IsTrue (
-          classContext.GetOrAddMixinContext (typeof (MixinWithAdditionalClassDependency)).ContainsExplicitDependency (typeof (MixinWithNoAdditionalDependency)));
-    }
-
-    [Test]
-    public void MixinAttributeOnMixinClass ()
-    {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
-
-      ClassContext classContext = context.GetClassContext (typeof (BaseType1));
-      Assert.IsNotNull (classContext);
-
-      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin1)));
-    }
-
-    [Test]
-    public void ExplicitInterfaceDependencies ()
-    {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
-      ClassContext classContext = context.GetClassContext (typeof (BaseType7));
-      MixinContext mixinContext = classContext.GetOrAddMixinContext (typeof (BT7Mixin1));
-
-      Assert.AreEqual (0, mixinContext.ExplicitDependencyCount);
-      Assert.IsFalse (mixinContext.ContainsExplicitDependency (typeof (IBaseType2)));
-
-      List<Type> deps = new List<Type> (mixinContext.ExplicitDependencies);
-      Assert.AreEqual (0, deps.Count);
-
-      Assert.IsFalse (mixinContext.RemoveExplicitDependency (typeof (IBaseType2)));
-
-      mixinContext.AddExplicitDependency (typeof (IBaseType2));
-
-      Assert.AreEqual (1, mixinContext.ExplicitDependencyCount);
-      Assert.IsTrue (mixinContext.ContainsExplicitDependency (typeof (IBaseType2)));
-
-      deps = new List<Type> (mixinContext.ExplicitDependencies);
-      Assert.AreEqual (1, deps.Count);
-      Assert.IsTrue (deps.Contains (typeof (IBaseType2)));
-
-      Assert.IsTrue (mixinContext.RemoveExplicitDependency (typeof (IBaseType2)));
-
-      Assert.AreEqual (0, mixinContext.ExplicitDependencyCount);
-      Assert.IsFalse (mixinContext.ContainsExplicitDependency (typeof (IBaseType2)));
-
-      deps = new List<Type> (mixinContext.ExplicitDependencies);
-      Assert.AreEqual (0, deps.Count);
-
-      Assert.IsFalse (mixinContext.RemoveExplicitDependency (typeof (IBaseType2)));
-    }
-
-    [Test]
-    public void ExplicitMixinDependencies ()
-    {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
-      ClassContext classContext = context.GetClassContext (typeof (BaseType7));
-      MixinContext mixinContext = classContext.GetOrAddMixinContext (typeof (BT7Mixin1));
-
-      Assert.AreEqual (0, mixinContext.ExplicitDependencyCount);
-      Assert.IsFalse (mixinContext.ContainsExplicitDependency (typeof (BT7Mixin2)));
-
-      List<Type> deps = new List<Type> (mixinContext.ExplicitDependencies);
-      Assert.AreEqual (0, deps.Count);
-
-      mixinContext.AddExplicitDependency (typeof (BT7Mixin2));
-
-      Assert.AreEqual (1, mixinContext.ExplicitDependencyCount);
-      Assert.IsTrue (mixinContext.ContainsExplicitDependency (typeof (BT7Mixin2)));
-    }
-
-    [Test]
     public void CannotCastMixinsToICollection()
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
@@ -219,20 +69,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     }
 
     [Test]
-    public void CannotCastExplicitDependenciesToICollection ()
-    {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      MixinContext mc = cc.GetOrAddMixinContext (typeof (BT1Mixin1));
-      Assert.IsTrue (mc.ExplicitDependencies is IEnumerable<Type>);
-      Assert.IsFalse (mc.ExplicitDependencies is List<Type>);
-      Assert.IsFalse (mc.ExplicitDependencies is IList<Type>);
-      Assert.IsFalse (mc.ExplicitDependencies is ICollection<Type>);
-      Assert.IsFalse (mc.ExplicitDependencies is ICollection);
-      Assert.IsFalse (mc.ExplicitDependencies is IList);
-    }
-
-    [Test]
-    public void ClassContextWithMixinParameters()
+    public void ConstructorWithMixinParameters()
     {
       ClassContext context = new ClassContext (typeof (BaseType1), typeof (BT1Mixin1), typeof (BT1Mixin2));
       Assert.AreEqual (2, context.MixinCount);
@@ -258,6 +95,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     }
 
     [Test]
+    [ExpectedException (typeof (InvalidOperationException))]
+    public void AddMixinThrowsOnDuplicateMixinContextsInAdd ()
+    {
+      ClassContext context = new ClassContext (typeof (string));
+      context.AddMixin (typeof (object));
+      context.AddMixin (typeof (object));
+    }
+
+    [Test]
     public void DuplicateCompleteInterfacesAreIgnored ()
     {
       ClassContext context = new ClassContext (typeof (BaseType5));
@@ -280,19 +126,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       Assert.IsFalse (cc.CompleteInterfaces is ICollection<Type>);
       Assert.IsFalse (cc.CompleteInterfaces is ICollection);
       Assert.IsFalse (cc.CompleteInterfaces is IList);
-    }
-
-    [Test]
-    public void CompleteInterfaceConfiguredViaAttribute ()
-    {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
-
-      ClassContext classContext = context.GetClassContext (typeof (BaseType6));
-      Assert.IsNotNull (classContext);
-
-      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (ICBT6Mixin1)));
-      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (ICBT6Mixin2)));
-      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (ICBT6Mixin3)));
     }
 
     [Test]
@@ -391,7 +224,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "is frozen", MatchType = MessageMatch.Contains)]
-    public void ThrowsOnRemoveWMxinWhenFrozen ()
+    public void ThrowsOnRemoveMixinWhenFrozen ()
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
       cc.Freeze ();
@@ -462,7 +295,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       Assert.AreEqual (typeof (BaseType1), cc.Type);
       Assert.IsNotNull (cc.GetOrAddMixinContext (typeof (BT1Mixin2)));
       Assert.AreEqual (1, cc.GetOrAddMixinContext (typeof (BT1Mixin2)).ExplicitDependencyCount);
-      IEnumerable<Type> deps = cc.GetOrAddMixinContext (typeof (BT1Mixin2)).ExplicitDependencies;
+      Dev.Null = cc.GetOrAddMixinContext (typeof (BT1Mixin2)).ExplicitDependencies;
     }
 
     [Test]

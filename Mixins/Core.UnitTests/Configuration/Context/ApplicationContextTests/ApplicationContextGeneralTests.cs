@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
@@ -10,11 +11,43 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
   public class ApplicationContextGeneralTests
   {
     [Test]
-    public void CompletelyNewApplicationContextDoesNotKnowAnyClasses()
+    public void NewApplicationContextDoesNotKnowAnyClasses()
     {
-      ApplicationContext ac = new ApplicationContext();
-      Assert.AreEqual (0, ac.ClassContextCount);
+      ApplicationContext context = new ApplicationContext();
+      Assert.AreEqual (0, context.ClassContextCount);
+      List<ClassContext> classContexts = new List<ClassContext> (context.ClassContexts);
+      Assert.AreEqual (0, classContexts.Count);
+      Assert.IsFalse (context.ContainsClassContext (typeof (BaseType1)));
     }
+
+    [Test]
+    public void BuildFromTestAssembly ()
+    {
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      CheckContext (context);
+    }
+
+    [Test]
+    public void BuildFromTestAssemblies ()
+    {
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (null, AppDomain.CurrentDomain.GetAssemblies ());
+      CheckContext (context);
+    }
+
+    private static void CheckContext (ApplicationContext context)
+    {
+      Assert.IsTrue (context.ContainsClassContext (typeof (BaseType1)));
+
+      List<ClassContext> classContexts = new List<ClassContext> (context.ClassContexts);
+      Assert.IsTrue (classContexts.Count > 0);
+
+      ClassContext contextForBaseType1 = context.GetClassContext (typeof (BaseType1));
+      Assert.AreEqual (2, contextForBaseType1.MixinCount);
+
+      Assert.IsTrue (contextForBaseType1.ContainsMixin (typeof (BT1Mixin1)));
+      Assert.IsTrue (contextForBaseType1.ContainsMixin (typeof (BT1Mixin2)));
+    }
+
 
     [Test]
     public void GeneralFunctionality()
@@ -62,6 +95,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
       ApplicationContext ac = new ApplicationContext ();
       ac.AddClassContext (new ClassContext (typeof (BaseType1)));
       ac.AddClassContext (new ClassContext (typeof (BaseType1)));
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException))]
+    public void ThrowsOnDoubleAdd_ViaConstructor ()
+    {
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      context.AddClassContext (new ClassContext (typeof (BaseType1)));
     }
 
     [Test]

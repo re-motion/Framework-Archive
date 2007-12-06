@@ -52,6 +52,9 @@
     <Compile Include="Configuration\Context\ApplicationContextTests\ApplicationContextCompleteInterfaceTests.cs" />
     <Compile Include="Configuration\Context\ApplicationContextTests\ApplicationContextValidationTests.cs" />
     <Compile Include="Configuration\Context\ApplicationContextTests\ApplicationContextGeneralTests.cs" />
+    <Compile Include="Configuration\Context\ClassContextTests\ClassContextInheritanceTests.cs" />
+    <Compile Include="Configuration\Context\ClassContextTests\ClassContextGeneralTests.cs" />
+    <Compile Include="Configuration\Context\MixinContextTests.cs" />
     <Compile Include="Configuration\Definitions\AttributeIntroductionDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\Definitions\MixedMixinTests.cs" />
     <Compile Include="Mixins\CodeGenSampleTypes\ClassWithCopyCustomAttributes.cs" />
@@ -129,7 +132,6 @@
     <Compile Include="SampleTypes\ClassFulfillingAllMemberRequirementsDuck.cs" />
     <Compile Include="SampleTypes\ClassFulfillingNoMemberRequirements.cs" />
     <Compile Include="Configuration\Context\ApplicationContextBuilderTests.cs" />
-    <Compile Include="Configuration\Context\ApplicationContextTests.cs" />
     <Compile Include="Configuration\Definitions\AttributeDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\Definitions\TargetClassDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\Definitions\TargetClassDefinitionCacheTests.cs" />
@@ -238,7 +240,6 @@
     <Compile Include="Configuration\ValidationSampleTypes\PublicNester.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\ThrowingRuleSet.cs" />
     <Compile Include="Configuration\Definitions\MixinDefinitionBuilderTests.cs" />
-    <Compile Include="Configuration\Context\ClassContextTests.cs" />
     <Compile Include="Mixins\CheckPEVerify.cs" />
     <Compile Include="Mixins\BaseCallProxyCodeGeneration\TypeFeatureTests.cs" />
     <Compile Include="Mixins\MixinReflectionTests.cs" />
