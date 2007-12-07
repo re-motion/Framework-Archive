@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Rubicon.Utilities;
+using System.Diagnostics;
 
 namespace Rubicon.Data.DomainObjects
 {
@@ -8,6 +9,7 @@ namespace Rubicon.Data.DomainObjects
 /// Base class for all collections of Rubicon.Data.DomainObjects.
 /// </summary>
 [Serializable]
+[DebuggerDisplay ("Collection: {GetType().Name} - Count: {Count}")]
 public class CommonCollection : ICollection
 {
   // types

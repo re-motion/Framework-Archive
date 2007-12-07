@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using Rubicon.Utilities;
 
@@ -6,6 +7,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
 {
 // Note: No properties and methods of this class are inheritance-aware!
 [Serializable]
+  [DebuggerDisplay ("{GetType().Name}: {_id}/{_endPointDefinitions[0].PropertyName} ({_endPointDefinitions[0].Cardinality})-{_endPointDefinitions[1].PropertyName} ({_endPointDefinitions[1].Cardinality})")]
 public class RelationDefinition : ISerializable, IObjectReference
 {
   // types

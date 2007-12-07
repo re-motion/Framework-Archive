@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
   [Serializable]
+  [DebuggerDisplay ("{GetType().Name}: {PropertyName}")]
   public abstract class PropertyDefinition: ISerializable, IObjectReference
   {
     // types

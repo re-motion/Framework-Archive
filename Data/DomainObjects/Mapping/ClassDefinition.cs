@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Utilities;
@@ -9,6 +10,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.Mapping
 {
   [Serializable]
+  [DebuggerDisplay ("{GetType().Name} for {ClassType.FullName}")]
   public abstract class ClassDefinition: ISerializable, IObjectReference
   {
     // types
