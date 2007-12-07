@@ -40,20 +40,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     }
 
     [Test]
-    public void GetClassDefinition_ForBaseClass_DerivedFromSimpleDomainObject ()
-    {
-      ClassReflector classReflector = new ClassReflector (typeof (ClassDerivedFromSimpleDomainObject));
-      ReflectionBasedClassDefinition expected = CreateClassWithMixedPropertiesClassDefinition ();
-
-      ReflectionBasedClassDefinition actual = classReflector.GetClassDefinition (_classDefinitions);
-
-      Assert.IsNotNull (actual);
-      _classDefinitionChecker.Check (expected, actual);
-      Assert.AreEqual (1, _classDefinitions.Count);
-      Assert.AreSame (actual, _classDefinitions.GetMandatory (typeof (ClassDerivedFromSimpleDomainObject)));
-    }
-
-    [Test]
     public void GetClassDefinition_ForDerivedClass ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (DerivedClassWithMixedProperties));
