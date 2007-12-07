@@ -35,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.MigrationToReflectionB
         "        return %classname%.NewObject (%parameterlist%);\r\n";
 
     private static readonly string s_transactionScopeHeader =
-        "      using (new CurrentTransactionScope (%parameterlist%))\r\n"
+        "      using (%parameterlist%.EnterNonDiscardingScope ())\r\n"
         + "      {\r\n";
 
     private static readonly string s_transactionScopeFooter =
@@ -207,7 +207,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.MigrationToReflectionB
         return cSharpTypeName;
 
       return base.GetCSharpTypeName (typeInfo);
-    }
+    }
+
     private bool IsInstantiable (XmlBasedClassDefinition classDefinition)
     {
       if (classDefinition.GetEntityName() == null)

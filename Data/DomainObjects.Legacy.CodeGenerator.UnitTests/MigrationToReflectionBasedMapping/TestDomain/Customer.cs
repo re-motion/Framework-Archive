@@ -28,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToR
 
     public static Customer NewObject (ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (clientTransaction.EnterNonDiscardingScope ())
       {
         return Customer.NewObject ();
       }
@@ -41,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToR
 
     public static new Customer GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (clientTransaction.EnterNonDiscardingScope ())
       {
         return Customer.GetObject (id);
       }
