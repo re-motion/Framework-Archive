@@ -10,20 +10,23 @@ namespace Rubicon.Mixins.Context
     private readonly ApplicationContext _parentContext;
     private readonly Set<Type> _extenders;
     private readonly Set<Type> _users;
-    private readonly Set<Type> _potentialTargets;
     private readonly Set<Type> _completeInterfaces;
     private readonly Set<Tuple<ClassContext, Type>> _suppressedMixins;
 
+    private readonly Set<Type> _targets;
+    private readonly Set<Type> _finishedTargets;
+
     private ApplicationContext _builtContext;
 
-    public InternalApplicationContextBuilder (ApplicationContext parentContext, Set<Type> extenders, Set<Type> users, Set<Type> potentialTargets,
-                                              Set<Type> completeInterfaces)
+    public InternalApplicationContextBuilder (ApplicationContext parentContext, Set<Type> extenders, Set<Type> users, Set<Type> completeInterfaces)
     {
       _parentContext = parentContext;
       _extenders = extenders;
       _completeInterfaces = completeInterfaces;
-      _potentialTargets = potentialTargets;
       _users = users;
+
+      _targets = new Set<Type> ();
+      _finishedTargets = new Set<Type> ();
       _suppressedMixins = new Set<Tuple<ClassContext, Type>> ();
 
       Analyze ();
@@ -43,8 +46,12 @@ namespace Rubicon.Mixins.Context
         AnalyzeUser (user);
       foreach (Type completeInterface in _completeInterfaces)
         AnalyzeCompleteInterface (completeInterface);
-      foreach (Type type in _potentialTargets)
-        AnalyzeInheritedMixins (type);
+      
+      // At this point of time, every type in _targets has exactly those mixins configured espectially for it
+
+      foreach (Type target in _targets)
+        AnalyzeInheritedMixins (target);
+
       foreach (Tuple<ClassContext, Type> suppressedMixin in _suppressedMixins)
         ApplySuppressedMixin (suppressedMixin.A, suppressedMixin.B);
     }
@@ -91,7 +98,8 @@ namespace Rubicon.Mixins.Context
             typeForMessage.FullName, classContext.Type.FullName);
         throw new ConfigurationException (message);
       }
-      else {
+      else
+      {
         MixinContext mixinContext = classContext.AddMixin (mixinType);
         foreach (Type additionalDependency in explicitDependencies)
           mixinContext.AddExplicitDependency (additionalDependency);
@@ -107,6 +115,8 @@ namespace Rubicon.Mixins.Context
           else
             _suppressedMixins.Add (Tuple.NewTuple (classContext, suppressedMixinType));
         }
+
+        _targets.Add (classContext.Type);
       }
     }
 
@@ -122,23 +132,30 @@ namespace Rubicon.Mixins.Context
 
     private void AnalyzeInheritedMixins (Type targetType)
     {
-      Type currentBaseType = targetType.BaseType;
-      while (currentBaseType != null)
-      {
-        if (currentBaseType.IsGenericType)
-          currentBaseType = currentBaseType.GetGenericTypeDefinition ();
-        AnalyzeInheritedMixins (targetType, currentBaseType);
-        currentBaseType = currentBaseType.BaseType;
-      }
+      if (_finishedTargets.Contains (targetType))
+        return;
+
+      ClassContext targetContext = _builtContext.GetClassContextNonRecursive (targetType); // null if no specific mixins are configured for this type
+
+      Type baseType = targetType.BaseType;
+      if (baseType != null)
+        AnalyzeBaseAndInherit(targetContext, baseType);
+
+      Type genericTypeDefinition = targetType.IsGenericType && !targetType.IsGenericTypeDefinition ? targetType.GetGenericTypeDefinition() : null;
+      if (genericTypeDefinition != null)
+        AnalyzeBaseAndInherit (targetContext, genericTypeDefinition);
+
+      _finishedTargets.Add (targetType);
     }
 
-    private void AnalyzeInheritedMixins (Type targetType, Type baseType)
+    private void AnalyzeBaseAndInherit (ClassContext targetContext, Type baseType)
     {
-      ClassContext baseTypeContext = _builtContext.GetClassContextNonRecursive (baseType);
-      if (baseTypeContext != null)
+      AnalyzeInheritedMixins (baseType);
+      if (targetContext != null)
       {
-        ClassContext targetContext = _builtContext.GetOrAddClassContext (targetType);
-        targetContext.InheritFrom (baseTypeContext);
+        ClassContext baseContext = _builtContext.GetClassContext (baseType); // this will include the base type's inherited stuff
+        if (baseContext != null)
+          targetContext.InheritFrom (baseContext);
       }
     }
 

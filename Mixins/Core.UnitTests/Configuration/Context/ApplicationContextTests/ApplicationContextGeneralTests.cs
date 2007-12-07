@@ -169,6 +169,18 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     }
 
     [Test]
+    public void GetContextWorksRecursively_OverGenericDefinition ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (GenericTargetClass<>), typeof (NullMixin)))
+      {
+        ClassContext context = MixinConfiguration.ActiveContext.GetClassContext (typeof (GenericTargetClass<object>));
+        Assert.IsNotNull (context);
+        Assert.AreEqual (typeof (GenericTargetClass<object>), context.Type);
+        Assert.IsTrue (context.ContainsMixin (typeof (NullMixin)));
+      }
+    }
+
+    [Test]
     public void GetContextNonRecursive ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
@@ -216,7 +228,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
       Assert.IsTrue (context.ContainsClassContext (typeof (List<int>)));
       Assert.IsTrue (context.ContainsClassContext (typeof (List<>)));
 
-      Assert.AreSame (context.GetClassContext (typeof (List<>)), context.GetClassContext (typeof (List<int>)));
+      Assert.AreNotSame (context.GetClassContext (typeof (List<>)), context.GetClassContext (typeof (List<int>)));
 
       context.AddClassContext (new ClassContext (typeof (List<int>)));
 
@@ -237,7 +249,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
       Assert.IsTrue (context.ContainsClassContext (typeof (List<int>)));
       Assert.IsTrue (context.ContainsClassContext (typeof (List<>)));
 
-      Assert.AreSame (context.GetClassContext (typeof (List<>)), context.GetClassContext (typeof (List<int>)));
+      Assert.AreNotSame (context.GetClassContext (typeof (List<>)), context.GetClassContext (typeof (List<int>)));
 
       ClassContext listIntContext = new ClassContext (typeof (List<int>));
       context.AddOrReplaceClassContext (listIntContext);
@@ -266,7 +278,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
 
       ClassContext classContext1 = context.GetClassContext (typeof (List<int>));
       ClassContext classContext2 = context.GetClassContextNonRecursive (typeof (List<>));
-      Assert.AreSame (classContext1, classContext2);
+      Assert.AreNotSame (classContext1, classContext2);
     }
 
     [Test]

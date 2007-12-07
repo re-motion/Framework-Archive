@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\Context\ApplicationContextBuilderTests\ApplicationContextBuilderGenericInheritanceTests.cs" />
+    <Compile Include="Configuration\Context\ApplicationContextBuilderTests\ApplicationContextBuilderInheritanceTests.cs" />
     <Compile Include="Configuration\Context\ApplicationContextTests\ApplicationContextInheritanceTests.cs" />
     <Compile Include="Configuration\Context\ApplicationContextTests\ApplicationContextCompleteInterfaceTests.cs" />
     <Compile Include="Configuration\Context\ApplicationContextTests\ApplicationContextValidationTests.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="SampleTypes\ClassOverridingSpecificGenericMixinMember.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters2.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters3.cs" />
+    <Compile Include="SampleTypes\NullMixin2.cs" />
     <Compile Include="SampleTypes\GenericClassExtendedByMixin.cs" />
     <Compile Include="SampleTypes\MixinExtendingSpecificGenericClass.cs" />
     <Compile Include="SampleTypes\MixinIndirectlyAddingInheritedAttributeFromSelf.cs" />
@@ -131,7 +134,7 @@
     <Compile Include="SampleTypes\MixinsWithCircularDependencies.cs" />
     <Compile Include="SampleTypes\ClassFulfillingAllMemberRequirementsDuck.cs" />
     <Compile Include="SampleTypes\ClassFulfillingNoMemberRequirements.cs" />
-    <Compile Include="Configuration\Context\ApplicationContextBuilderTests.cs" />
+    <Compile Include="Configuration\Context\ApplicationContextBuilderTests\ApplicationContextBuilderGeneralTests.cs" />
     <Compile Include="Configuration\Definitions\AttributeDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\Definitions\TargetClassDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\Definitions\TargetClassDefinitionCacheTests.cs" />

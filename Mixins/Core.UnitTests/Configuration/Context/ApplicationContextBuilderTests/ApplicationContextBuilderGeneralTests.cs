@@ -12,10 +12,10 @@ using Rubicon.Reflection;
 using Rubicon.Utilities;
 using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 
-namespace Rubicon.Mixins.UnitTests.Configuration.Context
+namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuilderTests
 {
   [TestFixture]
-  public class ApplicationContextBuilderTests
+  public class ApplicationContextBuilderGeneralTests
   {
     [Test]
     public void BuildFromClassContexts()
@@ -104,7 +104,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     {
       AssemblyFinderTypeDiscoveryService service =
           (AssemblyFinderTypeDiscoveryService)
-          PrivateInvoke.InvokeNonPublicStaticMethod (typeof (ApplicationContextBuilder), "GetTypeDiscoveryService");
+              PrivateInvoke.InvokeNonPublicStaticMethod (typeof (ApplicationContextBuilder), "GetTypeDiscoveryService");
       Assert.IsFalse (service.AssemblyFinder.Filter.ShouldConsiderAssembly (typeof (object).Assembly.GetName ()));
       Assert.IsFalse (service.AssemblyFinder.Filter.ShouldConsiderAssembly (typeof (Uri).Assembly.GetName ()));
     }
@@ -114,7 +114,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     {
       AssemblyFinderTypeDiscoveryService service =
           (AssemblyFinderTypeDiscoveryService)
-          PrivateInvoke.InvokeNonPublicStaticMethod (typeof (ApplicationContextBuilder), "GetTypeDiscoveryService");
+              PrivateInvoke.InvokeNonPublicStaticMethod (typeof (ApplicationContextBuilder), "GetTypeDiscoveryService");
       
       Assembly signedAssembly = TypeFactory.GetConcreteType (typeof (object), GenerationPolicy.ForceGeneration).Assembly;
       Assembly unsignedAssembly = TypeFactory.GetConcreteType (typeof (BaseType1), GenerationPolicy.ForceGeneration).Assembly;
@@ -131,13 +131,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     {
       AssemblyFinderTypeDiscoveryService service =
           (AssemblyFinderTypeDiscoveryService)
-          PrivateInvoke.InvokeNonPublicStaticMethod (typeof (ApplicationContextBuilder), "GetTypeDiscoveryService");
+              PrivateInvoke.InvokeNonPublicStaticMethod (typeof (ApplicationContextBuilder), "GetTypeDiscoveryService");
 
-      Assert.IsTrue (service.AssemblyFinder.Filter.ShouldConsiderAssembly (typeof (ApplicationContextBuilderTests).Assembly.GetName ()));
+      Assert.IsTrue (service.AssemblyFinder.Filter.ShouldConsiderAssembly (typeof (ApplicationContextBuilderGeneralTests).Assembly.GetName ()));
       Assert.IsTrue (service.AssemblyFinder.Filter.ShouldConsiderAssembly (typeof (ApplicationContextBuilder).Assembly.GetName ()));
       Assert.IsTrue (service.AssemblyFinder.Filter.ShouldConsiderAssembly (new AssemblyName ("whatever")));
 
-      Assert.IsTrue (service.AssemblyFinder.Filter.ShouldIncludeAssembly (typeof (ApplicationContextBuilderTests).Assembly));
+      Assert.IsTrue (service.AssemblyFinder.Filter.ShouldIncludeAssembly (typeof (ApplicationContextBuilderGeneralTests).Assembly));
       Assert.IsTrue (service.AssemblyFinder.Filter.ShouldIncludeAssembly (typeof (ApplicationContextBuilder).Assembly));
     }
 
@@ -210,7 +210,5 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (ICBT6Mixin2)));
       Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (ICBT6Mixin3)));
     }
-
-
   }
 }

@@ -158,7 +158,6 @@ namespace Rubicon.Mixins.Context
 
     private readonly Set<Type> _extenders = new Set<Type>();
     private readonly Set<Type> _users = new Set<Type>();
-    private readonly Set<Type> _potentialTargets = new Set<Type>();
     private readonly Set<Type> _completeInterfaces = new Set<Type>();
     private readonly Set<Type> _allTypes = new Set<Type> ();
 
@@ -218,16 +217,13 @@ namespace Rubicon.Mixins.Context
         if (type.IsDefined (typeof (CompleteInterfaceAttribute), false))
           _completeInterfaces.Add (type);
 
-        _potentialTargets.Add (type);
-
         if (type.BaseType != null)
         {
-          // When analyzing types, we want type definitions, not specializations
+          // When analyzing types for attributes, we want type definitions, not specializations
           if (type.BaseType.IsGenericType)
             AddType (type.BaseType.GetGenericTypeDefinition());
           else
             AddType (type.BaseType);
-
         }
       }
 
@@ -241,7 +237,7 @@ namespace Rubicon.Mixins.Context
     /// <see cref="ClassContext"/> and <see cref="MixinContext"/> objects based on the information added so far.</returns>
     public ApplicationContext BuildContext ()
     {
-      return new InternalApplicationContextBuilder (_parentContext, _extenders, _users, _potentialTargets, _completeInterfaces).BuiltContext;
+      return new InternalApplicationContextBuilder (_parentContext, _extenders, _users, _completeInterfaces).BuiltContext;
     }
   }
 }

@@ -87,18 +87,24 @@ namespace Rubicon.Mixins.Context
       ArgumentUtility.CheckNotNull ("type", type);
 
       ClassContext thisContext = GetClassContextNonRecursive (type);
-      Type currentType = type.BaseType;
-
-      while (thisContext == null && currentType != null)
+      if (thisContext != null)
+        return thisContext;
+      
+      if (type.IsGenericType && !type.IsGenericTypeDefinition)
       {
-        thisContext = GetClassContextNonRecursive (currentType);
-        if (thisContext != null)
-          thisContext = thisContext.CloneForSpecificType (type);
-
-        currentType = currentType.BaseType;
+        ClassContext definitionContext = GetClassContextNonRecursive (type.GetGenericTypeDefinition());
+        if (definitionContext != null)
+          return definitionContext.CloneForSpecificType (type);
       }
 
-      return thisContext;
+      if (type.BaseType != null)
+      {
+        ClassContext baseContext = GetClassContext (type.BaseType);
+        if (baseContext != null)
+          return baseContext.CloneForSpecificType (type);
+      }
+
+      return null;
     }
 
     /// <summary>
@@ -113,8 +119,6 @@ namespace Rubicon.Mixins.Context
 
       if (_classContexts.ContainsKey (type))
         return _classContexts[type];
-      else if (type.IsGenericType && !type.IsGenericTypeDefinition)
-        return GetClassContextNonRecursive (type.GetGenericTypeDefinition());
       else
         return null;
     }
