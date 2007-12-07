@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfiguratio
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflectorTests
@@ -39,6 +40,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     }
 
     [Test]
+    public void GetClassDefinition_ForBaseClass_DerivedFromSimpleDomainObject ()
+    {
+      ClassReflector classReflector = new ClassReflector (typeof (ClassDerivedFromSimpleDomainObject));
+      ReflectionBasedClassDefinition expected = CreateClassWithMixedPropertiesClassDefinition ();
+
+      ReflectionBasedClassDefinition actual = classReflector.GetClassDefinition (_classDefinitions);
+
+      Assert.IsNotNull (actual);
+      _classDefinitionChecker.Check (expected, actual);
+      Assert.AreEqual (1, _classDefinitions.Count);
+      Assert.AreSame (actual, _classDefinitions.GetMandatory (typeof (ClassDerivedFromSimpleDomainObject)));
+    }
+
+    [Test]
     public void GetClassDefinition_ForDerivedClass ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (DerivedClassWithMixedProperties));
@@ -55,18 +70,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     }
 
     [Test]
-    public void GetClassDefinition_ForDerivedClassWithBaseClassAlreadyInClassDefinitionCollection ()
+    public void InheritanceRoot_SimpleDomainObject ()
     {
-      ClassReflector classReflector = new ClassReflector (typeof (DerivedClassWithMixedProperties));
-      ReflectionBasedClassDefinition expectedBaseClass = CreateClassWithMixedPropertiesClassDefinition();
-      _classDefinitions.Add (expectedBaseClass);
-
+      ClassReflector classReflector = new ClassReflector (typeof (ClassDerivedFromSimpleDomainObject));
       ReflectionBasedClassDefinition actual = classReflector.GetClassDefinition (_classDefinitions);
 
       Assert.IsNotNull (actual);
-      Assert.AreEqual (2, _classDefinitions.Count);
-      Assert.AreSame (actual, _classDefinitions.GetMandatory (typeof (DerivedClassWithMixedProperties)));
-      Assert.AreSame (expectedBaseClass, actual.BaseClass);
+      Assert.AreSame (actual, actual.GetInheritanceRootClass());
     }
 
     [Test]

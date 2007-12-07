@@ -32,6 +32,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes
     public void GetObjectData (SerializationInfo info, StreamingContext context)
     {
       info.AddValue ("_memberHeldAsField", _memberHeldAsField + "-GetObjectData");
+      BaseGetObjectData (info, context);
     }
   }
 }

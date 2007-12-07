@@ -13,6 +13,11 @@ namespace Rubicon.Data.DomainObjects
 /// <summary>
 /// Base class for all objects that are persisted by the framework.
 /// </summary>
+/// <remarks>
+/// If a class implementing <see cref="ISerializable"/> is derived from this base class, it must provide a deserialization constructor invoking
+/// this class' deserialization constructor, and it must call <see cref="BaseGetObjectData"/> from the <see cref="ISerializable.GetObjectData"/>
+/// implementation.
+/// </remarks>
 [Serializable]
 [DebuggerDisplay("{GetPublicDomainObjectType().FullName}: {ID.ToString()}")]
 public class DomainObject
@@ -27,10 +32,10 @@ public class DomainObject
   /// Returns an invocation object creating a new instance of a concrete domain object for the current <see cref="DomainObjects.ClientTransaction"/>.
   /// </summary>
   /// <typeparam name="T">The concrete type to be implemented by the object.</typeparam>
-  /// <returns>An <see cref="FuncInvoker{T}"/> object used to create a new domain object instance.</returns>
+  /// <returns>An <see cref="IFuncInvoker{T}"/> object used to create a new domain object instance.</returns>
   /// <remarks>
   /// <para>
-  /// This method's return value is an <see cref="FuncInvoker{T}"/> object, which can be used to specify the required constructor and 
+  /// This method's return value is an <see cref="IFuncInvoker{T}"/> object, which can be used to specify the required constructor and 
   /// pass it the necessary arguments in order to create a new domain object. Depending on the mapping being used by the object, one of two
   /// methods of object creation is used: legacy or via factory.
   /// </para>
@@ -70,7 +75,7 @@ public class DomainObject
   /// </exception>
   /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
   /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="T"/>.</exception>
-  public static T GetObject<T> (ObjectID id) where T : DomainObject
+  protected static T GetObject<T> (ObjectID id) where T : DomainObject
   {
     return GetObject<T> (id, false);
   }
@@ -90,7 +95,7 @@ public class DomainObject
   /// </exception>
   /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
   /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="T"/>.</exception>
-  public static T GetObject<T> (ObjectID id, bool includeDeleted) where T : DomainObject
+  protected static T GetObject<T> (ObjectID id, bool includeDeleted) where T : DomainObject
   {
     ArgumentUtility.CheckNotNull ("id", id);
     return (T) RepositoryAccessor.GetObject (id, includeDeleted);
@@ -252,9 +257,18 @@ public class DomainObject
   protected DomainObject (SerializationInfo info, StreamingContext context)
   {
     ArgumentUtility.CheckNotNull ("info", info);
-    ArgumentUtility.CheckNotNull ("context", context);
 
-    _id = (ObjectID) info.GetValue ("DomainObject.ID", typeof (ObjectID));
+    try
+    {
+      _id = (ObjectID) info.GetValue ("DomainObject.ID", typeof (ObjectID));
+    }
+    catch (SerializationException ex)
+    {
+      Type publicDomainObjectType = GetPublicDomainObjectType ();
+      string message = string.Format (
+          "The GetObjectData method on type {0} did not call DomainObject's BaseGetObjectData method.", publicDomainObjectType.FullName);
+      throw new SerializationException (message, ex);
+    }
   }
 
   #region Legacy constructors
@@ -301,6 +315,20 @@ public class DomainObject
   #endregion
 
   // methods and properties
+
+  /// <summary>
+  /// Serializes the base data needed to deserialize a <see cref="DomainObject"/> instance.
+  /// </summary>
+  /// <param name="info">The <see cref="SerializationInfo"/> coming from the .NET serialization infrastructure.</param>
+  /// <param name="context">The <see cref="StreamingContext"/> coming from the .NET serialization infrastructure.</param>
+  /// <remarks>Be sure to call this method from the <see cref="ISerializable.GetObjectData"/> implementation of any concrete
+  /// <see cref="DomainObject"/> type implementing the <see cref="ISerializable"/> interface.</remarks>
+  protected void BaseGetObjectData (SerializationInfo info, StreamingContext context)
+  {
+    ArgumentUtility.CheckNotNull ("info", info);
+
+    info.AddValue ("DomainObject.ID", ID);
+  }
 
   /// <summary>
   /// Sets the data container during the loading process of a domain object.

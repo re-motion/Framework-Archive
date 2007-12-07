@@ -123,6 +123,7 @@
     <Compile Include="Persistence\Rdbms\DataContainerLoaderHelper.cs" />
     <Compile Include="Persistence\Rdbms\IDataContainerLoaderHelper.cs" />
     <Compile Include="Persistence\Rdbms\ObjectIDLoader.cs" />
+    <Compile Include="SimpleDomainObject.cs" />
     <Compile Include="Transport\DomainObjectImporter.cs" />
     <Compile Include="Transport\DomainObjectTransporter.cs" />
     <Compile Include="IDomainObjectMixin.cs" />

@@ -186,7 +186,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private bool IsInheritenceRoot ()
     {
-      if (_type.BaseType == typeof (DomainObject))
+      if (_type.BaseType == typeof (DomainObject) || _type.BaseType == typeof (SimpleDomainObject))
         return true;
 
       return Attribute.IsDefined (_type, typeof (StorageGroupAttribute), false);

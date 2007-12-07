@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Infrastructure;
@@ -46,6 +47,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       public void GetObjectData (SerializationInfo info, StreamingContext context)
       {
         info.AddValue ("I", I);
+        BaseGetObjectData (info, context);
       }
     }
 
@@ -63,6 +65,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
       public void GetObjectData (SerializationInfo info, StreamingContext context)
       {
+        BaseGetObjectData (info, context);
+      }
+    }
+
+    [Serializable]
+    [DBTable]
+    public class SerializableClassImplementingISerializableNotCallingBaseGetObjectData : DomainObject, ISerializable
+    {
+      public SerializableClassImplementingISerializableNotCallingBaseGetObjectData ()
+      {
+      }
+
+      protected SerializableClassImplementingISerializableNotCallingBaseGetObjectData (SerializationInfo info, StreamingContext context)
+        : base (info, context)
+      {
+      }
+
+      public void GetObjectData (SerializationInfo info, StreamingContext context)
+      {
       }
     }
 
@@ -72,6 +93,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     private SerializableClass _serializableInstance;
     private SerializableClassImplementingISerializable _serializableInstanceImplementingISerializable;
     private SerializableClassImplementingISerializableNotCallingBaseCtor _serializableInstanceImplementingISerializableNotCallingBaseCtor;
+    private SerializableClassImplementingISerializableNotCallingBaseGetObjectData _serializableInstanceImplementingISerializableNotCallingGetObjectData;
 
     public override void SetUp ()
     {
@@ -93,6 +115,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       _serializableInstanceImplementingISerializableNotCallingBaseCtor =
           _factory.GetTypesafeConstructorInvoker<SerializableClassImplementingISerializableNotCallingBaseCtor> (
               concreteTypeImplementingISerializableNotCallingBaseCtor).With();
+      Type concreteTypeImplementingISerializableNotCallingBaseGetObjectData =
+          _factory.GetConcreteDomainObjectType (typeof (SerializableClassImplementingISerializableNotCallingBaseGetObjectData));
+      _serializableInstanceImplementingISerializableNotCallingGetObjectData =
+          _factory.GetTypesafeConstructorInvoker<SerializableClassImplementingISerializableNotCallingBaseGetObjectData> (
+              concreteTypeImplementingISerializableNotCallingBaseGetObjectData).With ();
     }
 
     [Test]
@@ -123,14 +150,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    public void GetObjectDataForGeneratedTypesDoesntAddMembersButIDIfToldTo ()
+    public void GetObjectDataForGeneratedTypesDoesntAddMembersIfToldTo ()
     {
       _serializableInstance.I = 0x400dd00d;
       SerializationHelper.GetObjectDataForGeneratedTypes (_info, _context, _serializableInstance, false);
       object[] members = (object[]) _info.GetValue ("baseMemberValues", typeof (object[]));
       Assert.IsNull (members);
-      ObjectID id = (ObjectID) _info.GetValue ("DomainObject.ID", typeof (ObjectID));
-      Assert.AreEqual (_serializableInstance.ID, id);
     }
 
     [Test]
@@ -195,8 +220,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public void OnDeserializationThrowsIfISerializableBaseCtorNotCalled ()
     {
       SerializationHelper.GetObjectDataForGeneratedTypes (_info, _context, _serializableInstanceImplementingISerializableNotCallingBaseCtor, false);
-      _serializableInstanceImplementingISerializable.GetObjectData (_info, _context);
+      _serializableInstanceImplementingISerializableNotCallingBaseCtor.GetObjectData (_info, _context);
       new SerializationHelper (_info, _context).OnDeserialization (null);
+    }
+
+    [Test]
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "The GetObjectData method on type "
+        + "Rubicon.Data.DomainObjects.UnitTests.Interception.SerializationHelperTest+SerializableClassImplementingISerializableNotCallingBaseGetObjectData"
+        +" did not call DomainObject's BaseGetObjectData method.")]
+    public void DeserializationCtorThrowsIfBaseGetObjectDataNotCalled ()
+    {
+      SerializationHelper.GetObjectDataForGeneratedTypes (_info, _context, _serializableInstanceImplementingISerializableNotCallingGetObjectData, false);
+      _serializableInstanceImplementingISerializableNotCallingGetObjectData.GetObjectData (_info, _context);
+      try
+      {
+        new SerializationHelper (_info, _context);
+      }
+      catch (TargetInvocationException ex)
+      {
+        throw ex.InnerException;
+      }
     }
 
     [Test]

@@ -188,6 +188,7 @@
     <Compile Include="DomainObjects\PropertyAccessorTest.cs" />
     <Compile Include="DomainObjects\PropertyIndexerTest.cs" />
     <Compile Include="DomainObjects\RelationChangeBaseTest.cs" />
+    <Compile Include="DomainObjects\SimpleDomainObjectTest.cs" />
     <Compile Include="DomainObjects\TransactionalAccessorTest.cs" />
     <Compile Include="Factories\ConfigurationFactory.cs" />
     <Compile Include="Configuration\FakeDomainObjectsConfigurationTest.cs" />
@@ -306,6 +307,7 @@
     <Compile Include="Persistence\Rdbms\QueryCommandBuilderTest.cs" />
     <Compile Include="DataManagement\RelationEndPointModificationCollectionTest.cs" />
     <Compile Include="RhinoMocksRepositoryAdapter.cs" />
+    <Compile Include="TestDomain\ClassDerivedFromSimpleDomainObject.cs" />
     <Compile Include="TestDomain\ClassWithSerializationCallbacks.cs" />
     <Compile Include="Serialization\SerializationCallbackTest.cs" />
     <Compile Include="StandardMappingTest.cs" />

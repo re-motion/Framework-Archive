@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
     private readonly IObjectReference _nestedObjectReference;
     private readonly object[] _baseMemberValues;
     private readonly Type _publicDomainObjectType;
-    private readonly ObjectID _id;
+    private ObjectID _idForCheck;
     private readonly StreamingContext _context;
 
     // Always remember: the whole configuration must be serialized as one single, flat object (or SerializationInfo), we cannot rely on any
@@ -37,10 +37,14 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
         MemberInfo[] baseMembers = FormatterServices.GetSerializableMembers (publicDomainObjectType);
         baseMemberValues = FormatterServices.GetObjectData (concreteObject, baseMembers);
       }
-      info.AddValue ("baseMemberValues", baseMemberValues);
+      else
+      {
+        // The ObjectID is actually stored and retrieved by ObjectID's BaseGetObjectData and deserialization constructor. However, to check
+        // whether these methods are correctly invoked, we need to store another copy for ourselves.
+        info.AddValue ("DomainObject._idForCheck", concreteObject.ID);
+      }
 
-      if (!serializeBaseMembers)
-        info.AddValue ("DomainObject.ID", concreteObject.ID);
+      info.AddValue ("baseMemberValues", baseMemberValues);
 
       DomainObjectMixinCodeGenerationBridge.SerializeMetadata (concreteObject, info, context);
     }
@@ -71,7 +75,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       {
         _nestedObjectReference = DomainObjectMixinCodeGenerationBridge.BeginDeserialization (_publicDomainObjectType, info, context);
         _realObject = (DomainObject) _nestedObjectReference.GetRealObject (context);
-        _id = (ObjectID) info.GetValue ("DomainObject.ID", typeof (ObjectID));
+        _idForCheck = (ObjectID) info.GetValue ("DomainObject._idForCheck", typeof (ObjectID));
       }
 
       DomainObjectMixinCodeGenerationBridge.RaiseOnDeserializing (_realObject, _context);
@@ -99,7 +103,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
         Assertion.IsNotNull (_nestedObjectReference);
         DomainObjectMixinCodeGenerationBridge.FinishDeserialization (_nestedObjectReference);
 
-        if (!object.Equals (_realObject.ID, _id))
+        if (!object.Equals (_realObject.ID, _idForCheck))
         {
           string message = string.Format (
               "The deserialization constructor on type {0} did not call DomainObject's base deserialization constructor.", _publicDomainObjectType.FullName);
