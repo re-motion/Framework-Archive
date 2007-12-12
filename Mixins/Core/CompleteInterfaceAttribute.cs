@@ -20,9 +20,9 @@ namespace Rubicon.Mixins
   /// inherited, i.e. an interface inheriting from a complete interface does not automatically constitute a complete interface as well.
   /// </para>
   /// <para>
-  /// When the default mixin configuration is built (see <see cref="ApplicationContextBuilder.BuildDefaultContext"/>), all complete interfaces
-  /// are automatically registered with <see cref="MixinConfiguration.ActiveContext"/> (see
-  /// <see cref="ApplicationContext.RegisterInterface(Type,Type)"/>). This means that in the default mixin configuration,
+  /// When the default mixin configuration is built (see <see cref="DeclarativeConfigurationBuilder.BuildDefaultConfiguration"/>), all complete interfaces
+  /// are automatically registered with <see cref="MixinConfiguration.ActiveConfiguration"/> (see
+  /// <see cref="MixinConfiguration.RegisterInterface(Type,Type)"/>). This means that in the default mixin configuration,
   /// <see cref="ObjectFactory.Create{T}()"/> and <see cref="ObjectFactory.CreateWithMixinInstances{T}(object[])"/> will be able to create instances from these
   /// interfaces.
   /// </para>

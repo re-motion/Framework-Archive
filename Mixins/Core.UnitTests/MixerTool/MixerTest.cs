@@ -86,7 +86,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
             Set<ClassContext> contextsFromTypes = GetContextsFromGeneratedTypes (Assembly.LoadFile (UnsignedAssemblyPath));
             contextsFromTypes.AddRange (GetContextsFromGeneratedTypes (Assembly.LoadFile (SignedAssemblyPath)));
             Set<ClassContext> contextsFromConfig = new Set<ClassContext> ();
-            foreach (ClassContext context in MixinConfiguration.ActiveContext.ClassContexts)
+            foreach (ClassContext context in MixinConfiguration.ActiveConfiguration.ClassContexts)
             {
               if (!context.Type.IsGenericTypeDefinition)
                 contextsFromConfig.Add (context);
@@ -153,7 +153,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
 
             Assert.IsNotNull (Mixin.GetMixinConfigurationFromConcreteType (generatedType));
             Assert.AreEqual (
-                MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType1)),
+                MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType1)),
                 Mixin.GetMixinConfigurationFromConcreteType (generatedType));
 
             object instance = Activator.CreateInstance (generatedType);
@@ -253,7 +253,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
       Set<ClassContext> classContextsBeingProcessed = new Set<ClassContext> ();
 
       // only use this assembly for this test case
-      using (MixinConfiguration.ScopedReplace (ApplicationContextBuilder.BuildContextFromAssemblies (typeof (MixerTest).Assembly)))
+      using (MixinConfiguration.ScopedReplace (DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (typeof (MixerTest).Assembly)))
       {
         Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
         mixer.ClassContextBeingProcessed +=
@@ -304,7 +304,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
     {
       Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, AppDomain.CurrentDomain.BaseDirectory);
       mixer.Execute ();
-      MixinConfiguration.SetActiveContext (null);
+      MixinConfiguration.SetActiveConfiguration (null);
       MixinConfiguration.ResetMasterConfiguration ();
       mixer.Execute ();
 

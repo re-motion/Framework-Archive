@@ -4,21 +4,21 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
 
-namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
+namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
 {
   [TestFixture]
-  public class ApplicationContextInheritanceTests
+  public class MixinConfigurationInheritanceTests
   {
     [Test]
-    public void InheritingApplicationContextKnowsClassesFromBasePlusOwn ()
+    public void InheritingMixinConfigurationKnowsClassesFromBasePlusOwn ()
     {
-      ApplicationContext ac = new ApplicationContext ();
+      MixinConfiguration ac = new MixinConfiguration ();
       Assert.AreEqual (0, ac.ClassContextCount);
       ac.AddClassContext (new ClassContext (typeof (BaseType1)));
       ac.AddClassContext (new ClassContext (typeof (BaseType2)));
       Assert.AreEqual (2, ac.ClassContextCount);
 
-      ApplicationContext ac2 = new ApplicationContext (ac);
+      MixinConfiguration ac2 = new MixinConfiguration (ac);
       Assert.AreEqual (2, ac2.ClassContextCount);
       Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
       Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType2)));
@@ -48,13 +48,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     [Test]
     public void OverridingClassContextsFromParent ()
     {
-      ApplicationContext ac = new ApplicationContext ();
+      MixinConfiguration ac = new MixinConfiguration ();
       Assert.AreEqual (0, ac.ClassContextCount);
       ac.AddClassContext (new ClassContext (typeof (BaseType1)));
       ac.AddClassContext (new ClassContext (typeof (BaseType2)));
       Assert.AreEqual (2, ac.ClassContextCount);
 
-      ApplicationContext ac2 = new ApplicationContext (ac);
+      MixinConfiguration ac2 = new MixinConfiguration (ac);
       Assert.AreEqual (2, ac2.ClassContextCount);
       Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
       Assert.AreEqual (ac.GetClassContext (typeof (BaseType1)), ac2.GetClassContext (typeof (BaseType1)));

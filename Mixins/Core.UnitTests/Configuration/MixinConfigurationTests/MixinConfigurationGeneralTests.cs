@@ -5,15 +5,15 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
 
-namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
+namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
 {
   [TestFixture]
-  public class ApplicationContextGeneralTests
+  public class MixinConfigurationGeneralTests
   {
     [Test]
-    public void NewApplicationContextDoesNotKnowAnyClasses()
+    public void NewMixinConfigurationDoesNotKnowAnyClasses ()
     {
-      ApplicationContext context = new ApplicationContext();
+      MixinConfiguration context = new MixinConfiguration();
       Assert.AreEqual (0, context.ClassContextCount);
       List<ClassContext> classContexts = new List<ClassContext> (context.ClassContexts);
       Assert.AreEqual (0, classContexts.Count);
@@ -23,18 +23,18 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     [Test]
     public void BuildFromTestAssembly ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       CheckContext (context);
     }
 
     [Test]
     public void BuildFromTestAssemblies ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (null, AppDomain.CurrentDomain.GetAssemblies ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (null, AppDomain.CurrentDomain.GetAssemblies ());
       CheckContext (context);
     }
 
-    private static void CheckContext (ApplicationContext context)
+    private static void CheckContext (MixinConfiguration context)
     {
       Assert.IsTrue (context.ContainsClassContext (typeof (BaseType1)));
 
@@ -52,7 +52,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     [Test]
     public void GeneralFunctionality()
     {
-      ApplicationContext ac = new ApplicationContext ();
+      MixinConfiguration ac = new MixinConfiguration ();
       Assert.AreEqual (0, ac.ClassContextCount);
       Assert.IsFalse (ac.ContainsClassContext (typeof (BaseType1)));
       Assert.IsNull (ac.GetClassContext (typeof (BaseType1)));
@@ -92,7 +92,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "already a class context", MatchType = MessageMatch.Contains)]
     public void ThrowsOnDoubleAdd ()
     {
-      ApplicationContext ac = new ApplicationContext ();
+      MixinConfiguration ac = new MixinConfiguration ();
       ac.AddClassContext (new ClassContext (typeof (BaseType1)));
       ac.AddClassContext (new ClassContext (typeof (BaseType1)));
     }
@@ -101,18 +101,18 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     [ExpectedException (typeof (InvalidOperationException))]
     public void ThrowsOnDoubleAdd_ViaConstructor ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       context.AddClassContext (new ClassContext (typeof (BaseType1)));
     }
 
     [Test]
     public void CopyTo ()
     {
-      ApplicationContext parent = new ApplicationContext();
+      MixinConfiguration parent = new MixinConfiguration();
       parent.GetOrAddClassContext (typeof (BaseType2)).GetOrAddMixinContext (typeof (BT2Mixin1)).AddExplicitDependency (typeof (IBaseType33));
       parent.RegisterInterface (typeof (IBaseType2), typeof (BaseType2));
 
-      ApplicationContext source = new ApplicationContext (parent);
+      MixinConfiguration source = new MixinConfiguration (parent);
       source.GetOrAddClassContext (typeof (BaseType1)).GetOrAddMixinContext (typeof (BT1Mixin1)).AddExplicitDependency (typeof (IBaseType34));
       source.GetOrAddClassContext (typeof (BaseType1)).AddCompleteInterface (typeof (IBaseType33));
 
@@ -126,7 +126,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
       Assert.IsTrue (source.GetOrAddClassContext (typeof (BaseType1)).ContainsMixin (typeof (BT1Mixin1)));
       Assert.IsTrue (source.GetOrAddClassContext (typeof (BaseType1)).GetOrAddMixinContext (typeof (BT1Mixin1)).ContainsExplicitDependency (typeof (IBaseType34)));
 
-      ApplicationContext destination = new ApplicationContext ();
+      MixinConfiguration destination = new MixinConfiguration ();
       destination.AddClassContext (new ClassContext (typeof (BaseType2)));
       destination.AddClassContext (new ClassContext (typeof (BaseType4)));
       destination.RegisterInterface (typeof (IBaseType2), typeof (BaseType4));
@@ -161,7 +161,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     {
       using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
       {
-        ClassContext context = MixinConfiguration.ActiveContext.GetClassContext (typeof (DerivedNullTarget));
+        ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (DerivedNullTarget));
         Assert.IsNotNull (context);
         Assert.AreEqual (typeof (DerivedNullTarget), context.Type);
         Assert.IsTrue (context.ContainsMixin (typeof (NullMixin)));
@@ -173,7 +173,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     {
       using (MixinConfiguration.ScopedExtend (typeof (GenericTargetClass<>), typeof (NullMixin)))
       {
-        ClassContext context = MixinConfiguration.ActiveContext.GetClassContext (typeof (GenericTargetClass<object>));
+        ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (GenericTargetClass<object>));
         Assert.IsNotNull (context);
         Assert.AreEqual (typeof (GenericTargetClass<object>), context.Type);
         Assert.IsTrue (context.ContainsMixin (typeof (NullMixin)));
@@ -185,7 +185,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     {
       using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
       {
-        ClassContext context = MixinConfiguration.ActiveContext.GetClassContextNonRecursive (typeof (DerivedNullTarget));
+        ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContextNonRecursive (typeof (DerivedNullTarget));
         Assert.IsNull (context);
       }
     }
@@ -193,7 +193,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     [Test]
     public void GenericTypesNotTransparentlyConvertedToTypeDefinitions ()
     {
-      ApplicationContext context = new ApplicationContext ();
+      MixinConfiguration context = new MixinConfiguration ();
       context.AddClassContext (new ClassContext (typeof (List<int>)));
       Assert.IsTrue (context.ContainsClassContext (typeof (List<int>)));
       Assert.IsFalse (context.ContainsClassContext (typeof (List<>)));
@@ -221,7 +221,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     [Test]
     public void AddContextForGenericSpecialization ()
     {
-      ApplicationContext context = new ApplicationContext ();
+      MixinConfiguration context = new MixinConfiguration ();
       context.AddClassContext (new ClassContext (typeof (List<>)));
 
       Assert.AreEqual (1, context.ClassContextCount);
@@ -242,7 +242,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     [Test]
     public void AddOrReplaceContextForGenericSpecialization ()
     {
-      ApplicationContext context = new ApplicationContext ();
+      MixinConfiguration context = new MixinConfiguration ();
       context.AddClassContext (new ClassContext (typeof (List<>)));
 
       Assert.AreEqual (1, context.ClassContextCount);
@@ -271,7 +271,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     [Test]
     public void GetContextForGenericTypeDefinitions ()
     {
-      ApplicationContext context = new ApplicationContext ();
+      MixinConfiguration context = new MixinConfiguration ();
       context.AddClassContext (new ClassContext (typeof (List<>)));
       Assert.IsTrue (context.ContainsClassContext (typeof (List<int>)));
       Assert.IsTrue (context.ContainsClassContext (typeof (List<>)));
@@ -284,7 +284,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     [Test]
     public void GetOrAddContextForGenericTypeDefinitions ()
     {
-      ApplicationContext context = new ApplicationContext ();
+      MixinConfiguration context = new MixinConfiguration ();
       ClassContext genericListContext = new ClassContext (typeof (List<>));
       context.AddClassContext (genericListContext);
 
@@ -302,7 +302,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     [Test]
     public void RemoveClassContextForGenericTypeDefinitions ()
     {
-      ApplicationContext context = new ApplicationContext ();
+      MixinConfiguration context = new MixinConfiguration ();
       context.AddClassContext (new ClassContext (typeof (List<>)));
       Assert.IsFalse (context.RemoveClassContext (typeof (List<int>)));
       Assert.AreEqual (1, context.ClassContextCount);

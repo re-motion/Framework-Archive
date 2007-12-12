@@ -13,9 +13,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
   public class ClassContextGeneralTests
   {
     [Test]
-    public void NewApplicationContextDoesNotKnowAnyClasses ()
+    public void NewMixinConfigurationDoesNotKnowAnyClasses ()
     {
-      ApplicationContext context = new ApplicationContext ();
+      MixinConfiguration context = new MixinConfiguration ();
       Assert.AreEqual (0, context.ClassContextCount);
       List<ClassContext> classContexts = new List<ClassContext> (context.ClassContexts);
       Assert.AreEqual (0, classContexts.Count);
@@ -47,7 +47,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void MixinsOnInterface ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       context.GetOrAddClassContext (typeof (IBaseType2)).AddMixin (typeof (BT2Mixin1));
 
       ClassContext classContext = context.GetClassContext (typeof (IBaseType2));

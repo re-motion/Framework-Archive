@@ -30,10 +30,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
 
       using (MixinConfiguration.ScopedExtend (typeof (TargetClass), typeof (One)))
       {
-        c1 = MixinConfiguration.ActiveContext.GetClassContext (typeof (TargetClass));
+        c1 = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (TargetClass));
         using (MixinConfiguration.ScopedExtend (typeof (One), typeof (Two)))
         {
-          c2 = MixinConfiguration.ActiveContext.GetClassContext (typeof (TargetClass));
+          c2 = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (TargetClass));
         }
       }
 

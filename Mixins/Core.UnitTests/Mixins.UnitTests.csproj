@@ -48,12 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\Context\ApplicationContextBuilderTests\ApplicationContextBuilderGenericInheritanceTests.cs" />
-    <Compile Include="Configuration\Context\ApplicationContextBuilderTests\ApplicationContextBuilderInheritanceTests.cs" />
-    <Compile Include="Configuration\Context\ApplicationContextTests\ApplicationContextInheritanceTests.cs" />
-    <Compile Include="Configuration\Context\ApplicationContextTests\ApplicationContextCompleteInterfaceTests.cs" />
-    <Compile Include="Configuration\Context\ApplicationContextTests\ApplicationContextValidationTests.cs" />
-    <Compile Include="Configuration\Context\ApplicationContextTests\ApplicationContextGeneralTests.cs" />
+    <Compile Include="Configuration\Context\DeclarativeConfigurationBuilderTests\DeclarativeConfigurationBuilderGenericInheritanceTests.cs" />
+    <Compile Include="Configuration\Context\DeclarativeConfigurationBuilderTests\DeclarativeConfigurationBuilderInheritanceTests.cs" />
+    <Compile Include="Configuration\MixinConfigurationTests\MixinConfigurationInheritanceTests.cs" />
+    <Compile Include="Configuration\MixinConfigurationTests\MixinConfigurationCompleteInterfaceTests.cs" />
+    <Compile Include="Configuration\MixinConfigurationTests\MixinConfigurationValidationTests.cs" />
+    <Compile Include="Configuration\MixinConfigurationTests\MixinConfigurationGeneralTests.cs" />
     <Compile Include="Configuration\Context\ClassContextTests\ClassContextInheritanceTests.cs" />
     <Compile Include="Configuration\Context\ClassContextTests\ClassContextGeneralTests.cs" />
     <Compile Include="Configuration\Context\MixinContextTests.cs" />
@@ -134,7 +134,7 @@
     <Compile Include="SampleTypes\MixinsWithCircularDependencies.cs" />
     <Compile Include="SampleTypes\ClassFulfillingAllMemberRequirementsDuck.cs" />
     <Compile Include="SampleTypes\ClassFulfillingNoMemberRequirements.cs" />
-    <Compile Include="Configuration\Context\ApplicationContextBuilderTests\ApplicationContextBuilderGeneralTests.cs" />
+    <Compile Include="Configuration\Context\DeclarativeConfigurationBuilderTests\DeclarativeConfigurationBuilderGeneralTests.cs" />
     <Compile Include="Configuration\Definitions\AttributeDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\Definitions\TargetClassDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\Definitions\TargetClassDefinitionCacheTests.cs" />
@@ -189,7 +189,7 @@
     <Compile Include="Configuration\Definitions\InterfaceIntroductionDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\Definitions\MemberChainTests.cs" />
     <Compile Include="Configuration\Definitions\MemberDefinitionBuilderTests.cs" />
-    <Compile Include="Configuration\MixinConfigurationTests.cs" />
+    <Compile Include="Configuration\MixinConfigurationTests\MixinConfigurationCurrentConfigurationTests.cs" />
     <Compile Include="Configuration\Definitions\OverrideAttributeHierarchyTests.cs" />
     <Compile Include="Configuration\Definitions\OverrideDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\UnvalidatedDefinitionBuilder.cs" />

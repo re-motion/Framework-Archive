@@ -9,12 +9,12 @@ namespace Rubicon.Data.DomainObjects.Mapping
   {
     public static List<Type> GetPersistentMixins (Type type)
     {
-      ClassContext mixinConfiguration = TypeFactory.GetContext (type, MixinConfiguration.ActiveContext, GenerationPolicy.GenerateOnlyIfConfigured);
+      ClassContext mixinConfiguration = TypeFactory.GetContext (type, MixinConfiguration.ActiveConfiguration, GenerationPolicy.GenerateOnlyIfConfigured);
       List<Type> persistentMixins = new List<Type> ();
       if (mixinConfiguration != null)
       {
         ClassContext parentClassContext =
-            TypeFactory.GetContext (type.BaseType, MixinConfiguration.ActiveContext, GenerationPolicy.GenerateOnlyIfConfigured);
+            TypeFactory.GetContext (type.BaseType, MixinConfiguration.ActiveConfiguration, GenerationPolicy.GenerateOnlyIfConfigured);
 
         foreach (MixinContext mixin in mixinConfiguration.Mixins)
         {

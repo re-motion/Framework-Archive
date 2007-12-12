@@ -5,9 +5,9 @@ using Rubicon.Mixins.Utilities;
 
 namespace Rubicon.Mixins.Context
 {
-  internal class InternalApplicationContextBuilder
+  internal class DeclarativeConfigurationAnalyzer
   {
-    private readonly ApplicationContext _parentContext;
+    private readonly MixinConfiguration _parentContext;
     private readonly Set<Type> _extenders;
     private readonly Set<Type> _users;
     private readonly Set<Type> _completeInterfaces;
@@ -16,9 +16,9 @@ namespace Rubicon.Mixins.Context
     private readonly Set<Type> _targets;
     private readonly Set<Type> _finishedTargets;
 
-    private ApplicationContext _builtContext;
+    private MixinConfiguration _analyzedConfiguration;
 
-    public InternalApplicationContextBuilder (ApplicationContext parentContext, Set<Type> extenders, Set<Type> users, Set<Type> completeInterfaces)
+    public DeclarativeConfigurationAnalyzer (MixinConfiguration parentContext, Set<Type> extenders, Set<Type> users, Set<Type> completeInterfaces)
     {
       _parentContext = parentContext;
       _extenders = extenders;
@@ -32,14 +32,14 @@ namespace Rubicon.Mixins.Context
       Analyze ();
     }
 
-    public ApplicationContext BuiltContext
+    public MixinConfiguration AnalyzedConfiguration
     {
-      get { return _builtContext; }
+      get { return _analyzedConfiguration; }
     }
 
     public void Analyze ()
     {
-      _builtContext = new ApplicationContext (_parentContext);
+      _analyzedConfiguration = new MixinConfiguration (_parentContext);
       foreach (Type extender in _extenders)
         AnalyzeExtender (extender);
       foreach (Type user in _users)
@@ -74,14 +74,14 @@ namespace Rubicon.Mixins.Context
             throw new ConfigurationException (message, ex);
           }
         }
-        ApplyMixinToClassContext (_builtContext.GetOrAddClassContext (mixinAttribute.TargetType), mixinType, mixinAttribute.AdditionalDependencies,
+        ApplyMixinToClassContext (_analyzedConfiguration.GetOrAddClassContext (mixinAttribute.TargetType), mixinType, mixinAttribute.AdditionalDependencies,
             mixinAttribute.SuppressedMixins);
       }
     }
 
     private void AnalyzeUser (Type user)
     {
-      ClassContext classContext = _builtContext.GetOrAddClassContext (user);
+      ClassContext classContext = _analyzedConfiguration.GetOrAddClassContext (user);
       foreach (UsesAttribute usesAttribute in user.GetCustomAttributes (typeof (UsesAttribute), false))
         ApplyMixinToClassContext (classContext, usesAttribute.MixinType, usesAttribute.AdditionalDependencies, usesAttribute.SuppressedMixins);
     }
@@ -124,9 +124,9 @@ namespace Rubicon.Mixins.Context
     {
       foreach (CompleteInterfaceAttribute ifaceAttribute in completeInterfaceType.GetCustomAttributes (typeof (CompleteInterfaceAttribute), false))
       {
-        ClassContext classContext = _builtContext.GetOrAddClassContext (ifaceAttribute.TargetType);
+        ClassContext classContext = _analyzedConfiguration.GetOrAddClassContext (ifaceAttribute.TargetType);
         classContext.AddCompleteInterface (completeInterfaceType);
-        _builtContext.RegisterInterface (completeInterfaceType, classContext);
+        _analyzedConfiguration.RegisterInterface (completeInterfaceType, classContext);
       }
     }
 
@@ -135,7 +135,7 @@ namespace Rubicon.Mixins.Context
       if (_finishedTargets.Contains (targetType))
         return;
 
-      ClassContext targetContext = _builtContext.GetClassContextNonRecursive (targetType); // null if no specific mixins are configured for this type
+      ClassContext targetContext = _analyzedConfiguration.GetClassContextNonRecursive (targetType); // null if no specific mixins are configured for this type
 
       Type baseType = targetType.BaseType;
       if (baseType != null)
@@ -153,7 +153,7 @@ namespace Rubicon.Mixins.Context
       AnalyzeInheritedMixins (baseType);
       if (targetContext != null)
       {
-        ClassContext baseContext = _builtContext.GetClassContext (baseType); // this will include the base type's inherited stuff
+        ClassContext baseContext = _analyzedConfiguration.GetClassContext (baseType); // this will include the base type's inherited stuff
         if (baseContext != null)
           targetContext.InheritFrom (baseContext);
       }

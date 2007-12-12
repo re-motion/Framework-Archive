@@ -23,7 +23,7 @@ namespace Rubicon.Mixins
   /// the <see cref="ObjectFactory"/> class should be used instead.
   /// </para>
   /// <para>
-  /// The <see cref="TypeFactory"/> class uses the mixin configuration defined by <see cref="MixinConfiguration.ActiveContext"/>. Use the 
+  /// The <see cref="TypeFactory"/> class uses the mixin configuration defined by <see cref="MixinConfiguration.ActiveConfiguration"/>. Use the 
   /// <see cref="MixinConfiguration"/> class if the configuration needs to be adapted.
   /// </para>
   /// </remarks>
@@ -32,7 +32,7 @@ namespace Rubicon.Mixins
   {
     /// <summary>
     /// Retrieves a concrete, instantiable, mixed type for the given <paramref name="targetType"/>, or <paramref name="targetType"/> itself if no
-    /// mixin configuration exists for the type in <see cref="MixinConfiguration.ActiveContext"/>.
+    /// mixin configuration exists for the type in <see cref="MixinConfiguration.ActiveConfiguration"/>.
     /// </summary>
     /// <param name="targetType">Base type for which a mixed type should be retrieved.</param>
     /// <returns>A concrete, instantiable, mixed type for the given <paramref name="targetType"/>.</returns>
@@ -44,7 +44,7 @@ namespace Rubicon.Mixins
     /// <remarks>
     /// <para>
     /// The type returned by this method is guaranteed to be derived from <paramref name="targetType"/>, but will usually not be the same as
-    /// <paramref name="targetType"/>. It manages integration of the mixins currently configured via <see cref="MixinConfiguration.ActiveContext"/>
+    /// <paramref name="targetType"/>. It manages integration of the mixins currently configured via <see cref="MixinConfiguration.ActiveConfiguration"/>
     /// with the given <paramref name="targetType"/>.
     /// </para>
     /// <para>
@@ -74,7 +74,7 @@ namespace Rubicon.Mixins
     /// <param name="generationPolicy">Defines whether to force generation of a type even if no <see cref="MixinConfiguration"/> is currently available
     /// for the given type.</param>
     /// <returns>A concrete, instantiable, mixed type for the given <paramref name="targetType"/>, or the type itself; depending on the
-    /// <paramref name="generationPolicy"/> and the <see cref="MixinConfiguration.ActiveContext"/>.</returns>
+    /// <paramref name="generationPolicy"/> and the <see cref="MixinConfiguration.ActiveConfiguration"/>.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="targetType"/> parameter is <see langword="null"/>.</exception>
     /// <exception cref="ConfigurationException">The current mixin configuration for the <paramref name="targetType"/> contains severe problems that
     /// make generation of a <see cref="TargetClassDefinition"/> object impossible.</exception>
@@ -83,7 +83,7 @@ namespace Rubicon.Mixins
     /// <remarks>
     /// <para>
     /// The type returned by this method is guaranteed to be derived from <paramref name="targetType"/>, but will usually not be the same as
-    /// <paramref name="targetType"/>. It manages integration of the mixins currently configured via <see cref="MixinConfiguration.ActiveContext"/>
+    /// <paramref name="targetType"/>. It manages integration of the mixins currently configured via <see cref="MixinConfiguration.ActiveConfiguration"/>
     /// with the given <paramref name="targetType"/>.
     /// </para>
     /// <para>
@@ -130,7 +130,7 @@ namespace Rubicon.Mixins
     /// </para>
     /// <para>
     /// Use <see cref="GetActiveConfiguration(Type,GenerationPolicy)"/> to force generation of an empty configuration if none currently
-    /// exists for the given type in <see cref="MixinConfiguration.ActiveContext"/>.
+    /// exists for the given type in <see cref="MixinConfiguration.ActiveConfiguration"/>.
     /// </para>
     /// </remarks>
     public static TargetClassDefinition GetActiveConfiguration (Type targetType)
@@ -159,14 +159,14 @@ namespace Rubicon.Mixins
     /// </para>
    /// <para>
     /// Use the <paramref name="generationPolicy"/> parameter to configure whether this method should return an empty but valid
-    /// <see cref="TargetClassDefinition"/> for types that do not have a mixin configuration in <see cref="MixinConfiguration.ActiveContext"/>.
+    /// <see cref="TargetClassDefinition"/> for types that do not have a mixin configuration in <see cref="MixinConfiguration.ActiveConfiguration"/>.
     /// </para>
     /// </remarks>
     public static TargetClassDefinition GetActiveConfiguration (Type targetType, GenerationPolicy generationPolicy)
     {
       ArgumentUtility.CheckNotNull ("targetType", targetType);
 
-      return GetConfiguration (targetType, MixinConfiguration.ActiveContext, generationPolicy);
+      return GetConfiguration (targetType, MixinConfiguration.ActiveConfiguration, generationPolicy);
     }
 
     /// <summary>
@@ -174,7 +174,7 @@ namespace Rubicon.Mixins
     /// this type.
     /// </summary>
     /// <param name="targetType">Base type for which an analyzed mixin configuration should be returned.</param>
-    /// <param name="applicationContext">The <see cref="ApplicationContext"/> to use.</param>
+    /// <param name="mixinConfiguration">The <see cref="MixinConfiguration"/> to use.</param>
     /// <returns>A <see cref="TargetClassDefinition"/> for the a given target type, or <see langword="null"/> if no mixin configuration exists for
     /// the given type.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="targetType"/> parameter is <see langword="null"/>.</exception>
@@ -188,20 +188,20 @@ namespace Rubicon.Mixins
     /// <see cref="TargetClassDefinitionCache"/>, but this is the public API that should be used instead of directly accessing the cache.
     /// </para>
     /// <para>
-    /// Use <see cref="GetConfiguration(Type,ApplicationContext,GenerationPolicy)"/> to force generation of an empty configuration if none currently
+    /// Use <see cref="GetConfiguration(Type,MixinConfiguration,GenerationPolicy)"/> to force generation of an empty configuration if none currently
     /// exists for the given type.
     /// </para>
     /// </remarks>
-    public static TargetClassDefinition GetConfiguration (Type targetType, ApplicationContext applicationContext)
+    public static TargetClassDefinition GetConfiguration (Type targetType, MixinConfiguration mixinConfiguration)
     {
-      return GetConfiguration (targetType, applicationContext, GenerationPolicy.GenerateOnlyIfConfigured);
+      return GetConfiguration (targetType, mixinConfiguration, GenerationPolicy.GenerateOnlyIfConfigured);
     }
 
     /// <summary>
     /// Returns a <see cref="TargetClassDefinition"/> for the a given target type.
     /// </summary>
     /// <param name="targetType">Base type for which an analyzed mixin configuration should be returned.</param>
-    /// <param name="applicationContext">The <see cref="ApplicationContext"/> to use.</param>
+    /// <param name="mixinConfiguration">The <see cref="MixinConfiguration"/> to use.</param>
     /// <param name="generationPolicy">Defines whether to return <see langword="null"/> or generate an empty default configuration if no mixin
     /// configuration is available for the given <paramref name="targetType"/>.</param>
     /// <returns>A <see cref="TargetClassDefinition"/> for the a given target type, or <see langword="null"/>.</returns>
@@ -217,20 +217,20 @@ namespace Rubicon.Mixins
     /// </para>
     /// <para>
     /// Use the <paramref name="generationPolicy"/> parameter to configure whether this method should return an empty but valid
-    /// <see cref="TargetClassDefinition"/> for types that do not have a mixin configuration in <paramref name="applicationContext"/>.
+    /// <see cref="TargetClassDefinition"/> for types that do not have a mixin configuration in <paramref name="mixinConfiguration"/>.
     /// </para>
     /// <para>
     /// If <paramref name="targetType"/> is already a generated type, no new <see cref="TargetClassDefinition"/> is created for it unless
     /// <see cref="GenerationPolicy.ForceGeneration"/> is specified.
     /// </para>
     /// </remarks>
-    public static TargetClassDefinition GetConfiguration (Type targetType, ApplicationContext applicationContext, GenerationPolicy generationPolicy)
+    public static TargetClassDefinition GetConfiguration (Type targetType, MixinConfiguration mixinConfiguration, GenerationPolicy generationPolicy)
     {
       ArgumentUtility.CheckNotNull ("targetType", targetType);
-      ArgumentUtility.CheckNotNull ("applicationContext", applicationContext);
+      ArgumentUtility.CheckNotNull ("mixinConfiguration", mixinConfiguration);
 
       ClassContext context;
-      context = GetContext(targetType, applicationContext, generationPolicy);
+      context = GetContext(targetType, mixinConfiguration, generationPolicy);
 
       if (context == null)
         return null;
@@ -242,34 +242,34 @@ namespace Rubicon.Mixins
     /// Returns a <see cref="ClassContext"/> for the a given target type.
     /// </summary>
     /// <param name="targetType">Base type for which a context should be returned.</param>
-    /// <param name="applicationContext">The <see cref="ApplicationContext"/> to use.</param>
+    /// <param name="mixinConfiguration">The <see cref="MixinConfiguration"/> to use.</param>
     /// <param name="generationPolicy">Defines whether to return <see langword="null"/> or generate an empty default configuration if no mixin
     /// configuration is available for the given <paramref name="targetType"/>.</param>
     /// <returns>A <see cref="ClassContext"/> for the a given target type, or <see langword="null"/>.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="targetType"/> parameter is <see langword="null"/>.</exception>
     /// <remarks>
     /// <para>
-    /// Use this to extract a class context for a given target type from an application context as it would be used to create the
-    /// <see cref="TargetClassDefinition"/> object for the target type. Besides looking up the target type in the given application context, this
+    /// Use this to extract a class context for a given target type from an <see cref="MixinConfiguration"/> as it would be used to create the
+    /// <see cref="TargetClassDefinition"/> object for the target type. Besides looking up the target type in the given mixin configuration, this
     /// includes generating a default context if <see cref="GenerationPolicy.ForceGeneration"/> is specified and the specialization of generic
     /// arguments in the class context, if any.
     /// </para>
     /// <para>
     /// Use the <paramref name="generationPolicy"/> parameter to configure whether this method should return an empty but valid
-    /// <see cref="ClassContext"/> for types that do not have a mixin configuration in the <paramref name="applicationContext"/>.
+    /// <see cref="ClassContext"/> for types that do not have a mixin configuration in the <paramref name="mixinConfiguration"/>.
     /// </para>
     /// <para>
     /// If <paramref name="targetType"/> is already a generated type, the <see cref="ClassContext"/> used for its generation is returned unless
     /// <see cref="GenerationPolicy.ForceGeneration"/> is specified.
     /// </para>
     /// </remarks>
-    public static ClassContext GetContext (Type targetType, ApplicationContext applicationContext, GenerationPolicy generationPolicy)
+    public static ClassContext GetContext (Type targetType, MixinConfiguration mixinConfiguration, GenerationPolicy generationPolicy)
     {
       ClassContext context;
       if (generationPolicy != GenerationPolicy.ForceGeneration && TypeUtility.IsGeneratedType (targetType))
         context = Mixin.GetMixinConfigurationFromConcreteType (targetType);
       else
-        context = applicationContext.GetClassContext (targetType);
+        context = mixinConfiguration.GetClassContext (targetType);
 
       if (context == null && generationPolicy == GenerationPolicy.ForceGeneration)
         context = new ClassContext (targetType);

@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Drawing.Design;
 using Rubicon.Mixins;
 using Rubicon.ObjectBinding.Design.BindableObject;
-using Rubicon.Mixins.Context;
 using TypeUtility=Rubicon.Utilities.TypeUtility;
 
 namespace Rubicon.ObjectBinding.Web.UI.Design
@@ -26,8 +25,8 @@ namespace Rubicon.ObjectBinding.Web.UI.Design
       base.Initialize (component);
 
       BindableObjectTypeFinder typeFinder = new BindableObjectTypeFinder (component.Site);
-      ApplicationContext mixinConfiguration = typeFinder.GetApplicationContext (false);
-      MixinConfiguration.SetActiveContext (mixinConfiguration);
+      MixinConfiguration mixinConfiguration = typeFinder.GetApplicationContext (false);
+      MixinConfiguration.SetActiveConfiguration (mixinConfiguration);
 
       IPropertyValueUIService propertyValueUIService = (IPropertyValueUIService) component.Site.GetService (typeof (IPropertyValueUIService));
       propertyValueUIService.AddPropertyValueUIHandler (PropertyValueUIHandler);

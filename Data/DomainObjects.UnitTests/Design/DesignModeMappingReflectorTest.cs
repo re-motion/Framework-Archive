@@ -16,7 +16,6 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Mixins;
-using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Design
 {
@@ -27,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
     public void TearDown ()
     {
       // reset mixin configuration to defaults
-      MixinConfiguration.SetActiveContext (null);
+      MixinConfiguration.SetActiveConfiguration (null);
       MixinConfiguration.ResetMasterConfiguration();
     }
 
@@ -70,12 +69,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
     {
       IDesignerHost mockDesignerHost = GetMockDesignerHost();
 
-      MixinConfiguration.SetActiveContext (null);
+      MixinConfiguration.SetActiveConfiguration (null);
       DesignModeMappingReflector mappingReflector = new DesignModeMappingReflector (mockDesignerHost);
       mappingReflector.GetClassDefinitions();
 
-      Assert.IsTrue (MixinConfiguration.HasActiveContext);
-      Assert.AreEqual (0, MixinConfiguration.ActiveContext.ClassContextCount);
+      Assert.IsTrue (MixinConfiguration.HasActiveConfiguration);
+      Assert.AreEqual (0, MixinConfiguration.ActiveConfiguration.ClassContextCount);
     }
 
     [Test]
@@ -83,14 +82,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
     {
       IDesignerHost mockDesignerHost = GetMockDesignerHost();
 
-      ApplicationContext context = new ApplicationContext();
-      MixinConfiguration.SetActiveContext (context);
+      MixinConfiguration context = new MixinConfiguration();
+      MixinConfiguration.SetActiveConfiguration (context);
 
       DesignModeMappingReflector mappingReflector = new DesignModeMappingReflector (mockDesignerHost);
       mappingReflector.GetClassDefinitions();
 
-      Assert.IsTrue (MixinConfiguration.HasActiveContext);
-      Assert.AreSame (context, MixinConfiguration.ActiveContext);
+      Assert.IsTrue (MixinConfiguration.HasActiveConfiguration);
+      Assert.AreSame (context, MixinConfiguration.ActiveConfiguration);
     }
 
     [Test]
@@ -134,7 +133,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
             DomainObjectsConfiguration.SetCurrent (
                 new FakeDomainObjectsConfiguration (mappingLoaderConfiguration, persistenceConfiguration, queryConfiguration));
 
-            Assert.IsFalse (MixinConfiguration.HasActiveContext);
+            Assert.IsFalse (MixinConfiguration.HasActiveConfiguration);
 
             IDesignerHost mockDesignerHost = GetMockDesignerHost();
             DesignModeMappingReflector mappingReflector = new DesignModeMappingReflector (mockDesignerHost);

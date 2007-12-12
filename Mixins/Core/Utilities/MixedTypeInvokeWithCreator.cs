@@ -76,7 +76,7 @@ namespace Rubicon.Mixins.Utilities
       Type targetType;
       if (baseType.IsInterface)
       {
-        ClassContext registeredContext = MixinConfiguration.ActiveContext.ResolveInterface (baseType);
+        ClassContext registeredContext = MixinConfiguration.ActiveConfiguration.ResolveInterface (baseType);
         if (registeredContext == null)
         {
           string message = string.Format (

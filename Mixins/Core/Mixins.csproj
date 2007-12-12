@@ -50,9 +50,10 @@
     <Compile Include="CodeGeneration\ConcreteMixedTypeAttribute.cs" />
     <Compile Include="CodeGeneration\NamespaceChangingNameProvider.cs" />
     <Compile Include="CompleteInterfaceAttribute.cs" />
-    <Compile Include="Context\InternalApplicationContextBuilder.cs" />
+    <Compile Include="Context\DeclarativeConfigurationAnalyzer.cs" />
     <Compile Include="Context\MixinContext.cs" />
     <Compile Include="IOverrideAttribute.cs" />
+    <Compile Include="MixinConfigurationScope.cs" />
     <Compile Include="OverrideMixinAttribute.cs" />
     <Compile Include="Definitions\AttributeIntroductionDefinition.cs" />
     <Compile Include="Definitions\Building\MixinDependencyDefinitionBuilder.cs" />
@@ -74,7 +75,6 @@
     <Compile Include="MixerTool\Mixer.cs" />
     <Compile Include="MixerTool\MixerParameters.cs" />
     <Compile Include="MixerTool\MixerRunner.cs" />
-    <Compile Include="MixinConfiguration.cs" />
     <Compile Include="Definitions\Building\MemberChain.cs" />
     <Compile Include="Definitions\IDefinitionCollection.cs" />
     <Compile Include="Definitions\CovariantDefinitionCollectionWrapper.cs" />
@@ -154,9 +154,9 @@
     <Compile Include="Definitions\MixinDefinition.cs" />
     <Compile Include="Definitions\RequiredFaceTypeDefinition.cs" />
     <Compile Include="Utilities\SignatureChecker.cs" />
-    <Compile Include="Context\ApplicationContext.cs" />
+    <Compile Include="MixinConfiguration.cs" />
     <Compile Include="Context\ClassContext.cs" />
-    <Compile Include="Context\ApplicationContextBuilder.cs" />
+    <Compile Include="Context\DeclarativeConfigurationBuilder.cs" />
     <Compile Include="IMixinTarget.cs" />
     <Compile Include="Mixin.cs" />
     <Compile Include="ExtendsAttribute.cs" />

@@ -18,28 +18,28 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       using (MixinConfiguration.ScopedEmpty())
       {
-        Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
-        Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
+        Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
+        Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType2)));
         Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
         Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
-        Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
-        Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
+        Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
+        Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType2)));
 
         using (MixinConfiguration.ScopedExtend(typeof (BaseType1)))
         {
-          Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
-          Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
+          Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
+          Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType2)));
           Assert.AreSame (
               TargetClassDefinitionCache.Current.GetTargetClassDefinition (new ClassContext (typeof (BaseType1))),
               TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
           Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
-          Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
-          Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
+          Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
+          Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType2)));
 
           using (MixinConfiguration.ScopedExtend(typeof (BaseType2)))
           {
-            Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
-            Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
+            Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
+            Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType2)));
 
             Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
             Assert.AreSame (
@@ -84,7 +84,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void NoDefinitionGeneratedIfNoConfigByDefault()
     {
-      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
+      Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (object)));
       Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (object)));
     }
 
@@ -99,7 +99,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void DefinitionGeneratedIfNoConfigViaPolicy ()
     {
-      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
+      Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (object)));
       TargetClassDefinition configuration = TypeFactory.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
       Assert.IsNotNull (configuration);
       Assert.AreEqual (typeof (object), configuration.Type);
@@ -118,7 +118,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void ForcedDefinitionsAreCached ()
     {
-      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
+      Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (object)));
       TargetClassDefinition d1 = TypeFactory.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
       TargetClassDefinition d2 = TypeFactory.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
       Assert.AreSame (d1, d2);
@@ -127,7 +127,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void ForcedGenerationIsNotPersistent ()
     {
-      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
+      Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (object)));
       TargetClassDefinition d1 = TypeFactory.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
       TargetClassDefinition d2 = TypeFactory.GetActiveConfiguration (typeof (object), GenerationPolicy.GenerateOnlyIfConfigured);
       Assert.IsNotNull (d1);
@@ -137,7 +137,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void NoTypeGeneratedIfNoConfigByDefault ()
     {
-      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
+      Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (object)));
       Assert.AreSame (typeof (object), TypeFactory.GetConcreteType (typeof (object)));
     }
 
@@ -151,7 +151,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void TypeGeneratedIfNoConfigViaPolicy ()
     {
-      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
+      Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (object)));
       Type concreteType = TypeFactory.GetConcreteType (typeof (object), GenerationPolicy.ForceGeneration);
       Assert.AreNotSame (typeof (object), concreteType);
       Assert.AreSame (typeof (object), concreteType.BaseType);

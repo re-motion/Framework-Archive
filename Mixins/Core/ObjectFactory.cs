@@ -23,7 +23,7 @@ namespace Rubicon.Mixins
   /// created without being instantiated, refer to the <see cref="TypeFactory"/> class.
   /// </para>
   /// <para>
-  /// The <see cref="ObjectFactory"/> class uses the mixin configuration defined by <see cref="MixinConfiguration.ActiveContext"/>. Use the 
+  /// The <see cref="ObjectFactory"/> class uses the mixin configuration defined by <see cref="MixinConfiguration.ActiveConfiguration"/>. Use the 
   /// <see cref="MixinConfiguration"/> class if the configuration needs to be adapted.
   /// </para>
   /// </remarks>
@@ -51,7 +51,7 @@ namespace Rubicon.Mixins
     /// </para>
     /// <para>
     /// The <see cref="Create{T}()"/> method supports the creation of instances from their complete interfaces: <typeparamref name="T"/> can be an
-    /// interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also <see cref="CompleteInterfaceAttribute"/>.
+    /// interface registered in the <see cref="MixinConfiguration.ActiveConfiguration"/>. See also <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
     /// </remarks>
     public static FuncInvokerWrapper<T> Create<T> ()
@@ -81,7 +81,7 @@ namespace Rubicon.Mixins
     /// </para>
     /// <para>
     /// The <see cref="Create{T}(GenerationPolicy)"/> method supports the creation of instances from their complete interfaces:
-    /// <typeparamref name="T"/> can be an interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also
+    /// <typeparamref name="T"/> can be an interface registered in the <see cref="MixinConfiguration.ActiveConfiguration"/>. See also
     /// <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
     /// </remarks>
@@ -112,7 +112,7 @@ namespace Rubicon.Mixins
     /// </para>
     /// <para>
     /// The <see cref="Create(Type)"/> method supports the creation of instances from their complete interfaces: <paramref name="baseType"/> can be
-    /// an interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also <see cref="CompleteInterfaceAttribute"/>.
+    /// an interface registered in the <see cref="MixinConfiguration.ActiveConfiguration"/>. See also <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
     /// <para>
     /// If <paramref name="baseType"/> is already a generated type, this method will not subclass it again.
@@ -148,7 +148,7 @@ namespace Rubicon.Mixins
     /// </para>
     /// <para>
     /// The <see cref="Create(Type, GenerationPolicy)"/> method supports the creation of instances from their complete interfaces:
-    /// <paramref name="baseType"/> can be an interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also
+    /// <paramref name="baseType"/> can be an interface registered in the <see cref="MixinConfiguration.ActiveConfiguration"/>. See also
     /// <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
     /// <para>
@@ -200,7 +200,7 @@ namespace Rubicon.Mixins
     /// </para>
     /// <para>
     /// The <see cref="CreateWithMixinInstances{T}(object[])"/> method supports the creation of instances from their complete interfaces:
-    /// <typeparamref name="T"/> can be an interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also
+    /// <typeparamref name="T"/> can be an interface registered in the <see cref="MixinConfiguration.ActiveConfiguration"/>. See also
     /// <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
     /// </remarks>
@@ -247,7 +247,7 @@ namespace Rubicon.Mixins
     /// </para>
     /// <para>
     /// The <see cref="CreateWithMixinInstances{T}(GenerationPolicy, object[])"/> method supports the creation of instances from their complete interfaces: <typeparamref name="T"/> can be an
-    /// interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also <see cref="CompleteInterfaceAttribute"/>.
+    /// interface registered in the <see cref="MixinConfiguration.ActiveConfiguration"/>. See also <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
     /// </remarks>
     public static FuncInvokerWrapper<T> CreateWithMixinInstances<T> (GenerationPolicy generationPolicy, params object[] mixinInstances)
@@ -293,7 +293,7 @@ namespace Rubicon.Mixins
     /// </para>
     /// <para>
     /// The <see cref="CreateWithMixinInstances(Type, object[])"/> method supports the creation of instances from their complete interfaces:
-    /// <paramref name="baseType"/> can be an interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also
+    /// <paramref name="baseType"/> can be an interface registered in the <see cref="MixinConfiguration.ActiveConfiguration"/>. See also
     /// <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
     /// <para>
@@ -344,7 +344,7 @@ namespace Rubicon.Mixins
     /// </para>
     /// <para>
     /// The <see cref="CreateWithMixinInstances (Type, GenerationPolicy, object[])"/> method supports the creation of instances from their complete
-    /// interfaces: <paramref name="baseType"/> can be an interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also
+    /// interfaces: <paramref name="baseType"/> can be an interface registered in the <see cref="MixinConfiguration.ActiveConfiguration"/>. See also
     /// <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
     /// <para>

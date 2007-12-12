@@ -4,15 +4,15 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
 
-namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
+namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
 {
   [TestFixture]
-  public class ApplicationContextCompleteInterfaceTests
+  public class MixinConfigurationCompleteInterfaceTests
   {
     [Test]
     public void RegisterAndResolveCompleteInterface ()
     {
-      ApplicationContext ac = new ApplicationContext ();
+      MixinConfiguration ac = new MixinConfiguration ();
       ClassContext cc = new ClassContext (typeof (BaseType2));
       ac.AddClassContext (cc);
       cc.AddCompleteInterface (typeof (IBaseType2));
@@ -29,28 +29,28 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The argument is not an interface.", MatchType = MessageMatch.Contains)]
     public void RegisterCompleteInterfaceThrowsOnNonInterface ()
     {
-      ApplicationContext ac = new ApplicationContext ();
+      MixinConfiguration ac = new MixinConfiguration ();
       ClassContext cc = new ClassContext (typeof (BaseType2));
       ac.AddClassContext (cc);
       ac.RegisterInterface (typeof (BaseType2), cc);
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The class context hasn't been added to this application context.",
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The class context hasn't been added to this configuration.",
         MatchType = MessageMatch.Contains)]
     public void RegisterCompleteInterfaceThrowsOnInvalidClassContext1 ()
     {
-      ApplicationContext ac = new ApplicationContext ();
+      MixinConfiguration ac = new MixinConfiguration ();
       ClassContext cc = new ClassContext (typeof (BaseType2));
       ac.RegisterInterface (typeof (IBaseType2), cc);
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The class context hasn't been added to this application context.",
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The class context hasn't been added to this configuration.",
         MatchType = MessageMatch.Contains)]
     public void RegisterCompleteInterfaceThrowsOnInvalidClassContext2 ()
     {
-      ApplicationContext ac = new ApplicationContext ();
+      MixinConfiguration ac = new MixinConfiguration ();
       ClassContext cc = new ClassContext (typeof (BaseType2));
       ac.AddClassContext (cc);
       ac.RegisterInterface (typeof (IBaseType2), new ClassContext (typeof (BaseType2)));
@@ -61,14 +61,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
         MatchType = MessageMatch.Contains)]
     public void RegisterCompleteInterfaceThrowsOnInvalidClassContext3 ()
     {
-      ApplicationContext ac = new ApplicationContext ();
+      MixinConfiguration ac = new MixinConfiguration ();
       ac.RegisterInterface (typeof (IBaseType2), typeof (BaseType2));
     }
 
     [Test]
     public void RemoveClassContextCausesInterfaceRegistrationToBeRemoved ()
     {
-      ApplicationContext ac = new ApplicationContext ();
+      MixinConfiguration ac = new MixinConfiguration ();
       ClassContext cc = new ClassContext (typeof (BaseType2));
       ac.AddClassContext (cc);
       ac.RegisterInterface (typeof (IBaseType2), cc);
@@ -83,7 +83,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
         MatchType = MessageMatch.Contains)]
     public void RegisterCompleteInterfaceThrowsOnDuplicateInterface ()
     {
-      ApplicationContext ac = new ApplicationContext ();
+      MixinConfiguration ac = new MixinConfiguration ();
       ClassContext cc = new ClassContext (typeof (BaseType2));
       ac.AddClassContext (cc);
       ac.RegisterInterface (typeof (IBaseType2), cc);
@@ -94,7 +94,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The argument is not an interface.", MatchType = MessageMatch.Contains)]
     public void ResolveCompleteInterfaceThrowsOnNonInterface ()
     {
-      ApplicationContext ac = new ApplicationContext ();
+      MixinConfiguration ac = new MixinConfiguration ();
       ac.ResolveInterface (typeof (BaseType2));
     }
   }

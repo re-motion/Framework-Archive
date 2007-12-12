@@ -77,7 +77,7 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     protected virtual Type GetConcreteType (Type type)
     {
-      if (MixinConfiguration.ActiveContext.ContainsClassContext (type))
+      if (MixinConfiguration.ActiveConfiguration.ContainsClassContext (type))
         return TypeFactory.GetConcreteType(type);
       return type;
     }

@@ -31,7 +31,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void IMixinTarget()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
 
       using (MixinConfiguration.ScopedReplace(context))
       {

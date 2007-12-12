@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Mixins;
-using Rubicon.Mixins.Context;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Design
@@ -30,8 +29,8 @@ namespace Rubicon.Data.DomainObjects.Design
     {
       // In design mode, the AppDomain's base directory is not defined. Therefore, we must avoid loading the default mixin configuration,
       // so we set an empty default one.
-      if (!MixinConfiguration.HasActiveContext)
-        MixinConfiguration.SetActiveContext (new ApplicationContext ());
+      if (!MixinConfiguration.HasActiveConfiguration)
+        MixinConfiguration.SetActiveConfiguration (new MixinConfiguration ());
 
       List<Type> domainObjectsTypes = new List<Type>();
       foreach (Type domainObjectType in _typeDiscoveryService.GetTypes (typeof (DomainObject), false))

@@ -49,21 +49,21 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void ValidationVisitsSomething ()
     {
-      IValidationLog log = MixinConfiguration.ActiveContext.Validate ();
+      IValidationLog log = MixinConfiguration.ActiveConfiguration.Validate ();
       Assert.IsTrue (log.ResultCount > 1);
     }
 
     [Test]
     public void ValidationDump ()
     {
-      IValidationLog log = MixinConfiguration.ActiveContext.Validate ();
+      IValidationLog log = MixinConfiguration.ActiveConfiguration.Validate ();
       ConsoleDumper.DumpValidationResults (log.GetResults ());
     }
 
     [Test]
     public void ValidationResultDefinition ()
     {
-      IValidationLog log = MixinConfiguration.ActiveContext.Validate ();
+      IValidationLog log = MixinConfiguration.ActiveConfiguration.Validate ();
 
       IEnumerator<ValidationResult> results = log.GetResults().GetEnumerator();
       Assert.IsTrue (results.MoveNext());
@@ -74,7 +74,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void AllIsValid ()
     {
-      IValidationLog log = MixinConfiguration.ActiveContext.Validate ();
+      IValidationLog log = MixinConfiguration.ActiveConfiguration.Validate ();
       AssertSuccess (log);
     }
 
@@ -83,7 +83,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
       {
-        IValidationLog log = MixinConfiguration.ActiveContext.Validate();
+        IValidationLog log = MixinConfiguration.ActiveConfiguration.Validate();
 
         Dictionary<IVisitableDefinition, IVisitableDefinition> visitedDefinitions = new Dictionary<IVisitableDefinition, IVisitableDefinition>();
         foreach (ValidationResult result in log.GetResults())
@@ -202,7 +202,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void HasDefaultRules ()
     {
-      IValidationLog log = MixinConfiguration.ActiveContext.Validate ();
+      IValidationLog log = MixinConfiguration.ActiveConfiguration.Validate ();
       Assert.IsTrue (log.GetNumberOfRulesExecuted () > 0);
     }
 

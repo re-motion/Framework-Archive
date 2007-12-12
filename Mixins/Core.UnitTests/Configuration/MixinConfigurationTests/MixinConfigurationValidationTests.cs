@@ -5,10 +5,10 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Mixins.Validation;
 
-namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
+namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
 {
   [TestFixture]
-  public class ApplicationContextValidationTests
+  public class MixinConfigurationValidationTests
   {
     [Test]
     public void ValidateWithNoErrors ()
@@ -17,7 +17,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
       {
         using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
         {
-          IValidationLog log = MixinConfiguration.ActiveContext.Validate ();
+          IValidationLog log = MixinConfiguration.ActiveConfiguration.Validate ();
           Assert.IsTrue (log.GetNumberOfSuccesses () > 0);
           Assert.AreEqual (0, log.GetNumberOfFailures ());
         }
@@ -31,7 +31,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
       {
         using (MixinConfiguration.ScopedExtend (typeof (int), typeof (NullMixin)))
         {
-          IValidationLog log = MixinConfiguration.ActiveContext.Validate ();
+          IValidationLog log = MixinConfiguration.ActiveConfiguration.Validate ();
           Assert.IsTrue (log.GetNumberOfFailures () > 0);
         }
       }
@@ -44,7 +44,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
       {
         using (MixinConfiguration.ScopedExtend (typeof (KeyValuePair<,>), typeof (NullMixin)))
         {
-          IValidationLog log = MixinConfiguration.ActiveContext.Validate ();
+          IValidationLog log = MixinConfiguration.ActiveConfiguration.Validate ();
           Assert.IsTrue (log.GetNumberOfFailures () > 0);
         }
       }
@@ -56,9 +56,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "The ApplicationContext contains a ClassContext for the generic type "
+    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "The MixinConfiguration contains a ClassContext for the generic type "
         + ".*UninstantiableGeneric\\`1\\[T\\], of which it cannot make a closed type. "
-            + "Because closed types are needed for validation, the ApplicationContext cannot be validated as a whole. The configuration might still "
+            + "Because closed types are needed for validation, the MixinConfiguration cannot be validated as a whole. The configuration might still "
                 + "be correct, but validation must be deferred to TypeFactory.GetActiveConfiguration.", MatchType = MessageMatch.Regex)]
     public void ValidationThrowsWhenGenericsCannotBeSpecialized ()
     {
@@ -66,7 +66,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextTests
       {
         using (MixinConfiguration.ScopedExtend (typeof (UninstantiableGeneric<>), typeof (NullMixin)))
         {
-          MixinConfiguration.ActiveContext.Validate ();
+          MixinConfiguration.ActiveConfiguration.Validate ();
         }
       }
     }

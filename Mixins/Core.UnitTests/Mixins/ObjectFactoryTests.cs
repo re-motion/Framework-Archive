@@ -207,8 +207,8 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       using (MixinConfiguration.ScopedEmpty ())
       {
-        MixinConfiguration.ActiveContext.GetOrAddClassContext (typeof (BaseType6)).AddCompleteInterface (typeof (IEmptyInterface));
-        MixinConfiguration.ActiveContext.RegisterInterface (typeof (IEmptyInterface), typeof (BaseType6));
+        MixinConfiguration.ActiveConfiguration.GetOrAddClassContext (typeof (BaseType6)).AddCompleteInterface (typeof (IEmptyInterface));
+        MixinConfiguration.ActiveConfiguration.RegisterInterface (typeof (IEmptyInterface), typeof (BaseType6));
 
         IEmptyInterface complete = ObjectFactory.Create<IEmptyInterface> ().With ();
 

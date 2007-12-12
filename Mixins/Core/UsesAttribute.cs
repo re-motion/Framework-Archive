@@ -9,7 +9,7 @@ namespace Rubicon.Mixins
   /// </summary>
   /// <remarks>
   /// <para>
-  /// This attribute is effective for the declarative mixin configuration built via <see cref="ApplicationContextBuilder.BuildDefaultContext"/>,
+  /// This attribute is effective for the declarative mixin configuration built via <see cref="DeclarativeConfigurationBuilder.BuildDefaultConfiguration"/>,
   /// which is in effect by default when an application is started.
   /// </para>
   /// <para> 

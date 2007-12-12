@@ -3,10 +3,10 @@ using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
 
-namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuilderTests
+namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfigurationBuilderTests
 {
   [TestFixture]
-  public class ApplicationContextBuilderGenericInheritanceTests
+  public class DeclarativeConfigurationBuilderGenericInheritanceTests
   {
     public class GenericClass<T> { }
     public class DerivedGenericClassFromOpen<T> : GenericClass<T> { }
@@ -32,7 +32,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void OpenGenericClassContext_Open()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (GenericClass<>));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
@@ -42,7 +42,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void ClosedGenericClassContext_Closed_NoOwnMixin ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (GenericClass<string>));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
@@ -52,7 +52,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void ClosedGenericClassContext_Closed_WithOwnMixin ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (GenericClass<int>));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
@@ -63,7 +63,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedGenericClassFromOpenContext_Open ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedGenericClassFromOpen<>));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
@@ -74,7 +74,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedGenericClassFromOpenContext_Closed_NoOwnMixin ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedGenericClassFromOpen<string>));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
@@ -85,7 +85,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedGenericClassFromOpenContext_Closed_WithOwnMixin ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedGenericClassFromOpen<int>));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForClosedGeneric)));
@@ -98,7 +98,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedGenericClassFromClosedContext_Open ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedGenericClassFromClosed<>));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
@@ -109,7 +109,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedGenericClassFromClosedContext_Closed_NoOwnMixins ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedGenericClassFromClosed<int>));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
@@ -120,7 +120,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedDerivedGenericClassFromOpenContext_Open ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedDerivedGenericClassFromOpen<>));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
@@ -131,7 +131,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedDerivedGenericClassFromOpenContext_Closed_NoOwnMixin ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedDerivedGenericClassFromOpen<string>));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
@@ -142,7 +142,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedDerivedGenericClassFromOpenContext_Closed_WithOwnMixin ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedDerivedGenericClassFromOpen<int>));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
@@ -157,7 +157,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedClassFromClosedContext ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedClassFromClosed));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));

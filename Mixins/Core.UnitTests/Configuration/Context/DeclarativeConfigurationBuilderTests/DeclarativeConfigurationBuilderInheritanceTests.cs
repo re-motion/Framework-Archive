@@ -4,10 +4,10 @@ using NUnit.Framework;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuilderTests
+namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfigurationBuilderTests
 {
   [TestFixture]
-  public class ApplicationContextBuilderInheritanceTests
+  public class DeclarativeConfigurationBuilderInheritanceTests
   {
     [Uses (typeof (NullMixin))]
     public class Base { }
@@ -34,7 +34,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void BaseContext ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly());
       ClassContext classContext = context.GetClassContext (typeof (Base));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin)));
@@ -44,7 +44,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedContext ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (Derived));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin)));
@@ -54,7 +54,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedContextWithOwnMixin ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedWithOwnMixin));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin)));
@@ -65,7 +65,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedDerivedContext ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedDerived));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin)));
@@ -75,7 +75,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedDerivedContextWithOwnMixin ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedDerivedWithOwnMixin));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin)));
@@ -86,12 +86,12 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedDerivedContextWithOwnMixin_Order1 ()
     {
-      ApplicationContextBuilder builder = new ApplicationContextBuilder (null);
+      DeclarativeConfigurationBuilder builder = new DeclarativeConfigurationBuilder (null);
       builder.AddType (typeof (Base));
       builder.AddType (typeof (Derived));
       builder.AddType (typeof (DerivedDerivedWithOwnMixin));
 
-      ApplicationContext context = builder.BuildContext();
+      MixinConfiguration context = builder.BuildConfiguration();
       ClassContext classContext = context.GetClassContext (typeof (DerivedDerivedWithOwnMixin));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin)));
@@ -102,12 +102,12 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedDerivedContextWithOwnMixin_Order2 ()
     {
-      ApplicationContextBuilder builder = new ApplicationContextBuilder (null);
+      DeclarativeConfigurationBuilder builder = new DeclarativeConfigurationBuilder (null);
       builder.AddType (typeof (DerivedDerivedWithOwnMixin));
       builder.AddType (typeof (Derived));
       builder.AddType (typeof (Base));
 
-      ApplicationContext context = builder.BuildContext ();
+      MixinConfiguration context = builder.BuildConfiguration ();
       ClassContext classContext = context.GetClassContext (typeof (DerivedDerivedWithOwnMixin));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin)));
@@ -119,7 +119,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedContextWithOverride ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedWithOverride));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (DerivedNullMixin)));
@@ -129,7 +129,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ApplicationContextBuild
     [Test]
     public void DerivedDerivedContextWithOverrideAndOverride ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedDerivedWithOwnMixinAndOverride));
       Assert.IsNotNull (classContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (DerivedNullMixin)));

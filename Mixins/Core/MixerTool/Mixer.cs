@@ -77,7 +77,7 @@ namespace Rubicon.Mixins.MixerTool
 
     private void Generate ()
     {
-      ApplicationContext configuration = MixinConfiguration.ActiveContext;
+      MixinConfiguration configuration = MixinConfiguration.ActiveConfiguration;
       s_log.InfoFormat ("Generating types for {0} configured mixin targets.", configuration.ClassContextCount);
       foreach (ClassContext context in configuration.ClassContexts)
       {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Reflection;
 using Rubicon.Collections;
+using Rubicon.Mixins;
 using Rubicon.Mixins.Context;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.Utilities;
@@ -27,7 +28,7 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
 
     public List<Type> GetTypes (bool includeGac)
     {
-      ApplicationContext applicationContext = GetApplicationContext (includeGac);
+      MixinConfiguration applicationContext = GetApplicationContext (includeGac);
 
       List<Type> bindableTypes = new List<Type> ();
       foreach (ClassContext classContext in applicationContext.ClassContexts)
@@ -38,15 +39,15 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
       return bindableTypes;
     }
 
-    public ApplicationContext GetApplicationContext (bool includeGac)
+    public MixinConfiguration GetApplicationContext (bool includeGac)
     {
       IEnumerable typesToBeAnalyzed = GetAllDesignerTypes (includeGac);
 
-      ApplicationContextBuilder builder = new ApplicationContextBuilder (null);
+      DeclarativeConfigurationBuilder builder = new DeclarativeConfigurationBuilder (null);
       foreach (Type type in typesToBeAnalyzed)
         builder.AddType (type);
 
-      return builder.BuildContext ();
+      return builder.BuildConfiguration ();
     }
 
     private IEnumerable GetAllDesignerTypes (bool includeGac)

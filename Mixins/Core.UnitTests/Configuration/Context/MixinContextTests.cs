@@ -14,7 +14,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     [Test]
     public void ExplicitInterfaceDependencies ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (BaseType7));
       MixinContext mixinContext = classContext.GetOrAddMixinContext (typeof (BT7Mixin1));
 
@@ -49,7 +49,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     [Test]
     public void ExplicitMixinDependencies ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (BaseType7));
       MixinContext mixinContext = classContext.GetOrAddMixinContext (typeof (BT7Mixin1));
 

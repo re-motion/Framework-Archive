@@ -132,7 +132,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void GetTargetClassDefinition ()
     {
-      ClassContext context = MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType3));
+      ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType3));
       TargetClassDefinition referenceDefinition = TargetClassDefinitionCache.Current.GetTargetClassDefinition (context);
 
       ConcreteMixedTypeAttribute attribute = ConcreteMixedTypeAttribute.FromClassContext (context);

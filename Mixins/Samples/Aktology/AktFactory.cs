@@ -67,8 +67,8 @@ namespace Rubicon.Mixins.Samples.Aktology
         ClassContext specificContext = new ClassContext(typeof (TBaseType), typeof (TMixin));
         specificContext.AddCompleteInterface (typeof (TInterface));
 
-        MixinConfiguration.ActiveContext.AddClassContext (specificContext);
-        MixinConfiguration.ActiveContext.RegisterInterface (typeof (TInterface), specificContext);
+        MixinConfiguration.ActiveConfiguration.AddClassContext (specificContext);
+        MixinConfiguration.ActiveConfiguration.RegisterInterface (typeof (TInterface), specificContext);
 
         return ObjectFactory.Create<TInterface>().With();
       }
