@@ -50,6 +50,9 @@
   <ItemGroup>
     <Compile Include="Configuration\Context\DeclarativeConfigurationBuilderTests\DeclarativeConfigurationBuilderGenericInheritanceTests.cs" />
     <Compile Include="Configuration\Context\DeclarativeConfigurationBuilderTests\DeclarativeConfigurationBuilderInheritanceTests.cs" />
+    <Compile Include="Configuration\Context\FluentBuilders\ClassContextBuilderTests.cs" />
+    <Compile Include="Configuration\Context\FluentBuilders\MixinConfigurationBuilderTests.cs" />
+    <Compile Include="Configuration\Context\FluentBuilders\MixinContextBuilderTests.cs" />
     <Compile Include="Configuration\MixinConfigurationTests\MixinConfigurationInheritanceTests.cs" />
     <Compile Include="Configuration\MixinConfigurationTests\MixinConfigurationCompleteInterfaceTests.cs" />
     <Compile Include="Configuration\MixinConfigurationTests\MixinConfigurationValidationTests.cs" />
