@@ -152,6 +152,7 @@ namespace Rubicon.Core.UnitTests.Utilities
     }
 
     [Test]
+    [Ignore ("TODO: SW")]
     public void AbbreviateWithoutFull ()
     {
       string name = TypeUtility.GetAbbreviatedTypeName (typeof (System.Uri), true);
