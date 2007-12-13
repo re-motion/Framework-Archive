@@ -26,7 +26,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     public void TargetClassDefinitionKnowsItsContext()
     {
       ClassContext classContext = new ClassContext (typeof (BaseType1));
-      using (MixinConfiguration.ScopedExtend(classContext))
+      MixinConfiguration configuration = new MixinConfiguration (null);
+      configuration.AddClassContext (classContext);
+
+      using (configuration.EnterScope())
       {
         TargetClassDefinition def = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         Assert.IsNotNull (def.ConfigurationContext);

@@ -94,7 +94,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     }
 
     [Test]
-    public void ScopedMixinConfiguration()
+    public void EnterScope()
     {
       MixinConfiguration context = new MixinConfiguration ();
       MixinConfiguration context2 = new MixinConfiguration ();
@@ -113,41 +113,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
         Assert.AreSame (context, MixinConfiguration.ActiveConfiguration);
       }
       Assert.IsFalse (MixinConfiguration.HasActiveConfiguration);
-    }
-
-    [Test]
-    public void MixinConfigurationOverloads()
-    {
-      Assert.IsFalse (MixinConfiguration.HasActiveConfiguration);
-      using (MixinConfiguration.ScopedExtend(typeof (BaseType1), typeof (BT1Mixin1), typeof (BT1Mixin2)))
-      {
-        Assert.IsTrue (MixinConfiguration.HasActiveConfiguration);
-        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
-        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType1)).ContainsMixin (typeof (BT1Mixin1)));
-        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType1)).ContainsMixin (typeof (BT1Mixin2)));
-        Assert.IsFalse (MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType1)).ContainsMixin (typeof (BT2Mixin1)));
-        Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType2)));
-
-        using (MixinConfiguration.ScopedExtend(new ClassContext(typeof (BaseType3), typeof (BT1Mixin1)), new ClassContext (typeof (object))))
-        {
-          Assert.IsTrue (MixinConfiguration.HasActiveConfiguration);
-          Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
-          Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType3)));
-          Assert.IsTrue (MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType3)).ContainsMixin (typeof (BT1Mixin1)));
-          Assert.IsFalse (MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType3)).ContainsMixin (typeof (BT3Mixin1)));
-          Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (object)));
-
-          using (MixinConfiguration.ScopedExtend (Assembly.GetExecutingAssembly()))
-          {
-            Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (object)));
-            Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
-            Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType2)));
-            Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType3)));
-            Assert.IsFalse (MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType3)).ContainsMixin (typeof (BT1Mixin1)));
-            Assert.IsTrue (MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType3)).ContainsMixin (typeof (BT3Mixin1)));
-          }
-        }
-      }
     }
 
     [Test]

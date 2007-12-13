@@ -55,14 +55,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void FaceInterfacesAddedViaContext ()
     {
-      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
-      {
-        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType6));
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType6));
 
-        Assert.IsTrue (targetClass.RequiredFaceTypes.ContainsKey (typeof (ICBT6Mixin1)), "This is added via a dependency of BT6Mixin3.");
-        Assert.IsTrue (targetClass.RequiredFaceTypes.ContainsKey (typeof (ICBT6Mixin2)), "This is added via a dependency of BT6Mixin3.");
-        Assert.IsTrue (targetClass.RequiredFaceTypes.ContainsKey (typeof (ICBT6Mixin3)), "This is added because of the CompleteInterfaceAttribute.");
-      }
+      Assert.IsTrue (targetClass.RequiredFaceTypes.ContainsKey (typeof (ICBT6Mixin1)), "This is added via a dependency of BT6Mixin3.");
+      Assert.IsTrue (targetClass.RequiredFaceTypes.ContainsKey (typeof (ICBT6Mixin2)), "This is added via a dependency of BT6Mixin3.");
+      Assert.IsTrue (targetClass.RequiredFaceTypes.ContainsKey (typeof (ICBT6Mixin3)), "This is added because of the CompleteInterfaceAttribute.");
     }
 
     [Test]
@@ -86,71 +83,65 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void BaseInterfaces ()
     {
-      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
-      {
-        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
 
-        List<Type> requiredBaseCallTypes = new List<RequiredBaseCallTypeDefinition> (targetClass.RequiredBaseCallTypes).ConvertAll<Type>
-            (delegate (RequiredBaseCallTypeDefinition def) { return def.Type; });
-        Assert.Contains (typeof (IBaseType31), requiredBaseCallTypes);
-        Assert.Contains (typeof (IBaseType33), requiredBaseCallTypes);
-        Assert.Contains (typeof (IBaseType34), requiredBaseCallTypes);
-        Assert.IsFalse (requiredBaseCallTypes.Contains (typeof (IBaseType35)));
+      List<Type> requiredBaseCallTypes = new List<RequiredBaseCallTypeDefinition> (targetClass.RequiredBaseCallTypes).ConvertAll<Type>
+          (delegate (RequiredBaseCallTypeDefinition def) { return def.Type; });
+      Assert.Contains (typeof (IBaseType31), requiredBaseCallTypes);
+      Assert.Contains (typeof (IBaseType33), requiredBaseCallTypes);
+      Assert.Contains (typeof (IBaseType34), requiredBaseCallTypes);
+      Assert.IsFalse (requiredBaseCallTypes.Contains (typeof (IBaseType35)));
 
-        List<MixinDefinition> requirers = new List<MixinDefinition> (targetClass.RequiredBaseCallTypes[typeof (IBaseType33)].FindRequiringMixins());
-        Assert.Contains (targetClass.GetMixinByConfiguredType (typeof (BT3Mixin3<,>)), requirers);
-      }
+      List<MixinDefinition> requirers = new List<MixinDefinition> (targetClass.RequiredBaseCallTypes[typeof (IBaseType33)].FindRequiringMixins());
+      Assert.Contains (targetClass.GetMixinByConfiguredType (typeof (BT3Mixin3<,>)), requirers);
     }
 
     [Test]
     public void BaseMethods ()
     {
-      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
-      {
-        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
 
-        RequiredBaseCallTypeDefinition req1 = targetClass.RequiredBaseCallTypes[typeof (IBaseType31)];
-        Assert.AreEqual (typeof (IBaseType31).GetMembers().Length, req1.Methods.Count);
+      RequiredBaseCallTypeDefinition req1 = targetClass.RequiredBaseCallTypes[typeof (IBaseType31)];
+      Assert.AreEqual (typeof (IBaseType31).GetMembers().Length, req1.Methods.Count);
 
-        RequiredMethodDefinition member1 = req1.Methods[typeof (IBaseType31).GetMethod ("IfcMethod")];
-        Assert.AreEqual ("Rubicon.Mixins.UnitTests.SampleTypes.IBaseType31.IfcMethod", member1.FullName);
-        Assert.AreSame (req1, member1.DeclaringRequirement);
-        Assert.AreSame (req1, member1.Parent);
+      RequiredMethodDefinition member1 = req1.Methods[typeof (IBaseType31).GetMethod ("IfcMethod")];
+      Assert.AreEqual ("Rubicon.Mixins.UnitTests.SampleTypes.IBaseType31.IfcMethod", member1.FullName);
+      Assert.AreSame (req1, member1.DeclaringRequirement);
+      Assert.AreSame (req1, member1.Parent);
 
-        Assert.AreEqual (typeof (IBaseType31).GetMethod ("IfcMethod"), member1.InterfaceMethod);
-        Assert.AreEqual (targetClass.Methods[typeof (BaseType3).GetMethod ("IfcMethod")], member1.ImplementingMethod);
+      Assert.AreEqual (typeof (IBaseType31).GetMethod ("IfcMethod"), member1.InterfaceMethod);
+      Assert.AreEqual (targetClass.Methods[typeof (BaseType3).GetMethod ("IfcMethod")], member1.ImplementingMethod);
 
-        RequiredBaseCallTypeDefinition req2 = targetClass.RequiredBaseCallTypes[typeof (IBT3Mixin4)];
-        Assert.AreEqual (typeof (IBT3Mixin4).GetMembers().Length, req2.Methods.Count);
+      RequiredBaseCallTypeDefinition req2 = targetClass.RequiredBaseCallTypes[typeof (IBT3Mixin4)];
+      Assert.AreEqual (typeof (IBT3Mixin4).GetMembers().Length, req2.Methods.Count);
 
-        RequiredMethodDefinition member2 = req2.Methods[typeof (IBT3Mixin4).GetMethod ("Foo")];
-        Assert.AreEqual ("Rubicon.Mixins.UnitTests.SampleTypes.IBT3Mixin4.Foo", member2.FullName);
-        Assert.AreSame (req2, member2.DeclaringRequirement);
-        Assert.AreSame (req2, member2.Parent);
+      RequiredMethodDefinition member2 = req2.Methods[typeof (IBT3Mixin4).GetMethod ("Foo")];
+      Assert.AreEqual ("Rubicon.Mixins.UnitTests.SampleTypes.IBT3Mixin4.Foo", member2.FullName);
+      Assert.AreSame (req2, member2.DeclaringRequirement);
+      Assert.AreSame (req2, member2.Parent);
 
-        Assert.AreEqual (typeof (IBT3Mixin4).GetMethod ("Foo"), member2.InterfaceMethod);
-        Assert.AreEqual (targetClass.Mixins[typeof (BT3Mixin4)].Methods[typeof (BT3Mixin4).GetMethod ("Foo")], member2.ImplementingMethod);
-      }
+      Assert.AreEqual (typeof (IBT3Mixin4).GetMethod ("Foo"), member2.InterfaceMethod);
+      Assert.AreEqual (targetClass.Mixins[typeof (BT3Mixin4)].Methods[typeof (BT3Mixin4).GetMethod ("Foo")], member2.ImplementingMethod);
 
       using (MixinConfiguration.ScopedExtend(typeof (BaseType3), typeof (BT3Mixin7Base), typeof (BT3Mixin4)))
       {
-        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
+        TargetClassDefinition targetClass2 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
 
-        RequiredBaseCallTypeDefinition req3 = targetClass.RequiredBaseCallTypes[typeof (ICBaseType3BT3Mixin4)];
+        RequiredBaseCallTypeDefinition req3 = targetClass2.RequiredBaseCallTypes[typeof (ICBaseType3BT3Mixin4)];
         Assert.AreEqual (0, req3.Methods.Count);
 
-        req3 = targetClass.RequiredBaseCallTypes[typeof (ICBaseType3)];
+        req3 = targetClass2.RequiredBaseCallTypes[typeof (ICBaseType3)];
         Assert.AreEqual (0, req3.Methods.Count);
 
-        req3 = targetClass.RequiredBaseCallTypes[typeof (IBaseType31)];
+        req3 = targetClass2.RequiredBaseCallTypes[typeof (IBaseType31)];
         Assert.AreEqual (1, req3.Methods.Count);
 
-        req3 = targetClass.RequiredBaseCallTypes[typeof (IBT3Mixin4)];
+        req3 = targetClass2.RequiredBaseCallTypes[typeof (IBT3Mixin4)];
         Assert.AreEqual (1, req3.Methods.Count);
 
         RequiredMethodDefinition member3 = req3.Methods[typeof (IBT3Mixin4).GetMethod ("Foo")];
         Assert.IsNotNull (member3);
-        Assert.AreEqual (targetClass.Mixins[typeof (BT3Mixin4)].Methods[typeof (BT3Mixin4).GetMethod ("Foo")], member3.ImplementingMethod);
+        Assert.AreEqual (targetClass2.Mixins[typeof (BT3Mixin4)].Methods[typeof (BT3Mixin4).GetMethod ("Foo")], member3.ImplementingMethod);
       }
     }
 
@@ -237,74 +228,71 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void Dependencies ()
     {
-      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
-      {
-        MixinDefinition bt3Mixin1 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin1)];
+      MixinDefinition bt3Mixin1 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin1)];
 
-        Assert.IsTrue (bt3Mixin1.ThisDependencies.ContainsKey (typeof (IBaseType31)));
-        Assert.AreEqual (1, bt3Mixin1.ThisDependencies.Count);
+      Assert.IsTrue (bt3Mixin1.ThisDependencies.ContainsKey (typeof (IBaseType31)));
+      Assert.AreEqual (1, bt3Mixin1.ThisDependencies.Count);
 
-        Assert.IsTrue (bt3Mixin1.BaseDependencies.ContainsKey (typeof (IBaseType31)));
-        Assert.AreEqual (1, bt3Mixin1.BaseDependencies.Count);
+      Assert.IsTrue (bt3Mixin1.BaseDependencies.ContainsKey (typeof (IBaseType31)));
+      Assert.AreEqual (1, bt3Mixin1.BaseDependencies.Count);
 
-        MixinDefinition bt3Mixin2 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin2)];
-        Assert.IsTrue (bt3Mixin2.ThisDependencies.ContainsKey (typeof (IBaseType32)));
-        Assert.AreEqual (1, bt3Mixin2.ThisDependencies.Count);
+      MixinDefinition bt3Mixin2 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin2)];
+      Assert.IsTrue (bt3Mixin2.ThisDependencies.ContainsKey (typeof (IBaseType32)));
+      Assert.AreEqual (1, bt3Mixin2.ThisDependencies.Count);
 
-        Assert.AreEqual (0, bt3Mixin2.BaseDependencies.Count);
+      Assert.AreEqual (0, bt3Mixin2.BaseDependencies.Count);
 
-        MixinDefinition bt3Mixin6 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).GetMixinByConfiguredType (typeof (BT3Mixin6<,>));
+      MixinDefinition bt3Mixin6 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).GetMixinByConfiguredType (typeof (BT3Mixin6<,>));
 
-        Assert.IsTrue (bt3Mixin6.ThisDependencies.ContainsKey (typeof (IBaseType31)));
-        Assert.IsTrue (bt3Mixin6.ThisDependencies.ContainsKey (typeof (IBaseType32)));
-        Assert.IsTrue (bt3Mixin6.ThisDependencies.ContainsKey (typeof (IBaseType33)));
-        Assert.IsTrue (bt3Mixin6.ThisDependencies.ContainsKey (typeof (IBT3Mixin4)));
-        Assert.IsFalse (bt3Mixin6.ThisDependencies.ContainsKey (typeof (IBaseType34)));
+      Assert.IsTrue (bt3Mixin6.ThisDependencies.ContainsKey (typeof (IBaseType31)));
+      Assert.IsTrue (bt3Mixin6.ThisDependencies.ContainsKey (typeof (IBaseType32)));
+      Assert.IsTrue (bt3Mixin6.ThisDependencies.ContainsKey (typeof (IBaseType33)));
+      Assert.IsTrue (bt3Mixin6.ThisDependencies.ContainsKey (typeof (IBT3Mixin4)));
+      Assert.IsFalse (bt3Mixin6.ThisDependencies.ContainsKey (typeof (IBaseType34)));
 
-        Assert.IsFalse (bt3Mixin6.ThisDependencies[typeof (IBaseType31)].IsAggregate);
-        Assert.IsFalse (bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].IsAggregate);
+      Assert.IsFalse (bt3Mixin6.ThisDependencies[typeof (IBaseType31)].IsAggregate);
+      Assert.IsFalse (bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].IsAggregate);
 
-        Assert.AreEqual (0, bt3Mixin6.ThisDependencies[typeof (IBaseType31)].AggregatedDependencies.Count);
+      Assert.AreEqual (0, bt3Mixin6.ThisDependencies[typeof (IBaseType31)].AggregatedDependencies.Count);
 
-        Assert.IsTrue (
-            bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].RequiredType.RequiringDependencies.ContainsKey (
-                bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)]));
-        Assert.IsNull (bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].Aggregator);
+      Assert.IsTrue (
+          bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].RequiredType.RequiringDependencies.ContainsKey (
+              bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)]));
+      Assert.IsNull (bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].Aggregator);
 
-        Assert.AreEqual (
-            TypeFactory.GetActiveConfiguration (typeof (BaseType3)).RequiredFaceTypes[typeof (IBaseType31)],
-            bt3Mixin6.ThisDependencies[typeof (IBaseType31)].RequiredType);
+      Assert.AreEqual (
+          TypeFactory.GetActiveConfiguration (typeof (BaseType3)).RequiredFaceTypes[typeof (IBaseType31)],
+          bt3Mixin6.ThisDependencies[typeof (IBaseType31)].RequiredType);
 
-        Assert.AreSame (TypeFactory.GetActiveConfiguration (typeof (BaseType3)), bt3Mixin6.ThisDependencies[typeof (IBaseType32)].GetImplementer());
-        Assert.AreSame (
-            TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin4)],
-            bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].GetImplementer());
+      Assert.AreSame (TypeFactory.GetActiveConfiguration (typeof (BaseType3)), bt3Mixin6.ThisDependencies[typeof (IBaseType32)].GetImplementer());
+      Assert.AreSame (
+          TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin4)],
+          bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].GetImplementer());
 
-        Assert.IsTrue (bt3Mixin6.BaseDependencies.ContainsKey (typeof (IBaseType34)));
-        Assert.IsTrue (bt3Mixin6.BaseDependencies.ContainsKey (typeof (IBT3Mixin4)));
-        Assert.IsFalse (bt3Mixin6.BaseDependencies.ContainsKey (typeof (IBaseType31)));
-        Assert.IsFalse (bt3Mixin6.BaseDependencies.ContainsKey (typeof (IBaseType32)));
-        Assert.IsTrue (bt3Mixin6.BaseDependencies.ContainsKey (typeof (IBaseType33)), "indirect dependency");
+      Assert.IsTrue (bt3Mixin6.BaseDependencies.ContainsKey (typeof (IBaseType34)));
+      Assert.IsTrue (bt3Mixin6.BaseDependencies.ContainsKey (typeof (IBT3Mixin4)));
+      Assert.IsFalse (bt3Mixin6.BaseDependencies.ContainsKey (typeof (IBaseType31)));
+      Assert.IsFalse (bt3Mixin6.BaseDependencies.ContainsKey (typeof (IBaseType32)));
+      Assert.IsTrue (bt3Mixin6.BaseDependencies.ContainsKey (typeof (IBaseType33)), "indirect dependency");
 
-        Assert.AreEqual (
-            TypeFactory.GetActiveConfiguration (typeof (BaseType3)).RequiredBaseCallTypes[typeof (IBaseType34)],
-            bt3Mixin6.BaseDependencies[typeof (IBaseType34)].RequiredType);
+      Assert.AreEqual (
+          TypeFactory.GetActiveConfiguration (typeof (BaseType3)).RequiredBaseCallTypes[typeof (IBaseType34)],
+          bt3Mixin6.BaseDependencies[typeof (IBaseType34)].RequiredType);
 
-        Assert.AreSame (TypeFactory.GetActiveConfiguration (typeof (BaseType3)), bt3Mixin6.BaseDependencies[typeof (IBaseType34)].GetImplementer());
-        Assert.AreSame (
-            TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin4)],
-            bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].GetImplementer());
+      Assert.AreSame (TypeFactory.GetActiveConfiguration (typeof (BaseType3)), bt3Mixin6.BaseDependencies[typeof (IBaseType34)].GetImplementer());
+      Assert.AreSame (
+          TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin4)],
+          bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].GetImplementer());
 
-        Assert.IsFalse (bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].IsAggregate);
-        Assert.IsFalse (bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].IsAggregate);
+      Assert.IsFalse (bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].IsAggregate);
+      Assert.IsFalse (bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].IsAggregate);
 
-        Assert.AreEqual (0, bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].AggregatedDependencies.Count);
+      Assert.AreEqual (0, bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].AggregatedDependencies.Count);
 
-        Assert.IsTrue (
-            bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].RequiredType.RequiringDependencies.ContainsKey (
-                bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)]));
-        Assert.IsNull (bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].Aggregator);
-      }
+      Assert.IsTrue (
+          bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].RequiredType.RequiringDependencies.ContainsKey (
+              bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)]));
+      Assert.IsNull (bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].Aggregator);
     }
 
     [Test]

@@ -331,6 +331,49 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     }
 
     [Test]
+    public void BuildContext_ExtendParentContext ()
+    {
+      ClassContext parentContext = new ClassContext (typeof (BaseType2));
+      parentContext.AddMixin (typeof (BT2Mixin1));
+
+      MixinConfiguration parentConfiguration = new MixinConfiguration (null);
+      parentConfiguration.AddClassContext (parentContext);
+
+      ClassContextBuilder classContextBuilder = new ClassContextBuilder (_parentBuilderMock, typeof (BaseType2), parentContext);
+      classContextBuilder.AddMixins<BT1Mixin1, BT1Mixin2> ();
+
+      MixinConfiguration mixinConfiguration = new MixinConfiguration (parentConfiguration);
+      ClassContext builtContext = classContextBuilder.BuildClassContext (mixinConfiguration);
+      Assert.IsTrue (mixinConfiguration.ContainsClassContext (builtContext.Type));
+      
+      Assert.AreEqual (3, builtContext.MixinCount);
+      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT2Mixin1)));
+      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin1)));
+      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin2)));
+    }
+
+    [Test]
+    public void BuildContext_ReplaceParentContext ()
+    {
+      ClassContext parentContext = new ClassContext (typeof (BaseType2));
+      parentContext.AddMixin (typeof (BT2Mixin1));
+
+      MixinConfiguration parentConfiguration = new MixinConfiguration (null);
+      parentConfiguration.AddClassContext (parentContext);
+
+      ClassContextBuilder classContextBuilder = new ClassContextBuilder (_parentBuilderMock, typeof (BaseType2), parentContext);
+      classContextBuilder.IgnoreParent ().AddMixins<BT1Mixin1, BT1Mixin2> ();
+
+      MixinConfiguration mixinConfiguration = new MixinConfiguration (parentConfiguration);
+      ClassContext builtContext = classContextBuilder.BuildClassContext (mixinConfiguration);
+      Assert.IsTrue (mixinConfiguration.ContainsClassContext (builtContext.Type));
+
+      Assert.AreEqual (2, builtContext.MixinCount);
+      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin1)));
+      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin2)));
+    }
+
+    [Test]
     public void ParentMembers ()
     {
       _mockRepository.BackToRecordAll();

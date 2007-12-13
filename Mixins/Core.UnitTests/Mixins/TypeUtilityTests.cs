@@ -158,7 +158,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void HasMixinsOnMixedTypesWithoutMixins ()
     {
-      using (MixinConfiguration.ScopedExtend (new ClassContext (typeof (object))))
+      using (MixinConfiguration.BuildNew().ForClass<object>().EnterScope())
       {
         Assert.IsFalse (TypeUtility.HasMixins (typeof (object)));
       }

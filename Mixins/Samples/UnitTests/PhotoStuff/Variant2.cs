@@ -13,32 +13,26 @@ namespace Rubicon.Mixins.Samples.UnitTests.PhotoStuff
     [Test]
     public void StoredMembers()
     {
-      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
-      {
-        Photo photo = ObjectFactory.Create<Photo>().With();
-        Assert.IsNotNull (photo.Document);
-        PropertyInfo[] properties = Array.FindAll (photo.GetType ().GetProperties (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance),
-            delegate (PropertyInfo pi)
-            {
-              return pi.IsDefined (typeof (StoredAttribute), false);
-            });
+      Photo photo = ObjectFactory.Create<Photo>().With();
+      Assert.IsNotNull (photo.Document);
+      PropertyInfo[] properties = Array.FindAll (photo.GetType ().GetProperties (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance),
+          delegate (PropertyInfo pi)
+          {
+            return pi.IsDefined (typeof (StoredAttribute), false);
+          });
 
-        Assert.AreEqual (1, properties.Length);
-      }
+      Assert.AreEqual (1, properties.Length);
     }
 
     [Test]
     public void InitializeWithConcreteDocument()
     {
-      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
-      {
-        Document doc = new Document();
-        doc.CreatedAt = new DateTime (2006, 01, 01);
-        Photo photo = ObjectFactory.Create<Photo>().With ();
-        Mixin.Get<DocumentMixin> (photo).Document = doc;
-        Assert.IsNotNull (photo.Document);
-        Assert.AreEqual (new DateTime (2006, 01, 01), photo.Document.CreatedAt);
-      }
+      Document doc = new Document();
+      doc.CreatedAt = new DateTime (2006, 01, 01);
+      Photo photo = ObjectFactory.Create<Photo>().With ();
+      Mixin.Get<DocumentMixin> (photo).Document = doc;
+      Assert.IsNotNull (photo.Document);
+      Assert.AreEqual (new DateTime (2006, 01, 01), photo.Document.CreatedAt);
     }
   }
 }

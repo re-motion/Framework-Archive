@@ -12,16 +12,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void CorrectlyCopiesContext()
     {
-      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
-      {
-        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
-        Assert.IsNull (targetClass.Parent);
-        Assert.AreEqual ("BaseType1", targetClass.Name);
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      Assert.IsNull (targetClass.Parent);
+      Assert.AreEqual ("BaseType1", targetClass.Name);
 
-        Assert.IsTrue (targetClass.Mixins.ContainsKey (typeof (BT1Mixin1)));
-        Assert.IsTrue (targetClass.Mixins.ContainsKey (typeof (BT1Mixin2)));
-        Assert.AreSame (targetClass, targetClass.Mixins[typeof (BT1Mixin1)].Parent);
-      }
+      Assert.IsTrue (targetClass.Mixins.ContainsKey (typeof (BT1Mixin1)));
+      Assert.IsTrue (targetClass.Mixins.ContainsKey (typeof (BT1Mixin2)));
+      Assert.AreSame (targetClass, targetClass.Mixins[typeof (BT1Mixin1)].Parent);
     }
 
     [Test]
@@ -44,32 +41,26 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void MixinIndicesCorrespondToPositionInArray()
     {
-      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
-      {
-        TargetClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
-        for (int i = 0; i < bt3.Mixins.Count; ++i)
-          Assert.AreEqual (i, bt3.Mixins[i].MixinIndex);
-      }
+      TargetClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
+      for (int i = 0; i < bt3.Mixins.Count; ++i)
+        Assert.AreEqual (i, bt3.Mixins[i].MixinIndex);
     }
 
     [Test]
     public void OverriddenMixinMethod()
     {
-      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
-      {
-        TargetClassDefinition overrider = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers));
-        MixinDefinition mixin = overrider.Mixins[typeof (MixinWithAbstractMembers)];
-        Assert.IsNotNull (mixin);
-        Assert.IsTrue (mixin.HasOverriddenMembers());
+      TargetClassDefinition overrider = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers));
+      MixinDefinition mixin = overrider.Mixins[typeof (MixinWithAbstractMembers)];
+      Assert.IsNotNull (mixin);
+      Assert.IsTrue (mixin.HasOverriddenMembers());
 
-        MethodDefinition method = mixin.Methods[typeof (MixinWithAbstractMembers).GetMethod ("AbstractMethod", BindingFlags.Instance | BindingFlags.NonPublic)];
-        Assert.IsNotNull (method);
-        MethodDefinition overridingMethod = overrider.Methods[typeof (ClassOverridingMixinMembers).GetMethod ("AbstractMethod")];
-        Assert.IsNotNull (overridingMethod);
-        Assert.AreSame (method, overridingMethod.Base);
-        Assert.IsTrue (method.Overrides.ContainsKey (typeof (ClassOverridingMixinMembers)));
-        Assert.AreSame (overridingMethod, method.Overrides[typeof (ClassOverridingMixinMembers)]);
-      }
+      MethodDefinition method = mixin.Methods[typeof (MixinWithAbstractMembers).GetMethod ("AbstractMethod", BindingFlags.Instance | BindingFlags.NonPublic)];
+      Assert.IsNotNull (method);
+      MethodDefinition overridingMethod = overrider.Methods[typeof (ClassOverridingMixinMembers).GetMethod ("AbstractMethod")];
+      Assert.IsNotNull (overridingMethod);
+      Assert.AreSame (method, overridingMethod.Base);
+      Assert.IsTrue (method.Overrides.ContainsKey (typeof (ClassOverridingMixinMembers)));
+      Assert.AreSame (overridingMethod, method.Overrides[typeof (ClassOverridingMixinMembers)]);
     }
 
     [Test]

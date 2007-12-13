@@ -181,7 +181,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
         classContext.AddCompleteInterface (completeInterface);
       foreach (ClassContext typeToInheritFrom in _typesToInheritFrom)
         classContext.InheritFrom (typeToInheritFrom);
-      mixinConfiguration.AddClassContext (classContext);
+      mixinConfiguration.AddOrReplaceClassContext (classContext);
       return classContext;
     }
 

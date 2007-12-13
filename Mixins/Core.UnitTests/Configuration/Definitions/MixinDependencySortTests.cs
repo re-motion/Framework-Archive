@@ -238,7 +238,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
       classContext.GetOrAddMixinContext (typeof (MixinWithAdditionalClassDependency)).AddExplicitDependency (typeof (MixinWithNoAdditionalDependency));
       classContext.GetOrAddMixinContext (typeof (MixinWithAdditionalInterfaceDependency)).AddExplicitDependency (typeof (IMixinWithAdditionalClassDependency));
 
-      using (MixinConfiguration.ScopedExtend (classContext))
+      MixinConfiguration configuration = new MixinConfiguration (null);
+      configuration.AddClassContext (classContext);
+
+      using (configuration.EnterScope())
       {
         TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (TargetClassWithAdditionalDependencies));
         Assert.AreEqual (0, targetClass.Mixins[typeof (MixinWithAdditionalInterfaceDependency)].MixinIndex);

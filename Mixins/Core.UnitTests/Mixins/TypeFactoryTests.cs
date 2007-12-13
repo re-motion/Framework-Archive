@@ -4,9 +4,7 @@ using Rubicon.Mixins;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
 using NUnit.Framework;
-using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.UnitTests.SampleTypes;
-using System.Reflection;
 
 namespace Rubicon.Mixins.UnitTests.Mixins
 {

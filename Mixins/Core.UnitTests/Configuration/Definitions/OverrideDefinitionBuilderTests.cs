@@ -13,112 +13,103 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void MethodOverrides ()
     {
-      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
-      {
-        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
-        MixinDefinition mixin1 = targetClass.Mixins[typeof (BT1Mixin1)];
-        MixinDefinition mixin2 = targetClass.Mixins[typeof (BT1Mixin2)];
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      MixinDefinition mixin1 = targetClass.Mixins[typeof (BT1Mixin1)];
+      MixinDefinition mixin2 = targetClass.Mixins[typeof (BT1Mixin2)];
 
-        Assert.IsFalse (mixin1.HasOverriddenMembers());
-        Assert.IsFalse (mixin2.HasOverriddenMembers ());
-        Assert.IsTrue (targetClass.HasOverriddenMembers ());
+      Assert.IsFalse (mixin1.HasOverriddenMembers());
+      Assert.IsFalse (mixin2.HasOverriddenMembers ());
+      Assert.IsTrue (targetClass.HasOverriddenMembers ());
 
-        MethodInfo baseMethod1 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[0]);
-        MethodInfo baseMethod2 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[] {typeof (string)});
-        MethodInfo mixinMethod1 = typeof (BT1Mixin1).GetMethod ("VirtualMethod", new Type[0]);
+      MethodInfo baseMethod1 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[0]);
+      MethodInfo baseMethod2 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[] {typeof (string)});
+      MethodInfo mixinMethod1 = typeof (BT1Mixin1).GetMethod ("VirtualMethod", new Type[0]);
 
-        MethodDefinition overridden = targetClass.Methods[baseMethod1];
+      MethodDefinition overridden = targetClass.Methods[baseMethod1];
 
-        Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin1)));
-        MethodDefinition overrider = overridden.Overrides[typeof (BT1Mixin1)];
+      Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin1)));
+      MethodDefinition overrider = overridden.Overrides[typeof (BT1Mixin1)];
 
-        Assert.AreSame (overrider, mixin1.Methods[mixinMethod1]);
-        Assert.IsNotNull (overrider.Base);
-        Assert.AreSame (overridden, overrider.Base);
+      Assert.AreSame (overrider, mixin1.Methods[mixinMethod1]);
+      Assert.IsNotNull (overrider.Base);
+      Assert.AreSame (overridden, overrider.Base);
 
-        MethodDefinition notOverridden = targetClass.Methods[baseMethod2];
-        Assert.AreEqual (0, notOverridden.Overrides.Count);
+      MethodDefinition notOverridden = targetClass.Methods[baseMethod2];
+      Assert.AreEqual (0, notOverridden.Overrides.Count);
 
-        Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin2)));
-        overrider = overridden.Overrides[typeof (BT1Mixin2)];
+      Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin2)));
+      overrider = overridden.Overrides[typeof (BT1Mixin2)];
 
-        Assert.IsTrue (new List<MemberDefinition> (mixin2.GetAllOverrides()).Contains (overrider));
-        Assert.AreSame (overridden, overrider.Base);
-      }
+      Assert.IsTrue (new List<MemberDefinition> (mixin2.GetAllOverrides()).Contains (overrider));
+      Assert.AreSame (overridden, overrider.Base);
     }
 
     [Test]
     public void PropertyOverrides ()
     {
-      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
-      {
-        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
-        MixinDefinition mixin1 = targetClass.Mixins[typeof (BT1Mixin1)];
-        MixinDefinition mixin2 = targetClass.Mixins[typeof (BT1Mixin2)];
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      MixinDefinition mixin1 = targetClass.Mixins[typeof (BT1Mixin1)];
+      MixinDefinition mixin2 = targetClass.Mixins[typeof (BT1Mixin2)];
 
-        PropertyInfo baseProperty1 = typeof (BaseType1).GetProperty ("VirtualProperty");
-        PropertyInfo baseProperty2 = typeof (BaseType1).GetProperty ("Item", new Type[] {typeof (string)});
-        PropertyInfo mixinProperty1 = typeof (BT1Mixin1).GetProperty ("VirtualProperty");
+      PropertyInfo baseProperty1 = typeof (BaseType1).GetProperty ("VirtualProperty");
+      PropertyInfo baseProperty2 = typeof (BaseType1).GetProperty ("Item", new Type[] {typeof (string)});
+      PropertyInfo mixinProperty1 = typeof (BT1Mixin1).GetProperty ("VirtualProperty");
 
-        PropertyDefinition overridden = targetClass.Properties[baseProperty1];
+      PropertyDefinition overridden = targetClass.Properties[baseProperty1];
 
-        Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin1)));
+      Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin1)));
 
-        PropertyDefinition overrider = overridden.Overrides[typeof (BT1Mixin1)];
+      PropertyDefinition overrider = overridden.Overrides[typeof (BT1Mixin1)];
 
-        Assert.AreSame (overrider, mixin1.Properties[mixinProperty1]);
-        Assert.IsNotNull (overrider.Base);
-        Assert.AreSame (overridden, overrider.Base);
-        Assert.AreSame (overridden.SetMethod, overrider.SetMethod.Base);
+      Assert.AreSame (overrider, mixin1.Properties[mixinProperty1]);
+      Assert.IsNotNull (overrider.Base);
+      Assert.AreSame (overridden, overrider.Base);
+      Assert.AreSame (overridden.SetMethod, overrider.SetMethod.Base);
 
-        PropertyDefinition notOverridden = targetClass.Properties[baseProperty2];
-        Assert.AreEqual (0, notOverridden.Overrides.Count);
+      PropertyDefinition notOverridden = targetClass.Properties[baseProperty2];
+      Assert.AreEqual (0, notOverridden.Overrides.Count);
 
-        Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin2)));
-        overrider = overridden.Overrides[typeof (BT1Mixin2)];
+      Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin2)));
+      overrider = overridden.Overrides[typeof (BT1Mixin2)];
 
-        Assert.IsTrue (new List<MemberDefinition> (mixin2.GetAllOverrides()).Contains (overrider));
-        Assert.AreSame (overridden, overrider.Base);
-        Assert.AreSame (overridden.GetMethod, overrider.GetMethod.Base);
-      }
+      Assert.IsTrue (new List<MemberDefinition> (mixin2.GetAllOverrides()).Contains (overrider));
+      Assert.AreSame (overridden, overrider.Base);
+      Assert.AreSame (overridden.GetMethod, overrider.GetMethod.Base);
     }
 
     [Test]
     public void EventOverrides ()
     {
-      using (MixinConfiguration.ScopedExtend (Assembly.GetExecutingAssembly ()))
-      {
-        TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
-        MixinDefinition mixin1 = targetClass.Mixins[typeof (BT1Mixin1)];
-        MixinDefinition mixin2 = targetClass.Mixins[typeof (BT1Mixin2)];
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      MixinDefinition mixin1 = targetClass.Mixins[typeof (BT1Mixin1)];
+      MixinDefinition mixin2 = targetClass.Mixins[typeof (BT1Mixin2)];
 
-        EventInfo baseEvent1 = typeof (BaseType1).GetEvent ("VirtualEvent");
-        EventInfo baseEvent2 = typeof (BaseType1).GetEvent ("ExplicitEvent");
-        EventInfo mixinEvent1 = typeof (BT1Mixin1).GetEvent ("VirtualEvent");
+      EventInfo baseEvent1 = typeof (BaseType1).GetEvent ("VirtualEvent");
+      EventInfo baseEvent2 = typeof (BaseType1).GetEvent ("ExplicitEvent");
+      EventInfo mixinEvent1 = typeof (BT1Mixin1).GetEvent ("VirtualEvent");
 
-        EventDefinition overridden = targetClass.Events[baseEvent1];
+      EventDefinition overridden = targetClass.Events[baseEvent1];
 
-        Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin1)));
+      Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin1)));
 
-        EventDefinition overrider = overridden.Overrides[typeof (BT1Mixin1)];
+      EventDefinition overrider = overridden.Overrides[typeof (BT1Mixin1)];
 
-        Assert.AreSame (overrider, mixin1.Events[mixinEvent1]);
-        Assert.IsNotNull (overrider.Base);
-        Assert.AreSame (overridden, overrider.Base);
-        Assert.AreSame (overridden.RemoveMethod, overrider.RemoveMethod.Base);
-        Assert.AreSame (overridden.AddMethod, overrider.AddMethod.Base);
+      Assert.AreSame (overrider, mixin1.Events[mixinEvent1]);
+      Assert.IsNotNull (overrider.Base);
+      Assert.AreSame (overridden, overrider.Base);
+      Assert.AreSame (overridden.RemoveMethod, overrider.RemoveMethod.Base);
+      Assert.AreSame (overridden.AddMethod, overrider.AddMethod.Base);
 
-        EventDefinition notOverridden = targetClass.Events[baseEvent2];
-        Assert.AreEqual (0, notOverridden.Overrides.Count);
+      EventDefinition notOverridden = targetClass.Events[baseEvent2];
+      Assert.AreEqual (0, notOverridden.Overrides.Count);
 
-        Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin2)));
-        overrider = overridden.Overrides[typeof (BT1Mixin2)];
+      Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin2)));
+      overrider = overridden.Overrides[typeof (BT1Mixin2)];
 
-        Assert.IsTrue (new List<MemberDefinition> (mixin2.GetAllOverrides()).Contains (overrider));
-        Assert.AreSame (overridden, overrider.Base);
-        Assert.AreSame (overridden.AddMethod, overrider.AddMethod.Base);
-        Assert.AreSame (overridden.RemoveMethod, overrider.RemoveMethod.Base);
-      }
+      Assert.IsTrue (new List<MemberDefinition> (mixin2.GetAllOverrides()).Contains (overrider));
+      Assert.AreSame (overridden, overrider.Base);
+      Assert.AreSame (overridden.AddMethod, overrider.AddMethod.Base);
+      Assert.AreSame (overridden.RemoveMethod, overrider.RemoveMethod.Base);
     }
 
     [Test]

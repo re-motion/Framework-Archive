@@ -11,15 +11,11 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 {
   public abstract class MixinBaseTest
   {
-    private IDisposable currentConfiguration = null;
-
     [SetUp]
     public virtual void SetUp()
     {
       ResetGeneratedAssemblies ();
       ConcreteTypeBuilder.SetCurrent (null);
-      
-      currentConfiguration = MixinConfiguration.ScopedExtend (Assembly.GetExecutingAssembly ());
     }
 
     private void ResetGeneratedAssemblies ()
@@ -33,8 +29,6 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [TearDown]
     public virtual void TearDown()
     {
-      if (currentConfiguration != null)
-        currentConfiguration.Dispose();
 
 #if !NO_PEVERIFY
       string[] paths;

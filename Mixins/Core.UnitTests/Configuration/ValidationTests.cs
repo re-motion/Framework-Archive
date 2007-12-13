@@ -81,122 +81,119 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void AllIsVisitedOnce ()
     {
-      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
+      IValidationLog log = MixinConfiguration.ActiveConfiguration.Validate();
+
+      Dictionary<IVisitableDefinition, IVisitableDefinition> visitedDefinitions = new Dictionary<IVisitableDefinition, IVisitableDefinition>();
+      foreach (ValidationResult result in log.GetResults())
       {
-        IValidationLog log = MixinConfiguration.ActiveConfiguration.Validate();
-
-        Dictionary<IVisitableDefinition, IVisitableDefinition> visitedDefinitions = new Dictionary<IVisitableDefinition, IVisitableDefinition>();
-        foreach (ValidationResult result in log.GetResults())
-        {
-          Assert.IsNotNull (result.Definition);
-          Assert.IsFalse (visitedDefinitions.ContainsKey (result.Definition));
-          visitedDefinitions.Add (result.Definition, result.Definition);
-        }
-
-        TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
-        Assert.IsTrue (visitedDefinitions.ContainsKey (bt1));
-        TargetClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
-        Assert.IsTrue (visitedDefinitions.ContainsKey (bt3));
-        TargetClassDefinition btWithAdditionalDependencies = TypeFactory.GetActiveConfiguration (typeof (TargetClassWithAdditionalDependencies));
-        Assert.IsTrue (visitedDefinitions.ContainsKey (btWithAdditionalDependencies));
-
-        MixinDefinition bt1m1 = bt1.Mixins[typeof (BT1Mixin1)];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (bt1m1));
-        MixinDefinition bt1m2 = bt1.Mixins[typeof (BT1Mixin2)];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (bt1m2));
-        MixinDefinition bt3m1 = bt3.Mixins[typeof (BT3Mixin1)];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (bt3m1));
-        MixinDefinition bt3m2 = bt3.Mixins[typeof (BT3Mixin2)];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (bt3m2));
-        MixinDefinition bt3m3 = bt3.GetMixinByConfiguredType (typeof (BT3Mixin3<,>));
-        Assert.IsTrue (visitedDefinitions.ContainsKey (bt3m3));
-        MixinDefinition bt3m4 = bt3.Mixins[typeof (BT3Mixin4)];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (bt3m4));
-        MixinDefinition bt3m5 = bt3.Mixins[typeof (BT3Mixin5)];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (bt3m5));
-
-        MethodDefinition m1 = bt1.Methods[typeof (BaseType1).GetMethod ("VirtualMethod", Type.EmptyTypes)];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (m1));
-        MethodDefinition m2 = bt1.Methods[typeof (BaseType1).GetMethod ("VirtualMethod", new Type[] {typeof (string)})];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (m2));
-        MethodDefinition m3 = bt1m1.Methods[typeof (BT1Mixin1).GetMethod ("VirtualMethod")];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (m3));
-        MethodDefinition m4 = bt1m1.Methods[typeof (BT1Mixin1).GetMethod ("IntroducedMethod")];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (m4));
-
-        PropertyDefinition p1 = bt1.Properties[typeof (BaseType1).GetProperty ("VirtualProperty")];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (p1));
-        MethodDefinition m5 = p1.GetMethod;
-        Assert.IsTrue (visitedDefinitions.ContainsKey (m5));
-        MethodDefinition m6 = p1.SetMethod;
-        Assert.IsTrue (visitedDefinitions.ContainsKey (m6));
-        PropertyDefinition p2 = bt1m1.Properties[typeof (BT1Mixin1).GetProperty ("VirtualProperty")];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (p2));
-
-        EventDefinition e1 = bt1.Events[typeof (BaseType1).GetEvent ("VirtualEvent")];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (e1));
-        MethodDefinition m7 = e1.AddMethod;
-        Assert.IsTrue (visitedDefinitions.ContainsKey (m7));
-        MethodDefinition m8 = e1.RemoveMethod;
-        Assert.IsTrue (visitedDefinitions.ContainsKey (m8));
-        EventDefinition e2 = bt1m1.Events[typeof (BT1Mixin1).GetEvent ("VirtualEvent")];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (e2));
-
-        InterfaceIntroductionDefinition i1 = bt1m1.InterfaceIntroductions[typeof (IBT1Mixin1)];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (i1));
-        MethodIntroductionDefinition im1 = i1.IntroducedMethods[typeof (IBT1Mixin1).GetMethod ("IntroducedMethod")];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (im1));
-        PropertyIntroductionDefinition im2 = i1.IntroducedProperties[typeof (IBT1Mixin1).GetProperty ("IntroducedProperty")];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (im2));
-        EventIntroductionDefinition im3 = i1.IntroducedEvents[typeof (IBT1Mixin1).GetEvent ("IntroducedEvent")];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (im3));
-
-        AttributeDefinition a1 = bt1.CustomAttributes.GetFirstItem (typeof (BT1Attribute));
-        Assert.IsTrue (visitedDefinitions.ContainsKey (a1));
-        AttributeDefinition a2 = bt1m1.CustomAttributes.GetFirstItem (typeof (BT1M1Attribute));
-        Assert.IsTrue (visitedDefinitions.ContainsKey (a2));
-        AttributeDefinition a3 = m1.CustomAttributes.GetFirstItem (typeof (BT1Attribute));
-        Assert.IsTrue (visitedDefinitions.ContainsKey (a3));
-        AttributeDefinition a4 = p1.CustomAttributes.GetFirstItem (typeof (BT1Attribute));
-        Assert.IsTrue (visitedDefinitions.ContainsKey (a4));
-        AttributeDefinition a5 = e1.CustomAttributes.GetFirstItem (typeof (BT1Attribute));
-        Assert.IsTrue (visitedDefinitions.ContainsKey (a5));
-        AttributeDefinition a6 = im1.ImplementingMember.CustomAttributes.GetFirstItem (typeof (BT1M1Attribute));
-        Assert.IsTrue (visitedDefinitions.ContainsKey (a6));
-        AttributeDefinition a7 = im2.ImplementingMember.CustomAttributes.GetFirstItem (typeof (BT1M1Attribute));
-        Assert.IsTrue (visitedDefinitions.ContainsKey (a7));
-        AttributeDefinition a8 = im3.ImplementingMember.CustomAttributes.GetFirstItem (typeof (BT1M1Attribute));
-        Assert.IsTrue (visitedDefinitions.ContainsKey (a8));
-
-        AttributeIntroductionDefinition ai1 = bt1.IntroducedAttributes.GetFirstItem (typeof (BT1M1Attribute));
-        Assert.IsTrue (visitedDefinitions.ContainsKey (ai1));
-        AttributeIntroductionDefinition ai2 = m1.IntroducedAttributes.GetFirstItem (typeof (BT1M1Attribute));
-        Assert.IsTrue (visitedDefinitions.ContainsKey (ai2));
-
-        RequiredBaseCallTypeDefinition bc1 = bt3.RequiredBaseCallTypes[typeof (IBaseType34)];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (bc1));
-        RequiredMethodDefinition bcm1 = bc1.Methods[typeof (IBaseType34).GetMethod ("IfcMethod")];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (bcm1));
-
-        RequiredFaceTypeDefinition ft1 = bt3.RequiredFaceTypes[typeof (IBaseType32)];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (ft1));
-        RequiredMethodDefinition fm1 = ft1.Methods[typeof (IBaseType32).GetMethod ("IfcMethod")];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (fm1));
-
-        RequiredMixinTypeDefinition rmt1 = btWithAdditionalDependencies.RequiredMixinTypes[typeof (IMixinWithAdditionalClassDependency)];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (rmt1));
-        RequiredMixinTypeDefinition rmt2 = btWithAdditionalDependencies.RequiredMixinTypes[typeof (MixinWithNoAdditionalDependency)];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (rmt2));
-
-        ThisDependencyDefinition td1 = bt3m1.ThisDependencies[typeof (IBaseType31)];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (td1));
-
-        BaseDependencyDefinition bd1 = bt3m1.BaseDependencies[typeof (IBaseType31)];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (bd1));
-
-        MixinDependencyDefinition md1 = btWithAdditionalDependencies.Mixins[typeof (MixinWithAdditionalClassDependency)].MixinDependencies[typeof (MixinWithNoAdditionalDependency)];
-        Assert.IsTrue (visitedDefinitions.ContainsKey (md1));
+        Assert.IsNotNull (result.Definition);
+        Assert.IsFalse (visitedDefinitions.ContainsKey (result.Definition));
+        visitedDefinitions.Add (result.Definition, result.Definition);
       }
+
+      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (bt1));
+      TargetClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (bt3));
+      TargetClassDefinition btWithAdditionalDependencies = TypeFactory.GetActiveConfiguration (typeof (TargetClassWithAdditionalDependencies));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (btWithAdditionalDependencies));
+
+      MixinDefinition bt1m1 = bt1.Mixins[typeof (BT1Mixin1)];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (bt1m1));
+      MixinDefinition bt1m2 = bt1.Mixins[typeof (BT1Mixin2)];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (bt1m2));
+      MixinDefinition bt3m1 = bt3.Mixins[typeof (BT3Mixin1)];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (bt3m1));
+      MixinDefinition bt3m2 = bt3.Mixins[typeof (BT3Mixin2)];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (bt3m2));
+      MixinDefinition bt3m3 = bt3.GetMixinByConfiguredType (typeof (BT3Mixin3<,>));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (bt3m3));
+      MixinDefinition bt3m4 = bt3.Mixins[typeof (BT3Mixin4)];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (bt3m4));
+      MixinDefinition bt3m5 = bt3.Mixins[typeof (BT3Mixin5)];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (bt3m5));
+
+      MethodDefinition m1 = bt1.Methods[typeof (BaseType1).GetMethod ("VirtualMethod", Type.EmptyTypes)];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (m1));
+      MethodDefinition m2 = bt1.Methods[typeof (BaseType1).GetMethod ("VirtualMethod", new Type[] {typeof (string)})];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (m2));
+      MethodDefinition m3 = bt1m1.Methods[typeof (BT1Mixin1).GetMethod ("VirtualMethod")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (m3));
+      MethodDefinition m4 = bt1m1.Methods[typeof (BT1Mixin1).GetMethod ("IntroducedMethod")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (m4));
+
+      PropertyDefinition p1 = bt1.Properties[typeof (BaseType1).GetProperty ("VirtualProperty")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (p1));
+      MethodDefinition m5 = p1.GetMethod;
+      Assert.IsTrue (visitedDefinitions.ContainsKey (m5));
+      MethodDefinition m6 = p1.SetMethod;
+      Assert.IsTrue (visitedDefinitions.ContainsKey (m6));
+      PropertyDefinition p2 = bt1m1.Properties[typeof (BT1Mixin1).GetProperty ("VirtualProperty")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (p2));
+
+      EventDefinition e1 = bt1.Events[typeof (BaseType1).GetEvent ("VirtualEvent")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (e1));
+      MethodDefinition m7 = e1.AddMethod;
+      Assert.IsTrue (visitedDefinitions.ContainsKey (m7));
+      MethodDefinition m8 = e1.RemoveMethod;
+      Assert.IsTrue (visitedDefinitions.ContainsKey (m8));
+      EventDefinition e2 = bt1m1.Events[typeof (BT1Mixin1).GetEvent ("VirtualEvent")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (e2));
+
+      InterfaceIntroductionDefinition i1 = bt1m1.InterfaceIntroductions[typeof (IBT1Mixin1)];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (i1));
+      MethodIntroductionDefinition im1 = i1.IntroducedMethods[typeof (IBT1Mixin1).GetMethod ("IntroducedMethod")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (im1));
+      PropertyIntroductionDefinition im2 = i1.IntroducedProperties[typeof (IBT1Mixin1).GetProperty ("IntroducedProperty")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (im2));
+      EventIntroductionDefinition im3 = i1.IntroducedEvents[typeof (IBT1Mixin1).GetEvent ("IntroducedEvent")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (im3));
+
+      AttributeDefinition a1 = bt1.CustomAttributes.GetFirstItem (typeof (BT1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (a1));
+      AttributeDefinition a2 = bt1m1.CustomAttributes.GetFirstItem (typeof (BT1M1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (a2));
+      AttributeDefinition a3 = m1.CustomAttributes.GetFirstItem (typeof (BT1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (a3));
+      AttributeDefinition a4 = p1.CustomAttributes.GetFirstItem (typeof (BT1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (a4));
+      AttributeDefinition a5 = e1.CustomAttributes.GetFirstItem (typeof (BT1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (a5));
+      AttributeDefinition a6 = im1.ImplementingMember.CustomAttributes.GetFirstItem (typeof (BT1M1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (a6));
+      AttributeDefinition a7 = im2.ImplementingMember.CustomAttributes.GetFirstItem (typeof (BT1M1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (a7));
+      AttributeDefinition a8 = im3.ImplementingMember.CustomAttributes.GetFirstItem (typeof (BT1M1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (a8));
+
+      AttributeIntroductionDefinition ai1 = bt1.IntroducedAttributes.GetFirstItem (typeof (BT1M1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (ai1));
+      AttributeIntroductionDefinition ai2 = m1.IntroducedAttributes.GetFirstItem (typeof (BT1M1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (ai2));
+
+      RequiredBaseCallTypeDefinition bc1 = bt3.RequiredBaseCallTypes[typeof (IBaseType34)];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (bc1));
+      RequiredMethodDefinition bcm1 = bc1.Methods[typeof (IBaseType34).GetMethod ("IfcMethod")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (bcm1));
+
+      RequiredFaceTypeDefinition ft1 = bt3.RequiredFaceTypes[typeof (IBaseType32)];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (ft1));
+      RequiredMethodDefinition fm1 = ft1.Methods[typeof (IBaseType32).GetMethod ("IfcMethod")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (fm1));
+
+      RequiredMixinTypeDefinition rmt1 = btWithAdditionalDependencies.RequiredMixinTypes[typeof (IMixinWithAdditionalClassDependency)];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (rmt1));
+      RequiredMixinTypeDefinition rmt2 = btWithAdditionalDependencies.RequiredMixinTypes[typeof (MixinWithNoAdditionalDependency)];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (rmt2));
+
+      ThisDependencyDefinition td1 = bt3m1.ThisDependencies[typeof (IBaseType31)];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (td1));
+
+      BaseDependencyDefinition bd1 = bt3m1.BaseDependencies[typeof (IBaseType31)];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (bd1));
+
+      MixinDependencyDefinition md1 = btWithAdditionalDependencies.Mixins[typeof (MixinWithAdditionalClassDependency)].MixinDependencies[typeof (MixinWithNoAdditionalDependency)];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (md1));
     }
 
     [Test]

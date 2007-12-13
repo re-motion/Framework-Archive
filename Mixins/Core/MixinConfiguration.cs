@@ -117,20 +117,6 @@ namespace Rubicon.Mixins
     }
 
     /// <summary>
-    /// Creates a new, empty mixin configuration and temporarily associates it with the current thread (actually <see cref="CallContext"/>). The
-    /// original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method is called.
-    /// </summary>
-    /// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
-    /// <remarks>
-    /// This is equivalent to using the <see cref="ScopedReplace"/> method and passing it an empty
-    /// <see cref="MixinConfiguration"/> that does not inherit anything from a parent configuration.
-    /// </remarks>
-    public static IDisposable ScopedEmpty ()
-    {
-      return new MixinConfiguration (null).EnterScope();
-    }
-
-    /// <summary>
     /// Creates an <see cref="MixinConfiguration"/> and temporarily associates it with the current thread (actually <see cref="CallContext"/>). The
     /// original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method is called. The created configuration inherits
     /// from the current <see cref="ActiveConfiguration"/> and associates the given <paramref name="baseType"/> with the given <paramref name="mixinTypes"/>
@@ -146,41 +132,10 @@ namespace Rubicon.Mixins
       ArgumentUtility.CheckNotNull ("baseType", baseType);
       ArgumentUtility.CheckNotNull ("mixinTypes", mixinTypes);
 
-      return ScopedExtend (new ClassContext (baseType, mixinTypes));
-    }
-
-    /// <summary>
-    /// Creates an <see cref="MixinConfiguration"/> and temporarily associates it with the current thread (actually <see cref="CallContext"/>). The
-    /// original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method is called. The created configuration inherits
-    /// from the current <see cref="ActiveConfiguration"/> and includes the given <paramref name="classContexts"/> (overriding any existing configuration
-    /// for the same types).
-    /// </summary>
-    /// <param name="classContexts">The class contexts to be included in the mixin configuration.</param>
-    /// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
-    /// <exception cref="ArgumentNullException">The <paramref name="classContexts"/> parameter is <see langword="null"/>.</exception>
-    public static IDisposable ScopedExtend (params ClassContext[] classContexts)
-    {
-      ArgumentUtility.CheckNotNull ("classContexts", classContexts);
-
-      MixinConfiguration newConfiguration = DeclarativeConfigurationBuilder.BuildConfigurationFromClasses (ActiveConfiguration, classContexts);
-      return newConfiguration.EnterScope ();
-    }
-
-    /// <summary>
-    /// Creates an <see cref="MixinConfiguration"/> and temporarily associates it with the current thread (actually <see cref="CallContext"/>). The
-    /// original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method is called. The created configuration inherits
-    /// from the current <see cref="ActiveConfiguration"/> and includes all mixin configuration declaratively specified in the given list of
-    /// <paramref name="assemblies"/>.
-    /// </summary>
-    /// <param name="assemblies">The assemblies to be analyzed into the mixin configuration.</param>
-    /// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
-    /// <exception cref="ArgumentNullException">The <paramref name="assemblies"/> parameter is <see langword="null"/>.</exception>
-    public static IDisposable ScopedExtend (params Assembly[] assemblies)
-    {
-      ArgumentUtility.CheckNotNull ("assemblies", assemblies);
-
-      MixinConfiguration newConfiguration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (ActiveConfiguration, assemblies);
-      return newConfiguration.EnterScope();
+      if (mixinTypes.Length > 0)
+        return MixinConfiguration.BuildFromActive().ForClass (baseType).IgnoreParent().AddMixins (mixinTypes).EnterScope();
+      else
+        return MixinConfiguration.BuildFromActive ().ForClass (baseType).IgnoreParent ().EnterScope ();
     }
 
     private static MixinConfiguration GetMasterConfiguration ()
