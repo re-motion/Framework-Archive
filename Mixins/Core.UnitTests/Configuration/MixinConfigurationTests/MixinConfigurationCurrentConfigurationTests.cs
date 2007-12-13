@@ -9,7 +9,7 @@ using Rubicon.Development.UnitTesting;
 namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
 {
   [TestFixture]
-  public class MixinConfiguration_CurrentConfigurationTests
+  public class MixinConfigurationCurrentConfigurationTests
   {
     [SetUp]
     public void SetUp()
