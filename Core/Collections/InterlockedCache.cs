@@ -24,9 +24,11 @@ namespace Rubicon.Collections
     {
       _cache = new Dictionary<TKey,TValue> (comparer);
     }
-    
+
+    [Obsolete ("Add is not safe for interlocked caches (can lead to race conditions). Use GetOrCreateValue() instead.", false)]
     public void Add (TKey key, TValue value)
     {
+      // throw new NotSupportedException ("Add is not safe for interlocked caches.");
       ArgumentUtility.CheckNotNull ("key", key);
 
       lock (_cache)

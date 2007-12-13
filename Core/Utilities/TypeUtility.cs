@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Text;
 using System.Text.RegularExpressions;
+using Rubicon.Collections;
 using R = System.Text.RegularExpressions;
 
 namespace Rubicon.Utilities
@@ -21,6 +22,8 @@ namespace Rubicon.Utilities
       public static readonly Regex s_enclosedQualifiedTypeRegex;
       public static readonly Regex s_enclosedTypeRegex;
       public static readonly Regex s_typeRegex;
+
+      public static InterlockedCache<string, string> s_fullTypeNames = new InterlockedCache<string, string>();
 
       static AbbreviationParser ()
       {
@@ -78,17 +81,23 @@ namespace Rubicon.Utilities
         s_typeRegex = new Regex (typePattern, options);
       }
 
-      public static string ParseAbbreviatedTypeName (string abbreviatedTypeName)
+      public static string ParseAbbreviatedTypeNameWithCache (string abbreviatedTypeName)
       {
         if (abbreviatedTypeName == null)
           return null;
 
-        string result = abbreviatedTypeName;
+        return s_fullTypeNames.GetOrCreateValue (abbreviatedTypeName, ParseAbbreviatedTypeName);
+      }
+
+      private static string ParseAbbreviatedTypeName  (string abbreviatedTypeName)
+      {
+        string fullTypeName = abbreviatedTypeName;
         string replace = @"${asm}.${type}${br}, ${asm}";
-        result = ReplaceRecursive (s_enclosedQualifiedTypeRegex, result, replace + "${sn}");
-        result = ReplaceRecursive (s_enclosedTypeRegex, result, "[" + replace + "]");
-        result = s_typeRegex.Replace (result, replace);
-        return result;
+        fullTypeName = ReplaceRecursive (s_enclosedQualifiedTypeRegex, fullTypeName, replace + "${sn}");
+        fullTypeName = ReplaceRecursive (s_enclosedTypeRegex, fullTypeName, "[" + replace + "]");
+        fullTypeName = s_typeRegex.Replace (fullTypeName, replace);
+
+        return fullTypeName;
       }
 
       private static string ReplaceRecursive (Regex regex, string input, string replacement)
@@ -115,7 +124,7 @@ namespace Rubicon.Utilities
     /// <returns> A standard type name as expected by <see cref="Type.GetType"/>. </returns>
     public static string ParseAbbreviatedTypeName (string abbreviatedTypeName)
     {
-      return AbbreviationParser.ParseAbbreviatedTypeName (abbreviatedTypeName);
+      return AbbreviationParser.ParseAbbreviatedTypeNameWithCache (abbreviatedTypeName);
     }
 
     /// <summary>

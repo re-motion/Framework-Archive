@@ -33,7 +33,7 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void Add_TryGetValue ()
     {
-      _cache.Add ("key1", new object());
+      _cache.GetOrCreateValue ("key1", delegate { return new object(); });
       object actual;
       Assert.IsFalse (_cache.TryGetValue ("key1", out actual));
       Assert.IsNull (actual);

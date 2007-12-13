@@ -21,6 +21,11 @@ namespace Rubicon.Core.UnitTests.Collections
       return new Cache<TKey, TValue> ();
     }
 
+    private void Add (string key, object value)
+    {
+      _cache.GetOrCreateValue (key, delegate { return value; });
+    }
+
     [Test]
     public void TryGet_WithResultNotInCache ()
     {
@@ -52,7 +57,7 @@ namespace Rubicon.Core.UnitTests.Collections
     {
       object expected = new object ();
 
-      _cache.Add ("key1", expected);
+      Add ("key1", expected);
       Assert.AreSame (expected, _cache.GetOrCreateValue ("key1", delegate (string key) { throw new InvalidOperationException ("The valueFactory must not be invoked."); }));
     }
 
@@ -61,7 +66,7 @@ namespace Rubicon.Core.UnitTests.Collections
     {
       object expected = new object();
 
-      _cache.Add ("key1", expected);
+      Add ("key1", expected);
       object actual;
       Assert.IsTrue (_cache.TryGetValue ("key1", out actual));
       Assert.AreSame (expected, actual);
@@ -72,7 +77,7 @@ namespace Rubicon.Core.UnitTests.Collections
     {
       object expected = new object ();
 
-      _cache.Add ("key1", expected);
+      Add ("key1", expected);
       object actual;
       Assert.IsTrue (_cache.TryGetValue ("key1", out actual));
       Assert.AreSame (expected, actual);
@@ -84,7 +89,7 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void Add_Null ()
     {
-      _cache.Add ("key1", null);
+      Add ("key1", null);
       object actual;
       Assert.IsTrue (_cache.TryGetValue ("key1", out actual));
       Assert.IsNull (actual);

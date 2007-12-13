@@ -47,6 +47,7 @@ namespace Rubicon.Data.DomainObjects
     /// <see langword="null"/>.</param>
     /// <typeparam name="T">The expected type of the concrete <see cref="SimpleDomainObject"/></typeparam>
     /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
+    /// <remarks>
     /// <para>
     /// This method is identical to <see cref="DomainObject.GetObject{T}(ObjectID)"/>, but can be called from any other class, whereas
     /// <see cref="DomainObject.GetObject{T}(ObjectID)"/> can only be called from classes derived from <see cref="DomainObject"/>.
