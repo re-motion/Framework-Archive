@@ -87,7 +87,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
     public void RunWithKeepTypeNames ()
     {
       Parameters.KeepTypeNames = true;
-      using (MixinConfiguration.ScopedEmpty())
+      using (MixinConfiguration.BuildNew().EnterScope())
       {
         using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (NullMixin)))
         {

@@ -49,7 +49,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     public virtual IDisposable EnterScope ()
     {
       MixinConfiguration configuration = BuildConfiguration();
-      return MixinConfiguration.ScopedReplace (configuration);
+      return configuration.EnterScope();
     }
   }
 }

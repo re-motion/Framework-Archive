@@ -205,7 +205,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void CompleteFaceInterfaceAddedImperativelyAsTypeArgument ()
     {
-      using (MixinConfiguration.ScopedEmpty ())
+      using (MixinConfiguration.BuildNew().EnterScope ())
       {
         MixinConfiguration.ActiveConfiguration.GetOrAddClassContext (typeof (BaseType6)).AddCompleteInterface (typeof (IEmptyInterface));
         MixinConfiguration.ActiveConfiguration.RegisterInterface (typeof (IEmptyInterface), typeof (BaseType6));
@@ -386,7 +386,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         + "TargetClassWithProtectedCtors does not contain a public constructor with signature ().")]
     public void ProtectedDefaultConstructor_NonMixed ()
     {
-      using (MixinConfiguration.ScopedEmpty ())
+      using (MixinConfiguration.BuildNew().EnterScope ())
       {
         ObjectFactory.Create<TargetClassWithProtectedCtors> ().With ();
       }
@@ -397,7 +397,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         + "TargetClassWithProtectedCtors does not contain a public constructor with signature (System.Int32).")]
     public void ProtectedNonDefaultConstructor_NonMixed ()
     {
-      using (MixinConfiguration.ScopedEmpty ())
+      using (MixinConfiguration.BuildNew().EnterScope ())
       {
         ObjectFactory.Create<TargetClassWithProtectedCtors> ().With (1);
       }

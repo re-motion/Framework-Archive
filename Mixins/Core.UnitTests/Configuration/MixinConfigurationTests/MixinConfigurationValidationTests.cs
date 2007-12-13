@@ -13,7 +13,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     [Test]
     public void ValidateWithNoErrors ()
     {
-      using (MixinConfiguration.ScopedEmpty ())
+      using (MixinConfiguration.BuildNew().EnterScope ())
       {
         using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
         {
@@ -27,7 +27,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     [Test]
     public void ValidateWithErrors ()
     {
-      using (MixinConfiguration.ScopedEmpty ())
+      using (MixinConfiguration.BuildNew().EnterScope ())
       {
         using (MixinConfiguration.ScopedExtend (typeof (int), typeof (NullMixin)))
         {
@@ -40,7 +40,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     [Test]
     public void ValidateWithGenerics ()
     {
-      using (MixinConfiguration.ScopedEmpty ())
+      using (MixinConfiguration.BuildNew().EnterScope ())
       {
         using (MixinConfiguration.ScopedExtend (typeof (KeyValuePair<,>), typeof (NullMixin)))
         {
@@ -62,7 +62,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
                 + "be correct, but validation must be deferred to TypeFactory.GetActiveConfiguration.", MatchType = MessageMatch.Regex)]
     public void ValidationThrowsWhenGenericsCannotBeSpecialized ()
     {
-      using (MixinConfiguration.ScopedEmpty ())
+      using (MixinConfiguration.BuildNew().EnterScope ())
       {
         using (MixinConfiguration.ScopedExtend (typeof (UninstantiableGeneric<>), typeof (NullMixin)))
         {

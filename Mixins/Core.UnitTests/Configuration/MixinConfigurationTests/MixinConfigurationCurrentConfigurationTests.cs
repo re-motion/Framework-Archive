@@ -99,11 +99,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
       MixinConfiguration context = new MixinConfiguration ();
       MixinConfiguration context2 = new MixinConfiguration ();
       Assert.IsFalse (MixinConfiguration.HasActiveConfiguration);
-      using (MixinConfiguration.ScopedReplace(context))
+      using (context.EnterScope())
       {
         Assert.IsTrue (MixinConfiguration.HasActiveConfiguration);
         Assert.AreSame (context, MixinConfiguration.ActiveConfiguration);
-        using (MixinConfiguration.ScopedReplace(context2))
+        using (context2.EnterScope())
         {
           Assert.AreNotSame (context, MixinConfiguration.ActiveConfiguration);
           Assert.AreSame (context2, MixinConfiguration.ActiveConfiguration);
@@ -165,7 +165,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     public void CreateEmptyConfiguration()
     {
       Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
-      using (MixinConfiguration.ScopedEmpty ())
+      using (MixinConfiguration.BuildNew().EnterScope ())
       {
         Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
       }

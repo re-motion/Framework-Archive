@@ -62,7 +62,7 @@ namespace Rubicon.Mixins.Samples.Aktology
 
     private static TInterface Create<TInterface, TBaseType, TMixin> ()
     {
-      using (MixinConfiguration.ScopedEmpty())
+      using (MixinConfiguration.BuildNew().EnterScope())
       {
         ClassContext specificContext = new ClassContext(typeof (TBaseType), typeof (TMixin));
         specificContext.AddCompleteInterface (typeof (TInterface));

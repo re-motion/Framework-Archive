@@ -143,7 +143,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void HasMixinsOnSimpleTypes ()
     {
       Assert.IsFalse (TypeUtility.HasMixins (typeof (object)));
-      using (MixinConfiguration.ScopedEmpty ())
+      using (MixinConfiguration.BuildNew().EnterScope ())
       {
         Assert.IsFalse (TypeUtility.HasMixins (typeof (BaseType1)));
       }

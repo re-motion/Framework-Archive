@@ -65,7 +65,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
         + "Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.MixinAddingPersistentProperties.")]
     public void DynamicChangeInPersistentMixinConfigurationThrowsInNewObject ()
     {
-      using (MixinConfiguration.ScopedEmpty ())
+      using (MixinConfiguration.BuildNew().EnterScope())
       {
         TargetClassForPersistentMixin.NewObject ();
       }
@@ -77,7 +77,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
         + "Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.MixinAddingPersistentProperties.")]
     public void DynamicChangeInPersistentMixinConfigurationThrowsInGetObject ()
     {
-      using (MixinConfiguration.ScopedEmpty ())
+      using (MixinConfiguration.BuildNew().EnterScope())
       {
         TargetClassForPersistentMixin.GetObject (new ObjectID (typeof (TargetClassForPersistentMixin), Guid.NewGuid()));
       }

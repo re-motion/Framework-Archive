@@ -1,9 +1,7 @@
 using System;
 using System.Reflection;
-using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Definitions.Building;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Mixins.Utilities;
 using NUnit.Framework;
@@ -33,7 +31,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
 
-      using (MixinConfiguration.ScopedReplace(context))
+      using (context.EnterScope())
       {
         BaseType1 bt1 = ObjectFactory.Create<BaseType1>().With();
         IMixinTarget mixinTarget = bt1 as IMixinTarget;

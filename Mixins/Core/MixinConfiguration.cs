@@ -117,23 +117,6 @@ namespace Rubicon.Mixins
     }
 
     /// <summary>
-    /// Temporarily replaces the mixin configuration associated with the current thread (actually <see cref="CallContext"/>) with the given
-    /// <see cref="MixinConfiguration"/>. The original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method
-    /// is called.
-    /// </summary>
-    /// <param name="newActiveConfiguration">The new active configuration.</param>
-    /// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
-    /// <exception cref="ArgumentNullException">The <paramref name="newActiveConfiguration"/> parameter is <see langword="null"/>.</exception>
-    public static IDisposable ScopedReplace (MixinConfiguration newActiveConfiguration)
-    {
-      ArgumentUtility.CheckNotNull ("newActiveConfiguration", newActiveConfiguration);
-
-      MixinConfigurationScope scope = new MixinConfigurationScope (PeekActiveConfiguration);
-      SetActiveConfiguration (newActiveConfiguration);
-      return scope;
-    }
-
-    /// <summary>
     /// Creates a new, empty mixin configuration and temporarily associates it with the current thread (actually <see cref="CallContext"/>). The
     /// original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method is called.
     /// </summary>
@@ -144,7 +127,7 @@ namespace Rubicon.Mixins
     /// </remarks>
     public static IDisposable ScopedEmpty ()
     {
-      return ScopedReplace (new MixinConfiguration (null));
+      return new MixinConfiguration (null).EnterScope();
     }
 
     /// <summary>
@@ -180,7 +163,7 @@ namespace Rubicon.Mixins
       ArgumentUtility.CheckNotNull ("classContexts", classContexts);
 
       MixinConfiguration newConfiguration = DeclarativeConfigurationBuilder.BuildConfigurationFromClasses (ActiveConfiguration, classContexts);
-      return ScopedReplace (newConfiguration);
+      return newConfiguration.EnterScope ();
     }
 
     /// <summary>
@@ -197,7 +180,7 @@ namespace Rubicon.Mixins
       ArgumentUtility.CheckNotNull ("assemblies", assemblies);
 
       MixinConfiguration newConfiguration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (ActiveConfiguration, assemblies);
-      return ScopedReplace (newConfiguration);
+      return newConfiguration.EnterScope();
     }
 
     private static MixinConfiguration GetMasterConfiguration ()
@@ -356,6 +339,19 @@ namespace Rubicon.Mixins
     public IEnumerable<ClassContext> ClassContexts
     {
       get { return _classContexts.Values; }
+    }
+
+    /// <summary>
+    /// Temporarily replaces the mixin configuration associated with the current thread (actually <see cref="CallContext"/>) with this 
+    /// <see cref="MixinConfiguration"/>. The original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method
+    /// is called.
+    /// </summary>
+    /// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
+    public IDisposable EnterScope ()
+    {
+      MixinConfigurationScope scope = new MixinConfigurationScope (PeekActiveConfiguration);
+      SetActiveConfiguration (this);
+      return scope;
     }
 
     /// <summary>

@@ -16,7 +16,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void GetActiveConfiguration()
     {
-      using (MixinConfiguration.ScopedEmpty())
+      using (MixinConfiguration.BuildNew().EnterScope())
       {
         Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
         Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType2)));

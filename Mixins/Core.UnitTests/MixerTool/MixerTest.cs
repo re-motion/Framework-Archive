@@ -103,7 +103,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
           delegate
           {
             Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
-            using (MixinConfiguration.ScopedEmpty())
+            using (MixinConfiguration.BuildNew().EnterScope())
             {
               using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin1)))
               {
@@ -123,7 +123,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
           delegate
           {
             Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
-            using (MixinConfiguration.ScopedEmpty ())
+            using (MixinConfiguration.BuildNew().EnterScope ())
             {
               using (MixinConfiguration.ScopedExtend (typeof (List<>), typeof (NullMixin)))
               {
@@ -142,7 +142,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
           {
             Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
 
-            using (MixinConfiguration.ScopedEmpty())
+            using (MixinConfiguration.BuildNew().EnterScope())
             {
               using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin1)))
               {
@@ -171,7 +171,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
           delegate
           {
             Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
-            using (MixinConfiguration.ScopedEmpty())
+            using (MixinConfiguration.BuildNew().EnterScope())
             {
               using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin1)))
               {
@@ -185,7 +185,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
           {
             Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
             ConcreteTypeBuilder.Current.LoadScopeIntoCache (theAssembly);
-            using (MixinConfiguration.ScopedEmpty())
+            using (MixinConfiguration.BuildNew().EnterScope())
             {
               using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin1)))
               {
@@ -203,7 +203,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
           delegate
           {
             Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
-            using (MixinConfiguration.ScopedEmpty ())
+            using (MixinConfiguration.BuildNew().EnterScope ())
             {
               using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin1)))
               {
@@ -224,7 +224,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
     public void MixerIgnoresInvalidTypes ()
     {
       Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
-      using (MixinConfiguration.ScopedEmpty ())
+      using (MixinConfiguration.BuildNew().EnterScope ())
       {
         using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin1))) // valid
         {
@@ -253,7 +253,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
       Set<ClassContext> classContextsBeingProcessed = new Set<ClassContext> ();
 
       // only use this assembly for this test case
-      using (MixinConfiguration.ScopedReplace (DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (typeof (MixerTest).Assembly)))
+      using (DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (typeof (MixerTest).Assembly).EnterScope())
       {
         Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
         mixer.ClassContextBeingProcessed +=
@@ -284,7 +284,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
     {
       Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
       mixer.NameProvider = new FooNameProvider ();
-      using (MixinConfiguration.ScopedEmpty())
+      using (MixinConfiguration.BuildNew().EnterScope())
       using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin1)))
       {
         mixer.Execute();
