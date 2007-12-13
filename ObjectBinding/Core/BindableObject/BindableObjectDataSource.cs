@@ -11,6 +11,7 @@ namespace Rubicon.ObjectBinding.BindableObject
   {
     private IBusinessObject _businessObject;
     private string _typeName;
+    private Type _type;
 
     public BindableObjectDataSource ()
     {
@@ -35,16 +36,21 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
       get
       {
+        if (_type != null)
+          return _type;
+
         if (_typeName == null)
           return null;
 
         if (IsDesignMode)
           return TypeUtility.GetDesignModeType (_typeName, Site, false);
 
-        return TypeUtility.GetType (_typeName, true, false);
+        _type = TypeUtility.GetType (_typeName, true, false);
+        return _type;
       }
       set
       {
+        _type = null;
         if (value == null)
           _typeName = null;
         else
