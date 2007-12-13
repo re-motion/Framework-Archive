@@ -143,5 +143,19 @@ namespace Rubicon.Core.UnitTests.Utilities
       string result = TypeUtility.ParseAbbreviatedTypeName (abbreviatedName);
       Assert.AreEqual (fullName, result);
     }
+
+    [Test]
+    public void AbbreviateWithoutNotFull()
+    {
+      string name = TypeUtility.GetAbbreviatedTypeName (typeof (System.Uri), false);
+      Assert.AreEqual ("System::Uri", name);
+    }
+
+    [Test]
+    public void AbbreviateWithoutFull ()
+    {
+      string name = TypeUtility.GetAbbreviatedTypeName (typeof (System.Uri), true);
+      Assert.AreEqual ("System::Uri, XXXXXXXXXXXXXXX", name);
+    }
   }
 }

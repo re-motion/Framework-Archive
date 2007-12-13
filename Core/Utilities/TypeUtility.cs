@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
+using System.Text;
 using System.Text.RegularExpressions;
 using R = System.Text.RegularExpressions;
 
@@ -11,6 +12,97 @@ namespace Rubicon.Utilities
   /// </summary>
   public static class TypeUtility
   {
+    /// <summary>
+    /// The implementation of <see cref="TypeUtility.ParseAbbreviatedTypeName"/>, implemented in a nested class in order to prevent unnecessary
+    /// initialization of pre-compiled regular expressions.
+    /// </summary>
+    private static class AbbreviationParser
+    {
+      public static readonly Regex s_enclosedQualifiedTypeRegex;
+      public static readonly Regex s_enclosedTypeRegex;
+      public static readonly Regex s_typeRegex;
+
+      static AbbreviationParser ()
+      {
+        string typeNamePattern =                // <asm>::<type>
+              @"(?<asm>[^\[\]\,]+)"             //    <asm> is the assembly part of the type name (before ::)
+            + @"::"
+            + @"(?<type>[^\[\]\,]+)";           //    <type> is the partially qualified type name (after ::)
+
+        string bracketPattern =                 // [...] (an optional pair of matching square brackets and anything in between)
+              @"(?<br> \[          "            //    see "Mastering Regular Expressions" (O'Reilly) for how the construct "balancing group definition" 
+            + @"  (                "            //    is used to match brackets: http://www.oreilly.com/catalog/regex2/chapter/ch09.pdf
+            + @"      [^\[\]]      "
+            + @"    |              "
+            + @"      \[ (?<d>)    "            //    increment nesting counter <d>
+            + @"    |              "
+            + @"      \] (?<-d>)   "            //    decrement <d>
+            + @"  )*               "
+            + @"  (?(d)(?!))       "            //    ensure <d> is 0 before considering next match
+            + @"\] )?              ";
+
+        string strongNameParts =                // comma-separated list of name=value pairs
+              @"(?<sn> (, \s* \w+ = [^,]+ )* )";
+
+        string typePattern =                    // <asm>::<type>[...] (square brackets are optional)
+              typeNamePattern
+            + bracketPattern;
+
+        string openUnqualifiedPattern =         // requires the pattern to be preceded by [ or ,
+              @"(?<= [\[,] )";
+        string closeUnqualifiedPattern =        // requires the pattern to be followed by ] or ,
+              @"(?= [\],] )";
+
+        string enclosedTypePattern =            // type within argument list
+              openUnqualifiedPattern
+            + typePattern
+            + closeUnqualifiedPattern;
+
+        string qualifiedTypePattern =           // <asm>::<type>[...], name=val, name=val ... (square brackets are optional)
+              typePattern
+            + strongNameParts;
+
+        string openQualifiedPattern =           // requires the pattern to be preceded by [[ or ,[
+              @"(?<= [\[,] \[)";
+        string closeQualifiedPattern =          // requires the pattern to be followed by ]] or ],
+              @"(?= \] [\],] )";
+
+        string enclosedQualifiedTypePattern =   // qualified type within argument list
+              openQualifiedPattern
+            + qualifiedTypePattern
+            + closeQualifiedPattern;
+
+        RegexOptions options = RegexOptions.ExplicitCapture | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled;
+        s_enclosedQualifiedTypeRegex = new Regex (enclosedQualifiedTypePattern, options);
+        s_enclosedTypeRegex = new Regex (enclosedTypePattern, options);
+        s_typeRegex = new Regex (typePattern, options);
+      }
+
+      public static string ParseAbbreviatedTypeName (string abbreviatedTypeName)
+      {
+        if (abbreviatedTypeName == null)
+          return null;
+
+        string result = abbreviatedTypeName;
+        string replace = @"${asm}.${type}${br}, ${asm}";
+        result = ReplaceRecursive (s_enclosedQualifiedTypeRegex, result, replace + "${sn}");
+        result = ReplaceRecursive (s_enclosedTypeRegex, result, "[" + replace + "]");
+        result = s_typeRegex.Replace (result, replace);
+        return result;
+      }
+
+      private static string ReplaceRecursive (Regex regex, string input, string replacement)
+      {
+        string result = regex.Replace (input, replacement);
+        while (result != input)
+        {
+          input = result;
+          result = regex.Replace (input, replacement);
+        }
+        return result;
+      }
+    }
+
     /// <summary>
     ///   Converts abbreviated qualified type names into standard qualified type names.
     /// </summary>
@@ -23,76 +115,7 @@ namespace Rubicon.Utilities
     /// <returns> A standard type name as expected by <see cref="Type.GetType"/>. </returns>
     public static string ParseAbbreviatedTypeName (string abbreviatedTypeName)
     {
-      if (abbreviatedTypeName == null)
-        return null;
-
-      string typeNamePattern =                // <asm>::<type>
-            @"(?<asm>[^\[\]\,]+)"             //    <asm> is the assembly part of the type name (before ::)
-          + @"::" 
-          + @"(?<type>[^\[\]\,]+)";           //    <type> is the partially qualified type name (after ::)
-
-      string bracketPattern =                 // [...] (an optional pair of matching square brackets and anything in between)
-            @"(?<br> \[          "            //    see "Mastering Regular Expressions" (O'Reilly) for how the construct "balancing group definition" 
-          + @"  (                "            //    is used to match brackets: http://www.oreilly.com/catalog/regex2/chapter/ch09.pdf
-          + @"      [^\[\]]      "
-          + @"    |              "
-          + @"      \[ (?<d>)    "            //    increment nesting counter <d>
-          + @"    |              "
-          + @"      \] (?<-d>)   "            //    decrement <d>
-          + @"  )*               "
-          + @"  (?(d)(?!))       "            //    ensure <d> is 0 before considering next match
-          + @"\] )?              ";
-
-      string strongNameParts =                // comma-separated list of name=value pairs
-            @"(?<sn> (, \s* \w+ = [^,]+ )* )";
-
-      string typePattern =                    // <asm>::<type>[...] (square brackets are optional)
-            typeNamePattern 
-          + bracketPattern;
-
-      string openUnqualifiedPattern =         // requires the pattern to be preceded by [ or ,
-            @"(?<= [\[,] )";   
-      string closeUnqualifiedPattern =        // requires the pattern to be followed by ] or ,
-            @"(?= [\],] )";
-
-      string enclosedTypePattern =            // type within argument list
-            openUnqualifiedPattern
-          + typePattern
-          + closeUnqualifiedPattern;
-
-      string qualifiedTypePattern =           // <asm>::<type>[...], name=val, name=val ... (square brackets are optional)
-            typePattern 
-          + strongNameParts;
-
-      string openQualifiedPattern =           // requires the pattern to be preceded by [[ or ,[
-            @"(?<= [\[,] \[)";   
-      string closeQualifiedPattern =          // requires the pattern to be followed by ]] or ],
-            @"(?= \] [\],] )";
-
-      string enclosedQualifiedTypePattern =   // qualified type within argument list
-            openQualifiedPattern 
-          + qualifiedTypePattern
-          + closeQualifiedPattern;
-
-      RegexOptions options = RegexOptions.ExplicitCapture | RegexOptions.IgnorePatternWhitespace; // | RegexOptions.Compiled
-      string result = abbreviatedTypeName;
-      string replace =          @"${asm}.${type}${br}, ${asm}";
-      result = ReplaceRecursive (result, enclosedQualifiedTypePattern,  replace + "${sn}",   options);
-      result = ReplaceRecursive (result, enclosedTypePattern,           "[" + replace + "]", options);
-      result = Regex.Replace    (result, typePattern,                   replace,             options);
-      return result;
-    }
-
-    private static string ReplaceRecursive (string input, string pattern, string replacement, RegexOptions options)
-    {
-      Regex regex = new Regex (pattern, options);
-      string result = regex.Replace (input, replacement);
-      while (result != input)
-      {
-        input = result;
-        result = regex.Replace (input, replacement);
-      }
-      return result;
+      return AbbreviationParser.ParseAbbreviatedTypeName (abbreviatedTypeName);
     }
 
     /// <summary>
@@ -141,5 +164,64 @@ namespace Rubicon.Utilities
         throw new TypeLoadException (string.Format ("Could not load type '{0}'.", TypeUtility.ParseAbbreviatedTypeName (abbreviatedTypeName)));
       return type;
     }
+
+    /// <summary>
+    /// Gets the type name in abbreviated syntax (<see cref="ParseAbbreviatedTypeName"/>).
+    /// </summary>
+    public static string GetAbbreviatedTypeName (Type type, bool includeVersionAndCulture)
+    {
+      StringBuilder sb = new StringBuilder (50);
+      BuildAbbreviatedTypeName (sb, type, includeVersionAndCulture, false);
+      return sb.ToString();
+    }
+
+    private static void BuildAbbreviatedTypeName (StringBuilder sb, Type type, bool includeVersionAndCulture, bool isTypeParameter)
+    {
+      string ns = type.Namespace;
+      string asm = type.Assembly.GetName().Name;
+      bool canAbbreviate = ns.StartsWith (asm);
+
+      // put type paramters in [brackets] if they include commas, so the commas cannot be confused with type parameter separators
+      bool needsBrackets = isTypeParameter && (includeVersionAndCulture || ! canAbbreviate);
+      if (needsBrackets)
+          sb.Append ("[");
+
+      if (canAbbreviate)
+      {
+        sb.Append (asm).Append ("::").Append (ns.Substring (asm.Length)).Append (type.Name);
+        BuildAbbreviatedTypeParameters (sb, type, includeVersionAndCulture);
+      }
+      else
+      {
+        sb.Append (ns).Append (type.Name);
+        BuildAbbreviatedTypeParameters (sb, type, includeVersionAndCulture);
+        sb.Append (", ").Append (asm);
+      }
+
+      if (includeVersionAndCulture)
+        sb.Append (type.Assembly.FullName.Substring (asm.Length));
+
+      if (needsBrackets)
+        sb.Append ("]");
+    }
+
+    private static void BuildAbbreviatedTypeParameters (StringBuilder sb, Type type, bool includeVersionAndCulture)
+    {
+      if (type.ContainsGenericParameters)
+      {
+        sb.Append ("[");
+        Type[] typeParams = type.GetGenericArguments();
+        for (int i = 0; i < typeParams.Length; ++i)
+        {
+          if (i > 0)
+            sb.Append (", ");
+
+          Type typeParam = typeParams[i];
+          BuildAbbreviatedTypeName (sb, typeParam, includeVersionAndCulture, true);
+        }
+        sb.Append ("]");
+      }
+    }
+
   }
 }
