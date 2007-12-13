@@ -69,13 +69,6 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     }
 
     [Test]
-    public void GetMetadata_FromCache ()
-    {
-      ClassReflector otherClassReflector = new ClassReflector (_type, _businessObjectProvider, DefaultMetadataFactory.Instance);
-      Assert.That (otherClassReflector.GetMetadata(), Is.SameAs (_classReflector.GetMetadata()));
-    }
-
-    [Test]
     public void GetMetadata_UsesFactory ()
     {
       MockRepository mockRepository = new MockRepository ();

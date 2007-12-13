@@ -43,11 +43,6 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     public BindableObjectClass GetMetadata ()
     {
-      return _businessObjectProvider.BusinessObjectClassCache.GetOrCreateValue (_targetType, delegate { return CreateBindableObjectClass(); });
-    }
-
-    private BindableObjectClass CreateBindableObjectClass ()
-    {
       BindableObjectClass bindableObjectClass;
       if (typeof (IBusinessObjectWithIdentity).IsAssignableFrom (ConcreteType))
         bindableObjectClass = new BindableObjectClassWithIdentity (_concreteType, _businessObjectProvider);

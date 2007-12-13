@@ -4,7 +4,6 @@ using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
-using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
 {
@@ -80,17 +79,11 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [Test]
     public void GetBindableObjectClass ()
     {
-      BindableObjectClass outValue;
-      Assert.That (_provider.BusinessObjectClassCache.TryGetValue (typeof (SimpleBusinessObjectClass), out outValue), Is.False);
-
       BindableObjectClass actual = _provider.GetBindableObjectClass (typeof (SimpleBusinessObjectClass));
 
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.TargetType, Is.SameAs (typeof (SimpleBusinessObjectClass)));
       Assert.That (actual.BusinessObjectProvider, Is.SameAs (_provider));
-      BindableObjectClass cachedBindableObjectClass;
-      Assert.That (_provider.BusinessObjectClassCache.TryGetValue (typeof (SimpleBusinessObjectClass), out cachedBindableObjectClass), Is.True);
-      Assert.That (actual, Is.SameAs (cachedBindableObjectClass));
     }
 
     [Test]

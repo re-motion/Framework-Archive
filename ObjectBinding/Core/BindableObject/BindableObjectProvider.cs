@@ -48,8 +48,13 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
+      return _businessObjectClassCache.GetOrCreateValue (type, delegate (Type classType) { return CreateBindableObjectClass (classType); });
+    }
+
+    private BindableObjectClass CreateBindableObjectClass (Type type)
+    {
       ClassReflector classReflector = new ClassReflector (type, this, GetMetadataFactoryForType (type));
-      return classReflector.GetMetadata();
+      return classReflector.GetMetadata ();
     }
 
     /// <summary>
@@ -69,11 +74,6 @@ namespace Rubicon.ObjectBinding.BindableObject
         return attribute.GetFactoryInstance ();
       else
         return DefaultMetadataFactory.Instance;
-    }
-
-    public InterlockedCache<Type, BindableObjectClass> BusinessObjectClassCache
-    {
-      get { return _businessObjectClassCache; }
     }
 
     /// <summary> The <see cref="IDictionary"/> used to store the references to the registered servies. </summary>
