@@ -65,8 +65,8 @@ namespace Rubicon.Mixins
   /// </threadsafety>
   public class MixinConfiguration
   {
-    private static readonly CallContextSingleton<MixinConfiguration> _ActiveConfiguration =
-    new CallContextSingleton<MixinConfiguration> ("Rubicon.Mixins.MixinConfiguration._ActiveConfiguration",
+    private static readonly CallContextSingleton<MixinConfiguration> _activeConfiguration =
+    new CallContextSingleton<MixinConfiguration> ("Rubicon.Mixins.MixinConfiguration._activeConfiguration",
         delegate { return CopyMasterConfiguration (); });
 
     private static MixinConfiguration _masterConfiguration = null;
@@ -85,7 +85,7 @@ namespace Rubicon.Mixins
     /// </remarks>
     public static bool HasActiveConfiguration
     {
-      get { return _ActiveConfiguration.HasCurrent; }
+      get { return _activeConfiguration.HasCurrent; }
     }
 
     /// <summary>
@@ -99,7 +99,7 @@ namespace Rubicon.Mixins
     /// </remarks>
     public static MixinConfiguration ActiveConfiguration
     {
-      get { return _ActiveConfiguration.Current; }
+      get { return _activeConfiguration.Current; }
     }
 
     private static MixinConfiguration PeekActiveConfiguration
@@ -113,7 +113,7 @@ namespace Rubicon.Mixins
     /// <param name="configuration">The configuration to be set, can be <see langword="null"/>.</param>
     public static void SetActiveConfiguration (MixinConfiguration configuration)
     {
-      _ActiveConfiguration.SetCurrent (configuration);
+      _activeConfiguration.SetCurrent (configuration);
     }
 
     /// <summary>
@@ -333,8 +333,8 @@ namespace Rubicon.Mixins
     /// </summary>
     /// <param name="type">The <see cref="System.Type"/> to retrieve a class context for.</param>
     /// <returns>The <see cref="ClassContext"/> stored by the <see cref="MixinConfiguration"/> for the given <see cref="Type"/>, or a copy of the
-    /// context of its base type (with an adjusted <see cref="Type"/> member), or <see langword="null"/> if no such context has been registered for
-    /// the type hierarchy.</returns>
+    /// context of its generic type definition or base type (in that order, with an adjusted <see cref="Type"/> member), or <see langword="null"/> if
+    /// no such context has been registered for the type hierarchy.</returns>
     public ClassContext GetClassContext (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
@@ -364,8 +364,8 @@ namespace Rubicon.Mixins
     /// Retrives the class context for exactly the given <see cref="System.Type"/>.
     /// </summary>
     /// <param name="type">The <see cref="System.Type"/> to retrieve a class context for.</param>
-    /// <returns>The <see cref="ClassContext"/> stored by the <see cref="MixinConfiguration"/> for the given <see cref="Type"/>,
-    /// or <see langword="null"/> if no such context has been registered.</returns>
+    /// <returns>The <see cref="ClassContext"/> stored by the <see cref="MixinConfiguration"/> for the given <see cref="Type"/> or its base type
+    /// or generic type definition, or <see langword="null"/> if no such context has been registered.</returns>
     public ClassContext GetClassContextNonRecursive (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
@@ -377,7 +377,8 @@ namespace Rubicon.Mixins
     }
 
     /// <summary>
-    /// Checks whether the <see cref="MixinConfiguration"/> holds a <see cref="ClassContext"/> for the given <see cref="Type"/>.
+    /// Checks whether the <see cref="MixinConfiguration"/> holds a <see cref="ClassContext"/> for the given <see cref="Type"/>, scanning the
+    /// inheritance hierarchy if no context exists exactly for that type.
     /// </summary>
     /// <param name="type">The <see cref="Type"/> to check for.</param>
     /// <returns>True if the <see cref="MixinConfiguration"/> holds a <see cref="ClassContext"/> for the given <see cref="Type"/>; false otherwise.
@@ -385,12 +386,7 @@ namespace Rubicon.Mixins
     public bool ContainsClassContext (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      if (_classContexts.ContainsKey (type))
-        return true;
-      else if (type.IsGenericType && !type.IsGenericTypeDefinition)
-        return ContainsClassContext (type.GetGenericTypeDefinition());
-      else
-        return false;
+      return GetClassContext (type) != null;
     }
 
     /// <summary>

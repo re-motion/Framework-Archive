@@ -181,6 +181,24 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     }
 
     [Test]
+    public void ContainsContextWorksRecursively ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
+      {
+        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (DerivedNullTarget)));
+      }
+    }
+
+    [Test]
+    public void ContainsContextWorksRecursively_OverGenericDefinition ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (GenericTargetClass<>), typeof (NullMixin)))
+      {
+        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (GenericTargetClass<object>)));
+      }
+    }
+
+    [Test]
     public void GetContextNonRecursive ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
