@@ -46,7 +46,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
 
       Provider.Connect ();
-      using (MixinConfiguration.ScopedExtend (typeof (WhereClauseBuilder), typeof (WhereClauseBuilderMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (WhereClauseBuilder)).Clear().AddMixins (typeof (WhereClauseBuilderMixin)).EnterScope())
       {
         SelectCommandBuilder builder = SelectCommandBuilder.CreateForRelatedIDLookup (
             Provider,

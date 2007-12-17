@@ -123,7 +123,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
       Assert.AreEqual (typeof (IBT3Mixin4).GetMethod ("Foo"), member2.InterfaceMethod);
       Assert.AreEqual (targetClass.Mixins[typeof (BT3Mixin4)].Methods[typeof (BT3Mixin4).GetMethod ("Foo")], member2.ImplementingMethod);
 
-      using (MixinConfiguration.ScopedExtend(typeof (BaseType3), typeof (BT3Mixin7Base), typeof (BT3Mixin4)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType3> ().Clear().AddMixins (typeof (BT3Mixin7Base), typeof (BT3Mixin4)).EnterScope())
       {
         TargetClassDefinition targetClass2 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
 
@@ -148,7 +148,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void DuckTypingFaceInterface ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseTypeWithDuckFaceMixin), typeof (DuckFaceMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseTypeWithDuckFaceMixin> ().Clear().AddMixins (typeof (DuckFaceMixin)).EnterScope())
       {
         TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseTypeWithDuckFaceMixin));
         Assert.IsTrue (targetClass.Mixins.ContainsKey (typeof (DuckFaceMixin)));
@@ -179,7 +179,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
         ExpectedMessage = "is not fulfilled - public or protected method MethodImplementedOnBase could not be found", MatchType = MessageMatch.Regex)]
     public void ThrowsWhenUnfulfilledDuckFace()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (DuckFaceMixinWithoutOverrides)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (DuckFaceMixinWithoutOverrides)).EnterScope())
       {
         TypeFactory.GetActiveConfiguration (typeof (NullTarget));
       }
@@ -188,7 +188,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void DuckTypingBaseInterface ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseTypeWithDuckBaseMixin), typeof (DuckBaseMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseTypeWithDuckBaseMixin> ().Clear().AddMixins (typeof (DuckBaseMixin)).EnterScope())
       {
         TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (BaseTypeWithDuckBaseMixin));
         Assert.IsTrue (targetClass.Mixins.ContainsKey (typeof (DuckBaseMixin)));
@@ -219,7 +219,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
         ExpectedMessage = "is not fulfilled - public or protected method MethodImplementedOnBase could not be found", MatchType = MessageMatch.Regex)]
     public void ThrowsWhenUnfulfilledDuckBase ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (DuckBaseMixinWithoutOverrides)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (DuckBaseMixinWithoutOverrides)).EnterScope())
       {
         TypeFactory.GetActiveConfiguration (typeof (NullTarget));
       }
@@ -390,7 +390,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void EmptyInterface()
     {
-      using (MixinConfiguration.ScopedExtend(typeof (BaseType1), typeof (MixinWithEmptyInterface), typeof (MixinRequiringEmptyInterface)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (MixinWithEmptyInterface), typeof (MixinRequiringEmptyInterface)).EnterScope())
       {
         TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         MixinDefinition m1 = bt1.Mixins[typeof (MixinWithEmptyInterface)];

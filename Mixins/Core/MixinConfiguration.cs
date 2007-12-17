@@ -17,22 +17,26 @@ namespace Rubicon.Mixins
   /// </summary>
   /// <remarks>
   /// <para>
-  /// The purpose of the <see cref="MixinConfiguration"/> class is twofold. First, it holds a thread-local (or, actually,
-  /// <see cref="CallContext">CallContext-local</see>) mixin configuration object for the current thread and allows that object to be changed,
-  /// see <see cref="MixinConfiguration.ActiveConfiguration"/> and <see cref="ScopedReplace"/> (as well as a number of other Scoped... methods).
-  /// Second, each of its instances represent a single mixin configuration, ie. a set of classes associated with mixins.
+  /// Instances of this class represent a single mixin configuration, ie. a set of classes associated with mixins. The class manages a thread-local
+  /// (actually <see cref="CallContext"/>-local) single active configuration instance via its <see cref="ActiveConfiguration"/> property and
+  /// related methods; the active configuration can conveniently be replaced via the <see cref="EnterScope"/> method. The also provides entry points
+  /// for building new mixin configuration objects: <see cref="BuildNew"/>, <see cref="BuildFromActive"/>, and <see cref="BuildFrom"/>.
   /// </para>
   /// <para>
   /// While the <see cref="MixinConfiguration.ActiveConfiguration"/> will usually be accessed only indirectly via <see cref="ObjectFactory"/> or <see cref="TypeFactory"/>,
-  /// the configuration replacement mechanism can be of use very often - whenever a mixin configuration needs to be adapted at runtime.
+  /// <see cref="EnterScope"/> and the <see cref="BuildFromActive">BuildFrom...</see> methods can be very useful to adjust a thread's mixin
+  /// configuration at runtime.
   /// </para>
   /// <para>
-  /// The default mixin configuration - the configuration in effect if not specifically replaced by another configuration - is obtained by analyzing
-  /// the assemblies referenced in the current AppDomain for attributes such as <see cref="UsesAttribute"/>, <see cref="ExtendsAttribute"/>, and
-  /// <see cref="CompleteInterfaceAttribute"/>. For more information about the default configuration, see <see cref="DeclarativeConfigurationBuilder.BuildDefaultConfiguration"/>.
+  /// The master mixin configuration - the configuration in effect for a thread if not specifically replaced by another configuration - is obtained
+  /// by analyzing the assemblies in the application's bin directory  for attributes such as <see cref="UsesAttribute"/>,
+  /// <see cref="ExtendsAttribute"/>, and <see cref="CompleteInterfaceAttribute"/>. (For more information about the default configuration, see
+  /// <see cref="DeclarativeConfigurationBuilder.BuildDefaultConfiguration"/>.) The master configuration can also be manipulated via
+  /// <see cref="EditMasterConfiguration"/>.
   /// </para>
   /// <example>
-  /// The following shows an exemplary application of the <see cref="MixinConfiguration"/> class.
+  /// The following shows an exemplary application of the <see cref="MixinConfiguration"/> class that manually builds mixin configuration instances
+  /// and activates them for the current thread for a given scope.
   /// <code>
   /// class Program
   /// {
@@ -41,19 +45,19 @@ namespace Rubicon.Mixins
   ///     // myType1 is an instantiation of MyType with the default mixin configuration
   ///     MyType myType1 = ObjectFactory.Create&lt;MyType&gt; ().With();
   /// 
-  ///     using (MixinConfiguration.ScopedExtend (typeof (MyType), typeof (SpecialMixin)))
+  ///     using (MixinConfiguration.BuildNew().ForClass&lt;MyType&gt;.AddMixin&lt;SpecialMixin&gt;().EnterScope())
   ///     {
   ///       // myType2 is an instantiation of MyType with a specific configuration, which contains only SpecialMixin
   ///       MyType myType2 = ObjectFactory.Create&lt;MyType&gt; ().With();
   /// 
-  ///       using (MixinConfiguration.ScopedEmpty())
+  ///       using (MixinConfiguration.BuildNew().EnterScope())
   ///       {
   ///         // myType3 is an instantiation of MyType without any mixins
   ///         MyType myType3 = ObjectFactory.Create&lt;MyType&gt; ().With();
   ///       }
   ///     }
   /// 
-  ///     // myType4 is again an instantiation of MyType with the default mixin configuration
+  ///     // myType4 again is an instantiation of MyType with the default mixin configuration
   ///     MyType myType4 = ObjectFactory.Create&lt;MyType&gt; ().With();
   ///   }
   /// }
@@ -114,28 +118,6 @@ namespace Rubicon.Mixins
     public static void SetActiveConfiguration (MixinConfiguration configuration)
     {
       _activeConfiguration.SetCurrent (configuration);
-    }
-
-    /// <summary>
-    /// Creates an <see cref="MixinConfiguration"/> and temporarily associates it with the current thread (actually <see cref="CallContext"/>). The
-    /// original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method is called. The created configuration inherits
-    /// from the current <see cref="ActiveConfiguration"/> and associates the given <paramref name="baseType"/> with the given <paramref name="mixinTypes"/>
-    /// (replacing the configuration for <paramref name="baseType"/> if any).
-    /// </summary>
-    /// <param name="baseType">A type for which a specific mixin configuration should be set up.</param>
-    /// <param name="mixinTypes">The mixin types to be associated with the <paramref name="baseType"/>.</param>
-    /// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
-    /// <exception cref="ArgumentNullException">The <paramref name="baseType"/> or the <paramref name="mixinTypes"/> parameter is
-    /// <see langword="null"/>.</exception>
-    public static IDisposable ScopedExtend (Type baseType, params Type[] mixinTypes)
-    {
-      ArgumentUtility.CheckNotNull ("baseType", baseType);
-      ArgumentUtility.CheckNotNull ("mixinTypes", mixinTypes);
-
-      if (mixinTypes.Length > 0)
-        return MixinConfiguration.BuildFromActive().ForClass (baseType).IgnoreParent().AddMixins (mixinTypes).EnterScope();
-      else
-        return MixinConfiguration.BuildFromActive ().ForClass (baseType).IgnoreParent ().EnterScope ();
     }
 
     private static MixinConfiguration GetMasterConfiguration ()

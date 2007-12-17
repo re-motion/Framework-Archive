@@ -10,7 +10,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void CircularThisDependenciesWork ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithCircularThisDependency1), typeof (MixinWithCircularThisDependency2)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithCircularThisDependency1), typeof (MixinWithCircularThisDependency2)).EnterScope())
       {
         object o = ObjectFactory.Create<NullTarget> ().With ();
         ICircular2 c1 = (ICircular2) o;

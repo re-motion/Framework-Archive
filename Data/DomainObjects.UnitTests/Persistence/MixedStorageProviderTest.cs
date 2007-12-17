@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void StorageProvidersCanBeMixed ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (StorageProvider), typeof (StorageProviderWithFixedGuidMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (StorageProvider)).Clear().AddMixins (typeof (StorageProviderWithFixedGuidMixin)).EnterScope())
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.ClassDefinitions[typeof (Order)];
         StorageProvider provider = new StorageProviderManager ()[orderDefinition.StorageProviderID];
@@ -24,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void MixinsCanOverrideStorageProviderMethods ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (StorageProvider), typeof (StorageProviderWithFixedGuidMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (StorageProvider)).Clear().AddMixins (typeof (StorageProviderWithFixedGuidMixin)).EnterScope())
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.ClassDefinitions[typeof (Order)];
         StorageProvider provider = new StorageProviderManager ()[orderDefinition.StorageProviderID];
@@ -37,7 +37,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void MixinsCanIntroduceStorageProviderInterfaces ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (StorageProvider), typeof (StorageProviderWithFixedGuidMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (StorageProvider)).Clear().AddMixins (typeof (StorageProviderWithFixedGuidMixin)).EnterScope())
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.ClassDefinitions[typeof (Order)];
         StorageProvider provider = new StorageProviderManager ()[orderDefinition.StorageProviderID];

@@ -77,7 +77,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
         + "Parameter name: concreteType")]
     public void Initialize_WithMixedTypeManuallyImplementingBindableObjectMixin ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ManualBusinessObject), typeof (object)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (ManualBusinessObject)).AddMixins ( typeof (object)).EnterScope())
       {
         new BindableObjectClass (TypeUtility.GetConcreteType (typeof (ManualBusinessObject)), _bindableObjectProvider);
       }

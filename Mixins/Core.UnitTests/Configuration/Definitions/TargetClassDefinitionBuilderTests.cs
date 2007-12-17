@@ -15,7 +15,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "contains generic parameters", MatchType = MessageMatch.Contains)]
     public void ThrowsOnGenericTargetClass()
     {
-      using (MixinConfiguration.ScopedExtend(typeof (BT3Mixin3<,>)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (BT3Mixin3<,>)).Clear().EnterScope())
       {
         TargetClassDefinitionBuilder builder = new TargetClassDefinitionBuilder();
         builder.Build (new ClassContext (typeof (BT3Mixin3<,>)));

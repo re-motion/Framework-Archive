@@ -86,7 +86,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void DynamicChangeInNonPersistentMixinConfigurationDoesntMatter ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (TargetClassForPersistentMixin), typeof (MixinAddingPersistentProperties))) // no NullMixin
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (TargetClassForPersistentMixin)).Clear().AddMixins (typeof (MixinAddingPersistentProperties)).EnterScope()) // no NullMixin
       {
         TargetClassForPersistentMixin.NewObject ();
         TargetClassForPersistentMixin.GetObject (new ObjectID (typeof (TargetClassForPersistentMixin), Guid.NewGuid ()));

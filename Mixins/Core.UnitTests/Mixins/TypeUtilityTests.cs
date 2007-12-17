@@ -41,7 +41,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       Assert.AreSame (TypeFactory.GetConcreteType (typeof (BaseType1)), TypeUtility.GetConcreteType (typeof (BaseType1)));
       Assert.AreSame (TypeFactory.GetConcreteType (typeof (BaseType2)), TypeUtility.GetConcreteType (typeof (BaseType2)));
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (NullMixin)).EnterScope())
       {
         Assert.AreNotSame (typeof (NullTarget), TypeUtility.GetConcreteType (typeof (NullTarget)));
         Assert.AreSame (TypeFactory.GetConcreteType (typeof (NullTarget)), TypeUtility.GetConcreteType (typeof (NullTarget)));
@@ -122,7 +122,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void IsAssignableRightParameterIsMadeConcrete ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (NullMixin)).EnterScope())
       {
         Assert.IsTrue (TypeUtility.IsAssignableFrom (typeof (NullTarget), typeof (NullTarget)));
         Assert.IsTrue (TypeUtility.IsAssignableFrom (CreateMixedType (typeof (NullTarget), typeof (NullMixin)), typeof (NullTarget)));
@@ -133,7 +133,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void IsAssignableInterfaceImplementedViaMixin ()
     {
       Assert.IsFalse (TypeUtility.IsAssignableFrom (typeof (IMixinIII4), typeof (NullTarget)));
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIntroducingInheritedInterface)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinIntroducingInheritedInterface)).EnterScope())
       {
         Assert.IsTrue (TypeUtility.IsAssignableFrom (typeof (IMixinIII4), typeof (NullTarget)));
       }
@@ -219,13 +219,13 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.AreSame (typeof (BT1Mixin1), TypeUtility.GetAscribableMixinType (typeof (BaseType1), typeof (BT1Mixin1)));
       Assert.AreSame (typeof (BT1Mixin2), TypeUtility.GetAscribableMixinType (typeof (BaseType1), typeof (BT1Mixin2)));
       Assert.AreSame (typeof (BT1Mixin1), TypeUtility.GetAscribableMixinType (typeof (BaseType1), typeof (IBT1Mixin1)));
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (GenericMixin<>)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (GenericMixin<>)).EnterScope())
       {
         Assert.AreSame (typeof (GenericMixin<>), TypeUtility.GetAscribableMixinType (typeof (BaseType1), typeof (GenericMixin<>)));
         Assert.IsNull (TypeUtility.GetAscribableMixinType (typeof (BaseType1), typeof (GenericMixin<int>)));
         Assert.IsNull (TypeUtility.GetAscribableMixinType (typeof (BaseType1), typeof (GenericMixin<string>)));
       }
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (GenericMixin<int>)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (GenericMixin<int>)).EnterScope())
       {
         Assert.AreSame (typeof (GenericMixin<int>), TypeUtility.GetAscribableMixinType (typeof (BaseType1), typeof (GenericMixin<>)));
         Assert.AreSame (typeof (GenericMixin<int>), TypeUtility.GetAscribableMixinType (typeof (BaseType1), typeof (GenericMixin<int>)));
@@ -240,13 +240,13 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.AreSame (typeof (BT1Mixin1), TypeUtility.GetAscribableMixinType (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (BT1Mixin1)));
       Assert.AreSame (typeof (BT1Mixin2), TypeUtility.GetAscribableMixinType (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (BT1Mixin2)));
       Assert.AreSame (typeof (BT1Mixin1), TypeUtility.GetAscribableMixinType (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (IBT1Mixin1)));
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (GenericMixin<>)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (GenericMixin<>)).EnterScope())
       {
         Assert.AreSame (typeof (GenericMixin<>), TypeUtility.GetAscribableMixinType (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (GenericMixin<>)));
         Assert.IsNull (TypeUtility.GetAscribableMixinType (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (GenericMixin<int>)));
         Assert.IsNull (TypeUtility.GetAscribableMixinType (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (GenericMixin<string>)));
       }
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (GenericMixin<int>)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (GenericMixin<int>)).EnterScope())
       {
         Assert.AreSame (typeof (GenericMixin<int>), TypeUtility.GetAscribableMixinType (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (GenericMixin<>)));
         Assert.AreSame (typeof (GenericMixin<int>), TypeUtility.GetAscribableMixinType (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (GenericMixin<int>)));
@@ -270,13 +270,13 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (BT1Mixin1)));
       Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (BT1Mixin2)));
       Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (IBT1Mixin1)));
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (GenericMixin<>)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (GenericMixin<>)).EnterScope())
       {
         Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (GenericMixin<>)));
         Assert.IsFalse (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (GenericMixin<int>)));
         Assert.IsFalse (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (GenericMixin<string>)));
       }
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (GenericMixin<int>)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (GenericMixin<int>)).EnterScope())
       {
         Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (GenericMixin<>)));
         Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (GenericMixin<int>)));
@@ -291,13 +291,13 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.IsTrue (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (BT1Mixin1)));
       Assert.IsTrue (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (BT1Mixin2)));
       Assert.IsTrue (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (IBT1Mixin1)));
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (GenericMixin<>)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (GenericMixin<>)).EnterScope())
       {
         Assert.IsTrue (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (GenericMixin<>)));
         Assert.IsFalse (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (GenericMixin<int>)));
         Assert.IsFalse (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (GenericMixin<string>)));
       }
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (GenericMixin<int>)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (GenericMixin<int>)).EnterScope())
       {
         Assert.IsTrue (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (GenericMixin<>)));
         Assert.IsTrue (TypeUtility.HasAscribableMixin (TypeUtility.GetConcreteType (typeof (BaseType1)), typeof (GenericMixin<int>)));

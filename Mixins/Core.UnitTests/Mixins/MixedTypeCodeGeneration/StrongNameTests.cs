@@ -12,7 +12,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void SignedBaseClassGeneratedIntoSignedAssembly ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (object)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (object)).Clear().EnterScope())
       {
         Type concreteType = TypeFactory.GetConcreteType (typeof (object), GenerationPolicy.ForceGeneration);
         Assert.IsTrue (ReflectionUtility.IsAssemblySigned (concreteType.Assembly));
@@ -22,7 +22,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void UnsignedBaseClassGeneratedIntoUnsignedAssembly ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (BaseType1)).Clear().EnterScope())
       {
         Type concreteType = TypeFactory.GetConcreteType (typeof (BaseType1), GenerationPolicy.ForceGeneration);
         Assert.IsFalse (ReflectionUtility.IsAssemblySigned (concreteType.Assembly));
@@ -32,7 +32,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void SignedBaseClassSignedMixinGeneratedIntoSignedAssembly ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (List<int>), typeof (object)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (List<int>)).Clear().AddMixins (typeof (object)).EnterScope())
       {
         Type concreteType = TypeFactory.GetConcreteType (typeof (List<int>), GenerationPolicy.ForceGeneration);
         Assert.IsTrue (ReflectionUtility.IsAssemblySigned (concreteType.Assembly));
@@ -42,7 +42,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void UnsignedBaseClassUnsignedMixinGeneratedIntoUnsignedAssembly ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin1)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (BT1Mixin1)).EnterScope())
       {
         Type concreteType = TypeFactory.GetConcreteType (typeof (BaseType1), GenerationPolicy.ForceGeneration);
         Assert.IsFalse (ReflectionUtility.IsAssemblySigned (concreteType.Assembly));
@@ -52,7 +52,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void UnsignedBaseClassSignedMixinGeneratedIntoUnsignedAssembly ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (object)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (object)).EnterScope())
       {
         Type concreteType = TypeFactory.GetConcreteType (typeof (BaseType1), GenerationPolicy.ForceGeneration);
         Assert.IsFalse (ReflectionUtility.IsAssemblySigned (concreteType.Assembly));
@@ -62,7 +62,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void SignedBaseClassUnsignedMixinGeneratedIntoUnsignedAssembly ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (NullMixin)).EnterScope())
       {
         Type concreteType = TypeFactory.GetConcreteType (typeof (NullTarget), GenerationPolicy.ForceGeneration);
         Assert.IsFalse (ReflectionUtility.IsAssemblySigned (concreteType.Assembly));
@@ -72,7 +72,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void SignedBaseClassUnsignedMixinWithOverride ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinOverridingToString)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinOverridingToString)).EnterScope())
       {
         object instance = ObjectFactory.Create<NullTarget>().With();
         Assert.AreEqual ("Overridden", instance.ToString());

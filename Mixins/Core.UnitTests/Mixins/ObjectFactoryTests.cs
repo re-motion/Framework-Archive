@@ -82,7 +82,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         + "possible to use the given object of type MixinWithProtectedOverrider as a mixin instance.", MatchType = MessageMatch.Contains)]
     public void ThrowsOnBaseMixinInstanceWhenGeneratedTypeIsNeeded ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (MixinWithProtectedOverrider)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (MixinWithProtectedOverrider)).EnterScope())
       {
         BaseType1 bt1 = ObjectFactory.CreateWithMixinInstances<BaseType1> (new MixinWithProtectedOverrider ()).With();
         bt1.VirtualMethod ();
@@ -103,7 +103,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void AcceptsInstanceOfGeneratedMixinType2 ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (MixinWithProtectedOverrider)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (MixinWithProtectedOverrider)).EnterScope())
       {
         TargetClassDefinition configuration = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         Type mixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (configuration.Mixins[0]);
@@ -117,7 +117,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void MixinsAreInitializedWithTarget ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType3), typeof (BT3Mixin2)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType3> ().Clear().AddMixins (typeof (BT3Mixin2)).EnterScope())
       {
         BaseType3 bt3 = ObjectFactory.Create<BaseType3> ().With ();
         BT3Mixin2 mixin = Mixin.Get<BT3Mixin2> (bt3);
@@ -129,7 +129,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void MixinsAreInitializedWithBase ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType3), typeof (BT3Mixin1)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType3> ().Clear().AddMixins (typeof (BT3Mixin1)).EnterScope())
       {
         BaseType3 bt3 = ObjectFactory.Create<BaseType3> ().With ();
         BT3Mixin1 mixin = Mixin.Get<BT3Mixin1> (bt3);
@@ -143,7 +143,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void MixinsAreInitializedWithConfiguration ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType3), typeof (BT3Mixin1)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType3> ().Clear().AddMixins (typeof (BT3Mixin1)).EnterScope())
       {
         BaseType3 bt3 = ObjectFactory.Create<BaseType3> ().With ();
         BT3Mixin1 mixin = Mixin.Get<BT3Mixin1> (bt3);
@@ -158,7 +158,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void CompleteFaceInterfacesAddedByMixins ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType3), typeof (BT3Mixin7Face), typeof (BT3Mixin4)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType3> ().Clear().AddMixins (typeof (BT3Mixin7Face), typeof (BT3Mixin4)).EnterScope())
       {
         ICBaseType3BT3Mixin4 complete = ObjectFactory.Create<BaseType3>().With() as ICBaseType3BT3Mixin4;
 
@@ -243,7 +243,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void MixinWithoutPublicCtor ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithPrivateCtorAndVirtualMethod)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithPrivateCtorAndVirtualMethod)).EnterScope())
       {
         MixinWithPrivateCtorAndVirtualMethod mixin = MixinWithPrivateCtorAndVirtualMethod.Create ();
         object o = ObjectFactory.CreateWithMixinInstances<NullTarget> (mixin).With ();
@@ -258,7 +258,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         + "ValidationSampleTypes.MixinWithPrivateCtorAndVirtualMethod, there is no public default constructor.")]
     public void ThrowsWhenMixinWithoutPublicDefaultCtorShouldBeInstantiated ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithPrivateCtorAndVirtualMethod)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithPrivateCtorAndVirtualMethod)).EnterScope())
       {
         ObjectFactory.CreateWithMixinInstances<NullTarget> ().With ();
       }
@@ -316,7 +316,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [ExpectedException (typeof (TargetInvocationException))]
     public void TargetInvocationExceptionWhenMixinOnInitializedThrows ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinThrowingInOnInitialized)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinThrowingInOnInitialized)).EnterScope())
       {
         ObjectFactory.Create<NullTarget> ().With ();
       }
@@ -334,7 +334,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [ExpectedException (typeof (NotSupportedException))]
     public void TargetInvocationExceptionWhenMixinCtorThrows ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinThrowingInCtor)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinThrowingInCtor)).EnterScope())
       {
         ObjectFactory.Create<NullTarget> ().With ();
       }
@@ -357,7 +357,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         + "TargetClassWithProtectedCtors does not contain a public constructor with signature ().")]
     public void ProtectedDefaultConstructor_Mixed ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (TargetClassWithProtectedCtors), typeof (NullMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass<TargetClassWithProtectedCtors> ().Clear().AddMixins (typeof (NullMixin)).EnterScope())
       {
         ObjectFactory.Create<TargetClassWithProtectedCtors> ().With ();
       }
@@ -369,7 +369,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         + "TargetClassWithProtectedCtors does not contain a public constructor with signature (System.Int32).")]
     public void ProtectedNonDefaultConstructor_Mixed ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (TargetClassWithProtectedCtors), typeof (NullMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass<TargetClassWithProtectedCtors> ().Clear().AddMixins (typeof (NullMixin)).EnterScope())
       {
         ObjectFactory.Create<TargetClassWithProtectedCtors> ().With (1);
       }

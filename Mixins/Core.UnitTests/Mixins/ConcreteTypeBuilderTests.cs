@@ -372,7 +372,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void GetConcreteMixinTypeBeforeGetConcreteTypeWorks ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseOverridingMixinMember), typeof (MixinWithOverridableMember)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseOverridingMixinMember> ().Clear().AddMixins (typeof (MixinWithOverridableMember)).EnterScope())
       {
         Type t = ConcreteTypeBuilder.Current.GetConcreteMixinType (TypeFactory.GetActiveConfiguration (typeof (BaseOverridingMixinMember)).Mixins[0]);
         Assert.IsNotNull (t);
@@ -390,7 +390,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         MatchType = MessageMatch.Contains)]
     public void GetConcreteMixinTypeThrowsIfNoMixinTypeGenerated ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithOverridableMember)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithOverridableMember)).EnterScope())
       {
         ConcreteTypeBuilder.Current.GetConcreteMixinType (TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[0]);
       }

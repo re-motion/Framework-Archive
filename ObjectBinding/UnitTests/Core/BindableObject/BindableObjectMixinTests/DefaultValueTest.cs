@@ -32,7 +32,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectMixi
     [Test]
     public void GetProperty_ReturnsNull_WhenDefaultValueTrue ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BindableObjectMixin), typeof (DefaultValueTrueMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (BindableObjectMixin)).AddMixins (typeof (DefaultValueTrueMixin)).EnterScope())
       {
         ClassWithValueType<int> instance = ObjectFactory.Create<ClassWithValueType<int>>().With();
         IBusinessObject instanceAsIBusinessObject = (IBusinessObject) instance;
@@ -44,7 +44,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectMixi
     [Test]
     public void GetProperty_ReturnsNonNull_WhenDefaultValueTrueOnList ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BindableObjectMixin), typeof (DefaultValueTrueMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (BindableObjectMixin)).AddMixins (typeof (DefaultValueTrueMixin)).EnterScope())
       {
         ClassWithValueType<int> instance = ObjectFactory.Create<ClassWithValueType<int>> ().With ();
         IBusinessObject instanceAsIBusinessObject = (IBusinessObject) instance;

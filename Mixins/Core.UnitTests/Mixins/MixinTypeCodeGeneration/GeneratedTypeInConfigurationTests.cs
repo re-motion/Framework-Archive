@@ -32,7 +32,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
           "GeneratedType", typeof (Mixin<object>));
       Type generatedType = typeEmitter.BuildType ();
 
-      using (MixinConfiguration.ScopedExtend (typeof (ClassOverridingMixinMethod), generatedType))
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassOverridingMixinMethod> ().Clear().AddMixins (generatedType).EnterScope())
       {
         object instance = ObjectFactory.Create (typeof (ClassOverridingMixinMethod)).With ();
         Assert.AreEqual ("Overridden!", Mixin.Get (generatedType, instance).ToString ());
@@ -50,7 +50,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
           .AddCustomAttribute (new CustomAttributeBuilder (typeof (OverrideMixinAttribute).GetConstructor (Type.EmptyTypes), new object[0]));
       Type generatedType = typeEmitter.BuildType ();
 
-      using (MixinConfiguration.ScopedExtend (generatedType, typeof (SimpleMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (generatedType).Clear().AddMixins (typeof (SimpleMixin)).EnterScope())
       {
         object instance = ObjectFactory.Create (generatedType).With ();
         Assert.AreEqual ("Generated _and_ overridden", Mixin.Get<SimpleMixin> (instance).ToString ());

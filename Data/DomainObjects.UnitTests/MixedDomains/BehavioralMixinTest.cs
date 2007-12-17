@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void NewDomainObjectsCanBeMixed ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (NullMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (NullMixin)).EnterScope())
       {
         Order order = Order.NewObject ();
         Assert.IsNotNull (Mixin.Get<NullMixin> (order));
@@ -23,7 +23,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void LoadedDomainObjectsCanBeMixed ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (NullMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (NullMixin)).EnterScope())
       {
         Order order = Order.GetObject (DomainObjectIDs.Order1);
         Assert.IsNotNull (Mixin.Get<NullMixin> (order));
@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void MixinCanAddInterface ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (MixinAddingInterface)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (MixinAddingInterface)).EnterScope())
       {
         Order order = Order.GetObject (DomainObjectIDs.Order1);
         Assert.IsTrue (order is IInterfaceAddedByMixin);
@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void MixinCanOverrideVirtualPropertiesAndMethods ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (DOWithVirtualPropertiesAndMethods), typeof (MixinOverridingPropertiesAndMethods)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (DOWithVirtualPropertiesAndMethods)).Clear().AddMixins (typeof (MixinOverridingPropertiesAndMethods)).EnterScope())
       {
         DOWithVirtualPropertiesAndMethods instance = (DOWithVirtualPropertiesAndMethods) RepositoryAccessor.NewObject (typeof (DOWithVirtualPropertiesAndMethods)).With();
         instance.Property = "Text";

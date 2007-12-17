@@ -137,7 +137,7 @@ namespace Rubicon.Mixins.Samples.UnitTests
       _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("StringMethod"));
       Type t = _builder.BuildMixinType (_invocationHandler);
 
-      using (MixinConfiguration.ScopedExtend (typeof (SampleTarget), t))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (SampleTarget)).Clear().AddMixins (t).EnterScope())
       {
         SampleTarget target = ObjectFactory.Create<SampleTarget> ().With();
         target.StringMethod (4);
@@ -151,7 +151,7 @@ namespace Rubicon.Mixins.Samples.UnitTests
       _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("StringMethod"));
       Type t = _builder.BuildMixinType (_invocationHandler);
 
-      using (MixinConfiguration.ScopedExtend (typeof (SampleTarget), t))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (SampleTarget)).Clear().AddMixins (t).EnterScope())
       {
         SampleTarget target = ObjectFactory.Create<SampleTarget> ().With ();
         target.StringMethod (4);
@@ -169,7 +169,7 @@ namespace Rubicon.Mixins.Samples.UnitTests
       _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("StringMethod"));
       Type t = _builder.BuildMixinType (_invocationHandler);
 
-      using (MixinConfiguration.ScopedExtend (typeof (SampleTarget), t))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (SampleTarget)).Clear().AddMixins (t).EnterScope())
       {
         SampleTarget target = ObjectFactory.Create<SampleTarget> ().With ();
         target.StringMethod (4);
@@ -185,7 +185,7 @@ namespace Rubicon.Mixins.Samples.UnitTests
       _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("StringMethod"));
       Type t = _builder.BuildMixinType (_invocationHandler);
 
-      using (MixinConfiguration.ScopedExtend (typeof (SampleTarget), t))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (SampleTarget)).Clear().AddMixins (t).EnterScope())
       {
         SampleTarget target = ObjectFactory.Create<SampleTarget> ().With ();
         string result = target.StringMethod (4);
@@ -199,7 +199,7 @@ namespace Rubicon.Mixins.Samples.UnitTests
       _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("VoidMethod"));
       Type t = _builder.BuildMixinType (_invocationHandler);
 
-      using (MixinConfiguration.ScopedExtend (typeof (SampleTarget), t))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (SampleTarget)).Clear().AddMixins (t).EnterScope())
       {
         SampleTarget target = ObjectFactory.Create<SampleTarget> ().With ();
         target.VoidMethod ();

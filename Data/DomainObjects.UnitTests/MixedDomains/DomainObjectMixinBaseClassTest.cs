@@ -36,7 +36,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [ExpectedException (typeof (ValidationException))]
     public void InvalidMixinConfiguration ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClassWithAllDataTypes), typeof (MixinWithAccessToDomainObjectProperties<Official>)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClassWithAllDataTypes)).Clear().AddMixins (typeof (MixinWithAccessToDomainObjectProperties<Official>)).EnterScope())
       {
         TypeFactory.GetActiveConfiguration (typeof (ClassWithAllDataTypes));
       }

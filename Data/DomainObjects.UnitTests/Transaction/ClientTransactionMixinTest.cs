@@ -10,7 +10,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ClientTransactionCanBeMixed ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClientTransaction), typeof (InvertingClientTransactionMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClientTransaction)).Clear().AddMixins (typeof (InvertingClientTransactionMixin)).EnterScope())
       {
         ClientTransaction mixedTransaction = ClientTransaction.NewTransaction ();
         Assert.IsNotNull (mixedTransaction);
@@ -21,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void SubTransactionsAlsoMixed ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClientTransaction), typeof (InvertingClientTransactionMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClientTransaction)).Clear().AddMixins (typeof (InvertingClientTransactionMixin)).EnterScope())
       {
         ClientTransaction mixedTransaction = ClientTransaction.NewTransaction ();
         ClientTransaction mixedSubTransaction = mixedTransaction.CreateSubTransaction ();
@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void TransactionMethodsCanBeOverridden ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClientTransaction), typeof (InvertingClientTransactionMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClientTransaction)).Clear().AddMixins (typeof (InvertingClientTransactionMixin)).EnterScope())
       {
         ClientTransaction invertedTransaction = ClientTransaction.NewTransaction();
 
@@ -61,7 +61,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void MixinCanAddInterface ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClientTransaction), typeof (ClientTransactionWithIDMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClientTransaction)).Clear().AddMixins (typeof (ClientTransactionWithIDMixin)).EnterScope())
       {
         IClientTransactionWithID transactionWithID = (IClientTransactionWithID) ClientTransaction.NewTransaction ();
         Assert.AreEqual (transactionWithID.ID.ToString (), transactionWithID.ToString ());

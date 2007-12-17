@@ -44,7 +44,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.BaseCallProxyCodeGeneration
     [Test]
     public void GeneratedTypeImplementsOverriddenMethods1 ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType3), typeof (BT3Mixin7Base), typeof (BT3Mixin4)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType3> ().Clear().AddMixins (typeof (BT3Mixin7Base), typeof (BT3Mixin4)).EnterScope())
       {
         Type t = TypeFactory.GetConcreteType (typeof (BaseType3));
         Type proxyType = t.GetNestedType ("BaseCallProxy");
@@ -56,7 +56,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.BaseCallProxyCodeGeneration
     [Test]
     public void GeneratedTypeImplementsOverriddenMethods2 ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin1)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (BT1Mixin1)).EnterScope())
       {
         Type t = TypeFactory.GetConcreteType (typeof (BaseType1));
         Type proxyType = t.GetNestedType ("BaseCallProxy");
@@ -68,7 +68,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.BaseCallProxyCodeGeneration
         Assert.IsNotNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType1.remove_VirtualEvent", BindingFlags.Public | BindingFlags.Instance));
       }
 
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin2)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (BT1Mixin2)).EnterScope())
       {
         Type t = TypeFactory.GetConcreteType (typeof (BaseType1));
         Type proxyType = t.GetNestedType ("BaseCallProxy");

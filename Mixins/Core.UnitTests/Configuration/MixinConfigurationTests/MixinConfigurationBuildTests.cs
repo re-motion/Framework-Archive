@@ -57,5 +57,18 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
       }
       Assert.AreSame (previousConfiguration, MixinConfiguration.ActiveConfiguration);
     }
+
+    [Test]
+    public void BuildFromActive_CausesDefaultConfigurationToBeAnalyzed ()
+    {
+      MixinConfiguration.SetActiveConfiguration (null);
+      Assert.IsFalse (MixinConfiguration.HasActiveConfiguration);
+      using (MixinConfiguration.BuildFromActive ().ForClass<BaseType1> ().Clear ().AddMixins (typeof (BT1Mixin1), typeof (BT1Mixin2)).EnterScope ())
+      {
+        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType3)));
+      }
+      Assert.IsTrue (MixinConfiguration.HasActiveConfiguration);
+    }
+
   }
 }

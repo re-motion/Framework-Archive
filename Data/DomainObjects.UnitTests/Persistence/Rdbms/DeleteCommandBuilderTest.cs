@@ -80,7 +80,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
       classWithAllDataTypes.Delete ();
-      using (MixinConfiguration.ScopedExtend (typeof (WhereClauseBuilder), typeof (WhereClauseBuilderMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (WhereClauseBuilder)).Clear().AddMixins (typeof (WhereClauseBuilderMixin)).EnterScope())
       {
         DataContainer deletedContainer = classWithAllDataTypes.InternalDataContainer;
 

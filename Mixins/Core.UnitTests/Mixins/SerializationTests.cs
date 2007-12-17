@@ -95,7 +95,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void GeneratedTypeWithReferenceToMixinBaseIsDeserializable ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (OverridableBaseType), typeof (MixinOverridingClassMethod)))
+      using (MixinConfiguration.BuildFromActive().ForClass<OverridableBaseType> ().Clear().AddMixins (typeof (MixinOverridingClassMethod)).EnterScope())
       {
         OverridableBaseType instance = ObjectFactory.Create<OverridableBaseType> ().With ();
         Assert.IsTrue (instance.GetType().IsSerializable);
@@ -252,7 +252,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void OnInitializedNotCalledOnDeserialization ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithOnInitializedAndOnDeserialized)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithOnInitializedAndOnDeserialized)).EnterScope())
       {
         NullTarget instance = ObjectFactory.Create<NullTarget> ().With ();
         Assert.IsTrue (Mixin.Get<MixinWithOnInitializedAndOnDeserialized> (instance).OnInitializedCalled);
@@ -265,7 +265,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void OnDeserializedCalledOnDeserialization ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithOnInitializedAndOnDeserialized)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithOnInitializedAndOnDeserialized)).EnterScope())
       {
         NullTarget instance = ObjectFactory.Create<NullTarget> ().With ();
         Assert.IsFalse (Mixin.Get<MixinWithOnInitializedAndOnDeserialized> (instance).OnDeserializedCalled);
@@ -279,7 +279,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void MixinConfigurationCanDifferAtDeserializationTime ()
     {
       byte[] serializedData;
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (NullMixin)).EnterScope())
       {
         NullTarget instance = ObjectFactory.Create<NullTarget> ().With ();
         Assert.IsNotNull (Mixin.Get<NullMixin> (instance));

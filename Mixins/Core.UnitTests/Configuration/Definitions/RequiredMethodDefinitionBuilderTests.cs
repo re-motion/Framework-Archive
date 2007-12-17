@@ -75,8 +75,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void RequiredFaceMethodsInterfaceImplementedOnMixin ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClassFulfillingNoMemberRequirements), typeof (MixinRequiringAllMembersFace),
-          typeof (MixinFulfillingAllMemberRequirements)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClassFulfillingNoMemberRequirements)).Clear().AddMixins (typeof (MixinRequiringAllMembersFace), typeof (MixinFulfillingAllMemberRequirements)).EnterScope())
       {
         TargetClassDefinition TargetClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingNoMemberRequirements));
         MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersFace)];
@@ -95,8 +94,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void RequiredBaseCallMethodsInterfaceImplementedOnMixin ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClassFulfillingNoMemberRequirements), typeof (MixinRequiringAllMembersBase),
-          typeof (MixinFulfillingAllMemberRequirements)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClassFulfillingNoMemberRequirements)).Clear().AddMixins (typeof (MixinRequiringAllMembersBase), typeof (MixinFulfillingAllMemberRequirements)).EnterScope())
       {
         TargetClassDefinition TargetClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingNoMemberRequirements));
         MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersBase)];
@@ -152,7 +150,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
         + "public or protected method Method could not be found on the base class.", MatchType = MessageMatch.Regex)]
     public void ThrowsIfMethodRequirementIsNotFulfilled ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinRequiringSingleMethod)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinRequiringSingleMethod)).EnterScope())
       {
         TypeFactory.GetActiveConfiguration (typeof (NullTarget));
         Assert.Fail ();
@@ -173,7 +171,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
         + "public or protected property Property could not be found on the base class.", MatchType = MessageMatch.Regex)]
     public void ThrowsIfPropertyRequirementIsNotFulfilled ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinRequiringSingleProperty)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinRequiringSingleProperty)).EnterScope())
       {
         TypeFactory.GetActiveConfiguration (typeof (NullTarget));
         Assert.Fail ();
@@ -194,7 +192,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
         + "or protected event Event could not be found on the base class.", MatchType = MessageMatch.Regex)]
     public void ThrowsIfEventRequirementIsNotFulfilled ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinRequiringSingleEvent)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinRequiringSingleEvent)).EnterScope())
       {
         TypeFactory.GetActiveConfiguration (typeof (NullTarget));
         Assert.Fail ();
@@ -223,7 +221,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
         + "public or protected method Method could not be found on the base class.", MatchType = MessageMatch.Regex)]
     public void ThrowsIfRequiredMethodIsPrivate ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClassFulfillingPrivately), typeof (MixinRequiringAllMembersFace)))
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingPrivately> ().Clear().AddMixins (typeof (MixinRequiringAllMembersFace)).EnterScope())
       {
         TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingPrivately));
       }
@@ -251,7 +249,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
         + "public or protected method Method could not be found on the base class.", MatchType = MessageMatch.Regex)]
     public void ThrowsIfRequiredMethodIsInternal ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClassFulfillingInternally), typeof (MixinRequiringAllMembersFace)))
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingInternally> ().Clear().AddMixins (typeof (MixinRequiringAllMembersFace)).EnterScope())
       {
         TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingInternally));
       }
@@ -276,7 +274,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void WorksIfRequiredMethodIsProtected ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClassFulfillingProtectedly), typeof (MixinRequiringAllMembersFace)))
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingProtectedly> ().Clear().AddMixins (typeof (MixinRequiringAllMembersFace)).EnterScope())
       {
         TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingProtectedly));
         RequiredFaceTypeDefinition requirement = definition.RequiredFaceTypes[typeof (IMixinRequiringAllMembersRequirements)];
@@ -288,7 +286,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void WorksIfExplicitlyImplemented ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClassFulfillingAllMemberRequirementsExplicitly), typeof (MixinRequiringAllMembersFace)))
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingAllMemberRequirementsExplicitly> ().Clear().AddMixins (typeof (MixinRequiringAllMembersFace)).EnterScope())
       {
         TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirementsExplicitly));
         RequiredFaceTypeDefinition requirement = definition.RequiredFaceTypes[typeof (IMixinRequiringAllMembersRequirements)];

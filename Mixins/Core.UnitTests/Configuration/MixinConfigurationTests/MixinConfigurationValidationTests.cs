@@ -15,7 +15,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       using (MixinConfiguration.BuildNew().EnterScope ())
       {
-        using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (NullMixin)))
+        using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (NullMixin)).EnterScope())
         {
           IValidationLog log = MixinConfiguration.ActiveConfiguration.Validate ();
           Assert.IsTrue (log.GetNumberOfSuccesses () > 0);
@@ -29,7 +29,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       using (MixinConfiguration.BuildNew().EnterScope ())
       {
-        using (MixinConfiguration.ScopedExtend (typeof (int), typeof (NullMixin)))
+        using (MixinConfiguration.BuildFromActive().ForClass<int> ().Clear().AddMixins (typeof (NullMixin)).EnterScope())
         {
           IValidationLog log = MixinConfiguration.ActiveConfiguration.Validate ();
           Assert.IsTrue (log.GetNumberOfFailures () > 0);
@@ -42,7 +42,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       using (MixinConfiguration.BuildNew().EnterScope ())
       {
-        using (MixinConfiguration.ScopedExtend (typeof (KeyValuePair<,>), typeof (NullMixin)))
+        using (MixinConfiguration.BuildFromActive().ForClass (typeof (KeyValuePair<,>)).Clear().AddMixins (typeof (NullMixin)).EnterScope())
         {
           IValidationLog log = MixinConfiguration.ActiveConfiguration.Validate ();
           Assert.IsTrue (log.GetNumberOfFailures () > 0);
@@ -64,7 +64,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       using (MixinConfiguration.BuildNew().EnterScope ())
       {
-        using (MixinConfiguration.ScopedExtend (typeof (UninstantiableGeneric<>), typeof (NullMixin)))
+        using (MixinConfiguration.BuildFromActive().ForClass (typeof (UninstantiableGeneric<>)).Clear().AddMixins (typeof (NullMixin)).EnterScope())
         {
           MixinConfiguration.ActiveConfiguration.Validate ();
         }

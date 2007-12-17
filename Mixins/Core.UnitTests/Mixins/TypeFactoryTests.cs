@@ -23,7 +23,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
         Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType2)));
 
-        using (MixinConfiguration.ScopedExtend(typeof (BaseType1)))
+        using (MixinConfiguration.BuildFromActive().ForClass (typeof (BaseType1)).Clear().EnterScope())
         {
           Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
           Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType2)));
@@ -34,7 +34,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
           Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
           Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType2)));
 
-          using (MixinConfiguration.ScopedExtend(typeof (BaseType2)))
+          using (MixinConfiguration.BuildFromActive().ForClass (typeof (BaseType2)).Clear().EnterScope())
           {
             Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
             Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType2)));
@@ -67,7 +67,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void MixinExtendingSpecificGenericType ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (GenericClassExtendedByMixin<int>), typeof (MixinExtendingSpecificGenericClass)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (GenericClassExtendedByMixin<int>)).Clear().AddMixins (typeof (MixinExtendingSpecificGenericClass)).EnterScope())
       {
         TargetClassDefinition targetClassDefinition =
             TypeFactory.GetActiveConfiguration (typeof (GenericClassExtendedByMixin<int>), GenerationPolicy.GenerateOnlyIfConfigured);

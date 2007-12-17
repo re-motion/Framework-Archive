@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void MixedTypesAreSerializable ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (MixinAddingInterface)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (MixinAddingInterface)).EnterScope())
       {
         Order order = Order.NewObject ();
         Assert.IsTrue (((object) order).GetType ().IsSerializable);
@@ -24,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void MixedObjectsCanBeSerializedWithoutException ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (MixinAddingInterface)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (MixinAddingInterface)).EnterScope())
       {
         Order order = Order.NewObject();
         Serializer.Serialize (order);
@@ -34,7 +34,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void MixedObjectsCanBeDeserializedWithoutException ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (MixinAddingInterface)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (MixinAddingInterface)).EnterScope())
       {
         Order order = Order.NewObject ();
         Serializer.SerializeAndDeserialize (order);
@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void DomainObjectStateIsRestored ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (MixinAddingInterface)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (MixinAddingInterface)).EnterScope())
       {
         Order order = Order.NewObject ();
         order.OrderNumber = 5;
@@ -63,7 +63,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void MixinStateIsRestored ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (MixinWithState)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (MixinWithState)).EnterScope())
       {
         Order order = Order.NewObject ();
         Mixin.Get<MixinWithState> (order).State = "Sto stas stat stamus statis stant";
@@ -79,7 +79,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     public void MixinConfigurationIsRestored ()
     {
       byte[] serializedData;
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (MixinWithState)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (MixinWithState)).EnterScope())
       {
         Order order = Order.NewObject ();
         Assert.IsNotNull (Mixin.Get<MixinWithState> (order));
@@ -89,7 +89,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
       Order deserializedOrder1 = (Order) Serializer.Deserialize (serializedData);
       Assert.IsNotNull (Mixin.Get<MixinWithState> (deserializedOrder1));
 
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (NullMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (NullMixin)).EnterScope())
       {
         Order deserializedOrder2 = (Order) Serializer.Deserialize (serializedData);
         Assert.IsNotNull (Mixin.Get<MixinWithState> (deserializedOrder2));

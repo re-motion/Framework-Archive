@@ -124,7 +124,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void InternalAttributesAreIgnored()
     {
-      using (MixinConfiguration.ScopedExtend(typeof (ClassWithInternalAttribute)))
+      using (MixinConfiguration.BuildFromActive ().ForClass<ClassWithInternalAttribute>().Clear().EnterScope())
       {
         Assert.IsFalse (
             TypeFactory.GetActiveConfiguration (typeof (ClassWithInternalAttribute)).CustomAttributes.ContainsKey (typeof (InternalStuffAttribute)));
@@ -134,7 +134,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void CopyAttributes_OnClass ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingAttribute)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinIndirectlyAddingAttribute)).EnterScope())
       {
         MixinDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinIndirectlyAddingAttribute)];
         Assert.IsFalse (definition.CustomAttributes.ContainsKey (typeof (CopyCustomAttributesAttribute)));
@@ -172,7 +172,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void CopyFilteredAttributes_OnClass ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingFilteredAttributes)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinIndirectlyAddingFilteredAttributes)).EnterScope())
       {
         MixinDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinIndirectlyAddingFilteredAttributes)];
         Assert.IsFalse (definition.CustomAttributes.ContainsKey (typeof (CopyCustomAttributesAttribute)));
@@ -192,7 +192,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void CopyNonInheritedAttributes ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingNonInheritedAttribute)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinIndirectlyAddingNonInheritedAttribute)).EnterScope())
       {
         MixinDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinIndirectlyAddingNonInheritedAttribute)];
         Assert.IsFalse (definition.CustomAttributes.ContainsKey (typeof (CopyCustomAttributesAttribute)));
@@ -203,7 +203,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void CopyNonInheritedAttributesFromSelf ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingNonInheritedAttributeFromSelf)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinIndirectlyAddingNonInheritedAttributeFromSelf)).EnterScope())
       {
         MixinDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget))
             .Mixins[typeof (MixinIndirectlyAddingNonInheritedAttributeFromSelf)];
@@ -215,7 +215,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void CopyNonInheritedAttributesFromSelf_DosntIntroduceDuplicates ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingInheritedAttributeFromSelf)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinIndirectlyAddingInheritedAttributeFromSelf)).EnterScope())
       {
         MixinDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget))
             .Mixins[typeof (MixinIndirectlyAddingInheritedAttributeFromSelf)];
@@ -227,7 +227,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void CopyAttributes_OnMember ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingAttribute)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinIndirectlyAddingAttribute)).EnterScope())
       {
         MethodDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinIndirectlyAddingAttribute)]
             .Methods[typeof (MixinIndirectlyAddingAttribute).GetMethod ("ToString")];
@@ -254,7 +254,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void CopyFilteredAttributes_OnMember ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinIndirectlyAddingFilteredAttributes)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinIndirectlyAddingFilteredAttributes)).EnterScope())
       {
         MethodDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinIndirectlyAddingFilteredAttributes)]
             .Methods[typeof (MixinIndirectlyAddingFilteredAttributes).GetMethod ("ToString")];
@@ -294,7 +294,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
         + ".*MixinWithAmbiguousSource.", MatchType = MessageMatch.Regex)]
     public void CopyAttributes_Ambiguous ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithAmbiguousSource)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithAmbiguousSource)).EnterScope())
       {
         TypeFactory.GetActiveConfiguration (typeof (NullTarget));
       }
@@ -317,7 +317,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
         + "source .*MixinWithUnknownSource.Source.", MatchType = MessageMatch.Regex)]
     public void CopyAttributes_Unknown ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithUnknownSource)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithUnknownSource)).EnterScope())
       {
         TypeFactory.GetActiveConfiguration (typeof (NullTarget));
       }
@@ -340,7 +340,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
         + ".*MixinWithInvalidSourceType of a different member kind.", MatchType = MessageMatch.Regex)]
     public void CopyAttributes_Invalid ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithInvalidSourceType)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithInvalidSourceType)).EnterScope())
       {
         TypeFactory.GetActiveConfiguration (typeof (NullTarget));
       }

@@ -37,15 +37,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void MixinDefinitionsAreSortedCorrectlyGrand ()
     {
-      using (MixinConfiguration.ScopedExtend(typeof (BaseType7), typeof (BT7Mixin0), typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3), typeof (BT7Mixin4), typeof (BT7Mixin5), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin8), typeof (BT7Mixin9), typeof (BT7Mixin10)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType7> ().Clear().AddMixins (typeof (BT7Mixin0), typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3), typeof (BT7Mixin4), typeof (BT7Mixin5), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin8), typeof (BT7Mixin9), typeof (BT7Mixin10)).EnterScope())
       {
         CheckGrandOrdering();
       }
-      using (MixinConfiguration.ScopedExtend(typeof (BaseType7), typeof (BT7Mixin10), typeof (BT7Mixin9), typeof (BT7Mixin8), typeof (BT7Mixin7), typeof (BT7Mixin6), typeof (BT7Mixin5), typeof (BT7Mixin4), typeof (BT7Mixin3), typeof (BT7Mixin2), typeof (BT7Mixin1), typeof (BT7Mixin0)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType7> ().Clear().AddMixins (typeof (BT7Mixin10), typeof (BT7Mixin9), typeof (BT7Mixin8), typeof (BT7Mixin7), typeof (BT7Mixin6), typeof (BT7Mixin5), typeof (BT7Mixin4), typeof (BT7Mixin3), typeof (BT7Mixin2), typeof (BT7Mixin1), typeof (BT7Mixin0)).EnterScope())
       {
         CheckGrandOrdering ();
       }
-      using (MixinConfiguration.ScopedExtend(typeof (BaseType7), typeof (BT7Mixin5), typeof (BT7Mixin8), typeof (BT7Mixin9), typeof (BT7Mixin2), typeof (BT7Mixin1), typeof (BT7Mixin10), typeof (BT7Mixin4), typeof (BT7Mixin0), typeof (BT7Mixin6), typeof (BT7Mixin3), typeof (BT7Mixin7)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType7> ().Clear().AddMixins (typeof (BT7Mixin5), typeof (BT7Mixin8), typeof (BT7Mixin9), typeof (BT7Mixin2), typeof (BT7Mixin1), typeof (BT7Mixin10), typeof (BT7Mixin4), typeof (BT7Mixin0), typeof (BT7Mixin6), typeof (BT7Mixin3), typeof (BT7Mixin7)).EnterScope())
       {
         CheckGrandOrdering ();
       }
@@ -87,7 +87,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
         MatchType = MessageMatch.Regex)]
     public void ThrowsIfConnectedMixinsCannotBeSorted()
     {
-      using (MixinConfiguration.ScopedExtend(typeof (BaseType7), typeof (BT7Mixin0), typeof (BT7Mixin4), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin2), typeof (BT7Mixin5)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType7> ().Clear().AddMixins (typeof (BT7Mixin0), typeof (BT7Mixin4), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin2), typeof (BT7Mixin5)).EnterScope())
       {
         TypeFactory.GetActiveConfiguration (typeof (BaseType7));
       }
@@ -110,7 +110,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
         MatchType = MessageMatch.Regex)]
     public void ThrowsOnCircularDependencies()
     {
-      using (MixinConfiguration.ScopedExtend(typeof (object), typeof (Circular1), typeof (Circular2)))
+      using (MixinConfiguration.BuildFromActive().ForClass<object> ().Clear().AddMixins (typeof (Circular1), typeof (Circular2)).EnterScope())
       {
         TypeFactory.GetActiveConfiguration (typeof (object));
       }
@@ -127,7 +127,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
         MatchType = MessageMatch.Regex)]
     public void ThrowsOnSelfDependencies ()
     {
-      using (MixinConfiguration.ScopedExtend(typeof (object), typeof (SelfDependency)))
+      using (MixinConfiguration.BuildFromActive().ForClass<object> ().Clear().AddMixins (typeof (SelfDependency)).EnterScope())
       {
         TypeFactory.GetActiveConfiguration (typeof (object));
       }
@@ -136,7 +136,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void DependencyAnalyzer ()
     {
-      using (MixinConfiguration.ScopedExtend(typeof (BaseType7), typeof (BT7Mixin0), typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3), typeof (BT7Mixin4), typeof (BT7Mixin5), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin8), typeof (BT7Mixin9), typeof (BT7Mixin10)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType7> ().Clear().AddMixins (typeof (BT7Mixin0), typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3), typeof (BT7Mixin4), typeof (BT7Mixin5), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin8), typeof (BT7Mixin9), typeof (BT7Mixin10)).EnterScope())
       {
         MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin0)).AddExplicitDependency (typeof (IBT7Mixin7));
         MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin7)).AddExplicitDependency (typeof (IBT7Mixin4));
@@ -182,7 +182,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void MixinGroupBuilder ()
     {
-      using (MixinConfiguration.ScopedExtend(typeof (BaseType7), typeof (BT7Mixin0), typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3), typeof (BT7Mixin4), typeof (BT7Mixin5), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin8), typeof (BT7Mixin9), typeof (BT7Mixin10)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType7> ().Clear().AddMixins (typeof (BT7Mixin0), typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3), typeof (BT7Mixin4), typeof (BT7Mixin5), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin8), typeof (BT7Mixin9), typeof (BT7Mixin10)).EnterScope())
       {
         MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin0)).AddExplicitDependency (typeof (IBT7Mixin7));
         MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin7)).AddExplicitDependency (typeof (IBT7Mixin4));

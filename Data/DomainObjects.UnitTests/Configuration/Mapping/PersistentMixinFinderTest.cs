@@ -46,7 +46,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
         + "specified when it is applied to a DomainObject.")]
     public void ForInvalidOpenGenericMixin ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (GenericMixin<>)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (GenericMixin<>)).EnterScope())
       {
         PersistentMixinFinder.GetPersistentMixins (typeof (Order));
       }

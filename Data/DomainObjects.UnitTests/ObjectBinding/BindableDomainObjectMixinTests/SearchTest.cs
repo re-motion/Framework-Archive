@@ -18,16 +18,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
     private IBusinessObject _orderItem;
     private IBusinessObjectReferenceProperty _property;
 
-    private IDisposable _mixinConfiguration1;
-    private IDisposable _mixinConfiguration2;
+    private IDisposable _mixinConfiguration;
 
     public override void SetUp ()
     {
       base.SetUp ();
       BindableObjectProvider.Current.AddService (typeof (BindableDomainObjectSearchService), new BindableDomainObjectSearchService ());
 
-      _mixinConfiguration1 = MixinConfiguration.ScopedExtend (typeof (Order), typeof (BindableDomainObjectMixin));
-      _mixinConfiguration2 = MixinConfiguration.ScopedExtend (typeof (OrderItem), typeof (BindableDomainObjectMixin));
+      _mixinConfiguration = MixinConfiguration.BuildFromActive ()
+          .ForClass<Order> ().Clear ().AddMixin<BindableDomainObjectMixin> ()
+          .ForClass<OrderItem> ().Clear ().AddMixin<BindableDomainObjectMixin> ()
+          .EnterScope();
 
       _orderItem = (IBusinessObject) OrderItem.NewObject();
       _property = (IBusinessObjectReferenceProperty) _orderItem.BusinessObjectClass.GetPropertyDefinition ("Order");
@@ -35,8 +36,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
 
     public override void TearDown ()
     {
-      _mixinConfiguration2.Dispose ();
-      _mixinConfiguration1.Dispose ();
+      _mixinConfiguration.Dispose ();
       base.TearDown ();
     }
 

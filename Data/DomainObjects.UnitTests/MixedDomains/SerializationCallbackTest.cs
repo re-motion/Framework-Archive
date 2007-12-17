@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void SerializationEvents_OnTarget ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClassWithSerializationCallbacks), typeof (MixinWithSerializationCallbacks)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClassWithSerializationCallbacks)).Clear().AddMixins (typeof (MixinWithSerializationCallbacks)).EnterScope())
       {
         ClassWithSerializationCallbacks instance =
             (ClassWithSerializationCallbacks) RepositoryAccessor.NewObject (typeof (ClassWithSerializationCallbacks)).With();
@@ -45,7 +45,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void DeserializationEvents_OnTarget ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClassWithSerializationCallbacks), typeof (MixinWithSerializationCallbacks)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClassWithSerializationCallbacks)).Clear().AddMixins (typeof (MixinWithSerializationCallbacks)).EnterScope())
       {
         ClassWithSerializationCallbacks instance =
             (ClassWithSerializationCallbacks) RepositoryAccessor.NewObject (typeof (ClassWithSerializationCallbacks)).With();
@@ -61,7 +61,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void SerializationEvents_OnMixin ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClassWithSerializationCallbacks), typeof (MixinWithSerializationCallbacks)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClassWithSerializationCallbacks)).Clear().AddMixins (typeof (MixinWithSerializationCallbacks)).EnterScope())
       {
         ClassWithSerializationCallbacks instance =
             (ClassWithSerializationCallbacks) RepositoryAccessor.NewObject (typeof (ClassWithSerializationCallbacks)).With();
@@ -77,7 +77,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void DeserializationEvents_OnMixin ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClassWithSerializationCallbacks), typeof (MixinWithSerializationCallbacks)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClassWithSerializationCallbacks)).Clear().AddMixins (typeof (MixinWithSerializationCallbacks)).EnterScope())
       {
         ClassWithSerializationCallbacks instance =
             (ClassWithSerializationCallbacks) RepositoryAccessor.NewObject (typeof (ClassWithSerializationCallbacks)).With();

@@ -194,7 +194,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Ambiguous override", MatchType = MessageMatch.Contains)]
     public void ThrowsOnTargetClassOverridingMultipleMixinMethods()
     {
-      using (MixinConfiguration.ScopedExtend(typeof (ClassOverridingMixinMembers), typeof (MixinWithAbstractMembers), typeof(MixinWithSingleAbstractMethod2)))
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassOverridingMixinMembers> ().Clear().AddMixins (typeof (MixinWithAbstractMembers), typeof(MixinWithSingleAbstractMethod2)).EnterScope())
       {
         TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers));
       }
@@ -203,7 +203,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void TargetClassOverridingSpecificMixinMethod ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClassOverridingSpecificMixinMember), typeof (MixinWithVirtualMethod), typeof (MixinWithVirtualMethod2)))
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassOverridingSpecificMixinMember> ().Clear().AddMixins (typeof (MixinWithVirtualMethod), typeof (MixinWithVirtualMethod2)).EnterScope())
       {
         TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingSpecificMixinMember));
         MethodDefinition method = definition.Methods[typeof (ClassOverridingSpecificMixinMember).GetMethod ("VirtualMethod")];
@@ -216,7 +216,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
                                                                            + "'Rubicon.Mixins.UnitTests.SampleTypes.ClassOverridingSpecificMixinMember.VirtualMethod' could not be found.")]
     public void TargetClassOverridingSpecificUnconfiguredMixinMethod ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClassOverridingSpecificMixinMember), typeof (MixinWithVirtualMethod2)))
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassOverridingSpecificMixinMember> ().Clear().AddMixins (typeof (MixinWithVirtualMethod2)).EnterScope())
       {
         TypeFactory.GetActiveConfiguration (typeof (ClassOverridingSpecificMixinMember));
       }
@@ -225,7 +225,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void TargetClassOverridingSpecificGenericMethod ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ClassOverridingSpecificGenericMixinMember), typeof (GenericMixinWithVirtualMethod<>), typeof (GenericMixinWithVirtualMethod2<>)))
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassOverridingSpecificGenericMixinMember> ().Clear().AddMixins (typeof (GenericMixinWithVirtualMethod<>), typeof (GenericMixinWithVirtualMethod2<>)).EnterScope())
       {
         TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingSpecificGenericMixinMember));
         MethodDefinition method = definition.Methods[typeof (ClassOverridingSpecificGenericMixinMember).GetMethod ("VirtualMethod")];

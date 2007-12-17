@@ -36,7 +36,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       ++order.OrderNumber;
       Provider.Connect ();
-      using (MixinConfiguration.ScopedExtend (typeof (WhereClauseBuilder), typeof (WhereClauseBuilderMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (WhereClauseBuilder)).Clear().AddMixins (typeof (WhereClauseBuilderMixin)).EnterScope())
       {
         CommandBuilder commandBuilder = new UpdateCommandBuilder (Provider, order.InternalDataContainer);
         using (IDbCommand command = commandBuilder.Create())

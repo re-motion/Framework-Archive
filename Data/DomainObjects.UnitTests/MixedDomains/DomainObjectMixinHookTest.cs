@@ -12,7 +12,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void OnDomainObjectLoaded ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (HookedDomainObjectMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (HookedDomainObjectMixin)).EnterScope())
       {
         HookedDomainObjectMixin mixinInstance = new HookedDomainObjectMixin ();
 
@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void OnDomainObjectLoadedAfterEnlist ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (HookedDomainObjectMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (HookedDomainObjectMixin)).EnterScope())
       {
         HookedDomainObjectMixin mixinInstance = new HookedDomainObjectMixin ();
 
@@ -69,7 +69,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void OnDomainObjectLoadedInSubTransaction ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (HookedDomainObjectMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (HookedDomainObjectMixin)).EnterScope())
       {
         HookedDomainObjectMixin mixinInstance = new HookedDomainObjectMixin ();
 
@@ -94,7 +94,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void OnDomainObjectLoadedInParentAndSubTransaction ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (HookedDomainObjectMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (HookedDomainObjectMixin)).EnterScope())
       {
         HookedDomainObjectMixin mixinInstance = new HookedDomainObjectMixin ();
 
@@ -123,7 +123,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void OnDomainObjectCreated ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (HookedDomainObjectMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (HookedDomainObjectMixin)).EnterScope())
       {
         HookedDomainObjectMixin mixinInstance = new HookedDomainObjectMixin ();
 

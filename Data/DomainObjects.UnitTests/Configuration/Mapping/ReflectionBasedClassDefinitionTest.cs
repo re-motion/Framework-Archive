@@ -914,12 +914,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ClassDefinition classDefinition = new ReflectionBasedClassDefinition ("x", "xx", "xxx", typeof (Order), false,
           new Type[] { typeof (MixinA) });
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (MixinA)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (MixinA)).EnterScope())
       {
         classDefinition.ValidateCurrentMixinConfiguration (); // ok, no changes
       }
 
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (NonDomainObjectMixin), typeof (MixinA)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (NonDomainObjectMixin), typeof (MixinA)).EnterScope())
       {
         classDefinition.ValidateCurrentMixinConfiguration (); // ok, no persistence-related changes
       }
@@ -933,7 +933,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ClassDefinition classDefinition = new ReflectionBasedClassDefinition ("x", "xx", "xxx", typeof (Order), false,
           new Type[] { typeof (MixinA) });
-      using (MixinConfiguration.ScopedExtend (typeof (Order)))
+      using (MixinConfiguration.BuildFromActive().ForClass<Order>().Clear().EnterScope())
       {
         classDefinition.ValidateCurrentMixinConfiguration ();
       }
@@ -948,7 +948,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ClassDefinition classDefinition = new ReflectionBasedClassDefinition ("x", "xx", "xxx", typeof (Order), false,
           new Type[] { typeof (MixinA) });
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (NonDomainObjectMixin), typeof (MixinA), typeof (MixinB), typeof (MixinC)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (NonDomainObjectMixin), typeof (MixinA), typeof (MixinB), typeof (MixinC)).EnterScope())
       {
         classDefinition.ValidateCurrentMixinConfiguration ();
         Assert.Fail ();

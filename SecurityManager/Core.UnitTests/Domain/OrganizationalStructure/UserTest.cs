@@ -282,7 +282,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void MixedUserTest ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (User), typeof (TestMixin), typeof(BindableDomainObjectMixin)))
+      using (MixinConfiguration.BuildFromActive ().ForClass (typeof (User)).Clear().AddMixins (typeof (TestMixin), typeof(BindableDomainObjectMixin)).EnterScope())
       {
         User user = CreateUser ();
         Assert.IsNotNull (Mixin.Get<TestMixin> (user));

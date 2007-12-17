@@ -20,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
     public override void SetUp ()
     {
       base.SetUp ();
-      using (MixinConfiguration.ScopedExtend (typeof (Order), typeof (BindableDomainObjectMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass (typeof (Order)).Clear().AddMixins (typeof (BindableDomainObjectMixin)).EnterScope())
       {
         _loadedOrder = Order.GetObject (DomainObjectIDs.Order1);
         _loadedBusinessOrder = (IBusinessObject) _loadedOrder;

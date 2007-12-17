@@ -138,7 +138,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void TestMultipleOverridesGrand ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType7), typeof (BT7Mixin0), typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3), typeof (BT7Mixin4), typeof (BT7Mixin5), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin8), typeof (BT7Mixin9), typeof (BT7Mixin10)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType7> ().Clear().AddMixins (typeof (BT7Mixin0), typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3), typeof (BT7Mixin4), typeof (BT7Mixin5), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin8), typeof (BT7Mixin9), typeof (BT7Mixin10)).EnterScope())
       {
         MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin0)).AddExplicitDependency (
             typeof (IBT7Mixin7));

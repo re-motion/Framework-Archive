@@ -36,7 +36,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
     [Test]
     public void SignedMixinWithSignedTargetClassGeneratedIntoSignedAssembly ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (ArrayList), typeof (EquatableMixin<>)))
+      using (MixinConfiguration.BuildFromActive().ForClass<ArrayList> ().Clear().AddMixins (typeof (EquatableMixin<>)).EnterScope())
       {
         MixinDefinition mixinDefinition = TypeFactory.GetActiveConfiguration (typeof (ArrayList)).GetMixinByConfiguredType (typeof (EquatableMixin<>));
         Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
@@ -47,7 +47,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
     [Test]
     public void UnsignedMixinWithUnsignedTargetClassGeneratedIntoUnsignedAssembly ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (UnsignedMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (UnsignedMixin)).EnterScope())
       {
         MixinDefinition mixinDefinition = TypeFactory.GetActiveConfiguration (typeof (BaseType1)).GetMixinByConfiguredType (typeof (UnsignedMixin));
         Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
@@ -58,7 +58,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
     [Test]
     public void SignedMixinWithUnsignedTargetClassGeneratedIntoUnsignedAssembly ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (UnsignedClass), typeof (EquatableMixin<>)))
+      using (MixinConfiguration.BuildFromActive().ForClass<UnsignedClass> ().Clear().AddMixins (typeof (EquatableMixin<>)).EnterScope())
       {
         MixinDefinition mixinDefinition =
             TypeFactory.GetActiveConfiguration (typeof (UnsignedClass)).GetMixinByConfiguredType (typeof (EquatableMixin<>));
@@ -72,7 +72,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
     [Test]
     public void UnsignedMixinWithSignedTargetClassGeneratedIntoUnsignedAssembly ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (UnsignedMixin)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (UnsignedMixin)).EnterScope())
       {
         MixinDefinition mixinDefinition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (UnsignedMixin)];
         Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);

@@ -54,7 +54,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void MixinImplementingFullPropertiesWithPartialIntroduction ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (MixinImplementingFullPropertiesWithPartialIntroduction)))
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (MixinImplementingFullPropertiesWithPartialIntroduction)).EnterScope())
       {
         BaseType1 bt1 = ObjectFactory.Create<BaseType1> ().With ();
         MethodInfo[] allMethods = bt1.GetType ().GetMethods (BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);

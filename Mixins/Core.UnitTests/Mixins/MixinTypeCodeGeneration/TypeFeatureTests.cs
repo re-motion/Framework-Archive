@@ -98,7 +98,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
     [Test]
     public void AttributesAreReplicatedIfNecessary ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithProtectedOverriderAndAttributes)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithProtectedOverriderAndAttributes)).EnterScope())
       {
         MixinDefinition mixinDefinition =
             TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinWithProtectedOverriderAndAttributes)];
@@ -120,7 +120,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration
     [Test]
     public void CopyTemplatesAreNotReplicated ()
     {
-      using (MixinConfiguration.ScopedExtend (typeof (NullTarget), typeof (MixinWithProtectedOverriderAndAttributes)))
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithProtectedOverriderAndAttributes)).EnterScope())
       {
         MixinDefinition mixinDefinition =
             TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinWithProtectedOverriderAndAttributes)];

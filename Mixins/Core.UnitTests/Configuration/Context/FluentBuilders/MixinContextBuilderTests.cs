@@ -94,11 +94,17 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
 
       using (_mockRepository.Ordered ())
       {
+        Expect.Call (_parentBuilderMock.Clear ()).Return (r1);
         Expect.Call (_parentBuilderMock.AddMixin (typeof (object))).Return (r4);
         Expect.Call (_parentBuilderMock.AddMixin<string> ()).Return (r4);
         Expect.Call (_parentBuilderMock.AddMixins (typeof (BT1Mixin1), typeof (BT1Mixin2))).Return (r1);
         Expect.Call (_parentBuilderMock.AddMixins<BT1Mixin1, BT1Mixin2> ()).Return (r1);
         Expect.Call (_parentBuilderMock.AddMixins<BT1Mixin1, BT1Mixin2, BT3Mixin1> ()).Return (r1);
+        Expect.Call (_parentBuilderMock.EnsureMixin (typeof (object))).Return (r1);
+        Expect.Call (_parentBuilderMock.EnsureMixin<string> ()).Return (r1);
+        Expect.Call (_parentBuilderMock.EnsureMixins (typeof (BT1Mixin1), typeof (BT1Mixin2))).Return (r1);
+        Expect.Call (_parentBuilderMock.EnsureMixins<BT1Mixin1, BT1Mixin2> ()).Return (r1);
+        Expect.Call (_parentBuilderMock.EnsureMixins<BT1Mixin1, BT1Mixin2, BT3Mixin1> ()).Return (r1);
         Expect.Call (_parentBuilderMock.AddOrderedMixins (typeof (BT1Mixin1), typeof (BT1Mixin2))).Return (r1);
         Expect.Call (_parentBuilderMock.AddOrderedMixins<BT1Mixin1, BT1Mixin2> ()).Return (r1);
         Expect.Call (_parentBuilderMock.AddOrderedMixins<BT1Mixin1, BT1Mixin2, BT3Mixin1> ()).Return (r1);
@@ -108,10 +114,12 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
         Expect.Call (_parentBuilderMock.AddCompleteInterfaces<IBT6Mixin1, IBT6Mixin2> ()).Return (r1);
         Expect.Call (_parentBuilderMock.AddCompleteInterfaces<IBT6Mixin1, IBT6Mixin2, IBT6Mixin3> ()).Return (r1);
         Expect.Call (_parentBuilderMock.AddCompleteInterfaces<IBT6Mixin1, IBT6Mixin2, IBT6Mixin3> ()).Return (r1);
+        Expect.Call (_parentBuilderMock.InheritFrom (r5)).Return (r1);
         Expect.Call (_parentBuilderMock.InheritFrom (typeof (BaseType5))).Return (r1);
+        Expect.Call (_parentBuilderMock.InheritFrom<BaseType5>()).Return (r1);
         Expect.Call (_parentBuilderMock.BuildClassContext (r2)).Return (r5);
 
-        Expect.Call (_parentBuilderMock.ForClass (typeof (object))).Return (r1);
+        Expect.Call (_parentBuilderMock.ForClass<object> ()).Return (r1);
         Expect.Call (_parentBuilderMock.ForClass<string> ()).Return (r1);
         Expect.Call (_parentBuilderMock.BuildConfiguration ()).Return (r2);
         Expect.Call (_parentBuilderMock.EnterScope ()).Return (r3);
@@ -119,11 +127,17 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
 
       _mockRepository.ReplayAll ();
 
+      Assert.AreSame (r1, _mixinBuilder.Clear ());
       Assert.AreSame (r4, _mixinBuilder.AddMixin (typeof (object)));
       Assert.AreSame (r4, _mixinBuilder.AddMixin<string> ());
       Assert.AreSame (r1, _mixinBuilder.AddMixins (typeof (BT1Mixin1), typeof (BT1Mixin2)));
       Assert.AreSame (r1, _mixinBuilder.AddMixins<BT1Mixin1, BT1Mixin2> ());
       Assert.AreSame (r1, _mixinBuilder.AddMixins<BT1Mixin1, BT1Mixin2, BT3Mixin1> ());
+      Assert.AreSame (r1, _mixinBuilder.EnsureMixin (typeof (object)));
+      Assert.AreSame (r1, _mixinBuilder.EnsureMixin<string> ());
+      Assert.AreSame (r1, _mixinBuilder.EnsureMixins (typeof (BT1Mixin1), typeof (BT1Mixin2)));
+      Assert.AreSame (r1, _mixinBuilder.EnsureMixins<BT1Mixin1, BT1Mixin2> ());
+      Assert.AreSame (r1, _mixinBuilder.EnsureMixins<BT1Mixin1, BT1Mixin2, BT3Mixin1> ());
       Assert.AreSame (r1, _mixinBuilder.AddOrderedMixins (typeof (BT1Mixin1), typeof (BT1Mixin2)));
       Assert.AreSame (r1, _mixinBuilder.AddOrderedMixins<BT1Mixin1, BT1Mixin2> ());
       Assert.AreSame (r1, _mixinBuilder.AddOrderedMixins<BT1Mixin1, BT1Mixin2, BT3Mixin1> ());
@@ -133,10 +147,12 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.AreSame (r1, _mixinBuilder.AddCompleteInterfaces<IBT6Mixin1, IBT6Mixin2> ());
       Assert.AreSame (r1, _mixinBuilder.AddCompleteInterfaces<IBT6Mixin1, IBT6Mixin2, IBT6Mixin3> ());
       Assert.AreSame (r1, _mixinBuilder.AddCompleteInterfaces<IBT6Mixin1, IBT6Mixin2, IBT6Mixin3> ());
+      Assert.AreSame (r1, _mixinBuilder.InheritFrom (r5));
       Assert.AreSame (r1, _mixinBuilder.InheritFrom (typeof (BaseType5)));
+      Assert.AreSame (r1, _mixinBuilder.InheritFrom<BaseType5>());
       Assert.AreSame (r5, _mixinBuilder.BuildClassContext (r2));
 
-      Assert.AreSame (r1, _mixinBuilder.ForClass (typeof (object)));
+      Assert.AreSame (r1, _mixinBuilder.ForClass<object> ());
       Assert.AreSame (r1, _mixinBuilder.ForClass<string> ());
       Assert.AreSame (r2, _mixinBuilder.BuildConfiguration ());
       Assert.AreSame (r3, _mixinBuilder.EnterScope ());
