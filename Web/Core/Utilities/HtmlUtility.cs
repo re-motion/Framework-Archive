@@ -21,9 +21,9 @@ public class HtmlUtility
     string html = HttpUtility.HtmlEncode (nonHtmlString);
     if (html != null)
     {
-      html = html.Replace ("\r\n", "<br>");
-      html = html.Replace ("\n", "<br>");
-      html = html.Replace ("\r", "<br>");
+      html = html.Replace ("\r\n", "<br />");
+      html = html.Replace ("\n", "<br />");
+      html = html.Replace ("\r", "<br />");
     }
     return html;
   }
