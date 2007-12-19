@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Rubicon.Collections;
 using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Context.FluentBuilders
@@ -11,7 +12,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
   {
     private readonly ClassContextBuilder _parent;
     private readonly Type _mixinType;
-    private readonly List<Type> _dependencies = new List<Type>();
+    private readonly Set<Type> _dependencies = new Set<Type>();
 
     public MixinContextBuilder (ClassContextBuilder parent, Type mixinType)
     {
@@ -59,6 +60,11 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     public virtual MixinContextBuilder WithDependency (Type requiredMixin)
     {
       ArgumentUtility.CheckNotNull ("requiredMixin", requiredMixin);
+      if (_dependencies.Contains (requiredMixin))
+      {
+        string message = string.Format ("The mixin {0} already has a dependency on type {1}.", MixinType.FullName, requiredMixin.FullName);
+        throw new ArgumentException (message, "requiredMixin");
+      }
       _dependencies.Add (requiredMixin);
       return this;
     }
@@ -140,7 +146,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// all mixin configuration data from its
     /// <see cref="ClassContextBuilder.ParentContext"/> and also resets all information collected so far for the class by this object.
     /// </summary>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder Clear ()
     {
       return _parent.Clear();
@@ -170,7 +176,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// Collects the given types as mixins for the <see cref="ClassContextBuilder.TargetType"/>.
     /// </summary>
     /// <param name="mixinTypes">The mixin types to collect.</param>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddMixins (params Type[] mixinTypes)
     {
       return _parent.AddMixins (mixinTypes);
@@ -181,7 +187,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// </summary>
     /// <typeparam name="TMixin1">The first mixin type to collect.</typeparam>
     /// <typeparam name="TMixin2">The second mixin type to collect.</typeparam>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddMixins<TMixin1, TMixin2> ()
     {
       return _parent.AddMixins<TMixin1, TMixin2> ();
@@ -193,7 +199,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <typeparam name="TMixin1">The first mixin type to collect.</typeparam>
     /// <typeparam name="TMixin2">The second mixin type to collect.</typeparam>
     /// <typeparam name="TMixin3">The third mixin type to collect.</typeparam>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddMixins<TMixin1, TMixin2, TMixin3> ()
     {
       return _parent.AddMixins<TMixin1, TMixin2, TMixin3>();
@@ -205,7 +211,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <see cref="InheritFrom(ClassContext)"/>.
     /// </summary>
     /// <param name="mixinType">The mixin type to collect.</param>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder EnsureMixin (Type mixinType)
     {
       return _parent.EnsureMixin (mixinType);
@@ -217,7 +223,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <see cref="InheritFrom(ClassContext)"/>.
     /// </summary>
     /// <typeparam name="TMixin">The mixin type to collect.</typeparam>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder EnsureMixin<TMixin> ()
     {
       return _parent.EnsureMixin<TMixin>();
@@ -229,7 +235,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <see cref="InheritFrom(ClassContext)"/>.
     /// </summary>
     /// <param name="mixinTypes">The mixin types to collect.</param>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder EnsureMixins (params Type[] mixinTypes)
     {
       return _parent.EnsureMixins (mixinTypes);
@@ -242,7 +248,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// </summary>
     /// <typeparam name="TMixin1">The first mixin type to collect.</typeparam>
     /// <typeparam name="TMixin2">The second mixin type to collect.</typeparam>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder EnsureMixins<TMixin1, TMixin2> ()
     {
       return _parent.EnsureMixins<TMixin1, TMixin2>();
@@ -256,7 +262,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <typeparam name="TMixin1">The first mixin type to collect.</typeparam>
     /// <typeparam name="TMixin2">The second mixin type to collect.</typeparam>
     /// <typeparam name="TMixin3">The third mixin type to collect.</typeparam>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder EnsureMixins<TMixin1, TMixin2, TMixin3> ()
     {
       return _parent.EnsureMixins<TMixin1, TMixin2, TMixin3>();
@@ -267,7 +273,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// order.
     /// </summary>
     /// <param name="mixinTypes">The mixin types to collect with dependencies.</param>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddOrderedMixins (params Type[] mixinTypes)
     {
       return _parent.AddOrderedMixins (mixinTypes);
@@ -279,7 +285,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// </summary>
     /// <typeparam name="TMixin1">The first mixin type to collect with dependencies.</typeparam>
     /// <typeparam name="TMixin2">The first mixin type to collect with dependencies.</typeparam>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddOrderedMixins<TMixin1, TMixin2> ()
     {
       return _parent.AddOrderedMixins<TMixin1, TMixin2> ();
@@ -292,7 +298,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <typeparam name="TMixin1">The first mixin type to collect with dependencies.</typeparam>
     /// <typeparam name="TMixin2">The first mixin type to collect with dependencies.</typeparam>
     /// <typeparam name="TMixin3">The first mixin type to collect with dependencies.</typeparam>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddOrderedMixins<TMixin1, TMixin2, TMixin3> ()
     {
       return _parent.AddOrderedMixins<TMixin1, TMixin2, TMixin3> ();
@@ -303,7 +309,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// target class itself and by mixins applied to the class, making it easier to invoke methods and properties on a mixed object without casting.
     /// </summary>
     /// <param name="interfaceType">The type to collect as a complete interface.</param>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddCompleteInterface (Type interfaceType)
     {
       return _parent.AddCompleteInterface (interfaceType);
@@ -314,7 +320,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// target class itself and by mixins applied to the class, making it easier to invoke methods and properties on a mixed object without casting.
     /// </summary>
     /// <typeparam name="TInterface">The type to collect as a complete interface.</typeparam>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddCompleteInterface<TInterface> ()
     {
       return _parent.AddCompleteInterface<TInterface> ();
@@ -325,7 +331,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// target class itself and by mixins applied to the class, making it easier to invoke methods and properties on a mixed object without casting.
     /// </summary>
     /// <param name="interfaceTypes">The types to collect as complete interfaces.</param>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddCompleteInterfaces (params Type[] interfaceTypes)
     {
       return _parent.AddCompleteInterfaces (interfaceTypes);
@@ -337,7 +343,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// </summary>
     /// <typeparam name="TInterface1">The types to collect as complete interfaces.</typeparam>
     /// <typeparam name="TInterface2">The types to collect as complete interfaces.</typeparam>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddCompleteInterfaces<TInterface1, TInterface2> ()
     {
       return _parent.AddCompleteInterfaces<TInterface1, TInterface2> ();
@@ -350,10 +356,74 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <typeparam name="TInterface1">The types to collect as complete interfaces.</typeparam>
     /// <typeparam name="TInterface2">The types to collect as complete interfaces.</typeparam>
     /// <typeparam name="TInterface3">The types to collect as complete interfaces.</typeparam>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddCompleteInterfaces<TInterface1, TInterface2, TInterface3> ()
     {
       return _parent.AddCompleteInterfaces<TInterface1, TInterface2, TInterface3> ();
+    }
+
+    /// <summary>
+    /// Denotes that a specific mixin type, and all mixin types that can be ascribed to it (see <see cref="ReflectionUtility.CanAscribe"/>), should be
+    /// ignored in the context of this object's <see cref="ClassContextBuilder"/>. Suppression is helpful when a target class should take over most 
+    /// of its mixins from the <see cref="ClassContextBuilder.ParentContext"/> or inherit mixins from another type, but a specific mixin should be ignored in that 
+    /// process.
+    /// </summary>
+    /// <param name="mixinType">The mixin type, base type, or generic type definition denoting mixin types to be suppressed.</param>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    public virtual ClassContextBuilder SuppressMixin (Type mixinType)
+    {
+      return _parent.SuppressMixin (mixinType);
+    }
+
+    /// <summary>
+    /// Denotes that a specific mixin type, and all mixin types that can be ascribed to it (see <see cref="ReflectionUtility.CanAscribe"/>), should be
+    /// ignored in the context of this object's <see cref="ClassContextBuilder"/>. Suppression is helpful when a target class should take over most of its mixins from the
+    /// <see cref="ClassContextBuilder.ParentContext"/> or inherit mixins from another type, but a specific mixin should be ignored in that process.
+    /// </summary>
+    /// <typeparam name="TMixinType">The mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    public virtual ClassContextBuilder SuppressMixin<TMixinType> ()
+    {
+      return _parent.SuppressMixin<TMixinType>();
+    }
+
+    /// <summary>
+    /// Denotes that a number of mixin types, and all mixin types that can be ascribed to it (see <see cref="ReflectionUtility.CanAscribe"/>), should be
+    /// ignored in the context of this object's <see cref="ClassContextBuilder"/>. Suppression is helpful when a target class should take over most of its mixins from the
+    /// <see cref="ClassContextBuilder.ParentContext"/> or inherit mixins from another type, but a specific mixin should be ignored in that process.
+    /// </summary>
+    /// <param name="mixinTypes">The mixin types, base types, or generic type definitions denoting mixin types to be suppressed.</param>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    public virtual ClassContextBuilder SuppressMixins (params Type[] mixinTypes)
+    {
+      return _parent.SuppressMixins (mixinTypes);
+    }
+
+    /// <summary>
+    /// Denotes that a number of mixin types, and all mixin types that can be ascribed to it (see <see cref="ReflectionUtility.CanAscribe"/>), should be
+    /// ignored in the context of this object's <see cref="ClassContextBuilder"/>. Suppression is helpful when a target class should take over most of its mixins from the
+    /// <see cref="ClassContextBuilder.ParentContext"/> or inherit mixins from another type, but a specific mixin should be ignored in that process.
+    /// </summary>
+    /// <typeparam name="TMixinType1">The first mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
+    /// <typeparam name="TMixinType2">The second mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    public virtual ClassContextBuilder SuppressMixins<TMixinType1, TMixinType2> ()
+    {
+      return _parent.SuppressMixins<TMixinType1, TMixinType2>();
+    }
+
+    /// <summary>
+    /// Denotes that a number of mixin types, and all mixin types that can be ascribed to it (see <see cref="ReflectionUtility.CanAscribe"/>), should be
+    /// ignored in the context of this object's <see cref="ClassContextBuilder"/>. Suppression is helpful when a target class should take over most of its mixins from the
+    /// <see cref="ClassContextBuilder.ParentContext"/> or inherit mixins from another type, but a specific mixin should be ignored in that process.
+    /// </summary>
+    /// <typeparam name="TMixinType1">The first mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
+    /// <typeparam name="TMixinType2">The second mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
+    /// <typeparam name="TMixinType3">The third mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    public virtual ClassContextBuilder SuppressMixins<TMixinType1, TMixinType2, TMixinType3> ()
+    {
+      return _parent.SuppressMixins<TMixinType1, TMixinType2, TMixinType3>();
     }
 
     /// <summary>
@@ -362,7 +432,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// another mixin if it is of the same or a derived type (or a generic specialization of the type).
     /// </summary>
     /// <param name="contextOfTargetTypeToInheritFrom">The class context to inherit from.</param>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder InheritFrom (ClassContext contextOfTargetTypeToInheritFrom)
     {
       return _parent.InheritFrom (contextOfTargetTypeToInheritFrom);
@@ -375,7 +445,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// another mixin if it is of the same or a derived type (or a generic specialization of the type).
     /// </summary>
     /// <param name="targetTypeToInheritFrom">The target type to inherit from.</param>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder InheritFrom (Type targetTypeToInheritFrom)
     {
       return _parent.InheritFrom (targetTypeToInheritFrom);
@@ -388,7 +458,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// another mixin if it is of the same or a derived type (or a generic specialization of the type).
     /// </summary>
     /// <typeparam name="TTypeToInheritFrom">The target type to inherit from.</typeparam>
-    /// <returns>This object for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
+    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder InheritFrom<TTypeToInheritFrom> ()
     {
       return _parent.InheritFrom<TTypeToInheritFrom>();

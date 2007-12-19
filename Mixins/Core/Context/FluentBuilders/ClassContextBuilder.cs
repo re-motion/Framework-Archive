@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Rubicon.Collections;
 using Rubicon.Mixins;
 using Rubicon.Mixins.Context;
 using Rubicon.Utilities;
@@ -14,8 +15,9 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     private readonly MixinConfigurationBuilder _parent;
     private readonly Type _targetType;
     private readonly Dictionary<Type, MixinContextBuilder> _mixinContextBuilders = new Dictionary<Type, MixinContextBuilder> ();
-    private readonly List<Type> _completeInterfaces = new List<Type> ();
-    private readonly List<ClassContext> _typesToInheritFrom = new List<ClassContext> ();
+    private readonly Set<Type> _completeInterfaces = new Set<Type> ();
+    private readonly Set<ClassContext> _typesToInheritFrom = new Set<ClassContext> ();
+    private readonly Set<Type> _suppressedMixins = new Set<Type> ();
 
     private ClassContext _parentContext;
 
@@ -86,6 +88,15 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     }
 
     /// <summary>
+    /// Gets the suppressed mixins collected so far.
+    /// </summary>
+    /// <value>The suppressed mixins collected so far by this object.</value>
+    public IEnumerable<Type> SuppressedMixins
+    {
+      get { return _suppressedMixins; }
+    }
+
+    /// <summary>
     /// Clears all mixin configuration for the <see cref="TargetType"/>. This causes the target type to ignore all mixin configuration data from its
     /// <see cref="ParentContext"/> and also resets all information collected so far for the class by this object.
     /// </summary>
@@ -107,6 +118,16 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     public virtual MixinContextBuilder AddMixin (Type mixinType)
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      if (_mixinContextBuilders.ContainsKey (mixinType))
+        throw new ArgumentException (
+            string.Format ("{0} is already configured as a mixin for type {1}.", mixinType.FullName, TargetType.FullName), "mixinType");
+      if (ParentContext != null && ParentContext.ContainsMixin (mixinType))
+      {
+        string message = string.Format ("{0} is already configured as a mixin for type {1} via its parent context. Call Clear() if the parent "
+            + "context should be ignored.", mixinType.FullName, TargetType.FullName);
+        throw new ArgumentException (message, "mixinType");
+      }
+
       MixinContextBuilder mixinContextBuilder = new MixinContextBuilder (this, mixinType);
       _mixinContextBuilders.Add (mixinType, mixinContextBuilder);
       return mixinContextBuilder;
@@ -298,6 +319,18 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     public virtual ClassContextBuilder AddCompleteInterface (Type interfaceType)
     {
       ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
+      if (_completeInterfaces.Contains (interfaceType))
+      {
+        string message = string.Format ("{0} is already configured as a complete interface for type {1}.",
+            interfaceType.FullName, TargetType.FullName);
+        throw new ArgumentException (message, "interfaceType");
+      }
+      if (ParentContext != null && ParentContext.ContainsCompleteInterface (interfaceType))
+      {
+        string message = string.Format ("{0} is already configured as a complete interface for type {1} via its parent context. Call Clear() if the"
+            + " parent context should be ignored.", interfaceType.FullName, TargetType.FullName);
+        throw new ArgumentException (message, "interfaceType");
+      }
       _completeInterfaces.Add (interfaceType);
       return this;
     }
@@ -350,6 +383,81 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     public virtual ClassContextBuilder AddCompleteInterfaces<TInterface1, TInterface2, TInterface3> ()
     {
       return AddCompleteInterfaces (typeof (TInterface1), typeof (TInterface2), typeof (TInterface3));
+    }
+
+    /// <summary>
+    /// Denotes that a specific mixin type, and all mixin types that can be ascribed to it (see <see cref="ReflectionUtility.CanAscribe"/>), should be
+    /// ignored in the context of this class. Suppression is helpful when a target class should take over most of its mixins from the
+    /// <see cref="ParentContext"/> or inherit mixins from another type, but a specific mixin should be ignored in that process.
+    /// </summary>
+    /// <param name="mixinType">The mixin type, base type, or generic type definition denoting mixin types to be suppressed.</param>
+    /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
+    public virtual ClassContextBuilder SuppressMixin (Type mixinType)
+    {
+      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      if (_suppressedMixins.Contains (mixinType))
+      {
+        string message =
+            string.Format ("The mixin type {0} has already been suppressed for target type {1}.", mixinType.FullName, TargetType.FullName);
+        throw new ArgumentException (message, "mixinType");
+      }
+
+      _suppressedMixins.Add (mixinType);
+      return this;
+    }
+
+    /// <summary>
+    /// Denotes that a specific mixin type, and all mixin types that can be ascribed to it (see <see cref="ReflectionUtility.CanAscribe"/>), should be
+    /// ignored in the context of this class. Suppression is helpful when a target class should take over most of its mixins from the
+    /// <see cref="ParentContext"/> or inherit mixins from another type, but a specific mixin should be ignored in that process.
+    /// </summary>
+    /// <typeparam name="TMixinType">The mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
+    /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
+    public virtual ClassContextBuilder SuppressMixin<TMixinType> ()
+    {
+      return SuppressMixin (typeof (TMixinType));
+    }
+
+    /// <summary>
+    /// Denotes that a number of mixin types, and all mixin types that can be ascribed to it (see <see cref="ReflectionUtility.CanAscribe"/>), should be
+    /// ignored in the context of this class. Suppression is helpful when a target class should take over most of its mixins from the
+    /// <see cref="ParentContext"/> or inherit mixins from another type, but a specific mixin should be ignored in that process.
+    /// </summary>
+    /// <param name="mixinTypes">The mixin types, base types, or generic type definitions denoting mixin types to be suppressed.</param>
+    /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
+    public virtual ClassContextBuilder SuppressMixins (params Type[] mixinTypes)
+    {
+      ArgumentUtility.CheckNotNull ("mixinTypes", mixinTypes);
+      foreach (Type mixinType in mixinTypes)
+        SuppressMixin (mixinType);
+      return this;
+    }
+
+    /// <summary>
+    /// Denotes that a number of mixin types, and all mixin types that can be ascribed to it (see <see cref="ReflectionUtility.CanAscribe"/>), should be
+    /// ignored in the context of this class. Suppression is helpful when a target class should take over most of its mixins from the
+    /// <see cref="ParentContext"/> or inherit mixins from another type, but a specific mixin should be ignored in that process.
+    /// </summary>
+    /// <typeparam name="TMixinType1">The first mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
+    /// <typeparam name="TMixinType2">The second mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
+    /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
+    public virtual ClassContextBuilder SuppressMixins<TMixinType1, TMixinType2> ()
+    {
+      return SuppressMixins (typeof (TMixinType1), typeof (TMixinType2));
+    }
+
+    /// <summary>
+    /// Denotes that a number of mixin types, and all mixin types that can be ascribed to it (see <see cref="ReflectionUtility.CanAscribe"/>), should be
+    /// ignored in the context of this class. Suppression is helpful when a target class should take over most of its mixins from the
+    /// <see cref="ParentContext"/> or inherit mixins from another type, but a specific mixin should be ignored in that process.
+    /// </summary>
+    /// <typeparam name="TMixinType1">The first mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
+    /// <typeparam name="TMixinType2">The second mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
+    /// <typeparam name="TMixinType3">The third mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
+    /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
+    public virtual ClassContextBuilder SuppressMixins<TMixinType1, TMixinType2, TMixinType3> ()
+    {
+      return SuppressMixins (typeof (TMixinType1), typeof (TMixinType2), typeof (TMixinType3));
     }
 
     /// <summary>
@@ -410,14 +518,46 @@ namespace Rubicon.Mixins.Context.FluentBuilders
       else
         classContext = new ClassContext (_targetType);
 
-      foreach (MixinContextBuilder mixinContextBuilder in MixinContextBuilders)
-        mixinContextBuilder.BuildMixinContext (classContext);
-      foreach (Type completeInterface in CompleteInterfaces)
-        classContext.AddCompleteInterface (completeInterface);
-      foreach (ClassContext typeToInheritFrom in TypesToInheritFrom)
-        classContext.InheritFrom (typeToInheritFrom);
+      ApplyMixins(classContext);
+      ApplyCompleteInterfaces(classContext);
+      ApplyInheritance(classContext);
+      ApplySuppressedMixins(classContext);
+
       mixinConfiguration.AddOrReplaceClassContext (classContext);
       return classContext;
+    }
+
+    private void ApplyMixins (ClassContext classContext)
+    {
+      foreach (MixinContextBuilder mixinContextBuilder in MixinContextBuilders)
+        mixinContextBuilder.BuildMixinContext (classContext);
+    }
+
+    private void ApplyCompleteInterfaces (ClassContext classContext)
+    {
+      foreach (Type completeInterface in CompleteInterfaces)
+        classContext.AddCompleteInterface (completeInterface);
+    }
+
+    private void ApplyInheritance (ClassContext classContext)
+    {
+      foreach (ClassContext typeToInheritFrom in TypesToInheritFrom)
+        classContext.InheritFrom (typeToInheritFrom);
+    }
+
+    private void ApplySuppressedMixins (ClassContext classContext)
+    {
+      foreach (Type suppressedType in SuppressedMixins)
+      {
+        Set<Type> concreteMixinsToBeRemoved = new Set<Type> ();
+        foreach (MixinContext mixin in classContext.Mixins)
+        {
+          if (Rubicon.Utilities.ReflectionUtility.CanAscribe (mixin.MixinType, suppressedType))
+            concreteMixinsToBeRemoved.Add (mixin.MixinType);
+        }
+        foreach (Type concreteType in concreteMixinsToBeRemoved)
+          classContext.RemoveMixin (concreteType);
+      }
     }
 
     #region Parent members

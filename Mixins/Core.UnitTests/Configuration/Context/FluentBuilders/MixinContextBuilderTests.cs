@@ -43,6 +43,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     }
 
     [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The mixin Rubicon.Mixins.UnitTests.SampleTypes.BT2Mixin1 already has a "
+        + "dependency on type Rubicon.Mixins.UnitTests.SampleTypes.BT1Mixin1.", MatchType = MessageMatch.Contains)]
+    public void WithDependency_Twice ()
+    {
+      _mixinBuilder.WithDependency (typeof (BT1Mixin1)).WithDependency (typeof (BT1Mixin1));
+    }
+
+    [Test]
     public void WithDependency_Generic ()
     {
       _mixinBuilder.WithDependency<BT1Mixin1> ();
@@ -114,6 +122,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
         Expect.Call (_parentBuilderMock.AddCompleteInterfaces<IBT6Mixin1, IBT6Mixin2> ()).Return (r1);
         Expect.Call (_parentBuilderMock.AddCompleteInterfaces<IBT6Mixin1, IBT6Mixin2, IBT6Mixin3> ()).Return (r1);
         Expect.Call (_parentBuilderMock.AddCompleteInterfaces<IBT6Mixin1, IBT6Mixin2, IBT6Mixin3> ()).Return (r1);
+        Expect.Call (_parentBuilderMock.SuppressMixin (typeof (object))).Return (r1);
+        Expect.Call (_parentBuilderMock.SuppressMixin<string> ()).Return (r1);
+        Expect.Call (_parentBuilderMock.SuppressMixins (typeof (BT1Mixin1), typeof (BT1Mixin2))).Return (r1);
+        Expect.Call (_parentBuilderMock.SuppressMixins<BT1Mixin1, BT1Mixin2> ()).Return (r1);
+        Expect.Call (_parentBuilderMock.SuppressMixins<BT1Mixin1, BT1Mixin2, BT3Mixin1> ()).Return (r1);
         Expect.Call (_parentBuilderMock.InheritFrom (r5)).Return (r1);
         Expect.Call (_parentBuilderMock.InheritFrom (typeof (BaseType5))).Return (r1);
         Expect.Call (_parentBuilderMock.InheritFrom<BaseType5>()).Return (r1);
@@ -147,6 +160,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.AreSame (r1, _mixinBuilder.AddCompleteInterfaces<IBT6Mixin1, IBT6Mixin2> ());
       Assert.AreSame (r1, _mixinBuilder.AddCompleteInterfaces<IBT6Mixin1, IBT6Mixin2, IBT6Mixin3> ());
       Assert.AreSame (r1, _mixinBuilder.AddCompleteInterfaces<IBT6Mixin1, IBT6Mixin2, IBT6Mixin3> ());
+      Assert.AreSame (r1, _mixinBuilder.SuppressMixin (typeof (object)));
+      Assert.AreSame (r1, _mixinBuilder.SuppressMixin<string> ());
+      Assert.AreSame (r1, _mixinBuilder.SuppressMixins (typeof (BT1Mixin1), typeof (BT1Mixin2)));
+      Assert.AreSame (r1, _mixinBuilder.SuppressMixins<BT1Mixin1, BT1Mixin2> ());
+      Assert.AreSame (r1, _mixinBuilder.SuppressMixins<BT1Mixin1, BT1Mixin2, BT3Mixin1> ());
       Assert.AreSame (r1, _mixinBuilder.InheritFrom (r5));
       Assert.AreSame (r1, _mixinBuilder.InheritFrom (typeof (BaseType5)));
       Assert.AreSame (r1, _mixinBuilder.InheritFrom<BaseType5>());

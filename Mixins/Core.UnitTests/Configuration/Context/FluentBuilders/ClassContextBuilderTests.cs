@@ -107,6 +107,25 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     }
 
     [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Rubicon.Mixins.UnitTests.SampleTypes.BT2Mixin1 is already configured as a "
+        + "mixin for type Rubicon.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
+    public void AddMixin_Twice ()
+    {
+      _classBuilder.AddMixin (typeof (BT2Mixin1)).AddMixin (typeof (BT2Mixin1));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Rubicon.Mixins.UnitTests.SampleTypes.BT2Mixin1 is already configured as a "
+        + "mixin for type Rubicon.Mixins.UnitTests.SampleTypes.BaseType2 via its parent context. Call Clear() if the parent context should be "
+        + "ignored.", MatchType = MessageMatch.Contains)]
+    public void AddMixin_ConflictWithParentContext ()
+    {
+      ClassContext parentContext = new ClassContext (typeof (BaseType2), typeof (BT2Mixin1));
+      ClassContextBuilder classBuilder = new ClassContextBuilder (_parentBuilderMock, typeof (BaseType2), parentContext);
+      classBuilder.AddMixin (typeof (BT2Mixin1));
+    }
+
+    [Test]
     public void AddMixin_Generic ()
     {
       Expect.Call (_classBuilderMock.AddMixin<BT2Mixin1> ()).CallOriginalMethod (OriginalCallOptions.CreateExpectation);
@@ -284,6 +303,27 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     }
 
     [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Rubicon.Mixins.UnitTests.SampleTypes.IBT6Mixin1 is already configured as a "
+        + "complete interface for type Rubicon.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
+    public void AddCompleteInterface_Twice ()
+    {
+      _classBuilder.AddCompleteInterface (typeof (IBT6Mixin1)).AddCompleteInterface (typeof (IBT6Mixin1));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Rubicon.Mixins.UnitTests.SampleTypes.IBT6Mixin1 is already configured as a "
+        + "complete interface for type Rubicon.Mixins.UnitTests.SampleTypes.BaseType2 via its parent context. Call Clear() if the parent context should be "
+        + "ignored.", MatchType = MessageMatch.Contains)]
+    public void AddCompleteInterface_ConflictWithParentContext ()
+    {
+      ClassContext parentContext = new ClassContext (typeof (BaseType2));
+      parentContext.AddCompleteInterface (typeof (IBT6Mixin1));
+
+      ClassContextBuilder classBuilder = new ClassContextBuilder (_parentBuilderMock, typeof (BaseType2), parentContext);
+      classBuilder.AddCompleteInterface (typeof (IBT6Mixin1));
+    }
+
+    [Test]
     public void AddCompleteInterface_Generic ()
     {
       Expect.Call (_classBuilderMock.AddCompleteInterface<BT2Mixin1> ()).CallOriginalMethod (OriginalCallOptions.CreateExpectation);
@@ -333,6 +373,73 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     }
 
     [Test]
+    public void SuppressMixin_NonGeneric ()
+    {
+      Assert.That (_classBuilder.SuppressedMixins, Is.Empty);
+      _classBuilder.SuppressMixin (typeof (BT1Mixin1));
+      _classBuilder.SuppressMixin (typeof (BT2Mixin1));
+      Assert.That (_classBuilder.SuppressedMixins, Is.EquivalentTo (new object[] { typeof (BT2Mixin1), typeof (BT1Mixin1) }));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The mixin type Rubicon.Mixins.UnitTests.SampleTypes.BT2Mixin1 has already "
+        + "been suppressed for target type Rubicon.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
+    public void SuppressMixin_Twice ()
+    {
+      _classBuilder.SuppressMixin (typeof (BT2Mixin1));
+      _classBuilder.SuppressMixin (typeof (BT2Mixin1));
+    }
+
+    [Test]
+    public void SuppressMixin_Generic ()
+    {
+      Expect.Call (_classBuilderMock.SuppressMixin<BT2Mixin1> ()).CallOriginalMethod (OriginalCallOptions.CreateExpectation);
+      Expect.Call (_classBuilderMock.SuppressMixin (typeof (BT2Mixin1))).Return (_classBuilderMock);
+
+      _mockRepository.Replay (_classBuilderMock);
+      Assert.AreSame (_classBuilderMock, _classBuilderMock.SuppressMixin<BT2Mixin1> ());
+      _mockRepository.Verify (_classBuilderMock);
+    }
+
+    [Test]
+    public void SuppressMixins_NonGeneric ()
+    {
+      Expect.Call (_classBuilderMock.SuppressMixins (typeof (BT2Mixin1), typeof (BT3Mixin1), typeof (BT3Mixin2)))
+          .CallOriginalMethod (OriginalCallOptions.CreateExpectation);
+      Expect.Call (_classBuilderMock.SuppressMixin (typeof (BT2Mixin1))).Return (_classBuilderMock);
+      Expect.Call (_classBuilderMock.SuppressMixin (typeof (BT3Mixin1))).Return (_classBuilderMock);
+      Expect.Call (_classBuilderMock.SuppressMixin (typeof (BT3Mixin2))).Return (_classBuilderMock);
+
+      _mockRepository.Replay (_classBuilderMock);
+      Assert.AreSame (_classBuilderMock, _classBuilderMock.SuppressMixins (typeof (BT2Mixin1), typeof (BT3Mixin1), typeof (BT3Mixin2)));
+      _mockRepository.Verify (_classBuilderMock);
+    }
+
+    [Test]
+    public void SuppressMixins_Generic2 ()
+    {
+      Expect.Call (_classBuilderMock.SuppressMixins<BT2Mixin1, BT3Mixin1> ())
+           .CallOriginalMethod (OriginalCallOptions.CreateExpectation);
+      Expect.Call (_classBuilderMock.SuppressMixins (typeof (BT2Mixin1), typeof (BT3Mixin1))).Return (_classBuilderMock);
+
+      _mockRepository.Replay (_classBuilderMock);
+      Assert.AreSame (_classBuilderMock, _classBuilderMock.SuppressMixins<BT2Mixin1, BT3Mixin1> ());
+      _mockRepository.Verify (_classBuilderMock);
+    }
+
+    [Test]
+    public void SuppressMixins_Generic3 ()
+    {
+      Expect.Call (_classBuilderMock.SuppressMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2> ())
+          .CallOriginalMethod (OriginalCallOptions.CreateExpectation);
+      Expect.Call (_classBuilderMock.SuppressMixins (typeof (BT2Mixin1), typeof (BT3Mixin1), typeof (BT3Mixin2))).Return (_classBuilderMock);
+
+      _mockRepository.Replay (_classBuilderMock);
+      Assert.AreSame (_classBuilderMock, _classBuilderMock.SuppressMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2> ());
+      _mockRepository.Verify (_classBuilderMock);
+    }
+
+    [Test]
     public void InheritFrom_Context ()
     {
       ClassContext inheritedContext1 = new ClassContext (typeof (BaseType1));
@@ -340,6 +447,16 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.AreSame (_classBuilder, _classBuilder.InheritFrom (inheritedContext1));
       Assert.AreSame (_classBuilder, _classBuilder.InheritFrom (inheritedContext2));
       Assert.That (_classBuilder.TypesToInheritFrom, Is.EqualTo (new ClassContext[] { inheritedContext1, inheritedContext2 }));
+    }
+
+    [Test]
+    public void InheritFrom_Twice ()
+    {
+      // TBD
+      ClassContext inheritedContext1 = new ClassContext (typeof (BaseType7));
+      ClassContext inheritedContext2 = new ClassContext (typeof (BaseType6));
+      _classBuilder.InheritFrom (inheritedContext1);
+      _classBuilder.InheritFrom (inheritedContext2);
     }
 
     [Test]
@@ -480,6 +597,37 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
 
       Assert.AreEqual (2, builtContext.MixinCount);
       Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin1)));
+      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin2)));
+    }
+
+    [Test]
+    public void BuildContext_Suppression ()
+    {
+      ClassContext inheritedContext = new ClassContext (typeof (BaseType2));
+      inheritedContext.AddMixin (typeof (BT3Mixin1));
+      inheritedContext.AddMixin (typeof (BT3Mixin3<IBaseType33, IBaseType33>));
+
+      ClassContext parentContext = new ClassContext (typeof (BaseType2));
+      parentContext.AddMixin (typeof (BT5Mixin1));
+      parentContext.AddMixin (typeof (BT5Mixin2));
+
+      MixinConfiguration parentConfiguration = new MixinConfiguration (null);
+      parentConfiguration.AddClassContext (parentContext);
+
+      ClassContextBuilder classContextBuilder = new ClassContextBuilder (_parentBuilderMock, typeof (BaseType2), parentContext);
+      classContextBuilder.AddMixins<BT1Mixin1, BT1Mixin2> ();
+
+      classContextBuilder.InheritFrom (inheritedContext);
+
+      classContextBuilder.SuppressMixins (typeof (IBT1Mixin1), typeof (BT5Mixin1), typeof (BT3Mixin3<,>));
+
+      MixinConfiguration mixinConfiguration = new MixinConfiguration (parentConfiguration);
+      ClassContext builtContext = classContextBuilder.BuildClassContext (mixinConfiguration);
+      Assert.IsTrue (mixinConfiguration.ContainsClassContext (builtContext.Type));
+
+      Assert.AreEqual (3, builtContext.MixinCount);
+      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT3Mixin1)));
+      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT5Mixin2)));
       Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin2)));
     }
 

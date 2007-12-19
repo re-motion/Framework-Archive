@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Runtime.Remoting.Messaging;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Context.FluentBuilders;
@@ -237,7 +236,7 @@ namespace Rubicon.Mixins
       return new MixinConfigurationBuilder (ActiveConfiguration);
     }
 
-    private readonly Dictionary<Type, ClassContext> _classContexts;
+    private readonly InheritanceAwareTypeDictionary<ClassContext> _classContexts;
     private readonly Dictionary<Type, ClassContext> _registeredInterfaces = new Dictionary<Type,ClassContext> ();
 
     /// <summary>
@@ -255,7 +254,7 @@ namespace Rubicon.Mixins
     /// <see langword="null"/>.</param>
     public MixinConfiguration (MixinConfiguration parentConfiguration)
     {
-      _classContexts = new Dictionary<Type, ClassContext>();
+      _classContexts = new InheritanceAwareTypeDictionary<ClassContext> ();
       if (parentConfiguration != null)
         parentConfiguration.CopyTo (this);
     }
@@ -301,7 +300,7 @@ namespace Rubicon.Mixins
     {
       ArgumentUtility.CheckNotNull ("classContext", classContext);
 
-      if (_classContexts.ContainsKey (classContext.Type))
+      if (_classContexts.ContainsExact (classContext.Type))
       {
         string message = string.Format ("There is already a class context for type {0}.", classContext.Type.FullName);
         throw new InvalidOperationException (message);
@@ -320,26 +319,8 @@ namespace Rubicon.Mixins
     public ClassContext GetClassContext (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-
-      ClassContext thisContext = GetClassContextNonRecursive (type);
-      if (thisContext != null)
-        return thisContext;
-      
-      if (type.IsGenericType && !type.IsGenericTypeDefinition)
-      {
-        ClassContext definitionContext = GetClassContextNonRecursive (type.GetGenericTypeDefinition());
-        if (definitionContext != null)
-          return definitionContext.CloneForSpecificType (type);
-      }
-
-      if (type.BaseType != null)
-      {
-        ClassContext baseContext = GetClassContext (type.BaseType);
-        if (baseContext != null)
-          return baseContext.CloneForSpecificType (type);
-      }
-
-      return null;
+      ClassContext classContext = _classContexts.GetWithInheritance (type);
+      return AdjustClassContextForType (classContext, type);
     }
 
     /// <summary>
@@ -351,11 +332,16 @@ namespace Rubicon.Mixins
     public ClassContext GetClassContextNonRecursive (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
+      ClassContext classContext = _classContexts.GetExact (type);
+      return AdjustClassContextForType(classContext, type);
+    }
 
-      if (_classContexts.ContainsKey (type))
-        return _classContexts[type];
+    private ClassContext AdjustClassContextForType (ClassContext classContext, Type type)
+    {
+      if (classContext == null || classContext.Type == type)
+        return classContext;
       else
-        return null;
+        return classContext.CloneForSpecificType (type);
     }
 
     /// <summary>
@@ -408,7 +394,7 @@ namespace Rubicon.Mixins
         foreach (Type interfaceToRemove in interfacesToRemove)
           _registeredInterfaces.Remove (interfaceToRemove);
 
-        return _classContexts.Remove (context.Type);
+        return _classContexts.RemoveExact (context.Type);
       }
       else
         return false;
@@ -496,8 +482,8 @@ namespace Rubicon.Mixins
       if (!interfaceType.IsInterface)
         throw new ArgumentException ("The argument is not an interface.", "interfaceType");
 
-      if (!_classContexts.ContainsKey (associatedClassContext.Type)
-          || !object.ReferenceEquals (_classContexts[associatedClassContext.Type], associatedClassContext))
+      if (!_classContexts.ContainsExact (associatedClassContext.Type)
+          || !object.ReferenceEquals (_classContexts.GetExact (associatedClassContext.Type), associatedClassContext))
         throw new ArgumentException ("The class context hasn't been added to this configuration.", "associatedClassContext");
 
       if (_registeredInterfaces.ContainsKey (interfaceType))

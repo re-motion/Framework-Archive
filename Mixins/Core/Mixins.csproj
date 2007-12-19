@@ -42,6 +42,7 @@
     <Compile Include="Context\FluentBuilders\ClassContextBuilder.cs" />
     <Compile Include="Context\FluentBuilders\MixinConfigurationBuilder.cs" />
     <Compile Include="Context\FluentBuilders\MixinContextBuilder.cs" />
+    <Compile Include="Context\InheritanceAwareTypeDictionary.cs" />
     <Compile Include="CopyCustomAttributesAttribute.cs" />
     <Compile Include="CodeGeneration\ConcreteMixinTypeAttribute.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallMethodGenerator.cs" />
