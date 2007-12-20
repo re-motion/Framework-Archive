@@ -207,8 +207,8 @@ namespace Rubicon.Mixins.Context.FluentBuilders
 
     /// <summary>
     /// Ensures that the given type is configured as a mixin for the <see cref="ClassContextBuilder.TargetType"/>, adding it if necessary. The mixin will not be
-    /// added if it is also present in the parent context (unless <see cref="Clear"/> was called) or inherited from a type added via
-    /// <see cref="InheritFrom(ClassContext)"/>.
+    /// added if it is also present in the parent context (unless <see cref="Clear"/> was called); if added, it will override corresponding
+    /// mixins inherited from a base type.
     /// </summary>
     /// <param name="mixinType">The mixin type to collect.</param>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
@@ -219,8 +219,8 @@ namespace Rubicon.Mixins.Context.FluentBuilders
 
     /// <summary>
     /// Ensures that the given type is configured as a mixin for the <see cref="ClassContextBuilder.TargetType"/>, adding it if necessary. The mixin will not be
-    /// added if it is also present in the parent context (unless <see cref="Clear"/> was called) or inherited from a type added via
-    /// <see cref="InheritFrom(ClassContext)"/>.
+    /// added if it is also present in the parent context (unless <see cref="Clear"/> was called); if added, it will override corresponding
+    /// mixins inherited from a base type.
     /// </summary>
     /// <typeparam name="TMixin">The mixin type to collect.</typeparam>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
@@ -231,8 +231,8 @@ namespace Rubicon.Mixins.Context.FluentBuilders
 
     /// <summary>
     /// Ensures that the given types are configured as mixins for the <see cref="ClassContextBuilder.TargetType"/>, adding them if necessary. The mixins will not be
-    /// added if they are also present in the parent context (unless <see cref="Clear"/> was called) or inherited from a type added via
-    /// <see cref="InheritFrom(ClassContext)"/>.
+    /// added if they are also present in the parent context (unless <see cref="Clear"/> was called); if added, they will override corresponding
+    /// mixins inherited from a base type.
     /// </summary>
     /// <param name="mixinTypes">The mixin types to collect.</param>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
@@ -243,8 +243,8 @@ namespace Rubicon.Mixins.Context.FluentBuilders
 
     /// <summary>
     /// Ensures that the given types are configured as mixins for the <see cref="ClassContextBuilder.TargetType"/>, adding them if necessary. The mixins will not be
-    /// added if they are also present in the parent context (unless <see cref="Clear"/> was called) or inherited from a type added via
-    /// <see cref="InheritFrom(ClassContext)"/>.
+    /// added if they are also present in the parent context (unless <see cref="Clear"/> was called); if added, they will override corresponding
+    /// mixins inherited from a base type.
     /// </summary>
     /// <typeparam name="TMixin1">The first mixin type to collect.</typeparam>
     /// <typeparam name="TMixin2">The second mixin type to collect.</typeparam>
@@ -256,8 +256,8 @@ namespace Rubicon.Mixins.Context.FluentBuilders
 
     /// <summary>
     /// Ensures that the given types are configured as mixins for the <see cref="ClassContextBuilder.TargetType"/>, adding them if necessary. The mixins will not be
-    /// added if they are also present in the parent context (unless <see cref="Clear"/> was called) or inherited from a type added via
-    /// <see cref="InheritFrom(ClassContext)"/>.
+    /// added if they are also present in the parent context (unless <see cref="Clear"/> was called); if added, they will override corresponding
+    /// mixins inherited from a base type.
     /// </summary>
     /// <typeparam name="TMixin1">The first mixin type to collect.</typeparam>
     /// <typeparam name="TMixin2">The second mixin type to collect.</typeparam>
@@ -427,51 +427,14 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     }
 
     /// <summary>
-    /// Collects the given class context to inherit mixin configuration data from it. When mixin configuration data is inherited, it can be overridden
-    /// by mixin configuration data from the parent context or by data explicitly added via <see cref="AddMixin"/>. A mixin overrides
-    /// another mixin if it is of the same or a derived type (or a generic specialization of the type).
-    /// </summary>
-    /// <param name="contextOfTargetTypeToInheritFrom">The class context to inherit from.</param>
-    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
-    public virtual ClassContextBuilder InheritFrom (ClassContext contextOfTargetTypeToInheritFrom)
-    {
-      return _parent.InheritFrom (contextOfTargetTypeToInheritFrom);
-    }
-
-    /// <summary>
-    /// Collects the class context of the given type from the <see cref="Parent"/>'s <see cref="MixinConfigurationBuilder.ParentConfiguration"/> to
-    /// inherit mixin configuration data from it. When mixin configuration data is inherited, it can be overridden
-    /// by mixin configuration data from the parent context or by data explicitly added via <see cref="AddMixin"/>. A mixin overrides
-    /// another mixin if it is of the same or a derived type (or a generic specialization of the type).
-    /// </summary>
-    /// <param name="targetTypeToInheritFrom">The target type to inherit from.</param>
-    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
-    public virtual ClassContextBuilder InheritFrom (Type targetTypeToInheritFrom)
-    {
-      return _parent.InheritFrom (targetTypeToInheritFrom);
-    }
-
-    /// <summary>
-    /// Collects the class context of the given type from the <see cref="Parent"/>'s <see cref="MixinConfigurationBuilder.ParentConfiguration"/> to
-    /// inherit mixin configuration data from it. When mixin configuration data is inherited, it can be overridden
-    /// by mixin configuration data from the parent context or by data explicitly added via <see cref="AddMixin"/>. A mixin overrides
-    /// another mixin if it is of the same or a derived type (or a generic specialization of the type).
-    /// </summary>
-    /// <typeparam name="TTypeToInheritFrom">The target type to inherit from.</typeparam>
-    /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
-    public virtual ClassContextBuilder InheritFrom<TTypeToInheritFrom> ()
-    {
-      return _parent.InheritFrom<TTypeToInheritFrom>();
-    }
-
-    /// <summary>
     /// Builds a class context with the data collected so far for the <see cref="ClassContextBuilder.TargetType"/>.
     /// </summary>
     /// <param name="mixinConfiguration">The mixin configuration to build the class context with.</param>
+    /// <param name="inheritedContexts">A collection of <see cref="ClassContext"/> instances the newly built context should inherit mixin data from.</param>
     /// <returns>A <see cref="ClassContext"/> for the <see cref="ClassContextBuilder.TargetType"/> holding all mixin configuration data collected so far.</returns>
-    public virtual ClassContext BuildClassContext (MixinConfiguration mixinConfiguration)
+    public virtual ClassContext BuildClassContext (MixinConfiguration mixinConfiguration, IEnumerable<ClassContext> inheritedContexts)
     {
-      return _parent.BuildClassContext (mixinConfiguration);
+      return _parent.BuildClassContext (mixinConfiguration, inheritedContexts);
     }
 
     /// <summary>

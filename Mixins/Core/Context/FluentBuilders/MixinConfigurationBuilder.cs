@@ -71,7 +71,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     {
       MixinConfiguration configuration = new MixinConfiguration (_parentConfiguration);
       foreach (ClassContextBuilder classContextBuilder in ClassContextBuilders)
-        classContextBuilder.BuildClassContext (configuration);
+        classContextBuilder.BuildClassContext (configuration, new ClassContext[0]); // TODO - inheritance
       return configuration;
     }
 
