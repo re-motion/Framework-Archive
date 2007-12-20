@@ -304,7 +304,8 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
     if (isRefresh)
     {
-      functionState.Touch();
+      functionState.Touch ();
+      functionStates.CleanUpExpired ();
       return null;
     }
     else if (isAbort)
