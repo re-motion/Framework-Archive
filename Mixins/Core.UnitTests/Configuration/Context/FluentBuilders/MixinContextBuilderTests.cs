@@ -108,8 +108,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
         Expect.Call (_parentBuilderMock.AddMixins (typeof (BT1Mixin1), typeof (BT1Mixin2))).Return (r1);
         Expect.Call (_parentBuilderMock.AddMixins<BT1Mixin1, BT1Mixin2> ()).Return (r1);
         Expect.Call (_parentBuilderMock.AddMixins<BT1Mixin1, BT1Mixin2, BT3Mixin1> ()).Return (r1);
-        Expect.Call (_parentBuilderMock.EnsureMixin (typeof (object))).Return (r1);
-        Expect.Call (_parentBuilderMock.EnsureMixin<string> ()).Return (r1);
+        Expect.Call (_parentBuilderMock.EnsureMixin (typeof (object))).Return (r4);
+        Expect.Call (_parentBuilderMock.EnsureMixin<string> ()).Return (r4);
         Expect.Call (_parentBuilderMock.EnsureMixins (typeof (BT1Mixin1), typeof (BT1Mixin2))).Return (r1);
         Expect.Call (_parentBuilderMock.EnsureMixins<BT1Mixin1, BT1Mixin2> ()).Return (r1);
         Expect.Call (_parentBuilderMock.EnsureMixins<BT1Mixin1, BT1Mixin2, BT3Mixin1> ()).Return (r1);
@@ -146,8 +146,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.AreSame (r1, _mixinBuilder.AddMixins (typeof (BT1Mixin1), typeof (BT1Mixin2)));
       Assert.AreSame (r1, _mixinBuilder.AddMixins<BT1Mixin1, BT1Mixin2> ());
       Assert.AreSame (r1, _mixinBuilder.AddMixins<BT1Mixin1, BT1Mixin2, BT3Mixin1> ());
-      Assert.AreSame (r1, _mixinBuilder.EnsureMixin (typeof (object)));
-      Assert.AreSame (r1, _mixinBuilder.EnsureMixin<string> ());
+      Assert.AreSame (r4, _mixinBuilder.EnsureMixin (typeof (object)));
+      Assert.AreSame (r4, _mixinBuilder.EnsureMixin<string> ());
       Assert.AreSame (r1, _mixinBuilder.EnsureMixins (typeof (BT1Mixin1), typeof (BT1Mixin2)));
       Assert.AreSame (r1, _mixinBuilder.EnsureMixins<BT1Mixin1, BT1Mixin2> ());
       Assert.AreSame (r1, _mixinBuilder.EnsureMixins<BT1Mixin1, BT1Mixin2, BT3Mixin1> ());

@@ -91,7 +91,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of <see cref="MixinType"/>.</returns>
     public virtual MixinContextBuilder WithDependencies (params Type[] requiredMixins)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("requiredMixins", requiredMixins);
+      ArgumentUtility.CheckNotNull ("requiredMixins", requiredMixins);
       foreach (Type requiredMixin in requiredMixins)
         WithDependency (requiredMixin);
       return this;
@@ -144,7 +144,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <summary>
     /// Clears all mixin configuration for the <see cref="Parent"/>'s <see cref="ClassContextBuilder.TargetType"/>. This causes the target type to ignore
     /// all mixin configuration data from its
-    /// <see cref="ClassContextBuilder.ParentContext"/> and also resets all information collected so far for the class by this object.
+    /// parent context and also resets all information collected so far for the class by this object.
     /// </summary>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder Clear ()
@@ -207,31 +207,31 @@ namespace Rubicon.Mixins.Context.FluentBuilders
 
     /// <summary>
     /// Ensures that the given type is configured as a mixin for the <see cref="ClassContextBuilder.TargetType"/>, adding it if necessary. The mixin will not be
-    /// added if it is also present in the <see cref="ClassContextBuilder.ParentContext"/> (unless <see cref="Clear"/> was called) or inherited from a type added via
+    /// added if it is also present in the parent context (unless <see cref="Clear"/> was called) or inherited from a type added via
     /// <see cref="InheritFrom(ClassContext)"/>.
     /// </summary>
     /// <param name="mixinType">The mixin type to collect.</param>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
-    public virtual ClassContextBuilder EnsureMixin (Type mixinType)
+    public virtual MixinContextBuilder EnsureMixin (Type mixinType)
     {
       return _parent.EnsureMixin (mixinType);
     }
 
     /// <summary>
     /// Ensures that the given type is configured as a mixin for the <see cref="ClassContextBuilder.TargetType"/>, adding it if necessary. The mixin will not be
-    /// added if it is also present in the <see cref="ClassContextBuilder.ParentContext"/> (unless <see cref="Clear"/> was called) or inherited from a type added via
+    /// added if it is also present in the parent context (unless <see cref="Clear"/> was called) or inherited from a type added via
     /// <see cref="InheritFrom(ClassContext)"/>.
     /// </summary>
     /// <typeparam name="TMixin">The mixin type to collect.</typeparam>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
-    public virtual ClassContextBuilder EnsureMixin<TMixin> ()
+    public virtual MixinContextBuilder EnsureMixin<TMixin> ()
     {
       return _parent.EnsureMixin<TMixin>();
     }
 
     /// <summary>
     /// Ensures that the given types are configured as mixins for the <see cref="ClassContextBuilder.TargetType"/>, adding them if necessary. The mixins will not be
-    /// added if they are also present in the <see cref="ClassContextBuilder.ParentContext"/> (unless <see cref="Clear"/> was called) or inherited from a type added via
+    /// added if they are also present in the parent context (unless <see cref="Clear"/> was called) or inherited from a type added via
     /// <see cref="InheritFrom(ClassContext)"/>.
     /// </summary>
     /// <param name="mixinTypes">The mixin types to collect.</param>
@@ -243,7 +243,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
 
     /// <summary>
     /// Ensures that the given types are configured as mixins for the <see cref="ClassContextBuilder.TargetType"/>, adding them if necessary. The mixins will not be
-    /// added if they are also present in the <see cref="ClassContextBuilder.ParentContext"/> (unless <see cref="Clear"/> was called) or inherited from a type added via
+    /// added if they are also present in the parent context (unless <see cref="Clear"/> was called) or inherited from a type added via
     /// <see cref="InheritFrom(ClassContext)"/>.
     /// </summary>
     /// <typeparam name="TMixin1">The first mixin type to collect.</typeparam>
@@ -256,7 +256,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
 
     /// <summary>
     /// Ensures that the given types are configured as mixins for the <see cref="ClassContextBuilder.TargetType"/>, adding them if necessary. The mixins will not be
-    /// added if they are also present in the <see cref="ClassContextBuilder.ParentContext"/> (unless <see cref="Clear"/> was called) or inherited from a type added via
+    /// added if they are also present in the parent context (unless <see cref="Clear"/> was called) or inherited from a type added via
     /// <see cref="InheritFrom(ClassContext)"/>.
     /// </summary>
     /// <typeparam name="TMixin1">The first mixin type to collect.</typeparam>
@@ -365,7 +365,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <summary>
     /// Denotes that a specific mixin type, and all mixin types that can be ascribed to it (see <see cref="ReflectionUtility.CanAscribe"/>), should be
     /// ignored in the context of this object's <see cref="ClassContextBuilder"/>. Suppression is helpful when a target class should take over most 
-    /// of its mixins from the <see cref="ClassContextBuilder.ParentContext"/> or inherit mixins from another type, but a specific mixin should be ignored in that 
+    /// of its mixins from the parent context or inherit mixins from another type, but a specific mixin should be ignored in that 
     /// process.
     /// </summary>
     /// <param name="mixinType">The mixin type, base type, or generic type definition denoting mixin types to be suppressed.</param>
@@ -378,7 +378,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <summary>
     /// Denotes that a specific mixin type, and all mixin types that can be ascribed to it (see <see cref="ReflectionUtility.CanAscribe"/>), should be
     /// ignored in the context of this object's <see cref="ClassContextBuilder"/>. Suppression is helpful when a target class should take over most of its mixins from the
-    /// <see cref="ClassContextBuilder.ParentContext"/> or inherit mixins from another type, but a specific mixin should be ignored in that process.
+    /// parent context or inherit mixins from another type, but a specific mixin should be ignored in that process.
     /// </summary>
     /// <typeparam name="TMixinType">The mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
@@ -390,7 +390,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <summary>
     /// Denotes that a number of mixin types, and all mixin types that can be ascribed to it (see <see cref="ReflectionUtility.CanAscribe"/>), should be
     /// ignored in the context of this object's <see cref="ClassContextBuilder"/>. Suppression is helpful when a target class should take over most of its mixins from the
-    /// <see cref="ClassContextBuilder.ParentContext"/> or inherit mixins from another type, but a specific mixin should be ignored in that process.
+    /// parent context or inherit mixins from another type, but a specific mixin should be ignored in that process.
     /// </summary>
     /// <param name="mixinTypes">The mixin types, base types, or generic type definitions denoting mixin types to be suppressed.</param>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
@@ -402,7 +402,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <summary>
     /// Denotes that a number of mixin types, and all mixin types that can be ascribed to it (see <see cref="ReflectionUtility.CanAscribe"/>), should be
     /// ignored in the context of this object's <see cref="ClassContextBuilder"/>. Suppression is helpful when a target class should take over most of its mixins from the
-    /// <see cref="ClassContextBuilder.ParentContext"/> or inherit mixins from another type, but a specific mixin should be ignored in that process.
+    /// parent context or inherit mixins from another type, but a specific mixin should be ignored in that process.
     /// </summary>
     /// <typeparam name="TMixinType1">The first mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
     /// <typeparam name="TMixinType2">The second mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
@@ -415,7 +415,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <summary>
     /// Denotes that a number of mixin types, and all mixin types that can be ascribed to it (see <see cref="ReflectionUtility.CanAscribe"/>), should be
     /// ignored in the context of this object's <see cref="ClassContextBuilder"/>. Suppression is helpful when a target class should take over most of its mixins from the
-    /// <see cref="ClassContextBuilder.ParentContext"/> or inherit mixins from another type, but a specific mixin should be ignored in that process.
+    /// parent context or inherit mixins from another type, but a specific mixin should be ignored in that process.
     /// </summary>
     /// <typeparam name="TMixinType1">The first mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
     /// <typeparam name="TMixinType2">The second mixin type, base type, or generic type definition denoting mixin types to be suppressed.</typeparam>
@@ -428,7 +428,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
 
     /// <summary>
     /// Collects the given class context to inherit mixin configuration data from it. When mixin configuration data is inherited, it can be overridden
-    /// by mixin configuration data from the <see cref="ClassContextBuilder.ParentContext"/> or by data explicitly added via <see cref="AddMixin"/>. A mixin overrides
+    /// by mixin configuration data from the parent context or by data explicitly added via <see cref="AddMixin"/>. A mixin overrides
     /// another mixin if it is of the same or a derived type (or a generic specialization of the type).
     /// </summary>
     /// <param name="contextOfTargetTypeToInheritFrom">The class context to inherit from.</param>
@@ -441,7 +441,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <summary>
     /// Collects the class context of the given type from the <see cref="Parent"/>'s <see cref="MixinConfigurationBuilder.ParentConfiguration"/> to
     /// inherit mixin configuration data from it. When mixin configuration data is inherited, it can be overridden
-    /// by mixin configuration data from the <see cref="ClassContextBuilder.ParentContext"/> or by data explicitly added via <see cref="AddMixin"/>. A mixin overrides
+    /// by mixin configuration data from the parent context or by data explicitly added via <see cref="AddMixin"/>. A mixin overrides
     /// another mixin if it is of the same or a derived type (or a generic specialization of the type).
     /// </summary>
     /// <param name="targetTypeToInheritFrom">The target type to inherit from.</param>
@@ -454,7 +454,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <summary>
     /// Collects the class context of the given type from the <see cref="Parent"/>'s <see cref="MixinConfigurationBuilder.ParentConfiguration"/> to
     /// inherit mixin configuration data from it. When mixin configuration data is inherited, it can be overridden
-    /// by mixin configuration data from the <see cref="ClassContextBuilder.ParentContext"/> or by data explicitly added via <see cref="AddMixin"/>. A mixin overrides
+    /// by mixin configuration data from the parent context or by data explicitly added via <see cref="AddMixin"/>. A mixin overrides
     /// another mixin if it is of the same or a derived type (or a generic specialization of the type).
     /// </summary>
     /// <typeparam name="TTypeToInheritFrom">The target type to inherit from.</typeparam>

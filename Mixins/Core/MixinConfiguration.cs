@@ -180,7 +180,7 @@ namespace Rubicon.Mixins
     /// <para>
     /// Use this method to build a new <see cref="MixinConfiguration"/> from scratch.
     /// </para>
-    /// <para
+    /// <para>
     /// If you want to temporarily make the built
     /// <see cref="MixinConfiguration"/> the <see cref="ActiveConfiguration"/>, call the builder's <see cref="MixinConfigurationBuilder.EnterScope"/>
     /// method from within a <c>using</c> statement.

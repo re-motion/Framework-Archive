@@ -68,12 +68,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     public void ForClass_WithExistingContext ()
     {
       ClassContext existingContext = new ClassContext (typeof (BaseType1));
+      existingContext.AddMixin (typeof (BT1Mixin1));
       MixinConfiguration parentConfiguration = new MixinConfiguration (null);
       parentConfiguration.AddClassContext (existingContext);
 
       MixinConfigurationBuilder builder = new MixinConfigurationBuilder (parentConfiguration);
       ClassContextBuilder classBuilder = builder.ForClass<BaseType1> ();
-      Assert.AreSame (existingContext, classBuilder.ParentContext);
+      Assert.That (classBuilder.MixinContextBuilders, Is.Not.Empty);
     }
 
     [Test]
@@ -81,7 +82,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     {
       MixinConfigurationBuilder builder = new MixinConfigurationBuilder (null);
       ClassContextBuilder classBuilder = builder.ForClass<BaseType1> ();
-      Assert.IsNull (classBuilder.ParentContext);
+      Assert.That (classBuilder.MixinContextBuilders, Is.Empty);
     }
 
     [Test]
@@ -90,7 +91,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       MixinConfiguration parentConfiguration = new MixinConfiguration (null);
       MixinConfigurationBuilder builder = new MixinConfigurationBuilder (parentConfiguration);
       ClassContextBuilder classBuilder = builder.ForClass<BaseType1> ();
-      Assert.IsNull (classBuilder.ParentContext);
+      Assert.That (classBuilder.MixinContextBuilders, Is.Empty);
     }
 
     [Test]
