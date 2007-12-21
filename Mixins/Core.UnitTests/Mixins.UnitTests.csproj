@@ -76,6 +76,7 @@
     <Compile Include="SampleTypes\ClassOverridingSpecificGenericMixinMember.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters2.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters3.cs" />
+    <Compile Include="SampleTypes\DerivedGenericTargetClass.cs" />
     <Compile Include="SampleTypes\NullMixin2.cs" />
     <Compile Include="SampleTypes\GenericClassExtendedByMixin.cs" />
     <Compile Include="SampleTypes\MixinExtendingSpecificGenericClass.cs" />

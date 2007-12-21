@@ -254,7 +254,19 @@ namespace Rubicon.Mixins
     /// <see langword="null"/>.</param>
     public MixinConfiguration (MixinConfiguration parentConfiguration)
     {
-      _classContexts = new InheritanceAwareTypeDictionary<ClassContext> ();
+      _classContexts = new InheritanceAwareTypeDictionary<ClassContext> (
+          delegate (Type type, ClassContext partOne, ClassContext partTwo)
+          {
+            ClassContext newContext = new ClassContext (type);
+            newContext.InheritFrom (partOne);
+            newContext.InheritFrom (partTwo);
+            return newContext;
+          },
+          delegate (Type type, ClassContext context)
+          {
+            return context.CloneForSpecificType (type);
+          }); 
+ 
       if (parentConfiguration != null)
         parentConfiguration.CopyTo (this);
     }
@@ -319,8 +331,7 @@ namespace Rubicon.Mixins
     public ClassContext GetClassContext (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      ClassContext classContext = _classContexts.GetWithInheritance (type);
-      return AdjustClassContextForType (classContext, type);
+      return _classContexts.GetWithInheritance (type);
     }
 
     /// <summary>
@@ -333,15 +344,7 @@ namespace Rubicon.Mixins
     {
       ArgumentUtility.CheckNotNull ("type", type);
       ClassContext classContext = _classContexts.GetExact (type);
-      return AdjustClassContextForType(classContext, type);
-    }
-
-    private ClassContext AdjustClassContextForType (ClassContext classContext, Type type)
-    {
-      if (classContext == null || classContext.Type == type)
-        return classContext;
-      else
-        return classContext.CloneForSpecificType (type);
+      return classContext;
     }
 
     /// <summary>

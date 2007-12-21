@@ -157,48 +157,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     }
 
     [Test]
-    public void GetContextWorksRecursively ()
-    {
-      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (NullMixin)).EnterScope())
-      {
-        ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (DerivedNullTarget));
-        Assert.IsNotNull (context);
-        Assert.AreEqual (typeof (DerivedNullTarget), context.Type);
-        Assert.IsTrue (context.ContainsMixin (typeof (NullMixin)));
-      }
-    }
-
-    [Test]
-    public void GetContextWorksRecursively_OverGenericDefinition ()
-    {
-      using (MixinConfiguration.BuildFromActive().ForClass (typeof (GenericTargetClass<>)).Clear().AddMixins (typeof (NullMixin)).EnterScope())
-      {
-        ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (GenericTargetClass<object>));
-        Assert.IsNotNull (context);
-        Assert.AreEqual (typeof (GenericTargetClass<object>), context.Type);
-        Assert.IsTrue (context.ContainsMixin (typeof (NullMixin)));
-      }
-    }
-
-    [Test]
-    public void ContainsContextWorksRecursively ()
-    {
-      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (NullMixin)).EnterScope())
-      {
-        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (DerivedNullTarget)));
-      }
-    }
-
-    [Test]
-    public void ContainsContextWorksRecursively_OverGenericDefinition ()
-    {
-      using (MixinConfiguration.BuildFromActive().ForClass (typeof (GenericTargetClass<>)).Clear().AddMixins (typeof (NullMixin)).EnterScope())
-      {
-        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (GenericTargetClass<object>)));
-      }
-    }
-
-    [Test]
     public void GetContextNonRecursive ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (NullMixin)).EnterScope())

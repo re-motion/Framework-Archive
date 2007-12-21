@@ -66,5 +66,63 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
       Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
       Assert.AreNotSame (ac.GetClassContext (typeof (BaseType1)), ac2.GetClassContext (typeof (BaseType1)));
     }
+
+    [Test]
+    public void GetContextWorksRecursively ()
+    {
+      using (MixinConfiguration.BuildFromActive ().ForClass<NullTarget> ().Clear ().AddMixins (typeof (NullMixin)).EnterScope ())
+      {
+        ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (DerivedNullTarget));
+        Assert.IsNotNull (context);
+        Assert.AreEqual (typeof (DerivedNullTarget), context.Type);
+        Assert.IsTrue (context.ContainsMixin (typeof (NullMixin)));
+      }
+    }
+
+    [Test]
+    public void GetContextWorksRecursively_OverGenericDefinition ()
+    {
+      using (MixinConfiguration.BuildFromActive ().ForClass (typeof (GenericTargetClass<>)).Clear ().AddMixins (typeof (NullMixin)).EnterScope ())
+      {
+        ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (GenericTargetClass<object>));
+        Assert.IsNotNull (context);
+        Assert.AreEqual (typeof (GenericTargetClass<object>), context.Type);
+        Assert.IsTrue (context.ContainsMixin (typeof (NullMixin)));
+      }
+    }
+
+    [Test]
+    public void GetContextWorksRecursively_OverGenericDefinitionAndBase ()
+    {
+      using (MixinConfiguration.BuildFromActive ()
+          .ForClass (typeof (GenericTargetClass<>)).Clear ().AddMixins (typeof (NullMixin))
+          .ForClass (typeof (GenericTargetClass<object>)).Clear ().AddMixins (typeof (NullMixin2))
+          .EnterScope ())
+      {
+        ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (DerivedGenericTargetClass<object>));
+        Assert.IsNotNull (context);
+        Assert.AreEqual (typeof (DerivedGenericTargetClass<object>), context.Type);
+        Assert.IsTrue (context.ContainsMixin (typeof (NullMixin)));
+        Assert.IsTrue (context.ContainsMixin (typeof (NullMixin2)));
+      }
+    }
+
+    [Test]
+    public void ContainsContextWorksRecursively ()
+    {
+      using (MixinConfiguration.BuildFromActive ().ForClass<NullTarget> ().Clear ().AddMixins (typeof (NullMixin)).EnterScope ())
+      {
+        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (DerivedNullTarget)));
+      }
+    }
+
+    [Test]
+    public void ContainsContextWorksRecursively_OverGenericDefinition ()
+    {
+      using (MixinConfiguration.BuildFromActive ().ForClass (typeof (GenericTargetClass<>)).Clear ().AddMixins (typeof (NullMixin)).EnterScope ())
+      {
+        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (GenericTargetClass<object>)));
+      }
+    }
   }
 }
