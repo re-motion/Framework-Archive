@@ -129,10 +129,11 @@ public class WxeFunctionState
       WxeFunction function, int lifetime, bool enableCleanUp)
   {
     ArgumentUtility.CheckNotNull ("function", function);
-    _function = function;
     _lastAccess = DateTime.Now;
     _lifetime = lifetime;
     _functionToken = Guid.NewGuid().ToString();
+    _function = function;
+    _function.SetFunctionToken (_functionToken);
     _isCleanUpEnabled = enableCleanUp;
     _postBackID = 0;
     s_log.Debug (string.Format ("Created WxeFunctionState {0}.", _functionToken));

@@ -206,6 +206,7 @@ namespace Rubicon.Web.ExecutionEngine
 
     private NameObjectCollection _variables;
 
+    private string _functionToken;
     private string _returnUrl;
     private object[] _actualParameters;
     private bool _parametersInitialized = false;
@@ -356,6 +357,25 @@ namespace Rubicon.Web.ExecutionEngine
     public virtual WxeParameterDeclaration[] ParameterDeclarations
     {
       get { return WxeFunction.GetParameterDeclarations (this.GetType ()); }
+    }
+
+    public string FunctionToken
+    {
+      get
+      {
+        if (_functionToken != null)
+          return _functionToken;
+        WxeFunction rootFunction = RootFunction;
+        if (rootFunction != null)
+          return rootFunction.FunctionToken;
+        throw new InvalidOperationException ("The WxeFunction does not have a RootFunction.");
+      }      
+    }
+
+    internal void SetFunctionToken (string functionToken)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
+      _functionToken = functionToken;
     }
 
     public override string ToString ()
