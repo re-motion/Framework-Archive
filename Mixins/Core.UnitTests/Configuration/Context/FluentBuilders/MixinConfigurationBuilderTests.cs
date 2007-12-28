@@ -248,5 +248,19 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.IsTrue (derivedContext2.ContainsMixin (typeof (DerivedNullMixin)));
       Assert.IsFalse (derivedContext2.ContainsMixin (typeof (NullMixin)));
     }
+
+    [Test]
+    public void CompleteInterfaceRegistration ()
+    {
+      MixinConfiguration configuration = new MixinConfigurationBuilder (null)
+          .ForClass (typeof (BaseType6))
+          .AddMixin (typeof (BT6Mixin1))
+          .AddCompleteInterface (typeof (ICBT6Mixin1)).BuildConfiguration();
+      ClassContext resolvedContext = configuration.ResolveInterface (typeof (ICBT6Mixin1));
+      Assert.IsNotNull (resolvedContext);
+      Assert.AreEqual (typeof (BaseType6), resolvedContext.Type);
+      Assert.AreEqual (1, resolvedContext.MixinCount);
+      Assert.IsTrue (resolvedContext.ContainsMixin (typeof (BT6Mixin1)));
+    }
   }
 }

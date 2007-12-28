@@ -235,7 +235,7 @@ namespace Rubicon.Mixins.Context
     /// <see cref="ClassContext"/> and <see cref="MixinContext"/> objects based on the information added so far.</returns>
     public MixinConfiguration BuildConfiguration ()
     {
-      return new DeclarativeConfigurationAnalyzer (_parentConfiguration, _extenders, _users, _completeInterfaces).AnalyzedConfiguration;
+      return new DeclarativeConfigurationAnalyzer (_parentConfiguration, _extenders, _users, _completeInterfaces).GetAnalyzedConfiguration;
     }
   }
 }

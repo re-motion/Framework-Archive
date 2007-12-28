@@ -72,7 +72,14 @@ namespace Rubicon.Mixins.Context.FluentBuilders
       IEnumerable<ClassContext> parentContexts = ParentConfiguration != null ? ParentConfiguration.ClassContexts : new ClassContext[0];
       MixinConfiguration builtConfiguration = new MixinConfiguration (ParentConfiguration);
       InheritanceAwareMixinConfigurationBuilder builder = new InheritanceAwareMixinConfigurationBuilder (builtConfiguration, parentContexts, ClassContextBuilders);
-      return builder.BuildMixinConfiguration();
+      builtConfiguration = builder.BuildMixinConfiguration();
+      foreach (ClassContextBuilder classContextBuilder in ClassContextBuilders)
+      {
+        ClassContext context = builtConfiguration.GetClassContext (classContextBuilder.TargetType);
+        foreach (Type completeInterface in context.CompleteInterfaces)
+          builtConfiguration.RegisterInterface (completeInterface, context);
+      }
+      return builtConfiguration;
     }
 
     /// <summary>

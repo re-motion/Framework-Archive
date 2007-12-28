@@ -108,13 +108,35 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     public virtual MixinContextBuilder AddMixin (Type mixinType)
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      if (_mixinContextBuilders.ContainsKey (mixinType))
+      if (AlreadyAppliedSame (mixinType))
+      {
+        Type mixinTypeForException = mixinType.IsGenericType ? mixinType.GetGenericTypeDefinition() : mixinType;
         throw new ArgumentException (
-            string.Format ("{0} is already configured as a mixin for type {1}.", mixinType.FullName, TargetType.FullName), "mixinType");
+            string.Format ("{0} is already configured as a mixin for type {1}.", mixinTypeForException.FullName, TargetType.FullName), "mixinType");
+      }
 
       MixinContextBuilder mixinContextBuilder = new MixinContextBuilder (this, mixinType);
       _mixinContextBuilders.Add (mixinType, mixinContextBuilder);
       return mixinContextBuilder;
+    }
+
+    private bool AlreadyAppliedSame (Type mixinType)
+    {
+      if (_mixinContextBuilders.ContainsKey (mixinType))
+        return true;
+
+      if (!mixinType.IsGenericType)
+        return false;
+
+      Type typeDefinition = mixinType.GetGenericTypeDefinition();
+
+      foreach (MixinContextBuilder mixinContextBuilder in MixinContextBuilders)
+      {
+        if (mixinContextBuilder.MixinType.IsGenericType && mixinContextBuilder.MixinType.GetGenericTypeDefinition() == typeDefinition)
+          return true;
+      }
+
+      return false;
     }
 
     /// <summary>
