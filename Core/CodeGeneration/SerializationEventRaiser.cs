@@ -9,7 +9,7 @@ namespace Rubicon.CodeGeneration
 {
   public class SerializationEventRaiser
   {
-    private InterlockedCache<Tuple<Type, Type>, List<MethodInfo>> _attributedMethodCache = new InterlockedCache<Tuple<Type, Type>, List<MethodInfo>>();
+    private readonly InterlockedCache<Tuple<Type, Type>, List<MethodInfo>> _attributedMethodCache = new InterlockedCache<Tuple<Type, Type>, List<MethodInfo>>();
 
     public virtual void InvokeAttributedMethod (object deserializedObject, Type attributeType, StreamingContext context)
     {
