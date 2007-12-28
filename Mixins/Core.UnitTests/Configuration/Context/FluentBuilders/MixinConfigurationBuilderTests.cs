@@ -116,5 +116,137 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       }
       Assert.AreSame (previousConfiguration, MixinConfiguration.ActiveConfiguration);
     }
+
+    [Test]
+    public void ClassContextInheritance_Base_FromParentConfiguration ()
+    {
+      MixinConfiguration parentConfiguration =
+          new MixinConfigurationBuilder (null).ForClass<NullTarget>().AddMixin (typeof (NullMixin)).BuildConfiguration();
+      MixinConfiguration configuration =
+          new MixinConfigurationBuilder (parentConfiguration).ForClass<DerivedNullTarget>().AddMixin (typeof (NullMixin2)).BuildConfiguration();
+      ClassContext derivedContext = configuration.GetClassContext (typeof (DerivedNullTarget));
+      Assert.AreEqual (2, derivedContext.MixinCount);
+      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin)));
+      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin2)));
+    }
+
+    [Test]
+    public void ClassContextInheritance_TypeDefinition_FromParentConfiguration ()
+    {
+      MixinConfiguration parentConfiguration =
+          new MixinConfigurationBuilder (null).ForClass (typeof (GenericTargetClass<>)).AddMixin (typeof (NullMixin)).BuildConfiguration ();
+      MixinConfiguration configuration =
+          new MixinConfigurationBuilder (parentConfiguration).ForClass<GenericTargetClass<int>> ().AddMixin (typeof (NullMixin2)).BuildConfiguration ();
+      ClassContext derivedContext = configuration.GetClassContext (typeof (GenericTargetClass<int>));
+      Assert.AreEqual (2, derivedContext.MixinCount);
+      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin)));
+      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin2)));
+    }
+
+    [Test]
+    public void ClassContextInheritance_BaseAndTypeDefinition_FromParentConfiguration ()
+    {
+      MixinConfiguration parentConfiguration = new MixinConfigurationBuilder (null)
+          .ForClass (typeof (DerivedGenericTargetClass<>)).AddMixin (typeof (NullMixin))
+          .ForClass (typeof (GenericTargetClass<int>)).AddMixin (typeof (NullMixin2))
+          .ForClass (typeof (GenericTargetClass<int>)).AddMixin (typeof (NullMixin3))
+          .BuildConfiguration ();
+      MixinConfiguration configuration = new MixinConfigurationBuilder (parentConfiguration)
+          .ForClass<DerivedGenericTargetClass<int>> ().AddMixin (typeof (NullMixin4))
+          .BuildConfiguration ();
+      ClassContext derivedContext = configuration.GetClassContext (typeof (DerivedGenericTargetClass<int>));
+      Assert.AreEqual (4, derivedContext.MixinCount);
+      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin)));
+      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin2)));
+      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin3)));
+      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin4)));
+    }
+
+    [Test]
+    public void ClassContextInheritance_WithOverrides_FromParentConfiguration ()
+    {
+      MixinConfiguration parentConfiguration = new MixinConfigurationBuilder (null)
+          .ForClass (typeof (NullTarget)).AddMixin (typeof (NullMixin))
+          .ForClass (typeof (GenericTargetClass<>)).AddMixin (typeof (NullMixin))
+          .BuildConfiguration ();
+      MixinConfiguration configuration = new MixinConfigurationBuilder (parentConfiguration)
+          .ForClass<DerivedNullTarget> ().AddMixin (typeof (DerivedNullMixin))
+          .ForClass<GenericTargetClass<int>> ().AddMixin (typeof (DerivedNullMixin))
+          .BuildConfiguration ();
+      
+      ClassContext derivedContext1 = configuration.GetClassContext (typeof (DerivedNullTarget));
+      Assert.AreEqual (1, derivedContext1.MixinCount);
+      Assert.IsTrue (derivedContext1.ContainsMixin (typeof (DerivedNullMixin)));
+      Assert.IsFalse (derivedContext1.ContainsMixin (typeof (NullMixin)));
+
+      ClassContext derivedContext2 = configuration.GetClassContext (typeof (GenericTargetClass<int>));
+      Assert.AreEqual (1, derivedContext2.MixinCount);
+      Assert.IsTrue (derivedContext2.ContainsMixin (typeof (DerivedNullMixin)));
+      Assert.IsFalse (derivedContext2.ContainsMixin (typeof (NullMixin)));
+    }
+
+    [Test]
+    public void ClassContextInheritance_Base_FromSameConfiguration ()
+    {
+      MixinConfiguration configuration = new MixinConfigurationBuilder (null)
+          .ForClass<DerivedNullTarget> ().AddMixin (typeof (NullMixin2))
+          .ForClass<NullTarget> ().AddMixin (typeof (NullMixin))
+          .BuildConfiguration ();
+      ClassContext derivedContext = configuration.GetClassContext (typeof (DerivedNullTarget));
+      Assert.AreEqual (2, derivedContext.MixinCount);
+      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin)));
+      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin2)));
+    }
+
+    [Test]
+    public void ClassContextInheritance_TypeDefinition_FromSameConfiguration ()
+    {
+      MixinConfiguration configuration = new MixinConfigurationBuilder (null)
+          .ForClass<GenericTargetClass<int>> ().AddMixin (typeof (NullMixin2))
+          .ForClass (typeof (GenericTargetClass<>)).AddMixin (typeof (NullMixin))
+          .BuildConfiguration ();
+      ClassContext derivedContext = configuration.GetClassContext (typeof (GenericTargetClass<int>));
+      Assert.AreEqual (2, derivedContext.MixinCount);
+      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin)));
+      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin2)));
+    }
+
+    [Test]
+    public void ClassContextInheritance_BaseAndTypeDefinition_FromSameConfiguration ()
+    {
+      MixinConfiguration configuration = new MixinConfigurationBuilder (null)
+          .ForClass<DerivedGenericTargetClass<int>> ().AddMixin (typeof (NullMixin4))
+          .ForClass (typeof (DerivedGenericTargetClass<>)).AddMixin (typeof (NullMixin))
+          .ForClass (typeof (GenericTargetClass<int>)).AddMixin (typeof (NullMixin2))
+          .ForClass (typeof (GenericTargetClass<int>)).AddMixin (typeof (NullMixin3))
+          .BuildConfiguration ();
+      ClassContext derivedContext = configuration.GetClassContext (typeof (DerivedGenericTargetClass<int>));
+      Assert.AreEqual (4, derivedContext.MixinCount);
+      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin)));
+      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin2)));
+      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin3)));
+      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin4)));
+    }
+
+    [Test]
+    public void ClassContextInheritance_WithOverrides_FromSameConfiguration ()
+    {
+      MixinConfiguration configuration = new MixinConfigurationBuilder (null)
+          .ForClass (typeof (NullTarget)).AddMixin (typeof (NullMixin))
+          .ForClass (typeof (GenericTargetClass<>)).AddMixin (typeof (NullMixin))
+          .ForClass<DerivedNullTarget> ().AddMixin (typeof (DerivedNullMixin))
+          .ForClass<GenericTargetClass<int>> ().AddMixin (typeof (DerivedNullMixin))
+          .BuildConfiguration ();
+
+      ClassContext derivedContext1 = configuration.GetClassContext (typeof (DerivedNullTarget));
+      Assert.AreEqual (1, derivedContext1.MixinCount);
+      Assert.IsTrue (derivedContext1.ContainsMixin (typeof (DerivedNullMixin)));
+      Assert.IsFalse (derivedContext1.ContainsMixin (typeof (NullMixin)));
+
+      ClassContext derivedContext2 = configuration.GetClassContext (typeof (GenericTargetClass<int>));
+      Assert.AreEqual (1, derivedContext2.MixinCount);
+      Assert.IsTrue (derivedContext2.ContainsMixin (typeof (DerivedNullMixin)));
+      Assert.IsFalse (derivedContext2.ContainsMixin (typeof (NullMixin)));
+    }
   }
 }

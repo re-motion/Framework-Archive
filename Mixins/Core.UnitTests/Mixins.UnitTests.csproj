@@ -76,6 +76,8 @@
     <Compile Include="SampleTypes\ClassOverridingSpecificGenericMixinMember.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters2.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters3.cs" />
+    <Compile Include="SampleTypes\DerivedNullMixin.cs" />
+    <Compile Include="SampleTypes\NullMixin3.cs" />
     <Compile Include="SampleTypes\DerivedGenericTargetClass.cs" />
     <Compile Include="SampleTypes\NullMixin2.cs" />
     <Compile Include="SampleTypes\GenericClassExtendedByMixin.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="SampleTypes\MixinIndirectlyAddingAttribute.cs" />
     <Compile Include="Mixins\CodeGenSampleTypes\MixinWithProtectedOverriderAndAttributes.cs" />
     <Compile Include="SampleTypes\MixinWithVirtualMethod.cs" />
+    <Compile Include="SampleTypes\NullMixin4.cs" />
     <Compile Include="SampleTypes\NullTarget.cs" />
     <Compile Include="SampleTypes\MixinMixingClass.cs" />
     <Compile Include="SampleTypes\MixinMixingMixin.cs" />

@@ -131,7 +131,7 @@ namespace Rubicon.Mixins.CodeGeneration
                 _mixinTypeNameProvider);
 
               foreach (Tuple<MixinDefinition, Type> finishedMixinTypes in generator.GetBuiltMixinTypes ())
-                _typeCache.Add (finishedMixinTypes.A, finishedMixinTypes.B);
+                _typeCache.GetOrCreateValue (finishedMixinTypes.A, delegate { return finishedMixinTypes.B; });
 
               Type finishedType = generator.GetBuiltType();
               return finishedType;

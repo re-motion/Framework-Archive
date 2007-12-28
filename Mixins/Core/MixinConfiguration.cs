@@ -236,7 +236,7 @@ namespace Rubicon.Mixins
       return new MixinConfigurationBuilder (ActiveConfiguration);
     }
 
-    private readonly InheritanceAwareTypeDictionary<ClassContext> _classContexts;
+    private readonly InheritanceAwareClassContextCollection _classContexts;
     private readonly Dictionary<Type, ClassContext> _registeredInterfaces = new Dictionary<Type,ClassContext> ();
 
     /// <summary>
@@ -254,18 +254,7 @@ namespace Rubicon.Mixins
     /// <see langword="null"/>.</param>
     public MixinConfiguration (MixinConfiguration parentConfiguration)
     {
-      _classContexts = new InheritanceAwareTypeDictionary<ClassContext> (
-          delegate (Type type, ClassContext partOne, ClassContext partTwo)
-          {
-            ClassContext newContext = new ClassContext (type);
-            newContext.InheritFrom (partOne);
-            newContext.InheritFrom (partTwo);
-            return newContext;
-          },
-          delegate (Type type, ClassContext context)
-          {
-            return context.CloneForSpecificType (type);
-          }); 
+      _classContexts = new InheritanceAwareClassContextCollection();
  
       if (parentConfiguration != null)
         parentConfiguration.CopyTo (this);
