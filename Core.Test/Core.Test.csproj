@@ -116,8 +116,10 @@
     <Compile Include="CallContextSingletonTest.cs" />
     <Compile Include="CodeGeneration\AssemblySaverTest.cs" />
     <Compile Include="CodeGeneration\AttributeReplicatorTest.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\BaseClassWithDeserializationEvents.cs" />
     <Compile Include="CodeGeneration\ClassEmitterGenericsTest.cs" />
     <Compile Include="CodeGeneration\ClassEmitterTest.cs" />
+    <Compile Include="CodeGeneration\SampleTypes\ClassWithDeserializationEvents.cs" />
     <Compile Include="CodeGeneration\EventEmitterTest.cs" />
     <Compile Include="CodeGeneration\CustomAttributeExpressionTest.cs" />
     <Compile Include="CodeGeneration\ExpressionReferenceTest.cs" />
@@ -149,6 +151,7 @@
     <Compile Include="CodeGeneration\SampleTypes\SimpleAttribute.cs" />
     <Compile Include="CodeGeneration\SampleTypes\SimpleArrayProvider.cs" />
     <Compile Include="CodeGeneration\SampleTypes\StructWithMethod.cs" />
+    <Compile Include="CodeGeneration\SerializationEventRaiserTest.cs" />
     <Compile Include="CodeGeneration\SerializationImplementerTest.cs" />
     <Compile Include="CodeGeneration\SnippetGenerationBaseTest.cs" />
     <Compile Include="CodeGeneration\TryFinallyStatementTest.cs" />

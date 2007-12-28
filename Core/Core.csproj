@@ -116,6 +116,7 @@
     <Compile Include="CodeGeneration\DPExtensions\TypeReferenceWrapper.cs" />
     <Compile Include="CodeGeneration\DPExtensions\VirtualMethodInvocationExpression.cs" />
     <Compile Include="CodeGeneration\IAttributableEmitter.cs" />
+    <Compile Include="CodeGeneration\SerializationEventRaiser.cs" />
     <Compile Include="CodeGeneration\SerializationImplementer.cs" />
     <Compile Include="Collections\AutoInitDictionary.cs" />
     <Compile Include="Collections\MultiDictionary.cs" />

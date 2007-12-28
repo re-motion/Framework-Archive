@@ -179,55 +179,6 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
       Assert.AreEqual (context, instance.Context);
     }
 
-    [Serializable]
-    class BaseClassWithDeserializationEvents
-    {
-      [NonSerialized]
-      public bool OnBaseDeserializedCalled;
-      [NonSerialized]
-      public bool OnBaseDeserializingCalled;
-
-      [OnDeserializing]
-      private void OnDeserializing (StreamingContext context)
-      {
-        OnBaseDeserializingCalled = true;
-      }
-
-      [OnDeserialized]
-      private void OnDeserialized (StreamingContext context)
-      {
-        OnBaseDeserializedCalled = true;
-      }
-    }
-
-    [Serializable]
-    class ClassWithDeserializationEvents : BaseClassWithDeserializationEvents, IDeserializationCallback
-    {
-      [NonSerialized]
-      public bool OnDeserializationCalled;
-      [NonSerialized]
-      public bool OnDeserializedCalled;
-      [NonSerialized]
-      public bool OnDeserializingCalled;
-
-      public void OnDeserialization (object sender)
-      {
-        OnDeserializationCalled = true;
-      }
-
-      [OnDeserializing]
-      private void OnDeserializing (StreamingContext context)
-      {
-        OnDeserializingCalled = true;
-      }
-
-      [OnDeserialized]
-      private void OnDeserialized (StreamingContext context)
-      {
-        OnDeserializedCalled = true;
-      }
-    }
-
     [Test]
     public void OnDeserializationWithFormatter ()
     {

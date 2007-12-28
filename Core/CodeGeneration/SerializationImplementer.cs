@@ -9,6 +9,8 @@ namespace Rubicon.CodeGeneration
 {
   public static class SerializationImplementer
   {
+    private static readonly SerializationEventRaiser s_serializationEventRaiser = new SerializationEventRaiser();
+
     private static bool IsPublicOrProtected (MethodBase method)
     {
       return method.IsPublic || method.IsFamily || method.IsFamilyOrAssembly;
@@ -101,36 +103,19 @@ namespace Rubicon.CodeGeneration
     public static void RaiseOnDeserialization (object deserializedObject, object sender)
     {
       ArgumentUtility.CheckNotNull ("deserializedObject", deserializedObject);
-
-      IDeserializationCallback objectAsDeserializationCallback = deserializedObject as IDeserializationCallback;
-      if (objectAsDeserializationCallback != null)
-        objectAsDeserializationCallback.OnDeserialization (sender);
+      s_serializationEventRaiser.RaiseDeserializationEvent (deserializedObject, sender);
     }
 
     public static void RaiseOnDeserializing (object deserializedObject, StreamingContext context)
     {
       ArgumentUtility.CheckNotNull ("deserializedObject", deserializedObject);
-      RaiseDeserializationEvent (deserializedObject, typeof (OnDeserializingAttribute), context);
+      s_serializationEventRaiser.InvokeAttributedMethod (deserializedObject, typeof (OnDeserializingAttribute), context);
     }
 
     public static void RaiseOnDeserialized (object deserializedObject, StreamingContext context)
     {
       ArgumentUtility.CheckNotNull ("deserializedObject", deserializedObject);
-      RaiseDeserializationEvent (deserializedObject, typeof (OnDeserializedAttribute), context);
-    }
-
-    private static void RaiseDeserializationEvent (object deserializedObject, Type attributeType, StreamingContext context)
-    {
-      for (Type currentType = deserializedObject.GetType (); currentType != null; currentType = currentType.BaseType)
-      {
-        foreach (
-            MethodInfo method in
-                currentType.GetMethods (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
-        {
-          if (method.IsDefined (attributeType, false))
-            method.Invoke (deserializedObject, new object[] {context});
-        }
-      }
+      s_serializationEventRaiser.InvokeAttributedMethod (deserializedObject, typeof (OnDeserializedAttribute), context);
     }
   }
 }
