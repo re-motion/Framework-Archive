@@ -118,6 +118,7 @@
     <Compile Include="Design\DesignModeMappingReflector.cs" />
     <Compile Include="DomainObjectMixin.cs" />
     <Compile Include="Infrastructure\RepositoryAccessor.cs" />
+    <Compile Include="Mapping\SerializableMappingObject.cs" />
     <Compile Include="Persistence\BulkLoadException.cs" />
     <Compile Include="Persistence\Rdbms\DataContainerLoader.cs" />
     <Compile Include="Persistence\Rdbms\DataContainerLoaderHelper.cs" />

@@ -7,23 +7,29 @@ namespace Rubicon.Data.DomainObjects.Mapping
 {
   [Serializable]
   [DebuggerDisplay ("{GetType().Name}: {PropertyName}")]
-  public abstract class PropertyDefinition: ISerializable, IObjectReference
+  public abstract class PropertyDefinition : SerializableMappingObject
   {
     // types
 
     // static members and constants
 
-    // member fields
+    // serialized member fields
+    // Note: PropertyDefinitions can only be serialized if they are part of the current mapping configuration. Only the fields listed below
+    // will be serialized; these are used to retrieve the "real" object at deserialization time.
 
-    private ClassDefinition _classDefinition;
-    private string _propertyName;
-    private string _storageSpecificName;
-    private int? _maxLength;
-    private bool _isPersistent;
+    private readonly string _propertyName;
+    private readonly string _serializedClassDefinitionID;
 
-    // Note: _mappingClassID is used only during the deserialization process. 
-    // It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.
-    private string _mappingClassID;
+    // nonserialized member fields
+
+    [NonSerialized]
+    private readonly ClassDefinition _classDefinition;
+    [NonSerialized]
+    private readonly string _storageSpecificName;
+    [NonSerialized]
+    private readonly int? _maxLength;
+    [NonSerialized]
+    private readonly bool _isPersistent;
 
     // construction and disposing
 
@@ -34,6 +40,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
 
       _classDefinition = classDefinition;
+      _serializedClassDefinitionID = classDefinition.ID;
       _propertyName = propertyName;
       _storageSpecificName = columnName;
       _maxLength = maxLength;
@@ -97,88 +104,26 @@ namespace Rubicon.Data.DomainObjects.Mapping
       return GetType ().FullName + ": " + _propertyName;
     }
 
-    /// <summary>
-    /// IsPartOfMappingConfiguration is used only during the deserialization process. 
-    /// It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.
-    /// </summary>
-    protected bool IsPartOfMappingConfiguration
-    {
-      get { return _mappingClassID != null; }
-    }
+    #region Serialization
 
-    private InvalidOperationException CreateInvalidOperationException (string message, params object[] args)
-    {
-      return new InvalidOperationException (string.Format (message, args));
-    }
-
-    #region ISerializable Members
-
-    protected PropertyDefinition (SerializationInfo info, StreamingContext context)
-    {
-      _propertyName = info.GetString ("PropertyName");
-      bool ispartOfMappingConfiguration = info.GetBoolean ("IsPartOfMappingConfiguration");
-
-      if (ispartOfMappingConfiguration)
-      {
-        // Note: If this object was part of MappingConfiguration.Current during the serialization process,
-        // it is assumed that the deserialized object should be the instance from MappingConfiguration.Current again.
-        // Therefore only the information needed in IObjectReference.GetRealObject is deserialized here.
-        _mappingClassID = info.GetString ("MappingClassID");
-      }
-      else
-      {
-        _classDefinition = (ClassDefinition) info.GetValue ("ClassDefinition", typeof (ClassDefinition));
-        _storageSpecificName = info.GetString ("StorageSpecificName");
-
-        _maxLength = (int?) info.GetValue ("MaxLength", typeof (int?));
-        _isPersistent = info.GetBoolean ("IsPersistent");
-      }
-    }
-
-    void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      info.AddValue ("PropertyName", _propertyName);
-
-      bool isPartOfMappingConfiguration = MappingConfiguration.Current.Contains (this);
-      info.AddValue ("IsPartOfMappingConfiguration", isPartOfMappingConfiguration);
-
-      if (isPartOfMappingConfiguration)
-      {
-        // Note: If this object is part of MappingConfiguration.Current during the serialization process,
-        // it is assumed that the deserialized object should be the instance from MappingConfiguration.Current again.
-        // Therefore only the information needed in IObjectReference.GetRealObject is serialized here.
-        info.AddValue ("MappingClassID", _classDefinition.ID);
-      }
-      else
-      {
-        GetObjectData (info, context);
-      }
-    }
-
-    protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      info.AddValue ("ClassDefinition", _classDefinition);
-      info.AddValue ("StorageSpecificName", _storageSpecificName);
-      info.AddValue ("MaxLength", _maxLength);
-      info.AddValue ("IsPersistent", _isPersistent);
-    }
-
-    #endregion
-
-    #region IObjectReference Members
-
-    object IObjectReference.GetRealObject (StreamingContext context)
+    public override object GetRealObject (StreamingContext context)
     {
       // Note: A PropertyDefinition must know its ClassDefinition to correctly deserialize itself and a 
       // ClassDefinition knows its PropertyDefintions. For bi-directional relationships
       // with two classes implementing IObjectReference.GetRealObject the order of calling this method is unpredictable.
       // Therefore the member _classDefinition cannot be used here, because it could point to the wrong instance. 
-      if (_mappingClassID != null)
-        return MappingConfiguration.Current.ClassDefinitions.GetMandatory (_mappingClassID)[_propertyName];
-      else
-        return this;
+      return MappingConfiguration.Current.ClassDefinitions.GetMandatory (_serializedClassDefinitionID)[_propertyName];
     }
 
+    protected override bool IsPartOfMapping
+    {
+      get { return MappingConfiguration.Current.Contains (this); }
+    }
+
+    protected override string IDForExceptions
+    {
+      get { return PropertyName; }
+    }
     #endregion
   }
 }

@@ -1,7 +1,5 @@
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
-using Rubicon.Reflection;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
@@ -9,8 +7,12 @@ namespace Rubicon.Data.DomainObjects.Mapping
   [Serializable]
   public class ReflectionBasedPropertyDefinition: PropertyDefinition
   {
+    // no members are serialized here
+    [NonSerialized]
     private readonly PropertyInfo _propertyInfo;
+    [NonSerialized]
     private readonly Type _propertyType;
+    [NonSerialized]
     private readonly bool _isNullable;
 
     public ReflectionBasedPropertyDefinition (
@@ -93,27 +95,5 @@ namespace Rubicon.Data.DomainObjects.Mapping
     {
       return new ArgumentException (string.Format (message, args) + "\r\n  Property: " + propertyName);
     }
-
-    #region ISerializable Members
-
-    protected ReflectionBasedPropertyDefinition (SerializationInfo info, StreamingContext context)
-        : base (info, context)
-    {
-      if (!IsPartOfMappingConfiguration)
-      {
-        _propertyType = (Type) info.GetValue ("PropertyType", typeof (Type));
-        _isNullable = info.GetBoolean ("IsNullable");
-      }
-    }
-
-    protected override void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      base.GetObjectData (info, context);
-
-      info.AddValue ("PropertyType", _propertyType);
-      info.AddValue ("IsNullable", _isNullable);
-    }
-
-    #endregion
   }
 }

@@ -8,6 +8,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
   [Serializable]
   public class ReflectionBasedVirtualRelationEndPointDefinition : VirtualRelationEndPointDefinition
   {
+    [NonSerialized]
     private readonly PropertyInfo _propertyInfo;
 
     public ReflectionBasedVirtualRelationEndPointDefinition (
@@ -38,27 +39,9 @@ namespace Rubicon.Data.DomainObjects.Mapping
       _propertyInfo = propertyInfo;
     }
 
-    protected ReflectionBasedVirtualRelationEndPointDefinition (SerializationInfo info, StreamingContext context)
-      : base (info, context)
-    {
-      ArgumentUtility.CheckNotNull ("info", info);
-      ArgumentUtility.CheckNotNull ("context", context);
-
-      _propertyInfo = (PropertyInfo) info.GetValue ("_propertyInfo", typeof (PropertyInfo));
-    }
-
     public PropertyInfo PropertyInfo
     {
       get { return _propertyInfo; }
-    }
-
-    protected override void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      ArgumentUtility.CheckNotNull ("info", info);
-      ArgumentUtility.CheckNotNull ("context", context);
-
-      base.GetObjectData (info, context);
-      info.AddValue ("_propertyInfo", _propertyInfo);
     }
   }
 }

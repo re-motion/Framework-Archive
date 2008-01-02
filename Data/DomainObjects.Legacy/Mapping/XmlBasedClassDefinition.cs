@@ -11,7 +11,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
   [Serializable]
   public class XmlBasedClassDefinition: ClassDefinition
   {
+    [NonSerialized]
     private Type _classType;
+    [NonSerialized]
     private string _classTypeName;
 
     public XmlBasedClassDefinition (string id, string entityName, string storageProviderID, Type classType)
@@ -113,26 +115,5 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
     {
       return DirectDomainObjectCreator.Instance;
     }
-
-    #region ISerializable Members
-
-    public XmlBasedClassDefinition (SerializationInfo info, StreamingContext context)
-      : base (info, context)
-    {
-      if (!IsPartOfMappingConfiguration)
-      {
-        _classType = (Type) info.GetValue ("ClassType", typeof (Type));
-        _classTypeName = info.GetString ("ClassTypeName");
-      }
-    }
-
-    protected override void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      base.GetObjectData (info, context);
-      info.AddValue ("ClassType", _classType);
-      info.AddValue ("ClassTypeName", _classTypeName);
-    }
-
-    #endregion
   }
 }

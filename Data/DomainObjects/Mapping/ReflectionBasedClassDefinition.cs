@@ -12,8 +12,11 @@ namespace Rubicon.Data.DomainObjects.Mapping
   [Serializable]
   public class ReflectionBasedClassDefinition: ClassDefinition
   {
+    [NonSerialized]
     private readonly bool _isAbstract;
+    [NonSerialized]
     private readonly Type _classType;
+    [NonSerialized]
     private readonly ICollection<Type> _persistentMixins;
 
     public ReflectionBasedClassDefinition (string id, string entityName, string storageProviderID, Type classType, bool isAbstract, ICollection<Type> persistentMixins)
@@ -97,26 +100,5 @@ namespace Rubicon.Data.DomainObjects.Mapping
         throw new MappingException (message);
       }
     }
-
-    #region ISerializable Members
-    
-    protected ReflectionBasedClassDefinition (SerializationInfo info, StreamingContext context)
-      : base (info, context)
-    {
-      if (!IsPartOfMappingConfiguration)
-      {
-        _classType = (Type) info.GetValue ("ClassType", typeof (Type));
-        _persistentMixins = (List<Type>) info.GetValue ("PersistentMixins", typeof (List<Type>));
-      }
-    }
-
-    protected override void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      base.GetObjectData (info, context);
-      info.AddValue ("ClassType", _classType);
-      info.AddValue ("PersistentMixins", _persistentMixins);
-    }
-
-    #endregion
   }
 }

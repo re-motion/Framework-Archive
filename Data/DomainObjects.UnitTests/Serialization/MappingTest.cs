@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Mixins.Context;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 {
@@ -13,19 +13,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
   public class MappingTest : SerializationBaseTest
   {
     [Test]
-    public void PropertyDefinitionWithoutClassDefinition ()
+    [ExpectedException (typeof (SerializationException),
+        ExpectedMessage = "The ReflectionBasedPropertyDefinition 'PropertyName' cannot be serialized because is is not part of the current mapping.")]
+    public void PropertyDefinitionWithoutClassDefinition_NotInMapping ()
     {
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("ClassID", "EntityName", "TestDomain", typeof (Order), false, new List<Type> ());
       PropertyDefinition propertyDefinition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(classDefinition, "PropertyName", "ColumnName", typeof (string), true, 100);
 
-      PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
-
-      Assert.IsFalse (ReferenceEquals (propertyDefinition, deserializedPropertyDefinition));
-      AreEqual (propertyDefinition, deserializedPropertyDefinition);
+      SerializeAndDeserialize (propertyDefinition);
     }
 
     [Test]
-    public void PropertyDefinitionWithClassDefinition ()
+    [ExpectedException (typeof (SerializationException),
+        ExpectedMessage = "The ReflectionBasedPropertyDefinition 'OrderNumber' cannot be serialized because is is not part of the current mapping.")]
+    public void PropertyDefinitionWithClassDefinition_NotInMapping ()
     {
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("ClassID", "EntityName", "TestDomain", typeof (Order), false, new List<Type> ());
       PropertyDefinition propertyDefinition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(classDefinition, "OrderNumber", "OrderNo", typeof (int));
@@ -40,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    public void PropertyDefinitionInMapping ()
+    public void PropertyDefinition_InMapping ()
     {
       ClassDefinition orderDefinition = MappingConfiguration.Current.ClassDefinitions["Order"];
       PropertyDefinition orderNumberDefinition = orderDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
@@ -50,7 +51,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    public void PropertyDefinitionWithUnresolvedNativePropertyType ()
+    [ExpectedException (typeof (SerializationException),
+        ExpectedMessage = "The ReflectionBasedPropertyDefinition 'PropertyName' cannot be serialized because is is not part of the current mapping.")]
+    public void PropertyDefinitionWithUnresolvedNativePropertyType_NotInMapping ()
     {
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order), false, new List<Type>());
       PropertyDefinition propertyDefinition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(classDefinition, "PropertyName", "ColumnName", typeof (int));
@@ -75,20 +78,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    public void RelationEndPointDefinitionWithoutRelationDefinition ()
+    [ExpectedException (typeof (SerializationException),
+        ExpectedMessage = "The RelationEndPointDefinition 'Order' cannot be serialized because is is not part of the current mapping.")]
+    public void RelationEndPointDefinitionWithoutRelationDefinition_NotInMapping ()
     {
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket), false, new List<Type>());
       classDefinition.MyPropertyDefinitions.Add (ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(classDefinition, "Order", "OrderID", typeof (ObjectID), false));
       RelationEndPointDefinition endPointdefinition = new RelationEndPointDefinition (classDefinition, "Order", true);
 
-      RelationEndPointDefinition deserializedEndPointDefinition = (RelationEndPointDefinition) SerializeAndDeserialize (endPointdefinition);
-
-      Assert.IsFalse (ReferenceEquals (endPointdefinition, deserializedEndPointDefinition));
-      AreEqual (endPointdefinition, deserializedEndPointDefinition);
+      SerializeAndDeserialize (endPointdefinition);
     }
 
     [Test]
-    public void RelationEndPointDefinitionWithRelationDefinition ()
+    [ExpectedException (typeof (SerializationException),
+        ExpectedMessage = "The RelationEndPointDefinition 'Order' cannot be serialized because is is not part of the current mapping.")]
+    public void RelationEndPointDefinitionWithRelationDefinition_NotInMapping ()
     {
       ReflectionBasedClassDefinition orderDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order), false, new List<Type>());
       ReflectionBasedClassDefinition orderTicketDefinition = new ReflectionBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket), false, new List<Type>());
@@ -108,7 +112,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    public void RelationEndPointDefinitionInMapping ()
+    public void RelationEndPointDefinition_InMapping ()
     {
       RelationDefinition relationDefinition = MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"];
       RelationEndPointDefinition endPointDefinition = (RelationEndPointDefinition) relationDefinition.GetEndPointDefinition ("OrderTicket", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
@@ -118,20 +122,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    public void VirtualRelationEndPointDefinitionWithoutRelationDefinition ()
+    [ExpectedException (typeof (SerializationException),
+        ExpectedMessage = "The ReflectionBasedVirtualRelationEndPointDefinition 'OrderTicket' cannot be serialized because is is not part of the current mapping.")]
+    public void VirtualRelationEndPointDefinitionWithoutRelationDefinition_NotInMapping ()
     {
       ClassDefinition classDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order), false, new List<Type>());
 
       VirtualRelationEndPointDefinition endPointdefinition = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(classDefinition, "OrderTicket", true, CardinalityType.One, typeof (Order));
 
-      VirtualRelationEndPointDefinition deserializedEndPointDefinition = (VirtualRelationEndPointDefinition) SerializeAndDeserialize (endPointdefinition);
-
-      Assert.IsFalse (ReferenceEquals (endPointdefinition, deserializedEndPointDefinition));
-      AreEqual (endPointdefinition, deserializedEndPointDefinition);
+      SerializeAndDeserialize (endPointdefinition);
     }
 
     [Test]
-    public void VirtualRelationEndPointDefinitionWithRelationDefinition ()
+    [ExpectedException (typeof (SerializationException),
+        ExpectedMessage = "The ReflectionBasedVirtualRelationEndPointDefinition 'OrderTicket' cannot be serialized because is is not part of the current mapping.")]
+    public void VirtualRelationEndPointDefinitionWithRelationDefinition_NotInMapping ()
     {
       ReflectionBasedClassDefinition orderDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order), false, new List<Type>());
       ReflectionBasedClassDefinition orderTicketDefinition = new ReflectionBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket), false, new List<Type>());
@@ -144,10 +149,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       new RelationDefinition ("OrderToOrderTicket", orderEndPointDefinition, orderTicketEndPointdefinition);
 
-      VirtualRelationEndPointDefinition deserializedOrderEndPointDefinition = (VirtualRelationEndPointDefinition) SerializeAndDeserialize (orderEndPointDefinition);
-
-      Assert.IsFalse (ReferenceEquals (orderEndPointDefinition, deserializedOrderEndPointDefinition));
-      AreEqual (orderEndPointDefinition, deserializedOrderEndPointDefinition);
+      SerializeAndDeserialize (orderEndPointDefinition);
     }
 
     [Test]
@@ -161,20 +163,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    public void AnonymousRelationEndPointDefinitionWithoutRelationDefinition ()
+    [ExpectedException (typeof (SerializationException),
+        ExpectedMessage = "The AnonymousRelationEndPointDefinition '<anonymous>' cannot be serialized because is is not part of the current mapping.")]
+    public void AnonymousRelationEndPointDefinitionWithoutRelationDefinition_NotInMapping ()
     {
       ClassDefinition classDefinition = new ReflectionBasedClassDefinition ("Client", "Client", "TestDomain", typeof (Client), false, new List<Type>());
 
       AnonymousRelationEndPointDefinition endPointdefinition = new AnonymousRelationEndPointDefinition (classDefinition);
 
-      AnonymousRelationEndPointDefinition deserializedEndPointDefinition = (AnonymousRelationEndPointDefinition) SerializeAndDeserialize (endPointdefinition);
-
-      Assert.IsFalse (ReferenceEquals (endPointdefinition, deserializedEndPointDefinition));
-      AreEqual (endPointdefinition, deserializedEndPointDefinition);
+      SerializeAndDeserialize (endPointdefinition);
     }
 
     [Test]
-    public void AnonymousRelationEndPointDefinitionWithRelationDefinition ()
+    [ExpectedException (typeof (SerializationException),
+        ExpectedMessage = "The AnonymousRelationEndPointDefinition '<anonymous>' cannot be serialized because is is not part of the current mapping.")]
+    public void AnonymousRelationEndPointDefinitionWithRelationDefinition_NotInMapping ()
     {
       ReflectionBasedClassDefinition clientDefinition = new ReflectionBasedClassDefinition ("Client", "Client", "TestDomain", typeof (Client), false, new List<Type>());
       ReflectionBasedClassDefinition locationDefinition = new ReflectionBasedClassDefinition ("Location", "Location", "TestDomain", typeof (Location), false, new List<Type>());
@@ -186,14 +189,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", clientEndPointDefinition, locationEndPointDefinition);
 
-      AnonymousRelationEndPointDefinition deserializedClientEndPointDefinition = (AnonymousRelationEndPointDefinition) SerializeAndDeserialize (clientEndPointDefinition);
-
-      Assert.IsFalse (ReferenceEquals (clientEndPointDefinition, deserializedClientEndPointDefinition));
-      AreEqual (clientEndPointDefinition, deserializedClientEndPointDefinition);
+      SerializeAndDeserialize (clientEndPointDefinition);
     }
 
     [Test]
-    public void AnonymousRelationEndPointDefinitionInMapping ()
+    public void AnonymousRelationEndPointDefinition_InMapping ()
     {
       RelationDefinition relationDefinition = MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"];
       AnonymousRelationEndPointDefinition endPointDefinition = (AnonymousRelationEndPointDefinition) relationDefinition.GetOppositeEndPointDefinition ("Location", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
@@ -203,7 +203,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    public void RelationDefinitionNotInMapping ()
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "The RelationDefinition 'Rubicon.Data.DomainObjects.UnitTests.TestDomain."
+        + "OrderTicket.Order' cannot be serialized because is is not part of the current mapping.")]
+    public void RelationDefinition_NotInMapping ()
     {
       RelationDefinition relationDefinition = TestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
       RelationDefinition deserializedRelationDefinition = (RelationDefinition) SerializeAndDeserialize (relationDefinition);
@@ -213,7 +215,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    public void RelationDefinitionInMapping ()
+    public void RelationDefinition_InMapping ()
     {
       RelationDefinition relationDefinition = MappingConfiguration.Current.RelationDefinitions.GetMandatory ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
       RelationDefinition deserializedRelationDefinition = (RelationDefinition) SerializeAndDeserialize (relationDefinition);
@@ -240,8 +242,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void SimpleClassDefinitionCollection ()
     {
       ClassDefinitionCollection definitions = new ClassDefinitionCollection ();
-      definitions.Add (TestMappingConfiguration.Current.ClassDefinitions[0]);
-      definitions.Add (TestMappingConfiguration.Current.ClassDefinitions[1]);
+      definitions.Add (MappingConfiguration.Current.ClassDefinitions[0]);
+      definitions.Add (MappingConfiguration.Current.ClassDefinitions[1]);
 
       ClassDefinitionCollection deserializedDefinitions = (ClassDefinitionCollection) SerializeAndDeserialize (definitions);
 
@@ -252,7 +254,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    public void ClassDefinitionNotInMapping ()
+    [ExpectedException (typeof (SerializationException),
+        ExpectedMessage = "The ReflectionBasedClassDefinition 'Partner' cannot be serialized because is is not part of the current mapping.")]
+    public void ClassDefinition_NotInMapping ()
     {
       ClassDefinition classDefinition = TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Partner");
 
@@ -263,7 +267,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    public void ClassDefinitionInMapping ()
+    public void ClassDefinition_InMapping ()
     {
       // Note: Partner has a base class and several derived classes.
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Partner");
@@ -287,7 +291,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void PropertyDefinitionWithEnumType ()
     {
       PropertyDefinition enumPropertyDefinition =
-          TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer").MyPropertyDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Type"];
+          MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer").MyPropertyDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Type"];
 
       PropertyDefinition deserializedEnumPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (enumPropertyDefinition);
 

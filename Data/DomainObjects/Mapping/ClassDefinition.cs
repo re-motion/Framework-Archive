@@ -11,26 +11,32 @@ namespace Rubicon.Data.DomainObjects.Mapping
 {
   [Serializable]
   [DebuggerDisplay ("{GetType().Name} for {ClassType.FullName}")]
-  public abstract class ClassDefinition: ISerializable, IObjectReference
+  public abstract class ClassDefinition: SerializableMappingObject
   {
     // types
 
     // static members and constants
 
-    // member fields
+    // serialized member fields
+    // Note: ClassDefinitions can only be serialized if they are part of the current mapping configuration. Only the fields listed below
+    // will be serialized; these are used to retrieve the "real" object at deserialization time.
 
     private readonly string _id;
+
+    // nonserialized member fields
+    [NonSerialized]
     private readonly string _entityName;
+    [NonSerialized]
     private readonly string _storageProviderID;
+    [NonSerialized]
     private readonly PropertyDefinitionCollection _propertyDefinitions;
+    [NonSerialized]
     private readonly RelationDefinitionCollection _relationDefinitions;
 
+    [NonSerialized]
     private ClassDefinition _baseClass;
+    [NonSerialized]
     private ClassDefinitionCollection _derivedClasses;
-
-    // Note: _isPartOfMappingConfiguration is used only during the deserialization process. 
-    // It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.
-    private readonly bool _isPartOfMappingConfiguration;
 
     // construction and disposing
 
@@ -384,15 +390,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
       return GetType().FullName + ": " + _id;
     }
 
-    /// <summary>
-    /// IsPartOfMappingConfiguration is used only during the deserialization process. 
-    /// It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.
-    /// </summary>
-    protected bool IsPartOfMappingConfiguration
-    {
-      get { return _isPartOfMappingConfiguration; }
-    }
-
     [Obsolete ("Check after Refactoring. (Version 1.7.42")]
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void SetBaseClass (ClassDefinition baseClass)
@@ -601,55 +598,21 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     protected internal abstract IDomainObjectCreator GetDomainObjectCreator ();
 
-    #region ISerializable Members
+    #region Serialization
 
-    protected ClassDefinition (SerializationInfo info, StreamingContext context)
+    public override object GetRealObject (StreamingContext context)
     {
-      _id = info.GetString ("ID");
-      _isPartOfMappingConfiguration = info.GetBoolean ("IsPartOfMappingConfiguration");
-
-      if (!_isPartOfMappingConfiguration)
-      {
-        _entityName = info.GetString ("EntityName");
-        _storageProviderID = info.GetString ("StorageProviderID");
-        _baseClass = (ClassDefinition) info.GetValue ("BaseClass", typeof (ClassDefinition));
-        _derivedClasses = (ClassDefinitionCollection) info.GetValue ("DerivedClasses", typeof (ClassDefinitionCollection));
-        _propertyDefinitions = (PropertyDefinitionCollection) info.GetValue ("PropertyDefinitions", typeof (PropertyDefinitionCollection));
-        _relationDefinitions = (RelationDefinitionCollection) info.GetValue ("RelationDefinitions", typeof (RelationDefinitionCollection));
-      }
+      return MappingConfiguration.Current.ClassDefinitions.GetMandatory (_id);
     }
 
-    void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+    protected override bool IsPartOfMapping
     {
-      info.AddValue ("ID", _id);
-
-      bool isPartOfMappingConfiguration = MappingConfiguration.Current.Contains (this);
-      info.AddValue ("IsPartOfMappingConfiguration", isPartOfMappingConfiguration);
-      
-      if (!isPartOfMappingConfiguration)
-        GetObjectData (info, context);
+      get { return MappingConfiguration.Current.Contains (this); }
     }
 
-    protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
+    protected override string IDForExceptions
     {
-      info.AddValue ("EntityName", _entityName);
-      info.AddValue ("StorageProviderID", _storageProviderID);
-      info.AddValue ("BaseClass", _baseClass);
-      info.AddValue ("DerivedClasses", _derivedClasses);
-      info.AddValue ("PropertyDefinitions", _propertyDefinitions);
-      info.AddValue ("RelationDefinitions", _relationDefinitions);
-    }
-
-    #endregion
-
-    #region IObjectReference Members
-
-    object IObjectReference.GetRealObject (StreamingContext context)
-    {
-      if (_isPartOfMappingConfiguration)
-        return MappingConfiguration.Current.ClassDefinitions.GetMandatory (_id);
-      else
-        return this;
+      get { return ID; }
     }
 
     #endregion

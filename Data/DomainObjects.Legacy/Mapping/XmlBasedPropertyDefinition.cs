@@ -8,9 +8,12 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
   [Serializable]
   public class XmlBasedPropertyDefinition: PropertyDefinition
   {
-    private TypeInfo _typeInfo;
-    private string _mappingTypeName;
-    private bool _isNullable;
+    [NonSerialized]
+    private readonly TypeInfo _typeInfo;
+    [NonSerialized]
+    private readonly string _mappingTypeName;
+    [NonSerialized]
+    private readonly bool _isNullable;
 
     public XmlBasedPropertyDefinition (XmlBasedClassDefinition classDefinition, string propertyName, string columnName, string mappingTypeName)
       : this (classDefinition, propertyName, columnName, mappingTypeName, false)
@@ -117,32 +120,5 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
     {
       return new MappingException (string.Format (message, args));
     }
-
-    #region ISerializable Members
-
-    protected XmlBasedPropertyDefinition (SerializationInfo info, StreamingContext context)
-      : base (info, context)
-    {
-      if (!IsPartOfMappingConfiguration)
-      {
-        // GetTypeInfo must be used, to ensure enums are registered even object is deserialized into another process.
-        _mappingTypeName = info.GetString ("MappingTypeName");
-        _isNullable = info.GetBoolean ("IsNullable");
-        
-        if (info.GetBoolean ("HasTypeInfo"))
-          _typeInfo = GetTypeInfo (_mappingTypeName, IsNullable);
-      }
-    }
-
-    protected override void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      base.GetObjectData (info, context);
-
-      info.AddValue ("HasTypeInfo", _typeInfo != null);
-      info.AddValue ("MappingTypeName", _mappingTypeName);
-      info.AddValue ("IsNullable", _isNullable);
-    }
-
-    #endregion
   }
 }
