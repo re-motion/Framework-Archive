@@ -39,7 +39,12 @@ namespace Rubicon.Mixins.Context
 
     private readonly Set<Type> _explicitDependencies;
     private readonly UncastableEnumerableWrapper<Type> _explicitDependenciesForOutside;
-    
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MixinContext"/> class.
+    /// </summary>
+    /// <param name="mixinType">The mixin type represented by this <see cref="MixinContext"/>.</param>
+    /// <param name="explicitDependencies">The explicit dependencies of the mixin.</param>
     public MixinContext (Type mixinType, IEnumerable<Type> explicitDependencies)
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
@@ -48,6 +53,16 @@ namespace Rubicon.Mixins.Context
       MixinType = mixinType;
       _explicitDependencies = new Set<Type> (explicitDependencies);
       _explicitDependenciesForOutside = new UncastableEnumerableWrapper<Type> (_explicitDependencies);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MixinContext"/> class.
+    /// </summary>
+    /// <param name="mixinType">The mixin type represented by this <see cref="MixinContext"/>.</param>
+    /// <param name="explicitDependencies">The explicit dependencies of the mixin.</param>
+    public MixinContext (Type mixinType, params Type[] explicitDependencies)
+        : this (mixinType, (IEnumerable<Type>) explicitDependencies)
+    {
     }
 
     internal void SerializeIntoFlatStructure (string key, SerializationInfo info)

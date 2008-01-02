@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Rubicon.Collections;
 using Rubicon.Mixins;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Definitions.Building;
@@ -32,16 +33,43 @@ namespace Rubicon.Mixins.Context
     /// Initializes a new <see cref="ClassContext"/> for a given mixin target type.
     /// </summary>
     /// <param name="type">The mixin target type to be represented by this context.</param>
+    /// <param name="mixins">A list of <see cref="MixinContext"/> objects representing the mixins applied to this class.</param>
+    /// <param name="completeInterfaces">The complete interfaces supported by the class.</param>
     /// <exception cref="ArgumentNullException">The <paramref name="type"/> parameter is <see langword="null"/>.</exception>
-    public ClassContext (Type type)
+    public ClassContext (Type type, IEnumerable<MixinContext> mixins, IEnumerable<Type> completeInterfaces)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
       _type = type;
+
       _mixins = new Dictionary<Type, MixinContext> ();
+      foreach (MixinContext mixin in mixins)
+        _mixins.Add (mixin.MixinType, mixin);
       _mixinWrapperForOutside = new UncastableEnumerableWrapper<MixinContext> (_mixins.Values);
-      _completeInterfaces = new List<Type> ();
+      
+      _completeInterfaces = new List<Type> (new Set<Type> (completeInterfaces));
       _completeInterfaceWrapperForOutside = new UncastableEnumerableWrapper<Type> (_completeInterfaces);
+    }
+
+    /// <summary>
+    /// Initializes a new <see cref="ClassContext"/> for a given target type without mixins.
+    /// </summary>
+    /// <param name="type">The mixin target type to be represented by this context.</param>
+    /// <exception cref="ArgumentNullException">The <paramref name="type"/> parameter is <see langword="null"/>.</exception>
+    public ClassContext (Type type)
+      : this (type, new MixinContext[0], new Type[0])
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new <see cref="ClassContext"/> for a given mixin target type.
+    /// </summary>
+    /// <param name="type">The mixin target type to be represented by this context.</param>
+    /// <param name="mixins">A list of <see cref="MixinContext"/> objects representing the mixins applied to this class.</param>
+    /// <exception cref="ArgumentNullException">The <paramref name="type"/> parameter is <see langword="null"/>.</exception>
+    public ClassContext (Type type, params MixinContext[] mixins)
+        : this (type, mixins, new Type[0])
+    {
     }
 
     /// <summary>
@@ -53,7 +81,7 @@ namespace Rubicon.Mixins.Context
     /// <exception cref="ArgumentNullException">One of the parameters passed to this method is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException">The <paramref name="mixinTypes"/> parameter contains duplicates.</exception>
     public  ClassContext (Type type, params Type[] mixinTypes)
-        : this (type)
+        : this (type, new MixinContext[0], new Type[0])
     {
       ArgumentUtility.CheckNotNull ("mixinTypes", mixinTypes);
 
@@ -84,7 +112,7 @@ namespace Rubicon.Mixins.Context
       int completeInterfaceCount = info.GetInt32 ("_completeInterfaces.Count");
       _completeInterfaces = new List<Type> (completeInterfaceCount);
       for (int i = 0; i < completeInterfaceCount; ++i)
-        AddCompleteInterface (ReflectionObjectSerializer.DeserializeType ("_completeInterfaces[" + i + "]", info));
+        _completeInterfaces.Add (ReflectionObjectSerializer.DeserializeType ("_completeInterfaces[" + i + "]", info));
       _completeInterfaceWrapperForOutside = new UncastableEnumerableWrapper<Type> (_completeInterfaces);
     }
 
@@ -331,38 +359,6 @@ namespace Rubicon.Mixins.Context
     }
 
     /// <summary>
-    /// Adds the given type to this <see cref="ClassContext"/> as a complete interface.
-    /// </summary>
-    /// <param name="interfaceType">Type to add as a complete interface.</param>
-    public void AddCompleteInterface (Type interfaceType)
-    {
-      ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
-      lock (_lockObject)
-      {
-        EnsureNotFrozen();
-        if (!ContainsCompleteInterface (interfaceType))
-          _completeInterfaces.Add (interfaceType);
-      }
-    }
-
-    /// <summary>
-    /// Removes the given complete interface from this <see cref="ClassContext"/>.
-    /// </summary>
-    /// <param name="interfaceType">Type to be removed as a complete interface.</param>
-    /// <returns>True if the type was successfully removed; false if it was not added as a complete interface.</returns>
-    /// <exception cref="ArgumentNullException">The <paramref name="interfaceType"/> parameter is <see langword="null"/>.</exception>
-    /// <exception cref="InvalidOperationException">The <see cref="ClassContext"/> is frozen.</exception>
-    public bool RemoveCompleteInterface (Type interfaceType)
-    {
-      ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
-      lock (_lockObject)
-      {
-        EnsureNotFrozen();
-        return _completeInterfaces.Remove (interfaceType);
-      }
-    }
-
-    /// <summary>
     /// Determines whether the specified <see cref="T:System.Object"></see> is equal to the current <see cref="ClassContext"/>.
     /// </summary>
     /// <param name="obj">The <see cref="T:System.Object"></see> to compare with this <see cref="ClassContext"/>.</param>
@@ -427,14 +423,11 @@ namespace Rubicon.Mixins.Context
     {
       lock (_lockObject)
       {
-        ClassContext newInstance = new ClassContext (type);
-
+        List<MixinContext> mixinContextClones = new List<MixinContext> (MixinCount);
         foreach (MixinContext mixinContext in Mixins)
-          newInstance.AddMixinContext (mixinContext.Clone());
+          mixinContextClones.Add (mixinContext.Clone ());
 
-        foreach (Type completeInterface in CompleteInterfaces)
-          newInstance.AddCompleteInterface (completeInterface);
-
+        ClassContext newInstance = new ClassContext (type, mixinContextClones, CompleteInterfaces);
         return newInstance;
       }
     }
@@ -480,6 +473,7 @@ namespace Rubicon.Mixins.Context
       return CloneForSpecificType (Type.MakeGenericType (genericArguments));
     }
 
+    // TODO: Change to return a new context rather than modifying current one.
     /// <summary>
     /// Inherits all data from the given <paramref name="baseContext"/> and applies overriding rules for mixins and concrete
     /// interfaces already defined for this <see cref="ClassContext"/>.
@@ -508,7 +502,7 @@ namespace Rubicon.Mixins.Context
         foreach (Type inheritedInterface in baseContext.CompleteInterfaces)
         {
           if (!ContainsCompleteInterface (inheritedInterface))
-            AddCompleteInterface (inheritedInterface);
+            _completeInterfaces.Add (inheritedInterface);
         }
       }
     }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
+using Rubicon.Mixins.Context.FluentBuilders;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Development.UnitTesting;
 
@@ -79,19 +80,21 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     }
 
     [Test]
-    public void CompleteInterfaces()
+    public void CompleteInterfaces_Empty()
     {
-      ClassContext context = new ClassContext (typeof (BaseType5));
+      ClassContext context = new ClassContext (typeof (BaseType5), new MixinContext[0], new Type[0]);
       Assert.AreEqual (0, context.CompleteInterfaceCount);
-      context.AddCompleteInterface (typeof (IBT5MixinC1));
+      Assert.IsEmpty (new List<Type> (context.CompleteInterfaces));
+      Assert.IsFalse (context.ContainsCompleteInterface (typeof (IBT5MixinC1)));
+    }
+
+    [Test]
+    public void CompleteInterfaces_NonEmpty ()
+    {
+      ClassContext context = new ClassContext (typeof (BaseType5), new MixinContext[0], new Type[] { typeof (IBT5MixinC1) });
       Assert.AreEqual (1, context.CompleteInterfaceCount);
       Assert.Contains (typeof (IBT5MixinC1), new List<Type> (context.CompleteInterfaces));
       Assert.IsTrue (context.ContainsCompleteInterface (typeof (IBT5MixinC1)));
-      Assert.IsTrue (context.RemoveCompleteInterface (typeof (IBT5MixinC1)));
-      Assert.IsFalse (context.ContainsCompleteInterface (typeof (IBT5MixinC1)));
-      Assert.AreEqual (0, context.CompleteInterfaceCount);
-      Assert.IsFalse (context.RemoveCompleteInterface (typeof (IBT5MixinC1)));
-      Assert.AreEqual (0, context.CompleteInterfaceCount);
     }
 
     [Test]
@@ -106,14 +109,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void DuplicateCompleteInterfacesAreIgnored ()
     {
-      ClassContext context = new ClassContext (typeof (BaseType5));
-      Assert.AreEqual (0, context.CompleteInterfaceCount);
-      context.AddCompleteInterface (typeof (IBT5MixinC1));
+      ClassContext context = new ClassContext (typeof (BaseType5), new MixinContext[0], new Type[] { typeof (IBT5MixinC1), typeof (IBT5MixinC1) });
       Assert.AreEqual (1, context.CompleteInterfaceCount);
-      Assert.Contains (typeof (IBT5MixinC1), new List<Type> (context.CompleteInterfaces));
-      context.AddCompleteInterface (typeof (IBT5MixinC1));
-      Assert.AreEqual (1, context.CompleteInterfaceCount);
-      Assert.Contains (typeof (IBT5MixinC1), new List<Type> (context.CompleteInterfaces));
     }
 
     [Test]
@@ -131,49 +128,42 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void ClassContextHasValueEquality ()
     {
-      ClassContext cc1 = new ClassContext (typeof (BaseType1));
-      cc1.AddMixin (typeof (BT1Mixin1));
-      cc1.AddCompleteInterface (typeof (IBT5MixinC1));
+      ClassContext cc1 = new ClassContextBuilder (typeof (BaseType1)).AddMixin (typeof (BT1Mixin1)).AddCompleteInterface (typeof (IBT5MixinC1))
+          .BuildClassContext();
 
-      ClassContext cc2 = new ClassContext (typeof (BaseType1));
-      cc2.AddMixin (typeof (BT1Mixin1));
-      cc2.AddCompleteInterface (typeof (IBT5MixinC1));
+      ClassContext cc2 = new ClassContextBuilder (typeof (BaseType1)).AddMixin (typeof (BT1Mixin1)).AddCompleteInterface (typeof (IBT5MixinC1))
+          .BuildClassContext ();
 
       Assert.AreEqual (cc1, cc2);
       Assert.AreEqual (cc1.GetHashCode (), cc2.GetHashCode ());
 
-      ClassContext cc3 = new ClassContext (typeof (BaseType2));
-      cc3.AddMixin (typeof (BT1Mixin1));
-      cc3.AddCompleteInterface (typeof (IBT5MixinC1));
+      ClassContext cc3 = new ClassContextBuilder (typeof (BaseType2)).AddMixin (typeof (BT1Mixin1)).AddCompleteInterface (typeof (IBT5MixinC1))
+          .BuildClassContext();
 
       Assert.AreNotEqual (cc1, cc3);
 
-      ClassContext cc4 = new ClassContext (typeof (BaseType2));
-      cc4.AddMixin (typeof (BT1Mixin1));
-      cc4.AddCompleteInterface (typeof (IBT5MixinC1));
+      ClassContext cc4 = new ClassContextBuilder (typeof (BaseType2)).AddMixin (typeof (BT1Mixin1)).AddCompleteInterface (typeof (IBT5MixinC1))
+          .BuildClassContext();
 
       Assert.AreEqual (cc4, cc3);
       Assert.AreEqual (cc4.GetHashCode (), cc3.GetHashCode ());
 
-      ClassContext cc5 = new ClassContext (typeof (BaseType2));
-      cc5.AddMixin (typeof (BT1Mixin2));
-      cc5.AddCompleteInterface (typeof (IBT5MixinC1));
+      ClassContext cc5 = new ClassContextBuilder (typeof (BaseType2)).AddMixin (typeof (BT1Mixin2)).AddCompleteInterface (typeof (IBT5MixinC1))
+          .BuildClassContext ();
 
       Assert.AreNotEqual (cc4, cc5);
 
-      ClassContext cc6 = new ClassContext (typeof (BaseType2));
-      cc5.AddMixin (typeof (BT1Mixin1));
-      cc5.AddCompleteInterface (typeof (IBT5MixinC2));
+      ClassContext cc6 = new ClassContextBuilder (typeof (BaseType2)).AddMixin (typeof (BT1Mixin1)).AddCompleteInterface (typeof (IBT5MixinC2))
+          .BuildClassContext();
 
       Assert.AreNotEqual (cc4, cc5);
 
-      ClassContext cc7 = new ClassContext (typeof (BaseType1));
-      cc7.AddMixin (typeof (BT1Mixin1));
+      ClassContext cc7 = new ClassContextBuilder (typeof (BaseType1)).AddMixin (typeof (BT1Mixin1))
+          .BuildClassContext ();
 
-      ClassContext cc8 = cc7.Clone ();
-      cc8.RemoveMixin (typeof (BT1Mixin1));
-      cc8.AddMixinContext (new MixinContext (typeof (BT1Mixin1), new Type[] {typeof (IBaseType2)}));
-
+      ClassContext cc8 = new ClassContextBuilder (typeof (BaseType1)).AddMixin (typeof (BT1Mixin1)).WithDependency (typeof (IBaseType2))
+          .BuildClassContext ();
+      
       Assert.AreEqual (cc7, cc7);
       Assert.AreEqual (cc7, cc7.Clone ());
       Assert.AreNotEqual (cc7, cc8);
@@ -182,9 +172,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void ClassContextIsSerializable ()
     {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      cc.AddCompleteInterface (typeof (IBT5MixinC1));
-      cc.AddMixinContext (new MixinContext (typeof (BT1Mixin1), new Type[] {typeof (IBaseType2)}));
+      ClassContext cc = new ClassContextBuilder (typeof (BaseType1))
+          .AddCompleteInterface (typeof (IBT5MixinC1))
+          .AddMixin (typeof (BT1Mixin1)).WithDependency (typeof (IBaseType2))
+          .BuildClassContext ();
 
       ClassContext cc2 = Serializer.SerializeAndDeserialize (cc);
       Assert.AreNotSame (cc2, cc);
@@ -233,26 +224,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "is frozen", MatchType = MessageMatch.Contains)]
-    public void ThrowsOnAddCompleteInterfaceWhenFrozen ()
-    {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      cc.Freeze ();
-      Assert.IsTrue (cc.IsFrozen);
-      cc.AddCompleteInterface (typeof (IBT5MixinC1));
-    }
-
-    [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "is frozen", MatchType = MessageMatch.Contains)]
-    public void ThrowsOnRemoveCompleteInterfaceWhenFrozen ()
-    {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      cc.Freeze ();
-      Assert.IsTrue (cc.IsFrozen);
-      cc.RemoveCompleteInterface (typeof (IBT5MixinC1));
-    }
-
-    [Test]
     public void NonchangingMethodsAndFreezeCanBeExecutedWhenFrozen ()
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
@@ -278,11 +249,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void FrozenContextCanBeClonedUnfrozen ()
     {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      cc.AddMixinContext (new MixinContext (typeof (BT1Mixin1), new Type[] {typeof (IBaseType2)}));
-      cc.AddMixin (typeof (BT1Mixin2));
-      cc.AddCompleteInterface (typeof (IBT5MixinC1));
-      cc.AddCompleteInterface (typeof (IBT5MixinC2));
+      ClassContext cc = new ClassContextBuilder (typeof (BaseType1))
+          .AddMixin (typeof (BT1Mixin1)).WithDependency (typeof (IBaseType2))
+          .AddMixin (typeof (BT1Mixin2))
+          .AddCompleteInterface (typeof (IBT5MixinC1))
+          .AddCompleteInterface (typeof (IBT5MixinC2))
+          .BuildClassContext();
+
       cc.Freeze ();
       Assert.IsTrue (cc.IsFrozen);
 
@@ -323,11 +296,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void AdaptingClonedContext ()
     {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      cc.AddMixin (typeof (BT1Mixin1));
-      cc.AddMixin (typeof (BT1Mixin2));
+      ClassContext cc = new ClassContextBuilder (typeof (BaseType1))
+          .AddMixin (typeof (BT1Mixin1))
+          .AddMixin (typeof (BT1Mixin2))
+          .AddCompleteInterface (typeof (IBT5MixinC1))
+          .BuildClassContext();
+
       Assert.IsFalse (cc.ContainsMixin (typeof (BT3Mixin1)));
-      cc.AddCompleteInterface (typeof (IBT5MixinC1));
       Assert.IsFalse (cc.ContainsCompleteInterface (typeof (IBT5MixinC2)));
 
       ClassContext cc2 = cc.Clone ();
@@ -346,14 +321,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       Assert.IsFalse (cc2.ContainsMixin (typeof (BT1Mixin2)));
       Assert.IsFalse (cc2.ContainsMixin (typeof (BT2Mixin1)));
       Assert.IsTrue (cc2.ContainsMixin (typeof (BT3Mixin1)));
-
-      cc2.RemoveCompleteInterface (typeof (IBT5MixinC2));
-      cc2.RemoveCompleteInterface (typeof (IBT5MixinC1));
-      cc2.AddCompleteInterface (typeof (IBT5MixinC1));
-      cc2.AddCompleteInterface (typeof (IBT5MixinC2));
-
-      Assert.IsTrue (cc2.ContainsCompleteInterface (typeof (IBT5MixinC1)));
-      Assert.IsTrue (cc2.ContainsCompleteInterface (typeof (IBT5MixinC2)));
 
       Assert.IsTrue (cc.ContainsCompleteInterface (typeof (IBT5MixinC1)));
       Assert.IsFalse (cc.ContainsCompleteInterface (typeof (IBT5MixinC2)));

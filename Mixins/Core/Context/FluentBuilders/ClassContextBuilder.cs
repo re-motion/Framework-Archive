@@ -19,6 +19,11 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     private readonly Set<Type> _suppressedMixins = new Set<Type> ();
     private bool _suppressInheritance = false;
 
+    public ClassContextBuilder (Type targetType)
+        : this (new MixinConfigurationBuilder (null), targetType, null)
+    {
+    }
+
     public ClassContextBuilder (MixinConfigurationBuilder parent, Type targetType, ClassContext parentContext)
     {
       ArgumentUtility.CheckNotNull ("parent", parent);
@@ -445,34 +450,31 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     }
 
     /// <summary>
-    /// Builds a class context with the data collected so far for the <see cref="TargetType"/>.
+    /// Builds a class context with the data collected so far for the <see cref="TargetType"/> that inherits from other contexts.
     /// </summary>
     /// <param name="inheritedContexts">A collection of <see cref="ClassContext"/> instances the newly built context should inherit mixin data from.</param>
     /// <returns>A <see cref="ClassContext"/> for the <see cref="TargetType"/> holding all mixin configuration data collected so far.</returns>
     public virtual ClassContext BuildClassContext (IEnumerable<ClassContext> inheritedContexts)
     {
-      ClassContext classContext = new ClassContext (_targetType);
-
-      ApplyMixins(classContext);
-      ApplyCompleteInterfaces(classContext);
+      ClassContext classContext = new ClassContext (_targetType, GetMixins(), CompleteInterfaces);
       ApplyInheritance(classContext, inheritedContexts);
       ApplySuppressedMixins(classContext);
       return classContext;
     }
 
-    private void ApplyMixins (ClassContext classContext)
+    /// <summary>
+    /// Builds a class context with the data collected so far for the <see cref="TargetType"/> without inheriting from other contexts.
+    /// </summary>
+    /// <returns>A <see cref="ClassContext"/> for the <see cref="TargetType"/> holding all mixin configuration data collected so far.</returns>
+    public virtual ClassContext BuildClassContext ()
     {
-      foreach (MixinContextBuilder mixinContextBuilder in MixinContextBuilders)
-      {
-        MixinContext mixinContext = mixinContextBuilder.BuildMixinContext();
-        classContext.AddMixinContext (mixinContext);
-      }
+      return BuildClassContext (new ClassContext[0]);
     }
 
-    private void ApplyCompleteInterfaces (ClassContext classContext)
+    private IEnumerable<MixinContext> GetMixins ()
     {
-      foreach (Type completeInterface in CompleteInterfaces)
-        classContext.AddCompleteInterface (completeInterface);
+      foreach (MixinContextBuilder mixinContextBuilder in MixinContextBuilders)
+        yield return mixinContextBuilder.BuildMixinContext();
     }
 
     private void ApplyInheritance (ClassContext classContext, IEnumerable<ClassContext> inheritedContexts)

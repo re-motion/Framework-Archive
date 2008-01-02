@@ -424,13 +424,21 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     }
 
     /// <summary>
-    /// Builds a class context with the data collected so far for the <see cref="ClassContextBuilder.TargetType"/>.
+    /// Builds a class context with the data collected so far for the <see cref="ClassContextBuilder.TargetType"/> that inherits from other contexts.
     /// </summary>
     /// <param name="inheritedContexts">A collection of <see cref="ClassContext"/> instances the newly built context should inherit mixin data from.</param>
     /// <returns>A <see cref="ClassContext"/> for the <see cref="ClassContextBuilder.TargetType"/> holding all mixin configuration data collected so far.</returns>
     public virtual ClassContext BuildClassContext (IEnumerable<ClassContext> inheritedContexts)
     {
       return _parent.BuildClassContext (inheritedContexts);
+    }
+
+    /// <summary>
+    /// Builds a class context with the data collected so far for the <see cref="ClassContextBuilder.TargetType"/> without inheriting from other contexts.
+    /// </summary>
+    public virtual ClassContext BuildClassContext ()
+    {
+      return _parent.BuildClassContext ();
     }
 
     /// <summary>

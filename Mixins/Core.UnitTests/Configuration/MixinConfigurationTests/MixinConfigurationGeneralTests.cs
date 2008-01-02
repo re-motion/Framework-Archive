@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Rubicon.Mixins.Context.FluentBuilders;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
@@ -108,13 +109,17 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     [Test]
     public void CopyTo ()
     {
-      MixinConfiguration parent = new MixinConfiguration();
-      parent.GetOrAddClassContext (typeof (BaseType2)).AddMixinContext (new MixinContext (typeof (BT2Mixin1), new Type[] {typeof (IBaseType33)}));
-      parent.RegisterInterface (typeof (IBaseType2), typeof (BaseType2));
+      MixinConfiguration parent = new MixinConfigurationBuilder (null)
+          .ForClass (typeof (BaseType2))
+          .AddMixin (typeof (BT2Mixin1)).WithDependency (typeof (IBaseType33))
+          .AddCompleteInterface (typeof (IBaseType2))
+          .BuildConfiguration();
 
-      MixinConfiguration source = new MixinConfiguration (parent);
-      source.GetOrAddClassContext (typeof (BaseType1)).AddMixinContext (new MixinContext (typeof (BT1Mixin1), new Type[] {typeof (IBaseType34)}));
-      source.GetOrAddClassContext (typeof (BaseType1)).AddCompleteInterface (typeof (IBaseType33));
+      MixinConfiguration source = new MixinConfigurationBuilder (parent)
+          .ForClass (typeof (BaseType1))
+          .AddMixin (typeof (BT1Mixin1)).WithDependency (typeof (IBaseType34))
+          .AddCompleteInterface (typeof (IBaseType33))
+          .BuildConfiguration();
 
       Assert.IsTrue (source.ContainsClassContext (typeof (BaseType2)));
       Assert.IsTrue (source.GetClassContext (typeof (BaseType2)).ContainsMixin (typeof (BT2Mixin1)));

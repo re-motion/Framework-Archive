@@ -128,6 +128,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
         Expect.Call (_parentBuilderMock.SuppressMixins<BT1Mixin1, BT1Mixin2> ()).Return (r1);
         Expect.Call (_parentBuilderMock.SuppressMixins<BT1Mixin1, BT1Mixin2, BT3Mixin1> ()).Return (r1);
         Expect.Call (_parentBuilderMock.BuildClassContext (inheritedContexts)).Return (r5);
+        Expect.Call (_parentBuilderMock.BuildClassContext ()).Return (r5);
 
         Expect.Call (_parentBuilderMock.ForClass<object> ()).Return (r1);
         Expect.Call (_parentBuilderMock.ForClass<string> ()).Return (r1);
@@ -163,6 +164,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.AreSame (r1, _mixinBuilder.SuppressMixins<BT1Mixin1, BT1Mixin2> ());
       Assert.AreSame (r1, _mixinBuilder.SuppressMixins<BT1Mixin1, BT1Mixin2, BT3Mixin1> ());
       Assert.AreSame (r5, _mixinBuilder.BuildClassContext (inheritedContexts));
+      Assert.AreSame (r5, _mixinBuilder.BuildClassContext ());
 
       Assert.AreSame (r1, _mixinBuilder.ForClass<object> ());
       Assert.AreSame (r1, _mixinBuilder.ForClass<string> ());

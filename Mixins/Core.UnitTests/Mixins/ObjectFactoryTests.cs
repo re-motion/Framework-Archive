@@ -199,11 +199,10 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void CompleteFaceInterfaceAddedImperativelyAsTypeArgument ()
     {
-      using (MixinConfiguration.BuildNew().EnterScope ())
+      using (MixinConfiguration.BuildNew()
+          .ForClass (typeof (BaseType6)).AddCompleteInterface (typeof (IEmptyInterface))
+          .EnterScope ())
       {
-        MixinConfiguration.ActiveConfiguration.GetOrAddClassContext (typeof (BaseType6)).AddCompleteInterface (typeof (IEmptyInterface));
-        MixinConfiguration.ActiveConfiguration.RegisterInterface (typeof (IEmptyInterface), typeof (BaseType6));
-
         IEmptyInterface complete = ObjectFactory.Create<IEmptyInterface> ().With ();
 
         Assert.IsNotNull (complete);

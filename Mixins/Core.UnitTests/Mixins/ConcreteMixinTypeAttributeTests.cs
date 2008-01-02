@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.Context;
+using Rubicon.Mixins.Context.FluentBuilders;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Mixins.Definitions;
 
@@ -62,10 +63,11 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void FromClassContextComplex ()
     {
-      ClassContext context = new ClassContext (typeof (int));
-      context.AddCompleteInterface (typeof (uint));
-      context.AddMixinContext (new MixinContext (typeof (string), new Type[] {typeof (bool)}));
-      context.AddMixinContext (new MixinContext (typeof (double), new Type[] {typeof (int)}));
+      ClassContext context = new ClassContextBuilder (typeof (int))
+          .AddCompleteInterface (typeof (uint))
+          .AddMixin (typeof (string)).WithDependency (typeof (bool))
+          .AddMixin (typeof (double)).WithDependency (typeof (int))
+          .BuildClassContext();
 
       ConcreteMixinTypeAttribute attribute = ConcreteMixinTypeAttribute.FromClassContext (5, context);
 

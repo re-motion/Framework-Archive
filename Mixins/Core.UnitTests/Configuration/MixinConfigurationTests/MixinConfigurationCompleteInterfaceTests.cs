@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Rubicon.Mixins.Context.FluentBuilders;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
@@ -13,9 +14,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     public void RegisterAndResolveCompleteInterface ()
     {
       MixinConfiguration ac = new MixinConfiguration ();
-      ClassContext cc = new ClassContext (typeof (BaseType2));
+      ClassContext cc = new ClassContextBuilder (typeof (BaseType2))
+          .AddCompleteInterface (typeof (IBaseType2))
+          .BuildClassContext();
+
       ac.AddClassContext (cc);
-      cc.AddCompleteInterface (typeof (IBaseType2));
       Assert.IsNull (ac.ResolveInterface (typeof (IBaseType2)));
       ac.RegisterInterface (typeof (IBaseType2), cc);
       Assert.AreSame (cc, ac.ResolveInterface (typeof (IBaseType2)));

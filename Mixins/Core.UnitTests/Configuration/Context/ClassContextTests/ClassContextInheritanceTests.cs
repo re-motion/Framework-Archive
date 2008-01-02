@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
 using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Mixins.Context.FluentBuilders;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Utilities;
 
@@ -236,9 +237,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void CompleteInterfaces ()
     {
-      ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddCompleteInterface (typeof (object));
-      baseContext.AddCompleteInterface (typeof (int));
+      ClassContext baseContext = new ClassContextBuilder (typeof (string))
+          .AddCompleteInterface (typeof (object))
+          .AddCompleteInterface (typeof (int))
+          .BuildClassContext();
 
       ClassContext inheritor = new ClassContext (typeof (double));
       inheritor.InheritFrom (baseContext);
@@ -251,8 +253,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void ContainsCompleteInterface ()
     {
-      ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddCompleteInterface (typeof (object));
+      ClassContext baseContext = new ClassContext (typeof (string), new MixinContext[0], new Type[] {typeof (object)});
 
       ClassContext inheritor = new ClassContext (typeof (double));
       inheritor.InheritFrom (baseContext);
@@ -263,11 +264,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void ExistingCompleteInterface_NotReplacedByInheritance ()
     {
-      ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddCompleteInterface (typeof (object));
+      ClassContext baseContext = new ClassContext (typeof (string), new MixinContext[0], new Type[] { typeof (object) });
 
-      ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.AddCompleteInterface (typeof (object));
+      ClassContext inheritor = new ClassContext (typeof (double), new MixinContext[0], new Type[] {typeof (object)});
       inheritor.InheritFrom (baseContext);
 
       Assert.AreEqual (1, inheritor.CompleteInterfaceCount);
@@ -275,29 +274,17 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     }
 
     [Test]
-    public void RemoveInheritedCompleteInterface ()
-    {
-      ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddCompleteInterface (typeof (object));
-
-      ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.InheritFrom (baseContext);
-      inheritor.RemoveCompleteInterface (typeof (object));
-
-      Assert.AreEqual (0, inheritor.CompleteInterfaceCount);
-      Assert.IsFalse (inheritor.ContainsCompleteInterface (typeof (object)));
-    }
-
-    [Test]
     public void InheritFrom_LeavesExistingData ()
     {
-      ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixin (typeof (DateTime));
-      baseContext.AddCompleteInterface (typeof (object));
+      ClassContext baseContext = new ClassContextBuilder (typeof (string))
+          .AddMixin (typeof (DateTime))
+          .AddCompleteInterface (typeof (object))
+          .BuildClassContext();
 
-      ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.AddMixin (typeof (string));
-      inheritor.AddCompleteInterface (typeof (int));
+      ClassContext inheritor = new ClassContextBuilder (typeof (double))
+          .AddMixin (typeof (string))
+          .AddCompleteInterface (typeof (int)).BuildClassContext();
+      
       inheritor.InheritFrom (baseContext);
 
       Assert.AreEqual (2, inheritor.MixinCount);

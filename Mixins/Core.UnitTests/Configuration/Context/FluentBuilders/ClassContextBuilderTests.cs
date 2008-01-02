@@ -42,6 +42,20 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     }
 
     [Test]
+    public void Initialization_Standalone ()
+    {
+      ClassContextBuilder classBuilder = new ClassContextBuilder (typeof (BaseType2));
+      Assert.AreSame (typeof (BaseType2), classBuilder.TargetType);
+      Assert.IsNotNull (classBuilder.Parent);
+      Assert.That (_classBuilder.MixinContextBuilders, Is.Empty);
+      Assert.That (_classBuilder.CompleteInterfaces, Is.Empty);
+
+      ClassContext classContext = _classBuilder.BuildClassContext (new ClassContext[0]);
+      Assert.AreEqual (0, classContext.MixinCount);
+      Assert.AreEqual (0, classContext.CompleteInterfaceCount);
+    }
+
+    [Test]
     public void Initialization_WithNoParentContext ()
     {
       Assert.AreSame (typeof (BaseType2), _classBuilder.TargetType);
@@ -57,9 +71,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     [Test]
     public void Initialization_WithParentContext ()
     {
-      ClassContext existingClassContext = new ClassContext(typeof (BaseType1));
-      existingClassContext.AddMixin (typeof (BT1Mixin1));
-      existingClassContext.AddCompleteInterface (typeof (IBT1Mixin1));
+      ClassContext existingClassContext = new ClassContextBuilder (typeof (BaseType1))
+          .AddMixin (typeof (BT1Mixin1))
+          .AddCompleteInterface (typeof (IBT1Mixin1))
+          .BuildClassContext();
 
       ClassContextBuilder classBuilder = new ClassContextBuilder (_parentBuilderMock, typeof (BaseType1), existingClassContext);
       Assert.That (GetMixinTypes (classBuilder),
@@ -354,8 +369,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
         + "complete interface for type Rubicon.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
     public void AddCompleteInterface_ConflictWithParentContext ()
     {
-      ClassContext parentContext = new ClassContext (typeof (BaseType2));
-      parentContext.AddCompleteInterface (typeof (IBT6Mixin1));
+      ClassContext parentContext = new ClassContext (typeof (BaseType2), new MixinContext[0], new Type[]{typeof (IBT6Mixin1)});
 
       ClassContextBuilder classBuilder = new ClassContextBuilder (_parentBuilderMock, typeof (BaseType2), parentContext);
       classBuilder.AddCompleteInterface (typeof (IBT6Mixin1));
@@ -483,7 +497,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       _classBuilder.AddMixins<BT1Mixin1, BT1Mixin2>();
       _classBuilder.AddCompleteInterfaces<IBT6Mixin1, IBT6Mixin2>();
 
-      ClassContext builtContext = _classBuilder.BuildClassContext (new ClassContext[0]);
+      ClassContext builtContext = _classBuilder.BuildClassContext ();
       
       Assert.AreEqual (2, builtContext.MixinCount);
       Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin1)));
@@ -497,8 +511,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     [Test]
     public void BuildContext_SuppressedInheritance ()
     {
-      ClassContext inheritedContext = new ClassContext (typeof (BaseType2), typeof (BT3Mixin1));
-      inheritedContext.AddCompleteInterface (typeof (BT1Mixin2));
+      ClassContext inheritedContext = new ClassContextBuilder (typeof (BaseType2))
+          .AddMixin (typeof (BT3Mixin1))
+          .AddCompleteInterface (typeof (BT1Mixin2))
+          .BuildClassContext();
 
       _classBuilder.Clear ();
       _classBuilder.AddMixins<BT1Mixin1, BT1Mixin2> ();
@@ -518,9 +534,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     [Test]
     public void BuildContext_WithInheritance ()
     {
-      ClassContext inheritedContext = new ClassContext (typeof (BaseType7));
-      inheritedContext.AddMixin (typeof (BT7Mixin1));
-      inheritedContext.AddCompleteInterface (typeof (BT1Mixin2));
+      ClassContext inheritedContext = new ClassContextBuilder (typeof (BaseType7))
+          .AddMixin (typeof (BT7Mixin1))
+          .AddCompleteInterface (typeof (BT1Mixin2))
+          .BuildClassContext();
       
       _classBuilder.AddMixins<BT1Mixin1, BT1Mixin2> ();
       _classBuilder.AddCompleteInterfaces<IBT6Mixin1, IBT6Mixin2> ();
