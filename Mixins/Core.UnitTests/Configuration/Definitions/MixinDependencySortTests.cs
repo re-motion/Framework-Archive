@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Rubicon.Mixins.Context.FluentBuilders;
 using Rubicon.Mixins.Definitions.Building;
 using Rubicon.Mixins.Definitions.Building.DependencySorting;
 using Rubicon.Mixins.UnitTests.SampleTypes;
@@ -53,31 +54,34 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
 
     private void CheckGrandOrdering ()
     {
-      MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin0)).AddExplicitDependency (typeof (IBT7Mixin7));
-      MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin7)).AddExplicitDependency (typeof (IBT7Mixin4));
-      MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin4)).AddExplicitDependency (typeof (IBT7Mixin6));
-      MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin6)).AddExplicitDependency (typeof (IBT7Mixin2));
-      MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin9)).AddExplicitDependency (typeof (IBT7Mixin8));
+      using (MixinConfiguration.BuildFromActive ().ForClass<BaseType7> ()
+          .EnsureMixin (typeof (BT7Mixin0)).WithDependency<IBT7Mixin7> ()
+          .EnsureMixin (typeof (BT7Mixin7)).WithDependency<IBT7Mixin4> ()
+          .EnsureMixin (typeof (BT7Mixin4)).WithDependency<IBT7Mixin6> ()
+          .EnsureMixin (typeof (BT7Mixin6)).WithDependency<IBT7Mixin2> ()
+          .EnsureMixin (typeof (BT7Mixin9)).WithDependency<IBT7Mixin8> ()
+          .EnterScope ())
+      {
+        TargetClassDefinition bt7 = TypeFactory.GetActiveConfiguration (typeof (BaseType7));
+        Assert.AreEqual (11, bt7.Mixins.Count);
+        // group 1
+        Assert.AreEqual (0, bt7.Mixins[typeof (BT7Mixin0)].MixinIndex); // u
+        Assert.AreEqual (1, bt7.Mixins[typeof (BT7Mixin7)].MixinIndex); // u
+        Assert.AreEqual (2, bt7.Mixins[typeof (BT7Mixin4)].MixinIndex); // u
+        Assert.AreEqual (3, bt7.Mixins[typeof (BT7Mixin6)].MixinIndex); // u
 
-      TargetClassDefinition bt7 = TypeFactory.GetActiveConfiguration (typeof (BaseType7));
-      Assert.AreEqual (11, bt7.Mixins.Count);
-      // group 1
-      Assert.AreEqual (0, bt7.Mixins[typeof (BT7Mixin0)].MixinIndex); // u
-      Assert.AreEqual (1, bt7.Mixins[typeof (BT7Mixin7)].MixinIndex); // u
-      Assert.AreEqual (2, bt7.Mixins[typeof (BT7Mixin4)].MixinIndex); // u
-      Assert.AreEqual (3, bt7.Mixins[typeof (BT7Mixin6)].MixinIndex); // u
+        Assert.AreEqual (4, bt7.Mixins[typeof (BT7Mixin2)].MixinIndex);
+        Assert.AreEqual (5, bt7.Mixins[typeof (BT7Mixin3)].MixinIndex);
+        Assert.AreEqual (6, bt7.Mixins[typeof (BT7Mixin1)].MixinIndex);
 
-      Assert.AreEqual (4, bt7.Mixins[typeof (BT7Mixin2)].MixinIndex);
-      Assert.AreEqual (5, bt7.Mixins[typeof (BT7Mixin3)].MixinIndex);
-      Assert.AreEqual (6, bt7.Mixins[typeof (BT7Mixin1)].MixinIndex);
+        // group 2
+        Assert.AreEqual (7, bt7.Mixins[typeof (BT7Mixin10)].MixinIndex);
+        Assert.AreEqual (8, bt7.Mixins[typeof (BT7Mixin9)].MixinIndex); // u
+        Assert.AreEqual (9, bt7.Mixins[typeof (BT7Mixin8)].MixinIndex); // u
 
-      // group 2
-      Assert.AreEqual (7, bt7.Mixins[typeof (BT7Mixin10)].MixinIndex);
-      Assert.AreEqual (8, bt7.Mixins[typeof (BT7Mixin9)].MixinIndex); // u
-      Assert.AreEqual (9, bt7.Mixins[typeof (BT7Mixin8)].MixinIndex); // u
-
-      // group 3
-      Assert.AreEqual (10, bt7.Mixins[typeof (BT7Mixin5)].MixinIndex);
+        // group 3
+        Assert.AreEqual (10, bt7.Mixins[typeof (BT7Mixin5)].MixinIndex);
+      }
     }
 
     [Test]
@@ -136,14 +140,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void DependencyAnalyzer ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<BaseType7> ().Clear().AddMixins (typeof (BT7Mixin0), typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3), typeof (BT7Mixin4), typeof (BT7Mixin5), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin8), typeof (BT7Mixin9), typeof (BT7Mixin10)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType7> ().Clear()
+          .AddMixin (typeof (BT7Mixin0)).WithDependency (typeof (IBT7Mixin7))
+          .AddMixin (typeof (BT7Mixin7)).WithDependency (typeof (IBT7Mixin4))
+          .AddMixin (typeof (BT7Mixin4)).WithDependency (typeof (IBT7Mixin6))
+          .AddMixin (typeof (BT7Mixin6)).WithDependency (typeof (IBT7Mixin2))
+          .AddMixin (typeof (BT7Mixin9)).WithDependency (typeof (IBT7Mixin8))
+          .AddMixins (typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3), typeof (BT7Mixin5), typeof (BT7Mixin8), typeof (BT7Mixin10))
+          .EnterScope())
       {
-        MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin0)).AddExplicitDependency (typeof (IBT7Mixin7));
-        MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin7)).AddExplicitDependency (typeof (IBT7Mixin4));
-        MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin4)).AddExplicitDependency (typeof (IBT7Mixin6));
-        MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin6)).AddExplicitDependency (typeof (IBT7Mixin2));
-        MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin9)).AddExplicitDependency (typeof (IBT7Mixin8));
-
         TargetClassDefinition bt7 = TypeFactory.GetActiveConfiguration (typeof (BaseType7));
         MixinDependencyAnalyzer analyzer = new MixinDependencyAnalyzer();
 
@@ -182,14 +187,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void MixinGroupBuilder ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<BaseType7> ().Clear().AddMixins (typeof (BT7Mixin0), typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3), typeof (BT7Mixin4), typeof (BT7Mixin5), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin8), typeof (BT7Mixin9), typeof (BT7Mixin10)).EnterScope())
+      using (MixinConfiguration.BuildFromActive ().ForClass<BaseType7> ().Clear ()
+          .AddMixin (typeof (BT7Mixin0)).WithDependency (typeof (IBT7Mixin7))
+          .AddMixin (typeof (BT7Mixin7)).WithDependency (typeof (IBT7Mixin4))
+          .AddMixin (typeof (BT7Mixin4)).WithDependency (typeof (IBT7Mixin6))
+          .AddMixin (typeof (BT7Mixin6)).WithDependency (typeof (IBT7Mixin2))
+          .AddMixin (typeof (BT7Mixin9)).WithDependency (typeof (IBT7Mixin8))
+          .AddMixins (typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3), typeof (BT7Mixin5), typeof (BT7Mixin8), typeof (BT7Mixin10))
+          .EnterScope ())
       {
-        MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin0)).AddExplicitDependency (typeof (IBT7Mixin7));
-        MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin7)).AddExplicitDependency (typeof (IBT7Mixin4));
-        MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin4)).AddExplicitDependency (typeof (IBT7Mixin6));
-        MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin6)).AddExplicitDependency (typeof (IBT7Mixin2));
-        MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin9)).AddExplicitDependency (typeof (IBT7Mixin8));
-
         TargetClassDefinition bt7 = TypeFactory.GetActiveConfiguration (typeof (BaseType7));
         DependentMixinGrouper grouper = new DependentMixinGrouper();
         List<Set<MixinDefinition>> mixinGroups = new List<Set<MixinDefinition>> (grouper.GroupMixins (bt7.Mixins));
@@ -223,21 +229,30 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void SortingWithExplicitDependencies ()
     {
-      CheckExplicitDependencyOrdering (new ClassContext (typeof (TargetClassWithAdditionalDependencies),
-          typeof (MixinWithAdditionalClassDependency), typeof (MixinWithNoAdditionalDependency), typeof (MixinWithAdditionalInterfaceDependency)));
+      ClassContext context = new ClassContextBuilder (new MixinConfigurationBuilder (null), typeof (TargetClassWithAdditionalDependencies), null)
+          .AddMixin<MixinWithAdditionalClassDependency> ().WithDependency<MixinWithNoAdditionalDependency>()
+          .AddMixin<MixinWithNoAdditionalDependency>()
+          .AddMixin<MixinWithAdditionalInterfaceDependency> ().WithDependency<IMixinWithAdditionalClassDependency> ()
+          .BuildClassContext(new ClassContext[0]);
+      CheckExplicitDependencyOrdering (context);
 
-      CheckExplicitDependencyOrdering (new ClassContext (typeof (TargetClassWithAdditionalDependencies),
-          typeof (MixinWithNoAdditionalDependency), typeof (MixinWithAdditionalClassDependency), typeof (MixinWithAdditionalInterfaceDependency)));
+      context = new ClassContextBuilder (new MixinConfigurationBuilder (null), typeof (TargetClassWithAdditionalDependencies), null)
+          .AddMixin<MixinWithNoAdditionalDependency> ()
+          .AddMixin<MixinWithAdditionalClassDependency> ().WithDependency<MixinWithNoAdditionalDependency> ()
+          .AddMixin<MixinWithAdditionalInterfaceDependency> ().WithDependency<IMixinWithAdditionalClassDependency> ()
+          .BuildClassContext (new ClassContext[0]);
+      CheckExplicitDependencyOrdering (context);
 
-      CheckExplicitDependencyOrdering (new ClassContext (typeof (TargetClassWithAdditionalDependencies),
-          typeof (MixinWithNoAdditionalDependency), typeof (MixinWithAdditionalInterfaceDependency), typeof (MixinWithAdditionalClassDependency)));
+      context = new ClassContextBuilder (new MixinConfigurationBuilder (null), typeof (TargetClassWithAdditionalDependencies), null)
+          .AddMixin<MixinWithNoAdditionalDependency> ()
+          .AddMixin<MixinWithAdditionalInterfaceDependency> ().WithDependency<IMixinWithAdditionalClassDependency> ()
+          .AddMixin<MixinWithAdditionalClassDependency> ().WithDependency<MixinWithNoAdditionalDependency> ()
+          .BuildClassContext (new ClassContext[0]);
+      CheckExplicitDependencyOrdering (context);
     }
 
     private void CheckExplicitDependencyOrdering (ClassContext classContext)
     {
-      classContext.GetOrAddMixinContext (typeof (MixinWithAdditionalClassDependency)).AddExplicitDependency (typeof (MixinWithNoAdditionalDependency));
-      classContext.GetOrAddMixinContext (typeof (MixinWithAdditionalInterfaceDependency)).AddExplicitDependency (typeof (IMixinWithAdditionalClassDependency));
-
       MixinConfiguration configuration = new MixinConfiguration (null);
       configuration.AddClassContext (classContext);
 

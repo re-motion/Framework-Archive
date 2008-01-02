@@ -31,8 +31,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.AreSame (_parentBuilderMock, _mixinBuilder.Parent);
       Assert.That (_mixinBuilder.Dependencies, Is.Empty);
 
-      ClassContext classContext = new ClassContext (typeof (BaseType2));
-      MixinContext mixinContext = _mixinBuilder.BuildMixinContext (classContext);
+      MixinContext mixinContext = _mixinBuilder.BuildMixinContext ();
       Assert.AreEqual (0, mixinContext.ExplicitDependencyCount);
     }
 
@@ -82,11 +81,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     [Test]
     public void BuildContext ()
     {
-      ClassContext classContext = new ClassContext (typeof (object));
       _mixinBuilder.WithDependency<IBT3Mixin4>();
-      MixinContext context = _mixinBuilder.BuildMixinContext (classContext);
+      MixinContext context = _mixinBuilder.BuildMixinContext ();
       Assert.AreSame (typeof (BT2Mixin1), context.MixinType);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (BT2Mixin1)));
       Assert.IsTrue (context.ContainsExplicitDependency (typeof (IBT3Mixin4)));
     }
 
@@ -130,7 +127,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
         Expect.Call (_parentBuilderMock.SuppressMixins (typeof (BT1Mixin1), typeof (BT1Mixin2))).Return (r1);
         Expect.Call (_parentBuilderMock.SuppressMixins<BT1Mixin1, BT1Mixin2> ()).Return (r1);
         Expect.Call (_parentBuilderMock.SuppressMixins<BT1Mixin1, BT1Mixin2, BT3Mixin1> ()).Return (r1);
-        Expect.Call (_parentBuilderMock.BuildClassContext (r2, inheritedContexts)).Return (r5);
+        Expect.Call (_parentBuilderMock.BuildClassContext (inheritedContexts)).Return (r5);
 
         Expect.Call (_parentBuilderMock.ForClass<object> ()).Return (r1);
         Expect.Call (_parentBuilderMock.ForClass<string> ()).Return (r1);
@@ -165,7 +162,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.AreSame (r1, _mixinBuilder.SuppressMixins (typeof (BT1Mixin1), typeof (BT1Mixin2)));
       Assert.AreSame (r1, _mixinBuilder.SuppressMixins<BT1Mixin1, BT1Mixin2> ());
       Assert.AreSame (r1, _mixinBuilder.SuppressMixins<BT1Mixin1, BT1Mixin2, BT3Mixin1> ());
-      Assert.AreSame (r5, _mixinBuilder.BuildClassContext (r2, inheritedContexts));
+      Assert.AreSame (r5, _mixinBuilder.BuildClassContext (inheritedContexts));
 
       Assert.AreSame (r1, _mixinBuilder.ForClass<object> ());
       Assert.AreSame (r1, _mixinBuilder.ForClass<string> ());

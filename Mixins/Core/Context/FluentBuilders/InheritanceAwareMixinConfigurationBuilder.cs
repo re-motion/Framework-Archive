@@ -61,7 +61,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
         List<ClassContext> inheritedContexts = new List<ClassContext>(1);
         if (inheritedContext != null)
           inheritedContexts.Add (inheritedContext);
-        finishedContext = _builders[type].BuildClassContext (_builtConfiguration, inheritedContexts);
+        finishedContext = _builders[type].BuildClassContext (inheritedContexts);
         _finishedContextsForBuilders.Add (finishedContext);
       }
       else

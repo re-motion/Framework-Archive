@@ -257,7 +257,7 @@ namespace Rubicon.Mixins.Context
         EnsureNotFrozen();
         if (!ContainsMixin (mixinType))
         {
-          MixinContext context = new MixinContext (this, mixinType, _lockObject);
+          MixinContext context = new MixinContext (mixinType, new Type[0]);
           AddMixinContext (context);
           return context;
         }
@@ -266,7 +266,7 @@ namespace Rubicon.Mixins.Context
       }
     }
 
-    private void AddMixinContext (MixinContext context)
+    public void AddMixinContext (MixinContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       lock (_lockObject)
@@ -430,7 +430,7 @@ namespace Rubicon.Mixins.Context
         ClassContext newInstance = new ClassContext (type);
 
         foreach (MixinContext mixinContext in Mixins)
-          mixinContext.CloneAndAddTo (newInstance);
+          newInstance.AddMixinContext (mixinContext.Clone());
 
         foreach (Type completeInterface in CompleteInterfaces)
           newInstance.AddCompleteInterface (completeInterface);
@@ -476,19 +476,8 @@ namespace Rubicon.Mixins.Context
 
       if (!Type.IsGenericTypeDefinition)
         throw new InvalidOperationException ("This method is only allowed on generic type definitions.");
-      
-      lock (_lockObject)
-      {
-        ClassContext newInstance = new ClassContext (Type.MakeGenericType (genericArguments));
 
-        foreach (MixinContext mixinContext in Mixins)
-          mixinContext.CloneAndAddTo (newInstance);
-
-        foreach (Type completeInterface in CompleteInterfaces)
-          newInstance.AddCompleteInterface (completeInterface);
-
-        return newInstance;
-      }
+      return CloneForSpecificType (Type.MakeGenericType (genericArguments));
     }
 
     /// <summary>
@@ -513,7 +502,7 @@ namespace Rubicon.Mixins.Context
         foreach (MixinContext inheritedMixin in baseContext.Mixins)
         {
           if (!ContainsOverrideForMixin (inheritedMixin.MixinType))
-            inheritedMixin.CloneAndAddTo (this);
+            AddMixinContext (inheritedMixin.Clone ());
         }
 
         foreach (Type inheritedInterface in baseContext.CompleteInterfaces)

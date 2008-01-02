@@ -7,6 +7,7 @@ using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Utilities;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Rubicon.Mixins.Context.FluentBuilders;
 
 namespace Rubicon.Mixins.CodeGeneration
 {
@@ -14,7 +15,7 @@ namespace Rubicon.Mixins.CodeGeneration
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
   public class ConcreteMixedTypeAttribute : Attribute
   {
-    private static ConstructorInfo s_attributeCtor =
+    private static readonly ConstructorInfo s_attributeCtor =
         typeof (ConcreteMixedTypeAttribute).GetConstructor (new Type[] {typeof (Type), typeof (Type[]), typeof (Type[]), typeof (Type[])});
 
     public static ConcreteMixedTypeAttribute FromClassContext (ClassContext context)
@@ -118,24 +119,25 @@ namespace Rubicon.Mixins.CodeGeneration
 
     public ClassContext GetClassContext ()
     {
-      ClassContext context = new ClassContext (TargetType, MixinTypes);
+      ClassContextBuilder contextBuilder = new ClassContextBuilder (new MixinConfigurationBuilder (null), TargetType, null);
+      contextBuilder.AddMixins (MixinTypes);
+      
       foreach (Type completeInterface in CompleteInterfaces)
-        context.AddCompleteInterface (completeInterface);
+        contextBuilder.AddCompleteInterface (completeInterface);
 
-      Type currentMixin = null;
+      Type currentMixinType = null;
       foreach (Type type in ExplicitDependenciesPerMixin)
       {
         if (type == typeof (NextMixinDependency))
-          currentMixin = null;
-        else if (currentMixin == null)
-          currentMixin = type;
+          currentMixinType = null;
+        else if (currentMixinType == null)
+          currentMixinType = type;
         else
-          context.GetOrAddMixinContext (currentMixin).AddExplicitDependency (type);
+          contextBuilder.EnsureMixin (currentMixinType).WithDependency (type);
       }
 
-      if (TargetType.IsGenericType && context.Type.IsGenericTypeDefinition)
-        context = context.SpecializeWithTypeArguments (TargetType.GetGenericArguments ());
-
+      ClassContext context = contextBuilder.BuildClassContext (new ClassContext[0]);
+      Assertion.IsTrue (context.Type == TargetType);
       return context;
     }
 

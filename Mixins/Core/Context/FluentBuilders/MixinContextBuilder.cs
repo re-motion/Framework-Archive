@@ -129,13 +129,10 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <summary>
     /// Builds a mixin context with the data collected so far for the <see cref="MixinType"/>.
     /// </summary>
-    /// <param name="classContext">The class context to build the mixin context with.</param>
     /// <returns>A <see cref="MixinContext"/> for the <see cref="MixinType"/> holding all mixin configuration data collected so far.</returns>
-    public virtual MixinContext BuildMixinContext (ClassContext classContext)
+    public virtual MixinContext BuildMixinContext ()
     {
-      MixinContext mixinContext = classContext.AddMixin (_mixinType);
-      foreach (Type dependency in _dependencies)
-        mixinContext.AddExplicitDependency (dependency);
+      MixinContext mixinContext = new MixinContext (_mixinType, _dependencies);
       return mixinContext;
     }
 
@@ -429,12 +426,11 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <summary>
     /// Builds a class context with the data collected so far for the <see cref="ClassContextBuilder.TargetType"/>.
     /// </summary>
-    /// <param name="mixinConfiguration">The mixin configuration to build the class context with.</param>
     /// <param name="inheritedContexts">A collection of <see cref="ClassContext"/> instances the newly built context should inherit mixin data from.</param>
     /// <returns>A <see cref="ClassContext"/> for the <see cref="ClassContextBuilder.TargetType"/> holding all mixin configuration data collected so far.</returns>
-    public virtual ClassContext BuildClassContext (MixinConfiguration mixinConfiguration, IEnumerable<ClassContext> inheritedContexts)
+    public virtual ClassContext BuildClassContext (IEnumerable<ClassContext> inheritedContexts)
     {
-      return _parent.BuildClassContext (mixinConfiguration, inheritedContexts);
+      return _parent.BuildClassContext (inheritedContexts);
     }
 
     /// <summary>

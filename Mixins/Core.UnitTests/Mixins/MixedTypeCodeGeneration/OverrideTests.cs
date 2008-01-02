@@ -138,19 +138,15 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void TestMultipleOverridesGrand ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<BaseType7> ().Clear().AddMixins (typeof (BT7Mixin0), typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3), typeof (BT7Mixin4), typeof (BT7Mixin5), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin8), typeof (BT7Mixin9), typeof (BT7Mixin10)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType7> ().Clear()
+          .AddMixin (typeof (BT7Mixin0)).WithDependency (typeof (IBT7Mixin7))
+          .AddMixin (typeof (BT7Mixin7)).WithDependency (typeof (IBT7Mixin4))
+          .AddMixin (typeof (BT7Mixin4)).WithDependency (typeof (IBT7Mixin6))
+          .AddMixin (typeof (BT7Mixin6)).WithDependency (typeof (IBT7Mixin2))
+          .AddMixin (typeof (BT7Mixin9)).WithDependency (typeof (IBT7Mixin8))
+          .AddMixins (typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3), typeof (BT7Mixin5), typeof (BT7Mixin8), typeof (BT7Mixin10))
+          .EnterScope())
       {
-        MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin0)).AddExplicitDependency (
-            typeof (IBT7Mixin7));
-        MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin7)).AddExplicitDependency (
-            typeof (IBT7Mixin4));
-        MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin4)).AddExplicitDependency (
-            typeof (IBT7Mixin6));
-        MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin6)).AddExplicitDependency (
-            typeof (IBT7Mixin2));
-        MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin9)).AddExplicitDependency (
-            typeof (IBT7Mixin8));
-
         BaseType7 bt7 = ObjectFactory.Create<BaseType7> ().With ();
         Assert.AreEqual ("BT7Mixin0.One(7)-BT7Mixin4.One(7)-BT7Mixin6.One(7)-BT7Mixin2.One(7)"
             + "-BT7Mixin3.One(7)-BT7Mixin1.BT7Mixin1Specific"

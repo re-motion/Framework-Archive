@@ -11,11 +11,10 @@ namespace Rubicon.Mixins.Context
   /// <summary>
   /// Represents a single mixin applied to a target class.
   /// </summary>
-  /// <threadsafety static="true" instance="true">
-  /// <para>The instance methods of this class are synchronized with the instance methods of the associated <see cref="ClassContext"/>.</para>
-  /// </threadsafety>
-  /// <remarks>Instances of this class are not created directly, but via <see cref="ClassContext.AddMixin"/> and
-  /// <see cref="TargetClassContext"/>.</remarks>
+  /// <threadsafety static="true" instance="true"/>
+  /// <remarks>
+  /// Instances of this class are immutable.
+  /// </remarks>
   public class MixinContext
   {
     internal static MixinContext DeserializeFromFlatStructure (ClassContext classContext, object lockObject, string key, SerializationInfo info)
@@ -26,32 +25,29 @@ namespace Rubicon.Mixins.Context
       ArgumentUtility.CheckNotNull ("info", info);
 
       Type mixinType = ReflectionObjectSerializer.DeserializeType (key + ".MixinType", info);
-      MixinContext newContext = new MixinContext (classContext, mixinType, lockObject);
 
       int dependencyCount = info.GetInt32 (key + ".ExplicitDependencyCount");
+      List<Type> explicitDependencies = new List<Type>();
       for (int i = 0; i < dependencyCount; ++i)
-        newContext.AddExplicitDependency (ReflectionObjectSerializer.DeserializeType (key + ".ExplicitDependencies[" + i + "]", info));
+        explicitDependencies.Add (ReflectionObjectSerializer.DeserializeType (key + ".ExplicitDependencies[" + i + "]", info));
 
+      MixinContext newContext = new MixinContext (mixinType, explicitDependencies);
       return newContext;
     }
 
-    private readonly ClassContext _classContext;
     public readonly Type MixinType;
+
     private readonly Set<Type> _explicitDependencies;
     private readonly UncastableEnumerableWrapper<Type> _explicitDependenciesForOutside;
-    private readonly object _lockObject;
     
-    internal MixinContext (ClassContext classContext, Type mixinType, object lockObject)
+    public MixinContext (Type mixinType, IEnumerable<Type> explicitDependencies)
     {
-      ArgumentUtility.CheckNotNull ("classContext", classContext);
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull ("lockObject", lockObject);
+      ArgumentUtility.CheckNotNull ("explicitDependencies", explicitDependencies);
 
-      _classContext = classContext;
       MixinType = mixinType;
-      _explicitDependencies = new Set<Type> ();
+      _explicitDependencies = new Set<Type> (explicitDependencies);
       _explicitDependenciesForOutside = new UncastableEnumerableWrapper<Type> (_explicitDependencies);
-      _lockObject = lockObject;
     }
 
     internal void SerializeIntoFlatStructure (string key, SerializationInfo info)
@@ -59,14 +55,11 @@ namespace Rubicon.Mixins.Context
       ArgumentUtility.CheckNotNull ("key", key);
       ArgumentUtility.CheckNotNull ("info", info);
 
-      lock (_lockObject)
-      {
-        ReflectionObjectSerializer.SerializeType (MixinType, key + ".MixinType", info);
-        info.AddValue (key + ".ExplicitDependencyCount", ExplicitDependencyCount);
-        IEnumerator<Type> dependencyEnumerator = ExplicitDependencies.GetEnumerator();
-        for (int i = 0; dependencyEnumerator.MoveNext(); ++i)
-          ReflectionObjectSerializer.SerializeType (dependencyEnumerator.Current, key + ".ExplicitDependencies[" + i + "]", info);
-      }
+      ReflectionObjectSerializer.SerializeType (MixinType, key + ".MixinType", info);
+      info.AddValue (key + ".ExplicitDependencyCount", ExplicitDependencyCount);
+      IEnumerator<Type> dependencyEnumerator = ExplicitDependencies.GetEnumerator();
+      for (int i = 0; dependencyEnumerator.MoveNext(); ++i)
+        ReflectionObjectSerializer.SerializeType (dependencyEnumerator.Current, key + ".ExplicitDependencies[" + i + "]", info);
     }
 
     /// <summary>
@@ -83,17 +76,13 @@ namespace Rubicon.Mixins.Context
       if (other == null)
         return false;
       
-      lock (_lockObject)
-      lock (other._lockObject)
-      {
-        if (!other.MixinType.Equals (this.MixinType) || other.ExplicitDependencyCount != this.ExplicitDependencyCount)
-          return false;
+      if (!other.MixinType.Equals (MixinType) || other.ExplicitDependencyCount != this.ExplicitDependencyCount)
+        return false;
 
-        foreach (Type explicitDependency in ExplicitDependencies)
-          if (!other.ContainsExplicitDependency (explicitDependency))
-            return false;
-        return true;
-      }
+      foreach (Type explicitDependency in ExplicitDependencies)
+        if (!other.ContainsExplicitDependency (explicitDependency))
+          return false;
+      return true;
     }
 
     /// <summary>
@@ -104,35 +93,18 @@ namespace Rubicon.Mixins.Context
     /// </returns>
     public override int GetHashCode ()
     {
-      lock (_lockObject)
-      {
-        return MixinType.GetHashCode() ^ EqualityUtility.GetRotatedHashCode (ExplicitDependencies);
-      }
+      return MixinType.GetHashCode() ^ EqualityUtility.GetRotatedHashCode (ExplicitDependencies);
     }
 
     /// <summary>
-    /// Adds a copy of this <see cref="MixinContext"/> to another <see cref="TargetClassContext"/>.
+    /// Creates a copy of this <see cref="MixinContext"/>.
     /// </summary>
-    /// <param name="targetForClone">The target <see cref="TargetClassContext"/> to add the new <see cref="MixinContext"/> to.</param>
-    /// <returns>The newly created context added to the target <see cref="TargetClassContext"/> and holding equivalent configuration data to
-    /// this <see cref="MixinContext"/>.</returns>
-    public MixinContext CloneAndAddTo (ClassContext targetForClone)
+    /// <returns>The newly created context holding equivalent configuration data to this <see cref="MixinContext"/>.</returns>
+    public MixinContext Clone ()
     {
-      ArgumentUtility.CheckNotNull ("targetForClone", targetForClone);
-      MixinContext clone = targetForClone.AddMixin (MixinType);
-      foreach (Type dependency in ExplicitDependencies)
-        clone.AddExplicitDependency (dependency);
+      MixinContext clone = new MixinContext (MixinType, ExplicitDependencies);
       Assertion.DebugAssert (clone.Equals (this));
       return clone;
-    }
-
-    /// <summary>
-    /// Gets the class context this mixin was defined for.
-    /// </summary>
-    /// <value>The class context.</value>
-    public ClassContext TargetClassContext
-    {
-      get { return _classContext; }
     }
 
     /// <summary>
@@ -143,11 +115,9 @@ namespace Rubicon.Mixins.Context
     /// mixin's class declaration. This can be used to define the ordering of mixins in specific mixin configurations.</remarks>
     public int ExplicitDependencyCount
     {
-      get {
-        lock (_lockObject)
-        {
-          return _explicitDependencies.Count;
-        }
+      get
+      {
+        return _explicitDependencies.Count;
       }
     }
 
@@ -161,10 +131,7 @@ namespace Rubicon.Mixins.Context
     {
       get
       {
-        lock (_lockObject)
-        {
-          return _explicitDependenciesForOutside;
-        }
+        return _explicitDependenciesForOutside;
       }
     }
 
@@ -181,47 +148,7 @@ namespace Rubicon.Mixins.Context
     public bool ContainsExplicitDependency (Type interfaceType)
     {
       ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
-      lock (_lockObject)
-      {
-        return _explicitDependencies.Contains (interfaceType);
-      }
-    }
-
-    /// <summary>
-    /// Adds the given type as an explicit dependency unless it has already been added to this <see cref="MixinContext"/>.
-    /// </summary>
-    /// <param name="mixinOrInterfaceType">Mixin type or interface type for the explicit dependency to add.</param>
-    /// <remarks>An explicit dependency is a base call dependency which should be considered for a mixin even though it is not expressed in the
-    /// mixin's class declaration. This can be used to define the ordering of mixins that override the same target class methods.</remarks>
-    /// <exception cref="ArgumentNullException">The <paramref name="mixinOrInterfaceType"/> parameter is <see langword="null"/>.</exception>
-    /// <exception cref="InvalidOperationException">The associated <see cref="TargetClassContext"/> is frozen.</exception>
-    public void AddExplicitDependency (Type mixinOrInterfaceType)
-    {
-      ArgumentUtility.CheckNotNull ("mixinOrInterfaceType", mixinOrInterfaceType);
-      lock (_lockObject)
-      {
-        _classContext.EnsureNotFrozen ();
-        _explicitDependencies.Add (mixinOrInterfaceType);
-      }
-    }
-
-    /// <summary>
-    /// Removes the given type from the set of explicit dependencies of this <see cref="MixinContext"/>.
-    /// </summary>
-    /// <param name="mixinOrInterfaceType">Mixin type or interface type of the dependency to remove.</param>
-    /// <returns>True if the dependency was successfully removed; false if the type wasn't added as a dependency.</returns>
-    /// <remarks>An explicit dependency is a base call dependency which should be considered for a mixin even though it is not expressed in the
-    /// mixin's class declaration. This can be used to define the ordering of mixins that override the same target class methods.</remarks>
-    /// <exception cref="ArgumentNullException">The <paramref name="mixinOrInterfaceType"/> parameter is <see langword="null"/>.</exception>
-    /// <exception cref="InvalidOperationException">The associated <see cref="TargetClassContext"/> is frozen.</exception>
-    public bool RemoveExplicitDependency (Type mixinOrInterfaceType)
-    {
-      ArgumentUtility.CheckNotNull ("mixinOrInterfaceType", mixinOrInterfaceType);
-      lock (_lockObject)
-      {
-        _classContext.EnsureNotFrozen ();
-        return _explicitDependencies.Remove (mixinOrInterfaceType);
-      }
+      return _explicitDependencies.Contains (interfaceType);
     }
   }
 }

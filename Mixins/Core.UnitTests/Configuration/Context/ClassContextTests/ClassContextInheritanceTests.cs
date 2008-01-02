@@ -91,7 +91,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     public void GetOrAddMixin ()
     {
       ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixin (typeof (DateTime)).AddExplicitDependency (typeof (int));
+      baseContext.AddMixinContext (new MixinContext (typeof (DateTime), new Type[] {typeof (int)}));
 
       ClassContext inheritor = new ClassContext (typeof (double));
       inheritor.InheritFrom (baseContext);
@@ -103,10 +103,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     public void ExistingMixin_OverridesInherited ()
     {
       ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixin (typeof (DateTime)).AddExplicitDependency (typeof (int));
+      baseContext.AddMixinContext (new MixinContext (typeof (DateTime), new Type[] {typeof (int)}));
 
       ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.AddMixin (typeof (DateTime)).AddExplicitDependency (typeof (decimal));
+      inheritor.AddMixinContext (new MixinContext (typeof (DateTime), new Type[] {typeof (decimal)}));
       
       inheritor.InheritFrom (baseContext); // ignores inherited DateTime because DateTime already exists
 
@@ -120,10 +120,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     public void DerivedMixin_OverridesInherited ()
     {
       ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixin (typeof (NullTarget)).AddExplicitDependency (typeof (int));
+      baseContext.AddMixinContext (new MixinContext (typeof (NullTarget), new Type[] {typeof (int)}));
 
       ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.AddMixin (typeof (DerivedNullTarget)).AddExplicitDependency (typeof (decimal));
+      inheritor.AddMixinContext (new MixinContext (typeof (DerivedNullTarget), new Type[] {typeof (decimal)}));
 
       inheritor.InheritFrom (baseContext); // ignores inherited NullTarget because DerivedNullTarget already exists
 
@@ -138,10 +138,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     public void SpecializedGenericMixin_OverridesInherited ()
     {
       ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixin (typeof (GenericMixinWithVirtualMethod<>)).AddExplicitDependency (typeof (int));
+      baseContext.AddMixinContext (new MixinContext (typeof (GenericMixinWithVirtualMethod<>), new Type[] {typeof (int)}));
 
       ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.AddMixin (typeof (GenericMixinWithVirtualMethod<object>)).AddExplicitDependency (typeof (decimal));
+      inheritor.AddMixinContext (new MixinContext (typeof (GenericMixinWithVirtualMethod<object>), new Type[] {typeof (decimal)}));
 
       inheritor.InheritFrom (baseContext);
 
@@ -160,10 +160,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     public void SpecializedDerivedGenericMixin_OverridesInherited ()
     {
       ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixin (typeof (GenericMixinWithVirtualMethod<>)).AddExplicitDependency (typeof (int));
+      baseContext.AddMixinContext (new MixinContext (typeof (GenericMixinWithVirtualMethod<>), new Type[] {typeof (int)}));
 
       ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.AddMixin (typeof (DerivedGenericMixin<object>)).AddExplicitDependency (typeof (decimal));
+      inheritor.AddMixinContext (new MixinContext (typeof (DerivedGenericMixin<object>), new Type[] {typeof (decimal)}));
 
       inheritor.InheritFrom (baseContext);
 
@@ -184,10 +184,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     public void InheritedDerivedMixin_Throws ()
     {
       ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixin (typeof (DerivedNullTarget)).AddExplicitDependency (typeof (int));
+      baseContext.AddMixinContext (new MixinContext (typeof (DerivedNullTarget), new Type[] {typeof (int)}));
 
       ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.AddMixin (typeof (NullTarget)).AddExplicitDependency (typeof (decimal));
+      inheritor.AddMixinContext (new MixinContext (typeof (NullTarget), new Type[] {typeof (decimal)}));
 
       inheritor.InheritFrom (baseContext);
     }
@@ -197,10 +197,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     public void InheritedSpecializedDerivedGenericMixin_Throws ()
     {
       ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixin (typeof (DerivedGenericMixin<object>)).AddExplicitDependency (typeof (int));
+      baseContext.AddMixinContext (new MixinContext (typeof (DerivedGenericMixin<object>), new Type[] {typeof (int)}));
 
       ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.AddMixin (typeof (GenericMixinWithVirtualMethod<>)).AddExplicitDependency (typeof (decimal));
+      inheritor.AddMixinContext (new MixinContext (typeof (GenericMixinWithVirtualMethod<>), new Type[] {typeof (decimal)}));
 
       inheritor.InheritFrom (baseContext);
     }
@@ -212,10 +212,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     public void InheritedUnspecializedDerivedGenericMixin_Throws ()
     {
       ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixin (typeof (DerivedGenericMixin<>)).AddExplicitDependency (typeof (int));
+      baseContext.AddMixinContext (new MixinContext (typeof (DerivedGenericMixin<>), new Type[] {typeof (int)}));
 
       ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.AddMixin (typeof (GenericMixinWithVirtualMethod<>)).AddExplicitDependency (typeof (decimal));
+      inheritor.AddMixinContext (new MixinContext (typeof (GenericMixinWithVirtualMethod<>), new Type[] {typeof (decimal)}));
 
       inheritor.InheritFrom (baseContext);
     }

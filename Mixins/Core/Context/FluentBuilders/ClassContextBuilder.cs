@@ -447,10 +447,9 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <summary>
     /// Builds a class context with the data collected so far for the <see cref="TargetType"/>.
     /// </summary>
-    /// <param name="mixinConfiguration">The mixin configuration to build the class context with.</param>
     /// <param name="inheritedContexts">A collection of <see cref="ClassContext"/> instances the newly built context should inherit mixin data from.</param>
     /// <returns>A <see cref="ClassContext"/> for the <see cref="TargetType"/> holding all mixin configuration data collected so far.</returns>
-    public virtual ClassContext BuildClassContext (MixinConfiguration mixinConfiguration, IEnumerable<ClassContext> inheritedContexts)
+    public virtual ClassContext BuildClassContext (IEnumerable<ClassContext> inheritedContexts)
     {
       ClassContext classContext = new ClassContext (_targetType);
 
@@ -458,15 +457,16 @@ namespace Rubicon.Mixins.Context.FluentBuilders
       ApplyCompleteInterfaces(classContext);
       ApplyInheritance(classContext, inheritedContexts);
       ApplySuppressedMixins(classContext);
-
-      mixinConfiguration.AddOrReplaceClassContext (classContext);
       return classContext;
     }
 
     private void ApplyMixins (ClassContext classContext)
     {
       foreach (MixinContextBuilder mixinContextBuilder in MixinContextBuilders)
-        mixinContextBuilder.BuildMixinContext (classContext);
+      {
+        MixinContext mixinContext = mixinContextBuilder.BuildMixinContext();
+        classContext.AddMixinContext (mixinContext);
+      }
     }
 
     private void ApplyCompleteInterfaces (ClassContext classContext)

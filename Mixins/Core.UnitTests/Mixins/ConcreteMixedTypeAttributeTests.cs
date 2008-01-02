@@ -59,10 +59,10 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void FromClassContextComplex ()
     {
-      ClassContext context = new ClassContext (typeof (int), typeof (string), typeof (double));
+      ClassContext context = new ClassContext (typeof (int));
       context.AddCompleteInterface (typeof (uint));
-      context.GetOrAddMixinContext (typeof (string)).AddExplicitDependency (typeof (bool));
-      context.GetOrAddMixinContext (typeof (double)).AddExplicitDependency (typeof (int));
+      context.AddMixinContext (new MixinContext (typeof (string), new Type[] {typeof (bool)}));
+      context.AddMixinContext (new MixinContext (typeof (double), new Type[] {typeof (int)}));
 
       ConcreteMixedTypeAttribute attribute = ConcreteMixedTypeAttribute.FromClassContext (context);
 
@@ -96,9 +96,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void GetClassContextComplex ()
     {
-      ClassContext context = new ClassContext (typeof (int), typeof (string), typeof (double));
+      ClassContext context = new ClassContext (typeof (int), typeof (double));
       context.AddCompleteInterface (typeof (uint));
-      context.GetOrAddMixinContext (typeof (string)).AddExplicitDependency (typeof (bool));
+      context.AddMixinContext (new MixinContext (typeof (string), new Type[] {typeof (bool)}));
 
       ConcreteMixedTypeAttribute attribute = ConcreteMixedTypeAttribute.FromClassContext (context);
       ClassContext regeneratedContext = attribute.GetClassContext ();

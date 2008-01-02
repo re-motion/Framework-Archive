@@ -171,7 +171,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       cc7.AddMixin (typeof (BT1Mixin1));
 
       ClassContext cc8 = cc7.Clone ();
-      cc8.GetOrAddMixinContext (typeof (BT1Mixin1)).AddExplicitDependency (typeof (IBaseType2));
+      cc8.RemoveMixin (typeof (BT1Mixin1));
+      cc8.AddMixinContext (new MixinContext (typeof (BT1Mixin1), new Type[] {typeof (IBaseType2)}));
 
       Assert.AreEqual (cc7, cc7);
       Assert.AreEqual (cc7, cc7.Clone ());
@@ -182,9 +183,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     public void ClassContextIsSerializable ()
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
-      cc.AddMixin (typeof (BT1Mixin1));
       cc.AddCompleteInterface (typeof (IBT5MixinC1));
-      cc.GetOrAddMixinContext (typeof (BT1Mixin1)).AddExplicitDependency (typeof (IBaseType2));
+      cc.AddMixinContext (new MixinContext (typeof (BT1Mixin1), new Type[] {typeof (IBaseType2)}));
 
       ClassContext cc2 = Serializer.SerializeAndDeserialize (cc);
       Assert.AreNotSame (cc2, cc);
@@ -253,33 +253,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "is frozen", MatchType = MessageMatch.Contains)]
-    public void ThrowsOnAddExplicitDependencyWhenFrozen ()
-    {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      MixinContext mc = cc.GetOrAddMixinContext (typeof (BT1Mixin1));
-      cc.Freeze ();
-      Assert.IsTrue (cc.IsFrozen);
-      mc.AddExplicitDependency (typeof (IBaseType2));
-    }
-
-    [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "is frozen", MatchType = MessageMatch.Contains)]
-    public void ThrowsOnRemoveExplicitDependencyWhenFrozen ()
-    {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      MixinContext mc = cc.GetOrAddMixinContext (typeof (BT1Mixin1));
-      mc.AddExplicitDependency (typeof (IBaseType2));
-      cc.Freeze ();
-      Assert.IsTrue (cc.IsFrozen);
-      mc.RemoveExplicitDependency (typeof (IBaseType2));
-    }
-
-    [Test]
     public void NonchangingMethodsAndFreezeCanBeExecutedWhenFrozen ()
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
-      cc.GetOrAddMixinContext (typeof (BT1Mixin2)).AddExplicitDependency (typeof (IBaseType2));
+      cc.AddMixinContext (new MixinContext (typeof (BT1Mixin2), new Type[] {typeof (IBaseType2)}));
       int hc = cc.GetHashCode ();
 
       cc.Freeze ();
@@ -302,7 +279,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     public void FrozenContextCanBeClonedUnfrozen ()
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
-      cc.GetOrAddMixinContext (typeof (BT1Mixin1)).AddExplicitDependency (typeof (IBaseType2));
+      cc.AddMixinContext (new MixinContext (typeof (BT1Mixin1), new Type[] {typeof (IBaseType2)}));
       cc.AddMixin (typeof (BT1Mixin2));
       cc.AddCompleteInterface (typeof (IBT5MixinC1));
       cc.AddCompleteInterface (typeof (IBT5MixinC2));
@@ -370,16 +347,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       Assert.IsFalse (cc2.ContainsMixin (typeof (BT2Mixin1)));
       Assert.IsTrue (cc2.ContainsMixin (typeof (BT3Mixin1)));
 
-      Assert.IsFalse (cc2.GetOrAddMixinContext (typeof (BT1Mixin1)).ContainsExplicitDependency (typeof (IBaseType2)));
-      Assert.IsFalse (cc.GetOrAddMixinContext (typeof (BT1Mixin1)).ContainsExplicitDependency (typeof (IBaseType2)));
-
-      cc2.GetOrAddMixinContext (typeof (BT1Mixin1)).AddExplicitDependency (typeof (IBaseType2));
-
-      Assert.IsTrue (cc2.GetOrAddMixinContext (typeof (BT1Mixin1)).ContainsExplicitDependency (typeof (IBaseType2)));
-      Assert.IsFalse (cc.GetOrAddMixinContext (typeof (BT1Mixin1)).ContainsExplicitDependency (typeof (IBaseType2)));
-
-      Assert.IsFalse (cc.ContainsMixin (typeof (BT3Mixin1)));
-
       cc2.RemoveCompleteInterface (typeof (IBT5MixinC2));
       cc2.RemoveCompleteInterface (typeof (IBT5MixinC1));
       cc2.AddCompleteInterface (typeof (IBT5MixinC1));
@@ -393,23 +360,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     }
 
     [Test]
-    public void CloneAndAddMixinContextTo ()
-    {
-      ClassContext one = new ClassContext (typeof (BaseType1));
-      one.AddMixin (typeof (BT1Mixin1)).AddExplicitDependency (typeof (IBaseType2));
-
-      ClassContext two = new ClassContext(typeof (BaseType2));
-      Assert.IsFalse (two.ContainsMixin (typeof (BT1Mixin1)));
-      one.GetOrAddMixinContext (typeof (BT1Mixin1)).CloneAndAddTo (two);
-      Assert.IsTrue (two.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (two.GetOrAddMixinContext (typeof (BT1Mixin1)).ContainsExplicitDependency (typeof (IBaseType2)));
-    }
-
-    [Test]
     public void SpecializeWithTypeArguments ()
     {
       ClassContext original = new ClassContext (typeof (List<>));
-      original.AddMixin (typeof (BT1Mixin1)).AddExplicitDependency (typeof (IBaseType2));
+      original.AddMixinContext (new MixinContext (typeof (BT1Mixin1), new Type[] {typeof (IBaseType2)}));
 
       ClassContext specialized = original.SpecializeWithTypeArguments (new Type[] { typeof (int) });
       Assert.IsNotNull (specialized);

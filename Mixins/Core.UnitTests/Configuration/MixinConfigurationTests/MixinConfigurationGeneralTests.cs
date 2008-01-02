@@ -109,11 +109,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     public void CopyTo ()
     {
       MixinConfiguration parent = new MixinConfiguration();
-      parent.GetOrAddClassContext (typeof (BaseType2)).GetOrAddMixinContext (typeof (BT2Mixin1)).AddExplicitDependency (typeof (IBaseType33));
+      parent.GetOrAddClassContext (typeof (BaseType2)).AddMixinContext (new MixinContext (typeof (BT2Mixin1), new Type[] {typeof (IBaseType33)}));
       parent.RegisterInterface (typeof (IBaseType2), typeof (BaseType2));
 
       MixinConfiguration source = new MixinConfiguration (parent);
-      source.GetOrAddClassContext (typeof (BaseType1)).GetOrAddMixinContext (typeof (BT1Mixin1)).AddExplicitDependency (typeof (IBaseType34));
+      source.GetOrAddClassContext (typeof (BaseType1)).AddMixinContext (new MixinContext (typeof (BT1Mixin1), new Type[] {typeof (IBaseType34)}));
       source.GetOrAddClassContext (typeof (BaseType1)).AddCompleteInterface (typeof (IBaseType33));
 
       Assert.IsTrue (source.ContainsClassContext (typeof (BaseType2)));

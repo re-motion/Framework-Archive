@@ -62,10 +62,10 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void FromClassContextComplex ()
     {
-      ClassContext context = new ClassContext (typeof (int), typeof (string), typeof (double));
+      ClassContext context = new ClassContext (typeof (int));
       context.AddCompleteInterface (typeof (uint));
-      context.GetOrAddMixinContext (typeof (string)).AddExplicitDependency (typeof (bool));
-      context.GetOrAddMixinContext (typeof (double)).AddExplicitDependency (typeof (int));
+      context.AddMixinContext (new MixinContext (typeof (string), new Type[] {typeof (bool)}));
+      context.AddMixinContext (new MixinContext (typeof (double), new Type[] {typeof (int)}));
 
       ConcreteMixinTypeAttribute attribute = ConcreteMixinTypeAttribute.FromClassContext (5, context);
 
