@@ -194,7 +194,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     string returningToken = postBackCollection[WxePageInfo.ReturningTokenID];
     if (! StringUtility.IsNullOrEmpty (returningToken))
     {
-      WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
+      WxeFunctionStateManager functionStates = WxeFunctionStateManager.Current;
       WxeFunctionState functionState = functionStates.GetItem (returningToken);
       if (functionState != null)
       {
@@ -780,7 +780,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     {
       bool isRootFunction = _returningFunctionState.Function == _returningFunctionState.Function.RootFunction;
       if (isRootFunction)
-        WxeFunctionStateCollection.Instance.Abort (_returningFunctionState);
+        WxeFunctionStateManager.Current.Abort (_returningFunctionState);
     }
 
     if (_executeNextStep)

@@ -101,6 +101,7 @@
   <ItemGroup>
     <Compile Include="Compilation\ResourceExpressionBuilder.cs" />
     <Compile Include="ExecutionEngine\IWxePage.cs" />
+    <Compile Include="ExecutionEngine\WxeFunctionStateManager.cs" />
     <Compile Include="ExecutionEngine\WxeNonRecoverableTransactionException.cs" />
     <Compile Include="ExecutionEngine\WxeVariableReference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

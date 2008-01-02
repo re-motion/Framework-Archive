@@ -5,7 +5,8 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Collections
 {
-  public class Hashtable<TKey, TValue>: System.Collections.Generic.Dictionary<TKey, TValue>
+  [Serializable]
+  public class Hashtable<TKey, TValue> : System.Collections.Generic.Dictionary<TKey, TValue>
     where TValue: class
   {
   }

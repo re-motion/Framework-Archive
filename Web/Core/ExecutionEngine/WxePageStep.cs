@@ -317,7 +317,7 @@ public class WxePageStep: WxeStep
   {
     bool enableCleanUp = ! returnFromExecute;
     WxeFunctionState functionState = new WxeFunctionState (function, enableCleanUp);
-    WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
+    WxeFunctionStateManager functionStates = WxeFunctionStateManager.Current;
     functionStates.Add (functionState);
     return functionState.FunctionToken;
   }
