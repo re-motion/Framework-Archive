@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
@@ -37,6 +38,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       _nameDefinition = ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(orderClass, "Name", "Name", typeof (string), 100);
       _nameProperty = new PropertyValue (_nameDefinition, "Arthur Dent");
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The ClassDefinition 'Rubicon.Data.DomainObjects.Mapping."
+        + "ReflectionBasedClassDefinition: Order' of the ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not part of the current"
+        + " mapping.\r\nParameter name: id")]
+    public void ClassDefinitionNotInMapping ()
+    {
+      ObjectID id = DomainObjectIDs.Order1;
+      MappingConfiguration.SetCurrent (null);
+      Assert.AreNotSame (MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Order)), id.ClassDefinition);
+      DataContainer.CreateNew (id);
     }
 
     [Test]

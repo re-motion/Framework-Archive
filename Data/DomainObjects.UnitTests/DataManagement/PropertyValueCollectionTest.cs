@@ -91,26 +91,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void PreviousEventCancels ()
-    {
-      PropertyValue value = CreatePropertyValue ("PropertyName", typeof (int), 42);
-      PropertyValueEventReceiver valueEventReceiver = new PropertyValueEventReceiver (value, true);
-
-      _collection.Add (value);
-
-      try
-      {
-        value.Value = 45;
-        Assert.Fail ("EventReceiverCancelException should be raised.");
-      }
-      catch (EventReceiverCancelException)
-      {
-        Assert.AreEqual (42, value.Value, "Value");
-        Assert.AreEqual (false, valueEventReceiver.HasChangedEventBeenCalled, "HasChangedEventBeenCalled");
-      }
-    }
-
-    [Test]
     public void PropertyValueInTwoCollections ()
     {
       PropertyValue value = CreatePropertyValue ("PropertyName", typeof (int), 42);

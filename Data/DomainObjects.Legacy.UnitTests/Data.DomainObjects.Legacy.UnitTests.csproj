@@ -91,7 +91,6 @@
     <Compile Include="EventReceiver\PropertyChangeState.cs" />
     <Compile Include="EventReceiver\PropertyDefinitionCollectionEventReceiver.cs" />
     <Compile Include="EventReceiver\PropertyValueContainerEventReceiver.cs" />
-    <Compile Include="EventReceiver\PropertyValueEventReceiver.cs" />
     <Compile Include="EventReceiver\RelationChangeState.cs" />
     <Compile Include="EventReceiver\SequenceEventReceiver.cs" />
     <Compile Include="Factories\DomainObjectIDs.cs" />

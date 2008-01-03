@@ -8,6 +8,7 @@ using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Mixins.Context;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -181,140 +182,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #3");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after change #3");
       Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched after change #3");
-    }
-
-    [Test]
-    public void Events ()
-    {
-      PropertyValue propertyValue = CreateIntPropertyValue ("test", 5);
-      PropertyValueEventReceiver eventReceiver = new PropertyValueEventReceiver (propertyValue, false);
-
-      Assert.AreEqual (5, propertyValue.Value, "Value");
-      Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue");
-      Assert.IsFalse (propertyValue.HasChanged, "HasChanged");
-      Assert.IsFalse (propertyValue.HasBeenTouched, "HasBeenTouched");
-      Assert.IsFalse (eventReceiver.HasChangingEventBeenCalled, "Changing event has been called.");
-      Assert.IsFalse (eventReceiver.HasChangedEventBeenCalled, "Changed event has been called.");
-
-      propertyValue.Value = 5;
-
-      Assert.AreEqual (5, propertyValue.Value, "Value");
-      Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue");
-      Assert.IsFalse (propertyValue.HasChanged, "HasChanged");
-      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched");
-      Assert.IsFalse (eventReceiver.HasChangingEventBeenCalled, "Changing event has been called.");
-      Assert.IsFalse (eventReceiver.HasChangedEventBeenCalled, "Changed event has been called.");
-
-      eventReceiver = new PropertyValueEventReceiver (propertyValue, false);
-
-      propertyValue.Value = 10;
-
-      Assert.AreEqual (10, propertyValue.Value, "Value");
-      Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue");
-      Assert.IsTrue (propertyValue.HasChanged, "HasChanged");
-      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched");
-      Assert.IsTrue (eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
-      Assert.IsTrue (eventReceiver.HasChangedEventBeenCalled, "Changed event has not been called.");
-      Assert.AreEqual (5, eventReceiver.OldValue);
-      Assert.AreEqual (10, eventReceiver.NewValue);
-    }
-
-    [Test]
-    public void EventsWithNullValue ()
-    {
-      PropertyValue propertyValue = CreateStringPropertyValue ("test", null);
-      PropertyValueEventReceiver eventReceiver = new PropertyValueEventReceiver (propertyValue, false);
-
-      Assert.IsNull (propertyValue.Value, "Value");
-      Assert.IsNull (propertyValue.OriginalValue, "OriginalValue");
-      Assert.IsFalse (propertyValue.HasChanged, "HasChanged");
-      Assert.IsFalse (propertyValue.HasBeenTouched, "HasBeenTouched");
-      Assert.IsFalse (eventReceiver.HasChangingEventBeenCalled, "Changing event has been called.");
-      Assert.IsFalse (eventReceiver.HasChangedEventBeenCalled, "Changed event has been called.");
-
-      propertyValue.Value = null;
-
-      Assert.IsNull (propertyValue.Value, "Value");
-      Assert.IsNull (propertyValue.OriginalValue, "OriginalValue");
-      Assert.IsFalse (propertyValue.HasChanged, "HasChanged");
-      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched");
-      Assert.IsFalse (eventReceiver.HasChangingEventBeenCalled, "Changing event has been called.");
-      Assert.IsFalse (eventReceiver.HasChangedEventBeenCalled, "Changed event has been called.");
-
-      eventReceiver = new PropertyValueEventReceiver (propertyValue, false);
-
-      propertyValue.Value = "Test string";
-
-      Assert.AreEqual ("Test string", propertyValue.Value, "Value");
-      Assert.IsNull (propertyValue.OriginalValue, "OriginalValue");
-      Assert.IsTrue (propertyValue.HasChanged, "HasChanged");
-      Assert.IsTrue (propertyValue.HasBeenTouched, "HasBeenTouched");
-      Assert.IsTrue (eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
-      Assert.IsTrue (eventReceiver.HasChangedEventBeenCalled, "Changed event has not been called.");
-      Assert.IsNull (eventReceiver.OldValue);
-      Assert.AreEqual ("Test string", eventReceiver.NewValue);
-    }
-
-    [Test]
-    public void CancelEvents ()
-    {
-      PropertyValue propertyValue = CreateIntPropertyValue ("test", 5);
-      PropertyValueEventReceiver eventReceiver = new PropertyValueEventReceiver (propertyValue, true);
-
-      Assert.AreEqual (5, propertyValue.Value, "Value");
-      Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue");
-      Assert.IsFalse (propertyValue.HasChanged, "HasChanged");
-      Assert.IsFalse (propertyValue.HasBeenTouched, "HasBeenTouched");
-      Assert.IsFalse (eventReceiver.HasChangingEventBeenCalled, "Changing event must not be called.");
-      Assert.IsFalse (eventReceiver.HasChangedEventBeenCalled, "Changed event must not be called.");
-
-      try
-      {
-        propertyValue.Value = 10;
-        Assert.Fail ("EventReceiverCancelException should be raised.");
-      }
-      catch (EventReceiverCancelException)
-      {
-        Assert.AreEqual (5, propertyValue.Value, "Value");
-        Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue");
-        Assert.IsFalse (propertyValue.HasChanged, "HasChanged");
-        Assert.IsFalse (propertyValue.HasBeenTouched, "HasBeenTouched");
-        Assert.IsTrue (eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
-        Assert.IsFalse (eventReceiver.HasChangedEventBeenCalled, "Changed event must not be called.");
-        Assert.AreEqual (5, eventReceiver.OldValue);
-        Assert.AreEqual (10, eventReceiver.NewValue);
-      }
-    }
-
-    [Test]
-    public void CancelEventsWithNullValue ()
-    {
-      PropertyValue propertyValue = CreateStringPropertyValue ("test", null);
-      PropertyValueEventReceiver eventReceiver = new PropertyValueEventReceiver (propertyValue, true);
-
-      Assert.IsNull (propertyValue.Value, "Value");
-      Assert.IsNull (propertyValue.OriginalValue, "OriginalValue");
-      Assert.IsFalse (propertyValue.HasChanged, "HasChanged");
-      Assert.IsFalse (propertyValue.HasBeenTouched, "HasBeenTouched");
-      Assert.IsFalse (eventReceiver.HasChangingEventBeenCalled, "Changing event must not be called.");
-      Assert.IsFalse (eventReceiver.HasChangedEventBeenCalled, "Changed event must not be called.");
-
-      try
-      {
-        propertyValue.Value = "Test string";
-        Assert.Fail ("EventReceiverCancelException was expected");
-      }
-      catch (EventReceiverCancelException)
-      {
-        Assert.IsNull (propertyValue.Value, "Value");
-        Assert.IsNull (propertyValue.OriginalValue, "OriginalValue");
-        Assert.IsFalse (propertyValue.HasChanged, "HasChanged");
-        Assert.IsFalse (propertyValue.HasBeenTouched, "HasBeenTouched");
-        Assert.IsTrue (eventReceiver.HasChangingEventBeenCalled, "Changing event has not been called.");
-        Assert.IsFalse (eventReceiver.HasChangedEventBeenCalled, "Changed event must not be called.");
-        Assert.IsNull (eventReceiver.OldValue);
-        Assert.AreEqual ("Test string", eventReceiver.NewValue);
-      }
     }
 
     [Test]
@@ -655,6 +522,127 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsFalse (propertyValue2.HasBeenTouched);
     }
 
+    [Test]
+    public void GetData_RestoreData_NonDiscarded ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 0);
+      propertyValue.Value = 17;
+
+      Assert.AreEqual (0, propertyValue.OriginalValue);
+      Assert.AreEqual (17, propertyValue.Value);
+      Assert.IsTrue (propertyValue.HasBeenTouched);
+      Assert.IsFalse (propertyValue.IsDiscarded);
+
+      object[] data = propertyValue.GetData();
+
+      PropertyValue restoredValue = new PropertyValue (definition, 1);
+
+      Assert.AreNotEqual (0, restoredValue.OriginalValue);
+      Assert.AreNotEqual (17, restoredValue.Value);
+      Assert.IsFalse (restoredValue.HasBeenTouched);
+      Assert.IsFalse (restoredValue.IsDiscarded);
+
+      restoredValue.RestoreData (data);
+
+      Assert.AreEqual (0, restoredValue.OriginalValue);
+      Assert.AreEqual (17, restoredValue.Value);
+      Assert.IsTrue (restoredValue.HasBeenTouched);
+      Assert.IsFalse (restoredValue.IsDiscarded);
+    }
+
+    [Test]
+    public void GetData_RestoreData_Discarded ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 0);
+      PrivateInvoke.InvokeNonPublicMethod (propertyValue, "Discard");
+
+      Assert.IsTrue (propertyValue.IsDiscarded);
+
+      object[] data = propertyValue.GetData ();
+
+      PropertyValue restoredValue = new PropertyValue (definition, 1);
+
+      Assert.IsFalse (restoredValue.IsDiscarded);
+
+      restoredValue.RestoreData (data);
+
+      Assert.IsTrue (restoredValue.IsDiscarded);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Parameter name: data", MatchType = MessageMatch.Contains)]
+    public void RestoreData_InvalidDataLength ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 0);
+      propertyValue.RestoreData (new object[2]);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage = "Parameter name: data[0]", MatchType = MessageMatch.Contains)]
+    public void RestoreData_InvalidDataItem0_Type_Discarded ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 0);
+      propertyValue.RestoreData (new object[] { "foo" });
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Parameter name: data[0]", MatchType = MessageMatch.Contains)]
+    public void RestoreData_InvalidDataItem0_Value_Discarded ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 0);
+      propertyValue.RestoreData (new object[] { false });
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage = "Parameter name: data[0]", MatchType = MessageMatch.Contains)]
+    public void RestoreData_InvalidDataItem0_Type_NotDiscarded ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 0);
+      propertyValue.RestoreData (new object[] { "foo", 0, 0, true });
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Parameter name: data[0]", MatchType = MessageMatch.Contains)]
+    public void RestoreData_InvalidDataItem0_Value_NotDiscarded ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 0);
+      propertyValue.RestoreData (new object[] { true, 0, 0, true });
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage = "Parameter name: data[1]", MatchType = MessageMatch.Contains)]
+    public void RestoreData_InvalidDataItem1_Type_NotDiscarded ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 0);
+      propertyValue.RestoreData (new object[] { false, "foo", 1, true });
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage = "Parameter name: data[2]", MatchType = MessageMatch.Contains)]
+    public void RestoreData_InvalidDataItem2_Type_NotDiscarded ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 0);
+      propertyValue.RestoreData (new object[] { false, 1, "foo", true });
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage = "Parameter name: data[3]", MatchType = MessageMatch.Contains)]
+    public void RestoreData_InvalidDataItem3_Type_NotDiscarded ()
+    {
+      PropertyDefinition definition = CreatePropertyDefinition ("testProperty2", typeof (int), null);
+      PropertyValue propertyValue = new PropertyValue (definition, 0);
+      propertyValue.RestoreData (new object[] { false, 1, 1, "foo" });
+    }
+    
     private PropertyValue CreateIntPropertyValue (string name, int intValue)
     {
       return CreatePropertyValue (name, typeof (int), null, intValue);

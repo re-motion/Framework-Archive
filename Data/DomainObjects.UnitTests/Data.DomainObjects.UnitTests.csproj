@@ -307,7 +307,10 @@
     <Compile Include="Persistence\Rdbms\QueryCommandBuilderTest.cs" />
     <Compile Include="DataManagement\RelationEndPointModificationCollectionTest.cs" />
     <Compile Include="RhinoMocksRepositoryAdapter.cs" />
+    <Compile Include="Serialization\DataContainerTest.cs" />
+    <Compile Include="Serialization\ObjectIDTest.cs" />
     <Compile Include="TestDomain\ClassDerivedFromSimpleDomainObject.cs" />
+    <Compile Include="TestDomain\ClassWithoutProperties.cs" />
     <Compile Include="TestDomain\ClassWithSerializationCallbacks.cs" />
     <Compile Include="Serialization\SerializationCallbackTest.cs" />
     <Compile Include="StandardMappingTest.cs" />
@@ -550,9 +553,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EventReceiver\PropertyValueContainerEventReceiver.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="EventReceiver\PropertyValueEventReceiver.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EventReceiver\RelationChangeState.cs">
@@ -938,7 +938,6 @@
     <Compile Include="EventReceiver\DataContainerMockEventReceiver.cs" />
     <Compile Include="EventReceiver\DomainObjectMockEventReceiver.cs" />
     <Compile Include="EventReceiver\PropertyValueCollectionMockEventReceiver.cs" />
-    <Compile Include="EventReceiver\PropertyValueMockEventReceiver.cs" />
     <Compile Include="Transaction\ClientTransactionScopeTest.cs" />
     <Compile Include="Transaction\CompoundClientTransactionListenerTest.cs" />
     <Compile Include="Transaction\ClientTransactionStateTransitionBaseTest.cs" />

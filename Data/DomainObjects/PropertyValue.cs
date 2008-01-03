@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
@@ -23,19 +24,10 @@ public class PropertyValue
 
   // member fields
 
-  /// <summary>
-  /// Occurs before the <see cref="Value"/> of the <see cref="PropertyValue"/> is changed.
-  /// </summary>
-  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
-  public event ValueChangeEventHandler Changing;
-  /// <summary>
-  /// Occurs after the <see cref="Value"/> of the <see cref="PropertyValue"/> is changed.
-  /// </summary>
-  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
-  public event ValueChangeEventHandler Changed;
-
   private readonly PropertyDefinition _definition;
   private readonly ArrayList _accessObservers;
+  
+  // actual property data
   private object _value;
   private object _originalValue;
   private bool _hasBeenTouched;
@@ -81,6 +73,44 @@ public class PropertyValue
   }
 
   // methods and properties
+
+  public object[] GetData ()
+  {
+    if (_isDiscarded)
+      return new object[] { true };
+    else
+      return new object[] { _isDiscarded, _value, _originalValue, _hasBeenTouched };
+  }
+
+  public void RestoreData (object[] data)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("data", data);
+
+    switch (data.Length)
+    {
+      case 1:
+        if (ArgumentUtility.CheckType<bool> ("data[0]", data[0]) != true)
+          throw CreateInvalidDataException ("data[0]");
+        _isDiscarded = true;
+        break;
+      case 4:
+        if (ArgumentUtility.CheckType<bool> ("data[0]", data[0]) != false)
+          throw CreateInvalidDataException ("data[0]");
+
+        _isDiscarded = false;
+        _value = ArgumentUtility.CheckType ("data[1]", data[1], PropertyType);
+        _originalValue = ArgumentUtility.CheckType ("data[2]", data[2], PropertyType);
+        _hasBeenTouched = ArgumentUtility.CheckNotNullAndType<bool> ("data[3]", data[3]);
+        break;
+      default:
+        throw CreateInvalidDataException ("data");
+    }
+  }
+
+  private Exception CreateInvalidDataException (string argumentName)
+  {
+    return new ArgumentException ("Invalid data specified, expected an object array as returned by GetData.", argumentName);
+  }
 
   /// <summary>
   /// Gets the <see cref="PropertyDefinition"/> of the <see cref="PropertyValue"/>.
@@ -293,26 +323,6 @@ public class PropertyValue
     get { return _isDiscarded; }
   }
 
-  /// <summary>
-  /// Raises the <see cref="Changing"/> event.
-  /// </summary>
-  /// <param name="args">A <see cref="ValueChangeEventArgs"/> object that contains the event data.</param>
-  protected virtual void OnChanging (ValueChangeEventArgs args)
-  {
-    if (Changing != null)
-      Changing (this, args);
-  }
-
-  /// <summary>
-  /// Raises the <see cref="Changed"/> event.
-  /// </summary>
-  /// <param name="args">A <see cref="EventArgs"/> object that contains the event data.</param>
-  protected virtual void OnChanged (ValueChangeEventArgs args)
-  {
-    if (Changed != null)
-      Changed (this, args);
-  }
-
   internal object GetFieldValue (ValueAccess valueAccess)
   {
     if (valueAccess == ValueAccess.Current)
@@ -427,14 +437,11 @@ public class PropertyValue
     // Therefore notification of PropertyValueCollection when changing property values is not organized through events.
     foreach (PropertyValueCollection accessObserver in _accessObservers)
       accessObserver.PropertyValueChanging (this, changingArgs);
-
-    OnChanging (changingArgs);
   }
 
   private void EndValueSet (object oldValue)
   {
     ValueChangeEventArgs changedArgs = new ValueChangeEventArgs (oldValue, _value);
-    OnChanged (changedArgs);
 
     // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
     // Therefore notification of PropertyValueCollection when changing property values is not organized through events.

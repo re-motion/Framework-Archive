@@ -4,11 +4,6 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects
 {
   /// <summary>
-  /// Represents the method that will handle the <see cref="PropertyValue.Changing"/> event of the <see cref="PropertyValue"/> class.
-  /// </summary>
-  public delegate void ValueChangeEventHandler (object sender, ValueChangeEventArgs args);
-
-  /// <summary>
   /// Represents the method that will handle a <b>PropertyChanging</b> event.
   /// </summary>
   public delegate void PropertyChangeEventHandler (object sender, PropertyChangeEventArgs args);
@@ -34,7 +29,7 @@ namespace Rubicon.Data.DomainObjects
   public delegate void SubTransactionCreatedEventHandler (object sender, SubTransactionCreatedEventArgs args);
 
   /// <summary>
-  /// Provides data for a <see cref="PropertyValue.Changing"/> event of the <see cref="PropertyValue"/> class.
+  /// Provides data for change events of <see cref="PropertyValue"/> instances.
   /// </summary>
   [Serializable]
   public class ValueChangeEventArgs : EventArgs

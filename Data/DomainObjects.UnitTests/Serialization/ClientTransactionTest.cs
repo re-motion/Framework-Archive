@@ -1,9 +1,11 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
 
@@ -58,16 +60,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       Assert.AreEqual (collection.Count, deserializedCollection.Count);
     }
 
-    [Test]
-    public void DataContainerTest ()
-    {
-      ObjectID objectID = new ObjectID ("Customer", Guid.NewGuid ());
-      DataContainer dataContainer = DataContainer.CreateNew (objectID);
-
-      DataContainer deserializedDataContainer = (DataContainer) SerializeAndDeserialize (dataContainer);
-
-      Assert.AreEqual (dataContainer.ID, deserializedDataContainer.ID);
-    }
+    
 
     [Test]
     public void DomainObjectTest ()
@@ -89,7 +82,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [Ignore ("TODO: Fix this bug")]
     public void DomainObject_DeserializationCallbackAttributesTest ()
     {
       Customer domainObject = Customer.GetObject (DomainObjectIDs.Customer1);

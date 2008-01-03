@@ -20,13 +20,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     private DataContainer _orderDataContainer;
     private PropertyValueCollection _orderPropertyValues;
     private PropertyValue _orderDeliveryDateProperty;
-    private PropertyValue _orderCustomerProperty;
 
     private DomainObjectEventReceiver _orderDomainObjectEventReceiver;
     private PropertyValueContainerEventReceiver _orderDataContainerEventReceiver;
     private PropertyValueContainerEventReceiver _orderPropertyValuesEventReceiver;
-    private PropertyValueEventReceiver _orderDeliveryDatePropertyEventReceiver;
-    private PropertyValueEventReceiver _orderCustomerPropertyEventReceiver;
 
     public override void TestFixtureSetUp()
     {
@@ -770,11 +767,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       Order newOrder = Order.NewObject();
 
       InitializeEventReceivers (newOrder);
-      CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
+      CheckNoEvents ();
 
       newOrder.DeliveryDate = DateTime.Now;
 
-      CheckEvents (_orderDeliveryDatePropertyEventReceiver, _orderDeliveryDateProperty);
+      CheckEvents (_orderDeliveryDateProperty);
     }
 
     [Test]
@@ -783,11 +780,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       Order newOrder = Order.NewObject();
 
       InitializeEventReceivers (newOrder);
-      CheckNoEvents (_orderCustomerPropertyEventReceiver);
+      CheckNoEvents ();
 
       newOrder.Customer = null;
 
-      CheckNoEvents (_orderCustomerPropertyEventReceiver);
+      CheckNoEvents ();
     }
 
     [Test]
@@ -796,11 +793,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       Order order2 = Order.GetObject (DomainObjectIDs.Order2);
 
       InitializeEventReceivers (order2);
-      CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
+      CheckNoEvents ();
 
       order2.DeliveryDate = DateTime.Now;
 
-      CheckEvents (_orderDeliveryDatePropertyEventReceiver, _orderDeliveryDateProperty);
+      CheckEvents (_orderDeliveryDateProperty);
     }
 
     [Test]
@@ -809,11 +806,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       Order order2 = Order.GetObject (DomainObjectIDs.Order2);
 
       InitializeEventReceivers (order2);
-      CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
+      CheckNoEvents ();
 
       order2.Customer = null;
 
-      CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
+      CheckNoEvents ();
     }
 
     [Test]
@@ -847,20 +844,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 			_orderDataContainer = order.InternalDataContainer;
       _orderPropertyValues = _orderDataContainer.PropertyValues;
       _orderDeliveryDateProperty = _orderPropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.DeliveryDate"];
-      _orderCustomerProperty = _orderPropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"];
 
       _orderDomainObjectEventReceiver = new DomainObjectEventReceiver (order);
       _orderDataContainerEventReceiver = new PropertyValueContainerEventReceiver (_orderDataContainer, false);
       _orderPropertyValuesEventReceiver = new PropertyValueContainerEventReceiver (_orderPropertyValues, false);
-
-      _orderDeliveryDatePropertyEventReceiver = new PropertyValueEventReceiver (_orderDeliveryDateProperty);
-      _orderCustomerPropertyEventReceiver = new PropertyValueEventReceiver (_orderCustomerProperty);
     }
 
-    private void CheckNoEvents (PropertyValueEventReceiver propertyValueEventReceiver)
+    private void CheckNoEvents ()
     {
-      Assert.IsFalse (propertyValueEventReceiver.HasChangingEventBeenCalled);
-      Assert.IsFalse (propertyValueEventReceiver.HasChangedEventBeenCalled);
       Assert.IsNull (_orderPropertyValuesEventReceiver.ChangingPropertyValue);
       Assert.IsNull (_orderPropertyValuesEventReceiver.ChangedPropertyValue);
       Assert.IsNull (_orderDataContainerEventReceiver.ChangingPropertyValue);
@@ -871,10 +862,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       Assert.IsNull (_orderDomainObjectEventReceiver.ChangedPropertyValue);
     }
 
-    private void CheckEvents (PropertyValueEventReceiver propertyValueEventReceiver, PropertyValue propertyValue)
+    private void CheckEvents (PropertyValue propertyValue)
     {
-      Assert.IsTrue (propertyValueEventReceiver.HasChangingEventBeenCalled);
-      Assert.IsTrue (propertyValueEventReceiver.HasChangedEventBeenCalled);
       Assert.AreSame (propertyValue, _orderPropertyValuesEventReceiver.ChangingPropertyValue);
       Assert.AreSame (propertyValue, _orderPropertyValuesEventReceiver.ChangedPropertyValue);
       Assert.AreSame (propertyValue, _orderDataContainerEventReceiver.ChangingPropertyValue);

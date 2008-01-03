@@ -716,10 +716,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
           _mockRepository.CreateMock<DataContainerMockEventReceiver> (order1DC);
       PropertyValueCollectionMockEventReceiver propertyValueCollectionMockEventReceiver =
           _mockRepository.CreateMock<PropertyValueCollectionMockEventReceiver> (order1DC.PropertyValues);
-      PropertyValueMockEventReceiver propertyValueMockEventReceiver =
-          _mockRepository.CreateMock<PropertyValueMockEventReceiver> (
-              order1DC.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
-
+      
       using (_mockRepository.Ordered ())
       {
         // "Changing" notifications
@@ -738,14 +735,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         propertyValueCollectionMockEventReceiver.PropertyChanging (null, null);
         LastCall.IgnoreArguments ();
 
-        propertyValueMockEventReceiver.Changing (null, null);
-        LastCall.IgnoreArguments ();
-
 
         // "Changed" notifications
 
-        propertyValueMockEventReceiver.Changed (null, null);
-        LastCall.IgnoreArguments ();
 
         propertyValueCollectionMockEventReceiver.PropertyChanged (null, null);
         LastCall.IgnoreArguments ();

@@ -377,23 +377,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void NoPropertyValueEventForRelationChange ()
-    {
-      PropertyValueEventReceiver oldOrderTicketPropertyEventReceiver = new PropertyValueEventReceiver (
-          _oldOrderTicket.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
-
-      PropertyValueEventReceiver newOrderTicketPropertyEventReceiver = new PropertyValueEventReceiver (
-          _newOrderTicket.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
-
-      _order.OrderTicket = _newOrderTicket;
-
-      Assert.IsFalse (oldOrderTicketPropertyEventReceiver.HasChangingEventBeenCalled);
-      Assert.IsFalse (oldOrderTicketPropertyEventReceiver.HasChangedEventBeenCalled);
-      Assert.IsFalse (newOrderTicketPropertyEventReceiver.HasChangingEventBeenCalled);
-      Assert.IsFalse (newOrderTicketPropertyEventReceiver.HasChangedEventBeenCalled);
-    }
-
-    [Test]
     public void ChangeRelationBackToOriginalValue ()
     {
       _order.OrderTicket = _newOrderTicket;
