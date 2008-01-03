@@ -145,11 +145,13 @@ namespace Rubicon.Utilities
                + @"Dog d = ArgumentUtility.CheckType<Dog> (""animal"", animal);" )]
     public static object CheckType (string argumentName, object actualValue, Type expectedType)
     {
-      if (expectedType.IsValueType)
-        throw new NotSupportedException ("Cannot use ArgumentUtility.CheckType for value types. Use CheckNotNullAndType instead.");
-
       if (actualValue == null)
-        return null;
+      {
+        if (expectedType.IsValueType && Nullable.GetUnderlyingType (expectedType) == null)
+          throw new ArgumentTypeException (argumentName, expectedType, null);
+        else
+          return null;
+      }
 
       if (!expectedType.IsInstanceOfType (actualValue))
         throw new ArgumentTypeException (argumentName, expectedType, actualValue.GetType ());
@@ -367,10 +369,11 @@ namespace Rubicon.Utilities
 
     private static string FormatMessage (string argumentName, Type expectedType, Type actualType)
     {
+      string actualTypeName = actualType != null ? actualType.ToString() : "<null>";
       if (expectedType == null)
-        return string.Format ("Argument {0} has unexpected type {1}", argumentName, actualType);
+        return string.Format ("Argument {0} has unexpected type {1}", argumentName, actualTypeName);
       else
-        return string.Format ("Argument {0} has type {2} when type {1} was expected.", argumentName, expectedType, actualType);
+        return string.Format ("Argument {0} has type {2} when type {1} was expected.", argumentName, expectedType, actualTypeName);
     }
   }
 

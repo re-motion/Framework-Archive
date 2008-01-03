@@ -16,22 +16,41 @@ namespace Rubicon.Core.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
-		public void Fail_ValueType ()
+		public void Succeed_ValueType ()
+    {
+      Assert.AreEqual (1, ArgumentUtility.CheckType ("arg", (object) 1, typeof (int)));
+    }
+
+    [Test]
+    public void Succeed_NullableValueTypeNull ()
+    {
+      Assert.AreEqual (null, ArgumentUtility.CheckType ("arg", (object) null, typeof (int?)));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException))]
+    public void Fail_ValueTypeNull ()
     {
       ArgumentUtility.CheckType ("arg", (object) null, typeof (int));
     }
 
     [Test]
+    [ExpectedException (typeof (ArgumentTypeException))]
+    public void Fail_ValueType ()
+    {
+      ArgumentUtility.CheckType ("arg", (object) DateTime.MinValue, typeof (int));
+    }
+
+    [Test]
 		public void Succeed_ReferenceTypeNull ()
     {
-      ArgumentUtility.CheckType ("arg", (object) null, typeof (string));
+      Assert.AreEqual (null, ArgumentUtility.CheckType ("arg", (object) null, typeof (string)));
     }
 
     [Test]
 		public void Succeed_NotNull ()
     {
-      ArgumentUtility.CheckType ("arg", "test", typeof (string));
+      Assert.AreEqual ("test", ArgumentUtility.CheckType ("arg", "test", typeof (string)));
     }
 	}
 }
