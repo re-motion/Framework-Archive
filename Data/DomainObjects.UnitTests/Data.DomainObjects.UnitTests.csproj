@@ -308,6 +308,8 @@
     <Compile Include="DataManagement\RelationEndPointModificationCollectionTest.cs" />
     <Compile Include="RhinoMocksRepositoryAdapter.cs" />
     <Compile Include="Serialization\DataContainerTest.cs" />
+    <Compile Include="Serialization\DomainObjectSerializationInfoTest.cs" />
+    <Compile Include="Serialization\FlattenedSerializableStub.cs" />
     <Compile Include="Serialization\ObjectIDTest.cs" />
     <Compile Include="TestDomain\ClassDerivedFromSimpleDomainObject.cs" />
     <Compile Include="TestDomain\ClassWithoutProperties.cs" />

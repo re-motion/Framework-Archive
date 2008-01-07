@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Utilities;
@@ -607,6 +608,70 @@ namespace Rubicon.Data.DomainObjects
     }
 
     #region Serialization
+
+    /*
+    public static DataContainer FlattenedDeserialize (DomainObjectSerializationInfo info)
+    {
+      ObjectID id = info.GetValueForHandle<ObjectID> ();
+      object timestamp = info.GetValue<object> ();
+      bool isDiscarded = info.GetValue<bool>();
+      PropertyValueCollection propertyValues = new PropertyValueCollection();
+
+      DataContainer dataContainer = new DataContainer (id, timestamp, propertyValues);
+      InitializePropertyValues (dataContainer);
+
+      if (!isDiscarded)
+        RestorePropertyValuesFromData (info, dataContainer._propertyValues);
+
+      dataContainer.PropertyChanging += info.GetValue<PropertyChangeEventHandler>();
+      dataContainer.PropertyChanged += info.GetValue<PropertyChangeEventHandler>();
+      dataContainer._clientTransaction = info.GetValueForHandle<ClientTransaction> ();
+      dataContainer._state = info.GetValue<DataContainerStateType> ();
+      dataContainer._domainObject = info.GetValueForHandle<DomainObject> ();
+      dataContainer._hasBeenMarkedChanged = info.GetValue<bool> ();
+
+      return dataContainer;
+    }
+
+    private static void RestorePropertyValuesFromData (DomainObjectSerializationInfo info, PropertyValueCollection propertyValues)
+    {
+      // TODO: wrap exceptions
+      int numberOfProperties = propertyValues.Count;
+      for (int i = 0; i < numberOfProperties; ++i)
+      {
+        string propertyName = info.GetValue<string>();
+        object[] data = info.GetValue<object[]>();
+        propertyValues[propertyName].RestoreData (data);
+      }
+    }
+
+    public void FlattenedSerialize (DomainObjectSerializationInfo info)
+    {
+      _id.FlattenedSerialize (info);
+      info.AddValue (_timestamp);
+      info.AddValue (_isDiscarded);
+      if (!_isDiscarded)
+      {
+        foreach (PropertyValue propertyValue in _propertyValues)
+        {
+          info.AddValue (propertyValue.Name);
+          info.AddValue (propertyValue.GetData());
+        }
+      }
+
+      info.AddValue (PropertyChanging);
+      info.AddValue (PropertyChanged);
+      info.AddValue (info.GetHandle (_clientTransaction));
+      info.AddValue (_state);
+      info.AddValue (info.GetHandle (_domainObject));
+      info.AddValue (_hasBeenMarkedChanged);
+    }
+
+    private IEnumerable<object[]> GetPropertyValueData ()
+    {
+      foreach (PropertyValue propertyValue in _propertyValues)
+        yield return new object[] {propertyValue.Name, propertyValue.GetData() };
+    }*/
 
     private DataContainer (SerializationInfo info, StreamingContext context)
     {
