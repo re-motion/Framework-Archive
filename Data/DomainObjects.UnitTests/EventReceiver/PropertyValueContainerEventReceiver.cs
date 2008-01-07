@@ -12,7 +12,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
     // member fields
 
     private bool _cancel;
+    [NonSerialized]
     private PropertyValue _changingPropertyValue;
+    [NonSerialized]
     private PropertyValue _changedPropertyValue;
     private object _changingOldValue;
     private object _changingNewValue;

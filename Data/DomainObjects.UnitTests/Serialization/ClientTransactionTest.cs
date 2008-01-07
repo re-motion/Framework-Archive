@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using NUnit.Framework;
 using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.DataManagement;
@@ -28,22 +29,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "not marked as serializable", MatchType = MessageMatch.Contains)]
     public void PropertyValueTest ()
     {
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions["Customer"];
       PropertyDefinition propertyDefinition = classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.CustomerSince"];
       PropertyValue value = new PropertyValue (propertyDefinition);
 
-      PropertyValue deserializedValue = (PropertyValue) SerializeAndDeserialize (value);
-
-      Assert.AreEqual (value.Name, deserializedValue.Name);
-      Assert.AreEqual (value.OriginalValue, deserializedValue.OriginalValue);
-      Assert.AreEqual (value.Value, deserializedValue.Value);
-      Assert.AreEqual (value.Definition, deserializedValue.Definition);
-      Assert.AreEqual (propertyDefinition, deserializedValue.Definition);
+      SerializeAndDeserialize (value);
     }
 
     [Test]
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "not marked as serializable", MatchType = MessageMatch.Contains)]
     public void PropertyValueCollection ()
     {
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions["Customer"];
@@ -54,10 +51,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       collection.Add (value);
 
-      PropertyValueCollection deserializedCollection = (PropertyValueCollection) SerializeAndDeserialize (collection);
-
-      Assert.IsNotNull (deserializedCollection);
-      Assert.AreEqual (collection.Count, deserializedCollection.Count);
+      SerializeAndDeserialize (collection);
     }
 
     

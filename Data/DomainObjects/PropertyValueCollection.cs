@@ -8,7 +8,6 @@ namespace Rubicon.Data.DomainObjects
 /// <summary>
 /// A typed collection for <see cref="PropertyValue"/> objects.
 /// </summary>
-[Serializable]
 public class PropertyValueCollection : CommonCollection
 {
   // types

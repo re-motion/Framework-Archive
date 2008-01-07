@@ -10,7 +10,6 @@ namespace Rubicon.Data.DomainObjects
 /// <summary>
 /// Represents a property of a domain object that is persisted by the framework.
 /// </summary>
-[Serializable]
 public class PropertyValue
 {
   // types
@@ -74,6 +73,11 @@ public class PropertyValue
 
   // methods and properties
 
+  /// <summary>
+  /// Returns an array of objects representing the current state of this object. This state can later be restored via <see cref="RestoreData"/>.
+  /// </summary>
+  /// <returns>A representation of the current state of this object that can be restored at a later point of time.</returns>
+  /// <remarks>The data returned by this method can be used for efficient serialization of this object.</remarks>
   public object[] GetData ()
   {
     if (_isDiscarded)
@@ -82,6 +86,12 @@ public class PropertyValue
       return new object[] { _isDiscarded, _value, _originalValue, _hasBeenTouched };
   }
 
+  /// <summary>
+  /// Restores this object to the state saved previously via <see cref="GetData"/>.
+  /// </summary>
+  /// <param name="data">The data objects returned by <see cref="GetData"/>.</param>
+  /// <remarks>This method can be used for efficient deserialization of this object. Note however that the owner of this
+  /// object is responsible for instantiating the object with the appropriate mapping references before filling it with data.</remarks>
   public void RestoreData (object[] data)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("data", data);
