@@ -115,7 +115,7 @@ namespace Rubicon.Data.DomainObjects.DataManagement
 
     public override bool HasChanged
     {
-      get { return !DomainObjectCollection.Compare (_oppositeDomainObjects, _originalOppositeDomainObjects, true); }
+      get { return ClientTransaction.HasCollectionEndPointChanged (this); }
     }
 
     public override bool HasBeenTouched

@@ -340,5 +340,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
           parentEndPoint.TakeOverCommittedData (endPoint);
       }
     }
+
+    protected internal override bool HasCollectionEndPointChanged (CollectionEndPoint endPoint)
+    {
+      return !DomainObjectCollection.Compare (endPoint.OppositeDomainObjects, endPoint.OriginalOppositeDomainObjects, false);
+    }
   }
 }

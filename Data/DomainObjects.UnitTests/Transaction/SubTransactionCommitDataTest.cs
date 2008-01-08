@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -166,6 +167,39 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.IsTrue (order.OrderItems.ContainsObject (newOrderItem));
       Assert.IsNotNull (order.OrderTicket);
       Assert.AreSame (newOrderTicket, order.OrderTicket);
+    }
+
+    [Test]
+    public void CommittedRelatedObjectCollectionOrder ()
+    {
+      Order order = Order.NewObject ();
+      Official official = Official.GetObject (DomainObjectIDs.Official1);
+      order.Official = official;
+      order.Customer = Customer.GetObject (DomainObjectIDs.Customer1);
+
+      OrderItem orderItem1 = OrderItem.NewObject ();
+      OrderItem orderItem2 = OrderItem.NewObject ();
+      OrderItem orderItem3 = OrderItem.NewObject ();
+      order.OrderItems.Add (orderItem1);
+      order.OrderItems.Add (orderItem2);
+      order.OrderItems.Add (orderItem3);
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
+      {
+        Assert.That (order.OrderItems, Is.EqualTo (new object[] {orderItem1, orderItem2, orderItem3}));
+        order.OrderItems.Clear ();
+        order.OrderItems.Add (orderItem2);
+        order.OrderItems.Add (orderItem3);
+        order.OrderItems.Add (orderItem1);
+        Assert.That (order.OrderItems, Is.EqualTo (new object[] { orderItem2, orderItem3, orderItem1 }));
+        ClientTransaction.Current.Commit();
+        Assert.That (order.OrderItems, Is.EqualTo (new object[] { orderItem2, orderItem3, orderItem1 }));
+      }
+      Assert.That (order.OrderItems, Is.EqualTo (new object[] { orderItem2, orderItem3, orderItem1 }));
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
+      {
+        Assert.That (order.OrderItems, Is.EqualTo (new object[] {orderItem2, orderItem3, orderItem1}));
+      }
     }
 
     [Test]

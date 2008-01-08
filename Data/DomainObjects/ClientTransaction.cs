@@ -272,7 +272,7 @@ public abstract class ClientTransaction : ITransaction
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
   ///   An error occurred while accessing the datasource.
   /// </exception>
-  internal protected abstract DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID);
+  protected internal abstract DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID);
 
   /// <summary>
   /// Loads all related <see cref="DomainObject"/>s of a given <see cref="DataManagement.RelationEndPointID"/>. 
@@ -285,7 +285,22 @@ public abstract class ClientTransaction : ITransaction
   ///   <paramref name="relationEndPointID"/> does not refer to one-to-many relation.<br /> -or- <br />
   ///   The StorageProvider for the related objects could not be initialized.
   /// </exception>
-  internal protected abstract DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID);  
+  protected internal abstract DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID);
+
+  /// <summary>
+  /// Determines whether a specific collection end point has changed with the semantics defined by this transaction.
+  /// </summary>
+  /// <param name="endPoint">The end point to check for changes.</param>
+  /// <returns>
+  /// True if the collection end point has changed; otherwise, false.
+  /// </returns>
+  /// <remarks>
+  /// Implementations will usually just compare the <see cref="CollectionEndPoint.OppositeDomainObjects"/> collection with the
+  /// <see cref="CollectionEndPoint.OriginalOppositeDomainObjects"/> collection to check for changes. However, implementations can choose whether
+  /// to ignore ordering or not for such a check. Ignoring ordering means a collection end point will not be committed if only the ordering of
+  /// its opposite objects has changed.
+  /// </remarks>
+  protected internal abstract bool HasCollectionEndPointChanged (CollectionEndPoint endPoint);
 
   /// <summary>
   /// Gets the <see cref="IQueryManager"/> of the <b>ClientTransaction</b>.
@@ -305,7 +320,7 @@ public abstract class ClientTransaction : ITransaction
   public bool IsReadOnly
   {
     get { return _isReadOnly; }
-    internal protected set { _isReadOnly = value; }
+    protected internal set { _isReadOnly = value; }
   }
 
   /// <summary>
@@ -861,7 +876,7 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="domainObject">The <see cref="DomainObject"/> to evaluate. Must not be <see langword="null"/>.</param>
   /// <returns><see langword="true"/> if any relations have changed; otherwise, <see langword="false"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
-  internal protected virtual bool HasRelationChanged (DomainObject domainObject)
+  protected internal virtual bool HasRelationChanged (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
@@ -875,7 +890,7 @@ public abstract class ClientTransaction : ITransaction
   /// <returns>The <see cref="DomainObject"/> that is the current related object.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
-  internal protected virtual DomainObject GetRelatedObject (RelationEndPointID relationEndPointID)
+  protected internal virtual DomainObject GetRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
@@ -898,7 +913,7 @@ public abstract class ClientTransaction : ITransaction
   /// <returns>The <see cref="DomainObject"/> that is the original related object.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
-  internal protected virtual DomainObject GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
+  protected internal virtual DomainObject GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     using (EnterNonDiscardingScope ())
@@ -920,7 +935,7 @@ public abstract class ClientTransaction : ITransaction
   /// <returns>A <see cref="DomainObjectCollection"/> containing the current related objects.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to a <see cref="DataManagement.CollectionEndPoint"/></exception>
-  internal protected virtual DomainObjectCollection GetRelatedObjects (RelationEndPointID relationEndPointID)
+  protected internal virtual DomainObjectCollection GetRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     using (EnterNonDiscardingScope ())
@@ -942,7 +957,7 @@ public abstract class ClientTransaction : ITransaction
   /// <returns>A <see cref="DomainObjectCollection"/> containing the original related objects.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to a <see cref="DataManagement.CollectionEndPoint"/></exception>
-  internal protected virtual DomainObjectCollection GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
+  protected internal virtual DomainObjectCollection GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     using (EnterNonDiscardingScope ())
@@ -971,7 +986,7 @@ public abstract class ClientTransaction : ITransaction
   /// <exception cref="DataManagement.ClientTransactionsDifferException">
   ///   <paramref name="newRelatedObject"/> does belongs to a different <b>ClientTransaction</b>.
   /// </exception>
-  internal protected virtual void SetRelatedObject (RelationEndPointID relationEndPointID, DomainObject newRelatedObject)
+  protected internal virtual void SetRelatedObject (RelationEndPointID relationEndPointID, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     using (EnterNonDiscardingScope ())
@@ -1011,7 +1026,7 @@ public abstract class ClientTransaction : ITransaction
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
   ///   An error occurred while accessing the datasource.
   /// </exception>
-  internal protected virtual DomainObject LoadObject (ObjectID id)
+  protected internal virtual DomainObject LoadObject (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
     using (EnterNonDiscardingScope ())
@@ -1039,7 +1054,7 @@ public abstract class ClientTransaction : ITransaction
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
   ///   An error occurred while accessing the datasource.
   /// </exception>
-  internal protected virtual DataContainer LoadExistingObject (DomainObject domainObject)
+  protected internal virtual DataContainer LoadExistingObject (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
     using (EnterNonDiscardingScope ())

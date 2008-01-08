@@ -154,7 +154,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       }
     }
 
-    internal protected override DataContainer LoadDataContainerForExistingObject (DomainObject domainObject)
+    protected internal override DataContainer LoadDataContainerForExistingObject (DomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
       using (EnterNonDiscardingScope ())
@@ -166,7 +166,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       }
     }
 
-    internal protected override DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)
+    protected internal override DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)
     {
       ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
       using (EnterNonDiscardingScope())
@@ -196,7 +196,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       }
     }
 
-    internal protected override DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID)
+    protected internal override DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID)
     {
       ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
       using (EnterNonDiscardingScope())
@@ -207,6 +207,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
           return MergeLoadedDomainObjects (relatedDataContainers, relationEndPointID);
         }
       }
+    }
+
+    protected internal override bool HasCollectionEndPointChanged (CollectionEndPoint endPoint)
+    {
+      return !DomainObjectCollection.Compare (endPoint.OppositeDomainObjects, endPoint.OriginalOppositeDomainObjects, true);
     }
   }
 }
