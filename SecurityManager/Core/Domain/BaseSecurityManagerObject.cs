@@ -7,7 +7,7 @@ namespace Rubicon.SecurityManager.Domain
   [Serializable]
   public abstract class BaseSecurityManagerObject : BindableDomainObject
   {
-    public static new BaseSecurityManagerObject GetObject (ObjectID id)
+    public static BaseSecurityManagerObject GetObject (ObjectID id)
     {
       return DomainObject.GetObject<BaseSecurityManagerObject> (id);
     }

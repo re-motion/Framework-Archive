@@ -39,7 +39,7 @@ namespace Rubicon.Web.ExecutionEngine
 
     /// <summary>Creates a new root transaction. </summary>
     /// <returns>A new root instance of type <typeparamref name="TTransaction"/>.</returns>
-    /// <remarks>This method is called via <see cref="WxeTransactionBase{TTransaction}"/> when a new root <see cref="TTransaction"/> is needed.</remarks>
+    /// <remarks>This method is called via <see cref="WxeTransactionBase{TTransaction}"/> when a new root <typeparamref name="TTransaction"/> is needed.</remarks>
     protected internal abstract TTransaction CreateRootTransaction ();
 
     /// <summary> Gets the underlying <typeparamref name="TTransaction"/> owned by this <see cref="WxeTransactedFunctionBase{TTransaction}"/>.</summary>

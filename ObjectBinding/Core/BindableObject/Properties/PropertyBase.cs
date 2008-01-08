@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using Rubicon.ObjectBinding;
 using Rubicon.Security;
 using Rubicon.Utilities;
 
@@ -75,8 +76,8 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     /// <summary> Gets the type of the property. </summary>
     /// <remarks> 
     ///   <para>
-    ///     This is the type of elements returned by the <see cref="IBusinessObject.GetProperty"/> method
-    ///     and set via the <see cref="IBusinessObject.SetProperty"/> method.
+    ///     This is the type of elements returned by the <see cref="IBusinessObject.GetProperty(IBusinessObjectProperty)"/> method
+    ///     and set via the <see cref="IBusinessObject.SetProperty(IBusinessObjectProperty,object)"/> method.
     ///   </para><para>
     ///     If <see cref="IsList"/> is <see langword="true"/>, the property type must implement the <see cref="IList"/> 
     ///     interface, and the items contained in this list must have a type of <see cref="ListInfo"/>.<see cref="IListInfo.ItemType"/>.
