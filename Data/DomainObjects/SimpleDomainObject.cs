@@ -5,23 +5,24 @@ using System.Runtime.Serialization;
 namespace Rubicon.Data.DomainObjects
 {
   /// <summary>
-  /// Represents a <see cref="DomainObject"/> that can be instantiated (via <see cref="NewObject{T}"/>), retrieved (via
-  /// <see cref="GetObject{T}(ObjectID)"/>), and deleted via public methods.
+  /// Represents a <see cref="DomainObject"/> that can be instantiated (via <see cref="NewObject"/>), retrieved (via
+  /// <see cref="GetObject(ObjectID)"/>), and deleted via public methods.
   /// </summary>
+  /// <typeparam name="TDomainObject">The type derived from <see cref="SimpleDomainObject{TDomainObject}"/>.</typeparam>
   /// <remarks>
-  /// The only difference between this class and <see cref="DomainObject"/> is that <see cref="SimpleDomainObject"/> has public
+  /// The only difference between this class and <see cref="DomainObject"/> is that <see cref="SimpleDomainObject{TDomainObject}"/> has public
   /// methods for instantiation, retrieval, and deletion, whereas these methods are protected on <see cref="DomainObject"/>. Derive
-  /// from <see cref="DomainObject"/> if you need to hide these methods from the public; derive from <see cref="SimpleDomainObject"/>
+  /// from <see cref="DomainObject"/> if you need to hide these methods from the public; derive from <see cref="SimpleDomainObject{TDomainObject}"/>
   /// if you don't.
   /// </remarks>
   [Serializable]
-  public abstract class SimpleDomainObject : DomainObject
+  public abstract class SimpleDomainObject<TDomainObject> : DomainObject
+      where TDomainObject : SimpleDomainObject<TDomainObject>
   {
     /// <summary>
     /// Returns an invocation object creating a new instance of a concrete domain object for the current
     /// <see cref="DomainObjects.ClientTransaction"/>.
     /// </summary>
-    /// <typeparam name="T">The concrete type to be implemented by the object.</typeparam>
     /// <returns>An <see cref="IFuncInvoker{T}"/> object used to create a new domain object instance.</returns>
     /// <remarks>
     /// <para>
@@ -30,22 +31,21 @@ namespace Rubicon.Data.DomainObjects
     /// </para>
     /// </remarks>
     /// <seealso cref="DomainObject.NewObject{T}"/>
-    /// <exception cref="ArgumentException">The type <typeparamref name="T"/> cannot be extended to a proxy, for example because it is sealed
+    /// <exception cref="ArgumentException">The type <typeparamref name="TDomainObject"/> cannot be extended to a proxy, for example because it is sealed
     /// or abstract and non-instantiable.</exception>
-    /// <exception cref="MissingMethodException">The given type <typeparamref name="T"/> does not implement the required protected
+    /// <exception cref="MissingMethodException">The given type <typeparamref name="TDomainObject"/> does not implement the required protected
     /// constructor.
     /// </exception>
-    public static new IFuncInvoker<T> NewObject<T> () where T : SimpleDomainObject
+    public static IFuncInvoker<TDomainObject> NewObject ()
     {
-      return DomainObject.NewObject<T>();
+      return DomainObject.NewObject<TDomainObject>();
     }
 
     /// <summary>
-    /// Gets a <see cref="SimpleDomainObject"/> that is already loaded or attempts to load it from the datasource.
+    /// Gets a <see cref="SimpleDomainObject{TDomainObject}"/> that is already loaded or attempts to load it from the datasource.
     /// </summary>
-    /// <param name="id">The <see cref="ObjectID"/> of the <see cref="SimpleDomainObject"/> that should be loaded. Must not be 
+    /// <param name="id">The <see cref="ObjectID"/> of the <see cref="SimpleDomainObject{TDomainObject}"/> that should be loaded. Must not be 
     /// <see langword="null"/>.</param>
-    /// <typeparam name="T">The expected type of the concrete <see cref="SimpleDomainObject"/></typeparam>
     /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
     /// <remarks>
     /// <para>
@@ -61,19 +61,18 @@ namespace Rubicon.Data.DomainObjects
     ///   An error occurred while accessing the datasource.
     /// </exception>
     /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
-    /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="T"/>.</exception>
-    public static new T GetObject<T> (ObjectID id) where T : SimpleDomainObject
+    /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="TDomainObject"/>.</exception>
+    public static TDomainObject GetObject (ObjectID id)
     {
-      return DomainObject.GetObject<T> (id);
+      return DomainObject.GetObject<TDomainObject> (id);
     }
 
     /// <summary>
-    /// Gets a <see cref="SimpleDomainObject"/> that is already loaded or attempts to load it from the datasource.
+    /// Gets a <see cref="SimpleDomainObject{TDomainObject}"/> that is already loaded or attempts to load it from the datasource.
     /// </summary>
-    /// <param name="id">The <see cref="ObjectID"/> of the <see cref="SimpleDomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
-    /// <param name="includeDeleted">Indicates if the method should return <see cref="SimpleDomainObject"/>s that are already deleted.</param>
-    /// <typeparam name="T">The expected type of the concrete <see cref="SimpleDomainObject"/></typeparam>
-    /// <returns>The <see cref="SimpleDomainObject"/> with the specified <paramref name="id"/>.</returns>
+    /// <param name="id">The <see cref="ObjectID"/> of the <see cref="SimpleDomainObject{TDomainObject}"/> that should be loaded. Must not be <see langword="null"/>.</param>
+    /// <param name="includeDeleted">Indicates if the method should return <see cref="SimpleDomainObject{TDomainObject}"/>s that are already deleted.</param>
+    /// <returns>The <see cref="SimpleDomainObject{TDomainObject}"/> with the specified <paramref name="id"/>.</returns>
     /// <remarks>
     /// <para>
     /// This method is identical to <see cref="DomainObject.GetObject{T}(ObjectID,bool)"/>, but can be called from any other class, whereas
@@ -88,10 +87,10 @@ namespace Rubicon.Data.DomainObjects
     ///   An error occurred while accessing the datasource.
     /// </exception>
     /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
-    /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="T"/>.</exception>
-    public static new T GetObject<T> (ObjectID id, bool includeDeleted) where T : SimpleDomainObject
+    /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="TDomainObject"/>.</exception>
+    public static TDomainObject GetObject (ObjectID id, bool includeDeleted)
     {
-      return DomainObject.GetObject<T> (id, includeDeleted);
+      return DomainObject.GetObject<TDomainObject> (id, includeDeleted);
     }
 
     protected SimpleDomainObject ()
@@ -99,11 +98,11 @@ namespace Rubicon.Data.DomainObjects
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SimpleDomainObject"/> class in the process of deserialization.
+    /// Initializes a new instance of the <see cref="SimpleDomainObject{TDomainObject}"/> class in the process of deserialization.
     /// </summary>
     /// <param name="info">The <see cref="SerializationInfo"/> coming from the .NET serialization infrastructure.</param>
     /// <param name="context">The <see cref="StreamingContext"/> coming from the .NET serialization infrastructure.</param>
-    /// <remarks>Be sure to call this base constructor from the deserialization constructor of any concrete <see cref="SimpleDomainObject"/> type
+    /// <remarks>Be sure to call this base constructor from the deserialization constructor of any concrete <see cref="SimpleDomainObject{TDomainObject}"/> type
     /// implementing the <see cref="ISerializable"/> interface.</remarks>
     protected SimpleDomainObject (SerializationInfo info, StreamingContext context)
       : base (info, context)
@@ -111,7 +110,7 @@ namespace Rubicon.Data.DomainObjects
     }
 
     /// <summary>
-    /// Deletes the <see cref="SimpleDomainObject"/>.
+    /// Deletes the <see cref="SimpleDomainObject{TDomainObject}"/>.
     /// </summary>
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
     /// <remarks>To perform custom actions when a <see cref="DomainObject"/> is deleted <see cref="DomainObject.OnDeleting"/> and <see cref="DomainObject.OnDeleted"/> should be overridden.</remarks>

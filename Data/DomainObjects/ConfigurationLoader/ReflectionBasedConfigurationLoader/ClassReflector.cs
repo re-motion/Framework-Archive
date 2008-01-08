@@ -104,7 +104,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     //TODO: Add constructor checks
     private void ValidateType ()
     {
-      if (_type.IsGenericType)
+      if (_type.IsGenericType && !IsDomainObjectBase (_type))
         throw CreateMappingException (null, _type.GetGenericTypeDefinition(), "Generic domain objects are not supported.");
       
       if (!IsAbstract())
@@ -186,10 +186,15 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private bool IsInheritenceRoot ()
     {
-      if (_type.BaseType == typeof (DomainObject) || _type.BaseType == typeof (SimpleDomainObject))
+      if (IsDomainObjectBase (_type.BaseType))
         return true;
 
       return Attribute.IsDefined (_type, typeof (StorageGroupAttribute), false);
+    }
+
+    private bool IsDomainObjectBase (Type type)
+    {
+      return type == typeof (DomainObject) || (type.IsGenericType && type.GetGenericTypeDefinition () == typeof (SimpleDomainObject<>));
     }
 
     private ReflectionBasedClassDefinition GetBaseClassDefinition (ClassDefinitionCollection classDefinitions)

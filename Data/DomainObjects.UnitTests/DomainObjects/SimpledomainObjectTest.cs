@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void NewObject ()
     {
-      ClassDerivedFromSimpleDomainObject instance = SimpleDomainObject.NewObject<ClassDerivedFromSimpleDomainObject>().With();
+      ClassDerivedFromSimpleDomainObject instance = ClassDerivedFromSimpleDomainObject.NewObject().With();
       Assert.IsNotNull (instance);
       Assert.AreEqual (0, instance.IntProperty);
       instance.IntProperty = 5;
@@ -24,11 +24,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetObject_WithoutDeleted ()
     {
-      ClassDerivedFromSimpleDomainObject instance = SimpleDomainObject.NewObject<ClassDerivedFromSimpleDomainObject> ().With ();
+      ClassDerivedFromSimpleDomainObject instance = ClassDerivedFromSimpleDomainObject.NewObject ().With ();
       instance.IntProperty = 7;
       using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
       {
-        ClassDerivedFromSimpleDomainObject gottenInstance = SimpleDomainObject.GetObject<ClassDerivedFromSimpleDomainObject> (instance.ID);
+        ClassDerivedFromSimpleDomainObject gottenInstance = ClassDerivedFromSimpleDomainObject.GetObject (instance.ID);
         Assert.AreSame (instance, gottenInstance);
         Assert.AreEqual (7, gottenInstance.IntProperty);
       }
@@ -37,10 +37,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetObject_IncludeDeletedFalse_NonDeleted ()
     {
-      ClassDerivedFromSimpleDomainObject instance = SimpleDomainObject.NewObject<ClassDerivedFromSimpleDomainObject> ().With ();
+      ClassDerivedFromSimpleDomainObject instance = ClassDerivedFromSimpleDomainObject.NewObject ().With ();
       using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
       {
-        ClassDerivedFromSimpleDomainObject gottenInstance = SimpleDomainObject.GetObject<ClassDerivedFromSimpleDomainObject> (instance.ID, false);
+        ClassDerivedFromSimpleDomainObject gottenInstance = ClassDerivedFromSimpleDomainObject.GetObject (instance.ID, false);
         Assert.AreSame (instance, gottenInstance);
       }
     }
@@ -49,21 +49,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (ObjectDeletedException), ExpectedMessage = "Object '.*' is already deleted.", MatchType = MessageMatch.Regex)]
     public void GetObject_IncludeDeletedFalse_Deleted ()
     {
-      ClassDerivedFromSimpleDomainObject instance = SimpleDomainObject.NewObject<ClassDerivedFromSimpleDomainObject> ().With ();
+      ClassDerivedFromSimpleDomainObject instance = ClassDerivedFromSimpleDomainObject.NewObject ().With ();
       using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
       {
         instance.Delete();
-        SimpleDomainObject.GetObject<ClassDerivedFromSimpleDomainObject> (instance.ID, false);
+        ClassDerivedFromSimpleDomainObject.GetObject (instance.ID, false);
       }
     }
 
     [Test]
     public void GetObject_IncludeDeletedTrue_NonDeleted ()
     {
-      ClassDerivedFromSimpleDomainObject instance = SimpleDomainObject.NewObject<ClassDerivedFromSimpleDomainObject> ().With ();
+      ClassDerivedFromSimpleDomainObject instance = ClassDerivedFromSimpleDomainObject.NewObject ().With ();
       using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
       {
-        ClassDerivedFromSimpleDomainObject gottenInstance = SimpleDomainObject.GetObject<ClassDerivedFromSimpleDomainObject> (instance.ID, true);
+        ClassDerivedFromSimpleDomainObject gottenInstance = ClassDerivedFromSimpleDomainObject.GetObject (instance.ID, true);
         Assert.AreSame (instance, gottenInstance);
       }
     }
@@ -71,11 +71,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetObject_IncludeDeletedTrue_Deleted ()
     {
-      ClassDerivedFromSimpleDomainObject instance = SimpleDomainObject.NewObject<ClassDerivedFromSimpleDomainObject> ().With ();
+      ClassDerivedFromSimpleDomainObject instance = ClassDerivedFromSimpleDomainObject.NewObject ().With ();
       using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
       {
         instance.Delete ();
-        ClassDerivedFromSimpleDomainObject gottenInstance = SimpleDomainObject.GetObject<ClassDerivedFromSimpleDomainObject> (instance.ID, true);
+        ClassDerivedFromSimpleDomainObject gottenInstance = ClassDerivedFromSimpleDomainObject.GetObject (instance.ID, true);
         Assert.AreSame (instance, gottenInstance);
         Assert.AreEqual (StateType.Deleted, gottenInstance.State);
       }
@@ -84,7 +84,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Serializable ()
     {
-      ClassDerivedFromSimpleDomainObject instance = SimpleDomainObject.NewObject<ClassDerivedFromSimpleDomainObject> ().With ();
+      ClassDerivedFromSimpleDomainObject instance = ClassDerivedFromSimpleDomainObject.NewObject ().With ();
       instance.IntProperty = 6;
       Tuple<ClientTransaction, ClassDerivedFromSimpleDomainObject> deserializedData =
           Serializer.SerializeAndDeserialize (Tuple.NewTuple (ClientTransaction.Current, instance));
@@ -99,7 +99,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [DBTable]
     [Instantiable]
     [Serializable]
-    public abstract class ClassDerivedFromSimpleDomainObjectImplementingISerializable : SimpleDomainObject, ISerializable
+    public abstract class ClassDerivedFromSimpleDomainObjectImplementingISerializable
+        : SimpleDomainObject<ClassDerivedFromSimpleDomainObjectImplementingISerializable>, ISerializable
     {
       public ClassDerivedFromSimpleDomainObjectImplementingISerializable ()
       {
@@ -122,7 +123,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void Serializable_WithISerializable ()
     {
       ClassDerivedFromSimpleDomainObjectImplementingISerializable instance =
-          SimpleDomainObject.NewObject<ClassDerivedFromSimpleDomainObjectImplementingISerializable> ().With ();
+          ClassDerivedFromSimpleDomainObjectImplementingISerializable.NewObject ().With ();
       instance.IntProperty = 5;
       Tuple<ClientTransaction, ClassDerivedFromSimpleDomainObjectImplementingISerializable> deserializedData =
           Serializer.SerializeAndDeserialize (Tuple.NewTuple (ClientTransaction.Current, instance));
