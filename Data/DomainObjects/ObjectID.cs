@@ -1,5 +1,6 @@
 using System;
 using Rubicon.Data.DomainObjects.Configuration;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Utilities;
@@ -14,7 +15,7 @@ namespace Rubicon.Data.DomainObjects
   /// <b>ObjectID</b> supports values of type <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
   /// </remarks>
   [Serializable]
-  public sealed class ObjectID : ISerializable
+  public sealed class ObjectID : IFlattenedSerializable
   {
     // types
 
@@ -376,20 +377,23 @@ namespace Rubicon.Data.DomainObjects
 
     #region Serialization
 
-    private ObjectID (SerializationInfo info, StreamingContext context)
+    public static ObjectID DeserializeFromFlatStructure (DomainObjectDeserializationInfo info)
     {
       ArgumentUtility.CheckNotNull ("info", info);
-      string classDefinitionID = info.GetString ("_classDefinition.ID");
-      _classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (classDefinitionID);
-      _value = info.GetValue ("_value", typeof (object));
+
+      string classDefinitionID = info.GetValueForHandle<string> ();
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (classDefinitionID);
+      object value = info.GetValue<object> ();
+
+      return new ObjectID (classDefinition, value);
     }
 
-    void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+    void IFlattenedSerializable.SerializeIntoFlatStructure( DomainObjectSerializationInfo info)
     {
       ArgumentUtility.CheckNotNull ("info", info);
 
-      info.AddValue ("_classDefinition.ID", _classDefinition.ID);
-      info.AddValue ("_value", _value);
+      info.AddHandle (_classDefinition.ID);
+      info.AddValue (_value);
     }
 
     #endregion

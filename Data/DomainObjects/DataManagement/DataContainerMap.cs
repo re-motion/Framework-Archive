@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
 [Serializable]
-public class DataContainerMap : IEnumerable
+public class DataContainerMap : IEnumerable, IFlattenedSerializable
 {
   // types
 
@@ -188,6 +188,26 @@ public class DataContainerMap : IEnumerable
     return _dataContainers.GetEnumerator ();
   }
 
+  #endregion
+
+  #region Serialization
+  public static DataContainerMap DeserializeFromFlatStructure (DomainObjectDeserializationInfo info)
+  {
+    ClientTransaction transaction = info.GetValueForHandle<ClientTransaction>();
+    DataContainer[] dataContainers = info.GetArray<DataContainer>();
+    DataContainerMap map = new DataContainerMap (transaction);
+    foreach (DataContainer dataContainer in dataContainers)
+      map._dataContainers.Add (dataContainer);
+    return map;
+  }
+
+  void IFlattenedSerializable.SerializeIntoFlatStructure (DomainObjectSerializationInfo info)
+  {
+    info.AddHandle (_clientTransaction);
+    DataContainer[] dataContainers = new DataContainer[_dataContainers.Count];
+    _dataContainers.CopyTo (dataContainers, 0);
+    info.AddArray (dataContainers);
+  }
   #endregion
 }
 }

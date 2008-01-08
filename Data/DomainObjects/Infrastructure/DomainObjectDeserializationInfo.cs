@@ -70,6 +70,15 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       return array;
     }
 
+    public T[] GetArray<T> (Func<DomainObjectDeserializationInfo, T> deserializer) where T : IFlattenedSerializable
+    {
+      int length = GetValue<int> ();
+      T[] array = new T[length];
+      for (int i = 0; i < length; ++i)
+        array[i] = GetValue (deserializer);
+      return array;
+    }
+
     public T GetValueForHandle<T> ()
     {
       int handle = GetValue<int>();

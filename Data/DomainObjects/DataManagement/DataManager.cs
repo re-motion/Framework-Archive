@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.Mapping;
+using System.Runtime.Serialization;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
 [Serializable]
-public class DataManager
+public class DataManager : ISerializable, IDeserializationCallback
 {
   // types
 
@@ -16,12 +15,14 @@ public class DataManager
 
   // member fields
 
-  private readonly ClientTransaction _clientTransaction;
-  private readonly IClientTransactionListener _transactionEventSink;
+  private ClientTransaction _clientTransaction;
+  private IClientTransactionListener _transactionEventSink;
 
-  private readonly DataContainerMap _dataContainerMap;
-  private readonly RelationEndPointMap _relationEndPointMap;
-  private readonly Dictionary<ObjectID, DataContainer> _discardedDataContainers;
+  private DataContainerMap _dataContainerMap;
+  private RelationEndPointMap _relationEndPointMap;
+  private Dictionary<ObjectID, DataContainer> _discardedDataContainers;
+  
+  private object[] _deserializedData; // only used for deserialization
 
   // construction and disposing
 
@@ -292,5 +293,51 @@ public class DataManager
         "newDiscardedContainer.Delete must have inserted the DataContainer into the list of discarded objects");
     Assertion.IsTrue (GetDiscardedDataContainer (newDiscardedContainer.ID) == newDiscardedContainer);
   }
+
+  #region Serialization
+  protected DataManager (SerializationInfo info, StreamingContext context)
+  {
+    _deserializedData = (object[]) info.GetValue ("doInfo.GetData", typeof (object[]));
+  }
+
+  void IDeserializationCallback.OnDeserialization (object sender)
+  {
+    DomainObjectDeserializationInfo doInfo = new DomainObjectDeserializationInfo (_deserializedData);
+    _clientTransaction = doInfo.GetValueForHandle<ClientTransaction> ();
+    _transactionEventSink = _clientTransaction.TransactionEventSink;
+    _dataContainerMap = doInfo.GetValue<DataContainerMap> (DataContainerMap.DeserializeFromFlatStructure);
+    _relationEndPointMap = doInfo.GetValue<RelationEndPointMap> ();
+    _discardedDataContainers = new Dictionary<ObjectID, DataContainer> ();
+
+    ObjectID[] discardedIDs = doInfo.GetArray<ObjectID> (ObjectID.DeserializeFromFlatStructure);
+    DataContainer[] discardedContainers = doInfo.GetArray<DataContainer> ();
+
+    if (discardedIDs.Length != discardedContainers.Length)
+      throw new SerializationException ("Invalid serilization data: discarded ID and data container counts do not match.");
+
+    for (int i = 0; i < discardedIDs.Length; ++i)
+      _discardedDataContainers.Add (discardedIDs[i], discardedContainers[i]);
+
+    _deserializedData = null;
+  }
+
+  void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+  {
+    DomainObjectSerializationInfo doInfo = new DomainObjectSerializationInfo();
+    doInfo.AddHandle (_clientTransaction);
+    doInfo.AddValue (_dataContainerMap);
+    doInfo.AddValue (_relationEndPointMap);
+
+    ObjectID[] discardedIDs = new ObjectID[_discardedDataContainers.Count];
+    _discardedDataContainers.Keys.CopyTo (discardedIDs, 0);
+    doInfo.AddArray (discardedIDs);
+
+    DataContainer[] discardedContainers = new DataContainer[_discardedDataContainers.Count];
+    _discardedDataContainers.Values.CopyTo (discardedContainers, 0);
+    doInfo.AddArray (discardedContainers);
+
+    info.AddValue ("doInfo.GetData", doInfo.GetData());
+  }
+  #endregion
 }
 }

@@ -217,5 +217,42 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
       deserializationInfo.GetValueForHandle<FlattenedSerializableStub> ();
     }
+
+    [Test]
+    public void FlattenedSerializableArray ()
+    {
+      FlattenedSerializableStub stub1 = new FlattenedSerializableStub ("begone, foul fiend", 123);
+      FlattenedSerializableStub stub2 = new FlattenedSerializableStub ("'twas brillig, and the slithy toves", 124);
+      FlattenedSerializableStub[] stubs = new FlattenedSerializableStub[] {stub1, stub2};
+      DomainObjectSerializationInfo serializationInfo = new DomainObjectSerializationInfo ();
+      serializationInfo.AddArray (stubs);
+      object[] data = serializationInfo.GetData ();
+
+      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
+      FlattenedSerializableStub[] deserializedStubs =
+          deserializationInfo.GetArray<FlattenedSerializableStub> (FlattenedSerializableStub.DeserializeFromFlatStructure);
+
+      Assert.AreEqual (2, deserializedStubs.Length);
+      Assert.AreEqual ("begone, foul fiend", deserializedStubs[0].Data1);
+      Assert.AreEqual (123, deserializedStubs[0].Data2);
+      Assert.AreEqual ("'twas brillig, and the slithy toves", deserializedStubs[1].Data1);
+      Assert.AreEqual (124, deserializedStubs[1].Data2);
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This method does not support deserialization of IFlattenedSerializable "
+        + "implementations. Use the overload taking a deserializer instead.")]
+    public void FlattenedSerializableArrayWithWrongDeserializationMethod ()
+    {
+      FlattenedSerializableStub stub1 = new FlattenedSerializableStub ("begone, foul fiend", 123);
+      FlattenedSerializableStub stub2 = new FlattenedSerializableStub ("'twas brillig, and the slithy toves", 124);
+      FlattenedSerializableStub[] stubs = new FlattenedSerializableStub[] { stub1, stub2 };
+      DomainObjectSerializationInfo serializationInfo = new DomainObjectSerializationInfo ();
+      serializationInfo.AddArray (stubs);
+      object[] data = serializationInfo.GetData ();
+
+      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
+      deserializationInfo.GetArray<FlattenedSerializableStub> ();
+    }
   }
 }
