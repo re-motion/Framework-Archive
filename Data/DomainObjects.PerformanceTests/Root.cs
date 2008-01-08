@@ -28,23 +28,56 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
     [STAThread]
     public static void Main (string[] args)
     {
-      LoadObjectsTest test = new LoadObjectsTest();
-      test.TestFixtureSetUp();
+      LoadObjectsTest test1 = new LoadObjectsTest();
+      test1.TestFixtureSetUp();
 
       // Have all xml files loaded, so if the code is instrumented by a profiler, 
       // the loading does not falsify the method run times during the first call of GetObject.
       MappingConfiguration mapping = MappingConfiguration.Current;
       QueryConfiguration queryConfiguration = DomainObjectsConfiguration.Current.Query;
 
-      test.SetUp();
-      test.LoadObjectsOverRelationTest();
-      test.TearDown();
+      test1.SetUp();
+      test1.LoadObjectsOverRelationTest();
+      test1.TearDown();
 
-      test.SetUp ();
-      test.LoadObjectsOverRelationWithAbstractBaseClass ();
-      test.TearDown ();
+      test1.SetUp ();
+      test1.LoadObjectsOverRelationWithAbstractBaseClass ();
+      test1.TearDown ();
 
-      test.TestFixtureTearDown();
+      test1.TestFixtureTearDown();
+
+      SerializationTest test2 = new SerializationTest();
+      test2.TestFixtureSetUp();
+
+      test2.SetUp();
+      test2.Serialize5ValuePropertyObjects ();
+      test2.TearDown();
+
+      test2.SetUp ();
+      test2.Serialize50ValuePropertyObjects ();
+      test2.TearDown ();
+
+      test2.SetUp ();
+      test2.Serialize500ValuePropertyObjects ();
+      test2.TearDown ();
+
+      test2.SetUp ();
+      test2.Serialize1025ValuePropertyObjects ();
+      test2.TearDown ();
+
+      test2.SetUp ();
+      test2.Serialize41RelationPropertyObjects ();
+      test2.TearDown ();
+
+      test2.SetUp ();
+      test2.Serialize410RelationPropertyObjects ();
+      test2.TearDown ();
+
+      test2.SetUp ();
+      test2.Serialize1025RelationPropertyObjects ();
+      test2.TearDown ();
+
+      test2.TestFixtureTearDown();
 
       Console.ReadLine();
     }
