@@ -10,6 +10,31 @@ namespace Rubicon.Data.DomainObjects
   /// Represents a collection of <see cref="DomainObject"/>s.
   /// </summary>
   /// <remarks>
+  /// <para>
+  /// If a <see cref="DomainObjectCollection"/> is used to model a bidirectional 1:n relation, consider the following about ordering:
+  /// <list type="bullet">
+  ///   <item>
+  ///     When loading the collection from the database (via loading an object in a root transaction), the order of items is defined
+  ///     by the sort order of the relation (see <see cref="DBBidirectionalRelationAttribute.SortExpression"/>). If there is no sort
+  ///     order, the order of items is undefined.
+  ///   </item>
+  ///   <item>
+  ///     When committing a root transaction, the order of items in the collection is ignored; the next time the object is loaded
+  ///     in another root transaction, the sort order is again defined by the sort order (or undefined). Specifically, if only the
+  ///     order of items changed in a 1:n relation, the respective objects will not be written to the database at all, as they will not
+  ///     be considered to have changed.
+  ///   </item>
+  ///   <item>
+  ///     When loading the collection from a parent transaction via loading an object in a subtransaction, the order of items is the same
+  ///     as in the parent transaction.
+  ///   </item>
+  ///   <item>
+  ///     When committing a subtransaction, the order of items in the collection is propagated to the parent transaction. After the commit,
+  ///     the parent transaction's collection will have the items in the same order as the committed subtransaction.
+  ///   </item>
+  /// </list>
+  /// </para>
+  /// <para>
   /// A derived collection with additional state should override at least the following methods:
   /// <list type="table">
   ///   <listheader>
@@ -61,6 +86,7 @@ namespace Rubicon.Data.DomainObjects
   ///     </description>
   ///   </item>
   /// </list>
+  /// </para>
   /// </remarks>
   [Serializable]
   public class DomainObjectCollection : CommonCollection, ICloneable, IList, IEnumerable<DomainObject>
