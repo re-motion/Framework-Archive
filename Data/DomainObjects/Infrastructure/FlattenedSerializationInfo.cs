@@ -4,12 +4,12 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
-  public class DomainObjectSerializationInfo
+  public class FlattenedSerializationInfo
   {
     private readonly List<object> _data = new List<object>();
     private readonly Dictionary<object, int> _handleMap = new Dictionary<object, int>();
 
-    public DomainObjectSerializationInfo ()
+    public FlattenedSerializationInfo ()
     {
     }
 
@@ -22,9 +22,21 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       IFlattenedSerializable serializable = value as IFlattenedSerializable;
       if (serializable != null)
-        serializable.SerializeIntoFlatStructure (this);
+        AddFlattenedSerializable(serializable);
       else
-        _data.Add (value);
+        AddSimpleValue(value);
+    }
+
+    private void AddFlattenedSerializable (IFlattenedSerializable serializable)
+    {
+      AddSimpleValue (FlattenedSerializableMarker.Instance);
+      AddSimpleValue (serializable.GetType ());
+      serializable.SerializeIntoFlatStructure (this);
+    }
+
+    private void AddSimpleValue<T> (T value)
+    {
+      _data.Add (value);
     }
 
     public void AddArray<T> (T[] valueArray)
@@ -37,16 +49,21 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public void AddHandle<T> (T value)
     {
-      int handle;
-      if (!_handleMap.TryGetValue (value, out handle))
-      {
-        handle = _handleMap.Count;
-        AddValue (handle);
-        AddValue (value);
-        _handleMap.Add (value, handle);
-      }
+      if (value == null)
+        AddValue (-1);
       else
-        AddValue (handle);
+      {
+        int handle;
+        if (!_handleMap.TryGetValue (value, out handle))
+        {
+          handle = _handleMap.Count;
+          _handleMap.Add (value, handle);
+          AddValue (handle);
+          AddValue (value);
+        }
+        else
+          AddValue (handle);
+      }
     }
   }
 }

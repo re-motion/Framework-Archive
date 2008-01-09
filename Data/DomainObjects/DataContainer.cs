@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects
   /// Represents a container for the persisted properties of a DomainObject.
   /// </summary>
   [Serializable]
-  public sealed class DataContainer : ISerializable, IDeserializationCallback
+  public sealed class DataContainer : ISerializable, IDeserializationCallback, IFlattenedSerializable
   {
     // types
 
@@ -609,69 +609,56 @@ namespace Rubicon.Data.DomainObjects
 
     #region Serialization
 
-    /*
-    public static DataContainer FlattenedDeserialize (DomainObjectSerializationInfo info)
+    private DataContainer (FlattenedDeserializationInfo info)
+        : this (info.GetValueForHandle<ObjectID> (), info.GetValue<object> (), new PropertyValueCollection())
     {
-      ObjectID id = info.GetValueForHandle<ObjectID> ();
-      object timestamp = info.GetValue<object> ();
-      bool isDiscarded = info.GetValue<bool>();
-      PropertyValueCollection propertyValues = new PropertyValueCollection();
+      InitializePropertyValues (this);
 
-      DataContainer dataContainer = new DataContainer (id, timestamp, propertyValues);
-      InitializePropertyValues (dataContainer);
+      _isDiscarded = info.GetValue<bool> ();
+      if (!_isDiscarded)
+        RestorePropertyValuesFromData (info);
 
-      if (!isDiscarded)
-        RestorePropertyValuesFromData (info, dataContainer._propertyValues);
-
-      dataContainer.PropertyChanging += info.GetValue<PropertyChangeEventHandler>();
-      dataContainer.PropertyChanged += info.GetValue<PropertyChangeEventHandler>();
-      dataContainer._clientTransaction = info.GetValueForHandle<ClientTransaction> ();
-      dataContainer._state = info.GetValue<DataContainerStateType> ();
-      dataContainer._domainObject = info.GetValueForHandle<DomainObject> ();
-      dataContainer._hasBeenMarkedChanged = info.GetValue<bool> ();
-
-      return dataContainer;
+      PropertyChanging += info.GetValue<PropertyChangeEventHandler>();
+      PropertyChanged += info.GetValue<PropertyChangeEventHandler>();
+      _clientTransaction = info.GetValueForHandle<ClientTransaction> ();
+      _state = info.GetValue<DataContainerStateType> ();
+      _domainObject = info.GetValueForHandle<DomainObject> ();
+      _hasBeenMarkedChanged = info.GetValue<bool> ();
     }
 
-    private static void RestorePropertyValuesFromData (DomainObjectSerializationInfo info, PropertyValueCollection propertyValues)
+    private void RestorePropertyValuesFromData (FlattenedDeserializationInfo info)
     {
       // TODO: wrap exceptions
-      int numberOfProperties = propertyValues.Count;
+      int numberOfProperties = _propertyValues.Count;
       for (int i = 0; i < numberOfProperties; ++i)
       {
-        string propertyName = info.GetValue<string>();
-        object[] data = info.GetValue<object[]>();
-        propertyValues[propertyName].RestoreData (data);
+        string propertyName = info.GetValueForHandle<string>();
+        object[] data = info.GetArray<object>();
+        _propertyValues[propertyName].RestoreData (data);
       }
     }
 
-    public void FlattenedSerialize (DomainObjectSerializationInfo info)
+    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      _id.FlattenedSerialize (info);
+      info.AddHandle (_id);
       info.AddValue (_timestamp);
       info.AddValue (_isDiscarded);
       if (!_isDiscarded)
       {
         foreach (PropertyValue propertyValue in _propertyValues)
         {
-          info.AddValue (propertyValue.Name);
-          info.AddValue (propertyValue.GetData());
+          info.AddHandle (propertyValue.Name);
+          info.AddArray (propertyValue.GetData());
         }
       }
 
       info.AddValue (PropertyChanging);
       info.AddValue (PropertyChanged);
-      info.AddValue (info.GetHandle (_clientTransaction));
+      info.AddHandle (_clientTransaction);
       info.AddValue (_state);
-      info.AddValue (info.GetHandle (_domainObject));
+      info.AddHandle (_domainObject);
       info.AddValue (_hasBeenMarkedChanged);
     }
-
-    private IEnumerable<object[]> GetPropertyValueData ()
-    {
-      foreach (PropertyValue propertyValue in _propertyValues)
-        yield return new object[] {propertyValue.Name, propertyValue.GetData() };
-    }*/
 
     private DataContainer (SerializationInfo info, StreamingContext context)
     {

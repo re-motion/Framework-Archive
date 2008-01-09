@@ -21,12 +21,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void ObjectIDIsFlattenedSerializable ()
     {
-      DomainObjectSerializationInfo info = new DomainObjectSerializationInfo ();
       ObjectID id = DomainObjectIDs.Order1;
-      ((IFlattenedSerializable) id).SerializeIntoFlatStructure (info);
-
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (info.GetData ());
-      ObjectID deserializedID = ObjectID.DeserializeFromFlatStructure (deserializationInfo);
+      ObjectID deserializedID = FlattenedSerializer.SerializeAndDeserialize (id);
 
       Assert.IsNotNull (deserializedID);
     }
@@ -34,25 +30,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DeserializedContent_Value ()
     {
-      DomainObjectSerializationInfo info = new DomainObjectSerializationInfo();
       ObjectID id = DomainObjectIDs.Order1;
-      ((IFlattenedSerializable)id).SerializeIntoFlatStructure (info);
-
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (info.GetData());
-      ObjectID deserializedID = ObjectID.DeserializeFromFlatStructure (deserializationInfo);
-      
+      ObjectID deserializedID = FlattenedSerializer.SerializeAndDeserialize (id);
+     
       Assert.AreEqual (id.Value, deserializedID.Value);
     }
 
     [Test]
     public void DeserializedContent_ClassDefinition ()
     {
-      DomainObjectSerializationInfo info = new DomainObjectSerializationInfo ();
       ObjectID id = DomainObjectIDs.Order1;
-      ((IFlattenedSerializable) id).SerializeIntoFlatStructure (info);
-
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (info.GetData ());
-      ObjectID deserializedID = ObjectID.DeserializeFromFlatStructure (deserializationInfo);
+      ObjectID deserializedID = FlattenedSerializer.SerializeAndDeserialize (id);
 
       Assert.AreEqual (id.ClassDefinition, deserializedID.ClassDefinition);
     }

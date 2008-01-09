@@ -302,14 +302,14 @@ public class DataManager : ISerializable, IDeserializationCallback
 
   void IDeserializationCallback.OnDeserialization (object sender)
   {
-    DomainObjectDeserializationInfo doInfo = new DomainObjectDeserializationInfo (_deserializedData);
+    FlattenedDeserializationInfo doInfo = new FlattenedDeserializationInfo (_deserializedData);
     _clientTransaction = doInfo.GetValueForHandle<ClientTransaction> ();
     _transactionEventSink = _clientTransaction.TransactionEventSink;
-    _dataContainerMap = doInfo.GetValue<DataContainerMap> (DataContainerMap.DeserializeFromFlatStructure);
+    _dataContainerMap = doInfo.GetValue<DataContainerMap> ();
     _relationEndPointMap = doInfo.GetValue<RelationEndPointMap> ();
     _discardedDataContainers = new Dictionary<ObjectID, DataContainer> ();
 
-    ObjectID[] discardedIDs = doInfo.GetArray<ObjectID> (ObjectID.DeserializeFromFlatStructure);
+    ObjectID[] discardedIDs = doInfo.GetArray<ObjectID> ();
     DataContainer[] discardedContainers = doInfo.GetArray<DataContainer> ();
 
     if (discardedIDs.Length != discardedContainers.Length)
@@ -323,7 +323,7 @@ public class DataManager : ISerializable, IDeserializationCallback
 
   void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
   {
-    DomainObjectSerializationInfo doInfo = new DomainObjectSerializationInfo();
+    FlattenedSerializationInfo doInfo = new FlattenedSerializationInfo();
     doInfo.AddHandle (_clientTransaction);
     doInfo.AddValue (_dataContainerMap);
     doInfo.AddValue (_relationEndPointMap);

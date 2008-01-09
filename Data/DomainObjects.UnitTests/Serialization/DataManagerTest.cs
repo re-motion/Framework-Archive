@@ -36,14 +36,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       Assert.IsTrue (dataManager.IsDiscarded (discardedContainer.ID));
       Assert.AreSame (discardedContainer, dataManager.GetDiscardedDataContainer(discardedContainer.ID));
 
-      Tuple<ClientTransaction, DataManager, DataContainer> deserializedData =
-          Serializer.SerializeAndDeserialize (Tuple.NewTuple (ClientTransaction.Current, dataManager, discardedContainer));
+      Tuple<ClientTransaction, DataManager> deserializedData =
+          Serializer.SerializeAndDeserialize (Tuple.NewTuple (ClientTransaction.Current, dataManager));
 
       Assert.AreNotEqual (0, deserializedData.B.DataContainerMap.Count);
       Assert.AreNotEqual (0, deserializedData.B.RelationEndPointMap.Count);
       Assert.AreEqual (1, deserializedData.B.DiscardedObjectCount);
       Assert.IsTrue (deserializedData.B.IsDiscarded (discardedContainer.ID));
-      Assert.AreSame (deserializedData.C, deserializedData.B.GetDiscardedDataContainer (discardedContainer.ID));
+      Assert.IsNotNull (deserializedData.B.GetDiscardedDataContainer (discardedContainer.ID));
 
       Assert.AreSame (deserializedData.A, PrivateInvoke.GetNonPublicField (deserializedData.B, "_clientTransaction"));
       Assert.IsNotNull (PrivateInvoke.GetNonPublicField (deserializedData.B, "_transactionEventSink"));

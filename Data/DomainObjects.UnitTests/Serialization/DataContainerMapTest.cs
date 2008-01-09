@@ -24,12 +24,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void DataContainerMapIsFlattenedSerializable ()
     {
       DataContainerMap map = ClientTransactionMock.DataManager.DataContainerMap;
-      DomainObjectSerializationInfo info = new DomainObjectSerializationInfo ();
-      ((IFlattenedSerializable) map).SerializeIntoFlatStructure (info);
 
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (info.GetData ());
-      DataContainerMap deserializedMap = DataContainerMap.DeserializeFromFlatStructure (deserializationInfo);
-
+      DataContainerMap deserializedMap = FlattenedSerializer.SerializeAndDeserialize (map);
       Assert.IsNotNull (deserializedMap);
     }
 
@@ -39,17 +35,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       DataContainerMap map = ClientTransactionMock.DataManager.DataContainerMap;
       Order.GetObject (DomainObjectIDs.Order1);
       Assert.AreEqual (1, map.Count);
-      
-      DomainObjectSerializationInfo info = new DomainObjectSerializationInfo();
-      ((IFlattenedSerializable) map).SerializeIntoFlatStructure (info);
-      
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (info.GetData ());
-      DataContainerMap deserializedMap = DataContainerMap.DeserializeFromFlatStructure (deserializationInfo);
 
+      DataContainerMap deserializedMap = FlattenedSerializer.SerializeAndDeserialize (map);
       Assert.AreEqual (ClientTransactionMock, PrivateInvoke.GetNonPublicField (deserializedMap, "_clientTransaction"));
       Assert.IsNotNull (PrivateInvoke.GetNonPublicField (deserializedMap, "_transactionEventSink"));
       Assert.AreEqual (1, deserializedMap.Count);
-
     }
   }
 }

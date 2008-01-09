@@ -2,6 +2,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 {
   public interface IFlattenedSerializable
   {
-    void SerializeIntoFlatStructure (DomainObjectSerializationInfo info);
+    // .ctor (FlattenedDeserializationInfo info)
+    void SerializeIntoFlatStructure (FlattenedSerializationInfo info);
   }
 }

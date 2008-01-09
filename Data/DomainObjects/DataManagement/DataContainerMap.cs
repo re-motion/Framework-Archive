@@ -191,17 +191,15 @@ public class DataContainerMap : IEnumerable, IFlattenedSerializable
   #endregion
 
   #region Serialization
-  public static DataContainerMap DeserializeFromFlatStructure (DomainObjectDeserializationInfo info)
+  protected DataContainerMap (FlattenedDeserializationInfo info)
+      : this (info.GetValueForHandle<ClientTransaction>())
   {
-    ClientTransaction transaction = info.GetValueForHandle<ClientTransaction>();
     DataContainer[] dataContainers = info.GetArray<DataContainer>();
-    DataContainerMap map = new DataContainerMap (transaction);
     foreach (DataContainer dataContainer in dataContainers)
-      map._dataContainers.Add (dataContainer);
-    return map;
+      _dataContainers.Add (dataContainer);
   }
 
-  void IFlattenedSerializable.SerializeIntoFlatStructure (DomainObjectSerializationInfo info)
+  void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
   {
     info.AddHandle (_clientTransaction);
     DataContainer[] dataContainers = new DataContainer[_dataContainers.Count];

@@ -310,7 +310,8 @@
     <Compile Include="Serialization\DataContainerMapTest.cs" />
     <Compile Include="Serialization\DataContainerTest.cs" />
     <Compile Include="Serialization\DataManagerTest.cs" />
-    <Compile Include="Serialization\DomainObjectSerializationInfoTest.cs" />
+    <Compile Include="Serialization\FlattenedSerializationInfoTest.cs" />
+    <Compile Include="Serialization\FlattenedSerializer.cs" />
     <Compile Include="Serialization\FlattenedSerializableStub.cs" />
     <Compile Include="Serialization\ObjectIDTest.cs" />
     <Compile Include="TestDomain\ClassDerivedFromSimpleDomainObject.cs" />

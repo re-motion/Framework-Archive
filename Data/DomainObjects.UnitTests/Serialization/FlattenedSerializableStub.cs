@@ -5,13 +5,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 {
   public class FlattenedSerializableStub : IFlattenedSerializable
   {
-    public static FlattenedSerializableStub DeserializeFromFlatStructure (DomainObjectDeserializationInfo info)
-    {
-      return new FlattenedSerializableStub (info.GetValue<string>(), info.GetValue<int>());
-    }
-
     public readonly string Data1;
     public readonly int Data2;
+    public FlattenedSerializableStub Data3;
 
     public FlattenedSerializableStub (string data1, int data2)
     {
@@ -19,10 +15,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       Data2 = data2;
     }
 
-    public void SerializeIntoFlatStructure (DomainObjectSerializationInfo info)
+    protected FlattenedSerializableStub (FlattenedDeserializationInfo info)
+    {
+      Data1 = info.GetValue<string> ();
+      Data2 = info.GetValue<int> ();
+      Data3 = info.GetValueForHandle<FlattenedSerializableStub> ();
+    }
+
+    public void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
       info.AddValue (Data1);
       info.AddValue (Data2);
+      info.AddHandle (Data3);
     }
   }
 }

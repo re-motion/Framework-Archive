@@ -8,12 +8,12 @@ using NUnit.Framework.SyntaxHelpers;
 namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 {
   [TestFixture]
-  public class DomainObjectSerializationInfoTest
+  public class FlattenedSerializationInfoTest
   {
     [Test]
     public void Values ()
     {
-      DomainObjectSerializationInfo serializationInfo = new DomainObjectSerializationInfo();
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo();
       serializationInfo.AddValue (1);
       serializationInfo.AddValue (new DateTime (2007, 1, 2));
       serializationInfo.AddValue ("Foo");
@@ -21,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       serializationInfo.AddValue<int?> (null);
       object[] data = serializationInfo.GetData();
 
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
       Assert.AreEqual (1, deserializationInfo.GetValue<int> ());
       Assert.AreEqual (new DateTime (2007, 1, 2), deserializationInfo.GetValue<DateTime> ());
       Assert.AreEqual ("Foo", deserializationInfo.GetValue<string> ());
@@ -33,11 +33,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
         + "position 0, but an object of type System.String was expected.")]
     public void InvalidDeserializedType ()
     {
-      DomainObjectSerializationInfo serializationInfo = new DomainObjectSerializationInfo ();
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
       serializationInfo.AddValue (1);
       object[] data = serializationInfo.GetData ();
 
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
       deserializationInfo.GetValue<string> ();
     }
 
@@ -46,11 +46,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
         + "position 0, but an object of type System.Int32 was expected.")]
     public void InvalidDeserializedType_WithNullAndValueType ()
     {
-      DomainObjectSerializationInfo serializationInfo = new DomainObjectSerializationInfo ();
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
       serializationInfo.AddValue<object> (null);
       object[] data = serializationInfo.GetData ();
 
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
       deserializationInfo.GetValue<int> ();
     }
 
@@ -58,10 +58,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [ExpectedException (typeof (SerializationException), ExpectedMessage = "There is no more data in the serialization stream at position 0.")]
     public void InvalidNumberOfDeserializedItems ()
     {
-      DomainObjectSerializationInfo serializationInfo = new DomainObjectSerializationInfo ();
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
       object[] data = serializationInfo.GetData ();
 
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
       deserializationInfo.GetValue<string> ();
     }
 
@@ -71,12 +71,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       object[] array1 = new object[] { "Foo", 1, 3.0 };
       DateTime[] array2 = new DateTime[] { DateTime.MinValue, DateTime.MaxValue };
 
-      DomainObjectSerializationInfo serializationInfo = new DomainObjectSerializationInfo ();
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
       serializationInfo.AddArray (array1);
       serializationInfo.AddArray (array2);
       object[] data = serializationInfo.GetData ();
 
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
       Assert.That (deserializationInfo.GetArray<object> (), Is.EqualTo (array1));
       Assert.That (deserializationInfo.GetArray<DateTime> (), Is.EqualTo (array2));
     }
@@ -88,11 +88,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     {
       object[] array1 = new object[] { "Foo", 1, 3.0 };
 
-      DomainObjectSerializationInfo serializationInfo = new DomainObjectSerializationInfo ();
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
       serializationInfo.AddArray (array1);
       object[] data = serializationInfo.GetData ();
 
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
       deserializationInfo.GetArray<int> ();
     }
 
@@ -105,7 +105,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       string s1 = "Foo";
       string s2 = "Fox";
 
-      DomainObjectSerializationInfo serializationInfo = new DomainObjectSerializationInfo ();
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
 
       serializationInfo.AddHandle (dt1);
       serializationInfo.AddHandle (dt2);
@@ -119,7 +119,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       object[] data = serializationInfo.GetData();
 
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
 
       Assert.AreEqual (dt1, deserializationInfo.GetValueForHandle<DateTime> ());
       Assert.AreEqual (dt2, deserializationInfo.GetValueForHandle<DateTime> ());
@@ -133,19 +133,35 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
+    public void NullHandles ()
+    {
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
+
+      serializationInfo.AddHandle<string> (null);
+      serializationInfo.AddHandle<int?> (null);
+
+      object[] data = serializationInfo.GetData ();
+
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
+
+      Assert.AreEqual (null, deserializationInfo.GetValueForHandle<string> ());
+      Assert.AreEqual (null, deserializationInfo.GetValueForHandle<int?> ());
+    }
+
+    [Test]
     [ExpectedException (typeof (SerializationException), ExpectedMessage = "The serialization stream contains an object of type System.DateTime at "
         + "position 3, but an object of type System.String was expected.")]
     public void HandlesWithInvalidType ()
     {
       DateTime dt1 = DateTime.MinValue;
 
-      DomainObjectSerializationInfo serializationInfo = new DomainObjectSerializationInfo ();
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
       serializationInfo.AddHandle (dt1);
       serializationInfo.AddHandle (dt1);
 
       object[] data = serializationInfo.GetData ();
 
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
       deserializationInfo.GetValueForHandle<DateTime> ();
       deserializationInfo.GetValueForHandle<string> ();
     }
@@ -154,49 +170,31 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void FlattenedSerializables ()
     {
       FlattenedSerializableStub stub = new FlattenedSerializableStub ("begone, foul fiend", 123);
-      DomainObjectSerializationInfo serializationInfo = new DomainObjectSerializationInfo ();
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
       serializationInfo.AddValue (stub);
       object[] data = serializationInfo.GetData();
 
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
-      FlattenedSerializableStub deserializedStub =
-          deserializationInfo.GetValue<FlattenedSerializableStub> (FlattenedSerializableStub.DeserializeFromFlatStructure);
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
+      FlattenedSerializableStub deserializedStub = deserializationInfo.GetValue<FlattenedSerializableStub> ();
 
       Assert.AreEqual ("begone, foul fiend", deserializedStub.Data1);
       Assert.AreEqual (123, deserializedStub.Data2);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This method does not support deserialization of IFlattenedSerializable "
-        + "implementations. Use the overload taking a deserializer instead.")]
-    public void FlattenedSerializablesWithWrongDeserializationMethod ()
-    {
-      FlattenedSerializableStub stub = new FlattenedSerializableStub ("begone, foul fiend", 123);
-      DomainObjectSerializationInfo serializationInfo = new DomainObjectSerializationInfo ();
-      serializationInfo.AddValue (stub);
-      object[] data = serializationInfo.GetData ();
-
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
-      deserializationInfo.GetValue<FlattenedSerializableStub> ();
-    }
-
-    [Test]
     public void FlattenedSerializableHandles ()
     {
       FlattenedSerializableStub stub = new FlattenedSerializableStub ("begone, foul fiend", 123);
-      DomainObjectSerializationInfo serializationInfo = new DomainObjectSerializationInfo ();
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
       serializationInfo.AddHandle (stub);
       serializationInfo.AddHandle (stub);
       serializationInfo.AddHandle (stub);
       object[] data = serializationInfo.GetData ();
 
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
-      FlattenedSerializableStub deserializedStub1 =
-          deserializationInfo.GetValueForHandle<FlattenedSerializableStub> (FlattenedSerializableStub.DeserializeFromFlatStructure);
-      FlattenedSerializableStub deserializedStub2 =
-          deserializationInfo.GetValueForHandle<FlattenedSerializableStub> (FlattenedSerializableStub.DeserializeFromFlatStructure);
-      FlattenedSerializableStub deserializedStub3 =
-          deserializationInfo.GetValueForHandle<FlattenedSerializableStub> (FlattenedSerializableStub.DeserializeFromFlatStructure);
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
+      FlattenedSerializableStub deserializedStub1 = deserializationInfo.GetValueForHandle<FlattenedSerializableStub> ();
+      FlattenedSerializableStub deserializedStub2 = deserializationInfo.GetValueForHandle<FlattenedSerializableStub> ();
+      FlattenedSerializableStub deserializedStub3 = deserializationInfo.GetValueForHandle<FlattenedSerializableStub> ();
 
       Assert.AreSame (deserializedStub1, deserializedStub2);
       Assert.AreSame (deserializedStub2, deserializedStub3);
@@ -205,17 +203,55 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This method does not support deserialization of IFlattenedSerializable "
-        + "implementations. Use the overload taking a deserializer instead.")]
-    public void FlattenedSerializableHandlesWithWrongDeserializationMethod ()
+    public void FlattenedSerializableHandles_WithOtherHandles ()
     {
-      FlattenedSerializableStub stub = new FlattenedSerializableStub ("begone, foul fiend", 123);
-      DomainObjectSerializationInfo serializationInfo = new DomainObjectSerializationInfo ();
-      serializationInfo.AddHandle (stub);
+      FlattenedSerializableStub stub1 = new FlattenedSerializableStub ("begone, foul fiend", 123);
+      FlattenedSerializableStub stub2 = new FlattenedSerializableStub ("befoul, gone fiend", 125);
+      stub1.Data3 = stub2;
+      
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
+      serializationInfo.AddHandle (stub1);
       object[] data = serializationInfo.GetData ();
 
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
-      deserializationInfo.GetValueForHandle<FlattenedSerializableStub> ();
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
+      FlattenedSerializableStub deserializedStub1 = deserializationInfo.GetValueForHandle<FlattenedSerializableStub> ();
+      FlattenedSerializableStub deserializedStub2 = deserializedStub1.Data3;
+
+      Assert.AreNotSame (deserializedStub1, deserializedStub2);
+      Assert.AreEqual ("begone, foul fiend", deserializedStub1.Data1);
+      Assert.AreEqual (123, deserializedStub1.Data2);
+      Assert.AreSame (deserializedStub2, deserializedStub1.Data3);
+
+      Assert.AreEqual ("befoul, gone fiend", deserializedStub2.Data1);
+      Assert.AreEqual (125, deserializedStub2.Data2);
+      Assert.IsNull (deserializedStub2.Data3);
+    }
+
+    [Test]
+    [Ignore ("TODO: FS - doesn't work at the moment, decide whether we need this later")]
+    public void FlattenedSerializableHandles_RecursiveHandles ()
+    {
+      FlattenedSerializableStub stub1 = new FlattenedSerializableStub ("begone, foul fiend", 123);
+      FlattenedSerializableStub stub2 = new FlattenedSerializableStub ("befoul, gone fiend", 125);
+      stub1.Data3 = stub2;
+      stub2.Data3 = stub1;
+
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
+      serializationInfo.AddHandle (stub1);
+      object[] data = serializationInfo.GetData ();
+
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
+      FlattenedSerializableStub deserializedStub1 = deserializationInfo.GetValueForHandle<FlattenedSerializableStub> ();
+      FlattenedSerializableStub deserializedStub2 = deserializedStub1.Data3;
+
+      Assert.AreNotSame (deserializedStub1, deserializedStub2);
+      Assert.AreEqual ("begone, foul fiend", deserializedStub1.Data1);
+      Assert.AreEqual (123, deserializedStub1.Data2);
+      Assert.AreSame (deserializedStub2, deserializedStub1.Data3);
+
+      Assert.AreEqual ("befoul, gone fiend", deserializedStub2.Data1);
+      Assert.AreEqual (125, deserializedStub2.Data2);
+      Assert.AreSame (deserializedStub1, deserializedStub2.Data3);
     }
 
     [Test]
@@ -224,13 +260,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       FlattenedSerializableStub stub1 = new FlattenedSerializableStub ("begone, foul fiend", 123);
       FlattenedSerializableStub stub2 = new FlattenedSerializableStub ("'twas brillig, and the slithy toves", 124);
       FlattenedSerializableStub[] stubs = new FlattenedSerializableStub[] {stub1, stub2};
-      DomainObjectSerializationInfo serializationInfo = new DomainObjectSerializationInfo ();
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
       serializationInfo.AddArray (stubs);
       object[] data = serializationInfo.GetData ();
 
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
-      FlattenedSerializableStub[] deserializedStubs =
-          deserializationInfo.GetArray<FlattenedSerializableStub> (FlattenedSerializableStub.DeserializeFromFlatStructure);
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
+      FlattenedSerializableStub[] deserializedStubs = deserializationInfo.GetArray<FlattenedSerializableStub> ();
 
       Assert.AreEqual (2, deserializedStubs.Length);
       Assert.AreEqual ("begone, foul fiend", deserializedStubs[0].Data1);
@@ -240,19 +275,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This method does not support deserialization of IFlattenedSerializable "
-        + "implementations. Use the overload taking a deserializer instead.")]
-    public void FlattenedSerializableArrayWithWrongDeserializationMethod ()
+    public void ArrayWithFlattenedSerializables ()
     {
       FlattenedSerializableStub stub1 = new FlattenedSerializableStub ("begone, foul fiend", 123);
       FlattenedSerializableStub stub2 = new FlattenedSerializableStub ("'twas brillig, and the slithy toves", 124);
-      FlattenedSerializableStub[] stubs = new FlattenedSerializableStub[] { stub1, stub2 };
-      DomainObjectSerializationInfo serializationInfo = new DomainObjectSerializationInfo ();
+      object[] stubs = new object[] { stub1, stub2 };
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
       serializationInfo.AddArray (stubs);
       object[] data = serializationInfo.GetData ();
 
-      DomainObjectDeserializationInfo deserializationInfo = new DomainObjectDeserializationInfo (data);
-      deserializationInfo.GetArray<FlattenedSerializableStub> ();
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
+      object[] deserializedStubs = deserializationInfo.GetArray<object> ();
+
+      Assert.AreEqual (2, deserializedStubs.Length);
+      Assert.AreEqual ("begone, foul fiend", ((FlattenedSerializableStub) deserializedStubs[0]).Data1);
+      Assert.AreEqual (123, ((FlattenedSerializableStub) deserializedStubs[0]).Data2);
+      Assert.AreEqual ("'twas brillig, and the slithy toves", ((FlattenedSerializableStub) deserializedStubs[1]).Data1);
+      Assert.AreEqual (124, ((FlattenedSerializableStub) deserializedStubs[1]).Data2);
     }
   }
 }

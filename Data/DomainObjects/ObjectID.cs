@@ -377,7 +377,7 @@ namespace Rubicon.Data.DomainObjects
 
     #region Serialization
 
-    public static ObjectID DeserializeFromFlatStructure (DomainObjectDeserializationInfo info)
+    private ObjectID (FlattenedDeserializationInfo info)
     {
       ArgumentUtility.CheckNotNull ("info", info);
 
@@ -385,10 +385,11 @@ namespace Rubicon.Data.DomainObjects
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (classDefinitionID);
       object value = info.GetValue<object> ();
 
-      return new ObjectID (classDefinition, value);
+      _classDefinition = classDefinition;
+      _value = value;
     }
 
-    void IFlattenedSerializable.SerializeIntoFlatStructure( DomainObjectSerializationInfo info)
+    void IFlattenedSerializable.SerializeIntoFlatStructure( FlattenedSerializationInfo info)
     {
       ArgumentUtility.CheckNotNull ("info", info);
 
