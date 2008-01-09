@@ -633,8 +633,7 @@ namespace Rubicon.Data.DomainObjects
       for (int i = 0; i < numberOfProperties; ++i)
       {
         string propertyName = info.GetValueForHandle<string>();
-        object[] data = info.GetArray<object>();
-        _propertyValues[propertyName].RestoreData (data);
+        _propertyValues[propertyName].DeserializeFromFlatStructure (info);
       }
     }
 
@@ -648,7 +647,7 @@ namespace Rubicon.Data.DomainObjects
         foreach (PropertyValue propertyValue in _propertyValues)
         {
           info.AddHandle (propertyValue.Name);
-          info.AddArray (propertyValue.GetData());
+          propertyValue.SerializeIntoFlatStructure (info);
         }
       }
 

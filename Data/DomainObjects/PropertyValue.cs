@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
@@ -487,5 +488,31 @@ public class PropertyValue
     _isDiscarded = source._isDiscarded;
     _hasBeenTouched |= source._hasBeenTouched || HasChanged; // true if: we have been touched/source has been touched/we have changed
   }
+
+  #region Serialization
+  internal void DeserializeFromFlatStructure (FlattenedDeserializationInfo info)
+  {
+    _isDiscarded = info.GetValue<bool>();
+    if (!_isDiscarded)
+    {
+      _value = info.GetValue<object>();
+      _originalValue = info.GetValue<object>();
+      _hasBeenTouched = info.GetValue<bool>();
+    }
+  }
+
+  internal void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
+  {
+    if (_isDiscarded)
+      info.AddValue (true);
+    else
+    {
+      info.AddValue (_isDiscarded);
+      info.AddValue (_value);
+      info.AddValue (_originalValue);
+      info.AddValue (_hasBeenTouched);
+    }
+  }
+  #endregion
 }
 }

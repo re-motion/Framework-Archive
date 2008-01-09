@@ -30,23 +30,23 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
     [STAThread]
     public static void Main (string[] args)
     {
-      LoadObjectsTest test1 = new LoadObjectsTest();
-      test1.TestFixtureSetUp();
+      //LoadObjectsTest test1 = new LoadObjectsTest();
+      //test1.TestFixtureSetUp();
 
-      // Have all xml files loaded, so if the code is instrumented by a profiler, 
-      // the loading does not falsify the method run times during the first call of GetObject.
-      MappingConfiguration mapping = MappingConfiguration.Current;
-      QueryConfiguration queryConfiguration = DomainObjectsConfiguration.Current.Query;
+      //// Have all xml files loaded, so if the code is instrumented by a profiler, 
+      //// the loading does not falsify the method run times during the first call of GetObject.
+      //MappingConfiguration mapping = MappingConfiguration.Current;
+      //QueryConfiguration queryConfiguration = DomainObjectsConfiguration.Current.Query;
 
-      test1.SetUp();
-      test1.LoadObjectsOverRelationTest();
-      test1.TearDown();
+      //test1.SetUp();
+      //test1.LoadObjectsOverRelationTest();
+      //test1.TearDown();
 
-      test1.SetUp ();
-      test1.LoadObjectsOverRelationWithAbstractBaseClass ();
-      test1.TearDown ();
+      //test1.SetUp ();
+      //test1.LoadObjectsOverRelationWithAbstractBaseClass ();
+      //test1.TearDown ();
 
-      test1.TestFixtureTearDown();
+      //test1.TestFixtureTearDown();
 
       SerializationTest test2 = new SerializationTest();
       test2.TestFixtureSetUp();
@@ -55,7 +55,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       Array.Sort (methods, delegate (MethodInfo one, MethodInfo two) { return one.Name.CompareTo (two.Name); });
       foreach (MethodInfo potentialTestMethod in methods)
       {
-        if (potentialTestMethod.IsDefined (typeof (TestAttribute), true))
+        if (potentialTestMethod.IsDefined (typeof (TestAttribute), true) && !potentialTestMethod.IsDefined (typeof (IgnoreAttribute), true))
         {
           test2.SetUp ();
           potentialTestMethod.Invoke (test2, new object[0]);
