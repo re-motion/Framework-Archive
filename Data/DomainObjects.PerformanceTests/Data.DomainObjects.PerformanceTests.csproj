@@ -133,6 +133,7 @@
     <Compile Include="TestDomain\ClientBoundBaseClass.cs" />
     <Compile Include="TestDomain\Company.cs" />
     <Compile Include="TestDomain\ClassWithRelationProperties.cs" />
+    <Compile Include="TestDomain\ClassWithFewValueProperties.cs" />
     <Compile Include="TestDomain\OppositeClassWithReallRelationProperties.cs" />
     <Compile Include="TestDomain\OppositeClassWithVirtualRelationProperties.cs" />
     <Compile Include="TestDomain\OppositeClassWithCollectionRelationProperties.cs" />

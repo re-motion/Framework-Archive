@@ -1,7 +1,9 @@
 using System;
+using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
+using System.Reflection;
 
 namespace Rubicon.Data.DomainObjects.PerformanceTests
 {
@@ -49,33 +51,17 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       SerializationTest test2 = new SerializationTest();
       test2.TestFixtureSetUp();
 
-      test2.SetUp();
-      test2.Serialize5ValuePropertyObjects ();
-      test2.TearDown();
-
-      test2.SetUp ();
-      test2.Serialize50ValuePropertyObjects ();
-      test2.TearDown ();
-
-      test2.SetUp ();
-      test2.Serialize500ValuePropertyObjects ();
-      test2.TearDown ();
-
-      test2.SetUp ();
-      test2.Serialize1025ValuePropertyObjects ();
-      test2.TearDown ();
-
-      test2.SetUp ();
-      test2.Serialize41RelationPropertyObjects ();
-      test2.TearDown ();
-
-      test2.SetUp ();
-      test2.Serialize410RelationPropertyObjects ();
-      test2.TearDown ();
-
-      test2.SetUp ();
-      test2.Serialize1025RelationPropertyObjects ();
-      test2.TearDown ();
+      MethodInfo[] methods = test2.GetType().GetMethods (BindingFlags.Public | BindingFlags.Instance);
+      Array.Sort (methods, delegate (MethodInfo one, MethodInfo two) { return one.Name.CompareTo (two.Name); });
+      foreach (MethodInfo potentialTestMethod in methods)
+      {
+        if (potentialTestMethod.IsDefined (typeof (TestAttribute), true))
+        {
+          test2.SetUp ();
+          potentialTestMethod.Invoke (test2, new object[0]);
+          test2.TearDown ();
+        }
+      }
 
       test2.TestFixtureTearDown();
 

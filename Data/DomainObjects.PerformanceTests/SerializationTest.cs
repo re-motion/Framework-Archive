@@ -11,98 +11,85 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
   public class SerializationTest : DatabaseTest
   {
     [Test]
-    public void Serialize5ValuePropertyObjects ()
+    public void SerializeValuePropertyObjects00050 ()
     {
-      PerformSerializationTests ("Serialize5ValuePropertyObjects", 2, 5, delegate
-      {
-        using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
-        {
-          for (int i = 0; i < 5; ++i)
-            CreateAndFillValuePropertyObject ();
-          return ClientTransaction.Current;
-        }
-      });
+      PerformSerializationTests (50, "SerializeValuePropertyObjects00050", 10, 12, CreateAndFillValuePropertyObject);
     }
 
     [Test]
-    public void Serialize50ValuePropertyObjects ()
+    public void SerializeValuePropertyObjects00500 ()
     {
-      PerformSerializationTests ("Serialize50ValuePropertyObjects", 14, 14, delegate
-      {
-        using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
-        {
-          for (int i = 0; i < 50; ++i)
-            CreateAndFillValuePropertyObject ();
-          return ClientTransaction.Current;
-        }
-      });
+      PerformSerializationTests (500, "SerializeValuePropertyObjects5000", 101, 150, CreateAndFillValuePropertyObject);
     }
 
     [Test]
-    public void Serialize500ValuePropertyObjects ()
+    public void SerializeValuePropertyObjects01025 ()
     {
-      PerformSerializationTests ("Serialize500ValuePropertyObjects", 139, 211, delegate
-      {
-        using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
-        {
-          for (int i = 0; i < 500; ++i)
-            CreateAndFillValuePropertyObject();
-          return ClientTransaction.Current;
-        }
-      });
+      PerformSerializationTests (1025, "SerializeValuePropertyObjects01025", 213, 335, CreateAndFillValuePropertyObject);
     }
 
     [Test]
-    public void Serialize1025ValuePropertyObjects ()
+    public void SerializeValuePropertyObjects10250 ()
     {
-      PerformSerializationTests ("Serialize1025ValuePropertyObjects", 281, 544, delegate
-      {
-        using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
-        {
-          for (int i = 0; i < 1025; ++i)
-            CreateAndFillValuePropertyObject ();
-          return ClientTransaction.Current;
-        }
-      });
+      PerformSerializationTests (10250, "SerializeValuePropertyObjects10250", 2144, 4683, CreateAndFillValuePropertyObject);
     }
 
     [Test]
-    public void Serialize41RelationPropertyObjects ()
+    public void SerializeSmallValuePropertyObjects00050 ()
     {
-      PerformSerializationTests ("Serialize41RelationPropertyObjects", 11, 9, delegate
-      {
-        using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
-        {
-          for (int i = 0; i < 1; ++i)
-            CreateAndFillRelationPropertyObject ();
-          return ClientTransaction.Current;
-        }
-      });
+      PerformSerializationTests (50, "SerializeSmallValuePropertyObjects00050", 10, 9, CreateAndFillSmallValuePropertyObject);
     }
 
     [Test]
-    public void Serialize410RelationPropertyObjects ()
+    public void SerializeSmallValuePropertyObjects00500 ()
     {
-      PerformSerializationTests ("Serialize410RelationPropertyObjects", 114, 74, delegate
-      {
-        using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
-        {
-          for (int i = 0; i < 10; ++i)
-            CreateAndFillRelationPropertyObject ();
-          return ClientTransaction.Current;
-        }
-      });
+      PerformSerializationTests (500, "SerializeSmallValuePropertyObjects00500", 62, 102, CreateAndFillSmallValuePropertyObject);
     }
 
     [Test]
-    public void Serialize1025RelationPropertyObjects ()
+    public void SerializeSmallValuePropertyObjects01025 ()
     {
-      PerformSerializationTests ("Serialize1025RelationPropertyObjects", 269, 219, delegate
+      PerformSerializationTests (1025, "SerializeSmallValuePropertyObjects01025", 142, 179, CreateAndFillSmallValuePropertyObject);
+    }
+
+    [Test]
+    public void SerializeSmallValuePropertyObjects10250 ()
+    {
+      PerformSerializationTests (10250, "SerializeSmallValuePropertyObjects10250", 1370, 3321, CreateAndFillSmallValuePropertyObject);
+    }
+
+    [Test]
+    public void SerializeRelationPropertyObjects00041 ()
+    {
+      PerformSerializationTests (1, "SerializeRelationPropertyObjects00041", 12, 10, CreateAndFillRelationPropertyObject);
+    }
+
+    [Test]
+    public void SerializeRelationPropertyObjects00410 ()
+    {
+      PerformSerializationTests (10, "SerializeRelationPropertyObjects00410", 92, 60, CreateAndFillRelationPropertyObject);
+    }
+
+    [Test]
+    public void SerializeRelationPropertyObjects01025 ()
+    {
+      PerformSerializationTests (25, "SerializeRelationPropertyObjects01025", 217, 184, CreateAndFillRelationPropertyObject);
+    }
+
+    [Test]
+    public void SerializeRelationPropertyObjects10250 ()
+    {
+      PerformSerializationTests (250, "SerializeRelationPropertyObjects10205", 2276, 4314, CreateAndFillRelationPropertyObject);
+    }
+
+    private void PerformSerializationTests (int count, string nameOfTest, int serExpectedMS, int deserExpectedMS, Proc objectCreator)
+    {
+      PerformSerializationTests (nameOfTest, serExpectedMS, deserExpectedMS, delegate
       {
         using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
         {
-          for (int i = 0; i < 25; ++i)
-            CreateAndFillRelationPropertyObject ();
+          for (int i = 0; i < count; ++i)
+            objectCreator ();
           return ClientTransaction.Current;
         }
       });
@@ -190,16 +177,46 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       instance.DateTimeProperty9 = new DateTime (random.Next () % 2000 + 1000, random.Next () % 12 + 1, random.Next () % 28 + 1);
       instance.DateTimeProperty10 = new DateTime (random.Next () % 2000 + 1000, random.Next () % 12 + 1, random.Next () % 28 + 1);
 
-      instance.StringProperty1 = random.Next ().ToString ();
-      instance.StringProperty2 = random.Next ().ToString ();
-      instance.StringProperty3 = random.Next ().ToString ();
-      instance.StringProperty4 = random.Next ().ToString ();
-      instance.StringProperty5 = random.Next ().ToString ();
-      instance.StringProperty6 = random.Next ().ToString ();
-      instance.StringProperty7 = random.Next ().ToString ();
-      instance.StringProperty8 = random.Next ().ToString ();
-      instance.StringProperty9 = random.Next ().ToString ();
-      instance.StringProperty10 = random.Next ().ToString ();
+      instance.StringProperty1 = Guid.NewGuid().ToString ();
+      instance.StringProperty2 = Guid.NewGuid ().ToString ();
+      instance.StringProperty3 = Guid.NewGuid ().ToString ();
+      instance.StringProperty4 = Guid.NewGuid ().ToString ();
+      instance.StringProperty5 = Guid.NewGuid ().ToString ();
+      instance.StringProperty6 = Guid.NewGuid ().ToString ();
+      instance.StringProperty7 = Guid.NewGuid ().ToString ();
+      instance.StringProperty8 = Guid.NewGuid ().ToString ();
+      instance.StringProperty9 = Guid.NewGuid ().ToString ();
+      instance.StringProperty10 = Guid.NewGuid ().ToString ();
+    }
+
+    private void CreateAndFillSmallValuePropertyObject ()
+    {
+      Random random = new Random ();
+      ClassWithFewValueProperties instance = ClassWithFewValueProperties.NewObject ().With ();
+
+      instance.BoolProperty1 = random.Next () % 2 == 0;
+      instance.BoolProperty2 = random.Next () % 2 == 0;
+      instance.BoolProperty3 = random.Next () % 2 == 0;
+      instance.BoolProperty4 = random.Next () % 2 == 0;
+      instance.BoolProperty5 = random.Next () % 2 == 0;
+
+      instance.IntProperty1 = random.Next ();
+      instance.IntProperty2 = random.Next ();
+      instance.IntProperty3 = random.Next ();
+      instance.IntProperty4 = random.Next ();
+      instance.IntProperty5 = random.Next ();
+
+      instance.DateTimeProperty1 = new DateTime (random.Next () % 2000 + 1000, random.Next () % 12 + 1, random.Next () % 28 + 1);
+      instance.DateTimeProperty2 = new DateTime (random.Next () % 2000 + 1000, random.Next () % 12 + 1, random.Next () % 28 + 1);
+      instance.DateTimeProperty3 = new DateTime (random.Next () % 2000 + 1000, random.Next () % 12 + 1, random.Next () % 28 + 1);
+      instance.DateTimeProperty4 = new DateTime (random.Next () % 2000 + 1000, random.Next () % 12 + 1, random.Next () % 28 + 1);
+      instance.DateTimeProperty5 = new DateTime (random.Next () % 2000 + 1000, random.Next () % 12 + 1, random.Next () % 28 + 1);
+
+      instance.StringProperty1 = Guid.NewGuid ().ToString ();
+      instance.StringProperty2 = Guid.NewGuid ().ToString ();
+      instance.StringProperty3 = Guid.NewGuid ().ToString ();
+      instance.StringProperty4 = Guid.NewGuid ().ToString ();
+      instance.StringProperty5 = Guid.NewGuid ().ToString ();
     }
 
     private void CreateAndFillRelationPropertyObject ()
