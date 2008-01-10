@@ -12,7 +12,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
   {
     [Test]
     [ExpectedException (typeof (SerializationException), ExpectedMessage = "Type 'Rubicon.Data.DomainObjects.DataContainer' in Assembly "
-        + "'Rubicon.Data.DomainObjects, Version=1.7.65.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd' is not marked as serializable.")]
+        + ".* is not marked as serializable.", MatchType = MessageMatch.Regex)]
     [Ignore ("TODO: FS - after finishing flattened serializable implementation")]
     public void DataContainerIsNotSerializable ()
     {

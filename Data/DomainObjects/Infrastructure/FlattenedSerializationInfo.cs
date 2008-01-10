@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Rubicon.Utilities;
 
@@ -42,9 +43,15 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public void AddArray<T> (T[] valueArray)
     {
       ArgumentUtility.CheckNotNull ("valueArray", valueArray);
-      AddValue (valueArray.Length);
-      for (int i = 0; i < valueArray.Length; ++i)
-        AddValue (valueArray[i]);
+      AddCollection (valueArray);
+    }
+
+    public void AddCollection<T> (ICollection<T> valueCollection)
+    {
+      ArgumentUtility.CheckNotNull ("valueCollection", valueCollection);
+      AddValue (valueCollection.Count);
+      foreach (T t in valueCollection)
+        AddValue (t);
     }
 
     public void AddHandle<T> (T value)

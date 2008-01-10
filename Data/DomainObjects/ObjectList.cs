@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects
 {

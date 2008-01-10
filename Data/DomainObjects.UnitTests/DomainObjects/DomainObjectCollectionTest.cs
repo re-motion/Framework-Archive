@@ -191,6 +191,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.AreEqual (1, _collection.Count, "Item count");
       Assert.AreSame (_customer1, _collection[_customer1.ID], "Customer 1");
+
+      _collection.Remove (_customer2.ID);
+    }
+
+    [Test]
+    public void RemoveObject ()
+    {
+      Assert.IsTrue (_collection.Remove (_customer2));
+
+      Assert.AreEqual (1, _collection.Count, "Item count");
+      Assert.AreSame (_customer1, _collection[_customer1.ID], "Customer 1");
+
+      Assert.IsFalse (_collection.Remove (_customer2));
     }
 
     [Test]

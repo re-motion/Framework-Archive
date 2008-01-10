@@ -1,5 +1,8 @@
 using System;
+using System.Reflection;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Reflection;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
@@ -20,6 +23,7 @@ namespace Rubicon.Data.DomainObjects.DataManagement
 
     // member fields
 
+    // this field is not serialized via IFlattenedSerializable.SerializeIntoFlatStructure
     private ICollectionEndPointChangeDelegate _changeDelegate = null;
 
     private readonly DomainObjectCollection _originalOppositeDomainObjects;
@@ -71,7 +75,7 @@ namespace Rubicon.Data.DomainObjects.DataManagement
       return clone;
     }
 
-    internal override void AssumeSameState (RelationEndPoint source)
+    protected internal override void AssumeSameState (RelationEndPoint source)
     {
       Assertion.IsTrue (Definition == source.Definition);
 
@@ -82,7 +86,7 @@ namespace Rubicon.Data.DomainObjects.DataManagement
       _hasBeenTouched = sourceCollectionEndPoint._hasBeenTouched;
     }
 
-    internal override void TakeOverCommittedData (RelationEndPoint source)
+    protected internal override void TakeOverCommittedData (RelationEndPoint source)
     {
       Assertion.IsTrue (Definition == source.Definition);
 
@@ -92,7 +96,7 @@ namespace Rubicon.Data.DomainObjects.DataManagement
       _hasBeenTouched |= sourceCollectionEndPoint._hasBeenTouched || HasChanged;
     }
 
-    internal override void RegisterWithMap (RelationEndPointMap map)
+    protected internal override void RegisterWithMap (RelationEndPointMap map)
     {
       ChangeDelegate = map;
     }
@@ -234,6 +238,35 @@ namespace Rubicon.Data.DomainObjects.DataManagement
     void ICollectionChangeDelegate.MarkAsTouched ()
     {
       _hasBeenTouched = true;
+    }
+
+    #endregion
+
+    #region Serialization
+
+    protected CollectionEndPoint (FlattenedDeserializationInfo info)
+        : base (info)
+    {
+      Type collectionType = info.GetValueForHandle<Type>();
+      _originalOppositeDomainObjects = (DomainObjectCollection) 
+          TypesafeActivator.CreateInstance (collectionType, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).With();
+      _originalOppositeDomainObjects.DeserializeFromFlatStructure (info);
+      _originalOppositeDomainObjects.ChangeDelegate = this;
+
+      _oppositeDomainObjects = (DomainObjectCollection)
+          TypesafeActivator.CreateInstance (collectionType, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).With ();
+      _oppositeDomainObjects.DeserializeFromFlatStructure (info);
+      _oppositeDomainObjects.ChangeDelegate = this;
+
+      _hasBeenTouched = info.GetValue<bool> ();
+    }
+
+    protected override void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
+    {
+      info.AddHandle (_originalOppositeDomainObjects.GetType());
+      _originalOppositeDomainObjects.SerializeIntoFlatStructure (info);
+      _oppositeDomainObjects.SerializeIntoFlatStructure (info);
+      info.AddValue (_hasBeenTouched);
     }
 
     #endregion

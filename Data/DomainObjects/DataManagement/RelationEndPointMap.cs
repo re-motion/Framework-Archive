@@ -692,11 +692,14 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
       : this (info.GetValueForHandle<ClientTransaction>())
   {
     ArgumentUtility.CheckNotNull ("info", info);
-    RelationEndPoint[] endPointArray = info.GetArray<RelationEndPoint>();
-    foreach (RelationEndPoint endPoint in endPointArray)
+    using (_clientTransaction.EnterNonDiscardingScope ())
     {
-      _relationEndPoints.Add (endPoint);
-      endPoint.RegisterWithMap (this);
+      RelationEndPoint[] endPointArray = info.GetArray<RelationEndPoint>();
+      foreach (RelationEndPoint endPoint in endPointArray)
+      {
+        _relationEndPoints.Add (endPoint);
+        endPoint.RegisterWithMap (this);
+      }
     }
   }
 

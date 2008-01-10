@@ -84,5 +84,10 @@ public class NullObjectEndPoint : ObjectEndPoint
   {
     get { return true; }
   }
+
+  protected override void SerializeIntoFlatStructure (Rubicon.Data.DomainObjects.Infrastructure.FlattenedSerializationInfo info)
+  {
+    throw new InvalidOperationException ("Rollback cannot be called on a NullCollectionEndPoint.");
+  }
 }
 }

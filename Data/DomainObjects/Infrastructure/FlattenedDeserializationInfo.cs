@@ -78,6 +78,13 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       return array;
     }
 
+    public void FillCollection<T> (ICollection<T> targetCollection)
+    {
+      int length = GetValue<int> ();
+      for (int i = 0; i < length; ++i)
+        targetCollection.Add (GetValue<T> ());
+    }
+
     public T GetValueForHandle<T> ()
     {
       int handle = GetValue<int> ();

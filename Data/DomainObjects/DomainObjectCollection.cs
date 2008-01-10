@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
@@ -89,7 +90,7 @@ namespace Rubicon.Data.DomainObjects
   /// </para>
   /// </remarks>
   [Serializable]
-  public class DomainObjectCollection : CommonCollection, ICloneable, IList, IEnumerable<DomainObject>
+  public class DomainObjectCollection : CommonCollection, ICloneable, IList, ICollection<DomainObject>
   {
     // types
 
@@ -258,6 +259,8 @@ namespace Rubicon.Data.DomainObjects
     public event DomainObjectCollectionChangeEventHandler Removed;
 
     private Type _requiredItemType;
+    
+    // this field will not be serialized via IFlattenedSerializable.SerializeIntoFlatStructure
     private ICollectionChangeDelegate _changeDelegate = null;
 
     // construction and disposing
@@ -267,7 +270,7 @@ namespace Rubicon.Data.DomainObjects
     /// </summary>
     /// <remarks>A derived class must support this constructor.</remarks>
     public DomainObjectCollection()
-        : this (null)
+        : this ((Type) null)
     {
     }
 
@@ -598,6 +601,8 @@ namespace Rubicon.Data.DomainObjects
     /// <summary>
     /// Removes a <see cref="DomainObject"/> from the collection.
     /// </summary>
+    /// <returns>True if the collection contained the given object when the method was called; false otherwise.
+    /// </returns>
     /// <remarks>
     ///   If <b>Remove</b> is called with an object that is not in the collection, no exception is thrown, and no events are raised. 
     /// </remarks>
@@ -609,7 +614,7 @@ namespace Rubicon.Data.DomainObjects
     ///   managing this collection. 
     ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
     /// </exception>
-    public void Remove (DomainObject domainObject)
+    public bool Remove (DomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
       if (IsReadOnly)
@@ -619,7 +624,7 @@ namespace Rubicon.Data.DomainObjects
       if (this[domainObject.ID] == null)
       {
         Touch();
-        return;
+        return false;
       }
 
       if (_changeDelegate != null)
@@ -630,6 +635,7 @@ namespace Rubicon.Data.DomainObjects
         PerformRemove (domainObject);
         EndRemove (domainObject);
       }
+      return true;
     }
 
     /// <summary>
@@ -1190,5 +1196,59 @@ namespace Rubicon.Data.DomainObjects
       if (_changeDelegate != null)
         _changeDelegate.MarkAsTouched ();
     }
+
+    void ICollection<DomainObject>.Add (DomainObject item)
+    {
+      ArgumentUtility.CheckNotNull ("item", item);
+      Add (item);
+    }
+
+    void ICollection<DomainObject>.CopyTo (DomainObject[] array, int arrayIndex)
+    {
+      ArgumentUtility.CheckNotNull ("array", array);
+      CopyTo (array, arrayIndex);
+    }
+
+    #region Serialization
+
+    public void DeserializeFromFlatStructure (FlattenedDeserializationInfo info)
+    {
+      _requiredItemType = info.GetValueForHandle<Type>();
+      Added += info.GetValue<DomainObjectCollectionChangeEventHandler> ();
+      Adding += info.GetValue<DomainObjectCollectionChangeEventHandler> ();
+      Removed += info.GetValue<DomainObjectCollectionChangeEventHandler> ();
+      Removing += info.GetValue<DomainObjectCollectionChangeEventHandler> ();
+
+      int count = info.GetValue<int>();
+      for (int i = 0; i < count; ++i)
+      {
+        ObjectID id = info.GetValueForHandle<ObjectID>();
+        DomainObject domainObject = RepositoryAccessor.GetObject (id, true); // info.GetValueForHandle<DomainObject>();
+        BaseAdd (id, domainObject);
+      }
+
+      SetIsReadOnly (info.GetValue<bool>());
+    }
+
+    public void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
+    {
+      info.AddHandle (_requiredItemType);
+      info.AddValue (Added);
+      info.AddValue (Adding);
+      info.AddValue (Removed);
+      info.AddValue (Removing);
+
+      info.AddValue (Count);
+      for (int i = 0; i < Count; ++i)
+      {
+        DomainObject domainObject = this[i];
+        info.AddHandle (domainObject.ID);
+        // info.AddHandle (domainObject);
+      }
+
+      info.AddValue (IsReadOnly);
+    }
+
+    #endregion
   }
 }

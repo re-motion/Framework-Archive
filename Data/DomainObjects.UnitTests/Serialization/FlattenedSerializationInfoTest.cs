@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using NUnit.Framework;
 using Rubicon.Collections;
@@ -94,6 +95,44 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
       deserializationInfo.GetArray<int> ();
+    }
+
+    [Test]
+    public void Collections ()
+    {
+      List<object> list1 = new List<object> (new object[] { "Foo", 1, 3.0 });
+      List<DateTime> list2 = new List<DateTime> (new DateTime[] { DateTime.MinValue, DateTime.MaxValue });
+
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
+      serializationInfo.AddCollection (list1);
+      serializationInfo.AddCollection (list2);
+      object[] data = serializationInfo.GetData ();
+
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
+      List<object> deserializedList1 = new List<object> ();
+      List<DateTime> deserializedList2 = new List<DateTime> ();
+
+      deserializationInfo.FillCollection (deserializedList1);
+      deserializationInfo.FillCollection (deserializedList2);
+
+      Assert.That (deserializedList1, Is.EqualTo (list1));
+      Assert.That (deserializedList2, Is.EqualTo (list2));
+    }
+
+    [Test]
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "The serialization stream contains an object of type System.String at "
+        + "position 1, but an object of type System.Int32 was expected.")]
+    public void InvalidCollectionType ()
+    {
+      List<object> list = new List<object> (new object[] { "Foo", 1, 3.0 });
+
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
+      serializationInfo.AddCollection (list);
+      object[] data = serializationInfo.GetData ();
+
+      List<int> deserializedList1 = new List<int> ();
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
+      deserializationInfo.FillCollection (deserializedList1);
     }
 
     [Test]

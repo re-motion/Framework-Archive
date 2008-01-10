@@ -307,6 +307,12 @@
     <Compile Include="Persistence\Rdbms\QueryCommandBuilderTest.cs" />
     <Compile Include="DataManagement\RelationEndPointModificationCollectionTest.cs" />
     <Compile Include="RhinoMocksRepositoryAdapter.cs" />
+    <Compile Include="Serialization\CollectionEndPointTest.cs" />
+    <Compile Include="Serialization\DomainObjectCollectionTest.cs" />
+    <Compile Include="Serialization\RelationEndPointIDTest.cs" />
+    <Compile Include="Serialization\RelationEndPointStub.cs" />
+    <Compile Include="Serialization\RelationEndPointTest.cs" />
+    <Compile Include="Serialization\ObjectEndPointTest.cs" />
     <Compile Include="Serialization\DataContainerMapTest.cs" />
     <Compile Include="Serialization\DataContainerTest.cs" />
     <Compile Include="Serialization\DataManagerTest.cs" />
