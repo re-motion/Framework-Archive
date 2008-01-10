@@ -51,11 +51,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       Assert.IsTrue (deserializedEndPoint.OppositeDomainObjects.Contains (DomainObjectIDs.OrderItem1));
       Assert.IsTrue (deserializedEndPoint.OppositeDomainObjects.Contains (DomainObjectIDs.OrderItem2));
       Assert.IsTrue (deserializedEndPoint.OppositeDomainObjects.Contains (DomainObjectIDs.OrderItem5));
+      Assert.IsFalse (deserializedEndPoint.OppositeDomainObjects.IsReadOnly);
       Assert.AreSame (deserializedEndPoint, PrivateInvoke.GetNonPublicField (deserializedEndPoint.OppositeDomainObjects, "_changeDelegate"));
 
       Assert.AreEqual (2, deserializedEndPoint.OriginalOppositeDomainObjects.Count);
       Assert.IsTrue (deserializedEndPoint.OriginalOppositeDomainObjects.Contains (DomainObjectIDs.OrderItem1));
       Assert.IsTrue (deserializedEndPoint.OriginalOppositeDomainObjects.Contains (DomainObjectIDs.OrderItem2));
+      Assert.IsTrue (deserializedEndPoint.OriginalOppositeDomainObjects.IsReadOnly);
       Assert.AreSame (deserializedEndPoint, PrivateInvoke.GetNonPublicField (deserializedEndPoint.OriginalOppositeDomainObjects, "_changeDelegate"));
 
       Assert.IsNull (deserializedEndPoint.ChangeDelegate);

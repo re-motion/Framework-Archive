@@ -495,9 +495,12 @@ public class PropertyValue
     _isDiscarded = info.GetValue<bool>();
     if (!_isDiscarded)
     {
-      _value = info.GetValue<object>();
-      _originalValue = info.GetValue<object>();
-      _hasBeenTouched = info.GetValue<bool>();
+      _hasBeenTouched = info.GetValue<bool> ();
+      _value = info.GetValue<object> ();
+      if (_hasBeenTouched)
+        _originalValue = info.GetValue<object> ();
+      else
+        _originalValue = _value;
     }
   }
 
@@ -508,9 +511,10 @@ public class PropertyValue
     else
     {
       info.AddValue (_isDiscarded);
-      info.AddValue (_value);
-      info.AddValue (_originalValue);
       info.AddValue (_hasBeenTouched);
+      info.AddValue (_value);
+      if (_hasBeenTouched)
+        info.AddValue (_originalValue);
     }
   }
   #endregion

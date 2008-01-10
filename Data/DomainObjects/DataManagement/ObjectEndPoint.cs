@@ -192,16 +192,20 @@ namespace Rubicon.Data.DomainObjects.DataManagement
     protected ObjectEndPoint (FlattenedDeserializationInfo info)
         : base (info)
     {
-      _originalOppositeObjectID = info.GetValueForHandle<ObjectID>();
+      _hasBeenTouched = info.GetValue<bool> ();
       _oppositeObjectID = info.GetValueForHandle<ObjectID>();
-      _hasBeenTouched = info.GetValue<bool>();
+      if (_hasBeenTouched)
+        _originalOppositeObjectID = info.GetValueForHandle<ObjectID> ();
+      else
+        _originalOppositeObjectID = _oppositeObjectID;
     }
 
     protected override void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddHandle (_originalOppositeObjectID);
-      info.AddHandle (_oppositeObjectID);
       info.AddValue (_hasBeenTouched);
+      info.AddHandle (_oppositeObjectID);
+      if (_hasBeenTouched)
+        info.AddHandle (_originalOppositeObjectID);
     }
 
     #endregion
