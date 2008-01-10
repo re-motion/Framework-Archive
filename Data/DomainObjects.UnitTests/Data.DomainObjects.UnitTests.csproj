@@ -314,6 +314,7 @@
     <Compile Include="Serialization\FlattenedSerializer.cs" />
     <Compile Include="Serialization\FlattenedSerializableStub.cs" />
     <Compile Include="Serialization\ObjectIDTest.cs" />
+    <Compile Include="Serialization\RelationEndPointMapTest.cs" />
     <Compile Include="TestDomain\ClassDerivedFromSimpleDomainObject.cs" />
     <Compile Include="TestDomain\ClassWithoutProperties.cs" />
     <Compile Include="TestDomain\ClassWithSerializationCallbacks.cs" />

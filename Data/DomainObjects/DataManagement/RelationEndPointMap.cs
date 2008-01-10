@@ -8,7 +8,7 @@ using System.Collections;
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
 [Serializable]
-public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerable
+public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerable, IFlattenedSerializable
 {
   // types
 
@@ -686,5 +686,28 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerabl
   {
     return _relationEndPoints.GetEnumerator ();
   }
+
+  #region Serialization
+  protected RelationEndPointMap (FlattenedDeserializationInfo info)
+      : this (info.GetValueForHandle<ClientTransaction>())
+  {
+    ArgumentUtility.CheckNotNull ("info", info);
+    RelationEndPoint[] endPointArray = info.GetArray<RelationEndPoint>();
+    foreach (RelationEndPoint endPoint in endPointArray)
+    {
+      _relationEndPoints.Add (endPoint);
+      endPoint.RegisterWithMap (this);
+    }
+  }
+
+  void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
+  {
+    ArgumentUtility.CheckNotNull ("info", info);
+    info.AddHandle (_clientTransaction);
+    RelationEndPoint[] endPointArray = new RelationEndPoint[Count];
+    _relationEndPoints.CopyTo (endPointArray, 0);
+    info.AddArray (endPointArray);
+  }
+  #endregion
 }
 }
