@@ -32,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     private T GetFlattenedSerializable<T> (int originalPosition)
     {
-      Type type = GetValue<Type>();
+      Type type = GetValueForHandle<Type>();
       object instance = TypesafeActivator.CreateInstance (type, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).With (this);
       return CastValue<T>(instance, originalPosition);
     }

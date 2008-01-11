@@ -1223,7 +1223,7 @@ namespace Rubicon.Data.DomainObjects
       for (int i = 0; i < count; ++i)
       {
         ObjectID id = info.GetValueForHandle<ObjectID>();
-        DomainObject domainObject = RepositoryAccessor.GetObject (id, true); // info.GetValueForHandle<DomainObject>();
+        DomainObject domainObject = info.GetValueForHandle<DomainObject>();
         BaseAdd (id, domainObject);
       }
 
@@ -1243,7 +1243,7 @@ namespace Rubicon.Data.DomainObjects
       {
         DomainObject domainObject = this[i];
         info.AddHandle (domainObject.ID);
-        // info.AddHandle (domainObject);
+        info.AddHandle (domainObject);
       }
 
       info.AddValue (IsReadOnly);

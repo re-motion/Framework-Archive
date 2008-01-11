@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 using NUnit.Framework;
 using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.DataManagement;
@@ -26,15 +28,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       Dev.Null = order.OrderItems[0];
 
-      Order discardedOrder = Order.NewObject();
+      Order discardedOrder = Order.NewObject ();
       DataContainer discardedContainer = discardedOrder.InternalDataContainer;
-      discardedOrder.Delete();
+      discardedOrder.Delete ();
 
       Assert.AreNotEqual (0, dataManager.DataContainerMap.Count);
       Assert.AreNotEqual (0, dataManager.RelationEndPointMap.Count);
       Assert.AreEqual (1, dataManager.DiscardedObjectCount);
       Assert.IsTrue (dataManager.IsDiscarded (discardedContainer.ID));
-      Assert.AreSame (discardedContainer, dataManager.GetDiscardedDataContainer(discardedContainer.ID));
+      Assert.AreSame (discardedContainer, dataManager.GetDiscardedDataContainer (discardedContainer.ID));
 
       Tuple<ClientTransaction, DataManager> deserializedData =
           Serializer.SerializeAndDeserialize (Tuple.NewTuple (ClientTransaction.Current, dataManager));
@@ -47,6 +49,45 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       Assert.AreSame (deserializedData.A, PrivateInvoke.GetNonPublicField (deserializedData.B, "_clientTransaction"));
       Assert.IsNotNull (PrivateInvoke.GetNonPublicField (deserializedData.B, "_transactionEventSink"));
+    }
+
+    // [Test]
+    public void DumpSerializedDataManager ()
+    {
+      DataManager dataManager = ClientTransactionMock.DataManager;
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Dev.Null = order.OrderItems[0];
+
+      Order discardedOrder = Order.NewObject ();
+      discardedOrder.Delete ();
+
+      for (int i = 0; i < 500; ++i)
+      {
+        Order newOrder = Order.NewObject();
+        newOrder.OrderTicket = OrderTicket.NewObject();
+      }
+
+      SerializationInfo info = new SerializationInfo (typeof (DataManager), new FormatterConverter ());
+      ((ISerializable) dataManager).GetObjectData (info, new StreamingContext ());
+      object[] data = (object[]) info.GetValue ("doInfo.GetData", typeof (object[]));
+      Dump (data);
+    }
+
+    private void Dump (object[] data)
+    {
+      Console.WriteLine ("The data array contains {0} elements.", data.Length);
+      Dictionary<Type, int> types = new Dictionary<Type, int> ();
+      foreach (object o in data)
+      {
+        Type type = o != null ? o.GetType() : typeof (void);
+        if (!types.ContainsKey (type))
+          types.Add (type, 0);
+        ++types[type];
+      }
+      List<KeyValuePair<Type, int>> typeList = new List<KeyValuePair<Type, int>> (types);
+      typeList.Sort (delegate (KeyValuePair<Type, int> one, KeyValuePair<Type, int> two) { return one.Value.CompareTo (two.Value); });
+      foreach (KeyValuePair<Type, int> entry in typeList)
+        Console.WriteLine ("{0}: {1}", entry.Key != typeof (void) ? entry.Key.ToString() : "<null>", entry.Value);
     }
   }
 }

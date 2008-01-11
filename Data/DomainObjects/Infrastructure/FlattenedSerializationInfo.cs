@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     private void AddFlattenedSerializable (IFlattenedSerializable serializable)
     {
       AddSimpleValue (FlattenedSerializableMarker.Instance);
-      AddSimpleValue (serializable.GetType ());
+      AddHandle (serializable.GetType ());
       serializable.SerializeIntoFlatStructure (this);
     }
 
