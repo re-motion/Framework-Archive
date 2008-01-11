@@ -1219,7 +1219,7 @@ namespace Rubicon.Data.DomainObjects
       Removed += info.GetValue<DomainObjectCollectionChangeEventHandler> ();
       Removing += info.GetValue<DomainObjectCollectionChangeEventHandler> ();
 
-      int count = info.GetValue<int>();
+      int count = info.GetIntValue();
       for (int i = 0; i < count; ++i)
       {
         ObjectID id = info.GetValueForHandle<ObjectID>();
@@ -1227,7 +1227,7 @@ namespace Rubicon.Data.DomainObjects
         BaseAdd (id, domainObject);
       }
 
-      SetIsReadOnly (info.GetValue<bool>());
+      SetIsReadOnly (info.GetBoolValue ());
     }
 
     public void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
@@ -1238,7 +1238,7 @@ namespace Rubicon.Data.DomainObjects
       info.AddValue (Removed);
       info.AddValue (Removing);
 
-      info.AddValue (Count);
+      info.AddIntValue (Count);
       for (int i = 0; i < Count; ++i)
       {
         DomainObject domainObject = this[i];
@@ -1246,7 +1246,7 @@ namespace Rubicon.Data.DomainObjects
         info.AddHandle (domainObject);
       }
 
-      info.AddValue (IsReadOnly);
+      info.AddBoolValue (IsReadOnly);
     }
 
     #endregion

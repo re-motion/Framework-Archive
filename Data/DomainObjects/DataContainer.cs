@@ -614,7 +614,7 @@ namespace Rubicon.Data.DomainObjects
     {
       InitializePropertyValues (this);
 
-      _isDiscarded = info.GetValue<bool> ();
+      _isDiscarded = info.GetBoolValue ();
       if (!_isDiscarded)
         RestorePropertyValuesFromData (info);
 
@@ -623,7 +623,7 @@ namespace Rubicon.Data.DomainObjects
       _clientTransaction = info.GetValueForHandle<ClientTransaction> ();
       _state = info.GetValue<DataContainerStateType> ();
       _domainObject = info.GetValueForHandle<DomainObject> ();
-      _hasBeenMarkedChanged = info.GetValue<bool> ();
+      _hasBeenMarkedChanged = info.GetBoolValue ();
     }
 
     private void RestorePropertyValuesFromData (FlattenedDeserializationInfo info)
@@ -641,7 +641,7 @@ namespace Rubicon.Data.DomainObjects
     {
       info.AddHandle (_id);
       info.AddValue (_timestamp);
-      info.AddValue (_isDiscarded);
+      info.AddBoolValue (_isDiscarded);
       if (!_isDiscarded)
       {
         foreach (PropertyValue propertyValue in _propertyValues)
@@ -656,7 +656,7 @@ namespace Rubicon.Data.DomainObjects
       info.AddHandle (_clientTransaction);
       info.AddValue (_state);
       info.AddHandle (_domainObject);
-      info.AddValue (_hasBeenMarkedChanged);
+      info.AddBoolValue (_hasBeenMarkedChanged);
     }
 
     private DataContainer (SerializationInfo info, StreamingContext context)

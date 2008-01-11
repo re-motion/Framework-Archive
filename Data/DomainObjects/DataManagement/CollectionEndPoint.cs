@@ -258,7 +258,7 @@ namespace Rubicon.Data.DomainObjects.DataManagement
       _oppositeDomainObjects.DeserializeFromFlatStructure (info);
       _oppositeDomainObjects.ChangeDelegate = this;
 
-      _hasBeenTouched = info.GetValue<bool> ();
+      _hasBeenTouched = info.GetBoolValue ();
     }
 
     protected override void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
@@ -266,7 +266,7 @@ namespace Rubicon.Data.DomainObjects.DataManagement
       info.AddHandle (_originalOppositeDomainObjects.GetType());
       _originalOppositeDomainObjects.SerializeIntoFlatStructure (info);
       _oppositeDomainObjects.SerializeIntoFlatStructure (info);
-      info.AddValue (_hasBeenTouched);
+      info.AddBoolValue (_hasBeenTouched);
     }
 
     #endregion

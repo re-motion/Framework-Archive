@@ -192,7 +192,7 @@ namespace Rubicon.Data.DomainObjects.DataManagement
     protected ObjectEndPoint (FlattenedDeserializationInfo info)
         : base (info)
     {
-      _hasBeenTouched = info.GetValue<bool> ();
+      _hasBeenTouched = info.GetBoolValue ();
       _oppositeObjectID = info.GetValueForHandle<ObjectID>();
       if (_hasBeenTouched)
         _originalOppositeObjectID = info.GetValueForHandle<ObjectID> ();
@@ -202,7 +202,7 @@ namespace Rubicon.Data.DomainObjects.DataManagement
 
     protected override void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddValue (_hasBeenTouched);
+      info.AddBoolValue (_hasBeenTouched);
       info.AddHandle (_oppositeObjectID);
       if (_hasBeenTouched)
         info.AddHandle (_originalOppositeObjectID);

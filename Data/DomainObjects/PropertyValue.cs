@@ -492,10 +492,10 @@ public class PropertyValue
   #region Serialization
   internal void DeserializeFromFlatStructure (FlattenedDeserializationInfo info)
   {
-    _isDiscarded = info.GetValue<bool>();
+    _isDiscarded = info.GetBoolValue ();
     if (!_isDiscarded)
     {
-      _hasBeenTouched = info.GetValue<bool> ();
+      _hasBeenTouched = info.GetBoolValue ();
       _value = info.GetValue<object> ();
       if (_hasBeenTouched)
         _originalValue = info.GetValue<object> ();
@@ -507,11 +507,11 @@ public class PropertyValue
   internal void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
   {
     if (_isDiscarded)
-      info.AddValue (true);
+      info.AddBoolValue (true);
     else
     {
-      info.AddValue (_isDiscarded);
-      info.AddValue (_hasBeenTouched);
+      info.AddBoolValue (_isDiscarded);
+      info.AddBoolValue (_hasBeenTouched);
       info.AddValue (_value);
       if (_hasBeenTouched)
         info.AddValue (_originalValue);

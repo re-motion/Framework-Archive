@@ -15,7 +15,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void Values ()
     {
       FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo();
-      serializationInfo.AddValue (1);
+      serializationInfo.AddIntValue (1);
+      serializationInfo.AddBoolValue (true);
+      serializationInfo.AddIntValue (2);
+      serializationInfo.AddBoolValue (false);
       serializationInfo.AddValue (new DateTime (2007, 1, 2));
       serializationInfo.AddValue ("Foo");
       serializationInfo.AddValue<object> (null);
@@ -23,19 +26,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       object[] data = serializationInfo.GetData();
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
-      Assert.AreEqual (1, deserializationInfo.GetValue<int> ());
+      Assert.AreEqual (1, deserializationInfo.GetIntValue ());
+      Assert.AreEqual (true, deserializationInfo.GetBoolValue ());
+      Assert.AreEqual (2, deserializationInfo.GetIntValue ());
+      Assert.AreEqual (false, deserializationInfo.GetBoolValue ());
       Assert.AreEqual (new DateTime (2007, 1, 2), deserializationInfo.GetValue<DateTime> ());
       Assert.AreEqual ("Foo", deserializationInfo.GetValue<string> ());
       Assert.AreEqual (null, deserializationInfo.GetValue<int?> ());
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "The serialization stream contains an object of type System.Int32 at "
-        + "position 0, but an object of type System.String was expected.")]
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Object stream: The serialization stream contains an object of type "
+        + "System.DateTime at position 0, but an object of type System.String was expected.")]
     public void InvalidDeserializedType ()
     {
       FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
-      serializationInfo.AddValue (1);
+      serializationInfo.AddValue (DateTime.Now);
       object[] data = serializationInfo.GetData ();
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
@@ -43,8 +49,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "The serialization stream contains a null value at "
-        + "position 0, but an object of type System.Int32 was expected.")]
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Object stream: There is no more data in the serialization stream at "
+        + "position 0.")]
+    public void InvalidDeserializedType_DifferentStream ()
+    {
+      FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
+      serializationInfo.AddIntValue (1);
+      object[] data = serializationInfo.GetData ();
+
+      FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
+      deserializationInfo.GetValue<string> ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Object stream: The serialization stream contains a null value at "
+       + "position 0, but an object of type System.DateTime was expected.")]
     public void InvalidDeserializedType_WithNullAndValueType ()
     {
       FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
@@ -52,11 +71,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       object[] data = serializationInfo.GetData ();
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
-      deserializationInfo.GetValue<int> ();
+      deserializationInfo.GetValue<DateTime> ();
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "There is no more data in the serialization stream at position 0.")]
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Object stream: There is no more data in the serialization stream at "
+        + "position 0.")]
     public void InvalidNumberOfDeserializedItems ()
     {
       FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
@@ -83,8 +103,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "The serialization stream contains an object of type System.String at "
-        + "position 1, but an object of type System.Int32 was expected.")]
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Object stream: The serialization stream contains an object of type "
+        + "System.String at position 0, but an object of type System.Int32 was expected.")]
     public void InvalidArrayType ()
     {
       object[] array1 = new object[] { "Foo", 1, 3.0 };
@@ -120,8 +140,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "The serialization stream contains an object of type System.String at "
-        + "position 1, but an object of type System.Int32 was expected.")]
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Object stream: The serialization stream contains an object of type "
+        + "System.String at position 0, but an object of type System.Int32 was expected.")]
     public void InvalidCollectionType ()
     {
       List<object> list = new List<object> (new object[] { "Foo", 1, 3.0 });
@@ -188,8 +208,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "The serialization stream contains an object of type System.DateTime at "
-        + "position 3, but an object of type System.String was expected.")]
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Object stream: The serialization stream contains an object of type "
+        + "System.DateTime at position 1, but an object of type System.String was expected.")]
     public void HandlesWithInvalidType ()
     {
       DateTime dt1 = DateTime.MinValue;

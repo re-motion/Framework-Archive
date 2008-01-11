@@ -51,7 +51,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       Assert.IsNotNull (PrivateInvoke.GetNonPublicField (deserializedData.B, "_transactionEventSink"));
     }
 
-    // [Test]
     public void DumpSerializedDataManager ()
     {
       DataManager dataManager = ClientTransactionMock.DataManager;
@@ -70,14 +69,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       SerializationInfo info = new SerializationInfo (typeof (DataManager), new FormatterConverter ());
       ((ISerializable) dataManager).GetObjectData (info, new StreamingContext ());
       object[] data = (object[]) info.GetValue ("doInfo.GetData", typeof (object[]));
-      Dump (data);
+      Console.WriteLine ("Object stream:");
+      Dump ((object[])data[0]);
+      Console.WriteLine ("Int stream:");
+      Dump ((int[]) data[1]);
+      Console.WriteLine ("Bool stream:");
+      Dump ((bool[]) data[2]);
     }
 
-    private void Dump (object[] data)
+    private void Dump<T> (T[] data)
     {
       Console.WriteLine ("The data array contains {0} elements.", data.Length);
       Dictionary<Type, int> types = new Dictionary<Type, int> ();
-      foreach (object o in data)
+      foreach (T o in data)
       {
         Type type = o != null ? o.GetType() : typeof (void);
         if (!types.ContainsKey (type))

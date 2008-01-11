@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
   public class FlattenedSerializationInfo
   {
-    private readonly List<object> _data = new List<object>();
+    private readonly FlattenedSerializationWriter<object> _objectWriter = new FlattenedSerializationWriter<object> ();
+    private readonly FlattenedSerializationWriter<int> _intWriter = new FlattenedSerializationWriter<int> ();
+    private readonly FlattenedSerializationWriter<bool> _boolWriter = new FlattenedSerializationWriter<bool> ();
     private readonly Dictionary<object, int> _handleMap = new Dictionary<object, int>();
 
     public FlattenedSerializationInfo ()
@@ -16,28 +19,33 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public object[] GetData ()
     {
-      return _data.ToArray();
+      return new object[] { _objectWriter.GetData (), _intWriter.GetData (), _boolWriter.GetData() };
+    }
+
+    public void AddIntValue (int value)
+    {
+      _intWriter.AddSimpleValue (value);
+    }
+
+    public void AddBoolValue (bool value)
+    {
+      _boolWriter.AddSimpleValue (value);
     }
 
     public void AddValue<T> (T value)
     {
       IFlattenedSerializable serializable = value as IFlattenedSerializable;
       if (serializable != null)
-        AddFlattenedSerializable(serializable);
+        AddFlattenedSerializable (serializable);
       else
-        AddSimpleValue(value);
+        _objectWriter.AddSimpleValue (value);
     }
 
     private void AddFlattenedSerializable (IFlattenedSerializable serializable)
     {
-      AddSimpleValue (FlattenedSerializableMarker.Instance);
+      _objectWriter.AddSimpleValue (FlattenedSerializableMarker.Instance);
       AddHandle (serializable.GetType ());
       serializable.SerializeIntoFlatStructure (this);
-    }
-
-    private void AddSimpleValue<T> (T value)
-    {
-      _data.Add (value);
     }
 
     public void AddArray<T> (T[] valueArray)
@@ -49,7 +57,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public void AddCollection<T> (ICollection<T> valueCollection)
     {
       ArgumentUtility.CheckNotNull ("valueCollection", valueCollection);
-      AddValue (valueCollection.Count);
+      AddIntValue (valueCollection.Count);
       foreach (T t in valueCollection)
         AddValue (t);
     }
@@ -57,7 +65,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public void AddHandle<T> (T value)
     {
       if (value == null)
-        AddValue (-1);
+        AddIntValue (-1);
       else
       {
         int handle;
@@ -65,11 +73,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         {
           handle = _handleMap.Count;
           _handleMap.Add (value, handle);
-          AddValue (handle);
+          AddIntValue (handle);
           AddValue (value);
         }
         else
-          AddValue (handle);
+          AddIntValue (handle);
       }
     }
   }

@@ -18,14 +18,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     protected FlattenedSerializableStub (FlattenedDeserializationInfo info)
     {
       Data1 = info.GetValue<string> ();
-      Data2 = info.GetValue<int> ();
+      Data2 = info.GetIntValue ();
       Data3 = info.GetValueForHandle<FlattenedSerializableStub> ();
     }
 
     public void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
       info.AddValue (Data1);
-      info.AddValue (Data2);
+      info.AddIntValue (Data2);
       info.AddHandle (Data3);
     }
   }

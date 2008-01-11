@@ -118,8 +118,10 @@
     <Compile Include="Design\DesignModeMappingReflector.cs" />
     <Compile Include="DomainObjectMixin.cs" />
     <Compile Include="Infrastructure\FlattenedDeserializationInfo.cs" />
+    <Compile Include="Infrastructure\FlattenedSerializationReader.cs" />
     <Compile Include="Infrastructure\FlattenedSerializableMarker.cs" />
     <Compile Include="Infrastructure\FlattenedSerializationInfo.cs" />
+    <Compile Include="Infrastructure\FlattenedSerializationWriter.cs" />
     <Compile Include="Infrastructure\IFlattenedSerializable.cs" />
     <Compile Include="Infrastructure\RepositoryAccessor.cs" />
     <Compile Include="Mapping\SerializableMappingObject.cs" />
