@@ -338,20 +338,20 @@ namespace Rubicon.Mixins.Context
     }
 
     /// <summary>
-    /// Gets the <see cref="MixinContext"/> for the given mixin type associated with this <see cref="ClassContext"/>, adding a new one if necessary.
+    /// Gets the <see cref="MixinContext"/> for the given mixin type associated with this <see cref="ClassContext"/>.
     /// </summary>
     /// <param name="mixinType">The mixin type to retrieve a <see cref="MixinContext"/> for.</param>
     /// <returns>A <see cref="MixinContext"/> for the given mixin type associated with this <see cref="ClassContext"/>.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="mixinType"/> parameter is <see langword="null"/>.</exception>
-    /// <exception cref="InvalidOperationException">The <see cref="ClassContext"/> is frozen.</exception>
-    public MixinContext GetOrAddMixinContext (Type mixinType)
+    public MixinContext GetMixinContext (Type mixinType)
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
       lock (_lockObject)
       {
         if (!ContainsMixin (mixinType))
-          AddMixin (mixinType);
-        return _mixins[mixinType];
+          return null;
+        else
+          return _mixins[mixinType];
       }
     }
 

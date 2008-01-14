@@ -27,11 +27,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     {
       MixinConfiguration context =
           new DeclarativeConfigurationBuilder (null).AddType (typeof (UserWithoutDependencies)).AddType (typeof (UserWithDependencies)).BuildConfiguration();
-      Assert.AreEqual (0, context.GetClassContext (typeof (UserWithoutDependencies)).GetOrAddMixinContext (typeof (NullMixin))
+      Assert.AreEqual (0, context.GetClassContext (typeof (UserWithoutDependencies)).GetMixinContext (typeof (NullMixin))
           .ExplicitDependencyCount);
-      Assert.AreEqual (1, context.GetClassContext (typeof (UserWithDependencies)).GetOrAddMixinContext (typeof (NullMixin))
+      Assert.AreEqual (1, context.GetClassContext (typeof (UserWithDependencies)).GetMixinContext (typeof (NullMixin))
           .ExplicitDependencyCount);
-      Assert.IsTrue (context.GetClassContext (typeof (UserWithDependencies)).GetOrAddMixinContext (typeof (NullMixin))
+      Assert.IsTrue (context.GetClassContext (typeof (UserWithDependencies)).GetMixinContext (typeof (NullMixin))
           .ContainsExplicitDependency (typeof (string)));
     }
 
@@ -46,7 +46,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     {
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (DerivedWithoutUses)).BuildConfiguration ();
       Assert.IsTrue (context.GetClassContext (typeof (DerivedWithoutUses)).ContainsMixin (typeof (NullMixin)));
-      Assert.IsTrue (context.GetClassContext (typeof (DerivedWithoutUses)).GetOrAddMixinContext (typeof (NullMixin)).ContainsExplicitDependency (typeof (object)));
+      Assert.IsTrue (context.GetClassContext (typeof (DerivedWithoutUses)).GetMixinContext (typeof (NullMixin))
+          .ContainsExplicitDependency (typeof (object)));
       Assert.AreEqual (1, context.GetClassContext (typeof (DerivedWithoutUses)).MixinCount);
     }
 
@@ -110,7 +111,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     {
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (DerivedWithUses)).BuildConfiguration ();
       Assert.IsTrue (context.GetClassContext (typeof (DerivedWithUses)).ContainsMixin (typeof (NullMixin)));
-      Assert.IsFalse (context.GetClassContext (typeof (DerivedWithUses)).GetOrAddMixinContext (typeof (NullMixin)).ContainsExplicitDependency (typeof (object)));
+      Assert.IsFalse (context.GetClassContext (typeof (DerivedWithUses)).GetMixinContext (typeof (NullMixin))
+          .ContainsExplicitDependency (typeof (object)));
       Assert.AreEqual (1, context.GetClassContext (typeof (DerivedWithUses)).MixinCount);
     }
 

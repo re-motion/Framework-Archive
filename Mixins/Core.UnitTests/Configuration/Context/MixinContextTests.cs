@@ -54,8 +54,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     [Test]
     public void CannotCastExplicitDependenciesToICollection ()
     {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      MixinContext mc = cc.GetOrAddMixinContext (typeof (BT1Mixin1));
+      ClassContext cc = new ClassContext (typeof (BaseType1), typeof (BT1Mixin1));
+      MixinContext mc = cc.GetMixinContext (typeof (BT1Mixin1));
       Assert.IsTrue (mc.ExplicitDependencies is IEnumerable<Type>);
       Assert.IsFalse (mc.ExplicitDependencies is List<Type>);
       Assert.IsFalse (mc.ExplicitDependencies is IList<Type>);

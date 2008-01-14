@@ -183,8 +183,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       Assert.IsNotNull (classContext);
 
       Assert.IsTrue (classContext.ContainsMixin (typeof (MixinWithAdditionalClassDependency)));
-      Assert.IsTrue (
-          classContext.GetOrAddMixinContext (typeof (MixinWithAdditionalClassDependency)).ContainsExplicitDependency (typeof (MixinWithNoAdditionalDependency)));
+      Assert.IsTrue (classContext.GetMixinContext (typeof (MixinWithAdditionalClassDependency))
+          .ContainsExplicitDependency (typeof (MixinWithNoAdditionalDependency)));
     }
 
     [Test]
