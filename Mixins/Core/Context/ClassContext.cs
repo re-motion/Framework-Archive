@@ -433,15 +433,16 @@ namespace Rubicon.Mixins.Context
       return newInstance;
     }
 
-    internal ClassContext CloneForSpecificType (Type type)
+    /// <summary>
+    /// Returns a new <see cref="ClassContext"/> with the same mixins and complete interfaces as this object, but a different target type.
+    /// </summary>
+    /// <param name="type">The target type to create the new <see cref="ClassContext"/> for.</param>
+    /// <returns>A clone of this <see cref="ClassContext"/> for a different target type.</returns>
+    public ClassContext CloneForSpecificType (Type type)
     {
       lock (_lockObject)
       {
-        List<MixinContext> mixinContextClones = new List<MixinContext> (MixinCount);
-        foreach (MixinContext mixinContext in Mixins)
-          mixinContextClones.Add (mixinContext.Clone ());
-
-        ClassContext newInstance = new ClassContext (type, mixinContextClones, CompleteInterfaces);
+        ClassContext newInstance = new ClassContext (type, Mixins, CompleteInterfaces);
         return newInstance;
       }
     }

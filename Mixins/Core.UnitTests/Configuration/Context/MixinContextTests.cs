@@ -63,15 +63,5 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       Assert.IsFalse (mc.ExplicitDependencies is ICollection);
       Assert.IsFalse (mc.ExplicitDependencies is IList);
     }
-
-    [Test]
-    public void Clone ()
-    {
-      ClassContext one = new ClassContextBuilder (typeof (BaseType1)).AddMixin<BT1Mixin1>().WithDependency<IBaseType2>().BuildClassContext();
-
-      ClassContext two = new ClassContext (typeof (BaseType2), one.GetOrAddMixinContext (typeof (BT1Mixin1)).Clone ());
-      Assert.IsTrue (two.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (two.GetOrAddMixinContext (typeof (BT1Mixin1)).ContainsExplicitDependency (typeof (IBaseType2)));
-    }
   }
 }

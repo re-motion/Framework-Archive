@@ -112,17 +112,6 @@ namespace Rubicon.Mixins.Context
     }
 
     /// <summary>
-    /// Creates a copy of this <see cref="MixinContext"/>.
-    /// </summary>
-    /// <returns>The newly created context holding equivalent configuration data to this <see cref="MixinContext"/>.</returns>
-    public MixinContext Clone ()
-    {
-      MixinContext clone = new MixinContext (MixinType, ExplicitDependencies);
-      Assertion.DebugAssert (clone.Equals (this));
-      return clone;
-    }
-
-    /// <summary>
     /// Gets the number of explicit dependencies added to this <see cref="MixinContext"/>.
     /// </summary>
     /// <value>The explicit dependency count.</value>

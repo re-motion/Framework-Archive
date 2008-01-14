@@ -7,6 +7,7 @@ using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Context.FluentBuilders;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Development.UnitTesting;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
 {
@@ -321,6 +322,23 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
 
       Assert.IsFalse (context.ContainsMixin (typeof (IList<>)));
       Assert.IsFalse (context.ContainsAssignableMixin (typeof (List<>)));
+    }
+
+    [Test]
+    public void CloneForSpecificType ()
+    {
+      MixinContext[] mixins = new MixinContext[] {
+          new MixinContext (typeof (BT1Mixin1), new Type[] { typeof (IBT1Mixin1) }),
+          new MixinContext (typeof (BT1Mixin2))
+      };
+      Type[] interfaces = new Type[] { typeof (ICBT6Mixin1), typeof (ICBT6Mixin2)};
+      ClassContext source = new ClassContext (typeof (BaseType1), mixins, interfaces);
+      ClassContext clone = source.CloneForSpecificType (typeof (BaseType2));
+      Assert.AreNotEqual (source, clone);
+      Assert.That (new List<MixinContext> (clone.Mixins), Is.EqualTo (mixins));
+      Assert.That (new List<Type> (clone.CompleteInterfaces), Is.EqualTo (interfaces));
+      Assert.AreEqual (typeof (BaseType2), clone.Type);
+      Assert.AreEqual (typeof (BaseType1), source.Type);
     }
   }
 }
