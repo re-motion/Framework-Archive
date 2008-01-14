@@ -28,7 +28,7 @@ namespace Rubicon.Mixins.Context
       get { return _internalCollection.Count; }
     }
 
-    public virtual bool Contains (TKey key)
+    public virtual bool ContainsKey (TKey key)
     {
       ArgumentUtility.CheckNotNull ("key", key);
       return _internalCollection.ContainsKey (key);

@@ -180,7 +180,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       Assert.AreNotSame (cc2, cc);
       Assert.AreEqual (cc2, cc);
       Assert.IsTrue (cc2.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (cc2.GetMixinContext (typeof (BT1Mixin1)).ContainsExplicitDependency (typeof (IBaseType2)));
+      Assert.IsTrue (cc2.GetMixinContext (typeof (BT1Mixin1)).ExplicitDependencies.ContainsKey (typeof (IBaseType2)));
     }
 
     [Test]
@@ -192,7 +192,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       Assert.IsNotNull (specialized);
       Assert.AreEqual (typeof (List<int>), specialized.Type);
       Assert.IsTrue (specialized.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (specialized.GetMixinContext (typeof (BT1Mixin1)).ContainsExplicitDependency (typeof (IBaseType2)));
+      Assert.IsTrue (specialized.GetMixinContext (typeof (BT1Mixin1)).ExplicitDependencies.ContainsKey (typeof (IBaseType2)));
     }
 
     [Test]

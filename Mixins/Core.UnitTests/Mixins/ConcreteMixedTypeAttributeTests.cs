@@ -121,16 +121,16 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.AreEqual (3, context.MixinCount);
 
       Assert.IsTrue (context.ContainsMixin (typeof (object)));
-      Assert.AreEqual (2, context.GetMixinContext (typeof (object)).ExplicitDependencyCount);
-      Assert.IsTrue (context.GetMixinContext (typeof (object)).ContainsExplicitDependency (typeof (double)));
-      Assert.IsTrue (context.GetMixinContext (typeof (object)).ContainsExplicitDependency (typeof (bool)));
+      Assert.AreEqual (2, context.GetMixinContext (typeof (object)).ExplicitDependencies.Count);
+      Assert.IsTrue (context.GetMixinContext (typeof (object)).ExplicitDependencies.ContainsKey (typeof (double)));
+      Assert.IsTrue (context.GetMixinContext (typeof (object)).ExplicitDependencies.ContainsKey (typeof (bool)));
 
       Assert.IsTrue (context.ContainsMixin (typeof (string)));
-      Assert.AreEqual (1, context.GetMixinContext (typeof (string)).ExplicitDependencyCount);
-      Assert.IsTrue (context.GetMixinContext (typeof (string)).ContainsExplicitDependency (typeof (bool)));
+      Assert.AreEqual (1, context.GetMixinContext (typeof (string)).ExplicitDependencies.Count);
+      Assert.IsTrue (context.GetMixinContext (typeof (string)).ExplicitDependencies.ContainsKey (typeof (bool)));
 
       Assert.IsTrue (context.ContainsMixin (typeof (int)));
-      Assert.AreEqual (0, context.GetMixinContext (typeof (int)).ExplicitDependencyCount);
+      Assert.AreEqual (0, context.GetMixinContext (typeof (int)).ExplicitDependencies.Count);
     }
 
     [Test]

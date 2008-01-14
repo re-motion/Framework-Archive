@@ -39,11 +39,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     [Test]
     public void Contains_Key ()
     {
-      Assert.IsTrue (_collection.Contains ("1"));
-      Assert.IsTrue (_collection.Contains ("2"));
-      Assert.IsTrue (_collection.Contains ("3"));
-      Assert.IsFalse (_collection.Contains ("4"));
-      Assert.IsFalse (_collection.Contains ("§"));
+      Assert.IsTrue (_collection.ContainsKey ("1"));
+      Assert.IsTrue (_collection.ContainsKey ("2"));
+      Assert.IsTrue (_collection.ContainsKey ("3"));
+      Assert.IsFalse (_collection.ContainsKey ("4"));
+      Assert.IsFalse (_collection.ContainsKey ("§"));
     }
 
     [Test]

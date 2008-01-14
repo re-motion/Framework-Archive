@@ -184,7 +184,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
 
       Assert.IsTrue (classContext.ContainsMixin (typeof (MixinWithAdditionalClassDependency)));
       Assert.IsTrue (classContext.GetMixinContext (typeof (MixinWithAdditionalClassDependency))
-          .ContainsExplicitDependency (typeof (MixinWithNoAdditionalDependency)));
+          .ExplicitDependencies.ContainsKey (typeof (MixinWithNoAdditionalDependency)));
     }
 
     [Test]

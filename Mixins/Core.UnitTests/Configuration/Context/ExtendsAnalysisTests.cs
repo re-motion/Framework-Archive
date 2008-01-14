@@ -29,11 +29,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       MixinConfiguration context =
           new DeclarativeConfigurationBuilder (null).AddType (typeof (ExtenderWithDependencies)).AddType (typeof (ExtenderWithoutDependencies)).BuildConfiguration ();
       Assert.AreEqual (0, context.GetClassContext (typeof (object)).GetMixinContext (typeof (ExtenderWithoutDependencies))
-          .ExplicitDependencyCount);
+          .ExplicitDependencies.Count);
       Assert.AreEqual (1, context.GetClassContext (typeof (object)).GetMixinContext (typeof (ExtenderWithDependencies))
-          .ExplicitDependencyCount);
+          .ExplicitDependencies.Count);
       Assert.IsTrue (context.GetClassContext (typeof (object)).GetMixinContext (typeof (ExtenderWithDependencies))
-          .ContainsExplicitDependency (typeof (string)));
+          .ExplicitDependencies.ContainsKey (typeof (string)));
     }
 
     public class ExtendsTargetBase { }

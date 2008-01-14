@@ -162,14 +162,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
       Assert.IsTrue (source.ContainsClassContext (typeof (BaseType2)));
       Assert.IsTrue (source.GetClassContext (typeof (BaseType2)).ContainsMixin (typeof (BT2Mixin1)));
       Assert.IsTrue (source.GetClassContext (typeof (BaseType2)).GetMixinContext (typeof (BT2Mixin1))
-          .ContainsExplicitDependency (typeof (IBaseType33)));
+          .ExplicitDependencies.ContainsKey (typeof (IBaseType33)));
 
       Assert.AreSame (source.GetClassContext (typeof (BaseType2)), source.ResolveInterface (typeof (IBaseType2)));
 
       Assert.IsTrue (source.ContainsClassContext (typeof (BaseType1)));
       Assert.IsTrue (source.GetClassContext (typeof (BaseType1)).ContainsMixin (typeof (BT1Mixin1)));
       Assert.IsTrue (source.GetClassContext (typeof (BaseType1)).GetMixinContext (typeof (BT1Mixin1))
-          .ContainsExplicitDependency (typeof (IBaseType34)));
+          .ExplicitDependencies.ContainsKey (typeof (IBaseType34)));
 
       MixinConfiguration destination = new MixinConfiguration ();
       destination.AddClassContext (new ClassContext (typeof (BaseType2)));
@@ -189,14 +189,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
       Assert.IsTrue (destination.ContainsClassContext (typeof (BaseType2)));
       Assert.IsTrue (destination.GetClassContext (typeof (BaseType2)).ContainsMixin (typeof (BT2Mixin1)));
       Assert.IsTrue (destination.GetClassContext (typeof (BaseType2)).GetMixinContext (typeof (BT2Mixin1))
-          .ContainsExplicitDependency (typeof (IBaseType33)));
+          .ExplicitDependencies.ContainsKey (typeof (IBaseType33)));
 
       Assert.AreSame (destination.GetClassContext (typeof (BaseType2)), destination.ResolveInterface (typeof (IBaseType2)));
 
       Assert.IsTrue (destination.ContainsClassContext (typeof (BaseType1)));
       Assert.IsTrue (destination.GetClassContext (typeof (BaseType1)).ContainsMixin (typeof (BT1Mixin1)));
       Assert.IsTrue (destination.GetClassContext (typeof (BaseType1)).GetMixinContext (typeof (BT1Mixin1))
-          .ContainsExplicitDependency (typeof (IBaseType34)));
+          .ExplicitDependencies.ContainsKey (typeof (IBaseType34)));
     }
 
     [Test]

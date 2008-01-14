@@ -27,12 +27,12 @@ namespace Rubicon.Mixins.Context
       }
     }
 
-    public bool Contains (TKey key)
+    public bool ContainsKey (TKey key)
     {
       ArgumentUtility.CheckNotNull ("key", key);
       lock (_syncObject)
       {
-        return _internalCollection.Contains (key);
+        return _internalCollection.ContainsKey (key);
       }
     }
 

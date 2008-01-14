@@ -30,7 +30,7 @@ namespace Rubicon.Mixins.CodeGeneration
       foreach (MixinContext mixin in context.Mixins)
       {
         mixinTypes.Add (mixin.MixinType);
-        if (mixin.ExplicitDependencyCount > 0)
+        if (mixin.ExplicitDependencies.Count > 0)
         {
           if (explicitDependencyList.Count != 0)
             explicitDependencyList.Add (typeof (NextMixinDependency));

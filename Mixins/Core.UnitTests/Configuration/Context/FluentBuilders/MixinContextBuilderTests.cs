@@ -32,7 +32,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.That (_mixinBuilder.Dependencies, Is.Empty);
 
       MixinContext mixinContext = _mixinBuilder.BuildMixinContext ();
-      Assert.AreEqual (0, mixinContext.ExplicitDependencyCount);
+      Assert.AreEqual (0, mixinContext.ExplicitDependencies.Count);
     }
 
     [Test]
@@ -84,7 +84,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       _mixinBuilder.WithDependency<IBT3Mixin4>();
       MixinContext context = _mixinBuilder.BuildMixinContext ();
       Assert.AreSame (typeof (BT2Mixin1), context.MixinType);
-      Assert.IsTrue (context.ContainsExplicitDependency (typeof (IBT3Mixin4)));
+      Assert.IsTrue (context.ExplicitDependencies.ContainsKey (typeof (IBT3Mixin4)));
     }
 
     [Test]

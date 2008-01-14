@@ -35,8 +35,7 @@ namespace Rubicon.Mixins.Context
     }
 
     public readonly Type MixinType;
-    private readonly Set<Type> _explicitDependencies;
-    private readonly UncastableEnumerableWrapper<Type> _explicitDependenciesForOutside;
+    private readonly ReadOnlyContextCollection<Type, Type> _explicitDependencies;
     private readonly int _cachedHashCode;
 
     /// <summary>
@@ -50,8 +49,7 @@ namespace Rubicon.Mixins.Context
       ArgumentUtility.CheckNotNull ("explicitDependencies", explicitDependencies);
 
       MixinType = mixinType;
-      _explicitDependencies = new Set<Type> (explicitDependencies);
-      _explicitDependenciesForOutside = new UncastableEnumerableWrapper<Type> (_explicitDependencies);
+      _explicitDependencies = new ReadOnlyContextCollection<Type, Type> (delegate (Type t) { return t; }, explicitDependencies);
 
       _cachedHashCode = MixinType.GetHashCode () ^ EqualityUtility.GetRotatedHashCode (ExplicitDependencies);
     }
@@ -72,7 +70,7 @@ namespace Rubicon.Mixins.Context
       ArgumentUtility.CheckNotNull ("info", info);
 
       ReflectionObjectSerializer.SerializeType (MixinType, key + ".MixinType", info);
-      info.AddValue (key + ".ExplicitDependencyCount", ExplicitDependencyCount);
+      info.AddValue (key + ".ExplicitDependencyCount", ExplicitDependencies.Count);
       IEnumerator<Type> dependencyEnumerator = ExplicitDependencies.GetEnumerator();
       for (int i = 0; dependencyEnumerator.MoveNext(); ++i)
         ReflectionObjectSerializer.SerializeType (dependencyEnumerator.Current, key + ".ExplicitDependencies[" + i + "]", info);
@@ -92,11 +90,11 @@ namespace Rubicon.Mixins.Context
       if (other == null)
         return false;
       
-      if (!other.MixinType.Equals (MixinType) || other.ExplicitDependencyCount != this.ExplicitDependencyCount)
+      if (!other.MixinType.Equals (MixinType) || other.ExplicitDependencies.Count != this.ExplicitDependencies.Count)
         return false;
 
       foreach (Type explicitDependency in ExplicitDependencies)
-        if (!other.ContainsExplicitDependency (explicitDependency))
+        if (!other.ExplicitDependencies.ContainsKey (explicitDependency))
           return false;
       return true;
     }
@@ -113,47 +111,17 @@ namespace Rubicon.Mixins.Context
     }
 
     /// <summary>
-    /// Gets the number of explicit dependencies added to this <see cref="MixinContext"/>.
-    /// </summary>
-    /// <value>The explicit dependency count.</value>
-    /// <remarks>An explicit dependency is a base call dependency which should be considered for a mixin even though it is not expressed in the
-    /// mixin's class declaration. This can be used to define the ordering of mixins in specific mixin configurations.</remarks>
-    public int ExplicitDependencyCount
-    {
-      get
-      {
-        return _explicitDependencies.Count;
-      }
-    }
-
-    /// <summary>
     /// Gets the explicit dependencies added to this <see cref="MixinContext"/>.
     /// </summary>
     /// <value>The explicit dependencies added to this <see cref="MixinContext"/>.</value>
     /// <remarks>An explicit dependency is a base call dependency which should be considered for a mixin even though it is not expressed in the
     /// mixin's class declaration. This can be used to define the ordering of mixins in specific mixin configurations.</remarks>
-    public IEnumerable<Type> ExplicitDependencies
+    public ReadOnlyContextCollection<Type, Type> ExplicitDependencies
     {
       get
       {
-        return _explicitDependenciesForOutside;
+        return _explicitDependencies;
       }
-    }
-
-    /// <summary>
-    /// Determines whether this <see cref="MixinContext"/> contains the given explicit dependency.
-    /// </summary>
-    /// <param name="interfaceType">The dependency type to check for.</param>
-    /// <returns>
-    /// True if this <see cref="MixinContext"/> contains the given explicit dependency; otherwise, false.
-    /// </returns>
-    /// <remarks>An explicit dependency is a base call dependency which should be considered for a mixin even though it is not expressed in the
-    /// mixin's class declaration. This can be used to define the ordering of mixins in specific mixin configurations.</remarks>
-    /// <exception cref="ArgumentNullException">The <paramref name="interfaceType"/> parameter is <see langword="null"/>.</exception>
-    public bool ContainsExplicitDependency (Type interfaceType)
-    {
-      ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
-      return _explicitDependencies.Contains (interfaceType);
     }
   }
 }
