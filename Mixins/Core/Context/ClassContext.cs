@@ -294,7 +294,7 @@ namespace Rubicon.Mixins.Context
       }
     }
 
-    public void AddMixinContext (MixinContext context)
+    private void AddMixinContext (MixinContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       lock (_lockObject)

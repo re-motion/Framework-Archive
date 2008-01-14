@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Mixins.Context;
+using Rubicon.Mixins.Context.FluentBuilders;
 using Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Mixins.Validation;
@@ -437,8 +438,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void FailsIfClassMixinDependencyNotFulfilled ()
     {
-      ClassContext context = new ClassContext (typeof (TargetClassWithAdditionalDependencies));
-      context.AddMixinContext (new MixinContext (typeof (MixinWithAdditionalClassDependency), new Type[] {typeof (MixinWithNoAdditionalDependency)}));
+      ClassContext context = new ClassContextBuilder (typeof (TargetClassWithAdditionalDependencies)).AddMixin<MixinWithAdditionalClassDependency>().WithDependency<MixinWithNoAdditionalDependency>().BuildClassContext();
 
       TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (context);
       DefaultValidationLog log = Validator.Validate (definition.Mixins[typeof (MixinWithAdditionalClassDependency)]);
@@ -449,8 +449,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void FailsIfInterfaceMixinDependencyNotFulfilled ()
     {
-      ClassContext context = new ClassContext (typeof (TargetClassWithAdditionalDependencies));
-      context.AddMixinContext (new MixinContext (typeof (MixinWithAdditionalInterfaceDependency), new Type[] {typeof (IMixinWithAdditionalClassDependency)}));
+      ClassContext context = new ClassContextBuilder (typeof (TargetClassWithAdditionalDependencies)).AddMixin<MixinWithAdditionalInterfaceDependency>().WithDependency<IMixinWithAdditionalClassDependency>().BuildClassContext();
 
       TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (context);
       DefaultValidationLog log = Validator.Validate (definition.Mixins[typeof (MixinWithAdditionalInterfaceDependency)]);

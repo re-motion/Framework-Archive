@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
+using Rubicon.Mixins.Context.FluentBuilders;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework.SyntaxHelpers;
 
@@ -66,12 +67,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     [Test]
     public void Clone ()
     {
-      ClassContext one = new ClassContext (typeof (BaseType1));
-      one.AddMixinContext (new MixinContext (typeof (BT1Mixin1), new Type[] { typeof (IBaseType2) }));
+      ClassContext one = new ClassContextBuilder (typeof (BaseType1)).AddMixin<BT1Mixin1>().WithDependency<IBaseType2>().BuildClassContext();
 
-      ClassContext two = new ClassContext (typeof (BaseType2));
-      Assert.IsFalse (two.ContainsMixin (typeof (BT1Mixin1)));
-      two.AddMixinContext (one.GetOrAddMixinContext (typeof (BT1Mixin1)).Clone ());
+      ClassContext two = new ClassContext (typeof (BaseType2), one.GetOrAddMixinContext (typeof (BT1Mixin1)).Clone ());
       Assert.IsTrue (two.ContainsMixin (typeof (BT1Mixin1)));
       Assert.IsTrue (two.GetOrAddMixinContext (typeof (BT1Mixin1)).ContainsExplicitDependency (typeof (IBaseType2)));
     }

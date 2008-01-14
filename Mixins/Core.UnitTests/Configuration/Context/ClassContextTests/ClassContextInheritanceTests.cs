@@ -91,8 +91,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void GetOrAddMixin ()
     {
-      ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixinContext (new MixinContext (typeof (DateTime), new Type[] {typeof (int)}));
+      ClassContext baseContext = new ClassContextBuilder (typeof (string)).AddMixin<DateTime>().WithDependency<int>().BuildClassContext();
 
       ClassContext inheritor = new ClassContext (typeof (double));
       inheritor.InheritFrom (baseContext);
@@ -103,11 +102,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void ExistingMixin_OverridesInherited ()
     {
-      ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixinContext (new MixinContext (typeof (DateTime), new Type[] {typeof (int)}));
-
-      ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.AddMixinContext (new MixinContext (typeof (DateTime), new Type[] {typeof (decimal)}));
+      ClassContext baseContext = new ClassContextBuilder (typeof (string)).AddMixin<DateTime>().WithDependency<int>().BuildClassContext();
+      ClassContext inheritor = new ClassContextBuilder (typeof (double)).AddMixin<DateTime>().WithDependency<decimal>().BuildClassContext();
       
       inheritor.InheritFrom (baseContext); // ignores inherited DateTime because DateTime already exists
 
@@ -120,11 +116,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void DerivedMixin_OverridesInherited ()
     {
-      ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixinContext (new MixinContext (typeof (NullTarget), new Type[] {typeof (int)}));
+      ClassContext baseContext = new ClassContextBuilder (typeof (string)).AddMixin<NullTarget>().WithDependency<int>().BuildClassContext();
 
-      ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.AddMixinContext (new MixinContext (typeof (DerivedNullTarget), new Type[] {typeof (decimal)}));
+      ClassContext inheritor = new ClassContextBuilder (typeof (double)).AddMixin<DerivedNullTarget>().WithDependency<decimal>().BuildClassContext();
 
       inheritor.InheritFrom (baseContext); // ignores inherited NullTarget because DerivedNullTarget already exists
 
@@ -138,11 +132,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void SpecializedGenericMixin_OverridesInherited ()
     {
-      ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixinContext (new MixinContext (typeof (GenericMixinWithVirtualMethod<>), new Type[] {typeof (int)}));
+      ClassContext baseContext = new ClassContextBuilder (typeof (string)).AddMixin (typeof (GenericMixinWithVirtualMethod<>)).WithDependency<int>().BuildClassContext();
 
-      ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.AddMixinContext (new MixinContext (typeof (GenericMixinWithVirtualMethod<object>), new Type[] {typeof (decimal)}));
+      ClassContext inheritor = new ClassContextBuilder (typeof (double)).AddMixin<GenericMixinWithVirtualMethod<object>>().WithDependency<decimal>().BuildClassContext();
 
       inheritor.InheritFrom (baseContext);
 
@@ -160,11 +152,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void SpecializedDerivedGenericMixin_OverridesInherited ()
     {
-      ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixinContext (new MixinContext (typeof (GenericMixinWithVirtualMethod<>), new Type[] {typeof (int)}));
+      ClassContext baseContext = new ClassContextBuilder (typeof (string)).AddMixin (typeof (GenericMixinWithVirtualMethod<>)).WithDependency<int>().BuildClassContext();
 
-      ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.AddMixinContext (new MixinContext (typeof (DerivedGenericMixin<object>), new Type[] {typeof (decimal)}));
+      ClassContext inheritor = new ClassContextBuilder (typeof (double)).AddMixin<DerivedGenericMixin<object>>().WithDependency<decimal>().BuildClassContext();
 
       inheritor.InheritFrom (baseContext);
 
@@ -184,11 +174,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [ExpectedException (typeof (ConfigurationException))]
     public void InheritedDerivedMixin_Throws ()
     {
-      ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixinContext (new MixinContext (typeof (DerivedNullTarget), new Type[] {typeof (int)}));
+      ClassContext baseContext = new ClassContextBuilder (typeof (string)).AddMixin<DerivedNullTarget>().WithDependency<int>().BuildClassContext();
 
-      ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.AddMixinContext (new MixinContext (typeof (NullTarget), new Type[] {typeof (decimal)}));
+      ClassContext inheritor = new ClassContextBuilder (typeof (double)).AddMixin<NullTarget>().WithDependency<decimal>().BuildClassContext();
 
       inheritor.InheritFrom (baseContext);
     }
@@ -197,11 +185,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [ExpectedException (typeof (ConfigurationException))]
     public void InheritedSpecializedDerivedGenericMixin_Throws ()
     {
-      ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixinContext (new MixinContext (typeof (DerivedGenericMixin<object>), new Type[] {typeof (int)}));
+      ClassContext baseContext = new ClassContextBuilder (typeof (string)).AddMixin<DerivedGenericMixin<object>>().WithDependency<int>().BuildClassContext();
 
-      ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.AddMixinContext (new MixinContext (typeof (GenericMixinWithVirtualMethod<>), new Type[] {typeof (decimal)}));
+      ClassContext inheritor = new ClassContextBuilder (typeof (double)).AddMixin (typeof (GenericMixinWithVirtualMethod<>)).WithDependency<decimal>().BuildClassContext();
 
       inheritor.InheritFrom (baseContext);
     }
@@ -212,11 +198,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
         + "specific mixin .*GenericMixinWithVirtualMethod\\`1\\[T\\].", MatchType = MessageMatch.Regex)]
     public void InheritedUnspecializedDerivedGenericMixin_Throws ()
     {
-      ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixinContext (new MixinContext (typeof (DerivedGenericMixin<>), new Type[] {typeof (int)}));
+      ClassContext baseContext = new ClassContextBuilder (typeof (string)).AddMixin (typeof (DerivedGenericMixin<>)).WithDependency<int>().BuildClassContext();
 
-      ClassContext inheritor = new ClassContext (typeof (double));
-      inheritor.AddMixinContext (new MixinContext (typeof (GenericMixinWithVirtualMethod<>), new Type[] {typeof (decimal)}));
+      ClassContext inheritor = new ClassContextBuilder (typeof (double)).AddMixin (typeof (GenericMixinWithVirtualMethod<>)).WithDependency<decimal>().BuildClassContext();
 
       inheritor.InheritFrom (baseContext);
     }

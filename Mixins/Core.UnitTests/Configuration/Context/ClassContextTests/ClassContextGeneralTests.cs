@@ -226,8 +226,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void NonchangingMethodsAndFreezeCanBeExecutedWhenFrozen ()
     {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      cc.AddMixinContext (new MixinContext (typeof (BT1Mixin2), new Type[] {typeof (IBaseType2)}));
+      ClassContext cc = new ClassContextBuilder(typeof (BaseType1)).AddMixin<BT1Mixin2>().WithDependency<IBaseType2>().BuildClassContext();
       int hc = cc.GetHashCode ();
 
       cc.Freeze ();
@@ -329,8 +328,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void SpecializeWithTypeArguments ()
     {
-      ClassContext original = new ClassContext (typeof (List<>));
-      original.AddMixinContext (new MixinContext (typeof (BT1Mixin1), new Type[] {typeof (IBaseType2)}));
+      ClassContext original = new ClassContextBuilder (typeof (List<>)).AddMixin<BT1Mixin1>().WithDependency<IBaseType2>().BuildClassContext();
 
       ClassContext specialized = original.SpecializeWithTypeArguments (new Type[] { typeof (int) });
       Assert.IsNotNull (specialized);
