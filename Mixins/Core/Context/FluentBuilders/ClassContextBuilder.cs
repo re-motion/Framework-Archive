@@ -457,8 +457,8 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     public virtual ClassContext BuildClassContext (IEnumerable<ClassContext> inheritedContexts)
     {
       ClassContext classContext = new ClassContext (_targetType, GetMixins(), CompleteInterfaces);
-      ApplyInheritance(classContext, inheritedContexts);
-      ApplySuppressedMixins(classContext);
+      classContext = ApplyInheritance(classContext, inheritedContexts);
+      classContext = classContext.SuppressMixins (SuppressedMixins);
       return classContext;
     }
 
@@ -477,28 +477,12 @@ namespace Rubicon.Mixins.Context.FluentBuilders
         yield return mixinContextBuilder.BuildMixinContext();
     }
 
-    private void ApplyInheritance (ClassContext classContext, IEnumerable<ClassContext> inheritedContexts)
+    private ClassContext ApplyInheritance (ClassContext classContext, IEnumerable<ClassContext> inheritedContexts)
     {
       if (SuppressInheritance)
-        return;
-
-      foreach (ClassContext typeToInheritFrom in inheritedContexts)
-        classContext.InheritFrom (typeToInheritFrom);
-    }
-
-    private void ApplySuppressedMixins (ClassContext classContext)
-    {
-      foreach (Type suppressedType in SuppressedMixins)
-      {
-        Set<Type> concreteMixinsToBeRemoved = new Set<Type> ();
-        foreach (MixinContext mixin in classContext.Mixins)
-        {
-          if (Rubicon.Utilities.ReflectionUtility.CanAscribe (mixin.MixinType, suppressedType))
-            concreteMixinsToBeRemoved.Add (mixin.MixinType);
-        }
-        foreach (Type concreteType in concreteMixinsToBeRemoved)
-          classContext.RemoveMixin (concreteType);
-      }
+        return classContext;
+      else
+        return classContext.InheritFrom (inheritedContexts);
     }
 
     #region Parent members

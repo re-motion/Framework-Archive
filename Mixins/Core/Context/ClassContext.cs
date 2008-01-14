@@ -20,6 +20,37 @@ namespace Rubicon.Mixins.Context
   [Serializable]
   public sealed class ClassContext : ISerializable, ICloneable
   {
+    private static bool ContainsOverrideForMixin (IEnumerable<MixinContext> mixinContexts, Type mixinType)
+    {
+      return GetOverrideForMixin (mixinContexts, mixinType) != null;
+    }
+
+    private static MixinContext GetOverrideForMixin (IEnumerable<MixinContext> mixinContexts, Type mixinType)
+    {
+      Type typeToSearchFor = mixinType.IsGenericType ? mixinType.GetGenericTypeDefinition () : mixinType;
+
+      foreach (MixinContext mixin in mixinContexts)
+      {
+        if (ReflectionUtility.CanAscribe (mixin.MixinType, typeToSearchFor))
+          return mixin;
+      }
+      return null;
+    }
+
+    // A = overridden, B = override
+    private static Tuple<MixinContext, MixinContext> GetFirstOverrideThatIsNotOverriddenByBase (IEnumerable<MixinContext> baseMixins,
+        IEnumerable<MixinContext> potentialOverrides)
+    {
+      foreach (MixinContext mixin in baseMixins)
+      {
+        MixinContext overrideForMixin;
+        if ((overrideForMixin = GetOverrideForMixin (potentialOverrides, mixin.MixinType)) != null
+            && !ContainsOverrideForMixin (baseMixins, overrideForMixin.MixinType))
+          return Tuple.NewTuple (mixin, overrideForMixin);
+      }
+      return null;
+    }
+
     private readonly Type _type;
     private readonly Dictionary<Type, MixinContext> _mixins;
     private readonly UncastableEnumerableWrapper<MixinContext> _mixinWrapperForOutside;
@@ -473,55 +504,78 @@ namespace Rubicon.Mixins.Context
       return CloneForSpecificType (Type.MakeGenericType (genericArguments));
     }
 
-    // TODO: Change to return a new context rather than modifying current one.
     /// <summary>
-    /// Inherits all data from the given <paramref name="baseContext"/> and applies overriding rules for mixins and concrete
-    /// interfaces already defined for this <see cref="ClassContext"/>.
+    /// Creates a new <see cref="ClassContext"/> inheriting all data from the given <paramref name="baseContext"/> and applying overriding rules for
+    /// mixins and concrete interfaces already defined for this <see cref="ClassContext"/>.
     /// </summary>
     /// <param name="baseContext">The base context to inherit data from.</param>
+    /// <returns>A new <see cref="ClassContext"/> combining the mixins of this object with those from the <paramref name="baseContext"/>.</returns>
     /// <exception cref="ConfigurationException">The <paramref name="baseContext"/> contains mixins whose base types or generic
     /// type definitions are already defined on this mixin. The derived context cannot have concrete mixins whose base types
     /// are defined on the parent context.
     /// </exception>
-    public void InheritFrom (ClassContext baseContext)
+    public ClassContext InheritFrom (ClassContext baseContext)
     {
       ArgumentUtility.CheckNotNull ("baseContext", baseContext);
-      EnsureNotFrozen();
-
-      lock (_lockObject)
-      lock (baseContext._lockObject)
-      {
-        CheckThatBaseContextDoesntOverrideUs(baseContext);
-
-        foreach (MixinContext inheritedMixin in baseContext.Mixins)
-        {
-          if (!ContainsOverrideForMixin (inheritedMixin.MixinType))
-            AddMixinContext (inheritedMixin.Clone ());
-        }
-
-        foreach (Type inheritedInterface in baseContext.CompleteInterfaces)
-        {
-          if (!ContainsCompleteInterface (inheritedInterface))
-            _completeInterfaces.Add (inheritedInterface);
-        }
-      }
+      return InheritFrom (new ClassContext[] {baseContext});
     }
 
-    private void CheckThatBaseContextDoesntOverrideUs (ClassContext baseContext)
+    /// <summary>
+    /// Creates a new <see cref="ClassContext"/> inheriting all data from the given <paramref name="baseContexts"/> and applying overriding rules for
+    /// mixins and concrete interfaces already defined for this <see cref="ClassContext"/>.
+    /// </summary>
+    /// <param name="baseContexts">The base contexts to inherit data from.</param>
+    /// <returns>A new <see cref="ClassContext"/> combining the mixins of this object with those from the <paramref name="baseContexts"/>.</returns>
+    /// <exception cref="ConfigurationException">The <paramref name="baseContexts"/> contain mixins whose base types or generic
+    /// type definitions are already defined on this mixin. The derived context cannot have concrete mixins whose base types
+    /// are defined on the parent context.
+    /// </exception>
+    public ClassContext InheritFrom (IEnumerable<ClassContext> baseContexts)
     {
-      foreach (MixinContext mixin in Mixins)
+      ArgumentUtility.CheckNotNull ("baseContexts", baseContexts);
+      EnsureNotFrozen ();
+
+      List<MixinContext> mixins;
+      List<Type> interfaces;
+      lock (_lockObject)
       {
-        MixinContext baseMixin;
-        if ((baseMixin = baseContext.GetOverrideForMixin (mixin.MixinType)) != null && !ContainsOverrideForMixin (baseMixin.MixinType))
+        mixins = new List<MixinContext> (Mixins);
+        interfaces = new List<Type> (CompleteInterfaces);
+      }
+
+      foreach (ClassContext baseContext in baseContexts)
+        ApplyInheritance (baseContext, mixins, interfaces);
+
+      return new ClassContext (Type, mixins, interfaces);
+    }
+
+    private void ApplyInheritance (ClassContext baseContext, List<MixinContext> mixins, List<Type> interfaces)
+    {
+      lock (baseContext._lockObject)
+      {
+        Tuple<MixinContext, MixinContext> overridden_override = GetFirstOverrideThatIsNotOverriddenByBase (mixins, baseContext.Mixins);
+        if (overridden_override != null)
         {
           string message = string.Format (
               "The class {0} inherits the mixin {1} from class {2}, but it is explicitly "
                   + "configured for the less specific mixin {3}.",
               Type.FullName,
-              baseMixin.MixinType.FullName,
+              overridden_override.B.MixinType.FullName,
               baseContext.Type.FullName,
-              mixin.MixinType);
+              overridden_override.A.MixinType);
           throw new ConfigurationException (message);
+        }
+
+        foreach (MixinContext inheritedMixin in baseContext.Mixins)
+        {
+          if (!ContainsOverrideForMixin (mixins, inheritedMixin.MixinType))
+            mixins.Add (inheritedMixin);
+        }
+
+        foreach (Type inheritedInterface in baseContext.CompleteInterfaces)
+        {
+          if (!interfaces.Contains (inheritedInterface))
+            interfaces.Add (inheritedInterface);
         }
       }
     }
@@ -536,24 +590,33 @@ namespace Rubicon.Mixins.Context
     public bool ContainsOverrideForMixin (Type mixinType)
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      return GetOverrideForMixin (mixinType) != null;
-    }
-
-    private MixinContext GetOverrideForMixin (Type mixinType)
-    {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      Type typeToSearchFor = mixinType.IsGenericType ? mixinType.GetGenericTypeDefinition() : mixinType;
-
       lock (_lockObject)
       {
-        foreach (MixinContext mixin in Mixins)
-        {
-          if (ReflectionUtility.CanAscribe (mixin.MixinType, typeToSearchFor))
-            return mixin;
-        }
-        return null;
+        return ContainsOverrideForMixin (Mixins, mixinType);
       }
+    }
 
+    /// <summary>
+    /// Returns a new <see cref="ClassContext"/> equivalent to this object but with all mixins ascribable from the given
+    /// <paramref name="mixinTypesToSuppress"/> removed.
+    /// </summary>
+    /// <param name="mixinTypesToSuppress">The mixin types to suppress.</param>
+    /// <returns>A copy of this <see cref="ClassContext"/> without any mixins that can be ascribed to the given mixin types.</returns>
+    public ClassContext SuppressMixins (IEnumerable<Type> mixinTypesToSuppress)
+    {
+      lock (_lockObject)
+      {
+        Dictionary<Type, MixinContext> mixins = new Dictionary<Type, MixinContext> (_mixins);
+        foreach (Type suppressedType in mixinTypesToSuppress)
+        {
+          foreach (MixinContext mixin in Mixins)
+          {
+            if (Rubicon.Utilities.ReflectionUtility.CanAscribe (mixin.MixinType, suppressedType))
+              mixins.Remove (mixin.MixinType);
+          }
+        }
+        return new ClassContext (Type, mixins.Values, CompleteInterfaces);
+      }
     }
   }
 }

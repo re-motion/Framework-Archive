@@ -44,10 +44,7 @@ namespace Rubicon.Mixins.Context
 
     private ClassContext CombineContexts (Type type, ClassContext inheritedOne, ClassContext inheritedTwo)
     {
-      ClassContext context = new ClassContext (type);
-      context.InheritFrom (inheritedOne);
-      context.InheritFrom (inheritedTwo);
-      return context;
+      return new ClassContext (type).InheritFrom (new ClassContext[] {inheritedOne, inheritedTwo});
     }
 
     private ClassContext AdjustContext (Type type, ClassContext inherited)
