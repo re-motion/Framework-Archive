@@ -29,6 +29,11 @@ namespace Rubicon.Mixins.Context
       get { return _values.Values; }
     }
 
+    public void Clear ()
+    {
+      _values.Clear();
+    }
+
     public void Add (Type type, ClassContext value)
     {
       ArgumentUtility.CheckNotNull ("type", type);

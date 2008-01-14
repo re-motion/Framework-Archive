@@ -23,7 +23,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
       ac.RegisterInterface (typeof (IBaseType2), cc);
       Assert.AreSame (cc, ac.ResolveInterface (typeof (IBaseType2)));
 
-      ac.GetOrAddClassContext (typeof (BaseType3));
+      ac.AddClassContext (new ClassContext (typeof (BaseType3)));
+      ac.GetClassContext (typeof (BaseType3));
       ac.RegisterInterface (typeof (IBaseType31), typeof (BaseType3));
       Assert.AreSame (ac.GetClassContext (typeof (BaseType3)), ac.ResolveInterface (typeof (IBaseType31)));
     }

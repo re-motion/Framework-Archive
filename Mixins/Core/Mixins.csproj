@@ -59,6 +59,9 @@
     <Compile Include="Context\DeclarativeConfigurationAnalyzer.cs" />
     <Compile Include="Context\MixinContext.cs" />
     <Compile Include="IOverrideAttribute.cs" />
+    <Compile Include="MixinConfiguration.ActiveConfiguration.cs" />
+    <Compile Include="MixinConfiguration.Build.cs" />
+    <Compile Include="MixinConfiguration.MasterConfiguration.cs" />
     <Compile Include="MixinConfigurationScope.cs" />
     <Compile Include="OverrideMixinAttribute.cs" />
     <Compile Include="Definitions\AttributeIntroductionDefinition.cs" />

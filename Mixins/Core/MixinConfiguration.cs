@@ -66,176 +66,8 @@ namespace Rubicon.Mixins
   /// <threadsafety static="true" instance="false">
   ///    <para>Instances of this class are meant to be used one-per-thread, see <see cref="ActiveConfiguration"/>.</para>
   /// </threadsafety>
-  public class MixinConfiguration
+  public partial class MixinConfiguration
   {
-    private static readonly CallContextSingleton<MixinConfiguration> _activeConfiguration =
-    new CallContextSingleton<MixinConfiguration> ("Rubicon.Mixins.MixinConfiguration._activeConfiguration",
-        delegate { return CopyMasterConfiguration (); });
-
-    private static MixinConfiguration _masterConfiguration = null;
-    private static readonly object _masterConfigurationLock = new object ();
-
-    /// <summary>
-    /// Gets a value indicating whether this thread has an active mixin configuration.
-    /// </summary>
-    /// <value>
-    ///   True if there is an active configuration for the current thread (actually <see cref="CallContext"/>); otherwise, false.
-    /// </value>
-    /// <remarks>
-    /// The <see cref="ActiveConfiguration"/> property will always return a non-<see langword="null"/> configuration, no matter whether one was
-    /// set for the current thread or not. If none was set, a default one is built using <see cref="DeclarativeConfigurationBuilder.BuildDefaultConfiguration"/>.
-    /// In order to check whether a configuration has been set (or a default one has been built), use this property.
-    /// </remarks>
-    public static bool HasActiveConfiguration
-    {
-      get { return _activeConfiguration.HasCurrent; }
-    }
-
-    /// <summary>
-    /// Gets the active mixin configuration for the current thread (actually <see cref="CallContext"/>).
-    /// </summary>
-    /// <value>The active mixin configuration for the current thread (<see cref="CallContext"/>).</value>
-    /// <remarks>
-    /// The <see cref="ActiveConfiguration"/> property will always return a non-<see langword="null"/> configuration, no matter whether one was
-    /// set for the current thread or not. If none was set, a default one is built using <see cref="DeclarativeConfigurationBuilder.BuildDefaultConfiguration"/>.
-    /// In order to check whether a configuration has been set (or a default one has been built), use the <see cref="HasActiveConfiguration"/> property.
-    /// </remarks>
-    public static MixinConfiguration ActiveConfiguration
-    {
-      get { return _activeConfiguration.Current; }
-    }
-
-    private static MixinConfiguration PeekActiveConfiguration
-    {
-      get { return HasActiveConfiguration ? ActiveConfiguration : null; }
-    }
-
-    /// <summary>
-    /// Sets the active mixin configuration configuration for the current thread.
-    /// </summary>
-    /// <param name="configuration">The configuration to be set, can be <see langword="null"/>.</param>
-    public static void SetActiveConfiguration (MixinConfiguration configuration)
-    {
-      _activeConfiguration.SetCurrent (configuration);
-    }
-
-    private static MixinConfiguration GetMasterConfiguration ()
-    {
-      lock (_masterConfigurationLock)
-      {
-        if (_masterConfiguration == null)
-          _masterConfiguration = DeclarativeConfigurationBuilder.BuildDefaultConfiguration ();
-        return _masterConfiguration;
-      }
-    }
-
-    private static MixinConfiguration CopyMasterConfiguration ()
-    {
-      lock (_masterConfigurationLock)
-      {
-        MixinConfiguration masterConfiguration = GetMasterConfiguration ();
-        return new MixinConfiguration (masterConfiguration);
-      }
-    }
-
-    /// <summary>
-    /// Locks access to the application's master mixin configuration and accepts a delegate to edit the configuration while it is locked.
-    /// </summary>
-    /// <param name="editor">A delegate performing changes to the master configuration.</param>
-    /// <remarks>
-    /// The master mixin configuration is the default mixin configuration used whenever a thread first accesses
-    /// <see cref="ActiveConfiguration"/>. Changes made to it will affect any thread accessing its mixin configuration for the
-    /// first time after this method has been called. If a thread attempts to access its mixin configuration for the first time while
-    /// a change is in progress, it will block until until that process has finished (i.e. until <paramref name="editor"/> has returned).
-    /// </remarks>
-    public static void EditMasterConfiguration (Proc<MixinConfiguration> editor)
-    {
-      lock (_masterConfigurationLock)
-      {
-        editor (GetMasterConfiguration ());
-      }
-    }
-
-    /// <summary>
-    /// Causes the master mixin configuration to be rebuilt from scratch the next time a thread accesses its mixin configuration for the first time.
-    /// </summary>
-    /// <remarks>
-    /// The master mixin configuration is the default mixin configuration used whenever a thread first accesses
-    /// <see cref="ActiveConfiguration"/>. Changes made to it will affect any thread accessing its mixin configuration for the
-    /// first time after this method has been called.
-    /// </remarks>
-    public static void ResetMasterConfiguration ()
-    {
-      lock (_masterConfigurationLock)
-      {
-        _masterConfiguration = null;
-      }
-    }
-
-    /// <summary>
-    /// Returns a <see cref="MixinConfigurationBuilder"/> object to build a new <see cref="MixinConfiguration"/>.
-    /// </summary>
-    /// <returns>A <see cref="MixinConfigurationBuilder"/> for building a new <see cref="MixinConfiguration"/> with a fluent interface.</returns>
-    /// <remarks>
-    /// <para>
-    /// Use this method to build a new <see cref="MixinConfiguration"/> from scratch.
-    /// </para>
-    /// <para>
-    /// If you want to temporarily make the built
-    /// <see cref="MixinConfiguration"/> the <see cref="ActiveConfiguration"/>, call the builder's <see cref="MixinConfigurationBuilder.EnterScope"/>
-    /// method from within a <c>using</c> statement.
-    /// </para>
-    /// </remarks>
-    public static MixinConfigurationBuilder BuildNew ()
-    {
-      return new MixinConfigurationBuilder (null);
-    }
-
-    /// <summary>
-    /// Returns a <see cref="MixinConfigurationBuilder"/> object to build a new <see cref="MixinConfiguration"/> which inherits data from a 
-    /// <paramref name="parentConfiguration"/>.
-    /// </summary>
-    /// <param name="parentConfiguration">A <see cref="MixinConfiguration"/> whose data should be inherited from the built
-    /// <see cref="MixinConfiguration"/>.</param>
-    /// <returns>A <see cref="MixinConfigurationBuilder"/> for building a new <see cref="MixinConfiguration"/> with a fluent interface.</returns>
-    /// <remarks>
-    /// <para>
-    /// Use this method to build a new <see cref="MixinConfiguration"/> while taking over the class-mixin bindings from an existing
-    /// <see cref="MixinConfiguration"/> object.
-    /// </para>
-    /// <para>
-    /// If you want to temporarily make the built
-    /// <see cref="MixinConfiguration"/> the <see cref="ActiveConfiguration"/>, call the builder's <see cref="MixinConfigurationBuilder.EnterScope"/>
-    /// method from within a <c>using</c> statement.
-    /// </para>
-    /// </remarks>
-    public static MixinConfigurationBuilder BuildFrom (MixinConfiguration parentConfiguration)
-    {
-      ArgumentUtility.CheckNotNull ("parentConfiguration", parentConfiguration);
-      return new MixinConfigurationBuilder (parentConfiguration);
-    }
-
-    /// <summary>
-    /// Returns a <see cref="MixinConfigurationBuilder"/> object to build a new <see cref="MixinConfiguration"/> which inherits data from the
-    /// <see cref="ActiveConfiguration"/>.
-    /// </summary>
-    /// <returns>A <see cref="MixinConfigurationBuilder"/> for building a new <see cref="MixinConfiguration"/> with a fluent interface.</returns>
-    /// <remarks>
-    /// <para>
-    /// Use this method to build a new <see cref="MixinConfiguration"/> while taking over the class-mixin bindings from the
-    /// <see cref="ActiveConfiguration"/>.
-    /// </para>
-    /// <para>
-    /// If you want to temporarily make the built
-    /// <see cref="MixinConfiguration"/> the <see cref="ActiveConfiguration"/>, call the builder's <see cref="MixinConfigurationBuilder.EnterScope"/>
-    /// method from within a <c>using</c> statement.
-    /// </para>
-    /// </remarks>
-    public static MixinConfigurationBuilder BuildFromActive ()
-    {
-      return new MixinConfigurationBuilder (ActiveConfiguration);
-    }
-
     private readonly InheritanceAwareClassContextCollection _classContexts;
     private readonly Dictionary<Type, ClassContext> _registeredInterfaces = new Dictionary<Type,ClassContext> ();
 
@@ -279,24 +111,14 @@ namespace Rubicon.Mixins
     }
 
     /// <summary>
-    /// Temporarily replaces the mixin configuration associated with the current thread (actually <see cref="CallContext"/>) with this 
-    /// <see cref="MixinConfiguration"/>. The original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method
-    /// is called.
-    /// </summary>
-    /// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
-    public IDisposable EnterScope ()
-    {
-      MixinConfigurationScope scope = new MixinConfigurationScope (PeekActiveConfiguration);
-      SetActiveConfiguration (this);
-      return scope;
-    }
-
-    /// <summary>
     /// Adds a new class context to the <see cref="MixinConfiguration"/>.
     /// </summary>
     /// <param name="classContext">The class context to add.</param>
     /// <exception cref="InvalidOperationException">The <see cref="MixinConfiguration"/> already contains a <see cref="ClassContext"/> for the
-    /// same <see cref="Type"/>.</exception>"
+    /// same <see cref="Type"/>.</exception>
+    /// <remarks>
+    /// This method does not register any complete interfaces. Use <see cref="RegisterInterface(Type,ClassContext)"/> for that purpose.
+    /// </remarks>
     public void AddClassContext (ClassContext classContext)
     {
       ArgumentUtility.CheckNotNull ("classContext", classContext);
@@ -350,23 +172,6 @@ namespace Rubicon.Mixins
     }
 
     /// <summary>
-    /// Retrieves a <see cref="ClassContext"/> for the given <see cref="Type"/>, or creates and adds a new one if none exists.
-    /// </summary>
-    /// <param name="type">The <see cref="Type"/> for which a <see cref="ClassContext"/> is to be retrieved.</param>
-    /// <returns>A <see cref="ClassContext"/> for the given <see cref="Type"/>.</returns>
-    public ClassContext GetOrAddClassContext (Type type)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ClassContext classContext = GetClassContextNonRecursive (type);
-      if (classContext == null || !classContext.Type.Equals (type))
-      {
-        classContext = new ClassContext (type);
-        AddClassContext (classContext);
-      }
-      return classContext;
-    }
-
-    /// <summary>
     /// Removes a class context from the <see cref="MixinConfiguration"/>.
     /// </summary>
     /// <param name="type">The <see cref="Type"/> whose class context is to be removed.</param>
@@ -402,6 +207,19 @@ namespace Rubicon.Mixins
 
       RemoveClassContext (newContext.Type);
       AddClassContext (newContext);
+    }
+
+    /// <summary>
+    /// Temporarily replaces the mixin configuration associated with the current thread (actually <see cref="CallContext"/>) with this 
+    /// <see cref="MixinConfiguration"/>. The original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method
+    /// is called.
+    /// </summary>
+    /// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
+    public IDisposable EnterScope ()
+    {
+      MixinConfigurationScope scope = new MixinConfigurationScope (PeekActiveConfiguration);
+      SetActiveConfiguration (this);
+      return scope;
     }
 
     /// <summary>
@@ -532,6 +350,15 @@ namespace Rubicon.Mixins
         return _registeredInterfaces[interfaceType];
       else
         return null;
+    }
+
+    /// <summary>
+    /// Removes all <see cref="ClassContext"/> instances and registered interfaces from this <see cref="MixinConfiguration"/> object.
+    /// </summary>
+    public void Clear ()
+    {
+      _classContexts.Clear();
+      _registeredInterfaces.Clear();
     }
 
     /// <summary>
