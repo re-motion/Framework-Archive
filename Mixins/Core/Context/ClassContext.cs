@@ -356,23 +356,6 @@ namespace Rubicon.Mixins.Context
     }
 
     /// <summary>
-    /// Removes the given mixin from this <see cref="ClassContext"/>.
-    /// </summary>
-    /// <param name="mixinType">The mixin type to be removed.</param>
-    /// <returns>True if a mixin context was removed for the given type, false if no such mixin context existed.</returns>
-    /// <exception cref="ArgumentNullException">The <paramref name="mixinType"/> parameter is <see langword="null"/>.</exception>
-    /// <exception cref="InvalidOperationException">The <see cref="ClassContext"/> is frozen.</exception>
-    public bool RemoveMixin (Type mixinType)
-    {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      lock (_lockObject)
-      {
-        EnsureNotFrozen();
-        return _mixins.Remove (mixinType);
-      }
-    }
-
-    /// <summary>
     /// Determines whether this <see cref="ClassContext"/> contains the given complete interface.
     /// </summary>
     /// <param name="interfaceType">Interface type to check for.</param>

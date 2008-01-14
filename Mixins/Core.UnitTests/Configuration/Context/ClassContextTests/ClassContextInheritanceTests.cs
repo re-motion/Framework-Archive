@@ -196,18 +196,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     }
 
     [Test]
-    public void RemoveInheritedMixin ()
-    {
-      ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixin (typeof (DateTime));
-
-      ClassContext inheritor = new ClassContext (typeof (double)).InheritFrom (baseContext);
-      inheritor.RemoveMixin (typeof (DateTime));
-      Assert.AreEqual (0, inheritor.MixinCount);
-      Assert.IsFalse (inheritor.ContainsMixin (typeof (DateTime)));
-    }
-
-    [Test]
     public void CompleteInterfaces ()
     {
       ClassContext baseContext = new ClassContextBuilder (typeof (string))
@@ -217,9 +205,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
 
       ClassContext inheritor = new ClassContext (typeof (double)).InheritFrom (baseContext);
 
-      Assert.AreEqual (2, baseContext.CompleteInterfaceCount);
-      Assert.That (EnumerableUtility.ToArray (baseContext.CompleteInterfaces),
-          Is.EqualTo (EnumerableUtility.ToArray (baseContext.CompleteInterfaces)));
+      Assert.AreEqual (2, inheritor.CompleteInterfaceCount);
+      Assert.That (EnumerableUtility.ToArray (inheritor.CompleteInterfaces),
+          Is.EqualTo (EnumerableUtility.ToArray (inheritor.CompleteInterfaces)));
     }
 
     [Test]

@@ -155,10 +155,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
       Assert.IsTrue (destination.ContainsClassContext (typeof (BaseType1)));
       Assert.IsTrue (destination.GetOrAddClassContext (typeof (BaseType1)).ContainsMixin (typeof (BT1Mixin1)));
       Assert.IsTrue (destination.GetOrAddClassContext (typeof (BaseType1)).GetOrAddMixinContext (typeof (BT1Mixin1)).ContainsExplicitDependency (typeof (IBaseType34)));
-
-      source.GetClassContext (typeof (BaseType2)).RemoveMixin (typeof (BT2Mixin1));
-      Assert.IsFalse (source.GetClassContext (typeof (BaseType2)).ContainsMixin (typeof (BT2Mixin1)));
-      Assert.IsTrue (destination.GetClassContext (typeof (BaseType2)).ContainsMixin (typeof (BT2Mixin1)));
     }
 
     [Test]

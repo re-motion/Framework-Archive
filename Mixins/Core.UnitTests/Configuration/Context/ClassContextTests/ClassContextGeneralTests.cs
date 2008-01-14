@@ -214,16 +214,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "is frozen", MatchType = MessageMatch.Contains)]
-    public void ThrowsOnRemoveMixinWhenFrozen ()
-    {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      cc.Freeze ();
-      Assert.IsTrue (cc.IsFrozen);
-      cc.RemoveMixin (typeof (BT1Mixin1));
-    }
-
-    [Test]
     public void NonchangingMethodsAndFreezeCanBeExecutedWhenFrozen ()
     {
       ClassContext cc = new ClassContextBuilder(typeof (BaseType1)).AddMixin<BT1Mixin2>().WithDependency<IBaseType2>().BuildClassContext();
@@ -290,39 +280,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       Assert.AreEqual (typeof (IBT5MixinC2), interfaceTypes[1]);
 
       Assert.AreEqual (typeof (BaseType1), cc.Type);
-    }
-
-    [Test]
-    public void AdaptingClonedContext ()
-    {
-      ClassContext cc = new ClassContextBuilder (typeof (BaseType1))
-          .AddMixin (typeof (BT1Mixin1))
-          .AddMixin (typeof (BT1Mixin2))
-          .AddCompleteInterface (typeof (IBT5MixinC1))
-          .BuildClassContext();
-
-      Assert.IsFalse (cc.ContainsMixin (typeof (BT3Mixin1)));
-      Assert.IsFalse (cc.ContainsCompleteInterface (typeof (IBT5MixinC2)));
-
-      ClassContext cc2 = cc.Clone ();
-
-      Assert.AreEqual (2, cc2.MixinCount);
-      Assert.IsFalse (cc2.RemoveMixin (typeof (BT2Mixin1)));
-      Assert.AreEqual (2, cc2.MixinCount);
-      Assert.IsTrue (cc2.RemoveMixin (typeof (BT1Mixin2)));
-      Assert.AreEqual (1, cc2.MixinCount);
-      Assert.IsFalse (cc2.RemoveMixin (typeof (BT1Mixin2)));
-      Assert.AreEqual (1, cc2.MixinCount);
-      cc2.AddMixin (typeof (BT3Mixin1));
-      Assert.AreEqual (2, cc2.MixinCount);
-
-      Assert.IsTrue (cc2.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsFalse (cc2.ContainsMixin (typeof (BT1Mixin2)));
-      Assert.IsFalse (cc2.ContainsMixin (typeof (BT2Mixin1)));
-      Assert.IsTrue (cc2.ContainsMixin (typeof (BT3Mixin1)));
-
-      Assert.IsTrue (cc.ContainsCompleteInterface (typeof (IBT5MixinC1)));
-      Assert.IsFalse (cc.ContainsCompleteInterface (typeof (IBT5MixinC2)));
     }
 
     [Test]
