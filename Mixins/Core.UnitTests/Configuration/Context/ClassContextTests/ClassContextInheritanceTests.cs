@@ -14,9 +14,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void ContainsOverrideForMixin_False ()
     {
-      ClassContext context = new ClassContext (typeof (string));
-      context.AddMixin (typeof (NullTarget));
-      context.AddMixin (typeof (GenericClassExtendedByMixin<>));
+      ClassContext context = new ClassContext (typeof (string), typeof (NullTarget), typeof (GenericClassExtendedByMixin<>));
 
       Assert.IsFalse (context.ContainsOverrideForMixin (typeof (int))); // completely unrelated
       Assert.IsFalse (context.ContainsOverrideForMixin (typeof (DerivedNullTarget))); // subtype
@@ -27,9 +25,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void ContainsOverrideForMixin_Same ()
     {
-      ClassContext context = new ClassContext (typeof (string));
-      context.AddMixin (typeof (NullTarget));
-      context.AddMixin (typeof (GenericClassExtendedByMixin<>));
+      ClassContext context = new ClassContext (typeof (string), typeof (NullTarget), typeof (GenericClassExtendedByMixin<>));
 
       Assert.IsTrue (context.ContainsOverrideForMixin (typeof (NullTarget)));
       Assert.IsTrue (context.ContainsOverrideForMixin (typeof (GenericClassExtendedByMixin<>)));
@@ -38,9 +34,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void ContainsOverrideForMixin_True ()
     {
-      ClassContext context = new ClassContext (typeof (string));
-      context.AddMixin (typeof (DerivedNullTarget));
-      context.AddMixin (typeof (GenericMixinWithVirtualMethod<object>));
+      ClassContext context = new ClassContext (typeof (string), typeof (DerivedNullTarget), typeof (GenericMixinWithVirtualMethod<object>));
       
       Assert.IsTrue (context.ContainsOverrideForMixin (typeof (NullTarget))); // supertype
       Assert.IsTrue (context.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<>))); // less specialized
@@ -49,9 +43,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void ContainsOverrideForMixin_DerivedAndSpecialized ()
     {
-      ClassContext context = new ClassContext (typeof (string));
-      context.AddMixin (typeof (DerivedNullTarget));
-      context.AddMixin (typeof (DerivedGenericMixin<object>));
+      ClassContext context = new ClassContext (typeof (string), typeof (DerivedNullTarget), typeof (DerivedGenericMixin<object>));
 
       Assert.IsTrue (context.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<>)));
       Assert.IsTrue (context.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<object>)));
@@ -64,10 +56,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void Mixins ()
     {
-      ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixin (typeof (DateTime));
-      baseContext.AddMixin (typeof (int));
-
+      ClassContext baseContext = new ClassContext (typeof (string), typeof (DateTime), typeof (int));
       ClassContext inheritor = new ClassContext (typeof (double)).InheritFrom (baseContext);
 
       Assert.AreEqual (2, inheritor.MixinCount);
@@ -77,8 +66,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     [Test]
     public void ContainsAssignableMixin ()
     {
-      ClassContext baseContext = new ClassContext (typeof (string));
-      baseContext.AddMixin (typeof (DerivedNullTarget));
+      ClassContext baseContext = new ClassContext (typeof (string), typeof (DerivedNullTarget));
 
       ClassContext inheritor = new ClassContext (typeof (double)).InheritFrom (baseContext);
 

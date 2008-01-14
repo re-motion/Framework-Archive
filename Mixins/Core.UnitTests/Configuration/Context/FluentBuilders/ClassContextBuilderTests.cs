@@ -91,8 +91,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     [Test]
     public void Clear ()
     {
-      ClassContext existingClassContext = new ClassContext (typeof (BaseType1));
-      existingClassContext.AddMixin (typeof (BT1Mixin1));
+      ClassContext existingClassContext = new ClassContext (typeof (BaseType1), typeof (BT1Mixin1));
 
       ClassContextBuilder classBuilder = new ClassContextBuilder (_parentBuilderMock, typeof (BaseType1), existingClassContext);
       classBuilder.AddMixin<BT1Mixin2> ();
@@ -270,8 +269,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     [Test]
     public void EnsureMixin_Inheritance ()
     {
-      ClassContext contextWithMixin = new ClassContext (typeof (BaseType3));
-      contextWithMixin.AddMixin (typeof (NullTarget));
+      ClassContext contextWithMixin = new ClassContext (typeof (BaseType3), typeof (NullTarget));
       
       MixinContextBuilder builder = _classBuilder.EnsureMixin (typeof (DerivedNullTarget));
       Assert.AreEqual (typeof (DerivedNullTarget), builder.MixinType);
@@ -287,8 +285,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     [Test]
     public void EnsureMixin_Parent ()
     {
-      ClassContext parentContext = new ClassContext (typeof (BaseType3));
-      parentContext.AddMixin (typeof (BT2Mixin1));
+      ClassContext parentContext = new ClassContext (typeof (BaseType3), typeof (BT2Mixin1));
       ClassContextBuilder classBuilder = new ClassContextBuilder (_parentBuilderMock, typeof (BaseType2), parentContext);
 
       Type[] mixinTypes = GetMixinTypes (classBuilder);
@@ -558,8 +555,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     [Test]
     public void BuildContext_ExtendParentContext ()
     {
-      ClassContext parentContext = new ClassContext (typeof (BaseType2));
-      parentContext.AddMixin (typeof (BT2Mixin1));
+      ClassContext parentContext = new ClassContext (typeof (BaseType2), typeof (BT2Mixin1));
 
       MixinConfiguration parentConfiguration = new MixinConfiguration (null);
       parentConfiguration.AddClassContext (parentContext);
@@ -578,8 +574,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     [Test]
     public void BuildContext_ReplaceParentContext ()
     {
-      ClassContext parentContext = new ClassContext (typeof (BaseType2));
-      parentContext.AddMixin (typeof (BT2Mixin1));
+      ClassContext parentContext = new ClassContext (typeof (BaseType2), typeof (BT2Mixin1));
 
       MixinConfiguration parentConfiguration = new MixinConfiguration (null);
       parentConfiguration.AddClassContext (parentContext);
@@ -597,13 +592,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     [Test]
     public void BuildContext_Suppression ()
     {
-      ClassContext inheritedContext = new ClassContext (typeof (BaseType2));
-      inheritedContext.AddMixin (typeof (BT3Mixin1));
-      inheritedContext.AddMixin (typeof (BT3Mixin3<IBaseType33, IBaseType33>));
+      ClassContext inheritedContext = new ClassContext (typeof (BaseType2), typeof (BT3Mixin1), typeof (BT3Mixin3<IBaseType33, IBaseType33>));
 
-      ClassContext parentContext = new ClassContext (typeof (BaseType2));
-      parentContext.AddMixin (typeof (BT5Mixin1));
-      parentContext.AddMixin (typeof (BT5Mixin2));
+      ClassContext parentContext = new ClassContext (typeof (BaseType2), typeof (BT5Mixin1), typeof (BT5Mixin2));
 
       MixinConfiguration parentConfiguration = new MixinConfiguration (null);
       parentConfiguration.AddClassContext (parentContext);

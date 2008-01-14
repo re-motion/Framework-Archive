@@ -51,30 +51,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     }
 
     [Test]
-    public void ClassContextFrozenAfterDefinitionGeneration ()
-    {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      Assert.IsFalse (cc.IsFrozen);
-      TargetClassDefinitionCache.Current.GetTargetClassDefinition (cc);
-      Assert.IsTrue (cc.IsFrozen);
-    }
-
-    [Test]
-    public void ClassContextFrozenEvenIfNotNewGeneration ()
-    {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      Assert.IsFalse (cc.IsFrozen);
-      ClassDefinitionBase cd = TargetClassDefinitionCache.Current.GetTargetClassDefinition (cc);
-      Assert.IsTrue (cc.IsFrozen);
-
-      ClassContext cc2 = new ClassContext (typeof (BaseType1));
-      Assert.IsFalse (cc2.IsFrozen);
-      ClassDefinitionBase cd2 = TargetClassDefinitionCache.Current.GetTargetClassDefinition (cc2);
-      Assert.AreSame (cd, cd2);
-      Assert.IsTrue (cc2.IsFrozen);
-    }
-
-    [Test]
     [ExpectedException (typeof (ValidationException))]
     public void CacheValidatesWhenGeneratingDefinition()
     {

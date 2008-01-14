@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.Context.FluentBuilders;
 
 namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
 {
@@ -26,8 +27,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     public void BuildFrom ()
     {
       MixinConfiguration previousConfiguration = MixinConfiguration.ActiveConfiguration;
-      MixinConfiguration parentConfiguration = new MixinConfiguration();
-      parentConfiguration.GetOrAddClassContext (typeof (BaseType2)).AddMixin (typeof (BT2Mixin1));
+      MixinConfiguration parentConfiguration = new MixinConfigurationBuilder (null)
+          .ForClass <BaseType2>().AddMixin (typeof (BT2Mixin1)).BuildConfiguration();
       
       Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
       using (MixinConfiguration.BuildFrom (parentConfiguration).ForClass<BaseType7> ().AddMixin<BT7Mixin0> ().EnterScope ())

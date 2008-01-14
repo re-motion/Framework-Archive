@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using Rubicon.Collections;
 using Rubicon.Mixins;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Definitions.Building;
 using Rubicon.Mixins.Utilities;
 using Rubicon.Mixins.Utilities.Serialization;
 using Rubicon.Utilities;
@@ -17,8 +15,11 @@ namespace Rubicon.Mixins.Context
   /// Holds the mixin configuration information for a single mixin target class.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
+  /// <remarks>
+  /// Instances of this class are immutable.
+  /// </remarks>
   [Serializable]
-  public sealed class ClassContext : ISerializable, ICloneable
+  public sealed class ClassContext : ISerializable
   {
     private static bool ContainsOverrideForMixin (IEnumerable<MixinContext> mixinContexts, Type mixinType)
     {
@@ -51,14 +52,19 @@ namespace Rubicon.Mixins.Context
       return null;
     }
 
+    private static int CalculateHashCode (ClassContext classContext)
+    {
+      return classContext.Type.GetHashCode ()
+          ^ EqualityUtility.GetRotatedHashCode (classContext.Mixins)
+          ^ EqualityUtility.GetRotatedHashCode (classContext.CompleteInterfaces);
+    }
+
     private readonly Type _type;
     private readonly Dictionary<Type, MixinContext> _mixins;
     private readonly UncastableEnumerableWrapper<MixinContext> _mixinWrapperForOutside;
     private readonly List<Type> _completeInterfaces;
     private readonly UncastableEnumerableWrapper<Type> _completeInterfaceWrapperForOutside;
-    private readonly object _lockObject = new object ();
-
-    private bool _isFrozen = false;
+    private readonly int _cachedHashCode;
 
     /// <summary>
     /// Initializes a new <see cref="ClassContext"/> for a given mixin target type.
@@ -80,6 +86,8 @@ namespace Rubicon.Mixins.Context
       
       _completeInterfaces = new List<Type> (new Set<Type> (completeInterfaces));
       _completeInterfaceWrapperForOutside = new UncastableEnumerableWrapper<Type> (_completeInterfaces);
+
+      _cachedHashCode = CalculateHashCode (this);
     }
 
     /// <summary>
@@ -118,14 +126,15 @@ namespace Rubicon.Mixins.Context
 
       foreach (Type mixinType in mixinTypes)
       {
-        try
+        if (!ContainsMixin (mixinType))
         {
-          AddMixin (mixinType);
+          MixinContext context = new MixinContext (mixinType, new Type[0]);
+          _mixins.Add (context.MixinType, context);
         }
-        catch (InvalidOperationException ex)
+        else
         {
           string message = string.Format ("The mixin type {0} was tried to be added twice.", mixinType.FullName);
-          throw new ArgumentException (message, "mixinTypes", ex);
+          throw new ArgumentException (message, "mixinTypes");
         }
       }
     }
@@ -137,7 +146,10 @@ namespace Rubicon.Mixins.Context
       int mixinCount = info.GetInt32 ("_mixins.Count");
       _mixins = new Dictionary<Type, MixinContext> (mixinCount);
       for (int i = 0; i < mixinCount; ++i)
-        AddMixinContext (MixinContext.DeserializeFromFlatStructure (this, _lockObject, "_mixins[" + i + "]", info));
+      {
+        MixinContext mixinContext = MixinContext.DeserializeFromFlatStructure (this, "_mixins[" + i + "]", info);
+        _mixins.Add (mixinContext.MixinType, mixinContext);
+      }
       _mixinWrapperForOutside = new UncastableEnumerableWrapper<MixinContext> (_mixins.Values);
 
       int completeInterfaceCount = info.GetInt32 ("_completeInterfaces.Count");
@@ -145,22 +157,21 @@ namespace Rubicon.Mixins.Context
       for (int i = 0; i < completeInterfaceCount; ++i)
         _completeInterfaces.Add (ReflectionObjectSerializer.DeserializeType ("_completeInterfaces[" + i + "]", info));
       _completeInterfaceWrapperForOutside = new UncastableEnumerableWrapper<Type> (_completeInterfaces);
+
+      _cachedHashCode = CalculateHashCode (this);
     }
 
     void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      lock (_lockObject)
-      {
-        ReflectionObjectSerializer.SerializeType (_type, "_type", info);
-        info.AddValue ("_mixins.Count", _mixins.Count);
-        IEnumerator<MixinContext> mixinEnumerator = _mixins.Values.GetEnumerator ();
-        for (int i = 0; mixinEnumerator.MoveNext(); ++i)
-          mixinEnumerator.Current.SerializeIntoFlatStructure ("_mixins[" + i + "]", info);
+      ReflectionObjectSerializer.SerializeType (_type, "_type", info);
+      info.AddValue ("_mixins.Count", _mixins.Count);
+      IEnumerator<MixinContext> mixinEnumerator = _mixins.Values.GetEnumerator ();
+      for (int i = 0; mixinEnumerator.MoveNext(); ++i)
+        mixinEnumerator.Current.SerializeIntoFlatStructure ("_mixins[" + i + "]", info);
 
-        info.AddValue ("_completeInterfaces.Count", _completeInterfaces.Count);
-        for (int i = 0; i < _completeInterfaces.Count; ++i)
-          ReflectionObjectSerializer.SerializeType (_completeInterfaces[i], "_completeInterfaces[" + i + "]", info);
-      }
+      info.AddValue ("_completeInterfaces.Count", _completeInterfaces.Count);
+      for (int i = 0; i < _completeInterfaces.Count; ++i)
+        ReflectionObjectSerializer.SerializeType (_completeInterfaces[i], "_completeInterfaces[" + i + "]", info);
     }
 
     /// <summary>
@@ -198,10 +209,7 @@ namespace Rubicon.Mixins.Context
     {
       get
       {
-        lock (_lockObject)
-        {
           return _mixins.Count;
-        }
       }
     }
 
@@ -213,52 +221,8 @@ namespace Rubicon.Mixins.Context
     {
       get
       {
-        lock (_lockObject)
-        {
           return _completeInterfaces.Count;
-        }
       }
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether this <see cref="ClassContext"/> is frozen.
-    /// </summary>
-    /// <value>True if this instance is frozen; otherwise, false.</value>
-    /// <remarks>A <see cref="ClassContext"/> can be frozen by calling its <see cref="Freeze"/> method. Frozen contexts can be inspected,
-    /// but they cannot be changed (e.g. by adding or modifying mixins or complete interfaces). <see cref="ClassContext">ClassContexts</see> are
-    /// automatically frozen when a <see cref="TargetClassDefinition"/> is built from them via the <see cref="TargetClassDefinitionBuilder"/> or
-    /// <see cref="TargetClassDefinitionCache"/> classes.</remarks>
-    public bool IsFrozen
-    {
-      get
-      {
-        lock (_lockObject)
-        {
-          return _isFrozen;
-        }
-      }
-    }
-
-    /// <summary>
-    /// Freezes this <see cref="ClassContext"/> and thus protects it and its contained <see cref="MixinContext">MixinContexts</see> against
-    /// further modification.
-    /// </summary>
-    /// <remarks>A <see cref="ClassContext"/> can be frozen by calling its <see cref="Freeze"/> method. Frozen contexts can be inspected,
-    /// but they cannot be changed (e.g. by adding or modifying mixins or complete interfaces). <see cref="ClassContext">ClassContexts</see> are
-    /// automatically frozen when a <see cref="TargetClassDefinition"/> is built from them via the <see cref="TargetClassDefinitionBuilder"/> or
-    /// <see cref="TargetClassDefinitionCache"/> classes.</remarks>
-    public void Freeze ()
-    {
-      lock (_lockObject)
-      {
-        _isFrozen = true;
-      }
-    }
-
-    internal void EnsureNotFrozen ()
-    {
-      if (IsFrozen)
-        throw new InvalidOperationException (string.Format ("The class context for {0} is frozen.", Type.FullName));
     }
 
     /// <summary>
@@ -272,10 +236,7 @@ namespace Rubicon.Mixins.Context
     public bool ContainsMixin (Type mixinType)
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      lock (_lockObject)
-      {
         return _mixins.ContainsKey (mixinType);
-      }
     }
 
     /// <summary>
@@ -289,52 +250,25 @@ namespace Rubicon.Mixins.Context
     public bool ContainsAssignableMixin (Type baseMixinType)
     {
       ArgumentUtility.CheckNotNull ("baseMixinType", baseMixinType);
-      lock (_lockObject)
-      {
         foreach (MixinContext mixin in Mixins)
         {
           if (baseMixinType.IsAssignableFrom (mixin.MixinType))
             return true;
         }
         return false;
-      }
     }
 
     /// <summary>
-    /// Associates a mixin type with this <see cref="ClassContext"/>.
+    /// Determines whether a mixin configured with this <see cref="ClassContext"/> overrides the given <paramref name="mixinType"/>.
     /// </summary>
-    /// <param name="mixinType">The mixin type to be associated with this context.</param>
-    /// <returns>A new <see cref="MixinContext"/> created for the given mixin type.</returns>
-    /// <exception cref="ArgumentNullException">The <paramref name="mixinType"/> parameter is <see langword="null"/>.</exception>
-    /// <exception cref="InvalidOperationException">The <see cref="ClassContext"/> is frozen or the mixin has already been
-    /// added to this context.</exception>
-    public MixinContext AddMixin (Type mixinType)
+    /// <param name="mixinType">The mixin type which is to be checked for overriders.</param>
+    /// <returns>
+    /// True if the specified mixin type is overridden in this class context; otherwise, false.
+    /// </returns>
+    public bool ContainsOverrideForMixin (Type mixinType)
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      lock (_lockObject)
-      {
-        EnsureNotFrozen();
-        if (!ContainsMixin (mixinType))
-        {
-          MixinContext context = new MixinContext (mixinType, new Type[0]);
-          AddMixinContext (context);
-          return context;
-        }
-        else
-          throw new InvalidOperationException ("Mixin " + mixinType.FullName + " already added to class " + Type.FullName + ".");
-      }
-    }
-
-    private void AddMixinContext (MixinContext context)
-    {
-      ArgumentUtility.CheckNotNull ("context", context);
-      lock (_lockObject)
-      {
-        if (ContainsMixin (context.MixinType))
-          throw new InvalidOperationException ("The class context already contains a mixin context for type " + context.MixinType.FullName + ".");
-        else
-          _mixins.Add (context.MixinType, context);
-      }
+      return ContainsOverrideForMixin (Mixins, mixinType);
     }
 
     /// <summary>
@@ -346,13 +280,10 @@ namespace Rubicon.Mixins.Context
     public MixinContext GetMixinContext (Type mixinType)
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      lock (_lockObject)
-      {
         if (!ContainsMixin (mixinType))
           return null;
         else
           return _mixins[mixinType];
-      }
     }
 
     /// <summary>
@@ -366,10 +297,7 @@ namespace Rubicon.Mixins.Context
     public bool ContainsCompleteInterface (Type interfaceType)
     {
       ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
-      lock (_lockObject)
-      {
         return _completeInterfaces.Contains (interfaceType);
-      }
     }
 
     /// <summary>
@@ -386,9 +314,6 @@ namespace Rubicon.Mixins.Context
       if (other == null)
         return false;
       
-      lock (_lockObject)
-      lock (other._lockObject)
-      {
         if (!other.Type.Equals (Type) || other._mixins.Count != _mixins.Count || other._completeInterfaces.Count != _completeInterfaces.Count)
           return false;
 
@@ -405,7 +330,6 @@ namespace Rubicon.Mixins.Context
         }
 
         return true;
-      }
     }
 
     /// <summary>
@@ -416,40 +340,7 @@ namespace Rubicon.Mixins.Context
     /// </returns>
     public override int GetHashCode ()
     {
-      lock (_lockObject)
-      {
-        return Type.GetHashCode() ^ EqualityUtility.GetRotatedHashCode (_mixins.Values) ^ EqualityUtility.GetRotatedHashCode (_completeInterfaces);
-      }
-    }
-
-    /// <summary>
-    /// Creates a deep clone of this instance.
-    /// </summary>
-    /// <returns>A new <see cref="ClassContext"/> holding equivalent configuration data as this <see cref="ClassContext"/> does.</returns>
-    public ClassContext Clone ()
-    {
-      ClassContext newInstance = CloneForSpecificType (Type);
-      Assertion.DebugAssert (newInstance.Equals (this));
-      return newInstance;
-    }
-
-    /// <summary>
-    /// Returns a new <see cref="ClassContext"/> with the same mixins and complete interfaces as this object, but a different target type.
-    /// </summary>
-    /// <param name="type">The target type to create the new <see cref="ClassContext"/> for.</param>
-    /// <returns>A clone of this <see cref="ClassContext"/> for a different target type.</returns>
-    public ClassContext CloneForSpecificType (Type type)
-    {
-      lock (_lockObject)
-      {
-        ClassContext newInstance = new ClassContext (type, Mixins, CompleteInterfaces);
-        return newInstance;
-      }
-    }
-
-    object ICloneable.Clone ()
-    {
-      return Clone();
+      return _cachedHashCode;
     }
 
     /// <summary>
@@ -467,6 +358,17 @@ namespace Rubicon.Mixins.Context
       foreach (Type completeInterfaceType in CompleteInterfaces)
         sb.Append (" => ").Append (completeInterfaceType.FullName);
       return sb.ToString();
+    }
+
+    /// <summary>
+    /// Returns a new <see cref="ClassContext"/> with the same mixins and complete interfaces as this object, but a different target type.
+    /// </summary>
+    /// <param name="type">The target type to create the new <see cref="ClassContext"/> for.</param>
+    /// <returns>A clone of this <see cref="ClassContext"/> for a different target type.</returns>
+    public ClassContext CloneForSpecificType (Type type)
+    {
+      ClassContext newInstance = new ClassContext (type, Mixins, CompleteInterfaces);
+      return newInstance;
     }
 
     /// <summary>
@@ -517,15 +419,11 @@ namespace Rubicon.Mixins.Context
     public ClassContext InheritFrom (IEnumerable<ClassContext> baseContexts)
     {
       ArgumentUtility.CheckNotNull ("baseContexts", baseContexts);
-      EnsureNotFrozen ();
 
       List<MixinContext> mixins;
       List<Type> interfaces;
-      lock (_lockObject)
-      {
-        mixins = new List<MixinContext> (Mixins);
-        interfaces = new List<Type> (CompleteInterfaces);
-      }
+      mixins = new List<MixinContext> (Mixins);
+      interfaces = new List<Type> (CompleteInterfaces);
 
       foreach (ClassContext baseContext in baseContexts)
         ApplyInheritance (baseContext, mixins, interfaces);
@@ -535,48 +433,29 @@ namespace Rubicon.Mixins.Context
 
     private void ApplyInheritance (ClassContext baseContext, List<MixinContext> mixins, List<Type> interfaces)
     {
-      lock (baseContext._lockObject)
+      Tuple<MixinContext, MixinContext> overridden_override = GetFirstOverrideThatIsNotOverriddenByBase (mixins, baseContext.Mixins);
+      if (overridden_override != null)
       {
-        Tuple<MixinContext, MixinContext> overridden_override = GetFirstOverrideThatIsNotOverriddenByBase (mixins, baseContext.Mixins);
-        if (overridden_override != null)
-        {
-          string message = string.Format (
-              "The class {0} inherits the mixin {1} from class {2}, but it is explicitly "
-                  + "configured for the less specific mixin {3}.",
-              Type.FullName,
-              overridden_override.B.MixinType.FullName,
-              baseContext.Type.FullName,
-              overridden_override.A.MixinType);
-          throw new ConfigurationException (message);
-        }
-
-        foreach (MixinContext inheritedMixin in baseContext.Mixins)
-        {
-          if (!ContainsOverrideForMixin (mixins, inheritedMixin.MixinType))
-            mixins.Add (inheritedMixin);
-        }
-
-        foreach (Type inheritedInterface in baseContext.CompleteInterfaces)
-        {
-          if (!interfaces.Contains (inheritedInterface))
-            interfaces.Add (inheritedInterface);
-        }
+        string message = string.Format (
+            "The class {0} inherits the mixin {1} from class {2}, but it is explicitly "
+                + "configured for the less specific mixin {3}.",
+            Type.FullName,
+            overridden_override.B.MixinType.FullName,
+            baseContext.Type.FullName,
+            overridden_override.A.MixinType);
+        throw new ConfigurationException (message);
       }
-    }
 
-    /// <summary>
-    /// Determines whether a mixin configured with this <see cref="ClassContext"/> overrides the given <paramref name="mixinType"/>.
-    /// </summary>
-    /// <param name="mixinType">The mixin type which is to be checked for overriders.</param>
-    /// <returns>
-    /// True if the specified mixin type is overridden in this class context; otherwise, false.
-    /// </returns>
-    public bool ContainsOverrideForMixin (Type mixinType)
-    {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      lock (_lockObject)
+      foreach (MixinContext inheritedMixin in baseContext.Mixins)
       {
-        return ContainsOverrideForMixin (Mixins, mixinType);
+        if (!ContainsOverrideForMixin (mixins, inheritedMixin.MixinType))
+          mixins.Add (inheritedMixin);
+      }
+
+      foreach (Type inheritedInterface in baseContext.CompleteInterfaces)
+      {
+        if (!interfaces.Contains (inheritedInterface))
+          interfaces.Add (inheritedInterface);
       }
     }
 
@@ -588,19 +467,16 @@ namespace Rubicon.Mixins.Context
     /// <returns>A copy of this <see cref="ClassContext"/> without any mixins that can be ascribed to the given mixin types.</returns>
     public ClassContext SuppressMixins (IEnumerable<Type> mixinTypesToSuppress)
     {
-      lock (_lockObject)
+      Dictionary<Type, MixinContext> mixins = new Dictionary<Type, MixinContext> (_mixins);
+      foreach (Type suppressedType in mixinTypesToSuppress)
       {
-        Dictionary<Type, MixinContext> mixins = new Dictionary<Type, MixinContext> (_mixins);
-        foreach (Type suppressedType in mixinTypesToSuppress)
+        foreach (MixinContext mixin in Mixins)
         {
-          foreach (MixinContext mixin in Mixins)
-          {
-            if (Rubicon.Utilities.ReflectionUtility.CanAscribe (mixin.MixinType, suppressedType))
-              mixins.Remove (mixin.MixinType);
-          }
+          if (Rubicon.Utilities.ReflectionUtility.CanAscribe (mixin.MixinType, suppressedType))
+            mixins.Remove (mixin.MixinType);
         }
-        return new ClassContext (Type, mixins.Values, CompleteInterfaces);
       }
+      return new ClassContext (Type, mixins.Values, CompleteInterfaces);
     }
   }
 }

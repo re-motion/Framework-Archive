@@ -17,10 +17,9 @@ namespace Rubicon.Mixins.Context
   /// </remarks>
   public class MixinContext
   {
-    internal static MixinContext DeserializeFromFlatStructure (ClassContext classContext, object lockObject, string key, SerializationInfo info)
+    internal static MixinContext DeserializeFromFlatStructure (ClassContext classContext, string key, SerializationInfo info)
     {
       ArgumentUtility.CheckNotNull ("classContext", classContext);
-      ArgumentUtility.CheckNotNull ("lockObject", lockObject);
       ArgumentUtility.CheckNotNull ("key", key);
       ArgumentUtility.CheckNotNull ("info", info);
 
@@ -36,9 +35,9 @@ namespace Rubicon.Mixins.Context
     }
 
     public readonly Type MixinType;
-
     private readonly Set<Type> _explicitDependencies;
     private readonly UncastableEnumerableWrapper<Type> _explicitDependenciesForOutside;
+    private readonly int _cachedHashCode;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MixinContext"/> class.
@@ -53,6 +52,8 @@ namespace Rubicon.Mixins.Context
       MixinType = mixinType;
       _explicitDependencies = new Set<Type> (explicitDependencies);
       _explicitDependenciesForOutside = new UncastableEnumerableWrapper<Type> (_explicitDependencies);
+
+      _cachedHashCode = MixinType.GetHashCode () ^ EqualityUtility.GetRotatedHashCode (ExplicitDependencies);
     }
 
     /// <summary>
@@ -108,7 +109,7 @@ namespace Rubicon.Mixins.Context
     /// </returns>
     public override int GetHashCode ()
     {
-      return MixinType.GetHashCode() ^ EqualityUtility.GetRotatedHashCode (ExplicitDependencies);
+      return _cachedHashCode;
     }
 
     /// <summary>

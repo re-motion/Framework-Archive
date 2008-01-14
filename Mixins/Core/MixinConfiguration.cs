@@ -544,7 +544,7 @@ namespace Rubicon.Mixins
       ArgumentUtility.CheckNotNull ("destination", destination);
 
       foreach (ClassContext classContext in ClassContexts)
-        destination.AddOrReplaceClassContext (classContext.Clone());
+        destination.AddOrReplaceClassContext (classContext);
 
       foreach (KeyValuePair<Type, ClassContext> interfaceRegistration in _registeredInterfaces)
       {

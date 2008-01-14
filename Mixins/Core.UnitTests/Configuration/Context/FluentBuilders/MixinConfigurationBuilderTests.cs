@@ -67,8 +67,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     [Test]
     public void ForClass_WithExistingContext ()
     {
-      ClassContext existingContext = new ClassContext (typeof (BaseType1));
-      existingContext.AddMixin (typeof (BT1Mixin1));
+      ClassContext existingContext = new ClassContext (typeof (BaseType1), typeof (BT1Mixin1));
       MixinConfiguration parentConfiguration = new MixinConfiguration (null);
       parentConfiguration.AddClassContext (existingContext);
 
