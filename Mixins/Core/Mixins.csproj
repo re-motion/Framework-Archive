@@ -39,12 +39,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\SynchronizedReadOnlyContextCollection.cs" />
     <Compile Include="Context\FluentBuilders\ClassContextBuilder.cs" />
     <Compile Include="Context\FluentBuilders\InheritanceAwareMixinConfigurationBuilder.cs" />
     <Compile Include="Context\FluentBuilders\MixinConfigurationBuilder.cs" />
     <Compile Include="Context\FluentBuilders\MixinContextBuilder.cs" />
     <Compile Include="Context\InheritedClassContextRetrievalAlgorithm.cs" />
     <Compile Include="Context\InheritanceAwareClassContextCollection.cs" />
+    <Compile Include="Context\ReadOnlyContextCollection.cs" />
     <Compile Include="CopyCustomAttributesAttribute.cs" />
     <Compile Include="CodeGeneration\ConcreteMixinTypeAttribute.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallMethodGenerator.cs" />
