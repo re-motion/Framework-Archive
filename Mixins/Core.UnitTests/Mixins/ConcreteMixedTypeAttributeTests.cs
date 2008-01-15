@@ -89,7 +89,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       ClassContext simpleContext = new ClassContext (typeof (object), typeof (string));
       ConcreteMixedTypeAttribute attribute = ConcreteMixedTypeAttribute.FromClassContext (simpleContext);
-      ClassContext regeneratedContext = attribute.GetClassContext ();
+      ClassContext regeneratedContext = attribute.GetClassContext();
 
       Assert.AreEqual (regeneratedContext, simpleContext);
       Assert.AreNotSame (regeneratedContext, simpleContext);
@@ -136,7 +136,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void GetTargetClassDefinition ()
     {
-      ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType3));
+      ClassContext context = MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance (typeof (BaseType3));
       TargetClassDefinition referenceDefinition = TargetClassDefinitionCache.Current.GetTargetClassDefinition (context);
 
       ConcreteMixedTypeAttribute attribute = ConcreteMixedTypeAttribute.FromClassContext (context);

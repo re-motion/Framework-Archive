@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\ClassContextEventArgs.cs" />
     <Compile Include="Context\MixinContextCollection.cs" />
     <Compile Include="Context\SynchronizedReadOnlyContextCollection.cs" />
     <Compile Include="Context\FluentBuilders\ClassContextBuilder.cs" />
@@ -83,7 +84,6 @@
     <Compile Include="GenerationForceKind.cs" />
     <Compile Include="IgnoreForMixinConfigurationAttribute.cs" />
     <Compile Include="MixedTypeInstantiationScope.cs" />
-    <Compile Include="MixerTool\ClassContextEventArgs.cs" />
     <Compile Include="MixerTool\Mixer.cs" />
     <Compile Include="MixerTool\MixerParameters.cs" />
     <Compile Include="MixerTool\MixerRunner.cs" />

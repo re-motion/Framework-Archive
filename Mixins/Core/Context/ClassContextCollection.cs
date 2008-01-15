@@ -7,6 +7,9 @@ namespace Rubicon.Mixins.Context
 {
   public class ClassContextCollection : ICollection, ICollection<ClassContext>
   {
+    public event EventHandler<ClassContextEventArgs> ClassContextAdded;
+    public event EventHandler<ClassContextEventArgs> ClassContextRemoved;
+
     private readonly Dictionary<Type, ClassContext> _values = new Dictionary<Type, ClassContext> ();
     private readonly InheritedClassContextRetrievalAlgorithm _inheritanceAlgorithm;
 
@@ -18,16 +21,6 @@ namespace Rubicon.Mixins.Context
     public int Count
     {
       get { return _values.Count; }
-    }
-
-    public IEnumerable<Type> Keys
-    {
-      get { return _values.Keys; }
-    }
-
-    public IEnumerable<ClassContext> Values
-    {
-      get { return _values.Values; }
     }
 
     public IEnumerator<ClassContext> GetEnumerator ()
@@ -54,7 +47,9 @@ namespace Rubicon.Mixins.Context
 
     public void Clear ()
     {
-      _values.Clear();
+      List<Type> keys = new List<Type> (_values.Keys);
+      foreach (Type type in keys)
+        RemoveExact (type);
     }
 
     public void Add (ClassContext value)
@@ -65,13 +60,27 @@ namespace Rubicon.Mixins.Context
         string message = string.Format ("A class context for type {0} was already added.", value.Type.FullName);
         throw new InvalidOperationException (message);
       }
+      
       _values.Add (value.Type, value);
+      if (ClassContextAdded != null)
+        ClassContextAdded (this, new ClassContextEventArgs (value));
+    }
+
+    public void AddOrReplace (ClassContext value)
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+      RemoveExact (value.Type);
+      Add (value);
     }
 
     public bool RemoveExact (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      return _values.Remove (type);
+      ClassContext removed = GetExact (type);
+      bool result = _values.Remove (type);
+      if (result && ClassContextRemoved != null)
+        ClassContextRemoved (this, new ClassContextEventArgs (removed));
+      return result;
     }
 
     bool ICollection<ClassContext>.Remove (ClassContext item)

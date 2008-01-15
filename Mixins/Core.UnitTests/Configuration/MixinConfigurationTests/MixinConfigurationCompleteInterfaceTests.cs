@@ -11,22 +11,32 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
   public class MixinConfigurationCompleteInterfaceTests
   {
     [Test]
-    public void RegisterAndResolveCompleteInterface ()
+    public void AddClassContextCausesInterfaceToBeRegistered ()
     {
       MixinConfiguration ac = new MixinConfiguration ();
       ClassContext cc = new ClassContextBuilder (typeof (BaseType2))
           .AddCompleteInterface (typeof (IBaseType2))
+          .BuildClassContext ();
+      ac.ClassContexts.Add (cc);
+      Assert.AreSame (cc, ac.ResolveInterface (typeof (IBaseType2)));
+    }
+
+    [Test]
+    public void RegisterAndResolveCompleteInterfaceExplicitly ()
+    {
+      MixinConfiguration ac = new MixinConfiguration ();
+      ClassContext cc = new ClassContextBuilder (typeof (BaseType2))
           .BuildClassContext();
 
-      ac.AddClassContext (cc);
+      ac.ClassContexts.Add (cc);
       Assert.IsNull (ac.ResolveInterface (typeof (IBaseType2)));
       ac.RegisterInterface (typeof (IBaseType2), cc);
       Assert.AreSame (cc, ac.ResolveInterface (typeof (IBaseType2)));
 
-      ac.AddClassContext (new ClassContext (typeof (BaseType3)));
-      ac.GetClassContext (typeof (BaseType3));
+      ac.ClassContexts.Add (new ClassContext (typeof (BaseType3)));
+      ac.ClassContexts.GetWithInheritance (typeof (BaseType3));
       ac.RegisterInterface (typeof (IBaseType31), typeof (BaseType3));
-      Assert.AreSame (ac.GetClassContext (typeof (BaseType3)), ac.ResolveInterface (typeof (IBaseType31)));
+      Assert.AreSame (ac.ClassContexts.GetWithInheritance (typeof (BaseType3)), ac.ResolveInterface (typeof (IBaseType31)));
     }
 
     [Test]
@@ -35,7 +45,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       MixinConfiguration ac = new MixinConfiguration ();
       ClassContext cc = new ClassContext (typeof (BaseType2));
-      ac.AddClassContext (cc);
+      ac.ClassContexts.Add (cc);
       ac.RegisterInterface (typeof (BaseType2), cc);
     }
 
@@ -56,7 +66,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       MixinConfiguration ac = new MixinConfiguration ();
       ClassContext cc = new ClassContext (typeof (BaseType2));
-      ac.AddClassContext (cc);
+      ac.ClassContexts.Add (cc);
       ac.RegisterInterface (typeof (IBaseType2), new ClassContext (typeof (BaseType2)));
     }
 
@@ -74,11 +84,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       MixinConfiguration ac = new MixinConfiguration ();
       ClassContext cc = new ClassContext (typeof (BaseType2));
-      ac.AddClassContext (cc);
+      ac.ClassContexts.Add (cc);
       ac.RegisterInterface (typeof (IBaseType2), cc);
+
       Assert.IsNotNull (ac.ResolveInterface (typeof (IBaseType2)));
       Assert.AreSame (cc, ac.ResolveInterface (typeof (IBaseType2)));
-      ac.RemoveClassContext (typeof (BaseType2));
+
+      ac.ClassContexts.RemoveExact (typeof (BaseType2));
+
       Assert.IsNull (ac.ResolveInterface (typeof (IBaseType2)));
     }
 
@@ -89,7 +102,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       MixinConfiguration ac = new MixinConfiguration ();
       ClassContext cc = new ClassContext (typeof (BaseType2));
-      ac.AddClassContext (cc);
+      ac.ClassContexts.Add (cc);
       ac.RegisterInterface (typeof (IBaseType2), cc);
       ac.RegisterInterface (typeof (IBaseType2), cc);
     }

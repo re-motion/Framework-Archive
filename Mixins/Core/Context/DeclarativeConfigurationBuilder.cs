@@ -99,7 +99,7 @@ namespace Rubicon.Mixins.Context
       MixinConfiguration configuration = new MixinConfiguration (parentConfiguration);
 
       foreach (ClassContext classContext in classContexts)
-        configuration.AddOrReplaceClassContext (classContext);
+        configuration.ClassContexts.AddOrReplace (classContext);
 
       return configuration;
     }

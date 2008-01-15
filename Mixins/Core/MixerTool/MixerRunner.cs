@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Rubicon.Mixins.CodeGeneration;
+using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Utilities;
 using Rubicon.Logging;

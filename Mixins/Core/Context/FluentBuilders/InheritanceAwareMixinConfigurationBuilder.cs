@@ -74,7 +74,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     public MixinConfiguration BuildMixinConfiguration ()
     {
       foreach (ClassContext context in _finishedContextsForBuilders)
-        _builtConfiguration.AddOrReplaceClassContext (context);
+        _builtConfiguration.ClassContexts.AddOrReplace (context);
       return _builtConfiguration;
     }
   }

@@ -15,16 +15,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
   public class ClassContextGeneralTests
   {
     [Test]
-    public void NewMixinConfigurationDoesNotKnowAnyClasses ()
-    {
-      MixinConfiguration context = new MixinConfiguration ();
-      Assert.AreEqual (0, context.ClassContextCount);
-      List<ClassContext> classContexts = new List<ClassContext> (context.ClassContexts);
-      Assert.AreEqual (0, classContexts.Count);
-      Assert.IsFalse (context.ContainsClassContext (typeof (BaseType1)));
-    }
-
-    [Test]
     public void GetMixinContext ()
     {
       ClassContext classContext = new ClassContext (typeof (BaseType7));
@@ -52,7 +42,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       MixinConfiguration context = MixinConfiguration.BuildFromActive()
           .ForClass <IBaseType2>().AddMixin<BT2Mixin1>().BuildConfiguration();
 
-      ClassContext classContext = context.GetClassContext (typeof (IBaseType2));
+      ClassContext classContext = context.ClassContexts.GetWithInheritance (typeof (IBaseType2));
       Assert.IsNotNull (classContext);
 
       Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (BT2Mixin1)));

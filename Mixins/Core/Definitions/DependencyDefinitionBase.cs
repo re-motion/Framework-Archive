@@ -9,9 +9,9 @@ namespace Rubicon.Mixins.Definitions
   {
     public readonly UniqueDefinitionCollection<Type, DependencyDefinitionBase> AggregatedDependencies;
 
-    private RequirementDefinitionBase _requirement; // the required face or base interface
-    private MixinDefinition _depender; // the mixin (directly or indirectly) defining the requirement
-    private DependencyDefinitionBase _aggregator; // the outer dependency containing this dependency, if defined indirectly
+    private readonly RequirementDefinitionBase _requirement; // the required face or base interface
+    private readonly MixinDefinition _depender; // the mixin (directly or indirectly) defining the requirement
+    private readonly DependencyDefinitionBase _aggregator; // the outer dependency containing this dependency, if defined indirectly
 
     public DependencyDefinitionBase (RequirementDefinitionBase requirement, MixinDefinition depender, DependencyDefinitionBase aggregator)
     {

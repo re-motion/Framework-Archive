@@ -27,7 +27,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     {
       ClassContext classContext = new ClassContext (typeof (BaseType1));
       MixinConfiguration configuration = new MixinConfiguration (null);
-      configuration.AddClassContext (classContext);
+      configuration.ClassContexts.Add (classContext);
 
       using (configuration.EnterScope())
       {

@@ -87,127 +87,65 @@ namespace Rubicon.Mixins
     public MixinConfiguration (MixinConfiguration parentConfiguration)
     {
       _classContexts = new ClassContextCollection();
+      _classContexts.ClassContextAdded += ClassContextAdded;
+      _classContexts.ClassContextRemoved += ClassContextRemoved;
  
       if (parentConfiguration != null)
         parentConfiguration.CopyTo (this);
     }
 
     /// <summary>
-    /// Gets the class context count for this <see cref="MixinConfiguration"/>.
-    /// </summary>
-    /// <value>The number of class contexts currently stored in this <see cref="MixinConfiguration"/>.</value>
-    public int ClassContextCount
-    {
-      get { return _classContexts.Count; }
-    }
-
-    /// <summary>
     /// Gets the class contexts currently stored in this <see cref="MixinConfiguration"/>.
     /// </summary>
     /// <value>The class contexts currently sotred in this configuration.</value>
-    public IEnumerable<ClassContext> ClassContexts
+    public ClassContextCollection ClassContexts
     {
-      get { return _classContexts.Values; }
+      get { return _classContexts; }
     }
 
-    /// <summary>
-    /// Adds a new class context to the <see cref="MixinConfiguration"/>.
-    /// </summary>
-    /// <param name="classContext">The class context to add.</param>
-    /// <exception cref="InvalidOperationException">The <see cref="MixinConfiguration"/> already contains a <see cref="ClassContext"/> for the
-    /// same <see cref="Type"/>.</exception>
-    /// <remarks>
-    /// This method does not register any complete interfaces. Use <see cref="RegisterInterface(Type,ClassContext)"/> for that purpose.
-    /// </remarks>
-    public void AddClassContext (ClassContext classContext)
+    private void ClassContextAdded (object sender, ClassContextEventArgs e)
     {
-      ArgumentUtility.CheckNotNull ("classContext", classContext);
+      foreach (Type completeInterface in e.ClassContext.CompleteInterfaces)
+        RegisterInterface (completeInterface, e.ClassContext);
+    }
 
-      if (_classContexts.ContainsExact (classContext.Type))
+    private void ClassContextRemoved (object sender, ClassContextEventArgs e)
+    {
+      List<Type> interfacesToBeRemoved = new List<Type>();
+      foreach (KeyValuePair<Type, ClassContext> item in _registeredInterfaces)
       {
-        string message = string.Format ("There is already a class context for type {0}.", classContext.Type.FullName);
-        throw new InvalidOperationException (message);
+        if (object.ReferenceEquals (item.Value, e.ClassContext))
+          interfacesToBeRemoved.Add (item.Key);
       }
-      _classContexts.Add (classContext);
+      foreach (Type type in interfacesToBeRemoved)
+        _registeredInterfaces.Remove (type);
     }
 
-    /// <summary>
-    /// Retrives the class context for a given <see cref="System.Type"/>, scanning the inheritance hierarchy if no context exists exactly for that
-    /// type.
-    /// </summary>
-    /// <param name="type">The <see cref="System.Type"/> to retrieve a class context for.</param>
-    /// <returns>The <see cref="ClassContext"/> stored by the <see cref="MixinConfiguration"/> for the given <see cref="Type"/>, or a copy of the
-    /// context of its generic type definition or base type (in that order, with an adjusted <see cref="Type"/> member), or <see langword="null"/> if
-    /// no such context has been registered for the type hierarchy.</returns>
-    public ClassContext GetClassContext (Type type)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-      return _classContexts.GetWithInheritance (type);
-    }
+    ///// <summary>
+    ///// Removes a class context from the <see cref="MixinConfiguration"/>.
+    ///// </summary>
+    ///// <param name="type">The <see cref="Type"/> whose class context is to be removed.</param>
+    ///// <returns>True if the <see cref="MixinConfiguration"/> contained a respective class context; false otherwise.</returns>
+    //public bool RemoveClassContext (Type type)
+    //{
+    //  ArgumentUtility.CheckNotNull ("type", type);
+    //  ClassContext context = GetClassContextNonRecursive (type);
+    //  if (context != null && context.Type.Equals (type))
+    //  {
+    //    List<Type> interfacesToRemove = new List<Type>();
+    //    foreach (Type registeredInterface in _registeredInterfaces.Keys)
+    //    {
+    //      if (object.ReferenceEquals (ResolveInterface (registeredInterface), context))
+    //        interfacesToRemove.Add (registeredInterface);
+    //    }
+    //    foreach (Type interfaceToRemove in interfacesToRemove)
+    //      _registeredInterfaces.Remove (interfaceToRemove);
 
-    /// <summary>
-    /// Retrives the class context for exactly the given <see cref="System.Type"/>.
-    /// </summary>
-    /// <param name="type">The <see cref="System.Type"/> to retrieve a class context for.</param>
-    /// <returns>The <see cref="ClassContext"/> stored by the <see cref="MixinConfiguration"/> for the given <see cref="Type"/> or its base type
-    /// or generic type definition, or <see langword="null"/> if no such context has been registered.</returns>
-    public ClassContext GetClassContextNonRecursive (Type type)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ClassContext classContext = _classContexts.GetExact (type);
-      return classContext;
-    }
-
-    /// <summary>
-    /// Checks whether the <see cref="MixinConfiguration"/> holds a <see cref="ClassContext"/> for the given <see cref="Type"/>, scanning the
-    /// inheritance hierarchy if no context exists exactly for that type.
-    /// </summary>
-    /// <param name="type">The <see cref="Type"/> to check for.</param>
-    /// <returns>True if the <see cref="MixinConfiguration"/> holds a <see cref="ClassContext"/> for the given <see cref="Type"/>; false otherwise.
-    /// </returns>
-    public bool ContainsClassContext (Type type)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-      return GetClassContext (type) != null;
-    }
-
-    /// <summary>
-    /// Removes a class context from the <see cref="MixinConfiguration"/>.
-    /// </summary>
-    /// <param name="type">The <see cref="Type"/> whose class context is to be removed.</param>
-    /// <returns>True if the <see cref="MixinConfiguration"/> contained a respective class context; false otherwise.</returns>
-    public bool RemoveClassContext (Type type)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ClassContext context = GetClassContextNonRecursive (type);
-      if (context != null && context.Type.Equals (type))
-      {
-        List<Type> interfacesToRemove = new List<Type>();
-        foreach (Type registeredInterface in _registeredInterfaces.Keys)
-        {
-          if (object.ReferenceEquals (ResolveInterface (registeredInterface), context))
-            interfacesToRemove.Add (registeredInterface);
-        }
-        foreach (Type interfaceToRemove in interfacesToRemove)
-          _registeredInterfaces.Remove (interfaceToRemove);
-
-        return _classContexts.RemoveExact (context.Type);
-      }
-      else
-        return false;
-    }
-
-    /// <summary>
-    /// Adds a class context, replacing the existing one if any.
-    /// </summary>
-    /// <param name="newContext">The class context to add to this <see cref="MixinConfiguration"/>.</param>
-    public void AddOrReplaceClassContext (ClassContext newContext)
-    {
-      ArgumentUtility.CheckNotNull ("newContext", newContext);
-
-      RemoveClassContext (newContext.Type);
-      AddClassContext (newContext);
-    }
+    //    return _classContexts.RemoveExact (context.Type);
+    //  }
+    //  else
+    //    return false;
+    //}
 
     /// <summary>
     /// Temporarily replaces the mixin configuration associated with the current thread (actually <see cref="CallContext"/>) with this 
@@ -320,7 +258,7 @@ namespace Rubicon.Mixins
       ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
       ArgumentUtility.CheckNotNull ("associatedClassType", associatedClassType);
 
-      ClassContext context = GetClassContextNonRecursive (associatedClassType);
+      ClassContext context = ClassContexts.GetExact (associatedClassType);
       if (context == null)
       {
         string message = string.Format ("There is no class context for the given type {0}.", associatedClassType.FullName);
@@ -371,7 +309,19 @@ namespace Rubicon.Mixins
       ArgumentUtility.CheckNotNull ("destination", destination);
 
       foreach (ClassContext classContext in ClassContexts)
-        destination.AddOrReplaceClassContext (classContext);
+      {
+        try
+        {
+          destination.ClassContexts.AddOrReplace (classContext);
+        }
+        catch (InvalidOperationException ex)
+        {
+          throw new ArgumentException (
+              "The given destination configuration object conflicts with the source configuration: " + ex.Message,
+              "destination",
+              ex);
+        }
+      }
 
       foreach (KeyValuePair<Type, ClassContext> interfaceRegistration in _registeredInterfaces)
       {

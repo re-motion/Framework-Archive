@@ -153,7 +153,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
 
             Assert.IsNotNull (Mixin.GetMixinConfigurationFromConcreteType (generatedType));
             Assert.AreEqual (
-                MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType1)),
+                MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance (typeof (BaseType1)),
                 Mixin.GetMixinConfigurationFromConcreteType (generatedType));
 
             object instance = Activator.CreateInstance (generatedType);

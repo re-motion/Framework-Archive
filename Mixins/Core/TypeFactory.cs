@@ -269,7 +269,7 @@ namespace Rubicon.Mixins
       if (generationPolicy != GenerationPolicy.ForceGeneration && TypeUtility.IsGeneratedType (targetType))
         context = Mixin.GetMixinConfigurationFromConcreteType (targetType);
       else
-        context = mixinConfiguration.GetClassContext (targetType);
+        context = mixinConfiguration.ClassContexts.GetWithInheritance (targetType);
 
       if (context == null && generationPolicy == GenerationPolicy.ForceGeneration)
         context = new ClassContext (targetType);

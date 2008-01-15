@@ -28,9 +28,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     {
       MixinConfiguration context =
           new DeclarativeConfigurationBuilder (null).AddType (typeof (ExtenderWithDependencies)).AddType (typeof (ExtenderWithoutDependencies)).BuildConfiguration ();
-      Assert.AreEqual (0, context.GetClassContext (typeof (object)).Mixins[typeof (ExtenderWithoutDependencies)].ExplicitDependencies.Count);
-      Assert.AreEqual (1, context.GetClassContext (typeof (object)).Mixins[typeof (ExtenderWithDependencies)].ExplicitDependencies.Count);
-      Assert.IsTrue (context.GetClassContext (typeof (object)).Mixins[typeof (ExtenderWithDependencies)].ExplicitDependencies.ContainsKey (typeof (string)));
+      Assert.AreEqual (0, context.ClassContexts.GetWithInheritance (typeof (object)).Mixins[typeof (ExtenderWithoutDependencies)].ExplicitDependencies.Count);
+      Assert.AreEqual (1, context.ClassContexts.GetWithInheritance (typeof (object)).Mixins[typeof (ExtenderWithDependencies)].ExplicitDependencies.Count);
+      Assert.IsTrue (context.ClassContexts.GetWithInheritance (typeof (object)).Mixins[typeof (ExtenderWithDependencies)].ExplicitDependencies.ContainsKey (typeof (string)));
     }
 
     public class ExtendsTargetBase { }
@@ -47,8 +47,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     {
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (ExtendingMixin))
           .AddType (typeof (ExtendsTargetDerivedWithoutExtends)).BuildConfiguration ();
-      Assert.IsTrue (context.GetClassContext (typeof (ExtendsTargetDerivedWithoutExtends)).Mixins.ContainsKey (typeof (ExtendingMixin)));
-      Assert.AreEqual (1, context.GetClassContext (typeof (ExtendsTargetDerivedWithoutExtends)).Mixins.Count);
+      Assert.IsTrue (context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetDerivedWithoutExtends)).Mixins.ContainsKey (typeof (ExtendingMixin)));
+      Assert.AreEqual (1, context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetDerivedWithoutExtends)).Mixins.Count);
     }
 
     public class ExtendsTargetDerivedWithExtends : ExtendsTargetBase { }
@@ -58,8 +58,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     {
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (ExtendingMixin))
           .AddType (typeof (ExtendsTargetDerivedWithExtends)).BuildConfiguration ();
-      Assert.IsTrue (context.GetClassContext (typeof (ExtendsTargetDerivedWithExtends)).Mixins.ContainsKey (typeof (ExtendingMixin)));
-      Assert.AreEqual (1, context.GetClassContext (typeof (ExtendsTargetDerivedWithExtends)).Mixins.Count);
+      Assert.IsTrue (context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetDerivedWithExtends)).Mixins.ContainsKey (typeof (ExtendingMixin)));
+      Assert.AreEqual (1, context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetDerivedWithExtends)).Mixins.Count);
     }
 
     [Extends (typeof (ExtendsTargetDerivedWithDerivedExtends))]
@@ -74,9 +74,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (ExtendingMixin)).AddType (typeof (DerivedExtendingMixin))
           .BuildConfiguration();
 
-      Assert.IsFalse (context.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).Mixins.ContainsKey (typeof (ExtendingMixin)));
-      Assert.IsTrue (context.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).Mixins.ContainsKey (typeof (DerivedExtendingMixin)));
-      Assert.AreEqual (1, context.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).Mixins.Count);
+      Assert.IsFalse (context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetDerivedWithDerivedExtends)).Mixins.ContainsKey (typeof (ExtendingMixin)));
+      Assert.IsTrue (context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetDerivedWithDerivedExtends)).Mixins.ContainsKey (typeof (DerivedExtendingMixin)));
+      Assert.AreEqual (1, context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetDerivedWithDerivedExtends)).Mixins.Count);
     }
 
     [Extends (typeof (ExtendsTargetDerivedWithDerivedExtends))]
@@ -89,10 +89,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (ExtendingMixin)).AddType (typeof (DerivedExtendingMixin))
           .AddType (typeof (DerivedExtendingMixin2)).BuildConfiguration ();
 
-      Assert.IsFalse (context.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).Mixins.ContainsKey (typeof (ExtendingMixin)));
-      Assert.IsTrue (context.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).Mixins.ContainsKey (typeof (DerivedExtendingMixin)));
-      Assert.IsTrue (context.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).Mixins.ContainsKey (typeof (DerivedExtendingMixin2)));
-      Assert.AreEqual (2, context.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).Mixins.Count);
+      Assert.IsFalse (context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetDerivedWithDerivedExtends)).Mixins.ContainsKey (typeof (ExtendingMixin)));
+      Assert.IsTrue (context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetDerivedWithDerivedExtends)).Mixins.ContainsKey (typeof (DerivedExtendingMixin)));
+      Assert.IsTrue (context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetDerivedWithDerivedExtends)).Mixins.ContainsKey (typeof (DerivedExtendingMixin2)));
+      Assert.AreEqual (2, context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetDerivedWithDerivedExtends)).Mixins.Count);
     }
 
     [Extends (typeof (ExtendsTargetBase))]
@@ -117,9 +117,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     public void DuplicateExtendsForSameClassInInheritanceHierarchyIsIgnored ()
     {
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (MixinExtendingBaseAndDerived)).BuildConfiguration ();
-      Assert.IsTrue (context.GetClassContext (typeof (ExtendsTargetBase)).Mixins.ContainsKey (typeof (MixinExtendingBaseAndDerived)));
-      Assert.IsTrue (context.GetClassContext (typeof (ExtendsTargetDerivedWithoutExtends)).Mixins.ContainsKey (typeof (MixinExtendingBaseAndDerived)));
-      Assert.AreEqual (1, context.GetClassContext (typeof (ExtendsTargetDerivedWithoutExtends)).Mixins.Count);
+      Assert.IsTrue (context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetBase)).Mixins.ContainsKey (typeof (MixinExtendingBaseAndDerived)));
+      Assert.IsTrue (context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetDerivedWithoutExtends)).Mixins.ContainsKey (typeof (MixinExtendingBaseAndDerived)));
+      Assert.AreEqual (1, context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetDerivedWithoutExtends)).Mixins.Count);
     }
 
     [Extends (typeof (ExtendsTargetBase), MixinTypeArguments = new Type[] { typeof (List<int>), typeof (IList<int>) })]
@@ -134,7 +134,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     public void ExtendsCanSpecializeGenericMixin ()
     {
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (GenericMixinWithSpecialization<,>)).BuildConfiguration ();
-      MixinContext mixinContext = new List<MixinContext> (context.GetClassContext (typeof (ExtendsTargetBase)).Mixins)[0];
+      MixinContext mixinContext = new List<MixinContext> (context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetBase)).Mixins)[0];
       Assert.IsTrue (ReflectionUtility.CanAscribe (mixinContext.MixinType, typeof (GenericMixinWithSpecialization<,>)));
       Assert.IsFalse (mixinContext.MixinType.IsGenericTypeDefinition);
       Assert.IsFalse (mixinContext.MixinType.ContainsGenericParameters);
@@ -167,7 +167,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     {
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (ExtendingMixin)).AddType (typeof (SuppressingExtender))
           .BuildConfiguration ();
-      ClassContext classContext = context.GetClassContext (typeof (ExtendsTargetBase));
+      ClassContext classContext = context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetBase));
       Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (SuppressingExtender)));
       Assert.IsFalse (classContext.Mixins.ContainsKey (typeof (ExtendingMixin)));
     }
@@ -185,7 +185,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     {
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (CircularSuppressingExtender1))
           .AddType (typeof (CircularSuppressingExtender2)).BuildConfiguration ();
-      ClassContext classContext = context.GetClassContext (typeof (ExtendsTargetBase));
+      ClassContext classContext = context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetBase));
       Assert.IsFalse (classContext.Mixins.ContainsKey (typeof (CircularSuppressingExtender1)));
       Assert.IsFalse (classContext.Mixins.ContainsKey (typeof (CircularSuppressingExtender2)));
     }
@@ -222,7 +222,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
           .AddType (typeof (GenericMixinWithSpecialization<,>))
           .AddType (typeof (GenericSuppressingExtender))
           .BuildConfiguration ();
-      ClassContext classContext = context.GetClassContext (typeof (ExtendsTargetBase));
+      ClassContext classContext = context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetBase));
       Assert.IsFalse (classContext.Mixins.ContainsKey (typeof (GenericMixinWithSpecialization<List<int>, IList<int>>)));
     }
 
@@ -233,7 +233,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
           .AddType (typeof (GenericMixinWithoutSpecialization<,>))
           .AddType (typeof (GenericSuppressingExtender))
           .BuildConfiguration ();
-      ClassContext classContext = context.GetClassContext (typeof (ExtendsTargetBase));
+      ClassContext classContext = context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetBase));
       Assert.IsFalse (classContext.Mixins.ContainsKey (typeof (GenericMixinWithoutSpecialization<,>)));
     }
 
@@ -247,7 +247,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null)
           .AddType (typeof (GenericMixinWithSpecialization<,>))
           .AddType (typeof (ClosedGenericSuppressingExtender)).BuildConfiguration ();
-      ClassContext classContext = context.GetClassContext (typeof (ExtendsTargetBase));
+      ClassContext classContext = context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetBase));
       Assert.IsFalse (classContext.Mixins.ContainsKey (typeof (GenericMixinWithSpecialization<List<int>, IList<int>>)));
     }
 
@@ -261,7 +261,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null)
           .AddType (typeof (GenericMixinWithSpecialization<,>))
           .AddType (typeof (ClosedGenericSuppressingExtender_WithWrongParameterTypes)).BuildConfiguration ();
-      ClassContext classContext = context.GetClassContext (typeof (ExtendsTargetBase));
+      ClassContext classContext = context.ClassContexts.GetWithInheritance (typeof (ExtendsTargetBase));
       Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (GenericMixinWithSpecialization<List<int>, IList<int>>)));
     }
 
@@ -269,13 +269,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     public void ExtendsAppliedToSpecificGenericClass ()
     {
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (MixinExtendingSpecificGenericClass)).BuildConfiguration();
-      Assert.IsTrue (context.ContainsClassContext (typeof (GenericClassExtendedByMixin<int>)));
-      Assert.IsFalse (context.ContainsClassContext (typeof (GenericClassExtendedByMixin<string>)));
-      Assert.IsFalse (context.ContainsClassContext (typeof (GenericClassExtendedByMixin<>)));
+      Assert.IsTrue (context.ClassContexts.ContainsWithInheritance (typeof (GenericClassExtendedByMixin<int>)));
+      Assert.IsFalse (context.ClassContexts.ContainsWithInheritance (typeof (GenericClassExtendedByMixin<string>)));
+      Assert.IsFalse (context.ClassContexts.ContainsWithInheritance (typeof (GenericClassExtendedByMixin<>)));
 
-      Assert.IsNotNull (context.GetClassContext (typeof (GenericClassExtendedByMixin<int>)));
-      Assert.IsNull (context.GetClassContext (typeof (GenericClassExtendedByMixin<string>)));
-      Assert.IsNull (context.GetClassContext (typeof (GenericClassExtendedByMixin<>)));
+      Assert.IsNotNull (context.ClassContexts.GetWithInheritance (typeof (GenericClassExtendedByMixin<int>)));
+      Assert.IsNull (context.ClassContexts.GetWithInheritance (typeof (GenericClassExtendedByMixin<string>)));
+      Assert.IsNull (context.ClassContexts.GetWithInheritance (typeof (GenericClassExtendedByMixin<>)));
     }
   }
 }

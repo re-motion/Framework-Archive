@@ -30,10 +30,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
 
       using (MixinConfiguration.BuildFromActive().ForClass<TargetClass> ().Clear().AddMixins (typeof (One)).EnterScope())
       {
-        c1 = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (TargetClass));
+        c1 = MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance (typeof (TargetClass));
         using (MixinConfiguration.BuildFromActive().ForClass<One> ().Clear().AddMixins (typeof (Two)).EnterScope())
         {
-          c2 = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (TargetClass));
+          c2 = MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance (typeof (TargetClass));
         }
       }
 

@@ -46,7 +46,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
       ArgumentUtility.CheckNotNull ("targetType", targetType);
       if (!_classContextBuilders.ContainsKey (targetType))
       {
-        ClassContext parentContext = ParentConfiguration != null ? ParentConfiguration.GetClassContextNonRecursive (targetType) : null;
+        ClassContext parentContext = ParentConfiguration != null ? ParentConfiguration.ClassContexts.GetExact (targetType) : null;
         ClassContextBuilder builder = new ClassContextBuilder (this, targetType, parentContext);
         _classContextBuilders.Add (targetType, builder);
       }
@@ -69,16 +69,11 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     /// <returns>A new <see cref="MixinConfiguration"/> instance incorporating all the data acquired so far.</returns>
     public virtual MixinConfiguration BuildConfiguration ()
     {
-      IEnumerable<ClassContext> parentContexts = ParentConfiguration != null ? ParentConfiguration.ClassContexts : new ClassContext[0];
+      IEnumerable<ClassContext> parentContexts = ParentConfiguration != null ?
+          (IEnumerable<ClassContext>) ParentConfiguration.ClassContexts : new ClassContext[0];
       MixinConfiguration builtConfiguration = new MixinConfiguration (ParentConfiguration);
       InheritanceAwareMixinConfigurationBuilder builder = new InheritanceAwareMixinConfigurationBuilder (builtConfiguration, parentContexts, ClassContextBuilders);
       builtConfiguration = builder.BuildMixinConfiguration();
-      foreach (ClassContextBuilder classContextBuilder in ClassContextBuilders)
-      {
-        ClassContext context = builtConfiguration.GetClassContext (classContextBuilder.TargetType);
-        foreach (Type completeInterface in context.CompleteInterfaces)
-          builtConfiguration.RegisterInterface (completeInterface, context);
-      }
       return builtConfiguration;
     }
 

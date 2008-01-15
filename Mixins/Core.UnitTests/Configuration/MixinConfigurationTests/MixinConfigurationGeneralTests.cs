@@ -5,6 +5,7 @@ using Rubicon.Mixins.Context.FluentBuilders;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
 {
@@ -15,10 +16,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     public void NewMixinConfigurationDoesNotKnowAnyClasses ()
     {
       MixinConfiguration configuration = new MixinConfiguration();
-      Assert.AreEqual (0, configuration.ClassContextCount);
-      List<ClassContext> classContexts = new List<ClassContext> (configuration.ClassContexts);
-      Assert.AreEqual (0, classContexts.Count);
-      Assert.IsFalse (configuration.ContainsClassContext (typeof (BaseType1)));
+      Assert.AreEqual (0, configuration.ClassContexts.Count);
+      Assert.IsFalse (configuration.ClassContexts.ContainsWithInheritance (typeof (BaseType1)));
     }
 
     [Test]
@@ -37,12 +36,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
 
     private static void CheckContext (MixinConfiguration configuration)
     {
-      Assert.IsTrue (configuration.ContainsClassContext (typeof (BaseType1)));
+      Assert.IsTrue (configuration.ClassContexts.ContainsWithInheritance (typeof (BaseType1)));
 
-      List<ClassContext> classContexts = new List<ClassContext> (configuration.ClassContexts);
-      Assert.IsTrue (classContexts.Count > 0);
-
-      ClassContext contextForBaseType1 = configuration.GetClassContext (typeof (BaseType1));
+      Assert.That (configuration.ClassContexts, Is.Not.Empty);
+      
+      ClassContext contextForBaseType1 = configuration.ClassContexts.GetWithInheritance (typeof (BaseType1));
       Assert.AreEqual (2, contextForBaseType1.Mixins.Count);
 
       Assert.IsTrue (contextForBaseType1.Mixins.ContainsKey (typeof (BT1Mixin1)));
@@ -53,10 +51,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     public void NewConfiguration ()
     {
       MixinConfiguration configuration = new MixinConfiguration();
-      Assert.AreEqual (0, configuration.ClassContextCount);
-      Assert.IsFalse (configuration.ContainsClassContext (typeof (BaseType1)));
-      Assert.IsNull (configuration.GetClassContext (typeof (BaseType1)));
-      Assert.IsEmpty (new List<ClassContext> (configuration.ClassContexts));
+      Assert.AreEqual (0, configuration.ClassContexts.Count);
+      Assert.IsFalse (configuration.ClassContexts.ContainsWithInheritance (typeof (BaseType1)));
+      Assert.IsNull (configuration.ClassContexts.GetWithInheritance (typeof (BaseType1)));
+      Assert.IsEmpty (configuration.ClassContexts);
     }
 
     [Test]
@@ -64,15 +62,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       MixinConfiguration configuration = new MixinConfiguration();
       ClassContext newContext1 = new ClassContext (typeof (BaseType1));
-      configuration.AddClassContext (newContext1);
-      Assert.AreEqual (1, configuration.ClassContextCount);
-      Assert.IsTrue (configuration.ContainsClassContext (typeof (BaseType1)));
-      Assert.AreSame (newContext1, configuration.GetClassContext (typeof (BaseType1)));
-      Assert.Contains (newContext1, new List<ClassContext> (configuration.ClassContexts));
-      Assert.AreEqual (1, new List<ClassContext> (configuration.ClassContexts).Count);
+      configuration.ClassContexts.Add (newContext1);
+      Assert.AreEqual (1, configuration.ClassContexts.Count);
+      Assert.IsTrue (configuration.ClassContexts.ContainsWithInheritance (typeof (BaseType1)));
+      Assert.AreSame (newContext1, configuration.ClassContexts.GetWithInheritance (typeof (BaseType1)));
+      Assert.Contains (newContext1, configuration.ClassContexts);
 
       ClassContext newContext2 = new ClassContext (typeof (BaseType2));
-      configuration.AddClassContext (newContext2);
+      configuration.ClassContexts.Add (newContext2);
       Assert.IsNotNull (newContext2);
       Assert.AreNotSame (newContext1, newContext2);
     }
@@ -82,11 +79,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       MixinConfiguration configuration = new MixinConfiguration();
       ClassContext newContext1 = new ClassContext (typeof (BaseType1));
-      configuration.AddClassContext (newContext1);
+      configuration.ClassContexts.Add (newContext1);
 
-      Assert.IsTrue (configuration.RemoveClassContext (typeof (BaseType1)));
-      Assert.IsFalse (configuration.ContainsClassContext (typeof (BaseType1)));
-      Assert.IsFalse (configuration.RemoveClassContext (typeof (BaseType1)));
+      Assert.IsTrue (configuration.ClassContexts.RemoveExact (typeof (BaseType1)));
+      Assert.IsFalse (configuration.ClassContexts.ContainsWithInheritance (typeof (BaseType1)));
+      Assert.IsFalse (configuration.ClassContexts.RemoveExact (typeof (BaseType1)));
     }
 
     [Test]
@@ -94,29 +91,29 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       MixinConfiguration configuration = new MixinConfiguration ();
       ClassContext existingContext = new ClassContext (typeof (BaseType2));
-      configuration.AddClassContext (existingContext);
+      configuration.ClassContexts.Add (existingContext);
 
       ClassContext replacement = new ClassContext (typeof (BaseType2));
-      Assert.AreSame (existingContext, configuration.GetClassContext (typeof (BaseType2)));
+      Assert.AreSame (existingContext, configuration.ClassContexts.GetWithInheritance (typeof (BaseType2)));
       
-      configuration.AddOrReplaceClassContext (replacement);
+      configuration.ClassContexts.AddOrReplace (replacement);
       
-      Assert.AreNotSame (existingContext, configuration.GetClassContext (typeof (BaseType2)));
-      Assert.AreSame (replacement, configuration.GetClassContext (typeof (BaseType2)));
+      Assert.AreNotSame (existingContext, configuration.ClassContexts.GetWithInheritance (typeof (BaseType2)));
+      Assert.AreSame (replacement, configuration.ClassContexts.GetWithInheritance (typeof (BaseType2)));
 
       ClassContext additionalContext = new ClassContext (typeof (BaseType3));
-      Assert.IsFalse (configuration.ContainsClassContext (additionalContext.Type));
-      configuration.AddOrReplaceClassContext (additionalContext);
-      Assert.IsTrue (configuration.ContainsClassContext (additionalContext.Type));
+      Assert.IsFalse (configuration.ClassContexts.ContainsWithInheritance (additionalContext.Type));
+      configuration.ClassContexts.AddOrReplace (additionalContext);
+      Assert.IsTrue (configuration.ClassContexts.ContainsWithInheritance (additionalContext.Type));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "already a class context", MatchType = MessageMatch.Contains)]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "already added", MatchType = MessageMatch.Contains)]
     public void ThrowsOnDoubleAdd ()
     {
       MixinConfiguration configuration = new MixinConfiguration ();
-      configuration.AddClassContext (new ClassContext (typeof (BaseType1)));
-      configuration.AddClassContext (new ClassContext (typeof (BaseType1)));
+      configuration.ClassContexts.Add (new ClassContext (typeof (BaseType1)));
+      configuration.ClassContexts.Add (new ClassContext (typeof (BaseType1)));
     }
 
     [Test]
@@ -124,7 +121,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     public void ThrowsOnDoubleAdd_ViaConstructor ()
     {
       MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
-      configuration.AddClassContext (new ClassContext (typeof (BaseType1)));
+      configuration.ClassContexts.Add (new ClassContext (typeof (BaseType1)));
     }
 
     [Test]
@@ -132,71 +129,125 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       MixinConfiguration configuration = new MixinConfiguration();
       ClassContext classContext = new ClassContext (typeof (object));
-      configuration.AddClassContext (classContext);
+      configuration.ClassContexts.Add (classContext);
       configuration.RegisterInterface (typeof (IServiceProvider), classContext);
 
-      Assert.AreEqual (1, configuration.ClassContextCount);
+      Assert.AreEqual (1, configuration.ClassContexts.Count);
       Assert.AreSame (classContext, configuration.ResolveInterface (typeof (IServiceProvider)));
 
       configuration.Clear();
 
-      Assert.AreEqual (0, configuration.ClassContextCount);
+      Assert.AreEqual (0, configuration.ClassContexts.Count);
       Assert.IsNull (configuration.ResolveInterface (typeof (IServiceProvider)));
     }
 
     [Test]
-    public void CopyTo ()
+    public void CopyTo_Simple ()
+    {
+      MixinConfiguration source = new MixinConfigurationBuilder (null)
+          .ForClass (typeof (BaseType1))
+          .AddMixin (typeof (BT1Mixin1)).WithDependency (typeof (IBaseType34))
+          .AddCompleteInterface (typeof (IBaseType33))
+          .BuildConfiguration ();
+
+      MixinConfiguration destination = new MixinConfiguration ();
+      source.CopyTo (destination);
+      Assert.That (destination.ClassContexts, Is.EqualTo (source.ClassContexts));
+      Assert.IsNotNull (destination.ResolveInterface (typeof (IBaseType33)));
+      Assert.AreSame (destination.ClassContexts.GetExact (typeof (BaseType1)), destination.ResolveInterface (typeof (IBaseType33)));
+    }
+
+    [Test]
+    public void CopyTo_WithParent ()
     {
       MixinConfiguration parent = new MixinConfigurationBuilder (null)
           .ForClass (typeof (BaseType2))
-          .AddMixin (typeof (BT2Mixin1)).WithDependency (typeof (IBaseType33))
-          .AddCompleteInterface (typeof (IBaseType2))
+          .AddMixin (typeof (BT2Mixin1))
+          .AddCompleteInterface (typeof (IBaseType31))
           .BuildConfiguration();
-
+      
       MixinConfiguration source = new MixinConfigurationBuilder (parent)
           .ForClass (typeof (BaseType1))
           .AddMixin (typeof (BT1Mixin1)).WithDependency (typeof (IBaseType34))
           .AddCompleteInterface (typeof (IBaseType33))
-          .BuildConfiguration();
-
-      Assert.IsTrue (source.ContainsClassContext (typeof (BaseType2)));
-      Assert.IsTrue (source.GetClassContext (typeof (BaseType2)).Mixins.ContainsKey (typeof (BT2Mixin1)));
-      Assert.IsTrue (source.GetClassContext (typeof (BaseType2)).Mixins[typeof (BT2Mixin1)]
-          .ExplicitDependencies.ContainsKey (typeof (IBaseType33)));
-
-      Assert.AreSame (source.GetClassContext (typeof (BaseType2)), source.ResolveInterface (typeof (IBaseType2)));
-
-      Assert.IsTrue (source.ContainsClassContext (typeof (BaseType1)));
-      Assert.IsTrue (source.GetClassContext (typeof (BaseType1)).Mixins.ContainsKey (typeof (BT1Mixin1)));
-      Assert.IsTrue (source.GetClassContext (typeof (BaseType1)).Mixins[typeof (BT1Mixin1)]
-          .ExplicitDependencies.ContainsKey (typeof (IBaseType34)));
+          .BuildConfiguration ();
 
       MixinConfiguration destination = new MixinConfiguration ();
-      destination.AddClassContext (new ClassContext (typeof (BaseType2)));
-      destination.AddClassContext (new ClassContext (typeof (BaseType4)));
-      destination.RegisterInterface (typeof (IBaseType2), typeof (BaseType4));
+      source.CopyTo (destination);
+      Assert.That (destination.ClassContexts, Is.EqualTo (source.ClassContexts));
+      Assert.IsNotNull (destination.ResolveInterface (typeof (IBaseType33)));
+      Assert.AreSame (destination.ClassContexts.GetExact (typeof (BaseType1)), destination.ResolveInterface (typeof (IBaseType33)));
+      Assert.IsNotNull (destination.ResolveInterface (typeof (IBaseType31)));
+      Assert.AreSame (destination.ClassContexts.GetExact (typeof (BaseType2)), destination.ResolveInterface (typeof (IBaseType31)));
+    }
 
-      Assert.IsTrue (destination.ContainsClassContext (typeof (BaseType2)));
-      Assert.IsTrue (destination.ContainsClassContext (typeof (BaseType4)));
-      Assert.IsFalse (destination.ContainsClassContext (typeof (BaseType1)));
+    [Test]
+    public void CopyTo_WithReplacement ()
+    {
+      MixinConfiguration source = new MixinConfigurationBuilder (null)
+          .ForClass (typeof (BaseType1))
+          .AddMixin (typeof (BT1Mixin1)).WithDependency (typeof (IBaseType34))
+          .AddCompleteInterface (typeof (IBaseType33))
+          .BuildConfiguration ();
 
-      Assert.AreSame (destination.GetClassContext (typeof (BaseType4)), destination.ResolveInterface (typeof (IBaseType2)));
-      
+      MixinConfiguration destination = new MixinConfigurationBuilder (null)
+          .ForClass (typeof (BaseType1))
+          .AddMixin (typeof (BT1Mixin2)).WithDependency (typeof (IBaseType35))
+          .AddCompleteInterface (typeof (IBaseType34))
+          .BuildConfiguration ();
+
       source.CopyTo (destination);
 
-      Assert.IsTrue (destination.ContainsClassContext (typeof (BaseType4)));
+      Assert.That (destination.ClassContexts, Is.EqualTo (source.ClassContexts));
+      Assert.IsNotNull (destination.ResolveInterface (typeof (IBaseType33)));
+      Assert.AreSame (destination.ClassContexts.GetExact (typeof (BaseType1)), destination.ResolveInterface (typeof (IBaseType33)));
+      Assert.IsNull (destination.ResolveInterface (typeof (IBaseType35)));
+    }
 
-      Assert.IsTrue (destination.ContainsClassContext (typeof (BaseType2)));
-      Assert.IsTrue (destination.GetClassContext (typeof (BaseType2)).Mixins.ContainsKey (typeof (BT2Mixin1)));
-      Assert.IsTrue (destination.GetClassContext (typeof (BaseType2)).Mixins[typeof (BT2Mixin1)]
-          .ExplicitDependencies.ContainsKey (typeof (IBaseType33)));
+    [Test]
+    public void CopyTo_WithAddition ()
+    {
+      MixinConfiguration source = new MixinConfigurationBuilder (null)
+          .ForClass (typeof (BaseType1))
+          .AddMixin (typeof (BT1Mixin1)).WithDependency (typeof (IBaseType34))
+          .AddCompleteInterface (typeof (IBaseType33))
+          .BuildConfiguration ();
 
-      Assert.AreSame (destination.GetClassContext (typeof (BaseType2)), destination.ResolveInterface (typeof (IBaseType2)));
+      MixinConfiguration destination = new MixinConfigurationBuilder (null)
+          .ForClass (typeof (BaseType2))
+          .AddMixin (typeof (BT1Mixin2)).WithDependency (typeof (IBaseType35))
+          .AddCompleteInterface (typeof (IBaseType34))
+          .BuildConfiguration ();
 
-      Assert.IsTrue (destination.ContainsClassContext (typeof (BaseType1)));
-      Assert.IsTrue (destination.GetClassContext (typeof (BaseType1)).Mixins.ContainsKey (typeof (BT1Mixin1)));
-      Assert.IsTrue (destination.GetClassContext (typeof (BaseType1)).Mixins[typeof (BT1Mixin1)]
-          .ExplicitDependencies.ContainsKey (typeof (IBaseType34)));
+      source.CopyTo (destination);
+
+      Assert.IsTrue (destination.ClassContexts.ContainsExact (typeof (BaseType1)));
+      Assert.IsTrue (destination.ClassContexts.ContainsExact (typeof (BaseType2)));
+
+      Assert.AreSame (destination.ClassContexts.GetExact (typeof (BaseType1)), destination.ResolveInterface (typeof (IBaseType33)));
+      Assert.AreSame (destination.ClassContexts.GetExact (typeof (BaseType2)), destination.ResolveInterface (typeof (IBaseType34)));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The given destination configuration object conflicts with the source "
+          + "configuration: The interface Rubicon.Mixins.UnitTests.SampleTypes.IBaseType33 has already been associated with a class context.\r\n"
+          + "Parameter name: destination")]
+    public void CopyTo_ThrowsWhenConflictWithRegisteredInterface ()
+    {
+      MixinConfiguration source = new MixinConfigurationBuilder (null)
+          .ForClass (typeof (BaseType1))
+          .AddMixin (typeof (BT1Mixin1)).WithDependency (typeof (IBaseType34))
+          .AddCompleteInterface (typeof (IBaseType33))
+          .BuildConfiguration ();
+
+      MixinConfiguration destination = new MixinConfigurationBuilder (null)
+          .ForClass (typeof (BaseType2))
+          .AddMixin (typeof (BT1Mixin2)).WithDependency (typeof (IBaseType35))
+          .BuildConfiguration ();
+
+      destination.RegisterInterface (typeof (IBaseType33), typeof (BaseType2));
+
+      source.CopyTo (destination);
     }
 
     [Test]
@@ -204,7 +255,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (NullMixin)).EnterScope())
       {
-        ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContextNonRecursive (typeof (DerivedNullTarget));
+        ClassContext context = MixinConfiguration.ActiveConfiguration.ClassContexts.GetExact (typeof (DerivedNullTarget));
         Assert.IsNull (context);
       }
     }
@@ -213,90 +264,90 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     public void GenericTypesNotTransparentlyConvertedToTypeDefinitions ()
     {
       MixinConfiguration configuration = new MixinConfiguration ();
-      configuration.AddClassContext (new ClassContext (typeof (List<int>)));
-      Assert.IsTrue (configuration.ContainsClassContext (typeof (List<int>)));
-      Assert.IsFalse (configuration.ContainsClassContext (typeof (List<>)));
+      configuration.ClassContexts.Add (new ClassContext (typeof (List<int>)));
+      Assert.IsTrue (configuration.ClassContexts.ContainsWithInheritance (typeof (List<int>)));
+      Assert.IsFalse (configuration.ClassContexts.ContainsWithInheritance (typeof (List<>)));
 
-      configuration.AddClassContext (new ClassContext (typeof (List<string>)));
+      configuration.ClassContexts.Add (new ClassContext (typeof (List<string>)));
 
-      Assert.AreEqual (2, configuration.ClassContextCount);
-      configuration.AddOrReplaceClassContext (new ClassContext (typeof (List<double>)));
-      Assert.AreEqual (3, configuration.ClassContextCount);
+      Assert.AreEqual (2, configuration.ClassContexts.Count);
+      configuration.ClassContexts.AddOrReplace (new ClassContext (typeof (List<double>)));
+      Assert.AreEqual (3, configuration.ClassContexts.Count);
 
-      ClassContext classContext1 = configuration.GetClassContext (typeof (List<int>));
-      ClassContext classContext2 = configuration.GetClassContextNonRecursive (typeof (List<string>));
+      ClassContext classContext1 = configuration.ClassContexts.GetWithInheritance (typeof (List<int>));
+      ClassContext classContext2 = configuration.ClassContexts.GetExact (typeof (List<string>));
       Assert.AreNotSame (classContext1, classContext2);
 
-      ClassContext classContext3 = configuration.GetClassContext (typeof (List<List<int>>));
+      ClassContext classContext3 = configuration.ClassContexts.GetWithInheritance (typeof (List<List<int>>));
       Assert.IsNull (classContext3);
 
-      Assert.IsFalse (configuration.RemoveClassContext (typeof (List<bool>)));
-      Assert.AreEqual (3, configuration.ClassContextCount);
-      Assert.IsTrue (configuration.RemoveClassContext (typeof (List<int>)));
-      Assert.AreEqual (2, configuration.ClassContextCount);
-      Assert.IsFalse (configuration.RemoveClassContext (typeof (List<int>)));
+      Assert.IsFalse (configuration.ClassContexts.RemoveExact (typeof (List<bool>)));
+      Assert.AreEqual (3, configuration.ClassContexts.Count);
+      Assert.IsTrue (configuration.ClassContexts.RemoveExact (typeof (List<int>)));
+      Assert.AreEqual (2, configuration.ClassContexts.Count);
+      Assert.IsFalse (configuration.ClassContexts.RemoveExact (typeof (List<int>)));
     }
 
     [Test]
     public void AddContextForGenericSpecialization ()
     {
       MixinConfiguration configuration = new MixinConfiguration ();
-      configuration.AddClassContext (new ClassContext (typeof (List<>)));
+      configuration.ClassContexts.Add (new ClassContext (typeof (List<>)));
 
-      Assert.AreEqual (1, configuration.ClassContextCount);
-      Assert.IsTrue (configuration.ContainsClassContext (typeof (List<int>)));
-      Assert.IsTrue (configuration.ContainsClassContext (typeof (List<>)));
+      Assert.AreEqual (1, configuration.ClassContexts.Count);
+      Assert.IsTrue (configuration.ClassContexts.ContainsWithInheritance (typeof (List<int>)));
+      Assert.IsTrue (configuration.ClassContexts.ContainsWithInheritance (typeof (List<>)));
 
-      Assert.AreNotSame (configuration.GetClassContext (typeof (List<>)), configuration.GetClassContext (typeof (List<int>)));
+      Assert.AreNotSame (configuration.ClassContexts.GetWithInheritance (typeof (List<>)), configuration.ClassContexts.GetWithInheritance (typeof (List<int>)));
 
-      configuration.AddClassContext (new ClassContext (typeof (List<int>)));
+      configuration.ClassContexts.Add (new ClassContext (typeof (List<int>)));
 
-      Assert.AreEqual (2, configuration.ClassContextCount);
-      Assert.IsTrue (configuration.ContainsClassContext (typeof (List<int>)));
-      Assert.IsTrue (configuration.ContainsClassContext (typeof (List<>)));
+      Assert.AreEqual (2, configuration.ClassContexts.Count);
+      Assert.IsTrue (configuration.ClassContexts.ContainsWithInheritance (typeof (List<int>)));
+      Assert.IsTrue (configuration.ClassContexts.ContainsWithInheritance (typeof (List<>)));
 
-      Assert.AreNotSame (configuration.GetClassContext (typeof (List<>)), configuration.GetClassContext (typeof (List<int>)));
+      Assert.AreNotSame (configuration.ClassContexts.GetWithInheritance (typeof (List<>)), configuration.ClassContexts.GetWithInheritance (typeof (List<int>)));
     }
 
     [Test]
     public void AddOrReplaceContextForGenericSpecialization ()
     {
       MixinConfiguration configuration = new MixinConfiguration ();
-      configuration.AddClassContext (new ClassContext (typeof (List<>)));
+      configuration.ClassContexts.Add (new ClassContext (typeof (List<>)));
 
-      Assert.AreEqual (1, configuration.ClassContextCount);
-      Assert.IsTrue (configuration.ContainsClassContext (typeof (List<int>)));
-      Assert.IsTrue (configuration.ContainsClassContext (typeof (List<>)));
+      Assert.AreEqual (1, configuration.ClassContexts.Count);
+      Assert.IsTrue (configuration.ClassContexts.ContainsWithInheritance (typeof (List<int>)));
+      Assert.IsTrue (configuration.ClassContexts.ContainsWithInheritance (typeof (List<>)));
 
-      Assert.AreNotSame (configuration.GetClassContext (typeof (List<>)), configuration.GetClassContext (typeof (List<int>)));
+      Assert.AreNotSame (configuration.ClassContexts.GetWithInheritance (typeof (List<>)), configuration.ClassContexts.GetWithInheritance (typeof (List<int>)));
 
       ClassContext listIntContext = new ClassContext (typeof (List<int>));
-      configuration.AddOrReplaceClassContext (listIntContext);
+      configuration.ClassContexts.AddOrReplace (listIntContext);
 
-      Assert.AreEqual (2, configuration.ClassContextCount);
-      Assert.IsTrue (configuration.ContainsClassContext (typeof (List<int>)));
-      Assert.IsTrue (configuration.ContainsClassContext (typeof (List<>)));
+      Assert.AreEqual (2, configuration.ClassContexts.Count);
+      Assert.IsTrue (configuration.ClassContexts.ContainsWithInheritance (typeof (List<int>)));
+      Assert.IsTrue (configuration.ClassContexts.ContainsWithInheritance (typeof (List<>)));
 
-      Assert.AreNotSame (configuration.GetClassContext (typeof (List<>)), configuration.GetClassContext (typeof (List<int>)));
-      Assert.AreSame (listIntContext, configuration.GetClassContext (typeof (List<int>)));
+      Assert.AreNotSame (configuration.ClassContexts.GetWithInheritance (typeof (List<>)), configuration.ClassContexts.GetWithInheritance (typeof (List<int>)));
+      Assert.AreSame (listIntContext, configuration.ClassContexts.GetWithInheritance (typeof (List<int>)));
 
       ClassContext newListIntContext = new ClassContext (typeof (List<int>));
-      configuration.AddOrReplaceClassContext (newListIntContext);
-      Assert.AreEqual (2, configuration.ClassContextCount);
+      configuration.ClassContexts.AddOrReplace (newListIntContext);
+      Assert.AreEqual (2, configuration.ClassContexts.Count);
 
-      Assert.AreSame (newListIntContext, configuration.GetClassContext (typeof (List<int>)));
+      Assert.AreSame (newListIntContext, configuration.ClassContexts.GetWithInheritance (typeof (List<int>)));
     }
 
     [Test]
     public void GetContextForGenericTypeDefinitions ()
     {
       MixinConfiguration configuration = new MixinConfiguration ();
-      configuration.AddClassContext (new ClassContext (typeof (List<>)));
-      Assert.IsTrue (configuration.ContainsClassContext (typeof (List<int>)));
-      Assert.IsTrue (configuration.ContainsClassContext (typeof (List<>)));
+      configuration.ClassContexts.Add (new ClassContext (typeof (List<>)));
+      Assert.IsTrue (configuration.ClassContexts.ContainsWithInheritance (typeof (List<int>)));
+      Assert.IsTrue (configuration.ClassContexts.ContainsWithInheritance (typeof (List<>)));
 
-      ClassContext classContext1 = configuration.GetClassContext (typeof (List<int>));
-      ClassContext classContext2 = configuration.GetClassContextNonRecursive (typeof (List<>));
+      ClassContext classContext1 = configuration.ClassContexts.GetWithInheritance (typeof (List<int>));
+      ClassContext classContext2 = configuration.ClassContexts.GetExact (typeof (List<>));
       Assert.AreNotSame (classContext1, classContext2);
     }
 
@@ -305,19 +356,19 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       MixinConfiguration configuration = new MixinConfiguration ();
       ClassContext genericListContext = new ClassContext (typeof (List<>));
-      configuration.AddClassContext (genericListContext);
+      configuration.ClassContexts.Add (genericListContext);
 
-      ClassContext listIntContext = configuration.GetClassContext (typeof (List<int>));
-      ClassContext listListContext = configuration.GetClassContext (typeof (List<List<int>>));
+      ClassContext listIntContext = configuration.ClassContexts.GetWithInheritance (typeof (List<int>));
+      ClassContext listListContext = configuration.ClassContexts.GetWithInheritance (typeof (List<List<int>>));
       Assert.AreNotSame (listIntContext, listListContext);
       Assert.AreNotEqual (listIntContext, listListContext);
       Assert.IsNotNull (listListContext);
 
-      ClassContext listListContext2 = configuration.GetClassContext (typeof (List<List<int>>));
+      ClassContext listListContext2 = configuration.ClassContexts.GetWithInheritance (typeof (List<List<int>>));
       Assert.AreNotSame (listListContext, listListContext2);
       Assert.AreEqual (listListContext, listListContext2);
 
-      ClassContext genericListContext2 = configuration.GetClassContext (typeof (List<>));
+      ClassContext genericListContext2 = configuration.ClassContexts.GetWithInheritance (typeof (List<>));
       Assert.AreSame (genericListContext, genericListContext2);
     }
 
@@ -325,22 +376,22 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     public void RemoveClassContextForGenericTypeDefinitions ()
     {
       MixinConfiguration configuration = new MixinConfiguration ();
-      configuration.AddClassContext (new ClassContext (typeof (List<>)));
-      Assert.IsFalse (configuration.RemoveClassContext (typeof (List<int>)));
-      Assert.AreEqual (1, configuration.ClassContextCount);
+      configuration.ClassContexts.Add (new ClassContext (typeof (List<>)));
+      Assert.IsFalse (configuration.ClassContexts.RemoveExact (typeof (List<int>)));
+      Assert.AreEqual (1, configuration.ClassContexts.Count);
       
-      configuration.AddClassContext (new ClassContext (typeof (List<int>)));
-      Assert.AreEqual (2, configuration.ClassContextCount);
+      configuration.ClassContexts.Add (new ClassContext (typeof (List<int>)));
+      Assert.AreEqual (2, configuration.ClassContexts.Count);
       
-      Assert.IsTrue (configuration.RemoveClassContext (typeof (List<int>)));
-      Assert.AreEqual (1, configuration.ClassContextCount);
-      Assert.IsFalse (configuration.RemoveClassContext (typeof (List<int>)));
-      Assert.AreEqual (1, configuration.ClassContextCount);
+      Assert.IsTrue (configuration.ClassContexts.RemoveExact (typeof (List<int>)));
+      Assert.AreEqual (1, configuration.ClassContexts.Count);
+      Assert.IsFalse (configuration.ClassContexts.RemoveExact (typeof (List<int>)));
+      Assert.AreEqual (1, configuration.ClassContexts.Count);
 
-      Assert.IsTrue (configuration.RemoveClassContext (typeof (List<>)));
-      Assert.AreEqual (0, configuration.ClassContextCount);
-      Assert.IsFalse (configuration.RemoveClassContext (typeof (List<>)));
-      Assert.AreEqual (0, configuration.ClassContextCount);
+      Assert.IsTrue (configuration.ClassContexts.RemoveExact (typeof (List<>)));
+      Assert.AreEqual (0, configuration.ClassContexts.Count);
+      Assert.IsFalse (configuration.ClassContexts.RemoveExact (typeof (List<>)));
+      Assert.AreEqual (0, configuration.ClassContexts.Count);
     }
   }
 }

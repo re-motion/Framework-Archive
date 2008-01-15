@@ -1,8 +1,7 @@
 using System;
-using Rubicon.Mixins.Context;
 using Rubicon.Utilities;
 
-namespace Rubicon.Mixins.MixerTool
+namespace Rubicon.Mixins.Context
 {
   [Serializable]
   public class ClassContextEventArgs : EventArgs

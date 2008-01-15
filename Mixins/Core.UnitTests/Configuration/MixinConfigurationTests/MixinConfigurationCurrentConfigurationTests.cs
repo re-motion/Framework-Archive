@@ -46,10 +46,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     public void DefaultContext()
     {
       MixinConfiguration context = MixinConfiguration.ActiveConfiguration;
-      Assert.AreNotEqual (0, context.ClassContextCount);
-      Assert.IsTrue (context.ContainsClassContext (typeof (BaseType1)));
-      Assert.IsTrue (context.ContainsClassContext (typeof (BaseType3)));
-      Assert.IsFalse (context.ContainsClassContext (typeof (BaseType4)));
+      Assert.AreNotEqual (0, context.ClassContexts.Count);
+      Assert.IsTrue (context.ClassContexts.ContainsWithInheritance (typeof (BaseType1)));
+      Assert.IsTrue (context.ClassContexts.ContainsWithInheritance (typeof (BaseType3)));
+      Assert.IsFalse (context.ClassContexts.ContainsWithInheritance (typeof (BaseType4)));
     }
 
     [Test]
@@ -118,25 +118,25 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     [Test]
     public void CreateEmptyConfiguration()
     {
-      Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
+      Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (BaseType1)));
       using (MixinConfiguration.BuildNew().EnterScope ())
       {
-        Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
+        Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (BaseType1)));
       }
     }
 
     [Test]
     public void MasterConfigurationIsCopiedByNewThreads ()
     {
-      Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (object)));
+      Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (object)));
       MixinConfiguration.EditMasterConfiguration (delegate (MixinConfiguration masterConfiguration)
       {
-        masterConfiguration.AddClassContext (new ClassContext (typeof (object)));
+        masterConfiguration.ClassContexts.Add (new ClassContext (typeof (object)));
       });
-      Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (object)));
+      Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (object)));
       ThreadRunner.Run (delegate
       {
-        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (object)));
+        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (object)));
       });
     }
   }

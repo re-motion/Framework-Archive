@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
@@ -13,58 +12,57 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     public void InheritingMixinConfigurationKnowsClassesFromBasePlusOwn ()
     {
       MixinConfiguration ac = new MixinConfiguration ();
-      Assert.AreEqual (0, ac.ClassContextCount);
-      ac.AddClassContext (new ClassContext (typeof (BaseType1)));
-      ac.AddClassContext (new ClassContext (typeof (BaseType2)));
-      Assert.AreEqual (2, ac.ClassContextCount);
+      Assert.AreEqual (0, ac.ClassContexts.Count);
+      ac.ClassContexts.Add (new ClassContext (typeof (BaseType1)));
+      ac.ClassContexts.Add (new ClassContext (typeof (BaseType2)));
+      Assert.AreEqual (2, ac.ClassContexts.Count);
 
       MixinConfiguration ac2 = new MixinConfiguration (ac);
-      Assert.AreEqual (2, ac2.ClassContextCount);
-      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
-      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType2)));
-      Assert.IsFalse (ac2.ContainsClassContext (typeof (BaseType3)));
+      Assert.AreEqual (2, ac2.ClassContexts.Count);
+      Assert.IsTrue (ac2.ClassContexts.ContainsWithInheritance (typeof (BaseType1)));
+      Assert.IsTrue (ac2.ClassContexts.ContainsWithInheritance (typeof (BaseType2)));
+      Assert.IsFalse (ac2.ClassContexts.ContainsWithInheritance (typeof (BaseType3)));
 
-      Assert.IsNotNull (ac2.GetClassContext (typeof (BaseType1)));
-      Assert.IsNotNull (ac2.GetClassContext (typeof (BaseType2)));
-      Assert.IsNull (ac2.GetClassContext (typeof (BaseType3)));
+      Assert.IsNotNull (ac2.ClassContexts.GetWithInheritance (typeof (BaseType1)));
+      Assert.IsNotNull (ac2.ClassContexts.GetWithInheritance (typeof (BaseType2)));
+      Assert.IsNull (ac2.ClassContexts.GetWithInheritance (typeof (BaseType3)));
 
-      ac2.AddClassContext (new ClassContext (typeof (BaseType3)));
-      Assert.AreEqual (3, ac2.ClassContextCount);
-      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
-      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType2)));
-      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType3)));
+      ac2.ClassContexts.Add (new ClassContext (typeof (BaseType3)));
+      Assert.AreEqual (3, ac2.ClassContexts.Count);
+      Assert.IsTrue (ac2.ClassContexts.ContainsWithInheritance (typeof (BaseType1)));
+      Assert.IsTrue (ac2.ClassContexts.ContainsWithInheritance (typeof (BaseType2)));
+      Assert.IsTrue (ac2.ClassContexts.ContainsWithInheritance (typeof (BaseType3)));
 
-      Assert.IsNotNull (ac2.GetClassContext (typeof (BaseType1)));
-      Assert.IsNotNull (ac2.GetClassContext (typeof (BaseType2)));
-      Assert.IsNotNull (ac2.GetClassContext (typeof (BaseType3)));
+      Assert.IsNotNull (ac2.ClassContexts.GetWithInheritance (typeof (BaseType1)));
+      Assert.IsNotNull (ac2.ClassContexts.GetWithInheritance (typeof (BaseType2)));
+      Assert.IsNotNull (ac2.ClassContexts.GetWithInheritance (typeof (BaseType3)));
 
-      List<ClassContext> contexts = new List<ClassContext> (ac2.ClassContexts);
-      Assert.AreEqual (3, contexts.Count);
-      Assert.Contains (ac.GetClassContext (typeof (BaseType1)), contexts);
-      Assert.Contains (ac.GetClassContext (typeof (BaseType2)), contexts);
-      Assert.Contains (ac2.GetClassContext (typeof (BaseType3)), contexts);
+      Assert.AreEqual (3, ac2.ClassContexts.Count);
+      Assert.Contains (ac.ClassContexts.GetWithInheritance (typeof (BaseType1)), ac2.ClassContexts);
+      Assert.Contains (ac.ClassContexts.GetWithInheritance (typeof (BaseType2)), ac2.ClassContexts);
+      Assert.Contains (ac2.ClassContexts.GetWithInheritance (typeof (BaseType3)), ac2.ClassContexts);
     }
 
     [Test]
     public void OverridingClassContextsFromParent ()
     {
       MixinConfiguration ac = new MixinConfiguration ();
-      Assert.AreEqual (0, ac.ClassContextCount);
-      ac.AddClassContext (new ClassContext (typeof (BaseType1)));
-      ac.AddClassContext (new ClassContext (typeof (BaseType2)));
-      Assert.AreEqual (2, ac.ClassContextCount);
+      Assert.AreEqual (0, ac.ClassContexts.Count);
+      ac.ClassContexts.Add (new ClassContext (typeof (BaseType1)));
+      ac.ClassContexts.Add (new ClassContext (typeof (BaseType2)));
+      Assert.AreEqual (2, ac.ClassContexts.Count);
 
       MixinConfiguration ac2 = new MixinConfiguration (ac);
-      Assert.AreEqual (2, ac2.ClassContextCount);
-      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
-      Assert.AreEqual (ac.GetClassContext (typeof (BaseType1)), ac2.GetClassContext (typeof (BaseType1)));
+      Assert.AreEqual (2, ac2.ClassContexts.Count);
+      Assert.IsTrue (ac2.ClassContexts.ContainsWithInheritance (typeof (BaseType1)));
+      Assert.AreEqual (ac.ClassContexts.GetWithInheritance (typeof (BaseType1)), ac2.ClassContexts.GetWithInheritance (typeof (BaseType1)));
 
       ClassContext newContext = new ClassContext (typeof (BaseType1));
-      ac2.AddOrReplaceClassContext (newContext);
-      Assert.AreEqual (2, ac2.ClassContextCount);
+      ac2.ClassContexts.AddOrReplace (newContext);
+      Assert.AreEqual (2, ac2.ClassContexts.Count);
 
-      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
-      Assert.AreNotSame (ac.GetClassContext (typeof (BaseType1)), ac2.GetClassContext (typeof (BaseType1)));
+      Assert.IsTrue (ac2.ClassContexts.ContainsWithInheritance (typeof (BaseType1)));
+      Assert.AreNotSame (ac.ClassContexts.GetWithInheritance (typeof (BaseType1)), ac2.ClassContexts.GetWithInheritance (typeof (BaseType1)));
     }
 
     [Test]
@@ -72,7 +70,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       using (MixinConfiguration.BuildFromActive ().ForClass<NullTarget> ().Clear ().AddMixins (typeof (NullMixin)).EnterScope ())
       {
-        ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (DerivedNullTarget));
+        ClassContext context = MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance (typeof (DerivedNullTarget));
         Assert.IsNotNull (context);
         Assert.AreEqual (typeof (DerivedNullTarget), context.Type);
         Assert.IsTrue (context.Mixins.ContainsKey (typeof (NullMixin)));
@@ -84,7 +82,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       using (MixinConfiguration.BuildFromActive ().ForClass (typeof (GenericTargetClass<>)).Clear ().AddMixins (typeof (NullMixin)).EnterScope ())
       {
-        ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (GenericTargetClass<object>));
+        ClassContext context = MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance (typeof (GenericTargetClass<object>));
         Assert.IsNotNull (context);
         Assert.AreEqual (typeof (GenericTargetClass<object>), context.Type);
         Assert.IsTrue (context.Mixins.ContainsKey (typeof (NullMixin)));
@@ -99,7 +97,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
           .ForClass (typeof (GenericTargetClass<object>)).Clear ().AddMixins (typeof (NullMixin2))
           .EnterScope ())
       {
-        ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (DerivedGenericTargetClass<object>));
+        ClassContext context = MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance (typeof (DerivedGenericTargetClass<object>));
         Assert.IsNotNull (context);
         Assert.AreEqual (typeof (DerivedGenericTargetClass<object>), context.Type);
         Assert.IsTrue (context.Mixins.ContainsKey (typeof (NullMixin)));
@@ -112,7 +110,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       using (MixinConfiguration.BuildFromActive ().ForClass<NullTarget> ().Clear ().AddMixins (typeof (NullMixin)).EnterScope ())
       {
-        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (DerivedNullTarget)));
+        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (DerivedNullTarget)));
       }
     }
 
@@ -121,7 +119,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
     {
       using (MixinConfiguration.BuildFromActive ().ForClass (typeof (GenericTargetClass<>)).Clear ().AddMixins (typeof (NullMixin)).EnterScope ())
       {
-        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (GenericTargetClass<object>)));
+        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (GenericTargetClass<object>)));
       }
     }
   }

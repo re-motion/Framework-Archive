@@ -254,7 +254,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     private void CheckExplicitDependencyOrdering (ClassContext classContext)
     {
       MixinConfiguration configuration = new MixinConfiguration (null);
-      configuration.AddClassContext (classContext);
+      configuration.ClassContexts.Add (classContext);
 
       using (configuration.EnterScope())
       {

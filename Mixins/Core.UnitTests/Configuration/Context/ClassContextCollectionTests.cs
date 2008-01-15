@@ -41,6 +41,28 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     }
 
     [Test]
+    public void AddedEvent ()
+    {
+      _collection.Clear();
+
+      ClassContext addedContext = null;
+      _collection.ClassContextAdded += delegate (object sender, ClassContextEventArgs args)
+      {
+        Assert.AreSame (_collection, sender);
+        addedContext = args.ClassContext;
+      };
+
+      _collection.Add (_cc1);
+      Assert.AreSame (_cc1, addedContext);
+
+      _collection.AddOrReplace (_cc2);
+      Assert.AreSame (_cc2, addedContext);
+
+      _collection.AddOrReplace (_cc1);
+      Assert.AreSame (_cc1, addedContext);
+    }
+
+    [Test]
     public void RemoveExact ()
     {
       Assert.IsTrue (_collection.RemoveExact (typeof (object)));
@@ -70,6 +92,49 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
 
       Assert.IsTrue (collectionAsICollection.Remove (_cc2));
       Assert.That (_collection, Is.Empty);
+    }
+
+    [Test]
+    public void RemovedEvent ()
+    {
+      ClassContext removedContext = null;
+      _collection.ClassContextRemoved += delegate (object sender, ClassContextEventArgs args)
+      {
+        Assert.AreSame (_collection, sender);
+        removedContext = args.ClassContext;
+      };
+
+      _collection.RemoveExact (_cc1.Type);
+      Assert.AreSame (_cc1, removedContext);
+
+      ClassContext cc2Equivalent = _cc2.CloneForSpecificType (_cc2.Type);
+      ((ICollection<ClassContext>)_collection).Remove (cc2Equivalent);
+      Assert.AreNotSame (cc2Equivalent, removedContext);
+      Assert.AreSame (_cc2, removedContext);
+
+      _collection.Add (_cc1);
+      _collection.Clear();
+
+      Assert.AreSame (_cc1, removedContext);
+    }
+
+    [Test]
+    public void AddOrReplace_Replace ()
+    {
+      ClassContext cc3 = new ClassContext (typeof (object));
+      _collection.AddOrReplace (cc3);
+      Assert.AreSame (cc3, _collection.GetExact (typeof (object)));
+      Assert.That (_collection, Is.EquivalentTo(new ClassContext[] { _cc2, cc3 }));
+    }
+
+    [Test]
+    public void AddOrReplace_Add ()
+    {
+      ClassContext cc3 = new ClassContext (typeof (ClassContextCollectionTests));
+      _collection.AddOrReplace (cc3);
+      Assert.AreSame (cc3, _collection.GetExact (typeof (ClassContextCollectionTests)));
+      Assert.AreSame (_cc1, _collection.GetExact (typeof (object)));
+      Assert.That (_collection, Is.EqualTo (new ClassContext[] { _cc1, _cc2, cc3 }));
     }
 
     [Test]
