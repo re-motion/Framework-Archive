@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Reflection;
 using NUnit.Framework;
+using Rhino.Mocks;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Context.FluentBuilders;
 using Rubicon.Mixins.UnitTests.SampleTypes;
@@ -21,8 +23,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       Assert.AreEqual (0, mixinContext.ExplicitDependencies.Count);
       Assert.IsFalse (mixinContext.ExplicitDependencies.ContainsKey (typeof (IBaseType2)));
 
-      List<Type> deps = new List<Type> (mixinContext.ExplicitDependencies);
-      Assert.That (deps, Is.Empty);
+      Assert.That (mixinContext.ExplicitDependencies, Is.Empty);
     }
 
     [Test]
@@ -34,8 +35,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       Assert.IsTrue (mixinContext.ExplicitDependencies.ContainsKey (typeof (IBT6Mixin2)));
       Assert.IsTrue (mixinContext.ExplicitDependencies.ContainsKey (typeof (IBT6Mixin3)));
 
-      List<Type> deps = new List<Type> (mixinContext.ExplicitDependencies);
-      Assert.That (deps, Is.EqualTo (new Type[] {typeof (IBT6Mixin2), typeof (IBT6Mixin3)}));
+      Assert.That (mixinContext.ExplicitDependencies, Is.EqualTo (new Type[] { typeof (IBT6Mixin2), typeof (IBT6Mixin3) }));
     }
 
     [Test]
@@ -47,8 +47,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       Assert.IsTrue (mixinContext.ExplicitDependencies.ContainsKey (typeof (BT6Mixin2)));
       Assert.IsTrue (mixinContext.ExplicitDependencies.ContainsKey (typeof (BT6Mixin3<>)));
 
-      List<Type> deps = new List<Type> (mixinContext.ExplicitDependencies);
-      Assert.That (deps, Is.EqualTo (new Type[] { typeof (BT6Mixin2), typeof (BT6Mixin3<>) }));
+      Assert.That (mixinContext.ExplicitDependencies, Is.EqualTo (new Type[] { typeof (BT6Mixin2), typeof (BT6Mixin3<>) }));
     }
   }
 }

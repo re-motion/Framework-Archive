@@ -73,7 +73,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     {
       ClassContext context = new ClassContext (typeof (BaseType5), new MixinContext[0], new Type[0]);
       Assert.AreEqual (0, context.CompleteInterfaces.Count);
-      Assert.IsEmpty (new List<Type> (context.CompleteInterfaces));
+      Assert.IsEmpty (context.CompleteInterfaces);
       Assert.IsFalse (context.CompleteInterfaces.ContainsKey (typeof (IBT5MixinC1)));
     }
 
@@ -82,7 +82,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     {
       ClassContext context = new ClassContext (typeof (BaseType5), new MixinContext[0], new Type[] { typeof (IBT5MixinC1) });
       Assert.AreEqual (1, context.CompleteInterfaces.Count);
-      Assert.Contains (typeof (IBT5MixinC1), new List<Type> (context.CompleteInterfaces));
+      Assert.Contains (typeof (IBT5MixinC1), context.CompleteInterfaces);
       Assert.IsTrue (context.CompleteInterfaces.ContainsKey (typeof (IBT5MixinC1)));
     }
 
@@ -210,8 +210,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       ClassContext source = new ClassContext (typeof (BaseType1), mixins, interfaces);
       ClassContext clone = source.CloneForSpecificType (typeof (BaseType2));
       Assert.AreNotEqual (source, clone);
-      Assert.That (new List<MixinContext> (clone.Mixins), Is.EqualTo (mixins));
-      Assert.That (new List<Type> (clone.CompleteInterfaces), Is.EqualTo (interfaces));
+      Assert.That (clone.Mixins, Is.EqualTo (mixins));
+      Assert.That (clone.CompleteInterfaces, Is.EqualTo (interfaces));
       Assert.AreEqual (typeof (BaseType2), clone.Type);
       Assert.AreEqual (typeof (BaseType1), source.Type);
     }
