@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using NUnit.Framework;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Mixins.CodeGeneration;
-using System.Runtime.Serialization;
 
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
@@ -38,7 +35,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void MixedObjectsCanBeCreatedWithMixinInstances ()
     {
       BT1Mixin1 m1 = new BT1Mixin1 ();
-      BaseType1 bt1 = ObjectFactory.CreateWithMixinInstances<BaseType1> (m1).With ();
+      BaseType1 bt1 = ObjectFactory.Create<BaseType1> (m1).With ();
 
       Assert.IsNotNull (Mixin.Get<BT1Mixin1> (bt1));
       Assert.AreSame (m1, Mixin.Get<BT1Mixin1> (bt1));
@@ -50,7 +47,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void MixedObjectsWithMixinInstancesCanBeCreatedFromType ()
     {
       BT1Mixin1 m1 = new BT1Mixin1 ();
-      BaseType1 bt1 = (BaseType1) ObjectFactory.CreateWithMixinInstances (typeof (BaseType1), m1).With ();
+      BaseType1 bt1 = (BaseType1) ObjectFactory.Create (typeof (BaseType1), m1).With ();
 
       Assert.IsNotNull (Mixin.Get<BT1Mixin1> (bt1));
       Assert.AreSame (m1, Mixin.Get<BT1Mixin1> (bt1));
@@ -64,7 +61,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void ThrowsOnWrongMixinInstances ()
     {
       BT2Mixin1 m1 = new BT2Mixin1 ();
-      ObjectFactory.CreateWithMixinInstances<BaseType3> (m1).With ();
+      ObjectFactory.Create<BaseType3> (m1).With ();
     }
 
     [Test]
@@ -73,7 +70,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void ThrowsOnWrongMixinInstancesWithType ()
     {
       BT2Mixin1 m1 = new BT2Mixin1 ();
-      ObjectFactory.CreateWithMixinInstances (typeof (BaseType3), m1).With ();
+      ObjectFactory.Create (typeof (BaseType3), m1).With ();
     }
 
     [Test]
@@ -84,7 +81,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (MixinWithProtectedOverrider)).EnterScope())
       {
-        BaseType1 bt1 = ObjectFactory.CreateWithMixinInstances<BaseType1> (new MixinWithProtectedOverrider ()).With();
+        BaseType1 bt1 = ObjectFactory.Create<BaseType1> (new MixinWithProtectedOverrider ()).With();
         bt1.VirtualMethod ();
       }
     }
@@ -96,7 +93,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Type generatedMixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (configuration.Mixins[typeof (MixinWithAbstractMembers)]);
       object mixinInstance = Activator.CreateInstance (generatedMixinType);
 
-      ClassOverridingMixinMembers classInstance = ObjectFactory.CreateWithMixinInstances<ClassOverridingMixinMembers> (mixinInstance).With ();
+      ClassOverridingMixinMembers classInstance = ObjectFactory.Create<ClassOverridingMixinMembers> (mixinInstance).With ();
       Assert.AreSame (mixinInstance, Mixin.Get<MixinWithAbstractMembers> (classInstance));
     }
 
@@ -108,7 +105,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         TargetClassDefinition configuration = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         Type mixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (configuration.Mixins[0]);
         object mixinInstance = Activator.CreateInstance (mixinType);
-        BaseType1 bt1 = ObjectFactory.CreateWithMixinInstances<BaseType1> (mixinInstance).With ();
+        BaseType1 bt1 = ObjectFactory.Create<BaseType1> (mixinInstance).With ();
         bt1.VirtualMethod ();
         Assert.AreSame (mixinInstance, Mixin.Get<MixinWithProtectedOverrider> (bt1));
       }
@@ -214,7 +211,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void CompleteFaceInterfaceAsTypeArgumentWithMixins ()
     {
-      ICBT6Mixin1 complete = ObjectFactory.CreateWithMixinInstances<ICBT6Mixin1> (new BT6Mixin1 ()).With ();
+      ICBT6Mixin1 complete = ObjectFactory.Create<ICBT6Mixin1> (new BT6Mixin1 ()).With ();
 
       Assert.IsNotNull (complete);
       Assert.IsTrue (complete is BaseType6);
@@ -236,7 +233,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         MatchType = MessageMatch.Regex)]
     public void InterfaceAsTypeArgumentWithoutCompletenessWithMixins ()
     {
-      ObjectFactory.CreateWithMixinInstances<IBaseType2> ().With ();
+      ObjectFactory.Create<IBaseType2> ().With ();
     }
 
     [Test]
@@ -245,7 +242,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithPrivateCtorAndVirtualMethod)).EnterScope())
       {
         MixinWithPrivateCtorAndVirtualMethod mixin = MixinWithPrivateCtorAndVirtualMethod.Create ();
-        object o = ObjectFactory.CreateWithMixinInstances<NullTarget> (mixin).With ();
+        object o = ObjectFactory.Create<NullTarget> (mixin).With ();
         Assert.IsNotNull (o);
         Assert.IsNotNull (Mixin.Get<MixinWithPrivateCtorAndVirtualMethod> (o));
         Assert.AreSame (mixin, Mixin.Get<MixinWithPrivateCtorAndVirtualMethod> (o));
@@ -259,7 +256,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithPrivateCtorAndVirtualMethod)).EnterScope())
       {
-        ObjectFactory.CreateWithMixinInstances<NullTarget> ().With ();
+        ObjectFactory.Create<NullTarget> ().With ();
       }
     }
 
@@ -300,7 +297,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         + "must be specified.", MatchType = MessageMatch.Regex)]
     public void ThrowsOnMixinInstancesWhenNoGeneration ()
     {
-      ObjectFactory.CreateWithMixinInstances (typeof (object), new object()).With ();
+      ObjectFactory.Create (typeof (object), new object()).With ();
     }
 
     public class MixinThrowingInOnInitialized : Mixin<object>
@@ -351,7 +348,6 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO - COMMONS-414")]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Mixins.UnitTests.Mixins.ObjectFactoryTests+"
         + "TargetClassWithProtectedCtors does not contain a public constructor with signature ().")]
     public void ProtectedDefaultConstructor_Mixed ()
@@ -363,7 +359,6 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO - COMMONS-414")]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Mixins.UnitTests.Mixins.ObjectFactoryTests+"
         + "TargetClassWithProtectedCtors does not contain a public constructor with signature (System.Int32).")]
     public void ProtectedNonDefaultConstructor_Mixed ()
@@ -393,6 +388,42 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       using (MixinConfiguration.BuildNew().EnterScope ())
       {
         ObjectFactory.Create<TargetClassWithProtectedCtors> ().With (1);
+      }
+    }
+
+    [Test]
+    public void ProtectedDefaultConstructor_Mixed_AllowProtected ()
+    {
+      using (MixinConfiguration.BuildFromActive ().ForClass<TargetClassWithProtectedCtors> ().Clear ().AddMixins (typeof (NullMixin)).EnterScope ())
+      {
+        Assert.IsNotNull (ObjectFactory.Create<TargetClassWithProtectedCtors> (true).With ());
+      }
+    }
+
+    [Test]
+    public void ProtectedNonDefaultConstructor_Mixed_AllowProtected ()
+    {
+      using (MixinConfiguration.BuildFromActive ().ForClass<TargetClassWithProtectedCtors> ().Clear ().AddMixins (typeof (NullMixin)).EnterScope ())
+      {
+        Assert.IsNotNull (ObjectFactory.Create<TargetClassWithProtectedCtors> (true).With (1));
+      }
+    }
+
+    [Test]
+    public void ProtectedDefaultConstructor_NonMixed_AllowProtected ()
+    {
+      using (MixinConfiguration.BuildNew ().EnterScope ())
+      {
+        Assert.IsNotNull (ObjectFactory.Create<TargetClassWithProtectedCtors> (true).With ());
+      }
+    }
+
+    [Test]
+    public void ProtectedNonDefaultConstructor_NonMixed_AllowProtected ()
+    {
+      using (MixinConfiguration.BuildNew ().EnterScope ())
+      {
+        Assert.IsNotNull (ObjectFactory.Create<TargetClassWithProtectedCtors> (true).With (1));
       }
     }
   }

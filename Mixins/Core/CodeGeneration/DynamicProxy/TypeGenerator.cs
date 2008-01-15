@@ -6,7 +6,6 @@ using System.Reflection.Emit;
 using System.Runtime.Serialization;
 using Rubicon.CodeGeneration;
 using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Utilities;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 using Castle.DynamicProxy.Generators.Emitters;

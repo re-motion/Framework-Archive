@@ -29,7 +29,7 @@ namespace Rubicon.Mixins.Samples.UnitTests.PhotoStuff
     {
       Document doc = new Document();
       doc.CreatedAt = new DateTime (2006, 01, 01);
-      Photo photo = ObjectFactory.CreateWithMixinInstances<Photo> (doc).With ();
+      Photo photo = ObjectFactory.Create<Photo> (doc).With ();
       Assert.IsNotNull (photo.Document);
       Assert.AreEqual (new DateTime (2006, 01, 01), photo.Document.CreatedAt);
     }
