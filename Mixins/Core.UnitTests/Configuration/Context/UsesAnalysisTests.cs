@@ -113,8 +113,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       Assert.AreEqual (1, context.GetClassContext (typeof (DerivedWithUses)).Mixins.Count);
     }
 
-    public class DerivedNullMixin : NullMixin { }
-
     [Uses (typeof (DerivedNullMixin))]
     [IgnoreForMixinConfiguration]
     public class DerivedWithMoreSpecificUses : BaseWithUses

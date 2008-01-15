@@ -55,6 +55,7 @@
     <Compile Include="Configuration\Context\FluentBuilders\ClassContextBuilderTests.cs" />
     <Compile Include="Configuration\Context\FluentBuilders\MixinConfigurationBuilderTests.cs" />
     <Compile Include="Configuration\Context\FluentBuilders\MixinContextBuilderTests.cs" />
+    <Compile Include="Configuration\Context\MixinContextCollectionTests.cs" />
     <Compile Include="Configuration\Context\ReadOnlyContextCollectionTests.cs" />
     <Compile Include="Configuration\Context\SynchronizedReadOnlyContextCollectionTests.cs" />
     <Compile Include="Configuration\MixinConfigurationTests\MixinConfigurationBuildTests.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="SampleTypes\ClassOverridingSpecificGenericMixinMember.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters2.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters3.cs" />
+    <Compile Include="SampleTypes\DerivedDerivedNullMixin.cs" />
     <Compile Include="SampleTypes\DerivedNullMixin.cs" />
     <Compile Include="SampleTypes\NullMixin3.cs" />
     <Compile Include="SampleTypes\DerivedGenericTargetClass.cs" />

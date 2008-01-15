@@ -28,9 +28,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
     [Uses (typeof (DerivedNullMixin))]
     public class DerivedDerivedWithOwnMixinAndOverride : DerivedDerivedWithOwnMixin { }
 
-    public class DerivedNullMixin : NullMixin { }
-
-
     [Test]
     public void BaseContext ()
     {
