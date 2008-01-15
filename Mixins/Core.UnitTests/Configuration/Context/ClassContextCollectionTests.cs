@@ -99,6 +99,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       Assert.AreSame (_cc1, _collection.GetWithInheritance (typeof (object)));
       Assert.AreSame (_cc2, _collection.GetWithInheritance (typeof (string)));
       Assert.AreSame (cc3, _collection.GetWithInheritance (typeof (List<>)));
+      Assert.AreSame (cc4, _collection.GetWithInheritance (typeof (List<string>)));
     }
 
     [Test]
@@ -112,11 +113,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     [Test]
     public void GetWithInheritance_Inheritance_FromBaseType ()
     {
-      ClassContext cc3 = new ClassContext (typeof (List<>));
-      _collection.Add (cc3);
-      ClassContext cc4 = new ClassContext (typeof (List<string>));
-      _collection.Add (cc4);
-      
       ClassContext inherited1 = _collection.GetWithInheritance (typeof (ClassContextCollectionTests));
       Assert.IsNotNull (inherited1);
       Assert.AreEqual (typeof (ClassContextCollectionTests), inherited1.Type);
@@ -135,6 +131,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     [Test]
     public void GetWithInheritance_Inheritance_FromGenericTypeDefinition ()
     {
+      _collection.Clear();
+
       ClassContext cc3 = new ClassContext (typeof (List<>), typeof (NullMixin3));
       _collection.Add (cc3);
       ClassContext cc4 = new ClassContext (typeof (List<string>), typeof (NullMixin4));
@@ -144,8 +142,21 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       Assert.IsNotNull (inherited4);
       Assert.AreEqual (typeof (List<int>), inherited4.Type);
       Assert.IsTrue (inherited4.Mixins.ContainsKey (typeof (NullMixin3)));
+    }
 
-      Assert.AreSame (cc4, _collection.GetWithInheritance (typeof (List<string>)));
+    [Test]
+    public void GetWithInheritance_Inheritance_FromGenericTypeDefinitionAndBase ()
+    {
+      ClassContext cc3 = new ClassContext (typeof (List<>), typeof (NullMixin3));
+      _collection.Add (cc3);
+      ClassContext cc4 = new ClassContext (typeof (List<string>), typeof (NullMixin4));
+      _collection.Add (cc4);
+
+      ClassContext inherited4 = _collection.GetWithInheritance (typeof (List<int>));
+      Assert.IsNotNull (inherited4);
+      Assert.AreEqual (typeof (List<int>), inherited4.Type);
+      Assert.IsTrue (inherited4.Mixins.ContainsKey (typeof (NullMixin2)));
+      Assert.IsTrue (inherited4.Mixins.ContainsKey (typeof (NullMixin3)));
     }
 
     [Test]

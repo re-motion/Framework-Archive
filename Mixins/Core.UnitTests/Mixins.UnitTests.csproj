@@ -55,6 +55,7 @@
     <Compile Include="Configuration\Context\FluentBuilders\ClassContextBuilderTests.cs" />
     <Compile Include="Configuration\Context\FluentBuilders\MixinConfigurationBuilderTests.cs" />
     <Compile Include="Configuration\Context\FluentBuilders\MixinContextBuilderTests.cs" />
+    <Compile Include="Configuration\Context\InheritedClassContextRetrievalAlgorithmTests.cs" />
     <Compile Include="Configuration\Context\MixinContextCollectionTests.cs" />
     <Compile Include="Configuration\Context\ReadOnlyContextCollectionTests.cs" />
     <Compile Include="Configuration\Context\SynchronizedReadOnlyContextCollectionTests.cs" />

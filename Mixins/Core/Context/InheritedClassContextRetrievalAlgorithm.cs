@@ -3,8 +3,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Context
 {
-  // TODO: Make public and add tests
-  internal class InheritedClassContextRetrievalAlgorithm
+  public class InheritedClassContextRetrievalAlgorithm
   {
     private readonly Func<Type, ClassContext> _exactGetter;
     private readonly Func<Type, ClassContext> _inheritanceAwareGetter;
