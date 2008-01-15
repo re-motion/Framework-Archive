@@ -51,8 +51,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.That (_classBuilder.CompleteInterfaces, Is.Empty);
 
       ClassContext classContext = _classBuilder.BuildClassContext (new ClassContext[0]);
-      Assert.AreEqual (0, classContext.MixinCount);
-      Assert.AreEqual (0, classContext.CompleteInterfaceCount);
+      Assert.AreEqual (0, classContext.Mixins.Count);
+      Assert.AreEqual (0, classContext.CompleteInterfaces.Count);
     }
 
     [Test]
@@ -64,8 +64,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.That (_classBuilder.CompleteInterfaces, Is.Empty);
       
       ClassContext classContext = _classBuilder.BuildClassContext(new ClassContext[0]);
-      Assert.AreEqual (0, classContext.MixinCount);
-      Assert.AreEqual (0, classContext.CompleteInterfaceCount);
+      Assert.AreEqual (0, classContext.Mixins.Count);
+      Assert.AreEqual (0, classContext.CompleteInterfaces.Count);
     }
 
     [Test]
@@ -82,10 +82,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.That (classBuilder.CompleteInterfaces, Is.EqualTo (new object[] { typeof (IBT1Mixin1) }));
 
       ClassContext classContext = classBuilder.BuildClassContext (new ClassContext[0]);
-      Assert.AreEqual (1, classContext.MixinCount);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.AreEqual (1, classContext.CompleteInterfaceCount);
-      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (IBT1Mixin1)));
+      Assert.AreEqual (1, classContext.Mixins.Count);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (BT1Mixin1)));
+      Assert.AreEqual (1, classContext.CompleteInterfaces.Count);
+      Assert.IsTrue (classContext.CompleteInterfaces.ContainsKey (typeof (IBT1Mixin1)));
     }
 
     [Test]
@@ -277,9 +277,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.That (mixinTypes, Is.EqualTo (new object[] { typeof (DerivedNullTarget) }));
 
       ClassContext builtContext = _classBuilder.BuildClassContext (new ClassContext[] {contextWithMixin});
-      Assert.AreEqual (1, builtContext.MixinCount);
-      Assert.IsTrue (builtContext.ContainsMixin (typeof (DerivedNullTarget)));
-      Assert.IsFalse (builtContext.ContainsMixin (typeof (NullTarget)));
+      Assert.AreEqual (1, builtContext.Mixins.Count);
+      Assert.IsTrue (builtContext.Mixins.ContainsKey (typeof (DerivedNullTarget)));
+      Assert.IsFalse (builtContext.Mixins.ContainsKey (typeof (NullTarget)));
     }
 
     [Test]
@@ -496,13 +496,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
 
       ClassContext builtContext = _classBuilder.BuildClassContext ();
       
-      Assert.AreEqual (2, builtContext.MixinCount);
-      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin2)));
+      Assert.AreEqual (2, builtContext.Mixins.Count);
+      Assert.IsTrue (builtContext.Mixins.ContainsKey (typeof (BT1Mixin1)));
+      Assert.IsTrue (builtContext.Mixins.ContainsKey (typeof (BT1Mixin2)));
 
-      Assert.AreEqual (2, builtContext.CompleteInterfaceCount);
-      Assert.IsTrue (builtContext.ContainsCompleteInterface (typeof (IBT6Mixin1)));
-      Assert.IsTrue (builtContext.ContainsCompleteInterface (typeof (IBT6Mixin2)));
+      Assert.AreEqual (2, builtContext.CompleteInterfaces.Count);
+      Assert.IsTrue (builtContext.CompleteInterfaces.ContainsKey (typeof (IBT6Mixin1)));
+      Assert.IsTrue (builtContext.CompleteInterfaces.ContainsKey (typeof (IBT6Mixin2)));
     }
 
     [Test]
@@ -519,13 +519,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
 
       ClassContext builtContext = _classBuilder.BuildClassContext (new ClassContext[] { inheritedContext });
 
-      Assert.AreEqual (2, builtContext.MixinCount);
-      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin2)));
+      Assert.AreEqual (2, builtContext.Mixins.Count);
+      Assert.IsTrue (builtContext.Mixins.ContainsKey (typeof (BT1Mixin1)));
+      Assert.IsTrue (builtContext.Mixins.ContainsKey (typeof (BT1Mixin2)));
 
-      Assert.AreEqual (2, builtContext.CompleteInterfaceCount);
-      Assert.IsTrue (builtContext.ContainsCompleteInterface (typeof (IBT6Mixin1)));
-      Assert.IsTrue (builtContext.ContainsCompleteInterface (typeof (IBT6Mixin2)));
+      Assert.AreEqual (2, builtContext.CompleteInterfaces.Count);
+      Assert.IsTrue (builtContext.CompleteInterfaces.ContainsKey (typeof (IBT6Mixin1)));
+      Assert.IsTrue (builtContext.CompleteInterfaces.ContainsKey (typeof (IBT6Mixin2)));
     }
 
     [Test]
@@ -541,15 +541,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
 
       ClassContext builtContext = _classBuilder.BuildClassContext (new ClassContext[] { inheritedContext });
 
-      Assert.AreEqual (3, builtContext.MixinCount);
-      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin2)));
-      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT7Mixin1)));
+      Assert.AreEqual (3, builtContext.Mixins.Count);
+      Assert.IsTrue (builtContext.Mixins.ContainsKey (typeof (BT1Mixin1)));
+      Assert.IsTrue (builtContext.Mixins.ContainsKey (typeof (BT1Mixin2)));
+      Assert.IsTrue (builtContext.Mixins.ContainsKey (typeof (BT7Mixin1)));
 
-      Assert.AreEqual (3, builtContext.CompleteInterfaceCount);
-      Assert.IsTrue (builtContext.ContainsCompleteInterface (typeof (IBT6Mixin1)));
-      Assert.IsTrue (builtContext.ContainsCompleteInterface (typeof (IBT6Mixin2)));
-      Assert.IsTrue (builtContext.ContainsCompleteInterface (typeof (BT1Mixin2)));
+      Assert.AreEqual (3, builtContext.CompleteInterfaces.Count);
+      Assert.IsTrue (builtContext.CompleteInterfaces.ContainsKey (typeof (IBT6Mixin1)));
+      Assert.IsTrue (builtContext.CompleteInterfaces.ContainsKey (typeof (IBT6Mixin2)));
+      Assert.IsTrue (builtContext.CompleteInterfaces.ContainsKey (typeof (BT1Mixin2)));
     }
 
     [Test]
@@ -565,10 +565,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
 
       ClassContext builtContext = classContextBuilder.BuildClassContext (new ClassContext[0]);
       
-      Assert.AreEqual (3, builtContext.MixinCount);
-      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT2Mixin1)));
-      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin2)));
+      Assert.AreEqual (3, builtContext.Mixins.Count);
+      Assert.IsTrue (builtContext.Mixins.ContainsKey (typeof (BT2Mixin1)));
+      Assert.IsTrue (builtContext.Mixins.ContainsKey (typeof (BT1Mixin1)));
+      Assert.IsTrue (builtContext.Mixins.ContainsKey (typeof (BT1Mixin2)));
     }
 
     [Test]
@@ -584,9 +584,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
 
       ClassContext builtContext = classContextBuilder.BuildClassContext (new ClassContext[0]);
 
-      Assert.AreEqual (2, builtContext.MixinCount);
-      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin2)));
+      Assert.AreEqual (2, builtContext.Mixins.Count);
+      Assert.IsTrue (builtContext.Mixins.ContainsKey (typeof (BT1Mixin1)));
+      Assert.IsTrue (builtContext.Mixins.ContainsKey (typeof (BT1Mixin2)));
     }
 
     [Test]
@@ -606,10 +606,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
 
       ClassContext builtContext = classContextBuilder.BuildClassContext (new ClassContext[] { inheritedContext });
 
-      Assert.AreEqual (3, builtContext.MixinCount);
-      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT3Mixin1)));
-      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT5Mixin2)));
-      Assert.IsTrue (builtContext.ContainsMixin (typeof (BT1Mixin2)));
+      Assert.AreEqual (3, builtContext.Mixins.Count);
+      Assert.IsTrue (builtContext.Mixins.ContainsKey (typeof (BT3Mixin1)));
+      Assert.IsTrue (builtContext.Mixins.ContainsKey (typeof (BT5Mixin2)));
+      Assert.IsTrue (builtContext.Mixins.ContainsKey (typeof (BT1Mixin2)));
     }
 
     [Test]

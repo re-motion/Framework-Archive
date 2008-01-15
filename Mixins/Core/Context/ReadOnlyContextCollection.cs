@@ -19,7 +19,23 @@ namespace Rubicon.Mixins.Context
       foreach (TValue value in values)
       {
         ArgumentUtility.CheckNotNull ("values[" + _internalCollection.Count + "]", value);
-        _internalCollection.Add (_keyGenerator (value), value);
+        
+        TKey key = _keyGenerator (value);
+        TValue existingValue;
+        if (_internalCollection.TryGetValue (key, out existingValue))
+        {
+          if (!value.Equals (existingValue))
+          {
+            string message = string.Format (
+                "The items {0} and {1} are identified by the same key {2} and cannot both be added to the collection.",
+                existingValue,
+                value,
+                key);
+            throw new ArgumentException (message, "values");
+          }
+        }
+        else
+          _internalCollection.Add (key, value);
       }
     }
 
@@ -43,6 +59,18 @@ namespace Rubicon.Mixins.Context
         return false;
       else
         return value.Equals (foundValue);
+    }
+
+    public virtual TValue this[TKey key]
+    {
+      get
+      {
+        TValue value;
+        if (!_internalCollection.TryGetValue (key, out value))
+          return default (TValue);
+        else
+          return value;
+      }
     }
 
     public virtual IEnumerator<TValue> GetEnumerator ()

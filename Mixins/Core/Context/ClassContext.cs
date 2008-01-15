@@ -21,21 +21,23 @@ namespace Rubicon.Mixins.Context
   [Serializable]
   public sealed class ClassContext : ISerializable
   {
-    private static bool ContainsOverrideForMixin (IEnumerable<MixinContext> mixinContexts, Type mixinType)
+    private static IEnumerable<MixinContext> GetMixinContexts (Type[] mixinTypes)
     {
-      return GetOverrideForMixin (mixinContexts, mixinType) != null;
-    }
-
-    private static MixinContext GetOverrideForMixin (IEnumerable<MixinContext> mixinContexts, Type mixinType)
-    {
-      Type typeToSearchFor = mixinType.IsGenericType ? mixinType.GetGenericTypeDefinition () : mixinType;
-
-      foreach (MixinContext mixin in mixinContexts)
+      Dictionary<Type, MixinContext> mixins = new Dictionary<Type, MixinContext> (mixinTypes.Length);
+      foreach (Type mixinType in mixinTypes)
       {
-        if (ReflectionUtility.CanAscribe (mixin.MixinType, typeToSearchFor))
-          return mixin;
+        if (!mixins.ContainsKey (mixinType))
+        {
+          MixinContext context = new MixinContext (mixinType, new Type[0]);
+          mixins.Add (context.MixinType, context);
+        }
+        else
+        {
+          string message = string.Format ("The mixin type {0} was tried to be added twice.", mixinType.FullName);
+          throw new ArgumentException (message, "mixinTypes");
+        }
       }
-      return null;
+      return mixins.Values;
     }
 
     // A = overridden, B = override
@@ -45,8 +47,8 @@ namespace Rubicon.Mixins.Context
       foreach (MixinContext mixin in baseMixins)
       {
         MixinContext overrideForMixin;
-        if ((overrideForMixin = GetOverrideForMixin (potentialOverrides, mixin.MixinType)) != null
-            && !ContainsOverrideForMixin (baseMixins, overrideForMixin.MixinType))
+        if ((overrideForMixin = MixinContextCollection.GetOverrideForMixin (potentialOverrides, mixin.MixinType)) != null
+            && !MixinContextCollection.ContainsOverrideForMixin (baseMixins, overrideForMixin.MixinType))
           return Tuple.NewTuple (mixin, overrideForMixin);
       }
       return null;
@@ -60,10 +62,8 @@ namespace Rubicon.Mixins.Context
     }
 
     private readonly Type _type;
-    private readonly Dictionary<Type, MixinContext> _mixins;
-    private readonly UncastableEnumerableWrapper<MixinContext> _mixinWrapperForOutside;
-    private readonly List<Type> _completeInterfaces;
-    private readonly UncastableEnumerableWrapper<Type> _completeInterfaceWrapperForOutside;
+    private readonly MixinContextCollection _mixins;
+    private readonly ReadOnlyContextCollection<Type, Type> _completeInterfaces;
     private readonly int _cachedHashCode;
 
     /// <summary>
@@ -79,13 +79,8 @@ namespace Rubicon.Mixins.Context
 
       _type = type;
 
-      _mixins = new Dictionary<Type, MixinContext> ();
-      foreach (MixinContext mixin in mixins)
-        _mixins.Add (mixin.MixinType, mixin);
-      _mixinWrapperForOutside = new UncastableEnumerableWrapper<MixinContext> (_mixins.Values);
-      
-      _completeInterfaces = new List<Type> (new Set<Type> (completeInterfaces));
-      _completeInterfaceWrapperForOutside = new UncastableEnumerableWrapper<Type> (_completeInterfaces);
+      _mixins = new MixinContextCollection (mixins);
+      _completeInterfaces = new ReadOnlyContextCollection<Type, Type> (delegate (Type t) { return t; }, completeInterfaces);
 
       _cachedHashCode = CalculateHashCode (this);
     }
@@ -120,58 +115,8 @@ namespace Rubicon.Mixins.Context
     /// <exception cref="ArgumentNullException">One of the parameters passed to this method is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException">The <paramref name="mixinTypes"/> parameter contains duplicates.</exception>
     public  ClassContext (Type type, params Type[] mixinTypes)
-        : this (type, new MixinContext[0], new Type[0])
+        : this (type, GetMixinContexts (ArgumentUtility.CheckNotNull ("mixinTypes", mixinTypes)), new Type[0])
     {
-      ArgumentUtility.CheckNotNull ("mixinTypes", mixinTypes);
-
-      foreach (Type mixinType in mixinTypes)
-      {
-        if (!ContainsMixin (mixinType))
-        {
-          MixinContext context = new MixinContext (mixinType, new Type[0]);
-          _mixins.Add (context.MixinType, context);
-        }
-        else
-        {
-          string message = string.Format ("The mixin type {0} was tried to be added twice.", mixinType.FullName);
-          throw new ArgumentException (message, "mixinTypes");
-        }
-      }
-    }
-
-    private ClassContext (SerializationInfo info, StreamingContext context)
-    {
-      _type = ReflectionObjectSerializer.DeserializeType ("_type", info);
-
-      int mixinCount = info.GetInt32 ("_mixins.Count");
-      _mixins = new Dictionary<Type, MixinContext> (mixinCount);
-      for (int i = 0; i < mixinCount; ++i)
-      {
-        MixinContext mixinContext = MixinContext.DeserializeFromFlatStructure (this, "_mixins[" + i + "]", info);
-        _mixins.Add (mixinContext.MixinType, mixinContext);
-      }
-      _mixinWrapperForOutside = new UncastableEnumerableWrapper<MixinContext> (_mixins.Values);
-
-      int completeInterfaceCount = info.GetInt32 ("_completeInterfaces.Count");
-      _completeInterfaces = new List<Type> (completeInterfaceCount);
-      for (int i = 0; i < completeInterfaceCount; ++i)
-        _completeInterfaces.Add (ReflectionObjectSerializer.DeserializeType ("_completeInterfaces[" + i + "]", info));
-      _completeInterfaceWrapperForOutside = new UncastableEnumerableWrapper<Type> (_completeInterfaces);
-
-      _cachedHashCode = CalculateHashCode (this);
-    }
-
-    void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      ReflectionObjectSerializer.SerializeType (_type, "_type", info);
-      info.AddValue ("_mixins.Count", _mixins.Count);
-      IEnumerator<MixinContext> mixinEnumerator = _mixins.Values.GetEnumerator ();
-      for (int i = 0; mixinEnumerator.MoveNext(); ++i)
-        mixinEnumerator.Current.SerializeIntoFlatStructure ("_mixins[" + i + "]", info);
-
-      info.AddValue ("_completeInterfaces.Count", _completeInterfaces.Count);
-      for (int i = 0; i < _completeInterfaces.Count; ++i)
-        ReflectionObjectSerializer.SerializeType (_completeInterfaces[i], "_completeInterfaces[" + i + "]", info);
     }
 
     /// <summary>
@@ -187,117 +132,18 @@ namespace Rubicon.Mixins.Context
     /// Gets the mixins associated with this <see cref="ClassContext"/>.
     /// </summary>
     /// <value>The mixins associated with this context.</value>
-    public IEnumerable<MixinContext> Mixins
+    public MixinContextCollection Mixins
     {
-      get { return _mixinWrapperForOutside; }
+      get { return _mixins; }
     }
 
     /// <summary>
     /// Gets the complete interfaces associated with this <see cref="ClassContext"/>.
     /// </summary>
     /// <value>The complete interfaces associated with this context (for an explanation, see <see cref="CompleteInterfaceAttribute"/>).</value>
-    public IEnumerable<Type> CompleteInterfaces
+    public ReadOnlyContextCollection<Type, Type> CompleteInterfaces
     {
-      get { return _completeInterfaceWrapperForOutside; }
-    }
-
-    /// <summary>
-    /// Gets the number of mixins associated with this <see cref="ClassContext"/>.
-    /// </summary>
-    /// <value>The mixin count of this context.</value>
-    public int MixinCount
-    {
-      get
-      {
-          return _mixins.Count;
-      }
-    }
-
-    /// <summary>
-    /// Gets the number of complete interfaces associated with this <see cref="ClassContext"/>.
-    /// </summary>
-    /// <value>The complete interface count.</value>
-    public int CompleteInterfaceCount
-    {
-      get
-      {
-          return _completeInterfaces.Count;
-      }
-    }
-
-    /// <summary>
-    /// Determines whether this <see cref="ClassContext"/> contains the specified mixin type.
-    /// </summary>
-    /// <param name="mixinType">The mixin type to check for.</param>
-    /// <returns>
-    /// True if the <see cref="ClassContext"/> contains the given mixin type; otherwise, false.
-    /// </returns>
-    /// <exception cref="ArgumentNullException">The <paramref name="mixinType"/> parameter is <see langword="null"/>.</exception>
-    public bool ContainsMixin (Type mixinType)
-    {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-        return _mixins.ContainsKey (mixinType);
-    }
-
-    /// <summary>
-    /// Determines whether this <see cref="ClassContext"/> contains a mixin type assignable to the specified type.
-    /// </summary>
-    /// <param name="baseMixinType">The mixin type to check for.</param>
-    /// <returns>
-    /// True if the <see cref="ClassContext"/> contains a type assignable to the specified type; otherwise, false.
-    /// </returns>
-    /// <exception cref="ArgumentNullException">The <paramref name="baseMixinType"/> parameter is <see langword="null"/>.</exception>
-    public bool ContainsAssignableMixin (Type baseMixinType)
-    {
-      ArgumentUtility.CheckNotNull ("baseMixinType", baseMixinType);
-        foreach (MixinContext mixin in Mixins)
-        {
-          if (baseMixinType.IsAssignableFrom (mixin.MixinType))
-            return true;
-        }
-        return false;
-    }
-
-    /// <summary>
-    /// Determines whether a mixin configured with this <see cref="ClassContext"/> overrides the given <paramref name="mixinType"/>.
-    /// </summary>
-    /// <param name="mixinType">The mixin type which is to be checked for overriders.</param>
-    /// <returns>
-    /// True if the specified mixin type is overridden in this class context; otherwise, false.
-    /// </returns>
-    public bool ContainsOverrideForMixin (Type mixinType)
-    {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      return ContainsOverrideForMixin (Mixins, mixinType);
-    }
-
-    /// <summary>
-    /// Gets the <see cref="MixinContext"/> for the given mixin type associated with this <see cref="ClassContext"/>.
-    /// </summary>
-    /// <param name="mixinType">The mixin type to retrieve a <see cref="MixinContext"/> for.</param>
-    /// <returns>A <see cref="MixinContext"/> for the given mixin type associated with this <see cref="ClassContext"/>.</returns>
-    /// <exception cref="ArgumentNullException">The <paramref name="mixinType"/> parameter is <see langword="null"/>.</exception>
-    public MixinContext GetMixinContext (Type mixinType)
-    {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-        if (!ContainsMixin (mixinType))
-          return null;
-        else
-          return _mixins[mixinType];
-    }
-
-    /// <summary>
-    /// Determines whether this <see cref="ClassContext"/> contains the given complete interface.
-    /// </summary>
-    /// <param name="interfaceType">Interface type to check for.</param>
-    /// <returns>
-    /// True if this <see cref="ClassContext"/> contains the given complete interface; otherwise, false.
-    /// </returns>
-    /// <exception cref="ArgumentNullException">The <paramref name="interfaceType"/> parameter is <see langword="null"/>.</exception>
-    public bool ContainsCompleteInterface (Type interfaceType)
-    {
-      ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
-        return _completeInterfaces.Contains (interfaceType);
+      get { return _completeInterfaces; }
     }
 
     /// <summary>
@@ -317,19 +163,19 @@ namespace Rubicon.Mixins.Context
         if (!other.Type.Equals (Type) || other._mixins.Count != _mixins.Count || other._completeInterfaces.Count != _completeInterfaces.Count)
           return false;
 
-        foreach (MixinContext mixinContext in _mixins.Values)
+        foreach (MixinContext mixinContext in _mixins)
         {
           if (!other._mixins.ContainsKey (mixinContext.MixinType) || !other._mixins[mixinContext.MixinType].Equals (mixinContext))
             return false;
         }
 
-        for (int i = 0; i < _completeInterfaces.Count; ++i)
+        foreach (Type completeInterface in _completeInterfaces)
         {
-          if (!_completeInterfaces[i].Equals (other._completeInterfaces[i]))
+          if (!other._completeInterfaces.ContainsKey (completeInterface))
             return false;
         }
 
-        return true;
+      return true;
     }
 
     /// <summary>
@@ -448,7 +294,7 @@ namespace Rubicon.Mixins.Context
 
       foreach (MixinContext inheritedMixin in baseContext.Mixins)
       {
-        if (!ContainsOverrideForMixin (mixins, inheritedMixin.MixinType))
+        if (!MixinContextCollection.ContainsOverrideForMixin (mixins, inheritedMixin.MixinType))
           mixins.Add (inheritedMixin);
       }
 
@@ -467,16 +313,61 @@ namespace Rubicon.Mixins.Context
     /// <returns>A copy of this <see cref="ClassContext"/> without any mixins that can be ascribed to the given mixin types.</returns>
     public ClassContext SuppressMixins (IEnumerable<Type> mixinTypesToSuppress)
     {
-      Dictionary<Type, MixinContext> mixins = new Dictionary<Type, MixinContext> (_mixins);
+      Dictionary<Type, MixinContext> mixinsAfterSuppression = new Dictionary<Type, MixinContext> ();
+      foreach (MixinContext mixinContext in _mixins)
+        mixinsAfterSuppression.Add (mixinContext.MixinType, mixinContext);
+
       foreach (Type suppressedType in mixinTypesToSuppress)
       {
         foreach (MixinContext mixin in Mixins)
         {
           if (Rubicon.Utilities.ReflectionUtility.CanAscribe (mixin.MixinType, suppressedType))
-            mixins.Remove (mixin.MixinType);
+            mixinsAfterSuppression.Remove (mixin.MixinType);
         }
       }
-      return new ClassContext (Type, mixins.Values, CompleteInterfaces);
+      return new ClassContext (Type, mixinsAfterSuppression.Values, CompleteInterfaces);
     }
+
+    #region Serialization
+    private ClassContext (SerializationInfo info, StreamingContext context)
+      : this (ReflectionObjectSerializer.DeserializeType ("_type", info), DeserializeMixins (info), DeserializeCompleteInterfaces (info))
+    {
+    }
+
+    private static IEnumerable<MixinContext> DeserializeMixins (SerializationInfo info)
+    {
+      int mixinCount = info.GetInt32 ("_mixins.Count");
+      List<MixinContext> mixinContexts = new List<MixinContext> (mixinCount);
+      for (int i = 0; i < mixinCount; ++i)
+      {
+        MixinContext mixinContext = MixinContext.DeserializeFromFlatStructure ("_mixins[" + i + "]", info);
+        mixinContexts.Add (mixinContext);
+      }
+      return mixinContexts;
+    }
+
+    private static IEnumerable<Type> DeserializeCompleteInterfaces (SerializationInfo info)
+    {
+      int completeInterfaceCount = info.GetInt32 ("_completeInterfaces.Count");
+      List<Type> completeInterfaces = new List<Type> (completeInterfaceCount);
+      for (int i = 0; i < completeInterfaceCount; ++i)
+        completeInterfaces.Add (ReflectionObjectSerializer.DeserializeType ("_completeInterfaces[" + i + "]", info));
+      return completeInterfaces;
+    }
+
+    void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+    {
+      ReflectionObjectSerializer.SerializeType (_type, "_type", info);
+      info.AddValue ("_mixins.Count", _mixins.Count);
+      IEnumerator<MixinContext> mixinEnumerator = _mixins.GetEnumerator ();
+      for (int i = 0; mixinEnumerator.MoveNext (); ++i)
+        mixinEnumerator.Current.SerializeIntoFlatStructure ("_mixins[" + i + "]", info);
+
+      IEnumerator<Type> interfaceEnumerator = _completeInterfaces.GetEnumerator ();
+      info.AddValue ("_completeInterfaces.Count", _completeInterfaces.Count);
+      for (int i = 0; interfaceEnumerator.MoveNext (); ++i)
+        ReflectionObjectSerializer.SerializeType (interfaceEnumerator.Current, "_completeInterfaces[" + i + "]", info);
+    }
+    #endregion
   }
 }

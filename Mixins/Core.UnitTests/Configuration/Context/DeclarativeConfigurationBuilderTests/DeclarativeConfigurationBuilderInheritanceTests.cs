@@ -37,8 +37,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly());
       ClassContext classContext = context.GetClassContext (typeof (Base));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin)));
-      Assert.AreEqual (1, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.AreEqual (1, classContext.Mixins.Count);
     }
 
     [Test]
@@ -47,8 +47,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (Derived));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin)));
-      Assert.AreEqual (1, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.AreEqual (1, classContext.Mixins.Count);
     }
 
     [Test]
@@ -57,9 +57,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedWithOwnMixin));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin2)));
-      Assert.AreEqual (2, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (NullMixin2)));
+      Assert.AreEqual (2, classContext.Mixins.Count);
     }
 
     [Test]
@@ -68,8 +68,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedDerived));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin)));
-      Assert.AreEqual (1, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.AreEqual (1, classContext.Mixins.Count);
     }
 
     [Test]
@@ -78,9 +78,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedDerivedWithOwnMixin));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin2)));
-      Assert.AreEqual (2, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (NullMixin2)));
+      Assert.AreEqual (2, classContext.Mixins.Count);
     }
 
     [Test]
@@ -94,9 +94,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = builder.BuildConfiguration();
       ClassContext classContext = context.GetClassContext (typeof (DerivedDerivedWithOwnMixin));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin2)));
-      Assert.AreEqual (2, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (NullMixin2)));
+      Assert.AreEqual (2, classContext.Mixins.Count);
     }
 
     [Test]
@@ -110,9 +110,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = builder.BuildConfiguration ();
       ClassContext classContext = context.GetClassContext (typeof (DerivedDerivedWithOwnMixin));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin2)));
-      Assert.AreEqual (2, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (NullMixin2)));
+      Assert.AreEqual (2, classContext.Mixins.Count);
     }
 
 
@@ -122,8 +122,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedWithOverride));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (DerivedNullMixin)));
-      Assert.AreEqual (1, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (DerivedNullMixin)));
+      Assert.AreEqual (1, classContext.Mixins.Count);
     }
 
     [Test]
@@ -132,9 +132,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedDerivedWithOwnMixinAndOverride));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (DerivedNullMixin)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin2)));
-      Assert.AreEqual (2, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (DerivedNullMixin)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (NullMixin2)));
+      Assert.AreEqual (2, classContext.Mixins.Count);
     }
   }
 }

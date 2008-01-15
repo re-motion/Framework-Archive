@@ -27,12 +27,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     {
       MixinConfiguration context =
           new DeclarativeConfigurationBuilder (null).AddType (typeof (UserWithoutDependencies)).AddType (typeof (UserWithDependencies)).BuildConfiguration();
-      Assert.AreEqual (0, context.GetClassContext (typeof (UserWithoutDependencies)).GetMixinContext (typeof (NullMixin))
-          .ExplicitDependencies.Count);
-      Assert.AreEqual (1, context.GetClassContext (typeof (UserWithDependencies)).GetMixinContext (typeof (NullMixin))
-          .ExplicitDependencies.Count);
-      Assert.IsTrue (context.GetClassContext (typeof (UserWithDependencies)).GetMixinContext (typeof (NullMixin))
-          .ExplicitDependencies.ContainsKey (typeof (string)));
+      Assert.AreEqual (0, context.GetClassContext (typeof (UserWithoutDependencies)).Mixins[typeof (NullMixin)].ExplicitDependencies.Count);
+      Assert.AreEqual (1, context.GetClassContext (typeof (UserWithDependencies)).Mixins[typeof (NullMixin)].ExplicitDependencies.Count);
+      Assert.IsTrue (context.GetClassContext (typeof (UserWithDependencies)).Mixins[typeof (NullMixin)].ExplicitDependencies.ContainsKey (typeof (string)));
     }
 
     [Uses (typeof (NullMixin), AdditionalDependencies = new Type[] { typeof (object) })]
@@ -45,10 +42,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     public void UsesAttributeIsInherited ()
     {
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (DerivedWithoutUses)).BuildConfiguration ();
-      Assert.IsTrue (context.GetClassContext (typeof (DerivedWithoutUses)).ContainsMixin (typeof (NullMixin)));
-      Assert.IsTrue (context.GetClassContext (typeof (DerivedWithoutUses)).GetMixinContext (typeof (NullMixin))
-          .ExplicitDependencies.ContainsKey (typeof (object)));
-      Assert.AreEqual (1, context.GetClassContext (typeof (DerivedWithoutUses)).MixinCount);
+      Assert.IsTrue (context.GetClassContext (typeof (DerivedWithoutUses)).Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (context.GetClassContext (typeof (DerivedWithoutUses)).Mixins[typeof (NullMixin)].ExplicitDependencies
+          .ContainsKey (typeof (object)));
+      Assert.AreEqual (1, context.GetClassContext (typeof (DerivedWithoutUses)).Mixins.Count);
     }
 
     public class DedicatedMixin {}
@@ -61,14 +58,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     public void UsesAttributeIsInherited_AndAugmentedWithOwn ()
     {
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (DerivedWithOwnUses)).BuildConfiguration ();
-      Assert.IsTrue (context.GetClassContext (typeof (DerivedWithOwnUses)).ContainsMixin (typeof (NullMixin)));
-      Assert.IsTrue (context.GetClassContext (typeof (DerivedWithOwnUses)).ContainsMixin (typeof (DedicatedMixin)));
+      Assert.IsTrue (context.GetClassContext (typeof (DerivedWithOwnUses)).Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (context.GetClassContext (typeof (DerivedWithOwnUses)).Mixins.ContainsKey (typeof (DedicatedMixin)));
 
       Type[] mixinTypes = EnumerableUtility.SelectToArray<MixinContext, Type> (
         context.GetClassContext (typeof (DerivedWithOwnUses)).Mixins, delegate (MixinContext mixin) { return mixin.MixinType; });
       
       Assert.That (mixinTypes, Is.EquivalentTo (new Type[] {typeof (NullMixin), typeof (DedicatedMixin)}));
-      Assert.AreEqual (2, context.GetClassContext (typeof (DerivedWithOwnUses)).MixinCount);
+      Assert.AreEqual (2, context.GetClassContext (typeof (DerivedWithOwnUses)).Mixins.Count);
     }
 
     [Uses (typeof (NullMixin))]
@@ -84,8 +81,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     public void UsesAttributeIsInheritedOnOpenGenericTypes ()
     {
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (GenericDerivedWithInheritedMixin<>)).BuildConfiguration ();
-      Assert.IsTrue (context.GetClassContext (typeof (GenericDerivedWithInheritedMixin<>)).ContainsMixin (typeof (NullMixin)));
-      Assert.AreEqual (1, context.GetClassContext (typeof (GenericDerivedWithInheritedMixin<>)).MixinCount);
+      Assert.IsTrue (context.GetClassContext (typeof (GenericDerivedWithInheritedMixin<>)).Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.AreEqual (1, context.GetClassContext (typeof (GenericDerivedWithInheritedMixin<>)).Mixins.Count);
     }
 
     public class NonGenericDerivedWithInheritedMixinFromGeneric : GenericBaseWithMixin<int>
@@ -96,8 +93,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     public void UsesAttributeIsInheritedOnNonGenericTypesInheritingFromGeneric ()
     {
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (NonGenericDerivedWithInheritedMixinFromGeneric)).BuildConfiguration ();
-      Assert.IsTrue (context.GetClassContext (typeof (NonGenericDerivedWithInheritedMixinFromGeneric)).ContainsMixin (typeof (NullMixin)));
-      Assert.AreEqual (1, context.GetClassContext (typeof (NonGenericDerivedWithInheritedMixinFromGeneric)).MixinCount);
+      Assert.IsTrue (context.GetClassContext (typeof (NonGenericDerivedWithInheritedMixinFromGeneric)).Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.AreEqual (1, context.GetClassContext (typeof (NonGenericDerivedWithInheritedMixinFromGeneric)).Mixins.Count);
     }
 
     [Uses (typeof (NullMixin))]
@@ -110,10 +107,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     public void InheritedUsesDuplicateIsIgnored ()
     {
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (DerivedWithUses)).BuildConfiguration ();
-      Assert.IsTrue (context.GetClassContext (typeof (DerivedWithUses)).ContainsMixin (typeof (NullMixin)));
-      Assert.IsFalse (context.GetClassContext (typeof (DerivedWithUses)).GetMixinContext (typeof (NullMixin))
+      Assert.IsTrue (context.GetClassContext (typeof (DerivedWithUses)).Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsFalse (context.GetClassContext (typeof (DerivedWithUses)).Mixins[typeof (NullMixin)]
           .ExplicitDependencies.ContainsKey (typeof (object)));
-      Assert.AreEqual (1, context.GetClassContext (typeof (DerivedWithUses)).MixinCount);
+      Assert.AreEqual (1, context.GetClassContext (typeof (DerivedWithUses)).Mixins.Count);
     }
 
     public class DerivedNullMixin : NullMixin { }
@@ -128,9 +125,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     public void InheritedUsesCanBeOverridden ()
     {
       MixinConfiguration context = new DeclarativeConfigurationBuilder (null).AddType (typeof (DerivedWithMoreSpecificUses)).BuildConfiguration ();
-      Assert.IsTrue (context.GetClassContext (typeof (DerivedWithMoreSpecificUses)).ContainsMixin (typeof (DerivedNullMixin)));
-      Assert.IsFalse (context.GetClassContext (typeof (DerivedWithMoreSpecificUses)).ContainsMixin (typeof (NullMixin)));
-      Assert.AreEqual (1, context.GetClassContext (typeof (DerivedWithMoreSpecificUses)).MixinCount);
+      Assert.IsTrue (context.GetClassContext (typeof (DerivedWithMoreSpecificUses)).Mixins.ContainsKey (typeof (DerivedNullMixin)));
+      Assert.IsFalse (context.GetClassContext (typeof (DerivedWithMoreSpecificUses)).Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.AreEqual (1, context.GetClassContext (typeof (DerivedWithMoreSpecificUses)).Mixins.Count);
     }
 
     public class BaseGenericMixin<TThis, TBase> : Mixin<TThis, TBase>
@@ -198,54 +195,54 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     public void OverrideAlsoWorksForGenericsOpenOpen ()
     {
       ClassContext ctx = new DeclarativeConfigurationBuilder (null).AddType (typeof (DerivedWithOpenOverridingOpen)).BuildConfiguration ().GetClassContext (typeof (DerivedWithOpenOverridingOpen));
-      Assert.IsTrue (ctx.ContainsMixin (typeof (DerivedGenericMixin<,>)));
-      Assert.IsFalse (ctx.ContainsMixin (typeof (BaseGenericMixin<,>)));
-      Assert.AreEqual (1, ctx.MixinCount);
+      Assert.IsTrue (ctx.Mixins.ContainsKey (typeof (DerivedGenericMixin<,>)));
+      Assert.IsFalse (ctx.Mixins.ContainsKey (typeof (BaseGenericMixin<,>)));
+      Assert.AreEqual (1, ctx.Mixins.Count);
     }
 
     [Test]
     public void OverrideAlsoWorksForGenericsOpenClosed ()
     {
       ClassContext ctx = new DeclarativeConfigurationBuilder (null).AddType (typeof (DerivedWithOpenOverridingClosed)).BuildConfiguration ().GetClassContext (typeof (DerivedWithOpenOverridingClosed));
-      Assert.IsTrue (ctx.ContainsMixin (typeof (DerivedGenericMixin<,>)));
-      Assert.IsFalse (ctx.ContainsMixin (typeof (BaseGenericMixin<BaseWithClosedGeneric, object>)));
-      Assert.AreEqual (1, ctx.MixinCount);
+      Assert.IsTrue (ctx.Mixins.ContainsKey (typeof (DerivedGenericMixin<,>)));
+      Assert.IsFalse (ctx.Mixins.ContainsKey (typeof (BaseGenericMixin<BaseWithClosedGeneric, object>)));
+      Assert.AreEqual (1, ctx.Mixins.Count);
     }
 
     [Test]
     public void OverrideAlsoWorksForGenericsClosedOpen ()
     {
       ClassContext ctx = new DeclarativeConfigurationBuilder (null).AddType (typeof (DerivedWithClosedOverridingOpen)).BuildConfiguration ().GetClassContext (typeof (DerivedWithClosedOverridingOpen));
-      Assert.IsTrue (ctx.ContainsMixin (typeof (DerivedGenericMixin<object, object>)));
-      Assert.IsFalse (ctx.ContainsMixin (typeof (BaseGenericMixin<,>)));
-      Assert.AreEqual (1, ctx.MixinCount);
+      Assert.IsTrue (ctx.Mixins.ContainsKey (typeof (DerivedGenericMixin<object, object>)));
+      Assert.IsFalse (ctx.Mixins.ContainsKey (typeof (BaseGenericMixin<,>)));
+      Assert.AreEqual (1, ctx.Mixins.Count);
     }
 
     [Test]
     public void OverrideAlsoWorksForGenericsClosedClosed ()
     {
       ClassContext ctx = new DeclarativeConfigurationBuilder (null).AddType (typeof (DerivedWithClosedOverridingClosed)).BuildConfiguration ().GetClassContext (typeof (DerivedWithClosedOverridingClosed));
-      Assert.IsTrue (ctx.ContainsMixin (typeof (DerivedGenericMixin<object, object>)));
-      Assert.IsFalse (ctx.ContainsMixin (typeof (BaseGenericMixin<BaseWithClosedGeneric, object>)));
-      Assert.AreEqual (1, ctx.MixinCount);
+      Assert.IsTrue (ctx.Mixins.ContainsKey (typeof (DerivedGenericMixin<object, object>)));
+      Assert.IsFalse (ctx.Mixins.ContainsKey (typeof (BaseGenericMixin<BaseWithClosedGeneric, object>)));
+      Assert.AreEqual (1, ctx.Mixins.Count);
     }
 
     [Test]
     public void OverrideAlsoWorksForGenericsRealClosedOpen ()
     {
       ClassContext ctx = new DeclarativeConfigurationBuilder (null).AddType (typeof (DerivedWithRealClosedOverridingOpen)).BuildConfiguration ().GetClassContext (typeof (DerivedWithRealClosedOverridingOpen));
-      Assert.IsTrue (ctx.ContainsMixin (typeof (DerivedClosedMixin)));
-      Assert.IsFalse (ctx.ContainsMixin (typeof (BaseGenericMixin<,>)));
-      Assert.AreEqual (1, ctx.MixinCount);
+      Assert.IsTrue (ctx.Mixins.ContainsKey (typeof (DerivedClosedMixin)));
+      Assert.IsFalse (ctx.Mixins.ContainsKey (typeof (BaseGenericMixin<,>)));
+      Assert.AreEqual (1, ctx.Mixins.Count);
     }
 
     [Test]
     public void OverrideAlsoWorksForGenericsRealClosedClosed ()
     {
       ClassContext ctx = new DeclarativeConfigurationBuilder (null).AddType (typeof (DerivedWithRealClosedOverridingClosed)).BuildConfiguration ().GetClassContext (typeof (DerivedWithRealClosedOverridingClosed));
-      Assert.IsTrue (ctx.ContainsMixin (typeof (DerivedClosedMixin)));
-      Assert.IsFalse (ctx.ContainsMixin (typeof (BaseGenericMixin<BaseWithClosedGeneric, object>)));
-      Assert.AreEqual (1, ctx.MixinCount);
+      Assert.IsTrue (ctx.Mixins.ContainsKey (typeof (DerivedClosedMixin)));
+      Assert.IsFalse (ctx.Mixins.ContainsKey (typeof (BaseGenericMixin<BaseWithClosedGeneric, object>)));
+      Assert.AreEqual (1, ctx.Mixins.Count);
     }
 
     [Uses (typeof (NullMixin))]
@@ -325,8 +322,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
           .AddType (typeof (SuppressedExtender))
           .BuildConfiguration ();
       ClassContext classContext = context.GetClassContext (typeof (SuppressingUser));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (NullMixin)));
-      Assert.IsFalse (classContext.ContainsMixin (typeof (SuppressedExtender)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsFalse (classContext.Mixins.ContainsKey (typeof (SuppressedExtender)));
     }
 
     [Uses (typeof (NullMixin), SuppressedMixins = new Type[] { typeof (NullMixin) })]

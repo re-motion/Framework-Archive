@@ -84,7 +84,7 @@ namespace Rubicon.Mixins
       ArgumentUtility.CheckNotNull ("type", type);
 
       ClassContext classContext = GetConcreteClassContext(type);
-      return classContext != null && classContext.MixinCount > 0;
+      return classContext != null && classContext.Mixins.Count > 0;
     }
 
     /// <summary>
@@ -104,7 +104,7 @@ namespace Rubicon.Mixins
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
 
       ClassContext classContext = GetConcreteClassContext (typeToCheck);
-      return classContext != null && classContext.ContainsMixin (mixinType);
+      return classContext != null && classContext.Mixins.ContainsKey (mixinType);
     }
 
     /// <summary>

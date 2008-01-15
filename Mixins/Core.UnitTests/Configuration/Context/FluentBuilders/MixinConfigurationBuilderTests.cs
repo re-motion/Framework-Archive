@@ -124,9 +124,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       MixinConfiguration configuration =
           new MixinConfigurationBuilder (parentConfiguration).ForClass<DerivedNullTarget>().AddMixin (typeof (NullMixin2)).BuildConfiguration();
       ClassContext derivedContext = configuration.GetClassContext (typeof (DerivedNullTarget));
-      Assert.AreEqual (2, derivedContext.MixinCount);
-      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin)));
-      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin2)));
+      Assert.AreEqual (2, derivedContext.Mixins.Count);
+      Assert.IsTrue (derivedContext.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (derivedContext.Mixins.ContainsKey (typeof (NullMixin2)));
     }
 
     [Test]
@@ -137,9 +137,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       MixinConfiguration configuration =
           new MixinConfigurationBuilder (parentConfiguration).ForClass<GenericTargetClass<int>> ().AddMixin (typeof (NullMixin2)).BuildConfiguration ();
       ClassContext derivedContext = configuration.GetClassContext (typeof (GenericTargetClass<int>));
-      Assert.AreEqual (2, derivedContext.MixinCount);
-      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin)));
-      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin2)));
+      Assert.AreEqual (2, derivedContext.Mixins.Count);
+      Assert.IsTrue (derivedContext.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (derivedContext.Mixins.ContainsKey (typeof (NullMixin2)));
     }
 
     [Test]
@@ -154,11 +154,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
           .ForClass<DerivedGenericTargetClass<int>> ().AddMixin (typeof (NullMixin4))
           .BuildConfiguration ();
       ClassContext derivedContext = configuration.GetClassContext (typeof (DerivedGenericTargetClass<int>));
-      Assert.AreEqual (4, derivedContext.MixinCount);
-      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin)));
-      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin2)));
-      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin3)));
-      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin4)));
+      Assert.AreEqual (4, derivedContext.Mixins.Count);
+      Assert.IsTrue (derivedContext.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (derivedContext.Mixins.ContainsKey (typeof (NullMixin2)));
+      Assert.IsTrue (derivedContext.Mixins.ContainsKey (typeof (NullMixin3)));
+      Assert.IsTrue (derivedContext.Mixins.ContainsKey (typeof (NullMixin4)));
     }
 
     [Test]
@@ -174,14 +174,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
           .BuildConfiguration ();
       
       ClassContext derivedContext1 = configuration.GetClassContext (typeof (DerivedNullTarget));
-      Assert.AreEqual (1, derivedContext1.MixinCount);
-      Assert.IsTrue (derivedContext1.ContainsMixin (typeof (DerivedNullMixin)));
-      Assert.IsFalse (derivedContext1.ContainsMixin (typeof (NullMixin)));
+      Assert.AreEqual (1, derivedContext1.Mixins.Count);
+      Assert.IsTrue (derivedContext1.Mixins.ContainsKey (typeof (DerivedNullMixin)));
+      Assert.IsFalse (derivedContext1.Mixins.ContainsKey (typeof (NullMixin)));
 
       ClassContext derivedContext2 = configuration.GetClassContext (typeof (GenericTargetClass<int>));
-      Assert.AreEqual (1, derivedContext2.MixinCount);
-      Assert.IsTrue (derivedContext2.ContainsMixin (typeof (DerivedNullMixin)));
-      Assert.IsFalse (derivedContext2.ContainsMixin (typeof (NullMixin)));
+      Assert.AreEqual (1, derivedContext2.Mixins.Count);
+      Assert.IsTrue (derivedContext2.Mixins.ContainsKey (typeof (DerivedNullMixin)));
+      Assert.IsFalse (derivedContext2.Mixins.ContainsKey (typeof (NullMixin)));
     }
 
     [Test]
@@ -192,9 +192,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
           .ForClass<NullTarget> ().AddMixin (typeof (NullMixin))
           .BuildConfiguration ();
       ClassContext derivedContext = configuration.GetClassContext (typeof (DerivedNullTarget));
-      Assert.AreEqual (2, derivedContext.MixinCount);
-      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin)));
-      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin2)));
+      Assert.AreEqual (2, derivedContext.Mixins.Count);
+      Assert.IsTrue (derivedContext.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (derivedContext.Mixins.ContainsKey (typeof (NullMixin2)));
     }
 
     [Test]
@@ -205,9 +205,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
           .ForClass (typeof (GenericTargetClass<>)).AddMixin (typeof (NullMixin))
           .BuildConfiguration ();
       ClassContext derivedContext = configuration.GetClassContext (typeof (GenericTargetClass<int>));
-      Assert.AreEqual (2, derivedContext.MixinCount);
-      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin)));
-      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin2)));
+      Assert.AreEqual (2, derivedContext.Mixins.Count);
+      Assert.IsTrue (derivedContext.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (derivedContext.Mixins.ContainsKey (typeof (NullMixin2)));
     }
 
     [Test]
@@ -220,11 +220,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
           .ForClass (typeof (GenericTargetClass<int>)).AddMixin (typeof (NullMixin3))
           .BuildConfiguration ();
       ClassContext derivedContext = configuration.GetClassContext (typeof (DerivedGenericTargetClass<int>));
-      Assert.AreEqual (4, derivedContext.MixinCount);
-      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin)));
-      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin2)));
-      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin3)));
-      Assert.IsTrue (derivedContext.ContainsMixin (typeof (NullMixin4)));
+      Assert.AreEqual (4, derivedContext.Mixins.Count);
+      Assert.IsTrue (derivedContext.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (derivedContext.Mixins.ContainsKey (typeof (NullMixin2)));
+      Assert.IsTrue (derivedContext.Mixins.ContainsKey (typeof (NullMixin3)));
+      Assert.IsTrue (derivedContext.Mixins.ContainsKey (typeof (NullMixin4)));
     }
 
     [Test]
@@ -238,14 +238,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
           .BuildConfiguration ();
 
       ClassContext derivedContext1 = configuration.GetClassContext (typeof (DerivedNullTarget));
-      Assert.AreEqual (1, derivedContext1.MixinCount);
-      Assert.IsTrue (derivedContext1.ContainsMixin (typeof (DerivedNullMixin)));
-      Assert.IsFalse (derivedContext1.ContainsMixin (typeof (NullMixin)));
+      Assert.AreEqual (1, derivedContext1.Mixins.Count);
+      Assert.IsTrue (derivedContext1.Mixins.ContainsKey (typeof (DerivedNullMixin)));
+      Assert.IsFalse (derivedContext1.Mixins.ContainsKey (typeof (NullMixin)));
 
       ClassContext derivedContext2 = configuration.GetClassContext (typeof (GenericTargetClass<int>));
-      Assert.AreEqual (1, derivedContext2.MixinCount);
-      Assert.IsTrue (derivedContext2.ContainsMixin (typeof (DerivedNullMixin)));
-      Assert.IsFalse (derivedContext2.ContainsMixin (typeof (NullMixin)));
+      Assert.AreEqual (1, derivedContext2.Mixins.Count);
+      Assert.IsTrue (derivedContext2.Mixins.ContainsKey (typeof (DerivedNullMixin)));
+      Assert.IsFalse (derivedContext2.Mixins.ContainsKey (typeof (NullMixin)));
     }
 
     [Test]
@@ -258,8 +258,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       ClassContext resolvedContext = configuration.ResolveInterface (typeof (ICBT6Mixin1));
       Assert.IsNotNull (resolvedContext);
       Assert.AreEqual (typeof (BaseType6), resolvedContext.Type);
-      Assert.AreEqual (1, resolvedContext.MixinCount);
-      Assert.IsTrue (resolvedContext.ContainsMixin (typeof (BT6Mixin1)));
+      Assert.AreEqual (1, resolvedContext.Mixins.Count);
+      Assert.IsTrue (resolvedContext.Mixins.ContainsKey (typeof (BT6Mixin1)));
     }
   }
 }

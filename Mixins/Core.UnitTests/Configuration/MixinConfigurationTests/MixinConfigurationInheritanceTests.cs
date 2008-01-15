@@ -75,7 +75,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
         ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (DerivedNullTarget));
         Assert.IsNotNull (context);
         Assert.AreEqual (typeof (DerivedNullTarget), context.Type);
-        Assert.IsTrue (context.ContainsMixin (typeof (NullMixin)));
+        Assert.IsTrue (context.Mixins.ContainsKey (typeof (NullMixin)));
       }
     }
 
@@ -87,7 +87,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
         ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (GenericTargetClass<object>));
         Assert.IsNotNull (context);
         Assert.AreEqual (typeof (GenericTargetClass<object>), context.Type);
-        Assert.IsTrue (context.ContainsMixin (typeof (NullMixin)));
+        Assert.IsTrue (context.Mixins.ContainsKey (typeof (NullMixin)));
       }
     }
 
@@ -102,8 +102,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
         ClassContext context = MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (DerivedGenericTargetClass<object>));
         Assert.IsNotNull (context);
         Assert.AreEqual (typeof (DerivedGenericTargetClass<object>), context.Type);
-        Assert.IsTrue (context.ContainsMixin (typeof (NullMixin)));
-        Assert.IsTrue (context.ContainsMixin (typeof (NullMixin2)));
+        Assert.IsTrue (context.Mixins.ContainsKey (typeof (NullMixin)));
+        Assert.IsTrue (context.Mixins.ContainsKey (typeof (NullMixin2)));
       }
     }
 

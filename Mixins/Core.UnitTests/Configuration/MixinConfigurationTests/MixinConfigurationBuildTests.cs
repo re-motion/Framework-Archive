@@ -17,7 +17,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
       {
         Assert.AreNotSame (previousConfiguration, MixinConfiguration.ActiveConfiguration);
         Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType7)));
-        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).ContainsMixin (typeof (BT7Mixin0)));
+        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).Mixins.ContainsKey (typeof (BT7Mixin0)));
         Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
       }
       Assert.AreSame (previousConfiguration, MixinConfiguration.ActiveConfiguration);
@@ -36,7 +36,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
         Assert.AreNotSame (previousConfiguration, MixinConfiguration.ActiveConfiguration);
         Assert.AreNotSame (parentConfiguration, MixinConfiguration.ActiveConfiguration);
         Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType7)));
-        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).ContainsMixin (typeof (BT7Mixin0)));
+        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType7)).Mixins.ContainsKey (typeof (BT7Mixin0)));
         Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
         Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType2)));
       }
@@ -52,9 +52,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
       {
         Assert.AreNotSame (previousConfiguration, MixinConfiguration.ActiveConfiguration);
         Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType1)));
-        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType1)).ContainsMixin (typeof (BT1Mixin1)));
+        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType1)).Mixins.ContainsKey (typeof (BT1Mixin1)));
         Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ContainsClassContext (typeof (BaseType4)));
-        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType4)).ContainsMixin (typeof (BT4Mixin1)));
+        Assert.IsTrue (MixinConfiguration.ActiveConfiguration.GetClassContext (typeof (BaseType4)).Mixins.ContainsKey (typeof (BT4Mixin1)));
       }
       Assert.AreSame (previousConfiguration, MixinConfiguration.ActiveConfiguration);
     }

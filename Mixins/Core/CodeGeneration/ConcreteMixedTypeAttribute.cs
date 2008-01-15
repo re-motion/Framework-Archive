@@ -21,8 +21,8 @@ namespace Rubicon.Mixins.CodeGeneration
     public static ConcreteMixedTypeAttribute FromClassContext (ClassContext context)
     {
       Type baseType = context.Type;
-      List<Type> mixinTypes = new List<Type> (context.MixinCount);
-      List<Type> completeInterfaces = new List<Type> (context.CompleteInterfaceCount);
+      List<Type> mixinTypes = new List<Type> (context.Mixins.Count);
+      List<Type> completeInterfaces = new List<Type> (context.CompleteInterfaces.Count);
       List<Type> explicitDependencyList = new List<Type> ();
 
       completeInterfaces.AddRange (context.CompleteInterfaces);

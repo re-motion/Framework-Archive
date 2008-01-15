@@ -43,10 +43,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
       Assert.IsTrue (classContexts.Count > 0);
 
       ClassContext contextForBaseType1 = configuration.GetClassContext (typeof (BaseType1));
-      Assert.AreEqual (2, contextForBaseType1.MixinCount);
+      Assert.AreEqual (2, contextForBaseType1.Mixins.Count);
 
-      Assert.IsTrue (contextForBaseType1.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (contextForBaseType1.ContainsMixin (typeof (BT1Mixin2)));
+      Assert.IsTrue (contextForBaseType1.Mixins.ContainsKey (typeof (BT1Mixin1)));
+      Assert.IsTrue (contextForBaseType1.Mixins.ContainsKey (typeof (BT1Mixin2)));
     }
 
     [Test]
@@ -160,15 +160,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
           .BuildConfiguration();
 
       Assert.IsTrue (source.ContainsClassContext (typeof (BaseType2)));
-      Assert.IsTrue (source.GetClassContext (typeof (BaseType2)).ContainsMixin (typeof (BT2Mixin1)));
-      Assert.IsTrue (source.GetClassContext (typeof (BaseType2)).GetMixinContext (typeof (BT2Mixin1))
+      Assert.IsTrue (source.GetClassContext (typeof (BaseType2)).Mixins.ContainsKey (typeof (BT2Mixin1)));
+      Assert.IsTrue (source.GetClassContext (typeof (BaseType2)).Mixins[typeof (BT2Mixin1)]
           .ExplicitDependencies.ContainsKey (typeof (IBaseType33)));
 
       Assert.AreSame (source.GetClassContext (typeof (BaseType2)), source.ResolveInterface (typeof (IBaseType2)));
 
       Assert.IsTrue (source.ContainsClassContext (typeof (BaseType1)));
-      Assert.IsTrue (source.GetClassContext (typeof (BaseType1)).ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (source.GetClassContext (typeof (BaseType1)).GetMixinContext (typeof (BT1Mixin1))
+      Assert.IsTrue (source.GetClassContext (typeof (BaseType1)).Mixins.ContainsKey (typeof (BT1Mixin1)));
+      Assert.IsTrue (source.GetClassContext (typeof (BaseType1)).Mixins[typeof (BT1Mixin1)]
           .ExplicitDependencies.ContainsKey (typeof (IBaseType34)));
 
       MixinConfiguration destination = new MixinConfiguration ();
@@ -187,15 +187,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
       Assert.IsTrue (destination.ContainsClassContext (typeof (BaseType4)));
 
       Assert.IsTrue (destination.ContainsClassContext (typeof (BaseType2)));
-      Assert.IsTrue (destination.GetClassContext (typeof (BaseType2)).ContainsMixin (typeof (BT2Mixin1)));
-      Assert.IsTrue (destination.GetClassContext (typeof (BaseType2)).GetMixinContext (typeof (BT2Mixin1))
+      Assert.IsTrue (destination.GetClassContext (typeof (BaseType2)).Mixins.ContainsKey (typeof (BT2Mixin1)));
+      Assert.IsTrue (destination.GetClassContext (typeof (BaseType2)).Mixins[typeof (BT2Mixin1)]
           .ExplicitDependencies.ContainsKey (typeof (IBaseType33)));
 
       Assert.AreSame (destination.GetClassContext (typeof (BaseType2)), destination.ResolveInterface (typeof (IBaseType2)));
 
       Assert.IsTrue (destination.ContainsClassContext (typeof (BaseType1)));
-      Assert.IsTrue (destination.GetClassContext (typeof (BaseType1)).ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (destination.GetClassContext (typeof (BaseType1)).GetMixinContext (typeof (BT1Mixin1))
+      Assert.IsTrue (destination.GetClassContext (typeof (BaseType1)).Mixins.ContainsKey (typeof (BT1Mixin1)));
+      Assert.IsTrue (destination.GetClassContext (typeof (BaseType1)).Mixins[typeof (BT1Mixin1)]
           .ExplicitDependencies.ContainsKey (typeof (IBaseType34)));
     }
 

@@ -29,14 +29,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     {
       ClassContext classContext = new ClassContext (typeof (BaseType7));
 
-      Assert.IsFalse (classContext.ContainsMixin (typeof (BT7Mixin1)));
-      MixinContext mixinContext = classContext.GetMixinContext (typeof (BT7Mixin1));
+      Assert.IsFalse (classContext.Mixins.ContainsKey (typeof (BT7Mixin1)));
+      MixinContext mixinContext = classContext.Mixins[typeof (BT7Mixin1)];
       Assert.IsNull (mixinContext);
 
       classContext = new ClassContext (typeof (BaseType7), typeof (BT7Mixin1));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (BT7Mixin1)));
-      mixinContext = classContext.GetMixinContext (typeof (BT7Mixin1));
-      Assert.AreSame (mixinContext, classContext.GetMixinContext (typeof (BT7Mixin1)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (BT7Mixin1)));
+      mixinContext = classContext.Mixins[typeof (BT7Mixin1)];
+      Assert.AreSame (mixinContext, classContext.Mixins[typeof (BT7Mixin1)]);
     }
 
     [Test]
@@ -55,47 +55,35 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       ClassContext classContext = context.GetClassContext (typeof (IBaseType2));
       Assert.IsNotNull (classContext);
 
-      Assert.IsTrue (classContext.ContainsMixin (typeof (BT2Mixin1)));
-    }
-
-    [Test]
-    public void CannotCastMixinsToICollection()
-    {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      Assert.IsTrue (cc.Mixins is IEnumerable<MixinContext>);
-      Assert.IsFalse (cc.Mixins is List<MixinContext>);
-      Assert.IsFalse (cc.Mixins is IList<MixinContext>);
-      Assert.IsFalse (cc.Mixins is ICollection<MixinContext>);
-      Assert.IsFalse (cc.Mixins is ICollection);
-      Assert.IsFalse (cc.Mixins is IList);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (BT2Mixin1)));
     }
 
     [Test]
     public void ConstructorWithMixinParameters()
     {
       ClassContext context = new ClassContext (typeof (BaseType1), typeof (BT1Mixin1), typeof (BT1Mixin2));
-      Assert.AreEqual (2, context.MixinCount);
-      Assert.IsTrue (context.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (context.ContainsMixin (typeof (BT1Mixin2)));
-      Assert.IsFalse (context.ContainsMixin (typeof (BT2Mixin1)));
+      Assert.AreEqual (2, context.Mixins.Count);
+      Assert.IsTrue (context.Mixins.ContainsKey (typeof (BT1Mixin1)));
+      Assert.IsTrue (context.Mixins.ContainsKey (typeof (BT1Mixin2)));
+      Assert.IsFalse (context.Mixins.ContainsKey (typeof (BT2Mixin1)));
     }
 
     [Test]
     public void CompleteInterfaces_Empty()
     {
       ClassContext context = new ClassContext (typeof (BaseType5), new MixinContext[0], new Type[0]);
-      Assert.AreEqual (0, context.CompleteInterfaceCount);
+      Assert.AreEqual (0, context.CompleteInterfaces.Count);
       Assert.IsEmpty (new List<Type> (context.CompleteInterfaces));
-      Assert.IsFalse (context.ContainsCompleteInterface (typeof (IBT5MixinC1)));
+      Assert.IsFalse (context.CompleteInterfaces.ContainsKey (typeof (IBT5MixinC1)));
     }
 
     [Test]
     public void CompleteInterfaces_NonEmpty ()
     {
       ClassContext context = new ClassContext (typeof (BaseType5), new MixinContext[0], new Type[] { typeof (IBT5MixinC1) });
-      Assert.AreEqual (1, context.CompleteInterfaceCount);
+      Assert.AreEqual (1, context.CompleteInterfaces.Count);
       Assert.Contains (typeof (IBT5MixinC1), new List<Type> (context.CompleteInterfaces));
-      Assert.IsTrue (context.ContainsCompleteInterface (typeof (IBT5MixinC1)));
+      Assert.IsTrue (context.CompleteInterfaces.ContainsKey (typeof (IBT5MixinC1)));
     }
 
     [Test]
@@ -110,19 +98,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     public void DuplicateCompleteInterfacesAreIgnored ()
     {
       ClassContext context = new ClassContext (typeof (BaseType5), new MixinContext[0], new Type[] { typeof (IBT5MixinC1), typeof (IBT5MixinC1) });
-      Assert.AreEqual (1, context.CompleteInterfaceCount);
-    }
-
-    [Test]
-    public void CannotCastCompleteInterfacesToICollection()
-    {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      Assert.IsTrue (cc.CompleteInterfaces is IEnumerable<Type>);
-      Assert.IsFalse (cc.CompleteInterfaces is List<Type>);
-      Assert.IsFalse (cc.CompleteInterfaces is IList<Type>);
-      Assert.IsFalse (cc.CompleteInterfaces is ICollection<Type>);
-      Assert.IsFalse (cc.CompleteInterfaces is ICollection);
-      Assert.IsFalse (cc.CompleteInterfaces is IList);
+      Assert.AreEqual (1, context.CompleteInterfaces.Count);
     }
 
     [Test]
@@ -179,8 +155,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       ClassContext cc2 = Serializer.SerializeAndDeserialize (cc);
       Assert.AreNotSame (cc2, cc);
       Assert.AreEqual (cc2, cc);
-      Assert.IsTrue (cc2.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (cc2.GetMixinContext (typeof (BT1Mixin1)).ExplicitDependencies.ContainsKey (typeof (IBaseType2)));
+      Assert.IsTrue (cc2.Mixins.ContainsKey (typeof (BT1Mixin1)));
+      Assert.IsTrue (cc2.Mixins[typeof (BT1Mixin1)].ExplicitDependencies.ContainsKey (typeof (IBaseType2)));
     }
 
     [Test]
@@ -191,8 +167,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       ClassContext specialized = original.SpecializeWithTypeArguments (new Type[] { typeof (int) });
       Assert.IsNotNull (specialized);
       Assert.AreEqual (typeof (List<int>), specialized.Type);
-      Assert.IsTrue (specialized.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (specialized.GetMixinContext (typeof (BT1Mixin1)).ExplicitDependencies.ContainsKey (typeof (IBaseType2)));
+      Assert.IsTrue (specialized.Mixins.ContainsKey (typeof (BT1Mixin1)));
+      Assert.IsTrue (specialized.Mixins[typeof (BT1Mixin1)].ExplicitDependencies.ContainsKey (typeof (IBaseType2)));
     }
 
     [Test]
@@ -207,20 +183,20 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     {
       ClassContext context = new ClassContext (typeof (object), typeof (IList<int>));
 
-      Assert.IsTrue (context.ContainsMixin (typeof (IList<int>)));
-      Assert.IsTrue (context.ContainsAssignableMixin (typeof (IList<int>)));
+      Assert.IsTrue (context.Mixins.ContainsKey (typeof (IList<int>)));
+      Assert.IsTrue (context.Mixins.ContainsAssignableMixin (typeof (IList<int>)));
 
-      Assert.IsFalse (context.ContainsMixin (typeof (ICollection<int>)));
-      Assert.IsTrue (context.ContainsAssignableMixin (typeof (ICollection<int>)));
+      Assert.IsFalse (context.Mixins.ContainsKey (typeof (ICollection<int>)));
+      Assert.IsTrue (context.Mixins.ContainsAssignableMixin (typeof (ICollection<int>)));
 
-      Assert.IsFalse (context.ContainsMixin (typeof (object)));
-      Assert.IsTrue (context.ContainsAssignableMixin (typeof (object)));
+      Assert.IsFalse (context.Mixins.ContainsKey (typeof (object)));
+      Assert.IsTrue (context.Mixins.ContainsAssignableMixin (typeof (object)));
 
-      Assert.IsFalse (context.ContainsMixin (typeof (List<int>)));
-      Assert.IsFalse (context.ContainsAssignableMixin (typeof (List<int>)));
+      Assert.IsFalse (context.Mixins.ContainsKey (typeof (List<int>)));
+      Assert.IsFalse (context.Mixins.ContainsAssignableMixin (typeof (List<int>)));
 
-      Assert.IsFalse (context.ContainsMixin (typeof (IList<>)));
-      Assert.IsFalse (context.ContainsAssignableMixin (typeof (List<>)));
+      Assert.IsFalse (context.Mixins.ContainsKey (typeof (IList<>)));
+      Assert.IsFalse (context.Mixins.ContainsAssignableMixin (typeof (List<>)));
     }
 
     [Test]

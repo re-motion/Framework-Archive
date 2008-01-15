@@ -16,10 +16,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     {
       ClassContext context = new ClassContext (typeof (string), typeof (NullTarget), typeof (GenericClassExtendedByMixin<>));
 
-      Assert.IsFalse (context.ContainsOverrideForMixin (typeof (int))); // completely unrelated
-      Assert.IsFalse (context.ContainsOverrideForMixin (typeof (DerivedNullTarget))); // subtype
-      Assert.IsTrue (context.ContainsOverrideForMixin (typeof (GenericClassExtendedByMixin<object>))); // specialization doesn't matter
-      Assert.IsFalse (context.ContainsOverrideForMixin (typeof (DerivedGenericMixin<>))); // subtype
+      Assert.IsFalse (context.Mixins.ContainsOverrideForMixin (typeof (int))); // completely unrelated
+      Assert.IsFalse (context.Mixins.ContainsOverrideForMixin (typeof (DerivedNullTarget))); // subtype
+      Assert.IsTrue (context.Mixins.ContainsOverrideForMixin (typeof (GenericClassExtendedByMixin<object>))); // specialization doesn't matter
+      Assert.IsFalse (context.Mixins.ContainsOverrideForMixin (typeof (DerivedGenericMixin<>))); // subtype
     }
 
     [Test]
@@ -27,8 +27,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     {
       ClassContext context = new ClassContext (typeof (string), typeof (NullTarget), typeof (GenericClassExtendedByMixin<>));
 
-      Assert.IsTrue (context.ContainsOverrideForMixin (typeof (NullTarget)));
-      Assert.IsTrue (context.ContainsOverrideForMixin (typeof (GenericClassExtendedByMixin<>)));
+      Assert.IsTrue (context.Mixins.ContainsOverrideForMixin (typeof (NullTarget)));
+      Assert.IsTrue (context.Mixins.ContainsOverrideForMixin (typeof (GenericClassExtendedByMixin<>)));
     }
 
     [Test]
@@ -36,8 +36,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     {
       ClassContext context = new ClassContext (typeof (string), typeof (DerivedNullTarget), typeof (GenericMixinWithVirtualMethod<object>));
       
-      Assert.IsTrue (context.ContainsOverrideForMixin (typeof (NullTarget))); // supertype
-      Assert.IsTrue (context.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<>))); // less specialized
+      Assert.IsTrue (context.Mixins.ContainsOverrideForMixin (typeof (NullTarget))); // supertype
+      Assert.IsTrue (context.Mixins.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<>))); // less specialized
     }
 
     [Test]
@@ -45,12 +45,12 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
     {
       ClassContext context = new ClassContext (typeof (string), typeof (DerivedNullTarget), typeof (DerivedGenericMixin<object>));
 
-      Assert.IsTrue (context.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<>)));
-      Assert.IsTrue (context.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<object>)));
-      Assert.IsTrue (context.ContainsOverrideForMixin (typeof (DerivedGenericMixin<>)));
-      Assert.IsTrue (context.ContainsOverrideForMixin (typeof (DerivedGenericMixin<object>)));
-      Assert.IsTrue (context.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<string>))); // different type arguments don't matter
-      Assert.IsTrue (context.ContainsOverrideForMixin (typeof (DerivedGenericMixin<string>))); // different specialization doesn't matter
+      Assert.IsTrue (context.Mixins.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<>)));
+      Assert.IsTrue (context.Mixins.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<object>)));
+      Assert.IsTrue (context.Mixins.ContainsOverrideForMixin (typeof (DerivedGenericMixin<>)));
+      Assert.IsTrue (context.Mixins.ContainsOverrideForMixin (typeof (DerivedGenericMixin<object>)));
+      Assert.IsTrue (context.Mixins.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<string>))); // different type arguments don't matter
+      Assert.IsTrue (context.Mixins.ContainsOverrideForMixin (typeof (DerivedGenericMixin<string>))); // different specialization doesn't matter
     }
 
     [Test]
@@ -59,7 +59,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       ClassContext baseContext = new ClassContext (typeof (string), typeof (DateTime), typeof (int));
       ClassContext inheritor = new ClassContext (typeof (double)).InheritFrom (baseContext);
 
-      Assert.AreEqual (2, inheritor.MixinCount);
+      Assert.AreEqual (2, inheritor.Mixins.Count);
       Assert.That (EnumerableUtility.ToArray (inheritor.Mixins), Is.EqualTo (EnumerableUtility.ToArray (baseContext.Mixins)));
     }
 
@@ -70,8 +70,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
 
       ClassContext inheritor = new ClassContext (typeof (double)).InheritFrom (baseContext);
 
-      Assert.IsTrue (inheritor.ContainsAssignableMixin (typeof (DerivedNullTarget)));
-      Assert.IsTrue (inheritor.ContainsAssignableMixin (typeof (NullTarget)));
+      Assert.IsTrue (inheritor.Mixins.ContainsAssignableMixin (typeof (DerivedNullTarget)));
+      Assert.IsTrue (inheritor.Mixins.ContainsAssignableMixin (typeof (NullTarget)));
     }
 
     [Test]
@@ -80,7 +80,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       ClassContext baseContext = new ClassContextBuilder (typeof (string)).AddMixin<DateTime>().WithDependency<int>().BuildClassContext();
       ClassContext inheritor = new ClassContext (typeof (double)).InheritFrom (baseContext);
 
-      Assert.AreEqual (baseContext.GetMixinContext (typeof (DateTime)), inheritor.GetMixinContext (typeof (DateTime)));
+      Assert.AreEqual (baseContext.Mixins[typeof (DateTime)], inheritor.Mixins[typeof (DateTime)]);
     }
 
     [Test]
@@ -90,10 +90,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       ClassContext inheritor = new ClassContextBuilder (typeof (double)).AddMixin<DateTime>().WithDependency<decimal>().BuildClassContext()
           .InheritFrom (baseContext); // ignores inherited DateTime because DateTime already exists
 
-      Assert.AreEqual (1, inheritor.MixinCount);
-      Assert.IsTrue (inheritor.ContainsMixin (typeof (DateTime)));
-      Assert.IsFalse (inheritor.GetMixinContext (typeof (DateTime)).ExplicitDependencies.ContainsKey (typeof (int)));
-      Assert.IsTrue (inheritor.GetMixinContext (typeof (DateTime)).ExplicitDependencies.ContainsKey (typeof (decimal)));
+      Assert.AreEqual (1, inheritor.Mixins.Count);
+      Assert.IsTrue (inheritor.Mixins.ContainsKey (typeof (DateTime)));
+      Assert.IsFalse (inheritor.Mixins[typeof (DateTime)].ExplicitDependencies.ContainsKey (typeof (int)));
+      Assert.IsTrue (inheritor.Mixins[typeof (DateTime)].ExplicitDependencies.ContainsKey (typeof (decimal)));
     }
 
     [Test]
@@ -104,11 +104,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       ClassContext inheritor = new ClassContextBuilder (typeof (double)).AddMixin<DerivedNullTarget>().WithDependency<decimal>().BuildClassContext()
           .InheritFrom (baseContext); // ignores inherited NullTarget because DerivedNullTarget already exists
 
-      Assert.AreEqual (1, inheritor.MixinCount);
-      Assert.IsFalse (inheritor.ContainsMixin (typeof (NullTarget)));
-      Assert.IsTrue (inheritor.ContainsMixin (typeof (DerivedNullTarget)));
-      Assert.IsFalse (inheritor.GetMixinContext (typeof (DerivedNullTarget)).ExplicitDependencies.ContainsKey (typeof (int)));
-      Assert.IsTrue (inheritor.GetMixinContext (typeof (DerivedNullTarget)).ExplicitDependencies.ContainsKey (typeof (decimal)));
+      Assert.AreEqual (1, inheritor.Mixins.Count);
+      Assert.IsFalse (inheritor.Mixins.ContainsKey (typeof (NullTarget)));
+      Assert.IsTrue (inheritor.Mixins.ContainsKey (typeof (DerivedNullTarget)));
+      Assert.IsFalse (inheritor.Mixins[typeof (DerivedNullTarget)].ExplicitDependencies.ContainsKey (typeof (int)));
+      Assert.IsTrue (inheritor.Mixins[typeof (DerivedNullTarget)].ExplicitDependencies.ContainsKey (typeof (decimal)));
     }
 
     [Test]
@@ -119,13 +119,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       ClassContext inheritor = new ClassContextBuilder (typeof (double)).AddMixin<GenericMixinWithVirtualMethod<object>>().WithDependency<decimal>().BuildClassContext()
           .InheritFrom (baseContext);
 
-      Assert.AreEqual (1, inheritor.MixinCount);
-      Assert.IsFalse (inheritor.ContainsMixin (typeof (GenericMixinWithVirtualMethod<>)));
-      Assert.IsTrue (inheritor.ContainsMixin (typeof (GenericMixinWithVirtualMethod<object>)));
-      Assert.IsFalse (inheritor.GetMixinContext (typeof (GenericMixinWithVirtualMethod<object>))
-          .ExplicitDependencies.ContainsKey (typeof (int)));
-      Assert.IsTrue (inheritor.GetMixinContext (typeof (GenericMixinWithVirtualMethod<object>))
-          .ExplicitDependencies.ContainsKey (typeof (decimal)));
+      Assert.AreEqual (1, inheritor.Mixins.Count);
+      Assert.IsFalse (inheritor.Mixins.ContainsKey (typeof (GenericMixinWithVirtualMethod<>)));
+      Assert.IsTrue (inheritor.Mixins.ContainsKey (typeof (GenericMixinWithVirtualMethod<object>)));
+      Assert.IsFalse (inheritor.Mixins[typeof (GenericMixinWithVirtualMethod<object>)].ExplicitDependencies.ContainsKey (typeof (int)));
+      Assert.IsTrue (inheritor.Mixins[typeof (GenericMixinWithVirtualMethod<object>)].ExplicitDependencies.ContainsKey (typeof (decimal)));
     }
 
     class DerivedGenericMixin<T> : GenericMixinWithVirtualMethod<T> where T : class { }
@@ -138,16 +136,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       ClassContext inheritor = new ClassContextBuilder (typeof (double)).AddMixin<DerivedGenericMixin<object>>().WithDependency<decimal>().BuildClassContext()
           .InheritFrom (baseContext);
 
-      Assert.AreEqual (1, inheritor.MixinCount);
-      Assert.IsFalse (inheritor.ContainsMixin (typeof (GenericMixinWithVirtualMethod<>)));
-      Assert.IsFalse (inheritor.ContainsMixin (typeof (GenericMixinWithVirtualMethod<object>)));
-      Assert.IsFalse (inheritor.ContainsMixin (typeof (DerivedGenericMixin<>)));
-      Assert.IsTrue (inheritor.ContainsMixin (typeof (DerivedGenericMixin<object>)));
+      Assert.AreEqual (1, inheritor.Mixins.Count);
+      Assert.IsFalse (inheritor.Mixins.ContainsKey (typeof (GenericMixinWithVirtualMethod<>)));
+      Assert.IsFalse (inheritor.Mixins.ContainsKey (typeof (GenericMixinWithVirtualMethod<object>)));
+      Assert.IsFalse (inheritor.Mixins.ContainsKey (typeof (DerivedGenericMixin<>)));
+      Assert.IsTrue (inheritor.Mixins.ContainsKey (typeof (DerivedGenericMixin<object>)));
 
-      Assert.IsFalse (inheritor.GetMixinContext (typeof (DerivedGenericMixin<object>))
-          .ExplicitDependencies.ContainsKey (typeof (int)));
-      Assert.IsTrue (inheritor.GetMixinContext (typeof (DerivedGenericMixin<object>))
-          .ExplicitDependencies.ContainsKey (typeof (decimal)));
+      Assert.IsFalse (inheritor.Mixins[typeof (DerivedGenericMixin<object>)].ExplicitDependencies.ContainsKey (typeof (int)));
+      Assert.IsTrue (inheritor.Mixins[typeof (DerivedGenericMixin<object>)].ExplicitDependencies.ContainsKey (typeof (decimal)));
     }
 
     [Test]
@@ -192,7 +188,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
 
       ClassContext inheritor = new ClassContext (typeof (double)).InheritFrom (baseContext);
 
-      Assert.AreEqual (2, inheritor.CompleteInterfaceCount);
+      Assert.AreEqual (2, inheritor.CompleteInterfaces.Count);
       Assert.That (EnumerableUtility.ToArray (inheritor.CompleteInterfaces),
           Is.EqualTo (EnumerableUtility.ToArray (inheritor.CompleteInterfaces)));
     }
@@ -204,7 +200,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
 
       ClassContext inheritor = new ClassContext (typeof (double)).InheritFrom (baseContext);
 
-      Assert.IsTrue (inheritor.ContainsCompleteInterface (typeof (object)));
+      Assert.IsTrue (inheritor.CompleteInterfaces.ContainsKey (typeof (object)));
     }
 
     [Test]
@@ -215,8 +211,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       ClassContext inheritor = new ClassContext (typeof (double), new MixinContext[0], new Type[] {typeof (object)})
           .InheritFrom (baseContext);
 
-      Assert.AreEqual (1, inheritor.CompleteInterfaceCount);
-      Assert.IsTrue (inheritor.ContainsCompleteInterface (typeof (object)));
+      Assert.AreEqual (1, inheritor.CompleteInterfaces.Count);
+      Assert.IsTrue (inheritor.CompleteInterfaces.ContainsKey (typeof (object)));
     }
 
     [Test]
@@ -232,8 +228,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
           .AddCompleteInterface (typeof (int)).BuildClassContext()
           .InheritFrom (baseContext);
 
-      Assert.AreEqual (2, inheritor.MixinCount);
-      Assert.AreEqual (2, inheritor.CompleteInterfaceCount);
+      Assert.AreEqual (2, inheritor.Mixins.Count);
+      Assert.AreEqual (2, inheritor.CompleteInterfaces.Count);
     }
   }
 }

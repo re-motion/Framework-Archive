@@ -17,9 +17,8 @@ namespace Rubicon.Mixins.Context
   /// </remarks>
   public class MixinContext
   {
-    internal static MixinContext DeserializeFromFlatStructure (ClassContext classContext, string key, SerializationInfo info)
+    internal static MixinContext DeserializeFromFlatStructure (string key, SerializationInfo info)
     {
-      ArgumentUtility.CheckNotNull ("classContext", classContext);
       ArgumentUtility.CheckNotNull ("key", key);
       ArgumentUtility.CheckNotNull ("info", info);
 

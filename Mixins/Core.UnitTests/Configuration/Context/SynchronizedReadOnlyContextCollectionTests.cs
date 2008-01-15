@@ -44,6 +44,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
         Expect.Call (innerMock.Count).Return (1);
         Expect.Call (innerMock.Contains (7)).Return (true);
         Expect.Call (innerMock.ContainsKey ("8")).Return (false);
+        Expect.Call (innerMock["8"]).Return (1);
         Expect.Call (innerMock.GetEnumerator ()).Return (enumerator);
         innerMock.CopyTo(array, 13);
       }
@@ -53,6 +54,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       Assert.AreEqual (1, _collection.Count);
       Assert.AreEqual (true, _collection.Contains (7));
       Assert.AreEqual (false, _collection.ContainsKey ("8"));
+      Assert.AreEqual (1, _collection["8"]);
       Assert.AreEqual (enumerator, _collection.GetEnumerator ());
       _collection.CopyTo (array, 13);
 

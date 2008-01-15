@@ -45,6 +45,14 @@ namespace Rubicon.Mixins.Context
       }
     }
 
+    public TValue this[TKey key]
+    {
+      get
+      {
+        return _internalCollection[key];
+      }
+    }
+
     public IEnumerator<TValue> GetEnumerator ()
     {
       lock (_syncObject)

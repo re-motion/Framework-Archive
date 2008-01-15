@@ -30,6 +30,24 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     }
 
     [Test]
+    public void NewCollection_Duplicates ()
+    {
+      ReadOnlyContextCollection<string, int> collection = new ReadOnlyContextCollection<string, int> (
+          delegate (int i) { return i.ToString(); },
+          new int[] {1, 2, 3, 3, 2, 1, 2, 1, 3, 2});
+
+      Assert.That (collection, Is.EquivalentTo (new int[] {1, 2, 3}));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The items 1 and 2 are identified by the same key 1 and cannot both be added "
+        + "to the collection.\r\nParameter name: values")]
+    public void NewCollection_DuplicateKeys_DifferentValues ()
+    {
+      new ReadOnlyContextCollection<string, int> (delegate { return "1"; }, new int[] { 1, 2 });
+    }
+
+    [Test]
     [ExpectedException (typeof (ArgumentNullException), ExpectedMessage = "Value cannot be null.\r\nParameter name: values[0]")]
     public void NewCollection_NullValue ()
     {
@@ -62,6 +80,16 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       Assert.IsTrue (collection.Contains (2));
       Assert.IsTrue (collection.Contains (3));
       Assert.IsFalse (collection.Contains (4));
+    }
+
+    [Test]
+    public void Get ()
+    {
+      Assert.AreEqual (1, _collection["1"]);
+      Assert.AreEqual (2, _collection["2"]);
+      Assert.AreEqual (3, _collection["3"]);
+      Assert.AreEqual (0, _collection["4"]);
+      Assert.AreEqual (0, _collection["soigfusolh"]);
     }
 
     [Test]

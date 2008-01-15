@@ -27,13 +27,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration ac2 = DeclarativeConfigurationBuilder.BuildConfigurationFromClasses (ac, new ClassContext (typeof (BaseType2)), new ClassContext (typeof (BaseType3)));
       Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
       Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType2)));
-      Assert.AreEqual (0, ac2.GetClassContext (typeof (BaseType2)).MixinCount);
+      Assert.AreEqual (0, ac2.GetClassContext (typeof (BaseType2)).Mixins.Count);
       Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType3)));
 
       MixinConfiguration ac3 = DeclarativeConfigurationBuilder.BuildConfigurationFromClasses (ac2, new ClassContext (typeof (BaseType2), typeof (BT2Mixin1)));
       Assert.IsTrue (ac3.ContainsClassContext (typeof (BaseType1)));
       Assert.IsTrue (ac3.ContainsClassContext (typeof (BaseType2)));
-      Assert.AreEqual (1, ac3.GetClassContext (typeof (BaseType2)).MixinCount);
+      Assert.AreEqual (1, ac3.GetClassContext (typeof (BaseType2)).Mixins.Count);
       Assert.IsTrue (ac3.ContainsClassContext (typeof (BaseType3)));
     }
 
@@ -48,7 +48,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration ac3 = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (ac, AppDomain.CurrentDomain.GetAssemblies ());
       Assert.IsTrue (ac3.ContainsClassContext (typeof (BaseType1)));
       Assert.IsTrue (ac3.ContainsClassContext (typeof (object)));
-      Assert.IsTrue (ac3.GetClassContext (typeof (BaseType6)).ContainsCompleteInterface (typeof (ICBT6Mixin1)));
+      Assert.IsTrue (ac3.GetClassContext (typeof (BaseType6)).CompleteInterfaces.ContainsKey (typeof (ICBT6Mixin1)));
       Assert.AreSame (ac3.GetClassContext (typeof (BaseType6)), ac3.ResolveInterface (typeof (ICBT6Mixin1)));
 
       MixinConfiguration ac4 = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (ac, (IEnumerable<Assembly>) AppDomain.CurrentDomain.GetAssemblies ());
@@ -62,10 +62,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly (), Assembly.GetExecutingAssembly ());
 
       ClassContext classContext = context.GetClassContext (typeof (BaseType1));
-      Assert.AreEqual (2, classContext.MixinCount);
+      Assert.AreEqual (2, classContext.Mixins.Count);
 
-      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin2)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (BT1Mixin1)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (BT1Mixin2)));
     }
 
     [Test]
@@ -75,10 +75,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
           .AddType (typeof (BT1Mixin1)).AddType (typeof (BT1Mixin1)).AddType (typeof (BT1Mixin2)).AddType (typeof (BT1Mixin2)).BuildConfiguration ();
 
       ClassContext classContext = context.GetClassContext (typeof (BaseType1));
-      Assert.AreEqual (2, classContext.MixinCount);
+      Assert.AreEqual (2, classContext.Mixins.Count);
 
-      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin1)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin2)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (BT1Mixin1)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (BT1Mixin2)));
     }
 
     [Test]
@@ -182,9 +182,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       ClassContext classContext = context.GetClassContext (typeof (TargetClassWithAdditionalDependencies));
       Assert.IsNotNull (classContext);
 
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinWithAdditionalClassDependency)));
-      Assert.IsTrue (classContext.GetMixinContext (typeof (MixinWithAdditionalClassDependency))
-          .ExplicitDependencies.ContainsKey (typeof (MixinWithNoAdditionalDependency)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinWithAdditionalClassDependency)));
+      Assert.IsTrue (classContext.Mixins[typeof (MixinWithAdditionalClassDependency)].ExplicitDependencies.ContainsKey (typeof (MixinWithNoAdditionalDependency)));
     }
 
     [Test]
@@ -195,7 +194,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       ClassContext classContext = context.GetClassContext (typeof (BaseType1));
       Assert.IsNotNull (classContext);
 
-      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin1)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (BT1Mixin1)));
     }
 
     [Test]
@@ -206,9 +205,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       ClassContext classContext = context.GetClassContext (typeof (BaseType6));
       Assert.IsNotNull (classContext);
 
-      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (ICBT6Mixin1)));
-      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (ICBT6Mixin2)));
-      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (ICBT6Mixin3)));
+      Assert.IsTrue (classContext.CompleteInterfaces.ContainsKey (typeof (ICBT6Mixin1)));
+      Assert.IsTrue (classContext.CompleteInterfaces.ContainsKey (typeof (ICBT6Mixin2)));
+      Assert.IsTrue (classContext.CompleteInterfaces.ContainsKey (typeof (ICBT6Mixin3)));
     }
   }
 }

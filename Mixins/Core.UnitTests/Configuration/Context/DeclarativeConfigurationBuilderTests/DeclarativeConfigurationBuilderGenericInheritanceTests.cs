@@ -35,8 +35,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (GenericClass<>));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
-      Assert.AreEqual (1, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForOpenGeneric)));
+      Assert.AreEqual (1, classContext.Mixins.Count);
     }
 
     [Test]
@@ -45,8 +45,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (GenericClass<string>));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
-      Assert.AreEqual (1, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForOpenGeneric)));
+      Assert.AreEqual (1, classContext.Mixins.Count);
     }
 
     [Test]
@@ -55,9 +55,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (GenericClass<int>));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForClosedGeneric)));
-      Assert.AreEqual (2, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForOpenGeneric)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForClosedGeneric)));
+      Assert.AreEqual (2, classContext.Mixins.Count);
     }
 
     [Test]
@@ -66,9 +66,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedGenericClassFromOpen<>));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForDerivedOpenGeneric)));
-      Assert.AreEqual (2, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForOpenGeneric)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForDerivedOpenGeneric)));
+      Assert.AreEqual (2, classContext.Mixins.Count);
     }
 
     [Test]
@@ -77,9 +77,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedGenericClassFromOpen<string>));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForDerivedOpenGeneric)));
-      Assert.AreEqual (2, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForOpenGeneric)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForDerivedOpenGeneric)));
+      Assert.AreEqual (2, classContext.Mixins.Count);
     }
 
     [Test]
@@ -88,11 +88,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedGenericClassFromOpen<int>));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForClosedGeneric)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForDerivedOpenGeneric)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForDerivedClosedGeneric)));
-      Assert.AreEqual (4, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForClosedGeneric)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForOpenGeneric)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForDerivedOpenGeneric)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForDerivedClosedGeneric)));
+      Assert.AreEqual (4, classContext.Mixins.Count);
     }
 
     [Test]
@@ -101,9 +101,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedGenericClassFromClosed<>));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForClosedGeneric)));
-      Assert.AreEqual (2, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForOpenGeneric)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForClosedGeneric)));
+      Assert.AreEqual (2, classContext.Mixins.Count);
     }
 
     [Test]
@@ -112,9 +112,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedGenericClassFromClosed<int>));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForClosedGeneric)));
-      Assert.AreEqual (2, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForOpenGeneric)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForClosedGeneric)));
+      Assert.AreEqual (2, classContext.Mixins.Count);
     }
 
     [Test]
@@ -123,9 +123,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedDerivedGenericClassFromOpen<>));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForDerivedOpenGeneric)));
-      Assert.AreEqual (2, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForOpenGeneric)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForDerivedOpenGeneric)));
+      Assert.AreEqual (2, classContext.Mixins.Count);
     }
 
     [Test]
@@ -134,9 +134,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedDerivedGenericClassFromOpen<string>));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForDerivedOpenGeneric)));
-      Assert.AreEqual (2, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForOpenGeneric)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForDerivedOpenGeneric)));
+      Assert.AreEqual (2, classContext.Mixins.Count);
     }
 
     [Test]
@@ -145,13 +145,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedDerivedGenericClassFromOpen<int>));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForClosedGeneric)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForDerivedOpenGeneric)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForDerivedClosedGeneric)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForDerivedDerivedClosedGeneric)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForDerivedDerivedClosedGeneric)));
-      Assert.AreEqual (5, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForOpenGeneric)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForClosedGeneric)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForDerivedOpenGeneric)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForDerivedClosedGeneric)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForDerivedDerivedClosedGeneric)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForDerivedDerivedClosedGeneric)));
+      Assert.AreEqual (5, classContext.Mixins.Count);
     }
 
     [Test]
@@ -160,9 +160,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration context = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (DerivedClassFromClosed));
       Assert.IsNotNull (classContext);
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForOpenGeneric)));
-      Assert.IsTrue (classContext.ContainsMixin (typeof (MixinForClosedGeneric)));
-      Assert.AreEqual (2, classContext.MixinCount);
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForOpenGeneric)));
+      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (MixinForClosedGeneric)));
+      Assert.AreEqual (2, classContext.Mixins.Count);
     }
   }
 }
