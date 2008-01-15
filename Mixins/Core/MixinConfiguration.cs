@@ -68,7 +68,7 @@ namespace Rubicon.Mixins
   /// </threadsafety>
   public partial class MixinConfiguration
   {
-    private readonly InheritanceAwareClassContextCollection _classContexts;
+    private readonly ClassContextCollection _classContexts;
     private readonly Dictionary<Type, ClassContext> _registeredInterfaces = new Dictionary<Type,ClassContext> ();
 
     /// <summary>
@@ -86,7 +86,7 @@ namespace Rubicon.Mixins
     /// <see langword="null"/>.</param>
     public MixinConfiguration (MixinConfiguration parentConfiguration)
     {
-      _classContexts = new InheritanceAwareClassContextCollection();
+      _classContexts = new ClassContextCollection();
  
       if (parentConfiguration != null)
         parentConfiguration.CopyTo (this);
@@ -128,7 +128,7 @@ namespace Rubicon.Mixins
         string message = string.Format ("There is already a class context for type {0}.", classContext.Type.FullName);
         throw new InvalidOperationException (message);
       }
-      _classContexts.Add (classContext.Type, classContext);
+      _classContexts.Add (classContext);
     }
 
     /// <summary>

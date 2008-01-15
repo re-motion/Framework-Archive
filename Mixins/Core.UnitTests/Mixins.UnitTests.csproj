@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\Context\ClassContextCollectionTests.cs" />
     <Compile Include="Configuration\Context\DeclarativeConfigurationBuilderTests\DeclarativeConfigurationBuilderGenericInheritanceTests.cs" />
     <Compile Include="Configuration\Context\DeclarativeConfigurationBuilderTests\DeclarativeConfigurationBuilderInheritanceTests.cs" />
     <Compile Include="Configuration\Context\FluentBuilders\ClassContextBuilderTests.cs" />

@@ -46,7 +46,7 @@
     <Compile Include="Context\FluentBuilders\MixinConfigurationBuilder.cs" />
     <Compile Include="Context\FluentBuilders\MixinContextBuilder.cs" />
     <Compile Include="Context\InheritedClassContextRetrievalAlgorithm.cs" />
-    <Compile Include="Context\InheritanceAwareClassContextCollection.cs" />
+    <Compile Include="Context\ClassContextCollection.cs" />
     <Compile Include="Context\ReadOnlyContextCollection.cs" />
     <Compile Include="CopyCustomAttributesAttribute.cs" />
     <Compile Include="CodeGeneration\ConcreteMixinTypeAttribute.cs" />
