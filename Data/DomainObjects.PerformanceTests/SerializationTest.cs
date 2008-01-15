@@ -10,6 +10,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
   // Reference system: Dell Dimension 9200, Intel Core 2 @ 2,66 GHz, 3,93 GB RAM; run in Release mode
 
   [TestFixture]
+  [Ignore]
   public class SerializationTest : DatabaseTest
   {
     [Test]

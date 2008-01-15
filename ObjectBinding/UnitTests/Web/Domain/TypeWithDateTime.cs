@@ -8,7 +8,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.Domain
   {
     public static TypeWithDateTime Create ()
     {
-      return ObjectFactory.Create<TypeWithDateTime> ().With ();
+      return ObjectFactory.Create<TypeWithDateTime> (true).With ();
     }
 
     private DateTime _dateTimeValue;

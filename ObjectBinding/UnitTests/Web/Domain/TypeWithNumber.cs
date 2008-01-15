@@ -8,7 +8,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.Domain
   {
     public static TypeWithNumber Create ()
     {
-      return ObjectFactory.Create<TypeWithNumber> ().With ();
+      return ObjectFactory.Create<TypeWithNumber> (true).With ();
     }
 
     private int _int32Value;

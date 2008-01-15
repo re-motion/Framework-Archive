@@ -8,12 +8,12 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.Domain
   {
     public static TypeWithAllDataTypes Create ()
     {
-      return ObjectFactory.Create<TypeWithAllDataTypes>().With();
+      return ObjectFactory.Create<TypeWithAllDataTypes>(true).With();
     }
 
     public static TypeWithAllDataTypes Create (string stringValue, int int32Value)
     {
-      return ObjectFactory.Create<TypeWithAllDataTypes> ().With (stringValue, int32Value);
+      return ObjectFactory.Create<TypeWithAllDataTypes> (true).With (stringValue, int32Value);
     }
 
     private bool _boolean;

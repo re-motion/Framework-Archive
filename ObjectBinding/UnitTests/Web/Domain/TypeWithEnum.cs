@@ -8,7 +8,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.Domain
   {
     public static TypeWithEnum Create ()
     {
-      return ObjectFactory.Create<TypeWithEnum> ().With ();
+      return ObjectFactory.Create<TypeWithEnum> (true).With ();
     }
 
     private TestEnum _enumValue;

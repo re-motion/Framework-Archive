@@ -8,17 +8,17 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.Domain
   {
     public static TypeWithReference Create ()
     {
-      return ObjectFactory.Create<TypeWithReference>().With();
+      return ObjectFactory.Create<TypeWithReference> (true).With ();
     }
 
     public static TypeWithReference Create (TypeWithReference firstValue, TypeWithReference secondValue)
     {
-      return ObjectFactory.Create<TypeWithReference>().With (firstValue, secondValue);
+      return ObjectFactory.Create<TypeWithReference> (true).With (firstValue, secondValue);
     }
 
     public static TypeWithReference Create (string displayName)
     {
-      return ObjectFactory.Create<TypeWithReference>().With (displayName);
+      return ObjectFactory.Create<TypeWithReference> (true).With (displayName);
     }
 
     private TypeWithReference _referenceValue;

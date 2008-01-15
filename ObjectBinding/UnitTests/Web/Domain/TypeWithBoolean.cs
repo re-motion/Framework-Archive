@@ -8,7 +8,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.Domain
   {
     public static TypeWithBoolean Create ()
     {
-      return ObjectFactory.Create<TypeWithBoolean> ().With ();
+      return ObjectFactory.Create<TypeWithBoolean> (true).With ();
     }
 
     private bool _booleanValue;

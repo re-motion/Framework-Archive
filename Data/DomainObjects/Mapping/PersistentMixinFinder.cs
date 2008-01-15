@@ -26,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
           }
 
           if (Utilities.ReflectionUtility.CanAscribe (mixin.MixinType, typeof (DomainObjectMixin<,>))
-              && (parentClassContext == null || !parentClassContext.ContainsAssignableMixin (mixin.MixinType)))
+              && (parentClassContext == null || !parentClassContext.Mixins.ContainsAssignableMixin (mixin.MixinType)))
             persistentMixins.Add (mixin.MixinType);
         }
       }

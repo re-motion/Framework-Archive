@@ -8,12 +8,12 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.Domain
   {
     public static TypeWithString Create ()
     {
-      return ObjectFactory.Create<TypeWithString> ().With ();
+      return ObjectFactory.Create<TypeWithString> (true).With ();
     }
 
     public static TypeWithString Create (string firstValue, string secondValue)
     {
-      return ObjectFactory.Create<TypeWithString> ().With (firstValue, secondValue);
+      return ObjectFactory.Create<TypeWithString> (true).With (firstValue, secondValue);
     }
 
     private string _stringValue;

@@ -74,7 +74,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
       mappingReflector.GetClassDefinitions();
 
       Assert.IsTrue (MixinConfiguration.HasActiveConfiguration);
-      Assert.AreEqual (0, MixinConfiguration.ActiveConfiguration.ClassContextCount);
+      Assert.AreEqual (0, MixinConfiguration.ActiveConfiguration.ClassContexts.Count);
     }
 
     [Test]
