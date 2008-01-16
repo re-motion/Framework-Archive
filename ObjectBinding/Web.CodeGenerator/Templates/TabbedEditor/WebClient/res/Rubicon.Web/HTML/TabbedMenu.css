@@ -31,7 +31,7 @@ td.tabbedMenuStatusCell
   padding-left: 0.3em;
   padding-right: 0.8em;
   color: White;
-  text-align:right;
+  text-align: right;
   white-space: nowrap;
 }
 
@@ -50,7 +50,7 @@ div.tabbedMainMenu span.tabStripTabSeparator
 div.tabbedMainMenu span.tabStripTab a
 {  
   border: none;
-  background-color: #e1ecfc;
+	background-color: #e1ecfc;
   color: Blue;
   font-size: 120%;
   font-weight: bold;
@@ -58,7 +58,7 @@ div.tabbedMainMenu span.tabStripTab a
 
 div.tabbedMainMenu span.tabStripTab a:hover
 {
-	background-color: #fee197;	
+	background-color: #fee197;
   color: Blue;
   cursor: pointer;
 	cursor: hand;
@@ -85,31 +85,53 @@ div.tabbedMainMenu span.tabStripTab.disabled a,
 div.tabbedMainMenu span.tabStripTab.disabled a:hover
 {
   color: Gray;
-  background-color: #E8E8E8;
+  background-color: #e8e8e8;
   cursor: default;
 }
 
+div.tabbedMainMenu a span.bottom, 
+div.tabbedMainMenu a span.topLeft, 
+div.tabbedMainMenu a span.topRight
+{
+  position: absolute;
+  font-size: 0.5%;
+  display: block;
+}
+
+div.tabbedMainMenu a span.bottom
+{  
+  bottom: -1px;
+  left: 0px;
+  height: 1px;
+  width: 100%;  
+}
+
 /* Top Left tab corner */
-div.tabbedMainMenu span.tabStripTab a span.topLeft,
-div.tabbedMainMenu span.tabStripTabSelected a span.topLeft
+div.tabbedMainMenu a span.topLeft
 {
   background-image: url(../Image/TabbedMainMenuTabTopLeftCorner.gif);
   background-repeat: no-repeat;
   background-position: left top;
+  width: 5px;
+  height: 5px;
+  top: 0px;
+  left: 0px;
 }
 
 /* Top Right tab corner */
-div.tabbedMainMenu span.tabStripTab a span.topRight,
-div.tabbedMainMenu span.tabStripTabSelected a span.topRight
+div.tabbedMainMenu a span.topRight
 {
   background-image: url(../Image/TabbedMainMenuTabTopRightCorner.gif);
   background-repeat: no-repeat;
   background-position: right top;
+  width: 5px;
+  height: 5px;
+  top: 0px;
+  right: 0px;
 }
 
 /* Content area of the tab */
-div.tabbedMainMenu span.tabStripTab a span.content,
-div.tabbedMainMenu span.tabStripTabSelected a span.content
+div.tabbedMainMenu a span.anchorBody
 {
   padding-top: 0.3em;
   padding-bottom: 0.3em;
@@ -118,11 +140,6 @@ div.tabbedMainMenu span.tabStripTabSelected a span.content
 }
 
 /* Non-IE Browsers hack \*/
-html>body div.tabbedMainMenu span.tabStripTabWrapper
-{
-  margin-bottom: -1px; /* Removes an offset between the main menu and the sub menu */
-}
-
 html>body div.tabbedMainMenu span.tabStripTab,
 html>body div.tabbedMainMenu span.tabStripTabSelected
 {
@@ -202,8 +219,7 @@ div.tabbedSubMenu span.tabStripTab.disabled img
 }
 
 /* Content area of the tab */
-div.tabbedSubMenu span.tabStripTab a span.content,
-div.tabbedSubMenu span.tabStripTabSelected a span.content
+div.tabbedSubMenu span.anchorBody
 {
   padding-top: 0.1em;
   padding-bottom: 0.1em;

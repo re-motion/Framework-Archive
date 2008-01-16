@@ -1,8 +1,6 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Edit$DOMAIN_CLASSNAME$Form.aspx.cs" Inherits="$PROJECT_ROOTNAMESPACE$.UI.Edit$DOMAIN_CLASSNAME$Form" %>
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="rubicon" TagName="NavigationTabs" Src="NavigationTabs.ascx" %>
+<%@ Register TagPrefix="app" TagName="NavigationTabs" Src="NavigationTabs.ascx" %>
 <%@ Register TagPrefix="rubicon" TagName="Edit$DOMAIN_CLASSNAME$Control" Src="Edit$DOMAIN_CLASSNAME$Control.ascx" %>
-<%@ Register Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" TagPrefix="dow" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -14,10 +12,10 @@
 
 <body>
   <form id="ThisForm" runat="server">
-    <dow:DomainObjectDataSourceControl ID="CurrentObject" runat="server" TypeName="$DOMAIN_QUALIFIEDCLASSTYPENAME$" />
+    <rubicon:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="$DOMAIN_QUALIFIEDCLASSTYPENAME$" />
     <rubicon:TabbedMultiView ID="MultiView" runat="server" CssClass="tabbedMultiView" >
       <TopControls>
-        <rubicon:NavigationTabs ID="TheNavigationTabs" runat="server" />
+        <app:NavigationTabs ID="TheNavigationTabs" runat="server" />
       </TopControls>
       <Views>
         <rubicon:TabView ID="Edit$DOMAIN_CLASSNAME$View" Title="$res:Details" runat="server">

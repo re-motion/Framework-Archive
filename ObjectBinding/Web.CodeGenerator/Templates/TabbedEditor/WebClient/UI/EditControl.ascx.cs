@@ -17,17 +17,16 @@ namespace $PROJECT_ROOTNAMESPACE$.UI
       get { return CurrentObject; }
     }
 
-    #region Add methods for Rubicon.ObjectBinding.IBusinessObjectReferenceProperty
     $REPEAT_FOREACHREFERENCEDPROPERTY_BEGIN$(isList=true)
     protected void $DOMAIN_PROPERTYNAME$Field_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
     {
       if (e.Item.ItemID == "AddMenuItem")
       {
-        $DOMAIN_REFERENCEDCLASSNAME$ row = new $DOMAIN_REFERENCEDCLASSNAME$();
+        $DOMAIN_REFERENCEDCLASSNAME$ row = $DOMAIN_REFERENCEDCLASSNAME$.NewObject();
         $DOMAIN_PROPERTYNAME$Field.AddAndEditRow (row);
       }
     }
+
     $REPEAT_FOREACHREFERENCEDPROPERTY_END$
-    #endregion
   }
 }

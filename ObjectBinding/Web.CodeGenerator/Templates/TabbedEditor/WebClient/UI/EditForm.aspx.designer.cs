@@ -14,7 +14,7 @@ namespace $PROJECT_ROOTNAMESPACE$.UI
 		protected Rubicon.Web.UI.Controls.TabView Edit$DOMAIN_CLASSNAME$View;
 		protected $PROJECT_ROOTNAMESPACE$.UI.Edit$DOMAIN_CLASSNAME$Control Edit$DOMAIN_CLASSNAME$Control;
 		protected System.Web.UI.HtmlControls.HtmlForm ThisForm;
-		protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
+		protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 		protected Rubicon.Web.UI.Controls.WebButton SaveButton;
 		protected Rubicon.Web.UI.Controls.WebButton CancelButton;
 	}

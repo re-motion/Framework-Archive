@@ -14,7 +14,7 @@ div.bocListTable
 {
 }
 
-/* Style applied to the div surrounding the BocList's table when the list is read-only. */
+/*  Style applied to the div surrounding the BocList's table when the list is read-only. */
 .bocList.readOnly div.bocListTable
 {
 }
@@ -176,7 +176,7 @@ td.bocListDataCellEven div td.dropDownMenuHeadButton a:hover
   background-color: Transparent;
 }
 
-/* Style applied to the text providing the sorting order's index. */
+/*  Style applied to the text providing the sorting order's index. */
 span.bocListSortingOrder
 {
   color: Gray;
@@ -200,7 +200,7 @@ span.bocListAvailableViewsListLabel
 }
 
 /*  Style applied to the validation messages, applied if the EditDetailsValidator has no style it self.  */
-div.bocListEditDetailsValidationMessage
+div.bocListEditModeValidationMessage
 {
 	color: Red;
 }

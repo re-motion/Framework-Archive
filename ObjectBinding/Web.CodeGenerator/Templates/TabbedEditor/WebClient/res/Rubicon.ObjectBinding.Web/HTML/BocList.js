@@ -5,7 +5,7 @@ var _bocList_TrClassName = '';
 var _bocList_TrClassNameSelected = '';
 
 //  Associative array: <BocList ID>, <BocList_SelectedRows>
-var _bocList_selectedRows = new Array();
+var _bocList_selectedRows = new Object();
 
 //  A flag that indicates that the OnClick event for a selection selectorControl has been raised
 //  prior to the row's OnClick event.
@@ -25,7 +25,7 @@ var _bocList_rowSelectionSingleCheckBox = 1;
 var _bocList_rowSelectionSingleRadioButton = 2;
 var _bocList_rowSelectionMultiple = 3;
 
-var _bocList_listMenuInfos = new Array();
+var _bocList_listMenuInfos = new Object();
 
 var _contentMenu_itemClassName = 'contentMenuItem';
 var _contentMenu_itemFocusClassName = 'contentMenuItemFocus';
@@ -39,11 +39,11 @@ function BocList_SelectedRows (selection)
   this.Selection = selection;
   //  Associative Array: <SelectorControl ID>, <BocList_RowBlock>
   this.Length = 0;
-  this.Rows = new Array();
+  this.Rows = new Object();
   this.Clear = function()
   {
     this.Length = 0;
-    this.Rows = new Array();
+    this.Rows = new Object();
   }
 }
 

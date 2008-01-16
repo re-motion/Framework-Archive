@@ -1,10 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Edit$DOMAIN_CLASSNAME$Control.ascx.cs" Inherits="$PROJECT_ROOTNAMESPACE$.UI.Edit$DOMAIN_CLASSNAME$Control" %>
-<%@ Register Assembly="Rubicon.ObjectBinding.Web" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" TagPrefix="obw" %>
-<%@ Register Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" TagPrefix="dow" %>
-<%@ Register Assembly="Rubicon.Web" Namespace="Rubicon.Web.UI.Controls" TagPrefix="rubicon" %>
 
 <rubicon:FormGridManager ID="FormGridManager" runat="server" />
-<dow:DomainObjectDataSourceControl ID="CurrentObject" runat="server" TypeName="$DOMAIN_QUALIFIEDCLASSTYPENAME$" />
+<rubicon:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="$DOMAIN_QUALIFIEDCLASSTYPENAME$" />
 
 <div>
   <table id="$DOMAIN_CLASSNAME$FormGrid" runat="server">

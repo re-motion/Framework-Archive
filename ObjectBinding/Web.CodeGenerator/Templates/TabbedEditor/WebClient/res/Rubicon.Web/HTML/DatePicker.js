@@ -41,7 +41,7 @@ function DatePicker_ShowDatePicker (button, container, target, src, width, heigh
     top += currentNode.offsetTop + currentNode.clientTop;
     if (currentNode != window.document.body) // body does not have to be considered
     {   
-      var overflow = currentNode.style.overflow.toLowerCase();
+      var overflow = currentNode.currentStyle.overflow.toLowerCase();
       if (overflow == 'auto' || overflow == 'scroll')
       {
         left -= currentNode.scrollLeft;

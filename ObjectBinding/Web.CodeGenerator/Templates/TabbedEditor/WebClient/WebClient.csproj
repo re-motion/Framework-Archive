@@ -37,158 +37,48 @@
   <ItemGroup>
     <Reference Include="Rubicon.Core, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Core.dll</HintPath>
+      <HintPath>..\..\egoraFX\Rubicon.Core.dll</HintPath>
     </Reference>
     <Reference Include="Rubicon.Data.DomainObjects, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Data.DomainObjects.dll</HintPath>
+      <HintPath>..\..\egoraFX\Rubicon.Data.DomainObjects.dll</HintPath>
     </Reference>
-    <Reference Include="Rubicon.Data.DomainObjects.Legacy.ObjectBinding, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+    <Reference Include="Rubicon.Data.DomainObjects.ObjectBinding, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Data.DomainObjects.Legacy.ObjectBinding.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.Data.DomainObjects.Legacy.ObjectBinding.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Data.DomainObjects.Legacy.ObjectBinding.Web.dll</HintPath>
+      <HintPath>..\..\egoraFX\Rubicon.Data.DomainObjects.ObjectBinding.dll</HintPath>
     </Reference>
     <Reference Include="Rubicon.Data.DomainObjects.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Data.DomainObjects.Web.dll</HintPath>
+      <HintPath>..\..\egoraFX\Rubicon.Data.DomainObjects.Web.dll</HintPath>
     </Reference>
     <Reference Include="Rubicon.ObjectBinding, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.ObjectBinding.dll</HintPath>
+      <HintPath>..\..\egoraFX\Rubicon.ObjectBinding.dll</HintPath>
     </Reference>
     <Reference Include="Rubicon.ObjectBinding.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.ObjectBinding.Web.dll</HintPath>
+      <HintPath>..\..\egoraFX\Rubicon.ObjectBinding.Web.dll</HintPath>
     </Reference>
     <Reference Include="Rubicon.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Web.dll</HintPath>
+      <HintPath>..\..\egoraFX\Rubicon.Web.dll</HintPath>
     </Reference>
     
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="res\Rubicon.ObjectBinding.Web\HTML\BocBooleanValue.css" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\HTML\BocBooleanValue.js" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\HTML\BocCheckBox.js" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\HTML\BocCheckboxValue.css" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\HTML\BocDateTimeValue.css" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\HTML\BocEnumValue.css" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\HTML\BocList.css" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\HTML\BocList.js" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\HTML\BocMultilineTextValue.css" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\HTML\BocReferenceValue.css" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\HTML\BocReferenceValue.js" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\HTML\BocTextValue.css" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\HTML\TextBoxStyle.js" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\Image\CheckBoxFalse.gif" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\Image\CheckBoxNull.gif" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\Image\CheckBoxTrue.gif" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\Image\DatePicker.gif" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\Image\MoveFirst.gif" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\Image\MoveFirstInactive.gif" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\Image\MoveLast.gif" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\Image\MoveLastInactive.gif" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\Image\MoveNext.gif" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\Image\MoveNextInactive.gif" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\Image\MovePrevious.gif" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\Image\MovePreviousInactive.gif" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\Image\RequiredField.gif" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\Image\SortAscending.gif" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\Image\SortDescending.gif" />
-    <Content Include="res\Rubicon.ObjectBinding.Web\Image\ValidationError.gif" />
-    <Content Include="res\Rubicon.Web\HTML\ColorScheme_1_3_26.css" />
-    <Content Include="res\Rubicon.Web\HTML\DatePicker.js" />
-    <Content Include="res\Rubicon.Web\HTML\DropDownMenu.css" />
-    <Content Include="res\Rubicon.Web\HTML\DropDownMenu.js" />
-    <Content Include="res\Rubicon.Web\HTML\ExecutionEngine.css" />
-    <Content Include="res\Rubicon.Web\HTML\ExecutionEngine.js" />
-    <Content Include="res\Rubicon.Web\HTML\ExecutionEngineIE.css" />
-    <Content Include="res\Rubicon.Web\HTML\FontSize080.css" />
-    <Content Include="res\Rubicon.Web\HTML\FontSize080Quirks.css" />
-    <Content Include="res\Rubicon.Web\HTML\FontSize100.css" />
-    <Content Include="res\Rubicon.Web\HTML\FontSize100Quirks.css" />
-    <Content Include="res\Rubicon.Web\HTML\FormGrid.css" />
-    <Content Include="res\Rubicon.Web\HTML\SmartNavigation.js" />
-    <Content Include="res\Rubicon.Web\HTML\SmartPage.css" />
-    <Content Include="res\Rubicon.Web\HTML\SmartPage.js" />
-    <Content Include="res\Rubicon.Web\HTML\Style.css" />
-    <Content Include="res\Rubicon.Web\HTML\TabbedMenu.css" />
-    <Content Include="res\Rubicon.Web\HTML\TabbedMultiView.css" />
-    <Content Include="res\Rubicon.Web\HTML\TabStrip.css" />
-    <Content Include="res\Rubicon.Web\HTML\TabStripMenu.css" />
-    <Content Include="res\Rubicon.Web\HTML\TreeView.css" />
-    <Content Include="res\Rubicon.Web\HTML\Utilities.js" />
-    <Content Include="res\Rubicon.Web\Image\DropDownMenuArrow.gif" />
-    <Content Include="res\Rubicon.Web\Image\DropDownMenuItemIconPane.gif" />
-    <Content Include="res\Rubicon.Web\Image\Help.gif" />
-    <Content Include="res\Rubicon.Web\Image\NavigationTabsMainMenuTabTopLeftCorner.gif" />
-    <Content Include="res\Rubicon.Web\Image\NavigationTabsMainMenuTabTopRightCorner.gif" />
-    <Content Include="res\Rubicon.Web\Image\RequiredField.gif" />
-    <Content Include="res\Rubicon.Web\Image\Spacer.gif" />
-    <Content Include="res\Rubicon.Web\Image\TabbedMainMenuTabTopLeftCorner.gif" />
-    <Content Include="res\Rubicon.Web\Image\TabbedMainMenuTabTopRightCorner.gif" />
-    <Content Include="res\Rubicon.Web\Image\TreeViewF.gif" />
-    <Content Include="res\Rubicon.Web\Image\TreeViewFMinus.gif" />
-    <Content Include="res\Rubicon.Web\Image\TreeViewFPlus.gif" />
-    <Content Include="res\Rubicon.Web\Image\TreeViewI.gif" />
-    <Content Include="res\Rubicon.Web\Image\TreeViewL.gif" />
-    <Content Include="res\Rubicon.Web\Image\TreeViewLMinus.gif" />
-    <Content Include="res\Rubicon.Web\Image\TreeViewLPlus.gif" />
-    <Content Include="res\Rubicon.Web\Image\TreeViewMinus.gif" />
-    <Content Include="res\Rubicon.Web\Image\TreeViewPlus.gif" />
-    <Content Include="res\Rubicon.Web\Image\TreeViewR.gif" />
-    <Content Include="res\Rubicon.Web\Image\TreeViewRMinus.gif" />
-    <Content Include="res\Rubicon.Web\Image\TreeViewRPlus.gif" />
-    <Content Include="res\Rubicon.Web\Image\TreeViewT.gif" />
-    <Content Include="res\Rubicon.Web\Image\TreeViewTMinus.gif" />
-    <Content Include="res\Rubicon.Web\Image\TreeViewTPlus.gif" />
-    <Content Include="res\Rubicon.Web\Image\TreeViewWhite.gif" />
-    <Content Include="res\Rubicon.Web\Image\ValidationError.gif" />
-    <Content Include="res\Rubicon.Web\UI\DatePickerForm.aspx" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="..\$DomainProjectName$\mapping.xml">
-      <Link>mapping.xml</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\$DomainProjectName$\mapping.xsd">
-      <Link>mapping.xsd</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="..\$DomainProjectName$\queries.xml">
       <Link>queries.xml</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\$DomainProjectName$\queries.xsd">
-      <Link>queries.xsd</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\$DomainProjectName$\storageProviders.xml">
-      <Link>storageProviders.xml</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\$DomainProjectName$\storageProviders.xsd">
-      <Link>storageProviders.xsd</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\$DomainProjectName$\types.xsd">
-      <Link>types.xsd</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
     <Content Include="Images\arrow.gif" />
     <Content Include="Images\rublogo.bmp" />
     <Content Include="UrlMapping.xml" />
@@ -203,7 +93,9 @@
   <ItemGroup>
     <Compile Include="Classes\BaseControl.cs" />
     <Compile Include="Classes\BasePage.cs" />
+    <Compile Include="Classes\BaseFunction.cs" />
     <Compile Include="Classes\EditFormPage.cs" />
+    <Compile Include="Classes\WxeExecuteFunctionOptions.cs" />
 
     <Compile Include="Properties\AssemblyInfo.cs" />
 
@@ -213,6 +105,9 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
     </Compile>
 
     <Compile Include="Globalization\Global.Designer.cs">
@@ -266,9 +161,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="res\Rubicon.Web\UI\WxeHandler.ashx" />
-    <None Include="res\Rubicon.Web\UI\WxeLauncher.ashx" />
-    <None Include="UrlMapping.xsd" />
     <None Include="Web.config" />
     <None Include="WxeHandler.ashx" />
   </ItemGroup>
@@ -300,6 +192,9 @@
   </Target>
   -->
 	<PropertyGroup>
-		<PreBuildEvent>..\..\References\wxegen ..\UI\*.aspx.cs ..\WxeFunctions.cs</PreBuildEvent>
-	</PropertyGroup>
+		<PreBuildEvent>
+      cd ..
+      ..\..\egoraFx\wxegen\wxegen UI\*.aspx.cs WxeFunctions.cs /prjfile:$WebClientName$.csproj /functionbase:$PROJECT_ROOTNAMESPACE$.Classes.BaseFunction
+    </PreBuildEvent>
+  </PropertyGroup>
 </Project>

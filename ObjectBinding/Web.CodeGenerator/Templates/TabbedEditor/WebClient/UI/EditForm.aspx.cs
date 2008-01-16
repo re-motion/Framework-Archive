@@ -11,26 +11,20 @@ using $DOMAIN_ROOTNAMESPACE$;
 
 namespace $PROJECT_ROOTNAMESPACE$.UI
 {
-  // <WxePageFunction pageType="$PROJECT_ROOTNAMESPACE$.UI.Edit$DOMAIN_CLASSNAME$Form" aspxFile="UI/Edit$DOMAIN_CLASSNAME$Form.aspx" functionName="Edit$DOMAIN_CLASSNAME$Function"
-  //      functionBaseType="Rubicon.Data.DomainObjects.Web.ExecutionEngine.WxeTransactedFunction">
-  //   <Parameter name="p_id" type="String" required="false" />
-  //   <Variable name="v_$DOMAIN_CLASSNAME$" type="$DOMAIN_ROOTNAMESPACE$.$DOMAIN_CLASSNAME$" />
+  // <WxePageFunction>
+  //   <Parameter name="obj" type="$DOMAIN_CLASSNAME$" />
   // </WxePageFunction>
   public partial class Edit$DOMAIN_CLASSNAME$Form : EditFormPage
   {
-    private bool _isSaved;
-
     protected void Page_Load (object sender, EventArgs e)
     {
       if (!IsPostBack)
       {
-        if (p_id != null)
-          v_$DOMAIN_CLASSNAME$ = $DOMAIN_CLASSNAME$.GetObject(ObjectID.Parse (p_id));
-        else
-          v_$DOMAIN_CLASSNAME$ = new $DOMAIN_CLASSNAME$();
+        if (obj == null)
+          obj = $DOMAIN_CLASSNAME$.NewObject();
       }
 
-      LoadObject (v_$DOMAIN_CLASSNAME$);
+      LoadObject (obj);
     }
 
     protected override IBusinessObjectDataSourceControl DataSource

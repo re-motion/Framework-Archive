@@ -8,13 +8,13 @@ using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using $PROJECT_ROOTNAMESPACE$;
 using $PROJECT_ROOTNAMESPACE$.Classes;
+using $DOMAIN_ROOTNAMESPACE$;
 
 namespace $PROJECT_ROOTNAMESPACE$.UI
 {
-  // <WxePageFunction pageType="$PROJECT_ROOTNAMESPACE$.UI.SearchResult$DOMAIN_CLASSNAME$Form" aspxFile="UI/SearchResult$DOMAIN_CLASSNAME$Form.aspx" functionName="SearchResult$DOMAIN_CLASSNAME$Function"
-  //      functionBaseType="Rubicon.Data.DomainObjects.Web.ExecutionEngine.WxeTransactedFunction">
-  //   <Parameter name="p_query" type="Rubicon.Data.DomainObjects.Queries.IQuery" required="false" />
-  //   <Variable name="v_$DOMAIN_CLASSNAME$s" type="Rubicon.Data.DomainObjects.DomainObjectCollection" />
+  // <WxePageFunction>
+  //   <Parameter name="query" type="IQuery" />
+  //   <Variable name="searchResult" type="DomainObjectCollection" />
   // </WxePageFunction>
   public partial class SearchResult$DOMAIN_CLASSNAME$Form : BasePage
   {
@@ -22,29 +22,24 @@ namespace $PROJECT_ROOTNAMESPACE$.UI
     {
       if (!IsPostBack)
       {
-        IQuery actualQuery = p_query;
-        if (actualQuery == null)
-          actualQuery = new Query ("All$DOMAIN_CLASSNAME$s");
-        v_$DOMAIN_CLASSNAME$s = ClientTransaction.Current.QueryManager.GetCollection (actualQuery);
+        if (query == null)
+          query = new Query ("All$DOMAIN_CLASSNAME$s");
+        searchResult = ClientTransaction.Current.QueryManager.GetCollection (query);
       }
-      $DOMAIN_CLASSNAME$List.LoadUnboundValue (v_$DOMAIN_CLASSNAME$s, IsPostBack);
+      $DOMAIN_CLASSNAME$List.LoadUnboundValue (searchResult, IsPostBack);
     }
 
     protected void $DOMAIN_CLASSNAME$List_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
     {
       if (e.Column.ItemID == "Edit")
       {
-        // execute edit function in own transaction and commit on return
-        if (! IsReturningPostBack)
+        try
         {
-          string id = ((IBusinessObjectWithIdentity)e.BusinessObject).UniqueIdentifier;
-          Edit$DOMAIN_CLASSNAME$Function function = new Edit$DOMAIN_CLASSNAME$Function (id);
-          function.TransactionMode = WxeTransactionMode.None;
-          ExecuteFunction (function);
-        }
-        else
-        {
+          Edit$DOMAIN_CLASSNAME$Form.Call (this, ($DOMAIN_CLASSNAME$)e.BusinessObject);
           ClientTransaction.Current.Commit ();
+        }
+        catch (WxeUserCancelException)
+        {
         }
       }
     }

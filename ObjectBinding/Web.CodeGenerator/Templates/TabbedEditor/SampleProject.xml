@@ -35,6 +35,8 @@
 
 		<replace from="$USER_STORAGEPROVIDER$" to="ProjectManagementDB" />
 		<replace from="$USER_CATALOGNAME$" to="SbauPM" />
-	</projectReplacements>
+
+    <replace from="$USER_LAYERSUPERTYPE$" to="SampleObject" />
+  </projectReplacements>
 
 </applicationGenerator>

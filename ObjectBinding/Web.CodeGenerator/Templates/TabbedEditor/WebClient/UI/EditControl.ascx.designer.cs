@@ -8,7 +8,7 @@ namespace $PROJECT_ROOTNAMESPACE$.UI
 	public partial class Edit$DOMAIN_CLASSNAME$Control
 	{
 		protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-		protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
+		protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 		protected System.Web.UI.HtmlControls.HtmlTable $DOMAIN_CLASSNAME$FormGrid;
 		protected Rubicon.Web.UI.Controls.FormGridLabel $DOMAIN_CLASSNAME$GridLabel;
 
