@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Validation;
 using Rubicon.Utilities;
@@ -10,8 +9,8 @@ namespace Rubicon.Mixins.Validation
   [Serializable]
   public class DefaultValidationLog : IValidationLog
   {
-    private Stack<ValidationResult> _currentData = new Stack<ValidationResult> ();
-    private List<ValidationResult> _results = new List<ValidationResult> ();
+    private readonly Stack<ValidationResult> _currentData = new Stack<ValidationResult> ();
+    private readonly List<ValidationResult> _results = new List<ValidationResult> ();
 
     private int failures = 0;
     private int warnings = 0;

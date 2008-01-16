@@ -178,6 +178,7 @@
     <Compile Include="Utilities\MethodSignatureEqualityComparer.cs" />
     <Compile Include="Utilities\UncastableEnumerableWrapper.cs" />
     <Compile Include="Validation\ConsoleDumper.cs" />
+    <Compile Include="Validation\DelegateRuleDescriptionAttribute.cs" />
     <Compile Include="Validation\Rules\DefaultMixinDependencyRules.cs" />
     <Compile Include="Validation\Rules\DefaultRequiredMixinTypeRules.cs" />
     <Compile Include="Validation\Rules\DefaultSuppressedInterfaceIntroductionRules.cs" />

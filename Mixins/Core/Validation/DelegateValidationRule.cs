@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Utilities;
+using System.Reflection;
 
 namespace Rubicon.Mixins.Validation
 {
@@ -30,11 +30,45 @@ namespace Rubicon.Mixins.Validation
       }
     }
 
+    private static string GetRuleName (Rule rule)
+    {
+      MethodInfo method = rule.Method;
+      DelegateRuleDescriptionAttribute attribute = AttributeUtility.GetCustomAttribute<DelegateRuleDescriptionAttribute> (method, true);
+      if (attribute == null || attribute.RuleName == null)
+        return method.DeclaringType.FullName + "." + rule.Method.Name;
+      else
+        return attribute.RuleName;
+    }
+
+    private static string GetMessage (Rule rule)
+    {
+      MethodInfo method = rule.Method;
+      DelegateRuleDescriptionAttribute attribute = AttributeUtility.GetCustomAttribute<DelegateRuleDescriptionAttribute> (method, true);
+      if (attribute == null || attribute.Message == null)
+        return FormatMessage (rule.Method.Name);
+      else
+        return attribute.Message;
+    }
+
+    private static string FormatMessage (string message)
+    {
+      StringBuilder sb = new StringBuilder ();
+
+      for (int i = 0; i < message.Length; ++i)
+      {
+        if (i > 0 && char.IsUpper (message[i]))
+          sb.Append (' ').Append (char.ToLower (message[i]));
+        else
+          sb.Append (message[i]);
+      }
+      return sb.ToString ();
+    }
+
     public delegate void Rule (Args args);
 
-    private Rule _rule;
-    private string _ruleName;
-    private string _message;
+    private readonly Rule _rule;
+    private readonly string _ruleName;
+    private readonly string _message;
 
     public DelegateValidationRule(Rule rule, string ruleName, string message)
     {
@@ -48,7 +82,7 @@ namespace Rubicon.Mixins.Validation
     }
 
     public DelegateValidationRule (Rule rule)
-        : this (ArgumentUtility.CheckNotNull("rule", rule), rule.Method.DeclaringType.FullName + "." + rule.Method.Name, rule.Method.Name)
+        : this (ArgumentUtility.CheckNotNull("rule", rule), GetRuleName(rule), GetMessage(rule))
     {
     }
 

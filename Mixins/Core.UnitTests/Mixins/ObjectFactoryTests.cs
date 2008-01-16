@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes;
+using Rubicon.Mixins.UnitTests.Configuration.ValidationTests.ValidationSampleTypes;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Mixins.CodeGeneration;
 
@@ -251,7 +251,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Cannot instantiate mixin Rubicon.Mixins.UnitTests.Configuration."
-        + "ValidationSampleTypes.MixinWithPrivateCtorAndVirtualMethod, there is no public default constructor.")]
+        + "ValidationTests.ValidationSampleTypes.MixinWithPrivateCtorAndVirtualMethod, there is no public default constructor.")]
     public void ThrowsWhenMixinWithoutPublicDefaultCtorShouldBeInstantiated ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithPrivateCtorAndVirtualMethod)).EnterScope())

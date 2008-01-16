@@ -13,13 +13,9 @@ namespace Rubicon.Mixins.Validation.Rules
       ArgumentUtility.CheckNotNull ("rule", rule);
 
       if (!test)
-      {
         log.Warn (rule);
-      }
       else
-      {
         log.Succeed (rule);
-      }
     }
 
     protected void SingleMust (bool test, IValidationLog log, IValidationRule rule)
@@ -28,13 +24,9 @@ namespace Rubicon.Mixins.Validation.Rules
       ArgumentUtility.CheckNotNull ("rule", rule);
 
       if (!test)
-      {
         log.Fail (rule);
-      }
       else
-      {
         log.Succeed (rule);
-      }
     }
   }
 }
