@@ -102,6 +102,7 @@
     <Compile Include="CodeGeneration\DPExtensions\AttributeReplicator.cs" />
     <Compile Include="CodeGeneration\DPExtensions\ClassEmitterSupportingOpenGenericBaseType.cs" />
     <Compile Include="CodeGeneration\DPExtensions\ConditionExpression.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\AutomaticMethodInvocationExpression.cs" />
     <Compile Include="CodeGeneration\DPExtensions\CustomAttributeExpression.cs" />
     <Compile Include="CodeGeneration\DPExtensions\ExpressionReference.cs" />
     <Compile Include="CodeGeneration\DPExtensions\FieldInfoReference.cs" />

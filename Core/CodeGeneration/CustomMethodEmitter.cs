@@ -119,9 +119,9 @@ namespace Rubicon.CodeGeneration
       }
     }
 
-    public CustomMethodEmitter ImplementByDelegating (Reference implementer, MethodInfo methodToCall)
+    public CustomMethodEmitter ImplementByDelegating (TypeReference implementer, MethodInfo methodToCall)
     {
-      AddDelegatingCallStatements (methodToCall, new TypeReferenceWrapper (implementer, _declaringType.TypeBuilder), true);
+      AddDelegatingCallStatements (methodToCall, implementer, true);
       return this;
     }
 
@@ -143,7 +143,7 @@ namespace Rubicon.CodeGeneration
 
       TypedMethodInvocationExpression delegatingCall;
       if (callVirtual)
-        delegatingCall = new VirtualMethodInvocationExpression (owner, methodToCall, argumentExpressions);
+        delegatingCall = new AutomaticMethodInvocationExpression (owner, methodToCall, argumentExpressions);
       else
         delegatingCall = new TypedMethodInvocationExpression (owner, methodToCall, argumentExpressions);
 

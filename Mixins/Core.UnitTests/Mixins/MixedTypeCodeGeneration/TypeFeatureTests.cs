@@ -198,5 +198,11 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
       Assert.AreNotSame (typeof (ClassWithCopyCustomAttributes), concreteType);
       Assert.IsEmpty (concreteType.GetCustomAttributes (typeof (SampleCopyTemplateAttribute), true));
     }
+
+    [Test]
+    public void ValueTypeMixin ()
+    {
+      CreateMixedType (typeof (BaseType1), typeof (ValueTypeMixin));
+    }
   }
 }

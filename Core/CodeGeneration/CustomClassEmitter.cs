@@ -354,7 +354,7 @@ namespace Rubicon.CodeGeneration
             MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
             CustomMethodEmitter wrapper = CreateMethod ("__wrap__" + method.Name, attributes);
             wrapper.CopyParametersAndReturnType (method);
-            wrapper.ImplementByDelegating (SelfReference.Self, method);
+            wrapper.ImplementByDelegating (new TypeReferenceWrapper (SelfReference.Self, TypeBuilder), method);
             return wrapper;
           });
     }

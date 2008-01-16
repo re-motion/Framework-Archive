@@ -16,9 +16,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private readonly MixinTypeGenerator[] _mixinTypeGenerators;
     private readonly CustomClassEmitter _emitter;
     private readonly TargetClassDefinition _targetClassConfiguration;
-    private FieldReference _depthField;
-    private FieldReference _thisField;
-    private Dictionary<MethodDefinition, MethodInfo> _overriddenMethodToImplementationMap = new Dictionary<MethodDefinition, MethodInfo>();
+    private readonly FieldReference _depthField;
+    private readonly FieldReference _thisField;
+    private readonly Dictionary<MethodDefinition, MethodInfo> _overriddenMethodToImplementationMap = new Dictionary<MethodDefinition, MethodInfo>();
 
     public BaseCallProxyGenerator (TypeGenerator surroundingType, ClassEmitter surroundingTypeEmitter, MixinTypeGenerator[] mixinTypeGenerators)
     {

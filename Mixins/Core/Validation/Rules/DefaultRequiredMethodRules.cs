@@ -13,6 +13,8 @@ namespace Rubicon.Mixins.Validation.Rules
       visitor.RequiredMethodRules.Add (new DelegateValidationRule<RequiredMethodDefinition> (RequiredBaseCallMethodMustBePublicOrProtected));
     }
 
+    [DelegateRuleDescription (Message = "One of the methods specified via the TBase type parameter of a mixin is not implemented as a public "
+        + "or protected method.")]
     private void RequiredBaseCallMethodMustBePublicOrProtected (DelegateValidationRule<RequiredMethodDefinition>.Args args)
     {
       SingleMust (!(args.Definition.DeclaringRequirement is RequiredBaseCallTypeDefinition)

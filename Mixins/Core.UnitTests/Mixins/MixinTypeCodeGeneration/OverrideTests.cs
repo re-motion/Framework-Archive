@@ -1,9 +1,5 @@
 using System;
-using System.Reflection;
 using NUnit.Framework;
-using Rhino.Mocks;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 
 namespace Rubicon.Mixins.UnitTests.Mixins.MixinTypeCodeGeneration

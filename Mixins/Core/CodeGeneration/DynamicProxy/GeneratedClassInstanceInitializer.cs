@@ -97,15 +97,21 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         mixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
 
       object mixinInstance;
-      try
+      if (mixinType.IsValueType)
+        mixinInstance = Activator.CreateInstance (mixinType); // there's always a public constructor for value types
+      else
       {
-        mixinInstance = ObjectFactory.Create (mixinType).With ();
-      }
-      catch (MissingMethodException ex)
-      {
-        string message = string.Format ("Cannot instantiate mixin {0}, there is no public default constructor.",
-            mixinDefinition.Type);
-        throw new MissingMethodException (message, ex);
+        try
+        {
+          mixinInstance = ObjectFactory.Create (mixinType).With();
+        }
+        catch (MissingMethodException ex)
+        {
+          string message = string.Format (
+              "Cannot instantiate mixin {0}, there is no visible default constructor.",
+              mixinDefinition.Type);
+          throw new MissingMethodException (message, ex);
+        }
       }
 
       return mixinInstance;

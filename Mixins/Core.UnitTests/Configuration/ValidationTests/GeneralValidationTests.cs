@@ -188,9 +188,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.ValidationTests
       ValidationException exception = new ValidationException (log);
       Assert.AreEqual ("Some parts of the mixin configuration could not be validated." + Environment.NewLine + "Rubicon.Mixins.UnitTests.Configuration."
           + "ValidationTests.ValidationSampleTypes.AbstractMixinWithoutBase.AbstractMethod (Rubicon.Mixins.UnitTests.Configuration.ValidationTests.ValidationSampleTypes."
-              + "AbstractMixinWithoutBase -> Rubicon.Mixins.UnitTests.SampleTypes.ClassOverridingSingleMixinMethod): There were 1 errors, 0 warnings, and 0 unexpected "
-                  + "exceptions. First error: Overriding mixin methods only possible when mixin derived from mixin base" + Environment.NewLine + "See Log.GetResults() "
-                      + "for a full list of issues.", exception.Message);
+          + "AbstractMixinWithoutBase -> Rubicon.Mixins.UnitTests.SampleTypes.ClassOverridingSingleMixinMethod): There were 1 errors, 0 warnings, and 0 unexpected "
+          + "exceptions. First error: A target class overrides a method from one of its mixins, but the mixin is not derived from one of the "
+          + "Mixin<...> base classes." + Environment.NewLine + "See Log.GetResults() for a full list of issues.", exception.Message);
 
       Assert.AreSame (log, exception.ValidationLog);
     }

@@ -326,7 +326,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         "Duck typing is only supported with members from the base type");
 
       CustomMethodEmitter methodImplementation = _emitter.CreateInterfaceMethodImplementation (requiredMethod.InterfaceMethod);
-      methodImplementation.ImplementByDelegating (SelfReference.Self, requiredMethod.ImplementingMethod.MethodInfo);
+      methodImplementation.ImplementByDelegating (new TypeReferenceWrapper (SelfReference.Self, TypeBuilder),
+          requiredMethod.ImplementingMethod.MethodInfo);
     }
 
     private void ImplementOverrides ()
@@ -360,7 +361,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       MethodInfo proxyMethod = _baseCallGenerator.GetProxyMethodForOverriddenMethod (method);
       CustomMethodEmitter methodOverride = Emitter.CreateMethodOverride (method.MethodInfo);
-      methodOverride.ImplementByDelegating (_firstField, proxyMethod);
+      methodOverride.ImplementByDelegating (new TypeReferenceWrapper (_firstField, _firstField.Reference.FieldType), proxyMethod);
       return methodOverride;
     }
 

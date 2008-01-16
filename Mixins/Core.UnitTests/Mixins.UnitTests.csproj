@@ -215,6 +215,7 @@
     <Compile Include="SampleTypes\DuckBaseMixin.cs" />
     <Compile Include="SampleTypes\ISimpleInterface.cs" />
     <Compile Include="SampleTypes\TargetClassWithAdditionalDependencies.cs" />
+    <Compile Include="SampleTypes\ValueTypeMixin.cs" />
     <Compile Include="Utilities\DependencySortTest.cs" />
     <Compile Include="Configuration\Definitions\InheritanceDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\Definitions\InterfaceIntroductionDefinitionBuilderTests.cs" />

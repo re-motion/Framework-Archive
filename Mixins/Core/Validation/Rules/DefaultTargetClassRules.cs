@@ -15,16 +15,19 @@ namespace Rubicon.Mixins.Validation.Rules
       visitor.TargetClassRules.Add (new DelegateValidationRule<TargetClassDefinition> (TargetClassMustHavePublicOrProtectedCtor));
     }
 
+    [DelegateRuleDescription (Message = "A target class for mixins is declared sealed (or it is a value type).")]
     private void TargetClassMustNotBeSealed (DelegateValidationRule<TargetClassDefinition>.Args args)
     {
       SingleMust(!args.Definition.Type.IsSealed, args.Log, args.Self);
     }
 
+    [DelegateRuleDescription (Message = "An interface is used as a target class for mixins.")]
     private void TargetClassMustNotBeAnInterface (DelegateValidationRule<TargetClassDefinition>.Args args)
     {
       SingleMust (!args.Definition.Type.IsInterface, args.Log, args.Self);
     }
 
+    [DelegateRuleDescription (Message = "An target class for mixins does not have a public or protected constructor.")]
     private void TargetClassMustHavePublicOrProtectedCtor (DelegateValidationRule<TargetClassDefinition>.Args args)
     {
       ConstructorInfo[] ctors = args.Definition.Type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);

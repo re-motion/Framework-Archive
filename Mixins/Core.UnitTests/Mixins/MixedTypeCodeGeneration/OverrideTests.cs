@@ -202,5 +202,12 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
       obj.VirtualEvent += delegate { };
       Assert.AreEqual (2, obj.GetVirtualEventInvocationList ().Length);
     }
+
+    [Test]
+    public void ValueTypeMixin ()
+    {
+      BaseType1 bt1 = CreateMixedObject<BaseType1>(typeof (ValueTypeMixin)).With();
+      Assert.AreEqual ("ValueTypeMixin.VirtualMethod", bt1.VirtualMethod());
+    }
   }
 }

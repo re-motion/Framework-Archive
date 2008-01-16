@@ -10,12 +10,12 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
   internal class BaseCallMethodGenerator
   {
-    private CustomMethodEmitter _methodEmitter;
+    private readonly CustomMethodEmitter _methodEmitter;
     private readonly MixinTypeGenerator[] _mixinTypeGenerators;
-    private TargetClassDefinition _targetClassConfiguration;
-    private FieldReference _depthField;
-    private FieldReference _thisField;
-    private TypeGenerator _surroundingType;
+    private readonly TargetClassDefinition _targetClassConfiguration;
+    private readonly FieldReference _depthField;
+    private readonly FieldReference _thisField;
+    private readonly TypeGenerator _surroundingType;
 
     public BaseCallMethodGenerator (CustomMethodEmitter methodEmitter, BaseCallProxyGenerator baseCallProxyGenerator,
         MixinTypeGenerator[] mixinTypeGenerators)
@@ -71,20 +71,27 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private Statement CreateBaseCallStatement (MethodDefinition target, ArgumentReference[] args)
     {
       Expression[] argExpressions = Array.ConvertAll<ArgumentReference, Expression> (args, delegate (ArgumentReference a) { return a.ToExpression (); });
+      
       if (target.DeclaringClass == _targetClassConfiguration)
-      {
-        MethodInfo baseCallMethod = _surroundingType.GetBaseCallMethod (target.MethodInfo);
-        return new ReturnStatement (new VirtualMethodInvocationExpression (new TypeReferenceWrapper (_thisField, _surroundingType.Emitter.TypeBuilder),
-            baseCallMethod, argExpressions));
-      }
+        return CreateBaseCallToTargetClassStatement(target, argExpressions);
       else
-      {
-        MixinDefinition mixin = (MixinDefinition) target.DeclaringClass;
-        MethodInfo baseCallMethod = GetMixinMethodToCall (mixin.MixinIndex, target);
-        TypeReference mixinReference = GetMixinReference (mixin, baseCallMethod.DeclaringType);
+        return CreateBaseCallToMixinStatement(target, argExpressions);
+    }
 
-        return new ReturnStatement (new VirtualMethodInvocationExpression (mixinReference, baseCallMethod, argExpressions));
-      }
+    private Statement CreateBaseCallToTargetClassStatement (MethodDefinition target, Expression[] argExpressions)
+    {
+      MethodInfo baseCallMethod = _surroundingType.GetBaseCallMethod (target.MethodInfo);
+      return new ReturnStatement (new AutomaticMethodInvocationExpression (new TypeReferenceWrapper (_thisField, _surroundingType.Emitter.TypeBuilder),
+          baseCallMethod, argExpressions));
+    }
+
+    private Statement CreateBaseCallToMixinStatement (MethodDefinition target, Expression[] argExpressions)
+    {
+      MixinDefinition mixin = (MixinDefinition) target.DeclaringClass;
+      MethodInfo baseCallMethod = GetMixinMethodToCall (mixin.MixinIndex, target);
+      TypeReference mixinReference = GetMixinReference (mixin, baseCallMethod.DeclaringType);
+
+      return new ReturnStatement (new AutomaticMethodInvocationExpression (mixinReference, baseCallMethod, argExpressions));
     }
 
     private MethodInfo GetMixinMethodToCall (int mixinIndex, MethodDefinition mixinMethod)

@@ -17,16 +17,19 @@ namespace Rubicon.Mixins.Validation.Rules
       visitor.MixinRules.Add (new DelegateValidationRule<MixinDefinition> (MixinCannotMixItsBase));
     }
 
+    [DelegateRuleDescription (Message = "An interface is configured as a mixin, but mixins must be classes or value types.")]
     private void MixinCannotBeInterface (DelegateValidationRule<MixinDefinition>.Args args)
     {
       SingleMust (!args.Definition.Type.IsInterface, args.Log, args.Self);
     }
 
+    [DelegateRuleDescription (Message = "A mixin type does not have public visibility.")]
     private void MixinMustBePublic (DelegateValidationRule<MixinDefinition>.Args args)
     {
       SingleMust (args.Definition.Type.IsVisible, args.Log, args.Self);
     }
 
+    [DelegateRuleDescription (Message = "A mixin whose members are overridden by the target class must have a public or protected default constructor.")]
     private void MixinWithOverriddenMembersMustHavePublicOrProtectedDefaultCtor (DelegateValidationRule<MixinDefinition>.Args args)
     {
       ConstructorInfo defaultCtor = args.Definition.Type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
@@ -35,11 +38,13 @@ namespace Rubicon.Mixins.Validation.Rules
           args.Log, args.Self);
     }
 
+    [DelegateRuleDescription (Message = "A mixin is applied to itself.")]
     private void MixinCannotMixItself (DelegateValidationRule<MixinDefinition>.Args args)
     {
       SingleMust (args.Definition.Type != args.Definition.TargetClass.Type, args.Log, args.Self);
     }
 
+    [DelegateRuleDescription (Message = "A mixin is applied to one of its base types.")]
     private void MixinCannotMixItsBase (DelegateValidationRule<MixinDefinition>.Args args)
     {
       SingleMust (!args.Definition.TargetClass.Type.IsAssignableFrom (args.Definition.Type), args.Log, args.Self);

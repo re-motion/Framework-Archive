@@ -17,6 +17,7 @@ namespace Rubicon.Mixins.Validation.Rules
     //  SingleMust (args.Definition.Type.IsInterface, args.Log, args.Self);
     //}
 
+    [DelegateRuleDescription (Message = "A type used as the TBase type parameter of a mixin does not have public visibility.")]
     private void RequiredBaseCallTypeMustBePublic (DelegateValidationRule<RequiredBaseCallTypeDefinition>.Args args)
     {
       SingleMust (args.Definition.Type.IsVisible, args.Log, args.Self);

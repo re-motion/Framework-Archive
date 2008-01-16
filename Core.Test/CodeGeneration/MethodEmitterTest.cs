@@ -289,6 +289,20 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
     }
 
     [Test]
+    public void ImplementByDelegatingToValueType ()
+    {
+      CustomMethodEmitter method = _classEmitter.CreateMethod ("IntEqualsSelf", MethodAttributes.Public | MethodAttributes.Static)
+          .SetParameterTypes (typeof (int))
+          .SetReturnType (typeof (bool));
+      LocalReference local = method.DeclareLocal (typeof (int));
+      method.AddStatement (new AssignStatement (local, method.ArgumentReferences[0].ToExpression()));
+      method.ImplementByDelegating (local, typeof (int).GetMethod ("Equals", new Type[] { typeof (int) }));
+
+      object instance = BuildInstance ();
+      Assert.AreEqual (true, InvokeMethod (instance, method, 5));
+    }
+
+    [Test]
     public void ImplementByBaseCall ()
     {
       CustomMethodEmitter method = _classEmitter.CreateMethod ("NewEquals", MethodAttributes.Public)
