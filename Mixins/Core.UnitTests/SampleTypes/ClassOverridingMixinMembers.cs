@@ -9,19 +9,19 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   public class ClassOverridingMixinMembers
   {
     [OverrideMixin]
-    public string AbstractMethod(int i)
+    public virtual string AbstractMethod(int i)
     {
       return "ClassOverridingMixinMembers.AbstractMethod-" + i;
     }
 
     [OverrideMixin]
-    public string AbstractProperty
+    public virtual string AbstractProperty
     {
       get { return "ClassOverridingMixinMembers.AbstractProperty"; }
     }
 
     [OverrideMixin]
-    public string RaiseEvent ()
+    public virtual string RaiseEvent ()
     {
       return _abstractEvent ();
     }
@@ -29,7 +29,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
     private Func<string> _abstractEvent;
 
     [OverrideMixin]
-    public event Func<string> AbstractEvent
+    public virtual event Func<string> AbstractEvent
     {
       add { _abstractEvent += value; }
       remove { _abstractEvent -= value; }

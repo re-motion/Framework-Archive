@@ -18,9 +18,9 @@ namespace Rubicon.Mixins.CodeGeneration
     private IModuleManager _scope;
     // No laziness here - a ModuleBuilder cannot be used by multiple threads at the same time anyway, so using a lazy cache could actually cause
     // errors (depending on how it was implemented)
-    private InterlockedCache<ClassDefinitionBase, Type> _typeCache = new InterlockedCache<ClassDefinitionBase, Type>();
+    private readonly InterlockedCache<ClassDefinitionBase, Type> _typeCache = new InterlockedCache<ClassDefinitionBase, Type>();
 
-    private object _scopeLockObject = new object ();
+    private readonly object _scopeLockObject = new object ();
     private INameProvider _typeNameProvider = GuidNameProvider.Instance;
     private INameProvider _mixinTypeNameProvider = GuidNameProvider.Instance;
 

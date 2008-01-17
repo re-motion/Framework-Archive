@@ -108,6 +108,10 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
           _scope = new ModuleScope (true, _strongAssemblyName, _strongModulePath, _weakAssemblyName, _weakModulePath);
         return _scope;
       }
+      set
+      {
+        _scope = value;
+      }
     }
 
     public bool HasSignedAssembly

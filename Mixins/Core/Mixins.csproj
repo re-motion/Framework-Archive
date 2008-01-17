@@ -67,6 +67,7 @@
     <Compile Include="MixinConfiguration.Build.cs" />
     <Compile Include="MixinConfiguration.MasterConfiguration.cs" />
     <Compile Include="MixinConfigurationScope.cs" />
+    <Compile Include="MixinTargetMockUtility.cs" />
     <Compile Include="OverrideMixinAttribute.cs" />
     <Compile Include="Definitions\AttributeIntroductionDefinition.cs" />
     <Compile Include="Definitions\Building\MixinDependencyDefinitionBuilder.cs" />

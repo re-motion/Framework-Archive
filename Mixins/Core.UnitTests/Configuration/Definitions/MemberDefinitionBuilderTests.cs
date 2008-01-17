@@ -288,7 +288,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
       Assert.IsTrue (d.Properties.ContainsKey (typeof (BT3Mixin2).GetProperty ("This")));
       Assert.IsTrue (d.Properties.ContainsKey (typeof (Mixin<IBaseType32>).GetProperty ("This", BindingFlags.NonPublic | BindingFlags.Instance)));
 
-      Assert.AreEqual (11, new List<MemberDefinition> (d.GetAllMembers ()).Count);
+      Assert.AreEqual (12, new List<MemberDefinition> (d.GetAllMembers ()).Count);
     }
 
     [Test]

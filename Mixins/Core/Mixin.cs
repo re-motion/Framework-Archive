@@ -141,7 +141,7 @@ namespace Rubicon.Mixins
     /// Gets an object reference for performing base calls from overridden methods.
     /// </summary>
     /// <value>The base call object reference.</value>
-    /// <exception cref="InvalidOperationException">The mixin has not yet been initialized, probably because the property is accessed from the mixin's
+    /// <exception cref="InvalidOperationException">The mixin has not been initialized yet, probably because the property is accessed from the mixin's
     /// constructor.</exception>
     /// <remarks>This property must not be accessed from the mixin's constructor; if you need to initialize the mixin by accessing the <see cref="Base"/>
     /// property, override the <see cref="Mixin{TThis}.OnInitialized"/> method.</remarks>
@@ -151,7 +151,7 @@ namespace Rubicon.Mixins
       get
       {
         if (_base == null)
-          throw new InvalidOperationException ("Mixin has not yet been initialized.");
+          throw new InvalidOperationException ("Mixin has not been initialized yet.");
         return _base;
       }
     }
@@ -231,7 +231,7 @@ namespace Rubicon.Mixins
     /// Gets a reference to the mixin's target object.
     /// </summary>
     /// <value>The target object reference.</value>
-    /// <exception cref="InvalidOperationException">The mixin has not yet been initialized, probably because the property is accessed from the mixin's
+    /// <exception cref="InvalidOperationException">The mixin has not been initialized yet, probably because the property is accessed from the mixin's
     /// constructor.</exception>
     /// <remarks>This property must not be accessed from the mixin's constructor; if you need to initialize the mixin by accessing the <see cref="This"/>
     /// property, override the <see cref="Mixin{TThis}.OnInitialized"/> method.</remarks>
@@ -241,7 +241,7 @@ namespace Rubicon.Mixins
       get
       {
         if (_this == null)
-          throw new InvalidOperationException ("Mixin has not yet been initialized.");
+          throw new InvalidOperationException ("Mixin has not been initialized yet.");
         return _this;
       }
     }
@@ -250,7 +250,7 @@ namespace Rubicon.Mixins
     /// Gets the mixin's configuration data.
     /// </summary>
     /// <value>A <see cref="MixinDefinition"/> holding the mixin's configuration data.</value>
-    /// <exception cref="InvalidOperationException">The mixin has not yet been initialized, probably because the property is accessed from the mixin's
+    /// <exception cref="InvalidOperationException">The mixin has not been initialized yet, probably because the property is accessed from the mixin's
     /// constructor.</exception>
     /// <remarks>This property must not be accessed from the mixin's constructor; if you need to initialize the mixin by accessing the <see cref="Configuration"/>
     /// property, override the <see cref="Mixin{TThis}.OnInitialized"/> method.</remarks>
@@ -260,7 +260,7 @@ namespace Rubicon.Mixins
       get
       {
         if (_configuration == null)
-          throw new InvalidOperationException ("Mixin has not yet been initialized.");
+          throw new InvalidOperationException ("Mixin has not been initialized yet.");
         return _configuration;
       }
     }

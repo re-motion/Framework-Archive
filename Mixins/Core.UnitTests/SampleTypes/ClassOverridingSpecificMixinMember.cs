@@ -8,7 +8,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   public class ClassOverridingSpecificMixinMember
   {
     [OverrideMixin (typeof (MixinWithVirtualMethod))]
-    public string VirtualMethod ()
+    public virtual string VirtualMethod ()
     {
       return "ClassOverridingSpecificMixinMember.ToString";
     }

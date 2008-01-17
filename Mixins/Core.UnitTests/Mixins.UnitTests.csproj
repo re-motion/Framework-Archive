@@ -88,6 +88,7 @@
     <Compile Include="Mixins\CodeGenSampleTypes\ClassWithCopyCustomAttributes.cs" />
     <Compile Include="Mixins\CodeGenSampleTypes\SampleCopyTemplateAttribute.cs" />
     <Compile Include="Mixins\MixedTypeCodeGeneration\MixedMixinTests.cs" />
+    <Compile Include="Mixins\MixinTargetMockUtilityTests.cs" />
     <Compile Include="Mixins\MixinTypeCodeGeneration\GeneratedTypeInConfigurationTests.cs" />
     <Compile Include="Mixins\ModuleManagerSerializationExtensionTests.cs" />
     <Compile Include="Mixins\RhinoMocksRepositoryAdapter.cs" />
