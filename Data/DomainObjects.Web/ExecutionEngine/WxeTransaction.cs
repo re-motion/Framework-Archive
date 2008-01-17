@@ -102,6 +102,8 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
     /// <param name="transaction">The new transaction.</param>
     protected override void SetCurrentTransaction (ClientTransaction transaction)
     {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
       ScopeStack.Push (ClientTransactionScope.ActiveScope);
       ClientTransactionScope newScope = transaction.EnterNonDiscardingScope(); // set new scope and store old one
       Assertion.IsTrue (ClientTransactionScope.ActiveScope == newScope);
