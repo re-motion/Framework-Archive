@@ -75,34 +75,30 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
 
     [Test]
     [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "No public or protected deserialization constructor in type "
-        + "Rubicon.Core.UnitTests.CodeGeneration.SampleTypes.SerializableClassWithoutCtor - this is not supported.")]
+        + "Rubicon.Core.UnitTests.CodeGeneration.SampleTypes.SerializableClassWithoutCtor - serialization is not supported.")]
     public void ImplementGetObjectDataByDelegationThrowsIfBaseHasNoDeserializationCtor ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "GetObjectDataByDelegation", typeof (SerializableClassWithoutCtor));
-      try
-      {
-        SerializationImplementer.ImplementGetObjectDataByDelegation (classEmitter, delegate { return null; });
-      }
-      finally
-      {
-        classEmitter.BuildType();
-      }
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "GetObjectDataByDelegation", typeof (SerializableClassWithoutCtor),
+          new Type[] {typeof (ISerializable)}, TypeAttributes.Public | TypeAttributes.Serializable, false);
+      SerializationImplementer.ImplementGetObjectDataByDelegation (classEmitter, delegate { return null; });
+      SerializableClassWithoutCtor instance = (SerializableClassWithoutCtor) Activator.CreateInstance (classEmitter.BuildType ());
+
+      Serializer.Serialize (instance);
     }
 
     [Test]
     [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "No public or protected GetObjectData in type "
-        + "Rubicon.Core.UnitTests.CodeGeneration.SampleTypes.SerializableClassWithPrivateGetObjectData - this is not supported.")]
+        + "Rubicon.Core.UnitTests.CodeGeneration.SampleTypes.SerializableClassWithPrivateGetObjectData - serialization is not supported.")]
     public void ImplementGetObjectDataByDelegationThrowsIfBaseHasPrivateGetObjectData ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "GetObjectDataByDelegation", typeof (SerializableClassWithPrivateGetObjectData));
-      try
-      {
-        SerializationImplementer.ImplementGetObjectDataByDelegation (classEmitter, delegate { return null; });
-      }
-      finally
-      {
-        classEmitter.BuildType ();
-      }
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "GetObjectDataByDelegation", typeof (SerializableClassWithPrivateGetObjectData),
+          new Type[] { typeof (ISerializable) }, TypeAttributes.Public | TypeAttributes.Serializable, false);
+
+      SerializationImplementer.ImplementGetObjectDataByDelegation (classEmitter, delegate { return null; });
+      SerializableClassWithPrivateGetObjectData instance =
+          (SerializableClassWithPrivateGetObjectData) Activator.CreateInstance (classEmitter.BuildType ());
+
+      Serializer.Serialize (instance);
     }
 
     [Test]

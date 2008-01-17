@@ -51,18 +51,22 @@ namespace Rubicon.CodeGeneration
       if (baseConstructor == null || !IsPublicOrProtected (baseConstructor))
       {
         string message = string.Format (
-            "No public or protected deserialization constructor in type {0} - this is not supported.",
+            "No public or protected deserialization constructor in type {0} - serialization is not supported.",
             classEmitter.BaseType.FullName);
-        throw new NotSupportedException (message);
+        getObjectDataMethod.ImplementByThrowing (typeof (NotSupportedException), message);
+        return;
       }
 
       MethodInfo baseGetObjectDataMethod =
           classEmitter.BaseType.GetMethod ("GetObjectData", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
       if (baseGetObjectDataMethod == null || !IsPublicOrProtected (baseGetObjectDataMethod))
       {
-        string message = string.Format ("No public or protected GetObjectData in type {0} - this is not supported.", classEmitter.BaseType.FullName);
-        throw new NotSupportedException (message);
+        string message = string.Format ("No public or protected GetObjectData in type {0} - serialization is not supported.",
+            classEmitter.BaseType.FullName);
+        getObjectDataMethod.ImplementByThrowing (typeof (NotSupportedException), message);
+        return;
       }
+
       getObjectDataMethod.AddStatement (
           new ExpressionStatement (
               new MethodInvocationExpression (
