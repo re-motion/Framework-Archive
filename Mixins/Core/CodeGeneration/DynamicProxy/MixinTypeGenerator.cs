@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Rubicon.CodeGeneration;
-using Rubicon.Collections;
 using Rubicon.CodeGeneration.DPExtensions;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Utilities;
@@ -16,6 +16,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
   internal class MixinTypeGenerator : IMixinTypeGenerator
   {
+    private static readonly ConstructorInfo s_debuggerDisplayAttributeConstructor =
+        typeof (DebuggerDisplayAttribute).GetConstructor (new Type[] { typeof (string) });
+
     private readonly ModuleManager _module;
     private readonly TypeGenerator _targetGenerator;
     private readonly MixinDefinition _configuration;
@@ -53,7 +56,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
       ImplementGetObjectData();
 
-      AddMixinTypeAttribute ();
+      AddMixinTypeAttribute();
+      AddDebuggerAttributes();
       ReplicateAttributes (_configuration.CustomAttributes, _emitter);
       ImplementOverrides();
     }
@@ -82,6 +86,13 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       CustomAttributeBuilder attributeBuilder = ConcreteMixinTypeAttribute.BuilderFromClassContext (Configuration.MixinIndex,
           Configuration.TargetClass.ConfigurationContext);
       Emitter.AddCustomAttribute (attributeBuilder);
+    }
+
+    private void AddDebuggerAttributes ()
+    {
+      string debuggerString = "Derived mixin: " + _configuration.Type.Name + " on class " + _configuration.TargetClass.Type.Name;
+      CustomAttributeBuilder debuggerAttribute = new CustomAttributeBuilder (s_debuggerDisplayAttributeConstructor, new object[] { debuggerString });
+      Emitter.AddCustomAttribute (debuggerAttribute);
     }
 
     private void ImplementOverrides ()

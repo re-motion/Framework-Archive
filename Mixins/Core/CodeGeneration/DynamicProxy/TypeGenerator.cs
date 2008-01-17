@@ -21,6 +21,10 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
   {
     private static readonly MethodInfo s_concreteTypeInitializationMethod =
         typeof (GeneratedClassInstanceInitializer).GetMethod ("InitializeMixinTarget", new Type[] { typeof (IMixinTarget) });
+    private static readonly ConstructorInfo s_debuggerBrowsableAttributeConstructor =
+        typeof (DebuggerBrowsableAttribute).GetConstructor (new Type[] { typeof (DebuggerBrowsableState) });
+    private static readonly ConstructorInfo s_debuggerDisplayAttributeConstructor =
+        typeof (DebuggerDisplayAttribute).GetConstructor (new Type[] { typeof (string) });
 
     private readonly ModuleManager _module;
     private readonly TargetClassDefinition _configuration;
@@ -32,6 +36,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private readonly FieldReference _firstField;
     private readonly Dictionary<MethodInfo, MethodInfo> _baseCallMethods = new Dictionary<MethodInfo, MethodInfo>();
     private readonly MixinTypeGenerator[] _mixinTypeGenerators;
+    private PropertyInfo[] s_debuggerDisplayNameProperty = new PropertyInfo[] { typeof (DebuggerDisplayAttribute).GetProperty ("Name") };
 
     public TypeGenerator (ModuleManager module, TargetClassDefinition configuration, INameProvider nameProvider, INameProvider mixinNameProvider)
     {
@@ -55,12 +60,15 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       _emitter = new CustomClassEmitter (classEmitter);
 
       _configurationField = _emitter.CreateStaticField ("__configuration", typeof (TargetClassDefinition));
+      HideFieldFromDebugger (_configurationField);
       _extensionsField = _emitter.CreateField ("__extensions", typeof (object[]));
+      HideFieldFromDebugger (_extensionsField);
 
       _mixinTypeGenerators = CreateMixinTypeGenerators (mixinNameProvider);
       _baseCallGenerator = new BaseCallProxyGenerator (this, classEmitter, _mixinTypeGenerators);
 
       _firstField = _emitter.CreateField ("__first", _baseCallGenerator.TypeBuilder);
+      HideFieldFromDebugger (_firstField);
 
       Statement initializationStatement = new ExpressionStatement (new MethodInvocationExpression (null, s_concreteTypeInitializationMethod,
           new ConvertExpression (typeof (IMixinTarget), SelfReference.Self.ToExpression ())));
@@ -80,6 +88,13 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       AddDebuggerAttributes();
 
       ImplementOverrides ();
+    }
+
+    private void HideFieldFromDebugger (FieldReference field)
+    {
+      CustomAttributeBuilder attributeBuilder = new CustomAttributeBuilder (s_debuggerBrowsableAttributeConstructor,
+          new object[] {DebuggerBrowsableState.Never});
+      field.Reference.SetCustomAttribute (attributeBuilder);
     }
 
     private IEnumerable<Type> GetMixinTypes ()
@@ -221,18 +236,28 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       configurationProperty.GetMethod =
           Emitter.CreateInterfaceMethodImplementation (typeof (IMixinTarget).GetMethod ("get_Configuration"));
       configurationProperty.ImplementWithBackingField (_configurationField);
+      AddDebuggerDisplayAttribute (configurationProperty, "Target class configuration for " + _configuration.Type.Name, "Configuration");
 
       CustomPropertyEmitter mixinsProperty =
           Emitter.CreateInterfacePropertyImplementation (typeof (IMixinTarget).GetProperty ("Mixins"));
       mixinsProperty.GetMethod =
           Emitter.CreateInterfaceMethodImplementation (typeof (IMixinTarget).GetMethod ("get_Mixins"));
       mixinsProperty.ImplementWithBackingField (_extensionsField);
+      AddDebuggerDisplayAttribute (mixinsProperty, "Count = {__extensions.Length}", "Mixins");
 
       CustomPropertyEmitter firstProperty =
           Emitter.CreateInterfacePropertyImplementation (typeof (IMixinTarget).GetProperty ("FirstBaseCallProxy"));
       firstProperty.GetMethod =
           Emitter.CreateInterfaceMethodImplementation (typeof (IMixinTarget).GetMethod ("get_FirstBaseCallProxy"));
       firstProperty.ImplementWithBackingField (_firstField);
+      AddDebuggerDisplayAttribute (firstProperty, "Generated proxy", "FirstBaseCallProxy");
+    }
+
+    private void AddDebuggerDisplayAttribute (IAttributableEmitter property, string displayString, string nameString)
+    {
+      CustomAttributeBuilder attributeBuilder = new CustomAttributeBuilder (s_debuggerDisplayAttributeConstructor,
+          new object[] { displayString }, s_debuggerDisplayNameProperty, new object[] { nameString });
+      property.AddCustomAttribute (attributeBuilder);
     }
 
     private void ImplementIntroducedInterfaces ()
@@ -416,10 +441,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       string debuggerString = "Mix of " + _configuration.Type.FullName + " + "
                               + SeparatedStringBuilder.Build (" + ", _configuration.Mixins, delegate (MixinDefinition m) { return m.FullName; });
-      CustomAttributeBuilder debuggerAttribute =
-          new CustomAttributeBuilder (
-              typeof (DebuggerDisplayAttribute).GetConstructor (new Type[] {typeof (string)}),
-              new object[] {debuggerString});
+      CustomAttributeBuilder debuggerAttribute = new CustomAttributeBuilder (s_debuggerDisplayAttributeConstructor, new object[] { debuggerString });
       Emitter.AddCustomAttribute (debuggerAttribute);
     }
 
