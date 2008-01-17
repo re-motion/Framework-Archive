@@ -16,6 +16,25 @@
       <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBoundEditableControl" />, this connection is two way, 
       allowing both read and write access to the bound object.
     </para>
+
+    <h3 class="dtH3">ObjectBinding, Mixins, and the Visual Studio Designer</h3>
+    <para>
+      <B>Rubicon.ObjectBinding</B> is designed to work together with types mixed via <see href="N_Rubicon_Mixins.html">Rubicon.Mixins</see>.
+      Its standard implementation of the object binding interfaces is supplied by a mixin that is configured via 
+      <see cref="Rubicon.ObjectBinding.BindableObjectAttribute"/> and <see cref="Rubicon.ObjectBinding.BindableObjectWithIdentityAttribute"/>.
+      That standard implementation also supports binding of properties added by other mixins.
+    </para>
+    <para>
+      For the Visual Studio Designer, <B>Rubicon.ObjectBinding</B> provides designer support for picking bindable types and for selecting bound
+      properties and property paths. Due to a weakness in the way the designer loads types and assemblies at design time, the mixins applied
+      to a target class in the built source code and the mixins applied to the same class in the designer might get out of sync.
+    </para>
+    <para>
+      In such a case, the designer will either not show certain types or properties, although they are clearly marked as bindable and added by
+      mixins in the source code; or it will display error messages about a certain class or property not being bindable, although it obviously is
+      in the source code. Sometimes, simply refreshing the designer can resolve that issue, but sometimes the issue can only be resolved by
+      restarting Visual Studio.
+    </para>
     
     <h3 class="dtH3">The Business Object Model</h3>
     <h4 class="dtH4">Introduction</h4>
