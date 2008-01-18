@@ -3,6 +3,13 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Globalization
 {
+  /// <summary>
+  /// Encapsulates the algorithms used to access resource containers defined by resource attributes.
+  /// </summary>
+  /// <typeparam name="TAttribute">The type of the resource attribute to be resolved by this class.</typeparam>
+  /// <remarks>
+  /// This class is an attribute type-agnostic encapsulation of the algorithms used by <see cref="MultiLingualResources"/>.
+  /// </remarks>
   public static class ResourceManagerResolverUtility<TAttribute>
       where TAttribute : Attribute, IResourcesAttribute
   {

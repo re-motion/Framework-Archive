@@ -7,6 +7,10 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Globalization
 {
+  /// <summary>
+  /// Provides a generalized implementation of the algorithms used to translate resource attributes into <see cref="IResourceManager"/> instances.
+  /// </summary>
+  /// <typeparam name="TAttribute">The type of the resource attribute to be resolved by this class.</typeparam>
   public class ResourceManagerResolverImplementation<TAttribute>
       where TAttribute : Attribute, IResourcesAttribute
   {
@@ -34,7 +38,7 @@ namespace Rubicon.Globalization
     /// </summary>
     /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/Common/*' />
     /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/param[@name="objectType" or @name="includeHierarchy" or @name="definingType"]' />
-    public IResourceManager GetResourceManager (Type objectType, bool includeHierarchy, out Type definingType)
+    public virtual IResourceManager GetResourceManager (Type objectType, bool includeHierarchy, out Type definingType)
     {
       ArgumentUtility.CheckNotNull ("objectType", objectType);
 

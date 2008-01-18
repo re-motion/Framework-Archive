@@ -9,6 +9,10 @@ namespace Rubicon.Globalization
 /// <summary>
 ///   Attribute for specifying the resource container for a type.
 /// </summary>
+/// <remarks>
+/// use the <see cref="MultiLingualResources"/> class to analyze instances of this attribute and to retrieve <see cref="ResourceManager"/>
+/// objects for them, eg. when implementing <see cref="IObjectWithResources"/>.
+/// </remarks>
 [AttributeUsage (AttributeTargets.Class | AttributeTargets.Enum, AllowMultiple = true, Inherited = false)]
 public class MultiLingualResourcesAttribute: Attribute, IResourcesAttribute
 {

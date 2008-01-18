@@ -3,6 +3,9 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Globalization
 {
+  /// <summary>
+  /// Provides the public API for classes working with and analyzing instances of <see cref="MultiLingualResourcesAttribute"/>.
+  /// </summary>
   public static class MultiLingualResources
   {
     private static readonly ResourceManagerResolverImplementation<MultiLingualResourcesAttribute> s_resolver =
