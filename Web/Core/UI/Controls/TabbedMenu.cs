@@ -546,7 +546,7 @@ namespace Rubicon.Web.UI.Controls
       if (localResourcesType == null)
         localResourceManager = NullResourceManager.Instance;
       else
-        localResourceManager = MultiLingualResourcesAttribute.GetResourceManager (localResourcesType, true);
+        localResourceManager = MultiLingualResources.GetResourceManager (localResourcesType, true);
       IResourceManager namingContainerResourceManager =
           ResourceManagerUtility.GetResourceManager (NamingContainer, true);
 

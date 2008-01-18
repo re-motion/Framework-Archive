@@ -113,8 +113,8 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
       {
         string displayName = string.Empty;
 
-        if (MultiLingualResourcesAttribute.ExistsResource (_propertyInfo.DeclaringType))
-          displayName = MultiLingualResourcesAttribute.GetResourceText (_propertyInfo.DeclaringType, "property:" + _propertyInfo.Name);
+        if (MultiLingualResources.ExistsResource (_propertyInfo.DeclaringType))
+          displayName = MultiLingualResources.GetResourceText (_propertyInfo.DeclaringType, "property:" + _propertyInfo.Name);
 
         if (displayName == string.Empty || displayName == null)
           displayName = _propertyInfo.Name;

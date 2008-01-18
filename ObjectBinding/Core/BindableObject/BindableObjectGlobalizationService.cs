@@ -57,9 +57,9 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     private IResourceManager GetResourceManager (Type type)
     {
-      if (!MultiLingualResourcesAttribute.ExistsResource (type))
+      if (!MultiLingualResources.ExistsResource (type))
         return NullResourceManager.Instance;
-      return MultiLingualResourcesAttribute.GetResourceManager (type, true);
+      return MultiLingualResources.GetResourceManager (type, true);
     }
   }
 }

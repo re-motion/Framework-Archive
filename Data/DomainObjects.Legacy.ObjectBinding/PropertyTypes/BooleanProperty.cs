@@ -26,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
     public string GetDisplayName (bool value)
     {
       string resourceName = value ? "True" : "False";
-      return MultiLingualResourcesAttribute.GetResourceText (this, resourceName);
+      return MultiLingualResources.GetResourceText (this, resourceName);
     }
 
     public bool? GetDefaultValue (IBusinessObjectClass objectClass)

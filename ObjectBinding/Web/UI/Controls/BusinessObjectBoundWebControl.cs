@@ -312,7 +312,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 
       //  Get the resource managers
 
-      IResourceManager localResourceManager = MultiLingualResourcesAttribute.GetResourceManager (localResourcesType, true);
+      IResourceManager localResourceManager = MultiLingualResources.GetResourceManager (localResourcesType, true);
       IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
 
       if (namingContainerResourceManager == null)

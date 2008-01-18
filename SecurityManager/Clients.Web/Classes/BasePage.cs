@@ -76,8 +76,8 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
     {
       Type type = this.GetType ();
 
-      if (MultiLingualResourcesAttribute.ExistsResource (type))
-        return MultiLingualResourcesAttribute.GetResourceManager (type, true);
+      if (MultiLingualResources.ExistsResource (type))
+        return MultiLingualResources.GetResourceManager (type, true);
       else
         return null;
     }

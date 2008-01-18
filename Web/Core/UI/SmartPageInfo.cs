@@ -166,7 +166,7 @@ namespace Rubicon.Web.UI
       //  Get the resource managers
 
       IResourceManager localResourceManager =
-          MultiLingualResourcesAttribute.GetResourceManager (localResourcesType, true);
+          MultiLingualResources.GetResourceManager (localResourcesType, true);
       IResourceManager pageResourceManager = ResourceManagerUtility.GetResourceManager ((Page) _page, true);
 
       if (pageResourceManager == null)

@@ -35,8 +35,8 @@ public class BaseUserControl :
   protected virtual IResourceManager GetResourceManager()
   {
     Type type = GetType();
-    if (MultiLingualResourcesAttribute.ExistsResource (type))
-      return MultiLingualResourcesAttribute.GetResourceManager (type, true);
+    if (MultiLingualResources.ExistsResource (type))
+      return MultiLingualResources.GetResourceManager (type, true);
     else
       return null;
   }

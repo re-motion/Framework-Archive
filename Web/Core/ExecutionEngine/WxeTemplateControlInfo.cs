@@ -89,7 +89,7 @@ public class WxeTemplateControlInfo
     //  Get the resource managers
 
     IResourceManager localResourceManager = 
-        MultiLingualResourcesAttribute.GetResourceManager (localResourcesType, true);
+        MultiLingualResources.GetResourceManager (localResourcesType, true);
     Control namingContainer = _control.NamingContainer;
     if (namingContainer == null)
       namingContainer = (Control) _control;
