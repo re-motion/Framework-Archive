@@ -27,7 +27,7 @@ namespace Rubicon.Mixins.Globalization
         foreach (MixinDefinition mixinDefinition in mixinConfiguration.Mixins)
         {
           TAttribute[] attributes;
-          FindFirstResourceDefinitions (mixinDefinition.Type, false, out definingType, out attributes);
+          FindFirstResourceDefinitions (mixinDefinition.Type, true, out definingType, out attributes);
           if (attributes.Length != 0)
             return attributes;
         }

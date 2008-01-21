@@ -6,6 +6,7 @@ using Rubicon.Collections;
 using Rubicon.Globalization;
 using Rubicon.Mixins.Globalization;
 using Rubicon.Mixins.UnitTests.Globalization.SampleTypes;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.UnitTests.Globalization
@@ -91,6 +92,18 @@ namespace Rubicon.Mixins.UnitTests.Globalization
       Type definingType;
       MultiLingualResourcesAttribute[] attributes;
 
+      _resolver.FindFirstResourceDefinitions (typeof (ClassWithoutMultiLingualResourcesAttributes), true, out definingType, out attributes);
+      Assert.IsNull (definingType);
+      Assert.IsEmpty (attributes);
+    }
+
+    [Test]
+    public void FindFirstResourceDefinitions_NoSuccessNoExceptionButMixins ()
+    {
+      Type definingType;
+      MultiLingualResourcesAttribute[] attributes;
+
+      using (MixinConfiguration.BuildNew().ForClass<ClassWithoutMultiLingualResourcesAttributes>().AddMixin<NullMixin>().EnterScope())
       _resolver.FindFirstResourceDefinitions (typeof (ClassWithoutMultiLingualResourcesAttributes), true, out definingType, out attributes);
       Assert.IsNull (definingType);
       Assert.IsEmpty (attributes);
