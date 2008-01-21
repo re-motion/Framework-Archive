@@ -2,7 +2,6 @@ using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
 
@@ -12,9 +11,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
   public class DataContainerMapTest : ClientTransactionBaseTest
   {
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Type 'Rubicon.Data.DomainObjects.DataManagemenet.DataContainerMap' in Assembly "
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Type 'Rubicon.Data.DomainObjects.DataManagement.DataContainerMap' in Assembly "
        + ".* is not marked as serializable.", MatchType = MessageMatch.Regex)]
-    [Ignore ("TODO: FS - after finishing flattened serializable implementation")]
     public void DataContainerMapIsNotSerializable ()
     {
       Serializer.SerializeAndDeserialize (ClientTransactionMock.DataManager.DataContainerMap);

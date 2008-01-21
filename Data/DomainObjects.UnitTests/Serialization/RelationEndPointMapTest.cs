@@ -11,9 +11,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
   public class RelationEndPointMapTest : ClientTransactionBaseTest
   {
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Type 'Rubicon.Data.DomainObjects.DataManagemenet.RelationEndPointMap' in Assembly "
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Type 'Rubicon.Data.DomainObjects.DataManagement.RelationEndPointMap' in Assembly "
         + ".* is not marked as serializable.", MatchType = MessageMatch.Regex)]
-    [Ignore ("TODO: FS - after finishing flattened serializable implementation")]
     public void RelationEndPointMapIsNotSerializable ()
     {
       Serializer.SerializeAndDeserialize (ClientTransactionMock.DataManager.RelationEndPointMap);

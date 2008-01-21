@@ -4,6 +4,7 @@ using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 {
+  [Serializable]
   public class RelationEndPointStub : RelationEndPoint
   {
     public RelationEndPointStub (ClientTransaction clientTransaction, RelationEndPointID id)

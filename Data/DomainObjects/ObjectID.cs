@@ -124,7 +124,10 @@ namespace Rubicon.Data.DomainObjects
 
     // member fields
 
+    [NonSerialized]
     private ClassDefinition _classDefinition;
+
+    private string _classDefinitionID;
     private object _value;
 
     // construction and disposing
@@ -254,6 +257,7 @@ namespace Rubicon.Data.DomainObjects
       storageProviderDefinition.CheckIdentityType (value.GetType());
 
       _classDefinition = classDefinition;
+      _classDefinitionID = _classDefinition.ID;
       _value = value;
     }
 
@@ -264,7 +268,7 @@ namespace Rubicon.Data.DomainObjects
     /// </summary>
     public string StorageProviderID
     {
-      get { return _classDefinition.StorageProviderID; }
+      get { return ClassDefinition.StorageProviderID; }
     }
 
     /// <summary>
@@ -283,7 +287,7 @@ namespace Rubicon.Data.DomainObjects
     /// </summary>
     public string ClassID
     {
-      get { return _classDefinition.ID; }
+      get { return ClassDefinition.ID; }
     }
 
     /// <summary>
@@ -291,7 +295,12 @@ namespace Rubicon.Data.DomainObjects
     /// </summary>
     public ClassDefinition ClassDefinition
     {
-      get { return _classDefinition; }
+      get
+      {
+        if (_classDefinition == null)
+          _classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (_classDefinitionID);
+        return _classDefinition;
+      }
     }
 
     /// <summary>
@@ -381,8 +390,8 @@ namespace Rubicon.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("info", info);
 
-      string classDefinitionID = info.GetValueForHandle<string> ();
-      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (classDefinitionID);
+      _classDefinitionID = info.GetValueForHandle<string> ();
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (_classDefinitionID);
       object value = info.GetValue<object> ();
 
       _classDefinition = classDefinition;
@@ -393,7 +402,7 @@ namespace Rubicon.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("info", info);
 
-      info.AddHandle (_classDefinition.ID);
+      info.AddHandle (_classDefinitionID);
       info.AddValue (_value);
     }
 

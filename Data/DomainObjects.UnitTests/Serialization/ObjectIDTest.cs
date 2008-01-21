@@ -10,12 +10,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
   public class ObjectIDTest : StandardMappingTest
   {
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Type 'Rubicon.Data.DomainObjects.ObjectID' in Assembly "
-        + ".* is not marked as serializable.", MatchType = MessageMatch.Regex)]
-    [Ignore ("TODO: FS - after finishing flattened serializable implementation")]
-    public void ObjectIDIsNotSerializable ()
+    public void ObjectIDIsSerializable ()
     {
-      Serializer.SerializeAndDeserialize (DomainObjectIDs.Order1);
+      ObjectID id = Serializer.SerializeAndDeserialize (DomainObjectIDs.Order1);
+      Assert.AreEqual (DomainObjectIDs.Order1, id);
     }
 
     [Test]

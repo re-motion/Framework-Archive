@@ -12,8 +12,7 @@ namespace Rubicon.Data.DomainObjects
   /// <summary>
   /// Represents a container for the persisted properties of a DomainObject.
   /// </summary>
-  [Serializable]
-  public sealed class DataContainer : ISerializable, IDeserializationCallback, IFlattenedSerializable
+  public sealed class DataContainer : IFlattenedSerializable
   {
     // types
 
@@ -657,78 +656,6 @@ namespace Rubicon.Data.DomainObjects
       info.AddValue (_state);
       info.AddHandle (_domainObject);
       info.AddBoolValue (_hasBeenMarkedChanged);
-    }
-
-    private DataContainer (SerializationInfo info, StreamingContext context)
-    {
-      ArgumentUtility.CheckNotNull ("info", info);
-
-      PropertyChanging += (PropertyChangeEventHandler) info.GetValue ("PropertyChanging", typeof (PropertyChangeEventHandler));
-      PropertyChanged += (PropertyChangeEventHandler) info.GetValue ("PropertyChanged", typeof (PropertyChangeEventHandler));
-
-      _id = (ObjectID) info.GetValue ("_id", typeof (ObjectID));
-      _clientTransaction = (ClientTransaction) info.GetValue ("_clientTransaction", typeof (ClientTransaction));
-      _timestamp = info.GetValue ("_timestamp", typeof (object));
-      _state = (DataContainerStateType) info.GetValue ("_state", typeof (DataContainerStateType));
-      _domainObject = (DomainObject) info.GetValue ("_domainObject", typeof (DomainObject));
-      _isDiscarded = info.GetBoolean ("_isDiscarded");
-      _hasBeenMarkedChanged = info.GetBoolean ("_hasBeenMarkedChanged");
-
-      _propertyValues = new PropertyValueCollection ();
-
-      if (!_isDiscarded)
-      {
-        _propertyValues.RegisterForChangeNotification (this);
-        _deserializedPropertyValueData = (List<object>) info.GetValue ("flattenedPropertyValueData", typeof (List<object>));
-      }
-      else
-        _propertyValues.Discard();
-    }
-
-    void IDeserializationCallback.OnDeserialization (object sender)
-    {
-      if (_deserializedPropertyValueData != null)
-      {
-        InitializePropertyValues (this);
-
-        for (int i = 0; i < _deserializedPropertyValueData.Count; ++i)
-        {
-          string propertyName = (string) _deserializedPropertyValueData[i];
-          ++i;
-          object[] data = (object[]) _deserializedPropertyValueData[i];
-          PropertyValues[propertyName].RestoreData (data);
-        }
-
-        _deserializedPropertyValueData = null;
-      }
-    }
-
-    void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      ArgumentUtility.CheckNotNull ("info", info);
-
-      info.AddValue ("PropertyChanging", PropertyChanging);
-      info.AddValue ("PropertyChanged", PropertyChanged);
-      info.AddValue ("_id", _id);
-      info.AddValue ("_clientTransaction", _clientTransaction);
-      info.AddValue ("_timestamp", _timestamp);
-      info.AddValue ("_state", _state);
-      info.AddValue ("_domainObject", _domainObject);
-      info.AddValue ("_isDiscarded", _isDiscarded);
-      info.AddValue ("_hasBeenMarkedChanged", _hasBeenMarkedChanged);
-
-      List<object> flattenedPropertyValueData = new List<object>();
-      if (!_isDiscarded)
-      {
-        foreach (PropertyValue propertyValue in _propertyValues)
-        {
-          flattenedPropertyValueData.Add (propertyValue.Definition.PropertyName);
-          object[] data = propertyValue.GetData();
-          flattenedPropertyValueData.Add (data);
-        }
-
-        info.AddValue ("flattenedPropertyValueData", flattenedPropertyValueData);
-      }
     }
 
     #endregion Serialization

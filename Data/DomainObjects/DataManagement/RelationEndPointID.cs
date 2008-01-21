@@ -5,7 +5,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
-  [Serializable]
   public sealed class RelationEndPointID : IFlattenedSerializable
   {
     // types

@@ -13,7 +13,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     [ExpectedException (typeof (SerializationException), ExpectedMessage = "Type 'Rubicon.Data.DomainObjects.DataContainer' in Assembly "
         + ".* is not marked as serializable.", MatchType = MessageMatch.Regex)]
-    [Ignore ("TODO: FS - after finishing flattened serializable implementation")]
     public void DataContainerIsNotSerializable ()
     {
       ObjectID objectID = new ObjectID ("Customer", Guid.NewGuid ());

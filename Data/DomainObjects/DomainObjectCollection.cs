@@ -261,6 +261,7 @@ namespace Rubicon.Data.DomainObjects
     private Type _requiredItemType;
     
     // this field will not be serialized via IFlattenedSerializable.SerializeIntoFlatStructure
+    [NonSerialized]
     private ICollectionChangeDelegate _changeDelegate = null;
 
     // construction and disposing
