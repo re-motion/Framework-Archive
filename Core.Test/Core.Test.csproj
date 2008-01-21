@@ -180,7 +180,7 @@
     <Compile Include="Design\DesignModeHelperBaseTest.cs" />
     <Compile Include="Design\StubDesignModeHelper.cs" />
     <Compile Include="DoubleCheckedLockingContainerTest.cs" />
-    <Compile Include="Globalization\ResourceManagerResolverImplementationTest.cs" />
+    <Compile Include="Globalization\ResourceManagerResolverTest.cs" />
     <Compile Include="Globalization\ResourceManagerResolverUtilityTest.cs" />
     <Compile Include="Globalization\SampleTypes\ClassWithMultiLingualResourcesAttributes.cs" />
     <Compile Include="Globalization\SampleTypes\ClassWithoutMultiLingualResourcesAttributes.cs" />

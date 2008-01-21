@@ -10,13 +10,13 @@ namespace Rubicon.Core.UnitTests.Globalization
   public class ResourceManagerResolverUtilityTest
   {
     private MockRepository _mockRepository;
-    private ResourceManagerResolverImplementation<MultiLingualResourcesAttribute> _resolverMock;
+    private ResourceManagerResolver<MultiLingualResourcesAttribute> _resolverMock;
 
     [SetUp]
     public void SetUp ()
     {
       _mockRepository = new MockRepository();
-      _resolverMock = _mockRepository.CreateMock<ResourceManagerResolverImplementation<MultiLingualResourcesAttribute>>();
+      _resolverMock = _mockRepository.CreateMock<ResourceManagerResolver<MultiLingualResourcesAttribute>>();
     }
 
     [Test]
@@ -105,8 +105,8 @@ namespace Rubicon.Core.UnitTests.Globalization
     [Test]
     public void ExistsResourceTrue ()
     {
-      ResourceManagerResolverImplementation<MultiLingualResourcesAttribute> resolver =
-          new ResourceManagerResolverImplementation<MultiLingualResourcesAttribute>();
+      ResourceManagerResolver<MultiLingualResourcesAttribute> resolver =
+          new ResourceManagerResolver<MultiLingualResourcesAttribute>();
       Assert.IsTrue (
           ResourceManagerResolverUtility<MultiLingualResourcesAttribute>.ExistsResource (resolver, typeof (ClassWithMultiLingualResourcesAttributes)));
       Assert.IsTrue (
@@ -118,8 +118,8 @@ namespace Rubicon.Core.UnitTests.Globalization
     [Test]
     public void ExistsResourceFalse ()
     {
-      ResourceManagerResolverImplementation<MultiLingualResourcesAttribute> resolver =
-          new ResourceManagerResolverImplementation<MultiLingualResourcesAttribute> ();
+      ResourceManagerResolver<MultiLingualResourcesAttribute> resolver =
+          new ResourceManagerResolver<MultiLingualResourcesAttribute> ();
       Assert.IsFalse (
           ResourceManagerResolverUtility<MultiLingualResourcesAttribute>.ExistsResource (resolver, typeof (ClassWithoutMultiLingualResourcesAttributes)));
     }

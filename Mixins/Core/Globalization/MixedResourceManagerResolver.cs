@@ -7,7 +7,7 @@ using Rubicon.Collections;
 
 namespace Rubicon.Mixins.Globalization
 {
-  public class MixedResourceManagerResolverImplementation<TAttribute> : ResourceManagerResolverImplementation<TAttribute>
+  public class MixedResourceManagerResolver<TAttribute> : ResourceManagerResolver<TAttribute>
       where TAttribute : Attribute, IResourcesAttribute
   {
     protected override object GetResourceManagerSetCacheKey (Type definingType, bool includeHierarchy)

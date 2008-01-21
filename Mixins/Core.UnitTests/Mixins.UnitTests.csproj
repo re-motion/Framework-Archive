@@ -86,7 +86,7 @@
     <Compile Include="Configuration\ValidationTests\Rules\DefaultTargetClassRulesTestss.cs" />
     <Compile Include="Configuration\ValidationTests\ValidationTestBase.cs" />
     <Compile Include="Globalization\MixedMultiLingualResourcesTests\ExistsResourceTests.cs" />
-    <Compile Include="Globalization\MixedResourceManagerResolverImplementationTests.cs" />
+    <Compile Include="Globalization\MixedResourceManagerResolverTests.cs" />
     <Compile Include="Globalization\SampleTypes\ClassWithMultiLingualResourcesAttributes.cs" />
     <Compile Include="Globalization\SampleTypes\ClassWithoutMultiLingualResourcesAttributes.cs" />
     <Compile Include="Globalization\SampleTypes\InheritedClassWithMultiLingualResourcesAttributes.cs" />

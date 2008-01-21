@@ -11,7 +11,7 @@ namespace Rubicon.Globalization
   /// Provides a generalized implementation of the algorithms used to translate resource attributes into <see cref="IResourceManager"/> instances.
   /// </summary>
   /// <typeparam name="TAttribute">The type of the resource attribute to be resolved by this class.</typeparam>
-  public class ResourceManagerResolverImplementation<TAttribute>
+  public class ResourceManagerResolver<TAttribute>
       where TAttribute : Attribute, IResourcesAttribute
   {
     private readonly InterlockedCache<string, ResourceManager> _resourceManagersCache = new InterlockedCache<string, ResourceManager> ();

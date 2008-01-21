@@ -11,14 +11,14 @@ using Rubicon.Utilities;
 namespace Rubicon.Mixins.UnitTests.Globalization
 {
   [TestFixture]
-  public class MixedResourceManagerResolverImplementationTests
+  public class MixedResourceManagerResolverTests
   {
-    private MixedResourceManagerResolverImplementation<MultiLingualResourcesAttribute> _resolver;
+    private MixedResourceManagerResolver<MultiLingualResourcesAttribute> _resolver;
 
     [SetUp]
     public void SetUp ()
     {
-      _resolver = new MixedResourceManagerResolverImplementation<MultiLingualResourcesAttribute> ();
+      _resolver = new MixedResourceManagerResolver<MultiLingualResourcesAttribute> ();
     }
 
     [Test]

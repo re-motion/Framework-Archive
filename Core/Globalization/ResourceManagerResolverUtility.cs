@@ -22,7 +22,7 @@ namespace Rubicon.Globalization
     /// </param>
     /// <param name="name"> The ID of the resource. </param>
     /// <returns> The found string resource or an empty string. </returns>
-    public static string GetResourceText (ResourceManagerResolverImplementation<TAttribute> resolver, Type objectTypeToGetResourceFor, string name)
+    public static string GetResourceText (ResourceManagerResolver<TAttribute> resolver, Type objectTypeToGetResourceFor, string name)
     {
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
       ArgumentUtility.CheckNotNull ("name", name);
@@ -43,7 +43,7 @@ namespace Rubicon.Globalization
     /// </param>
     /// <param name="name"> The ID of the resource. </param>
     /// <returns> <see langword="true"/> if the resource can be found. </returns>
-    public static bool ExistsResourceText (ResourceManagerResolverImplementation<TAttribute> resolver, Type objectTypeToGetResourceFor, string name)
+    public static bool ExistsResourceText (ResourceManagerResolver<TAttribute> resolver, Type objectTypeToGetResourceFor, string name)
     {
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
       ArgumentUtility.CheckNotNull ("name", name);
@@ -68,7 +68,7 @@ namespace Rubicon.Globalization
     ///   The <see cref="Type"/> for which to check for the resource set.
     /// </param>
     /// <returns> <see langword="true"/> if the resource ser can be found. </returns>
-    public static bool ExistsResource (ResourceManagerResolverImplementation<TAttribute> resolver, Type objectTypeToGetResourceFor)
+    public static bool ExistsResource (ResourceManagerResolver<TAttribute> resolver, Type objectTypeToGetResourceFor)
     {
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
 

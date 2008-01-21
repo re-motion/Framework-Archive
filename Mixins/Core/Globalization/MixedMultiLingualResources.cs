@@ -10,8 +10,8 @@ namespace Rubicon.Mixins.Globalization
   /// </summary>
   public class MixedMultiLingualResources
   {
-    private static readonly MixedResourceManagerResolverImplementation<MultiLingualResourcesAttribute> s_resolver =
-        new MixedResourceManagerResolverImplementation<MultiLingualResourcesAttribute> ();
+    private static readonly MixedResourceManagerResolver<MultiLingualResourcesAttribute> s_resolver =
+        new MixedResourceManagerResolver<MultiLingualResourcesAttribute> ();
 
     /// <summary>
     ///   Returns an instance of <see cref="IResourceManager"/> for the resource container specified in the class declaration of the type.

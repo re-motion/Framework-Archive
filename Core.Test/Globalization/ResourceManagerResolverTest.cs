@@ -11,14 +11,14 @@ using Rubicon.Utilities;
 namespace Rubicon.Core.UnitTests.Globalization
 {
   [TestFixture]
-  public class ResourceManagerResolverImplementationTest
+  public class ResourceManagerResolverTest
   {
-    private ResourceManagerResolverImplementation<MultiLingualResourcesAttribute> _resolver;
+    private ResourceManagerResolver<MultiLingualResourcesAttribute> _resolver;
 
     [SetUp]
     public void SetUp ()
     {
-      _resolver = new ResourceManagerResolverImplementation<MultiLingualResourcesAttribute>();
+      _resolver = new ResourceManagerResolver<MultiLingualResourcesAttribute>();
     }
 
     [Test]
@@ -76,11 +76,11 @@ namespace Rubicon.Core.UnitTests.Globalization
             new MultiLingualResourcesAttribute ("Two")
           };
 
-      PrivateInvoke.InvokeNonPublicMethod (attributes[0], "SetResourceAssembly", typeof (ResourceManagerResolverImplementationTest).Assembly);
+      PrivateInvoke.InvokeNonPublicMethod (attributes[0], "SetResourceAssembly", typeof (ResourceManagerResolverTest).Assembly);
 
       ResourceManager[] resourceManagers = _resolver.GetResourceManagers (typeof (object).Assembly, attributes);
       Assert.AreEqual (2, resourceManagers.Length);
-      Assert.AreEqual (typeof (ResourceManagerResolverImplementationTest).Assembly, PrivateInvoke.GetNonPublicField (resourceManagers[0], "MainAssembly"));
+      Assert.AreEqual (typeof (ResourceManagerResolverTest).Assembly, PrivateInvoke.GetNonPublicField (resourceManagers[0], "MainAssembly"));
       Assert.AreEqual (typeof (object).Assembly, PrivateInvoke.GetNonPublicField (resourceManagers[1], "MainAssembly"));
     }
 

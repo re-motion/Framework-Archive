@@ -8,8 +8,8 @@ namespace Rubicon.Globalization
   /// </summary>
   public static class MultiLingualResources
   {
-    private static readonly ResourceManagerResolverImplementation<MultiLingualResourcesAttribute> s_resolver =
-        new ResourceManagerResolverImplementation<MultiLingualResourcesAttribute>();
+    private static readonly ResourceManagerResolver<MultiLingualResourcesAttribute> s_resolver =
+        new ResourceManagerResolver<MultiLingualResourcesAttribute>();
 
     /// <summary>
     ///   Returns an instance of <c>IResourceManager</c> for the resource container specified

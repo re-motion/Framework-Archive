@@ -138,7 +138,7 @@
     <Compile Include="DoubleCheckedLockingContainer.cs" />
     <Compile Include="Globalization\IResourcesAttribute.cs" />
     <Compile Include="Globalization\MultiLingualResources.cs" />
-    <Compile Include="Globalization\ResourceManagerResolverImplementation.cs" />
+    <Compile Include="Globalization\ResourceManagerResolver.cs" />
     <Compile Include="Globalization\ResourceManagerResolverUtility.cs" />
     <Compile Include="INullObject.cs" />
     <Compile Include="Collections\ArrayComparer.cs" />
