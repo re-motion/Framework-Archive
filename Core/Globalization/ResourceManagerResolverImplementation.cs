@@ -15,7 +15,7 @@ namespace Rubicon.Globalization
       where TAttribute : Attribute, IResourcesAttribute
   {
     private readonly InterlockedCache<string, ResourceManager> _resourceManagersCache = new InterlockedCache<string, ResourceManager> ();
-    private readonly InterlockedCache<string, ResourceManagerSet> _resourceManagerWrappersCache = new InterlockedCache<string, ResourceManagerSet>();
+    private readonly InterlockedCache<object, ResourceManagerSet> _resourceManagerWrappersCache = new InterlockedCache<object, ResourceManagerSet>();
 
     /// <summary>
     ///   Returns an instance of <c>IResourceManager</c> for the resource container specified
@@ -46,10 +46,10 @@ namespace Rubicon.Globalization
       //  Current hierarchy level, always report missing TAttribute
 
       Type retrievedDefiningType;
-      GetResourceNameAndType (objectType, false, out retrievedDefiningType, out resourceAttributes);
+      FindFirstResourceDefinitions (objectType, false, out retrievedDefiningType, out resourceAttributes);
       definingType = retrievedDefiningType;
 
-      string key = retrievedDefiningType.AssemblyQualifiedName + "/" + includeHierarchy;
+      object key = GetResourceManagerSetCacheKey(retrievedDefiningType, includeHierarchy);
 
       //  Look in cache and continue with the cached resource manager wrapper, if one is found
       return _resourceManagerWrappersCache.GetOrCreateValue (
@@ -58,6 +58,11 @@ namespace Rubicon.Globalization
           {
             return CreateResourceManagerSet (retrievedDefiningType, resourceAttributes, includeHierarchy);
           });
+    }
+
+    protected virtual object GetResourceManagerSetCacheKey (Type definingType, bool includeHierarchy)
+    {
+      return definingType.AssemblyQualifiedName + "/" + includeHierarchy;
     }
 
     private ResourceManagerSet CreateResourceManagerSet (Type definingType, TAttribute[] resourceAttributes,
@@ -83,7 +88,7 @@ namespace Rubicon.Globalization
       while (currentType != null)
       {
         TAttribute[] resourceAttributes;
-        GetResourceNameAndType (currentType, true, out currentType, out resourceAttributes);
+        FindFirstResourceDefinitions (currentType, true, out currentType, out resourceAttributes);
 
         //  No more base types defining the TAttribute
         if (currentType != null)
@@ -131,11 +136,10 @@ namespace Rubicon.Globalization
     }
 
     /// <summary>
-    /// Finds the class where the <typeparamref name="TAttribute"/> was defined and returns
-    /// its type and all the <typeparamref name="TAttribute"/> instances.
+    /// Walks through the inheritance hierarchy of the given type, searching for a type on which <typeparamref name="TAttribute"/> is defined.
     /// </summary>
-    /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceNameAndType/*' />
-    public void GetResourceNameAndType (
+    /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/FindFirstResourceDefinitions/*' />
+    public virtual void FindFirstResourceDefinitions (
         Type concreteType,
         bool noUndefinedException,
         out Type definingType,
@@ -144,27 +148,30 @@ namespace Rubicon.Globalization
       ArgumentUtility.CheckNotNull ("concreteType", concreteType);
       ArgumentUtility.CheckNotNull ("noUndefinedException", noUndefinedException);
 
-      Type type = concreteType;
-      resourceAttributes = GetResourceAttributes (type);
+      resourceAttributes = GetResourceAttributes (concreteType);
 
-      //  Find the base type where MultiLingualResourceAttribute was specified for this type
-      //  Base type can be identical to type
+      if (resourceAttributes.Length != 0)
+          definingType = concreteType;
+      else
+          resourceAttributes = FindFirstResourceDefinitionsInBaseTypes (concreteType, out definingType);
 
-      while (resourceAttributes.Length == 0)
+      if (resourceAttributes.Length == 0 && !noUndefinedException)
+          throw new ResourceException ("Type " + concreteType.FullName + " and its base classes do not define the attribute " + typeof (TAttribute).Name + ".");
+    }
+
+    protected virtual TAttribute[] FindFirstResourceDefinitionsInBaseTypes (Type concreteType, out Type definingType)
+    {
+      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
+
+      definingType = concreteType.BaseType;
+      while (definingType != null)
       {
-        type = type.BaseType;
-        if (type == null)
-        {
-          if (noUndefinedException)
-            break;
-          else
-            throw new ResourceException ("Type " + concreteType.FullName + " and its base classes do not define the attribute " + typeof (TAttribute).Name + ".");
-        }
-
-        resourceAttributes = GetResourceAttributes (type);
+        TAttribute[] resourceAttributes = GetResourceAttributes (definingType);
+        if (resourceAttributes.Length != 0)
+          return resourceAttributes;
+        definingType = definingType.BaseType;
       }
-
-      definingType = type;
+      return new TAttribute[0];
     }
 
     /// <summary>

@@ -62,6 +62,8 @@
     <Compile Include="CompleteInterfaceAttribute.cs" />
     <Compile Include="Context\DeclarativeConfigurationAnalyzer.cs" />
     <Compile Include="Context\MixinContext.cs" />
+    <Compile Include="Globalization\MixedMultiLingualResources.cs" />
+    <Compile Include="Globalization\MixedResourceManagerResolverImplementation.cs" />
     <Compile Include="IOverrideAttribute.cs" />
     <Compile Include="MixinConfiguration.ActiveConfiguration.cs" />
     <Compile Include="MixinConfiguration.Build.cs" />

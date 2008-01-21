@@ -75,7 +75,7 @@ namespace Rubicon.Globalization
       Type definingType;
       TAttribute[] resourceAttributes;
 
-      resolver.GetResourceNameAndType (objectTypeToGetResourceFor, true, out definingType, out resourceAttributes);
+      resolver.FindFirstResourceDefinitions (objectTypeToGetResourceFor, true, out definingType, out resourceAttributes);
       return resourceAttributes.Length > 0;
     }
   }

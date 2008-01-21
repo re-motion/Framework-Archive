@@ -33,7 +33,7 @@
       A <b>ResourceManager</b> Array containing the type's resource containers.
     </returns>
   </GetResourceManagers>
-  <GetResourceNameAndType>
+  <FindFirstResourceDefinitions>
     <param name="concreteType">The type to be analyzed</param>
     <param name="noUndefinedException">
       If true, don't throw an exception when MultiLingualResourcesAttribute is not defined.
@@ -45,5 +45,5 @@
     <param name="resourceAttributes">
       The <b>MultiLingualResourcesAttribute</b> instances associated with <paramref name="concreteType"/>.
     </param>
-  </GetResourceNameAndType>
+  </FindFirstResourceDefinitions>
 </MultiLingualResourcesAttribute>

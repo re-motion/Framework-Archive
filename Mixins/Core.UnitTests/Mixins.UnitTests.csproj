@@ -85,6 +85,15 @@
     <Compile Include="Configuration\ValidationTests\DelegateRuleDescriptionTests.cs" />
     <Compile Include="Configuration\ValidationTests\Rules\DefaultTargetClassRulesTestss.cs" />
     <Compile Include="Configuration\ValidationTests\ValidationTestBase.cs" />
+    <Compile Include="Globalization\MixedMultiLingualResourcesTests\ExistsResourceTests.cs" />
+    <Compile Include="Globalization\MixedResourceManagerResolverImplementationTests.cs" />
+    <Compile Include="Globalization\SampleTypes\ClassWithMultiLingualResourcesAttributes.cs" />
+    <Compile Include="Globalization\SampleTypes\ClassWithoutMultiLingualResourcesAttributes.cs" />
+    <Compile Include="Globalization\SampleTypes\InheritedClassWithMultiLingualResourcesAttributes.cs" />
+    <Compile Include="Globalization\SampleTypes\InheritedClassWithoutMultiLingualResourcesAttributes.cs" />
+    <Compile Include="Globalization\MixedMultiLingualResourcesTests\GetResourceManagerTests.cs" />
+    <Compile Include="Globalization\SampleTypes\MixinAddingMultiLingualResourcesAttributes1.cs" />
+    <Compile Include="Globalization\SampleTypes\MixinAddingMultiLingualResourcesAttributes2.cs" />
     <Compile Include="Mixins\CodeGenSampleTypes\ClassWithCopyCustomAttributes.cs" />
     <Compile Include="Mixins\CodeGenSampleTypes\SampleCopyTemplateAttribute.cs" />
     <Compile Include="Mixins\MixedTypeCodeGeneration\MixedMixinTests.cs" />

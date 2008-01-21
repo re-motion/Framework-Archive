@@ -85,12 +85,12 @@ namespace Rubicon.Core.UnitTests.Globalization
     }
 
     [Test]
-    public void GetResourceNameAndType_SuccessOnSameType ()
+    public void FindFirstResourceDefinitions_SuccessOnSameType ()
     {
       Type definingType;
       MultiLingualResourcesAttribute[] attributes;
 
-      _resolver.GetResourceNameAndType (typeof (ClassWithMultiLingualResourcesAttributes), false, out definingType, out attributes);
+      _resolver.FindFirstResourceDefinitions (typeof (ClassWithMultiLingualResourcesAttributes), false, out definingType, out attributes);
       Assert.AreSame (typeof (ClassWithMultiLingualResourcesAttributes), definingType);
       Assert.AreEqual (3, attributes.Length);
       Assert.That (attributes, Is.EquivalentTo (
@@ -98,12 +98,12 @@ namespace Rubicon.Core.UnitTests.Globalization
     }
 
     [Test]
-    public void GetResourceNameAndType_DoesNotInherit ()
+    public void FindFirstResourceDefinitions_DoesNotInherit ()
     {
       Type definingType;
       MultiLingualResourcesAttribute[] attributes;
 
-      _resolver.GetResourceNameAndType (typeof (InheritedClassWithMultiLingualResourcesAttributes), false, out definingType, out attributes);
+      _resolver.FindFirstResourceDefinitions (typeof (InheritedClassWithMultiLingualResourcesAttributes), false, out definingType, out attributes);
       Assert.AreSame (typeof (InheritedClassWithMultiLingualResourcesAttributes), definingType);
       Assert.AreEqual (2, attributes.Length);
       Assert.That (attributes, Is.EquivalentTo (
@@ -111,12 +111,12 @@ namespace Rubicon.Core.UnitTests.Globalization
     }
 
     [Test]
-    public void GetResourceNameAndType_SuccessOnBase ()
+    public void FindFirstResourceDefinitions_SuccessOnBase ()
     {
       Type definingType;
       MultiLingualResourcesAttribute[] attributes;
 
-      _resolver.GetResourceNameAndType (typeof (InheritedClassWithoutMultiLingualResourcesAttributes), false, out definingType, out attributes);
+      _resolver.FindFirstResourceDefinitions (typeof (InheritedClassWithoutMultiLingualResourcesAttributes), false, out definingType, out attributes);
       Assert.AreSame (typeof (ClassWithMultiLingualResourcesAttributes), definingType);
       Assert.AreEqual (3, attributes.Length);
       Assert.That (attributes, Is.EquivalentTo (
@@ -124,12 +124,12 @@ namespace Rubicon.Core.UnitTests.Globalization
     }
 
     [Test]
-    public void GetResourceNameAndType_NoSuccessNoException ()
+    public void FindFirstResourceDefinitions_NoSuccessNoException ()
     {
       Type definingType;
       MultiLingualResourcesAttribute[] attributes;
 
-      _resolver.GetResourceNameAndType (typeof (ClassWithoutMultiLingualResourcesAttributes), true, out definingType, out attributes);
+      _resolver.FindFirstResourceDefinitions (typeof (ClassWithoutMultiLingualResourcesAttributes), true, out definingType, out attributes);
       Assert.IsNull (definingType);
       Assert.IsEmpty (attributes);
     }
@@ -137,12 +137,12 @@ namespace Rubicon.Core.UnitTests.Globalization
     [Test]
     [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Rubicon.Core.UnitTests.Globalization.SampleTypes."
         + "ClassWithoutMultiLingualResourcesAttributes and its base classes do not define the attribute MultiLingualResourcesAttribute.")]
-    public void GetResourceNameAndType_NoSuccessException ()
+    public void FindFirstResourceDefinitions_NoSuccessException ()
     {
       Type definingType;
       MultiLingualResourcesAttribute[] attributes;
 
-      _resolver.GetResourceNameAndType (typeof (ClassWithoutMultiLingualResourcesAttributes), false, out definingType, out attributes);
+      _resolver.FindFirstResourceDefinitions (typeof (ClassWithoutMultiLingualResourcesAttributes), false, out definingType, out attributes);
     }
 
     [Test]
