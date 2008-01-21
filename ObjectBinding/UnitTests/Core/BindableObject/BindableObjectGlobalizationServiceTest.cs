@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
@@ -84,6 +85,16 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     {
       IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithResources), "ValueWithoutResource");
       Assert.That (_globalizationService.GetPropertyDisplayName (IPropertyInformation), Is.EqualTo ("ValueWithoutResource"));
+    }
+
+    [Test]
+    public void GetPropertyDisplayName_WithMixin ()
+    {
+      using (MixinConfiguration.BuildFromActive ().ForClass<SimpleBusinessObjectClass> ().AddMixin<MixinAddingResources> ().EnterScope ())
+      {
+        IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
+        Assert.That (_globalizationService.GetPropertyDisplayName (IPropertyInformation), Is.EqualTo ("Resource from mixin"));
+      }
     }
   }
 }

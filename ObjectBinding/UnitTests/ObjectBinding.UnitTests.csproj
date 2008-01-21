@@ -100,6 +100,7 @@
     <Compile Include="Core\BindableObject\TestDomain\IInterfaceWithReferenceType.cs" />
     <Compile Include="Core\BindableObject\TestDomain\ManualBusinessObject.cs" />
     <Compile Include="Core\BindableObject\TestDomain\MixinAddingProperty.cs" />
+    <Compile Include="Core\BindableObject\TestDomain\MixinAddingResources.cs" />
     <Compile Include="Core\BindableObject\TestDomain\SecurableClassWithOverriddenDisplayName.cs" />
     <Compile Include="Core\BindableObject\TestDomain\ISearchServiceOnProperty.cs" />
     <Compile Include="Core\BindableObject\TestDomain\EnumWithUndefinedValueFromOtherType.cs" />
@@ -143,6 +144,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ClassWithResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Globalization\MixinAddingResources.Designer.cs">
+      <DependentUpon>MixinAddingResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Core\Globalization\EnumWithResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -249,6 +255,11 @@
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ClassWithResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Globalization\MixinAddingResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MixinAddingResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Core\Globalization\EnumWithResources.resx">
       <SubType>Designer</SubType>

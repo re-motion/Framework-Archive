@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using Rubicon.Collections;
 using Rubicon.Globalization;
+using Rubicon.Mixins.Globalization;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
 
@@ -57,9 +58,9 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     private IResourceManager GetResourceManager (Type type)
     {
-      if (!MultiLingualResources.ExistsResource (type))
+      if (!MixedMultiLingualResources.ExistsResource (type))
         return NullResourceManager.Instance;
-      return MultiLingualResources.GetResourceManager (type, true);
+      return MixedMultiLingualResources.GetResourceManager (type, true);
     }
   }
-}
+} 
