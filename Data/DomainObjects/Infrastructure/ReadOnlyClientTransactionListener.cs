@@ -42,7 +42,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       Assertion.IsTrue (_clientTransaction.IsReadOnly); // after a subtransaction has been created, the parent must be read-only
     }
 
-    public virtual void NewObjectCreating (Type type)
+    public virtual void NewObjectCreating (Type type, DomainObject instance)
     {
       EnsureWriteable ("NewObjectCreating");
     }
@@ -50,6 +50,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public virtual void ObjectLoading (ObjectID id)
     {
       EnsureWriteable ("ObjectLoading");
+    }
+
+    public void ObjectInitializedFromDataContainer (ObjectID id, DomainObject instance)
+    {
+      EnsureWriteable ("ObjectInitializedFromDataContainer");
     }
 
     public virtual void ObjectsLoaded (DomainObjectCollection domainObjects)

@@ -18,11 +18,13 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     void SubTransactionCreating ();
     void SubTransactionCreated (ClientTransaction subTransaction);
 
-    void NewObjectCreating (Type type);
-    
+    void NewObjectCreating (Type type, DomainObject instance);
+
     void ObjectLoading (ObjectID id);
     void ObjectsLoaded (DomainObjectCollection domainObjects);
-    
+
+    void ObjectInitializedFromDataContainer (ObjectID id, DomainObject instance);
+
     void ObjectDeleting (DomainObject domainObject);
     void ObjectDeleted (DomainObject domainObject);
 

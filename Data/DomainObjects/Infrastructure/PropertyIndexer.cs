@@ -15,12 +15,6 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   {
     private readonly DomainObject _domainObject;
 
-    private DataContainer GetDataContainer ()
-    {
-      _domainObject.CheckIfRightTransaction (ClientTransaction.Current);
-      return _domainObject.GetDataContainerForTransaction (ClientTransaction.Current);
-    }
-
     /// <summary>
     /// Initializes a new <see cref="PropertyIndexer"/> instance. This is usually not called from the outside; instead, <see cref="PropertyIndexer"/>
     /// instances are returned by <see cref="DomainObject.Properties"/>.
@@ -54,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         catch (ArgumentException ex)
         {
           throw new ArgumentException (string.Format ("The domain object type {0} does not have a mapping property named '{1}'.",
-            GetDataContainer().ClassDefinition.ClassType.FullName, propertyName), "propertyName", ex);
+            _domainObject.ID.ClassDefinition.ClassType.FullName, propertyName), "propertyName", ex);
         }
       }
     }

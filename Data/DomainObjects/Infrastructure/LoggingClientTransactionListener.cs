@@ -11,7 +11,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   [Serializable]
   public class LoggingClientTransactionListener : IClientTransactionListener
   {
-    private static ILog s_log = LogManager.GetLogger (typeof (LoggingClientTransactionListener));
+    private static readonly ILog s_log = LogManager.GetLogger (typeof (LoggingClientTransactionListener));
 
     public void SubTransactionCreating ()
     {
@@ -23,7 +23,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       s_log.Info ("SubTransactionCreated");
     }
 
-    public void NewObjectCreating (Type type)
+    public void NewObjectCreating (Type type, DomainObject instance)
     {
       s_log.Info ("NewObjectCreating");
     }
@@ -31,6 +31,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public void ObjectLoading (ObjectID id)
     {
       s_log.Info ("ObjectLoading");
+    }
+
+    public void ObjectInitializedFromDataContainer (ObjectID id, DomainObject instance)
+    {
+      s_log.Info ("ObjectInitializedFromDataContainer");
     }
 
     public void ObjectsLoaded (DomainObjectCollection domainObjects)

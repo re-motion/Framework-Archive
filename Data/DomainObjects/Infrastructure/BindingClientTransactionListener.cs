@@ -1,34 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
-  /// <summary>
-  /// A <see cref="IClientTransactionListener"/> implementation that notifies <see cref="IClientTransactionExtension">IClientTransactionExtensions</see>
-  /// about transaction events.
-  /// </summary>
-  /// <remarks>
-  /// The <see cref="ClientTransaction"/> class uses this listener to implement its extension mechanism.
-  /// </remarks>
-  [Serializable]
-  public class ExtensionClientTransactionListener : IClientTransactionListener
+  public class BindingClientTransactionListener : IClientTransactionListener
   {
-    private readonly ClientTransactionExtensionCollection _extensions;
-    private readonly ClientTransaction _clientTransaction;
+    private readonly ClientTransaction _bindingTransaction;
 
-    public ExtensionClientTransactionListener (ClientTransaction clientTransaction, ClientTransactionExtensionCollection extensions)
+    public BindingClientTransactionListener (ClientTransaction bindingTransaction)
     {
-      _clientTransaction = clientTransaction;
-      _extensions = extensions;
-    }
-
-    public ClientTransactionExtensionCollection Extensions
-    {
-      get { return _extensions; }
+      ArgumentUtility.CheckNotNull ("bindingTransaction", bindingTransaction);
+      _bindingTransaction = bindingTransaction;
     }
 
     public void SubTransactionCreating ()
@@ -43,102 +27,102 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public void NewObjectCreating (Type type, DomainObject instance)
     {
-      Extensions.NewObjectCreating (_clientTransaction, type);
+      // not handled by this listener
     }
 
     public void ObjectLoading (ObjectID id)
     {
-      Extensions.ObjectLoading (_clientTransaction, id);
+      // not handled by this listener
     }
 
     public void ObjectInitializedFromDataContainer (ObjectID id, DomainObject instance)
     {
-      // not handled by this listener
+      instance.Bind (_bindingTransaction);
     }
 
     public void ObjectsLoaded (DomainObjectCollection domainObjects)
     {
-      Extensions.ObjectsLoaded (_clientTransaction, domainObjects);
+      // not handled by this listener
     }
 
     public void ObjectDeleting (DomainObject domainObject)
     {
-      Extensions.ObjectDeleting (_clientTransaction, domainObject);
+      // not handled by this listener
     }
 
     public void ObjectDeleted (DomainObject domainObject)
     {
-      Extensions.ObjectDeleted (_clientTransaction, domainObject);
+      // not handled by this listener
     }
 
     public void PropertyValueReading (DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
     {
-      Extensions.PropertyValueReading (_clientTransaction, dataContainer, propertyValue, valueAccess);
+      // not handled by this listener
     }
 
     public void PropertyValueRead (DataContainer dataContainer, PropertyValue propertyValue, object value, ValueAccess valueAccess)
     {
-      Extensions.PropertyValueRead (_clientTransaction, dataContainer, propertyValue, value, valueAccess);
+      // not handled by this listener
     }
 
     public void PropertyValueChanging (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
-      Extensions.PropertyValueChanging (_clientTransaction, dataContainer, propertyValue, oldValue, newValue);
+      // not handled by this listener
     }
 
     public void PropertyValueChanged (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
-      Extensions.PropertyValueChanged (_clientTransaction, dataContainer, propertyValue, oldValue, newValue);
+      // not handled by this listener
     }
 
     public void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess)
     {
-      Extensions.RelationReading (_clientTransaction, domainObject, propertyName, valueAccess);
+      // not handled by this listener
     }
 
     public void RelationRead (DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess)
     {
-      Extensions.RelationRead (_clientTransaction, domainObject, propertyName, relatedObject, valueAccess);
+      // not handled by this listener
     }
 
     public void RelationRead (DomainObject domainObject, string propertyName, DomainObjectCollection relatedObjects, ValueAccess valueAccess)
     {
-      Extensions.RelationRead (_clientTransaction, domainObject, propertyName, relatedObjects, valueAccess);
+      // not handled by this listener
     }
 
     public void RelationChanging (DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)
     {
-      Extensions.RelationChanging (_clientTransaction, domainObject, propertyName, oldRelatedObject, newRelatedObject);
+      // not handled by this listener
     }
 
     public void RelationChanged (DomainObject domainObject, string propertyName)
     {
-      Extensions.RelationChanged (_clientTransaction, domainObject, propertyName);
+      // not handled by this listener
     }
 
     public void FilterQueryResult (DomainObjectCollection queryResult, IQuery query)
     {
-      Extensions.FilterQueryResult (_clientTransaction, queryResult, query);
+      // not handled by this listener
     }
 
     public void TransactionCommitting (DomainObjectCollection domainObjects)
     {
-      Extensions.Committing (_clientTransaction, domainObjects);
+      // not handled by this listener
     }
 
     public void TransactionCommitted (DomainObjectCollection domainObjects)
     {
-      Extensions.Committed (_clientTransaction, domainObjects);
+      // not handled by this listener
     }
 
     public void TransactionRollingBack (DomainObjectCollection domainObjects)
     {
-      Extensions.RollingBack (_clientTransaction, domainObjects);
+      // not handled by this listener
     }
 
     public void TransactionRolledBack (DomainObjectCollection domainObjects)
     {
-      Extensions.RolledBack (_clientTransaction, domainObjects);
+      // not handled by this listener
     }
 
     public void RelationEndPointMapRegistering (RelationEndPoint endPoint)

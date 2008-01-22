@@ -135,8 +135,6 @@ namespace Rubicon.Data.DomainObjects
     private bool _isDiscarded = false;
     private bool _hasBeenMarkedChanged = false;
     
-    private List<object> _deserializedPropertyValueData; // used only for deserialization
-
     // construction and disposing
 
     private DataContainer (ObjectID id)

@@ -74,8 +74,8 @@ namespace Rubicon.Data.DomainObjects.DataManagement
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-      RelationEndPointID[] relationEndPointIDs = domainObject.GetDataContainerForTransaction (_clientTransaction).RelationEndPointIDs;
       CheckClientTransactionForDeletion (domainObject);
+      RelationEndPointID[] relationEndPointIDs = domainObject.GetDataContainerForTransaction (_clientTransaction).RelationEndPointIDs;
       _transactionEventSink.RelationEndPointMapPerformingDelete (relationEndPointIDs);
 
       foreach (RelationEndPointID endPointID in relationEndPointIDs)
@@ -169,8 +169,8 @@ namespace Rubicon.Data.DomainObjects.DataManagement
     {
       ArgumentUtility.CheckNotNull ("endPointID", endPointID);
       CheckCardinality (endPointID, CardinalityType.One, "SetRelatedObject", "endPointID");
-      CheckDeleted (newRelatedObject);
       CheckClientTransactionForObjectEndPoint (endPointID, newRelatedObject);
+      CheckDeleted (newRelatedObject);
       CheckType (endPointID, newRelatedObject);
 
       RelationEndPoint endPoint = GetRelationEndPointWithLazyLoad (endPointID);
@@ -579,9 +579,9 @@ namespace Rubicon.Data.DomainObjects.DataManagement
         DomainObject domainObject,
         int index)
     {
+      CheckClientTransactionForInsertionIntoCollectionEndPoint (endPoint.ID, domainObject, index);
       CheckDeleted (endPoint);
       CheckDeleted (domainObject);
-      CheckClientTransactionForInsertionIntoCollectionEndPoint (endPoint.ID, domainObject, index);
 
       ObjectEndPoint addingEndPoint = (ObjectEndPoint) GetRelationEndPoint (
           domainObject, endPoint.OppositeEndPointDefinition);
@@ -605,9 +605,9 @@ namespace Rubicon.Data.DomainObjects.DataManagement
         DomainObject domainObject,
         int index)
     {
+      CheckClientTransactionForReplacementInCollectionEndPoint (endPoint.ID, domainObject, index);
       CheckDeleted (endPoint);
       CheckDeleted (domainObject);
-      CheckClientTransactionForReplacementInCollectionEndPoint (endPoint.ID, domainObject, index);
 
       ObjectEndPoint newEndPoint = (ObjectEndPoint) GetRelationEndPoint (
           domainObject, endPoint.OppositeEndPointDefinition);
@@ -638,9 +638,9 @@ namespace Rubicon.Data.DomainObjects.DataManagement
 
     void ICollectionEndPointChangeDelegate.PerformRemove (CollectionEndPoint endPoint, DomainObject domainObject)
     {
+      CheckClientTransactionForRemovalFromCollectionEndPoint (endPoint.ID, domainObject);
       CheckDeleted (endPoint);
       CheckDeleted (domainObject);
-      CheckClientTransactionForRemovalFromCollectionEndPoint (endPoint.ID, domainObject);
 
       ObjectEndPoint removingEndPoint = (ObjectEndPoint) GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition);
 

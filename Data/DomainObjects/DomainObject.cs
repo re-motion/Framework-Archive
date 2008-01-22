@@ -226,6 +226,7 @@ namespace Rubicon.Data.DomainObjects
 
     private ObjectID _id;
     private int _loadCount;
+    private ClientTransaction _bindingTransaction; // null unless this object is bound to a fixed transaction
 
     // construction and disposing
 
@@ -240,8 +241,8 @@ namespace Rubicon.Data.DomainObjects
     {
       Type publicDomainObjectType = GetPublicDomainObjectType();
 
-      ClientTransactionScope.CurrentTransaction.TransactionEventSink.NewObjectCreating (publicDomainObjectType);
-      DataContainer firstDataContainer = ClientTransactionScope.CurrentTransaction.CreateNewDataContainer (publicDomainObjectType);
+      ClientTransaction.Current.TransactionEventSink.NewObjectCreating (publicDomainObjectType, this);
+      DataContainer firstDataContainer = ClientTransaction.Current.CreateNewDataContainer (publicDomainObjectType);
       firstDataContainer.SetDomainObject (this);
 
       InitializeFromDataContainer (firstDataContainer);
@@ -284,7 +285,7 @@ namespace Rubicon.Data.DomainObjects
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
       Type publicDomainObjectType = GetPublicDomainObjectType();
-      clientTransaction.TransactionEventSink.NewObjectCreating (publicDomainObjectType);
+      clientTransaction.TransactionEventSink.NewObjectCreating (publicDomainObjectType, this);
 
       DataContainer firstDataContainer = clientTransaction.CreateNewDataContainer (publicDomainObjectType);
       firstDataContainer.SetDomainObject (this);
@@ -342,6 +343,7 @@ namespace Rubicon.Data.DomainObjects
       ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
       _id = dataContainer.ID;
+      dataContainer.ClientTransaction.TransactionEventSink.ObjectInitializedFromDataContainer (_id, this);
       dataContainer.ClientTransaction.EnlistDomainObject (this);
     }
 
@@ -384,11 +386,55 @@ namespace Rubicon.Data.DomainObjects
     /// </summary>
     public StateType State
     {
-      get { return GetStateForTransaction (ClientTransaction.Current); }
+      get { return GetStateForTransaction (ClientTransaction); }
     }
 
     /// <summary>
-    /// Gets the state of this object in a given <see cref="ClientTransaction"/>.
+    /// Gets the transaction used when this <see cref="DomainObject"/> is accessed. If a <see cref="DomainObject"/> is bound to a specific
+    /// <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>, this property will return that transaction, otherwise it returns
+    /// <see cref="DomainObjects.ClientTransaction.Current"/>.
+    /// </summary>
+    /// <value>The transaction used by this <see cref="DomainObject"/> when it is accessed.</value>
+    /// <remarks>
+    /// <para>
+    /// To check whether this object is bound to the transaction returned by the <see cref="ClientTransaction"/> property, check the
+    /// <see cref="IsBoundToSpecificTransaction"/> property.
+    /// </para>
+    /// <para>
+    /// To check whether this <see cref="DomainObject"/> can actually be used in the transaction returned by this property, use the 
+    /// <see cref="CanBeUsedInTransaction"/> method. To enlist the object in the transaction, call
+    /// <see cref="DomainObjects.ClientTransaction.EnlistDomainObject"/>.
+    /// </para>
+    /// </remarks>
+    public ClientTransaction ClientTransaction
+    {
+      get { return _bindingTransaction ?? ClientTransaction.Current; }
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether this instance is bound to specific transaction. If it is, it will always use that transaction, otherwise,
+    /// it will always use <see cref="DomainObjects.ClientTransaction.Current"/> when it is accessed.
+    /// </summary>
+    /// <value>
+    /// True if this instance is bound to specific transaction; otherwise, false.
+    /// </value>
+    /// <remarks>
+    /// <para>
+    /// To bind a <see cref="DomainObject"/> to a transaction, instantiate or load it in the scope of a transaction created via
+    /// <see cref="DomainObjects.ClientTransaction.NewBindingTransaction"/>. Such a transaction will automatically bind all objects created or loaded
+    /// in its scope to itself.
+    /// </para>
+    /// <para>
+    /// To retrieve the transaction the object is bound to, use the <see cref="ClientTransaction"/> property.
+    /// </para>
+    /// </remarks>
+    public bool IsBoundToSpecificTransaction
+    {
+      get { return _bindingTransaction != null; }
+    }
+
+    /// <summary>
+    /// Gets the state of this object in a given <see cref="DomainObjects.ClientTransaction"/>.
     /// </summary>
     /// <param name="clientTransaction">The client transaction to retrieve the object's state from.</param>
     /// <returns>The state of this object in the given transaction.</returns>
@@ -396,6 +442,7 @@ namespace Rubicon.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
+      CheckIfRightTransaction (clientTransaction);
       if (IsDiscardedInTransaction (clientTransaction))
         return StateType.Discarded;
       else
@@ -422,7 +469,7 @@ namespace Rubicon.Data.DomainObjects
     /// <exception cref="ObjectDiscardedException">The object has already been discarded.</exception>
     public void MarkAsChanged ()
     {
-      CheckIfObjectIsDiscarded (ClientTransaction.Current);
+      CheckIfObjectIsDiscarded (ClientTransaction);
 
       DataContainer dataContainer = GetDataContainer();
       try
@@ -436,18 +483,18 @@ namespace Rubicon.Data.DomainObjects
     }
 
     /// <summary>
-    /// Gets a value indicating the discarded status of the object in the <see cref="ClientTransactionScope.CurrentTransaction"/>.
+    /// Gets a value indicating the discarded status of the object in the <see cref="ClientTransaction"/>.
     /// </summary>
     /// <remarks>
     /// For more information why and when an object is discarded see <see cref="Rubicon.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
     /// </remarks>
     public bool IsDiscarded
     {
-      get { return IsDiscardedInTransaction (ClientTransaction.Current); }
+      get { return IsDiscardedInTransaction (ClientTransaction); }
     }
 
     /// <summary>
-    /// Gets a value indicating the discarded status of the object in the given <see cref="ClientTransaction"/>.
+    /// Gets a value indicating the discarded status of the object in the given <see cref="DomainObjects.ClientTransaction"/>.
     /// </summary>
     /// <param name="transaction">The transaction to check.</param>
     /// <returns>True if this object is discarded in the given <paramref name="transaction"/>; otherwise, false.</returns>
@@ -474,26 +521,25 @@ namespace Rubicon.Data.DomainObjects
     {
       get
       {
-        CheckIfObjectIsDiscarded (ClientTransaction.Current);
-        CheckIfRightTransaction (ClientTransaction.Current);
+        CheckIfObjectIsDiscarded (ClientTransaction);
+        CheckIfRightTransaction (ClientTransaction);
         return new DataContainerIndirection (this);
       }
     }
 
     /// <summary>
-    /// Gets the <see cref="DomainObjects.DataContainer"/> of the <see cref="DomainObject"/> in the <see cref="ClientTransactionScope.CurrentTransaction"/>.
+    /// Gets the <see cref="DomainObjects.DataContainer"/> of the <see cref="DomainObject"/> in the <see cref="ClientTransaction"/>.
     /// </summary>
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
     private DataContainer GetDataContainer ()
     {
-      CheckIfRightTransaction (ClientTransaction.Current);
-
-      return GetDataContainerForTransaction (ClientTransactionScope.CurrentTransaction);
+      return GetDataContainerForTransaction (ClientTransaction);
     }
 
     internal DataContainer GetDataContainerForTransaction (ClientTransaction transaction)
     {
       CheckIfObjectIsDiscarded (transaction);
+      CheckIfRightTransaction (transaction);
 
       DataContainer dataContainer = transaction.DataManager.DataContainerMap[ID];
       if (dataContainer == null)
@@ -504,18 +550,22 @@ namespace Rubicon.Data.DomainObjects
     }
 
     /// <summary>
-    /// Deletes the <see cref="DomainObject"/>.
+    /// Deletes the <see cref="DomainObject"/> in the <see cref="ClientTransaction"/>.
     /// </summary>
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
     /// <remarks>To perform custom actions when a <see cref="DomainObject"/> is deleted <see cref="OnDeleting"/> and <see cref="OnDeleted"/> should be overridden.</remarks>
     protected void Delete ()
     {
-      CheckIfObjectIsDiscarded (ClientTransaction.Current);
-      CheckIfRightTransaction (ClientTransaction.Current);
       RepositoryAccessor.DeleteObject (this);
     }
 
     #region Transaction handling
+
+    internal void Bind (ClientTransaction bindingTransaction)
+    {
+      ArgumentUtility.CheckNotNull ("bindingTransaction", bindingTransaction);
+      _bindingTransaction = bindingTransaction;
+    }
 
     /// <summary>
     /// Determines whether this instance can be used in the specified transaction.
@@ -524,7 +574,7 @@ namespace Rubicon.Data.DomainObjects
     /// <returns>
     /// True if this instance can be used in the specified transaction; otherwise, false.
     /// </returns>
-    /// <remarks>If this method returns false, <see cref="ClientTransaction.EnlistDomainObject"/> can be used to enlist this instance in another
+    /// <remarks>If this method returns false, <see cref="DomainObjects.ClientTransaction.EnlistDomainObject"/> can be used to enlist this instance in another
     /// transaction.</remarks>
     public bool CanBeUsedInTransaction (ClientTransaction transaction)
     {
@@ -573,12 +623,12 @@ namespace Rubicon.Data.DomainObjects
     protected internal virtual void PreparePropertyAccess (string propertyName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-      if (!PropertyAccessor.IsValidProperty (GetDataContainer().ClassDefinition, propertyName))
+      if (!PropertyAccessor.IsValidProperty (ID.ClassDefinition, propertyName))
       {
         string message = string.Format (
             "The property identifier '{0}' is not a valid property of domain object type {1}.",
             propertyName,
-            GetDataContainer().ClassDefinition.ClassType.FullName);
+            ID.ClassDefinition.ClassType.FullName);
         throw new ArgumentException (message, "propertyName");
       }
 

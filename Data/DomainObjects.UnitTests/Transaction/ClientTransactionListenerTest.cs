@@ -51,16 +51,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       Expect (delegate
         {
-          _listener.NewObjectCreating (typeof (ClassWithAllDataTypes));
+          _listener.NewObjectCreating (typeof (ClassWithAllDataTypes), null);
+          LastCall.Constraints (
+              Mock_Is.Equal (typeof (ClassWithAllDataTypes)), Mock_Is.NotNull() & Mock_Property.ValueConstraint ("ID", Mock_Is.Null()));
 
           _listener.DataContainerMapRegistering (null);
+          LastCall.IgnoreArguments ();
+
+          _listener.ObjectInitializedFromDataContainer (null, null);
           LastCall.IgnoreArguments ();
         },
         delegate { ClassWithAllDataTypes.NewObject (); });
     }
 
     [Test]
-    public void ObjectsLoadingObjectsLoaded ()
+    public void ObjectsLoadingInitializedObjectsLoaded ()
     {
       Expect (delegate
         {
@@ -68,6 +73,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
           _listener.DataContainerMapRegistering (null);
           LastCall.IgnoreArguments ();
+
+          _listener.ObjectInitializedFromDataContainer (null, null);
+          LastCall.Constraints (
+              Mock_Is.Equal (DomainObjectIDs.ClassWithAllDataTypes1),
+              Mock_Is.NotNull() & Mock_Property.ValueConstraint ("ID", Mock_Is.NotNull()));
 
           _listener.ObjectsLoaded (null);
           LastCall.Constraints (Mock_Property.Value ("Count", 1));
@@ -165,6 +175,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
           _listener.DataContainerMapRegistering (null);
           LastCall.IgnoreArguments ();
 
+          _listener.ObjectInitializedFromDataContainer (null, null);
+          LastCall.IgnoreArguments ();
+
           _listener.RelationEndPointMapRegistering (null);
           LastCall.IgnoreArguments ().Repeat.Any();
 
@@ -259,6 +272,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
           _listener.RelationEndPointMapRegistering (null);
           LastCall.Constraints (Mock_Property.Value ("ObjectID", DomainObjectIDs.Customer1));
 
+          _listener.ObjectInitializedFromDataContainer (null, null);
+          LastCall.IgnoreArguments ();
+
           _listener.ObjectsLoaded (null);
           LastCall.IgnoreArguments ();
           _listener.RelationRead (null, null, (DomainObject) null, ValueAccess.Current);
@@ -308,6 +324,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
           _listener.DataContainerMapRegistering (null);
           LastCall.Constraints (Mock_Property.Value ("ID", DomainObjectIDs.ClassWithAllDataTypes1));
+
+          _listener.ObjectInitializedFromDataContainer (null, null);
+          LastCall.IgnoreArguments();
 
           _listener.ObjectsLoaded (null);
           LastCall.IgnoreArguments ();

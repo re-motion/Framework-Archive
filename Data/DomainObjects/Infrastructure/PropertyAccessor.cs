@@ -235,6 +235,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       get { return _domainObject; }
     }
 
+    private ClientTransaction DefaultTransaction
+    {
+      get { return DomainObject.ClientTransaction; }
+    }
+
     private void CheckTransactionalStatus (ClientTransaction transaction)
     {
       _domainObject.CheckIfObjectIsDiscarded (transaction);
@@ -251,8 +256,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       get
       {
-        CheckTransactionalStatus (ClientTransactionScope.CurrentTransaction);
-        return _strategy.HasChanged (this, ClientTransactionScope.CurrentTransaction);
+        CheckTransactionalStatus (DefaultTransaction);
+        return _strategy.HasChanged (this, DefaultTransaction);
       }
     }
 
@@ -270,8 +275,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       get
       {
-        CheckTransactionalStatus (ClientTransactionScope.CurrentTransaction);
-        return _strategy.HasBeenTouched (this, ClientTransactionScope.CurrentTransaction);
+        CheckTransactionalStatus (DefaultTransaction);
+        return _strategy.HasBeenTouched (this, DefaultTransaction);
       }
     }
 
@@ -287,8 +292,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       get
       {
-        CheckTransactionalStatus (ClientTransactionScope.CurrentTransaction);
-        return _strategy.IsNull (this, ClientTransactionScope.CurrentTransaction);
+        CheckTransactionalStatus (DefaultTransaction);
+        return _strategy.IsNull (this, DefaultTransaction);
       }
     }
 
@@ -315,7 +320,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public T GetValue<T> ()
     {
-      return GetValueTx<T> (ClientTransactionScope.CurrentTransaction);
+      return GetValueTx<T> (DefaultTransaction);
     }
 
     /// <summary>
@@ -328,7 +333,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public ObjectID GetRelatedObjectID ()
     {
-      return GetRelatedObjectIDTx (ClientTransactionScope.CurrentTransaction);
+      return GetRelatedObjectIDTx (DefaultTransaction);
     }
 
     /// <summary>
@@ -405,7 +410,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public void SetValue<T> (T value)
     {
-      SetValueTx (ClientTransactionScope.CurrentTransaction, value);
+      SetValueTx (DefaultTransaction, value);
     }
 
     /// <summary>
@@ -446,7 +451,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public void SetValueWithoutTypeCheck (object value)
     {
-      SetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction, value);
+      SetValueWithoutTypeCheckTx (DefaultTransaction, value);
     }
 
     /// <summary>
@@ -478,7 +483,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public object GetValueWithoutTypeCheck ()
     {
-      return GetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
+      return GetValueWithoutTypeCheckTx (DefaultTransaction);
     }
 
     /// <summary>
@@ -551,7 +556,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public object GetOriginalValueWithoutTypeCheck ()
     {
-      return GetOriginalValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
+      return GetOriginalValueWithoutTypeCheckTx (DefaultTransaction);
     }
 
     /// <summary>
@@ -579,7 +584,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public ObjectID GetOriginalRelatedObjectID ()
     {
-      return GetOriginalRelatedObjectIDTx (ClientTransactionScope.CurrentTransaction);
+      return GetOriginalRelatedObjectIDTx (DefaultTransaction);
     }
 
     /// <summary>

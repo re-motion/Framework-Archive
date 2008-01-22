@@ -66,10 +66,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       CheckNotification (typeof (IClientTransactionListener).GetMethod ("SubTransactionCreating"), new object[0]);
       CheckNotification (typeof (IClientTransactionListener).GetMethod ("SubTransactionCreated"), new object[] { ClientTransactionMock });
 
-      CheckNotification (typeof (IClientTransactionListener).GetMethod ("NewObjectCreating"), new object[] {typeof (string)});
+      CheckNotification (typeof (IClientTransactionListener).GetMethod ("NewObjectCreating"), new object[] {typeof (string), null});
 
-      CheckNotification (typeof (IClientTransactionListener).GetMethod ("ObjectLoading"), new object[] {order.ID});
+      CheckNotification (typeof (IClientTransactionListener).GetMethod ("ObjectLoading"), new object[] { order.ID });
       CheckNotification (typeof (IClientTransactionListener).GetMethod ("ObjectsLoaded"), new object[] {new DomainObjectCollection()});
+
+      CheckNotification (typeof (IClientTransactionListener).GetMethod ("ObjectInitializedFromDataContainer"), new object[] { order.ID, order });
 
       CheckNotification (typeof (IClientTransactionListener).GetMethod ("ObjectDeleting"), new object[] {order});
       CheckNotification (typeof (IClientTransactionListener).GetMethod ("ObjectDeleted"), new object[] {order});

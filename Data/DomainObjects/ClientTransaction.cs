@@ -33,7 +33,7 @@ public abstract class ClientTransaction : ITransaction
   // static members and constants
 
   /// <summary>
-  /// Creates a new root <see cref="ClientTransaction"/>, specificalle a <see cref="RootClientTransaction"/>.
+  /// Creates a new root <see cref="ClientTransaction"/>, specifically a <see cref="RootClientTransaction"/>.
   /// </summary>
   /// <returns>A new root <see cref="ClientTransaction"/> instance.</returns>
   /// <remarks>The object returned by this method can be extended with <b>Mixins</b> by configuring the <see cref="MixinConfiguration.ActiveConfiguration"/>
@@ -42,6 +42,26 @@ public abstract class ClientTransaction : ITransaction
   public static ClientTransaction NewTransaction ()
   {
     return ObjectFactory.Create<RootClientTransaction>().With();
+  }
+
+  /// <summary>
+  /// Creates a new root <see cref="ClientTransaction"/> that binds all <see cref="DomainObject"/> instances that are created in its context. A bound
+  /// <see cref="DomainObject"/> is always accessed in the context of its binding transaction, it never uses <see cref="Current"/>.
+  /// </summary>
+  /// <returns>A new binding <see cref="ClientTransaction"/> instance.</returns>
+  /// <remarks>
+  /// <para>
+  /// The object returned by this method can be extended with <b>Mixins</b> by configuring the <see cref="MixinConfiguration.ActiveConfiguration"/>
+  /// to include a mixin for type <see cref="RootClientTransaction"/>. Declaratively, this can be achieved by attaching an
+  /// <see cref="ExtendsAttribute"/> instance for <see cref="ClientTransaction"/> or <see cref="RootClientTransaction"/> to a mixin class.
+  /// </para>
+  /// <para>
+  /// Binding transactions cannot have subtransactions.
+  /// </para>
+  /// </remarks>
+  public static ClientTransaction NewBindingTransaction ()
+  {
+    return ObjectFactory.Create<BindingClientTransaction> ().With ();
   }
 
   /// <summary>
@@ -470,6 +490,7 @@ public abstract class ClientTransaction : ITransaction
   /// ParentTransaction), but this is not enforced until first access to the object.
   /// </summary>
   /// <param name="domainObject">The object to be enlisted in this transaction.</param>
+  /// <returns>True if the object was newly enlisted; false if it had already been enlisted in this transaction.</returns>
   /// <remarks>
   /// <para>
   /// Unlike <see cref="DomainObject.GetObject{T}(ObjectID)"/>, this method does not create a new <see cref="DomainObject"/> reference if the object
@@ -494,10 +515,17 @@ public abstract class ClientTransaction : ITransaction
   /// <exception cref="InvalidOperationException">The domain object cannot be enlisted, because another <see cref="DomainObject"/> with the same
   /// <exception cref="ArgumentNullException">The <paramref name="domainObject"/> parameter is <see langword="null"/>.</exception>
   /// <see cref="ObjectID"/> has already been associated with this transaction.</exception>
-  public void EnlistDomainObject (DomainObject domainObject)
+  public bool EnlistDomainObject (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    DoEnlistDomainObject (domainObject);
+    if (domainObject.IsBoundToSpecificTransaction && domainObject.ClientTransaction != this)
+    {
+      string message = string.Format ("Cannot enlist the domain object '{0}' in this transaction, because it is already bound to another transaction.",
+          domainObject.ID);
+      throw new InvalidOperationException (message);
+    }
+
+    return DoEnlistDomainObject (domainObject);
   }
 
   /// <summary>
@@ -523,7 +551,7 @@ public abstract class ClientTransaction : ITransaction
 
     foreach (DomainObject domainObject in sourceTransaction.EnlistedDomainObjects)
     {
-      bool enlisted = DoEnlistDomainObject (domainObject);
+      bool enlisted = EnlistDomainObject (domainObject);
       if (enlisted)
         enlistedObjects.Add (domainObject);
     }
@@ -880,7 +908,8 @@ public abstract class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.GetDataContainerForTransaction (this));
+    DataContainer dataContainer = domainObject.GetDataContainerForTransaction (this);
+    return _dataManager.RelationEndPointMap.HasRelationChanged (dataContainer);
   }
 
   /// <summary>
@@ -991,6 +1020,7 @@ public abstract class ClientTransaction : ITransaction
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
     using (EnterNonDiscardingScope ())
     {
+      GetObject (relationEndPointID.ObjectID, true); // ensure that the object is actually loaded before accessing its related objects
       _dataManager.RelationEndPointMap.SetRelatedObject (relationEndPointID, newRelatedObject);
     }
   }

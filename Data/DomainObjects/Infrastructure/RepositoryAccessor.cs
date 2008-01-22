@@ -65,11 +65,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public static DomainObject GetObject (ObjectID objectID, bool includeDeleted)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
-      return ClientTransactionScope.CurrentTransaction.GetObject (objectID, includeDeleted);
+      return ClientTransaction.Current.GetObject (objectID, includeDeleted);
     }
 
     /// <summary>
-    /// Deletes the given <see cref="DomainObject"/>.
+    /// Deletes the given <see cref="DomainObject"/> in the <see cref="DomainObject.ClientTransaction"/>.
     /// </summary>
     /// <param name="objectToBeDeleted">The object to be deleted.</param>
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
@@ -79,9 +79,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull ("objectToBeDeleted", objectToBeDeleted);
 
-      objectToBeDeleted.CheckIfObjectIsDiscarded (ClientTransaction.Current);
-      objectToBeDeleted.CheckIfRightTransaction (ClientTransaction.Current);
-      ClientTransaction.Current.Delete (objectToBeDeleted);
+      objectToBeDeleted.CheckIfObjectIsDiscarded (objectToBeDeleted.ClientTransaction);
+      objectToBeDeleted.CheckIfRightTransaction (objectToBeDeleted.ClientTransaction);
+      objectToBeDeleted.ClientTransaction.Delete (objectToBeDeleted);
     }
 
     internal static IDomainObjectCreator GetCreator (Type domainObjectType)

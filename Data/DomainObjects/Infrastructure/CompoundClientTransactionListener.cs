@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   [Serializable]
   public class CompoundClientTransactionListener : IClientTransactionListener
   {
-    private List<IClientTransactionListener> _listeners = new List<IClientTransactionListener> ();
+    private readonly List<IClientTransactionListener> _listeners = new List<IClientTransactionListener> ();
 
     public void AddListener (IClientTransactionListener listener)
     {
@@ -34,16 +34,22 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         listener.SubTransactionCreated (subTransaction);
     }
 
-    public void NewObjectCreating (Type type)
+    public void NewObjectCreating (Type type, DomainObject instance)
     {
       foreach (IClientTransactionListener listener in _listeners)
-        listener.NewObjectCreating (type);
+        listener.NewObjectCreating (type, instance);
     }
 
     public void ObjectLoading (ObjectID id)
     {
       foreach (IClientTransactionListener listener in _listeners)
         listener.ObjectLoading (id);
+    }
+
+    public void ObjectInitializedFromDataContainer (ObjectID id, DomainObject instance)
+    {
+      foreach (IClientTransactionListener listener in _listeners)
+        listener.ObjectInitializedFromDataContainer (id, instance);
     }
 
     public void ObjectsLoaded (DomainObjectCollection domainObjects)

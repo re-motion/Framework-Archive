@@ -40,12 +40,17 @@ namespace Rubicon.Data.DomainObjects.Transport
       // not handled by this listener
     }
 
-    public void NewObjectCreating (Type type)
+    public void NewObjectCreating (Type type, DomainObject instance)
     {
       // not handled by this listener
     }
 
     public void ObjectLoading (ObjectID id)
+    {
+      // not handled by this listener
+    }
+
+    public void ObjectInitializedFromDataContainer (ObjectID id, DomainObject instance)
     {
       // not handled by this listener
     }

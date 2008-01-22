@@ -22,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       InvalidatedTransactionListener listener = new InvalidatedTransactionListener();
       MethodInfo[] methods = typeof (InvalidatedTransactionListener).GetMethods (BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
-      Assert.AreEqual (33, methods.Length);
+      Assert.AreEqual (34, methods.Length);
 
       foreach (MethodInfo method in methods)
       {

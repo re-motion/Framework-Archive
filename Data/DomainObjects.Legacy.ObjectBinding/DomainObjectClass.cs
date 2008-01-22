@@ -19,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
 /// </remarks>
 public class DomainObjectClass: IBusinessObjectClassWithIdentity
 {
-  private static List<string> s_frameworkPropertyNames;
+  private static readonly List<string> s_frameworkPropertyNames;
 
   static DomainObjectClass ()
   {
@@ -28,6 +28,8 @@ public class DomainObjectClass: IBusinessObjectClassWithIdentity
     s_frameworkPropertyNames.Add ("State");
     s_frameworkPropertyNames.Add ("ID");
     s_frameworkPropertyNames.Add ("DataContainer");
+    s_frameworkPropertyNames.Add ("ClientTransaction");
+    s_frameworkPropertyNames.Add ("IsBoundToSpecificTransaction");
   }
 
   public static DomainObjectClass CreateForDesignMode (Type type)

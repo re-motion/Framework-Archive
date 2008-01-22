@@ -22,12 +22,17 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       throw CreateException();
     }
 
-    public void NewObjectCreating (Type type)
+    public void NewObjectCreating (Type type, DomainObject instance)
     {
       throw CreateException();
     }
 
     public void ObjectLoading (ObjectID id)
+    {
+      throw CreateException();
+    }
+
+    public void ObjectInitializedFromDataContainer (ObjectID id, DomainObject instance)
     {
       throw CreateException();
     }

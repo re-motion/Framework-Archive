@@ -190,6 +190,7 @@
     <Compile Include="DomainObjects\RelationChangeBaseTest.cs" />
     <Compile Include="DomainObjects\SimpleDomainObjectTest.cs" />
     <Compile Include="DomainObjects\TransactionalAccessorTest.cs" />
+    <Compile Include="DomainObjects\TransactionBoundObjectTest.cs" />
     <Compile Include="Factories\ConfigurationFactory.cs" />
     <Compile Include="Configuration\FakeDomainObjectsConfigurationTest.cs" />
     <Compile Include="Configuration\DomainObjectsConfigurationTest.cs" />
@@ -934,6 +935,7 @@
     <Compile Include="TestDomain\TestDomainBase.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Transaction\BindingClientTransactionTest.cs" />
     <Compile Include="Transaction\ClientTransactionAsITransactionTest.cs" />
     <Compile Include="Transaction\ClientTransactionExtensionCollectionTest.cs" />
     <Compile Include="Transaction\ClientTransactionExtensionRelationChangesTest.cs" />
