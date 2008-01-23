@@ -5,6 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
+  [Serializable]
   public class BindingClientTransactionListener : IClientTransactionListener
   {
     private readonly ClientTransaction _bindingTransaction;

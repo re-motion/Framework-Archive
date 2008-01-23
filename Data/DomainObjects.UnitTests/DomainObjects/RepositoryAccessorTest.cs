@@ -43,6 +43,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No ClientTransaction has been associated with the current thread.")]
+    public void NewObject_NoTransaction ()
+    {
+      using (ClientTransactionScope.EnterNullScope ())
+      {
+        RepositoryAccessor.NewObject (typeof (Order)).With();
+      }
+    }
+
+    [Test]
     public void GetObject ()
     {
       Order order = RepositoryAccessor.GetObject (DomainObjectIDs.Order1, false) as Order;
@@ -70,6 +80,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No ClientTransaction has been associated with the current thread.")]
+    public void GetObject_NoTransaction ()
+    {
+      using (ClientTransactionScope.EnterNullScope ())
+      {
+        RepositoryAccessor.GetObject (DomainObjectIDs.Order1, false);
+      }
+    }
+
+    [Test]
     public void DeleteObject ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
@@ -84,6 +104,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       RepositoryAccessor.DeleteObject (order);
       RepositoryAccessor.DeleteObject (order);
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No ClientTransaction has been associated with the current thread or this object.")]
+    public void DeleteObject_NoTransaction ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      using (ClientTransactionScope.EnterNullScope ())
+      {
+        RepositoryAccessor.DeleteObject (order);
+      }
     }
   }
 }

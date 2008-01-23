@@ -34,6 +34,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     }
 
     [Test]
+    public void NonEmptyTransport_ObjectsBoundToTransaction ()
+    {
+      ObjectID[] loadedObjects = new ObjectID[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.Company1 };
+      DomainObjectTransporter transporter = new DomainObjectTransporter();
+      foreach (ObjectID id in loadedObjects)
+        transporter.Load (id);
+
+      TransportedDomainObjects transportedObjects = new DomainObjectImporter (transporter.GetBinaryTransportData()).GetImportedObjects();
+      foreach (DomainObject domainObject in transportedObjects.TransportedObjects)
+      {
+        Assert.IsTrue (domainObject.IsBoundToSpecificTransaction);
+        Assert.AreSame (transportedObjects.DataTransaction, domainObject.ClientTransaction);
+      }
+    }
+
+    [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Invalid data specified: End of Stream encountered before parsing was completed."
         + "\r\nParameter name: data")]
     public void InvalidData ()
@@ -117,9 +133,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
         Assert.IsTrue (loadedObject2.Properties[typeof (Computer), "Employee"].HasChanged);
         Assert.IsFalse (loadedObject3.Properties[typeof (Computer), "Employee"].HasChanged);
 
-        Assert.AreEqual (Employee.GetObject (DomainObjectIDs.Employee3), loadedObject1.Employee);
-        Assert.AreEqual (Employee.GetObject (DomainObjectIDs.Employee4), loadedObject2.Employee);
-        Assert.AreEqual (Employee.GetObject (DomainObjectIDs.Employee5), loadedObject3.Employee);
+        using (loadedObject1.ClientTransaction.EnterNonDiscardingScope ())
+        {
+          Assert.AreEqual (Employee.GetObject (DomainObjectIDs.Employee3), loadedObject1.Employee);
+          Assert.AreEqual (Employee.GetObject (DomainObjectIDs.Employee4), loadedObject2.Employee);
+          Assert.AreEqual (Employee.GetObject (DomainObjectIDs.Employee5), loadedObject3.Employee);
+        }
       }, binaryData);
     }
 
@@ -197,8 +216,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
         Assert.IsTrue (loadedObject1.Properties[typeof (OrderItem), "Order"].HasChanged);
         Assert.IsFalse (loadedObject2.Properties[typeof (OrderItem), "Order"].HasChanged);
 
-        Assert.AreEqual (Order.GetObject (DomainObjectIDs.Order1), loadedObject1.Order);
-        Assert.AreEqual (Order.GetObject (DomainObjectIDs.Order1), loadedObject2.Order);
+        using (loadedObject1.ClientTransaction.EnterNonDiscardingScope ())
+        {
+          Assert.AreEqual (Order.GetObject (DomainObjectIDs.Order1), loadedObject1.Order);
+          Assert.AreEqual (Order.GetObject (DomainObjectIDs.Order1), loadedObject2.Order);
+        }
       }, binaryData);
     }
 
@@ -237,10 +259,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     {
       TransportedDomainObjects transportedObjects = Import(binaryData);
       List<DomainObject> domainObjects = new List<DomainObject> (transportedObjects.TransportedObjects);
-      using (transportedObjects.DataTransaction.EnterNonDiscardingScope ())
-      {
-        checker (domainObjects);
-      }
+      checker (domainObjects);
     }
 
     private TransportedDomainObjects Import (byte[] binaryData)

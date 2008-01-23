@@ -12,11 +12,15 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 	public class DataContainerIndirection
 	{
 		private readonly DomainObject _domainObject;
+	  private readonly ClientTransaction _clientTransaction;
 
-		public DataContainerIndirection (DomainObject domainObject)
+		public DataContainerIndirection (DomainObject domainObject, ClientTransaction clientTransaction)
 		{
 			ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+		  ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
 			_domainObject = domainObject;
+		  _clientTransaction = clientTransaction;
 		}
 
     private DataContainer GetDataContainer ()
@@ -38,7 +42,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
 		public ClientTransaction ClientTransaction
 		{
-      get { return _domainObject.ClientTransaction; }
+      get { return _clientTransaction; }
 		}
 
 		public DomainObject DomainObject

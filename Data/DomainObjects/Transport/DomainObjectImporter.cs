@@ -59,7 +59,7 @@ namespace Rubicon.Data.DomainObjects.Transport
 
     public TransportedDomainObjects GetImportedObjects ()
     {
-      ClientTransaction targetTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction targetTransaction = ClientTransaction.NewBindingTransaction ();
       List<Tuple<DataContainer, DataContainer>> dataContainerMapping = GetTargetDataContainersForSourceObjects (targetTransaction);
 
       // grab enlisted objects _before_ properties are synchronized, as synchronizing might load some additional objects

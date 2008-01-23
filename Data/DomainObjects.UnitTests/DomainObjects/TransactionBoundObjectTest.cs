@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.Infrastructure;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -48,6 +49,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         Assert.IsFalse (loadedOrder.IsBoundToSpecificTransaction);
         Assert.AreSame (ClientTransaction.Current, loadedOrder.ClientTransaction);
       }
+    }
+
+    [Test]
+    public void UnboundObjects_NoCurrentTransaction ()
+    {
+      Order newOrder;
+      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      {
+        newOrder = Order.NewObject ();
+      }
+      Assert.IsNull (newOrder.ClientTransaction);
     }
 
     [Test]

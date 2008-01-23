@@ -241,7 +241,7 @@ namespace Rubicon.Data.DomainObjects
     {
       Type publicDomainObjectType = GetPublicDomainObjectType();
 
-      ClientTransaction.Current.TransactionEventSink.NewObjectCreating (publicDomainObjectType, this);
+      ClientTransactionScope.CurrentTransaction.TransactionEventSink.NewObjectCreating (publicDomainObjectType, this);
       DataContainer firstDataContainer = ClientTransaction.Current.CreateNewDataContainer (publicDomainObjectType);
       firstDataContainer.SetDomainObject (this);
 
@@ -386,7 +386,7 @@ namespace Rubicon.Data.DomainObjects
     /// </summary>
     public StateType State
     {
-      get { return GetStateForTransaction (ClientTransaction); }
+      get { return GetStateForTransaction (GetNonNullClientTransaction()); }
     }
 
     /// <summary>
@@ -409,6 +409,15 @@ namespace Rubicon.Data.DomainObjects
     public ClientTransaction ClientTransaction
     {
       get { return _bindingTransaction ?? ClientTransaction.Current; }
+    }
+
+    internal ClientTransaction GetNonNullClientTransaction ()
+    {
+      ClientTransaction transaction = ClientTransaction;
+      if (transaction == null)
+        throw new InvalidOperationException ("No ClientTransaction has been associated with the current thread or this object.");
+      else
+        return transaction;
     }
 
     /// <summary>
@@ -469,9 +478,10 @@ namespace Rubicon.Data.DomainObjects
     /// <exception cref="ObjectDiscardedException">The object has already been discarded.</exception>
     public void MarkAsChanged ()
     {
-      CheckIfObjectIsDiscarded (ClientTransaction);
+      ClientTransaction transaction = GetNonNullClientTransaction();
+      CheckIfObjectIsDiscarded (transaction);
 
-      DataContainer dataContainer = GetDataContainer();
+      DataContainer dataContainer = GetDataContainerForTransaction (transaction);
       try
       {
         dataContainer.MarkAsChanged();
@@ -490,7 +500,7 @@ namespace Rubicon.Data.DomainObjects
     /// </remarks>
     public bool IsDiscarded
     {
-      get { return IsDiscardedInTransaction (ClientTransaction); }
+      get { return IsDiscardedInTransaction (GetNonNullClientTransaction ()); }
     }
 
     /// <summary>
@@ -521,9 +531,10 @@ namespace Rubicon.Data.DomainObjects
     {
       get
       {
-        CheckIfObjectIsDiscarded (ClientTransaction);
-        CheckIfRightTransaction (ClientTransaction);
-        return new DataContainerIndirection (this);
+        ClientTransaction transaction = GetNonNullClientTransaction();
+        CheckIfObjectIsDiscarded (transaction);
+        CheckIfRightTransaction (transaction);
+        return new DataContainerIndirection (this, transaction);
       }
     }
 
@@ -533,7 +544,7 @@ namespace Rubicon.Data.DomainObjects
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
     private DataContainer GetDataContainer ()
     {
-      return GetDataContainerForTransaction (ClientTransaction);
+      return GetDataContainerForTransaction (GetNonNullClientTransaction ());
     }
 
     internal DataContainer GetDataContainerForTransaction (ClientTransaction transaction)

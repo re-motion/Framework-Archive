@@ -237,7 +237,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     private ClientTransaction DefaultTransaction
     {
-      get { return DomainObject.ClientTransaction; }
+      get { return DomainObject.GetNonNullClientTransaction(); }
     }
 
     private void CheckTransactionalStatus (ClientTransaction transaction)

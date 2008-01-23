@@ -2,6 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
+  [Serializable]
   public class BindingClientTransaction : RootClientTransaction
   {
     public BindingClientTransaction ()
