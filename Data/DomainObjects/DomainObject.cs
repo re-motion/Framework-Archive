@@ -225,7 +225,7 @@ namespace Rubicon.Data.DomainObjects
     public event EventHandler RolledBack;
 
     private ObjectID _id;
-    private int _loadCount;
+    private bool _initialConstructionEventSignalled = false;
     private ClientTransaction _bindingTransaction; // null unless this object is bound to a fixed transaction
 
     // construction and disposing
@@ -246,6 +246,7 @@ namespace Rubicon.Data.DomainObjects
       firstDataContainer.SetDomainObject (this);
 
       InitializeFromDataContainer (firstDataContainer);
+      _initialConstructionEventSignalled = true;
     }
 
     /// <summary>
@@ -263,7 +264,7 @@ namespace Rubicon.Data.DomainObjects
       {
         _id = (ObjectID) info.GetValue ("DomainObject.ID", typeof (ObjectID));
         _bindingTransaction = (ClientTransaction) info.GetValue ("DomainObject._bindingTransaction", typeof (ClientTransaction));
-        _loadCount = info.GetInt32 ("DomainObject._loadCount");
+        _initialConstructionEventSignalled = true;
       }
       catch (SerializationException ex)
       {
@@ -293,6 +294,7 @@ namespace Rubicon.Data.DomainObjects
       firstDataContainer.SetDomainObject (this);
 
       InitializeFromDataContainer (firstDataContainer);
+      _initialConstructionEventSignalled = true;
     }
 
     /// <summary>
@@ -334,14 +336,15 @@ namespace Rubicon.Data.DomainObjects
 
       info.AddValue ("DomainObject.ID", ID);
       info.AddValue ("DomainObject._bindingTransaction", _bindingTransaction);
-      info.AddValue ("DomainObject._loadCount", _loadCount);
     }
 
     /// <summary>
-    /// Sets the data container during the loading process of a domain object.
+    /// Sets the data container during the process creating a domain object or loading it for the first time.
     /// </summary>
     /// <param name="dataContainer">The data container to be associated with the loaded domain object.</param>
     /// <exception cref="ArgumentNullException">The <paramref name="dataContainer"/> parameter is null.</exception>
+    /// <remarks>This method is always called exactly once per <see cref="DomainObject"/> instance, and it is called regardless of
+    /// whether the object has been created by <see cref="NewObject{T}"/> or loaded via <see cref="GetObject{T}(ObjectID)"/>.</remarks>
     internal void InitializeFromDataContainer (DataContainer dataContainer)
     {
       ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
@@ -985,11 +988,12 @@ namespace Rubicon.Data.DomainObjects
     {
       LoadMode loadMode;
 
-      ++_loadCount;
-      if (_loadCount == 1)
+      if (!_initialConstructionEventSignalled)
         loadMode = LoadMode.WholeDomainObjectInitialized;
       else
         loadMode = LoadMode.DataContainerLoadedOnly;
+
+      _initialConstructionEventSignalled = true;
 
       DomainObjectMixinCodeGenerationBridge.OnDomainObjectLoaded (this, loadMode);
       OnLoaded (loadMode);

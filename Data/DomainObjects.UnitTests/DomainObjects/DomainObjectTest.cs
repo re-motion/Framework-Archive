@@ -212,6 +212,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    public void OnLoadedWithNewInParentAndGetInSubTransaction ()
+    {
+      ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.NewObject ();
+      Assert.IsFalse (classWithAllDataTypes.OnLoadedHasBeenCalled);
+      Assert.AreEqual (0, classWithAllDataTypes.OnLoadedCallCount);
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
+      {
+        Dev.Null = classWithAllDataTypes.Int32Property;
+
+        Assert.IsTrue (classWithAllDataTypes.OnLoadedHasBeenCalled);
+        Assert.AreEqual (1, classWithAllDataTypes.OnLoadedCallCount);
+        Assert.AreEqual (LoadMode.DataContainerLoadedOnly, classWithAllDataTypes.OnLoadedLoadMode);
+      }
+    }
+
+    [Test]
     public void GetRelatedObject ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
