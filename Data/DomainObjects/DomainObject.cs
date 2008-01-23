@@ -262,6 +262,8 @@ namespace Rubicon.Data.DomainObjects
       try
       {
         _id = (ObjectID) info.GetValue ("DomainObject.ID", typeof (ObjectID));
+        _bindingTransaction = (ClientTransaction) info.GetValue ("DomainObject._bindingTransaction", typeof (ClientTransaction));
+        _loadCount = info.GetInt32 ("DomainObject._loadCount");
       }
       catch (SerializationException ex)
       {
@@ -331,6 +333,8 @@ namespace Rubicon.Data.DomainObjects
       ArgumentUtility.CheckNotNull ("info", info);
 
       info.AddValue ("DomainObject.ID", ID);
+      info.AddValue ("DomainObject._bindingTransaction", _bindingTransaction);
+      info.AddValue ("DomainObject._loadCount", _loadCount);
     }
 
     /// <summary>

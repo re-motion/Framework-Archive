@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Development.UnitTesting;
@@ -22,6 +23,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     }
 
     protected TestDomainBase()
+    {
+    }
+
+    protected TestDomainBase (SerializationInfo info, StreamingContext context)
+      : base (info, context)
     {
     }
 

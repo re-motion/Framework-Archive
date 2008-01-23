@@ -310,6 +310,7 @@
     <Compile Include="RhinoMocksRepositoryAdapter.cs" />
     <Compile Include="Serialization\CollectionEndPointTest.cs" />
     <Compile Include="Serialization\DomainObjectCollectionTest.cs" />
+    <Compile Include="Serialization\DomainObjectTest.cs" />
     <Compile Include="Serialization\FlattenedSerializationReaderTest.cs" />
     <Compile Include="Serialization\FlattenedSerializationWriterTest.cs" />
     <Compile Include="Serialization\RelationEndPointIDTest.cs" />

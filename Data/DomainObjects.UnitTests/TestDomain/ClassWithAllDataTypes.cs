@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
@@ -7,7 +8,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [TestDomain]
   [Instantiable]
   [Serializable]
-  public abstract class ClassWithAllDataTypes : TestDomainBase
+  public abstract class ClassWithAllDataTypes : TestDomainBase, ISerializable
   {
     public enum EnumType
     {
@@ -32,6 +33,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     protected ClassWithAllDataTypes ()
     {
+    }
+
+    protected ClassWithAllDataTypes (SerializationInfo info, StreamingContext context)
+      : base (info, context)
+    {
+    }
+
+    public void GetObjectData (SerializationInfo info, StreamingContext context)
+    {
+      BaseGetObjectData (info, context);
     }
 
     [StorageClassNone]
