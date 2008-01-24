@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Utilities;
 
@@ -84,7 +85,7 @@ namespace Rubicon.Data.DomainObjects.Transport
     /// Each object behaves as if it were loaded via <see cref="Load"/>.
     /// </summary>
     /// <param name="objectID">The <see cref="ObjectID"/> of the object which is to be loaded together with its related objects.</param>
-    /// <seealso cref="DomainObject.GetAllRelatedObjects"/>
+    /// <seealso cref="PropertyIndexer.GetAllRelatedObjects"/>
     public void LoadWithRelatedObjects (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
@@ -92,7 +93,7 @@ namespace Rubicon.Data.DomainObjects.Transport
       DomainObject sourceObject = _transportTransaction.GetObject (objectID, false);
       using (_transportTransaction.EnterNonDiscardingScope ())
       {
-        foreach (DomainObject domainObject in sourceObject.GetAllRelatedObjects ())
+        foreach (DomainObject domainObject in sourceObject.Properties.GetAllRelatedObjects ())
           Load (domainObject.ID); // explicitly call load rather than just implicitly loading it into the transaction for consistency
       }
     }
@@ -102,7 +103,7 @@ namespace Rubicon.Data.DomainObjects.Transport
     /// transporter. Each object behaves as if it were loaded via <see cref="Load"/>.
     /// </summary>
     /// <param name="objectID">The <see cref="ObjectID"/> of the object which is to be loaded together with its related objects.</param>
-    /// <seealso cref="DomainObject.GetFlattenedRelatedObjectGraph"/>
+    /// <seealso cref="DomainObjectGraphTraverser.GetFlattenedRelatedObjectGraph"/>
     public void LoadRecursive (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
@@ -110,7 +111,7 @@ namespace Rubicon.Data.DomainObjects.Transport
       DomainObject sourceObject = _transportTransaction.GetObject (objectID, false);
       using (_transportTransaction.EnterNonDiscardingScope ())
       {
-        foreach (DomainObject domainObject in sourceObject.GetFlattenedRelatedObjectGraph())
+        foreach (DomainObject domainObject in sourceObject.GetGraphTraverser (FullGraphTraversalStrategy.Instance).GetFlattenedRelatedObjectGraph())
           Load (domainObject.ID); // explicitly call load rather than just implicitly loading it into the transaction for consistency
       }
     }

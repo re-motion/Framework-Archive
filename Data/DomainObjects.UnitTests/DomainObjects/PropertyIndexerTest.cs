@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -38,13 +39,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void Count ()
     {
       Order order = Order.NewObject ();
-      Assert.AreEqual (6, order.Properties.Count);
+      Assert.AreEqual (6, order.Properties.GetPropertyCount());
 
       OrderItem orderItem = OrderItem.NewObject ();
-      Assert.AreEqual (3, orderItem.Properties.Count);
+      Assert.AreEqual (3, orderItem.Properties.GetPropertyCount());
 
       ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.NewObject ();
-      Assert.AreEqual (41, cwadt.Properties.Count);
+      Assert.AreEqual (41, cwadt.Properties.GetPropertyCount());
     }
 
     [Test]
@@ -168,6 +169,76 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Distributor distributor = Distributor.NewObject ();
       distributor.Properties.Find (typeof (Distributor), "Frobbers");
+    }
+
+    [Test]
+    public void GetAllRelatedObjects_DoesNotContainRoot ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      List<DomainObject> relatedObjects = new List<DomainObject> (order.Properties.GetAllRelatedObjects ());
+      Assert.That (relatedObjects, List.Not.Contains (order));
+    }
+
+    [Test]
+    public void GetAllRelatedObjects_DoesNotContainIndirectRelatedObjects ()
+    {
+      Ceo ceo = Ceo.GetObject (DomainObjectIDs.Ceo1);
+      List<DomainObject> relatedObjects = new List<DomainObject> (ceo.Properties.GetAllRelatedObjects ());
+      Assert.That (relatedObjects, List.Not.Contains (ceo.Company.IndustrialSector));
+    }
+
+    [Test]
+    public void GetAllRelatedObjects_DoesNotContainDuplicates ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      List<DomainObject> relatedObjects = new List<DomainObject> (order.Properties.GetAllRelatedObjects ());
+      Assert.That (relatedObjects, Is.EquivalentTo (new Set<DomainObject> (relatedObjects)));
+    }
+
+    [Test]
+    public void GetAllRelatedObjects_DoesNotContainNulls ()
+    {
+      Order order = Order.NewObject ();
+      List<DomainObject> relatedObjects = new List<DomainObject> (order.Properties.GetAllRelatedObjects ());
+      Assert.That (relatedObjects, List.Not.Contains (null));
+    }
+
+    [Test]
+    public void GetAllRelatedObjects_ContainsSimpleRelatedObject ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      List<DomainObject> relatedObjects = new List<DomainObject> (order.Properties.GetAllRelatedObjects ());
+      Assert.That (relatedObjects, List.Contains (order.Official));
+      Assert.That (relatedObjects, List.Contains (order.OrderTicket));
+    }
+
+    [Test]
+    public void GetAllRelatedObjects_ContainsSimpleRelatedObjectBothSides ()
+    {
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
+      List<DomainObject> relatedObjects = new List<DomainObject> (computer.Properties.GetAllRelatedObjects ());
+      Assert.That (relatedObjects, List.Contains (computer.Employee));
+
+      Employee employee = Employee.GetObject (DomainObjectIDs.Employee3);
+      relatedObjects = new List<DomainObject> (employee.Properties.GetAllRelatedObjects ());
+      Assert.That (relatedObjects, List.Contains (employee.Computer));
+
+    }
+
+    [Test]
+    public void GetAllRelatedObjects_ContainsSimpleRelatedObjectUnidirectional ()
+    {
+      Client client = Client.GetObject (DomainObjectIDs.Client2);
+      List<DomainObject> relatedObjects = new List<DomainObject> (client.Properties.GetAllRelatedObjects ());
+      Assert.That (relatedObjects, List.Contains (client.ParentClient));
+    }
+
+    [Test]
+    public void GetAllRelatedObjects_ContainsRelatedObjects ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      List<DomainObject> relatedObjects = new List<DomainObject> (order.Properties.GetAllRelatedObjects ());
+      Assert.That (order.OrderItems, Is.SubsetOf (relatedObjects));
     }
   }
 }

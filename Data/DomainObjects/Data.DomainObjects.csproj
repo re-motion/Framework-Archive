@@ -116,7 +116,9 @@
     <Compile Include="Design\DomainObjectsDesignModeHelper.cs" />
     <Compile Include="Design\DesignModeMappingLoaderAttribute.cs" />
     <Compile Include="Design\DesignModeMappingReflector.cs" />
+    <Compile Include="DomainObjectGraphTraverser.cs" />
     <Compile Include="DomainObjectMixin.cs" />
+    <Compile Include="FullGraphTraversalStrategy.cs" />
     <Compile Include="Infrastructure\BindingClientTransaction.cs" />
     <Compile Include="Infrastructure\BindingClientTransactionListener.cs" />
     <Compile Include="Infrastructure\FlattenedDeserializationInfo.cs" />
@@ -126,6 +128,7 @@
     <Compile Include="Infrastructure\FlattenedSerializationWriter.cs" />
     <Compile Include="Infrastructure\IFlattenedSerializable.cs" />
     <Compile Include="Infrastructure\RepositoryAccessor.cs" />
+    <Compile Include="IGraphTraversalStrategy.cs" />
     <Compile Include="Mapping\SerializableMappingObject.cs" />
     <Compile Include="Persistence\BulkLoadException.cs" />
     <Compile Include="Persistence\Rdbms\DataContainerLoader.cs" />

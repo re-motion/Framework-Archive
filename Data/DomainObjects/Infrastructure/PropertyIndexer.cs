@@ -83,21 +83,18 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// Gets the number of properties defined by the domain object. This corresponds to the number of <see cref="PropertyAccessor"/> objects
     /// indexable by this structure and enumerated by <see cref="GetEnumerator"/>.
     /// </summary>
-    /// <value>The number of properties defined by the domain object.</value>
-    public int Count
+    /// <returns>The number of properties defined by the domain object.</returns>
+    public int GetPropertyCount ()
     {
-      get
+      ClassDefinition classDefinition = _domainObject.ID.ClassDefinition;
+      IRelationEndPointDefinition[] endPointDefinitions = classDefinition.GetRelationEndPointDefinitions();
+      int count = classDefinition.GetPropertyDefinitions().Count;
+      foreach (IRelationEndPointDefinition endPointDefinition in endPointDefinitions)
       {
-        ClassDefinition classDefinition = _domainObject.ID.ClassDefinition;
-        IRelationEndPointDefinition[] endPointDefinitions = classDefinition.GetRelationEndPointDefinitions ();
-        int count = classDefinition.GetPropertyDefinitions ().Count;
-        foreach (IRelationEndPointDefinition endPointDefinition in endPointDefinitions)
-        {
-          if (endPointDefinition.IsVirtual)
-            ++count;
-        }
-        return count;
+        if (endPointDefinition.IsVirtual)
+          ++count;
       }
+      return count;
     }
 
     public IEnumerator<PropertyAccessor> GetEnumerator ()
@@ -191,6 +188,31 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull ("shortPropertyName", shortPropertyName);
       return Find (typeof (TDomainObject), shortPropertyName);
+    }
+
+    /// <summary>
+    /// Gets all related objects of the associated <see cref="DomainObject"/>.
+    /// </summary>
+    /// <returns>An enumeration of all <see cref="DomainObject"/> directly referenced by the associated <see cref="DomainObject"/> in the form of
+    /// <see cref="PropertyKind.RelatedObject"/> and <see cref="PropertyKind.RelatedObjectCollection"/> properties.</returns>
+    public IEnumerable<DomainObject> GetAllRelatedObjects ()
+    {
+      foreach (PropertyAccessor property in _domainObject.Properties)
+      {
+        switch (property.Kind)
+        {
+          case PropertyKind.RelatedObject:
+            DomainObject value = (DomainObject) property.GetValueWithoutTypeCheck ();
+            if (value != null)
+              yield return value;
+            break;
+          case PropertyKind.RelatedObjectCollection:
+            DomainObjectCollection values = (DomainObjectCollection) property.GetValueWithoutTypeCheck ();
+            foreach (DomainObject relatedObject in values)
+              yield return relatedObject;
+            break;
+        }
+      }
     }
   }
 }

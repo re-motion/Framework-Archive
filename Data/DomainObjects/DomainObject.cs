@@ -719,55 +719,9 @@ namespace Rubicon.Data.DomainObjects
       return new TransactionalAccessor<T> (property);
     }
 
-    /// <summary>
-    /// Gets all related objects of this <see cref="DomainObject"/>.
-    /// </summary>
-    /// <returns>An enumeration of all <see cref="DomainObject"/> directly referenced by this <see cref="DomainObject"/> in the form of
-    /// <see cref="PropertyKind.RelatedObject"/> and <see cref="PropertyKind.RelatedObjectCollection"/> properties.</returns>
-    protected internal IEnumerable<DomainObject> GetAllRelatedObjects ()
+    protected internal DomainObjectGraphTraverser GetGraphTraverser (IGraphTraversalStrategy strategy)
     {
-      foreach (PropertyAccessor property in Properties)
-      {
-        switch (property.Kind)
-        {
-          case PropertyKind.RelatedObject:
-            DomainObject value = (DomainObject) property.GetValueWithoutTypeCheck();
-            if (value != null)
-              yield return value;
-            break;
-          case PropertyKind.RelatedObjectCollection:
-            DomainObjectCollection values = (DomainObjectCollection) property.GetValueWithoutTypeCheck();
-            foreach (DomainObject relatedObject in values)
-              yield return relatedObject;
-            break;
-        }
-      }
-    }
-
-    /// <summary>
-    /// Provides a mechanism for retrieving all the <see cref="DomainObject"/> instances directly or indirectly referenced by this object via
-    /// <see cref="PropertyKind.RelatedObject"/> and <see cref="PropertyKind.RelatedObjectCollection"/> properties.
-    /// </summary>
-    /// <returns>A <see cref="Set{T}"/> of <see cref="DomainObject"/> instances containing this object and all objects directly or indirectly
-    /// referenced by it.</returns>
-    // Note: Implemented nonrecursively in order to support very large graphs.
-    protected internal Set<DomainObject> GetFlattenedRelatedObjectGraph ()
-    {
-      Set<DomainObject> resultSet = new Set<DomainObject>();
-      Set<DomainObject> objectsToBeProcessed = new Set<DomainObject> (this);
-
-      while (objectsToBeProcessed.Count > 0)
-      {
-        DomainObject current = objectsToBeProcessed.GetAny();
-        objectsToBeProcessed.Remove (current);
-        if (!resultSet.Contains (current))
-        {
-          resultSet.Add (current);
-          objectsToBeProcessed.AddRange (current.GetAllRelatedObjects());
-        }
-      }
-
-      return resultSet;
+      return new DomainObjectGraphTraverser (this, strategy);
     }
 
     #endregion

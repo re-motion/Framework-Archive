@@ -78,14 +78,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       get { return base.Properties; }
     }
 
-    public new IEnumerable<DomainObject> GetAllRelatedObjects ()
+    public new DomainObjectGraphTraverser GetGraphTraverser(IGraphTraversalStrategy stragety)
     {
-      return base.GetAllRelatedObjects ();
-    }
-
-    public new Set<DomainObject> GetFlattenedRelatedObjectGraph ()
-    {
-      return base.GetFlattenedRelatedObjectGraph();
+      return base.GetGraphTraverser (stragety);
     }
   }
 }
