@@ -50,8 +50,9 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     public void InitializeFromExistingSession ()
     {
       _mockRepository.BackToRecordAll();
+      DateTime lastAccess = DateTime.Now;
       WxeFunctionStateManager.WxeFunctionStateMetaData functionStateMetaData =
-          new WxeFunctionStateManager.WxeFunctionStateMetaData (Guid.NewGuid().ToString(), 1, DateTime.Now);
+          new WxeFunctionStateManager.WxeFunctionStateMetaData (Guid.NewGuid().ToString(), 1, lastAccess);
       Dictionary<string, WxeFunctionStateManager.WxeFunctionStateMetaData> functionStates =
           new Dictionary<string, WxeFunctionStateManager.WxeFunctionStateMetaData> ();
       functionStates.Add (functionStateMetaData.FunctionToken, functionStateMetaData);
@@ -66,7 +67,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       WxeFunctionStateManager functionStateManager = new WxeFunctionStateManager (session);
 
       _mockRepository.VerifyAll();
-      Assert.AreEqual (DateTime.Now, functionStateManager.GetLastAccess (functionStateMetaData.FunctionToken));
+      Assert.AreEqual (lastAccess, functionStateManager.GetLastAccess (functionStateMetaData.FunctionToken));
     }
 
     [Test]
