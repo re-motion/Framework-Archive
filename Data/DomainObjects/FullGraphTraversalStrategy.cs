@@ -16,7 +16,7 @@ namespace Rubicon.Data.DomainObjects
       return true;
     }
 
-    public bool ShouldFollowLink (DomainObject currentObject, PropertyAccessor linkProperty)
+    public bool ShouldFollowLink (DomainObject root, DomainObject currentObject, int currentDepth, PropertyAccessor linkProperty)
     {
       return true;
     }

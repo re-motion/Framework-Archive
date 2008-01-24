@@ -17,10 +17,14 @@ namespace Rubicon.Data.DomainObjects
     /// <summary>
     /// Determines whether to follow a relation link when traversing a <see cref="DomainObject"/> graph.
     /// </summary>
+    /// <param name="root">The root domain object from which the traversal was started.</param>
     /// <param name="currentObject">The current domain object defining the relation link.</param>
+    /// <param name="currentDepth">The number of links that were traversed from the root to the current object. Note that this value is not
+    /// necessarily the shortest path from the root to the current object; if an object can be reached in more than one way, it is not defined
+    /// which way is taken by the traverser.</param>
     /// <param name="linkProperty">The link property. Note that when the property's <see cref="PropertyAccessor.GetValue{T}"/> methods are
     /// accessed, this can cause the related objects to be loaded from the database.</param>
     /// <returns>True if the traverser should follow the link; otherwise, if traversal should stop at the <paramref name="currentObject"/>.</returns>
-    bool ShouldFollowLink (DomainObject currentObject, PropertyAccessor linkProperty);
+    bool ShouldFollowLink (DomainObject root, DomainObject currentObject, int currentDepth, PropertyAccessor linkProperty);
   }
 }

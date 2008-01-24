@@ -182,7 +182,7 @@
     <Compile Include="DataManagement\NullEndPointModificationTest.cs" />
     <Compile Include="DataManagement\ObjectEndPointModificationTest.cs" />
     <Compile Include="DomainObjects\RepositoryAccessorTest.cs" />
-    <Compile Include="DomainObjects\GraphTest.cs" />
+    <Compile Include="DomainObjects\DomainObjectGraphTraverserTest.cs" />
     <Compile Include="DomainObjects\MultiTransactionTest.cs" />
     <Compile Include="DomainObjects\ObjectListIListTest.cs" />
     <Compile Include="DomainObjects\PropertyAccessorTest.cs" />
@@ -972,6 +972,9 @@
     <Compile Include="Transaction\SubTransactionTest.cs" />
     <Compile Include="Transport\DomainObjectImporterTest.cs" />
     <Compile Include="Transport\DomainObjectTransporterTest.cs" />
+    <Compile Include="Transport\FollowAllProcessNoneStrategy.cs" />
+    <Compile Include="Transport\FollowOnlyOneLevelStrategy.cs" />
+    <Compile Include="Transport\OnlyProcessComputersStrategy.cs" />
     <Compile Include="Transport\TransportedDomainObjectsTest.cs" />
     <Compile Include="UnitTestStorageProviderStub.cs">
       <SubType>Code</SubType>

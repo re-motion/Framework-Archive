@@ -23,32 +23,20 @@ namespace Rubicon.Data.DomainObjects.Transport
     public DomainObjectImporter (byte[] data)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("data", data);
-      _sourceTransaction = DeserializeData (data);
-      _transportedObjects = ExtractTransportedObjects (_sourceTransaction);
-      _transportedObjectIDs = GetObjectIDs (_transportedObjects);
+      Tuple<ClientTransaction, ObjectID[]> deserializedData = DeserializeData (data);
+      _sourceTransaction = deserializedData.A;
+      _transportedObjectIDs = deserializedData.B;
+      _transportedObjects = _sourceTransaction.GetObjects<DomainObject> (_transportedObjectIDs);
     }
 
-    private DomainObjectCollection ExtractTransportedObjects (ClientTransaction transaction)
-    {
-      return new DomainObjectCollection (transaction.EnlistedDomainObjects, true);
-    }
-
-    private ObjectID[] GetObjectIDs (DomainObjectCollection domainObjects)
-    {
-      ObjectID[] ids = new ObjectID[domainObjects.Count];
-      for (int i = 0; i < domainObjects.Count; ++i)
-        ids[i] = domainObjects[i].ID;
-      return ids;
-    }
-
-    private ClientTransaction DeserializeData (byte[] data)
+    private Tuple<ClientTransaction, ObjectID[]> DeserializeData (byte[] data)
     {
       using (MemoryStream stream = new MemoryStream (data))
       {
         BinaryFormatter formatter = new BinaryFormatter ();
         try
         {
-          return (ClientTransaction) formatter.Deserialize (stream);
+          return (Tuple<ClientTransaction, ObjectID[]>) formatter.Deserialize (stream);
         }
         catch (SerializationException ex)
         {

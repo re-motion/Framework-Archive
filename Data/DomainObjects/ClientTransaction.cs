@@ -786,7 +786,7 @@ public abstract class ClientTransaction : ITransaction
   /// <see cref="BulkLoadException.Exceptions"/> property.</exception>
   public ObjectList<T> GetObjects<T> (params ObjectID[] objectIDs) where T : DomainObject
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("objectIDs", objectIDs);
+    ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
     return GetObjects<T> (objectIDs, true);
   }
 
@@ -826,7 +826,7 @@ public abstract class ClientTransaction : ITransaction
   /// <see cref="BulkLoadException.Exceptions"/> property.</exception>
   protected internal virtual ObjectList<T> GetObjects<T> (ObjectID[] objectIDs, bool throwOnNotFound) where T : DomainObject
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("objectIDs", objectIDs);
+    ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
     using (EnterNonDiscardingScope ())
     {

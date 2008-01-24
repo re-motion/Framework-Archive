@@ -611,5 +611,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
       return (ObjectID) ValuePropertyAccessorStrategy.Instance.GetOriginalValueWithoutTypeCheck (this, transaction);
     }
+
+    public override string ToString ()
+    {
+      return _propertyIdentifier;
+    }
   }
 }

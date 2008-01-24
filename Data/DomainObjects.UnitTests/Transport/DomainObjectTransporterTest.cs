@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using System.Collections.Generic;
 using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Transport;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -23,16 +24,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     [Test]
     public void Initialization ()
     {
-      Assert.AreEqual (0, _transporter.ObjectCount);
-      Assert.IsEmpty (GetIDList ());
+      Assert.AreEqual (0, _transporter.ObjectIDs.Count);
+      Assert.IsEmpty (_transporter.ObjectIDs);
     }
 
     [Test]
     public void Load ()
     {
       _transporter.Load (DomainObjectIDs.Order1);
-      Assert.AreEqual (1, _transporter.ObjectCount);
-      Assert.That (GetIDList (), Is.EqualTo (new ObjectID[] { DomainObjectIDs.Order1 }));
+      Assert.AreEqual (1, _transporter.ObjectIDs.Count);
+      Assert.That (_transporter.ObjectIDs, Is.EqualTo (new ObjectID[] { DomainObjectIDs.Order1 }));
     }
 
     [Test]
@@ -40,8 +41,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     {
       _transporter.Load (DomainObjectIDs.Order1);
       _transporter.Load (DomainObjectIDs.Order1);
-      Assert.AreEqual (1, _transporter.ObjectCount);
-      Assert.That (GetIDList (), Is.EqualTo (new ObjectID[] { DomainObjectIDs.Order1 }));
+      Assert.AreEqual (1, _transporter.ObjectIDs.Count);
+      Assert.That (_transporter.ObjectIDs, Is.EqualTo (new ObjectID[] { DomainObjectIDs.Order1 }));
     }
 
     [Test]
@@ -56,20 +57,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     public void Load_Multiple ()
     {
       _transporter.Load (DomainObjectIDs.Order1);
-      Assert.AreEqual (1, _transporter.ObjectCount);
+      Assert.AreEqual (1, _transporter.ObjectIDs.Count);
       _transporter.Load (DomainObjectIDs.Order2);
-      Assert.AreEqual (2, _transporter.ObjectCount);
+      Assert.AreEqual (2, _transporter.ObjectIDs.Count);
       _transporter.Load (DomainObjectIDs.OrderItem1);
-      Assert.AreEqual (3, _transporter.ObjectCount);
-      Assert.That (GetIDList (), Is.EqualTo (new ObjectID[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.OrderItem1 }));
+      Assert.AreEqual (3, _transporter.ObjectIDs.Count);
+      Assert.That (_transporter.ObjectIDs, Is.EqualTo (new ObjectID[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.OrderItem1 }));
     }
 
     [Test]
     public void LoadWithRelatedObjects ()
     {
       _transporter.LoadWithRelatedObjects (DomainObjectIDs.Order1);
-      Assert.AreEqual (6, _transporter.ObjectCount);
-      Assert.That (GetIDList (), Is.EquivalentTo (new ObjectID[] { DomainObjectIDs.Order1, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2,
+      Assert.AreEqual (6, _transporter.ObjectIDs.Count);
+      Assert.That (_transporter.ObjectIDs, Is.EquivalentTo (new ObjectID[] { DomainObjectIDs.Order1, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2,
           DomainObjectIDs.OrderTicket1, DomainObjectIDs.Customer1, DomainObjectIDs.Official1 }));
     }
 
@@ -77,9 +78,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     public void LoadRecursive ()
     {
       _transporter.LoadRecursive (DomainObjectIDs.Employee1);
-      Assert.AreEqual (5, _transporter.ObjectCount);
-      Assert.That (GetIDList (), Is.EquivalentTo (new ObjectID[] { DomainObjectIDs.Employee1, DomainObjectIDs.Employee4, DomainObjectIDs.Computer2,
+      Assert.AreEqual (5, _transporter.ObjectIDs.Count);
+      Assert.That (_transporter.ObjectIDs, Is.EquivalentTo (new ObjectID[] { DomainObjectIDs.Employee1, DomainObjectIDs.Employee4, DomainObjectIDs.Computer2,
           DomainObjectIDs.Employee5, DomainObjectIDs.Computer3 }));
+    }
+
+    [Test]
+    public void LoadRecursive_WithStrategy_ShouldFollow ()
+    {
+      FollowOnlyOneLevelStrategy strategy = new FollowOnlyOneLevelStrategy();
+      _transporter.LoadRecursive (DomainObjectIDs.Employee1, strategy);
+      Assert.That (_transporter.ObjectIDs, Is.EquivalentTo (new ObjectID[] { DomainObjectIDs.Employee1, DomainObjectIDs.Employee4, DomainObjectIDs.Employee5 }));
+    }
+
+    [Test]
+    public void LoadRecursive_WithStrategy_ShouldProcess ()
+    {
+      OnlyProcessComputersStrategy strategy = new OnlyProcessComputersStrategy ();
+      _transporter.LoadRecursive (DomainObjectIDs.Employee1, strategy);
+      Assert.That (_transporter.ObjectIDs, Is.EquivalentTo (new ObjectID[] { DomainObjectIDs.Computer2, DomainObjectIDs.Computer3 }));
     }
 
     [Test]
@@ -104,90 +121,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       DomainObjectTransporter.LoadTransportData (data);
     }
 
-    /*[Test]
-    public void LoadRecursive_WithFilter_DontStopRecursion ()
-    {
-      _transporter.LoadRecursive (DomainObjectIDs.Order1,
-          delegate (ObjectID id, ref bool continueRecursion) { return typeof (OrderItem).IsAssignableFrom (id.ClassDefinition.ClassType); });
-      
-      List<ObjectID> flattenedGraphIDs;
-
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
-      {
-        Order order1 = Order.GetObject (DomainObjectIDs.Order1);
-        Set<DomainObject> flattenedGraph = order1.GetFlattenedRelatedObjectGraph ();
-        flattenedGraphIDs = new List<ObjectID> ();
-        foreach (DomainObject domainObject in flattenedGraph)
-        {
-          if (domainObject is OrderItem)
-            flattenedGraphIDs.Add (domainObject.ID);
-        }
-      }
-
-      Assert.AreEqual (flattenedGraphIDs.Count, _transporter.ObjectCount);
-      Assert.That (GetIDList (), Is.EquivalentTo (flattenedGraphIDs), "Recursion stops where filter returns false.");
-    }
-
     [Test]
-    public void LoadRecursive_WithFilter_StopRecursion ()
+    public void TransactionContainsMoreObjects_ThanAreTransported ()
     {
-      _transporter.LoadRecursive (DomainObjectIDs.Order1,
-          delegate (ObjectID id, ref bool continueRecursion)
-          {
-            // recurse on order items or original objects, include only order items
-            continueRecursion = typeof (OrderItem).IsAssignableFrom (id.ClassDefinition.ClassType) || id == DomainObjectIDs.Order1;
-            return typeof (OrderItem).IsAssignableFrom (id.ClassDefinition.ClassType);
-          });
+      _transporter.LoadRecursive (DomainObjectIDs.Employee1, new FollowAllProcessNoneStrategy());
+      Assert.AreEqual (0, _transporter.ObjectIDs.Count);
+      Assert.IsEmpty (new List<ObjectID> (_transporter.ObjectIDs));
 
-      List<ObjectID> flattenedGraphIDs;
-
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
-      {
-        Order order1 = Order.GetObject (DomainObjectIDs.Order1);
-        Set<DomainObject> flattenedGraph = order1.GetFlattenedRelatedObjectGraph ();
-        flattenedGraphIDs = new List<ObjectID> ();
-        foreach (DomainObject domainObject in flattenedGraph)
-        {
-          if (domainObject is OrderItem)
-            flattenedGraphIDs.Add (domainObject.ID);
-        }
-      }
-
-      Assert.AreNotEqual (flattenedGraphIDs.Count, _transporter.ObjectCount);
-      Assert.AreEqual (3, _transporter.ObjectCount);
-      Assert.That (GetIDList (), Is.EquivalentTo (new ObjectID[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 }));
+      TransportedDomainObjects transportedObjects = DomainObjectTransporter.LoadTransportData (_transporter.GetBinaryTransportData());
+      Assert.IsEmpty (transportedObjects.TransportedObjects);
     }
-
-    [Test]
-    public void LoadRecursive_WithFilter_StopRecursionImmediately ()
-    {
-      _transporter.LoadRecursive (DomainObjectIDs.Order1,
-          delegate (ObjectID id, ref bool continueRecursion)
-          {
-            // recurse on order items, include only order items
-            continueRecursion = typeof (OrderItem).IsAssignableFrom (id.ClassDefinition.ClassType);
-            return typeof (OrderItem).IsAssignableFrom (id.ClassDefinition.ClassType);
-          });
-
-      // recursion stopped immediately, no object was taken
-      Assert.AreEqual (0, _transporter.ObjectCount);
-    }
-
-    [Test]
-    public void LoadRecursive_WithFilter_StopAtOneBranchContinueAtAnother ()
-    {
-      _transporter.LoadRecursive (DomainObjectIDs.Order1,
-          delegate (ObjectID id, ref bool continueRecursion)
-          {
-            // recurse on the original object, ?? , include only order items
-            continueRecursion = id == DomainObjectIDs.Order1 || typeof (OrderTicket).IsAssignableFrom (id.ClassDefinition.ClassType);
-            return typeof (OrderTicket).IsAssignableFrom (id.ClassDefinition.ClassType);
-          });
-
-      // recursion stopped immediately, no object was taken
-      Assert.AreEqual (0, _transporter.ObjectCount);
-    }*/
-
+    
     [Test]
     public void GetBinaryTransportData ()
     {
@@ -195,11 +139,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       byte[] data = _transporter.GetBinaryTransportData ();
       Assert.IsNotNull (data);
       Assert.IsNotEmpty (data);
-    }
-
-    private List<ObjectID> GetIDList ()
-    {
-      return new List<ObjectID> (_transporter.ObjectIDs);
     }
   }
 }

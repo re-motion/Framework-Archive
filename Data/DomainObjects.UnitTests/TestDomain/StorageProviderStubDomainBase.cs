@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 #pragma warning disable 0618
 
@@ -34,6 +35,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     public new void SetRelatedObject (string propertyName, DomainObject newRelatedObject)
     {
       base.SetRelatedObject (propertyName, newRelatedObject);
+    }
+
+    [StorageClassNone]
+    public new PropertyIndexer Properties
+    {
+      get { return base.Properties; }
     }
   }
 }

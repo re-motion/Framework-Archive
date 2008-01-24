@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Persistence;
@@ -32,27 +34,15 @@ namespace Rubicon.Data.DomainObjects.Transport
     }
 
     private readonly ClientTransaction _transportTransaction = ClientTransaction.NewTransaction ();
-
-    /// <summary>
-    /// Gets the number of objects loaded into this transporter.
-    /// </summary>
-    /// <value>The number of loaded objects.</value>
-    public int ObjectCount
-    {
-      get { return _transportTransaction.EnlistedDomainObjectCount; }
-    }
+    private readonly Set<ObjectID> _transportedObjects = new Set<ObjectID>();
 
     /// <summary>
     /// Gets the IDs of the objects loaded into this transporter.
     /// </summary>
     /// <value>The IDs of the loaded objects.</value>
-    public IEnumerable<ObjectID> ObjectIDs
+    public ReadOnlyCollection<ObjectID> ObjectIDs
     {
-      get
-      {
-        foreach (DomainObject domainObject in _transportTransaction.EnlistedDomainObjects)
-          yield return domainObject.ID;
-      }
+      get { return new ReadOnlyCollection<ObjectID> (_transportedObjects.ToArray()); }
     }
 
     /// <summary>
@@ -78,6 +68,7 @@ namespace Rubicon.Data.DomainObjects.Transport
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       _transportTransaction.GetObject (objectID, false);
+      _transportedObjects.Add (objectID);
     }
 
     /// <summary>
@@ -91,6 +82,7 @@ namespace Rubicon.Data.DomainObjects.Transport
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
       DomainObject sourceObject = _transportTransaction.GetObject (objectID, false);
+      Load (sourceObject.ID);
       using (_transportTransaction.EnterNonDiscardingScope ())
       {
         foreach (DomainObject domainObject in sourceObject.Properties.GetAllRelatedObjects ())
@@ -107,11 +99,26 @@ namespace Rubicon.Data.DomainObjects.Transport
     public void LoadRecursive (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
+      LoadRecursive (objectID, FullGraphTraversalStrategy.Instance);
+    }
+
+    /// <summary>
+    /// Loads the object with the specified <see cref="ObjectID"/> plus all objects directly or indirectly referenced by it into the
+    /// transporter, as specified by the <see cref="IGraphTraversalStrategy"/>. Each object behaves as if it were loaded via <see cref="Load"/>.
+    /// </summary>
+    /// <param name="objectID">The <see cref="ObjectID"/> of the object which is to be loaded together with its related objects.</param>
+    /// <param name="strategy">An <see cref="IGraphTraversalStrategy"/> instance defining which related object links to follow and which
+    /// objects to include in the set of transported objects.</param>
+    /// <seealso cref="DomainObjectGraphTraverser.GetFlattenedRelatedObjectGraph"/>
+    public void LoadRecursive (ObjectID objectID, IGraphTraversalStrategy strategy )
+    {
+      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull ("strategy", strategy);
 
       DomainObject sourceObject = _transportTransaction.GetObject (objectID, false);
       using (_transportTransaction.EnterNonDiscardingScope ())
       {
-        foreach (DomainObject domainObject in sourceObject.GetGraphTraverser (FullGraphTraversalStrategy.Instance).GetFlattenedRelatedObjectGraph())
+        foreach (DomainObject domainObject in sourceObject.GetGraphTraverser (strategy).GetFlattenedRelatedObjectGraph ())
           Load (domainObject.ID); // explicitly call load rather than just implicitly loading it into the transaction for consistency
       }
     }
@@ -126,7 +133,7 @@ namespace Rubicon.Data.DomainObjects.Transport
       using (MemoryStream dataStream = new MemoryStream ())
       {
         BinaryFormatter formatter = new BinaryFormatter ();
-        formatter.Serialize (dataStream, _transportTransaction);
+        formatter.Serialize (dataStream, Tuple.NewTuple (_transportTransaction, _transportedObjects.ToArray()));
         return dataStream.ToArray ();
       }
     }

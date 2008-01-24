@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Transport;
 using Rubicon.Utilities;
@@ -16,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.Transport
   public struct TransportedDomainObjects
   {
     private ClientTransaction _dataTransaction;
-    private List<DomainObject> _transportedObjects;
+    private ReadOnlyCollection<DomainObject> _transportedObjects;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TransportedDomainObjects"/> class. This constructor is typically only used internally,
@@ -29,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.Transport
       ArgumentUtility.CheckNotNull ("dataTransaction", dataTransaction);
 
       _dataTransaction = dataTransaction;
-      _transportedObjects = transportedObjects;
+      _transportedObjects = transportedObjects.AsReadOnly();
     }
 
     /// <summary>
@@ -46,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.Transport
     /// Gets the transported objects. Use <see cref="DataTransaction"/> to inspect or change their data before calling <see cref="FinishTransport()"/>.
     /// </summary>
     /// <value>The transported objects.</value>
-    public IEnumerable<DomainObject> TransportedObjects
+    public ReadOnlyCollection<DomainObject> TransportedObjects
     {
       get { return _transportedObjects; }
     }
