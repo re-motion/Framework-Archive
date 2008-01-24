@@ -63,7 +63,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     protected  SecurableClassDefinition ()
     {
-      Initialize ();
+      SubscribeCollectionEvents ();
     }
 
     // methods and properties
@@ -72,11 +72,11 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     protected override void OnLoaded (LoadMode loadMode)
     {
       base.OnLoaded (loadMode);
-      if (loadMode == LoadMode.WholeDomainObjectInitialized)
-        Initialize ();
+      SubscribeCollectionEvents (); // always subscribe collection events when the object gets a new data container
+
     }
 
-    private void Initialize ()
+    private void SubscribeCollectionEvents ()
     {
       AccessControlLists.Added += AccessControlLists_Added;
     }
