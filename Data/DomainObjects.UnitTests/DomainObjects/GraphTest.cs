@@ -58,7 +58,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void GetFlattenedRelatedObjectGraph_WithTraversalFilter_FollowLink ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      Set<DomainObject> graph = order.GetGraphTraverser(new TestTraversalStrategy(true)).GetFlattenedRelatedObjectGraph ();
+      Set<DomainObject> graph = order.GetGraphTraverser (new TestTraversalStrategy (true, false)).GetFlattenedRelatedObjectGraph ();
 
       Set<DomainObject> expected = new Set<DomainObject> (
           order,
@@ -84,7 +84,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void GetFlattenedRelatedObjectGraph_WithTraversalFilter_FollowLink_IncludeObject ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      Set<DomainObject> graph = order.GetGraphTraverser(new TestTraversalStrategy (false)).GetFlattenedRelatedObjectGraph ();
+      Set<DomainObject> graph = order.GetGraphTraverser (new TestTraversalStrategy (false, false)).GetFlattenedRelatedObjectGraph ();
 
       Set<DomainObject> expected = new Set<DomainObject> (
           order,
@@ -101,22 +101,36 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.That (graph, Is.EquivalentTo (expected));
     }
+     
+    [Test]
+    public void Traversal_NotAffectedByNotProcessingAnObject ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Set<DomainObject> graph = order.GetGraphTraverser (new TestTraversalStrategy (false, true)).GetFlattenedRelatedObjectGraph ();
+
+      Set<DomainObject> expected = new Set<DomainObject> (RepositoryAccessor.GetObject (DomainObjectIDs.Distributor2, false));
+
+      Assert.That (graph, Is.EquivalentTo (expected));
+    }
 
     class TestTraversalStrategy : IGraphTraversalStrategy
     {
       private readonly bool _includePersons;
+      private readonly bool _includeOnlyDistributors;
 
-      public TestTraversalStrategy (bool includePersons)
+      public TestTraversalStrategy (bool includePersons, bool includeOnlyDistributors)
       {
         _includePersons = includePersons;
+        _includeOnlyDistributors = includeOnlyDistributors;
       }
 
-      public bool IncludeObject (DomainObject domainObject)
+      public bool ShouldProcessObject (DomainObject domainObject)
       {
-        return _includePersons || !(domainObject is Person);
+        return (!_includeOnlyDistributors || domainObject is Distributor)
+            && (_includePersons || !(domainObject is Person));
       }
 
-      public bool FollowLink (DomainObject currentObject, PropertyAccessor linkProperty)
+      public bool ShouldFollowLink (DomainObject currentObject, PropertyAccessor linkProperty)
       {
         return !typeof (Ceo).IsAssignableFrom (linkProperty.PropertyType)
           && !typeof (Order).IsAssignableFrom (linkProperty.PropertyType)

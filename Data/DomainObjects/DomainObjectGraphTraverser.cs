@@ -45,7 +45,7 @@ namespace Rubicon.Data.DomainObjects
         if (!visited.Contains (current))
         {
           visited.Add (current);
-          if (_strategy.IncludeObject (current))
+          if (_strategy.ShouldProcessObject (current))
             resultSet.Add (current);
           objectsToBeProcessed.AddRange (GetNextTraversedObjects (current, _strategy));
         }
@@ -61,7 +61,7 @@ namespace Rubicon.Data.DomainObjects
         switch (property.Kind)
         {
           case PropertyKind.RelatedObject:
-            if (strategy.FollowLink (current, property))
+            if (strategy.ShouldFollowLink (current, property))
             {
               DomainObject relatedObject = (DomainObject) property.GetValueWithoutTypeCheck ();
               if (relatedObject != null)
@@ -69,7 +69,7 @@ namespace Rubicon.Data.DomainObjects
             }
             break;
           case PropertyKind.RelatedObjectCollection:
-            if (strategy.FollowLink (current, property))
+            if (strategy.ShouldFollowLink (current, property))
             {
               foreach (DomainObject relatedObject in (DomainObjectCollection) property.GetValueWithoutTypeCheck ())
               {

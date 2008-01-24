@@ -11,12 +11,12 @@ namespace Rubicon.Data.DomainObjects
     {
     }
 
-    public bool IncludeObject (DomainObject domainObject)
+    public bool ShouldProcessObject (DomainObject domainObject)
     {
       return true;
     }
 
-    public bool FollowLink (DomainObject currentObject, PropertyAccessor linkProperty)
+    public bool ShouldFollowLink (DomainObject currentObject, PropertyAccessor linkProperty)
     {
       return true;
     }
