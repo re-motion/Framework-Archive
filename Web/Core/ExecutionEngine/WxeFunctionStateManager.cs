@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Web;
 using System.Web.SessionState;
 using Rubicon.Collections;
@@ -112,18 +113,35 @@ namespace Rubicon.Web.ExecutionEngine
     public WxeFunctionState GetItem (string functionToken)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
-      return (WxeFunctionState) _session[GetSessionKeyForFunctionState (functionToken)];
+      
+      Stopwatch stopwatch = null;
+      bool hasOutOfProcessSession = _session.Mode != SessionStateMode.InProc;
+      if (hasOutOfProcessSession)
+      {
+        stopwatch = new Stopwatch();
+        stopwatch.Start();
+      }
+
+      WxeFunctionState functionState = (WxeFunctionState) _session[GetSessionKeyForFunctionState (functionToken)];
+
+      if (hasOutOfProcessSession)
+      {
+        stopwatch.Stop();
+        s_log.DebugFormat ("Deserialized WxeFunctionState {0} in {1} ms.", functionToken, stopwatch.ElapsedMilliseconds);
+      }
+
+      return functionState;
     }
 
-    /// <summary> Removes the <paramref name="functionState"/> from the collection. </summary>
-    /// <param name="functionState"> 
-    ///   The <see cref="WxeFunctionState"/> to be removed. Must not be <see langword="null"/>.
+    /// <summary> Removes the <paramref name="functionToken"/> from the collection. </summary>
+    /// <param name="functionToken"> 
+    ///   The <see cref="WxeFunctionState"/> to be removed. Must not be <see langword="null"/> or empty.
     /// </param>
-    protected void Remove (WxeFunctionState functionState)
+    protected void Remove (string functionToken)
     {
-      ArgumentUtility.CheckNotNull ("functionState", functionState);
-      _session.Remove (GetSessionKeyForFunctionState (functionState.FunctionToken));
-      _functionStates.Remove (functionState.FunctionToken);
+      ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
+      _session.Remove (GetSessionKeyForFunctionState (functionToken));
+      _functionStates.Remove (functionToken);
     }
 
     /// <summary> Removes and aborts the <paramref name="functionState"/> from the collection. </summary>
@@ -133,7 +151,7 @@ namespace Rubicon.Web.ExecutionEngine
     public void Abort (WxeFunctionState functionState)
     {
       ArgumentUtility.CheckNotNull ("functionState", functionState);
-      Remove (functionState);
+      Remove (functionState.FunctionToken);
       functionState.Abort();
     }
 
