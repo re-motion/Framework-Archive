@@ -87,5 +87,15 @@ namespace Rubicon.Mixins.UnitTests.Mixins.BaseCallProxyCodeGeneration
         Assert.AreEqual ("BT3Mixin7Base.IfcMethod-BT3Mixin4.Foo-BaseType3.IfcMethod-BaseType3.IfcMethod2", bt3.IfcMethod ());
       }
     }
+
+    [Test]
+    public void BaseCallToString()
+    {
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassOverridingToString>().Clear().AddMixins(typeof(MixinOverridingToString)).EnterScope())
+      {
+        object instance = ObjectFactory.Create<ClassOverridingToString>().With();
+        Assert.AreEqual("Overridden: ClassOverridingToString", instance.ToString());
+      }
+    }
   }
 }

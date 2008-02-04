@@ -87,7 +87,8 @@ namespace Rubicon.Mixins.Utilities
       else
       {
         string methodName = initializationMode == InitializationMode.Construction ? "Initialize" : "Deserialize";
-        return mixinBaseType.GetMethod (methodName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+        MethodInfo method = mixinBaseType.GetMethod (methodName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+        return method;
       }
     }
 

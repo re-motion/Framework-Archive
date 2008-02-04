@@ -152,7 +152,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
 
       MixinConfiguration destination = new MixinConfiguration ();
       source.CopyTo (destination);
-      Assert.That (destination.ClassContexts, Is.EqualTo (source.ClassContexts));
+      Assert.That(destination.ClassContexts, Is.EquivalentTo(source.ClassContexts));
       Assert.IsNotNull (destination.ResolveInterface (typeof (IBaseType33)));
       Assert.AreSame (destination.ClassContexts.GetExact (typeof (BaseType1)), destination.ResolveInterface (typeof (IBaseType33)));
     }
@@ -174,7 +174,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
 
       MixinConfiguration destination = new MixinConfiguration ();
       source.CopyTo (destination);
-      Assert.That (destination.ClassContexts, Is.EqualTo (source.ClassContexts));
+      Assert.That(destination.ClassContexts, Is.EquivalentTo(source.ClassContexts));
       Assert.IsNotNull (destination.ResolveInterface (typeof (IBaseType33)));
       Assert.AreSame (destination.ClassContexts.GetExact (typeof (BaseType1)), destination.ResolveInterface (typeof (IBaseType33)));
       Assert.IsNotNull (destination.ResolveInterface (typeof (IBaseType31)));
@@ -198,7 +198,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
 
       source.CopyTo (destination);
 
-      Assert.That (destination.ClassContexts, Is.EqualTo (source.ClassContexts));
+      Assert.That(destination.ClassContexts, Is.EquivalentTo(source.ClassContexts));
       Assert.IsNotNull (destination.ResolveInterface (typeof (IBaseType33)));
       Assert.AreSame (destination.ClassContexts.GetExact (typeof (BaseType1)), destination.ResolveInterface (typeof (IBaseType33)));
       Assert.IsNull (destination.ResolveInterface (typeof (IBaseType35)));

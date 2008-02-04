@@ -39,7 +39,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     public void WithDependency_NonGeneric ()
     {
       _mixinBuilder.WithDependency (typeof (BT1Mixin1));
-      Assert.That (_mixinBuilder.Dependencies, Is.EqualTo (new object[] { typeof (BT1Mixin1) }));
+      Assert.That (_mixinBuilder.Dependencies, Is.EquivalentTo (new object[] { typeof (BT1Mixin1) }));
     }
 
     [Test]
@@ -54,28 +54,28 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     public void WithDependency_Generic ()
     {
       _mixinBuilder.WithDependency<BT1Mixin1> ();
-      Assert.That (_mixinBuilder.Dependencies, Is.EqualTo (new object[] { typeof (BT1Mixin1) }));
+      Assert.That (_mixinBuilder.Dependencies, Is.EquivalentTo (new object[] { typeof (BT1Mixin1) }));
     }
 
     [Test]
     public void WithDependencies_NonGeneric ()
     {
       _mixinBuilder.WithDependencies (typeof (BT1Mixin1), typeof (BT1Mixin2));
-      Assert.That (_mixinBuilder.Dependencies, Is.EqualTo (new object[] { typeof (BT1Mixin1), typeof (BT1Mixin2) }));
+      Assert.That (_mixinBuilder.Dependencies, Is.EquivalentTo (new object[] { typeof (BT1Mixin1), typeof (BT1Mixin2) }));
     }
 
     [Test]
     public void WithDependencies_Generic2 ()
     {
       _mixinBuilder.WithDependencies<BT1Mixin1, BT1Mixin2>();
-      Assert.That (_mixinBuilder.Dependencies, Is.EqualTo (new object[] { typeof (BT1Mixin1), typeof (BT1Mixin2) }));
+      Assert.That (_mixinBuilder.Dependencies, Is.EquivalentTo (new object[] { typeof (BT1Mixin1), typeof (BT1Mixin2) }));
     }
 
     [Test]
     public void WithDependencies_Generic3 ()
     {
       _mixinBuilder.WithDependencies<BT1Mixin1, BT1Mixin2, BT2Mixin1> ();
-      Assert.That (_mixinBuilder.Dependencies, Is.EqualTo (new object[] { typeof (BT1Mixin1), typeof (BT1Mixin2), typeof (BT2Mixin1) }));
+      Assert.That (_mixinBuilder.Dependencies, Is.EquivalentTo (new object[] { typeof (BT1Mixin1), typeof (BT1Mixin2), typeof (BT2Mixin1) }));
     }
 
     [Test]

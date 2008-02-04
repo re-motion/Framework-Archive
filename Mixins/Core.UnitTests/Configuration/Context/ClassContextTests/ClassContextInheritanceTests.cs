@@ -60,7 +60,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       ClassContext inheritor = new ClassContext (typeof (double)).InheritFrom (baseContext);
 
       Assert.AreEqual (2, inheritor.Mixins.Count);
-      Assert.That (EnumerableUtility.ToArray (inheritor.Mixins), Is.EqualTo (EnumerableUtility.ToArray (baseContext.Mixins)));
+      Assert.That (inheritor.Mixins, Is.EquivalentTo (baseContext.Mixins));
     }
 
     [Test]
@@ -189,8 +189,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       ClassContext inheritor = new ClassContext (typeof (double)).InheritFrom (baseContext);
 
       Assert.AreEqual (2, inheritor.CompleteInterfaces.Count);
-      Assert.That (EnumerableUtility.ToArray (inheritor.CompleteInterfaces),
-          Is.EqualTo (EnumerableUtility.ToArray (inheritor.CompleteInterfaces)));
+      Assert.That (inheritor.CompleteInterfaces, Is.EquivalentTo (inheritor.CompleteInterfaces));
     }
 
     [Test]

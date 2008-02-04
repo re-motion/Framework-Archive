@@ -103,6 +103,7 @@
     <Compile Include="Mixins\RhinoMocksRepositoryAdapter.cs" />
     <Compile Include="Mixins\SerializationCallbackTests.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters.cs" />
+    <Compile Include="SampleTypes\ClassOverridingToString.cs" />
     <Compile Include="SampleTypes\ClassWithMixedMixin.cs" />
     <Compile Include="SampleTypes\ClassOverridingSpecificMixinMember.cs" />
     <Compile Include="SampleTypes\ClassOverridingSpecificGenericMixinMember.cs" />

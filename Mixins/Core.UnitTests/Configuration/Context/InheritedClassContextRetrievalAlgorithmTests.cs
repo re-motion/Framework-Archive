@@ -65,15 +65,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       Assert.IsNotNull (inherited1);
       Assert.AreNotSame (_ccObject, inherited1);
       Assert.AreEqual (typeof (int), inherited1.Type);
-      Assert.That (inherited1.Mixins, Is.EqualTo (_ccObject.Mixins));
-      Assert.That (inherited1.CompleteInterfaces, Is.EqualTo (_ccObject.CompleteInterfaces));
+      Assert.That(inherited1.Mixins, Is.EquivalentTo(_ccObject.Mixins));
+      Assert.That (inherited1.CompleteInterfaces, Is.EquivalentTo (_ccObject.CompleteInterfaces));
 
       ClassContext inherited2 = _algorithm.GetWithInheritance (typeof (string));
       Assert.IsNotNull (inherited2);
       Assert.AreNotSame (_ccObject, inherited2);
       Assert.AreEqual (typeof (string), inherited2.Type);
-      Assert.That (inherited2.Mixins, Is.EqualTo (_ccObject.Mixins));
-      Assert.That (inherited2.CompleteInterfaces, Is.EqualTo (_ccObject.CompleteInterfaces));
+      Assert.That (inherited2.Mixins, Is.EquivalentTo (_ccObject.Mixins));
+      Assert.That(inherited2.CompleteInterfaces, Is.EquivalentTo(_ccObject.CompleteInterfaces));
     }
 
     [Test]
@@ -85,15 +85,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       Assert.IsNotNull (inherited1);
       Assert.AreNotSame (_ccList, inherited1);
       Assert.AreEqual (typeof (List<int>), inherited1.Type);
-      Assert.That (inherited1.Mixins, Is.EqualTo (_ccList.Mixins));
-      Assert.That (inherited1.CompleteInterfaces, Is.EqualTo (_ccList.CompleteInterfaces));
+      Assert.That(inherited1.Mixins, Is.EquivalentTo(_ccList.Mixins));
+      Assert.That(inherited1.CompleteInterfaces, Is.EquivalentTo(_ccList.CompleteInterfaces));
 
       ClassContext inherited2 = _algorithm.GetWithInheritance (typeof (List<string>));
       Assert.IsNotNull (inherited2);
       Assert.AreNotSame (_ccList, inherited2);
       Assert.AreEqual (typeof (List<string>), inherited2.Type);
-      Assert.That (inherited2.Mixins, Is.EqualTo (_ccList.Mixins));
-      Assert.That (inherited2.CompleteInterfaces, Is.EqualTo (_ccList.CompleteInterfaces));
+      Assert.That(inherited2.Mixins, Is.EquivalentTo(_ccList.Mixins));
+      Assert.That(inherited2.CompleteInterfaces, Is.EquivalentTo(_ccList.CompleteInterfaces));
     }
 
     [Test]

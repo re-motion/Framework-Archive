@@ -200,8 +200,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       ClassContext source = new ClassContext (typeof (BaseType1), mixins, interfaces);
       ClassContext clone = source.CloneForSpecificType (typeof (BaseType2));
       Assert.AreNotEqual (source, clone);
-      Assert.That (clone.Mixins, Is.EqualTo (mixins));
-      Assert.That (clone.CompleteInterfaces, Is.EqualTo (interfaces));
+      Assert.That(clone.Mixins, Is.EquivalentTo(mixins));
+      Assert.That (clone.CompleteInterfaces, Is.EquivalentTo (interfaces));
       Assert.AreEqual (typeof (BaseType2), clone.Type);
       Assert.AreEqual (typeof (BaseType1), source.Type);
     }

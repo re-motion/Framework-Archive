@@ -229,8 +229,6 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementIMixinTarget ()
     {
-      Assertion.DebugAssert (Array.IndexOf (TypeBuilder.GetInterfaces(), typeof (IMixinTarget)) != 0);
-
       CustomPropertyEmitter configurationProperty =
           Emitter.CreateInterfacePropertyImplementation (typeof (IMixinTarget).GetProperty ("Configuration"));
       configurationProperty.GetMethod =

@@ -72,10 +72,10 @@ namespace Rubicon.Mixins.UnitTests.Mixins.MixedTypeCodeGeneration
     [Test]
     public void SignedBaseClassUnsignedMixinWithOverride ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinOverridingToString)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassOverridingToString> ().Clear().AddMixins (typeof (MixinOverridingToString)).EnterScope())
       {
-        object instance = ObjectFactory.Create<NullTarget>().With();
-        Assert.AreEqual ("Overridden", instance.ToString());
+        object instance = ObjectFactory.Create<ClassOverridingToString>().With();
+        Assert.AreEqual ("Overridden: ClassOverridingToString", instance.ToString());
       }
     }
   }

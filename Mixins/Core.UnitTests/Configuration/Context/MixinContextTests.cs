@@ -35,7 +35,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       Assert.IsTrue (mixinContext.ExplicitDependencies.ContainsKey (typeof (IBT6Mixin2)));
       Assert.IsTrue (mixinContext.ExplicitDependencies.ContainsKey (typeof (IBT6Mixin3)));
 
-      Assert.That (mixinContext.ExplicitDependencies, Is.EqualTo (new Type[] { typeof (IBT6Mixin2), typeof (IBT6Mixin3) }));
+      Assert.That(mixinContext.ExplicitDependencies, Is.EquivalentTo(new Type[] { typeof(IBT6Mixin2), typeof(IBT6Mixin3) }));
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       Assert.IsTrue (mixinContext.ExplicitDependencies.ContainsKey (typeof (BT6Mixin2)));
       Assert.IsTrue (mixinContext.ExplicitDependencies.ContainsKey (typeof (BT6Mixin3<>)));
 
-      Assert.That (mixinContext.ExplicitDependencies, Is.EqualTo (new Type[] { typeof (BT6Mixin2), typeof (BT6Mixin3<>) }));
+      Assert.That(mixinContext.ExplicitDependencies, Is.EquivalentTo(new Type[] { typeof(BT6Mixin2), typeof(BT6Mixin3<>) }));
     }
   }
 }

@@ -2,12 +2,12 @@ using System;
 
 namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
-  public class MixinOverridingToString : Mixin<object>
+  public class MixinOverridingToString : Mixin<object, object>
   {
     [OverrideTarget]
     public new string ToString ()
     {
-      return "Overridden";
+      return "Overridden: " + Base.ToString();
     }
   }
 }

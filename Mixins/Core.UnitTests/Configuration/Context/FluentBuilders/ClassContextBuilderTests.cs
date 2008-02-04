@@ -78,8 +78,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
 
       ClassContextBuilder classBuilder = new ClassContextBuilder (_parentBuilderMock, typeof (BaseType1), existingClassContext);
       Assert.That (GetMixinTypes (classBuilder),
-        Is.EqualTo (new object[] {typeof (BT1Mixin1)}));
-      Assert.That (classBuilder.CompleteInterfaces, Is.EqualTo (new object[] { typeof (IBT1Mixin1) }));
+        Is.EquivalentTo (new object[] {typeof (BT1Mixin1)}));
+      Assert.That(classBuilder.CompleteInterfaces, Is.EquivalentTo(new object[] { typeof(IBT1Mixin1) }));
 
       ClassContext classContext = classBuilder.BuildClassContext (new ClassContext[0]);
       Assert.AreEqual (1, classContext.Mixins.Count);
@@ -224,9 +224,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.AreSame (typeof (BT2Mixin1), mixinBuilders[0].MixinType);
       Assert.That (mixinBuilders[0].Dependencies, Is.Empty);
       Assert.AreSame (typeof (BT3Mixin1), mixinBuilders[1].MixinType);
-      Assert.That (mixinBuilders[1].Dependencies, Is.EqualTo (new object[] { typeof (BT2Mixin1) }));
+      Assert.That(mixinBuilders[1].Dependencies, Is.EquivalentTo(new object[] { typeof(BT2Mixin1) }));
       Assert.AreSame (typeof (BT3Mixin2), mixinBuilders[2].MixinType);
-      Assert.That (mixinBuilders[2].Dependencies, Is.EqualTo (new object[] { typeof (BT3Mixin1) }));
+      Assert.That (mixinBuilders[2].Dependencies, Is.EquivalentTo (new object[] { typeof (BT3Mixin1) }));
     }
 
     [Test]
@@ -238,7 +238,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.AreSame (typeof (BT2Mixin1), mixinBuilders[0].MixinType);
       Assert.That (mixinBuilders[0].Dependencies, Is.Empty);
       Assert.AreSame (typeof (BT3Mixin1), mixinBuilders[1].MixinType);
-      Assert.That (mixinBuilders[1].Dependencies, Is.EqualTo (new object[] { typeof (BT2Mixin1) }));
+      Assert.That (mixinBuilders[1].Dependencies, Is.EquivalentTo (new object[] { typeof (BT2Mixin1) }));
     }
 
     [Test]
@@ -250,9 +250,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.AreSame (typeof (BT2Mixin1), mixinBuilders[0].MixinType);
       Assert.That (mixinBuilders[0].Dependencies, Is.Empty);
       Assert.AreSame (typeof (BT3Mixin1), mixinBuilders[1].MixinType);
-      Assert.That (mixinBuilders[1].Dependencies, Is.EqualTo (new object[] { typeof (BT2Mixin1) }));
+      Assert.That (mixinBuilders[1].Dependencies, Is.EquivalentTo (new object[] { typeof (BT2Mixin1) }));
       Assert.AreSame (typeof (BT3Mixin2), mixinBuilders[2].MixinType);
-      Assert.That (mixinBuilders[2].Dependencies, Is.EqualTo (new object[] { typeof (BT3Mixin1) }));
+      Assert.That (mixinBuilders[2].Dependencies, Is.EquivalentTo (new object[] { typeof (BT3Mixin1) }));
     }
 
     [Test]
@@ -261,9 +261,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       MixinContextBuilder builder = _classBuilder.EnsureMixin (typeof (BT2Mixin1));
       Assert.AreEqual (typeof (BT2Mixin1), builder.MixinType);
       Type[] mixinTypes = GetMixinTypes();
-      Assert.That (mixinTypes, Is.EqualTo (new object[] { typeof (BT2Mixin1) }));
+      Assert.That (mixinTypes, Is.EquivalentTo (new object[] { typeof (BT2Mixin1) }));
       Assert.AreSame (builder, _classBuilder.EnsureMixin (typeof (BT2Mixin1)));
-      Assert.That (mixinTypes, Is.EqualTo (new object[] { typeof (BT2Mixin1) }));
+      Assert.That (mixinTypes, Is.EquivalentTo (new object[] { typeof (BT2Mixin1) }));
     }
 
     [Test]
@@ -274,7 +274,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       MixinContextBuilder builder = _classBuilder.EnsureMixin (typeof (DerivedNullTarget));
       Assert.AreEqual (typeof (DerivedNullTarget), builder.MixinType);
       Type[] mixinTypes = GetMixinTypes ();
-      Assert.That (mixinTypes, Is.EqualTo (new object[] { typeof (DerivedNullTarget) }));
+      Assert.That (mixinTypes, Is.EquivalentTo (new object[] { typeof (DerivedNullTarget) }));
 
       ClassContext builtContext = _classBuilder.BuildClassContext (new ClassContext[] {contextWithMixin});
       Assert.AreEqual (1, builtContext.Mixins.Count);
@@ -289,12 +289,12 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       ClassContextBuilder classBuilder = new ClassContextBuilder (_parentBuilderMock, typeof (BaseType2), parentContext);
 
       Type[] mixinTypes = GetMixinTypes (classBuilder);
-      Assert.That (mixinTypes, Is.EqualTo (new object[] { typeof (BT2Mixin1) }));
+      Assert.That (mixinTypes, Is.EquivalentTo (new object[] { typeof (BT2Mixin1) }));
 
       MixinContextBuilder builder = classBuilder.EnsureMixin (typeof (BT2Mixin1));
       Assert.AreEqual (typeof (BT2Mixin1), builder.MixinType);
       mixinTypes = GetMixinTypes (classBuilder);
-      Assert.That (mixinTypes, Is.EqualTo (new object[] { typeof (BT2Mixin1) }));
+      Assert.That (mixinTypes, Is.EquivalentTo (new object[] { typeof (BT2Mixin1) }));
     }
 
     [Test]
@@ -350,7 +350,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
     public void AddCompleteInterface_NonGeneric ()
     {
       Assert.AreSame (_classBuilder, _classBuilder.AddCompleteInterface (typeof (IBT6Mixin1)));
-      Assert.That (_classBuilder.CompleteInterfaces, Is.EqualTo (new object[] { typeof (IBT6Mixin1) }));
+      Assert.That (_classBuilder.CompleteInterfaces, Is.EquivalentTo (new object[] { typeof (IBT6Mixin1) }));
     }
 
     [Test]

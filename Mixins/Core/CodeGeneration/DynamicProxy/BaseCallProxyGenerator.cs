@@ -4,6 +4,7 @@ using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Rubicon.CodeGeneration;
+using Rubicon.CodeGeneration.DPExtensions;
 using Rubicon.Mixins.Definitions;
 using System.Reflection;
 using Rubicon.Utilities;
@@ -101,14 +102,21 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       Assertion.IsTrue (methodDefinitionOnTarget.DeclaringClass == _targetClassConfiguration);
 
-      MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
+      MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.Virtual;
       CustomMethodEmitter methodOverride = new CustomMethodEmitter (_emitter, methodDefinitionOnTarget.FullName, attributes);
       methodOverride.CopyParametersAndReturnType (methodDefinitionOnTarget.MethodInfo);
-
+      
       BaseCallMethodGenerator methodGenerator = new BaseCallMethodGenerator (methodOverride, this, _mixinTypeGenerators);
       methodGenerator.AddBaseCallToNextInChain (methodDefinitionOnTarget);
 
       _overriddenMethodToImplementationMap.Add (methodDefinitionOnTarget, methodOverride.MethodBuilder);
+
+      MethodInfo sameMethodOnProxyBase = _emitter.BaseType.GetMethod(methodDefinitionOnTarget.Name,
+          BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, methodOverride.ParameterTypes, null);
+      if (sameMethodOnProxyBase != null && sameMethodOnProxyBase.IsVirtual)
+        _emitter.CreateMethodOverride (sameMethodOnProxyBase).ImplementByDelegating (
+            new TypeReferenceWrapper (SelfReference.Self, _emitter.TypeBuilder),
+            methodOverride.MethodBuilder);
     }
 
     private void ImplementBaseCallsForRequirements ()
