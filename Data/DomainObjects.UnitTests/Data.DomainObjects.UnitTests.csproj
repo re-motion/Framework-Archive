@@ -277,6 +277,7 @@
     <Compile Include="MixedDomains\SampleTypes\MixinOverridingPropertiesAndMethods.cs" />
     <Compile Include="MixedDomains\SampleTypes\MixinWithState.cs" />
     <Compile Include="MixedDomains\SampleTypes\NullMixin.cs" />
+    <Compile Include="MixedDomains\SampleTypes\RelationTargetForPersistentMixin.cs" />
     <Compile Include="MixedDomains\SampleTypes\TargetClassForPersistentMixin.cs" />
     <Compile Include="MixedDomains\SerializationCallbackTest.cs" />
     <Compile Include="MixedDomains\SerializationTest.cs" />

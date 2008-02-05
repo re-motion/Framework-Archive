@@ -26,5 +26,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
       get { return _nonPersistentProperty; }
       set { _nonPersistentProperty = value; }
     }
+
+    [DBBidirectionalRelation ("RelationProperty", ContainsForeignKey = true)]
+    public RelationTargetForPersistentMixin RelationProperty
+    {
+      get { return Properties[typeof (MixinAddingPersistentProperties), "RelationProperty"].GetValue<RelationTargetForPersistentMixin>(); }
+      set { Properties[typeof (MixinAddingPersistentProperties), "RelationProperty"].SetValue (value); }
+    }
   }
 }

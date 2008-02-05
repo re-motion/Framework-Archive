@@ -152,9 +152,10 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private void ValidateOppositePropertyInfoDeclaringType (PropertyInfo oppositePropertyInfo, ClassDefinitionCollection classDefintions)
     {
+      Type oppositeDomainObjectType = GetDomainObjectTypeFromRelationProperty (oppositePropertyInfo);
       if (classDefintions.Contains (PropertyInfo.DeclaringType))
       {
-        if (PropertyInfo.DeclaringType != GetDomainObjectTypeFromRelationProperty (oppositePropertyInfo))
+        if (PropertyInfo.DeclaringType != oppositeDomainObjectType)
         {
           throw CreateMappingException (
               null,
@@ -166,15 +167,21 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       }
       else
       {
-        if (!PropertyInfo.DeclaringType.IsAssignableFrom (GetDomainObjectTypeFromRelationProperty (oppositePropertyInfo)))
+        if (PropertyInfo.DeclaringType.IsAssignableFrom (oppositeDomainObjectType))
+          return;
+
+        foreach (Type oppositeMixinType in PersistentMixinFinder.GetPersistentMixins (oppositeDomainObjectType))
         {
-          throw CreateMappingException (
-              null,
-              PropertyInfo,
-              "The declaring type cannot be assigned to the type of the opposite relation propery '{0}' declared on type '{1}'.",
-              BidirectionalRelationAttribute.OppositeProperty,
-              oppositePropertyInfo.DeclaringType.FullName);
+          if (PropertyInfo.DeclaringType.IsAssignableFrom (oppositeMixinType))
+            return;
         }
+
+        throw CreateMappingException (
+            null,
+            PropertyInfo,
+            "The declaring type cannot be assigned to the type of the opposite relation propery '{0}' declared on type '{1}'.",
+            BidirectionalRelationAttribute.OppositeProperty,
+            oppositePropertyInfo.DeclaringType.FullName);
       }
     }
 

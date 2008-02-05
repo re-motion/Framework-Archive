@@ -242,7 +242,7 @@ namespace Rubicon.Data.DomainObjects
       Type publicDomainObjectType = GetPublicDomainObjectType();
 
       ClientTransactionScope.CurrentTransaction.TransactionEventSink.NewObjectCreating (publicDomainObjectType, this);
-      DataContainer firstDataContainer = ClientTransaction.Current.CreateNewDataContainer (publicDomainObjectType);
+      DataContainer firstDataContainer = ClientTransactionScope.CurrentTransaction.CreateNewDataContainer (publicDomainObjectType);
       firstDataContainer.SetDomainObject (this);
 
       InitializeFromDataContainer (firstDataContainer);

@@ -42,10 +42,21 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     protected PropertyInfo GetOppositePropertyInfo ()
     {
-      for (Type type = GetDomainObjectTypeFromRelationProperty (PropertyInfo); type != null; type = type.BaseType)
+      Type type = GetDomainObjectTypeFromRelationProperty (PropertyInfo);
+      PropertyInfo oppositePropertyInfo = GetOppositePropertyInfo (type);
+      if (oppositePropertyInfo != null)
+        return oppositePropertyInfo;
+
+      foreach (Type mixinType in PersistentMixinFinder.GetPersistentMixins (type))
       {
-        PropertyInfo oppositePropertyInfo =
-            type.GetProperty (BidirectionalRelationAttribute.OppositeProperty, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        oppositePropertyInfo = GetOppositePropertyInfo (mixinType);
+        if (oppositePropertyInfo != null)
+          return oppositePropertyInfo;
+      }
+
+      for (Type baseType = type.BaseType; baseType != null; baseType = baseType.BaseType)
+      {
+        oppositePropertyInfo = GetOppositePropertyInfo (baseType);
         if (oppositePropertyInfo != null)
           return oppositePropertyInfo;
       }
@@ -56,6 +67,11 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
           "Opposite relation property '{0}' could not be found on type '{1}'.",
           BidirectionalRelationAttribute.OppositeProperty,
           GetDomainObjectTypeFromRelationProperty (PropertyInfo));
+    }
+
+    private PropertyInfo GetOppositePropertyInfo (Type type)
+    {
+      return type.GetProperty (BidirectionalRelationAttribute.OppositeProperty, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
     protected Type GetDomainObjectTypeFromRelationProperty (PropertyInfo propertyInfo)

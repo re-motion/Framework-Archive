@@ -25,6 +25,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     }
 
     [Test]
+    public void ClassDefinitionIncludesRelationProperty ()
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (TargetClassForPersistentMixin));
+      Assert.IsNotNull (classDefinition.GetPropertyDefinition (typeof (MixinAddingPersistentProperties).FullName + ".RelationProperty"));
+      Assert.IsNotNull (classDefinition.GetRelationDefinition (typeof (MixinAddingPersistentProperties).FullName + ".RelationProperty"));
+    }
+
+    [Test]
+    public void RelationTargetClassDefinitionIncludesRelationProperty ()
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (RelationTargetForPersistentMixin));
+      Assert.IsNull (classDefinition.GetPropertyDefinition (typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty"));
+      Assert.IsNotNull (classDefinition.GetRelationDefinition (typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty"));
+    }
+
+    [Test]
     public void GetSetCommitRollbackPersistentProperties ()
     {
       IMixinAddingPeristentProperties properties = TargetClassForPersistentMixin.NewObject () as IMixinAddingPeristentProperties;
@@ -91,6 +107,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
         TargetClassForPersistentMixin.NewObject ();
         TargetClassForPersistentMixin.GetObject (new ObjectID (typeof (TargetClassForPersistentMixin), Guid.NewGuid ()));
       }
+    }
+
+    [Test]
+    public void RelationProperties ()
+    {
+      TargetClassForPersistentMixin  tc = TargetClassForPersistentMixin.NewObject ();
+      RelationTargetForPersistentMixin relationTarget = RelationTargetForPersistentMixin.NewObject().With();
+      MixinAddingPersistentProperties mixin = Mixin.Get<MixinAddingPersistentProperties> (tc);
+      mixin.RelationProperty = relationTarget;
+      Assert.AreSame (relationTarget, mixin.RelationProperty);
+      Assert.AreSame (tc, relationTarget.RelationProperty);
     }
   }
 }
