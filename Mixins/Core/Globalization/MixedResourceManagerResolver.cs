@@ -10,6 +10,14 @@ namespace Rubicon.Mixins.Globalization
   public class MixedResourceManagerResolver<TAttribute> : ResourceManagerResolver<TAttribute>
       where TAttribute : Attribute, IResourcesAttribute
   {
+    public override IResourceManager GetResourceManager (Type objectType, bool includeHierarchy, out Type definingType)
+    {
+      if (Mixins.TypeUtility.IsGeneratedType (objectType))
+        objectType = Mixins.TypeUtility.GetUnderlyingTargetType (objectType);
+
+      return base.GetResourceManager (objectType, includeHierarchy, out definingType);
+    }
+
     protected override object GetResourceManagerSetCacheKey (Type definingType, bool includeHierarchy)
     {
       return Tuple.NewTuple (

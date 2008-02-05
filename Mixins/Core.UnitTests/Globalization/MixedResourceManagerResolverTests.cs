@@ -158,5 +158,18 @@ namespace Rubicon.Mixins.UnitTests.Globalization
     {
       _resolver.GetResourceManager (typeof (ClassWithoutMultiLingualResourcesAttributes), true);
     }
+
+    [Test]
+    [ExpectedException (typeof (MissingManifestResourceException), ExpectedMessage = "Could not find any resources appropriate for the specified "
+        + "culture or the neutral culture.  Make sure \"OnTarget.resources\" was correctly embedded or linked into assembly "
+        + "\"Rubicon.Mixins.UnitTests\" at compile time, or that all the satellite assemblies required are loadable and fully signed.")]
+    public void GetResourceManager_ForGeneratedType_GetString ()
+    {
+      using (MixinConfiguration.BuildNew ().ForClass<ClassWithMultiLingualResourcesAttributes> ().AddMixin<NullMixin>().EnterScope ())
+      {
+        IResourceManager resourceManager = _resolver.GetResourceManager (TypeFactory.GetConcreteType (typeof (ClassWithMultiLingualResourcesAttributes)), true);
+        resourceManager.GetString ("Foo");
+      }
+    }
   }
 }

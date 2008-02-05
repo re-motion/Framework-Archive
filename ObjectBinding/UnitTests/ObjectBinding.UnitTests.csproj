@@ -94,6 +94,7 @@
     <Compile Include="Core\BindableObject\TestDomain\ClassWithSpecialFactory.cs" />
     <Compile Include="Core\BindableObject\TestDomain\ClassWithMixedPropertyOfSameName.cs" />
     <Compile Include="Core\BindableObject\TestDomain\ClassWithIdentityAndDisplayName.cs" />
+    <Compile Include="Core\BindableObject\TestDomain\ClassWithMixedPropertyAndResources.cs" />
     <Compile Include="Core\BindableObject\TestDomain\DerivedBusinessObjectClass.cs" />
     <Compile Include="Core\BindableObject\TestDomain\BaseBusinessObjectClass.cs" />
     <Compile Include="Core\BindableObject\TestDomain\ICustomGetObjectService.cs" />
@@ -144,6 +145,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ClassWithResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Globalization\ClassWithMixedPropertyAndResources.Designer.cs">
+      <DependentUpon>ClassWithMixedPropertyAndResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Core\Globalization\MixinAddingResources.Designer.cs">
       <DependentUpon>MixinAddingResources.resx</DependentUpon>
@@ -255,6 +261,11 @@
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ClassWithResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Globalization\ClassWithMixedPropertyAndResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ClassWithMixedPropertyAndResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Core\Globalization\MixinAddingResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

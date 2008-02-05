@@ -23,7 +23,7 @@ namespace Rubicon.Globalization
     /// </summary>
     /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/Common/*' />
     /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/param[@name="objectType" or @name="includeHierarchy"]' />
-    public virtual IResourceManager GetResourceManager (Type objectType, bool includeHierarchy)
+    public IResourceManager GetResourceManager (Type objectType, bool includeHierarchy)
     {
       ArgumentUtility.CheckNotNull ("objectType", objectType);
       ArgumentUtility.CheckNotNull ("includeHierarchy", includeHierarchy);

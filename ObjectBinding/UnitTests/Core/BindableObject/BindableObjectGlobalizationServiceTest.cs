@@ -96,5 +96,14 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
         Assert.That (_globalizationService.GetPropertyDisplayName (IPropertyInformation), Is.EqualTo ("Resource from mixin"));
       }
     }
+
+    [Test]
+    public void GetPropertyDisplayName_WithPropertyAddedByMixin ()
+    {
+      BindableObjectClass bindableClass = BindableObjectProvider.Current.GetBindableObjectClass (typeof (ClassWithMixedPropertyAndResources));
+      PropertyBase property = (PropertyBase) bindableClass.GetPropertyDefinition ("MixedProperty");
+
+      Assert.That (_globalizationService.GetPropertyDisplayName (property.PropertyInfo), Is.EqualTo ("Resourced!"));
+    }
   }
 }
