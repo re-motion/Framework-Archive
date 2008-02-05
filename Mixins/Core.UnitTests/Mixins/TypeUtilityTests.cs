@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Castle.DynamicProxy;
 using NUnit.Framework;
+using Rubicon.CodeGeneration;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework.SyntaxHelpers;
@@ -372,6 +374,15 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void GetUnderlyingTargetTypeOnConcreteType ()
     {
       Assert.AreSame (typeof (BaseType1), TypeUtility.GetUnderlyingTargetType (TypeUtility.GetConcreteType (typeof (BaseType1))));
+    }
+
+    [Test]
+    public void GetUnderlyingTargetTypeOnDerivedConcreteType ()
+    {
+      Type concreteType = TypeUtility.GetConcreteType (typeof (BaseType1));
+      CustomClassEmitter customClassEmitter = new CustomClassEmitter (new ModuleScope (false), "Test", concreteType);
+      Type derivedType = customClassEmitter.BuildType();
+      Assert.AreSame (typeof (BaseType1), TypeUtility.GetUnderlyingTargetType (derivedType));
     }
   }
 }

@@ -1,5 +1,7 @@
 using System;
 using System.Reflection;
+using Castle.DynamicProxy;
+using Rubicon.CodeGeneration;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.SampleTypes;
@@ -217,6 +219,16 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void GetMixinConfigurationFromConcreteTypeNullWhenNoMixedType ()
     {
       Assert.IsNull (Mixin.GetMixinConfigurationFromConcreteType (typeof (object)));
+    }
+
+    [Test]
+    public void GetMixinConfigurationFromDerivedConcreteType ()
+    {
+      Type concreteType = TypeUtility.GetConcreteType (typeof (BaseType1));
+      CustomClassEmitter customClassEmitter = new CustomClassEmitter (new ModuleScope (false), "Test", concreteType);
+      Type derivedType = customClassEmitter.BuildType ();
+      Assert.AreEqual (TypeFactory.GetActiveConfiguration (typeof (BaseType1)).ConfigurationContext,
+          Mixin.GetMixinConfigurationFromConcreteType (derivedType));
     }
   }
 }

@@ -12,7 +12,7 @@ using Rubicon.Mixins.Context.FluentBuilders;
 namespace Rubicon.Mixins.CodeGeneration
 {
   [CLSCompliant (false)]
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+  [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
   public class ConcreteMixedTypeAttribute : Attribute
   {
     private static readonly ConstructorInfo s_attributeCtor =

@@ -60,14 +60,11 @@ namespace Rubicon.Mixins
     /// if <paramref name="type"/> is no mixed type.</returns>
     public static ClassContext GetMixinConfigurationFromConcreteType (Type type)
     {
-      ConcreteMixedTypeAttribute[] attributes = (ConcreteMixedTypeAttribute[])type.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false);
-      if (attributes.Length == 0)
+      ConcreteMixedTypeAttribute attribute = AttributeUtility.GetCustomAttribute<ConcreteMixedTypeAttribute> (type, true);
+      if (attribute == null)
         return null;
       else
-      {
-        Assertion.IsTrue (attributes.Length == 1, "AllowMultiple == false");
-        return attributes[0].GetClassContext();
-      }
+        return attribute.GetClassContext();
     }
   }
 

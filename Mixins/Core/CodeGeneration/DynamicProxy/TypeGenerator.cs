@@ -25,6 +25,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         typeof (DebuggerBrowsableAttribute).GetConstructor (new Type[] { typeof (DebuggerBrowsableState) });
     private static readonly ConstructorInfo s_debuggerDisplayAttributeConstructor =
         typeof (DebuggerDisplayAttribute).GetConstructor (new Type[] { typeof (string) });
+    private readonly PropertyInfo[] s_debuggerDisplayNameProperty = new PropertyInfo[] { typeof (DebuggerDisplayAttribute).GetProperty ("Name") };
 
     private readonly ModuleManager _module;
     private readonly TargetClassDefinition _configuration;
@@ -36,7 +37,6 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private readonly FieldReference _firstField;
     private readonly Dictionary<MethodInfo, MethodInfo> _baseCallMethods = new Dictionary<MethodInfo, MethodInfo>();
     private readonly MixinTypeGenerator[] _mixinTypeGenerators;
-    private PropertyInfo[] s_debuggerDisplayNameProperty = new PropertyInfo[] { typeof (DebuggerDisplayAttribute).GetProperty ("Name") };
 
     public TypeGenerator (ModuleManager module, TargetClassDefinition configuration, INameProvider nameProvider, INameProvider mixinNameProvider)
     {
