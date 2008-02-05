@@ -85,7 +85,8 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     [Test]
     public void GetItem ()
     {
-      Expect.Call (_mockSessionState[GetSessionKeyForFunctionState()]).Return (_functionState);
+      Expect.Call (_mockSessionState.Mode).Return (SessionStateMode.InProc);
+      Expect.Call (_mockSessionState[GetSessionKeyForFunctionState ()]).Return (_functionState);
       _mockRepository.ReplayAll();
 
       WxeFunctionStateManager functionStateManager = new WxeFunctionStateManager (_session);
