@@ -1,13 +1,16 @@
 using System;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.ObjectBinding;
+using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Security;
 using Rubicon.Security.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using System.Collections.Generic;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
@@ -251,6 +254,25 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     #endregion
+
+    [Test]
+    public void SearchParentGroups ()
+    {
+      BindableObjectProvider.Current.AddService (typeof (ParentGroupSearchService), new ParentGroupSearchService());
+      IBusinessObjectClass groupClass = BindableObjectProvider.Current.GetBindableObjectClass (typeof (Group));
+      IBusinessObjectReferenceProperty parentGroupProperty = (IBusinessObjectReferenceProperty) groupClass.GetPropertyDefinition ("Parent");
+      Assert.That (parentGroupProperty, Is.Not.Null);
+
+      Group group = Group.FindByUnqiueIdentifier ("UID: group0");
+      Assert.That (group, Is.Not.Null);
+      List<Group> expectedParentGroups = group.GetPossibleParentGroups (group.Tenant.ID);
+      Assert.That (expectedParentGroups, Is.Not.Empty);
+
+      Assert.That (parentGroupProperty.SupportsSearchAvailableObjects (true), Is.True);
+
+      IBusinessObject[] actualParentGroups = parentGroupProperty.SearchAvailableObjects (group, true, null);
+      Assert.That (actualParentGroups, Is.EquivalentTo (expectedParentGroups));
+    }
 
     private Group CreateGroup ()
     {

@@ -22,6 +22,7 @@ namespace Rubicon.SecurityManager.Clients.Web
       SecurityAdapterRegistry.Instance.SetAdapter (typeof (IWxeSecurityAdapter), new WxeSecurityAdapter());
       BindableObjectProvider.Current.AddService (typeof (BindableDomainObjectSearchService), new BindableDomainObjectSearchService());
       BindableObjectProvider.Current.AddService (typeof (BindableDomainObjectGetObjectService), new BindableDomainObjectGetObjectService());
+      BindableObjectProvider.Current.AddService (typeof (ParentGroupSearchService), new ParentGroupSearchService ());
     }
     
     protected void Application_End (object sender, EventArgs e)

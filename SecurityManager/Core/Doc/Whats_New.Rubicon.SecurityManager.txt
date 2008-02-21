@@ -1,3 +1,10 @@
+1.7.81
+======
+- Global.asax für Clients.Web:
+  Weitere Services müssen imm ApplicationStart registriert werden:
+  * BindableObjectProvider.Current.AddService (typeof (ParentGroupSearchService), new ParentGroupSearchService());
+
+
 1.7.64
 ======
 - Bugfix: User.OwningGorup wurde für nicht übersetzt.

@@ -90,6 +90,7 @@
     <Compile Include="Domain\Metadata\StatePropertyDefinition.cs" />
     <Compile Include="Domain\Metadata\StatePropertyReference.cs" />
     <Compile Include="Domain\OrganizationalStructure\Delegation.cs" />
+    <Compile Include="Domain\OrganizationalStructure\ParentGroupSearchService.cs" />
     <Compile Include="Domain\OrganizationalStructure\Tenant.cs" />
     <Compile Include="Domain\OrganizationalStructure\Group.cs" />
     <Compile Include="Domain\OrganizationalStructure\GroupType.cs" />

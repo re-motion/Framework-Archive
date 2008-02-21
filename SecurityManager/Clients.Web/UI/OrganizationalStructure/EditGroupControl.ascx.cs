@@ -13,15 +13,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
   [WebMultiLingualResources (typeof (EditGroupControlResources))]
   public partial class EditGroupControl : BaseControl
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    // methods and properties
     public override IBusinessObjectDataSourceControl DataSource
     {
       get { return CurrentObject; }
@@ -41,7 +32,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       base.OnLoad (e);
 
-      FillParentField ();
       FillGroupTypeField ();
 
       if (ChildrenList.IsReadOnly)
@@ -54,11 +44,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     private void FillGroupTypeField ()
     {
       GroupTypeField.SetBusinessObjectList (GroupType.FindAll ());
-    }
-
-    private void FillParentField ()
-    {
-      ParentField.SetBusinessObjectList (CurrentFunction.Group.GetPossibleParentGroups (CurrentFunction.TenantID));
     }
 
     public override bool Validate ()

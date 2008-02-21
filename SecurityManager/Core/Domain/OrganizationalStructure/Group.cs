@@ -5,6 +5,7 @@ using System.Security.Principal;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Globalization;
+using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.Security;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Utilities;
@@ -33,7 +34,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       private Group _group;
 
       public GroupSecurityStrategy (Group group)
-        : base (group)
+          : base (group)
       {
         ArgumentUtility.CheckNotNull ("group", group);
 
@@ -55,10 +56,10 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     internal static Group NewObject ()
     {
-      return NewObject<Group> ().With ();
+      return NewObject<Group>().With();
     }
 
-    public static new Group GetObject (ObjectID id)
+    public new static Group GetObject (ObjectID id)
     {
       return DomainObject.GetObject<Group> (id);
     }
@@ -106,7 +107,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     protected Group ()
     {
-      UniqueIdentifier = Guid.NewGuid ().ToString ();
+      UniqueIdentifier = Guid.NewGuid().ToString();
     }
 
     // methods and properties
@@ -124,6 +125,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     public abstract Tenant Tenant { get; set; }
 
     [DBBidirectionalRelation ("Children")]
+    [SearchAvailableObjectsServiceType (typeof (ParentGroupSearchService))]
     public abstract Group Parent { get; set; }
 
     [DBBidirectionalRelation ("Parent")]
@@ -157,11 +159,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       ArgumentUtility.CheckNotNull ("tenantID", tenantID);
 
-      List<Group> groups = new List<Group> ();
+      List<Group> groups = new List<Group>();
 
       foreach (Group group in FindByTenantID (tenantID))
       {
-        if ((!Children.Contains (group.ID)) && (group.ID != this.ID))
+        if ((!Children.Contains (group.ID)) && (group.ID != ID))
           groups.Add (group);
       }
       return groups;

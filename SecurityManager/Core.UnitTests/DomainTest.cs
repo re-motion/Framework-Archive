@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
+using Rubicon.ObjectBinding.BindableObject;
 
 namespace Rubicon.SecurityManager.UnitTests
 {
@@ -24,6 +25,7 @@ namespace Rubicon.SecurityManager.UnitTests
     public virtual void TearDown()
     {
       ClientTransactionScope.ResetActiveScope();
+      BindableObjectProvider.SetCurrent (null);
     }
   }
 }
