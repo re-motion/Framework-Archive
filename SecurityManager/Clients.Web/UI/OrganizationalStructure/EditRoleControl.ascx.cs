@@ -1,4 +1,5 @@
 using System;
+using System.Web.UI;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.SecurityManager.Clients.Web.Classes;
@@ -13,15 +14,9 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
   [WebMultiLingualResources (typeof (EditRoleControlResources))]
   public partial class EditRoleControl : BaseControl
   {
-    // types
+    private BusinessObjectBoundEditableWebControl _groupField;
+    private BusinessObjectBoundEditableWebControl _userField;
 
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    // methods and properties
     public override IBusinessObjectDataSourceControl DataSource
     {
       get { return CurrentObject; }
@@ -34,72 +29,61 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     public override IFocusableControl InitialFocusControl
     {
-      get { return UserField; }
+      get { return (IFocusableControl) _userField; }
+    }
+
+    protected override void OnInit (EventArgs e)
+    {
+      base.OnInit (e);
+
+      _groupField = GetBoundEditableWebControl ("GroupField", "Group");
+      _userField = GetBoundEditableWebControl ("UserField", "User");
     }
 
     protected override void OnLoad (EventArgs e)
     {
       base.OnLoad (e);
 
-      InitializeUserField (IsPostBack);
-      InitializeGroupField (IsPostBack);
+      InitializeUserField();
+      InitializeGroupField();
       InitializePositionField (IsPostBack);
     }
 
-    private void InitializeUserField (bool interim)
+    public override bool Validate ()
     {
-      if (CurrentFunction.User == null)
-      {
-        if (!interim)
-          FillUserField ();
-      }
-      else
-      {
-        UserField.ReadOnly = NaBoolean.True;
-      }
+      bool isValid = base.Validate();
+
+      isValid &= FormGridManager.Validate();
+
+      return isValid;
     }
 
-    private void InitializeGroupField (bool interim)
+    private void InitializeUserField ()
     {
-      if (CurrentFunction.Group == null)
-      {
-        if (!interim)
-          FillGroupField ();
-      }
-      else
-      {
-        GroupField.ReadOnly = NaBoolean.True;
-      }
+      if (CurrentFunction.User != null)
+        _userField.ReadOnly = NaBoolean.True;
+    }
+
+    private void InitializeGroupField ()
+    {
+      if (CurrentFunction.Group != null)
+        _groupField.ReadOnly = NaBoolean.True;
     }
 
     private void InitializePositionField (bool interim)
     {
-      bool isGroupSelected = GroupField.Value != null;
+      bool isGroupSelected = _groupField.Value != null;
       PositionField.Enabled = isGroupSelected;
       if (!interim)
-        FillPositionField ();
-    }
-
-    private void FillUserField ()
-    {
-      Group group = CurrentFunction.Group;
-      if (group != null)
-        UserField.SetBusinessObjectList (User.FindByTenantID (group.Tenant.ID));
-    }
-
-    private void FillGroupField ()
-    {
-      User user = CurrentFunction.User;
-      if (user != null)
-        GroupField.SetBusinessObjectList (CurrentFunction.Role.GetPossibleGroups (user.Tenant.ID));
+        FillPositionField();
     }
 
     private void FillPositionField ()
     {
-      if (GroupField.Value == null)
-        PositionField.ClearBusinessObjectList ();
+      if (_groupField.Value == null)
+        PositionField.ClearBusinessObjectList();
       else
-        PositionField.SetBusinessObjectList (CurrentFunction.Role.GetPossiblePositions ((Group) GroupField.Value));
+        PositionField.SetBusinessObjectList (CurrentFunction.Role.GetPossiblePositions ((Group) _groupField.Value));
     }
 
     protected void GroupField_SelectionChanged (object sender, EventArgs e)
@@ -107,13 +91,30 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       InitializePositionField (false);
     }
 
-    public override bool Validate ()
+    private BusinessObjectBoundEditableWebControl GetBoundEditableWebControl (string controlID, string propertyIdentifier)
     {
-      bool isValid = base.Validate ();
+      Control control = FindControl (controlID);
+      
+      if (control == null)
+        throw new InvalidOperationException (string.Format ("No control with the ID '{0}' found.", controlID));
+      
+      if (!(control is BusinessObjectBoundEditableWebControl))
+      {
+        throw new InvalidOperationException (
+            string.Format ("Control '{0}' must be of type '{1}'.", controlID, typeof (BusinessObjectBoundEditableWebControl).FullName));
+      }
+      
+      if (!(control is IFocusableControl))
+      {
+        throw new InvalidOperationException (
+            string.Format ("Control '{0}' must implement the '{1}' interface.", controlID, typeof (IFocusableControl).FullName));
+      }
+      
+      BusinessObjectBoundEditableWebControl boundEditableWebControl = (BusinessObjectBoundEditableWebControl) control;
+      if (boundEditableWebControl.Property == null || boundEditableWebControl.Property.Identifier != propertyIdentifier)
+        throw new InvalidOperationException (string.Format ("Control '{0}' is not bound to property '{1}'.", controlID, propertyIdentifier));
 
-      isValid &= FormGridManager.Validate ();
-
-      return isValid;
+      return boundEditableWebControl;
     }
   }
 }

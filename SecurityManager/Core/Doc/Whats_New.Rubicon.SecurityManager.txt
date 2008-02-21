@@ -2,8 +2,8 @@
 ======
 - Global.asax für Clients.Web:
   Weitere Services müssen imm ApplicationStart registriert werden:
-  * BindableObjectProvider.Current.AddService (typeof (ParentGroupSearchService), new ParentGroupSearchService());
-
+  * BindableObjectProvider.Current.AddService (typeof (GroupPropertiesSearchService), new GroupPropertiesSearchService());
+  * BindableObjectProvider.Current.AddService (typeof (RolePropertiesSearchService), new RolePropertiesSearchService());
 
 1.7.64
 ======

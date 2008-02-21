@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Globalization;
+using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.Security;
 using Rubicon.Utilities;
 
@@ -26,6 +27,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     [DBBidirectionalRelation ("Roles")]
     [Mandatory]
+    [SearchAvailableObjectsServiceType(typeof (RolePropertiesSearchService))]
     public abstract Group Group { get; set; }
 
     [DBBidirectionalRelation ("Roles")]
@@ -34,6 +36,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     [DBBidirectionalRelation ("Roles")]
     [Mandatory]
+    [SearchAvailableObjectsServiceType (typeof (RolePropertiesSearchService))]
     public abstract User User { get; set; }
 
 

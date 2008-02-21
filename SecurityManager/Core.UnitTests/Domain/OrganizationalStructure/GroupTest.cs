@@ -258,7 +258,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void SearchParentGroups ()
     {
-      BindableObjectProvider.Current.AddService (typeof (ParentGroupSearchService), new ParentGroupSearchService());
+      BindableObjectProvider.Current.AddService (typeof (GroupPropertiesSearchService), new GroupPropertiesSearchService());
       IBusinessObjectClass groupClass = BindableObjectProvider.Current.GetBindableObjectClass (typeof (Group));
       IBusinessObjectReferenceProperty parentGroupProperty = (IBusinessObjectReferenceProperty) groupClass.GetPropertyDefinition ("Parent");
       Assert.That (parentGroupProperty, Is.Not.Null);

@@ -125,7 +125,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     public abstract Tenant Tenant { get; set; }
 
     [DBBidirectionalRelation ("Children")]
-    [SearchAvailableObjectsServiceType (typeof (ParentGroupSearchService))]
+    [SearchAvailableObjectsServiceType (typeof (GroupPropertiesSearchService))]
     public abstract Group Parent { get; set; }
 
     [DBBidirectionalRelation ("Parent")]

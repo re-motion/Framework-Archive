@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Configuration.Provider;
 using System.Security.Principal;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 using Rubicon.Data.DomainObjects;
+using Rubicon.ObjectBinding;
+using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.Security;
 using Rubicon.Security.Configuration;
 using Rubicon.SecurityManager.Domain;
@@ -188,6 +191,52 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       List<Position> positions = role.GetPossiblePositions (rootGroup);
 
       Assert.AreEqual (3, positions.Count);
+    }
+
+    [Test]
+    public void SearchGroups ()
+    {
+      SecurityConfiguration.Current.SecurityProvider = new NullSecurityProvider ();
+      SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
+      BindableObjectProvider.Current.AddService (typeof (RolePropertiesSearchService), new RolePropertiesSearchService ());
+      IBusinessObjectClass roleClass = BindableObjectProvider.Current.GetBindableObjectClass (typeof (Role));
+      IBusinessObjectReferenceProperty groupProperty = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition ("Group");
+      Assert.That (groupProperty, Is.Not.Null);
+
+      User user = User.FindByUserName ("group0/user1");
+      Assert.That (user, Is.Not.Null);
+      Role role = Role.NewObject();
+      role.User = user;
+      List<Group> expectedGroups = role.GetPossibleGroups (user.Tenant.ID);
+      Assert.That (expectedGroups, Is.Not.Empty);
+
+      Assert.That (groupProperty.SupportsSearchAvailableObjects (true), Is.True);
+
+      IBusinessObject[] actualGroups = groupProperty.SearchAvailableObjects (role, true, null);
+      Assert.That (actualGroups, Is.EquivalentTo (expectedGroups));
+    }
+
+    [Test]
+    public void SearchUsers ()
+    {
+      SecurityConfiguration.Current.SecurityProvider = new NullSecurityProvider ();
+      SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
+      BindableObjectProvider.Current.AddService (typeof (RolePropertiesSearchService), new RolePropertiesSearchService ());
+      IBusinessObjectClass roleClass = BindableObjectProvider.Current.GetBindableObjectClass (typeof (Role));
+      IBusinessObjectReferenceProperty userProperty = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition ("User");
+      Assert.That (userProperty, Is.Not.Null);
+
+      Group group = Group.FindByUnqiueIdentifier ("UID: group0");
+      Assert.That (group, Is.Not.Null);
+      Role role = Role.NewObject ();
+      role.Group = group;
+      DomainObjectCollection expectedGroups = User.FindByTenantID (group.Tenant.ID);
+      Assert.That (expectedGroups, Is.Not.Empty);
+
+      Assert.That (userProperty.SupportsSearchAvailableObjects (true), Is.True);
+
+      IBusinessObject[] actualUsers = userProperty.SearchAvailableObjects (role, true, null);
+      Assert.That (actualUsers, Is.EquivalentTo (expectedGroups));
     }
 
     private void ExpectSecurityProviderGetAccessForGroup (string owningGroup, string owningTenant, IPrincipal principal, params Enum[] returnedAccessTypeEnums)
