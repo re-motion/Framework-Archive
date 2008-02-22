@@ -26,14 +26,14 @@ namespace Rubicon.Mixins.MixerTool
     public string AssemblyOutputDirectory = Environment.CurrentDirectory;
 
     [CommandLineStringArgument ("signedAssemblyName", true,
-        Description = "The simple name of the signed assembly generated (without extension; default: Rubicon.Mixins.Generated.Signed).",
+			  Description = "The simple name of the signed assembly generated (without extension; default: Rubicon.Mixins.Persistent.Signed).",
         Placeholder = "simpleName")]
-    public string SignedAssemblyName = "Rubicon.Mixins.Generated.Signed";
+		public string SignedAssemblyName = "Rubicon.Mixins.Persistent.Signed";
 
     [CommandLineStringArgument ("unsignedAssemblyName", true,
-        Description = "The simple name of the unsigned assembly generated (without extension; default: Rubicon.Mixins.Generated.Unsigned).",
+			  Description = "The simple name of the unsigned assembly generated (without extension; default: Rubicon.Mixins.Persistent.Unsigned).",
         Placeholder = "simpleName")]
-    public string UnsignedAssemblyName = "Rubicon.Mixins.Generated.Unsigned";
+		public string UnsignedAssemblyName = "Rubicon.Mixins.Persistent.Unsigned";
 
     [CommandLineFlagArgument ("keepTypeNames", false,
         Description = "Specifies that the mixer should not use GUIDs to name the generated types, but instead keep the type names of the target "

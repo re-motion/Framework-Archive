@@ -20,8 +20,8 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
       Assert.AreEqual (Environment.CurrentDirectory, Parameters.AssemblyOutputDirectory);
       Assert.AreEqual (Environment.CurrentDirectory, Parameters.BaseDirectory);
       Assert.AreEqual ("", Parameters.ConfigFile);
-      Assert.AreEqual ("Rubicon.Mixins.Generated.Signed", Parameters.SignedAssemblyName);
-      Assert.AreEqual ("Rubicon.Mixins.Generated.Unsigned", Parameters.UnsignedAssemblyName);
+      Assert.AreEqual ("Rubicon.Mixins.Persistent.Signed", Parameters.SignedAssemblyName);
+      Assert.AreEqual ("Rubicon.Mixins.Persistent.Unsigned", Parameters.UnsignedAssemblyName);
       Assert.AreEqual (false, Parameters.KeepTypeNames);
     }
 
