@@ -92,6 +92,7 @@
     <Compile Include="Configuration\ValidationTests\ValidationSampleTypes\InternalClass.cs" />
     <Compile Include="Configuration\ValidationTests\ValidationTestBase.cs" />
     <Compile Include="Globalization\MixedMultiLingualResourcesTests\ExistsResourceTests.cs" />
+    <Compile Include="Globalization\MixedMultiLingualResourcesTests\GeneralTests.cs" />
     <Compile Include="Globalization\MixedResourceManagerResolverTests.cs" />
     <Compile Include="Globalization\SampleTypes\ClassWithMultiLingualResourcesAttributes.cs" />
     <Compile Include="Globalization\SampleTypes\ClassWithoutMultiLingualResourcesAttributes.cs" />

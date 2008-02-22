@@ -47,6 +47,16 @@ namespace Rubicon.Mixins.UnitTests.Globalization.MixedMultiLingualResourcesTests
       Assert.AreEqual ("OnTarget", resourceManager[0].Name);
     }
 
+		[Test]
+		public void AttributesOnBaseAndClass_InheritedDefault ()
+		{
+			ResourceManagerSet resourceManager =
+					(ResourceManagerSet) MixedMultiLingualResources.GetResourceManager (typeof (InheritedClassWithMultiLingualResourcesAttributes));
+
+			Assert.AreEqual (1, resourceManager.Count);
+			Assert.AreEqual ("OnInherited", resourceManager[0].Name);
+		}
+
     [Test]
     public void AttributesOnBaseAndClass_InheritedFalse ()
     {

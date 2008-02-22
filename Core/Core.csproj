@@ -137,6 +137,7 @@
     <Compile Include="Design\EnvDteDesignModeHelper.cs" />
     <Compile Include="Design\IDesignModeHelper.cs" />
     <Compile Include="DoubleCheckedLockingContainer.cs" />
+    <Compile Include="Globalization\IResourceManagerResolverUtility.cs" />
     <Compile Include="Globalization\IResourcesAttribute.cs" />
     <Compile Include="Globalization\MultiLingualResources.cs" />
     <Compile Include="Globalization\ResourceManagerResolver.cs" />

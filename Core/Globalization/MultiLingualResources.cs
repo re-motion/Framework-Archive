@@ -8,8 +8,17 @@ namespace Rubicon.Globalization
   /// </summary>
   public static class MultiLingualResources
   {
-    private static readonly ResourceManagerResolver<MultiLingualResourcesAttribute> s_resolver =
+  	private static readonly ResourceManagerResolver<MultiLingualResourcesAttribute> s_resolver =
         new ResourceManagerResolver<MultiLingualResourcesAttribute>();
+
+		/// <summary>
+		/// Gets the resolver object used by the methods of this class.
+		/// </summary>
+		/// <value>The resolver object used by <see cref="MultiLingualResources"/>.</value>
+		public static ResourceManagerResolver<MultiLingualResourcesAttribute> Resolver
+		{
+			get { return s_resolver; }
+		}
 
     /// <summary>
     ///   Returns an instance of <c>IResourceManager</c> for the resource container specified
@@ -49,7 +58,7 @@ namespace Rubicon.Globalization
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
       ArgumentUtility.CheckNotNull ("name", name);
       
-      return ResourceManagerResolverUtility<MultiLingualResourcesAttribute>.GetResourceText (s_resolver, objectTypeToGetResourceFor, name);
+      return ResourceManagerResolverUtility.Current.GetResourceText (s_resolver, objectTypeToGetResourceFor, name);
     }
 
     /// <summary>
@@ -81,7 +90,7 @@ namespace Rubicon.Globalization
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
       ArgumentUtility.CheckNotNull ("name", name);
 
-      return ResourceManagerResolverUtility<MultiLingualResourcesAttribute>.ExistsResourceText (s_resolver, objectTypeToGetResourceFor, name);
+			return ResourceManagerResolverUtility.Current.ExistsResourceText (s_resolver, objectTypeToGetResourceFor, name);
     }
 
     /// <summary>
@@ -110,11 +119,11 @@ namespace Rubicon.Globalization
     public static bool ExistsResource (Type objectTypeToGetResourceFor)
     {
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
-      return ResourceManagerResolverUtility<MultiLingualResourcesAttribute>.ExistsResource (s_resolver, objectTypeToGetResourceFor);
+			return ResourceManagerResolverUtility.Current.ExistsResource (s_resolver, objectTypeToGetResourceFor);
     }
 
     /// <summary>
-    ///   Checks for the existence of a resource set for the specified type.
+    ///   Checks for the existence of a resource set for the specified object.
     /// </summary>
     /// <param name="objectToGetResourceFor">
     ///   The object for whose <see cref="Type"/> to check for the resource set.

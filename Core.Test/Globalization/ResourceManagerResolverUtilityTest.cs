@@ -19,7 +19,35 @@ namespace Rubicon.Core.UnitTests.Globalization
       _resolverMock = _mockRepository.CreateMock<ResourceManagerResolver<MultiLingualResourcesAttribute>>();
     }
 
-    [Test]
+		[TearDown]
+		public void TearDown ()
+		{
+			ResourceManagerResolverUtility.SetCurrent (null);
+		}
+
+		[Test]
+		public void Current_Initial ()
+		{
+			Assert.IsNotNull (ResourceManagerResolverUtility.Current);
+			Assert.AreSame (ResourceManagerResolverUtility.Default, ResourceManagerResolverUtility.Current);
+		}
+
+  	[Test]
+		public void Current_Set ()
+		{
+			IResourceManagerResolverUtility mockUtility = _mockRepository.CreateMock<IResourceManagerResolverUtility>();
+			ResourceManagerResolverUtility.SetCurrent (mockUtility);
+			Assert.AreSame (mockUtility, ResourceManagerResolverUtility.Current);
+		}
+
+		[Test]
+		public void Current_Reset ()
+		{
+			ResourceManagerResolverUtility.SetCurrent (null);
+			Assert.AreSame (ResourceManagerResolverUtility.Default, ResourceManagerResolverUtility.Current);
+		}
+
+ 	[Test]
     public void GetResourceText ()
     {
       IResourceManager resourceManagerMock = _mockRepository.CreateMock<IResourceManager>();
@@ -27,7 +55,7 @@ namespace Rubicon.Core.UnitTests.Globalization
       Expect.Call (resourceManagerMock.GetString ("Borg")).Return ("Resistance is futile");
       _mockRepository.ReplayAll ();
 
-      string text = ResourceManagerResolverUtility<MultiLingualResourcesAttribute>.GetResourceText (
+      string text = ResourceManagerResolverUtility.Current.GetResourceText (
           _resolverMock, typeof (ClassWithMultiLingualResourcesAttributes), "Borg");
       Assert.AreEqual ("Resistance is futile", text);
 
@@ -42,7 +70,7 @@ namespace Rubicon.Core.UnitTests.Globalization
       Expect.Call (resourceManagerMock.GetString ("Grob")).Return ("Grob");
       _mockRepository.ReplayAll ();
 
-      string text = ResourceManagerResolverUtility<MultiLingualResourcesAttribute>.GetResourceText (
+			string text = ResourceManagerResolverUtility.Current.GetResourceText (
           _resolverMock, typeof (ClassWithMultiLingualResourcesAttributes), "Grob");
       Assert.AreEqual ("", text);
 
@@ -56,7 +84,7 @@ namespace Rubicon.Core.UnitTests.Globalization
       Expect.Call (_resolverMock.GetResourceManager (typeof (ClassWithMultiLingualResourcesAttributes), false)).Throw (new ResourceException(""));
       _mockRepository.ReplayAll ();
 
-      ResourceManagerResolverUtility<MultiLingualResourcesAttribute>.GetResourceText (_resolverMock, typeof (ClassWithMultiLingualResourcesAttributes), "Grob");
+			ResourceManagerResolverUtility.Current.GetResourceText (_resolverMock, typeof (ClassWithMultiLingualResourcesAttributes), "Grob");
     }
 
     [Test]
@@ -67,7 +95,7 @@ namespace Rubicon.Core.UnitTests.Globalization
       Expect.Call (resourceManagerMock.GetString ("Borg")).Return ("Resistance is futile");
       _mockRepository.ReplayAll ();
 
-      bool result = ResourceManagerResolverUtility<MultiLingualResourcesAttribute>.ExistsResourceText (
+			bool result = ResourceManagerResolverUtility.Current.ExistsResourceText (
           _resolverMock, typeof (ClassWithMultiLingualResourcesAttributes), "Borg");
       Assert.IsTrue (result);
 
@@ -82,7 +110,7 @@ namespace Rubicon.Core.UnitTests.Globalization
       Expect.Call (resourceManagerMock.GetString ("Borg")).Return ("Borg");
       _mockRepository.ReplayAll ();
 
-      bool result = ResourceManagerResolverUtility<MultiLingualResourcesAttribute>.ExistsResourceText (
+			bool result = ResourceManagerResolverUtility.Current.ExistsResourceText (
           _resolverMock, typeof (ClassWithMultiLingualResourcesAttributes), "Borg");
       Assert.IsFalse (result);
 
@@ -95,7 +123,7 @@ namespace Rubicon.Core.UnitTests.Globalization
       Expect.Call (_resolverMock.GetResourceManager (typeof (ClassWithMultiLingualResourcesAttributes), false)).Throw (new ResourceException (""));
       _mockRepository.ReplayAll ();
 
-      bool result = ResourceManagerResolverUtility<MultiLingualResourcesAttribute>.ExistsResourceText (
+			bool result = ResourceManagerResolverUtility.Current.ExistsResourceText (
           _resolverMock, typeof (ClassWithMultiLingualResourcesAttributes), "Borg");
       Assert.IsFalse (result);
 
@@ -106,22 +134,22 @@ namespace Rubicon.Core.UnitTests.Globalization
     public void ExistsResourceTrue ()
     {
       ResourceManagerResolver<MultiLingualResourcesAttribute> resolver =
-          new ResourceManagerResolver<MultiLingualResourcesAttribute>();
+					new ResourceManagerResolver<MultiLingualResourcesAttribute> ();
       Assert.IsTrue (
-          ResourceManagerResolverUtility<MultiLingualResourcesAttribute>.ExistsResource (resolver, typeof (ClassWithMultiLingualResourcesAttributes)));
+					ResourceManagerResolverUtility.Current.ExistsResource (resolver, typeof (ClassWithMultiLingualResourcesAttributes)));
       Assert.IsTrue (
-          ResourceManagerResolverUtility<MultiLingualResourcesAttribute>.ExistsResource (resolver, typeof (InheritedClassWithMultiLingualResourcesAttributes)));
+					ResourceManagerResolverUtility.Current.ExistsResource (resolver, typeof (InheritedClassWithMultiLingualResourcesAttributes)));
       Assert.IsTrue (
-          ResourceManagerResolverUtility<MultiLingualResourcesAttribute>.ExistsResource (resolver, typeof (InheritedClassWithoutMultiLingualResourcesAttributes)));
+					ResourceManagerResolverUtility.Current.ExistsResource (resolver, typeof (InheritedClassWithoutMultiLingualResourcesAttributes)));
     }
 
     [Test]
     public void ExistsResourceFalse ()
     {
-      ResourceManagerResolver<MultiLingualResourcesAttribute> resolver =
-          new ResourceManagerResolver<MultiLingualResourcesAttribute> ();
+			ResourceManagerResolver<MultiLingualResourcesAttribute> resolver =
+					new ResourceManagerResolver<MultiLingualResourcesAttribute> ();
       Assert.IsFalse (
-          ResourceManagerResolverUtility<MultiLingualResourcesAttribute>.ExistsResource (resolver, typeof (ClassWithoutMultiLingualResourcesAttributes)));
+					ResourceManagerResolverUtility.Current.ExistsResource (resolver, typeof (ClassWithoutMultiLingualResourcesAttributes)));
     }
   }
 }
