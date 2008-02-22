@@ -89,6 +89,7 @@
     <Compile Include="Configuration\ValidationTests\GeneralValidationTests.cs" />
     <Compile Include="Configuration\ValidationTests\DelegateRuleDescriptionTests.cs" />
     <Compile Include="Configuration\ValidationTests\Rules\DefaultTargetClassRulesTestss.cs" />
+    <Compile Include="Configuration\ValidationTests\ValidationSampleTypes\InternalClass.cs" />
     <Compile Include="Configuration\ValidationTests\ValidationTestBase.cs" />
     <Compile Include="Globalization\MixedMultiLingualResourcesTests\ExistsResourceTests.cs" />
     <Compile Include="Globalization\MixedResourceManagerResolverTests.cs" />

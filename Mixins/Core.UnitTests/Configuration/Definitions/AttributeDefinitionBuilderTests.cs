@@ -119,7 +119,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     class InternalStuffAttribute : Attribute { }
 
     [InternalStuff]
-    class ClassWithInternalAttribute { }
+    public class ClassWithInternalAttribute { }
 
     [Test]
     public void InternalAttributesAreIgnored()

@@ -46,6 +46,34 @@ namespace Rubicon.Mixins.UnitTests.Configuration.ValidationTests.Rules
       Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustHavePublicOrProtectedCtor", log));
     }
 
+		[Test]
+		public void FailsIfTargetClassIsNotPublic ()
+		{
+			TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (InternalClass),
+					typeof (NullMixin));
+			DefaultValidationLog log = Validator.Validate (definition);
 
+			Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustBePublic", log));
+		}
+
+		[Test]
+		public void FailsIfNestedTargetClassIsNotPublic ()
+		{
+			TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (PublicNester.InternalNested),
+					typeof (NullMixin));
+			DefaultValidationLog log = Validator.Validate (definition);
+
+			Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustBePublic", log));
+		}
+
+		[Test]
+		public void SucceedsIfNestedTargetClassIsPublic ()
+		{
+			TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (PublicNester.PublicNested),
+					typeof (NullMixin));
+			DefaultValidationLog log = Validator.Validate (definition);
+
+			AssertSuccess (log);
+		}
   }
 }
