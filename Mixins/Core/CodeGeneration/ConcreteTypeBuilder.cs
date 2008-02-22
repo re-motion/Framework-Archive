@@ -193,7 +193,7 @@ namespace Rubicon.Mixins.CodeGeneration
     /// Loads an assembly with the given name and adds its mixed types to this builder's cache.
     /// </summary>
     /// <param name="assembly">The assembly whose public types to load into the cache.</param>
-    public void LoadScopeIntoCache (Assembly assembly)
+    public void LoadAssemblyIntoCache (Assembly assembly)
     {
       ArgumentUtility.CheckNotNull ("assembly", assembly);
 

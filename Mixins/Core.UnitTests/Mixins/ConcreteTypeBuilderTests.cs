@@ -194,7 +194,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
             repository.ReplayAll ();
 
             Assembly assembly = Assembly.Load (AssemblyName.GetAssemblyName (modulePath));
-            ConcreteTypeBuilder.Current.LoadScopeIntoCache (assembly);
+            ConcreteTypeBuilder.Current.LoadAssemblyIntoCache (assembly);
             Type concreteType = TypeFactory.GetConcreteType (typeof (BaseType1));
             string expectedTypeName = (string) args[0];
             Assert.AreEqual (expectedTypeName, concreteType.FullName);
@@ -216,7 +216,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
             string modulePath = ConcreteTypeBuilder.Current.Scope.UnsignedModulePath;
             Assembly assembly = Assembly.Load (AssemblyName.GetAssemblyName (modulePath));
-            ConcreteTypeBuilder.Current.LoadScopeIntoCache (assembly);
+            ConcreteTypeBuilder.Current.LoadAssemblyIntoCache (assembly);
 
             Type concreteType1b = TypeFactory.GetConcreteType (typeof (BaseType1));
             Assert.AreSame (concreteType1, concreteType1b);
@@ -250,7 +250,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
             repository.ReplayAll ();
 
             Assembly assembly = Assembly.Load (AssemblyName.GetAssemblyName (modulePath));
-            ConcreteTypeBuilder.Current.LoadScopeIntoCache (assembly);
+            ConcreteTypeBuilder.Current.LoadAssemblyIntoCache (assembly);
 
             MixinDefinition innerMixinDefinition =
               TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
@@ -286,7 +286,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
             Type concreteType1a = ConcreteTypeBuilder.Current.GetConcreteMixinType (innerMixinDefinition);
 
             Assembly assembly = Assembly.Load (AssemblyName.GetAssemblyName (modulePath));
-            ConcreteTypeBuilder.Current.LoadScopeIntoCache (assembly);
+            ConcreteTypeBuilder.Current.LoadAssemblyIntoCache (assembly);
 
             Type concreteType1b = ConcreteTypeBuilder.Current.GetConcreteMixinType (innerMixinDefinition);
 
@@ -310,7 +310,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       {
         string modulePath = ConcreteTypeBuilder.Current.Scope.UnsignedModulePath;
         Assembly assembly = Assembly.Load (AssemblyName.GetAssemblyName (modulePath));
-        ConcreteTypeBuilder.Current.LoadScopeIntoCache (assembly);
+        ConcreteTypeBuilder.Current.LoadAssemblyIntoCache (assembly);
 
         MockRepository repository = new MockRepository ();
 

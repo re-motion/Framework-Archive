@@ -184,7 +184,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
           delegate
           {
             Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
-            ConcreteTypeBuilder.Current.LoadScopeIntoCache (theAssembly);
+            ConcreteTypeBuilder.Current.LoadAssemblyIntoCache (theAssembly);
             using (MixinConfiguration.BuildNew().EnterScope())
             {
               using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (BT1Mixin1)).EnterScope())
