@@ -59,7 +59,10 @@ namespace Rubicon.Mixins.MixerTool
       }
       catch (Exception ex)
       {
-        Console.WriteLine (ex.Message);
+				using (ConsoleUtility.EnterColorScope (ConsoleColor.Red, null))
+				{
+					Console.WriteLine (ex.Message);
+				}
       }
     }
 

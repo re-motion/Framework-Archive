@@ -330,6 +330,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\AttributeUtilityTests\ComplexAttribute.cs" />
+    <Compile Include="Utilities\ConsoleUtilityTest.cs" />
     <Compile Include="Utilities\EnumDescriptionTest.cs">
       <SubType>Code</SubType>
     </Compile>

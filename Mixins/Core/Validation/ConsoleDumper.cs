@@ -22,15 +22,16 @@ namespace Rubicon.Mixins.Validation
         }
         else if (result.TotalRulesExecuted != result.Successes.Count)
         {
-          Console.ForegroundColor = ConsoleColor.Gray;
-          Console.WriteLine ("{0} '{1}', {2} rules executed", result.Definition.GetType().Name, result.Definition.FullName, result.TotalRulesExecuted);
-          DumpContext (result);
+					using (ConsoleUtility.EnterColorScope (ConsoleColor.Gray, null))
+					{
+						Console.WriteLine ("{0} '{1}', {2} rules executed", result.Definition.GetType().Name, result.Definition.FullName, result.TotalRulesExecuted);
+						DumpContext (result);
+					}
         }
         DumpResultList ("unexpected exceptions", result.Exceptions, ConsoleColor.White, ConsoleColor.DarkRed);
-        // DumpResultList ("successes", result.Successes, ConsoleColor.Green, ConsoleColor.Black);
-        DumpResultList ("warnings", result.Warnings, ConsoleColor.Yellow, ConsoleColor.Black);
-        DumpResultList ("failures", result.Failures, ConsoleColor.Red, ConsoleColor.Black);
-        Console.ForegroundColor = ConsoleColor.Gray;
+				// DumpResultList ("successes", result.Successes, ConsoleColor.Green, null);
+				DumpResultList ("warnings", result.Warnings, ConsoleColor.Yellow, null);
+				DumpResultList ("failures", result.Failures, ConsoleColor.Red, null);
       }
     }
 
@@ -41,18 +42,16 @@ namespace Rubicon.Mixins.Validation
         Console.WriteLine ("Context: " + contextString);
     }
 
-    private static void DumpResultList<T> (string title, List<T> resultList, ConsoleColor foreColor, ConsoleColor backColor) where T : IDefaultValidationResultItem
+    private static void DumpResultList<T> (string title, List<T> resultList, ConsoleColor foreColor, ConsoleColor? backColor) where T : IDefaultValidationResultItem
     {
       if (resultList.Count > 0)
       {
-        Console.ForegroundColor = foreColor;
-        Console.BackgroundColor = backColor;
-
-        Console.WriteLine ("  {0} - {1}", title, resultList.Count);
-        foreach (T resultItem in resultList)
-        {
-          Console.WriteLine ("    {0} ({1})", resultItem.Message, resultItem.Rule.RuleName);
-        }
+				using (ConsoleUtility.EnterColorScope (foreColor, backColor))
+				{
+					Console.WriteLine ("  {0} - {1}", title, resultList.Count);
+					foreach (T resultItem in resultList)
+						Console.WriteLine ("    {0} ({1})", resultItem.Message, resultItem.Rule.RuleName);
+				}
       }
     }
   }

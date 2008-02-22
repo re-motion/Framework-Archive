@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Rubicon.Mixins.Validation;
 using Rubicon.Utilities;
 using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Logging;
@@ -85,16 +86,25 @@ namespace Rubicon.Mixins.MixerTool
           s_log.WarnFormat ("Type {0} is a generic type definition and is thus ignored.", context.Type);
         else
         {
-          try
-          {
-            ClassContextBeingProcessed (this, new ClassContextEventArgs (context));
-            Type concreteType = TypeFactory.GetConcreteType (context.Type);
-            s_log.InfoFormat ("{0} : {1}", context.ToString (), concreteType.FullName);
-          }
-          catch (Exception ex)
-          {
-            s_log.ErrorFormat (ex, "{0} : Error when generating type", context.ToString ());
-          }
+					try
+					{
+						ClassContextBeingProcessed (this, new ClassContextEventArgs (context));
+						Type concreteType = TypeFactory.GetConcreteType (context.Type);
+						s_log.InfoFormat ("{0} : {1}", context.ToString (), concreteType.FullName);
+					}
+					catch (ValidationException validationException)
+					{
+						s_log.ErrorFormat (validationException, "{0} : Validation error when generating type", context.ToString ());
+						ConsoleDumper.DumpValidationResults (validationException.ValidationLog.GetResults());
+					}
+					catch (Exception ex)
+					{
+						s_log.ErrorFormat (ex, "{0} : Unecpexted error when generating type", context.ToString ());
+						using (ConsoleUtility.EnterColorScope (ConsoleColor.Red, null))
+						{
+							Console.WriteLine (ex.ToString());
+						}
+					}
         }
       }
     }

@@ -1,6 +1,7 @@
 using System;
 using Rubicon.Mixins.MixerTool;
 using Rubicon.Text.CommandLine;
+using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.MixerTool.Console
 {
@@ -29,10 +30,13 @@ namespace Rubicon.Mixins.MixerTool.Console
       }
       catch (Exception e)
       {
-        System.Console.Error.WriteLine ("Execution aborted. Exception stack:");
-        for (; e != null; e = e.InnerException)
-          System.Console.Error.WriteLine ("{0}: {1}\n{2}", e.GetType ().FullName, e.Message, e.StackTrace);
-        return 1;
+				using (ConsoleUtility.EnterColorScope (ConsoleColor.White, ConsoleColor.DarkRed))
+				{
+					System.Console.Error.WriteLine ("Execution aborted. Exception stack:");
+					for (; e != null; e = e.InnerException)
+						System.Console.Error.WriteLine ("{0}: {1}\n{2}", e.GetType().FullName, e.Message, e.StackTrace);
+				}
+      	return 1;
       }
       return 0;
     }
