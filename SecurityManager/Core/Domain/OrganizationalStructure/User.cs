@@ -5,6 +5,7 @@ using System.Runtime.Remoting.Messaging;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Globalization;
+using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.Security;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Utilities;
@@ -116,6 +117,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     public abstract Tenant Tenant { get; set; }
 
     [Mandatory]
+    [SearchAvailableObjectsServiceType(typeof (UserPropertiesSearchService))]
     public abstract Group OwningGroup { get; set; }
 
     // Must not be private because PermissionReflection would not work with derived classes.

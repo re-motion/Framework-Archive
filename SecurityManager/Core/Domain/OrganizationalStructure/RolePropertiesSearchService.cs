@@ -5,8 +5,18 @@ using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
-  public class RolePropertiesSearchService : ISearchAvailableObjectsService
+  /// <summary>
+  /// Implementation of <see cref="ISearchAvailableObjectsService"/> for the <see cref="Role"/> type.
+  /// </summary>
+  /// <remarks>
+  /// The service is applied to the <see cref="Role.Group"/> and the <see cref="Role.User"/> properties via the
+  /// <see cref="SearchAvailableObjectsServiceTypeAttribute"/>.
+  /// </remarks>
+  public sealed class RolePropertiesSearchService : ISearchAvailableObjectsService
   {
+    private const string c_groupName = "Group";
+    private const string c_userName = "User";
+
     public RolePropertiesSearchService ()
     {
     }
@@ -15,7 +25,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       ArgumentUtility.CheckNotNull ("property", property);
 
-      if (property.Identifier == "Group" || property.Identifier == "User")
+      if (property.Identifier == c_groupName || property.Identifier == c_userName)
         return true;
       else
         return false;
@@ -28,11 +38,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
       switch (property.Identifier)
       {
-        case "Group":
+        case c_groupName:
           if (role.User == null || role.User.Tenant == null)
             return new IBusinessObject[0];
           return (IBusinessObject[]) ArrayUtility.Convert (role.GetPossibleGroups (role.User.Tenant.ID), typeof (IBusinessObject));
-        case "User":
+        case c_userName:
           if (role.Group == null || role.Group.Tenant == null)
             return new IBusinessObject[0];
           return (IBusinessObject[]) ArrayUtility.Convert (User.FindByTenantID (role.Group.Tenant.ID), typeof (IBusinessObject));

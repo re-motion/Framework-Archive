@@ -5,8 +5,16 @@ using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
-  public class GroupPropertiesSearchService : ISearchAvailableObjectsService
+  /// <summary>
+  /// Implementation of <see cref="ISearchAvailableObjectsService"/> for the <see cref="Group"/> type.
+  /// </summary>
+  /// <remarks>
+  /// The service is applied to the <see cref="Group.Parent"/> property via the <see cref="SearchAvailableObjectsServiceTypeAttribute"/>.
+  /// </remarks>
+  public sealed class GroupPropertiesSearchService : ISearchAvailableObjectsService
   {
+    private const string c_parentName = "Parent";
+
     public GroupPropertiesSearchService ()
     {
     }
@@ -14,7 +22,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     public bool SupportsIdentity (IBusinessObjectReferenceProperty property)
     {
       ArgumentUtility.CheckNotNull ("property", property);
-      if (property.Identifier == "Parent")
+      if (property.Identifier == c_parentName)
         return true;
       else
         return false;
@@ -27,7 +35,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
       switch (property.Identifier)
       {
-        case "Parent":
+        case c_parentName:
           if (group.Tenant == null)
             return new IBusinessObject[0];
           return (IBusinessObject[]) ArrayUtility.Convert (group.GetPossibleParentGroups (group.Tenant.ID), typeof (IBusinessObject));

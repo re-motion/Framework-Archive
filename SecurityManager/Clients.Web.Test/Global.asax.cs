@@ -22,6 +22,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
       BindableObjectProvider.Current.AddService (typeof (BindableDomainObjectSearchService), new BindableDomainObjectSearchService());
       BindableObjectProvider.Current.AddService (typeof (BindableDomainObjectGetObjectService), new BindableDomainObjectGetObjectService ());
       BindableObjectProvider.Current.AddService (typeof (GroupPropertiesSearchService), new GroupPropertiesSearchService ());
+      BindableObjectProvider.Current.AddService (typeof (UserPropertiesSearchService), new UserPropertiesSearchService ());
       BindableObjectProvider.Current.AddService (typeof (RolePropertiesSearchService), new RolePropertiesSearchService ());
     }
 

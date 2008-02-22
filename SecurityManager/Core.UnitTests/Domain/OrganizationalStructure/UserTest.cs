@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Mixins;
+using Rubicon.ObjectBinding;
+using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.Security;
 using Rubicon.Security.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
@@ -260,6 +263,26 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       user.Title = null;
 
       Assert.AreEqual ("UserLastName", user.DisplayName);
+    }
+
+    [Test]
+    public void SearchOwningGroups ()
+    {
+      BindableObjectProvider.Current.AddService (typeof (UserPropertiesSearchService), new UserPropertiesSearchService ());
+      IBusinessObjectClass userClass = BindableObjectProvider.Current.GetBindableObjectClass (typeof (User));
+      IBusinessObjectReferenceProperty owningGroupProperty = (IBusinessObjectReferenceProperty) userClass.GetPropertyDefinition ("OwningGroup");
+      Assert.That (owningGroupProperty, Is.Not.Null);
+
+      User user = User.FindByUserName ("group0/user1");
+      Assert.That (user, Is.Not.Null);
+      DomainObjectCollection expectedOwningGroups = Group.FindByTenantID (user.Tenant.ID);
+      Assert.That (expectedOwningGroups, Is.Not.Empty);
+
+      Assert.That (owningGroupProperty.SupportsSearchAvailableObjects (true), Is.True);
+
+      IBusinessObject[] actualOwningGroups = owningGroupProperty.SearchAvailableObjects(user, true, null);
+      Assert.That (actualOwningGroups, Is.EquivalentTo (expectedOwningGroups));
+
     }
 
     private User CreateUser ()

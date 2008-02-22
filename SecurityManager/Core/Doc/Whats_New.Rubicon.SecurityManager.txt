@@ -4,6 +4,7 @@
   Weitere Services müssen imm ApplicationStart registriert werden:
   * BindableObjectProvider.Current.AddService (typeof (GroupPropertiesSearchService), new GroupPropertiesSearchService());
   * BindableObjectProvider.Current.AddService (typeof (RolePropertiesSearchService), new RolePropertiesSearchService());
+  * BindableObjectProvider.Current.AddService (typeof (UserPropertiesSearchService), new UserPropertiesSearchService ());
 
 1.7.64
 ======

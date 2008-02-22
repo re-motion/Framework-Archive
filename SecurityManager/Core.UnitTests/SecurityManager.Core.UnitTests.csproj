@@ -91,6 +91,7 @@
     <Compile Include="Domain\Metadata\SecurableClassDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\StatePropertyDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\SecurableClassDefinitionWrapper.cs" />
+    <Compile Include="Domain\OrganizationalStructure\UserPropertiesSearchServiceTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\RolePropertiesSearchServiceTests\SearchOtherProperty.cs" />
     <Compile Include="Domain\OrganizationalStructure\RolePropertiesSearchServiceTests\SearchUser.cs" />
     <Compile Include="Domain\OrganizationalStructure\RolePropertiesSearchServiceTests\SearchGroup.cs" />

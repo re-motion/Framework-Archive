@@ -13,15 +13,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
   [WebMultiLingualResources (typeof (EditUserControlResources))]
   public partial class EditUserControl : BaseControl
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    // methods and properties
     public override IBusinessObjectDataSourceControl DataSource
     {
       get { return CurrentObject; }
@@ -48,15 +39,8 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
             new BocListSortingOrderEntry ((IBocSortableColumnDefinition) RolesList.FixedColumns[1], SortingDirection.Ascending));
       }
 
-      FillOwningGroupField ();
-
       if (RolesList.IsReadOnly)
         RolesList.Selection = RowSelection.Disabled;
-    }
-
-    private void FillOwningGroupField ()
-    {
-      OwningGroupField.SetBusinessObjectList (Group.FindByTenantID (CurrentFunction.TenantID));
     }
 
     public override bool Validate ()
