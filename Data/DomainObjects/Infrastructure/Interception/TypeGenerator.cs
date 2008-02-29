@@ -125,6 +125,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
     private MethodInfo GetTopMostOverrideOfMethod (MethodInfo method)
     {
       ArgumentUtility.CheckNotNull ("method", method);
+      Assertion.IsTrue (method.DeclaringType.IsAssignableFrom (_baseType), "only methods declared on the base type (or below) are processed");
       if (method.DeclaringType == _baseType)
         return method;
       else

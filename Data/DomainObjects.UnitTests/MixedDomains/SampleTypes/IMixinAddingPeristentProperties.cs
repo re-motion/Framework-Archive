@@ -11,5 +11,33 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
 
     [StorageClassNone]
     int NonPersistentProperty { get; set; }
+
+    //[DBBidirectionalRelation ("RelationProperty1", ContainsForeignKey = true)]
+    //RelationTargetForPersistentMixin RelationProperty
+    //{
+    //  get;
+    //  set;
+    //}
+
+    //[DBBidirectionalRelation ("RelationProperty2", ContainsForeignKey = false)]
+    //RelationTargetForPersistentMixin VirtualRelationProperty
+    //{
+    //  get;
+    //  set;
+    //}
+
+    //[DBBidirectionalRelation ("RelationProperty3")]
+    //ObjectList<RelationTargetForPersistentMixin> CollectionPropertyNSide
+    //{
+    //  get;
+    //  set;
+    //}
+
+    //[DBBidirectionalRelation ("RelationProperty4")]
+    //RelationTargetForPersistentMixin CollectionProperty1Side
+    //{
+    //  get;
+    //  set;
+    //}
   }
 }

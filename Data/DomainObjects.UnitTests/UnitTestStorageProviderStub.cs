@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
 
     // member fields
 
-    private int _lastID = 0;
+    private static int _lastID = 0;
 
     // construction and disposing
 

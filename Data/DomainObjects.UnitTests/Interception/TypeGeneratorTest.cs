@@ -7,8 +7,13 @@ using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Infrastructure.Interception;
 using Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes;
+using Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Mixins;
+using Rubicon.Mixins.CodeGeneration;
+using Rubicon.Utilities;
 using File=System.IO.File;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 {
@@ -19,14 +24,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     private const BindingFlags _declaredInstanceFlags = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
     private ModuleManager _scope;
+    private string _directory;
 
     public override void SetUp ()
     {
       base.SetUp ();
-      string directory = Path.Combine (Environment.CurrentDirectory, "Interception.TypeGeneratorTest.Dlls");
-      SetupAssemblyDirectory(directory);
+      _directory = Path.Combine (Environment.CurrentDirectory, "Interception.TypeGeneratorTest.Dlls");
+      SetupAssemblyDirectory(_directory);
 
-      _scope = new ModuleManager (directory);
+      _scope = new ModuleManager (_directory);
+      
+      // setup mixin builder to generate files into the same directory
+      ConcreteTypeBuilder.SetCurrent (null); // reinitialize ConcreteTypeBuilder
+      ConcreteTypeBuilder.Current.Scope.SignedModulePath = Path.Combine (_directory, ConcreteTypeBuilder.Current.Scope.SignedAssemblyName + ".dll");
+      ConcreteTypeBuilder.Current.Scope.UnsignedModulePath = Path.Combine (_directory, ConcreteTypeBuilder.Current.Scope.UnsignedAssemblyName + ".dll");
     }
 
     private void SetupAssemblyDirectory (string directory)
@@ -41,11 +52,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
       Module domainObjectAssemblyModule = typeof (DomainObject).Assembly.ManifestModule;
       File.Copy (domainObjectAssemblyModule.FullyQualifiedName, Path.Combine (directory, domainObjectAssemblyModule.Name));
+
+      Module mixinAssemblyModule = typeof (Mixin).Assembly.ManifestModule;
+      File.Copy (mixinAssemblyModule.FullyQualifiedName, Path.Combine (directory, mixinAssemblyModule.Name));
     }
 
     public override void TearDown ()
     {
       string[] paths = _scope.SaveAssemblies ();
+      // save mixins as well, we need those files if the intercepted types depend on mixed types
+      ConcreteTypeBuilder.Current.SaveAndResetDynamicScope ();
+
 #if !NO_PEVERIFY
       foreach (string path in paths)
         PEVerifier.VerifyPEFile (path);
@@ -231,6 +248,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       Type type = CreateTypeGenerator (typeof (DOWithVirtualProperties)).BuildType();
       DOWithVirtualProperties instance = (DOWithVirtualProperties) Activator.CreateInstance (type);
       Dev.Null = instance.PropertyNotInMapping;
+    }
+
+    [Test]
+    public void IgnoresMixedProperties ()
+    {
+      Type mixedBaseType = TypeFactory.GetConcreteType (typeof (TargetClassForPersistentMixin));
+      // save mixin scope to enable peverifying the intercepted type
+      Assert.IsTrue (Mixins.TypeUtility.HasMixin (mixedBaseType, typeof (MixinAddingPersistentProperties)));
+      Type type = _scope.CreateTypeGenerator (typeof (TargetClassForPersistentMixin), mixedBaseType).BuildType ();
+      Assert.That (type.GetProperties (_declaredInstanceFlags), Is.Empty);
     }
 
     [Test]

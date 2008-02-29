@@ -37,7 +37,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     {
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (RelationTargetForPersistentMixin));
       Assert.IsNull (classDefinition.GetPropertyDefinition (typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty"));
-      Assert.IsNotNull (classDefinition.GetRelationDefinition (typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty"));
+      Assert.IsNotNull (classDefinition.GetRelationDefinition (typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty1"));
     }
 
     [Test]
@@ -110,14 +110,56 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     }
 
     [Test]
-    public void RelationProperties ()
+    public void RelationPropertyRealSide ()
     {
       TargetClassForPersistentMixin  tc = TargetClassForPersistentMixin.NewObject ();
       RelationTargetForPersistentMixin relationTarget = RelationTargetForPersistentMixin.NewObject().With();
       MixinAddingPersistentProperties mixin = Mixin.Get<MixinAddingPersistentProperties> (tc);
       mixin.RelationProperty = relationTarget;
       Assert.AreSame (relationTarget, mixin.RelationProperty);
-      Assert.AreSame (tc, relationTarget.RelationProperty);
+      Assert.AreSame (tc, relationTarget.RelationProperty1);
+    }
+
+    [Test]
+    public void VirtualRelationProperty ()
+    {
+      TargetClassForPersistentMixin tc = TargetClassForPersistentMixin.NewObject ();
+      RelationTargetForPersistentMixin relationTarget = RelationTargetForPersistentMixin.NewObject ().With ();
+      MixinAddingPersistentProperties mixin = Mixin.Get<MixinAddingPersistentProperties> (tc);
+      mixin.VirtualRelationProperty = relationTarget;
+      Assert.AreSame (relationTarget, mixin.VirtualRelationProperty);
+      Assert.AreSame (tc, relationTarget.RelationProperty2);
+    }
+
+    [Test]
+    public void CollectionPropertyNSide ()
+    {
+      TargetClassForPersistentMixin tc = TargetClassForPersistentMixin.NewObject ();
+      RelationTargetForPersistentMixin relationTarget1 = RelationTargetForPersistentMixin.NewObject ().With ();
+      RelationTargetForPersistentMixin relationTarget2 = RelationTargetForPersistentMixin.NewObject ().With ();
+      MixinAddingPersistentProperties mixin = Mixin.Get<MixinAddingPersistentProperties> (tc);
+      mixin.CollectionPropertyNSide.Add (relationTarget1);
+      mixin.CollectionPropertyNSide.Add (relationTarget2);
+      Assert.AreSame (relationTarget1, mixin.CollectionPropertyNSide[0]);
+      Assert.AreSame (relationTarget2, mixin.CollectionPropertyNSide[1]);
+      Assert.AreSame (tc, relationTarget1.RelationProperty3);
+      Assert.AreSame (tc, relationTarget2.RelationProperty3);
+    }
+
+    [Test]
+    public void CollectionProperty1Side ()
+    {
+      TargetClassForPersistentMixin tc1 = TargetClassForPersistentMixin.NewObject ();
+      TargetClassForPersistentMixin tc2 = TargetClassForPersistentMixin.NewObject ();
+      RelationTargetForPersistentMixin relationTarget = RelationTargetForPersistentMixin.NewObject ().With ();
+      MixinAddingPersistentProperties mixin1 = Mixin.Get<MixinAddingPersistentProperties> (tc1);
+      MixinAddingPersistentProperties mixin2 = Mixin.Get<MixinAddingPersistentProperties> (tc2);
+      mixin1.CollectionProperty1Side = relationTarget;
+      mixin2.CollectionProperty1Side = relationTarget;
+      Assert.AreSame (relationTarget, mixin1.CollectionProperty1Side);
+      Assert.AreSame (relationTarget, mixin2.CollectionProperty1Side);
+      Assert.AreSame (tc1, relationTarget.RelationProperty4[0]);
+      Assert.AreSame (tc2, relationTarget.RelationProperty4[1]);
     }
   }
 }

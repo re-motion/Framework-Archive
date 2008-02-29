@@ -49,13 +49,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
       foreach (ReflectionBasedPropertyDefinition propertyDefinition in _classDefinition.GetPropertyDefinitions ())
       {
-        if (propertyDefinition.PropertyInfo.DeclaringType.IsAssignableFrom (_baseType)) // we cannot intercept properties added from another class (mixin)
-        {
-          string propertyIdentifier = propertyDefinition.PropertyName;
-          PropertyInfo property = propertyDefinition.PropertyInfo;
-
-          AnalyzeAndValidateProperty (property, propertyIdentifier);
-        }
+        PropertyInfo property = propertyDefinition.PropertyInfo;
+        string propertyIdentifier = propertyDefinition.PropertyName;
+        AnalyzeAndValidateProperty (property, propertyIdentifier);
       }
 
       foreach (IRelationEndPointDefinition endPointDefinition in _classDefinition.GetRelationEndPointDefinitions ())
@@ -76,6 +72,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     private void AnalyzeAndValidateProperty (PropertyInfo property, string propertyIdentifier)
     {
+      if (!property.DeclaringType.IsAssignableFrom (_baseType)) // we cannot intercept properties added from another class (mixin)
+        return;
+        
       MethodInfo getMethod = property.GetGetMethod (true);
       MethodInfo setMethod = property.GetSetMethod (true);
 
