@@ -102,8 +102,10 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       ArgumentUtility.CheckNotNull ("dataReader", dataReader);
 
       object idValue = GetValue (dataReader, "ID");
-      ClassDefinition classDefinition = GetClassDefinition (dataReader, idValue);
+      if (idValue == DBNull.Value)
+        return null;
 
+      ClassDefinition classDefinition = GetClassDefinition (dataReader, idValue);
       return GetObjectID (classDefinition, idValue);
     }
 

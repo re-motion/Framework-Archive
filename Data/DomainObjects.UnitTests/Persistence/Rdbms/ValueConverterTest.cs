@@ -187,6 +187,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       }
     }
 
+    [Test]
+    public void GetNullIDWithClassIDNull ()
+    {
+      using (IDbCommand command = _connection.CreateCommand ())
+      {
+        command.CommandText = string.Format ("SELECT null as ID, null as ClassID;");
+        using (IDataReader reader = command.ExecuteReader ())
+        {
+          Assert.IsTrue (reader.Read ());
+          ObjectID id = _converter.GetID (reader);
+          Assert.IsNull (id);
+        }
+      }
+    }
+
     private IDbCommand CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassCommand (Guid id)
     {
       return CreateCommand ("TableWithOptionalOneToOneRelationAndOppositeDerivedClass", id, _connection);
