@@ -141,7 +141,7 @@ namespace Rubicon.ObjectBinding.Sample
 
     protected BindableXmlObject CreateObject (Type type, Guid id)
     {
-      BindableXmlObject obj = (BindableXmlObject) ObjectFactory.Create (type).With();
+      BindableXmlObject obj = (BindableXmlObject) ObjectFactory.Create (true, type).With();
       obj._id = id;
       AddToIdentityMap (obj);
       return obj;
