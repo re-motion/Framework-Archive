@@ -147,7 +147,7 @@ namespace Rubicon.Mixins.Context
       return BuildConfigurationFromTypes (null, EnumerableUtility.Cast<Type> (types));
     }
 
-    public static ITypeDiscoveryService GetTypeDiscoveryService ()
+    private static ITypeDiscoveryService GetTypeDiscoveryService ()
     {
       return ContextAwareTypeDiscoveryService.GetInstance();
     }
