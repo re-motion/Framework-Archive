@@ -7,7 +7,7 @@ namespace Rubicon.Reflection
 {
   public static class ContextAwareTypeDiscoveryService
   {
-    public static readonly string s_defaultServiceKey = typeof (ContextAwareTypeDiscoveryService).FullName + ".DefaultService";
+    private static readonly string s_defaultServiceKey = typeof (ContextAwareTypeDiscoveryService).FullName + ".DefaultService";
 
     public static readonly CallContextSingleton<ITypeDiscoveryService> DefaultService =
         new CallContextSingleton<ITypeDiscoveryService> (s_defaultServiceKey, CreateDefaultService);

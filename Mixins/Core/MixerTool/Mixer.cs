@@ -67,15 +67,15 @@ namespace Rubicon.Mixins.MixerTool
       ConcreteTypeBuilder.Current.Scope.UnsignedModulePath = Path.Combine (_assemblyOutputDirectory,
           ConcreteTypeBuilder.Current.Scope.UnsignedAssemblyName + ".dll");
 
+      ConcreteTypeBuilder.Current.Scope.SignedAssemblyName = _signedAssemblyName;
+      ConcreteTypeBuilder.Current.Scope.SignedModulePath = Path.Combine (_assemblyOutputDirectory,
+          ConcreteTypeBuilder.Current.Scope.SignedAssemblyName + ".dll");
+
       if (File.Exists (ConcreteTypeBuilder.Current.Scope.UnsignedModulePath))
         File.Delete (ConcreteTypeBuilder.Current.Scope.UnsignedModulePath);
 
       if (File.Exists (ConcreteTypeBuilder.Current.Scope.SignedModulePath))
         File.Delete (ConcreteTypeBuilder.Current.Scope.SignedModulePath);
-
-      ConcreteTypeBuilder.Current.Scope.SignedAssemblyName = _signedAssemblyName;
-      ConcreteTypeBuilder.Current.Scope.SignedModulePath = Path.Combine (_assemblyOutputDirectory,
-          ConcreteTypeBuilder.Current.Scope.SignedAssemblyName + ".dll");
     }
 
     private void Generate ()

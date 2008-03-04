@@ -5,12 +5,14 @@ using System.Reflection;
 using Rhino.Mocks;
 using Rubicon.Design;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
 using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
+using System.IO;
 
 namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfigurationBuilderTests
 {
@@ -87,6 +89,24 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfiguratio
       MixinConfiguration ac = DeclarativeConfigurationBuilder.BuildDefaultConfiguration();
       Assert.IsNotNull (ac);
       Assert.AreNotEqual (0, ac.ClassContexts.Count);
+    }
+
+    [Test]
+    public void BuildDefault_DoesNotLockPersistedFile ()
+    {
+      ConcreteTypeBuilder.SetCurrent (null);
+      TypeFactory.GetConcreteType (typeof (object), GenerationPolicy.ForceGeneration);
+      string[] paths = ConcreteTypeBuilder.Current.SaveAndResetDynamicScope();
+      try
+      {
+        Assert.AreEqual (1, paths.Length);
+        ContextAwareTypeDiscoveryService.DefaultService.SetCurrent (null);
+        DeclarativeConfigurationBuilder.BuildDefaultConfiguration ();
+      }
+      finally
+      {
+        File.Delete (paths[0]);
+      }
     }
 
     [Extends (typeof (BaseType1))]

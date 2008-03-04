@@ -77,6 +77,23 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
     }
 
     [Test]
+    public void MixerToolCanBeRunTwice ()
+    {
+      AppDomainRunner.Run (
+          delegate
+          {
+            Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
+            mixer.Execute ();
+          });
+      AppDomainRunner.Run (
+          delegate
+          {
+            Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
+            mixer.Execute ();
+          });
+    }
+
+    [Test]
     public void MixerToolGeneratesTypesForDefaultMixinConfiguration ()
     {
       AppDomainRunner.Run (
