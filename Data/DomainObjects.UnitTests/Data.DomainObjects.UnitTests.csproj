@@ -234,6 +234,7 @@
     <Compile Include="Design\DomainObjectsDesignModeHelperTest.cs" />
     <Compile Include="Design\FakeDesignModeMappingLoader.cs" />
     <Compile Include="DomainObjects\ConstructionTest.cs" />
+    <Compile Include="IntegrationTests\QueryTest.cs" />
     <Compile Include="Interception\SampleTypes\ClassWithExplicitInterfaceProperty.cs" />
     <Compile Include="Interception\SampleTypes\ClassWithWrongConstructor.cs" />
     <Compile Include="Interception\SampleTypes\DOOverridingVirtualStorageClassNoneProperties.cs" />
@@ -300,6 +301,7 @@
     <Compile Include="ObjectBinding\TestDomain\OppositeAnonymousBindableDomainObject.cs" />
     <Compile Include="ObjectBinding\TestDomain\SecurableBindableDomainObjectWithOverriddenDisplayName.cs" />
     <Compile Include="Persistence\MixedStorageProviderTest.cs" />
+    <Compile Include="Persistence\Rdbms\DataContainerFactoryTest.cs" />
     <Compile Include="Persistence\Rdbms\SqlProviderLoadDataContainersTest.cs" />
     <Compile Include="Persistence\Rdbms\DataContainerLoaderTest.cs" />
     <Compile Include="Persistence\Rdbms\ObjectIDLoaderTest.cs" />
@@ -327,6 +329,8 @@
     <Compile Include="Serialization\FlattenedSerializableStub.cs" />
     <Compile Include="Serialization\ObjectIDTest.cs" />
     <Compile Include="Serialization\RelationEndPointMapTest.cs" />
+    <Compile Include="TableInheritance\OppositeClassDefinitionRetrieverTest.cs" />
+    <Compile Include="TableInheritance\TestDomain\SpecificFolder.cs" />
     <Compile Include="TestDomain\ClassDerivedFromSimpleDomainObject.cs" />
     <Compile Include="TestDomain\ClassWithoutProperties.cs" />
     <Compile Include="TestDomain\ClassWithSerializationCallbacks.cs" />

@@ -43,6 +43,9 @@ public class DataContainerFactory
     ValueConverter valueConverter = _provider.CreateValueConverter ();
     
     ObjectID id = valueConverter.GetID (_dataReader);
+    if (id == null)
+      throw _provider.CreateRdbmsProviderException ("An object returned from the database had a NULL ID, which is not supported.");
+
     object timestamp = _dataReader.GetValue (valueConverter.GetMandatoryOrdinal (_dataReader, "Timestamp"));
 
     DataContainer dataContainer = DataContainer.CreateForExisting (id, timestamp);
@@ -57,7 +60,7 @@ public class DataContainerFactory
       }
       catch (Exception e)
       {
-        throw CreateRdbmsProviderException (e, "Error while reading property '{0}' of object '{1}': {2}", 
+        throw _provider.CreateRdbmsProviderException (e, "Error while reading property '{0}' of object '{1}': {2}", 
             propertyDefinition.PropertyName, id, e.Message);
       }
 
@@ -65,21 +68,6 @@ public class DataContainerFactory
     }
 
     return dataContainer;
-  }
-
-  protected RdbmsProviderException CreateRdbmsProviderException (
-      string formatString,
-      params object[] args)
-  {
-    return CreateRdbmsProviderException (null, formatString, args);
-  }
-
-  protected RdbmsProviderException CreateRdbmsProviderException (
-      Exception innerException,
-      string formatString,
-      params object[] args)
-  {
-    return new RdbmsProviderException (string.Format (formatString, args), innerException);
   }
 }
 }

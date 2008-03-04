@@ -21,13 +21,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       base.SetUp ();
 
-      _converter = new ValueConverter (TypeConversionProvider.Create ());
-      _ceoDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Ceo");
-
       _storageProviderManager = new StorageProviderManager ();
       RdbmsProvider provider = (RdbmsProvider) _storageProviderManager.GetMandatory ("TestDomain");
       provider.Connect ();
       _connection = provider.Connection;
+
+      _ceoDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Ceo");
+      _converter = new ValueConverter (provider, TypeConversionProvider.Create ());
     }
 
     public override void TearDown ()
@@ -183,6 +183,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         {
           Assert.IsTrue (reader.Read ());
           _converter.GetID (reader);
+        }
+      }
+    }
+
+    [Test]
+    public void GetNullID ()
+    {
+      using (IDbCommand command = _connection.CreateCommand ())
+      {
+        command.CommandText = string.Format ("SELECT null as ID, 'Client' as ClassID;");
+        using (IDataReader reader = command.ExecuteReader ())
+        {
+          Assert.IsTrue (reader.Read ());
+          ObjectID id = _converter.GetID (reader);
+          Assert.IsNull (id);
         }
       }
     }

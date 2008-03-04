@@ -34,6 +34,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
         }
       }
     }
-
   }
 }

@@ -13,9 +13,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     private ClientTransaction _bindingTransaction;
 
     [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
-      _bindingTransaction = ClientTransaction.NewBindingTransaction();
+      base.SetUp ();
+      _bindingTransaction = ClientTransaction.NewBindingTransaction ();
     }
 
     private T NewBound<T> (params object[] args)

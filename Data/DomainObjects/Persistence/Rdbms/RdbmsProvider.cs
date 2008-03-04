@@ -425,7 +425,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       return CreateRdbmsProviderException (null, formatString, args);
     }
 
-    protected RdbmsProviderException CreateRdbmsProviderException (
+    protected internal RdbmsProviderException CreateRdbmsProviderException (
         Exception innerException,
         string formatString,
         params object[] args)
@@ -493,7 +493,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
     /// <summary> Gets a value converter that converts database types to .NET types according to the providers type mapping rules. </summary>
     public virtual ValueConverter CreateValueConverter ()
     {
-      return new ValueConverter (TypeConversionProvider);
+      return new ValueConverter (this, TypeConversionProvider);
     }
 
     /// <summary> Surrounds an identifier with delimiters according to the database's syntax. </summary>

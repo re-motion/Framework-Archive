@@ -17,8 +17,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
       base.SetUp ();
 
-      _converter = new ValueConverter (TypeConversionProvider.Create ());
       Provider.Connect ();
+      _converter = new ValueConverter (Provider, TypeConversionProvider.Create ());
     }
 
     [Test]

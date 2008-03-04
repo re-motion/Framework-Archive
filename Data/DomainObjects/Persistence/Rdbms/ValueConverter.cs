@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using System.Data;
 using System.Globalization;
-using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
@@ -12,11 +9,13 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
   public class ValueConverter : ValueConverterBase
   {
-    private static Hashtable s_hasClassIDColumn = new Hashtable ();
+    private readonly RdbmsProvider _provider;
 
-    public ValueConverter (TypeConversionProvider typeConversionProvider)
-        : base(typeConversionProvider)
+    public ValueConverter (RdbmsProvider provider, TypeConversionProvider typeConversionProvider)
+        : base (typeConversionProvider)
     {
+      ArgumentUtility.CheckNotNull ("provider", provider);
+      _provider = provider;
     }
 
     public virtual object GetDBValue (object value)
@@ -24,7 +23,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       if (value == null)
         return DBNull.Value;
 
-      Type type = value.GetType ();
+      Type type = value.GetType();
 
       INaNullable naValueType = value as INaNullable;
       if (naValueType != null)
@@ -34,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
         else
           return DBNull.Value;
       }
-      
+
       if (type.IsEnum)
         return Convert.ChangeType (value, Enum.GetUnderlyingType (type), CultureInfo.InvariantCulture);
 
@@ -49,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       if (id.StorageProviderID == storageProviderID)
         return id.Value;
       else
-        return id.ToString ();
+        return id.ToString();
     }
 
     public int GetMandatoryOrdinal (IDataReader dataReader, string columnName)
@@ -60,15 +59,14 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       try
       {
         return dataReader.GetOrdinal (columnName);
-
       }
       catch (IndexOutOfRangeException)
       {
-        throw CreateRdbmsProviderException ("The mandatory column '{0}' could not be found.", columnName);
+        throw _provider.CreateRdbmsProviderException ("The mandatory column '{0}' could not be found.", columnName);
       }
     }
 
-    [Obsolete("Passing the columnOrdinal into GetValue is no longer supported. (Version 1.7.42)")]
+    [Obsolete ("Passing the columnOrdinal into GetValue is no longer supported. (Version 1.7.42)")]
     public object GetValue (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, IDataReader dataReader, int columnOrdinal)
     {
       return GetValue (classDefinition, propertyDefinition, dataReader);
@@ -130,13 +128,14 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[classID];
       if (classDefinition == null)
-        throw CreateRdbmsProviderException ("Invalid ClassID '{0}' for ID '{1}' encountered.", classID, idValue);
+        throw _provider.CreateRdbmsProviderException ("Invalid ClassID '{0}' for ID '{1}' encountered.", classID, idValue);
 
       if (classDefinition.IsAbstract)
       {
-        throw CreateRdbmsProviderException (
+        throw _provider.CreateRdbmsProviderException (
             "Invalid database value encountered. Column 'ClassID' of row with ID '{0}' refers to abstract class '{1}'.",
-            idValue, classDefinition.ID);
+            idValue,
+            classDefinition.ID);
       }
 
       return classDefinition;
@@ -146,7 +145,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
     {
       int classIDColumnOrdinal = GetMandatoryOrdinal (dataReader, "ClassID");
       if (dataReader.IsDBNull (classIDColumnOrdinal))
-        throw CreateRdbmsProviderException ("Invalid database value encountered. Column 'ClassID' must not contain null.");
+        throw _provider.CreateRdbmsProviderException ("Invalid database value encountered. Column 'ClassID' must not contain null.");
 
       return dataReader.GetString (classIDColumnOrdinal);
     }
@@ -156,128 +155,27 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       return GetObjectID (classDefinition, propertyDefinition, dataReader, GetMandatoryOrdinal (dataReader, columnName));
     }
 
-    private ObjectID GetObjectID (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, IDataReader dataReader, int objectIDColumnOrdinal)
+    private ObjectID GetObjectID (
+        ClassDefinition classDefinition, PropertyDefinition propertyDefinition, IDataReader dataReader, int objectIDColumnOrdinal)
     {
       CheckObjectIDColumn (classDefinition, propertyDefinition, dataReader, objectIDColumnOrdinal);
 
-      ClassDefinition relatedClassDefinition = GetMandatoryOppositeClassDefinition (classDefinition, propertyDefinition, dataReader, objectIDColumnOrdinal);
+      OppositeClassDefinitionRetriever retriever = new OppositeClassDefinitionRetriever (_provider, classDefinition, propertyDefinition);
+      ClassDefinition relatedClassDefinition = retriever.GetMandatoryOppositeClassDefinition (dataReader, objectIDColumnOrdinal);
       return GetObjectID (relatedClassDefinition, dataReader.GetValue (objectIDColumnOrdinal));
     }
 
-    private void CheckObjectIDColumn (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, IDataReader dataReader, int objectIDColumnOrdinal)
+    private void CheckObjectIDColumn (
+        ClassDefinition classDefinition, PropertyDefinition propertyDefinition, IDataReader dataReader, int objectIDColumnOrdinal)
     {
       IRelationEndPointDefinition endPointDefinition = classDefinition.GetMandatoryRelationEndPointDefinition (propertyDefinition.PropertyName);
       if (endPointDefinition.IsMandatory && dataReader.IsDBNull (objectIDColumnOrdinal))
       {
         throw CreateConverterException (
             "Invalid null value for not-nullable relation property '{0}' encountered. Class: '{1}'.",
-            propertyDefinition.PropertyName, classDefinition.ID);
+            propertyDefinition.PropertyName,
+            classDefinition.ID);
       }
-    }
-
-    private ClassDefinition GetMandatoryOppositeClassDefinition (
-        ClassDefinition classDefinition,
-        PropertyDefinition propertyDefinition,
-        IDataReader dataReader,
-        int objectIDColumnOrdinal)
-    {
-      ClassDefinition relatedClassDefinition = classDefinition.GetMandatoryOppositeClassDefinition (propertyDefinition.PropertyName);
-      if (relatedClassDefinition.IsPartOfInheritanceHierarchy && classDefinition.StorageProviderID == relatedClassDefinition.StorageProviderID)
-      {
-        int classIDColumnOrdinal;
-        try
-        {
-          classIDColumnOrdinal = dataReader.GetOrdinal (RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName));
-        }
-        catch (IndexOutOfRangeException)
-        {
-          throw CreateRdbmsProviderException (
-              "Incorrect database format encountered."
-              + " Entity '{0}' must have column '{1}' defined, because opposite class '{2}' is part of an inheritance hierarchy.",
-              classDefinition.GetEntityName (),
-              RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName),
-              relatedClassDefinition.ID);
-        }
-
-        if (dataReader.IsDBNull (objectIDColumnOrdinal) && !dataReader.IsDBNull (classIDColumnOrdinal))
-        {
-          throw CreateRdbmsProviderException (
-              "Incorrect database value encountered. Column '{0}' of entity '{1}' must not contain a value.",
-              RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName),
-              classDefinition.GetEntityName ());
-        }
-
-        if (!dataReader.IsDBNull (objectIDColumnOrdinal) && dataReader.IsDBNull (classIDColumnOrdinal))
-        {
-          throw CreateRdbmsProviderException (
-              "Incorrect database value encountered. Column '{0}' of entity '{1}' must not contain null.",
-              RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName),
-              classDefinition.GetEntityName ());
-        }
-
-        if (dataReader.IsDBNull (classIDColumnOrdinal))
-          return relatedClassDefinition;
-        else
-          return MappingConfiguration.Current.ClassDefinitions.GetMandatory (dataReader.GetString (classIDColumnOrdinal));
-      }
-      else
-      {
-        // Note: We cannot ask an IDataReader if a specific column exists without an exception thrown by IDataReader.
-        // Because throwing and catching exceptions is a very time consuming operation the result is cached per entity
-        // and relation and is reused in subsequent calls.
-        lock (typeof (ValueConverter))
-        {
-          int hashKey = GetClassIDColumnHashKey (classDefinition, propertyDefinition);
-          if (!s_hasClassIDColumn.Contains (hashKey))
-          {
-            try
-            {
-              dataReader.GetOrdinal (RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName));
-              s_hasClassIDColumn[hashKey] = true;
-            }
-            catch (IndexOutOfRangeException)
-            {
-              s_hasClassIDColumn[hashKey] = false;
-            }
-          }
-
-          if ((bool) s_hasClassIDColumn[hashKey])
-          {
-            throw CreateRdbmsProviderException (
-                "Incorrect database format encountered. Entity '{0}' must not contain column '{1}', because opposite class '{2}' is not part of an inheritance hierarchy.",
-                classDefinition.GetEntityName (),
-                RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName),
-                relatedClassDefinition.ID);
-          }
-        }
-
-        return relatedClassDefinition;
-      }
-    }
-
-    private int GetClassIDColumnHashKey (ClassDefinition classDefinition, PropertyDefinition propertyDefinition)
-    {
-      StorageProviderDefinition storageProviderDefinition =
-          DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory (classDefinition.StorageProviderID);
-
-      return storageProviderDefinition.GetHashCode ()
-          ^ classDefinition.GetEntityName ().GetHashCode ()
-          ^ propertyDefinition.StorageSpecificName.GetHashCode ();
-    }
-
-    protected RdbmsProviderException CreateRdbmsProviderException (
-        string formatString,
-        params object[] args)
-    {
-      return CreateRdbmsProviderException (null, formatString, args);
-    }
-
-    protected RdbmsProviderException CreateRdbmsProviderException (
-        Exception innerException,
-        string formatString,
-        params object[] args)
-    {
-      return new RdbmsProviderException (string.Format (formatString, args), innerException);
     }
   }
 }
