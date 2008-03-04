@@ -33,7 +33,14 @@ public class DataContainerFactory
     DataContainerCollection dataContainerCollection = new DataContainerCollection ();
 
     while (_dataReader.Read ())
-      dataContainerCollection.Add (CreateDataContainerFromReader ());
+    {
+      DataContainer dataContainer = CreateDataContainerFromReader ();
+      if (dataContainerCollection.Contains (dataContainer.ID))
+        throw _provider.CreateRdbmsProviderException (
+            "A database query returned duplicates of the domain object '{0}', which is not supported.",
+            dataContainer.ID);
+      dataContainerCollection.Add (dataContainer);
+    }
 
     return dataContainerCollection;
   }

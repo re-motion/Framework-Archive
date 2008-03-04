@@ -58,6 +58,11 @@
     <statement>SELECT [Employee].* FROM [Computer] LEFT OUTER JOIN [Employee] ON [Computer].[EmployeeID] = [Employee].[ID] ORDER BY [ID] asc;</statement>
   </query>
 
+  <query id="QueryWithDuplicates" type="collection">
+    <storageProviderID>TestDomain</storageProviderID>
+    <statement>SELECT [Order].* FROM [OrderItem] INNER JOIN [Order] ON [OrderItem].[OrderID] = [Order].[ID] WHERE [Order].[OrderNo] = 1;</statement>
+  </query>
+
   <query id="QueryWithSpecificCollectionType" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
     <statement>select * from [Order];</statement>

@@ -96,6 +96,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       factory.CreateCollection ();
     }
 
+    [Test]
+    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = "A database query returned duplicates of the domain object "
+        + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid', which is not supported.")]
+    public void CreateCollection_WithDuplicates ()
+    {
+      DataContainerFactory factory = new DataContainerFactory (Provider, _readerMock);
+
+      using (_mockRepository.Ordered ())
+      {
+        SetupOrderTicket (DomainObjectIDs.OrderTicket1, 123, "flip", DomainObjectIDs.Order1, true);
+        SetupOrderTicket (DomainObjectIDs.OrderTicket1, 123, "flip", DomainObjectIDs.Order1, false);
+        Expect.Call (_readerMock.Read ()).Return (false);
+      }
+
+      _mockRepository.ReplayAll ();
+
+      factory.CreateCollection ();
+
+      _mockRepository.VerifyAll ();
+    }
+
     private void SetupOrderTicket (ObjectID ticketID, int timestamp, string fileName, ObjectID relatedOrder, bool checkOrderIDClassIDNotExists)
     {
       using (_mockRepository.Ordered ())
