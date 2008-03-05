@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidUnidirectionalRelation.cs" />
+    <Compile Include="Configuration\Mapping\RelationReflectorWithMixinsTest.cs" />
     <Compile Include="Configuration\Mapping\PersistentMixinFinderTest.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\GetRelationDefinitionsForClosedGeneric.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\GetClassDefinitionForHierarchyWithoutStorageGroup.cs" />
@@ -176,6 +177,9 @@
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidBidirectionalRelationLeftSideNotInMapping.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidProperties.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithSameClassID.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassAndMixinWithSameRelationPropertieRealSides.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassAndMixinWithSameRelationPropertiesVirtualSides.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassAndMixinWithSameRelationPropertiesMixedSides.cs" />
     <Compile Include="Configuration\StorageProviders\RdbmsProviderDefinitionTest.cs" />
     <Compile Include="Configuration\StorageProviders\TypeProviderTest.cs" />
     <TestDomain Include="Design\DelaySignAssembly\DelaySignClass.cs" />

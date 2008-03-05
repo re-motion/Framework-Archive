@@ -12,10 +12,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
     [DBBidirectionalRelation ("VirtualRelationProperty", ContainsForeignKey = true)]
     public abstract TargetClassForPersistentMixin RelationProperty2 { get; set; }
 
-    [DBBidirectionalRelation ("CollectionPropertyNSide")]
+    [DBBidirectionalRelation ("CollectionProperty1Side")]
     public abstract TargetClassForPersistentMixin RelationProperty3 { get; set; }
 
-    [DBBidirectionalRelation ("CollectionProperty1Side")]
+    [DBBidirectionalRelation ("CollectionPropertyNSide")]
     public abstract ObjectList<TargetClassForPersistentMixin> RelationProperty4 { get; }
   }
 }

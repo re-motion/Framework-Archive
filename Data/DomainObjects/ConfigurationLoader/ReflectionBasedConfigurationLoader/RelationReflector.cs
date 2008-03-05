@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
@@ -42,11 +43,12 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       }
       else
       {
-        if (relationDefinitions.Contains (GetRelationID()))
-          return relationDefinitions[GetRelationID()];
+        string relationID = GetRelationID();
+        if (relationDefinitions.Contains (relationID))
+          return relationDefinitions[relationID];
 
         RelationDefinition relationDefinition = new RelationDefinition (
-            GetRelationID(),
+            relationID,
             relationEndPointReflector.GetMetadata (),
             CreateOppositeEndPointDefinition (classDefinitions));
 
@@ -93,9 +95,14 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private string GetRelationID ()
     {
-      if (ClassDefinition.BaseClass == null && ClassDefinition.ClassType != PropertyInfo.DeclaringType)
+      if (ClassDefinition.BaseClass == null && ClassDefinition.ClassType != PropertyInfo.DeclaringType && !IsMixedProperty (PropertyInfo))
         return ReflectionUtility.GetPropertyName (ClassDefinition.ClassType, PropertyInfo.Name);
       return ReflectionUtility.GetPropertyName (PropertyInfo);
+    }
+
+    private bool IsMixedProperty (PropertyInfo propertyInfo)
+    {
+      return new List<Type> (ClassDefinition.PersistentMixins).Contains (propertyInfo.DeclaringType);
     }
 
     private IRelationEndPointDefinition CreateOppositeEndPointDefinition (ClassDefinitionCollection classDefinitions)

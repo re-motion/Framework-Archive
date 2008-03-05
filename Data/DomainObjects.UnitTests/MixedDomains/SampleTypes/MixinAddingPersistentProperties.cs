@@ -27,6 +27,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
       set { _nonPersistentProperty = value; }
     }
 
+    public RelationTargetForPersistentMixin UnidirectionalRelationProperty
+    {
+      get { return Properties[typeof (MixinAddingPersistentProperties), "UnidirectionalRelationProperty"].GetValue<RelationTargetForPersistentMixin> (); }
+      set { Properties[typeof (MixinAddingPersistentProperties), "UnidirectionalRelationProperty"].SetValue (value); }
+    }
+
     [DBBidirectionalRelation ("RelationProperty1", ContainsForeignKey = true)]
     public RelationTargetForPersistentMixin RelationProperty
     {
@@ -42,16 +48,34 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
     }
 
     [DBBidirectionalRelation ("RelationProperty3")]
-    public ObjectList<RelationTargetForPersistentMixin> CollectionPropertyNSide
+    public ObjectList<RelationTargetForPersistentMixin> CollectionProperty1Side
     {
-      get { return Properties[typeof (MixinAddingPersistentProperties), "CollectionPropertyNSide"].GetValue < ObjectList<RelationTargetForPersistentMixin>> (); }
+      get { return Properties[typeof (MixinAddingPersistentProperties), "CollectionProperty1Side"].GetValue<ObjectList<RelationTargetForPersistentMixin>> (); }
     }
 
     [DBBidirectionalRelation ("RelationProperty4")]
-    public RelationTargetForPersistentMixin CollectionProperty1Side
+    public RelationTargetForPersistentMixin CollectionPropertyNSide
     {
-      get { return Properties[typeof (MixinAddingPersistentProperties), "CollectionProperty1Side"].GetValue<RelationTargetForPersistentMixin> (); }
-      set { Properties[typeof (MixinAddingPersistentProperties), "CollectionProperty1Side"].SetValue (value); }
+      get { return Properties[typeof (MixinAddingPersistentProperties), "CollectionPropertyNSide"].GetValue<RelationTargetForPersistentMixin> (); }
+      set { Properties[typeof (MixinAddingPersistentProperties), "CollectionPropertyNSide"].SetValue (value); }
     }
   }
+
+  //public class MixinAddingPersistentProperties2 : DomainObjectMixin<DomainObject>
+  //{
+  //  [DBColumn("Storm")]
+  //  public int PersistentProperty
+  //  {
+  //    get { return Properties[typeof (MixinAddingPersistentProperties2), "PersistentProperty"].GetValue<int> (); }
+  //    set { Properties[typeof (MixinAddingPersistentProperties2), "PersistentProperty"].SetValue (value); }
+  //  }
+
+  //  [DBBidirectionalRelation ("RelationProperty4")]
+  //  [DBColumn ("Winter")]
+  //  public RelationTargetForPersistentMixin CollectionPropertyNSide
+  //  {
+  //    get { return Properties[typeof (MixinAddingPersistentProperties2), "CollectionPropertyNSide"].GetValue<RelationTargetForPersistentMixin> (); }
+  //    set { Properties[typeof (MixinAddingPersistentProperties2), "CollectionPropertyNSide"].SetValue (value); }
+  //  }
+  //}
 }

@@ -7,7 +7,6 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfiguratio
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
-using Rubicon.Mixins.Context;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping

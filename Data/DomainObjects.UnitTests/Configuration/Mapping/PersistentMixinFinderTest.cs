@@ -4,7 +4,6 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Mixins;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
