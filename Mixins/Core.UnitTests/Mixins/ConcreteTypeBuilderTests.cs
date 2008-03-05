@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Rhino.Mocks;
+using Rubicon.Mixins.CodeGeneration.DynamicProxy;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Mixins.CodeGeneration;
@@ -176,6 +177,28 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot load assembly 'Rubicon.Mixins.Generated.Signed' into the cache "
+      + "because it has the same name as one of the dynamic assemblies used by the mixin engine. Having two assemblies with the same name loaded "
+      + "into one AppDomain can cause strange and sporadic TypeLoadExceptions.\r\nParameter name: assembly")]
+    public void LoadThrows_WhenLoadedAssemblyHasSameName_AsSigned ()
+    {
+      ModuleManager moduleManager = (ModuleManager) ConcreteTypeBuilder.Current.Scope;
+      moduleManager.Scope.ObtainDynamicModule (true);
+      ConcreteTypeBuilder.Current.LoadAssemblyIntoCache (moduleManager.Scope.StrongNamedModule.Assembly);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot load assembly 'Rubicon.Mixins.Generated.Unsigned' into the cache "
+      + "because it has the same name as one of the dynamic assemblies used by the mixin engine. Having two assemblies with the same name loaded "
+      + "into one AppDomain can cause strange and sporadic TypeLoadExceptions.\r\nParameter name: assembly")]
+    public void LoadThrows_WhenLoadedAssemblyHasSameName_AsUnsigned ()
+    {
+      ModuleManager moduleManager = (ModuleManager) ConcreteTypeBuilder.Current.Scope;
+      moduleManager.Scope.ObtainDynamicModule (false);
+      ConcreteTypeBuilder.Current.LoadAssemblyIntoCache (moduleManager.Scope.WeakNamedModule.Assembly);
+    }
+
+    [Test]
     public void LoadAddsLoadedBaseTypesToTheCache ()
     {
       string concreteTypeName = TypeFactory.GetConcreteType (typeof (BaseType1)).FullName;
@@ -189,6 +212,8 @@ namespace Rubicon.Mixins.UnitTests.Mixins
             IModuleManager moduleManagerMock = repository.CreateMock<IModuleManager> ();
             ConcreteTypeBuilder.Current.Scope = moduleManagerMock;
 
+            Expect.Call (moduleManagerMock.SignedAssemblyName).Return ("FooS");
+            Expect.Call (moduleManagerMock.UnsignedAssemblyName).Return ("FooU");
             // expecting _no_ other actions on the scope when loading and accessing types from saved module
 
             repository.ReplayAll ();
@@ -212,9 +237,11 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
       AppDomainRunner.Run (delegate (object[] args)
           {
+            string modulePath = ConcreteTypeBuilder.Current.Scope.UnsignedModulePath;
+            ConcreteTypeBuilder.Current.Scope.UnsignedAssemblyName = "Bla";
+
             Type concreteType1 = TypeFactory.GetConcreteType (typeof (BaseType1));
 
-            string modulePath = ConcreteTypeBuilder.Current.Scope.UnsignedModulePath;
             Assembly assembly = Assembly.Load (AssemblyName.GetAssemblyName (modulePath));
             ConcreteTypeBuilder.Current.LoadAssemblyIntoCache (assembly);
 
@@ -245,6 +272,8 @@ namespace Rubicon.Mixins.UnitTests.Mixins
             IModuleManager moduleManagerMock = repository.CreateMock<IModuleManager> ();
             ConcreteTypeBuilder.Current.Scope = moduleManagerMock;
 
+            Expect.Call (moduleManagerMock.SignedAssemblyName).Return ("FooS");
+            Expect.Call (moduleManagerMock.UnsignedAssemblyName).Return ("FooU");
             // expecting _no_ other actions on the scope when loading and accessing types from saved module
 
             repository.ReplayAll ();
@@ -279,6 +308,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       AppDomainRunner.Run (delegate (object[] args)
           {
             string modulePath = ConcreteTypeBuilder.Current.Scope.UnsignedModulePath;
+            ConcreteTypeBuilder.Current.Scope.UnsignedAssemblyName = "Bla";
 
             MixinDefinition innerMixinDefinition =
               TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
@@ -309,6 +339,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       AppDomainRunner.Run (delegate
       {
         string modulePath = ConcreteTypeBuilder.Current.Scope.UnsignedModulePath;
+        ConcreteTypeBuilder.Current.Scope.UnsignedAssemblyName = "Bla";
         Assembly assembly = Assembly.Load (AssemblyName.GetAssemblyName (modulePath));
         ConcreteTypeBuilder.Current.LoadAssemblyIntoCache (assembly);
 

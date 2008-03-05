@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Rubicon.Mixins;
@@ -13,11 +14,25 @@ namespace Rubicon.Mixins.CodeGeneration
   /// <summary>
   /// Provides a way to build concrete types for target and mixin classes in mixin configurations and maintains a cache for built types.
   /// </summary>
+  /// <remarks>
+  /// <para>
+  /// You can use different instances of <see cref="ConcreteTypeBuilder"/> by setting them as the
+  /// <see cref="ThreadSafeSingletonBase{TSelf,TCreator}.Current"/> property via <see cref="ThreadSafeSingletonBase{TSelf,TCreator}.SetCurrent"/>.
+  /// Each of these will have its own instance of <see cref="IModuleManager"/> as its <see cref="Scope"/>, and each scope will have its own
+  /// dynamic assembly for code generation. However, each scope's assembly will have the same default name. 
+  /// </para>
+  /// <para>
+  /// Having different assemblies with the same names loaded into one AppDomain can lead to sporadic
+  /// <see cref="TypeLoadException">TypeLoadExceptions</see> in reflective scenarios. To avoid running into such errors, set the 
+  /// <see cref="IModuleManager.SignedAssemblyName"/> and <see cref="IModuleManager.UnsignedAssemblyName"/> properties of the
+  /// <see cref="Scope"/> to unique names for each <see cref="ConcreteTypeBuilder"/> instance you use.
+  /// </para>
+  /// </remarks>
   public class ConcreteTypeBuilder : ThreadSafeSingletonBase<ConcreteTypeBuilder, DefaultInstanceCreator<ConcreteTypeBuilder>>
   {
     private IModuleManager _scope;
-    // No laziness here - a ModuleBuilder cannot be used by multiple threads at the same time anyway, so using a lazy cache could actually cause
-    // errors (depending on how it was implemented)
+    // Use a pessimistic cache - a ModuleBuilder cannot be used by multiple threads at the same time anyway, so using a lazy cache could actually 
+    // cause errors (depending on how it was implemented)
     private readonly InterlockedCache<ClassDefinitionBase, Type> _typeCache = new InterlockedCache<ClassDefinitionBase, Type>();
 
     private readonly object _scopeLockObject = new object ();
@@ -169,10 +184,18 @@ namespace Rubicon.Mixins.CodeGeneration
     /// </summary>
     /// <returns>An array containing the paths of the assembly files saved.</returns>
     /// <remarks>
+    /// <para>
     /// This is similar to directly calling <c>Scope.SaveAssemblies</c>, but in addition resets the <see cref="Scope"/> to a new instance of
     /// <see cref="IModuleManager"/>. That way, the builder can continue to generate types even when the dynamic assemblies have been saved.
     /// Note that each time this method is called, only the types generated since the last save operation are persisted. Also, if the scope isn't
     /// reconfigured to save at different paths, previously saved assemblies might be overwritten.
+    /// </para>
+    /// <para>
+    /// Having different assemblies with the same names loaded into one AppDomain can lead to sporadic
+    /// <see cref="TypeLoadException">TypeLoadExceptions</see> in reflective scenarios. To avoid running into such errors, set the 
+    /// <see cref="IModuleManager.SignedAssemblyName"/> and <see cref="IModuleManager.UnsignedAssemblyName"/> properties of the
+    /// <see cref="Scope"/> to new, unique names after calling this method.
+    /// </para>
     /// </remarks>
     public string[] SaveAndResetDynamicScope ()
     {
@@ -197,7 +220,22 @@ namespace Rubicon.Mixins.CodeGeneration
     {
       ArgumentUtility.CheckNotNull ("assembly", assembly);
 
-      foreach (Type type in assembly.GetExportedTypes ())
+      AssemblyName assemblyName = assembly.GetName();
+      if (assemblyName.Name == Scope.SignedAssemblyName || assemblyName.Name == Scope.UnsignedAssemblyName)
+      {
+        string message = string.Format (
+            "Cannot load assembly '{0}' into the cache because it has the same name as one of the dynamic assemblies used "
+            + "by the mixin engine. Having two assemblies with the same name loaded into one AppDomain can cause strange and sporadic "
+            + "TypeLoadExceptions.", assemblyName.Name);
+        throw new ArgumentException (message, "assembly");
+      }
+
+      ImportTypes(assembly.GetExportedTypes ());
+    }
+
+    private void ImportTypes (IEnumerable<Type> types)
+    {
+      foreach (Type type in types)
       {
         foreach (ConcreteMixedTypeAttribute typeDescriptor in type.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false))
         {
