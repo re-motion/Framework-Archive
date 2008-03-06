@@ -379,6 +379,11 @@ namespace Rubicon.Data.DomainObjects
       return base.GetType();
     }
 
+    public override string ToString ()
+    {
+      return ID.ToString();
+    }
+
     /// <summary>
     /// Gets the <see cref="ObjectID"/> of the <see cref="DomainObject"/>.
     /// </summary>

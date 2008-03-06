@@ -36,6 +36,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    public void ToString ()
+    {
+      Order order = Order.NewObject();
+      Assert.AreEqual (order.ID.ToString(), order.ToString());
+    }
+
+    [Test]
     public void LoadingOfSimpleObject ()
     {
       ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
