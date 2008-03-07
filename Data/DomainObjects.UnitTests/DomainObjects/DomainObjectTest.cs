@@ -36,7 +36,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void ToString ()
+    public new void ToString ()
     {
       Order order = Order.NewObject();
       Assert.AreEqual (order.ID.ToString(), order.ToString());
