@@ -19,7 +19,7 @@ namespace Rubicon.SecurityManager.Clients.Web
 
     protected override void OnLoad (EventArgs e)
     {
-      _clientTransaction = ClientTransaction.NewTransaction ();
+      _clientTransaction = ClientTransaction.NewRootTransaction ();
       _clientTransaction.EnterDiscardingScope ();
       if (!IsPostBack)
       {

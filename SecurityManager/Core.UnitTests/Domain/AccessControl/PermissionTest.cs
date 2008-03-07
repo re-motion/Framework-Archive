@@ -11,7 +11,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public override void SetUp ()
     {
       base.SetUp ();
-      ClientTransaction.NewTransaction ().EnterNonDiscardingScope ();
+      ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ();
     }
 
     [Test]

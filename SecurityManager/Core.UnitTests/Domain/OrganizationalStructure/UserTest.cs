@@ -27,7 +27,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.TestFixtureSetUp ();
 
       _dbFixtures = new DatabaseFixtures ();
-      Tenant tenant = _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
+      Tenant tenant = _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.NewRootTransaction());
       _expectedTenantID = tenant.ID;
     }
 
@@ -110,7 +110,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       User.Current = user;
       Assert.AreSame (user, User.Current);
 
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         Assert.AreEqual (user.ID, User.Current.ID);
         Assert.AreNotSame (user, User.Current);

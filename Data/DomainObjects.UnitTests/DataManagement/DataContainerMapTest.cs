@@ -146,7 +146,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
         MatchType = MessageMatch.Regex)]
     public void PerformDeleteWithOtherClientTransaction ()
     {
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope())
       {
         Order order1 = Order.GetObject (DomainObjectIDs.Order1);
 

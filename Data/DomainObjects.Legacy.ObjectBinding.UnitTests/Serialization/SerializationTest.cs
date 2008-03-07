@@ -28,7 +28,7 @@ public class SerializationTest : DatabaseTest
   public override void SetUp ()
   {
     base.SetUp ();
-    _transactionScope = ClientTransaction.NewTransaction ().EnterNonDiscardingScope ();
+    _transactionScope = ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ();
   }
 
   public override void TearDown ()

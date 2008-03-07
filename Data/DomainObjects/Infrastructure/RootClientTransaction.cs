@@ -15,6 +15,16 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   [Serializable]
   public class RootClientTransaction : ClientTransaction
   {
+    /// <summary>
+    /// Do not use this method, use <see>ClientTransaction.NewBindingTransaction</see> instead.
+    /// </summary>
+    /// <returns></returns>
+    [Obsolete ("Use ClientTransaction.NewBindingTransaction for clarity.")]
+    public static new ClientTransaction NewBindingTransaction ()
+    {
+      return ClientTransaction.NewBindingTransaction ();
+    }
+
     private readonly Dictionary<ObjectID, DomainObject> _enlistedObjects;
     [NonSerialized]
     private RootQueryManager _queryManager;

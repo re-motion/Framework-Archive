@@ -13,14 +13,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
       base.TestFixtureSetUp ();
       
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateAndCommitSecurableClassDefinitionWithStates (ClientTransaction.NewTransaction());
+      dbFixtures.CreateAndCommitSecurableClassDefinitionWithStates (ClientTransaction.NewRootTransaction());
     }
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      ClientTransaction.NewTransaction ().EnterNonDiscardingScope ();
+      ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ();
     }
 
     [Test]

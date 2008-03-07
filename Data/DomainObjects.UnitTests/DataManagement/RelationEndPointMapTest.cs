@@ -172,7 +172,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
       OrderTicket orderTicket2;
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope())
       {
         orderTicket2 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
       }
@@ -188,7 +188,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
       OrderItem orderItem3;
 
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope())
       {
         orderItem3 = OrderItem.GetObject (DomainObjectIDs.OrderItem3);
       }
@@ -205,7 +205,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
       OrderItem orderItem3;
 
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope())
       {
         orderItem3 = OrderItem.GetObject (DomainObjectIDs.OrderItem3);
       }
@@ -222,7 +222,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
       OrderItem orderItem1;
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
       }
@@ -236,7 +236,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
       OrderItem orderItem3;
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope())
       {
         orderItem3 = OrderItem.GetObject (DomainObjectIDs.OrderItem3);
       }
@@ -264,7 +264,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void PerformDeletionWithOtherClientTransaction ()
     {
       Order order1;
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope())
       {
         order1 = Order.GetObject (DomainObjectIDs.Order1);
       }

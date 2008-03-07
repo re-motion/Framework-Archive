@@ -353,7 +353,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreEqual (8, cwadt.Int16Property);
       ClientTransactionMock.Commit ();
 
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         ClientTransaction.Current.EnlistDomainObject (cwadt);
         Assert.AreEqual (7, cwadt.Int32Property);

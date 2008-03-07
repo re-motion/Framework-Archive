@@ -52,7 +52,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void GetDataContainerUsesStoredTransaction ()
     {
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         Assert.AreSame (ClientTransactionMock, _customerEndPoint.GetDataContainer ().ClientTransaction);
       }

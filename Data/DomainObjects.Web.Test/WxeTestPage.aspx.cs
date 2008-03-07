@@ -65,7 +65,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
     private void WxeTransactedFunctionCreateNewButton_Click (object sender, EventArgs e)
     {
       // TODO: cheange to Remember/CheckActiveClientTransactionScope
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         RememberCurrentClientTransaction();
 
@@ -79,7 +79,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 
     private void WxeTransactedFunctionNoneButton_Click (object sender, EventArgs e)
     {
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         RememberCurrentClientTransaction();
 
@@ -91,15 +91,15 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 
     private void WxeTransactedFunctionCreateNewAutoCommitButton_Click (object sender, EventArgs e)
     {
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         RememberCurrentClientTransaction();
-        SetInt32Property (5, ClientTransaction.NewTransaction());
+        SetInt32Property (5, ClientTransaction.NewRootTransaction());
 
         new AutoCommitTestTransactedFunction (WxeTransactionMode.CreateRoot, DomainObjectIDs.ObjectWithAllDataTypes1).Execute ();
         CheckCurrentClientTransactionRestored();
 
-        if (GetInt32Property (ClientTransaction.NewTransaction()) != 10)
+        if (GetInt32Property (ClientTransaction.NewRootTransaction()) != 10)
           throw new TestFailureException ("The WxeTransactedFunction wrongly did not properly commit or set the property value.");
       }
 
@@ -108,16 +108,16 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 
     private void WxeTransactedFunctionCreateNewNoAutoCommitButton_Click (object sender, EventArgs e)
     {
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         RememberCurrentClientTransaction();
-        SetInt32Property (5, ClientTransaction.NewTransaction());
+        SetInt32Property (5, ClientTransaction.NewRootTransaction());
 
         new NoAutoCommitTestTransactedFunction (WxeTransactionMode.CreateRoot, DomainObjectIDs.ObjectWithAllDataTypes1).Execute ();
 
         CheckCurrentClientTransactionRestored();
 
-        if (GetInt32Property (ClientTransaction.NewTransaction()) != 5)
+        if (GetInt32Property (ClientTransaction.NewRootTransaction()) != 5)
           throw new TestFailureException ("The WxeTransactedFunction wrongly did set and commit the property value.");
       }
       ShowResultText ("Test WxeTransactedFunction (TransactionMode = CreateNew, AutoCommit = false) executed successfully.");
@@ -125,8 +125,8 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 
     private void WxeTransactedFunctionNoneAutoCommitButton_Click (object sender, EventArgs e)
     {
-      SetInt32Property (5, ClientTransaction.NewTransaction());
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      SetInt32Property (5, ClientTransaction.NewRootTransaction());
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         RememberCurrentClientTransaction();
 
@@ -138,7 +138,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
           throw new TestFailureException ("The WxeTransactedFunction wrongly did not set property value.");
       }
 
-      if (GetInt32Property (ClientTransaction.NewTransaction()) != 5)
+      if (GetInt32Property (ClientTransaction.NewRootTransaction()) != 5)
         throw new TestFailureException ("The WxeTransactedFunction wrongly committed the property value.");
 
       ShowResultText ("Test WxeTransactedFunction (TransactionMode = None, AutoCommit = true) executed successfully.");
@@ -146,8 +146,8 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 
     private void WxeTransactedFunctionNoneNoAutoCommitButton_Click (object sender, EventArgs e)
     {
-      SetInt32Property (5, ClientTransaction.NewTransaction());
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      SetInt32Property (5, ClientTransaction.NewRootTransaction());
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         RememberCurrentClientTransaction();
 
@@ -159,7 +159,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
           throw new TestFailureException ("The WxeTransactedFunction wrongly did not set the property value.");
       }
 
-      if (GetInt32Property (ClientTransaction.NewTransaction()) != 5)
+      if (GetInt32Property (ClientTransaction.NewRootTransaction()) != 5)
         throw new TestFailureException ("The WxeTransactedFunction wrongly committed the property value.");
 
       ShowResultText ("Test WxeTransactedFunction (TransactionMode = None, AutoCommit = false) executed successfully.");
@@ -169,7 +169,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
     {
       if (!IsReturningPostBack)
       {
-        using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+        using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
         {
           RememberCurrentClientTransaction();
           ExecuteFunction (new ParentPageStepTestTransactedFunction());

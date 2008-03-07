@@ -155,7 +155,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (id);
       classWithAllDataTypes.OnLoadedHasBeenCalled = false;
       classWithAllDataTypes.OnLoadedCallCount = 0;
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
 
       newTransaction.EnlistDomainObject (classWithAllDataTypes);
 
@@ -170,7 +170,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (id);
       classWithAllDataTypes.OnLoadedHasBeenCalled = false;
       classWithAllDataTypes.OnLoadedCallCount = 0;
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
 
       newTransaction.EnlistDomainObject (classWithAllDataTypes);
 
@@ -350,13 +350,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
       customer.Name = "New name";
 
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         ClientTransaction.Current.EnlistDomainObject (customer);
         Assert.AreEqual (StateType.Unchanged, customer.GetStateForTransaction (ClientTransaction.Current));
         Assert.AreEqual (StateType.Changed, customer.GetStateForTransaction (ClientTransactionMock));
 
-        using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+        using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
         {
           Assert.AreEqual (StateType.Changed, customer.GetStateForTransaction (ClientTransactionMock)); // must not throw a ClientTransactionDiffersException
         }
@@ -390,7 +390,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void IsDiscardedInTransaction ()
     {
-      ClientTransaction otherTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction otherTransaction = ClientTransaction.NewRootTransaction ();
       ClassWithAllDataTypes loadedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
       using (otherTransaction.EnterNonDiscardingScope ())
       {

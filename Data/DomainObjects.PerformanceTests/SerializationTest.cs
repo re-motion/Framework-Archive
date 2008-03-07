@@ -89,7 +89,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
     {
       PerformSerializationTests (nameOfTest, serExpectedMS, deserExpectedMS, delegate
       {
-        using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+        using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
         {
           for (int i = 0; i < count; ++i)
             objectCreator ();

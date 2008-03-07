@@ -16,7 +16,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlTestHelper ()
     {
-      _transaction = ClientTransaction.NewTransaction ();
+      _transaction = ClientTransaction.NewRootTransaction ();
       _factory = new OrganizationalStructureFactory ();
     }
 

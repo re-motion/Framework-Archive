@@ -50,7 +50,7 @@ namespace Rubicon.SecurityManager.UnitTests
      _service = new SecurityService (_mockAclFinder, _mockTokenBuilder);
      _context = new SecurityContext (typeof (Order), "Owner", "UID: OwnerGroup", "OwnerTenant", null, null);
 
-      _clientTransaction = ClientTransaction.NewTransaction ();
+      _clientTransaction = ClientTransaction.NewRootTransaction ();
       using (_clientTransaction.EnterNonDiscardingScope ())
       {
         _ace = CreateAce();

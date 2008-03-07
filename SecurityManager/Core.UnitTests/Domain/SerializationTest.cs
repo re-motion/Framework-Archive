@@ -45,7 +45,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     private void CheckDomainObjectSerializability<T> (Func<T> creator)
         where T: DomainObject
     {
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         T instance = creator ();
 

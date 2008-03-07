@@ -40,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void UnboundObjects ()
     {
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         Order newOrder = Order.NewObject();
         Assert.IsFalse (newOrder.IsBoundToSpecificTransaction);
@@ -56,7 +56,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void UnboundObjects_NoCurrentTransaction ()
     {
       Order newOrder;
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         newOrder = Order.NewObject ();
       }
@@ -82,7 +82,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetBoundObject_WithCurrentTransaction ()
     {
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         Order order = GetBound<Order> (DomainObjectIDs.Order1);
         Assert.IsTrue (order.IsBoundToSpecificTransaction);
@@ -101,7 +101,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void CanBeUsedInTransaction_WithCurrentTransaction ()
     {
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         Order order = GetBound<Order> (DomainObjectIDs.Order1);
         Assert.IsTrue (order.CanBeUsedInTransaction (_bindingTransaction));
@@ -114,7 +114,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         + "c97f02b89c36|System.Guid' in this transaction, because it is already bound to another transaction.")]
     public void Enlist_InDifferentTransaction ()
     {
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
       Order order = GetBound<Order> (DomainObjectIDs.Order1);
       newTransaction.EnlistDomainObject (order);
     }
@@ -177,7 +177,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void SetRelatedObject_UnboundValue ()
     {
       Order order = GetBound<Order> (DomainObjectIDs.Order1);
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         order.OrderTicket = OrderTicket.NewObject();
       }
@@ -188,7 +188,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void InsertRelatedObject_UnboundValue ()
     {
       Order order = GetBound<Order> (DomainObjectIDs.Order1);
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         order.OrderItems.Add (OrderItem.NewObject ());
       }

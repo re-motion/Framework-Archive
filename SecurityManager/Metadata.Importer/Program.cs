@@ -65,7 +65,7 @@ namespace Rubicon.SecurityManager.Metadata.Importer
             new AssemblyFinder (ApplicationAssemblyFinderFilter.Instance, typeof (BaseSecurityManagerObject).Assembly));
         MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (typeDiscoveryService)));
 
-        ClientTransaction transaction = ClientTransaction.NewTransaction();
+        ClientTransaction transaction = ClientTransaction.NewRootTransaction();
         
         if (_arguments.ImportMetadata)
           ImportMetadata (transaction);

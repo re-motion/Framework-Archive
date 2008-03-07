@@ -16,7 +16,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void AddAccessType_TwoNewAccessTypes ()
     {
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         AccessTypeDefinition accessType0 = AccessTypeDefinition.NewObject();
         AccessTypeDefinition accessType1 = AccessTypeDefinition.NewObject();
@@ -42,7 +42,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void AddStateProperty ()
     {
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         StatePropertyDefinition stateProperty = StatePropertyDefinition.NewObject();
         SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
@@ -221,7 +221,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
         testHelper.Transaction.Commit();
       }
 
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName ("Rubicon.SecurityManager.UnitTests.TestDomain.Invoice");
 
@@ -243,7 +243,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
         testHelper.Transaction.Commit();
       }
 
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName ("Invce");
 
@@ -257,7 +257,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       dbFixtures.CreateEmptyDomain();
 
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         DomainObjectCollection result = SecurableClassDefinition.FindAll();
 
@@ -270,12 +270,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       SecurableClassDefinition[] expectedClassDefinitions;
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         expectedClassDefinitions = dbFixtures.CreateAndCommitSecurableClassDefinitions (10, ClientTransactionScope.CurrentTransaction);
       }
 
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         DomainObjectCollection result = SecurableClassDefinition.FindAll();
 
@@ -290,13 +290,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       SecurableClassDefinition[] expectedClassDefinitions;
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         expectedClassDefinitions =
             dbFixtures.CreateAndCommitSecurableClassDefinitionsWithSubClassesEach (10, 10, ClientTransactionScope.CurrentTransaction);
       }
 
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         DomainObjectCollection result = SecurableClassDefinition.FindAllBaseClasses();
 
@@ -312,7 +312,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       SecurableClassDefinition expectedBaseClassDefinition;
       ObjectList<SecurableClassDefinition> expectedDerivedClasses;
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         SecurableClassDefinition[] expectedBaseClassDefinitions =
             dbFixtures.CreateAndCommitSecurableClassDefinitionsWithSubClassesEach (10, 10, ClientTransactionScope.CurrentTransaction);
@@ -320,7 +320,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
         expectedDerivedClasses = expectedBaseClassDefinition.DerivedClasses;
       }
 
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         SecurableClassDefinition actualBaseClassDefinition = SecurableClassDefinition.GetObject (expectedBaseClassDefinition.ID);
 
@@ -333,7 +333,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void CreateAccessControlList ()
     {
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
@@ -353,7 +353,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void CreateAccessControlList_TwoNewAcls ()
     {
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
@@ -379,13 +379,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       SecurableClassDefinition expectedClassDefinition;
       ObjectList<AccessTypeDefinition> expectedAccessTypes;
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         expectedClassDefinition = dbFixtures.CreateAndCommitSecurableClassDefinitionWithAccessTypes (10, ClientTransactionScope.CurrentTransaction);
         expectedAccessTypes = expectedClassDefinition.AccessTypes;
       }
 
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         SecurableClassDefinition actualClassDefinition = SecurableClassDefinition.GetObject (expectedClassDefinition.ID);
 
@@ -402,14 +402,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       SecurableClassDefinition expectedClassDefinition;
       ObjectList<AccessControlList> expectedAcls;
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         expectedClassDefinition =
             dbFixtures.CreateAndCommitSecurableClassDefinitionWithAccessControlLists (10, ClientTransactionScope.CurrentTransaction);
         expectedAcls = expectedClassDefinition.AccessControlLists;
       }
 
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         SecurableClassDefinition actualClassDefinition = SecurableClassDefinition.GetObject (expectedClassDefinition.ID);
 
@@ -422,7 +422,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void GetChangedAt_AfterCreation ()
     {
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
 
@@ -433,7 +433,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void Touch_AfterCreation ()
     {
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
 

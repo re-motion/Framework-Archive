@@ -19,7 +19,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       base.TestFixtureSetUp ();
  
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      _currentClassDefinitionTransaction = ClientTransaction.NewTransaction ();
+      _currentClassDefinitionTransaction = ClientTransaction.NewRootTransaction ();
       _currentClassDefinition = dbFixtures.CreateAndCommitSecurableClassDefinitionWithAccessControlLists (1, _currentClassDefinitionTransaction);
     }
 
@@ -40,7 +40,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       SecurityContext context = new SecurityContext (typeof (Order));
      
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      AccessControlList foundAcl = aclFinder.Find (ClientTransaction.NewTransaction (), context);
+      AccessControlList foundAcl = aclFinder.Find (ClientTransaction.NewRootTransaction (), context);
 
       Assert.AreEqual (expectedAccessControlList.ID, foundAcl.ID);
     }
@@ -53,7 +53,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       SecurityContext context = new SecurityContext (typeof (PremiumOrder));
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      aclFinder.Find (ClientTransaction.NewTransaction (), context);
+      aclFinder.Find (ClientTransaction.NewRootTransaction (), context);
     }
   }
 }

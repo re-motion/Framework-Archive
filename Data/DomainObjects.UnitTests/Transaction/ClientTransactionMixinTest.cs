@@ -12,7 +12,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClientTransaction)).Clear().AddMixins (typeof (InvertingClientTransactionMixin)).EnterScope())
       {
-        ClientTransaction mixedTransaction = ClientTransaction.NewTransaction ();
+        ClientTransaction mixedTransaction = ClientTransaction.NewRootTransaction ();
         Assert.IsNotNull (mixedTransaction);
         Assert.IsNotNull (Mixin.Get<InvertingClientTransactionMixin> (mixedTransaction));
       }
@@ -23,7 +23,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClientTransaction)).Clear().AddMixins (typeof (InvertingClientTransactionMixin)).EnterScope())
       {
-        ClientTransaction mixedTransaction = ClientTransaction.NewTransaction ();
+        ClientTransaction mixedTransaction = ClientTransaction.NewRootTransaction ();
         ClientTransaction mixedSubTransaction = mixedTransaction.CreateSubTransaction ();
         Assert.IsNotNull (mixedSubTransaction);
         Assert.IsNotNull (Mixin.Get<InvertingClientTransactionMixin> (mixedSubTransaction));
@@ -35,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClientTransaction)).Clear().AddMixins (typeof (InvertingClientTransactionMixin)).EnterScope())
       {
-        ClientTransaction invertedTransaction = ClientTransaction.NewTransaction();
+        ClientTransaction invertedTransaction = ClientTransaction.NewRootTransaction();
 
         bool committed = false;
         bool rolledBack = false;
@@ -63,7 +63,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClientTransaction)).Clear().AddMixins (typeof (ClientTransactionWithIDMixin)).EnterScope())
       {
-        IClientTransactionWithID transactionWithID = (IClientTransactionWithID) ClientTransaction.NewTransaction ();
+        IClientTransactionWithID transactionWithID = (IClientTransactionWithID) ClientTransaction.NewRootTransaction ();
         Assert.AreEqual (transactionWithID.ID.ToString (), transactionWithID.ToString ());
         IClientTransactionWithID subTransactionWithID = (IClientTransactionWithID) transactionWithID.AsClientTransaction.CreateSubTransaction ();
         Assert.AreNotEqual (transactionWithID.ID, subTransactionWithID.ID);

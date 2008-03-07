@@ -130,7 +130,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       ObjectList<StateDefinition> expectedStateDefinitions = expectdPropertyDefinition.DefinedStates;
       _testHelper.Transaction.Commit();
 
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         StatePropertyDefinition actualStatePropertyDefinition = StatePropertyDefinition.GetObject (expectdPropertyDefinition.ID);
 

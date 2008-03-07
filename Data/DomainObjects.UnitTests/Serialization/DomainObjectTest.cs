@@ -74,7 +74,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       {
         ClassWithAllDataTypes deserializedInstance = deserializedData.B;
         Assert.IsFalse (deserializedInstance.OnLoadedHasBeenCalled);
-        using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+        using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
         {
           ClientTransaction.Current.EnlistDomainObject (deserializedInstance);
           deserializedInstance.Int32Property = 15;

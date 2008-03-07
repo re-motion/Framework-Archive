@@ -11,7 +11,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public OrganizationalStructureTestHelper ()
     {
-      _transaction = ClientTransaction.NewTransaction();
+      _transaction = ClientTransaction.NewRootTransaction();
       _factory = new OrganizationalStructureFactory ();
     }
 

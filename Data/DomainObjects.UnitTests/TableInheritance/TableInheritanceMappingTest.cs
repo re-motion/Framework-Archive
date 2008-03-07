@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       DomainObjectsConfiguration.SetCurrent (TableInheritanceConfiguration.Instance.GetDomainObjectsConfiguration ());
       MappingConfiguration.SetCurrent (TableInheritanceConfiguration.Instance.GetMappingConfiguration ());
       ConfigurationWrapper.SetCurrent (null);
-      _transactionScope = ClientTransaction.NewTransaction().EnterDiscardingScope();
+      _transactionScope = ClientTransaction.NewRootTransaction().EnterDiscardingScope();
     }
 
     public override void TearDown ()

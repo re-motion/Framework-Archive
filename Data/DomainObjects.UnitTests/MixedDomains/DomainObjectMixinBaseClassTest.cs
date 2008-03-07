@@ -108,7 +108,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
       Assert.AreEqual (LoadMode.WholeDomainObjectInitialized, _loadedClassWithAllDataTypesMixin.OnDomainObjectLoadedLoadMode);
 
       _loadedClassWithAllDataTypesMixin.OnDomainObjectLoadedCalled = false;
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         ClientTransaction.Current.EnlistDomainObject (_loadedClassWithAllDataTypes);
         ++_loadedClassWithAllDataTypes.Int32Property;

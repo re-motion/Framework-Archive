@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.Transport
       return new DomainObjectImporter (data).GetImportedObjects ();
     }
 
-    private readonly ClientTransaction _transportTransaction = ClientTransaction.NewTransaction ();
+    private readonly ClientTransaction _transportTransaction = ClientTransaction.NewRootTransaction ();
     private readonly Set<ObjectID> _transportedObjects = new Set<ObjectID>();
 
     /// <summary>

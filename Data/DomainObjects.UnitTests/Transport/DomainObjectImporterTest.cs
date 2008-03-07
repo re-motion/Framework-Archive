@@ -270,7 +270,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     private void ModifyDatabase (Proc changer)
     {
       SetDatabaseModifyable ();
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope())
       {
         changer();
         ClientTransaction.Current.Commit ();

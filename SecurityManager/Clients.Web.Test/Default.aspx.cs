@@ -23,7 +23,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
     {
       base.OnLoad (e);
 
-      _clientTransaction = ClientTransaction.NewTransaction();
+      _clientTransaction = ClientTransaction.NewRootTransaction();
       _clientTransaction.EnterDiscardingScope();
       if (!IsPostBack)
       {

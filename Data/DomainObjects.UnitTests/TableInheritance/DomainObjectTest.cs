@@ -86,7 +86,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void ManyToOneRelationToConcreteSingle ()
     {
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         Order order = Order.GetObject (DomainObjectIDs.Order);
         Assert.AreEqual (DomainObjectIDs.Customer, order.Customer.ID);
@@ -111,7 +111,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       expectedCustomer.Region = expectedNewRegion;
 
       ClientTransactionScope.CurrentTransaction.Commit ();
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope())
       {
         Customer actualCustomer = Customer.GetObject (expectedCustomer.ID);
         Assert.AreEqual ("NewLastName", actualCustomer.LastName);
@@ -137,7 +137,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       expectedAddress.Person = expectedCustomer;
 
       ClientTransactionScope.CurrentTransaction.Commit ();
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope())
       {
         Customer actualCustomer = Customer.GetObject (expectedCustomer.ID);
         Assert.IsNotNull (actualCustomer);
@@ -157,7 +157,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       
 
       ClientTransactionScope.CurrentTransaction.Commit ();
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope())
       {
         try
         {

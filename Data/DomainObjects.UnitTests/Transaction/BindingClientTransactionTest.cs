@@ -97,7 +97,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         + "c97f02b89c36|System.Guid in this binding transaction, because it has originally been loaded in another transaction.")]
     public void EnlistingFails_ForObjectFromOther ()
     {
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         Order order = Order.GetObject (DomainObjectIDs.Order1);
         _bindingTransaction.EnlistDomainObject (order);

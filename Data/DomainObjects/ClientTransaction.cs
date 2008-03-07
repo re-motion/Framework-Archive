@@ -39,7 +39,7 @@ public abstract class ClientTransaction : ITransaction
   /// <remarks>The object returned by this method can be extended with <b>Mixins</b> by configuring the <see cref="MixinConfiguration.ActiveConfiguration"/>
   /// to include a mixin for type <see cref="RootClientTransaction"/>. Declaratively, this can be achieved by attaching an
   /// <see cref="ExtendsAttribute"/> instance for <see cref="ClientTransaction"/> or <see cref="RootClientTransaction"/> to a mixin class.</remarks>
-  public static ClientTransaction NewTransaction ()
+  public static ClientTransaction NewRootTransaction ()
   {
     return ObjectFactory.Create<RootClientTransaction>().With();
   }

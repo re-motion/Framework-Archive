@@ -48,7 +48,7 @@ namespace Rubicon.SecurityManager
 
     public AccessType[] GetAccess (SecurityContext context, IPrincipal user)
     {
-      return GetAccess (ClientTransaction.NewTransaction(), context, user);
+      return GetAccess (ClientTransaction.NewRootTransaction(), context, user);
     }
 
     public AccessType[] GetAccess (ClientTransaction transaction, SecurityContext context, IPrincipal user)
@@ -79,7 +79,7 @@ namespace Rubicon.SecurityManager
 
     public int GetRevision ()
     {
-      using (ClientTransaction.NewTransaction().EnterNonDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterNonDiscardingScope())
       {
         return Revision.GetRevision ();
       }

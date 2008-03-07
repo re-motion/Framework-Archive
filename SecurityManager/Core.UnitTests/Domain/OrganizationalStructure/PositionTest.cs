@@ -16,8 +16,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void FindAll ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.NewTransaction());
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.NewRootTransaction());
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         DomainObjectCollection positions = Position.FindAll ();
 

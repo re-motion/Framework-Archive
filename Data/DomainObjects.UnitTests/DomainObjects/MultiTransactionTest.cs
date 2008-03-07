@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order order = Order.NewObject ();
       Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
-      Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransaction.NewTransaction()));
+      Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransaction.NewRootTransaction()));
     }
 
     [Test]
@@ -24,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void ThrowsWhenCannotBeUsedInTransaction ()
     {
       Order order = Order.NewObject ();
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope())
       {
         Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
         int i = order.OrderNumber;
@@ -38,7 +38,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void ThrowsOnDeleteWhenCannotBeUsedInTransaction ()
     {
       Order order = Order.NewObject ();
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope())
       {
         Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
         order.Delete();
@@ -48,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void LoadedObjectCanBeEnlistedInTransaction ()
     {
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction();
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
       Assert.IsFalse (order.CanBeUsedInTransaction (newTransaction));
@@ -60,7 +60,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void NewObjectCanBeEnlistedInTransaction ()
     {
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction();
       Order order = Order.NewObject ();
       newTransaction.EnlistDomainObject (order);
       Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
@@ -71,7 +71,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         ExpectedMessage = "Object 'Order|fbab57e5-ba54-4d61-8bca-e8b9badc253a|System.Guid' could not be found.", MatchType = MessageMatch.Regex)]
     public void NewObjectCannotBeUsedInTransaction ()
     {
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
       Order order = Order.NewObject ();
       newTransaction.EnlistDomainObject (order);
       using (newTransaction.EnterDiscardingScope ())
@@ -84,7 +84,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void NewObjectCanBeEnlistedAndUsedInTransactionWhenCommitted ()
     {
       SetDatabaseModifyable ();
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction();
       Order order = Order.NewObject ();
       order.OrderNumber = 5;
       order.DeliveryDate = DateTime.Now;
@@ -110,7 +110,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void EnlistedObjectCanBeUsedInTwoTransactions ()
     {
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction();
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       newTransaction.EnlistDomainObject (order);
       Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
@@ -142,7 +142,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       order.Delete ();
       ClientTransactionScope.CurrentTransaction.Commit ();
 
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction();
       newTransaction.EnlistDomainObject (order);
       Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
     }
@@ -161,7 +161,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       order.Delete ();
       ClientTransactionScope.CurrentTransaction.Commit ();
 
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
       newTransaction.EnlistDomainObject (order);
 
       using (newTransaction.EnterDiscardingScope ())
@@ -178,7 +178,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       order.Delete ();
       Assert.AreEqual (StateType.Deleted, order.State);
       
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction();
       newTransaction.EnlistDomainObject (order);
       using (newTransaction.EnterDiscardingScope ())
       {
@@ -192,8 +192,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       SetDatabaseModifyable ();
 
-      ClientTransaction newTransaction1 = ClientTransaction.NewTransaction();
-      ClientTransaction newTransaction2 = ClientTransaction.NewTransaction();
+      ClientTransaction newTransaction1 = ClientTransaction.NewRootTransaction();
+      ClientTransaction newTransaction2 = ClientTransaction.NewRootTransaction();
       
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       newTransaction1.EnlistDomainObject (order);
@@ -232,7 +232,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void GetObjectAfterEnlistingReturnsEnlistedObject ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
         Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
@@ -246,7 +246,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void EnlistingAlthoughObjectHasAlreadyBeenLoadedThrows ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope())
       {
         Assert.AreNotSame (order, Order.GetObject (order.ID));
         ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
@@ -258,7 +258,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
         ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
@@ -275,7 +275,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void EnlistDomainObjectInSubTransaction ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ().CreateSubTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ().CreateSubTransaction ();
       newTransaction.EnlistDomainObject (order);
       Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
     }
@@ -287,7 +287,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       OrderItem orderItem1 = order.OrderItems[0];
       OrderItem orderItem2 = order.OrderItems[1];
 
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
       newTransaction.EnlistDomainObjects (order, orderItem2);
 
       Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
@@ -312,7 +312,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionMock));
       Assert.IsTrue (orderItem.CanBeUsedInTransaction (ClientTransactionMock));
 
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ().CreateSubTransaction();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ().CreateSubTransaction();
 
       Assert.IsFalse (order.CanBeUsedInTransaction (newTransaction));
       Assert.IsFalse (orderItem.CanBeUsedInTransaction (newTransaction));
@@ -334,14 +334,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
       Assert.IsTrue (order.IsDiscarded);
 
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope ())
       {
         ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1).Delete ();
         SetDatabaseModifyable ();
         ClientTransactionScope.CurrentTransaction.Commit ();
       }
 
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
 
       newTransaction.EnlistDomainObjects (order, cwadt);
 
@@ -353,7 +353,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void EnlistDomainObjectsIgnoresObjectsAlreadyEnlisted ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
       
       newTransaction.EnlistDomainObject (order);
       Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
@@ -369,13 +369,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       SetDatabaseModifyable ();
       ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
       
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope())
       {
         ClassWithAllDataTypes.GetObject (cwadt.ID).Delete ();
         ClientTransactionScope.CurrentTransaction.Commit ();
       }
 
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
 
       newTransaction.EnlistDomainObjects (cwadt);
 
@@ -390,13 +390,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       SetDatabaseModifyable ();
       ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         ClassWithAllDataTypes.GetObject (cwadt.ID).Delete ();
         ClientTransactionScope.CurrentTransaction.Commit ();
       }
 
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
 
       newTransaction.EnlistDomainObjects (cwadt);
 
@@ -413,7 +413,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void EnlistDomainObjectsThrowsOnObjectsAlreadyEnlistedWithDifferentReferences ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
 
       using (newTransaction.EnterDiscardingScope ())
       {
@@ -428,7 +428,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void OnLoadedCanAccessValuePropertiesInEnlistDomainObject ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
       order.ProtectedLoaded += delegate (object sender, EventArgs e) { Assert.AreEqual (1, ((Order) sender).OrderNumber); };
 
       newTransaction.EnlistDomainObject (order);
@@ -443,7 +443,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionMock));
       Assert.IsTrue (orderItem.CanBeUsedInTransaction (ClientTransactionMock));
 
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
 
       Assert.IsFalse (order.CanBeUsedInTransaction (newTransaction));
       Assert.IsFalse (orderItem.CanBeUsedInTransaction (newTransaction));
@@ -463,7 +463,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionMock));
       Assert.IsTrue (orderItem.CanBeUsedInTransaction (ClientTransactionMock));
 
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ().CreateSubTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ().CreateSubTransaction ();
 
       Assert.IsFalse (order.CanBeUsedInTransaction (newTransaction));
       Assert.IsFalse (orderItem.CanBeUsedInTransaction (newTransaction));
@@ -481,7 +481,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void EnlistSameObjectsDoesntThrowOnNew ()
     {
       Order.NewObject ();
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
       newTransaction.EnlistSameDomainObjects (ClientTransactionMock, false);
     }
 
@@ -491,16 +491,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       SetDatabaseModifyable ();
       ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         ClassWithAllDataTypes.GetObject (cwadt.ID).Delete ();
         ClientTransactionScope.CurrentTransaction.Commit ();
       }
 
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
       newTransaction.EnlistSameDomainObjects (ClientTransactionMock, false);
 
-      ClientTransaction newTransaction2 = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction2 = ClientTransaction.NewRootTransaction ();
       newTransaction2.EnlistSameDomainObjects (newTransaction, false);
 
       Assert.IsTrue (cwadt.CanBeUsedInTransaction (newTransaction));
@@ -513,7 +513,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       OrderItem orderItem = order.OrderItems[0];
 
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
       order.ProtectedLoaded += delegate (object sender, EventArgs e) { Assert.AreSame (sender, ((Order) sender).OrderItems[0].Order); };
 
       newTransaction.EnlistSameDomainObjects (ClientTransactionMock, false);
@@ -528,7 +528,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       OrderItem orderItem = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
       Order order = orderItem.Order;
 
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
       orderItem.ProtectedLoaded += delegate (object sender, EventArgs e) { Assert.Contains (sender, ((OrderItem) sender).Order.OrderItems); };
 
       newTransaction.EnlistSameDomainObjects (ClientTransactionMock, false);
@@ -547,7 +547,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       order.OrderItems.Add (OrderItem.NewObject ());
       Assert.IsTrue (orderItemAdded);
 
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         orderItemAdded = false;
         Assert.IsFalse (orderItemAdded);
@@ -569,7 +569,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       order.OrderItems.Add (OrderItem.NewObject ());
       Assert.IsTrue (orderItemAdded);
 
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         orderItemAdded = false;
         Assert.IsFalse (orderItemAdded);
@@ -592,7 +592,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       order.OrderItems.Add (OrderItem.NewObject ());
       Assert.IsTrue (orderItemAdded);
 
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         ClientTransaction.Current.EnlistSameDomainObjects (ClientTransactionMock, false);
         orderItemAdded = false;
@@ -612,7 +612,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       order.OrderItems.Add (OrderItem.NewObject ());
       Assert.IsTrue (orderItemAdded);
 
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         ClientTransaction.Current.EnlistSameDomainObjects (ClientTransactionMock, true);
         orderItemAdded = false;
@@ -632,7 +632,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       order.OrderItems.Add (OrderItem.NewObject ());
       Assert.IsTrue (orderItemAdded);
 
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         ClientTransaction.Current.EnlistDomainObject (order);
         ClientTransaction.Current.EnlistSameDomainObjects (ClientTransactionMock, true);

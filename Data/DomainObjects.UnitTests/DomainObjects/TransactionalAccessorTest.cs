@@ -20,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       PropertyAccessor orderNumberAccessor = order.Properties[typeof (Order), "OrderNumber"];
 
-      ClientTransaction secondTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction secondTransaction = ClientTransaction.NewRootTransaction ();
       secondTransaction.EnlistDomainObject (order);
 
       orderNumberAccessor.SetValue (12);
@@ -37,7 +37,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       PropertyAccessor orderNumberAccessor = order.Properties[typeof (Order), "OrderNumber"];
 
-      ClientTransaction secondTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction secondTransaction = ClientTransaction.NewRootTransaction ();
       secondTransaction.EnlistDomainObject (order);
 
       TransactionalAccessor<int> orderNumberTx = CreateTransactionalAccessor<int> (orderNumberAccessor);
@@ -67,7 +67,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
 
-      ClientTransaction secondTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction secondTransaction = ClientTransaction.NewRootTransaction ();
       secondTransaction.EnlistDomainObject (order);
 
       order.OrderNumberTx[ClientTransactionMock] = 7;

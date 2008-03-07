@@ -121,7 +121,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void ClientTransactionSerializationTest ()
     {
-      ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
+      ClientTransaction clientTransaction = ClientTransaction.NewRootTransaction();
 
       ClientTransaction deserializedClientTransaction = (ClientTransaction) SerializeAndDeserialize (clientTransaction);
 
@@ -131,7 +131,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void SubClientTransactionSerializationTest ()
     {
-      ClientTransaction clientTransaction = ClientTransaction.NewTransaction ().CreateSubTransaction();
+      ClientTransaction clientTransaction = ClientTransaction.NewRootTransaction ().CreateSubTransaction();
 
       ClientTransaction deserializedClientTransaction = (ClientTransaction) SerializeAndDeserialize (clientTransaction);
 

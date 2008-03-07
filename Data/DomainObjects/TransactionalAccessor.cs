@@ -26,8 +26,8 @@ namespace Rubicon.Data.DomainObjects
   /// 
   ///   public static void Test (MyDomainObject obj)
   ///   {
-  ///     ClientTransaction transaction1 = ClientTransaction.NewTransaction();
-  ///     ClientTransaction transaction2 = ClientTransaction.NewTransaction();
+  ///     ClientTransaction transaction1 = ClientTransaction.NewRootTransaction();
+  ///     ClientTransaction transaction2 = ClientTransaction.NewRootTransaction();
   ///   
   ///     transaction1.EnlistDomainObject (obj);
   ///     transaction2.EnlistDomainObject (obj);

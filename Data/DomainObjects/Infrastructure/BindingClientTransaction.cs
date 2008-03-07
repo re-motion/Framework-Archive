@@ -5,6 +5,16 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   [Serializable]
   public class BindingClientTransaction : RootClientTransaction
   {
+    /// <summary>
+    /// Do not use this method, use <see>ClientTransaction.NewRootTransaction</see> instead.
+    /// </summary>
+    /// <returns></returns>
+    [Obsolete ("Use ClientTransaction.NewRootTransaction for clarity.")]
+    public static new ClientTransaction NewRootTransaction ()
+    {
+      return ClientTransaction.NewRootTransaction();
+    }
+
     public BindingClientTransaction ()
     {
       AddListener (new BindingClientTransactionListener (this));

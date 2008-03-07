@@ -55,7 +55,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void GetDataContainerUsesStoredTransaction ()
     {
       AnonymousEndPoint endPoint = new AnonymousEndPoint (ClientTransactionMock, _client, _clientToLocationDefinition);
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         Assert.AreSame (ClientTransactionMock, endPoint.GetDataContainer ().ClientTransaction);
       }

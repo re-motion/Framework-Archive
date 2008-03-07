@@ -38,7 +38,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       _collection = CreateCustomerCollection ();
 
-      _secondClientTransaction = ClientTransaction.NewTransaction();
+      _secondClientTransaction = ClientTransaction.NewRootTransaction();
       _secondCollection = new DomainObjectCollection ();
       using (_secondClientTransaction.EnterDiscardingScope ())
       {

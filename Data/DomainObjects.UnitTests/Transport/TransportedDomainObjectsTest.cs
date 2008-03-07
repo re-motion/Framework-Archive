@@ -18,7 +18,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     [Test]
     public void EmptyTransport ()
     {
-      ClientTransaction dataTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction dataTransaction = ClientTransaction.NewRootTransaction ();
       TransportedDomainObjects transportedObjects = new TransportedDomainObjects (dataTransaction, new List<DomainObject>());
 
       Assert.IsNotNull (transportedObjects.DataTransaction);
@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     [Test]
     public void TransportedObjectsStayConstant_WhenTransactionIsManipulated ()
     {
-      TransportedDomainObjects transportedObjects = new TransportedDomainObjects (ClientTransaction.NewTransaction (), new List<DomainObject> ());
+      TransportedDomainObjects transportedObjects = new TransportedDomainObjects (ClientTransaction.NewRootTransaction (), new List<DomainObject> ());
 
       Assert.IsEmpty (GetTransportedObjects (transportedObjects));
 
@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     [Test]
     public void NonEmptyTransport ()
     {
-      ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
       List<DomainObject> transportedObjectList = new List<DomainObject>  ();
       using (newTransaction.EnterNonDiscardingScope ())
       {
@@ -121,7 +121,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 
       transportedObjects.FinishTransport ();
 
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         ClassWithAllDataTypes c3 = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
         ClassWithAllDataTypes c4 = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes2);
@@ -142,7 +142,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
         return ((ClassWithAllDataTypes) transportedObject).Int32Property < 0;
       });
 
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         try
         {
@@ -212,7 +212,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     private void ModifyDatabase (Proc changer)
     {
       SetDatabaseModifyable ();
-      using (ClientTransaction.NewTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
         changer ();
         ClientTransaction.Current.Commit ();

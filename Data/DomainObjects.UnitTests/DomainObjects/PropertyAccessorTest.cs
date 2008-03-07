@@ -646,7 +646,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.NewObject ();
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         accessor.GetValueTx<int> (ClientTransactionScope.CurrentTransaction);
       }
@@ -658,7 +658,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         accessor.GetValueTx<int> (ClientTransactionScope.CurrentTransaction);
       }
@@ -715,7 +715,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.NewObject ();
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         accessor.GetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
       }
@@ -727,7 +727,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         accessor.GetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
       }
@@ -785,7 +785,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.NewObject ();
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         accessor.GetOriginalValueTx<int> (ClientTransactionScope.CurrentTransaction);
       }
@@ -797,7 +797,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         accessor.GetOriginalValueTx<int> (ClientTransactionScope.CurrentTransaction);
       }
@@ -855,7 +855,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.NewObject ();
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         accessor.GetOriginalValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
       }
@@ -867,7 +867,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         accessor.GetOriginalValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction);
       }
@@ -879,7 +879,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order order = Order.GetObject(DomainObjectIDs.Order1);
       OrderTicket orderTicket2 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
 
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
         OrderTicket orderTicket1 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
@@ -906,7 +906,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.NewObject ();
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         accessor.SetValueTx (ClientTransactionScope.CurrentTransaction, 1);
       }
@@ -918,7 +918,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         accessor.SetValueTx (ClientTransactionScope.CurrentTransaction, 2);
       }
@@ -930,7 +930,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       OrderTicket orderTicket2 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
 
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
         OrderTicket orderTicket1 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
@@ -957,7 +957,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.NewObject ();
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         accessor.SetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction, 1);
       }
@@ -969,7 +969,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.GetObject (DomainObjectIDs.Order1);
       PropertyAccessor accessor = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         accessor.SetValueWithoutTypeCheckTx (ClientTransactionScope.CurrentTransaction, 2);
       }
@@ -1192,7 +1192,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void DiscardCheck_Tx ()
     {
       ClassWithAllDataTypes instance = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
-      ClientTransaction otherTransaction = ClientTransaction.NewTransaction ();
+      ClientTransaction otherTransaction = ClientTransaction.NewRootTransaction ();
       using (otherTransaction.EnterNonDiscardingScope ())
       {
         otherTransaction.EnlistDomainObject (instance);

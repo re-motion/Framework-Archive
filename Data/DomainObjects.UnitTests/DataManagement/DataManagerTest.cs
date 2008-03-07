@@ -360,7 +360,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void DeleteWithOtherClientTransaction ()
     {
       Order order1;
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope())
       {
         order1 = Order.GetObject (DomainObjectIDs.Order1);
       }
@@ -371,7 +371,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void DeleteWithOtherClientTransaction_UsesStoredTransaction ()
     {
       Order order1 = Order.GetObject (DomainObjectIDs.Order1);
-      using (ClientTransaction.NewTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.NewRootTransaction ().EnterDiscardingScope ())
       {
         _dataManager.Delete (order1); // deletes in _dataManager's transaction, not in current transaction
       }

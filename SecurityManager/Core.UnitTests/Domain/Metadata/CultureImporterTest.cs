@@ -18,14 +18,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       base.TestFixtureSetUp ();
 
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateAndCommitSecurableClassDefinitionWithStates (ClientTransaction.NewTransaction());
+      dbFixtures.CreateAndCommitSecurableClassDefinitionWithStates (ClientTransaction.NewRootTransaction());
     }
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _transaction = ClientTransaction.NewTransaction();
+      _transaction = ClientTransaction.NewRootTransaction();
       _importer = new CultureImporter (_transaction);
     }
 

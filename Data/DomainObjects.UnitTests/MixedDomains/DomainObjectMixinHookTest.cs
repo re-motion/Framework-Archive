@@ -49,7 +49,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
         mixinInstance.OnLoadedCalled = false;
         mixinInstance.OnLoadedCount = 0;
 
-        ClientTransaction newTransaction = ClientTransaction.NewTransaction ();
+        ClientTransaction newTransaction = ClientTransaction.NewRootTransaction ();
         newTransaction.EnlistDomainObject (order);
 
         Assert.IsFalse (mixinInstance.OnLoadedCalled);

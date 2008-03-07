@@ -829,7 +829,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       existingCustomer.Orders[0].Delete();
 
       ClientTransactionScope.CurrentTransaction.Commit();
-      using (ClientTransaction.NewTransaction().EnterDiscardingScope())
+      using (ClientTransaction.NewRootTransaction().EnterDiscardingScope())
       {
         newCustomer = Customer.GetObject (newCustomer.ID);
         existingCustomer = Customer.GetObject (DomainObjectIDs.Customer3);
