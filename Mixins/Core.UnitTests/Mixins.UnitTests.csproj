@@ -59,6 +59,7 @@
     <Compile Include="Configuration\Context\DeclarativeAnalyzers\DeclarativeConfigurationAnalyzerTest.cs" />
     <Compile Include="Configuration\Context\DeclarativeAnalyzers\UsesAnalyzerTests.cs" />
     <Compile Include="Configuration\Context\DeclarativeAnalyzers\ExtendsAnalyzerTests.cs" />
+    <Compile Include="Configuration\Context\DeclarativeConfigurationBuilderTests.cs" />
     <Compile Include="Configuration\Context\DeclarativeConfigurationBuilder_IntegrationTests\DeclarativeConfigurationBuilderGenericInheritanceTests.cs" />
     <Compile Include="Configuration\Context\DeclarativeConfigurationBuilder_IntegrationTests\DeclarativeConfigurationBuilderInheritanceTests.cs" />
     <Compile Include="Configuration\Context\DeclarativeConfigurationBuilder_IntegrationTests\MixAnalysisTests.cs" />

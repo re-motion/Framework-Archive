@@ -155,7 +155,6 @@ namespace Rubicon.Mixins.Context
     }
 
     private readonly MixinConfiguration _parentConfiguration;
-
     private readonly Set<Type> _allTypes = new Set<Type> ();
 
     /// <summary>
@@ -166,6 +165,11 @@ namespace Rubicon.Mixins.Context
     public DeclarativeConfigurationBuilder (MixinConfiguration parentConfiguration)
     {
       _parentConfiguration = parentConfiguration;
+    }
+
+    public IEnumerable<Type> AllTypes
+    {
+      get { return _allTypes; }
     }
 
     /// <summary>
