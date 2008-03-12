@@ -57,6 +57,7 @@
     <Compile Include="Configuration\Context\ClassContextCollectionTests.cs" />
     <Compile Include="Configuration\Context\DeclarativeAnalyzers\CompleteInterfaceAnalyzerTests.cs" />
     <Compile Include="Configuration\Context\DeclarativeAnalyzers\DeclarativeConfigurationAnalyzerTest.cs" />
+    <Compile Include="Configuration\Context\DeclarativeAnalyzers\MixAnalyzerTests.cs" />
     <Compile Include="Configuration\Context\DeclarativeAnalyzers\UsesAnalyzerTests.cs" />
     <Compile Include="Configuration\Context\DeclarativeAnalyzers\ExtendsAnalyzerTests.cs" />
     <Compile Include="Configuration\Context\DeclarativeConfigurationBuilderTests.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Mixins\ModuleManagerSerializationExtensionTests.cs" />
     <Compile Include="Mixins\RhinoMocksRepositoryAdapter.cs" />
     <Compile Include="Mixins\SerializationCallbackTests.cs" />
+    <Compile Include="SampleTypes\AdditionalDependencyForGlobalMix.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters.cs" />
     <Compile Include="SampleTypes\BaseTypeForGlobalMixAttribute.cs" />
     <Compile Include="SampleTypes\ClassOverridingToString.cs" />
@@ -125,6 +127,8 @@
     <Compile Include="SampleTypes\AttributeWithParameters3.cs" />
     <Compile Include="SampleTypes\DerivedDerivedNullMixin.cs" />
     <Compile Include="SampleTypes\DerivedNullMixin.cs" />
+    <Compile Include="SampleTypes\GlobalMixAttributes.cs" />
+    <Compile Include="SampleTypes\MixinForGlobalMix.cs" />
     <Compile Include="SampleTypes\MixinForGlobalMixAttribute.cs" />
     <Compile Include="SampleTypes\NullMixin3.cs" />
     <Compile Include="SampleTypes\DerivedGenericTargetClass.cs" />
@@ -240,6 +244,8 @@
     <Compile Include="SampleTypes\MixinWithSingleAbstractMethod.cs" />
     <Compile Include="SampleTypes\DuckBaseMixin.cs" />
     <Compile Include="SampleTypes\ISimpleInterface.cs" />
+    <Compile Include="SampleTypes\SuppressedMixinForGlobalMix.cs" />
+    <Compile Include="SampleTypes\TargetClassForGlobalMix.cs" />
     <Compile Include="SampleTypes\TargetClassWithAdditionalDependencies.cs" />
     <Compile Include="SampleTypes\ValueTypeMixin.cs" />
     <Compile Include="Utilities\DependencySortTest.cs" />

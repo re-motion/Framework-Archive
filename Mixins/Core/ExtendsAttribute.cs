@@ -24,13 +24,11 @@ namespace Rubicon.Mixins
   /// </para>
   /// </remarks>
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
-  public class ExtendsAttribute : Attribute
+  public class ExtendsAttribute : MixinRelationshipAttribute
   {
     private readonly Type _targetType;
 
-    private Type[] _additionalDependencies = Type.EmptyTypes;
     private Type[] _mixinTypeArguments = Type.EmptyTypes;
-    private Type[] _suppressedMixins = Type.EmptyTypes;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ExtendsAttribute"/> class.
@@ -52,22 +50,6 @@ namespace Rubicon.Mixins
     }
 
     /// <summary>
-    /// Gets or sets additional explicit base call dependencies for this mixin type when applied to the given target type. This can be used to
-    /// establish an ordering when combining unrelated mixins on a class which override the same methods.
-    /// </summary>
-    /// <value>The additional dependencies of the mixin. The validity of the dependency types is not checked until the configuration is built.</value>
-    /// <exception cref="ArgumentNullException">The <paramref name="value"/> argument is <see langword="null"/>.</exception>
-    public Type[] AdditionalDependencies
-    {
-      get { return _additionalDependencies; }
-      set
-      {
-        ArgumentUtility.CheckNotNull ("value", value);
-        _additionalDependencies = value;
-      }
-    }
-
-    /// <summary>
     /// Gets or sets the generic type arguments to be used when applying a generic mixin to the given target type. This is useful when the
     /// <see cref="ExtendsAttribute"/> is to be applied to a generic mixin class, but the default generic type specialization algorithm of the
     /// mixin engine does not give the desired results.
@@ -82,23 +64,6 @@ namespace Rubicon.Mixins
       {
         ArgumentUtility.CheckNotNull ("value", value);
         _mixinTypeArguments = value;
-      }
-    }
-
-    /// <summary>
-    /// Gets or sets the mixins suppressed by this mixin.
-    /// </summary>
-    /// <value>The mixins suppressed by this mixin.</value>
-    /// <remarks>Use this attribute to actively remove another mixin from this mixin's target type. The list of suppressed mixins cannot contain 
-    /// this mixin itself, but it can contain mixins which themselves suppress this mixin. Such circular suppressions result in both mixins being
-    /// removed from the configuration.</remarks>
-    public Type[] SuppressedMixins
-    {
-      get { return _suppressedMixins; }
-      set
-      {
-        ArgumentUtility.CheckNotNull ("value", value);
-        _suppressedMixins = value;
       }
     }
   }

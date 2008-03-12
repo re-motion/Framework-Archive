@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Context\ClassContextEventArgs.cs" />
     <Compile Include="Context\DeclarativeAnalyzers\CompleteInterfaceAnalyzer.cs" />
+    <Compile Include="Context\DeclarativeAnalyzers\MixAnalyzer.cs" />
     <Compile Include="Context\DeclarativeAnalyzers\ExtendsAnalyzer.cs" />
     <Compile Include="Context\DeclarativeAnalyzers\RelationAnalyzerBase.cs" />
     <Compile Include="Context\DeclarativeAnalyzers\UsesAnalyzer.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Context\InheritedClassContextRetrievalAlgorithm.cs" />
     <Compile Include="Context\ClassContextCollection.cs" />
     <Compile Include="Context\ReadOnlyContextCollection.cs" />
+    <Compile Include="MixAttribute.cs" />
     <Compile Include="CopyCustomAttributesAttribute.cs" />
     <Compile Include="CodeGeneration\ConcreteMixinTypeAttribute.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallMethodGenerator.cs" />
@@ -78,6 +80,7 @@
     <Compile Include="MixinConfiguration.Build.cs" />
     <Compile Include="MixinConfiguration.MasterConfiguration.cs" />
     <Compile Include="MixinConfigurationScope.cs" />
+    <Compile Include="MixinRelationshipAttribute.cs" />
     <Compile Include="MixinTargetMockUtility.cs" />
     <Compile Include="OverrideMixinAttribute.cs" />
     <Compile Include="Definitions\AttributeIntroductionDefinition.cs" />
