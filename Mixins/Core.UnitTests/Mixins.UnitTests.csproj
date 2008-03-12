@@ -55,8 +55,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\Context\ClassContextCollectionTests.cs" />
-    <Compile Include="Configuration\Context\DeclarativeConfigurationBuilderTests\DeclarativeConfigurationBuilderGenericInheritanceTests.cs" />
-    <Compile Include="Configuration\Context\DeclarativeConfigurationBuilderTests\DeclarativeConfigurationBuilderInheritanceTests.cs" />
+    <Compile Include="Configuration\Context\DeclarativeAnalyzers\CompleteInterfaceAnalyzerTests.cs" />
+    <Compile Include="Configuration\Context\DeclarativeAnalyzers\DeclarativeConfigurationAnalyzerTest.cs" />
+    <Compile Include="Configuration\Context\DeclarativeAnalyzers\UsesAnalyzerTests.cs" />
+    <Compile Include="Configuration\Context\DeclarativeAnalyzers\ExtendsAnalyzerTests.cs" />
+    <Compile Include="Configuration\Context\DeclarativeConfigurationBuilder_IntegrationTests\DeclarativeConfigurationBuilderGenericInheritanceTests.cs" />
+    <Compile Include="Configuration\Context\DeclarativeConfigurationBuilder_IntegrationTests\DeclarativeConfigurationBuilderInheritanceTests.cs" />
+    <Compile Include="Configuration\Context\DeclarativeConfigurationBuilder_IntegrationTests\MixAnalysisTests.cs" />
     <Compile Include="Configuration\Context\FluentBuilders\ClassContextBuilderTests.cs" />
     <Compile Include="Configuration\Context\FluentBuilders\MixinConfigurationBuilderTests.cs" />
     <Compile Include="Configuration\Context\FluentBuilders\MixinContextBuilderTests.cs" />
@@ -110,6 +115,7 @@
     <Compile Include="Mixins\RhinoMocksRepositoryAdapter.cs" />
     <Compile Include="Mixins\SerializationCallbackTests.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters.cs" />
+    <Compile Include="SampleTypes\BaseTypeForGlobalMixAttribute.cs" />
     <Compile Include="SampleTypes\ClassOverridingToString.cs" />
     <Compile Include="SampleTypes\ClassWithMixedMixin.cs" />
     <Compile Include="SampleTypes\ClassOverridingSpecificMixinMember.cs" />
@@ -118,6 +124,7 @@
     <Compile Include="SampleTypes\AttributeWithParameters3.cs" />
     <Compile Include="SampleTypes\DerivedDerivedNullMixin.cs" />
     <Compile Include="SampleTypes\DerivedNullMixin.cs" />
+    <Compile Include="SampleTypes\MixinForGlobalMixAttribute.cs" />
     <Compile Include="SampleTypes\NullMixin3.cs" />
     <Compile Include="SampleTypes\DerivedGenericTargetClass.cs" />
     <Compile Include="SampleTypes\NullMixin2.cs" />
@@ -183,16 +190,16 @@
     <Compile Include="SampleTypes\MixinsWithCircularDependencies.cs" />
     <Compile Include="SampleTypes\ClassFulfillingAllMemberRequirementsDuck.cs" />
     <Compile Include="SampleTypes\ClassFulfillingNoMemberRequirements.cs" />
-    <Compile Include="Configuration\Context\DeclarativeConfigurationBuilderTests\DeclarativeConfigurationBuilderGeneralTests.cs" />
+    <Compile Include="Configuration\Context\DeclarativeConfigurationBuilder_IntegrationTests\DeclarativeConfigurationBuilderGeneralTests.cs" />
     <Compile Include="Configuration\Definitions\AttributeDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\Definitions\TargetClassDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\Definitions\TargetClassDefinitionCacheTests.cs" />
     <Compile Include="Configuration\Definitions\ClassDefinitionTests.cs" />
     <Compile Include="Configuration\Definitions\DependencyDefinitionBuilderTests.cs" />
-    <Compile Include="Configuration\Context\ExtendsAnalysisTests.cs" />
+    <Compile Include="Configuration\Context\DeclarativeConfigurationBuilder_IntegrationTests\ExtendsAnalysisTests.cs" />
     <Compile Include="Configuration\Definitions\MixinDependencySortTests.cs" />
     <Compile Include="Configuration\Definitions\RequiredMethodDefinitionBuilderTests.cs" />
-    <Compile Include="Configuration\Context\UsesAnalysisTests.cs" />
+    <Compile Include="Configuration\Context\DeclarativeConfigurationBuilder_IntegrationTests\UsesAnalysisTests.cs" />
     <None Include="Mixins.UnitTests.build" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
     <Compile Include="Configuration\ValidationTests\ValidationSampleTypes\ClassOverridingMixinEvent.cs" />

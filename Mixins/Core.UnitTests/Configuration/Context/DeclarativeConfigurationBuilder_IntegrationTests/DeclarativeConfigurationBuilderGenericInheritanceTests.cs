@@ -3,7 +3,7 @@ using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Mixins.Context;
 
-namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfigurationBuilderTests
+namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfigurationBuilder_IntegrationTests
 {
   [TestFixture]
   public class DeclarativeConfigurationBuilderGenericInheritanceTests

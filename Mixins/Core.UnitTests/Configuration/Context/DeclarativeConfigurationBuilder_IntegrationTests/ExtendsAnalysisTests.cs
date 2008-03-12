@@ -6,7 +6,7 @@ using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Utilities;
 
-namespace Rubicon.Mixins.UnitTests.Configuration.Context
+namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfigurationBuilder_IntegrationTests
 {
   [TestFixture]
   public class ExtendsAnalysisTests
@@ -102,7 +102,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin .*DoubleExtendingMixin are "
-                                                                           + "configured for target type .*ExtendsTargetBase.", MatchType = MessageMatch.Regex)]
+        + "configured for target type .*ExtendsTargetBase.", MatchType = MessageMatch.Regex)]
     public void ThrowsOnDuplicateExtendsForSameClass ()
     {
       new DeclarativeConfigurationBuilder (null).AddType (typeof (DoubleExtendingMixin)).BuildConfiguration ();
@@ -152,7 +152,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The ExtendsAttribute for target class "
         + ".*ExtendsTargetBase applied to mixin type "
-        + ".*InvalidGenericMixin`2 specified invalid generic type arguments.", MatchType = MessageMatch.Regex)]
+            + ".*InvalidGenericMixin`2 specified invalid generic type arguments.", MatchType = MessageMatch.Regex)]
     public void InvalidTypeParametersThrowConfigurationException ()
     {
       new DeclarativeConfigurationBuilder (null).AddType (typeof (InvalidGenericMixin<,>)).BuildConfiguration ();

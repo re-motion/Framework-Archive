@@ -5,6 +5,8 @@ using System.ComponentModel.Design;
 using System.Reflection;
 using Rubicon.Mixins;
 using Rubicon.Collections;
+using Rubicon.Mixins.Context.DeclarativeAnalyzers;
+using Rubicon.Mixins.Context.FluentBuilders;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
 
@@ -235,7 +237,16 @@ namespace Rubicon.Mixins.Context
     /// <see cref="ClassContext"/> and <see cref="MixinContext"/> objects based on the information added so far.</returns>
     public MixinConfiguration BuildConfiguration ()
     {
-      return new DeclarativeConfigurationAnalyzer (_parentConfiguration, _extenders, _users, _completeInterfaces).GetAnalyzedConfiguration;
+      MixinConfigurationBuilder configurationBuilder = new MixinConfigurationBuilder (_parentConfiguration);
+      ExtendsAnalyzer extendsAnalyzer = new ExtendsAnalyzer (configurationBuilder);
+      UsesAnalyzer usesAnalyzer = new UsesAnalyzer (configurationBuilder);
+      CompleteInterfaceAnalyzer completeInterfaceAnalyzer = new CompleteInterfaceAnalyzer (configurationBuilder);
+      
+      DeclarativeConfigurationAnalyzer configurationAnalyzer = 
+          new DeclarativeConfigurationAnalyzer (configurationBuilder, extendsAnalyzer, usesAnalyzer, completeInterfaceAnalyzer);
+      configurationAnalyzer.Analyze(_extenders, _users, _completeInterfaces);
+      
+      return configurationBuilder.BuildConfiguration();
     }
   }
 }

@@ -14,7 +14,7 @@ using Rubicon.Utilities;
 using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 using System.IO;
 
-namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfigurationBuilderTests
+namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfigurationBuilder_IntegrationTests
 {
   [TestFixture]
   public class DeclarativeConfigurationBuilderGeneralTests

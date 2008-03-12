@@ -45,6 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\ClassContextEventArgs.cs" />
+    <Compile Include="Context\DeclarativeAnalyzers\CompleteInterfaceAnalyzer.cs" />
+    <Compile Include="Context\DeclarativeAnalyzers\ExtendsAnalyzer.cs" />
+    <Compile Include="Context\DeclarativeAnalyzers\RelationAnalyzerBase.cs" />
+    <Compile Include="Context\DeclarativeAnalyzers\UsesAnalyzer.cs" />
     <Compile Include="Context\MixinContextCollection.cs" />
     <Compile Include="Context\SynchronizedReadOnlyContextCollection.cs" />
     <Compile Include="Context\FluentBuilders\ClassContextBuilder.cs" />
@@ -65,7 +69,7 @@
     <Compile Include="CodeGeneration\ConcreteMixedTypeAttribute.cs" />
     <Compile Include="CodeGeneration\NamespaceChangingNameProvider.cs" />
     <Compile Include="CompleteInterfaceAttribute.cs" />
-    <Compile Include="Context\DeclarativeConfigurationAnalyzer.cs" />
+    <Compile Include="Context\DeclarativeAnalyzers\DeclarativeConfigurationAnalyzer.cs" />
     <Compile Include="Context\MixinContext.cs" />
     <Compile Include="Globalization\MixedMultiLingualResources.cs" />
     <Compile Include="Globalization\MixedResourceManagerResolver.cs" />

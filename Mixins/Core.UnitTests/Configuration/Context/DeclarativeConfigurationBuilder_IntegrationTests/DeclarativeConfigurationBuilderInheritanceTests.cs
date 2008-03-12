@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfigurationBuilderTests
+namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeConfigurationBuilder_IntegrationTests
 {
   [TestFixture]
   public class DeclarativeConfigurationBuilderInheritanceTests

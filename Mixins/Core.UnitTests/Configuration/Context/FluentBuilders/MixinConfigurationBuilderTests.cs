@@ -1,5 +1,7 @@
 using System;
 using NUnit.Framework;
+using Rhino.Mocks;
+using Rhino.Mocks.Interfaces;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Context.FluentBuilders;
 using Rubicon.Mixins.UnitTests.SampleTypes;
@@ -260,6 +262,45 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.FluentBuilders
       Assert.AreEqual (typeof (BaseType6), resolvedContext.Type);
       Assert.AreEqual (1, resolvedContext.Mixins.Count);
       Assert.IsTrue (resolvedContext.Mixins.ContainsKey (typeof (BT6Mixin1)));
+    }
+
+    [Test]
+    public void AddMixinToClass ()
+    {
+      MockRepository mockRepository = new MockRepository();
+      MixinConfigurationBuilder builder = mockRepository.CreateMock<MixinConfigurationBuilder>((MixinConfiguration) null);
+
+      Type targetType = typeof (object);
+      Type mixinType = typeof (string);
+      Type[] explicitDependencies = new Type[] { typeof (int) };
+      Type[] suppressedMixins = new Type[] { typeof (double) };
+
+      ClassContextBuilder classBuilderMock = mockRepository.CreateMock<ClassContextBuilder> (builder, targetType, null);
+      MixinContextBuilder mixinBuilderMock = mockRepository.CreateMock<MixinContextBuilder> (classBuilderMock, mixinType);
+
+      using (mockRepository.Ordered ())
+      {
+        Expect.Call (builder.AddMixinToClass (targetType, mixinType, explicitDependencies, suppressedMixins))
+            .CallOriginalMethod (OriginalCallOptions.CreateExpectation);
+        Expect.Call (builder.ForClass (targetType)).Return (classBuilderMock);
+        Expect.Call (classBuilderMock.AddMixin (mixinType)).Return (mixinBuilderMock);
+        Expect.Call (mixinBuilderMock.WithDependencies (explicitDependencies)).Return (mixinBuilderMock);
+        Expect.Call (mixinBuilderMock.SuppressMixins (suppressedMixins)).Return (classBuilderMock);
+      }
+
+      mockRepository.ReplayAll ();
+      MixinConfigurationBuilder returnedBuilder = builder.AddMixinToClass (targetType, mixinType, explicitDependencies, suppressedMixins);
+      Assert.AreSame (builder, returnedBuilder);
+      mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Mixin type System.Int32 applied to target class System.Object "
+        + "suppresses itself.")]
+    public void AddMixinToClass_WithSelfSuppressor ()
+    {
+      MixinConfigurationBuilder builder = new MixinConfigurationBuilder (null);
+      builder.AddMixinToClass (typeof (object), typeof (int), new Type[0], new Type[] {typeof (int)});
     }
   }
 }

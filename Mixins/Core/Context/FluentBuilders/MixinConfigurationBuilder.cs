@@ -64,6 +64,62 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     }
 
     /// <summary>
+    /// Adds the given mixin to the given target type with a number of explicit dependencies and suppressed mixins. This is a shortcut
+    /// method for calling <see cref="ForClass"/>, <see cref="ClassContextBuilder.AddMixin"/>, <see cref="MixinContextBuilder.WithDependencies"/>,
+    /// and <see cref="MixinContextBuilder.SuppressMixins"/> in a row.
+    /// </summary>
+    /// <param name="targetType">The target type to add a mixin for.</param>
+    /// <param name="mixinType">The mixin type to add.</param>
+    /// <param name="explicitDependencies">The explicit dependencies of the mixin in the context of the target type.</param>
+    /// <param name="suppressedMixins">The mixins suppressed by this mixin in the context of the target type.</param>
+    public virtual MixinConfigurationBuilder AddMixinToClass (Type targetType, Type mixinType, IEnumerable<Type> explicitDependencies, 
+        IEnumerable<Type> suppressedMixins)
+    {
+      MixinContextBuilder mixinContextBuilder = AddMixinToClass (targetType, mixinType);
+      CheckForSelfSuppressor (targetType, mixinType, suppressedMixins);
+
+      mixinContextBuilder
+          .WithDependencies (EnumerableUtility.ToArray (explicitDependencies))
+          .SuppressMixins (EnumerableUtility.ToArray (suppressedMixins));
+
+      return this;
+    }
+
+    private void CheckForSelfSuppressor (Type targetType, Type mixinType, IEnumerable<Type> suppressedMixins)
+    {
+      foreach (Type suppressedMixinType in suppressedMixins)
+      {
+        if (Rubicon.Utilities.ReflectionUtility.CanAscribe (mixinType, suppressedMixinType))
+        {
+          string message = string.Format ("Mixin type {0} applied to target class {1} suppresses itself.", mixinType.FullName,
+              targetType.FullName);
+          throw new InvalidOperationException (message);
+        }
+      }
+    }
+
+    private MixinContextBuilder AddMixinToClass (Type targetType, Type mixinType)
+    {
+      MixinContextBuilder mixinContextBuilder;
+      try
+      {
+        mixinContextBuilder = ForClass (targetType).AddMixin (mixinType);
+      }
+      catch (ArgumentException ex)
+      {
+        Type typeForMessage = mixinType;
+        if (typeForMessage.IsGenericType)
+          typeForMessage = typeForMessage.GetGenericTypeDefinition ();
+        string message = string.Format (
+            "Two instances of mixin {0} are configured for target type {1}.",
+            typeForMessage.FullName,
+            targetType.FullName);
+        throw new ConfigurationException (message, ex);
+      }
+      return mixinContextBuilder;
+    }
+
+    /// <summary>
     /// Builds a configuration object with the data gathered so far.
     /// </summary>
     /// <returns>A new <see cref="MixinConfiguration"/> instance incorporating all the data acquired so far.</returns>
