@@ -27,15 +27,15 @@ namespace Rubicon.Mixins.Context.DeclarativeAnalyzers
       _completeInterfaceAnalyzer = interfaceAnalyzer;
     }
     
-    public void Analyze (IEnumerable<Type> extenders, IEnumerable<Type> users, IEnumerable<Type> completeInterfaces)
+    public void Analyze (IEnumerable<Type> types)
     {
-      foreach (Type extender in extenders)
+      foreach (Type extender in types)
         _extendsAnalyzer.Analyze (extender);
 
-      foreach (Type user in users)
+      foreach (Type user in types)
         _usesAnalyzer.Analyze (user);
 
-      foreach (Type completeInterface in completeInterfaces)
+      foreach (Type completeInterface in types)
         _completeInterfaceAnalyzer.Analyze (completeInterface);
     }
   }

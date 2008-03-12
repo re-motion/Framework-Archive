@@ -156,9 +156,6 @@ namespace Rubicon.Mixins.Context
 
     private readonly MixinConfiguration _parentConfiguration;
 
-    private readonly Set<Type> _extenders = new Set<Type>();
-    private readonly Set<Type> _users = new Set<Type>();
-    private readonly Set<Type> _completeInterfaces = new Set<Type>();
     private readonly Set<Type> _allTypes = new Set<Type> ();
 
     /// <summary>
@@ -206,25 +203,15 @@ namespace Rubicon.Mixins.Context
       if (type.IsGenericType && !type.IsGenericTypeDefinition)
         throw new ArgumentException ("Type must be non-generic or a generic type definition.", "type");
 
-      if (!_allTypes.Contains (type))
+      _allTypes.Add (type);
+
+      if (type.BaseType != null)
       {
-        _allTypes.Add (type);
-
-        if (type.IsDefined (typeof (ExtendsAttribute), false))
-          _extenders.Add (type);
-        if (type.IsDefined (typeof (UsesAttribute), false))
-          _users.Add (type);
-        if (type.IsDefined (typeof (CompleteInterfaceAttribute), false))
-          _completeInterfaces.Add (type);
-
-        if (type.BaseType != null)
-        {
-          // When analyzing types for attributes, we want type definitions, not specializations
-          if (type.BaseType.IsGenericType)
-            AddType (type.BaseType.GetGenericTypeDefinition());
-          else
-            AddType (type.BaseType);
-        }
+        // When analyzing types for attributes, we want type definitions, not specializations
+        if (type.BaseType.IsGenericType)
+          AddType (type.BaseType.GetGenericTypeDefinition());
+        else
+          AddType (type.BaseType);
       }
 
       return this;
@@ -244,7 +231,7 @@ namespace Rubicon.Mixins.Context
       
       DeclarativeConfigurationAnalyzer configurationAnalyzer = 
           new DeclarativeConfigurationAnalyzer (configurationBuilder, extendsAnalyzer, usesAnalyzer, completeInterfaceAnalyzer);
-      configurationAnalyzer.Analyze(_extenders, _users, _completeInterfaces);
+      configurationAnalyzer.Analyze(_allTypes);
       
       return configurationBuilder.BuildConfiguration();
     }

@@ -29,25 +29,23 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.DeclarativeAnalyzers
     [Test]
     public void Analyze ()
     {
-      Type[] extenders = new Type[] { typeof (object), typeof (string) };
-      Type[] users = new Type[] { typeof (int), typeof (double) };
-      Type[] completeInterfaces = new Type[] { typeof (IServiceProvider), typeof (ICloneable) };
+      Type[] types = new Type[] { typeof (object), typeof (string) };
 
       using (_mockRepository.Ordered ())
       {
         _extendsAnalyzerMock.Analyze (typeof (object)); // expectation
         _extendsAnalyzerMock.Analyze (typeof (string)); // expectation
-        _usesAnalyzerMock.Analyze (typeof (int)); // expectation
-        _usesAnalyzerMock.Analyze (typeof (double)); // expectation
-        _completeInterfaceAnalyzerMock.Analyze (typeof (IServiceProvider)); // expectation
-        _completeInterfaceAnalyzerMock.Analyze (typeof (ICloneable)); // expectation
+        _usesAnalyzerMock.Analyze (typeof (object)); // expectation
+        _usesAnalyzerMock.Analyze (typeof (string)); // expectation
+        _completeInterfaceAnalyzerMock.Analyze (typeof (object)); // expectation
+        _completeInterfaceAnalyzerMock.Analyze (typeof (string)); // expectation
       }
 
       _mockRepository.ReplayAll();
 
       DeclarativeConfigurationAnalyzer analyzer = new DeclarativeConfigurationAnalyzer (_configurationBuilderMock,
           _extendsAnalyzerMock, _usesAnalyzerMock, _completeInterfaceAnalyzerMock);
-      analyzer.Analyze (extenders, users, completeInterfaces);
+      analyzer.Analyze (types);
 
       _mockRepository.VerifyAll();
     }
