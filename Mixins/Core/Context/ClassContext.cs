@@ -57,8 +57,8 @@ namespace Rubicon.Mixins.Context
     private static int CalculateHashCode (ClassContext classContext)
     {
       return classContext.Type.GetHashCode ()
-          ^ EqualityUtility.GetRotatedHashCode (classContext.Mixins)
-          ^ EqualityUtility.GetRotatedHashCode (classContext.CompleteInterfaces);
+          ^ EqualityUtility.GetXorHashCode (classContext.Mixins)
+          ^ EqualityUtility.GetXorHashCode (classContext.CompleteInterfaces);
     }
 
     private readonly Type _type;

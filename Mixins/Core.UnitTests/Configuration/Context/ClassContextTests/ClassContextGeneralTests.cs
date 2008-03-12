@@ -205,5 +205,106 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context.ClassContextTests
       Assert.AreEqual (typeof (BaseType2), clone.Type);
       Assert.AreEqual (typeof (BaseType1), source.Type);
     }
+
+    [Test]
+    public void Equals_True ()
+    {
+      ClassContext c1 =
+          new ClassContext (
+              typeof (BaseType1),
+              new MixinContext[] {new MixinContext (typeof (BT1Mixin1)), new MixinContext (typeof (BT1Mixin2))},
+              new Type[] {typeof (IBT5MixinC1), typeof (IBT5MixinC2)});
+      ClassContext c2 =
+          new ClassContext (
+              typeof (BaseType1),
+              new MixinContext[] { new MixinContext (typeof (BT1Mixin1)), new MixinContext (typeof (BT1Mixin2)) },
+              new Type[] { typeof (IBT5MixinC1), typeof (IBT5MixinC2) });
+      ClassContext c3 =
+          new ClassContext (
+              typeof (BaseType1),
+              new MixinContext[] { new MixinContext (typeof (BT1Mixin2)), new MixinContext (typeof (BT1Mixin1)) },
+              new Type[] { typeof (IBT5MixinC1), typeof (IBT5MixinC2) });
+      ClassContext c4 =
+          new ClassContext (
+              typeof (BaseType1),
+              new MixinContext[] {new MixinContext (typeof (BT1Mixin1)), new MixinContext (typeof (BT1Mixin2))},
+              new Type[] { typeof (IBT5MixinC2), typeof (IBT5MixinC1) });
+
+      Assert.AreEqual (c1, c2);
+      Assert.AreEqual (c1, c3);
+      Assert.AreEqual (c1, c4);
+
+      ClassContext c5 = new ClassContext (typeof (BaseType1));
+      ClassContext c6 = new ClassContext (typeof (BaseType1));
+      Assert.AreEqual (c5, c6);
+    }
+
+    [Test]
+    public void Equals_False ()
+    {
+      ClassContext c1 =
+          new ClassContext (
+              typeof (BaseType1),
+              new MixinContext[] { new MixinContext (typeof (BT1Mixin1)), new MixinContext (typeof (BT1Mixin2)) },
+              new Type[] { typeof (IBT5MixinC1), typeof (IBT5MixinC2) });
+      ClassContext c2 =
+          new ClassContext (
+              typeof (BaseType2),
+              new MixinContext[] { new MixinContext (typeof (BT1Mixin1)), new MixinContext (typeof (BT1Mixin2)) },
+              new Type[] { typeof (IBT5MixinC1), typeof (IBT5MixinC2) });
+      ClassContext c3 =
+          new ClassContext (
+              typeof (BaseType1),
+              new MixinContext[] { new MixinContext (typeof (BT1Mixin2)), new MixinContext (typeof (BT1Mixin1)) },
+              new Type[] { typeof (IBT5MixinC1) });
+      ClassContext c4 =
+          new ClassContext (
+              typeof (BaseType1),
+              new MixinContext[] { new MixinContext (typeof (BT1Mixin1)) },
+              new Type[] { typeof (IBT5MixinC2), typeof (IBT5MixinC1) });
+      ClassContext c5 =
+          new ClassContext (
+              typeof (BaseType1),
+              new MixinContext[] { new MixinContext (typeof (BT1Mixin1), typeof (BT1Mixin2)), new MixinContext (typeof (BT1Mixin2)) },
+              new Type[] { typeof (IBT5MixinC1), typeof (IBT5MixinC2) });
+
+      Assert.AreNotEqual (c1, c2);
+      Assert.AreNotEqual (c1, c3);
+      Assert.AreNotEqual (c1, c4);
+      Assert.AreNotEqual (c1, c5);
+    }
+
+    [Test]
+    public void GetHashCode_Equal ()
+    {
+      ClassContext c1 =
+          new ClassContext (
+              typeof (BaseType1),
+              new MixinContext[] { new MixinContext (typeof (BT1Mixin1)), new MixinContext (typeof (BT1Mixin2)) },
+              new Type[] { typeof (IBT5MixinC1), typeof (IBT5MixinC2) });
+      ClassContext c2 =
+          new ClassContext (
+              typeof (BaseType1),
+              new MixinContext[] { new MixinContext (typeof (BT1Mixin1)), new MixinContext (typeof (BT1Mixin2)) },
+              new Type[] { typeof (IBT5MixinC1), typeof (IBT5MixinC2) });
+      ClassContext c3 =
+          new ClassContext (
+              typeof (BaseType1),
+              new MixinContext[] { new MixinContext (typeof (BT1Mixin2)), new MixinContext (typeof (BT1Mixin1)) },
+              new Type[] { typeof (IBT5MixinC1), typeof (IBT5MixinC2) });
+      ClassContext c4 =
+          new ClassContext (
+              typeof (BaseType1),
+              new MixinContext[] { new MixinContext (typeof (BT1Mixin1)), new MixinContext (typeof (BT1Mixin2)) },
+              new Type[] { typeof (IBT5MixinC2), typeof (IBT5MixinC1) });
+
+      Assert.AreEqual (c1.GetHashCode (), c2.GetHashCode ());
+      Assert.AreEqual (c1.GetHashCode (), c3.GetHashCode ());
+      Assert.AreEqual (c1.GetHashCode (), c4.GetHashCode ());
+
+      ClassContext c5 = new ClassContext (typeof (BaseType1));
+      ClassContext c6 = new ClassContext (typeof (BaseType1));
+      Assert.AreEqual (c5.GetHashCode (), c6.GetHashCode ());
+    }
   }
 }

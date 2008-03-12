@@ -49,5 +49,44 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
 
       Assert.That(mixinContext.ExplicitDependencies, Is.EquivalentTo(new Type[] { typeof(BT6Mixin2), typeof(BT6Mixin3<>) }));
     }
+
+    [Test]
+    public void Equals_True ()
+    {
+      MixinContext c1 = new MixinContext (typeof (BT6Mixin1), typeof (BT6Mixin2), typeof (BT6Mixin3<>));
+      MixinContext c2 = new MixinContext (typeof (BT6Mixin1), typeof (BT6Mixin2), typeof (BT6Mixin3<>));
+      MixinContext c3 = new MixinContext (typeof (BT6Mixin1));
+      MixinContext c4 = new MixinContext (typeof (BT6Mixin1));
+      MixinContext c5 = new MixinContext (typeof (BT6Mixin1), typeof (BT6Mixin3<>), typeof (BT6Mixin2));
+
+      Assert.AreEqual (c1, c2);
+      Assert.AreEqual (c3, c4);
+      Assert.AreEqual (c1, c5);
+    }
+
+    [Test]
+    public void Equals_False()
+    {
+      MixinContext c1 = new MixinContext (typeof (BT6Mixin1), typeof (BT6Mixin2), typeof (BT6Mixin3<>));
+      MixinContext c2 = new MixinContext (typeof (BT6Mixin1), typeof (BT6Mixin3<>));
+      MixinContext c3 = new MixinContext (typeof (BT6Mixin2), typeof (BT6Mixin3<>));
+
+      Assert.AreNotEqual (c1, c2);
+      Assert.AreNotEqual (c2, c3);
+    }
+
+    [Test]
+    public void GetHashCode_Equal ()
+    {
+      MixinContext c1 = new MixinContext (typeof (BT6Mixin1), typeof (BT6Mixin2), typeof (BT6Mixin3<>));
+      MixinContext c2 = new MixinContext (typeof (BT6Mixin1), typeof (BT6Mixin2), typeof (BT6Mixin3<>));
+      MixinContext c3 = new MixinContext (typeof (BT6Mixin1));
+      MixinContext c4 = new MixinContext (typeof (BT6Mixin1));
+      MixinContext c5 = new MixinContext (typeof (BT6Mixin1), typeof (BT6Mixin3<>), typeof (BT6Mixin2));
+
+      Assert.AreEqual (c1.GetHashCode (), c2.GetHashCode ());
+      Assert.AreEqual (c3.GetHashCode (), c4.GetHashCode ());
+      Assert.AreEqual (c1.GetHashCode (), c5.GetHashCode ());
+    }
   }
 }

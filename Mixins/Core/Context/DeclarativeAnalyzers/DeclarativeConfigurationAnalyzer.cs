@@ -3,40 +3,47 @@ using System.Collections.Generic;
 using Rubicon.Collections;
 using Rubicon.Mixins.Context.FluentBuilders;
 using Rubicon.Utilities;
+using System.Reflection;
 
 namespace Rubicon.Mixins.Context.DeclarativeAnalyzers
 {
   public class DeclarativeConfigurationAnalyzer
   {
-    private readonly MixinConfigurationBuilder _configurationBuilder;
     private readonly ExtendsAnalyzer _extendsAnalyzer;
     private readonly UsesAnalyzer _usesAnalyzer;
+    private readonly MixAnalyzer _mixAnalyzer;
     private readonly CompleteInterfaceAnalyzer _completeInterfaceAnalyzer;
 
-    public DeclarativeConfigurationAnalyzer (MixinConfigurationBuilder configurationBuilder, ExtendsAnalyzer extendsAnalyzer,
-        UsesAnalyzer usesAnalyzer, CompleteInterfaceAnalyzer interfaceAnalyzer)
+    public DeclarativeConfigurationAnalyzer (ExtendsAnalyzer extendsAnalyzer, UsesAnalyzer usesAnalyzer, CompleteInterfaceAnalyzer interfaceAnalyzer, 
+        MixAnalyzer mixAnalyzer)
     {
-      ArgumentUtility.CheckNotNull ("configurationBuilder", configurationBuilder);
       ArgumentUtility.CheckNotNull ("extendsAnalyzer", extendsAnalyzer);
       ArgumentUtility.CheckNotNull ("usesAnalyzer", usesAnalyzer);
       ArgumentUtility.CheckNotNull ("interfaceAnalyzer", interfaceAnalyzer);
+      ArgumentUtility.CheckNotNull ("mixAnalyzer", mixAnalyzer);
 
-      _configurationBuilder = configurationBuilder;
       _extendsAnalyzer = extendsAnalyzer;
       _usesAnalyzer = usesAnalyzer;
       _completeInterfaceAnalyzer = interfaceAnalyzer;
+      _mixAnalyzer = mixAnalyzer;
     }
     
     public void Analyze (IEnumerable<Type> types)
     {
-      foreach (Type extender in types)
-        _extendsAnalyzer.Analyze (extender);
+      Set<Assembly> assemblies = new Set<Assembly>();
 
-      foreach (Type user in types)
-        _usesAnalyzer.Analyze (user);
+      foreach (Type type in types)
+      {
+        _extendsAnalyzer.Analyze (type);
+        _usesAnalyzer.Analyze (type);
+        _completeInterfaceAnalyzer.Analyze (type);
 
-      foreach (Type completeInterface in types)
-        _completeInterfaceAnalyzer.Analyze (completeInterface);
+        if (!assemblies.Contains (type.Assembly))
+        {
+          assemblies.Add (type.Assembly);
+          _mixAnalyzer.Analyze (type.Assembly);
+        }
+      }
     }
   }
 }

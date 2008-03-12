@@ -50,7 +50,7 @@ namespace Rubicon.Mixins.Context
       MixinType = mixinType;
       _explicitDependencies = new ReadOnlyContextCollection<Type, Type> (delegate (Type t) { return t; }, explicitDependencies);
 
-      _cachedHashCode = MixinType.GetHashCode () ^ EqualityUtility.GetRotatedHashCode (ExplicitDependencies);
+      _cachedHashCode = MixinType.GetHashCode () ^ EqualityUtility.GetXorHashCode (ExplicitDependencies);
     }
 
     /// <summary>

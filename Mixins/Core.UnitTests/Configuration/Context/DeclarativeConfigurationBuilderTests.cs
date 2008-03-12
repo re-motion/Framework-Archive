@@ -13,11 +13,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
   public class DeclarativeConfigurationBuilderTests
   {
     private DeclarativeConfigurationBuilder _builder;
+    private ClassContext _globalClassContext;
 
     [SetUp]
     public void SetUp ()
     {
       _builder = new DeclarativeConfigurationBuilder (null);
+      _globalClassContext = new ClassContextBuilder (typeof (TargetClassForGlobalMix))
+          .AddMixin (typeof (MixinForGlobalMix)).WithDependency (typeof (AdditionalDependencyForGlobalMix))
+          .AddMixin (typeof (AdditionalDependencyForGlobalMix)).BuildClassContext ();
     }
 
     [Test]
@@ -112,7 +116,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
       ClassContext c1 = new ClassContext (typeof (User), typeof (NullMixin));
       ClassContext c2 = new ClassContextBuilder(typeof (NullTarget))
           .AddMixin (typeof (Extender)).AddCompleteInterface (typeof (ICompleteInterface)).BuildClassContext ();
-      Assert.That (configuration.ClassContexts, Is.EquivalentTo (new object[] { c1, c2 }));
+      Assert.That (configuration.ClassContexts, Is.EquivalentTo (new object[] { c1, c2, _globalClassContext }));
     }
 
     [Test]
@@ -124,7 +128,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
 
       MixinConfiguration configuration = builder.BuildConfiguration ();
       ClassContext c1 = new ClassContext (typeof (User), typeof (NullMixin));
-      Assert.That (configuration.ClassContexts, Is.EquivalentTo (new object[] { c1, parentConfiguration.ClassContexts.GetExact (typeof (int)) }));
+      Assert.That (configuration.ClassContexts,
+          Is.EquivalentTo (new object[] { c1, parentConfiguration.ClassContexts.GetExact (typeof (int)), _globalClassContext }));
     }
   }
 }

@@ -143,6 +143,23 @@ namespace Rubicon.Utilities
     }
 
     /// <summary>
+    /// Gets a hash code for the given enumerable. The hash code is calculated by combining the hash codes of the enumerated objects using the
+    /// XOR operation. This is usually suboptimal to <see cref="GetRotatedHashCode(IEnumerable)"/> unless the ordering of enumerated objects
+    /// should explicitly be ignored.
+    /// </summary>
+    /// <param name="objects">The object enumeration for which a hash code should be calculated.</param>
+    /// <returns>The combined hash code of all objects in the enumeration.</returns>
+    /// <remarks>For a given set of objects, this method will always return the same value, regardless of the objects' order.</remarks>
+    public static int GetXorHashCode (IEnumerable objects)
+    {
+      int hc = 0;
+      foreach (object value in objects)
+        hc ^= SafeGetHashCode (value);
+
+      return hc;
+    }
+
+    /// <summary>
     /// Returns whether two equatable objects are equal.
     /// </summary>
     /// <remarks>
@@ -203,5 +220,6 @@ namespace Rubicon.Utilities
       else
         return a.Equals ((object) b);
     }
+   
   }
 }
