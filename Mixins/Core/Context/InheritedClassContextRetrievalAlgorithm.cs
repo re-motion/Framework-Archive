@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Context
@@ -23,32 +24,15 @@ namespace Rubicon.Mixins.Context
       if (exactValue != null)
         return exactValue;
 
-      ClassContext definitionValue = null;
+      ClassContextCollector collector = new ClassContextCollector();
       if (type.IsGenericType && !type.IsGenericTypeDefinition)
-        definitionValue = _inheritanceAwareGetter (type.GetGenericTypeDefinition ());
-
-      ClassContext baseValue = null;
+        collector.Add (_inheritanceAwareGetter (type.GetGenericTypeDefinition ()));
       if (type.BaseType != null)
-        baseValue = _inheritanceAwareGetter (type.BaseType);
+        collector.Add (_inheritanceAwareGetter (type.BaseType));
+      foreach (Type interfaceType in type.GetInterfaces ())
+        collector.Add (_inheritanceAwareGetter (interfaceType));
 
-      if (definitionValue != null && baseValue != null)
-        return CombineContexts (type, baseValue, definitionValue);
-      else if (definitionValue != null)
-        return AdjustContext (type, definitionValue);
-      else if (baseValue != null)
-        return AdjustContext (type, baseValue);
-      else
-        return null;
-    }
-
-    private ClassContext CombineContexts (Type type, ClassContext inheritedOne, ClassContext inheritedTwo)
-    {
-      return new ClassContext (type).InheritFrom (new ClassContext[] {inheritedOne, inheritedTwo});
-    }
-
-    private ClassContext AdjustContext (Type type, ClassContext inherited)
-    {
-      return inherited.CloneForSpecificType (type);
+      return collector.GetCombinedContexts (type);
     }
   }
 }

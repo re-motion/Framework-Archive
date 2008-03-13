@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using Rubicon.Collections;
+using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Validation;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
@@ -21,6 +25,10 @@ namespace Rubicon.Mixins.MixerTool
     private readonly string _assemblyOutputDirectory;
     private INameProvider _nameProvider = GuidNameProvider.Instance;
 
+    private readonly List<Tuple<ClassContext, Exception>> _errors = new List<Tuple<ClassContext, Exception>> ();
+    private readonly Dictionary<Type, ClassContext> _processedContexts = new Dictionary<Type, ClassContext> ();
+    private readonly Dictionary<Type, Type> _finishedTypes = new Dictionary<Type, Type> ();
+
     public Mixer (string signedAssemblyName, string unsignedAssemblyName, string assemblyOutputDirectory)
     {
       ArgumentUtility.CheckNotNull ("signedAssemblyName", signedAssemblyName);
@@ -38,8 +46,27 @@ namespace Rubicon.Mixins.MixerTool
       set { _nameProvider = value; }
     }
 
+    public ReadOnlyCollection<Tuple<ClassContext, Exception>> Errors
+    {
+      get { return _errors.AsReadOnly(); }
+    }
+
+    public Dictionary<Type, ClassContext> ProcessedContexts
+    {
+      get { return _processedContexts; }
+    }
+
+    public Dictionary<Type, Type> FinishedTypes
+    {
+      get { return _finishedTypes; }
+    }
+
     public void Execute ()
     {
+      _errors.Clear();
+      _processedContexts.Clear();
+      _finishedTypes.Clear();
+
       s_log.InfoFormat ("Base directory is '{0}'.", AppDomain.CurrentDomain.BaseDirectory);
       ConcreteTypeBuilder originalBuilder = ConcreteTypeBuilder.Current;
       try
@@ -91,51 +118,66 @@ namespace Rubicon.Mixins.MixerTool
     private void GenerateForConfiguredContexts (MixinConfiguration configuration)
     {
       foreach (ClassContext classContext in configuration.ClassContexts)
-      {
-        if (classContext.Type.IsGenericTypeDefinition)
-          s_log.WarnFormat ("Type {0} is a generic type definition and is thus ignored.", classContext.Type);
-        else
-          GenerateForClassContext (classContext);
-      }
+        GenerateForClassContext (classContext);
     }
 
     private void GenerateForInheritedContexts (MixinConfiguration configuration, ICollection typesToCheck)
     {
       foreach (Type type in typesToCheck)
       {
-        if (type.IsGenericTypeDefinition)
-          s_log.WarnFormat ("Type {0} is a generic type definition and is thus ignored.", type);
-        else
-        {
-          ClassContext contextWithoutInheritance = configuration.ClassContexts.GetExact (type);
-          ClassContext contextWithInheritance = configuration.ClassContexts.GetWithInheritance (type);
-          if (contextWithoutInheritance == null && contextWithInheritance != null)
-            GenerateForClassContext (contextWithInheritance);
-        }
+        ClassContext contextWithoutInheritance = configuration.ClassContexts.GetExact (type);
+        ClassContext contextWithInheritance = configuration.ClassContexts.GetWithInheritance (type);
+        if (contextWithoutInheritance == null && contextWithInheritance != null)
+          GenerateForClassContext (contextWithInheritance);
       }
     }
 
     private void GenerateForClassContext (ClassContext context)
     {
+      if (!ShouldProcessContext (context))
+        return;
+
+      _processedContexts.Add (context.Type, context);
+
       try
       {
         ClassContextBeingProcessed (this, new ClassContextEventArgs (context));
         Type concreteType = TypeFactory.GetConcreteType (context.Type);
         s_log.InfoFormat ("{0} : {1}", context.ToString(), concreteType.FullName);
+        _finishedTypes.Add (context.Type, concreteType);
       }
       catch (ValidationException validationException)
       {
+        _errors.Add (new Tuple<ClassContext, Exception> (context, validationException));
         s_log.ErrorFormat (validationException, "{0} : Validation error when generating type", context.ToString());
         ConsoleDumper.DumpValidationResults (validationException.ValidationLog.GetResults());
       }
       catch (Exception ex)
       {
-        s_log.ErrorFormat (ex, "{0} : Unexpected error when generating type", context.ToString());
+        _errors.Add (new Tuple<ClassContext, Exception> (context, ex));
+        s_log.ErrorFormat (ex, "{0} : Unexpected error when generating type", context.ToString ());
         using (ConsoleUtility.EnterColorScope (ConsoleColor.Red, null))
         {
           Console.WriteLine (ex.ToString());
         }
       }
+    }
+
+    private bool ShouldProcessContext (ClassContext context)
+    {
+      if (context.Type.IsGenericTypeDefinition)
+      {
+        s_log.WarnFormat ("Type {0} is a generic type definition and is thus ignored.", context.Type);
+        return false;
+      }
+
+      if (context.Type.IsInterface)
+      {
+        s_log.WarnFormat ("Type {0} is an interface and is thus ignored.", context.Type);
+        return false;
+      }
+
+      return true;
     }
 
     private void Save ()

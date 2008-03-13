@@ -51,6 +51,11 @@ namespace Rubicon.Utilities
           yield return item;
       }
     }
+
+    public static T[] CombineToArray<T> (params IEnumerable<T>[] sources)
+    {
+      return ToArray (Combine (sources));
+    }
     
     public static IList<T> ToList<T> (IEnumerable<T> source)
     {

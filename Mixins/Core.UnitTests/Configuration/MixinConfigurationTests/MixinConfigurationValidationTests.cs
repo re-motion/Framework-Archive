@@ -37,37 +37,21 @@ namespace Rubicon.Mixins.UnitTests.Configuration.MixinConfigurationTests
       }
     }
 
-    [Test]
-    public void ValidateWithGenerics ()
-    {
-      using (MixinConfiguration.BuildNew().EnterScope ())
-      {
-        using (MixinConfiguration.BuildFromActive().ForClass (typeof (KeyValuePair<,>)).Clear().AddMixins (typeof (NullMixin)).EnterScope())
-        {
-          IValidationLog log = MixinConfiguration.ActiveConfiguration.Validate ();
-          Assert.IsTrue (log.GetNumberOfFailures () > 0);
-        }
-      }
-    }
-
     class UninstantiableGeneric<T>
-        where T : ISerializable, IServiceProvider
+      where T : ISerializable, IServiceProvider
     {
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "The MixinConfiguration contains a ClassContext for the generic type "
-        + ".*UninstantiableGeneric\\`1\\[T\\], of which it cannot make a closed type. "
-            + "Because closed types are needed for validation, the MixinConfiguration cannot be validated as a whole. The configuration might still "
-                + "be correct, but validation must be deferred to TypeFactory.GetActiveConfiguration.", MatchType = MessageMatch.Regex)]
-    public void ValidationThrowsWhenGenericsCannotBeSpecialized ()
+    public void ValidateWithGenerics_IgnoresGenerics ()
     {
-      using (MixinConfiguration.BuildNew().EnterScope ())
+      using (MixinConfiguration.BuildNew ()
+          .ForClass (typeof (KeyValuePair<,>)).Clear ().AddMixins (typeof (NullMixin))
+          .ForClass (typeof (UninstantiableGeneric<>)).Clear().AddMixins (typeof (NullMixin))
+          .EnterScope ())
       {
-        using (MixinConfiguration.BuildFromActive().ForClass (typeof (UninstantiableGeneric<>)).Clear().AddMixins (typeof (NullMixin)).EnterScope())
-        {
-          MixinConfiguration.ActiveConfiguration.Validate ();
-        }
+        IValidationLog log = MixinConfiguration.ActiveConfiguration.Validate ();
+        Assert.AreEqual (0, log.GetNumberOfFailures ());
       }
     }
   }

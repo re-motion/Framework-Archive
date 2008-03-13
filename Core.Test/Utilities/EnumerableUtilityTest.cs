@@ -22,5 +22,12 @@ namespace Rubicon.Core.UnitTests.Utilities
       Assert.That (EnumerableUtility.ToArray (castEnumerable1), Is.EqualTo (sourceArray));
       Assert.That (EnumerableUtility.ToArray (castEnumerable2), Is.EqualTo (sourceArray));
     }
+
+    [Test]
+    public void CombineToArray ()
+    {
+      int[] combined = EnumerableUtility.CombineToArray (new int[] {1, 2, 3}, new List<int> (new int[] {3, 4, 5}));
+      Assert.That (combined, Is.EqualTo (new int[] {1, 2, 3, 3, 4, 5}));
+    }
   }
 }

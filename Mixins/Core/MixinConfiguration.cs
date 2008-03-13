@@ -178,31 +178,16 @@ namespace Rubicon.Mixins
 
       foreach (ClassContext classContext in ActiveConfiguration.ClassContexts)
       {
-        Type typeToVerify;
-        if (classContext.Type.IsGenericTypeDefinition)
+        if (!classContext.Type.IsGenericTypeDefinition && !classContext.Type.IsInterface)
         {
           try
           {
-            typeToVerify = GenericTypeInstantiator.EnsureClosedType (classContext.Type);
+            definitions.Add (TypeFactory.GetActiveConfiguration (classContext.Type));
           }
-          catch (NotSupportedException ex)
+          catch (ValidationException exception)
           {
-            string message = string.Format ("The MixinConfiguration contains a ClassContext for the generic type {0}, of which it cannot make a "
-                + "closed type. Because closed types are needed for validation, the MixinConfiguration cannot be validated as a whole. The "
-                    + "configuration might still be correct, but validation must be deferred to TypeFactory.GetActiveConfiguration.", classContext.Type);
-            throw new NotSupportedException (message, ex);
+            exceptions.Add (exception);
           }
-        }
-        else
-          typeToVerify = classContext.Type;
-
-        try
-        {
-          definitions.Add (TypeFactory.GetActiveConfiguration (typeToVerify));
-        }
-        catch (ValidationException exception)
-        {
-          exceptions.Add (exception);
         }
       }
       DefaultValidationLog log = Validator.Validate (definitions);

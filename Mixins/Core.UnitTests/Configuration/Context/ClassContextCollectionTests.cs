@@ -194,6 +194,37 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     }
 
     [Test]
+    public void GetWithInheritance_Inheritance_FromInterface ()
+    {
+      _collection.Clear ();
+      ClassContext classContext = new ClassContext (typeof (IMixedInterface), typeof (NullMixin), typeof (NullMixin2));
+      _collection.Add (classContext);
+
+      ClassContext inherited = _collection.GetWithInheritance (typeof (ClassWithMixedInterface));
+      Assert.IsNotNull (inherited);
+      Assert.AreEqual (typeof (ClassWithMixedInterface), inherited.Type);
+      Assert.IsTrue (inherited.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (inherited.Mixins.ContainsKey (typeof (NullMixin2)));
+    }
+
+    [Test]
+    public void GetWithInheritance_Inheritance_FromInterfaceAndBase ()
+    {
+      _collection.Clear();
+      ClassContext classContext1 = new ClassContext (typeof (IMixedInterface), typeof (NullMixin), typeof (NullMixin2));
+      ClassContext classContext2 = new ClassContext (typeof (object), typeof (NullMixin3));
+      _collection.Add (classContext1);
+      _collection.Add (classContext2);
+
+      ClassContext inherited = _collection.GetWithInheritance (typeof (ClassWithMixedInterface));
+      Assert.IsNotNull (inherited);
+      Assert.AreEqual (typeof (ClassWithMixedInterface), inherited.Type);
+      Assert.IsTrue (inherited.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (inherited.Mixins.ContainsKey (typeof (NullMixin2)));
+      Assert.IsTrue (inherited.Mixins.ContainsKey (typeof (NullMixin3)));
+    }
+
+    [Test]
     public void GetWithInheritance_Inheritance_FromGenericTypeDefinition ()
     {
       _collection.Clear();

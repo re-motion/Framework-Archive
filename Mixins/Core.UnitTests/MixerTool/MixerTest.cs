@@ -77,6 +77,18 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
     }
 
     [Test]
+    public void MixerCanBeExecutedTwice ()
+    {
+      AppDomainRunner.Run (
+          delegate
+          {
+            Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
+            mixer.Execute ();
+            mixer.Execute ();
+          });
+    }
+
+    [Test]
     public void MixerToolCanBeRunTwice ()
     {
       AppDomainRunner.Run (
@@ -94,92 +106,127 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
     }
 
     [Test]
-    public void MixerToolGeneratesTypesForDefaultMixinConfiguration ()
+    public void DefaultConfigurationIsProcessed ()
+    {
+      AppDomainRunner.Run (
+          delegate
+          {
+            Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
+            mixer.Execute ();
+
+            Set<ClassContext> contextsFromConfig = GetExpectedDefaultContexts ();
+            Assert.That (mixer.ProcessedContexts.Values, Is.EquivalentTo (contextsFromConfig));
+          });
+    }
+
+    [Test]
+    public void TypesAreGeneratedForProcessedContexts ()
     {
       AppDomainRunner.Run (
           delegate
           {
             Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
             mixer.Execute();
+            
             Set<ClassContext> contextsFromTypes = GetContextsFromGeneratedTypes (Assembly.LoadFile (UnsignedAssemblyPath));
             contextsFromTypes.AddRange (GetContextsFromGeneratedTypes (Assembly.LoadFile (SignedAssemblyPath)));
-            Set<ClassContext> contextsFromConfig = new Set<ClassContext>();
-            foreach (ClassContext context in MixinConfiguration.ActiveConfiguration.ClassContexts)
-            {
-              if (!context.Type.IsGenericTypeDefinition)
-                contextsFromConfig.Add (context);
-            }
-
-            foreach (Type t in ContextAwareTypeDiscoveryService.GetInstance ().GetTypes (null, false))
-            {
-              if (!t.IsGenericTypeDefinition)
-              {
-                ClassContext context = MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance (t);
-                if (context != null)
-                  contextsFromConfig.Add (context);
-              }
-            }
-
+            
+            Set<ClassContext> contextsFromConfig = GetExpectedDefaultContexts();
             Assert.That (contextsFromTypes, Is.EquivalentTo (contextsFromConfig));
           });
     }
 
+    private Set<ClassContext> GetExpectedDefaultContexts ()
+    {
+      Set<ClassContext> contextsFromConfig = new Set<ClassContext>();
+      foreach (ClassContext context in MixinConfiguration.ActiveConfiguration.ClassContexts)
+      {
+        if (!context.Type.IsGenericTypeDefinition && !context.Type.IsInterface)
+          contextsFromConfig.Add (context);
+      }
+
+      foreach (Type t in ContextAwareTypeDiscoveryService.GetInstance ().GetTypes (null, false))
+      {
+        if (!t.IsGenericTypeDefinition && !t.IsInterface)
+        {
+          ClassContext context = MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance (t);
+          if (context != null)
+            contextsFromConfig.Add (context);
+        }
+      }
+      return contextsFromConfig;
+    }
+
     [Test]
-    public void MixerToolGeneratesTypesForActiveMixinConfiguration ()
+    public void NoErrorsInDefaultConfiguration ()
     {
       AppDomainRunner.Run (
           delegate
           {
             Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
-            using (MixinConfiguration.BuildNew().EnterScope())
-            {
-              using (MixinConfiguration.BuildFromActive().ForClass<BaseType1>().Clear().AddMixins (typeof (BT1Mixin1)).EnterScope())
-              {
-                mixer.Execute();
-              }
-            }
-            Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
-            Assert.AreEqual (2, theAssembly.GetTypes().Length); // one for the base type, one for the base call proxy
+            mixer.Execute ();
+            Assert.IsEmpty (mixer.Errors);
           });
     }
 
     [Test]
-    public void MixerToolGeneratesTypesForSubclassesOfTargetTypes ()
+    public void GenericTypeDefinitionsAreIgnored ()
     {
       AppDomainRunner.Run (
           delegate
           {
             Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
+            mixer.Execute ();
+            Assert.IsTrue (new List<ClassContext> (mixer.ProcessedContexts.Values)
+                .TrueForAll (delegate (ClassContext c) { return !c.Type.IsGenericTypeDefinition; }));
+          });
+    }
+
+    [Test]
+    public void InterfacesAreIgnored ()
+    {
+      AppDomainRunner.Run (
+          delegate
+          {
+            Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
+            mixer.Execute ();
+            Assert.IsTrue (new List<ClassContext> (mixer.ProcessedContexts.Values)
+                .TrueForAll (delegate (ClassContext c) { return !c.Type.IsInterface; }));
+          });
+    }
+
+    [Test]
+    public void ActiveMixinConfigurationIsProcessed ()
+    {
+      AppDomainRunner.Run (
+          delegate
+          {
+            Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
+            using (MixinConfiguration.BuildNew().ForClass<BaseType1>().Clear().AddMixins (typeof (BT1Mixin1)).EnterScope())
+            {
+              mixer.Execute();
+              Assert.AreEqual (1, mixer.ProcessedContexts.Count);
+              Assert.That(mixer.ProcessedContexts.Values, Is.EquivalentTo (MixinConfiguration.ActiveConfiguration.ClassContexts));
+            }
+          });
+    }
+
+    [Test]
+    public void MixerToolProcessesSubclassesOfTargetTypes ()
+    {
+      AppDomainRunner.Run (
+          delegate
+          {
+            Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
+            
             using (MixinConfiguration.BuildNew().ForClass<NullTarget>().Clear().AddMixins (typeof (NullMixin)).EnterScope())
             {
               Assert.IsTrue (TypeUtility.HasMixin (typeof (DerivedNullTarget), typeof (NullMixin)));
               mixer.Execute();
             }
-            Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
-            Type generatedType =
-                Array.Find (
-                    theAssembly.GetTypes(), delegate (Type t) { return TypeUtility.GetUnderlyingTargetType (t) == typeof (DerivedNullTarget); });
-            Assert.IsNotNull (generatedType);
-            Type[] types = EnumerableUtility.ToArray (TypeUtility.GetMixinTypes (generatedType));
-            Assert.That (types, Is.EqualTo (new Type[] {typeof (NullMixin)}));
-          });
-    }
 
-    [Test]
-    public void MixerToolIgnoresGenericTypeDefinitions ()
-    {
-      Assert.IsFalse (File.Exists (UnsignedAssemblyPath));
-      AppDomainRunner.Run (
-          delegate
-          {
-            Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
-            using (MixinConfiguration.BuildNew().ForClass (typeof (GenericTargetClass<>)).Clear().AddMixins (typeof (NullMixin)).EnterScope())
-            {
-              mixer.Execute();
-            }
+            Assert.IsTrue (mixer.ProcessedContexts.ContainsKey (typeof (DerivedNullTarget)));
           });
-      Assert.IsFalse (File.Exists (SignedAssemblyPath));
-      Assert.IsFalse (File.Exists (UnsignedAssemblyPath));
     }
 
     [Test]
@@ -190,19 +237,12 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
           delegate
           {
             Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
-            using (MixinConfiguration.BuildNew ().EnterScope ())
+            using (MixinConfiguration.BuildNew ().ForClass (typeof (List<int>)).Clear ().AddMixins (typeof (NullMixin)).EnterScope ())
             {
-              using (MixinConfiguration.BuildFromActive ().ForClass (typeof (List<int>)).Clear ().AddMixins (typeof (NullMixin)).EnterScope ())
-              {
-                mixer.Execute ();
-              }
+              mixer.Execute ();
             }
 
-            Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
-            Type generatedType =
-                Array.Find (
-                    theAssembly.GetTypes (), delegate (Type t) { return TypeUtility.GetUnderlyingTargetType (t) == typeof (List<int>); });
-            Assert.IsNotNull (generatedType);
+            Assert.IsTrue (mixer.ProcessedContexts.ContainsKey (typeof (List<int>)));
           });
     }
 
@@ -214,24 +254,22 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
           {
             Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
 
-            using (MixinConfiguration.BuildNew().EnterScope())
+            using (MixinConfiguration.BuildNew().ForClass<BaseType1>().Clear().AddMixins (typeof (BT1Mixin1)).EnterScope())
             {
-              using (MixinConfiguration.BuildFromActive().ForClass<BaseType1>().Clear().AddMixins (typeof (BT1Mixin1)).EnterScope())
-              {
-                mixer.Execute();
-                Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
-                Assert.AreEqual (2, theAssembly.GetTypes().Length);
-                Type generatedType = GetFirstMixedType (theAssembly);
+              mixer.Execute();
 
-                Assert.IsNotNull (Mixin.GetMixinConfigurationFromConcreteType (generatedType));
-                Assert.AreEqual (
-                    MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance (typeof (BaseType1)),
-                    Mixin.GetMixinConfigurationFromConcreteType (generatedType));
+              Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
+              Assert.AreEqual (2, theAssembly.GetTypes().Length);
+              Type generatedType = GetFirstMixedType (theAssembly);
 
-                object instance = Activator.CreateInstance (generatedType);
-                Assert.IsTrue (generatedType.IsInstanceOfType (instance));
-                Assert.IsNotNull (Mixin.Get<BT1Mixin1> (instance));
-              }
+              Assert.IsNotNull (Mixin.GetMixinConfigurationFromConcreteType (generatedType));
+              Assert.AreEqual (
+                  MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance (typeof (BaseType1)),
+                  Mixin.GetMixinConfigurationFromConcreteType (generatedType));
+
+              object instance = Activator.CreateInstance (generatedType);
+              Assert.IsTrue (generatedType.IsInstanceOfType (instance));
+              Assert.IsNotNull (Mixin.Get<BT1Mixin1> (instance));
             }
           });
     }
@@ -275,12 +313,9 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
           delegate
           {
             Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
-            using (MixinConfiguration.BuildNew().EnterScope())
+            using (MixinConfiguration.BuildNew().ForClass<BaseType1>().Clear().AddMixins (typeof (BT1Mixin1)).EnterScope())
             {
-              using (MixinConfiguration.BuildFromActive().ForClass<BaseType1>().Clear().AddMixins (typeof (BT1Mixin1)).EnterScope())
-              {
-                mixer.Execute();
-              }
+              mixer.Execute();
             }
           });
 
@@ -298,31 +333,25 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
       Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
       using (MixinConfiguration.BuildNew().EnterScope())
       {
-        using (MixinConfiguration.BuildFromActive().ForClass<BaseType1>().Clear().AddMixins (typeof (BT1Mixin1)).EnterScope()) // valid
+        using (MixinConfiguration.BuildNew ()
+            .ForClass<BaseType1> ().Clear ().AddMixins (typeof (BT1Mixin1))  // valid
+            .ForClass<BaseType2>().Clear().AddMixins (typeof (BT1Mixin1))  // invalid
+            .EnterScope())
         {
-          using (MixinConfiguration.BuildFromActive().ForClass<BaseType2>().Clear().AddMixins (typeof (BT1Mixin1)).EnterScope()) // invalid
-          {
-            mixer.Execute();
-          }
+          Console.WriteLine ("The following error is expected:");
+          mixer.Execute();
+          Assert.AreEqual (1, mixer.Errors.Count);
+          Assert.AreEqual (MixinConfiguration.ActiveConfiguration.ClassContexts.GetExact (typeof (BaseType2)), mixer.Errors[0].A);
+          Assert.That (mixer.FinishedTypes.Keys, Is.EquivalentTo (new object[] { typeof (BaseType1) }));
+          Console.WriteLine ("This error was expected.");
         }
       }
-
-      Assert.IsTrue (File.Exists (UnsignedAssemblyPath));
-
-      AppDomainRunner.Run (
-          delegate
-          {
-            Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
-            Assert.AreEqual (2, theAssembly.GetTypes().Length); // mixed type + base call proxy
-            Type generatedType = GetFirstMixedType (theAssembly);
-            Assert.AreEqual (typeof (BaseType1), generatedType.BaseType);
-          });
     }
 
     [Test]
     public void MixerRaisesEventForEachClassContextBeingProcessed ()
     {
-      Set<ClassContext> classContextsBeingProcessed = new Set<ClassContext>();
+      List<ClassContext> classContextsBeingProcessed = new List<ClassContext>();
 
       // only use this assembly for this test case
       using (DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (typeof (MixerTest).Assembly).EnterScope())
@@ -331,17 +360,8 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
         mixer.ClassContextBeingProcessed +=
             delegate (object sender, ClassContextEventArgs args) { classContextsBeingProcessed.Add (args.ClassContext); };
         mixer.Execute();
+        Assert.That (classContextsBeingProcessed, Is.EquivalentTo (mixer.ProcessedContexts.Values));
       }
-
-      AppDomainRunner.Run (
-          delegate (object[] args)
-          {
-            Set<ClassContext> contextsFromEvent = (Set<ClassContext>) args[0];
-            Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
-            Set<ClassContext> contextsFromTypes = GetContextsFromGeneratedTypes (theAssembly);
-            Assert.That (contextsFromEvent, Is.EquivalentTo (contextsFromTypes));
-          },
-          classContextsBeingProcessed);
     }
 
     private class FooNameProvider : INameProvider
@@ -357,20 +377,11 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
     {
       Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, Parameters.AssemblyOutputDirectory);
       mixer.NameProvider = new FooNameProvider();
-      using (MixinConfiguration.BuildNew().EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<BaseType1>().Clear().AddMixins (typeof (BT1Mixin1)).EnterScope())
       {
-        using (MixinConfiguration.BuildFromActive().ForClass<BaseType1>().Clear().AddMixins (typeof (BT1Mixin1)).EnterScope())
-        {
-          mixer.Execute();
-        }
+        mixer.Execute();
+        Assert.AreEqual ("Foo", mixer.FinishedTypes[typeof (BaseType1)].FullName);
       }
-
-      AppDomainRunner.Run (
-          delegate
-          {
-            Assembly theAssembly = Assembly.LoadFile (UnsignedAssemblyPath);
-            Assert.AreEqual ("Foo", GetFirstMixedType (theAssembly).FullName);
-          });
     }
 
     [Test]
@@ -379,9 +390,13 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
     {
       Mixer mixer = new Mixer (Parameters.SignedAssemblyName, Parameters.UnsignedAssemblyName, AppDomain.CurrentDomain.BaseDirectory);
       mixer.Execute();
+      ContextAwareTypeDiscoveryService.DefaultService.SetCurrent (null); // trigger reloading of assemblies
+      
+      // trigger reanalysis of the default mixin configuration
       MixinConfiguration.SetActiveConfiguration (null);
       MixinConfiguration.ResetMasterConfiguration();
-      mixer.Execute();
+      
+      mixer.Execute(); // this should _not_ load the generated files
 
       File.Delete (Parameters.UnsignedAssemblyName);
       File.Delete (Parameters.SignedAssemblyName);

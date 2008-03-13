@@ -77,6 +77,33 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Context
     }
 
     [Test]
+    public void Get_FromInterface ()
+    {
+      ClassContext ccInterface = new ClassContext (typeof (IMixedInterface), typeof (MixinExtendingMixedInterface));
+      _contexts.Add (ccInterface.Type, ccInterface);
+
+      ClassContext inherited = _algorithm.GetWithInheritance (typeof (ClassWithMixedInterface));
+      Assert.IsNotNull (inherited);
+      Assert.AreEqual (typeof (ClassWithMixedInterface), inherited.Type);
+      Assert.That (inherited.Mixins, Is.EquivalentTo (ccInterface.Mixins));
+      Assert.That (inherited.CompleteInterfaces, Is.EquivalentTo (ccInterface.CompleteInterfaces));
+    }
+
+    [Test]
+    public void Get_FromInterfacesAndBase ()
+    {
+      ClassContext ccInterface = new ClassContext (typeof (IMixedInterface), typeof (MixinExtendingMixedInterface));
+      _contexts.Add (ccInterface.Type, ccInterface);
+      _contexts.Add (_ccObject.Type, _ccObject);
+
+      ClassContext inherited = _algorithm.GetWithInheritance (typeof (ClassWithMixedInterface));
+      Assert.IsNotNull (inherited);
+      Assert.AreEqual (typeof (ClassWithMixedInterface), inherited.Type);
+      Assert.That (inherited.Mixins, Is.EquivalentTo (EnumerableUtility.CombineToArray (ccInterface.Mixins, _ccObject.Mixins)));
+      Assert.That (inherited.CompleteInterfaces, Is.EquivalentTo (EnumerableUtility.CombineToArray (ccInterface.CompleteInterfaces, _ccObject.CompleteInterfaces)));
+    }
+
+    [Test]
     public void Get_FromTypeDefinition ()
     {
       _contexts.Add (_ccList.Type, _ccList);

@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\ClassContextCollector.cs" />
     <Compile Include="Context\ClassContextEventArgs.cs" />
     <Compile Include="Context\DeclarativeAnalyzers\CompleteInterfaceAnalyzer.cs" />
     <Compile Include="Context\DeclarativeAnalyzers\MixAnalyzer.cs" />
