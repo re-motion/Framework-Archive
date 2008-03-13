@@ -34,23 +34,35 @@ namespace Rubicon.Mixins.Definitions.Building
       ArgumentUtility.CheckNotNull ("mixinContext", mixinContext);
       ArgumentUtility.CheckNotNull ("index", index);
 
-      Type mixinType = TargetClass.MixinTypeInstantiator.GetClosedMixinType (mixinContext.MixinType);
-      MixinDefinition mixin = new MixinDefinition (mixinType, TargetClass);
-      TargetClass.Mixins.Add (mixin);
+      MixinDefinition mixin = CreateMixinDefinition(mixinContext);
 
+      AnalyzeMembers(mixin);
+      AnalyzeAttributes(mixin);
+      AnalyzeAttributeIntroductions(mixin);
+      AnalyzeInterfaceIntroductions (mixin);
+      AnalyzeOverrides (mixin);
+      AnalyzeDependencies(mixin, mixinContext.ExplicitDependencies);
+    }
+
+    private MixinDefinition CreateMixinDefinition (MixinContext mixinContext)
+    {
+      Type mixinType = TargetClass.MixinTypeInstantiator.GetClosedMixinType (mixinContext.MixinType);
+      bool acceptsAlphabeticOrdering = AcceptsAlphabeticOrdering (mixinType);
+      MixinDefinition mixin = new MixinDefinition (mixinType, TargetClass, acceptsAlphabeticOrdering);
+      TargetClass.Mixins.Add (mixin);
+      return mixin;
+    }
+
+    private bool AcceptsAlphabeticOrdering (Type mixinType)
+    {
+      return mixinType.IsDefined (typeof (AcceptsAlphabeticOrderingAttribute), false);
+    }
+
+    private void AnalyzeMembers (MixinDefinition mixin)
+    {
       const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
       MemberDefinitionBuilder membersBuilder = new MemberDefinitionBuilder (mixin, IsVisibleToInheritorsOrExplicitInterfaceImpl, bindingFlags);
       membersBuilder.Apply (mixin.Type);
-
-      AttributeDefinitionBuilder attributesBuilder = new AttributeDefinitionBuilder (mixin);
-      attributesBuilder.Apply (mixin.Type);
-
-      _attributeIntroductionBuilder.Apply (mixin);
-
-      AnalyzeInterfaceIntroductions (mixin);
-      AnalyzeOverrides (mixin);
-
-      AnalyzeDependencies(mixin, mixinContext.ExplicitDependencies);
     }
 
     private bool IsVisibleToInheritorsOrExplicitInterfaceImpl (MethodInfo method)
@@ -58,6 +70,17 @@ namespace Rubicon.Mixins.Definitions.Building
       return ReflectionUtility.IsPublicOrProtectedOrExplicit (method);
     }
 
+    private void AnalyzeAttributes (MixinDefinition mixin)
+    {
+      AttributeDefinitionBuilder attributesBuilder = new AttributeDefinitionBuilder (mixin);
+      attributesBuilder.Apply (mixin.Type);
+    }
+
+    private void AnalyzeAttributeIntroductions (MixinDefinition mixin)
+    {
+      _attributeIntroductionBuilder.Apply (mixin);
+    }
+    
     private void AnalyzeInterfaceIntroductions (MixinDefinition mixin)
     {
       InterfaceIntroductionDefinitionBuilder introductionBuilder = new InterfaceIntroductionDefinitionBuilder (mixin);

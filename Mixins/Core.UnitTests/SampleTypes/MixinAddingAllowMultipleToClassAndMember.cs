@@ -1,6 +1,7 @@
 namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
   [Multi]
+  [AcceptsAlphabeticOrdering]
   public class MixinAddingAllowMultipleToClassAndMember
   {
     [OverrideTarget]
@@ -11,6 +12,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   }
 
   [Multi]
+  [AcceptsAlphabeticOrdering]
   public class MixinAddingAllowMultipleToClassAndMember2 : MixinAddingAllowMultipleToClassAndMember
   {
   }

@@ -6,6 +6,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
   [Extends (typeof (BaseType1))]
   [Serializable]
+  [AcceptsAlphabeticOrdering]
   public class BT1Mixin2
   {
     [OverrideTarget]

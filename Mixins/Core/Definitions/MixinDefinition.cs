@@ -21,14 +21,16 @@ namespace Rubicon.Mixins.Definitions
         new UniqueDefinitionCollection<Type, MixinDependencyDefinition> (delegate (MixinDependencyDefinition d) { return d.RequiredType.Type; });
 
     private readonly TargetClassDefinition _targetClass;
+    private readonly bool _acceptsAlphabeticOrdering;
+
     private int _mixinIndex;
-
-
-    public MixinDefinition (Type type, TargetClassDefinition targetClass)
+    
+    public MixinDefinition (Type type, TargetClassDefinition targetClass, bool acceptsAlphabeticOrdering)
         : base (type)
     {
       ArgumentUtility.CheckNotNull ("targetClass", targetClass);
       _targetClass = targetClass;
+      _acceptsAlphabeticOrdering = acceptsAlphabeticOrdering;
     }
 
     public TargetClassDefinition TargetClass
@@ -54,6 +56,11 @@ namespace Rubicon.Mixins.Definitions
     {
       get { return _mixinIndex; }
       internal set { _mixinIndex = value; }
+    }
+
+    public bool AcceptsAlphabeticOrdering
+    {
+      get { return _acceptsAlphabeticOrdering; }
     }
 
     protected override void ChildSpecificAccept (IDefinitionVisitor visitor)

@@ -2,6 +2,7 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 
 namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
+  [AcceptsAlphabeticOrdering]
   public class MixinAddingBT1AttributeToMember
   {
     [OverrideTarget]
@@ -12,6 +13,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
     }
   }
 
+  [AcceptsAlphabeticOrdering]
   public class MixinAddingBT1AttributeToMember2 : MixinAddingBT1AttributeToMember
   {
   }

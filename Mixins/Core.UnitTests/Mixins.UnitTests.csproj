@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeGeneration\IntegrationTests.cs" />
     <Compile Include="CodeGeneration\SampleTypes\BaseOverridingMixinMember.cs" />
     <Compile Include="CodeGeneration\SampleTypes\MixinWithOverridableMember.cs" />
     <Compile Include="Configuration\Context\ClassContextCollectionTests.cs" />
@@ -75,7 +76,21 @@
     <Compile Include="Configuration\Context\MixinContextCollectionTests.cs" />
     <Compile Include="Configuration\Context\ReadOnlyContextCollectionTests.cs" />
     <Compile Include="Configuration\Context\SynchronizedReadOnlyContextCollectionTests.cs" />
+    <Compile Include="Configuration\Definitions\DependencySorting\DependentMixinGrouperTests.cs" />
     <Compile Include="Configuration\Definitions\DependencySorting\MixinDependencyAnalyzerTest.cs" />
+    <Compile Include="Configuration\Definitions\DependencySorting\SampleTypes\MixinWithAdditionalDependency.cs" />
+    <Compile Include="Configuration\Definitions\DependencySorting\SampleTypes\MixinImplementingAdditionalDependency.cs" />
+    <Compile Include="Configuration\Definitions\DependencySorting\SampleTypes\MixinWithBaseCallDependency2OverridingM1.cs" />
+    <Compile Include="Configuration\Definitions\DependencySorting\SampleTypes\IBaseCallDependency2.cs" />
+    <Compile Include="Configuration\Definitions\DependencySorting\SampleTypes\MixinOverridingM2.cs" />
+    <Compile Include="Configuration\Definitions\DependencySorting\SampleTypes\MixinOverridingM1M2.cs" />
+    <Compile Include="Configuration\Definitions\DependencySorting\SampleTypes\IBaseCallDependency1.cs" />
+    <Compile Include="Configuration\Definitions\DependencySorting\SampleTypes\MixinImplementingBaseCallDependency1.cs" />
+    <Compile Include="Configuration\Definitions\DependencySorting\SampleTypes\MixinOverridingM1.cs" />
+    <Compile Include="Configuration\Definitions\DependencySorting\SampleTypes\IndependentMixin2.cs" />
+    <Compile Include="Configuration\Definitions\DependencySorting\SampleTypes\IndependentMixin1.cs" />
+    <Compile Include="Configuration\Definitions\DependencySorting\SampleTypes\MixinWithBaseCallDependency1.cs" />
+    <Compile Include="Configuration\Definitions\DependencySorting\SampleTypes\TargetClass.cs" />
     <Compile Include="Configuration\MixinConfigurationTests\MixinConfigurationBuildTests.cs" />
     <Compile Include="Configuration\MixinConfigurationTests\MixinConfigurationInheritanceTests.cs" />
     <Compile Include="Configuration\MixinConfigurationTests\MixinConfigurationCompleteInterfaceTests.cs" />
@@ -131,10 +146,13 @@
     <Compile Include="SampleTypes\ClassOverridingSpecificGenericMixinMember.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters2.cs" />
     <Compile Include="SampleTypes\AttributeWithParameters3.cs" />
+    <Compile Include="SampleTypes\ClassWithMixinsAcceptingAlphabeticOrdering.cs" />
+    <Compile Include="SampleTypes\MixinAcceptingAlphabeticOrdering2.cs" />
     <Compile Include="SampleTypes\DerivedDerivedNullMixin.cs" />
     <Compile Include="SampleTypes\DerivedNullMixin.cs" />
     <Compile Include="SampleTypes\GlobalMixAttributes.cs" />
     <Compile Include="SampleTypes\IMixedInterface.cs" />
+    <Compile Include="SampleTypes\MixinAcceptingAlphabeticOrdering1.cs" />
     <Compile Include="SampleTypes\MixinExtendingMixedInterface.cs" />
     <Compile Include="SampleTypes\MixinForGlobalMix.cs" />
     <Compile Include="SampleTypes\NullMixin3.cs" />

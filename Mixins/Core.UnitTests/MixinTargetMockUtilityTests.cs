@@ -35,7 +35,7 @@ namespace Rubicon.Mixins.UnitTests
       IBaseType31 thisMock = repository.CreateMock<IBaseType31>();
       IBaseType31 baseMock = repository.CreateMock<IBaseType31>();
       TargetClassDefinition targetClassConfiguration = new TargetClassDefinition (new ClassContext (typeof (BaseType3)));
-      MixinDefinition mixinConfiguration = new MixinDefinition (typeof (BT3Mixin1), targetClassConfiguration);
+      MixinDefinition mixinConfiguration = new MixinDefinition (typeof (BT3Mixin1), targetClassConfiguration, false);
 
       BT3Mixin1 mixin = new BT3Mixin1();
 
@@ -53,7 +53,7 @@ namespace Rubicon.Mixins.UnitTests
 
       IBaseType32 thisMock = repository.CreateMock<IBaseType32> ();
       TargetClassDefinition targetClassConfiguration = new TargetClassDefinition (new ClassContext (typeof (BaseType3)));
-      MixinDefinition mixinConfiguration = new MixinDefinition (typeof (BT3Mixin1), targetClassConfiguration);
+      MixinDefinition mixinConfiguration = new MixinDefinition (typeof (BT3Mixin1), targetClassConfiguration, false);
 
       BT3Mixin2 mixin = new BT3Mixin2 ();
 

@@ -46,17 +46,17 @@ namespace Rubicon.Mixins.Definitions.Building.DependencySorting
       if (_mixins.Remove (mixin))
       {
         group.Add (mixin);
-        foreach (BaseDependencyDefinition dependency in mixin.BaseDependencies)
+        foreach (DependencyDefinitionBase dependency in mixin.GetOrderRelevantDependencies ())
         {
-          MixinDefinition implementer = dependency.GetImplementer () as MixinDefinition;
+          MixinDefinition implementer = dependency.GetImplementer() as MixinDefinition;
           if (implementer != null)
             AddToGroupRecursive (implementer, group);
+        }
 
-          foreach (MemberDefinition overridingMember in mixin.GetAllOverrides ())
-          {
-            MemberDefinition overriddenMember = overridingMember.BaseAsMember;
-            AddOtherOverridersToGroup (overriddenMember, group);
-          }
+        foreach (MemberDefinition overridingMember in mixin.GetAllOverrides ())
+        {
+          MemberDefinition overriddenMember = overridingMember.BaseAsMember;
+          AddOtherOverridersToGroup (overriddenMember, group);
         }
       }
     }

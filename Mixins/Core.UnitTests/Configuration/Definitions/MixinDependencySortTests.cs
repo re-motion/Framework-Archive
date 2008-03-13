@@ -264,5 +264,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
         Assert.AreEqual (2, targetClass.Mixins[typeof (MixinWithNoAdditionalDependency)].MixinIndex);
       }
     }
+
+    [Test]
+    public void AlphabeticOrdering ()
+    {
+      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithMixinsAcceptingAlphabeticOrdering));
+      Assert.AreEqual (typeof (MixinAcceptingAlphabeticOrdering1), targetClass.Mixins[0].Type);
+      Assert.AreEqual (typeof (MixinAcceptingAlphabeticOrdering2), targetClass.Mixins[1].Type);
+    }
   }
 }

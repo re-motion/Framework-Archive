@@ -190,5 +190,29 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
       Assert.IsFalse (bt1.HasProtectedOverriders ());
       Assert.IsFalse (bt1.Mixins[0].HasProtectedOverriders ());
     }
+
+    [Test]
+    public void AcceptsAlphabeticOrdering_True ()
+    {
+      using (MixinConfiguration.BuildNew ()
+          .ForClass<ClassWithMixinsAcceptingAlphabeticOrdering> ().AddMixin<MixinAcceptingAlphabeticOrdering1> ()
+          .EnterScope ())
+      {
+        MixinDefinition accepter = TypeFactory.GetActiveConfiguration (typeof (ClassWithMixinsAcceptingAlphabeticOrdering))
+            .Mixins[typeof (MixinAcceptingAlphabeticOrdering1)];
+        Assert.IsTrue (accepter.AcceptsAlphabeticOrdering);
+      }
+    }
+
+    [Test]
+    public void AcceptsAlphabeticOrdering_False ()
+    {
+      using (MixinConfiguration.BuildNew ().ForClass<NullTarget> ().AddMixin<NullMixin> ().EnterScope ())
+      {
+        MixinDefinition accepter = TypeFactory.GetActiveConfiguration (typeof (NullTarget))
+            .Mixins[typeof (NullMixin)];
+        Assert.IsFalse (accepter.AcceptsAlphabeticOrdering);
+      }
+    }
   }
 }
