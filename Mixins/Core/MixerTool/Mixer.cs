@@ -61,7 +61,7 @@ namespace Rubicon.Mixins.MixerTool
       get { return _finishedTypes; }
     }
 
-    public void Execute ()
+    public void Execute (bool saveGeneratedTypes)
     {
       _errors.Clear();
       _processedContexts.Clear();
@@ -105,7 +105,7 @@ namespace Rubicon.Mixins.MixerTool
         File.Delete (ConcreteTypeBuilder.Current.Scope.SignedModulePath);
     }
 
-    private void Generate ()
+    public void Generate ()
     {
       MixinConfiguration configuration = MixinConfiguration.ActiveConfiguration;
       ICollection typesToCheck = ContextAwareTypeDiscoveryService.GetInstance().GetTypes (null, false);
@@ -188,9 +188,7 @@ namespace Rubicon.Mixins.MixerTool
       else
       {
         foreach (string path in paths)
-        {
           s_log.InfoFormat ("Generated assembly file {0}.", path);
-        }
       }
     }
   }

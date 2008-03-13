@@ -1,8 +1,6 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.Context;
 using Rubicon.Mixins.MixerTool;
 using System.IO;
 using System.Reflection;
@@ -10,9 +8,9 @@ using Rubicon.Mixins.UnitTests.SampleTypes;
 
 namespace Rubicon.Mixins.UnitTests.MixerTool
 {
-  [Serializable]
   [TestFixture]
-  public class MixerRunnerTest : MixerToolBaseTest
+  [Serializable]
+  public class MixerRunnerTests : MixerToolBaseTests
   {
     [Test]
     public void ParameterDefaults ()

@@ -110,6 +110,7 @@
     <Compile Include="Globalization\MixedMultiLingualResourcesTests\GetResourceManagerTests.cs" />
     <Compile Include="Globalization\SampleTypes\MixinAddingMultiLingualResourcesAttributes1.cs" />
     <Compile Include="Globalization\SampleTypes\MixinAddingMultiLingualResourcesAttributes2.cs" />
+    <Compile Include="MixerTool\Mixer_IntegrationTests.cs" />
     <Compile Include="Mixins\CodeGenSampleTypes\ClassWithCopyCustomAttributes.cs" />
     <Compile Include="Mixins\CodeGenSampleTypes\SampleCopyTemplateAttribute.cs" />
     <Compile Include="Mixins\MixedTypeCodeGeneration\MixedMixinTests.cs" />
@@ -160,9 +161,9 @@
     <Compile Include="SampleTypes\MixinWithAdditionalInterfaceDependency.cs" />
     <Compile Include="SampleTypes\MixinWithEmptyInterface.cs" />
     <Compile Include="Configuration\ValidationTests\ValidationSampleTypes\ClassWithVirtualMethod.cs" />
-    <Compile Include="MixerTool\MixerRunnerTest.cs" />
-    <Compile Include="MixerTool\MixerTest.cs" />
-    <Compile Include="MixerTool\MixerToolBaseTest.cs" />
+    <Compile Include="MixerTool\MixerRunnerTests.cs" />
+    <Compile Include="MixerTool\MixerTests.cs" />
+    <Compile Include="MixerTool\MixerToolBaseTests.cs" />
     <Content Include="MixerTool\SampleAssembly\SampleTypes.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

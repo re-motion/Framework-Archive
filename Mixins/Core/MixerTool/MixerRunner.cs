@@ -55,7 +55,7 @@ namespace Rubicon.Mixins.MixerTool
       mixer.ClassContextBeingProcessed += Mixer_ClassContextBeingProcessed;
       try
       {
-        mixer.Execute ();
+        mixer.Execute (true);
       }
       catch (Exception ex)
       {

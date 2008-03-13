@@ -10,7 +10,7 @@ using Rubicon.Mixins.MixerTool;
 namespace Rubicon.Mixins.UnitTests.MixerTool
 {
   [Serializable]
-  public class MixerToolBaseTest
+  public class MixerToolBaseTests
   {
     private MixerParameters _parameters;
 
