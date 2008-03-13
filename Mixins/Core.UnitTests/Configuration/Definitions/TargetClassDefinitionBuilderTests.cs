@@ -25,6 +25,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration.Definitions
     [Test]
     public void TargetClassDefinitionKnowsItsContext()
     {
+      TargetClassDefinitionCache.SetCurrent (null);
       ClassContext classContext = new ClassContext (typeof (BaseType1));
       MixinConfiguration configuration = new MixinConfiguration (null);
       configuration.ClassContexts.Add (classContext);
