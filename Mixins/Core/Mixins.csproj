@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcceptsAlphabeticOrderingAttribute.cs" />
+    <Compile Include="CodeGeneration\IGeneratedBaseCallProxyType.cs" />
+    <Compile Include="CodeGeneration\IGeneratedMixinType.cs" />
     <Compile Include="Context\ClassContextCollector.cs" />
     <Compile Include="Context\ClassContextEventArgs.cs" />
     <Compile Include="Context\DeclarativeAnalyzers\CompleteInterfaceAnalyzer.cs" />

@@ -26,11 +26,11 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [Test]
     public void Initialize ()
     {
-      BindableObjectClass bindableObjectClass = new BindableObjectClass (TypeUtility.GetConcreteType (typeof (SimpleBusinessObjectClass)), _bindableObjectProvider);
+      BindableObjectClass bindableObjectClass = new BindableObjectClass (TypeUtility.GetConcreteMixedType (typeof (SimpleBusinessObjectClass)), _bindableObjectProvider);
 
       Assert.That (bindableObjectClass.TargetType, Is.SameAs (typeof (SimpleBusinessObjectClass)));
       Assert.That (bindableObjectClass.ConcreteType, Is.Not.SameAs (typeof (SimpleBusinessObjectClass)));
-      Assert.That (bindableObjectClass.ConcreteType, Is.SameAs (Mixins.TypeUtility.GetConcreteType (typeof (SimpleBusinessObjectClass))));
+      Assert.That (bindableObjectClass.ConcreteType, Is.SameAs (Mixins.TypeUtility.GetConcreteMixedType (typeof (SimpleBusinessObjectClass))));
       Assert.That (
           bindableObjectClass.Identifier,
           Is.EqualTo ("Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleBusinessObjectClass, Rubicon.ObjectBinding.UnitTests"));
@@ -42,7 +42,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     public void Initialize_WithGeneric ()
     {
       BindableObjectClass bindableObjectClass =
-          new BindableObjectClass (TypeUtility.GetConcreteType (typeof (ClassWithReferenceType<SimpleReferenceType>)), _bindableObjectProvider);
+          new BindableObjectClass (TypeUtility.GetConcreteMixedType (typeof (ClassWithReferenceType<SimpleReferenceType>)), _bindableObjectProvider);
 
       Assert.That (bindableObjectClass.TargetType, Is.SameAs (typeof (ClassWithReferenceType<SimpleReferenceType>)));
     }
@@ -55,7 +55,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
         + "Parameter name: concreteType")]
     public void Initialize_WithTypeNotUsingBindableObjectMixin ()
     {
-      new BindableObjectClass (TypeUtility.GetConcreteType (typeof (SimpleReferenceType)), _bindableObjectProvider);
+      new BindableObjectClass (TypeUtility.GetConcreteMixedType (typeof (SimpleReferenceType)), _bindableObjectProvider);
     }
 
     [Test]
@@ -79,7 +79,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     {
       using (MixinConfiguration.BuildFromActive().ForClass (typeof (ManualBusinessObject)).AddMixins ( typeof (object)).EnterScope())
       {
-        new BindableObjectClass (TypeUtility.GetConcreteType (typeof (ManualBusinessObject)), _bindableObjectProvider);
+        new BindableObjectClass (TypeUtility.GetConcreteMixedType (typeof (ManualBusinessObject)), _bindableObjectProvider);
       }
     }
 
@@ -98,7 +98,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     public void GetPropertyDefinition_ForMixedProperty ()
     {
       PropertyReflector propertyReflector =
-          new PropertyReflector (GetPropertyInfo (TypeUtility.GetConcreteType (typeof (ClassWithMixedProperty)),
+          new PropertyReflector (GetPropertyInfo (TypeUtility.GetConcreteMixedType (typeof (ClassWithMixedProperty)),
           typeof (IMixinAddingProperty).FullName + ".MixedProperty"), _bindableObjectProvider);
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithMixedProperty), _bindableObjectProvider, DefaultMetadataFactory.Instance);
       BindableObjectClass bindableObjectClass = classReflector.GetMetadata ();

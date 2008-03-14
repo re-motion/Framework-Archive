@@ -1,15 +1,22 @@
 using System;
-using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.CodeGeneration;
 using NUnit.Framework;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Reflection;
-using Rubicon.Mixins.UnitTests.CodeGeneration.SampleTypes;
 
 namespace Rubicon.Mixins.UnitTests.CodeGeneration.BaseCallProxyCodeGeneration
 {
   [TestFixture]
   public class TypeFeatureTests : CodeGenerationBaseTest
   {
+    [Test]
+    public void GeneratedTypeImplementsMarkerInterface ()
+    {
+      Type t = CreateMixedType (typeof (BaseType3), typeof (BT3Mixin3<,>));
+      Type baseCallProxyType = t.GetNestedType ("BaseCallProxy");
+      Assert.IsTrue (typeof (IGeneratedBaseCallProxyType).IsAssignableFrom (baseCallProxyType));
+    }
+
     [Test]
     public void GeneratedTypeExists ()
     {

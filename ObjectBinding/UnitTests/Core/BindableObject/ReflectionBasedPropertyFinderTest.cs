@@ -122,7 +122,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     public void NoPropertiesFromBindableObjectMixins ()
     {
       Type targetType = typeof (ClassWithIdentity);
-      Type concreteType = Mixins.TypeUtility.GetConcreteType (targetType);
+      Type concreteType = Mixins.TypeUtility.GetConcreteMixedType (targetType);
 
       List<IPropertyInformation> targetTypeProperties = new List<IPropertyInformation> (new ReflectionBasedPropertyFinder (targetType).GetPropertyInfos ());
       List<IPropertyInformation> concreteTypeProperties = new List<IPropertyInformation> (new ReflectionBasedPropertyFinder (concreteType).GetPropertyInfos ());

@@ -30,7 +30,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     {
       Assert.That (_classReflector.TargetType, Is.SameAs (_type));
       Assert.That (_classReflector.ConcreteType, Is.Not.SameAs (_type));
-      Assert.That (_classReflector.ConcreteType, Is.SameAs (Mixins.TypeUtility.GetConcreteType (_type)));
+      Assert.That (_classReflector.ConcreteType, Is.SameAs (Mixins.TypeUtility.GetConcreteMixedType (_type)));
       Assert.That (_classReflector.BusinessObjectProvider, Is.SameAs (_businessObjectProvider));
     }
 
@@ -84,7 +84,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
 
       ClassReflector otherClassReflector = new ClassReflector (_type, _businessObjectProvider, factoryMock);
 
-      Type concreteType = Mixins.TypeUtility.GetConcreteType (_type);
+      Type concreteType = Mixins.TypeUtility.GetConcreteMixedType (_type);
 
       Expect.Call (factoryMock.CreatePropertyFinder (concreteType)).Return (propertyFinderMock);
       Expect.Call (propertyFinderMock.GetPropertyInfos ()).Return (new IPropertyInformation[] { dummyProperty1, dummyProperty2 });

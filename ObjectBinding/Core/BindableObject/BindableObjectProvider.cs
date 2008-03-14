@@ -67,7 +67,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     public virtual IMetadataFactory GetMetadataFactoryForType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      Type concreteType = Mixins.TypeUtility.GetConcreteType (type);
+      Type concreteType = Mixins.TypeUtility.GetConcreteMixedType (type);
       UseCustomMetadataFactoryAttribute attribute =
           (UseCustomMetadataFactoryAttribute) AttributeUtility.GetCustomAttribute (concreteType, typeof (UseCustomMetadataFactoryAttribute), true);
       if (attribute != null)

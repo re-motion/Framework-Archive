@@ -266,7 +266,7 @@ namespace Rubicon.Mixins
     public static ClassContext GetContext (Type targetType, MixinConfiguration mixinConfiguration, GenerationPolicy generationPolicy)
     {
       ClassContext context;
-      if (generationPolicy != GenerationPolicy.ForceGeneration && TypeUtility.IsGeneratedType (targetType))
+      if (generationPolicy != GenerationPolicy.ForceGeneration && TypeUtility.IsGeneratedConcreteMixedType (targetType))
         context = Mixin.GetMixinConfigurationFromConcreteType (targetType);
       else
         context = mixinConfiguration.ClassContexts.GetWithInheritance (targetType);

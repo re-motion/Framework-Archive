@@ -26,7 +26,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     public void Initialize ()
     {
       BindableObjectClassWithIdentity bindableObjectClass =
-          new BindableObjectClassWithIdentity (TypeUtility.GetConcreteType (typeof (ClassWithIdentity)), _bindableObjectProvider);
+          new BindableObjectClassWithIdentity (TypeUtility.GetConcreteMixedType (typeof (ClassWithIdentity)), _bindableObjectProvider);
 
       Assert.That (bindableObjectClass.TargetType, Is.SameAs (typeof (ClassWithIdentity)));
       Assert.That (
@@ -40,7 +40,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     public void GetObject_WithDefaultService ()
     {
       BindableObjectClassWithIdentity bindableObjectClass =
-          new BindableObjectClassWithIdentity (TypeUtility.GetConcreteType (typeof (ClassWithIdentity)), _bindableObjectProvider);
+          new BindableObjectClassWithIdentity (TypeUtility.GetConcreteMixedType (typeof (ClassWithIdentity)), _bindableObjectProvider);
       IGetObjectService mockService = _mockRepository.CreateMock<IGetObjectService>();
       IBusinessObjectWithIdentity expected = _mockRepository.Stub<IBusinessObjectWithIdentity>();
 
@@ -58,7 +58,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     public void GetObject_WithCustomService ()
     {
       BindableObjectClassWithIdentity bindableObjectClass = new BindableObjectClassWithIdentity (
-          TypeUtility.GetConcreteType (typeof (ClassWithIdentityAndGetObjectServiceAttribute)), _bindableObjectProvider);
+          TypeUtility.GetConcreteMixedType (typeof (ClassWithIdentityAndGetObjectServiceAttribute)), _bindableObjectProvider);
       ICustomGetObjectService mockService = _mockRepository.CreateMock<ICustomGetObjectService>();
       IBusinessObjectWithIdentity expected = _mockRepository.Stub<IBusinessObjectWithIdentity>();
 
@@ -81,7 +81,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     public void GetObject_WithoutService ()
     {
       BindableObjectClassWithIdentity bindableObjectClass =
-          new BindableObjectClassWithIdentity (TypeUtility.GetConcreteType (typeof (ClassWithIdentity)), _bindableObjectProvider);
+          new BindableObjectClassWithIdentity (TypeUtility.GetConcreteMixedType (typeof (ClassWithIdentity)), _bindableObjectProvider);
 
       bindableObjectClass.GetObject ("TheUniqueIdentifier");
     }

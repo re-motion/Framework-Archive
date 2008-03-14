@@ -21,7 +21,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       ArgumentUtility.CheckNotNull ("metadataFactory", metadataFactory);
 
       _targetType = targetType;
-      _concreteType = Mixins.TypeUtility.GetConcreteType (_targetType);
+      _concreteType = Mixins.TypeUtility.GetConcreteMixedType (_targetType);
       _businessObjectProvider = businessObjectProvider;
       _metadataFactory = metadataFactory;
     }

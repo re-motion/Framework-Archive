@@ -32,6 +32,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       _targetClassConfiguration = surroundingType.Configuration;
 
       List<Type> interfaces = new List<Type> ();
+      interfaces.Add (typeof (IGeneratedBaseCallProxyType));
       foreach (RequiredBaseCallTypeDefinition requiredType in _targetClassConfiguration.RequiredBaseCallTypes)
         interfaces.Add (requiredType.Type);
 

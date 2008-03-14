@@ -41,7 +41,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       string typeName = nameProvider.GetNewTypeName (configuration);
       typeName = CustomClassEmitter.FlattenTypeName (typeName);
 
-      Type[] interfaces = new Type[] {typeof (ISerializable)};
+      Type[] interfaces = new Type[] {typeof (ISerializable), typeof (IGeneratedMixinType)};
       TypeAttributes flags = TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable;
 
       bool forceUnsigned = !StrongNameUtil.IsAssemblySigned (targetGenerator.TypeBuilder.Assembly);

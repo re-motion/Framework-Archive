@@ -12,7 +12,7 @@ namespace Rubicon.Mixins.Globalization
   {
     public override IResourceManager GetResourceManager (Type objectType, bool includeHierarchy, out Type definingType)
     {
-      if (Mixins.TypeUtility.IsGeneratedType (objectType))
+      if (Mixins.TypeUtility.IsGeneratedConcreteMixedType (objectType))
         objectType = Mixins.TypeUtility.GetUnderlyingTargetType (objectType);
 
       return base.GetResourceManager (objectType, includeHierarchy, out definingType);

@@ -14,6 +14,16 @@ namespace Rubicon.Mixins.UnitTests.CodeGeneration.MixinTypeCodeGeneration
   public class TypeFeatureTests : CodeGenerationBaseTest
   {
     [Test]
+    public void GeneratedTypeImplementsMarkerInterface ()
+    {
+      MixinDefinition mixinDefinition =
+          TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
+      Assert.IsNotNull (mixinDefinition);
+      Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
+      Assert.IsTrue (typeof (IGeneratedMixinType).IsAssignableFrom (generatedType));
+    }
+
+    [Test]
     public void GeneratedMixinTypeHasMixinTypeAttribute ()
     {
       MixinDefinition mixinDefinition =
