@@ -62,12 +62,12 @@ namespace Rubicon.Mixins.Definitions.Building.DependencySorting
       return mixinsByTypeName;
     }
 
-    private void SortAlphabetically (List<Tuple<string, MixinDefinition>> mixinsByTypeName)
+    public void SortAlphabetically (List<Tuple<string, MixinDefinition>> mixinsByTypeName)
     {
       mixinsByTypeName.Sort (
           delegate (Tuple<string, MixinDefinition> t1, Tuple<string, MixinDefinition> t2)
           {
-            return t1.A.CompareTo (t2.A);
+            return StringComparer.Ordinal.Compare(t1.A, t2.A);
           });
     }
 

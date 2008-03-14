@@ -15,6 +15,7 @@ namespace Rubicon.Mixins.UnitTests.Context.DeclarativeAnalyzers
     private UsesAnalyzer _usesAnalyzerMock;
     private CompleteInterfaceAnalyzer _completeInterfaceAnalyzerMock;
     private MixAnalyzer _mixAnalyzerMock;
+    private IgnoresAnalyzer _ignoresAnalyzerMock;
 
     [SetUp]
     public void SetUp ()
@@ -26,6 +27,7 @@ namespace Rubicon.Mixins.UnitTests.Context.DeclarativeAnalyzers
       _usesAnalyzerMock = _mockRepository.CreateMock<UsesAnalyzer> (_configurationBuilderMock);
       _completeInterfaceAnalyzerMock = _mockRepository.CreateMock<CompleteInterfaceAnalyzer> (_configurationBuilderMock);
       _mixAnalyzerMock = _mockRepository.CreateMock<MixAnalyzer> (_configurationBuilderMock);
+      _ignoresAnalyzerMock = _mockRepository.CreateMock<IgnoresAnalyzer> (_configurationBuilderMock);
     }
 
     [Test]
@@ -46,11 +48,15 @@ namespace Rubicon.Mixins.UnitTests.Context.DeclarativeAnalyzers
         _completeInterfaceAnalyzerMock.Analyze (typeof (DeclarativeConfigurationAnalyzerTest)); // expectation
         _mixAnalyzerMock.Analyze (typeof (object).Assembly);
         _mixAnalyzerMock.Analyze (typeof (DeclarativeConfigurationAnalyzerTest).Assembly);
+        _ignoresAnalyzerMock.Analyze (typeof (object)); // expectation
+        _ignoresAnalyzerMock.Analyze (typeof (string)); // expectation
+        _ignoresAnalyzerMock.Analyze (typeof (DeclarativeConfigurationAnalyzerTest)); // expectation
       }
 
       _mockRepository.ReplayAll();
 
-      DeclarativeConfigurationAnalyzer analyzer = new DeclarativeConfigurationAnalyzer (_extendsAnalyzerMock, _usesAnalyzerMock, _completeInterfaceAnalyzerMock, _mixAnalyzerMock);
+      DeclarativeConfigurationAnalyzer analyzer = new DeclarativeConfigurationAnalyzer (_extendsAnalyzerMock, _usesAnalyzerMock, 
+          _completeInterfaceAnalyzerMock, _mixAnalyzerMock, _ignoresAnalyzerMock);
       analyzer.Analyze (types);
 
       _mockRepository.VerifyAll();

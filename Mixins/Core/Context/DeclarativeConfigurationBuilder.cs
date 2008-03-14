@@ -233,9 +233,10 @@ namespace Rubicon.Mixins.Context
       UsesAnalyzer usesAnalyzer = new UsesAnalyzer (configurationBuilder);
       CompleteInterfaceAnalyzer completeInterfaceAnalyzer = new CompleteInterfaceAnalyzer (configurationBuilder);
       MixAnalyzer mixAnalyzer = new MixAnalyzer (configurationBuilder);
+      IgnoresAnalyzer ignoresAnalyzer = new IgnoresAnalyzer (configurationBuilder);
       
-      DeclarativeConfigurationAnalyzer configurationAnalyzer = 
-          new DeclarativeConfigurationAnalyzer (extendsAnalyzer, usesAnalyzer, completeInterfaceAnalyzer, mixAnalyzer);
+      DeclarativeConfigurationAnalyzer configurationAnalyzer =
+          new DeclarativeConfigurationAnalyzer (extendsAnalyzer, usesAnalyzer, completeInterfaceAnalyzer, mixAnalyzer, ignoresAnalyzer);
       configurationAnalyzer.Analyze(_allTypes);
       
       return configurationBuilder.BuildConfiguration();

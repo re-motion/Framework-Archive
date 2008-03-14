@@ -48,8 +48,10 @@
     <Compile Include="CodeGeneration\IGeneratedBaseCallProxyType.cs" />
     <Compile Include="CodeGeneration\IGeneratedMixinType.cs" />
     <Compile Include="Context\ClassContextCollector.cs" />
+    <Compile Include="Context\ClassContextDeriver.cs" />
     <Compile Include="Context\ClassContextEventArgs.cs" />
     <Compile Include="Context\DeclarativeAnalyzers\CompleteInterfaceAnalyzer.cs" />
+    <Compile Include="Context\DeclarativeAnalyzers\IgnoresAnalyzer.cs" />
     <Compile Include="Context\DeclarativeAnalyzers\MixAnalyzer.cs" />
     <Compile Include="Context\DeclarativeAnalyzers\ExtendsAnalyzer.cs" />
     <Compile Include="Context\DeclarativeAnalyzers\RelationAnalyzerBase.cs" />
@@ -63,6 +65,8 @@
     <Compile Include="Context\InheritedClassContextRetrievalAlgorithm.cs" />
     <Compile Include="Context\ClassContextCollection.cs" />
     <Compile Include="Context\ReadOnlyContextCollection.cs" />
+    <Compile Include="IgnoresMixinAttribute.cs" />
+    <Compile Include="IgnoresClassAttribute.cs" />
     <Compile Include="MixAttribute.cs" />
     <Compile Include="CopyCustomAttributesAttribute.cs" />
     <Compile Include="CodeGeneration\ConcreteMixinTypeAttribute.cs" />

@@ -112,6 +112,28 @@ namespace Rubicon.Mixins.UnitTests.Context.ClassContextTests
     }
 
     [Test]
+    public void BaseAndDerivedMixin_CanBeInherited ()
+    {
+      ClassContext baseContext = new ClassContextBuilder (typeof (string)).AddMixin<NullMixin> ().AddMixin<DerivedNullMixin>().BuildClassContext ();
+      ClassContext inheritor = new ClassContext (typeof (double)).InheritFrom (baseContext);
+
+      Assert.AreEqual (2, inheritor.Mixins.Count);
+      Assert.IsTrue (inheritor.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (inheritor.Mixins.ContainsKey (typeof (DerivedNullMixin)));
+    }
+
+    [Test]
+    public void BaseAndDerivedMixin_CanBeInherited_DifferentOrder ()
+    {
+      ClassContext baseContext = new ClassContextBuilder (typeof (string)).AddMixin<DerivedNullMixin> ().AddMixin<NullMixin> ().BuildClassContext ();
+      ClassContext inheritor = new ClassContext (typeof (double)).InheritFrom (baseContext);
+
+      Assert.AreEqual (2, inheritor.Mixins.Count);
+      Assert.IsTrue (inheritor.Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (inheritor.Mixins.ContainsKey (typeof (DerivedNullMixin)));
+    }
+
+    [Test]
     public void SpecializedGenericMixin_OverridesInherited ()
     {
       ClassContext baseContext = new ClassContextBuilder (typeof (string)).AddMixin (typeof (GenericMixinWithVirtualMethod<>)).WithDependency<int>().BuildClassContext();

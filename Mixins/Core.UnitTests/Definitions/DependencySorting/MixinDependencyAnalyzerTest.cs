@@ -1,9 +1,14 @@
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using NUnit.Framework;
+using Rubicon.Collections;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Definitions.Building.DependencySorting;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Mixins.Utilities.DependencySort;
+using System.Threading;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace Rubicon.Mixins.UnitTests.Definitions.DependencySorting
 {
@@ -95,6 +100,54 @@ namespace Rubicon.Mixins.UnitTests.Definitions.DependencySorting
     {
       Assert.AreSame (_alphabeticAccepter,
           _analyzer.ResolveEqualRoots (new MixinDefinition[] { _independent1, _alphabeticAccepter2, _alphabeticAccepter }));
+    }
+
+    [Test]
+    public void SortAlphabetically ()
+    {
+      List<Tuple<string, MixinDefinition>> mixinsByTypeName = new List<Tuple<string, MixinDefinition>>();
+      Tuple<string, MixinDefinition> zebra = Tuple.NewTuple ("Zebra", _independent1);
+      Tuple<string, MixinDefinition> bravo = Tuple.NewTuple ("Bravo", _independent1);
+      Tuple<string, MixinDefinition> charlie = Tuple.NewTuple ("Charlie", _independent1);
+      Tuple<string, MixinDefinition> alpha = Tuple.NewTuple ("Alpha", _independent1);
+      Tuple<string, MixinDefinition> delta = Tuple.NewTuple ("Delta", _independent1);
+
+      mixinsByTypeName.Add (zebra);
+      mixinsByTypeName.Add (bravo);
+      mixinsByTypeName.Add (charlie);
+      mixinsByTypeName.Add (alpha);
+      mixinsByTypeName.Add (delta);
+
+      _analyzer.SortAlphabetically (mixinsByTypeName);
+
+      Assert.That (mixinsByTypeName, Is.EqualTo (new object[] { alpha, bravo, charlie, delta, zebra }));
+    }
+
+    [Test]
+    public void SortAlphabetically_UsesOrdinalComparison ()
+    {
+      CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
+      try
+      {
+        Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo ("de-de");
+
+        List<Tuple<string, MixinDefinition>> mixinsByTypeName = new List<Tuple<string, MixinDefinition>> ();
+        Tuple<string, MixinDefinition> a = Tuple.NewTuple ("A", _independent1);
+        Tuple<string, MixinDefinition> ae = Tuple.NewTuple ("Ä", _independent1);
+        Tuple<string, MixinDefinition> b = Tuple.NewTuple ("B", _independent1);
+
+        mixinsByTypeName.Add (a);
+        mixinsByTypeName.Add (ae);
+        mixinsByTypeName.Add (b);
+
+        _analyzer.SortAlphabetically (mixinsByTypeName);
+
+        Assert.That (mixinsByTypeName, Is.EqualTo (new object[] { a, b, ae }));
+      }
+      finally
+      {
+        Thread.CurrentThread.CurrentCulture = originalCulture;
+      }
     }
 
     [Test]

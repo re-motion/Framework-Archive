@@ -40,20 +40,6 @@ namespace Rubicon.Mixins.Context
       return mixins.Values;
     }
 
-    // A = overridden, B = override
-    private static Tuple<MixinContext, MixinContext> GetFirstOverrideThatIsNotOverriddenByBase (IEnumerable<MixinContext> baseMixins,
-        IEnumerable<MixinContext> potentialOverrides)
-    {
-      foreach (MixinContext mixin in baseMixins)
-      {
-        MixinContext overrideForMixin;
-        if ((overrideForMixin = MixinContextCollection.GetOverrideForMixin (potentialOverrides, mixin.MixinType)) != null
-            && !MixinContextCollection.ContainsOverrideForMixin (baseMixins, overrideForMixin.MixinType))
-          return Tuple.NewTuple (mixin, overrideForMixin);
-      }
-      return null;
-    }
-
     private static int CalculateHashCode (ClassContext classContext)
     {
       return classContext.Type.GetHashCode ()
@@ -264,45 +250,7 @@ namespace Rubicon.Mixins.Context
     /// </exception>
     public ClassContext InheritFrom (IEnumerable<ClassContext> baseContexts)
     {
-      ArgumentUtility.CheckNotNull ("baseContexts", baseContexts);
-
-      List<MixinContext> mixins;
-      List<Type> interfaces;
-      mixins = new List<MixinContext> (Mixins);
-      interfaces = new List<Type> (CompleteInterfaces);
-
-      foreach (ClassContext baseContext in baseContexts)
-        ApplyInheritance (baseContext, mixins, interfaces);
-
-      return new ClassContext (Type, mixins, interfaces);
-    }
-
-    private void ApplyInheritance (ClassContext baseContext, List<MixinContext> mixins, List<Type> interfaces)
-    {
-      Tuple<MixinContext, MixinContext> overridden_override = GetFirstOverrideThatIsNotOverriddenByBase (mixins, baseContext.Mixins);
-      if (overridden_override != null)
-      {
-        string message = string.Format (
-            "The class {0} inherits the mixin {1} from class {2}, but it is explicitly "
-                + "configured for the less specific mixin {3}.",
-            Type.FullName,
-            overridden_override.B.MixinType.FullName,
-            baseContext.Type.FullName,
-            overridden_override.A.MixinType);
-        throw new ConfigurationException (message);
-      }
-
-      foreach (MixinContext inheritedMixin in baseContext.Mixins)
-      {
-        if (!MixinContextCollection.ContainsOverrideForMixin (mixins, inheritedMixin.MixinType))
-          mixins.Add (inheritedMixin);
-      }
-
-      foreach (Type inheritedInterface in baseContext.CompleteInterfaces)
-      {
-        if (!interfaces.Contains (inheritedInterface))
-          interfaces.Add (inheritedInterface);
-      }
+      return ClassContextDeriver.Instance.DeriveContext (this, baseContexts);
     }
 
     /// <summary>
