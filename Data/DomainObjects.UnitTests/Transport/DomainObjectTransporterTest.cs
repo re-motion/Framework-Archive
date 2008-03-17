@@ -5,18 +5,19 @@ using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Transport;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 {
   [TestFixture]
   public class DomainObjectTransporterTest : StandardMappingTest
   {
-    DomainObjectTransporter _transporter;
+    private DomainObjectTransporter _transporter;
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      _transporter = new DomainObjectTransporter ();
+      base.SetUp();
+      _transporter = new DomainObjectTransporter();
     }
 
     [Test]
@@ -29,18 +30,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     [Test]
     public void Load ()
     {
-      _transporter.Load (DomainObjectIDs.Order1);
+      DomainObject domainObject = _transporter.Load (DomainObjectIDs.Order1);
       Assert.AreEqual (1, _transporter.ObjectIDs.Count);
-      Assert.That (_transporter.ObjectIDs, Is.EqualTo (new ObjectID[] { DomainObjectIDs.Order1 }));
+      Assert.That (_transporter.ObjectIDs, Is.EqualTo (new ObjectID[] {DomainObjectIDs.Order1}));
+
+      Assert.AreSame (domainObject, _transporter.GetTransportedObject (domainObject.ID));
     }
 
     [Test]
     public void Load_Twice ()
     {
-      _transporter.Load (DomainObjectIDs.Order1);
-      _transporter.Load (DomainObjectIDs.Order1);
+      DomainObject domainObject1 = _transporter.Load (DomainObjectIDs.Order1);
+      DomainObject domainObject2 = _transporter.Load (DomainObjectIDs.Order1);
       Assert.AreEqual (1, _transporter.ObjectIDs.Count);
-      Assert.That (_transporter.ObjectIDs, Is.EqualTo (new ObjectID[] { DomainObjectIDs.Order1 }));
+      Assert.That (_transporter.ObjectIDs, Is.EqualTo (new ObjectID[] {DomainObjectIDs.Order1}));
+      Assert.AreSame (domainObject1, domainObject2);
     }
 
     [Test]
@@ -60,41 +64,88 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       Assert.AreEqual (2, _transporter.ObjectIDs.Count);
       _transporter.Load (DomainObjectIDs.OrderItem1);
       Assert.AreEqual (3, _transporter.ObjectIDs.Count);
-      Assert.That (_transporter.ObjectIDs, Is.EqualTo (new ObjectID[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.OrderItem1 }));
+      Assert.That (_transporter.ObjectIDs, Is.EqualTo (new ObjectID[] {DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.OrderItem1}));
     }
 
     [Test]
     public void LoadWithRelatedObjects ()
     {
-      _transporter.LoadWithRelatedObjects (DomainObjectIDs.Order1);
+      IEnumerable<DomainObject> loadedObjects = _transporter.LoadWithRelatedObjects (DomainObjectIDs.Order1);
       Assert.AreEqual (6, _transporter.ObjectIDs.Count);
-      Assert.That (_transporter.ObjectIDs, Is.EquivalentTo (new ObjectID[] { DomainObjectIDs.Order1, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2,
-          DomainObjectIDs.OrderTicket1, DomainObjectIDs.Customer1, DomainObjectIDs.Official1 }));
+      Assert.That (
+          _transporter.ObjectIDs,
+          Is.EquivalentTo (
+              new ObjectID[]
+                  {
+                      DomainObjectIDs.Order1, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2,
+                      DomainObjectIDs.OrderTicket1, DomainObjectIDs.Customer1, DomainObjectIDs.Official1
+                  }));
+      Assert.That (
+          EnumerableUtility.ToArray (loadedObjects),
+          Is.EquivalentTo (
+              new object[]
+                  {
+                      _transporter.GetTransportedObject (DomainObjectIDs.Order1), _transporter.GetTransportedObject (DomainObjectIDs.OrderItem1),
+                      _transporter.GetTransportedObject (DomainObjectIDs.OrderItem2),
+                      _transporter.GetTransportedObject (DomainObjectIDs.OrderTicket1), _transporter.GetTransportedObject (DomainObjectIDs.Customer1),
+                      _transporter.GetTransportedObject (DomainObjectIDs.Official1)
+                  }));
     }
 
     [Test]
     public void LoadRecursive ()
     {
-      _transporter.LoadRecursive (DomainObjectIDs.Employee1);
+      IEnumerable<DomainObject> loadedObjects = _transporter.LoadRecursive (DomainObjectIDs.Employee1);
       Assert.AreEqual (5, _transporter.ObjectIDs.Count);
-      Assert.That (_transporter.ObjectIDs, Is.EquivalentTo (new ObjectID[] { DomainObjectIDs.Employee1, DomainObjectIDs.Employee4, DomainObjectIDs.Computer2,
-          DomainObjectIDs.Employee5, DomainObjectIDs.Computer3 }));
+      Assert.That (
+          _transporter.ObjectIDs,
+          Is.EquivalentTo (
+              new ObjectID[]
+                  {
+                      DomainObjectIDs.Employee1, DomainObjectIDs.Employee4, DomainObjectIDs.Computer2,
+                      DomainObjectIDs.Employee5, DomainObjectIDs.Computer3
+                  }));
+      Assert.That (
+          EnumerableUtility.ToArray (loadedObjects),
+          Is.EquivalentTo (
+              new object[]
+                  {
+                      _transporter.GetTransportedObject (DomainObjectIDs.Employee1), _transporter.GetTransportedObject (DomainObjectIDs.Employee4),
+                      _transporter.GetTransportedObject (DomainObjectIDs.Computer2),
+                      _transporter.GetTransportedObject (DomainObjectIDs.Employee5), _transporter.GetTransportedObject (DomainObjectIDs.Computer3)
+                  }));
     }
 
     [Test]
     public void LoadRecursive_WithStrategy_ShouldFollow ()
     {
       FollowOnlyOneLevelStrategy strategy = new FollowOnlyOneLevelStrategy();
-      _transporter.LoadRecursive (DomainObjectIDs.Employee1, strategy);
-      Assert.That (_transporter.ObjectIDs, Is.EquivalentTo (new ObjectID[] { DomainObjectIDs.Employee1, DomainObjectIDs.Employee4, DomainObjectIDs.Employee5 }));
+      IEnumerable<DomainObject> loadedObjects = _transporter.LoadRecursive (DomainObjectIDs.Employee1, strategy);
+      Assert.That (
+          _transporter.ObjectIDs, Is.EquivalentTo (new ObjectID[] {DomainObjectIDs.Employee1, DomainObjectIDs.Employee4, DomainObjectIDs.Employee5}));
+      Assert.That (
+          EnumerableUtility.ToArray (loadedObjects),
+          Is.EquivalentTo (
+              new object[]
+                  {
+                      _transporter.GetTransportedObject (DomainObjectIDs.Employee1), _transporter.GetTransportedObject (DomainObjectIDs.Employee4),
+                      _transporter.GetTransportedObject (DomainObjectIDs.Employee5)
+                  }));
     }
 
     [Test]
     public void LoadRecursive_WithStrategy_ShouldProcess ()
     {
-      OnlyProcessComputersStrategy strategy = new OnlyProcessComputersStrategy ();
-      _transporter.LoadRecursive (DomainObjectIDs.Employee1, strategy);
-      Assert.That (_transporter.ObjectIDs, Is.EquivalentTo (new ObjectID[] { DomainObjectIDs.Computer2, DomainObjectIDs.Computer3 }));
+      OnlyProcessComputersStrategy strategy = new OnlyProcessComputersStrategy();
+      IEnumerable<DomainObject> loadedObjects = _transporter.LoadRecursive (DomainObjectIDs.Employee1, strategy);
+      Assert.That (_transporter.ObjectIDs, Is.EquivalentTo (new ObjectID[] {DomainObjectIDs.Computer2, DomainObjectIDs.Computer3}));
+      Assert.That (
+          EnumerableUtility.ToArray (loadedObjects),
+          Is.EquivalentTo (
+              new object[]
+                  {
+                      _transporter.GetTransportedObject (DomainObjectIDs.Computer2), _transporter.GetTransportedObject (DomainObjectIDs.Computer3)
+                  }));
     }
 
     [Test]
@@ -110,20 +161,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     {
       _transporter.Load (DomainObjectIDs.Employee1);
       _transporter.Load (DomainObjectIDs.Employee2);
-      TransportedDomainObjects transportedObjects = DomainObjectTransporter.LoadTransportData (_transporter.GetBinaryTransportData ());
+      TransportedDomainObjects transportedObjects = DomainObjectTransporter.LoadTransportData (_transporter.GetBinaryTransportData());
       Assert.IsNotNull (transportedObjects);
       List<DomainObject> domainObjects = new List<DomainObject> (transportedObjects.TransportedObjects);
       Assert.AreEqual (2, domainObjects.Count);
-      Assert.That (domainObjects.ConvertAll<ObjectID> (delegate (DomainObject obj) { return obj.ID; }),
-          Is.EquivalentTo (new ObjectID[] { DomainObjectIDs.Employee1, DomainObjectIDs.Employee2 }));
+      Assert.That (
+          domainObjects.ConvertAll<ObjectID> (delegate (DomainObject obj) { return obj.ID; }),
+          Is.EquivalentTo (new ObjectID[] {DomainObjectIDs.Employee1, DomainObjectIDs.Employee2}));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Invalid data specified: End of Stream encountered before parsing was completed."
-        + "\r\nParameter name: data")]
+    [ExpectedException (typeof (ArgumentException),
+        ExpectedMessage = "Invalid data specified: End of Stream encountered before parsing was completed."
+            + "\r\nParameter name: data")]
     public void LoadTransportData_InvalidData ()
     {
-      byte[] data = new byte[] { 1, 2, 3 };
+      byte[] data = new byte[] {1, 2, 3};
       DomainObjectTransporter.LoadTransportData (data);
     }
 
@@ -150,12 +203,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       TransportedDomainObjects transportedObjects = DomainObjectTransporter.LoadTransportData (_transporter.GetBinaryTransportData());
       Assert.IsEmpty (transportedObjects.TransportedObjects);
     }
-    
+
     [Test]
     public void GetBinaryTransportData ()
     {
       _transporter.Load (DomainObjectIDs.Order1);
-      byte[] data = _transporter.GetBinaryTransportData ();
+      byte[] data = _transporter.GetBinaryTransportData();
       Assert.IsNotNull (data);
       Assert.IsNotEmpty (data);
     }
@@ -170,7 +223,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be " 
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be "
         + "retrieved, it hasn't been loaded yet. Load it first, then retrieve it for editing.\r\nParameter name: loadedObjectID")]
     public void GetTransportedObject_ThrowsOnUnloadedObject ()
     {
@@ -214,7 +267,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Object 'Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid' " 
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Object 'Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid' "
         + "cannot be modified for transportation because it hasn't been loaded yet. Load it before manipulating it.")]
     public void GetTransportedObject_GetSetRelatedObject_VirtualSide_Unloaded ()
     {

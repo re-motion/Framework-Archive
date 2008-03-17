@@ -83,6 +83,7 @@ namespace Rubicon.Data.DomainObjects.Transport
     /// Loads the object with the specified <see cref="ObjectID"/> into the transporter.
     /// </summary>
     /// <param name="objectID">The <see cref="ObjectID"/> of the object to load.</param>
+    /// <returns>The loaded object, whose properties can be manipulated before it is transported.</returns>
     /// <remarks>
     /// <para>
     /// This method loads exactly the object with the given ID, it will not load any related objects.
@@ -98,11 +99,12 @@ namespace Rubicon.Data.DomainObjects.Transport
     /// also applies to the 1-side of a 1-to-n relationship because the n-side is the foreign key side.
     /// </para>
     /// </remarks>
-    public void Load (ObjectID objectID)
+    public DomainObject Load (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
-      _transportTransaction.GetObject (objectID, false);
+      DomainObject domainObject = _transportTransaction.GetObject (objectID, false);
       _transportedObjects.Add (objectID);
+      return domainObject;
     }
 
     /// <summary>
@@ -110,17 +112,23 @@ namespace Rubicon.Data.DomainObjects.Transport
     /// Each object behaves as if it were loaded via <see cref="Load"/>.
     /// </summary>
     /// <param name="objectID">The <see cref="ObjectID"/> of the object which is to be loaded together with its related objects.</param>
+    /// <returns>The loaded objects, whose properties can be manipulated before they are transported.</returns>
     /// <seealso cref="PropertyIndexer.GetAllRelatedObjects"/>
-    public void LoadWithRelatedObjects (ObjectID objectID)
+    public IEnumerable<DomainObject> LoadWithRelatedObjects (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
+      return EnumerableUtility.ToArray (LazyLoadWithRelatedObjects(objectID));
+    }
 
+    private IEnumerable<DomainObject> LazyLoadWithRelatedObjects (ObjectID objectID)
+    {
       DomainObject sourceObject = _transportTransaction.GetObject (objectID, false);
-      Load (sourceObject.ID);
+      yield return Load (sourceObject.ID);
       using (_transportTransaction.EnterNonDiscardingScope ())
       {
-        foreach (DomainObject domainObject in sourceObject.Properties.GetAllRelatedObjects ())
-          Load (domainObject.ID); // explicitly call load rather than just implicitly loading it into the transaction for consistency
+        IEnumerable<DomainObject> relatedObjects = sourceObject.Properties.GetAllRelatedObjects ();
+        foreach (DomainObject domainObject in relatedObjects)
+          yield return Load (domainObject.ID); // explicitly call load rather than just implicitly loading it into the transaction
       }
     }
 
@@ -129,11 +137,12 @@ namespace Rubicon.Data.DomainObjects.Transport
     /// transporter. Each object behaves as if it were loaded via <see cref="Load"/>.
     /// </summary>
     /// <param name="objectID">The <see cref="ObjectID"/> of the object which is to be loaded together with its related objects.</param>
+    /// <returns>The loaded objects, whose properties can be manipulated before they are transported.</returns>
     /// <seealso cref="DomainObjectGraphTraverser.GetFlattenedRelatedObjectGraph"/>
-    public void LoadRecursive (ObjectID objectID)
+    public IEnumerable<DomainObject> LoadRecursive (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
-      LoadRecursive (objectID, FullGraphTraversalStrategy.Instance);
+      return LoadRecursive (objectID, FullGraphTraversalStrategy.Instance);
     }
 
     /// <summary>
@@ -143,8 +152,9 @@ namespace Rubicon.Data.DomainObjects.Transport
     /// <param name="objectID">The <see cref="ObjectID"/> of the object which is to be loaded together with its related objects.</param>
     /// <param name="strategy">An <see cref="IGraphTraversalStrategy"/> instance defining which related object links to follow and which
     /// objects to include in the set of transported objects.</param>
+    /// <returns>The loaded objects, whose properties can be manipulated before they are transported.</returns>
     /// <seealso cref="DomainObjectGraphTraverser.GetFlattenedRelatedObjectGraph"/>
-    public void LoadRecursive (ObjectID objectID, IGraphTraversalStrategy strategy )
+    public IEnumerable<DomainObject> LoadRecursive (ObjectID objectID, IGraphTraversalStrategy strategy)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       ArgumentUtility.CheckNotNull ("strategy", strategy);
@@ -152,8 +162,10 @@ namespace Rubicon.Data.DomainObjects.Transport
       DomainObject sourceObject = _transportTransaction.GetObject (objectID, false);
       using (_transportTransaction.EnterNonDiscardingScope ())
       {
-        foreach (DomainObject domainObject in sourceObject.GetGraphTraverser (strategy).GetFlattenedRelatedObjectGraph ())
+        Set<DomainObject> graph = sourceObject.GetGraphTraverser (strategy).GetFlattenedRelatedObjectGraph ();
+        foreach (DomainObject domainObject in graph)
           Load (domainObject.ID); // explicitly call load rather than just implicitly loading it into the transaction for consistency
+        return graph;
       }
     }
 
