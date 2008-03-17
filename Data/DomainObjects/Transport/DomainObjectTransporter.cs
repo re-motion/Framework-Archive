@@ -8,6 +8,7 @@ using Rubicon.Collections;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Reflection;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Transport
@@ -61,6 +62,21 @@ namespace Rubicon.Data.DomainObjects.Transport
     public bool IsLoaded (ObjectID objectID)
     {
       return _transportedObjects.Contains (objectID);
+    }
+
+    /// <summary>
+    /// Loads a new instance of a domain object for transportation.
+    /// </summary>
+    /// <param name="type">The domain object type to instantiate. The type must have a parameterless constructor.</param>
+    /// <returns>A new instance of <paramref name="type"/> prepared for transport.</returns>
+    public DomainObject LoadNew (Type type)
+    {
+      using (_transportTransaction.EnterNonDiscardingScope ())
+      {
+        DomainObject domainObject = RepositoryAccessor.NewObject (type).With();
+        Load (domainObject.ID);
+        return domainObject;
+      }
     }
 
     /// <summary>

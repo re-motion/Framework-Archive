@@ -2,11 +2,9 @@ using System;
 using NUnit.Framework;
 using System.Collections.Generic;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Transport;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Collections;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 {
@@ -97,6 +95,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       OnlyProcessComputersStrategy strategy = new OnlyProcessComputersStrategy ();
       _transporter.LoadRecursive (DomainObjectIDs.Employee1, strategy);
       Assert.That (_transporter.ObjectIDs, Is.EquivalentTo (new ObjectID[] { DomainObjectIDs.Computer2, DomainObjectIDs.Computer3 }));
+    }
+
+    [Test]
+    public void LoadNew ()
+    {
+      Order order = (Order) _transporter.LoadNew (typeof (Order));
+      Assert.IsNotNull (order);
+      Assert.IsTrue (_transporter.IsLoaded (order.ID));
     }
 
     [Test]

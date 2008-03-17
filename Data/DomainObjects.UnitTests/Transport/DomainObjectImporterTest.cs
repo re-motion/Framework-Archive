@@ -88,6 +88,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     }
 
     [Test]
+    public void NonExistingObjects_NewInSource ()
+    {
+      DomainObjectTransporter transporter = new DomainObjectTransporter ();
+      Computer outerComputer = (Computer) transporter.LoadNew (typeof (Computer));
+      byte[] binaryData = transporter.GetBinaryTransportData ();
+
+      CheckImport (delegate (List<DomainObject> importedObjects)
+      {
+        Computer loadedObject1 = (Computer) importedObjects[0];
+        Assert.AreEqual (StateType.New, loadedObject1.State);
+        Assert.AreEqual (outerComputer.ID, loadedObject1.ID);
+      }, binaryData);
+    }
+
+    [Test]
     public void ExistingObjects_Loaded ()
     {
       byte[] binaryData = GetBinaryDataFor (DomainObjectIDs.Order1);
@@ -322,6 +337,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
         Assert.AreSame (loadedObject1, loadedObject2.Computer);
       }, binaryData);
     }
+
+    [Test]
+    public void ChangedBySource_RelatedObjectToNew ()
+    {
+      DomainObjectTransporter transporter = new DomainObjectTransporter ();
+      Computer computer = (Computer) transporter.LoadNew (typeof (Computer));
+      Employee employee = (Employee) transporter.LoadNew (typeof (Employee));
+
+      computer.Employee = employee;
+
+      byte[] binaryData = transporter.GetBinaryTransportData ();
+      CheckImport (delegate (List<DomainObject> importedObjects)
+      {
+        Computer loadedObject1 = (Computer) importedObjects.Find (delegate (DomainObject obj) { return obj is Computer; });
+        Employee loadedObject2 = (Employee) importedObjects.Find (delegate (DomainObject obj) { return obj is Employee; });
+        Assert.AreSame (loadedObject2, loadedObject1.Employee);
+      }, binaryData);
+    }
+
 
     private byte[] GetBinaryDataForChangedObject (ObjectID id, string propertyToTouch, object newValue)
     {
