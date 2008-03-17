@@ -108,14 +108,17 @@ public class RootQueryManager : IQueryManager
     if (query.QueryType == QueryType.Scalar)
       throw new ArgumentException ("A scalar query cannot be used with GetCollection.", "query");
 
-    using (StorageProviderManager storageProviderManager = new StorageProviderManager ())
+    using (_clientTransaction.EnterNonDiscardingScope ())
     {
-      StorageProvider provider = storageProviderManager.GetMandatory (query.StorageProviderID);
-      DataContainerCollection dataContainers = provider.ExecuteCollectionQuery (query);
+      using (StorageProviderManager storageProviderManager = new StorageProviderManager())
+      {
+        StorageProvider provider = storageProviderManager.GetMandatory (query.StorageProviderID);
+        DataContainerCollection dataContainers = provider.ExecuteCollectionQuery (query);
 
-      DomainObjectCollection queryResult = _clientTransaction.MergeLoadedDomainObjects (dataContainers, collectionType, requiredItemType);
-      _clientTransaction.TransactionEventSink.FilterQueryResult (queryResult, query);
-      return queryResult;
+        DomainObjectCollection queryResult = _clientTransaction.MergeLoadedDomainObjects (dataContainers, collectionType, requiredItemType);
+        _clientTransaction.TransactionEventSink.FilterQueryResult (queryResult, query);
+        return queryResult;
+      }
     }
   }
 

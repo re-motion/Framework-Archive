@@ -25,6 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     }
 
     public event EventHandler ProtectedLoaded;
+    public static event EventHandler StaticLoadHandler;
 
     public readonly bool CtorCalled = false;
 
@@ -107,6 +108,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       base.OnLoaded (loadMode);
       if (ProtectedLoaded != null)
         ProtectedLoaded (this, EventArgs.Empty);
+      if (StaticLoadHandler != null)
+        StaticLoadHandler (this, EventArgs.Empty);
     }
   }
 }

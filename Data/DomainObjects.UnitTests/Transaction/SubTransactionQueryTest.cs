@@ -1,8 +1,10 @@
 using System;
 using NUnit.Framework;
+using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.Queries;
 using NUnit.Framework.SyntaxHelpers;
+using Mocks_Is = Rhino.Mocks.Constraints.Is;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -133,6 +135,58 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       Assert.IsNull (queriedObject.CustomerSince);
       Assert.AreSame (newOrder, queriedObject.Orders[0]);
+    }
+
+    [Test]
+    public void FilterQueryResultCalledInCorrectScope ()
+    {
+      MockRepository mockRepository = new MockRepository ();
+      IClientTransactionExtension extensionMock = mockRepository.Stub<IClientTransactionExtension> ();
+
+      ClientTransactionMock.Extensions.Add ("mock", extensionMock);
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
+      {
+        Query query = new Query ("OrderQuery");
+        query.Parameters.Add ("@customerID", DomainObjectIDs.Customer3);
+
+        extensionMock.FilterQueryResult (null, null, null); // expectation
+        LastCall.Constraints (Mocks_Is.Same (ClientTransactionMock), Mocks_Is.Anything (), Mocks_Is.Anything ());
+        LastCall.Do ((Proc<ClientTransaction, DomainObjectCollection, IQuery>) delegate
+        {
+          Assert.AreSame (ClientTransactionMock, ClientTransaction.Current);
+        });
+
+        mockRepository.ReplayAll ();
+        ClientTransaction.Current.QueryManager.GetCollection (query);
+        mockRepository.VerifyAll ();
+      }
+    }
+
+    [Test]
+    public void AccessObjectInFilterQueryResult ()
+    {
+      MockRepository mockRepository = new MockRepository ();
+      IClientTransactionExtension extensionMock = mockRepository.Stub<IClientTransactionExtension> ();
+
+      Order.GetObject (DomainObjectIDs.Order1);
+
+      ClientTransactionMock.Extensions.Add ("mock", extensionMock);
+      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
+      {
+        Query query = new Query ("OrderQuery");
+        query.Parameters.Add ("@customerID", DomainObjectIDs.Customer3);
+
+        extensionMock.FilterQueryResult (null, null, null); // expectation
+        LastCall.IgnoreArguments();
+        LastCall.Do ((Proc<ClientTransaction, DomainObjectCollection, IQuery>) delegate
+        {
+          Order.GetObject (DomainObjectIDs.Order1);
+        });
+
+        mockRepository.ReplayAll ();
+        ClientTransaction.Current.QueryManager.GetCollection (query);
+        mockRepository.VerifyAll ();
+      }
     }
   }
 }
