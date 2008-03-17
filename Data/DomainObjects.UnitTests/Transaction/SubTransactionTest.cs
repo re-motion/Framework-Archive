@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
@@ -7,9 +8,11 @@ using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
+using Rubicon.Data.DomainObjects.UnitTests.Queries;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Reflection;
 using Rubicon.Utilities;
 
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
@@ -817,6 +820,42 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1).Delete ();
         subTransaction.Commit();
         subTransaction.GetObjects<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The ClientTransactionMock cannot be made writeable twice. A common " 
+        + ("reason for this error is that a subtransaction is accessed while its parent transaction is engaged in a load operation. During such an " 
+        + "operation, the subtransaction cannot be used."))]
+    public void Throws_WhenUsedWhileParentIsWriteable ()
+    {
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
+      using (subTransaction.EnterDiscardingScope ())
+      {
+        Type unlockerType = typeof (ClientTransaction).Assembly.GetType ("Rubicon.Data.DomainObjects.Infrastructure.TransactionUnlocker");
+        object unlocker =
+            Activator.CreateInstance (unlockerType, BindingFlags.NonPublic | BindingFlags.Instance, null, new object[] {ClientTransactionMock}, null);
+        using ((IDisposable) unlocker)
+        {
+          Order.GetObject (DomainObjectIDs.Order1);
+        }
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The ClientTransactionMock cannot be made writeable twice. A common "
+    + ("reason for this error is that a subtransaction is accessed while its parent transaction is engaged in a load operation. During such an "
+    + "operation, the subtransaction cannot be used."))]
+    public void Throws_WhenUsedWhileParentIsWriteable_IntegrationTest ()
+    {
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
+      using (subTransaction.EnterDiscardingScope ())
+      {
+        ClientTransactionMock.Loaded += delegate
+        {
+          subTransaction.GetObjects<Order> (DomainObjectIDs.Order1);
+        };
+        Order.GetObject (DomainObjectIDs.Order2);
       }
     }
   }

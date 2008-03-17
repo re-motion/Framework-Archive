@@ -17,7 +17,13 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     private TransactionUnlocker (ClientTransaction transaction)
     {
-      Assertion.IsTrue (transaction.IsReadOnly);
+      if (!transaction.IsReadOnly)
+      {
+        string message = string.Format ("The {0} cannot be made writeable twice. A common reason for this error is that a subtransaction is accessed " 
+            + "while its parent transaction is engaged in a load operation. During such an operation, the subtransaction cannot be used.",
+            transaction.GetType().Name);
+        throw new InvalidOperationException (message);
+      }
       transaction.IsReadOnly = false;
       _transaction = transaction;
     }
