@@ -122,6 +122,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     }
 
     [Test]
+    public void IsLoaded_True ()
+    {
+      _transporter.Load (DomainObjectIDs.Employee1);
+      Assert.IsTrue (_transporter.IsLoaded (DomainObjectIDs.Employee1));
+    }
+
+    [Test]
+    public void IsLoaded_False ()
+    {
+      Assert.IsFalse (_transporter.IsLoaded (DomainObjectIDs.Employee1));
+    }
+
+    [Test]
     public void TransactionContainsMoreObjects_ThanAreTransported ()
     {
       _transporter.LoadRecursive (DomainObjectIDs.Employee1, new FollowAllProcessNoneStrategy());
@@ -139,6 +152,69 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       byte[] data = _transporter.GetBinaryTransportData ();
       Assert.IsNotNull (data);
       Assert.IsNotEmpty (data);
+    }
+
+    [Test]
+    public void GetTransportedObject_ReturnsCorrectObject ()
+    {
+      _transporter.Load (DomainObjectIDs.Order1);
+      Order order = (Order) _transporter.GetTransportedObject (DomainObjectIDs.Order1);
+      Assert.IsNotNull (order);
+      Assert.AreEqual (DomainObjectIDs.Order1, order.ID);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be " 
+        + "retrieved, it hasn't been loaded yet. Load it first, then retrieve it for editing.\r\nParameter name: loadedObjectID")]
+    public void GetTransportedObject_ThrowsOnUnloadedObject ()
+    {
+      _transporter.GetTransportedObject (DomainObjectIDs.Order1);
+    }
+
+    [Test]
+    public void GetTransportedObject_ReturnsBoundObject ()
+    {
+      _transporter.Load (DomainObjectIDs.Order1);
+      Order order = (Order) _transporter.GetTransportedObject (DomainObjectIDs.Order1);
+      Assert.IsTrue (order.IsBoundToSpecificTransaction);
+    }
+
+    [Test]
+    public void GetTransportedObject_GetSetPropertyValue ()
+    {
+      _transporter.Load (DomainObjectIDs.Order1);
+      Order order = (Order) _transporter.GetTransportedObject (DomainObjectIDs.Order1);
+      ++order.OrderNumber;
+      Assert.AreEqual (2, order.OrderNumber);
+    }
+
+    [Test]
+    public void GetTransportedObject_GetSetRelatedObject_RealSide ()
+    {
+      _transporter.Load (DomainObjectIDs.Computer1);
+      Computer computer = (Computer) _transporter.GetTransportedObject (DomainObjectIDs.Computer1);
+      computer.Employee = null;
+      Assert.IsNull (computer.Employee);
+    }
+
+    [Test]
+    public void GetTransportedObject_GetSetRelatedObject_VirtualSide_Loaded ()
+    {
+      _transporter.Load (DomainObjectIDs.Computer1);
+      _transporter.Load (DomainObjectIDs.Employee3);
+      Employee employee = (Employee) _transporter.GetTransportedObject (DomainObjectIDs.Employee3);
+      employee.Computer = null;
+      Assert.IsNull (employee.Computer);
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Object 'Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid' " 
+        + "cannot be modified for transportation because it hasn't been loaded yet. Load it before manipulating it.")]
+    public void GetTransportedObject_GetSetRelatedObject_VirtualSide_Unloaded ()
+    {
+      _transporter.Load (DomainObjectIDs.Employee3);
+      Employee employee = (Employee) _transporter.GetTransportedObject (DomainObjectIDs.Employee3);
+      employee.Computer = null;
     }
   }
 }

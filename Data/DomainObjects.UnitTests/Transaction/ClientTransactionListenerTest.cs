@@ -184,6 +184,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
           _listener.RelationChanging (order, typeof (Order).FullName + ".Customer", customer, newCustomer);
           _listener.RelationChanging (newCustomer, typeof (Customer).FullName + ".Orders", null, order);
           _listener.RelationChanging (customer, typeof (Customer).FullName + ".Orders", order, null);
+          _listener.PropertyValueChanging (
+              order.InternalDataContainer,
+              order.InternalDataContainer.PropertyValues[typeof (Order).FullName + ".Customer"],
+              customer.ID,
+              newCustomer.ID);
+          _listener.PropertyValueChanged (
+              order.InternalDataContainer,
+              order.InternalDataContainer.PropertyValues[typeof (Order).FullName + ".Customer"],
+              customer.ID,
+              newCustomer.ID);
           _listener.RelationChanged (order, typeof (Order).FullName + ".Customer");
           _listener.RelationChanged (newCustomer, typeof (Customer).FullName + ".Orders");
           _listener.RelationChanged (customer, typeof (Customer).FullName + ".Orders");

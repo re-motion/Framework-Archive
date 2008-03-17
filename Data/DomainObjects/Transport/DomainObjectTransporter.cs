@@ -33,8 +33,14 @@ namespace Rubicon.Data.DomainObjects.Transport
       return new DomainObjectImporter (data).GetImportedObjects ();
     }
 
-    private readonly ClientTransaction _transportTransaction = ClientTransaction.NewRootTransaction ();
+    private readonly ClientTransaction _transportTransaction;
     private readonly Set<ObjectID> _transportedObjects = new Set<ObjectID>();
+
+    public DomainObjectTransporter ()
+    {
+      _transportTransaction = ClientTransaction.NewBindingTransaction();
+      _transportTransaction.AddListener (new TransporterListener (this));
+    }
 
     /// <summary>
     /// Gets the IDs of the objects loaded into this transporter.
@@ -43,6 +49,18 @@ namespace Rubicon.Data.DomainObjects.Transport
     public ReadOnlyCollection<ObjectID> ObjectIDs
     {
       get { return new ReadOnlyCollection<ObjectID> (_transportedObjects.ToArray()); }
+    }
+
+    /// <summary>
+    /// Determines whether the specified <paramref name="objectID"/> has been loaded for transportation.
+    /// </summary>
+    /// <param name="objectID">The object ID to check.</param>
+    /// <returns>
+    /// True if the specified object ID has been loaded; otherwise, false.
+    /// </returns>
+    public bool IsLoaded (ObjectID objectID)
+    {
+      return _transportedObjects.Contains (objectID);
     }
 
     /// <summary>
@@ -121,6 +139,23 @@ namespace Rubicon.Data.DomainObjects.Transport
         foreach (DomainObject domainObject in sourceObject.GetGraphTraverser (strategy).GetFlattenedRelatedObjectGraph ())
           Load (domainObject.ID); // explicitly call load rather than just implicitly loading it into the transaction for consistency
       }
+    }
+
+    /// <summary>
+    /// Retrieves a loaded object so that it can be manipulated prior to it being transported.
+    /// </summary>
+    /// <param name="loadedObjectID">The object ID of the object to be retrieved.</param>
+    /// <returns>A <see cref="DomainObject"/> representing an object to be transported. Properties of this object can be manipulated.</returns>
+    public DomainObject GetTransportedObject (ObjectID loadedObjectID)
+    {
+      ArgumentUtility.CheckNotNull ("loadedObjectID", loadedObjectID);
+      if (!IsLoaded (loadedObjectID))
+      {
+        string message = string.Format ("Object '{0}' cannot be retrieved, it hasn't been loaded yet. Load it first, then retrieve it for editing.",
+            loadedObjectID);
+        throw new ArgumentException (message, "loadedObjectID");
+      }
+      return _transportTransaction.GetObject (loadedObjectID, false);
     }
 
     /// <summary>

@@ -520,6 +520,7 @@
     <Compile Include="Infrastructure\SubClientTransaction.cs" />
     <Compile Include="TransactionalAccessor.cs" />
     <Compile Include="Transport\TransportedDomainObjects.cs" />
+    <Compile Include="Transport\TransporterListener.cs" />
     <Compile Include="Transport\TransportFinishTransactionListener.cs" />
     <Compile Include="ValueAccess.cs" />
     <Compile Include="ValueTooLongException.cs">

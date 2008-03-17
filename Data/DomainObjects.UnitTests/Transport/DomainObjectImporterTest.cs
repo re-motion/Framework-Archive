@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Transport;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -72,6 +73,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     }
 
     [Test]
+    public void NonExistingObjects_ChangedBySource ()
+    {
+      byte[] binaryData = GetBinaryDataForChangedObject (DomainObjectIDs.ClassWithAllDataTypes1, 
+          ReflectionUtility.GetPropertyName (typeof (ClassWithAllDataTypes), "Int32Property"), 12);
+      ModifyDatabase (delegate { ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1).Delete (); });
+
+      CheckImport (delegate (List<DomainObject> importedObjects)
+      {
+        ClassWithAllDataTypes loadedObject1 = (ClassWithAllDataTypes) importedObjects[0];
+        Assert.AreEqual (StateType.New, loadedObject1.State);
+        Assert.AreEqual (12, loadedObject1.Int32Property);
+      }, binaryData);
+    }
+
+    [Test]
     public void ExistingObjects_Loaded ()
     {
       byte[] binaryData = GetBinaryDataFor (DomainObjectIDs.Order1);
@@ -95,6 +111,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
         Assert.AreEqual (StateType.Changed, loadedObject1.State);
         DomainObject loadedObject2 = importedObjects[1];
         Assert.AreEqual (StateType.Unchanged, loadedObject2.State);
+      }, binaryData);
+    }
+
+    [Test]
+    public void ExistingObjects_ChangedBySource ()
+    {
+      byte[] binaryData = GetBinaryDataForChangedObject (DomainObjectIDs.ClassWithAllDataTypes1,
+          ReflectionUtility.GetPropertyName (typeof (ClassWithAllDataTypes), "Int32Property"), 12);
+
+      CheckImport (delegate (List<DomainObject> importedObjects)
+      {
+        ClassWithAllDataTypes loadedObject1 = (ClassWithAllDataTypes) importedObjects[0];
+        Assert.AreEqual (StateType.Changed, loadedObject1.State);
+        Assert.AreEqual (12, loadedObject1.Int32Property);
       }, binaryData);
     }
 
@@ -239,6 +269,67 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 
         Assert.IsFalse (loadedObject1.Properties[typeof (Order), "OrderItems"].HasChanged);
       }, binaryData);
+    }
+
+    [Test]
+    public void ChangedBySource_PropertyValue ()
+    {
+      byte[] binaryData = GetBinaryDataForChangedObject (DomainObjectIDs.Order1, ReflectionUtility.GetPropertyName (typeof (Order), "OrderNumber"), 2);
+      CheckImport (delegate (List<DomainObject> importedObjects)
+      {
+        Order loadedObject1 = (Order) importedObjects[0];
+
+        Assert.AreEqual (2, loadedObject1.OrderNumber);
+      }, binaryData);
+    }
+
+    [Test]
+    public void ChangedBySource_RelatedObjectToExistingObject_RealSide ()
+    {
+      DomainObjectTransporter transporter = new DomainObjectTransporter ();
+      transporter.Load (DomainObjectIDs.Computer1);
+      transporter.Load (DomainObjectIDs.Computer2);
+      transporter.Load (DomainObjectIDs.Employee3);
+      transporter.Load (DomainObjectIDs.Employee4);
+      Computer computer = (Computer) transporter.GetTransportedObject (DomainObjectIDs.Computer1);
+      computer.Employee = (Employee) transporter.GetTransportedObject (DomainObjectIDs.Employee4);
+
+      byte[] binaryData = transporter.GetBinaryTransportData ();
+      CheckImport (delegate (List<DomainObject> importedObjects)
+      {
+        Computer loadedObject1 = (Computer) importedObjects.Find (delegate (DomainObject obj) { return obj.ID == DomainObjectIDs.Computer1; });
+        Employee loadedObject2 = (Employee) importedObjects.Find (delegate (DomainObject obj) { return obj.ID == DomainObjectIDs.Employee4; });
+        Assert.AreSame (loadedObject2, loadedObject1.Employee);
+      }, binaryData);
+    }
+
+    [Test]
+    public void ChangedBySource_RelatedObjectToExistingObject_VirtualSide ()
+    {
+      DomainObjectTransporter transporter = new DomainObjectTransporter ();
+      transporter.Load (DomainObjectIDs.Computer1);
+      transporter.Load (DomainObjectIDs.Computer2);
+      transporter.Load (DomainObjectIDs.Employee3);
+      transporter.Load (DomainObjectIDs.Employee4);
+      Employee employee = (Employee) transporter.GetTransportedObject (DomainObjectIDs.Employee3);
+      employee.Computer = (Computer) transporter.GetTransportedObject (DomainObjectIDs.Computer2);
+
+      byte[] binaryData = transporter.GetBinaryTransportData ();
+      CheckImport (delegate (List<DomainObject> importedObjects)
+      {
+        Computer loadedObject1 = (Computer) importedObjects.Find (delegate (DomainObject obj) { return obj.ID == DomainObjectIDs.Computer2; });
+        Employee loadedObject2 = (Employee) importedObjects.Find (delegate (DomainObject obj) { return obj.ID == DomainObjectIDs.Employee3; });
+        Assert.AreSame (loadedObject1, loadedObject2.Computer);
+      }, binaryData);
+    }
+
+    private byte[] GetBinaryDataForChangedObject (ObjectID id, string propertyToTouch, object newValue)
+    {
+      DomainObjectTransporter transporter = new DomainObjectTransporter ();
+      transporter.Load (id);
+      DomainObject domainObject = transporter.GetTransportedObject (id);
+      new PropertyIndexer (domainObject)[propertyToTouch].SetValueWithoutTypeCheck (newValue);
+      return transporter.GetBinaryTransportData();
     }
 
     private byte[] GetBinaryDataFor (params ObjectID[] ids)

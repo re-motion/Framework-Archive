@@ -186,26 +186,24 @@ public class PropertyValue
       CheckDiscarded ();
       CheckForRelationProperty ();
 
-      SetValueInternal (value, true);
+      SetValueInternal (value);
     }
   }
 
-  private void SetValueInternal (object value, bool raiseEvents)
+  private void SetValueInternal (object value)
   {
     if (AreValuesDifferent (_value, value))
     {
       CheckValue (value, _definition);
 
-      if (raiseEvents)
-        BeginValueSet (value);
+      BeginValueSet (value);
 
       object oldValue = _value;
       _value = value;
 
       _hasBeenTouched = true;
 
-      if (raiseEvents)
-        EndValueSet (oldValue);
+      EndValueSet (oldValue);
     }
     else
       _hasBeenTouched = true;
@@ -368,7 +366,7 @@ public class PropertyValue
 
   internal void SetRelationValue (ObjectID id)
   {
-    SetValueInternal (id, false);
+    SetValueInternal (id);
   }
 
   internal void Discard ()

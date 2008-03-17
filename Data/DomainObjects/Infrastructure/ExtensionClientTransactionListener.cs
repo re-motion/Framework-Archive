@@ -83,12 +83,14 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public void PropertyValueChanging (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
-      Extensions.PropertyValueChanging (_clientTransaction, dataContainer, propertyValue, oldValue, newValue);
+      if (propertyValue.PropertyType != typeof (ObjectID))
+        Extensions.PropertyValueChanging (_clientTransaction, dataContainer, propertyValue, oldValue, newValue);
     }
 
     public void PropertyValueChanged (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
-      Extensions.PropertyValueChanged (_clientTransaction, dataContainer, propertyValue, oldValue, newValue);
+      if (propertyValue.PropertyType != typeof (ObjectID))
+        Extensions.PropertyValueChanged (_clientTransaction, dataContainer, propertyValue, oldValue, newValue);
     }
 
     public void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess)

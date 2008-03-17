@@ -483,20 +483,26 @@ namespace Rubicon.Data.DomainObjects
       if (_clientTransaction != null)
         _clientTransaction.TransactionEventSink.PropertyValueChanging (this, args.PropertyValue, args.OldValue, args.NewValue);
 
-      // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
-      // Therefore notification of DomainObject when changing property values is not organized through events.
-      DomainObject.PropertyValueChanging (this, args);
+      if (args.PropertyValue.PropertyType != typeof (ObjectID))
+      {
+        // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+        // Therefore notification of DomainObject when changing property values is not organized through events.
+        DomainObject.PropertyValueChanging (this, args);
 
-      OnPropertyChanging (args);
+        OnPropertyChanging (args);
+      }
     }
 
     internal void PropertyValueChanged (PropertyValueCollection propertyValueCollection, PropertyChangeEventArgs args)
     {
-      OnPropertyChanged (args);
+      if (args.PropertyValue.PropertyType != typeof (ObjectID))
+      {
+        OnPropertyChanged (args);
 
-      // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
-      // Therefore notification of DomainObject when changing property values is not organized through events.
-      DomainObject.PropertyValueChanged (this, args);
+        // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+        // Therefore notification of DomainObject when changing property values is not organized through events.
+        DomainObject.PropertyValueChanged (this, args);
+      }
 
       if (_clientTransaction != null)
         _clientTransaction.TransactionEventSink.PropertyValueChanged (this, args.PropertyValue, args.OldValue, args.NewValue);
