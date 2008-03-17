@@ -55,7 +55,7 @@
 
   <query id="QueryWithNullValues" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
-    <statement>SELECT [Employee].* FROM [Computer] LEFT OUTER JOIN [Employee] ON [Computer].[EmployeeID] = [Employee].[ID] ORDER BY [ID] asc;</statement>
+    <statement>SELECT [Employee].* FROM [Computer] LEFT OUTER JOIN [Employee] ON [Computer].[EmployeeID] = [Employee].[ID] ORDER BY [Employee].[ID] asc;</statement>
   </query>
 
   <query id="QueryWithDuplicates" type="collection">
