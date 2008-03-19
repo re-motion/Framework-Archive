@@ -1,5 +1,9 @@
 use TestDomain
 
+delete from [MixedDomains_TargetWithTwoUnidirectionalMixins]
+delete from [MixedDomains_TargetWithUnidirectionalMixin1]
+delete from [MixedDomains_TargetWithUnidirectionalMixin2]
+
 delete from [FileSystemItem]
 delete from [Location]
 delete from [Client]

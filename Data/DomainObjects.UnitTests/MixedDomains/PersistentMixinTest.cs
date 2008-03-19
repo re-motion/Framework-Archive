@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Mixins;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
@@ -25,11 +26,110 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     }
 
     [Test]
-    public void ClassDefinitionIncludesRelationProperty ()
+    public void ClassDefinition_RealSide_Unmixed ()
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Computer));
+      PropertyDefinition relationProperty = classDefinition.GetPropertyDefinition (typeof (Computer).FullName + ".Employee");
+      RelationDefinition relation = classDefinition.GetRelationDefinition (typeof (Computer).FullName + ".Employee");
+      Assert.IsNotNull (relationProperty);
+      Assert.IsNotNull (relation);
+      Assert.AreEqual (typeof (Computer).FullName + ".Employee", relation.ID);
+    }
+
+    [Test]
+    public void ClassDefinition_VirtualSide_Unmixed ()
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Employee));
+      PropertyDefinition relationProperty = classDefinition.GetPropertyDefinition (typeof (Employee).FullName + ".Computer");
+      RelationDefinition relation = classDefinition.GetRelationDefinition (typeof (Employee).FullName + ".Computer");
+      Assert.IsNull (relationProperty);
+      Assert.IsNotNull (relation);
+      Assert.AreEqual (typeof (Computer).FullName + ".Employee", relation.ID);
+    }
+
+    [Test]
+    public void ClassDefinition_RealSide_MixedReal ()
     {
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (TargetClassForPersistentMixin));
-      Assert.IsNotNull (classDefinition.GetPropertyDefinition (typeof (MixinAddingPersistentProperties).FullName + ".RelationProperty"));
-      Assert.IsNotNull (classDefinition.GetRelationDefinition (typeof (MixinAddingPersistentProperties).FullName + ".RelationProperty"));
+      PropertyDefinition relationProperty = classDefinition.GetPropertyDefinition (typeof (MixinAddingPersistentProperties).FullName + ".RelationProperty");
+      RelationDefinition relation = classDefinition.GetRelationDefinition (typeof (MixinAddingPersistentProperties).FullName + ".RelationProperty");
+      Assert.IsNotNull (relationProperty);
+      Assert.IsNotNull (relation);
+      Assert.AreEqual (string.Format ("{0}->{1}.RelationProperty", typeof (TargetClassForPersistentMixin).FullName,
+          typeof (MixinAddingPersistentProperties).FullName), relation.ID);
+    }
+
+    [Test]
+    public void ClassDefinition_VirtualSide_MixedReal ()
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (RelationTargetForPersistentMixin));
+      PropertyDefinition relationProperty = classDefinition.GetPropertyDefinition (typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty1");
+      RelationDefinition relation = classDefinition.GetRelationDefinition (typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty1");
+      Assert.IsNull (relationProperty);
+      Assert.IsNotNull (relation);
+      Assert.AreEqual (string.Format ("{0}->{1}.RelationProperty", typeof (TargetClassForPersistentMixin).FullName,
+         typeof (MixinAddingPersistentProperties).FullName), relation.ID);
+    }
+
+    [Test]
+    public void ClassDefinition_RealSide_MixedVirtual ()
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (RelationTargetForPersistentMixin));
+      PropertyDefinition relationProperty = classDefinition.GetPropertyDefinition (typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty2");
+      RelationDefinition relation = classDefinition.GetRelationDefinition (typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty2");
+      Assert.IsNotNull (relationProperty);
+      Assert.IsNotNull (relation);
+      Assert.AreEqual (typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty2", relation.ID);
+    }
+
+    [Test]
+    public void ClassDefinition_VirtualSide_MixedVirtual ()
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (TargetClassForPersistentMixin));
+      PropertyDefinition relationProperty = classDefinition.GetPropertyDefinition (typeof (MixinAddingPersistentProperties).FullName + ".VirtualRelationProperty");
+      RelationDefinition relation = classDefinition.GetRelationDefinition (typeof (MixinAddingPersistentProperties).FullName + ".VirtualRelationProperty");
+      Assert.IsNull (relationProperty);
+      Assert.IsNotNull (relation);
+      Assert.AreEqual (typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty2", relation.ID);
+    }
+
+    [Test]
+    public void ClassDefinition_Unidirectional_OneClassTwoMixins ()
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (TargetClassWithTwoUnidirectionalMixins));
+      PropertyDefinition relationProperty1 = classDefinition.GetPropertyDefinition (typeof (MixinAddingUnidirectionalRelation1).FullName + ".Computer");
+      PropertyDefinition relationProperty2 = classDefinition.GetPropertyDefinition (typeof (MixinAddingUnidirectionalRelation2).FullName + ".Computer");
+      RelationDefinition relation1 = classDefinition.GetRelationDefinition (typeof (MixinAddingUnidirectionalRelation1).FullName + ".Computer");
+      RelationDefinition relation2 = classDefinition.GetRelationDefinition (typeof (MixinAddingUnidirectionalRelation2).FullName + ".Computer");
+      Assert.IsNotNull (relationProperty1);
+      Assert.IsNotNull (relationProperty2);
+      Assert.IsNotNull (relation1);
+      Assert.IsNotNull (relation2);
+      Assert.AreNotSame (relation1, relation2);
+      Assert.AreEqual (string.Format ("{0}->{1}.Computer", typeof (TargetClassWithTwoUnidirectionalMixins).FullName,
+         typeof (MixinAddingUnidirectionalRelation1).FullName), relation1.ID);
+      Assert.AreEqual (string.Format ("{0}->{1}.Computer", typeof (TargetClassWithTwoUnidirectionalMixins).FullName,
+         typeof (MixinAddingUnidirectionalRelation2).FullName), relation2.ID);
+    }
+
+    [Test]
+    public void ClassDefinition_Unidirectional_TwoClassesOneMixin ()
+    {
+      ClassDefinition classDefinition1 = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (TargetClassWithUnidirectionalMixin1));
+      ClassDefinition classDefinition2 = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (TargetClassWithUnidirectionalMixin2));
+      PropertyDefinition relationProperty1 = classDefinition1.GetPropertyDefinition (typeof (MixinAddingUnidirectionalRelation1).FullName + ".Computer");
+      PropertyDefinition relationProperty2 = classDefinition2.GetPropertyDefinition (typeof (MixinAddingUnidirectionalRelation1).FullName + ".Computer");
+      RelationDefinition relation1 = classDefinition1.GetRelationDefinition (typeof (MixinAddingUnidirectionalRelation1).FullName + ".Computer");
+      RelationDefinition relation2 = classDefinition2.GetRelationDefinition (typeof (MixinAddingUnidirectionalRelation1).FullName + ".Computer");
+      Assert.IsNotNull (relationProperty1);
+      Assert.IsNotNull (relationProperty2);
+      Assert.IsNotNull (relation1);
+      Assert.IsNotNull (relation2);
+      Assert.AreNotSame (relation1, relation2);
+      Assert.AreEqual (string.Format ("{0}->{1}.Computer", typeof (TargetClassWithUnidirectionalMixin1).FullName,
+         typeof (MixinAddingUnidirectionalRelation1).FullName), relation1.ID);
+      Assert.AreEqual (string.Format ("{0}->{1}.Computer", typeof (TargetClassWithUnidirectionalMixin2).FullName,
+         typeof (MixinAddingUnidirectionalRelation1).FullName), relation2.ID);
     }
 
     [Test]
@@ -40,72 +140,38 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
       Assert.IsNotNull (classDefinition.GetRelationDefinition (typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty1"));
     }
 
-    [Test]
-    public void GetSetCommitRollbackPersistentProperties ()
-    {
-      IMixinAddingPeristentProperties properties = TargetClassForPersistentMixin.NewObject () as IMixinAddingPeristentProperties;
-      Assert.IsNotNull (properties);
-      
-      properties.ExtraPersistentProperty = 10;
-      properties.PersistentProperty = 11;
-      properties.NonPersistentProperty = 12;
-
-      Assert.AreEqual (10, properties.ExtraPersistentProperty);
-      Assert.AreEqual (11, properties.PersistentProperty);
-      Assert.AreEqual (12, properties.NonPersistentProperty);
-
-      ClientTransactionMock.Commit ();
-
-      Assert.AreEqual (10, properties.ExtraPersistentProperty);
-      Assert.AreEqual (11, properties.PersistentProperty);
-      Assert.AreEqual (12, properties.NonPersistentProperty);
-
-      properties.ExtraPersistentProperty = 13;
-      properties.PersistentProperty = 14;
-      properties.NonPersistentProperty = 15;
-
-      Assert.AreEqual (13, properties.ExtraPersistentProperty);
-      Assert.AreEqual (14, properties.PersistentProperty);
-      Assert.AreEqual (15, properties.NonPersistentProperty);
-
-      ClientTransactionMock.Rollback ();
-
-      Assert.AreEqual (10, properties.ExtraPersistentProperty);
-      Assert.AreEqual (11, properties.PersistentProperty);
-      Assert.AreEqual (15, properties.NonPersistentProperty);
-    }
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage = "A persistence-related mixin was removed from the domain object type "
-        + "Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.TargetClassForPersistentMixin after the mapping information was built: "
-        + "Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.MixinAddingPersistentProperties.")]
+       + "Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.StubStorageTargetClassForPersistentMixin after the mapping information was built: "
+       + "Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.StubStoragePersistentMixin.")]
     public void DynamicChangeInPersistentMixinConfigurationThrowsInNewObject ()
     {
       using (MixinConfiguration.BuildNew().EnterScope())
       {
-        TargetClassForPersistentMixin.NewObject ();
+        StubStorageTargetClassForPersistentMixin.NewObject ();
       }
     }
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage = "A persistence-related mixin was removed from the domain object type "
-        + "Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.TargetClassForPersistentMixin after the mapping information was built: "
-        + "Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.MixinAddingPersistentProperties.")]
+       + "Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.StubStorageTargetClassForPersistentMixin after the mapping information was built: "
+        + "Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.StubStoragePersistentMixin.")]
     public void DynamicChangeInPersistentMixinConfigurationThrowsInGetObject ()
     {
       using (MixinConfiguration.BuildNew().EnterScope())
       {
-        TargetClassForPersistentMixin.GetObject (new ObjectID (typeof (TargetClassForPersistentMixin), Guid.NewGuid()));
+        StubStorageTargetClassForPersistentMixin.GetObject (new ObjectID (typeof (StubStorageTargetClassForPersistentMixin), Guid.NewGuid ()));
       }
     }
 
     [Test]
     public void DynamicChangeInNonPersistentMixinConfigurationDoesntMatter ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass (typeof (TargetClassForPersistentMixin)).Clear().AddMixins (typeof (MixinAddingPersistentProperties)).EnterScope()) // no NullMixin
+      using (MixinConfiguration.BuildFromActive ().ForClass (typeof (StubStorageTargetClassForPersistentMixin)).Clear ().AddMixin (typeof (StubStoragePersistentMixin)).EnterScope ()) // no NullMixin
       {
-        TargetClassForPersistentMixin.NewObject ();
-        TargetClassForPersistentMixin.GetObject (new ObjectID (typeof (TargetClassForPersistentMixin), Guid.NewGuid ()));
+        StubStorageTargetClassForPersistentMixin.NewObject ();
+        StubStorageTargetClassForPersistentMixin.GetObject (new ObjectID (typeof (StubStorageTargetClassForPersistentMixin), Guid.NewGuid ()));
       }
     }
 

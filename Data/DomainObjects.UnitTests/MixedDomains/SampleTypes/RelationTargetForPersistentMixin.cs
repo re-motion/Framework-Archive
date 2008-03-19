@@ -1,9 +1,11 @@
 using System;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
 {
-  [DBTable]
+  [DBTable ("MixedDomains_RelationTarget")]
   [Instantiable]
+  [TestDomain]
   public abstract class RelationTargetForPersistentMixin : SimpleDomainObject<RelationTargetForPersistentMixin>
   {
     [DBBidirectionalRelation ("RelationProperty")]

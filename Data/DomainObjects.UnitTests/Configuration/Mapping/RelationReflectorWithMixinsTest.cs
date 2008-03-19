@@ -45,9 +45,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_classDefinitions, _relationDefinitions);
 
-      Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.MixinAddingPersistentProperties.UnidirectionalRelationProperty",
-          actualRelationDefinition.ID);
+      Assert.AreEqual (typeof (TargetClassForPersistentMixin).FullName + "->" + typeof (MixinAddingPersistentProperties).FullName 
+          + ".UnidirectionalRelationProperty", actualRelationDefinition.ID);
 
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actualRelationDefinition.EndPointDefinitions[0]);
       RelationEndPointDefinition endPointDefinition = (RelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[0];
@@ -78,8 +77,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_classDefinitions, _relationDefinitions);
 
-      Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.MixinAddingPersistentProperties.RelationProperty",
+      Assert.AreEqual (typeof (TargetClassForPersistentMixin).FullName + "->" + typeof (MixinAddingPersistentProperties) + ".RelationProperty",
           actualRelationDefinition.ID);
 
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actualRelationDefinition.EndPointDefinitions[0]);
@@ -126,7 +124,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_classDefinitions, _relationDefinitions);
 
       Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.MixinAddingPersistentProperties.CollectionPropertyNSide",
+          typeof (TargetClassForPersistentMixin).FullName + "->" + typeof (MixinAddingPersistentProperties) + ".CollectionPropertyNSide",
           actualRelationDefinition.ID);
 
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actualRelationDefinition.EndPointDefinitions[0]);

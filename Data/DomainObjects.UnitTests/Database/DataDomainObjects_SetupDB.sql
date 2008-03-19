@@ -1,6 +1,41 @@
 USE TestDomain
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'MixedDomains_Target')
+BEGIN
+  ALTER TABLE [MixedDomains_Target] DROP CONSTRAINT [FK_MixedDomains_Target_RelationProperty]
+  ALTER TABLE [MixedDomains_Target] DROP CONSTRAINT [FK_MixedDomains_Target_CollectionPropertyNSide]
+  ALTER TABLE [MixedDomains_Target] DROP CONSTRAINT [FK_MixedDomains_Target_UnidirectionalRelationProperty]
+END
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'MixedDomains_RelationTarget')
+BEGIN
+  ALTER TABLE [MixedDomains_RelationTarget] DROP CONSTRAINT [FK_MixedDomains_RelationTarget_RelationProperty2]
+  ALTER TABLE [MixedDomains_RelationTarget] DROP CONSTRAINT [FK_MixedDomains_RelationTarget_RelationProperty3ID]
+END
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'MixedDomains_Target') 
+  DROP TABLE [MixedDomains_Target]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'MixedDomains_RelationTarget') 
+  DROP TABLE [MixedDomains_RelationTarget]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'MixedDomains_TargetWithTwoUnidirectionalMixins') 
+  DROP TABLE [MixedDomains_TargetWithTwoUnidirectionalMixins]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'MixedDomains_TargetWithUnidirectionalMixin1') 
+  DROP TABLE [MixedDomains_TargetWithUnidirectionalMixin1]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'MixedDomains_TargetWithUnidirectionalMixin2') 
+  DROP TABLE [MixedDomains_TargetWithUnidirectionalMixin2]
+GO
+
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Location') 
   DROP TABLE [Location]
 GO
@@ -152,7 +187,6 @@ GO
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Folder') 
   DROP TABLE [TableInheritance_Folder]
 GO
-
 
 IF OBJECT_ID ('rpf_testSPQuery', 'P') IS NOT NULL 
   DROP PROCEDURE rpf_testSPQuery;
@@ -744,6 +778,80 @@ CREATE TABLE [TableInheritance_DerivedClassWithEntityWithHierarchy] (
       REFERENCES [TableInheritance_Client] ([ID]),
   CONSTRAINT [FK_TableInheritance_Client_TableInheritance_DerivedClassWithEntityWithHierarchy_3] FOREIGN KEY ([ClientFromDerivedClassWithEntityFromBaseClassID]) 
       REFERENCES [TableInheritance_Client] ([ID])
+) 
+GO
+
+CREATE TABLE [MixedDomains_Target] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [PersistentProperty] int NOT NULL,
+  [ExtraPersistentProperty] int NOT NULL,
+  [RelationPropertyID] uniqueidentifier NULL,
+  [CollectionPropertyNSideID] uniqueidentifier NULL,
+  [UnidirectionalRelationPropertyID] uniqueidentifier NULL,
+  
+  CONSTRAINT [PK_MixedDomains_Target] PRIMARY KEY CLUSTERED ([ID])
+) 
+GO
+
+CREATE TABLE [MixedDomains_RelationTarget] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [RelationProperty2ID] uniqueidentifier NULL,
+  [RelationProperty3ID] uniqueidentifier NULL,
+  
+  CONSTRAINT [PK_MixedDomains_RelationTarget] PRIMARY KEY CLUSTERED ([ID])
+) 
+GO
+
+ALTER TABLE [MixedDomains_Target] ADD CONSTRAINT [FK_MixedDomains_Target_RelationProperty] FOREIGN KEY ([RelationPropertyID]) REFERENCES [MixedDomains_RelationTarget] ([ID])
+ALTER TABLE [MixedDomains_Target] ADD CONSTRAINT [FK_MixedDomains_Target_CollectionPropertyNSide] FOREIGN KEY ([CollectionPropertyNSideID]) REFERENCES [MixedDomains_RelationTarget] ([ID])
+ALTER TABLE [MixedDomains_Target] ADD CONSTRAINT [FK_MixedDomains_Target_UnidirectionalRelationProperty] FOREIGN KEY ([UnidirectionalRelationPropertyID]) REFERENCES [MixedDomains_RelationTarget] ([ID])
+GO
+
+ALTER TABLE [MixedDomains_RelationTarget] ADD CONSTRAINT [FK_MixedDomains_RelationTarget_RelationProperty2] FOREIGN KEY ([RelationProperty2ID]) REFERENCES [MixedDomains_Target] ([ID])
+ALTER TABLE [MixedDomains_RelationTarget] ADD CONSTRAINT [FK_MixedDomains_RelationTarget_RelationProperty3ID] FOREIGN KEY ([RelationProperty3ID]) REFERENCES [MixedDomains_Target] ([ID])
+GO
+
+CREATE TABLE [MixedDomains_TargetWithTwoUnidirectionalMixins] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [ComputerID] uniqueidentifier NULL,
+  [Computer2ID] uniqueidentifier NULL,
+  
+  CONSTRAINT [PK_MixedDomains_TargetWithTwoUnidirectionalMixins] PRIMARY KEY CLUSTERED ([ID]),
+  CONSTRAINT [FK_MixedDomains_TargetWithTwoUnidirectionalMixins_Computer] FOREIGN KEY ([ComputerID]) REFERENCES [Computer] ([ID]),
+  CONSTRAINT [FK_MixedDomains_TargetWithTwoUnidirectionalMixins_Computer2] FOREIGN KEY ([Computer2ID]) REFERENCES [Computer] ([ID])
+) 
+GO
+
+CREATE TABLE [MixedDomains_TargetWithUnidirectionalMixin1] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [ComputerID] uniqueidentifier NULL,
+  
+  CONSTRAINT [PK_MixedDomains_TargetWithUnidirectionalMixin1] PRIMARY KEY CLUSTERED ([ID]),
+  CONSTRAINT [FK_MixedDomains_TargetWithUnidirectionalMixin1_Computer] FOREIGN KEY ([ComputerID]) REFERENCES [Computer] ([ID])
+) 
+GO
+
+CREATE TABLE [MixedDomains_TargetWithUnidirectionalMixin2] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [ComputerID] uniqueidentifier NULL,
+  
+  CONSTRAINT [PK_MixedDomains_TargetWithUnidirectionalMixin2] PRIMARY KEY CLUSTERED ([ID]),
+  CONSTRAINT [FK_MixedDomains_TargetWithUnidirectionalMixin2_Computer] FOREIGN KEY ([ComputerID]) REFERENCES [Computer] ([ID])
 ) 
 GO
 

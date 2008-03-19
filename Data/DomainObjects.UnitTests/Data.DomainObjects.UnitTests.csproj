@@ -238,6 +238,7 @@
     <Compile Include="Design\DomainObjectsDesignModeHelperTest.cs" />
     <Compile Include="Design\FakeDesignModeMappingLoader.cs" />
     <Compile Include="DomainObjects\ConstructionTest.cs" />
+    <Compile Include="IntegrationTests\MixedDomainTest.cs" />
     <Compile Include="IntegrationTests\QueryTest.cs" />
     <Compile Include="Interception\SampleTypes\ClassWithExplicitInterfaceProperty.cs" />
     <Compile Include="Interception\SampleTypes\ClassWithWrongConstructor.cs" />
@@ -273,11 +274,16 @@
     <Compile Include="MixedDomains\DomainObjectMixinBaseClassTest.cs" />
     <Compile Include="MixedDomains\DomainObjectMixinHookTest.cs" />
     <Compile Include="MixedDomains\PersistentMixinTest.cs" />
+    <Compile Include="MixedDomains\SampleTypes\StubStoragePersistentMixin.cs" />
+    <Compile Include="MixedDomains\SampleTypes\StubStorageTargetClassForPersistentMixin.cs" />
+    <Compile Include="MixedDomains\SampleTypes\TargetClassWithUnidirectionalMixin1.cs" />
+    <Compile Include="MixedDomains\SampleTypes\MixinAddingUnidirectionalRelation2.cs" />
     <Compile Include="MixedDomains\SampleTypes\DOWithVirtualPropertiesAndMethods.cs" />
     <Compile Include="MixedDomains\SampleTypes\HookedDomainObjectMixin.cs" />
     <Compile Include="MixedDomains\SampleTypes\IInterfaceAddedByMixin.cs" />
     <Compile Include="MixedDomains\SampleTypes\IMixinAddingPeristentProperties.cs" />
     <Compile Include="MixedDomains\SampleTypes\MixinAddingPersistentProperties.cs" />
+    <Compile Include="MixedDomains\SampleTypes\MixinAddingUnidirectionalRelation1.cs" />
     <Compile Include="MixedDomains\SampleTypes\MixinWithAccessToDomainObjectProperties.cs" />
     <Compile Include="MixedDomains\SampleTypes\MixinAddingInterface.cs" />
     <Compile Include="MixedDomains\SampleTypes\MixinOverridingPropertiesAndMethods.cs" />
@@ -285,6 +291,8 @@
     <Compile Include="MixedDomains\SampleTypes\NullMixin.cs" />
     <Compile Include="MixedDomains\SampleTypes\RelationTargetForPersistentMixin.cs" />
     <Compile Include="MixedDomains\SampleTypes\TargetClassForPersistentMixin.cs" />
+    <Compile Include="MixedDomains\SampleTypes\TargetClassWithTwoUnidirectionalMixins.cs" />
+    <Compile Include="MixedDomains\SampleTypes\TargetClassWithUnidirectionalMixin2.cs" />
     <Compile Include="MixedDomains\SerializationCallbackTest.cs" />
     <Compile Include="MixedDomains\SerializationTest.cs" />
     <Compile Include="ObjectBinding\BindableDomainObjectMixinTests\CommonTest.cs" />
