@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Rubicon.Collections;
+using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Infrastructure;
@@ -16,33 +17,44 @@ namespace Rubicon.Data.DomainObjects.Transport
   /// </summary>
   public class DomainObjectImporter
   {
-    private readonly ClientTransaction _sourceTransaction;
-    private readonly DomainObjectCollection _transportedObjects;
     private readonly ObjectID[] _transportedObjectIDs;
+    private readonly DataContainer[] _transportedContainers;
 
     public DomainObjectImporter (byte[] data)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("data", data);
-      Tuple<ClientTransaction, ObjectID[]> deserializedData = DeserializeData (data);
-      _sourceTransaction = deserializedData.A;
-      _transportedObjectIDs = deserializedData.B;
-      _transportedObjects = _sourceTransaction.GetObjects<DomainObject> (_transportedObjectIDs);
+      _transportedContainers = DeserializeData (data);
+      _transportedObjectIDs = GetIDs (_transportedContainers);
     }
 
-    private Tuple<ClientTransaction, ObjectID[]> DeserializeData (byte[] data)
+    private ObjectID[] GetIDs (DataContainer[] containers)
+    {
+      return Array.ConvertAll<DataContainer, ObjectID> (containers, delegate (DataContainer container) { return container.ID; });
+    }
+
+    private DataContainer[] DeserializeData (byte[] data)
     {
       using (MemoryStream stream = new MemoryStream (data))
       {
         BinaryFormatter formatter = new BinaryFormatter ();
         try
         {
-          return (Tuple<ClientTransaction, ObjectID[]>) formatter.Deserialize (stream);
+          Tuple<ClientTransaction, ObjectID[]> deserializedData = (Tuple<ClientTransaction, ObjectID[]>) formatter.Deserialize (stream);
+          return GetTransportedContainers (deserializedData);
         }
         catch (SerializationException ex)
         {
           throw new ArgumentException ("Invalid data specified: " + ex.Message, "data", ex);
         }
       }
+    }
+
+    private DataContainer[] GetTransportedContainers (Tuple<ClientTransaction, ObjectID[]> deserializedData)
+    {
+      DataContainer[] dataContainers = new DataContainer[deserializedData.B.Length];
+      for (int i = 0; i < dataContainers.Length; i++)
+        dataContainers[i] = deserializedData.A.DataManager.DataContainerMap[deserializedData.B[i]];
+      return dataContainers;
     }
 
     public TransportedDomainObjects GetImportedObjects ()
@@ -60,25 +72,22 @@ namespace Rubicon.Data.DomainObjects.Transport
     private List<Tuple<DataContainer, DataContainer>> GetTargetDataContainersForSourceObjects (ClientTransaction targetTransaction)
     {
       List<Tuple<DataContainer, DataContainer>> result = new List<Tuple<DataContainer, DataContainer>> ();
-      if (_transportedObjects.Count > 0)
+      if (_transportedContainers.Length > 0)
       {
         using (targetTransaction.EnterNonDiscardingScope())
         {
           ObjectList<DomainObject> existingObjects = targetTransaction.TryGetObjects<DomainObject> (_transportedObjectIDs);
 
-          for (int i = 0; i < _transportedObjects.Count; ++i)
+          foreach (DataContainer sourceDataContainer in _transportedContainers)
           {
-            DomainObject sourceObject = _transportedObjects[i];
-            DataContainer sourceDataContainer = sourceObject.GetDataContainerForTransaction (_sourceTransaction);
-
-            DomainObject existingObject = existingObjects[sourceObject.ID];
+            DomainObject existingObject = existingObjects[sourceDataContainer.ID];
             DataContainer targetDataContainer;
             
             if (existingObject != null)
               targetDataContainer = existingObject.GetDataContainerForTransaction (targetTransaction);
             else
             {
-              targetDataContainer = targetTransaction.CreateNewDataContainer (sourceObject.ID);
+              targetDataContainer = targetTransaction.CreateNewDataContainer (sourceDataContainer.ID);
               targetTransaction.EnlistDomainObject (targetDataContainer.DomainObject);
             }
 
@@ -93,22 +102,23 @@ namespace Rubicon.Data.DomainObjects.Transport
     {
       foreach (Tuple<DataContainer, DataContainer> sourceToTargetContainer in sourceToTargetMapping)
       {
-        ClientTransaction targetTransaction = sourceToTargetContainer.B.ClientTransaction;
+        DataContainer sourceContainer = sourceToTargetContainer.A;
+        DataContainer targetContainer = sourceToTargetContainer.B;
+        DomainObject targetObject = targetContainer.DomainObject;
+        ClientTransaction targetTransaction = targetContainer.ClientTransaction;
 
-        DomainObject sourceObject = sourceToTargetContainer.A.DomainObject;
-        DomainObject targetObject = sourceToTargetContainer.B.DomainObject;
-        foreach (PropertyAccessor sourceProperty in sourceObject.Properties)
+        foreach (PropertyValue sourceProperty in sourceContainer.PropertyValues)
         {
-          PropertyAccessor targetProperty = targetObject.Properties[sourceProperty.PropertyIdentifier];
-          switch (sourceProperty.Kind)
+          PropertyAccessor targetProperty = targetObject.Properties[sourceProperty.Name];
+          switch (targetProperty.Kind)
           {
             case PropertyKind.PropertyValue:
-              targetProperty.SetValueWithoutTypeCheckTx (targetTransaction, sourceProperty.GetValueWithoutTypeCheckTx (_sourceTransaction));
+              targetProperty.SetValueWithoutTypeCheckTx (targetTransaction, sourceProperty.Value);
               break;
             case PropertyKind.RelatedObject:
-              if (!sourceProperty.RelationEndPointDefinition.IsVirtual)
+              if (!targetProperty.RelationEndPointDefinition.IsVirtual)
               {
-                ObjectID relatedObjectID = sourceProperty.GetRelatedObjectIDTx (_sourceTransaction);
+                ObjectID relatedObjectID = (ObjectID) sourceProperty.Value;
                 DomainObject targetRelatedObject = relatedObjectID != null ? targetTransaction.GetObject (relatedObjectID) : null;
                 targetProperty.SetValueWithoutTypeCheckTx (targetTransaction, targetRelatedObject);
               }

@@ -69,6 +69,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    public void IsRelationProperty_False ()
+    {
+      PropertyDefinition intDefinition = CreateIntPropertyDefinition ("test");
+      PropertyValue propertyValue1 = new PropertyValue (intDefinition, 5);
+      Assert.IsFalse (propertyValue1.IsRelationProperty);
+    }
+
+    [Test]
+    public void IsRelationProperty_True ()
+    {
+      PropertyDefinition propertyDefinition = CreatePropertyDefinition ("test", typeof (ObjectID), null);
+      PropertyValue propertyValue1 = new PropertyValue (propertyDefinition, null);
+      Assert.IsTrue (propertyValue1.IsRelationProperty);
+    }
+
+    [Test]
     public void SettingOfValueForValueType ()
     {
       PropertyValue propertyValue = CreateIntPropertyValue ("test", 5);

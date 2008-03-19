@@ -460,8 +460,13 @@ public class PropertyValue
 
   private void CheckForRelationProperty ()
   {
-    if (_definition.PropertyType == typeof (ObjectID))
+    if (IsRelationProperty)
       throw new InvalidOperationException (string.Format ("The relation property '{0}' cannot be set directly.", _definition.PropertyName));
+  }
+
+  public bool IsRelationProperty
+  {
+    get { return _definition.PropertyType == typeof (ObjectID); }
   }
 
   private void CheckDiscarded ()
