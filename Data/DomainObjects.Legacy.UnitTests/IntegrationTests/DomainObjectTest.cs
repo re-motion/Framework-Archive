@@ -772,7 +772,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
       order2.Customer = null;
 
-      CheckNoEvents ();
+      CheckMixedEvents (order2.InternalDataContainer.PropertyValues["Customer"]);
     }
 
     [Test]
@@ -816,6 +816,18 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
     {
       Assert.IsNull (_orderPropertyValuesEventReceiver.ChangingPropertyValue);
       Assert.IsNull (_orderPropertyValuesEventReceiver.ChangedPropertyValue);
+      Assert.IsNull (_orderDataContainerEventReceiver.ChangingPropertyValue);
+      Assert.IsNull (_orderDataContainerEventReceiver.ChangedPropertyValue);
+      Assert.IsFalse (_orderDomainObjectEventReceiver.HasChangingEventBeenCalled);
+      Assert.IsFalse (_orderDomainObjectEventReceiver.HasChangedEventBeenCalled);
+      Assert.IsNull (_orderDomainObjectEventReceiver.ChangingPropertyValue);
+      Assert.IsNull (_orderDomainObjectEventReceiver.ChangedPropertyValue);
+    }
+
+    private void CheckMixedEvents (PropertyValue propertyValue)
+    {
+      Assert.AreSame (propertyValue, _orderPropertyValuesEventReceiver.ChangingPropertyValue);
+      Assert.AreSame (propertyValue, _orderPropertyValuesEventReceiver.ChangedPropertyValue);
       Assert.IsNull (_orderDataContainerEventReceiver.ChangingPropertyValue);
       Assert.IsNull (_orderDataContainerEventReceiver.ChangedPropertyValue);
       Assert.IsFalse (_orderDomainObjectEventReceiver.HasChangingEventBeenCalled);
