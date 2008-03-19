@@ -175,9 +175,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Invalid data specified: End of Stream encountered before parsing was completed."
-            + "\r\nParameter name: data")]
+    [ExpectedException (typeof (TransportationException),
+        ExpectedMessage = "Invalid data specified: End of Stream encountered before parsing was completed.")]
     public void LoadTransportData_InvalidData ()
     {
       byte[] data = new byte[] {1, 2, 3};

@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
   public class DefaultExportStrategyTest : ClientTransactionBaseTest
   {
     [Test]
-    public void Export_Serialized ()
+    public void Export_SerializesData ()
     {
       DataContainer expectedContainer1 = Order.GetObject (DomainObjectIDs.Order1).InternalDataContainer;
       DataContainer expectedContainer2 = Order.GetObject (DomainObjectIDs.Order2).InternalDataContainer;

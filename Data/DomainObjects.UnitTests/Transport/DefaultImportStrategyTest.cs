@@ -39,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 
     [Test]
     [ExpectedException (typeof (TransportationException), ExpectedMessage = "Invalid data specified: Attempting to deserialize an empty stream.")]
-    public void Import_InvalidFormat ()
+    public void Import_ThrowsOnInvalidFormat ()
     {
       byte[] data = new byte[0];
       DefaultImportStrategy.Instance.Import (data);
