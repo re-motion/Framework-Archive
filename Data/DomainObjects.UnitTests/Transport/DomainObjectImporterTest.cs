@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Transport;
@@ -42,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       foreach (ObjectID id in loadedObjects)
         transporter.Load (id);
 
-      TransportedDomainObjects transportedObjects = new DomainObjectImporter (transporter.GetBinaryTransportData()).GetImportedObjects();
+      TransportedDomainObjects transportedObjects = new DomainObjectImporter (transporter.GetBinaryTransportData(), DefaultImportStrategy.Instance).GetImportedObjects();
       foreach (DomainObject domainObject in transportedObjects.TransportedObjects)
       {
         Assert.IsTrue (domainObject.IsBoundToSpecificTransaction);
@@ -56,7 +57,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     public void InvalidData ()
     {
       byte[] data = new byte[] { 1, 2, 3 };
-      new DomainObjectImporter (data);
+      new DomainObjectImporter (data, DefaultImportStrategy.Instance);
     }
 
     [Test]
@@ -356,6 +357,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       }, binaryData);
     }
 
+    [Test]
+    public void SpecialStrategy ()
+    {
+      MockRepository repository = new MockRepository ();
+      IImportStrategy mockStrategy = repository.CreateMock<IImportStrategy> ();
+      byte[] data = new byte[] { 1, 2, 3 };
+      DataContainer[] containers;
+      using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
+      {
+        containers = new DataContainer[] { Order.GetObject (DomainObjectIDs.Order1).InternalDataContainer };
+      }
+
+      Expect.Call (mockStrategy.Import (data)).Return (containers);
+
+      repository.ReplayAll ();
+
+      DomainObjectImporter importer = new DomainObjectImporter (data, mockStrategy);
+      TransportedDomainObjects result = importer.GetImportedObjects ();
+      Assert.That (result.TransportedObjects, Is.EquivalentTo (result.DataTransaction.GetObjects<Order> (DomainObjectIDs.Order1)));
+
+      repository.VerifyAll ();
+    }
+
 
     private byte[] GetBinaryDataForChangedObject (ObjectID id, string propertyToTouch, object newValue)
     {
@@ -389,7 +413,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 
     private TransportedDomainObjects Import (byte[] binaryData)
     {
-      return new DomainObjectImporter (binaryData).GetImportedObjects ();
+      return new DomainObjectImporter (binaryData, DefaultImportStrategy.Instance).GetImportedObjects ();
     }
 
     private void ModifyDatabase (Proc changer)

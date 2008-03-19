@@ -4,8 +4,6 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Infrastructure;
 
@@ -17,44 +15,14 @@ namespace Rubicon.Data.DomainObjects.Transport
   /// </summary>
   public class DomainObjectImporter
   {
-    private readonly ObjectID[] _transportedObjectIDs;
     private readonly DataContainer[] _transportedContainers;
 
-    public DomainObjectImporter (byte[] data)
+    public DomainObjectImporter (byte[] data, IImportStrategy importStrategy)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("data", data);
-      _transportedContainers = DeserializeData (data);
-      _transportedObjectIDs = GetIDs (_transportedContainers);
-    }
+      ArgumentUtility.CheckNotNull ("importStrategy", importStrategy);
 
-    private ObjectID[] GetIDs (DataContainer[] containers)
-    {
-      return Array.ConvertAll<DataContainer, ObjectID> (containers, delegate (DataContainer container) { return container.ID; });
-    }
-
-    private DataContainer[] DeserializeData (byte[] data)
-    {
-      using (MemoryStream stream = new MemoryStream (data))
-      {
-        BinaryFormatter formatter = new BinaryFormatter ();
-        try
-        {
-          Tuple<ClientTransaction, ObjectID[]> deserializedData = (Tuple<ClientTransaction, ObjectID[]>) formatter.Deserialize (stream);
-          return GetTransportedContainers (deserializedData);
-        }
-        catch (SerializationException ex)
-        {
-          throw new ArgumentException ("Invalid data specified: " + ex.Message, "data", ex);
-        }
-      }
-    }
-
-    private DataContainer[] GetTransportedContainers (Tuple<ClientTransaction, ObjectID[]> deserializedData)
-    {
-      DataContainer[] dataContainers = new DataContainer[deserializedData.B.Length];
-      for (int i = 0; i < dataContainers.Length; i++)
-        dataContainers[i] = deserializedData.A.DataManager.DataContainerMap[deserializedData.B[i]];
-      return dataContainers;
+      _transportedContainers = importStrategy.Import (data);
     }
 
     public TransportedDomainObjects GetImportedObjects ()
@@ -76,26 +44,35 @@ namespace Rubicon.Data.DomainObjects.Transport
       {
         using (targetTransaction.EnterNonDiscardingScope())
         {
-          ObjectList<DomainObject> existingObjects = targetTransaction.TryGetObjects<DomainObject> (_transportedObjectIDs);
+          ObjectID[] transportedObjectIDs = GetIDs (_transportedContainers);
+          ObjectList<DomainObject> existingObjects = targetTransaction.TryGetObjects<DomainObject> (transportedObjectIDs);
 
           foreach (DataContainer sourceDataContainer in _transportedContainers)
           {
-            DomainObject existingObject = existingObjects[sourceDataContainer.ID];
-            DataContainer targetDataContainer;
-            
-            if (existingObject != null)
-              targetDataContainer = existingObject.GetDataContainerForTransaction (targetTransaction);
-            else
-            {
-              targetDataContainer = targetTransaction.CreateNewDataContainer (sourceDataContainer.ID);
-              targetTransaction.EnlistDomainObject (targetDataContainer.DomainObject);
-            }
-
+            DataContainer targetDataContainer = GetTargetDataContainer(sourceDataContainer, existingObjects, targetTransaction);
             result.Add (Tuple.NewTuple (sourceDataContainer, targetDataContainer));
           }
         }
       }
       return result;
+    }
+
+    private DataContainer GetTargetDataContainer (DataContainer sourceDataContainer, ObjectList<DomainObject> existingObjects, ClientTransaction targetTransaction)
+    {
+      DomainObject existingObject = existingObjects[sourceDataContainer.ID];
+      if (existingObject != null)
+        return existingObject.GetDataContainerForTransaction (targetTransaction);
+      else
+      {
+        DataContainer targetDataContainer = targetTransaction.CreateNewDataContainer (sourceDataContainer.ID);
+        targetTransaction.EnlistDomainObject (targetDataContainer.DomainObject);
+        return targetDataContainer;
+      }
+    }
+
+    private ObjectID[] GetIDs (DataContainer[] containers)
+    {
+      return Array.ConvertAll<DataContainer, ObjectID> (containers, delegate (DataContainer container) { return container.ID; });
     }
 
     private void SynchronizeData (IEnumerable<Tuple<DataContainer, DataContainer>> sourceToTargetMapping)

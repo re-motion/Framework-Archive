@@ -2,10 +2,14 @@ using System;
 using NUnit.Framework;
 using System.Collections.Generic;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Transport;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Utilities;
+using Mocks_Is = Rhino.Mocks.Constraints.Is;
+using Mocks_Property = Rhino.Mocks.Constraints.Property;
+using Mocks_List = Rhino.Mocks.Constraints.List;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 {
@@ -211,6 +215,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       byte[] data = _transporter.GetBinaryTransportData();
       Assert.IsNotNull (data);
       Assert.IsNotEmpty (data);
+    }
+
+    [Test]
+    public void GetBinaryTransportData_SpecialStrategy ()
+    {
+      DomainObject loadedObject = _transporter.Load (DomainObjectIDs.Order1);
+      ClientTransaction dataTransaction = loadedObject.ClientTransaction;
+
+      MockRepository repository = new MockRepository ();
+      IExportStrategy mockStrategy = repository.CreateMock<IExportStrategy> ();
+      byte[] data = new byte[] { 1, 2, 3 };
+
+      Expect.Call (mockStrategy.Export (null, null))
+          .Constraints (Mocks_List.Equal (_transporter.ObjectIDs), Mocks_Is.Same (dataTransaction))
+          .Return (data);
+
+      repository.ReplayAll ();
+      Assert.AreSame (data, _transporter.GetBinaryTransportData (mockStrategy));
+      repository.VerifyAll ();
     }
 
     [Test]

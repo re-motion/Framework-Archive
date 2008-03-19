@@ -19,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.Transport
   public class DomainObjectTransporter
   {
     /// <summary>
-    /// Loads the data transported from another system into a <see cref="TransportedDomainObjects"/> container.
+    /// Loads the data transported from another system into a <see cref="TransportedDomainObjects"/> container using the <see cref="DefaultImportStrategy"/>.
     /// </summary>
     /// <param name="data">The transported data to be loaded.</param>
     /// <returns>A container holding the objects loaded from the given data.</returns>
@@ -30,8 +30,26 @@ namespace Rubicon.Data.DomainObjects.Transport
     /// </remarks>
     public static TransportedDomainObjects LoadTransportData (byte[] data)
     {
+      DefaultImportStrategy strategy = DefaultImportStrategy.Instance;
+      return LoadTransportData(data, strategy);
+    }
+
+    /// <summary>
+    /// Loads the data transported from another system into a <see cref="TransportedDomainObjects"/> container.
+    /// </summary>
+    /// <param name="data">The transported data to be loaded.</param>
+    /// <param name="strategy">The strategy to use when importing data. This must match the strategy being used with <see cref="GetBinaryTransportData"/>.</param>
+    /// <returns>A container holding the objects loaded from the given data.</returns>
+    /// <exception cref="ObjectNotFoundException">A referenced related object is not part of the transported data and does not exist on the
+    /// target system.</exception>
+    /// <remarks>
+    /// Given a <see cref="DomainObjectTransporter"/>, the binary data can be retrieved from <see cref="GetBinaryTransportData"/>.
+    /// </remarks>
+    private static TransportedDomainObjects LoadTransportData (byte[] data, DefaultImportStrategy strategy)
+    {
       ArgumentUtility.CheckNotNullOrEmpty ("data", data);
-      return new DomainObjectImporter (data).GetImportedObjects ();
+      ArgumentUtility.CheckNotNull ("strategy", strategy);
+      return new DomainObjectImporter (data, strategy).GetImportedObjects ();
     }
 
     private readonly ClientTransaction _transportTransaction;
@@ -187,18 +205,24 @@ namespace Rubicon.Data.DomainObjects.Transport
     }
 
     /// <summary>
-    /// Gets a the objects loaded into this transporter (including their contents) in a binary format for transport to another system.
+    /// Gets a the objects loaded into this transporter (including their contents) in a binary format for transport to another system using <see cref="DefaultExportStrategy"/>.
     /// At the target system, the data can be loaded via <see cref="LoadTransportData"/>.
     /// </summary>
     /// <returns>The loaded objects in a binary format.</returns>
     public byte[] GetBinaryTransportData ()
     {
-      using (MemoryStream dataStream = new MemoryStream ())
-      {
-        BinaryFormatter formatter = new BinaryFormatter ();
-        formatter.Serialize (dataStream, Tuple.NewTuple (_transportTransaction, _transportedObjects.ToArray()));
-        return dataStream.ToArray ();
-      }
+      return GetBinaryTransportData (DefaultExportStrategy.Instance);
+    }
+
+    /// <summary>
+    /// Gets a the objects loaded into this transporter (including their contents) in a binary format for transport to another system.
+    /// At the target system, the data can be loaded via <see cref="LoadTransportData(byte[],DefaultImportStrategy)"/>.
+    /// </summary>
+    /// <param name="strategy">The strategy to be used for exporting data. This must match the strategy used with <see cref="LoadTransportData(byte[],DefaultImportStrategy)"/>.</param>
+    /// <returns>The loaded objects in a binary format.</returns>
+    public byte[] GetBinaryTransportData (IExportStrategy strategy)
+    {
+      return strategy.Export (_transportedObjects.ToArray(), _transportTransaction);
     }
   }
 }

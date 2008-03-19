@@ -988,6 +988,8 @@
     <Compile Include="Transaction\SubTransactionQueryTest.cs" />
     <Compile Include="Transaction\SubTransactionRollbackDataTest.cs" />
     <Compile Include="Transaction\SubTransactionTest.cs" />
+    <Compile Include="Transport\DefaultExportStrategyTest.cs" />
+    <Compile Include="Transport\DefaultImportStrategyTest.cs" />
     <Compile Include="Transport\DomainObjectImporterTest.cs" />
     <Compile Include="Transport\DomainObjectTransporterTest.cs" />
     <Compile Include="Transport\FollowAllProcessNoneStrategy.cs" />
