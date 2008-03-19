@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Infrastructure;
@@ -15,20 +12,20 @@ namespace Rubicon.Data.DomainObjects.Transport
   /// </summary>
   public class DomainObjectImporter
   {
-    private readonly DataContainer[] _transportedContainers;
+    private readonly TransportItem[] _transportItems;
 
     public DomainObjectImporter (byte[] data, IImportStrategy importStrategy)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("data", data);
       ArgumentUtility.CheckNotNull ("importStrategy", importStrategy);
 
-      _transportedContainers = importStrategy.Import (data);
+      _transportItems = EnumerableUtility.ToArray (importStrategy.Import (data));
     }
 
     public TransportedDomainObjects GetImportedObjects ()
     {
       ClientTransaction targetTransaction = ClientTransaction.NewBindingTransaction ();
-      List<Tuple<DataContainer, DataContainer>> dataContainerMapping = GetTargetDataContainersForSourceObjects (targetTransaction);
+      List<Tuple<TransportItem, DataContainer>> dataContainerMapping = GetTargetDataContainersForSourceObjects (targetTransaction);
 
       // grab enlisted objects _before_ properties are synchronized, as synchronizing might load some additional objects
       List<DomainObject> transportedObjects = new List<DomainObject> (targetTransaction.EnlistedDomainObjects);
@@ -37,56 +34,56 @@ namespace Rubicon.Data.DomainObjects.Transport
       return new TransportedDomainObjects (targetTransaction, transportedObjects);
     }
 
-    private List<Tuple<DataContainer, DataContainer>> GetTargetDataContainersForSourceObjects (ClientTransaction targetTransaction)
+    private List<Tuple<TransportItem, DataContainer>> GetTargetDataContainersForSourceObjects (ClientTransaction targetTransaction)
     {
-      List<Tuple<DataContainer, DataContainer>> result = new List<Tuple<DataContainer, DataContainer>> ();
-      if (_transportedContainers.Length > 0)
+      List<Tuple<TransportItem, DataContainer>> result = new List<Tuple<TransportItem, DataContainer>> ();
+      if (_transportItems.Length > 0)
       {
         using (targetTransaction.EnterNonDiscardingScope())
         {
-          ObjectID[] transportedObjectIDs = GetIDs (_transportedContainers);
+          ObjectID[] transportedObjectIDs = GetIDs (_transportItems);
           ObjectList<DomainObject> existingObjects = targetTransaction.TryGetObjects<DomainObject> (transportedObjectIDs);
 
-          foreach (DataContainer sourceDataContainer in _transportedContainers)
+          foreach (TransportItem transportItem in _transportItems)
           {
-            DataContainer targetDataContainer = GetTargetDataContainer(sourceDataContainer, existingObjects, targetTransaction);
-            result.Add (Tuple.NewTuple (sourceDataContainer, targetDataContainer));
+            DataContainer targetDataContainer = GetTargetDataContainer(transportItem, existingObjects, targetTransaction);
+            result.Add (Tuple.NewTuple (transportItem, targetDataContainer));
           }
         }
       }
       return result;
     }
 
-    private DataContainer GetTargetDataContainer (DataContainer sourceDataContainer, ObjectList<DomainObject> existingObjects, ClientTransaction targetTransaction)
+    private DataContainer GetTargetDataContainer (TransportItem transportItem, ObjectList<DomainObject> existingObjects, ClientTransaction targetTransaction)
     {
-      DomainObject existingObject = existingObjects[sourceDataContainer.ID];
+      DomainObject existingObject = existingObjects[transportItem.ID];
       if (existingObject != null)
         return existingObject.GetDataContainerForTransaction (targetTransaction);
       else
       {
-        DataContainer targetDataContainer = targetTransaction.CreateNewDataContainer (sourceDataContainer.ID);
+        DataContainer targetDataContainer = targetTransaction.CreateNewDataContainer (transportItem.ID);
         targetTransaction.EnlistDomainObject (targetDataContainer.DomainObject);
         return targetDataContainer;
       }
     }
 
-    private ObjectID[] GetIDs (DataContainer[] containers)
+    private ObjectID[] GetIDs (TransportItem[] items)
     {
-      return Array.ConvertAll<DataContainer, ObjectID> (containers, delegate (DataContainer container) { return container.ID; });
+      return Array.ConvertAll<TransportItem, ObjectID> (items, delegate (TransportItem item) { return item.ID; });
     }
 
-    private void SynchronizeData (IEnumerable<Tuple<DataContainer, DataContainer>> sourceToTargetMapping)
+    private void SynchronizeData (IEnumerable<Tuple<TransportItem, DataContainer>> sourceToTargetMapping)
     {
-      foreach (Tuple<DataContainer, DataContainer> sourceToTargetContainer in sourceToTargetMapping)
+      foreach (Tuple<TransportItem, DataContainer> sourceToTargetContainer in sourceToTargetMapping)
       {
-        DataContainer sourceContainer = sourceToTargetContainer.A;
+        TransportItem transportItem = sourceToTargetContainer.A;
         DataContainer targetContainer = sourceToTargetContainer.B;
         DomainObject targetObject = targetContainer.DomainObject;
         ClientTransaction targetTransaction = targetContainer.ClientTransaction;
 
-        foreach (PropertyValue sourceProperty in sourceContainer.PropertyValues)
+        foreach (KeyValuePair<string, object> sourceProperty in transportItem.Properties)
         {
-          PropertyAccessor targetProperty = targetObject.Properties[sourceProperty.Name];
+          PropertyAccessor targetProperty = targetObject.Properties[sourceProperty.Key];
           switch (targetProperty.Kind)
           {
             case PropertyKind.PropertyValue:

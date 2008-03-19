@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -10,7 +11,7 @@ namespace Rubicon.Data.DomainObjects.Transport
   {
     public static readonly DefaultImportStrategy Instance = new DefaultImportStrategy ();
 
-    public DataContainer[] Import (byte[] data)
+    public IEnumerable<TransportItem> Import (byte[] data)
     {
       using (MemoryStream stream = new MemoryStream (data))
       {
@@ -18,7 +19,8 @@ namespace Rubicon.Data.DomainObjects.Transport
         try
         {
           Tuple<ClientTransaction, ObjectID[]> deserializedData = (Tuple<ClientTransaction, ObjectID[]>) formatter.Deserialize (stream);
-          return GetTransportedContainers (deserializedData);
+          DataContainer[] dataContainers = GetTransportedContainers (deserializedData);
+          return UnwrapData (dataContainers);
         }
         catch (SerializationException ex)
         {
@@ -33,6 +35,15 @@ namespace Rubicon.Data.DomainObjects.Transport
       for (int i = 0; i < dataContainers.Length; i++)
         dataContainers[i] = deserializedData.A.DataManager.DataContainerMap[deserializedData.B[i]];
       return dataContainers;
+    }
+
+    private IEnumerable<TransportItem> UnwrapData (IEnumerable<DataContainer> containers)
+    {
+      foreach (DataContainer container in containers)
+      {
+        TransportItem item = TransportItem.PackageDataContainer(container);
+        yield return item;
+      }
     }
   }
 }

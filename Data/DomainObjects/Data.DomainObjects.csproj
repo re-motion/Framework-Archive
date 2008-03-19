@@ -527,6 +527,7 @@
     <Compile Include="Transport\TransportedDomainObjects.cs" />
     <Compile Include="Transport\TransporterListener.cs" />
     <Compile Include="Transport\TransportFinishTransactionListener.cs" />
+    <Compile Include="Transport\TransportItem.cs" />
     <Compile Include="ValueAccess.cs" />
     <Compile Include="ValueTooLongException.cs">
       <SubType>Code</SubType>

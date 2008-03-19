@@ -6,6 +6,7 @@ using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Transport;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 {
@@ -15,14 +16,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     [Test]
     public void Import_DeserializesData ()
     {
+      string orderNumberIdentifier = ReflectionUtility.GetPropertyName (typeof (Order), "OrderNumber");
+
       DataContainer expectedContainer1 = Order.GetObject (DomainObjectIDs.Order1).InternalDataContainer;
       DataContainer expectedContainer2 = Order.GetObject (DomainObjectIDs.Order2).InternalDataContainer;
 
       byte[] data = Serialize(expectedContainer1.ID, expectedContainer2.ID);
-      DataContainer[] containers = DefaultImportStrategy.Instance.Import (data);
-      Assert.AreEqual (2, containers.Length);
-      Assert.AreEqual (expectedContainer1.ID, containers[0].ID);
-      Assert.AreEqual (expectedContainer2.ID, containers[1].ID);
+      TransportItem[] items = EnumerableUtility.ToArray (DefaultImportStrategy.Instance.Import (data));
+      Assert.AreEqual (2, items.Length);
+
+      Assert.AreEqual (expectedContainer1.ID, items[0].ID);
+      Assert.AreEqual (expectedContainer1.PropertyValues.Count, items[0].Properties.Count);
+      Assert.AreEqual (expectedContainer1.PropertyValues[orderNumberIdentifier].Value, items[0].Properties[orderNumberIdentifier]);
+
+      Assert.AreEqual (expectedContainer2.ID, items[1].ID);
+      Assert.AreEqual (expectedContainer2.PropertyValues.Count, items[1].Properties.Count);
+      Assert.AreEqual (expectedContainer2.PropertyValues[orderNumberIdentifier].Value, items[1].Properties[orderNumberIdentifier]);
     }
 
     [Test]
@@ -32,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       Dev.Null = Order.GetObject (DomainObjectIDs.Order2).InternalDataContainer;
 
       byte[] data = Serialize (expectedContainer1.ID );
-      DataContainer[] containers = DefaultImportStrategy.Instance.Import (data);
+      TransportItem[] containers = EnumerableUtility.ToArray (DefaultImportStrategy.Instance.Import (data));
       Assert.AreEqual (1, containers.Length);
       Assert.AreEqual (expectedContainer1.ID, containers[0].ID);
     }

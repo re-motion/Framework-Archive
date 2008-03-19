@@ -1,7 +1,9 @@
+using System.Collections.Generic;
+
 namespace Rubicon.Data.DomainObjects.Transport
 {
   public interface IImportStrategy
   {
-    DataContainer[] Import (byte[] data);
+    IEnumerable<TransportItem> Import (byte[] data);
   }
 }

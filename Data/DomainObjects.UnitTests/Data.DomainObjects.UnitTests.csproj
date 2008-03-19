@@ -997,6 +997,7 @@
     <Compile Include="Transport\OnlyProcessComputersStrategy.cs" />
     <Compile Include="Transport\TransportedDomainObjectsTest.cs" />
     <Compile Include="Transport\TransporterListenerTest.cs" />
+    <Compile Include="Transport\TransportItemTest.cs" />
     <Compile Include="UnitTestStorageProviderStub.cs">
       <SubType>Code</SubType>
     </Compile>

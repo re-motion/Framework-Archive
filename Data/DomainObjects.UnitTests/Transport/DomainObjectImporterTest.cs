@@ -362,13 +362,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       MockRepository repository = new MockRepository ();
       IImportStrategy mockStrategy = repository.CreateMock<IImportStrategy> ();
       byte[] data = new byte[] { 1, 2, 3 };
-      DataContainer[] containers;
+      TransportItem[] items;
       using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
-        containers = new DataContainer[] { Order.GetObject (DomainObjectIDs.Order1).InternalDataContainer };
+        items = new TransportItem[] { TransportItem.PackageDataContainer (Order.GetObject (DomainObjectIDs.Order1).InternalDataContainer) };
       }
 
-      Expect.Call (mockStrategy.Import (data)).Return (containers);
+      Expect.Call (mockStrategy.Import (data)).Return (items);
 
       repository.ReplayAll ();
 
@@ -378,8 +378,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 
       repository.VerifyAll ();
     }
-
-
+    
     private byte[] GetBinaryDataForChangedObject (ObjectID id, string propertyToTouch, object newValue)
     {
       DomainObjectTransporter transporter = new DomainObjectTransporter ();
