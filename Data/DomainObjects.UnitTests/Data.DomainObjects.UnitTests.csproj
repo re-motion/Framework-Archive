@@ -997,7 +997,7 @@
     <Compile Include="Transport\FollowOnlyOneLevelStrategy.cs" />
     <Compile Include="Transport\OnlyProcessComputersStrategy.cs" />
     <Compile Include="Transport\TransportedDomainObjectsTest.cs" />
-    <Compile Include="Transport\TransporterListenerTest.cs" />
+    <Compile Include="Transport\TransportTransactionListenerTest.cs" />
     <Compile Include="Transport\TransportItemTest.cs" />
     <Compile Include="Transport\XmlImportStrategyTest.cs" />
     <Compile Include="UnitTestStorageProviderStub.cs">

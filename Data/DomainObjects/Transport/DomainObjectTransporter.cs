@@ -58,7 +58,7 @@ namespace Rubicon.Data.DomainObjects.Transport
     public DomainObjectTransporter ()
     {
       _transportTransaction = ClientTransaction.NewBindingTransaction();
-      _transportTransaction.AddListener (new TransporterListener (this));
+      _transportTransaction.AddListener (new TransportTransactionListener (this));
     }
 
     /// <summary>

@@ -7,12 +7,12 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.Transport
 {
   [Serializable]
-  public class TransporterListener : IClientTransactionListener
+  public class TransportTransactionListener : IClientTransactionListener
   {
     [NonSerialized]
     private readonly DomainObjectTransporter _transporter;
 
-    public TransporterListener (DomainObjectTransporter transporter)
+    public TransportTransactionListener (DomainObjectTransporter transporter)
     {
       ArgumentUtility.CheckNotNull ("transporter", transporter);
       _transporter = transporter;
@@ -118,7 +118,7 @@ namespace Rubicon.Data.DomainObjects.Transport
 
     public void TransactionCommitting (DomainObjectCollection domainObjects)
     {
-      
+      throw new InvalidOperationException ("The transport transaction cannot be committed.");
     }
 
     public void TransactionCommitted (DomainObjectCollection domainObjects)
@@ -128,7 +128,7 @@ namespace Rubicon.Data.DomainObjects.Transport
 
     public void TransactionRollingBack (DomainObjectCollection domainObjects)
     {
-      
+      throw new InvalidOperationException ("The transport transaction cannot be rolled back.");
     }
 
     public void TransactionRolledBack (DomainObjectCollection domainObjects)

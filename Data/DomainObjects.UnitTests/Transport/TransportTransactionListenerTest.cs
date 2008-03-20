@@ -7,16 +7,16 @@ using Rubicon.Development.UnitTesting;
 namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 {
   [TestFixture]
-  public class TransporterListenerTest : ClientTransactionBaseTest
+  public class TransportTransactionListenerTest : ClientTransactionBaseTest
   {
     private DomainObjectTransporter _transporter;
-    private TransporterListener _listener;
+    private TransportTransactionListener _listener;
 
     public override void SetUp ()
     {
       base.SetUp ();
       _transporter = new DomainObjectTransporter();
-      _listener = new TransporterListener (_transporter);
+      _listener = new TransportTransactionListener (_transporter);
     }
 
     [Test]
@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
         + "it has been deserialized.")]
     public void Serialization_AndMethodCalled ()
     {
-      TransporterListener listener = Serializer.SerializeAndDeserialize (_listener);
+      TransportTransactionListener listener = Serializer.SerializeAndDeserialize (_listener);
       listener.PropertyValueChanging (null, null, null, null);
     }
 
@@ -55,6 +55,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
           .ClientTransaction.GetObjects<Computer> (DomainObjectIDs.Computer1)[0];
       _listener.PropertyValueChanging (source.InternalDataContainer,
           source.InternalDataContainer.PropertyValues[ReflectionUtility.GetPropertyName (typeof (Computer), "SerialNumber")], null, null);
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The transport transaction cannot be committed.")]
+    public void CommitingTransaction ()
+    {
+      _transporter.Load (DomainObjectIDs.Computer2).ClientTransaction.Commit();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The transport transaction cannot be rolled back.")]
+    public void RollingBackTransaction ()
+    {
+      _transporter.Load (DomainObjectIDs.Computer2).ClientTransaction.Rollback();
     }
   }
 }
