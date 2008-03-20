@@ -35,8 +35,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     private string GetXmlString ()
     {
       return @"<?xml version=""1.0""?>
-<ArrayOfTransportItem xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <TransportItem ID=""Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid"">
+<ArrayOfXmlTransportItem xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <XmlTransportItem ID=""Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid"">
     <Properties Count=""4"">
       <Property Name=""Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"" Type=""System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"">
         <int>1</int>
@@ -47,8 +47,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       <Property Name=""Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official"" ObjectID=""true"">Official|1|System.Int32</Property>
       <Property Name=""Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"" ObjectID=""true"">Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid</Property>
     </Properties>
-  </TransportItem>
-  <TransportItem ID=""Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid"">
+  </XmlTransportItem>
+  <XmlTransportItem ID=""Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid"">
     <Properties Count=""4"">
       <Property Name=""Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"" Type=""System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"">
         <int>3</int>
@@ -59,8 +59,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       <Property Name=""Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official"" ObjectID=""true"">Official|1|System.Int32</Property>
       <Property Name=""Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"" ObjectID=""true"">Customer|dd3e3d55-c16f-497f-a3e1-384d08de0d66|System.Guid</Property>
     </Properties>
-  </TransportItem>
-</ArrayOfTransportItem>";
+  </XmlTransportItem>
+</ArrayOfXmlTransportItem>";
     }
 
     [Test]

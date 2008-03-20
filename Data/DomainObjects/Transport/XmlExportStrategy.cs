@@ -12,13 +12,13 @@ namespace Rubicon.Data.DomainObjects.Transport
     {
       using (MemoryStream dataStream = new MemoryStream ())
       {
-        XmlSerializer formatter = new XmlSerializer (typeof (TransportItem[]));
-        PerformSerialization(transportedObjects, dataStream, formatter);
+        XmlSerializer formatter = new XmlSerializer (typeof (XmlTransportItem[]));
+        PerformSerialization(XmlTransportItem.Wrap (transportedObjects), dataStream, formatter);
         return dataStream.ToArray ();
       }
     }
 
-    protected virtual void PerformSerialization (TransportItem[] transportedObjects, MemoryStream dataStream, XmlSerializer formatter)
+    protected virtual void PerformSerialization (XmlTransportItem[] transportedObjects, MemoryStream dataStream, XmlSerializer formatter)
     {
       formatter.Serialize (dataStream, transportedObjects);
     }

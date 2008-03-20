@@ -990,6 +990,7 @@
     <Compile Include="Transaction\SubTransactionTest.cs" />
     <Compile Include="Transport\BinaryExportStrategyTest.cs" />
     <Compile Include="Transport\BinaryImportStrategyTest.cs" />
+    <Compile Include="Transport\XmlTransportItemTest.cs" />
     <Compile Include="Transport\XmlExportStrategyTest.cs" />
     <Compile Include="Transport\DomainObjectImporterTest.cs" />
     <Compile Include="Transport\DomainObjectTransporterTest.cs" />

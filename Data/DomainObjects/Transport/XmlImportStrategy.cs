@@ -15,8 +15,8 @@ namespace Rubicon.Data.DomainObjects.Transport
       {
         using (MemoryStream dataStream = new MemoryStream (data))
         {
-          XmlSerializer formatter = new XmlSerializer (typeof (TransportItem[]));
-          return PerformDeserialization(dataStream, formatter);
+          XmlSerializer formatter = new XmlSerializer (typeof (XmlTransportItem[]));
+          return XmlTransportItem.Unwrap (PerformDeserialization(dataStream, formatter));
         }
       }
       catch (Exception ex)
@@ -25,9 +25,9 @@ namespace Rubicon.Data.DomainObjects.Transport
       }
     }
 
-    protected virtual IEnumerable<TransportItem> PerformDeserialization (MemoryStream dataStream, XmlSerializer formatter)
+    protected virtual XmlTransportItem[] PerformDeserialization (MemoryStream dataStream, XmlSerializer formatter)
     {
-      return (TransportItem[]) formatter.Deserialize (dataStream);
+      return (XmlTransportItem[]) formatter.Deserialize (dataStream);
     }
   }
 }

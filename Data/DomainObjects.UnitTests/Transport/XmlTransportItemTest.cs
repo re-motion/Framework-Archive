@@ -1,0 +1,92 @@
+using System;
+using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Transport;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
+
+namespace Rubicon.Data.DomainObjects.UnitTests.Transport
+{
+  [TestFixture]
+  public class XmlTransportItemTest : ClientTransactionBaseTest
+  {
+    [Test]
+    public void Wrap ()
+    {
+      TransportItem item1 = new TransportItem (DomainObjectIDs.Order1);
+      TransportItem item2 = new TransportItem (DomainObjectIDs.Order2);
+
+      XmlTransportItem[] xmlItems = XmlTransportItem.Wrap (new TransportItem[] { item1, item2 });
+      Assert.AreEqual (2, xmlItems.Length);
+      Assert.AreEqual (item1, xmlItems[0].TransportItem);
+      Assert.AreEqual (item2, xmlItems[1].TransportItem);
+    }
+
+    [Test]
+    public void Unwrap ()
+    {
+      TransportItem item1 = new TransportItem (DomainObjectIDs.Order1);
+      TransportItem item2 = new TransportItem (DomainObjectIDs.Order2);
+
+      TransportItem[] items = XmlTransportItem.Unwrap (new XmlTransportItem[] { new XmlTransportItem  (item1), new XmlTransportItem (item2)});
+      Assert.AreEqual (2, items.Length);
+      Assert.AreEqual (item1, items[0]);
+      Assert.AreEqual (item2, items[1]);
+    }
+
+    [Test]
+    public void XmlSerializable_ID ()
+    {
+      DataContainer container = Computer.GetObject (DomainObjectIDs.Computer1).InternalDataContainer;
+      TransportItem item = TransportItem.PackageDataContainer (container);
+      TransportItem deserializedItem = SerializeAndDeserialize (item);
+
+      Assert.AreEqual (container.ID, deserializedItem.ID);
+    }
+
+    [Test]
+    public void XmlSerializable_Properties ()
+    {
+      DataContainer container = Computer.GetObject (DomainObjectIDs.Computer1).InternalDataContainer;
+      TransportItem item = TransportItem.PackageDataContainer (container);
+      TransportItem deserializedItem = SerializeAndDeserialize (item);
+
+      TransportItemTest.CheckEqualData (container, deserializedItem);
+    }
+
+    [Test]
+    public void XmlSerializable_Properties_IntVsString ()
+    {
+      TransportItem item = new TransportItem (DomainObjectIDs.Order2);
+      item.Properties.Add ("Int", 1);
+      item.Properties.Add ("String", "1");
+      TransportItem deserializedItem = SerializeAndDeserialize (item);
+
+      Assert.AreEqual (1, deserializedItem.Properties["Int"]);
+      Assert.AreEqual ("1", deserializedItem.Properties["String"]);
+    }
+
+    [Test]
+    public void XmlSerializable_Multiple ()
+    {
+      DataContainer container1 = Computer.GetObject (DomainObjectIDs.Computer1).InternalDataContainer;
+      DataContainer container2 = Computer.GetObject (DomainObjectIDs.Computer2).InternalDataContainer;
+      TransportItem item1 = TransportItem.PackageDataContainer (container1);
+      TransportItem item2 = TransportItem.PackageDataContainer (container2);
+
+      TransportItem[] deserializedItems = SerializeAndDeserialize (new TransportItem[] { item1, item2 });
+
+      TransportItemTest.CheckEqualData (container1, deserializedItems[0]);
+      TransportItemTest.CheckEqualData (container2, deserializedItems[1]);
+    }
+
+    private TransportItem SerializeAndDeserialize (TransportItem item)
+    {
+      return Serializer.XmlSerializeAndDeserialize (new XmlTransportItem (item)).TransportItem;
+    }
+
+    private TransportItem[] SerializeAndDeserialize (TransportItem[] items)
+    {
+      return XmlTransportItem.Unwrap (Serializer.XmlSerializeAndDeserialize (XmlTransportItem.Wrap (items)));
+    }
+  }
+}

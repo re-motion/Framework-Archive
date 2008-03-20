@@ -525,6 +525,7 @@
     <Compile Include="Transport\IImportStrategy.cs" />
     <Compile Include="Transport\TransportationException.cs" />
     <Compile Include="Transport\TransportedDomainObjects.cs" />
+    <Compile Include="Transport\XmlTransportItem.cs" />
     <Compile Include="Transport\TransportTransactionListener.cs" />
     <Compile Include="Transport\TransportFinishTransactionListener.cs" />
     <Compile Include="Transport\TransportItem.cs" />
