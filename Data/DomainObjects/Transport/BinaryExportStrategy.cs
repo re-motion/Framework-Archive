@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Rubicon.Data.DomainObjects.Transport
 {
-  public sealed class BinaryExportStrategy : IExportStrategy
+  public class BinaryExportStrategy : IExportStrategy
   {
     public static readonly BinaryExportStrategy Instance = new BinaryExportStrategy();
 
@@ -15,9 +15,15 @@ namespace Rubicon.Data.DomainObjects.Transport
       {
         BinaryFormatter formatter = new BinaryFormatter ();
         KeyValuePair<string, Dictionary<string, object>>[] versionIndependentItems = GetVersionIndependentItems (transportedItems);
-        formatter.Serialize (dataStream, versionIndependentItems);
+        PerformSerialization(versionIndependentItems, dataStream, formatter);
         return dataStream.ToArray ();
       }
+    }
+
+    protected virtual void PerformSerialization (KeyValuePair<string, Dictionary<string, object>>[] versionIndependentItems, MemoryStream dataStream,
+        BinaryFormatter formatter)
+    {
+      formatter.Serialize (dataStream, versionIndependentItems);
     }
 
     private KeyValuePair<string, Dictionary<string, object>>[] GetVersionIndependentItems (TransportItem[] transportItems)

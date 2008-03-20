@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Rubicon.Data.DomainObjects.Transport
 {
-  public sealed class BinaryImportStrategy : IImportStrategy
+  public class BinaryImportStrategy : IImportStrategy
   {
     public static readonly BinaryImportStrategy Instance = new BinaryImportStrategy ();
 
@@ -16,8 +16,7 @@ namespace Rubicon.Data.DomainObjects.Transport
         BinaryFormatter formatter = new BinaryFormatter ();
         try
         {
-          KeyValuePair<string, Dictionary<string, object>>[] deserializedData = 
-              (KeyValuePair<string, Dictionary<string, object>>[]) formatter.Deserialize (stream);
+          KeyValuePair<string, Dictionary<string, object>>[] deserializedData = PerformDeserialization(stream, formatter);
           TransportItem[] transportedObjects = GetTransportItems (deserializedData);
           return transportedObjects;
         }
@@ -26,6 +25,11 @@ namespace Rubicon.Data.DomainObjects.Transport
           throw new TransportationException ("Invalid data specified: " + ex.Message, ex);
         }
       }
+    }
+
+    protected virtual KeyValuePair<string, Dictionary<string, object>>[] PerformDeserialization (MemoryStream stream, BinaryFormatter formatter)
+    {
+      return (KeyValuePair<string, Dictionary<string, object>>[]) formatter.Deserialize (stream);
     }
 
     private TransportItem[] GetTransportItems (KeyValuePair<string, Dictionary<string, object>>[] deserializedData)
