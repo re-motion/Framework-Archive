@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace Rubicon.Data.DomainObjects.Transport
 {
-  public sealed class XmlExportStrategy : IExportStrategy
+  public class XmlExportStrategy : IExportStrategy
   {
     public static readonly XmlExportStrategy Instance = new XmlExportStrategy();
 
@@ -13,9 +13,14 @@ namespace Rubicon.Data.DomainObjects.Transport
       using (MemoryStream dataStream = new MemoryStream ())
       {
         XmlSerializer formatter = new XmlSerializer (typeof (TransportItem[]));
-        formatter.Serialize (dataStream, transportedObjects);
+        PerformSerialization(transportedObjects, dataStream, formatter);
         return dataStream.ToArray ();
       }
+    }
+
+    protected virtual void PerformSerialization (TransportItem[] transportedObjects, MemoryStream dataStream, XmlSerializer formatter)
+    {
+      formatter.Serialize (dataStream, transportedObjects);
     }
   }
 }
