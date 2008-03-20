@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Rubicon.Collections;
 
 namespace Rubicon.Data.DomainObjects.Transport
 {
@@ -9,12 +8,12 @@ namespace Rubicon.Data.DomainObjects.Transport
   {
     public static readonly DefaultExportStrategy Instance = new DefaultExportStrategy();
 
-    public byte[] Export (ObjectID[] transportedObjects, ClientTransaction dataTransaction)
+    public byte[] Export (TransportItem[] transportedItems)
     {
       using (MemoryStream dataStream = new MemoryStream ())
       {
         BinaryFormatter formatter = new BinaryFormatter ();
-        formatter.Serialize (dataStream, Tuple.NewTuple (dataTransaction, transportedObjects));
+        formatter.Serialize (dataStream, transportedItems);
         return dataStream.ToArray ();
       }
     }

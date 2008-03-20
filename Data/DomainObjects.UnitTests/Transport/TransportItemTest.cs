@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.Transport;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
 using System.IO;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 {
@@ -25,6 +26,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       TransportItem item = TransportItem.PackageDataContainer (container);
 
       CheckEqualData(container, item);
+    }
+
+    [Test]
+    public void PackageDataContainers()
+    {
+      DataContainer container1 = Computer.GetObject (DomainObjectIDs.Computer1).InternalDataContainer;
+      DataContainer container2 = Computer.GetObject (DomainObjectIDs.Computer1).InternalDataContainer;
+      TransportItem[] items = EnumerableUtility.ToArray (TransportItem.PackageDataContainers (new DataContainer[] { container1, container2 }));
+
+      CheckEqualData (container1, items[0]);
+      CheckEqualData (container2, items[1]);
     }
 
     [Test]

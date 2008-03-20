@@ -21,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       DataContainer expectedContainer1 = Order.GetObject (DomainObjectIDs.Order1).InternalDataContainer;
       DataContainer expectedContainer2 = Order.GetObject (DomainObjectIDs.Order2).InternalDataContainer;
 
-      byte[] data = Serialize(expectedContainer1.ID, expectedContainer2.ID);
+      byte[] data = Serialize(expectedContainer1, expectedContainer2);
       TransportItem[] items = EnumerableUtility.ToArray (DefaultImportStrategy.Instance.Import (data));
       Assert.AreEqual (2, items.Length);
 
@@ -40,10 +40,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       DataContainer expectedContainer1 = Order.GetObject (DomainObjectIDs.Order1).InternalDataContainer;
       Dev.Null = Order.GetObject (DomainObjectIDs.Order2).InternalDataContainer;
 
-      byte[] data = Serialize (expectedContainer1.ID );
+      byte[] data = Serialize (expectedContainer1);
       TransportItem[] containers = EnumerableUtility.ToArray (DefaultImportStrategy.Instance.Import (data));
       Assert.AreEqual (1, containers.Length);
       Assert.AreEqual (expectedContainer1.ID, containers[0].ID);
+    }
+
+    private byte[] Serialize (params DataContainer[] containers)
+    {
+      TransportItem[] items = EnumerableUtility.ToArray (TransportItem.PackageDataContainers (containers));
+      return Serializer.Serialize (items);
     }
 
     [Test]
@@ -54,17 +60,34 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       DefaultImportStrategy.Instance.Import (data);
     }
 
-    private byte[] Serialize (params ObjectID[] loadedIDs)
+    [Test]
+    [ExpectedException (typeof (TransportationException), ExpectedMessage = "Invalid data specified: Unable to cast object of type 'System.String' "
+       + "to type 'Rubicon.Data.DomainObjects.Transport.TransportItem[]'.")]
+    public void Import_ThrowsOnInvalidSerializedData ()
     {
-      byte[] data;
-      using (MemoryStream stream = new MemoryStream ())
-      {
-        BinaryFormatter formatter = new BinaryFormatter ();
-        formatter.Serialize (stream, new Tuple<ClientTransaction, ObjectID[]> (ClientTransactionMock,
-            loadedIDs));
-        data = stream.ToArray ();
-      }
-      return data;
+      byte[] data = Serializer.Serialize ("string");
+      DefaultImportStrategy.Instance.Import (data);
+    }
+
+    [Test]
+    public void Import_ExportStrategy_IntegrationTest ()
+    {
+      TransportItem item1 = new TransportItem (DomainObjectIDs.Order1);
+      item1.Properties.Add ("Foo", 12);
+      TransportItem item2 = new TransportItem (DomainObjectIDs.Order2);
+      item2.Properties.Add ("Bar", "42");
+
+      byte[] package = DefaultExportStrategy.Instance.Export (new TransportItem[] { item1, item2 });
+      TransportItem[] importedItems = EnumerableUtility.ToArray (DefaultImportStrategy.Instance.Import (package));
+
+      Assert.AreEqual (2, importedItems.Length);
+      Assert.AreEqual (item1.ID, importedItems[0].ID);
+      Assert.AreEqual (1, importedItems[0].Properties.Count);
+      Assert.AreEqual (item1.Properties["Foo"], importedItems[0].Properties["Foo"]);
+
+      Assert.AreEqual (item2.ID, importedItems[1].ID);
+      Assert.AreEqual (1, importedItems[1].Properties.Count);
+      Assert.AreEqual (item2.Properties["Bar"], importedItems[1].Properties["Bar"]);
     }
   }
 }

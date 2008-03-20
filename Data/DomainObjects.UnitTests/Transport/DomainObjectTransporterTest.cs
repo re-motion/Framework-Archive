@@ -219,15 +219,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     [Test]
     public void GetBinaryTransportData_SpecialStrategy ()
     {
-      DomainObject loadedObject = _transporter.Load (DomainObjectIDs.Order1);
-      ClientTransaction dataTransaction = loadedObject.ClientTransaction;
+      DomainObject loadedObject1 = _transporter.Load (DomainObjectIDs.Order1);
+      DomainObject loadedObject2 = _transporter.Load (DomainObjectIDs.Order2);
 
       MockRepository repository = new MockRepository ();
       IExportStrategy mockStrategy = repository.CreateMock<IExportStrategy> ();
       byte[] data = new byte[] { 1, 2, 3 };
 
-      Expect.Call (mockStrategy.Export (null, null))
-          .Constraints (Mocks_List.Equal (_transporter.ObjectIDs), Mocks_Is.Same (dataTransaction))
+      Expect.Call (mockStrategy.Export (null))
+          .Constraints (
+              Mocks_List.Count (Mocks_Is.Equal (2)) 
+              & Mocks_List.Element (0, Mocks_Property.Value ("ID", loadedObject1.ID)) 
+              & Mocks_List.Element (1, Mocks_Property.Value ("ID", loadedObject2.ID)))
           .Return (data);
 
       repository.ReplayAll ();

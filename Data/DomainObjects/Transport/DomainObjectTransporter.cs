@@ -222,7 +222,15 @@ namespace Rubicon.Data.DomainObjects.Transport
     /// <returns>The loaded objects in a binary format.</returns>
     public byte[] GetBinaryTransportData (IExportStrategy strategy)
     {
-      return strategy.Export (_transportedObjects.ToArray(), _transportTransaction);
+      IEnumerable<DataContainer> transportedContainers = GetTransportedContainers();
+      TransportItem[] transportItems = EnumerableUtility.ToArray (TransportItem.PackageDataContainers (transportedContainers));
+      return strategy.Export (transportItems);
+    }
+
+    private IEnumerable<DataContainer> GetTransportedContainers ()
+    {
+      foreach (ObjectID id in _transportedObjects)
+        yield return _transportTransaction.DataManager.DataContainerMap[id];
     }
   }
 }

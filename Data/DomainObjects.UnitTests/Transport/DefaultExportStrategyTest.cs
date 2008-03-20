@@ -1,11 +1,9 @@
 using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
-using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Transport;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 {
@@ -18,21 +16,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       DataContainer expectedContainer1 = Order.GetObject (DomainObjectIDs.Order1).InternalDataContainer;
       DataContainer expectedContainer2 = Order.GetObject (DomainObjectIDs.Order2).InternalDataContainer;
 
-      byte[] expectedData = Serialize (expectedContainer1.ID, expectedContainer2.ID);
-      byte[] actualData = DefaultExportStrategy.Instance.Export (new ObjectID[] { expectedContainer1.ID, expectedContainer2.ID }, ClientTransactionMock);
-      Assert.That (actualData, Is.EqualTo (expectedData));
-    }
+      TransportItem item1 = TransportItem.PackageDataContainer (expectedContainer1);
+      TransportItem item2 = TransportItem.PackageDataContainer (expectedContainer2);
 
-    private byte[] Serialize (params ObjectID[] loadedIDs)
-    {
-      byte[] data;
-      using (MemoryStream stream = new MemoryStream ())
-      {
-        BinaryFormatter formatter = new BinaryFormatter ();
-        formatter.Serialize (stream, new Tuple<ClientTransaction, ObjectID[]> (ClientTransactionMock, loadedIDs));
-        data = stream.ToArray ();
-      }
-      return data;
+      TransportItem[] items = new TransportItem[] { item1, item2 };
+      byte[] expectedData = Serializer.Serialize (items);
+      byte[] actualData = DefaultExportStrategy.Instance.Export (items);
+      Assert.That (actualData, Is.EqualTo (expectedData));
     }
   }
 }

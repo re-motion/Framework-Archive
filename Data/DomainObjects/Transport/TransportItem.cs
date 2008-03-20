@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Transport
 {
@@ -11,10 +12,20 @@ namespace Rubicon.Data.DomainObjects.Transport
   {
     public static TransportItem PackageDataContainer (DataContainer container)
     {
+      ArgumentUtility.CheckNotNull ("container", container);
+
       TransportItem item = new TransportItem (container.ID);
       foreach (PropertyValue propertyValue in container.PropertyValues)
         item.Properties.Add (propertyValue.Name, propertyValue.Value);
       return item;
+    }
+
+    public static IEnumerable<TransportItem> PackageDataContainers (IEnumerable<DataContainer> containers)
+    {
+      ArgumentUtility.CheckNotNull ("containers", containers);
+
+      foreach (DataContainer container in containers)
+        yield return PackageDataContainer (container);
     }
 
     private ObjectID _id;
@@ -22,6 +33,7 @@ namespace Rubicon.Data.DomainObjects.Transport
 
     public TransportItem (ObjectID id)
     {
+      ArgumentUtility.CheckNotNull ("id", id);
       _id = id;
       _properties = new Dictionary<string, object>();
     }
@@ -116,6 +128,5 @@ namespace Rubicon.Data.DomainObjects.Transport
       reader.ReadEndElement ();
       return new KeyValuePair<string, object> (name, value);
     }
-
   }
 }
