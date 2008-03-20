@@ -8,7 +8,7 @@ using Rubicon.Development.UnitTesting;
 namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 {
   [TestFixture]
-  public class DefaultExportStrategyTest : ClientTransactionBaseTest
+  public class BinaryExportStrategyTest : ClientTransactionBaseTest
   {
     [Test]
     public void Export_SerializesData ()
@@ -21,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 
       TransportItem[] items = new TransportItem[] { item1, item2 };
       byte[] expectedData = Serializer.Serialize (items);
-      byte[] actualData = DefaultExportStrategy.Instance.Export (items);
+      byte[] actualData = BinaryExportStrategy.Instance.Export (items);
       Assert.That (actualData, Is.EqualTo (expectedData));
     }
   }

@@ -4,9 +4,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Rubicon.Data.DomainObjects.Transport
 {
-  public sealed class DefaultExportStrategy : IExportStrategy
+  public sealed class BinaryExportStrategy : IExportStrategy
   {
-    public static readonly DefaultExportStrategy Instance = new DefaultExportStrategy();
+    public static readonly BinaryExportStrategy Instance = new BinaryExportStrategy();
 
     public byte[] Export (TransportItem[] transportedItems)
     {

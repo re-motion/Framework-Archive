@@ -43,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       foreach (ObjectID id in loadedObjects)
         transporter.Load (id);
 
-      TransportedDomainObjects transportedObjects = new DomainObjectImporter (transporter.GetBinaryTransportData(), DefaultImportStrategy.Instance).GetImportedObjects();
+      TransportedDomainObjects transportedObjects = new DomainObjectImporter (transporter.GetBinaryTransportData(), BinaryImportStrategy.Instance).GetImportedObjects();
       foreach (DomainObject domainObject in transportedObjects.TransportedObjects)
       {
         Assert.IsTrue (domainObject.IsBoundToSpecificTransaction);
@@ -56,7 +56,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     public void InvalidData ()
     {
       byte[] data = new byte[] { 1, 2, 3 };
-      new DomainObjectImporter (data, DefaultImportStrategy.Instance);
+      new DomainObjectImporter (data, BinaryImportStrategy.Instance);
     }
 
     [Test]
@@ -411,7 +411,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 
     private TransportedDomainObjects Import (byte[] binaryData)
     {
-      return new DomainObjectImporter (binaryData, DefaultImportStrategy.Instance).GetImportedObjects ();
+      return new DomainObjectImporter (binaryData, BinaryImportStrategy.Instance).GetImportedObjects ();
     }
 
     private void ModifyDatabase (Proc changer)

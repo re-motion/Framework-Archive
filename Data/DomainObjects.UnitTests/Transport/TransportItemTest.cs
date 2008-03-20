@@ -54,15 +54,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     {
       DataContainer container = Computer.GetObject (DomainObjectIDs.Computer1).InternalDataContainer;
       TransportItem item = TransportItem.PackageDataContainer (container);
-      TransportItem deserializedItem;
-      using (MemoryStream stream = new MemoryStream ())
-      {
-        XmlSerializer serializer = new XmlSerializer (typeof (TransportItem));
-        serializer.Serialize (stream, item);
-        stream.Seek (0, SeekOrigin.Begin);
-        deserializedItem = (TransportItem) serializer.Deserialize (stream);
-      }
-
+      TransportItem deserializedItem = Serializer.XmlSerializeAndDeserialize (item);
+      
       Assert.AreEqual (container.ID, deserializedItem.ID);
     }
 
@@ -71,16 +64,35 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     {
       DataContainer container = Computer.GetObject (DomainObjectIDs.Computer1).InternalDataContainer;
       TransportItem item = TransportItem.PackageDataContainer (container);
-      TransportItem deserializedItem;
-      using (MemoryStream stream = new MemoryStream ())
-      {
-        XmlSerializer serializer = new XmlSerializer (typeof (TransportItem));
-        serializer.Serialize (stream, item);
-        stream.Seek (0, SeekOrigin.Begin);
-        deserializedItem = (TransportItem) serializer.Deserialize (stream);
-      }
+      TransportItem deserializedItem = Serializer.XmlSerializeAndDeserialize (item);
 
       CheckEqualData (container, deserializedItem);
+    }
+
+    [Test]
+    public void XmlSerializable_Properties_IntVsString ()
+    {
+      TransportItem item = new TransportItem(DomainObjectIDs.Order2);
+      item.Properties.Add ("Int", 1);
+      item.Properties.Add ("String", "1");
+      TransportItem deserializedItem = Serializer.XmlSerializeAndDeserialize (item);
+
+      Assert.AreEqual (1, deserializedItem.Properties["Int"]);
+      Assert.AreEqual ("1", deserializedItem.Properties["String"]);
+    }
+
+    [Test]
+    public void XmlSerializable_Multiple ()
+    {
+      DataContainer container1 = Computer.GetObject (DomainObjectIDs.Computer1).InternalDataContainer;
+      DataContainer container2 = Computer.GetObject (DomainObjectIDs.Computer2).InternalDataContainer;
+      TransportItem item1 = TransportItem.PackageDataContainer (container1);
+      TransportItem item2 = TransportItem.PackageDataContainer (container2);
+
+      TransportItem[] deserializedItems = Serializer.XmlSerializeAndDeserialize (new TransportItem[] {item1, item2});
+
+      CheckEqualData (container1, deserializedItems[0]);
+      CheckEqualData (container2, deserializedItems[1]);
     }
 
     private void CheckEqualData (DataContainer expectedData, TransportItem item)

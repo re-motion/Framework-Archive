@@ -988,8 +988,9 @@
     <Compile Include="Transaction\SubTransactionQueryTest.cs" />
     <Compile Include="Transaction\SubTransactionRollbackDataTest.cs" />
     <Compile Include="Transaction\SubTransactionTest.cs" />
-    <Compile Include="Transport\DefaultExportStrategyTest.cs" />
-    <Compile Include="Transport\DefaultImportStrategyTest.cs" />
+    <Compile Include="Transport\BinaryExportStrategyTest.cs" />
+    <Compile Include="Transport\BinaryImportStrategyTest.cs" />
+    <Compile Include="Transport\XmlExportStrategyTest.cs" />
     <Compile Include="Transport\DomainObjectImporterTest.cs" />
     <Compile Include="Transport\DomainObjectTransporterTest.cs" />
     <Compile Include="Transport\FollowAllProcessNoneStrategy.cs" />
@@ -998,6 +999,7 @@
     <Compile Include="Transport\TransportedDomainObjectsTest.cs" />
     <Compile Include="Transport\TransporterListenerTest.cs" />
     <Compile Include="Transport\TransportItemTest.cs" />
+    <Compile Include="Transport\XmlImportStrategyTest.cs" />
     <Compile Include="UnitTestStorageProviderStub.cs">
       <SubType>Code</SubType>
     </Compile>

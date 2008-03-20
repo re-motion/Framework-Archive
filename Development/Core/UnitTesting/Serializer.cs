@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Serialization;
 using Rubicon.Utilities;
 
 namespace Rubicon.Development.UnitTesting
@@ -38,6 +39,30 @@ namespace Rubicon.Development.UnitTesting
         BinaryFormatter formatter = new BinaryFormatter ();
         return formatter.Deserialize (stream);
       }
+    }
+
+    public static byte[] XmlSerialize (object o)
+    {
+      using (MemoryStream stream = new MemoryStream ())
+      {
+        XmlSerializer serializer = new XmlSerializer (o.GetType());
+        serializer.Serialize (stream, o);
+        return stream.ToArray();
+      }
+    }
+
+    public static T XmlDeserialize<T> (byte[] bytes)
+    {
+      using (MemoryStream stream = new MemoryStream (bytes))
+      {
+        XmlSerializer serializer = new XmlSerializer (typeof (T));
+        return (T) serializer.Deserialize (stream);
+      }
+    }
+
+    public static T XmlSerializeAndDeserialize<T> (T t)
+    {
+      return XmlDeserialize<T> (XmlSerialize (t));
     }
   }
 }

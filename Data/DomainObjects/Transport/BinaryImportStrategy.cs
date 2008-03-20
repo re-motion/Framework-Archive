@@ -5,9 +5,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Rubicon.Data.DomainObjects.Transport
 {
-  public sealed class DefaultImportStrategy : IImportStrategy
+  public sealed class BinaryImportStrategy : IImportStrategy
   {
-    public static readonly DefaultImportStrategy Instance = new DefaultImportStrategy ();
+    public static readonly BinaryImportStrategy Instance = new BinaryImportStrategy ();
 
     public IEnumerable<TransportItem> Import (byte[] data)
     {

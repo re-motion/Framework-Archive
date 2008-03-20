@@ -78,6 +78,8 @@ namespace Rubicon.Data.DomainObjects.Transport
       {
         Properties.Add (properties[i].Key, properties[i].Value);
       }
+
+      reader.ReadEndElement();
     }
 
     private void SerializeProperty (XmlWriter writer, KeyValuePair<string, object> property)
@@ -97,7 +99,12 @@ namespace Rubicon.Data.DomainObjects.Transport
         writer.WriteString (objectID.ToString ());
       }
       else
-        writer.WriteValue (value);
+      {
+        Type valueType = value.GetType();
+        writer.WriteAttributeString ("Type", valueType.AssemblyQualifiedName);
+        XmlSerializer valueSerializer = new XmlSerializer (valueType);
+        valueSerializer.Serialize (writer, value);
+      }
     }
 
     private List<KeyValuePair<string, object>> DeserializeProperties (XmlReader reader)
@@ -115,6 +122,7 @@ namespace Rubicon.Data.DomainObjects.Transport
     {
       string name = reader.GetAttribute ("Name");
       string objectIDAttribute = reader.GetAttribute ("ObjectID");
+      string valueTypeName = reader.GetAttribute ("Type");
 
       reader.ReadStartElement ("Property");
       object value;
@@ -124,7 +132,11 @@ namespace Rubicon.Data.DomainObjects.Transport
         value = ObjectID.Parse (objectIDString);
       }
       else
-        value = reader.ReadContentAsObject ();
+      {
+        Type valueType = Type.GetType (valueTypeName, true, false);
+        XmlSerializer deserializer = new XmlSerializer (valueType);
+        value = deserializer.Deserialize (reader);
+      }
       reader.ReadEndElement ();
       return new KeyValuePair<string, object> (name, value);
     }

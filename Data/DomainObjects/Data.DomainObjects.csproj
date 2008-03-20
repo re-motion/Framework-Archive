@@ -138,7 +138,7 @@
     <Compile Include="Persistence\Rdbms\ObjectIDLoader.cs" />
     <Compile Include="Persistence\Rdbms\OppositeClassDefinitionRetriever.cs" />
     <Compile Include="SimpleDomainObject.cs" />
-    <Compile Include="Transport\DefaultExportStrategy.cs" />
+    <Compile Include="Transport\BinaryExportStrategy.cs" />
     <Compile Include="Transport\DomainObjectImporter.cs" />
     <Compile Include="Transport\DomainObjectTransporter.cs" />
     <Compile Include="IDomainObjectMixin.cs" />
@@ -520,7 +520,7 @@
     </Compile>
     <Compile Include="Infrastructure\SubClientTransaction.cs" />
     <Compile Include="TransactionalAccessor.cs" />
-    <Compile Include="Transport\DefaultImportStrategy.cs" />
+    <Compile Include="Transport\BinaryImportStrategy.cs" />
     <Compile Include="Transport\IExportStrategy.cs" />
     <Compile Include="Transport\IImportStrategy.cs" />
     <Compile Include="Transport\TransportationException.cs" />
@@ -528,6 +528,8 @@
     <Compile Include="Transport\TransporterListener.cs" />
     <Compile Include="Transport\TransportFinishTransactionListener.cs" />
     <Compile Include="Transport\TransportItem.cs" />
+    <Compile Include="Transport\XmlExportStrategy.cs" />
+    <Compile Include="Transport\XmlImportStrategy.cs" />
     <Compile Include="ValueAccess.cs" />
     <Compile Include="ValueTooLongException.cs">
       <SubType>Code</SubType>

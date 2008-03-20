@@ -11,7 +11,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 {
   [TestFixture]
-  public class DefaultImportStrategyTest : ClientTransactionBaseTest
+  public class BinaryImportStrategyTest : ClientTransactionBaseTest
   {
     [Test]
     public void Import_DeserializesData ()
@@ -22,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       DataContainer expectedContainer2 = Order.GetObject (DomainObjectIDs.Order2).InternalDataContainer;
 
       byte[] data = Serialize(expectedContainer1, expectedContainer2);
-      TransportItem[] items = EnumerableUtility.ToArray (DefaultImportStrategy.Instance.Import (data));
+      TransportItem[] items = EnumerableUtility.ToArray (BinaryImportStrategy.Instance.Import (data));
       Assert.AreEqual (2, items.Length);
 
       Assert.AreEqual (expectedContainer1.ID, items[0].ID);
@@ -41,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       Dev.Null = Order.GetObject (DomainObjectIDs.Order2).InternalDataContainer;
 
       byte[] data = Serialize (expectedContainer1);
-      TransportItem[] containers = EnumerableUtility.ToArray (DefaultImportStrategy.Instance.Import (data));
+      TransportItem[] containers = EnumerableUtility.ToArray (BinaryImportStrategy.Instance.Import (data));
       Assert.AreEqual (1, containers.Length);
       Assert.AreEqual (expectedContainer1.ID, containers[0].ID);
     }
@@ -57,7 +57,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     public void Import_ThrowsOnInvalidFormat ()
     {
       byte[] data = new byte[0];
-      DefaultImportStrategy.Instance.Import (data);
+      BinaryImportStrategy.Instance.Import (data);
     }
 
     [Test]
@@ -66,7 +66,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     public void Import_ThrowsOnInvalidSerializedData ()
     {
       byte[] data = Serializer.Serialize ("string");
-      DefaultImportStrategy.Instance.Import (data);
+      BinaryImportStrategy.Instance.Import (data);
     }
 
     [Test]
@@ -77,8 +77,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       TransportItem item2 = new TransportItem (DomainObjectIDs.Order2);
       item2.Properties.Add ("Bar", "42");
 
-      byte[] package = DefaultExportStrategy.Instance.Export (new TransportItem[] { item1, item2 });
-      TransportItem[] importedItems = EnumerableUtility.ToArray (DefaultImportStrategy.Instance.Import (package));
+      byte[] package = BinaryExportStrategy.Instance.Export (new TransportItem[] { item1, item2 });
+      TransportItem[] importedItems = EnumerableUtility.ToArray (BinaryImportStrategy.Instance.Import (package));
 
       Assert.AreEqual (2, importedItems.Length);
       Assert.AreEqual (item1.ID, importedItems[0].ID);

@@ -19,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.Transport
   public class DomainObjectTransporter
   {
     /// <summary>
-    /// Loads the data transported from another system into a <see cref="TransportedDomainObjects"/> container using the <see cref="DefaultImportStrategy"/>.
+    /// Loads the data transported from another system into a <see cref="TransportedDomainObjects"/> container using the <see cref="BinaryImportStrategy"/>.
     /// </summary>
     /// <param name="data">The transported data to be loaded.</param>
     /// <returns>A container holding the objects loaded from the given data.</returns>
@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.Transport
     /// </remarks>
     public static TransportedDomainObjects LoadTransportData (byte[] data)
     {
-      DefaultImportStrategy strategy = DefaultImportStrategy.Instance;
+      BinaryImportStrategy strategy = BinaryImportStrategy.Instance;
       return LoadTransportData(data, strategy);
     }
 
@@ -45,7 +45,7 @@ namespace Rubicon.Data.DomainObjects.Transport
     /// <remarks>
     /// Given a <see cref="DomainObjectTransporter"/>, the binary data can be retrieved from <see cref="GetBinaryTransportData"/>.
     /// </remarks>
-    private static TransportedDomainObjects LoadTransportData (byte[] data, DefaultImportStrategy strategy)
+    private static TransportedDomainObjects LoadTransportData (byte[] data, BinaryImportStrategy strategy)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("data", data);
       ArgumentUtility.CheckNotNull ("strategy", strategy);
@@ -205,20 +205,20 @@ namespace Rubicon.Data.DomainObjects.Transport
     }
 
     /// <summary>
-    /// Gets a the objects loaded into this transporter (including their contents) in a binary format for transport to another system using <see cref="DefaultExportStrategy"/>.
+    /// Gets a the objects loaded into this transporter (including their contents) in a binary format for transport to another system using <see cref="BinaryExportStrategy"/>.
     /// At the target system, the data can be loaded via <see cref="LoadTransportData"/>.
     /// </summary>
     /// <returns>The loaded objects in a binary format.</returns>
     public byte[] GetBinaryTransportData ()
     {
-      return GetBinaryTransportData (DefaultExportStrategy.Instance);
+      return GetBinaryTransportData (BinaryExportStrategy.Instance);
     }
 
     /// <summary>
     /// Gets a the objects loaded into this transporter (including their contents) in a binary format for transport to another system.
-    /// At the target system, the data can be loaded via <see cref="LoadTransportData(byte[],DefaultImportStrategy)"/>.
+    /// At the target system, the data can be loaded via <see cref="LoadTransportData(byte[],BinaryImportStrategy)"/>.
     /// </summary>
-    /// <param name="strategy">The strategy to be used for exporting data. This must match the strategy used with <see cref="LoadTransportData(byte[],DefaultImportStrategy)"/>.</param>
+    /// <param name="strategy">The strategy to be used for exporting data. This must match the strategy used with <see cref="LoadTransportData(byte[],BinaryImportStrategy)"/>.</param>
     /// <returns>The loaded objects in a binary format.</returns>
     public byte[] GetBinaryTransportData (IExportStrategy strategy)
     {
