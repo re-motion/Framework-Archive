@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Transport;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -20,7 +21,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       TransportItem item2 = TransportItem.PackageDataContainer (expectedContainer2);
 
       TransportItem[] items = new TransportItem[] { item1, item2 };
-      byte[] expectedData = Serializer.Serialize (items);
+      KeyValuePair<string, Dictionary<string, object>> versionIndependentItem1 =
+          new KeyValuePair<string, Dictionary<string, object>> (item1.ID.ToString(), item1.Properties);
+      KeyValuePair<string, Dictionary<string, object>> versionIndependentItem2 = 
+          new KeyValuePair<string, Dictionary<string, object>> (item2.ID.ToString(), item2.Properties);
+
+      byte[] expectedData = Serializer.Serialize (new KeyValuePair<string, Dictionary<string, object>>[] {versionIndependentItem1, versionIndependentItem2});
       byte[] actualData = BinaryExportStrategy.Instance.Export (items);
       Assert.That (actualData, Is.EqualTo (expectedData));
     }

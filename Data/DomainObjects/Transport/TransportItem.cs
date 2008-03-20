@@ -38,6 +38,15 @@ namespace Rubicon.Data.DomainObjects.Transport
       _properties = new Dictionary<string, object>();
     }
 
+    internal TransportItem (ObjectID id, Dictionary<string, object> properties)
+    {
+      ArgumentUtility.CheckNotNull ("id", id);
+      ArgumentUtility.CheckNotNull ("properties", properties);
+
+      _id = id;
+      _properties = properties;
+    }
+
     public ObjectID ID
     {
       get { return _id; }

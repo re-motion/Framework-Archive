@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
@@ -34,22 +35,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
       Assert.AreEqual (expectedContainer2.PropertyValues[orderNumberIdentifier].Value, items[1].Properties[orderNumberIdentifier]);
     }
 
-    [Test]
-    public void Import_OnlyImportsLoadedObjects ()
-    {
-      DataContainer expectedContainer1 = Order.GetObject (DomainObjectIDs.Order1).InternalDataContainer;
-      Dev.Null = Order.GetObject (DomainObjectIDs.Order2).InternalDataContainer;
-
-      byte[] data = Serialize (expectedContainer1);
-      TransportItem[] containers = EnumerableUtility.ToArray (BinaryImportStrategy.Instance.Import (data));
-      Assert.AreEqual (1, containers.Length);
-      Assert.AreEqual (expectedContainer1.ID, containers[0].ID);
-    }
-
     private byte[] Serialize (params DataContainer[] containers)
     {
       TransportItem[] items = EnumerableUtility.ToArray (TransportItem.PackageDataContainers (containers));
-      return Serializer.Serialize (items);
+      KeyValuePair<string, Dictionary<string, object>>[] versionIndependentItems =
+          Array.ConvertAll<TransportItem, KeyValuePair<string, Dictionary<string, object>>> (
+              items,
+              delegate (TransportItem item) { return new KeyValuePair<string, Dictionary<string, object>>(item.ID.ToString(), item.Properties); });
+      return Serializer.Serialize (versionIndependentItems);
     }
 
     [Test]
@@ -62,7 +55,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 
     [Test]
     [ExpectedException (typeof (TransportationException), ExpectedMessage = "Invalid data specified: Unable to cast object of type 'System.String' "
-       + "to type 'Rubicon.Data.DomainObjects.Transport.TransportItem[]'.")]
+        + "to type 'System.Collections.Generic.KeyValuePair`2[System.String,System.Collections.Generic.Dictionary`2[System.String,System.Object]][]'.")]
     public void Import_ThrowsOnInvalidSerializedData ()
     {
       byte[] data = Serializer.Serialize ("string");

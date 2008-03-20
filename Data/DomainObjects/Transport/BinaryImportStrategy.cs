@@ -16,14 +16,26 @@ namespace Rubicon.Data.DomainObjects.Transport
         BinaryFormatter formatter = new BinaryFormatter ();
         try
         {
-          TransportItem[] deserializedData = (TransportItem[]) formatter.Deserialize (stream);
-          return deserializedData;
+          KeyValuePair<string, Dictionary<string, object>>[] deserializedData = 
+              (KeyValuePair<string, Dictionary<string, object>>[]) formatter.Deserialize (stream);
+          TransportItem[] transportedObjects = GetTransportItems (deserializedData);
+          return transportedObjects;
         }
         catch (Exception ex)
         {
           throw new TransportationException ("Invalid data specified: " + ex.Message, ex);
         }
       }
+    }
+
+    private TransportItem[] GetTransportItems (KeyValuePair<string, Dictionary<string, object>>[] deserializedData)
+    {
+      return Array.ConvertAll<KeyValuePair<string, Dictionary<string, object>>, TransportItem> (deserializedData,
+          delegate (KeyValuePair<string, Dictionary<string, object>> pair)
+          {
+            ObjectID objectID = ObjectID.Parse (pair.Key);
+            return new TransportItem (objectID, pair.Value);
+          });
     }
   }
 }
