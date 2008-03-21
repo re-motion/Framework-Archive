@@ -5,6 +5,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Rubicon.Data.DomainObjects.Transport
 {
+  /// <summary>
+  /// Represents an import strategy for <see cref="DomainObject"/> instances using binary serialization. This matches <see cref="BinaryExportStrategy"/>.
+  /// </summary>
   public class BinaryImportStrategy : IImportStrategy
   {
     public static readonly BinaryImportStrategy Instance = new BinaryImportStrategy ();

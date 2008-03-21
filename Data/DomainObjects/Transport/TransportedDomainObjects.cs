@@ -11,8 +11,8 @@ namespace Rubicon.Data.DomainObjects.Transport
   /// Represents the data transported via a <see cref="DomainObjectTransporter"/> object on the target system.
   /// </summary>
   /// <remarks>
-  /// Instantiate this class via <see cref="DomainObjectTransporter.LoadTransportData"/> with the data obtained from
-  /// <see cref="DomainObjectTransporter.GetBinaryTransportData"/>.
+  /// Instantiate this class via <see cref="DomainObjectTransporter.LoadTransportData(byte[])"/> with the data obtained from
+  /// <see cref="DomainObjectTransporter.GetBinaryTransportData()"/>.
   /// </remarks>
   public struct TransportedDomainObjects
   {
@@ -21,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.Transport
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TransportedDomainObjects"/> class. This constructor is typically only used internally,
-    /// use <see cref="DomainObjectTransporter.LoadTransportData"/> to instantiate this class.
+    /// use <see cref="DomainObjectTransporter.LoadTransportData(byte[])"/> to instantiate this class.
     /// </summary>
     /// <param name="dataTransaction">The transaction containing the transported objects' data.</param>
     /// <param name="transportedObjects">The transported objects.</param>

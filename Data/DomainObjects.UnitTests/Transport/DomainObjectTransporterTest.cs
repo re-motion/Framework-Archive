@@ -175,6 +175,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
     }
 
     [Test]
+    public void LoadTransportData_XmlStrategy ()
+    {
+      _transporter.Load (DomainObjectIDs.Employee1);
+      _transporter.Load (DomainObjectIDs.Employee2);
+
+      byte[] data = _transporter.GetBinaryTransportData(XmlExportStrategy.Instance);
+      TransportedDomainObjects transportedObjects = DomainObjectTransporter.LoadTransportData (data, XmlImportStrategy.Instance);
+      Assert.IsNotNull (transportedObjects);
+      List<DomainObject> domainObjects = new List<DomainObject> (transportedObjects.TransportedObjects);
+      Assert.AreEqual (2, domainObjects.Count);
+      Assert.That (
+          domainObjects.ConvertAll<ObjectID> (delegate (DomainObject obj) { return obj.ID; }),
+          Is.EquivalentTo (new ObjectID[] { DomainObjectIDs.Employee1, DomainObjectIDs.Employee2 }));
+    }
+
+    [Test]
     [ExpectedException (typeof (TransportationException),
         ExpectedMessage = "Invalid data specified: End of Stream encountered before parsing was completed.")]
     public void LoadTransportData_InvalidData ()

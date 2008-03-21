@@ -4,6 +4,9 @@ using System.Xml.Serialization;
 
 namespace Rubicon.Data.DomainObjects.Transport
 {
+  /// <summary>
+  /// Represents an export strategy for <see cref="DomainObject"/> instances using XML serialization. This matches <see cref="XmlImportStrategy"/>.
+  /// </summary>
   public class XmlExportStrategy : IExportStrategy
   {
     public static readonly XmlExportStrategy Instance = new XmlExportStrategy();

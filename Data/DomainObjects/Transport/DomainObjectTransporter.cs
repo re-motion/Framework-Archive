@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using Rubicon.Collections;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Reflection;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Transport
@@ -26,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.Transport
     /// <exception cref="ObjectNotFoundException">A referenced related object is not part of the transported data and does not exist on the
     /// target system.</exception>
     /// <remarks>
-    /// Given a <see cref="DomainObjectTransporter"/>, the binary data can be retrieved from <see cref="GetBinaryTransportData"/>.
+    /// Given a <see cref="DomainObjectTransporter"/>, the binary data can be retrieved from <see cref="GetBinaryTransportData()"/>.
     /// </remarks>
     public static TransportedDomainObjects LoadTransportData (byte[] data)
     {
@@ -38,14 +34,14 @@ namespace Rubicon.Data.DomainObjects.Transport
     /// Loads the data transported from another system into a <see cref="TransportedDomainObjects"/> container.
     /// </summary>
     /// <param name="data">The transported data to be loaded.</param>
-    /// <param name="strategy">The strategy to use when importing data. This must match the strategy being used with <see cref="GetBinaryTransportData"/>.</param>
+    /// <param name="strategy">The strategy to use when importing data. This must match the strategy being used with <see cref="GetBinaryTransportData(IExportStrategy)"/>.</param>
     /// <returns>A container holding the objects loaded from the given data.</returns>
     /// <exception cref="ObjectNotFoundException">A referenced related object is not part of the transported data and does not exist on the
     /// target system.</exception>
     /// <remarks>
-    /// Given a <see cref="DomainObjectTransporter"/>, the binary data can be retrieved from <see cref="GetBinaryTransportData"/>.
+    /// Given a <see cref="DomainObjectTransporter"/>, the binary data can be retrieved from <see cref="GetBinaryTransportData(IExportStrategy)"/>.
     /// </remarks>
-    private static TransportedDomainObjects LoadTransportData (byte[] data, BinaryImportStrategy strategy)
+    public static TransportedDomainObjects LoadTransportData (byte[] data, IImportStrategy strategy)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("data", data);
       ArgumentUtility.CheckNotNull ("strategy", strategy);

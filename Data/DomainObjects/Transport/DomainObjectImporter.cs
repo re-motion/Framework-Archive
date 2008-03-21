@@ -8,7 +8,7 @@ namespace Rubicon.Data.DomainObjects.Transport
 {
   /// <summary>
   /// Assists in importing data exported by a <see cref="DomainObjectTransporter"/> object. This class is used by
-  /// <see cref="DomainObjectTransporter.LoadTransportData"/> and is usually not instantiated by itself.
+  /// <see cref="DomainObjectTransporter.LoadTransportData(byte[])"/> and is usually not instantiated by users.
   /// </summary>
   public class DomainObjectImporter
   {
