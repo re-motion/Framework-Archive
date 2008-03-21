@@ -19,7 +19,7 @@ namespace Rubicon.Data.DomainObjects
     /// Returns the directory of the current executing assembly.
     /// </summary>
     /// <returns>The path of the current executing assembly</returns>
-    public static string GetDomainObjectAssemblyDirectory()
+    public static string GetConfigFileDirectory()
     {
       return GetAssemblyDirectory (typeof (DomainObject).Assembly);
     }

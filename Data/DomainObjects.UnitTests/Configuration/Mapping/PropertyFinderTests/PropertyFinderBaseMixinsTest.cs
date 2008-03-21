@@ -48,5 +48,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFin
                       GetProperty (typeof (MixinE), "P9"),
                   }));
     }
+
+    [Test]
+    [Ignore ("TODO: FS - Implement derived mixins")]
+    public void FindPropertyInfos_ForDerivedMixinNotOnBase ()
+    {
+      PropertyFinderBase propertyFinder = new StubPropertyFinderBase (typeof (TargetClassC), false);
+
+      Assert.That (
+          propertyFinder.FindPropertyInfos (CreateReflectionBasedClassDefinition (typeof (TargetClassC))),
+          Is.EquivalentTo (
+              new PropertyInfo[]
+                  {
+                      GetProperty (typeof (DerivedMixinNotOnBase), "DerivedMixinProperty"),
+                      GetProperty (typeof (MixinNotOnBase), "MixinProperty"),
+                  }));
+    }
   }
 }

@@ -72,7 +72,17 @@ namespace Rubicon.Data.DomainObjects.Mapping
     public bool HasPersistentMixin (Type mixinType)
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      return _persistentMixins.Contains (mixinType);
+      if (_persistentMixins.Contains (mixinType))
+        return true;
+      else
+      {
+        foreach (Type mixin in _persistentMixins)
+        {
+          if (mixinType.IsAssignableFrom (mixin))
+            return true;
+        }
+        return false;
+      }
     }
 
     private MappingException CreateMappingException (string message, params object[] args)

@@ -935,6 +935,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
+    public void HasPersistentMixin_TrueWithBase ()
+    {
+      Type[] mixins = new Type[] { typeof (MixinB) };
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("x", "xx", "xxx", typeof (Order), false, mixins);
+      Assert.IsTrue (classDefinition.HasPersistentMixin (typeof (MixinA)));
+      Assert.IsTrue (classDefinition.HasPersistentMixin (typeof (MixinB)));
+    }
+
+    [Test]
     public void HasPersistentMixin_False ()
     {
       Type[] mixins = new Type[0];

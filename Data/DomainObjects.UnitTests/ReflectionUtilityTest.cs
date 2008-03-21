@@ -142,7 +142,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     [Test]
     public void GetDomainObjectAssemblyDirectory ()
     {
-      Assert.AreEqual (Path.GetDirectoryName (typeof (DomainObject).Assembly.Location), ReflectionUtility.GetDomainObjectAssemblyDirectory());
+      Assert.AreEqual (Path.GetDirectoryName (typeof (DomainObject).Assembly.Location), ReflectionUtility.GetConfigFileDirectory());
     }
   }
 }

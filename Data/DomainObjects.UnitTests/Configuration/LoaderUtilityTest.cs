@@ -48,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
     public void GetConfigurationFileNameForNonExistingAppSettingsKey()
     {
       Assert.AreEqual (
-          Path.Combine (ReflectionUtility.GetDomainObjectAssemblyDirectory(), "Mapping.xml"),
+          Path.Combine (ReflectionUtility.GetConfigFileDirectory(), "Mapping.xml"),
           LoaderUtility.GetConfigurationFileName ("AppSettingKeyDoesNotExist", "Mapping.xml"));
     }
 

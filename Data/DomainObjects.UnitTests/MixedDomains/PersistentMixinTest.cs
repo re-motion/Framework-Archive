@@ -19,6 +19,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
     }
 
     [Test]
+    [Ignore ("TODO: FS - Implement derived mixins")]
+    public void ClassDefinitionIncludesPersistentPropertiesFromDerivedMixin ()
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (TargetClassForDerivedPersistentMixin));
+      Assert.IsNotNull (classDefinition.GetPropertyDefinition (typeof (DerivedMixinAddingPersistentProperties).FullName + ".AdditionalPersistentProperty"));
+      Assert.IsNotNull (classDefinition.GetPropertyDefinition (typeof (MixinAddingPersistentProperties).FullName + ".PersistentProperty"));
+    }
+
+    [Test]
     public void ClassDefinitionExcludesNonPersistentProperties ()
     {
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (TargetClassForPersistentMixin));
@@ -236,6 +245,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
       Assert.AreSame (relationTarget, mixin2.CollectionPropertyNSide);
       Assert.AreSame (tc1, relationTarget.RelationProperty4[0]);
       Assert.AreSame (tc2, relationTarget.RelationProperty4[1]);
+    }
+
+    [Test]
+    [Ignore ("TODO: FS - Implement derived mixins")]
+    public void DerivedMixin ()
+    {
+      TargetClassForDerivedPersistentMixin tc = TargetClassForDerivedPersistentMixin.NewObject().With();
+      DerivedMixinAddingPersistentProperties mixin = Mixin.Get<DerivedMixinAddingPersistentProperties> (tc);
+      mixin.AdditionalPersistentProperty = 12;
+      Assert.AreEqual (12, mixin.AdditionalPersistentProperty);
+      mixin.PersistentProperty = 10;
+      Assert.AreEqual (10, mixin.PersistentProperty);
     }
   }
 }

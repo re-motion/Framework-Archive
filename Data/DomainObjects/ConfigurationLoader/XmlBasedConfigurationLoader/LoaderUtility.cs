@@ -54,7 +54,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLo
       if (fileName != null)
         return fileName;
 
-      return Path.Combine (ReflectionUtility.GetDomainObjectAssemblyDirectory (), defaultFileName);
+      return Path.Combine (ReflectionUtility.GetConfigFileDirectory (), defaultFileName);
     }
   }
 }
