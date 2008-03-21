@@ -1,10 +1,7 @@
 using System;
-using System.Xml.Serialization;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Transport;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
-using System.IO;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transport
@@ -37,16 +34,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transport
 
       CheckEqualData (container1, items[0]);
       CheckEqualData (container2, items[1]);
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      DataContainer container = Computer.GetObject (DomainObjectIDs.Computer1).InternalDataContainer;
-      TransportItem item = TransportItem.PackageDataContainer (container);
-      TransportItem deserializedItem = Serializer.SerializeAndDeserialize (item);
-
-      CheckEqualData (container, deserializedItem);
     }
 
     public static void CheckEqualData (DataContainer expectedData, TransportItem item)
