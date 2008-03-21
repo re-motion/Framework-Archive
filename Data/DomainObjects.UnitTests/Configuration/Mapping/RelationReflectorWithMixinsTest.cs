@@ -35,6 +35,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
+    public void IsMixedProperty_True ()
+    {
+      PropertyInfo propertyInfo = typeof (MixinAddingPersistentProperties).GetProperty ("UnidirectionalRelationProperty");
+      PropertyReflector propertyReflector = new PropertyReflector (_mixinTargetClassDefinition, propertyInfo);
+      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
+      _mixinTargetClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
+      RelationReflector relationReflector = new RelationReflector (_mixinTargetClassDefinition, propertyInfo);
+      Assert.IsTrue (relationReflector.IsMixedProperty);
+    }
+
+    [Test]
+    public void DomainObjectTypeDeclaringProperty ()
+    {
+      PropertyInfo propertyInfo = typeof (MixinAddingPersistentProperties).GetProperty ("UnidirectionalRelationProperty");
+      PropertyReflector propertyReflector = new PropertyReflector (_mixinTargetClassDefinition, propertyInfo);
+      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
+      _mixinTargetClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
+      RelationReflector relationReflector = new RelationReflector (_mixinTargetClassDefinition, propertyInfo);
+      Assert.AreEqual (typeof (TargetClassForPersistentMixin), relationReflector.DomainObjectTypeDeclaringProperty);
+    }
+
+    [Test]
     public void GetMetadata_Mixed_Unidirectional ()
     {
       PropertyInfo propertyInfo = typeof (MixinAddingPersistentProperties).GetProperty ("UnidirectionalRelationProperty");

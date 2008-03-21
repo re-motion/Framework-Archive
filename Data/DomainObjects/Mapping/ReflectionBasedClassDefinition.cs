@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
         throw CreateMappingException ("Type '{0}' of class '{1}' is not derived from 'Rubicon.Data.DomainObjects.DomainObject'.", classType, ID);
      
       _classType = classType;
-      _persistentMixins = persistentMixins;
+      _persistentMixins = new Set<Type> (persistentMixins);
       _isAbstract = isAbstract;
 
       if (baseClass != null)
@@ -67,6 +67,12 @@ namespace Rubicon.Data.DomainObjects.Mapping
     public override bool IsClassTypeResolved
     {
       get { return true; }
+    }
+
+    public bool HasPersistentMixin (Type mixinType)
+    {
+      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      return _persistentMixins.Contains (mixinType);
     }
 
     private MappingException CreateMappingException (string message, params object[] args)

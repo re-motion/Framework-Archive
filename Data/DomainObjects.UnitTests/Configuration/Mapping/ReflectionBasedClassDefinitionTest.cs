@@ -910,6 +910,40 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
+    public void PersistentMixins_Empty ()
+    {
+      Type[] mixins = new Type[0];
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("x", "xx", "xxx", typeof (Order), false, mixins);
+      Assert.That (classDefinition.PersistentMixins, Is.EqualTo (mixins));
+    }
+
+    [Test]
+    public void PersistentMixins_NonEmpty ()
+    {
+      Type[] mixins = new Type[] { typeof (MixinA), typeof (MixinB) };
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("x", "xx", "xxx", typeof (Order), false, mixins);
+      Assert.That (classDefinition.PersistentMixins, Is.EqualTo (mixins));
+    }
+
+    [Test]
+    public void HasPersistentMixin_True ()
+    {
+      Type[] mixins = new Type[] { typeof (MixinA), typeof (MixinB) };
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("x", "xx", "xxx", typeof (Order), false, mixins);
+      Assert.IsTrue (classDefinition.HasPersistentMixin (typeof (MixinA)));
+      Assert.IsTrue (classDefinition.HasPersistentMixin (typeof (MixinB)));
+    }
+
+    [Test]
+    public void HasPersistentMixin_False ()
+    {
+      Type[] mixins = new Type[0];
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("x", "xx", "xxx", typeof (Order), false, mixins);
+      Assert.IsFalse (classDefinition.HasPersistentMixin (typeof (MixinA)));
+      Assert.IsFalse (classDefinition.HasPersistentMixin (typeof (MixinB)));
+    }
+
+    [Test]
     public void ValidateCurrentMixinConfiguration_OkWhenNoPersistentChanges ()
     {
       ClassDefinition classDefinition = new ReflectionBasedClassDefinition ("x", "xx", "xxx", typeof (Order), false,

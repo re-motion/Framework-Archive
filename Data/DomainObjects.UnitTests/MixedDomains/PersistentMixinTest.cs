@@ -7,6 +7,30 @@ using Rubicon.Mixins;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
 {
+  //[DBTable]
+  //[Instantiable]
+  //public abstract class C1 : SimpleDomainObject<C1>
+  //{
+  //  [DBBidirectionalRelation ("VirtualSide", ContainsForeignKey = true)]
+  //  public abstract RT RealSide { get; set; }
+  //}
+
+  //[DBTable]
+  //[Instantiable]
+  //public abstract class C2 : SimpleDomainObject<C2>
+  //{
+  //  [DBBidirectionalRelation ("VirtualSide", ContainsForeignKey = true)]
+  //  public abstract RT RealSide { get; set; }
+  //}
+
+  //[DBTable]
+  //[Instantiable]
+  //public abstract class RT : SimpleDomainObject<RT>
+  //{
+  //  [DBBidirectionalRelation ("RealSide")]
+  //  public abstract C1 VirtualSide { get; set; }
+  //}
+
   [TestFixture]
   public class PersistentMixinTest : ClientTransactionBaseTest
   {

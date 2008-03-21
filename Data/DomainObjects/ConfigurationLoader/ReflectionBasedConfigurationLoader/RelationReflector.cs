@@ -28,6 +28,17 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
     }
 
+    public Type DomainObjectTypeDeclaringProperty
+    {
+      get
+      {
+        if (IsMixedProperty)
+          return ClassDefinition.ClassType;
+        else
+          return PropertyInfo.DeclaringType;
+      }
+    }
+
     public RelationDefinition GetMetadata (ClassDefinitionCollection classDefinitions, RelationDefinitionCollection relationDefinitions)
     {
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
@@ -95,7 +106,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private string GetRelationID ()
     {
-      if (IsMixedProperty (PropertyInfo))
+      if (IsMixedProperty)
       {
         string propertyName = ReflectionUtility.GetPropertyName (PropertyInfo);
         return string.Format ("{0}->{1}", ClassDefinition.ClassType.FullName, propertyName);
@@ -103,11 +114,6 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       else if (ClassDefinition.BaseClass == null && ClassDefinition.ClassType != PropertyInfo.DeclaringType)
         return ReflectionUtility.GetPropertyName (ClassDefinition.ClassType, PropertyInfo.Name);
       return ReflectionUtility.GetPropertyName (PropertyInfo);
-    }
-
-    private bool IsMixedProperty (PropertyInfo propertyInfo)
-    {
-      return new List<Type> (ClassDefinition.PersistentMixins).Contains (propertyInfo.DeclaringType);
     }
 
     private IRelationEndPointDefinition CreateOppositeEndPointDefinition (ClassDefinitionCollection classDefinitions)
@@ -165,33 +171,29 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     private void ValidateOppositePropertyInfoDeclaringType (PropertyInfo oppositePropertyInfo, ClassDefinitionCollection classDefintions)
     {
       Type oppositeDomainObjectType = GetDomainObjectTypeFromRelationProperty (oppositePropertyInfo);
-      if (classDefintions.Contains (PropertyInfo.DeclaringType))
+      if (classDefintions.Contains (DomainObjectTypeDeclaringProperty))
       {
-        if (PropertyInfo.DeclaringType != oppositeDomainObjectType)
+        if (DomainObjectTypeDeclaringProperty != oppositeDomainObjectType)
         {
           throw CreateMappingException (
               null,
               PropertyInfo,
-              "The declaring type does not match the type of the opposite relation propery '{0}' declared on type '{1}'.",
+              "The declaring type '{0}' does not match the type of the opposite relation propery '{1}' declared on type '{2}'.",
+              DomainObjectTypeDeclaringProperty.Name,
               BidirectionalRelationAttribute.OppositeProperty,
               oppositePropertyInfo.DeclaringType.FullName);
         }
       }
       else
       {
-        if (PropertyInfo.DeclaringType.IsAssignableFrom (oppositeDomainObjectType))
+        if (DomainObjectTypeDeclaringProperty.IsAssignableFrom (oppositeDomainObjectType))
           return;
-
-        foreach (Type oppositeMixinType in PersistentMixinFinder.GetPersistentMixins (oppositeDomainObjectType))
-        {
-          if (PropertyInfo.DeclaringType.IsAssignableFrom (oppositeMixinType))
-            return;
-        }
 
         throw CreateMappingException (
             null,
             PropertyInfo,
-            "The declaring type cannot be assigned to the type of the opposite relation propery '{0}' declared on type '{1}'.",
+            "The declaring type '{0}' cannot be assigned to the type of the opposite relation propery '{1}' declared on type '{2}'.",
+            DomainObjectTypeDeclaringProperty.Name,
             BidirectionalRelationAttribute.OppositeProperty,
             oppositePropertyInfo.DeclaringType.FullName);
       }

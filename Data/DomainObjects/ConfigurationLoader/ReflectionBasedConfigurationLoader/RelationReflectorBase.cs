@@ -10,6 +10,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   {
     private readonly BidirectionalRelationAttribute _bidirectionalRelationAttribute;
     private readonly ReflectionBasedClassDefinition _classDefinition;
+    private readonly bool _isMixedProperty;
 
     protected RelationReflectorBase (
         ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo, Type bidirectionalRelationAttributeType)
@@ -23,6 +24,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       _classDefinition = classDefinition;
       _bidirectionalRelationAttribute =
           (BidirectionalRelationAttribute) AttributeUtility.GetCustomAttribute (PropertyInfo, bidirectionalRelationAttributeType, true);
+      _isMixedProperty = _classDefinition.HasPersistentMixin (PropertyInfo.DeclaringType);
     }
 
     public ReflectionBasedClassDefinition ClassDefinition
@@ -38,6 +40,11 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     protected bool IsBidirectionalRelation
     {
       get { return _bidirectionalRelationAttribute != null; }
+    }
+
+    public bool IsMixedProperty
+    {
+      get { return _isMixedProperty; }
     }
 
     protected PropertyInfo GetOppositePropertyInfo ()
@@ -86,8 +93,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private void CheckClassDefinitionType (ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo)
     {
-      if (!PropertyInfo.DeclaringType.IsAssignableFrom (classDefinition.ClassType)
-          && !Mixins.TypeUtility.HasAscribableMixin (classDefinition.ClassType, PropertyInfo.DeclaringType))
+      if (!PropertyInfo.DeclaringType.IsAssignableFrom (classDefinition.ClassType) && !classDefinition.HasPersistentMixin (PropertyInfo.DeclaringType))
       {
         string message = string.Format (
             "The classDefinition's class type '{0}' is not assignable to the property's declaring type.\r\nDeclaring type: {1}, property: {2}",

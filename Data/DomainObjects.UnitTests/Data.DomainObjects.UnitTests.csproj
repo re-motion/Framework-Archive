@@ -274,8 +274,12 @@
     <Compile Include="MixedDomains\DomainObjectMixinBaseClassTest.cs" />
     <Compile Include="MixedDomains\DomainObjectMixinHookTest.cs" />
     <Compile Include="MixedDomains\PersistentMixinTest.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\TargetClass2ForMixinAddingBidirectionalRelationTwice.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\MixinAddingBidirectionalRelationTwice.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\RelationTargetForMixinAddingBidirectionalRelationTwice.cs" />
     <Compile Include="MixedDomains\SampleTypes\StubStoragePersistentMixin.cs" />
     <Compile Include="MixedDomains\SampleTypes\StubStorageTargetClassForPersistentMixin.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\TargetClass1ForMixinAddingBidirectionalRelationTwice.cs" />
     <Compile Include="MixedDomains\SampleTypes\TargetClassWithUnidirectionalMixin1.cs" />
     <Compile Include="MixedDomains\SampleTypes\MixinAddingUnidirectionalRelation2.cs" />
     <Compile Include="MixedDomains\SampleTypes\DOWithVirtualPropertiesAndMethods.cs" />
