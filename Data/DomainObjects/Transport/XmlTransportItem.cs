@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Transport
@@ -33,22 +34,17 @@ namespace Rubicon.Data.DomainObjects.Transport
       get { return _transportItem; }
     }
 
+    public XmlSchema GetSchema ()
+    {
+      return null;
+    }
+
     public void WriteXml (XmlWriter writer)
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
       writer.WriteAttributeString ("ID", _transportItem.ID.ToString ());
-
-      writer.WriteStartElement ("Properties");
-      writer.WriteAttributeString ("Count", _transportItem.Properties.Count.ToString ());
-      foreach (KeyValuePair<string, object> property in _transportItem.Properties)
-        SerializeProperty (writer, property);
-      writer.WriteEndElement ();
-    }
-
-    public XmlSchema GetSchema ()
-    {
-      return null;
+      SerializeProperties(writer);
     }
 
     public void ReadXml (XmlReader reader)
@@ -59,7 +55,7 @@ namespace Rubicon.Data.DomainObjects.Transport
       ObjectID id = ObjectID.Parse (idString);
 
       reader.Read ();
-      List<KeyValuePair<string, object>> properties = DeserializeProperties (reader);
+      List<KeyValuePair<string, object>> properties = DeserializeProperties (reader, id.ClassDefinition);
       reader.ReadEndElement ();
 
       _transportItem = CreateTransportItem(id, properties);
@@ -75,63 +71,116 @@ namespace Rubicon.Data.DomainObjects.Transport
       return new TransportItem (id, propertyDictionary);
     }
 
-    private void SerializeProperty (XmlWriter writer, KeyValuePair<string, object> property)
+    private void SerializeProperties (XmlWriter writer)
     {
-      writer.WriteStartElement ("Property");
-      writer.WriteAttributeString ("Name", property.Key);
-      SerializePropertyValue (writer, property.Value);
+      writer.WriteStartElement ("Properties");
+      foreach (KeyValuePair<string, object> property in _transportItem.Properties)
+        SerializeProperty (writer, _transportItem.ID.ClassDefinition, property);
       writer.WriteEndElement ();
     }
 
-    private void SerializePropertyValue (XmlWriter writer, object value)
+    private List<KeyValuePair<string, object>> DeserializeProperties (XmlReader reader, ClassDefinition classDefinition)
     {
-      ObjectID objectID;
-      if ((objectID = value as ObjectID) != null)
-      {
-        writer.WriteAttributeString ("ObjectID", "true");
-        writer.WriteString (objectID.ToString ());
-      }
+      reader.ReadStartElement ("Properties");
+      List<KeyValuePair<string, object>> properties = new List<KeyValuePair<string, object>> ();
+      while (reader.IsStartElement ("Property"))
+        properties.Add (DeserializeProperty (reader, classDefinition));
+      reader.ReadEndElement ();
+      return properties;
+    }
+
+    private void SerializeProperty (XmlWriter writer, ClassDefinition classDefinition, KeyValuePair<string, object> property)
+    {
+      PropertyDefinition propertyDefinition = classDefinition.GetPropertyDefinition (property.Key);
+      writer.WriteStartElement ("Property");
+      writer.WriteAttributeString ("Name", property.Key);
+      SerializePropertyValue (writer, propertyDefinition, property.Value);
+      writer.WriteEndElement ();
+    }
+
+    private KeyValuePair<string, object> DeserializeProperty (XmlReader reader, ClassDefinition classDefinition)
+    {
+      string name = reader.GetAttribute ("Name");
+      PropertyDefinition propertyDefinition = classDefinition.GetPropertyDefinition (name);
+      object value = DeserializePropertyValue (reader, propertyDefinition);
+      return new KeyValuePair<string, object> (name, value);
+    }
+
+    private void SerializePropertyValue (XmlWriter writer, PropertyDefinition propertyDefinition, object value)
+    {
+      Type valueType;
+      if (propertyDefinition == null)
+        valueType = SerializeCustomValueType(writer, value);
+      else
+        valueType = propertyDefinition.PropertyType;
+
+      if (value == null)
+        writer.WriteElementString ("null", "");
+      else if (valueType == typeof (ObjectID))
+        writer.WriteString (value.ToString ());
       else
       {
-        Type valueType = value.GetType ();
-        writer.WriteAttributeString ("Type", valueType.AssemblyQualifiedName);
         XmlSerializer valueSerializer = new XmlSerializer (valueType);
         valueSerializer.Serialize (writer, value);
       }
     }
 
-    private List<KeyValuePair<string, object>> DeserializeProperties (XmlReader reader)
+    private object DeserializePropertyValue (XmlReader reader, PropertyDefinition propertyDefinition)
     {
-      int propertyCount = int.Parse (reader.GetAttribute ("Count"));
-      reader.ReadStartElement ("Properties");
-      List<KeyValuePair<string, object>> properties = new List<KeyValuePair<string, object>> (propertyCount);
-      for (int i = 0; i < propertyCount; ++i)
-        properties.Add (DeserializeProperty (reader));
-      reader.ReadEndElement ();
-      return properties;
-    }
-
-    private KeyValuePair<string, object> DeserializeProperty (XmlReader reader)
-    {
-      string name = reader.GetAttribute ("Name");
-      string objectIDAttribute = reader.GetAttribute ("ObjectID");
-      string valueTypeName = reader.GetAttribute ("Type");
+      Type valueType;
+      if (propertyDefinition == null)
+        valueType = DeserializeCustomValueType (reader);
+      else
+        valueType = propertyDefinition.PropertyType;
 
       reader.ReadStartElement ("Property");
+
       object value;
-      if (objectIDAttribute != null)
+      if (reader.IsStartElement ("null"))
+      {
+        reader.ReadStartElement ("null"); // no end element for null
+        value = null;
+      }
+      else if (valueType == typeof (ObjectID))
       {
         string objectIDString = reader.ReadContentAsString ();
         value = ObjectID.Parse (objectIDString);
       }
       else
       {
-        Type valueType = Type.GetType (valueTypeName, true, false);
-        XmlSerializer deserializer = new XmlSerializer (valueType);
-        value = deserializer.Deserialize (reader);
+        XmlSerializer valueDeserializer = new XmlSerializer (valueType);
+        value = valueDeserializer.Deserialize (reader);
       }
       reader.ReadEndElement ();
-      return new KeyValuePair<string, object> (name, value);
+      return value;
+    }
+
+    private Type SerializeCustomValueType (XmlWriter writer, object value)
+    {
+      Type valueType = value != null ? value.GetType () : null;
+
+      if (valueType == null)
+        writer.WriteAttributeString ("Type", "null");
+      else if (valueType == typeof (ObjectID))
+        writer.WriteAttributeString ("Type", "ObjectID");
+      else
+        writer.WriteAttributeString ("Type", valueType.AssemblyQualifiedName);
+      
+      return valueType;
+    }
+
+     private Type DeserializeCustomValueType (XmlReader reader)
+    {
+      string valueTypeAttribute = reader.GetAttribute ("Type");
+      switch (valueTypeAttribute)
+      {
+        case "null":
+          return null;
+        case "ObjectID":
+          return typeof (ObjectID);
+          default:
+          return Type.GetType (valueTypeAttribute);
+      }
     }
   }
 }
