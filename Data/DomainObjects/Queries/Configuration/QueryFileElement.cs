@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
       if (Path.IsPathRooted (path))
         return Path.GetFullPath (path);
       else
-        return Path.GetFullPath (Path.Combine (ReflectionUtility.GetExecutingAssemblyPath (), path));
+        return Path.GetFullPath (Path.Combine (ReflectionUtility.GetDomainObjectAssemblyDirectory (), path));
     }
 
     private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();

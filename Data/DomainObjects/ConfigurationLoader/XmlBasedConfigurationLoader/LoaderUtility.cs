@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Specialized;
-using System.Configuration;
 using System.IO;
 using System.Xml;
 using Rubicon.Configuration;
@@ -56,7 +54,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLo
       if (fileName != null)
         return fileName;
 
-      return Path.Combine (ReflectionUtility.GetExecutingAssemblyPath (), defaultFileName);
+      return Path.Combine (ReflectionUtility.GetDomainObjectAssemblyDirectory (), defaultFileName);
     }
   }
 }

@@ -1,8 +1,13 @@
 using System;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using NUnit.Framework;
+using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
+using System.IO;
+using Rubicon.Development.UnitTesting;
+using File=System.IO.File;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
@@ -18,8 +23,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.Int32",
           ReflectionUtility.GetPropertyName (propertyInfo));
     }
-
-   
+       
     private int TestProperty
     {
       get { return 0; }
@@ -83,5 +87,62 @@ namespace Rubicon.Data.DomainObjects.UnitTests
       Assert.AreEqual (mixedVisibilityProperty, ReflectionUtility.GetPropertyForMethod (mixedVisibilityProperty.GetGetMethod (true)));
       Assert.AreEqual (mixedVisibilityProperty, ReflectionUtility.GetPropertyForMethod (mixedVisibilityProperty.GetSetMethod (true)));
     }
- }
+
+    [Test]
+    public void GetAssemblyPath ()
+    {
+      Assert.AreEqual (AppDomain.CurrentDomain.BaseDirectory, ReflectionUtility.GetAssemblyDirectory (typeof (ReflectionUtilityTest).Assembly));
+    }
+
+    [Test]
+    public void GetAssemblyPath_WithHashInDirectoryName ()
+    {
+      string directoryPath = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "#HashTestPath");
+      string originalAssemblyPath = typeof (ReflectionUtilityTest).Assembly.Location;
+      string newAssemblyPath = Path.Combine (directoryPath, Path.GetFileName (originalAssemblyPath));
+
+      if (Directory.Exists (directoryPath))
+        Directory.Delete (directoryPath, true);
+
+      Directory.CreateDirectory (directoryPath);
+      try
+      {
+        File.Copy (originalAssemblyPath, newAssemblyPath);
+        AppDomainRunner.Run (
+            delegate (object[] args)
+            {
+              string directory = (string) args[0];
+              string assemblyPath = (string) args[1];
+
+              Assembly assembly = Assembly.LoadFile (assemblyPath);
+              Assert.AreEqual (directory, Path.GetDirectoryName (assembly.Location));
+              Assert.AreEqual (directory, ReflectionUtility.GetAssemblyDirectory (assembly));
+            }, directoryPath, newAssemblyPath);
+      }
+      finally
+      {
+        Directory.Delete (directoryPath, true);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), 
+        ExpectedMessage = "The assembly's code base 'http://server/File.ext' is not a local path.")]
+    public void GetAssemblyPath_FromNonLocalUri ()
+    {
+      MockRepository mockRepository = new MockRepository();
+      _Assembly assemblyMock = mockRepository.CreateMock<_Assembly>();
+
+      SetupResult.For (assemblyMock.EscapedCodeBase).Return ("http://server/File.ext");
+      mockRepository.ReplayAll();
+
+      ReflectionUtility.GetAssemblyDirectory (assemblyMock);
+    }
+
+    [Test]
+    public void GetDomainObjectAssemblyDirectory ()
+    {
+      Assert.AreEqual (Path.GetDirectoryName (typeof (DomainObject).Assembly.Location), ReflectionUtility.GetDomainObjectAssemblyDirectory());
+    }
+  }
 }

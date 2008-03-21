@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
@@ -18,16 +19,38 @@ namespace Rubicon.Data.DomainObjects
     /// Returns the directory of the current executing assembly.
     /// </summary>
     /// <returns>The path of the current executing assembly</returns>
-    public static string GetExecutingAssemblyPath()
+    public static string GetDomainObjectAssemblyDirectory()
     {
-      return GetAssemblyPath (Assembly.GetExecutingAssembly());
+      return GetAssemblyDirectory (typeof (DomainObject).Assembly);
     }
 
-    public static string GetAssemblyPath(Assembly assembly)
+    /// <summary>
+    /// Gets the directory containing the given assembly.
+    /// </summary>
+    /// <param name="assembly">The assembly whose directory to retrieve.</param>
+    /// <returns>The directory holding the given assembly as a local path. If the assembly has been shadow-copied, this returns the directory before the
+    /// shadow-copying.</returns>
+    /// <exception cref="InvalidOperationException">The assembly's code base is not a local path.</exception>
+    public static string GetAssemblyDirectory (Assembly assembly)
+    {
+      return GetAssemblyDirectory ((_Assembly) assembly);
+    }
+
+    /// <summary>
+    /// Gets the directory containing the given assembly.
+    /// </summary>
+    /// <param name="assembly">The assembly whose directory to retrieve.</param>
+    /// <returns>The directory holding the given assembly as a local path. If the assembly has been shadow-copied, this returns the directory before the
+    /// shadow-copying.</returns>
+    /// <exception cref="InvalidOperationException">The assembly's code base is not a local path.</exception>
+    [CLSCompliant (false)]
+    public static string GetAssemblyDirectory (_Assembly assembly)
     {
       ArgumentUtility.CheckNotNull ("assembly", assembly);
 
-      Uri codeBaseUri = new Uri (assembly.CodeBase);
+      Uri codeBaseUri = new Uri (assembly.EscapedCodeBase);
+      if (!codeBaseUri.IsFile)
+        throw new InvalidOperationException (string.Format ("The assembly's code base '{0}' is not a local path.", codeBaseUri.OriginalString));
       return Path.GetDirectoryName (codeBaseUri.LocalPath);
     }
 
