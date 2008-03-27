@@ -129,4 +129,10 @@
   <data name="property:SpecificPosition" xml:space="preserve">
     <value>Position</value>
   </data>
+  <data name="property:SpecificTenant" xml:space="preserve">
+    <value>Mandant</value>
+  </data>
+  <data name="property:Tenant" xml:space="preserve">
+    <value>Mandant</value>
+  </data>
 </root>

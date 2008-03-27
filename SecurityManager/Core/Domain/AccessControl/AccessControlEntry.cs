@@ -50,7 +50,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     public void Touch ()
     {
       if (State == StateType.Unchanged)
-        MarkAsChanged ();
+        MarkAsChanged();
     }
 
     public abstract int Index { get; set; }
@@ -108,7 +108,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     [ObjectBinding (ReadOnly = true)]
     public virtual ObjectList<Permission> Permissions
     {
-      get { return new ObjectList<Permission> (CurrentProperty.GetValue<ObjectList<Permission>> (), true); }
+      get { return new ObjectList<Permission> (CurrentProperty.GetValue<ObjectList<Permission>>(), true); }
     }
 
     private ObjectList<Permission> GetPermissions ()
@@ -139,7 +139,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
             string.Format ("The access type '{0}' has already been attached to this access control entry.", accessType.Name), "accessType");
       }
 
-      Permission permission = Permission.NewObject ();
+      Permission permission = Permission.NewObject();
       permission.AccessType = accessType;
       permission.Allowed = null;
       DomainObjectCollection permissions = GetPermissions();
@@ -308,8 +308,11 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     {
       AccessControlEntryValidationResult result = new AccessControlEntryValidationResult();
 
-      if (Tenant == TenantSelection.SpecificTenant && SpecificTenant == null)
-        result.SetSpecificTenantMissing();
+      if (State != StateType.Deleted)
+      {
+        if (Tenant == TenantSelection.SpecificTenant && SpecificTenant == null)
+          result.SetSpecificTenantMissing();
+      }
 
       return result;
     }

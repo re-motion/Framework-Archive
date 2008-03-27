@@ -20,10 +20,10 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public static SecurableClassDefinition NewObject ()
     {
-      return NewObject<SecurableClassDefinition> ().With ();
+      return NewObject<SecurableClassDefinition>().With();
     }
 
-    public static new SecurableClassDefinition GetObject (ObjectID id)
+    public new static SecurableClassDefinition GetObject (ObjectID id)
     {
       return DomainObject.GetObject<SecurableClassDefinition> (id);
     }
@@ -61,9 +61,9 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // construction and disposing
 
-    protected  SecurableClassDefinition ()
+    protected SecurableClassDefinition ()
     {
-      SubscribeCollectionEvents ();
+      SubscribeCollectionEvents();
     }
 
     // methods and properties
@@ -72,8 +72,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     protected override void OnLoaded (LoadMode loadMode)
     {
       base.OnLoaded (loadMode);
-      SubscribeCollectionEvents (); // always subscribe collection events when the object gets a new data container
-
+      SubscribeCollectionEvents(); // always subscribe collection events when the object gets a new data container
     }
 
     private void SubscribeCollectionEvents ()
@@ -89,7 +88,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
         accessControlList.Index = 0;
       else
         accessControlList.Index = ((AccessControlList) accessControlLists[accessControlLists.Count - 2]).Index + 1;
-      Touch ();
+      Touch();
     }
 
     [DBBidirectionalRelation ("DerivedClasses")]
@@ -102,7 +101,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     public void Touch ()
     {
       if (State == StateType.Unchanged)
-        MarkAsChanged ();
+        MarkAsChanged();
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
@@ -116,7 +115,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       {
         if (_stateProperties == null)
         {
-          ObjectList<StatePropertyDefinition> stateProperties = new ObjectList<StatePropertyDefinition> ();
+          ObjectList<StatePropertyDefinition> stateProperties = new ObjectList<StatePropertyDefinition>();
 
           foreach (StatePropertyReference propertyReference in StatePropertyReferences)
             stateProperties.Add (propertyReference.StateProperty);
@@ -139,7 +138,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       {
         if (_accessTypes == null)
         {
-          ObjectList<AccessTypeDefinition> accessTypes = new ObjectList<AccessTypeDefinition> ();
+          ObjectList<AccessTypeDefinition> accessTypes = new ObjectList<AccessTypeDefinition>();
 
           foreach (AccessTypeReference accessTypeReference in AccessTypeReferences)
             accessTypes.Add (accessTypeReference.AccessType);
@@ -160,7 +159,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public void AddAccessType (AccessTypeDefinition accessType)
     {
-      AccessTypeReference reference = AccessTypeReference.NewObject ();
+      AccessTypeReference reference = AccessTypeReference.NewObject();
       reference.AccessType = accessType;
       AccessTypeReferences.Add (reference);
       DomainObjectCollection accessTypeReferences = AccessTypeReferences;
@@ -168,14 +167,14 @@ namespace Rubicon.SecurityManager.Domain.Metadata
         reference.Index = 0;
       else
         reference.Index = ((AccessTypeReference) accessTypeReferences[accessTypeReferences.Count - 2]).Index + 1;
-      Touch ();
+      Touch();
 
       _accessTypes = null;
     }
 
     public void AddStateProperty (StatePropertyDefinition stateProperty)
     {
-      StatePropertyReference reference = StatePropertyReference.NewObject ();
+      StatePropertyReference reference = StatePropertyReference.NewObject();
       reference.StateProperty = stateProperty;
 
       StatePropertyReferences.Add (reference);
@@ -195,18 +194,18 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public AccessControlList CreateAccessControlList ()
     {
-      AccessControlList accessControlList = AccessControlList.NewObject ();
+      AccessControlList accessControlList = AccessControlList.NewObject();
       accessControlList.Class = this;
-      accessControlList.CreateStateCombination ();
-      accessControlList.CreateAccessControlEntry ();
+      accessControlList.CreateStateCombination();
+      accessControlList.CreateAccessControlEntry();
 
       return accessControlList;
     }
 
     public SecurableClassValidationResult Validate ()
     {
-      SecurableClassValidationResult result = new SecurableClassValidationResult ();
-      
+      SecurableClassValidationResult result = new SecurableClassValidationResult();
+
       ValidateUniqueStateCombinations (result);
 
       return result;
@@ -214,7 +213,9 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public void ValidateUniqueStateCombinations (SecurableClassValidationResult result)
     {
-      Dictionary<StateCombination, StateCombination> stateCombinations = new Dictionary<StateCombination, StateCombination> (new StateCombinationComparer ());
+      Dictionary<StateCombination, StateCombination> stateCombinations = new Dictionary<StateCombination, StateCombination> (new StateCombinationComparer());
+
+      Assertion.IsTrue (State != StateType.Deleted || StateCombinations.Count == 0, "StateCombinations of object are not empty but the object is deleted.", ID);
 
       foreach (StateCombination stateCombination in StateCombinations)
       {
@@ -232,11 +233,11 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     protected override void OnCommitting (EventArgs args)
     {
-      SecurableClassValidationResult result = Validate ();
+      SecurableClassValidationResult result = Validate();
       if (!result.IsValid)
       {
-        throw new ConstraintViolationException (string.Format (
-            "The securable class definition '{0}' contains at least one state combination, which has been defined twice.", Name));
+        throw new ConstraintViolationException (
+            string.Format ("The securable class definition '{0}' contains at least one state combination, which has been defined twice.", Name));
       }
 
       base.OnCommitting (args);

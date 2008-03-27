@@ -73,11 +73,17 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlList CreateAcl (SecurableClassDefinition classDefinition, params StateDefinition[] states)
     {
-      using (_transaction.EnterNonDiscardingScope())
+      return CreateAcl (classDefinition, _transaction, states);
+    }
+
+
+    private AccessControlList CreateAcl (SecurableClassDefinition classDefinition, ClientTransaction transaction, params StateDefinition[] states)
+    {
+      using (transaction.EnterNonDiscardingScope ())
       {
         AccessControlList acl = AccessControlList.NewObject ();
         acl.Class = classDefinition;
-        StateCombination stateCombination = CreateStateCombination (acl);
+        StateCombination stateCombination = CreateStateCombination (acl, transaction);
 
         foreach (StateDefinition state in states)
           stateCombination.AttachState (state);
@@ -88,7 +94,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public StateCombination CreateStateCombination (AccessControlList acl)
     {
-      using (_transaction.EnterNonDiscardingScope())
+      return CreateStateCombination (acl, _transaction);
+    }
+
+    private StateCombination CreateStateCombination (AccessControlList acl, ClientTransaction transaction)
+    {
+      using (transaction.EnterNonDiscardingScope ())
       {
         StateCombination stateCombination = StateCombination.NewObject ();
         stateCombination.AccessControlList = acl;
@@ -100,11 +111,16 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public StateCombination CreateStateCombination (SecurableClassDefinition classDefinition, params StateDefinition[] states)
     {
-      using (_transaction.EnterNonDiscardingScope())
+      return CreateStateCombination (classDefinition, _transaction, states);
+    }
+
+    public StateCombination CreateStateCombination (SecurableClassDefinition classDefinition, ClientTransaction transaction, params StateDefinition[] states)
+    {
+      using (transaction.EnterNonDiscardingScope())
       {
-        AccessControlList acl = CreateAcl (classDefinition, states);
+        AccessControlList acl = CreateAcl (classDefinition, transaction, states);
         return acl.StateCombinations[0];
-      }
+      }    
     }
 
     public StatePropertyDefinition CreateStateProperty (string name)

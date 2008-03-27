@@ -14,9 +14,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      _testHelper = new AccessControlTestHelper ();
-      _testHelper.Transaction.EnterNonDiscardingScope ();
+      base.SetUp();
+      _testHelper = new AccessControlTestHelper();
+      _testHelper.Transaction.EnterNonDiscardingScope();
     }
 
     [Test]
@@ -24,7 +24,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     {
       AccessControlEntry ace = AccessControlEntry.NewObject();
 
-      AccessControlEntryValidationResult result = ace.Validate ();
+      AccessControlEntryValidationResult result = ace.Validate();
 
       Assert.IsTrue (result.IsValid);
     }
@@ -35,7 +35,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
       Tenant tenant = _testHelper.CreateTenant ("TestTenant");
       AccessControlEntry ace = _testHelper.CreateAceWithSpecficTenant (tenant);
 
-      AccessControlEntryValidationResult result = ace.Validate ();
+      AccessControlEntryValidationResult result = ace.Validate();
 
       Assert.IsTrue (result.IsValid);
     }
@@ -47,22 +47,39 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
       AccessControlEntry ace = _testHelper.CreateAceWithSpecficTenant (tenant);
       ace.SpecificTenant = null;
 
-      AccessControlEntryValidationResult result = ace.Validate ();
+      AccessControlEntryValidationResult result = ace.Validate();
 
       Assert.IsFalse (result.IsValid);
       Assert.IsTrue (result.IsSpecificTenantMissing);
     }
 
     [Test]
-    [ExpectedException (typeof (ConstraintViolationException), ExpectedMessage =
-       "The access control entry has the Tenant property set to SpecificTenant, but no Tenant is assigned.")]
+    [ExpectedException (typeof (ConstraintViolationException),
+        ExpectedMessage = "The access control entry has the Tenant property set to SpecificTenant, but no Tenant is assigned.")]
     public void Commit_SpecificTenantIsNull ()
     {
       Tenant tenant = _testHelper.CreateTenant ("TestTenant");
       AccessControlEntry ace = _testHelper.CreateAceWithSpecficTenant (tenant);
       ace.SpecificTenant = null;
 
-      ClientTransactionScope.CurrentTransaction.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit();
+    }
+
+    [Test]
+    public void ValidateSpecificTenant_IsNullAndObjectIsDeleted ()
+    {
+      Tenant tenant = _testHelper.CreateTenant ("TestTenant");
+      AccessControlEntry ace = _testHelper.CreateAceWithSpecficTenant (tenant);
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+      {
+        ace.SpecificTenant = null;
+        ace.Delete();
+
+        AccessControlEntryValidationResult result = ace.Validate();
+
+        Assert.IsTrue (result.IsValid);
+        Assert.AreEqual (StateType.Deleted, ace.State);
+      }
     }
   }
 }
