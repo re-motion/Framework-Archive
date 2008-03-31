@@ -100,6 +100,7 @@
     <Compile Include="Core\BindableObject\TestDomain\ClassWithMixedPropertyOfSameName.cs" />
     <Compile Include="Core\BindableObject\TestDomain\ClassWithIdentityAndDisplayName.cs" />
     <Compile Include="Core\BindableObject\TestDomain\ClassWithMixedPropertyAndResources.cs" />
+    <Compile Include="Core\BindableObject\TestDomain\DerivedBusinessObjectClassWithoutAttribute.cs" />
     <Compile Include="Core\BindableObject\TestDomain\DerivedBusinessObjectClass.cs" />
     <Compile Include="Core\BindableObject\TestDomain\BaseBusinessObjectClass.cs" />
     <Compile Include="Core\BindableObject\TestDomain\ICustomGetObjectService.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Core\BusinessObjectStringFormatterServiceTests\GetPropertyString_WithReferenceProperty.cs" />
     <Compile Include="Core\BusinessObjectStringFormatterServiceTests\GetPropertyString_WithBooleanProperty.cs" />
     <Compile Include="Core\BusinessObjectStringFormatterServiceTests\GetPropertyString_WithEnumerationProperty.cs" />
+    <Compile Include="Core\Design\BindableObject\BindableObjectTypeFinderTest.cs" />
     <Compile Include="Core\Design\DropDownEditorBaseTest.cs">
     </Compile>
     <Compile Include="Core\Design\MockDropDownEditorBase.cs" />

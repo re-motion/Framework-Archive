@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Reflection;
-using Rubicon.Collections;
 using Rubicon.Mixins;
 using Rubicon.Mixins.Context;
 using Rubicon.ObjectBinding.BindableObject;
@@ -28,32 +26,30 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
 
     public List<Type> GetTypes (bool includeGac)
     {
-      MixinConfiguration applicationContext = GetApplicationContext (includeGac);
+      ICollection types = GetAllDesignerTypes (includeGac);
+      MixinConfiguration applicationContext = GetMixinConfiguration (types);
 
       List<Type> bindableTypes = new List<Type>();
-      //using (applicationContext.EnterScope ())
-      //{
-      //  ICollection types = GetAllDesignerTypes (includeGac);
-      //  foreach (Type type in types)
-      //  {
-      //    if (!Mixins.TypeUtility.IsGeneratedByMixinEngine (type) 
-      //        && Mixins.TypeUtility.HasAscribableMixin (type, typeof (BindableObjectMixinBase<>)))
-      //      bindableTypes.Add (type);
-      //  }
-      //}
-
-      foreach (ClassContext classContext in applicationContext.ClassContexts)
+      using (applicationContext.EnterScope ())
       {
-        if (Mixins.TypeUtility.HasAscribableMixin (classContext.Type, typeof (BindableObjectMixinBase<>)))
-          bindableTypes.Add (classContext.Type);
+        foreach (Type type in types)
+        {
+          if (!Mixins.TypeUtility.IsGeneratedByMixinEngine (type)
+              && Mixins.TypeUtility.HasAscribableMixin (type, typeof (BindableObjectMixinBase<>)))
+            bindableTypes.Add (type);
+        }
       }
       return bindableTypes;
     }
 
-    public MixinConfiguration GetApplicationContext (bool includeGac)
+    public MixinConfiguration GetMixinConfiguration (bool includeGac)
     {
       ICollection typesToBeAnalyzed = GetAllDesignerTypes (includeGac);
+      return GetMixinConfiguration(typesToBeAnalyzed);
+    }
 
+    private MixinConfiguration GetMixinConfiguration (ICollection typesToBeAnalyzed)
+    {
       DeclarativeConfigurationBuilder builder = new DeclarativeConfigurationBuilder (null);
       foreach (Type type in typesToBeAnalyzed)
         builder.AddType (type);

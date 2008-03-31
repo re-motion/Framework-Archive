@@ -320,11 +320,16 @@ namespace Rubicon.Mixins.UnitTests
       Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (BT1Mixin1)));
       Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (BT1Mixin2)));
       Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (IBT1Mixin1)));
-      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (GenericMixin<>)).EnterScope())
+      Assert.IsFalse (TypeUtility.HasAscribableMixin (typeof (GenericTargetClass<>), typeof (NullMixin)));
+      using (MixinConfiguration.BuildFromActive()
+          .ForClass<BaseType1> ().Clear().AddMixins (typeof (GenericMixin<>))
+          .ForClass (typeof (GenericTargetClass<>)).AddMixin (typeof (NullMixin))
+          .EnterScope())
       {
         Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (GenericMixin<>)));
         Assert.IsFalse (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (GenericMixin<int>)));
         Assert.IsFalse (TypeUtility.HasAscribableMixin (typeof (BaseType1), typeof (GenericMixin<string>)));
+        Assert.IsTrue (TypeUtility.HasAscribableMixin (typeof (GenericTargetClass<>), typeof (NullMixin)));
       }
       using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (GenericMixin<int>)).EnterScope())
       {

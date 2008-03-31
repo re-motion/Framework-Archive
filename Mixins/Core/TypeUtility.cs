@@ -164,7 +164,10 @@ namespace Rubicon.Mixins
 
     private static ClassContext GetConcreteClassContext (Type type)
     {
-      return Mixin.GetMixinConfigurationFromConcreteType (GetConcreteMixedType (type));
+      if (IsGeneratedConcreteMixedType (type))
+        return Mixin.GetMixinConfigurationFromConcreteType (type);
+      else
+        return MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance (type);
     }
 
     /// <summary>

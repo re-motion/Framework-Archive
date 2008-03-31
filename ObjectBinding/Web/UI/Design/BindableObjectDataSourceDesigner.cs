@@ -25,7 +25,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Design
       base.Initialize (component);
 
       BindableObjectTypeFinder typeFinder = new BindableObjectTypeFinder (component.Site);
-      MixinConfiguration mixinConfiguration = typeFinder.GetApplicationContext (false);
+      MixinConfiguration mixinConfiguration = typeFinder.GetMixinConfiguration (false);
       MixinConfiguration.SetActiveConfiguration (mixinConfiguration);
 
       IPropertyValueUIService propertyValueUIService = (IPropertyValueUIService) component.Site.GetService (typeof (IPropertyValueUIService));
