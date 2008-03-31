@@ -95,9 +95,15 @@ namespace Rubicon.Mixins
     }
 
     /// <summary>
-    /// Gets the class contexts currently stored in this <see cref="MixinConfiguration"/>.
+    /// Gets the class contexts currently stored in this <see cref="MixinConfiguration"/>. Only contexts that have been explicitly added for classes
+    /// are returned.
     /// </summary>
     /// <value>The class contexts currently sotred in this configuration.</value>
+    /// <remarks>
+    /// Note that the collection returned cannot be used to enumerate all mixed classes, only
+    /// those which are explicitly configured for mixins. If, for example, a base class is configured to have a mixin, its subclasses will not be
+    /// enumerated by the collection even though they inherit the mixin from the base class.
+    /// </remarks>
     public ClassContextCollection ClassContexts
     {
       get { return _classContexts; }
