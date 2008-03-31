@@ -30,7 +30,18 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
     {
       MixinConfiguration applicationContext = GetApplicationContext (includeGac);
 
-      List<Type> bindableTypes = new List<Type> ();
+      List<Type> bindableTypes = new List<Type>();
+      //using (applicationContext.EnterScope ())
+      //{
+      //  ICollection types = GetAllDesignerTypes (includeGac);
+      //  foreach (Type type in types)
+      //  {
+      //    if (!Mixins.TypeUtility.IsGeneratedByMixinEngine (type) 
+      //        && Mixins.TypeUtility.HasAscribableMixin (type, typeof (BindableObjectMixinBase<>)))
+      //      bindableTypes.Add (type);
+      //  }
+      //}
+
       foreach (ClassContext classContext in applicationContext.ClassContexts)
       {
         if (Mixins.TypeUtility.HasAscribableMixin (classContext.Type, typeof (BindableObjectMixinBase<>)))
@@ -41,7 +52,7 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
 
     public MixinConfiguration GetApplicationContext (bool includeGac)
     {
-      IEnumerable typesToBeAnalyzed = GetAllDesignerTypes (includeGac);
+      ICollection typesToBeAnalyzed = GetAllDesignerTypes (includeGac);
 
       DeclarativeConfigurationBuilder builder = new DeclarativeConfigurationBuilder (null);
       foreach (Type type in typesToBeAnalyzed)
@@ -50,7 +61,7 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
       return builder.BuildConfiguration ();
     }
 
-    private IEnumerable GetAllDesignerTypes (bool includeGac)
+    private ICollection GetAllDesignerTypes (bool includeGac)
     {
       ITypeDiscoveryService typeDiscoveryService = (ITypeDiscoveryService) _serviceProvider.GetService (typeof (ITypeDiscoveryService));
       if (typeDiscoveryService == null)
