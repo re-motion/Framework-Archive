@@ -240,7 +240,7 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
 
     DetermineClientScriptLevel();
 
-    if (_hasClientScript && IsDescriptionEnabled)
+    if (_hasClientScript)
     {
       if (Enabled)
       {
@@ -259,11 +259,11 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
       {
         string label = IsDescriptionEnabled ? "document.getElementById ('" + _label.ClientID + "')" : "null";
         string checkBox = "document.getElementById ('" + _checkBox.ClientID + "')";
-        string script = " (" 
-            + checkBox + ", "
-            + label + ", " 
-            + (StringUtility.IsNullOrEmpty (_trueDescription) ? "null" : "'" + _trueDescription + "'") + ", "
-            + (StringUtility.IsNullOrEmpty (_falseDescription) ? "null" :"'" +  _falseDescription + "'") + ");";
+        string script = " ("
+                        + checkBox + ", "
+                        + label + ", "
+                        + (StringUtility.IsNullOrEmpty (_trueDescription) ? "null" : "'" + _trueDescription + "'") + ", "
+                        + (StringUtility.IsNullOrEmpty (_falseDescription) ? "null" : "'" + _falseDescription + "'") + ");";
 
         if (IsAutoPostBackEnabled)
           script += Page.ClientScript.GetPostBackEventReference (this, "") + ";";

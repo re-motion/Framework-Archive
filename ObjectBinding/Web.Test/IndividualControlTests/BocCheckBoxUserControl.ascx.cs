@@ -37,6 +37,7 @@ public class BocCheckBoxUserControl : BaseUserControl
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox DisabledUnboundReadOnlyDeceasedField;
   protected System.Web.UI.WebControls.Label DisabledUnboundReadOnlyDeceasedFieldValueLabel;
   protected System.Web.UI.WebControls.Label DeceasedFieldCheckedChangedLabel;
+  protected System.Web.UI.WebControls.Label UnboundDeceasedFieldCheckedChangedLabel;
   protected Rubicon.Web.UI.Controls.WebButton DeceasedTestSetNullButton;
   protected Rubicon.Web.UI.Controls.WebButton DeceasedTestToggleValueButton;
   protected Rubicon.Web.UI.Controls.WebButton ReadOnlyDeceasedTestSetNullButton;
@@ -49,6 +50,7 @@ public class BocCheckBoxUserControl : BaseUserControl
     base.RegisterEventHandlers();
 
     this.DeceasedField.CheckedChanged += new System.EventHandler(this.DeceasedField_CheckedChanged);
+    this.UnboundDeceasedField.CheckedChanged += UnboundDeceasedField_CheckedChanged;
     this.DeceasedTestSetNullButton.Click += new System.EventHandler(this.DeceasedTestSetNullButton_Click);
     this.DeceasedTestToggleValueButton.Click += new System.EventHandler(this.DeceasedTestToggleValueButton_Click);
     this.ReadOnlyDeceasedTestSetNullButton.Click += new System.EventHandler(this.ReadOnlyDeceasedTestSetNullButton_Click);
@@ -136,6 +138,14 @@ public class BocCheckBoxUserControl : BaseUserControl
       DeceasedFieldCheckedChangedLabel.Text = DeceasedField.Value.ToString();
     else
       DeceasedFieldCheckedChangedLabel.Text = "not set";
+  }
+
+  private void UnboundDeceasedField_CheckedChanged (object sender, System.EventArgs e)
+  {
+    if (UnboundDeceasedField.Value != null)
+      UnboundDeceasedFieldCheckedChangedLabel.Text = UnboundDeceasedField.Value.ToString ();
+    else
+      UnboundDeceasedFieldCheckedChangedLabel.Text = "not set";
   }
 
 	#region Web Form Designer generated code

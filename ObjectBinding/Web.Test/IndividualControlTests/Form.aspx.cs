@@ -114,18 +114,21 @@ namespace OBWTest.IndividualControlTests
     private void PopulateDataSources ()
     {
       CurrentObject.BusinessObject = (IBusinessObject) CurrentFunction.Person;
-      _dataEditControl.BusinessObject = (IBusinessObject) CurrentFunction.Person;
+      if (_dataEditControl != null)
+        _dataEditControl.BusinessObject = (IBusinessObject) CurrentFunction.Person;
     }
 
     private void LoadValues (bool interim)
     {
       CurrentObject.LoadValues (interim);
-      _dataEditControl.LoadValues (interim);
+      if (_dataEditControl != null)
+        _dataEditControl.LoadValues (interim);
     }
 
     private void SaveValues (bool interim)
     {
-      _dataEditControl.SaveValues (interim);
+      if (_dataEditControl != null)
+        _dataEditControl.SaveValues (interim);
       CurrentObject.SaveValues (interim);
     }
 
