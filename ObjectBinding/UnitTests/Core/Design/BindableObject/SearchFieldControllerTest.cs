@@ -4,7 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.ObjectBinding.Design.BindableObject;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.Design
+namespace Rubicon.ObjectBinding.UnitTests.Core.Design.BindableObject
 {
   [TestFixture]
   public class SearchFieldControllerTest

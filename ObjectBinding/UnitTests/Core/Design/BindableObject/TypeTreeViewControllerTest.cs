@@ -7,7 +7,7 @@ using NUnit.Framework.SyntaxHelpers;
 using Rubicon.ObjectBinding.Design.BindableObject;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.Design
+namespace Rubicon.ObjectBinding.UnitTests.Core.Design.BindableObject
 {
   [TestFixture]
   public class TypeTreeViewControllerTest
