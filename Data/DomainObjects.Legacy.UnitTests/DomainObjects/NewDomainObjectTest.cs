@@ -1,12 +1,12 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
-using Rubicon.NullableValueTypes;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Remotion.NullableValueTypes;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DomainObjects
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.DomainObjects
 {
   [TestFixture]
   public class NewDomainObjectTest : ClientTransactionBaseTest

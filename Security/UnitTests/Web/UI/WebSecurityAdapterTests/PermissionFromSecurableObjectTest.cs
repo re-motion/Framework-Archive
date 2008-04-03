@@ -1,12 +1,12 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Security.Configuration;
-using Rubicon.Security.Web.UI;
-using Rubicon.Security.UnitTests.Web.Configuration;
-using Rubicon.Security.UnitTests.Web.Domain;
-using Rubicon.Web.UI;
+using Remotion.Security.Configuration;
+using Remotion.Security.Web.UI;
+using Remotion.Security.UnitTests.Web.Configuration;
+using Remotion.Security.UnitTests.Web.Domain;
+using Remotion.Web.UI;
 
-namespace Rubicon.Security.UnitTests.Web.UI.WebSecurityAdapterTests
+namespace Remotion.Security.UnitTests.Web.UI.WebSecurityAdapterTests
 {
   [TestFixture]
   public class PermissionFromSecurableObjectTest

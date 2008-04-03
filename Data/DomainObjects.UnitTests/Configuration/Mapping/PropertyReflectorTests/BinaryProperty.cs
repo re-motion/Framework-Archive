@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {
   [TestFixture]
   public class BinaryProperty: BaseTest
@@ -17,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NoAttribute",
+          "Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NoAttribute",
           actual.PropertyName);
       Assert.AreSame (typeof (byte[]), actual.PropertyType);
       Assert.IsTrue (actual.IsNullable);
@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NullableFromAttribute",
+          "Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NullableFromAttribute",
           actual.PropertyName);
       Assert.AreSame (typeof (byte[]), actual.PropertyType);
       Assert.IsTrue (actual.IsNullable);
@@ -49,7 +49,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NotNullable",
+          "Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NotNullable",
           actual.PropertyName);
       Assert.AreSame (typeof (byte[]), actual.PropertyType);
       Assert.IsFalse (actual.IsNullable);
@@ -65,7 +65,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.MaximumLength",
+          "Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.MaximumLength",
           actual.PropertyName);
       Assert.AreSame (typeof (byte[]), actual.PropertyType);
       Assert.IsTrue (actual.IsNullable);
@@ -81,7 +81,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NotNullableAndMaximumLength",
+          "Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NotNullableAndMaximumLength",
           actual.PropertyName);
       Assert.AreSame (typeof (byte[]), actual.PropertyType);
       Assert.IsFalse (actual.IsNullable);
@@ -91,8 +91,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage = 
-        "The 'Rubicon.Data.DomainObjects.BinaryPropertyAttribute' may be only applied to properties of type 'System.Byte[]'.\r\n"
-        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.BinaryProperty, property: Int32Property")]
+        "The 'Remotion.Data.DomainObjects.BinaryPropertyAttribute' may be only applied to properties of type 'System.Byte[]'.\r\n"
+        + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.BinaryProperty, property: Int32Property")]
     public void GetMetadata_WithAttributeAppliedToInvalidProperty()
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<BinaryProperty> ("Int32Property");

@@ -1,9 +1,9 @@
 using System;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
+namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   /// <summary>
   /// Implementation of <see cref="ISearchAvailableObjectsService"/> for the <see cref="User"/> type.

@@ -4,12 +4,12 @@ using System.IO;
 using System.Reflection;
 using Castle.DynamicProxy;
 using NUnit.Framework;
-using Rubicon.Collections;
-using Rubicon.Development.UnitTesting;
+using Remotion.Collections;
+using Remotion.Development.UnitTesting;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Mixins.Samples.DynamicMixinBuilding;
+using Remotion.Mixins.Samples.DynamicMixinBuilding;
 
-namespace Rubicon.Mixins.Samples.UnitTests
+namespace Remotion.Mixins.Samples.UnitTests
 {
   [TestFixture]
   public class DynamicMixinBuilderTests
@@ -100,7 +100,7 @@ namespace Rubicon.Mixins.Samples.UnitTests
     public void BuildMixinType_CreatesTypeDerivedFromMixin ()
     {
       Type t = new DynamicMixinBuilder (typeof (object)).BuildMixinType (_invocationHandler);
-      Assert.IsTrue (Rubicon.Utilities.ReflectionUtility.CanAscribe (t, typeof (Mixin<,>)));
+      Assert.IsTrue (Remotion.Utilities.ReflectionUtility.CanAscribe (t, typeof (Mixin<,>)));
     }
 
     [Test]

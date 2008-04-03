@@ -9,14 +9,14 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
-using Rubicon.Templates.Generic.Web.Classes;
+using Remotion.Templates.Generic.Web.Classes;
 
-namespace Rubicon.Templates.Generic.Web
+namespace Remotion.Templates.Generic.Web
 {
 
 public class Default : BasePage
 {
-  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   protected System.Web.UI.WebControls.LinkButton StartButton;
 
 	private void Page_Load(object sender, System.EventArgs e)

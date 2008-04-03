@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Mixins.Context.FluentBuilders;
-using Rubicon.Utilities;
+using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   public partial class MixinConfiguration
   {

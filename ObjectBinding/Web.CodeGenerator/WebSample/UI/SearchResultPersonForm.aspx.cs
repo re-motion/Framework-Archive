@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI.Globalization;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI.Globalization;
 using WebSample;
 using WebSample.Classes;
 using WebSample.WxeFunctions;

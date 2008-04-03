@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   //TODO: doc
   public interface IBusinessObjectClassService : IBusinessObjectService

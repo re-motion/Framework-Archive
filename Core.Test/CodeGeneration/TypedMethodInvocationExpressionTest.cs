@@ -1,11 +1,11 @@
 using System;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using NUnit.Framework;
-using Rubicon.CodeGeneration;
-using Rubicon.CodeGeneration.DPExtensions;
-using Rubicon.Collections;
+using Remotion.CodeGeneration;
+using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Collections;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration
+namespace Remotion.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class TypedMethodInvocationExpressionTest : SnippetGenerationBaseTest

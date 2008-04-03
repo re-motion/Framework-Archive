@@ -1,8 +1,8 @@
 using System;
 using System.Globalization;
-using Rubicon.Text.CommandLine;
+using Remotion.Text.CommandLine;
 
-namespace Rubicon.Security.Metadata.Extractor
+namespace Remotion.Security.Metadata.Extractor
 {
   public class Program
   {

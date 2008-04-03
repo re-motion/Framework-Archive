@@ -3,9 +3,9 @@ using System.Collections;
 using System.Diagnostics;
 using System.Reflection;
 using System.Xml.Serialization;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Reflection.Legacy
+namespace Remotion.ObjectBinding.Reflection.Legacy
 {
   public class ReflectionBusinessObjectProperty: IBusinessObjectProperty
   {
@@ -49,7 +49,7 @@ namespace Rubicon.ObjectBinding.Reflection.Legacy
         return new ReflectionBusinessObjectProperty (propertyInfo, itemType, isList);
     }
 
-    //TODO: Code duplication with Rubicon.Data.DomainObjects.Mapping.TypeInfo
+    //TODO: Code duplication with Remotion.Data.DomainObjects.Mapping.TypeInfo
     private static Type GetNativeType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
@@ -60,7 +60,7 @@ namespace Rubicon.ObjectBinding.Reflection.Legacy
       return type;
     }
 
-    //TODO: Code duplication with Rubicon.Data.DomainObjects.Mapping.TypeInfo
+    //TODO: Code duplication with Remotion.Data.DomainObjects.Mapping.TypeInfo
     private static bool IsNullableValueType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);

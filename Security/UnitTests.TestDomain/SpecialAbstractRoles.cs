@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Security.UnitTests.TestDomain
+namespace Remotion.Security.UnitTests.TestDomain
 {
   [AbstractRole]
   public enum SpecialAbstractRoles

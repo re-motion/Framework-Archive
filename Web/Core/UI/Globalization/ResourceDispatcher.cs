@@ -5,12 +5,12 @@ using System.Reflection;
 using System.Resources;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using Rubicon.Globalization;
-using Rubicon.Logging;
-using Rubicon.Utilities;
-using Rubicon.Web.Utilities;
+using Remotion.Globalization;
+using Remotion.Logging;
+using Remotion.Utilities;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UI.Globalization
+namespace Remotion.Web.UI.Globalization
 {
 /// <summary>
 ///   Provides methods for dispatching the resources inside an IResourceManager container

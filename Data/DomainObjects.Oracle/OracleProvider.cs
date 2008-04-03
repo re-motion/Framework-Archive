@@ -1,12 +1,12 @@
 using System;
 using System.Data;
 using Oracle.DataAccess.Client;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Utilities;
 using System.Text.RegularExpressions;
 
-namespace Rubicon.Data.DomainObjects.Oracle
+namespace Remotion.Data.DomainObjects.Oracle
 {
   public class OracleProvider: RdbmsProvider
   {

@@ -1,11 +1,11 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.ObjectBinding.Design;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
+using Remotion.ObjectBinding.Design;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Design
+namespace Remotion.ObjectBinding.Web.UI.Design
 {
 
 [Obsolete ("Only required when configuring a component in the VS.NET ASP.NET Designer.")]

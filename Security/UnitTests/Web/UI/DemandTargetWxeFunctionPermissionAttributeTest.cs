@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Security.Web.UI;
-using Rubicon.Security.UnitTests.Web.ExecutionEngine;
+using Remotion.Security.Web.UI;
+using Remotion.Security.UnitTests.Web.ExecutionEngine;
 
-namespace Rubicon.Security.UnitTests.Web.UI
+namespace Remotion.Security.UnitTests.Web.UI
 {
   [TestFixture]
   public class DemandTargetWxeFunctionPermissionAttributeTest

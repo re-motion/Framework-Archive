@@ -7,8 +7,8 @@
     <ProjectGuid>{7CA0F5EF-CDEA-4B5D-9954-1CC50973C7D0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Security.MSBuild.Tasks</RootNamespace>
-    <AssemblyName>Rubicon.Security.MSBuild.Tasks</AssemblyName>
+    <RootNamespace>Remotion.Security.MSBuild.Tasks</RootNamespace>
+    <AssemblyName>Remotion.Security.MSBuild.Tasks</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

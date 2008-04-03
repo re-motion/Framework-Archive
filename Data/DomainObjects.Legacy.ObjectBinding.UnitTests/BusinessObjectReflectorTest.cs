@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
-using Rubicon.ObjectBinding;
+using Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
+namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
   public abstract class StubBusinessObject
   {    

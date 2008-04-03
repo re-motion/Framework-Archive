@@ -2,7 +2,7 @@ using System;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using System.Reflection.Emit;
 
-namespace Rubicon.CodeGeneration.DPExtensions
+namespace Remotion.CodeGeneration.DPExtensions
 {
   public abstract class ConditionExpression : Expression
   {

@@ -1,8 +1,8 @@
 using System;
 using System.Configuration;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Configuration
+namespace Remotion.Configuration
 {
   /// <summary>
   /// Concrete implementation of <see cref="ConfigurationWrapper"/> that uses the <see cref="ConfigurationManager"/>. Create the instance by

@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel.Design;
 using System.Runtime.Remoting.Messaging;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Reflection
+namespace Remotion.Reflection
 {
   public static class ContextAwareTypeDiscoveryService
   {

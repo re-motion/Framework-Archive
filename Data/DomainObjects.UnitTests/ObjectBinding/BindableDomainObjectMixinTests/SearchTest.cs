@@ -1,16 +1,16 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding;
-using Rubicon.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding;
+using Remotion.Data.DomainObjects.ObjectBinding;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
+namespace Remotion.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
 {
   [TestFixture]
   public class SearchTest : ObjectBindingBaseTest

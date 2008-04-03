@@ -2,10 +2,10 @@ using System;
 using System.IO;
 using Castle.DynamicProxy;
 using NUnit.Framework;
-using Rubicon.CodeGeneration.DPExtensions;
-using Rubicon.Development.UnitTesting;
+using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration
+namespace Remotion.Core.UnitTests.CodeGeneration
 {
   public abstract class CodeGenerationBaseTest
   {

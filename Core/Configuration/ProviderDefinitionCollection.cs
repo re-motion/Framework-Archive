@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel;
 using System.Configuration.Provider;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Configuration
+namespace Remotion.Configuration
 {
   /// <summary>Represents a collection of provider objects that inherit from <typeparamref name="T"/>.</summary>
   /// <typeparam name="T">The type of elements in the list.</typeparam>

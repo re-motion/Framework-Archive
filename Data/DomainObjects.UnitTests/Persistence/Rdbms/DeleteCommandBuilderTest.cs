@@ -1,11 +1,11 @@
 using System;
 using System.Data;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Mixins;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
   [TestFixture]
   public class DeleteCommandBuilderTest : SqlProviderBaseTest

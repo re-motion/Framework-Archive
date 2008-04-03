@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 
-namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
+namespace Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
 {
   [TestFixture]
   public class TypeNameTest
@@ -29,11 +29,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _assemblyQualifiedName = "Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests";
+      _assemblyQualifiedName = "Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests";
       _typeName = new TypeName (_assemblyQualifiedName);
 
       _typeNameOfNestedType = new TypeName (
-          "Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest+NestedType, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests");
+          "Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest+NestedType, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests");
     }
 
     [Test]
@@ -46,8 +46,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
     public void InitializeWithParts ()
     {
       TypeName typeName = new TypeName (
-          "Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest", 
-          "Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests");
+          "Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest", 
+          "Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests");
 
       Assert.AreEqual (_assemblyQualifiedName, typeName.AssemblyQualifiedName);
     }
@@ -55,23 +55,23 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
     [Test]
     public void FullName ()
     {
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest", _typeName.FullName);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest", _typeName.FullName);
     }
 
     [Test]
     public void FullNameIsTrimmed ()
     {
       TypeName typeName = new TypeName (
-          "Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest , Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests");
+          "Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest , Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests");
 
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest", typeName.FullName);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest", typeName.FullName);
     }
 
     [Test]
     public void AssemblyName ()
     {
       Assert.IsNotNull (_typeName.AssemblyName);
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests", _typeName.AssemblyName.FullName);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests", _typeName.AssemblyName.FullName);
     }
 
     [Test]
@@ -100,8 +100,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
     [Test]
     public void Namespace ()
     {
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests", _typeName.Namespace);
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests", _typeNameOfNestedType.Namespace);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests", _typeName.Namespace);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests", _typeNameOfNestedType.Namespace);
     }
 
     [Test]
@@ -143,7 +143,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException), 
-        ExpectedMessage = "Argument 'value' must be of type 'Rubicon.Data.DomainObjects.Legacy.CodeGenerator.TypeName' but was of type 'System.String'.\r\n"
+        ExpectedMessage = "Argument 'value' must be of type 'Remotion.Data.DomainObjects.Legacy.CodeGenerator.TypeName' but was of type 'System.String'.\r\n"
         + "Parameter name: value")]
     public void CompareToWithInvalidArgumentType ()
     {
@@ -152,47 +152,47 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException), 
-        ExpectedMessage = "The assemblyQualifiedName 'Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest' does not contain an assembly name.\r\n"
+        ExpectedMessage = "The assemblyQualifiedName 'Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest' does not contain an assembly name.\r\n"
         + "Parameter name: assemblyQualifiedName")]
     public void InitializeWithMissingAssemblyName ()
     {
-      new TypeName ("Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest");
+      new TypeName ("Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest");
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The assemblyQualifiedName 'Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest,' does contains an empty assembly name.\r\n"
+        ExpectedMessage = "The assemblyQualifiedName 'Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest,' does contains an empty assembly name.\r\n"
         + "Parameter name: assemblyQualifiedName")]
     public void InitializeWithEmptyAssemblyName ()
     {
-      new TypeName ("Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest,");
+      new TypeName ("Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest,");
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The assemblyQualifiedName 'Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest,  ' does contains an empty assembly name.\r\n"
+        ExpectedMessage = "The assemblyQualifiedName 'Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest,  ' does contains an empty assembly name.\r\n"
         + "Parameter name: assemblyQualifiedName")]
     public void InitializeWithWhiteSpaceAssemblyName ()
     {
-      new TypeName ("Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest,  ");
+      new TypeName ("Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.TypeNameTest,  ");
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The assemblyQualifiedName ', Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests' does contains an empty type name.\r\n"
+        ExpectedMessage = "The assemblyQualifiedName ', Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests' does contains an empty type name.\r\n"
         + "Parameter name: assemblyQualifiedName")]
     public void InitializeWithEmptyTypeName ()
     {
-      new TypeName (", Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests");
+      new TypeName (", Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests");
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The assemblyQualifiedName '  , Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests' does contains an empty type name.\r\n"
+        ExpectedMessage = "The assemblyQualifiedName '  , Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests' does contains an empty type name.\r\n"
         + "Parameter name: assemblyQualifiedName")]
     public void InitializeWithWhiteSpaceTypeName ()
     {
-      new TypeName ("  , Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests");
+      new TypeName ("  , Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests");
     }
   }
 }

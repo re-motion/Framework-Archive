@@ -9,7 +9,7 @@
 using System;
 using System.Collections;
 
-namespace Rubicon.ObjectBinding.Web.CodeGenerator
+namespace Remotion.ObjectBinding.Web.CodeGenerator
 {
 	// OBLXWxxxx (UiGenerator warning)
 	public enum WarningCode {

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Globalization
+namespace Remotion.Globalization
 {
 
 [AttributeUsage (AttributeTargets.Enum, AllowMultiple = false, Inherited = false)]

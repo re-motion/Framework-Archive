@@ -1,11 +1,11 @@
 using System;
 using System.Web.UI;
-using Rubicon.Logging;
-using Rubicon.Utilities;
-using Rubicon.Web.Configuration;
-using Rubicon.Web.Utilities;
+using Remotion.Logging;
+using Remotion.Utilities;
+using Remotion.Web.Configuration;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UI
+namespace Remotion.Web.UI
 {
 
 public class WcagHelper

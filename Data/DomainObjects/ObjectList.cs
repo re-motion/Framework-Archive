@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   [Serializable]
   public class ObjectList<T> : DomainObjectCollection, IList<T> where T : DomainObject

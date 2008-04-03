@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Web.UI;
-using Rubicon.Utilities;
-using Rubicon.Web.Utilities;
+using Remotion.Utilities;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 //[Editor (typeof (WebTabCollectionEditor), typeof (UITypeEditor))]

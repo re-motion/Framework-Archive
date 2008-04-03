@@ -1,4 +1,4 @@
-namespace Rubicon.Mixins.UnitTests.Utilities.Serialization
+namespace Remotion.Mixins.UnitTests.Utilities.Serialization
 {
   public class GenericType<T>
   {

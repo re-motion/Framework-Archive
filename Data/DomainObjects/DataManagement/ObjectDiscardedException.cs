@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.DataManagement
+namespace Remotion.Data.DomainObjects.DataManagement
 {
 /// <summary>
 /// The exception that is thrown when properties or methods of a discarded object are accessed.

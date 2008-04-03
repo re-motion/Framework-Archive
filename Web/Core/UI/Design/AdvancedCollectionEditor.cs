@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 
-namespace Rubicon.Web.UI.Design
+namespace Remotion.Web.UI.Design
 {
 public class AdvancedCollectionEditor: CollectionEditor
 {

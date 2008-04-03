@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Globalization;
+using Remotion.Globalization;
 
-namespace Rubicon.Core.UnitTests.Globalization.SampleTypes
+namespace Remotion.Core.UnitTests.Globalization.SampleTypes
 {
   [MultiLingualResources ("Four")]
   [MultiLingualResources ("Five")]

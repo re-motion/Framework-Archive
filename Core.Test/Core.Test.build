@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Rubicon.CooNet.UnitTests">  
+<project xmlns="nant-schema" name="Remotion.CooNet.UnitTests">  
 
   <target name="build" description="perform a build">
 
@@ -21,14 +21,14 @@
         <include name="${build.test.outputdir}/Castle.DynamicProxy.dll" />
         <include name="${build.test.outputdir}/log4net.dll" />
         <include name="${build.test.outputdir}/Rhino.Mocks.dll" />
-        <include name="${build.test.outputdir}/Rubicon.Core.dll" />
-        <include name="${build.test.outputdir}/Rubicon.Development.dll" />
+        <include name="${build.test.outputdir}/Remotion.Core.dll" />
+        <include name="${build.test.outputdir}/Remotion.Development.dll" />
         <include name="${build.test.outputdir}/nunit.framework.dll" />
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Data.dll"/>
       </references>
-      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Core.UnitTests">
+      <resources failonempty="true" dynamicprefix="true" prefix="Remotion.Core.UnitTests">
         <include name="Resources/*.resx" />
         <include name="**/*.xsd" />
       </resources>

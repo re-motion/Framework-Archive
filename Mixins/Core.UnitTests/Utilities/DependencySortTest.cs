@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Mixins.Utilities.DependencySort;
+using Remotion.Mixins.Utilities.DependencySort;
 using NUnit.Framework;
-using Rubicon.Collections;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.UnitTests.Utilities
+namespace Remotion.Mixins.UnitTests.Utilities
 {
   [TestFixture]
   public class DependencySortTest

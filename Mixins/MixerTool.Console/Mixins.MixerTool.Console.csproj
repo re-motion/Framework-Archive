@@ -7,7 +7,7 @@
     <ProjectGuid>{152DAF45-13C9-4A73-90D0-DF774ED12528}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Mixins.MixerTool.Console</RootNamespace>
+    <RootNamespace>Remotion.Mixins.MixerTool.Console</RootNamespace>
     <AssemblyName>TypeMixer</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

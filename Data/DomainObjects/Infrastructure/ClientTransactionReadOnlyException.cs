@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
   /// Thrown when a client transaction's state is tried to be modified and the ClientTransaction's internal state is set to read-only,

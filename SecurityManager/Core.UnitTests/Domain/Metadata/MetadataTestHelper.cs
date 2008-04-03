@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain.Metadata;
+using Remotion.Data.DomainObjects;
+using Remotion.SecurityManager.Domain.Metadata;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
+namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 {
   public class MetadataTestHelper
   {
@@ -38,7 +38,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       {
         AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (
             new Guid ("00000003-0001-0000-0000-000000000000"),
-            "Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain",
+            "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain",
             0);
         role.Index = index;
 
@@ -52,7 +52,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       {
         AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (
             new Guid ("00000003-0002-0000-0000-000000000000"),
-            "Secretary|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain",
+            "Secretary|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain",
             1);
         role.Index = index;
 
@@ -66,7 +66,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       {
         AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (
             new Guid ("00000004-0001-0000-0000-000000000000"),
-            "Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRoles, Rubicon.Security.UnitTests.TestDomain",
+            "Administrator|Remotion.Security.UnitTests.TestDomain.SpecialAbstractRoles, Remotion.Security.UnitTests.TestDomain",
             0);
         role.Index = index;
 
@@ -80,7 +80,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       {
         AccessTypeDefinition type = AccessTypeDefinition.NewObject (
             new Guid ("1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"),
-            "Create|Rubicon.Security.GeneralAccessTypes, Rubicon.Security",
+            "Create|Remotion.Security.GeneralAccessTypes, Remotion.Security",
             0);
         type.Index = index;
 
@@ -94,7 +94,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       {
         AccessTypeDefinition type = AccessTypeDefinition.NewObject (
             new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a"),
-            "Read|Rubicon.Security.GeneralAccessTypes, Rubicon.Security",
+            "Read|Remotion.Security.GeneralAccessTypes, Remotion.Security",
             1);
         type.Index = index;
 
@@ -108,7 +108,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       {
         AccessTypeDefinition type = AccessTypeDefinition.NewObject (
             new Guid ("11186122-6de0-4194-b434-9979230c41fd"),
-            "Edit|Rubicon.Security.GeneralAccessTypes, Rubicon.Security",
+            "Edit|Remotion.Security.GeneralAccessTypes, Remotion.Security",
             2);
         type.Index = index;
 

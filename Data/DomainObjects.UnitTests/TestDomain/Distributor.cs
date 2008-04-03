@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
   [Instantiable]
@@ -25,8 +25,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     [DBBidirectionalRelation ("Distributor")]
     private ClassWithoutRelatedClassIDColumn ClassWithoutRelatedClassIDColumn
     {
-      get { return (ClassWithoutRelatedClassIDColumn) GetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor.ClassWithoutRelatedClassIDColumn"); }
-      set { SetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor.ClassWithoutRelatedClassIDColumn", value); }
+      get { return (ClassWithoutRelatedClassIDColumn) GetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Distributor.ClassWithoutRelatedClassIDColumn"); }
+      set { SetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Distributor.ClassWithoutRelatedClassIDColumn", value); }
     }
   }
 }

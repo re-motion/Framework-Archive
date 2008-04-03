@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.Mixins.Utilities;
-using Rubicon.Utilities;
+using Remotion.Mixins.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   public class EventDefinition : MemberDefinition, IVisitableDefinition
   {

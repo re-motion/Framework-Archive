@@ -1,10 +1,10 @@
 using System;
 using System.Data;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting.Data.SqlClient;
-using Rubicon.Utilities;
+using Remotion.Development.UnitTesting.Data.SqlClient;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests
 {
   public abstract class DatabaseTest
   {

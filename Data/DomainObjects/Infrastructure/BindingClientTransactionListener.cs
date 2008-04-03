@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
   [Serializable]
   public class BindingClientTransactionListener : IClientTransactionListener

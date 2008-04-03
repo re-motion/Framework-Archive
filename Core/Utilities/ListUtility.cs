@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
   public delegate IList CreateListMethod (int count);
 

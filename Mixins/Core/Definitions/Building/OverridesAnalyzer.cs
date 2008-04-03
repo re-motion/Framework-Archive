@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Collections;
-using Rubicon.Utilities;
+using Remotion.Mixins.Definitions;
+using Remotion.Collections;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Definitions.Building
+namespace Remotion.Mixins.Definitions.Building
 {
   public class OverridesAnalyzer<TMember>
       where TMember : MemberDefinition

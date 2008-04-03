@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Specialized;
-using Rubicon.Collections;
-using Rubicon.Configuration;
+using Remotion.Collections;
+using Remotion.Configuration;
 
-namespace Rubicon.Security.UnitTests.Core.Configuration
+namespace Remotion.Security.UnitTests.Core.Configuration
 {
   public class GlobalAccessTypeCacheProviderMock : ExtendedProviderBase, IGlobalAccessTypeCacheProvider
   {

@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Sample
+namespace Remotion.ObjectBinding.Sample
 {
   public class TestWebTreeViewMenuItemProvider : WebTreeViewMenuItemProvider
   {

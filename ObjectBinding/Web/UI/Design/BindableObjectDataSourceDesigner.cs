@@ -3,11 +3,11 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding.Design.BindableObject;
-using TypeUtility=Rubicon.Utilities.TypeUtility;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.Design.BindableObject;
+using TypeUtility=Remotion.Utilities.TypeUtility;
 
-namespace Rubicon.ObjectBinding.Web.UI.Design
+namespace Remotion.ObjectBinding.Web.UI.Design
 {
   public class BindableObjectDataSourceDesigner : BocDataSourceDesigner
   {

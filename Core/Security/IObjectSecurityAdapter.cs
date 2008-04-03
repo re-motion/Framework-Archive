@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   [Obsolete ("Use IObjectSecurityAdapter instead. (Version: 1.7.41)", true)]
   public interface IObjectSecurityProvider : IObjectSecurityAdapter, ISecurityProviderObsolete
@@ -8,9 +8,9 @@ namespace Rubicon.Security
   /// <summary>Defines an adapter between the security layer and the business object implementation.</summary>
   /// <remarks>
   /// It is registered in the <see cref="SecurityAdapterRegistry"/> and is used for security checks 
-  /// in implementations of <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/>.
+  /// in implementations of <see cref="Remotion.ObjectBinding.IBusinessObjectProperty"/>.
   /// <note type="implementnotes">
-  /// A typical implementation uses a <see cref="T:Rubicon.Security.SecurityClient"/> that further dispatches to an 
+  /// A typical implementation uses a <see cref="T:Remotion.Security.SecurityClient"/> that further dispatches to an 
   /// <see cref="IObjectSecurityStrategy"/> retrieved from the <see cref="ISecurableObject"/>.
   /// </note>
   /// </remarks>

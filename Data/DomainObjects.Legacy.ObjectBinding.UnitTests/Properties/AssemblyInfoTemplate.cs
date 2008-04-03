@@ -7,8 +7,8 @@ using System.Reflection;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle("Unit Tests for Rubicon DomainObjects ObjectBinding Library")]
-[assembly: AssemblyDescription("Unit Tests for Rubicon DomainObjects Object Binding Library")]
+[assembly: AssemblyTitle("Unit Tests for Remotion DomainObjects ObjectBinding Library")]
+[assembly: AssemblyDescription("Unit Tests for Remotion DomainObjects Object Binding Library")]
 [assembly: AssemblyConfiguration("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]
 [assembly: AssemblyProduct("@productname@")]

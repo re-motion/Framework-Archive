@@ -11,28 +11,28 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Text;
-using Rubicon.Web.Utilities;
-using Rubicon.Utilities;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.ObjectBinding;
+using Remotion.Web.Utilities;
+using Remotion.Utilities;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding;
 
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Collections;
-using Rubicon.Web.UI.Controls;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Collections;
+using Remotion.Web.UI.Controls;
 
 namespace OBWTest
 {
 
 public class TestTabbedForm : TestWxeBasePage
 {
-  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   private IDataEditControl[] _dataEditControls;
-  protected Rubicon.Web.UI.Controls.WebTabStrip PagesTabStrip;
-  protected Rubicon.Web.UI.Controls.TabbedMenu NavigationTabs;
-  protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
-  protected Rubicon.Web.UI.Controls.TabbedMultiView MultiView;
+  protected Remotion.Web.UI.Controls.WebTabStrip PagesTabStrip;
+  protected Remotion.Web.UI.Controls.TabbedMenu NavigationTabs;
+  protected Remotion.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
+  protected Remotion.Web.UI.Controls.TabbedMultiView MultiView;
   private PlaceHolder _wxeControlsPlaceHolder;
-  protected Rubicon.Web.UI.Controls.SmartHyperLink SmartHyperLink1;
+  protected Remotion.Web.UI.Controls.SmartHyperLink SmartHyperLink1;
   private bool _currentObjectSaved = false;
 
   protected TestTabbedFormWxeFunction Function
@@ -73,10 +73,10 @@ public class TestTabbedForm : TestWxeBasePage
     List<IDataEditControl> dataEditControls = new List<IDataEditControl> ();
     // load editor pages
     IDataEditControl dataEditControl;
-    dataEditControl = AddPage ("TestTabbedPersonDetailsUserControl", "Person Details", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Person.gif"), "TestTabbedPersonDetailsUserControl.ascx");
+    dataEditControl = AddPage ("TestTabbedPersonDetailsUserControl", "Person Details", new IconInfo ("Images/Remotion.ObjectBinding.Sample.Person.gif"), "TestTabbedPersonDetailsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add (dataEditControl);
-    dataEditControl = AddPage ("TestTabbedPersonJobsUserControl", "Jobs", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Job.gif"), "TestTabbedPersonJobsUserControl.ascx");
+    dataEditControl = AddPage ("TestTabbedPersonJobsUserControl", "Jobs", new IconInfo ("Images/Remotion.ObjectBinding.Sample.Job.gif"), "TestTabbedPersonJobsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add (dataEditControl);
     _dataEditControls = (IDataEditControl[]) dataEditControls.ToArray ();
@@ -108,7 +108,7 @@ public class TestTabbedForm : TestWxeBasePage
     view.Icon = icon;
 
     UserControl control = (UserControl) this.LoadControl (path);
-    control.ID = Rubicon.Text.IdentifierGenerator.HtmlStyle.GetValidIdentifier (System.IO.Path.GetFileNameWithoutExtension (path));
+    control.ID = Remotion.Text.IdentifierGenerator.HtmlStyle.GetValidIdentifier (System.IO.Path.GetFileNameWithoutExtension (path));
 
     //EgoFormPageUserControl formPageControl = control as EgoFormPageUserControl;
     //if (formPageControl != null)
@@ -193,7 +193,7 @@ public class TestTabbedForm : TestWxeBasePage
     base.OnInit(e);
 
     this.EnableAbort = true;
-    this.ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.OnlyIfDirty;
+    this.ShowAbortConfirmation = Remotion.Web.UI.ShowAbortConfirmation.OnlyIfDirty;
 
 	  LoadUserControls();
 	}

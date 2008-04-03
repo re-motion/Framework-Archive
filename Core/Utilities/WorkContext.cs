@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
 
 /// <summary>
@@ -121,7 +121,7 @@ public class WorkContext: IDisposable
         {
           if (! s_enableTracingFlagInitialized)
           {
-            if (0 == string.Compare (System.Configuration.ConfigurationManager.AppSettings["Rubicon.WorkContext.EnableTracing"], "true", true, CultureInfo.InvariantCulture))
+            if (0 == string.Compare (System.Configuration.ConfigurationManager.AppSettings["Remotion.WorkContext.EnableTracing"], "true", true, CultureInfo.InvariantCulture))
               s_enableTracing = true;
             s_enableTracingFlagInitialized = true;
           }

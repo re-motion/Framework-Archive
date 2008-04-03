@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests
+namespace Remotion.Data.DomainObjects.UnitTests
 {
   public class ClientTransactionBaseTest : StandardMappingTest
   {

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.Web.UI;
+using Remotion.Web.UI;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
   /// <summary> This interface represents a page that can be used in a <see cref="WxePageStep"/>. </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/Class/*' />

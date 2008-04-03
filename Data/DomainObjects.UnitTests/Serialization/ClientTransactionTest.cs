@@ -1,16 +1,16 @@
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
+namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 {
   [TestFixture]
   public class ClientTransactionTest : SerializationBaseTest
@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void PropertyValueTest ()
     {
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions["Customer"];
-      PropertyDefinition propertyDefinition = classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.CustomerSince"];
+      PropertyDefinition propertyDefinition = classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.CustomerSince"];
       PropertyValue value = new PropertyValue (propertyDefinition);
 
       SerializeAndDeserialize (value);
@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void PropertyValueCollection ()
     {
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions["Customer"];
-      PropertyDefinition propertyDefinition = classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.CustomerSince"];
+      PropertyDefinition propertyDefinition = classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.CustomerSince"];
       PropertyValue value = new PropertyValue (propertyDefinition);
 
       PropertyValueCollection collection = new PropertyValueCollection ();

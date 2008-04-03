@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI;
 
-namespace Rubicon.Web.Test.UpdatePanelTests
+namespace Remotion.Web.Test.UpdatePanelTests
 {
   public partial class SutForm : WxePage
   {
@@ -10,12 +10,12 @@ namespace Rubicon.Web.Test.UpdatePanelTests
     {
       base.OnPreRender (e);
 
-      Rubicon.Web.UI.HtmlHeadAppender.Current.RegisterStylesheetLink (
+      Remotion.Web.UI.HtmlHeadAppender.Current.RegisterStylesheetLink (
           "style",
-          Rubicon.Web.ResourceUrlResolver.GetResourceUrl (this, typeof (WxePage), Rubicon.Web.ResourceType.Html, "Style.css"));
-      Rubicon.Web.UI.HtmlHeadAppender.Current.RegisterStylesheetLink (
+          Remotion.Web.ResourceUrlResolver.GetResourceUrl (this, typeof (WxePage), Remotion.Web.ResourceType.Html, "Style.css"));
+      Remotion.Web.UI.HtmlHeadAppender.Current.RegisterStylesheetLink (
           "fontsize080",
-          Rubicon.Web.ResourceUrlResolver.GetResourceUrl (this, typeof (WxePage), Rubicon.Web.ResourceType.Html, "FontSize080.css"));
+          Remotion.Web.ResourceUrlResolver.GetResourceUrl (this, typeof (WxePage), Remotion.Web.ResourceType.Html, "FontSize080.css"));
     }
   }
 }

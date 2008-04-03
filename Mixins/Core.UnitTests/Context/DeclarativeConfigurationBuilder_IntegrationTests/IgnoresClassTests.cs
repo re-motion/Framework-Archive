@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests.Context.DeclarativeConfigurationBuilder_IntegrationTests
+namespace Remotion.Mixins.UnitTests.Context.DeclarativeConfigurationBuilder_IntegrationTests
 {
   [TestFixture]
   public class IgnoresClassTests

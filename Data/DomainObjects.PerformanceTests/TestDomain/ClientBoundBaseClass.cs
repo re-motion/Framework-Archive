@@ -1,9 +1,9 @@
 using System;
 
-using Rubicon.Data.DomainObjects;
-using Rubicon.NullableValueTypes;
+using Remotion.Data.DomainObjects;
+using Remotion.NullableValueTypes;
 
-namespace Rubicon.Data.DomainObjects.PerformanceTests.TestDomain
+namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
 {
   public abstract class ClientBoundBaseClass : DomainObject
   {

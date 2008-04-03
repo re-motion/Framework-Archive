@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.Mapping
+namespace Remotion.Data.DomainObjects.Mapping
 {
 public interface IRelationEndPointDefinition : INullObject
 {

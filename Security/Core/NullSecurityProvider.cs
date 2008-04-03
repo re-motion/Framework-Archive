@@ -2,9 +2,9 @@ using System;
 using System.Collections.Specialized;
 using System.Configuration.Provider;
 using System.Security.Principal;
-using Rubicon.Configuration;
+using Remotion.Configuration;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   /// <summary>
   /// Provides an implementation of a nullable object according to the "Null Object Pattern", 

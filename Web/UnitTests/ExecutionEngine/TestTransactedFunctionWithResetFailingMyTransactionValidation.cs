@@ -1,9 +1,9 @@
 using System.Threading;
 using NUnit.Framework;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Development.UnitTesting;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine
 {
   public class TestTransactedFunctionWithResetFailingMyTransactionValidation : WxeTransactedFunctionBase<TestTransaction>
   {

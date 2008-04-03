@@ -3,11 +3,11 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using Rubicon.Web.Configuration;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
+using Remotion.Web.Configuration;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UI
+namespace Remotion.Web.UI
 {
 
 public interface IWindowStateManager
@@ -331,8 +331,8 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
 
 
   /// <summary>
-  ///   Call this method before validating when using <see cref="Rubicon.Web.UI.Controls.FormGridManager"/> 
-  ///   and <see cref="M:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl.Validate()"/>.
+  ///   Call this method before validating when using <see cref="Remotion.Web.UI.Controls.FormGridManager"/> 
+  ///   and <see cref="M:Remotion.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl.Validate()"/>.
   /// </summary>
   public void PrepareValidation()
   {

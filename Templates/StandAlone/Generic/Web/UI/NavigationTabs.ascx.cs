@@ -2,12 +2,12 @@ using System;
 using System.Web;
 using System.Web.UI.WebControls;
 
-using Rubicon.Web;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Templates.Generic.Web.Classes;
+using Remotion.Web;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Templates.Generic.Web.Classes;
 
-namespace Rubicon.Templates.Generic.Web.UI
+namespace Remotion.Templates.Generic.Web.UI
 {
 public class NavigationTabs : System.Web.UI.UserControl
 {

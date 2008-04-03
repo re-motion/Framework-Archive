@@ -1,7 +1,7 @@
 using System;
 using System.CodeDom;
 
-namespace Rubicon.Development.CodeDom
+namespace Remotion.Development.CodeDom
 {
 
 public class CodeOperatorChainExpression: CodeBinaryOperatorExpression

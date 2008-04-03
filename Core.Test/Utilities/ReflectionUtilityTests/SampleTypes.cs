@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Core.UnitTests.Utilities.ReflectionUtilityTests
+namespace Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests
 {
   public class ParameterType
   {

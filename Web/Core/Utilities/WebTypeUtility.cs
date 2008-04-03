@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Reflection;
 using System.Web.Compilation;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.Utilities
+namespace Remotion.Web.Utilities
 {
 
 /// <summary> Utility methods for handling types in web projects. </summary>

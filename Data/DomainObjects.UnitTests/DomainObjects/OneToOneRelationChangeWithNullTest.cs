@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
   public class OneToOneRelationChangeWithNullTest : RelationChangeBaseTest
@@ -45,7 +45,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Employee employee = Employee.GetObject (DomainObjectIDs.Employee1);
       computerWithoutEmployee.Employee = employee;
 
-			Assert.AreEqual (employee.ID, computerWithoutEmployee.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
+			Assert.AreEqual (employee.ID, computerWithoutEmployee.InternalDataContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
 
       Assert.AreSame (employee, computerWithoutEmployee.Employee);
       Assert.AreSame (computerWithoutEmployee, employee.Computer);
@@ -58,7 +58,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       employeeWithoutComputer.Computer = computer;
 
-			Assert.AreEqual (employeeWithoutComputer.ID, computer.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
+			Assert.AreEqual (employeeWithoutComputer.ID, computer.InternalDataContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
 
       Assert.AreSame (computer, employeeWithoutComputer.Computer);
       Assert.AreSame (employeeWithoutComputer, computer.Employee);
@@ -71,7 +71,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Computer computer = employee.Computer;
       computer.Employee = null;
 
-			Assert.IsNull (computer.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
+			Assert.IsNull (computer.InternalDataContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
 
       Assert.IsNull (computer.Employee);
       Assert.IsNull (employee.Computer);
@@ -84,7 +84,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Computer computer = employee.Computer;
       employee.Computer = null;
 
-			Assert.IsNull (computer.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
+			Assert.IsNull (computer.InternalDataContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
 
       Assert.IsNull (employee.Computer);
       Assert.IsNull (computer.Employee);

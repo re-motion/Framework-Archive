@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.Metadata
+namespace Remotion.SecurityManager.Domain.Metadata
 {
   [Serializable]
   [Instantiable]

@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
+namespace Remotion.Data.DomainObjects.UnitTests.Transaction
 {
   [TestFixture]
   public class ClientTransactionTest : ClientTransactionBaseTest
@@ -91,11 +91,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _eventReceiver.Clear ();
 
       Assert.AreSame (orderTicket, ClientTransactionMock.GetRelatedObject (
-          new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket")));
+          new RelationEndPointID (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket")));
 
       Assert.AreEqual (0, _eventReceiver.LoadedDomainObjects.Count);
 
-      Assert.AreSame (order, ClientTransactionMock.GetRelatedObject (new RelationEndPointID (orderTicket.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order")));
+      Assert.AreSame (order, ClientTransactionMock.GetRelatedObject (new RelationEndPointID (orderTicket.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order")));
       Assert.AreEqual (0, _eventReceiver.LoadedDomainObjects.Count);
     }
 
@@ -104,7 +104,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       DomainObject orderTicket = ClientTransactionMock.GetObject (DomainObjectIDs.OrderTicket1);
       _eventReceiver.Clear ();
-      DomainObject order = ClientTransactionMock.GetRelatedObject (new RelationEndPointID (orderTicket.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      DomainObject order = ClientTransactionMock.GetRelatedObject (new RelationEndPointID (orderTicket.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
 
       Assert.IsNotNull (order);
       Assert.AreEqual (DomainObjectIDs.Order1, order.ID);
@@ -122,7 +122,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _eventReceiver.Clear ();
 
       DomainObject orderTicket = ClientTransactionMock.GetRelatedObject (
-          new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
+          new RelationEndPointID (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
 
       Assert.IsNotNull (orderTicket);
       Assert.AreEqual (DomainObjectIDs.OrderTicket1, orderTicket.ID);
@@ -142,7 +142,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _eventReceiver.Clear ();
 
       Assert.IsNull (ClientTransactionMock.GetRelatedObject (
-          new RelationEndPointID (classWithValidRelation.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyOptional")));
+          new RelationEndPointID (classWithValidRelation.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyOptional")));
 
       Assert.AreEqual (0, _eventReceiver.LoadedDomainObjects.Count);
     }
@@ -156,7 +156,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _eventReceiver.Clear ();
 
       Assert.IsNull (ClientTransactionMock.GetRelatedObject (
-          new RelationEndPointID (classWithGuidKey.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsOptional")));
+          new RelationEndPointID (classWithGuidKey.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsOptional")));
 
       Assert.AreEqual (0, _eventReceiver.LoadedDomainObjects.Count);
     }
@@ -173,13 +173,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreEqual (0, clientTransactionMock.NumberOfCallsToLoadRelatedObject);
 
       Assert.IsNull (clientTransactionMock.GetRelatedObject (
-          new RelationEndPointID (classWithValidRelation.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyOptional")));
+          new RelationEndPointID (classWithValidRelation.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyOptional")));
 
       Assert.AreEqual (1, clientTransactionMock.NumberOfCallsToLoadDataContainer);
       Assert.AreEqual (0, clientTransactionMock.NumberOfCallsToLoadRelatedObject);
 
       clientTransactionMock.GetRelatedObject (
-          new RelationEndPointID (classWithValidRelation.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyOptional"));
+          new RelationEndPointID (classWithValidRelation.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyOptional"));
 
       Assert.AreEqual (1, clientTransactionMock.NumberOfCallsToLoadDataContainer);
       Assert.AreEqual (0, clientTransactionMock.NumberOfCallsToLoadRelatedObject);
@@ -197,13 +197,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreEqual (0, clientTransactionMock.NumberOfCallsToLoadRelatedObject);
 
       Assert.IsNull (clientTransactionMock.GetRelatedObject (
-          new RelationEndPointID (classWithGuidKey.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsOptional")));
+          new RelationEndPointID (classWithGuidKey.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsOptional")));
 
       Assert.AreEqual (1, clientTransactionMock.NumberOfCallsToLoadDataContainer);
       Assert.AreEqual (1, clientTransactionMock.NumberOfCallsToLoadRelatedObject);
 
       clientTransactionMock.GetRelatedObject (
-          new RelationEndPointID (classWithGuidKey.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsOptional"));
+          new RelationEndPointID (classWithGuidKey.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsOptional"));
 
       Assert.AreEqual (1, clientTransactionMock.NumberOfCallsToLoadDataContainer);
       Assert.AreEqual (1, clientTransactionMock.NumberOfCallsToLoadRelatedObject);
@@ -215,7 +215,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       DomainObject expectedCeo = ClientTransactionMock.GetObject (DomainObjectIDs.Ceo6);
       DomainObject partner = ClientTransactionMock.GetObject (DomainObjectIDs.Partner1);
 
-      DomainObject actualCeo = ClientTransactionMock.GetRelatedObject (new RelationEndPointID (partner.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo"));
+      DomainObject actualCeo = ClientTransactionMock.GetRelatedObject (new RelationEndPointID (partner.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo"));
       Assert.AreSame (expectedCeo, actualCeo);
     }
 
@@ -226,7 +226,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _eventReceiver.Clear ();
 
       DomainObjectCollection orders = ClientTransactionMock.GetRelatedObjects (
-          new RelationEndPointID (customer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
+          new RelationEndPointID (customer.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       Assert.IsNotNull (orders);
       Assert.AreEqual (typeof (OrderCollection), orders.GetType (), "Type of collection");
@@ -243,10 +243,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _eventReceiver.Clear ();
 
       DomainObjectCollection orders1 = ClientTransactionMock.GetRelatedObjects (
-          new RelationEndPointID (customer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
+          new RelationEndPointID (customer.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       DomainObjectCollection orders2 = ClientTransactionMock.GetRelatedObjects (
-          new RelationEndPointID (customer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
+          new RelationEndPointID (customer.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       Assert.IsTrue (ReferenceEquals (orders1, orders2));
 
@@ -263,7 +263,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _eventReceiver.Clear ();
 
       DomainObjectCollection orders = ClientTransactionMock.GetRelatedObjects (
-          new RelationEndPointID (customer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
+          new RelationEndPointID (customer.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       Assert.AreSame (order, orders[DomainObjectIDs.Order1]);
       Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
@@ -275,7 +275,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Customer customer = Customer.GetObject (DomainObjectIDs.Customer2);
       _eventReceiver.Clear ();
 
-      DomainObjectCollection orders = ClientTransactionMock.GetRelatedObjects (new RelationEndPointID (customer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
+      DomainObjectCollection orders = ClientTransactionMock.GetRelatedObjects (new RelationEndPointID (customer.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       Assert.IsNotNull (orders);
       Assert.IsEmpty (orders);
@@ -288,7 +288,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
 
       DomainObjectCollection orders = ClientTransactionMock.GetRelatedObjects (
-          new RelationEndPointID (customer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
+          new RelationEndPointID (customer.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       Order order = Order.GetObject (DomainObjectIDs.Order1);
 
@@ -301,10 +301,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
 
       DomainObjectCollection orders = ClientTransactionMock.GetRelatedObjects (
-          new RelationEndPointID (customer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
+          new RelationEndPointID (customer.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       Assert.AreSame (customer, ClientTransactionMock.GetRelatedObject (
-          new RelationEndPointID (orders[0].ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer")));
+          new RelationEndPointID (orders[0].ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer")));
     }
 
     [Test]
@@ -314,7 +314,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       DomainObject expectedPartner = ClientTransactionMock.GetObject (DomainObjectIDs.Partner2);
 
       DomainObjectCollection companies = ClientTransactionMock.GetRelatedObjects (
-          new RelationEndPointID (industrialSector.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies"));
+          new RelationEndPointID (industrialSector.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies"));
 
       Assert.AreSame (expectedPartner, companies[DomainObjectIDs.Partner2]);
     }
@@ -326,7 +326,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       DomainObject order = ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
       DomainObject customer = ClientTransactionMock.GetObject (DomainObjectIDs.Customer1);
 
-      ClientTransactionMock.SetRelatedObject (new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"), customer);
+      ClientTransactionMock.SetRelatedObject (new RelationEndPointID (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"), customer);
     }
 
     [Test]
@@ -336,7 +336,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       DomainObject person = ClientTransactionMock.GetObject (DomainObjectIDs.Person1);
       DomainObject company = ClientTransactionMock.GetObject (DomainObjectIDs.Company1);
 
-      ClientTransactionMock.SetRelatedObject (new RelationEndPointID (person.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany"), company);
+      ClientTransactionMock.SetRelatedObject (new RelationEndPointID (person.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany"), company);
     }
 
     [Test]
@@ -424,9 +424,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
     
     [Test]
-    [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage = "Values of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order' "
-      + "cannot be added to this collection. Values must be of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem' or derived from "
-      + "'Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.\r\nParameter name: domainObject")]
+    [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage = "Values of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' "
+      + "cannot be added to this collection. Values must be of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem' or derived from "
+      + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.\r\nParameter name: domainObject")]
     public void GetObjects_InvalidType ()
     {
       ClientTransactionMock.GetObjects<OrderItem> (DomainObjectIDs.Order1);
@@ -454,7 +454,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
     [Test]
     [ExpectedException (typeof (MandatoryRelationNotSetException),
-       ExpectedMessage = "Mandatory relation property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' of domain object"
+       ExpectedMessage = "Mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' of domain object"
         + " 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid' cannot be null.")]
     public void CommitWithMandatoryOneToOneRelationNotSet ()
     {
@@ -479,7 +479,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
     [Test]
     [ExpectedException (typeof (MandatoryRelationNotSetException),
-      ExpectedMessage = "Mandatory relation property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies' of domain object"
+      ExpectedMessage = "Mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies' of domain object"
        + " 'IndustrialSector|8565a077-ea01-4b5d-beaa-293dc484bddc|System.Guid' contains no items.")]
     public void CommitWithMandatoryOneToManyRelationNotSet ()
     {
@@ -553,7 +553,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       customer.Orders.Add (Order.GetObject (DomainObjectIDs.Order2));
       ClientTransactionMock.Commit ();
 
-      DomainObjectCollection originalOrders = customer.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
+      DomainObjectCollection originalOrders = customer.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
       Assert.AreEqual (typeof (OrderCollection), originalOrders.GetType ());
       Assert.IsTrue (originalOrders.IsReadOnly);
 
@@ -569,7 +569,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       customer.Orders.SetIsReadOnly (true);
       ClientTransactionMock.Rollback ();
 
-      Assert.IsTrue (customer.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders").IsReadOnly);
+      Assert.IsTrue (customer.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders").IsReadOnly);
       Assert.IsTrue (customer.Orders.IsReadOnly);
     }
 
@@ -739,9 +739,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       }
       catch (MandatoryRelationNotSetException ex)
       {
-        string expectedMessage = string.Format ("Mandatory relation property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' of domain object '{0}' cannot be null.", newOrderTicket.ID);
+        string expectedMessage = string.Format ("Mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' of domain object '{0}' cannot be null.", newOrderTicket.ID);
         Assert.AreEqual (expectedMessage, ex.Message);
-        Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", ex.PropertyName);
+        Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", ex.PropertyName);
         Assert.AreSame (newOrderTicket, ex.DomainObject);
       }
     }
@@ -758,9 +758,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       }
       catch (MandatoryRelationNotSetException ex)
       {
-        string expectedMessage = string.Format ("Mandatory relation property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies' of domain object '{0}' contains no items.", newIndustrialSector.ID);
+        string expectedMessage = string.Format ("Mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies' of domain object '{0}' contains no items.", newIndustrialSector.ID);
         Assert.AreEqual (expectedMessage, ex.Message);
-        Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies", ex.PropertyName);
+        Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies", ex.PropertyName);
         Assert.AreSame (newIndustrialSector, ex.DomainObject);
       }
     }

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 using System.Collections;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   /// <summary>
   /// When applied to a mixin, specifies a class whose custom attributes should be added to the mixin's target class. This is useful when a mixin

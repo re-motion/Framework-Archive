@@ -7,8 +7,8 @@
     <ProjectGuid>{5C1EB605-33ED-4A19-91B0-D060638191FB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.ObjectBinding.UnitTests</RootNamespace>
-    <AssemblyName>Rubicon.ObjectBinding.UnitTests</AssemblyName>
+    <RootNamespace>Remotion.ObjectBinding.UnitTests</RootNamespace>
+    <AssemblyName>Remotion.ObjectBinding.UnitTests</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

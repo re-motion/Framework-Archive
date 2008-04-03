@@ -1,11 +1,11 @@
 using System;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary> Provides functionality for business object providers. </summary>
   /// <remarks>
   ///   A business object provider is able to retrieve services (e.g. the
-  ///   <see cref="T:Rubicon.ObjectBinding.Web.IBusinessObjectWebUIService"/>) from the object model, as well as provide
+  ///   <see cref="T:Remotion.ObjectBinding.Web.IBusinessObjectWebUIService"/>) from the object model, as well as provide
   ///   functionality required by more than one of the business object components (<b>Class</b>, <b>Property</b>, and
   ///   <b>Object</b>).
   ///   <note type="inotes">

@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
-using Rubicon.Mixins.Context.FluentBuilders;
+using Remotion.Mixins.Context.FluentBuilders;
 
-namespace Rubicon.Mixins.Context.DeclarativeAnalyzers
+namespace Remotion.Mixins.Context.DeclarativeAnalyzers
 {
   public class MixAnalyzer : RelationAnalyzerBase
   {

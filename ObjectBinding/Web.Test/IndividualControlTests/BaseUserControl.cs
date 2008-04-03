@@ -2,10 +2,10 @@ using System;
 using System.Web;
 using System.Web.UI.WebControls;
 
-using Rubicon.Globalization;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.Globalization;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {

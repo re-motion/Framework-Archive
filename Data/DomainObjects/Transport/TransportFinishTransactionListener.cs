@@ -1,10 +1,10 @@
 using System;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Transport
+namespace Remotion.Data.DomainObjects.Transport
 {
   internal class TransportFinishTransactionListener : IClientTransactionListener
   {

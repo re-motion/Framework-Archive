@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.SampleTypes
+namespace Remotion.Mixins.UnitTests.CodeGeneration.SampleTypes
 {
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
   public class InheritableAttribute : Attribute

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Remotion.ObjectBinding.BindableObject
 {
   //TODO: doc
   public class BindableObjectClass : IBusinessObjectClass

@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Queries
+namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
   [TestFixture]
   public class QueryTest : StandardMappingTest

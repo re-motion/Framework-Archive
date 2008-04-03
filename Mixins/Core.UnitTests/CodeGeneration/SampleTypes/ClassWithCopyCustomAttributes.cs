@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.SampleTypes
+namespace Remotion.Mixins.UnitTests.CodeGeneration.SampleTypes
 {
   [CopyCustomAttributes (typeof (CopyTemplate))]
   public class ClassWithCopyCustomAttributes

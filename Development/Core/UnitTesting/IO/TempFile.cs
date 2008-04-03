@@ -1,8 +1,8 @@
 using System;
 using System.IO;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Development.UnitTesting.IO
+namespace Remotion.Development.UnitTesting.IO
 {
   /// <summary>
   /// The <see cref="TempFile"/> class represents a disposable temp file created via the <see cref="Path.GetTempFileName"/> method.

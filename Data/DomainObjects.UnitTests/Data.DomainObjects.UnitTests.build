@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Rubicon.Data.DomainObjects.UnitTests">
+<project xmlns="nant-schema" name="Remotion.Data.DomainObjects.UnitTests">
   
   <target name="build" description="perform a build">
     <csc  target="library"
@@ -22,21 +22,21 @@
         <include asis="true" name="${build.test.outputdir}/log4net.dll"/>
         <include asis="true" name="${build.test.outputdir}/nunit.framework.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rhino.Mocks.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Core.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Development.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.ObjectBinding.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.Web.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Mixins.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.ObjectBinding.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Web.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Web.UnitTests.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Core.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Development.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Data.DomainObjects.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Data.DomainObjects.ObjectBinding.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Data.DomainObjects.Web.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Mixins.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.ObjectBinding.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Web.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Web.UnitTests.dll"/>
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="System.Web.dll"/>
         <include asis="true" name="System.Xml.dll"/>
       </references>
-      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Data.DomainObjects.UnitTests">
+      <resources failonempty="true" dynamicprefix="true" prefix="Remotion.Data.DomainObjects.UnitTests">
         <include name="Resources/*.*" />
         <exclude name="Resources/*.cs" />
       </resources>

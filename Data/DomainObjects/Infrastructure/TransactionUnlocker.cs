@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
   /// Temporarily makes a read-only transaction writeable.

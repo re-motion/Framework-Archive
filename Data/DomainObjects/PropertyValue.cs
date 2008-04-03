@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
 /// <summary>
 /// Represents a property of a domain object that is persisted by the framework.
@@ -51,8 +51,8 @@ public class PropertyValue
   /// <param name="definition">The <see cref="PropertyDefinition"/> to use for initializing the <b>PropertyValue</b>. Must not be <see langword="null"/>.</param>
   /// <param name="value">The initial <see cref="Value"/> for the <b>PropertyValue</b>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="definition"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.InvalidTypeException"><paramref name="value"/> does not match the required type specified in <paramref name="definition"/>.</exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.ValueTooLongException"><paramref name="value"/> is longer than the maximum length specified in <paramref name="definition"/>.</exception>
+  /// <exception cref="Remotion.Data.DomainObjects.InvalidTypeException"><paramref name="value"/> does not match the required type specified in <paramref name="definition"/>.</exception>
+  /// <exception cref="Remotion.Data.DomainObjects.ValueTooLongException"><paramref name="value"/> is longer than the maximum length specified in <paramref name="definition"/>.</exception>
   public PropertyValue (PropertyDefinition definition, object value)
       : this (definition, value, value)
   {
@@ -166,8 +166,8 @@ public class PropertyValue
   /// Gets or sets the value of the <see cref="PropertyValue"/>.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.InvalidTypeException"><paramref name="value"/> does not match the required type specified in <see cref="Definition"/>.</exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.ValueTooLongException"><paramref name="value"/> is longer than the maximum length specified in <see cref="Definition"/>.</exception>
+  /// <exception cref="Remotion.Data.DomainObjects.InvalidTypeException"><paramref name="value"/> does not match the required type specified in <see cref="Definition"/>.</exception>
+  /// <exception cref="Remotion.Data.DomainObjects.ValueTooLongException"><paramref name="value"/> is longer than the maximum length specified in <see cref="Definition"/>.</exception>
   public object Value
   {
     get
@@ -325,7 +325,7 @@ public class PropertyValue
   /// Gets a value indicating the discarded status of the <see cref="PropertyValue"/>.
   /// </summary>
   /// <remarks>
-  /// For more information why and when a <see cref="PropertyValue"/> is discarded see <see cref="Rubicon.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
+  /// For more information why and when a <see cref="PropertyValue"/> is discarded see <see cref="Remotion.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
   /// </remarks>
   public bool IsDiscarded
   {

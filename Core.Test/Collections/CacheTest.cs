@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Collections;
-using Rubicon.Development.UnitTesting;
+using Remotion.Collections;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Core.UnitTests.Collections
+namespace Remotion.Core.UnitTests.Collections
 {
   [TestFixture]
   public class CacheTest

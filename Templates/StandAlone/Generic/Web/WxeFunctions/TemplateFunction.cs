@@ -1,8 +1,8 @@
 using System;
 
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Templates.Generic.Web.WxeFunctions
+namespace Remotion.Templates.Generic.Web.WxeFunctions
 {
 public class TemplateFunction : BaseFunction
 {

@@ -1,11 +1,11 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.Legacy.Infrastructure;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Legacy.Infrastructure;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.Mapping
+namespace Remotion.Data.DomainObjects.Legacy.Mapping
 {
   /// <summary><see cref="ClassDefinition"/> used when loading the mappign from an xml-file.</summary>
   [Serializable]
@@ -67,7 +67,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
     private void CheckClassType (string classID, Type classType)
     {
       if (!classType.IsSubclassOf (typeof (DomainObject)))
-        throw CreateMappingException ("Type '{0}' of class '{1}' is not derived from 'Rubicon.Data.DomainObjects.DomainObject'.", classType, classID);
+        throw CreateMappingException ("Type '{0}' of class '{1}' is not derived from 'Remotion.Data.DomainObjects.DomainObject'.", classType, classID);
     }
 
     public new XmlBasedClassDefinition BaseClass

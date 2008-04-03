@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Text;
 
-namespace Rubicon.Text
+namespace Remotion.Text
 {
 
 public class IdentifierGenerator: ICloneable

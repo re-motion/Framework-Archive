@@ -3,11 +3,11 @@ using System.Collections;
 using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Mixins.UnitTests.CodeGeneration.SampleTypes;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using System.Collections.Generic;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.MixedTypeCodeGeneration
+namespace Remotion.Mixins.UnitTests.CodeGeneration.MixedTypeCodeGeneration
 {
   [TestFixture]
   public class IntroductionTests : CodeGenerationBaseTest
@@ -59,11 +59,11 @@ namespace Rubicon.Mixins.UnitTests.CodeGeneration.MixedTypeCodeGeneration
         BaseType1 bt1 = ObjectFactory.Create<BaseType1> ().With ();
         MethodInfo[] allMethods = bt1.GetType ().GetMethods (BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
         string[] allMethodNames = Array.ConvertAll<MethodInfo, string> (allMethods, delegate (MethodInfo mi) { return mi.Name; });
-        Assert.That (allMethodNames, List.Contains ("Rubicon.Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.get_Prop1"));
-        Assert.That (allMethodNames, List.Contains ("Rubicon.Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.set_Prop2"));
+        Assert.That (allMethodNames, List.Contains ("Remotion.Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.get_Prop1"));
+        Assert.That (allMethodNames, List.Contains ("Remotion.Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.set_Prop2"));
 
-        Assert.That (allMethodNames, List.Not.Contains ("Rubicon.Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.set_Prop1"));
-        Assert.That (allMethodNames, List.Not.Contains ("Rubicon.Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.get_Prop2"));
+        Assert.That (allMethodNames, List.Not.Contains ("Remotion.Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.set_Prop1"));
+        Assert.That (allMethodNames, List.Not.Contains ("Remotion.Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.get_Prop2"));
       }
     }
 

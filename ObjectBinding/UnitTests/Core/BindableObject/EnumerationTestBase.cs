@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
 {
   public class EnumerationTestBase : TestBase
   {

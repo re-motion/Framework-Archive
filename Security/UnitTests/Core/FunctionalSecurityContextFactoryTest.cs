@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Security.UnitTests.Core.SampleDomain;
-using Rubicon.Development.UnitTesting;
+using Remotion.Security.UnitTests.Core.SampleDomain;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Security.UnitTests.Core
+namespace Remotion.Security.UnitTests.Core
 {
   [TestFixture]
   public class FunctionalSecurityContextFactoryTest
@@ -15,7 +15,7 @@ namespace Rubicon.Security.UnitTests.Core
 
       SecurityContext context = factory.CreateSecurityContext ();
       Assert.IsNotNull (context);
-      Assert.AreEqual ("Rubicon.Security.UnitTests.Core.SampleDomain.SecurableObject, Rubicon.Security.UnitTests", context.Class);
+      Assert.AreEqual ("Remotion.Security.UnitTests.Core.SampleDomain.SecurableObject, Remotion.Security.UnitTests", context.Class);
     }
 
     [Test]

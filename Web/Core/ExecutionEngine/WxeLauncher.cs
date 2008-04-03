@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using System.Text;
 using System.Web;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
 
 /// <summary> Redirects the request to the <b>WxeHandler.ashx</b> HTTP handler. </summary>

@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine
 {
 
 [TestFixture]

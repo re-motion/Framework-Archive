@@ -6,12 +6,12 @@ using System.CodeDom.Compiler;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Rubicon.Text.CommandLine;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Text.CommandLine;
+using Remotion.Web.ExecutionEngine;
 using WxeFunctionGenerator.Schema;
 
 // for DeserializeUsingSchema only
-using Rubicon.Xml;
+using Remotion.Xml;
 using XmlSchemaValidationException=System.Xml.Schema.XmlSchemaValidationException;
 using System.Collections.Generic;
 
@@ -70,7 +70,7 @@ namespace WxeFunctionGenerator
       catch (CommandLineArgumentException e)
       {
         string appName = System.IO.Path.GetFileName (System.Environment.GetCommandLineArgs ()[0]);
-        Console.Error.WriteLine ("rubicon WXE function generator");
+        Console.Error.WriteLine ("remotion WXE function generator");
         Console.Error.Write (e.Message);
         Console.Error.WriteLine ("Usage: " + parser.GetAsciiSynopsis (appName, 79));
         return 1;
@@ -268,7 +268,7 @@ namespace WxeFunctionGenerator
       unit.Namespaces.Add (ns);
 
 			ns.Imports.Add (new CodeNamespaceImport ("System"));
-			ns.Imports.Add (new CodeNamespaceImport ("Rubicon.Web.ExecutionEngine"));
+			ns.Imports.Add (new CodeNamespaceImport ("Remotion.Web.ExecutionEngine"));
 
       // generate a partial class for the page that allows access to parameters and
       // local variables from page code

@@ -1,8 +1,8 @@
 using System;
 
-using Rubicon.Data.DomainObjects;
+using Remotion.Data.DomainObjects;
 
-namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
 {
   [DBTable]
   [FirstStorageGroupAttribute]

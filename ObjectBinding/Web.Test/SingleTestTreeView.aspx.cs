@@ -1,9 +1,9 @@
 using System;
 using System.Web.UI.WebControls;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Web.UI.Controls;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
 namespace OBWTest
 {
@@ -11,14 +11,14 @@ namespace OBWTest
   {
     protected System.Web.UI.WebControls.Label TreeViewLabel;
     protected System.Web.UI.WebControls.Button PostBackButton;
-    protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-    protected Rubicon.Web.UI.Controls.WebTreeView WebTreeView;
+    protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+    protected Remotion.Web.UI.Controls.WebTreeView WebTreeView;
     protected PersonTreeView PersonTreeView;
     protected PersonTreeView PersonTreeViewWithMenus;
     protected System.Web.UI.WebControls.Button RefreshPesonTreeViewButton;
     protected System.Web.UI.WebControls.Button Node332Button;
-    protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+    protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
     private void Page_Load (object sender, System.EventArgs e)
     {
@@ -54,14 +54,14 @@ namespace OBWTest
 
       nodes = WebTreeView.Nodes;
       nodes.Add (
-          new WebTreeNode ("node0", "Node 0", "Hello", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Job.gif", "Icon", "ToolTip", Unit.Pixel (16), Unit.Pixel (16))));
+          new WebTreeNode ("node0", "Node 0", "Hello", new IconInfo ("Images/Remotion.ObjectBinding.Sample.Job.gif", "Icon", "ToolTip", Unit.Pixel (16), Unit.Pixel (16))));
       nodes.Add (new WebTreeNode ("node1", "Node 1"));
       nodes.Add (new WebTreeNode ("node2", "Node 2"));
       nodes.Add (new WebTreeNode ("node3", "Node 3"));
       nodes.Add (new WebTreeNode ("node4", "Node 4"));
 
       nodes = ((WebTreeNode) WebTreeView.Nodes[0]).Children;
-      nodes.Add (new WebTreeNode ("node00", "Node 0-0", "Images/Rubicon.ObjectBinding.Sample.Job.gif"));
+      nodes.Add (new WebTreeNode ("node00", "Node 0-0", "Images/Remotion.ObjectBinding.Sample.Job.gif"));
       nodes.Add (new WebTreeNode ("node01", "Node 0-1"));
       nodes.Add (new WebTreeNode ("node02", "Node 0-2"));
       nodes.Add (new WebTreeNode ("node03", "Node 0-3"));
@@ -69,10 +69,10 @@ namespace OBWTest
 
       nodes = ((WebTreeNode) ((WebTreeNode) WebTreeView.Nodes[0]).Children[0]).Children;
       nodes.Add (new WebTreeNode ("node000", "Node 0-0-0"));
-      nodes.Add (new WebTreeNode ("node001", "Node 0-0-1", "Hello", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Job.gif")));
+      nodes.Add (new WebTreeNode ("node001", "Node 0-0-1", "Hello", new IconInfo ("Images/Remotion.ObjectBinding.Sample.Job.gif")));
       nodes.Add (
-          new WebTreeNode ("node002", "Node 0-0-2", "Hello", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Job.gif", "Icon", null, Unit.Pixel (16), Unit.Pixel (16))));
-      nodes.Add (new WebTreeNode ("node003", "Node 0-0-3", "Images/Rubicon.ObjectBinding.Sample.Job.gif"));
+          new WebTreeNode ("node002", "Node 0-0-2", "Hello", new IconInfo ("Images/Remotion.ObjectBinding.Sample.Job.gif", "Icon", null, Unit.Pixel (16), Unit.Pixel (16))));
+      nodes.Add (new WebTreeNode ("node003", "Node 0-0-3", "Images/Remotion.ObjectBinding.Sample.Job.gif"));
       ((WebTreeNode) ((WebTreeNode) WebTreeView.Nodes[0]).Children[0]).IsEvaluated = true;
 
       nodes = ((WebTreeNode) WebTreeView.Nodes[3]).Children;
@@ -120,20 +120,20 @@ namespace OBWTest
     /// </summary>
     private void InitializeComponent ()
     {
-      PersonTreeView.Click += new Rubicon.ObjectBinding.Web.UI.Controls.BocTreeNodeClickEventHandler (PersonTreeView_Click);
-      PersonTreeView.SelectionChanged += new Rubicon.ObjectBinding.Web.UI.Controls.BocTreeNodeEventHandler (PersonTreeView_SelectionChanged);
+      PersonTreeView.Click += new Remotion.ObjectBinding.Web.UI.Controls.BocTreeNodeClickEventHandler (PersonTreeView_Click);
+      PersonTreeView.SelectionChanged += new Remotion.ObjectBinding.Web.UI.Controls.BocTreeNodeEventHandler (PersonTreeView_SelectionChanged);
       RefreshPesonTreeViewButton.Click += new System.EventHandler (RefreshPesonTreeViewButton_Click);
-      WebTreeView.Click += new Rubicon.Web.UI.Controls.WebTreeNodeClickEventHandler (TreeView_Click);
+      WebTreeView.Click += new Remotion.Web.UI.Controls.WebTreeNodeClickEventHandler (TreeView_Click);
       Node332Button.Click += new System.EventHandler (Node332Button_Click);
       Load += new System.EventHandler (Page_Load);
     }
 
-    private void TreeView_Click (object sender, Rubicon.Web.UI.Controls.WebTreeNodeClickEventArgs e)
+    private void TreeView_Click (object sender, Remotion.Web.UI.Controls.WebTreeNodeClickEventArgs e)
     {
       TreeViewLabel.Text = "Node = " + e.Node.Text;
     }
 
-    private void PersonTreeView_Click (object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocTreeNodeClickEventArgs e)
+    private void PersonTreeView_Click (object sender, Remotion.ObjectBinding.Web.UI.Controls.BocTreeNodeClickEventArgs e)
     {
       TreeViewLabel.Text = "Node = " + e.Node.Text;
     }
@@ -143,7 +143,7 @@ namespace OBWTest
       PersonTreeView.RefreshTreeNodes();
     }
 
-    private void PersonTreeView_SelectionChanged (object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocTreeNodeEventArgs e)
+    private void PersonTreeView_SelectionChanged (object sender, Remotion.ObjectBinding.Web.UI.Controls.BocTreeNodeEventArgs e)
     {
     }
 

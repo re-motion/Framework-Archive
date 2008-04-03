@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   [DebuggerDisplay ("{RequiredType.Type}, Depender = {Depender.Type}")]
   public abstract class DependencyDefinitionBase : IVisitableDefinition

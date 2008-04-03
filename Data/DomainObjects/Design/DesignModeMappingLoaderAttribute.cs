@@ -1,11 +1,11 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.ConfigurationLoader;
+using Remotion.Reflection;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Design
+namespace Remotion.Data.DomainObjects.Design
 {
   /// <summary>
   /// Design mode attribute used to associate a design mode specifc mapping loader with it's run-time version.

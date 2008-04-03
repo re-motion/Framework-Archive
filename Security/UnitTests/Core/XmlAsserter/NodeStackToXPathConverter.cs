@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
-namespace Rubicon.Security.UnitTests.Core.XmlAsserter
+namespace Remotion.Security.UnitTests.Core.XmlAsserter
 {
   public class NodeStackToXPathConverter
   {

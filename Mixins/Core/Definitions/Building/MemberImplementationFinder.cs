@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Rubicon.Text;
-using Rubicon.Utilities;
+using Remotion.Text;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Definitions.Building
+namespace Remotion.Mixins.Definitions.Building
 {
   internal class MemberImplementationFinder
   {

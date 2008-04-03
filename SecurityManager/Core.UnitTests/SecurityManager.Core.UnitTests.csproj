@@ -7,8 +7,8 @@
     <ProjectGuid>{65B86B2E-D54D-425B-B681-82449E31BA01}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.SecurityManager.UnitTests</RootNamespace>
-    <AssemblyName>Rubicon.SecurityManager.UnitTests</AssemblyName>
+    <RootNamespace>Remotion.SecurityManager.UnitTests</RootNamespace>
+    <AssemblyName>Remotion.SecurityManager.UnitTests</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

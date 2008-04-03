@@ -1,10 +1,10 @@
 using System;
 using System.IO;
 using System.Xml;
-using Rubicon.SecurityManager.Configuration;
-using Rubicon.Utilities;
+using Remotion.SecurityManager.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.UnitTests.Configuration
+namespace Remotion.SecurityManager.UnitTests.Configuration
 {
   internal class TestSecurityManagerConfiguration : SecurityManagerConfiguration
   {

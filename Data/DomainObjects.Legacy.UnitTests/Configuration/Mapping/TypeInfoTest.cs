@@ -1,13 +1,13 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.Resources;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
-using Rubicon.NullableValueTypes;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Legacy.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.Resources;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Remotion.NullableValueTypes;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 {
   [TestFixture]
   public class TypeInfoTest : StandardMappingTest
@@ -70,7 +70,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     public void UnknownMappingType ()
     {
       Assert.IsNull (TypeInfo.GetInstance (
-          "Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping.TypeMappingTest+TypeMappingTestEnum, Rubicon.Data.DomainObjects.Legacy.UnitTests", false));
+          "Remotion.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping.TypeMappingTest+TypeMappingTestEnum, Remotion.Data.DomainObjects.Legacy.UnitTests", false));
     }
 
     [Test]

@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance
 {
   [TestFixture]
   public class DomainObjectTest : TableInheritanceMappingTest

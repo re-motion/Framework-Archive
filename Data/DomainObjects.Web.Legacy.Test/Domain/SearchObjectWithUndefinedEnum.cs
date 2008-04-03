@@ -1,8 +1,8 @@
 using System;
 
-using Rubicon.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.DomainObjects.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain
+namespace Remotion.Data.DomainObjects.Web.Legacy.Test.Domain
 {
 public class SearchObjectWithUndefinedEnum : BindableSearchObject
 {
@@ -29,7 +29,7 @@ public class SearchObjectWithUndefinedEnum : BindableSearchObject
     set { _undefinedEnum = value; }
   }
 
-  public override Rubicon.Data.DomainObjects.Queries.IQuery CreateQuery()
+  public override Remotion.Data.DomainObjects.Queries.IQuery CreateQuery()
   {
     throw new NotImplementedException ();
   }

@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle ("Rubicon Mixins Library")]
+[assembly: AssemblyTitle ("Remotion Mixins Library")]
 [assembly: AssemblyDescription ("Library for Mixin-oriented development")]
 [assembly: AssemblyConfiguration ("@buildinfo@")]
 [assembly: AssemblyCompany ("@company@")]

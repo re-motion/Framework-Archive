@@ -2,10 +2,10 @@ using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.Globalization;
-using Rubicon.Utilities;
+using Remotion.Globalization;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
   public abstract class MenuTab : WebTab

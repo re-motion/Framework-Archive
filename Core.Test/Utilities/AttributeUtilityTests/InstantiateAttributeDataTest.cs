@@ -1,10 +1,10 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
+namespace Remotion.Core.UnitTests.Utilities.AttributeUtilityTests
 {
   [TestFixture]
   public class InstantiateAttributeDataTest

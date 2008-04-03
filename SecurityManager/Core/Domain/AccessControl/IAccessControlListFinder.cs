@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Security;
+using Remotion.Data.DomainObjects;
+using Remotion.Security;
 
-namespace Rubicon.SecurityManager.Domain.AccessControl
+namespace Remotion.SecurityManager.Domain.AccessControl
 {
   public interface IAccessControlListFinder
   {

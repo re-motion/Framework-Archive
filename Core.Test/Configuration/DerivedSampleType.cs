@@ -1,4 +1,4 @@
-namespace Rubicon.Core.UnitTests.Configuration
+namespace Remotion.Core.UnitTests.Configuration
 {
   public class DerivedSampleType : SampleType
   {

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.SecurityManager.Clients.Web.WxeFunctions;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.SecurityManager.Clients.Web.WxeFunctions;
 
-namespace Rubicon.SecurityManager.Clients.Web.Classes
+namespace Remotion.SecurityManager.Clients.Web.Classes
 {
   public abstract class BaseEditPage : BasePage
   {

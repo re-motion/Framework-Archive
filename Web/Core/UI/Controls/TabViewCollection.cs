@@ -2,9 +2,9 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 public class TabViewCollection: ViewCollection

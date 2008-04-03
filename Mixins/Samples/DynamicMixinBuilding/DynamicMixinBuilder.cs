@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Castle.DynamicProxy;
-using Rubicon.Collections;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Samples.DynamicMixinBuilding
+namespace Remotion.Mixins.Samples.DynamicMixinBuilding
 {
   public delegate object BaseMethodInvoker (object[] args);
   public delegate object MethodInvocationHandler (object instance, MethodInfo method, object[] args, BaseMethodInvoker baseMethod);

@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 {
   [TestFixture]
   public class StorageProviderCollectionTest : StandardMappingTest

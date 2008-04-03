@@ -1,16 +1,16 @@
 using System;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.Security;
-using Rubicon.Security.Web.ExecutionEngine;
-using Rubicon.Security.Web.UI;
-using Rubicon.SecurityManager.Clients.Web.Classes;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI;
-using SecurityManagerUser = Rubicon.SecurityManager.Domain.OrganizationalStructure.User;
+using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.Security;
+using Remotion.Security.Web.ExecutionEngine;
+using Remotion.Security.Web.UI;
+using Remotion.SecurityManager.Clients.Web.Classes;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI;
+using SecurityManagerUser = Remotion.SecurityManager.Domain.OrganizationalStructure.User;
 
-namespace Rubicon.SecurityManager.Clients.Web.Test
+namespace Remotion.SecurityManager.Clients.Web.Test
 {
   public class Global : SecurityManagerHttpApplication
   {

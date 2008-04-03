@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
+namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl {
     
     
     /// <summary>
@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
+        protected global::Remotion.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
         
         /// <summary>
         /// CurrentObject control.
@@ -35,7 +35,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
         
         /// <summary>
         /// SecurableClassDefinitionTree control.
@@ -44,6 +44,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.SecurityManager.Clients.Web.Classes.SecurableClassDefinitionTreeView SecurableClassDefinitionTree;
+        protected global::Remotion.SecurityManager.Clients.Web.Classes.SecurableClassDefinitionTreeView SecurableClassDefinitionTree;
     }
 }

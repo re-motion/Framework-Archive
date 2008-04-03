@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   //TODO: Type property for concrete numeric type
   /// <summary>The <see cref="IBusinessObjectNumericProperty"/> interface provides additional meta data for numeric values.</summary>

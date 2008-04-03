@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary> The <b>IBusinessObjectDateTimeProperty</b> interface is used for accessing <see cref="DateTime"/> values. </summary>
   /// <remarks>

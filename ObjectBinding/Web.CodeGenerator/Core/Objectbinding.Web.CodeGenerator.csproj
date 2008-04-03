@@ -7,7 +7,7 @@
     <ProjectGuid>{E8822EE5-E678-4ECF-AAEC-9476696F90B3}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.ObjectBinding.Web.CodeGenerator</RootNamespace>
+    <RootNamespace>Remotion.ObjectBinding.Web.CodeGenerator</RootNamespace>
     <AssemblyName>uigen</AssemblyName>
     <SccProjectName>
     </SccProjectName>

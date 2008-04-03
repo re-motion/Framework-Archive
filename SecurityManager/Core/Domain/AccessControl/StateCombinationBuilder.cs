@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.Utilities;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.AccessControl
+namespace Remotion.SecurityManager.Domain.AccessControl
 {
   public class StateCombinationBuilder
   {

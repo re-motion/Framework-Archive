@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject.Properties;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
 {
   [TestFixture]
   public class DefaultMetadataFactoryTest

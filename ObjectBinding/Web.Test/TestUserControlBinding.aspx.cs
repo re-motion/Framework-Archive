@@ -16,13 +16,13 @@ namespace OBWTest
 	/// </summary>
 	public class TestUserControlBinding : System.Web.UI.Page
 	{
-    protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl DataSource;
+    protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl DataSource;
     protected System.Web.UI.HtmlControls.HtmlTable NameFormGrid;
     protected System.Web.UI.WebControls.Label Label1;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.UserControlBinding UserControlBinding1;
-    protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
+    protected Remotion.ObjectBinding.Web.UI.Controls.UserControlBinding UserControlBinding1;
+    protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   
 		private void Page_Load(object sender, System.EventArgs e)
 		{

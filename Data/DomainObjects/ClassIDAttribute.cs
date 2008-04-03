@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   //TODO: Doc
   [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]

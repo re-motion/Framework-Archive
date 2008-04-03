@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Mixins;
-using Rubicon.Utilities;
+using Remotion.Mixins;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Context.FluentBuilders
+namespace Remotion.Mixins.Context.FluentBuilders
 {
   /// <summary>
   /// Provides a fluent interface for building <see cref="MixinConfiguration"/> objects.
@@ -89,7 +89,7 @@ namespace Rubicon.Mixins.Context.FluentBuilders
     {
       foreach (Type suppressedMixinType in suppressedMixins)
       {
-        if (Rubicon.Utilities.ReflectionUtility.CanAscribe (mixinType, suppressedMixinType))
+        if (Remotion.Utilities.ReflectionUtility.CanAscribe (mixinType, suppressedMixinType))
         {
           string message = string.Format ("Mixin type {0} applied to target class {1} suppresses itself.", mixinType.FullName,
               targetType.FullName);

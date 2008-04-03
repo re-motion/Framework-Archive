@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Rubicon.Security.UnitTests.Core
+namespace Remotion.Security.UnitTests.Core
 {
   [TestFixture]
   public class SecurityAdapterRegistryTest

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 
-using Rubicon.Security.Metadata;
-using Rubicon.Security.Configuration;
-using Rubicon.Utilities;
-using Rubicon.Web.UI;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Security.Metadata;
+using Remotion.Security.Configuration;
+using Remotion.Utilities;
+using Remotion.Web.UI;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Security.Web.UI
+namespace Remotion.Security.Web.UI
 {
   [Obsolete ("Use WebSecurityAdapter instead. (Version: 1.7.41)", true)]
   public class WebSecurityProvider : WebSecurityAdapter, IWebSecurityProvider

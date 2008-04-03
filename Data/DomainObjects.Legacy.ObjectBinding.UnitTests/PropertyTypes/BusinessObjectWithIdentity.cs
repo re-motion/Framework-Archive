@@ -1,7 +1,7 @@
 using System;
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
+namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
 {
 public class BusinessObjectWithIdentity : IBusinessObjectWithIdentity
 {

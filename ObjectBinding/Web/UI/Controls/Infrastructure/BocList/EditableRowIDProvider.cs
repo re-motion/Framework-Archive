@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Specialized;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList
+namespace Remotion.ObjectBinding.Web.UI.Controls.Infrastructure.BocList
 {
 
 [Serializable]

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.Transport;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Transport;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Transport
+namespace Remotion.Data.DomainObjects.UnitTests.Transport
 {
   [TestFixture]
   public class DomainObjectImporterTest : StandardMappingTest

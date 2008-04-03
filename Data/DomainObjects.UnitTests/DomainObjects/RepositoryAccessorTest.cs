@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
   public class RepositoryAccessorTest : ClientTransactionBaseTest
@@ -35,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.Data.DomainObjects.UnitTests.TestDomain."
         + "OrderItem does not support the requested constructor with signature (System.String).")]
     public void NewObject_WrongCtorArgs ()
     {

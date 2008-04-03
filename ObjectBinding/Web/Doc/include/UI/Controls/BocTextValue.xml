@@ -46,7 +46,7 @@
       <para>
         The resources required by this control are defined by the <see cref="BocTextValue.ResourceIdentifier"/> enum.
       </para><para>
-        Provide the external resources for this control. See <see cref="T:Rubicon.Web.ResourceUrlResolver"/> 
+        Provide the external resources for this control. See <see cref="T:Remotion.Web.ResourceUrlResolver"/> 
         for details on this subject.
       </para><para>
         See the <see cref="CreateValidators"/> method for the validators provided by this control.        
@@ -76,7 +76,7 @@
         enum. See the <b>ResourceIdentifier</b>'s documentation for details on localization.
       </para><para>
         The control supports resource dispatching to its properties through the 
-        <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>.
+        <see cref="Remotion.Web.UI.Globalization.ResourceDispatcher"/>.
         Use the following resource identifiers for dispatching strings to the <b>BocTextValue</b>
         or use the <b>global resource identifier</b> syntax for setting the resource identifier in the propery.
       </para>
@@ -105,9 +105,9 @@
         a call to <see cref="SaveValue"/> with <b>interim</b> set <see langword="true"/> is required to save the
         value back into the data source.
       </para><para>
-        If the <see cref="TextBoxStyle"/>'s <see cref="Rubicon.ObjectBinding.Web.UI.Controls.TextBoxStyle.TextMode"/> 
+        If the <see cref="TextBoxStyle"/>'s <see cref="Remotion.ObjectBinding.Web.UI.Controls.TextBoxStyle.TextMode"/> 
         is set to <see cref="TextBoxMode.MultiLine"/>, the control uses a client script provided by 
-        <see cref="Rubicon.ObjectBinding.Web.UI.Controls.TextBoxStyle"/> to check that the entered text does not exceed 
+        <see cref="Remotion.ObjectBinding.Web.UI.Controls.TextBoxStyle"/> to check that the entered text does not exceed 
         the maximum length. This only covers text entered by the keyboard, not through the clipboard. 
         Set <see cref="SingleRowTextBoxStyle.CheckClientSideMaxLength"/> to <see langword="false"/> to disable this 
         script.        

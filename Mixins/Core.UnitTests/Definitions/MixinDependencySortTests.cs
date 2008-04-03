@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Mixins.Context.FluentBuilders;
-using Rubicon.Mixins.Definitions.Building;
-using Rubicon.Mixins.Definitions.Building.DependencySorting;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.Mixins.Definitions.Building;
+using Remotion.Mixins.Definitions.Building.DependencySorting;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Utilities.DependencySort;
-using Rubicon.Collections;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Utilities.DependencySort;
+using Remotion.Collections;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Mixins.UnitTests.Definitions
+namespace Remotion.Mixins.UnitTests.Definitions
 {
   [TestFixture]
   public class MixinDependencySortTests

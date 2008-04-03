@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   [AccessType]
   public enum GeneralAccessTypes

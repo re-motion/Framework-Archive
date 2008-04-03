@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
   /// Represents a top-level <see cref="ClientTransaction"/>, which does not have a parent transaction.

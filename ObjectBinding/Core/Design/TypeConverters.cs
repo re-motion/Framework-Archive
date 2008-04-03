@@ -4,7 +4,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace Rubicon.ObjectBinding.Design
+namespace Remotion.ObjectBinding.Design
 {
 
 /// <summary>

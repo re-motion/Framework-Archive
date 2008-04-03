@@ -1,9 +1,9 @@
 using System;
 using System.Reflection;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
+namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   /// <summary>Base class for reflecting on the relations of a class.</summary>
   public abstract class RelationReflectorBase : MemberReflectorBase

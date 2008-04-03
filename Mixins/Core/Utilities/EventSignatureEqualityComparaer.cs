@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Utilities
+namespace Remotion.Mixins.Utilities
 {
   public class EventSignatureEqualityComparer : IEqualityComparer<EventInfo>
   {

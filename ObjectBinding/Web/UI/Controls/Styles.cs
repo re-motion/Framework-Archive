@@ -3,13 +3,13 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.NullableValueTypes;
-using Rubicon.Utilities;
-using Rubicon.Web;
-using Rubicon.Web.UI;
-using Rubicon.Web.Utilities;
+using Remotion.NullableValueTypes;
+using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.UI;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 public enum ListControlType
 {

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.Mixins.CodeGeneration.DynamicProxy
 {
   internal class BaseCallProxyInitializer
   {

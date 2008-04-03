@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors
 {
   public abstract class ClassWithInvalidProperties : DomainObject
   {

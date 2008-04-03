@@ -1,11 +1,11 @@
 using System;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.UnitTests.Context.DeclarativeConfigurationBuilder_IntegrationTests
+namespace Remotion.Mixins.UnitTests.Context.DeclarativeConfigurationBuilder_IntegrationTests
 {
   [TestFixture]
   public class UsesAnalysisTests
@@ -329,7 +329,7 @@ namespace Rubicon.Mixins.UnitTests.Context.DeclarativeConfigurationBuilder_Integ
     public class SelfSuppressingUser { }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Mixin type Rubicon.Mixins.UnitTests.SampleTypes.NullMixin applied to "
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Mixin type Remotion.Mixins.UnitTests.SampleTypes.NullMixin applied to "
         + "target class .*SelfSuppressingUser suppresses itself.", MatchType = MessageMatch.Regex)]
     public void SelfSuppresser ()
     {

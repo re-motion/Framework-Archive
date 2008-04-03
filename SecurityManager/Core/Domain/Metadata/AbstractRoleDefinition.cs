@@ -1,12 +1,12 @@
 using System;
 using System.ComponentModel;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Security;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.Metadata
+namespace Remotion.SecurityManager.Domain.Metadata
 {
   [Serializable]
   [Instantiable]
@@ -33,7 +33,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public static DomainObjectCollection FindAll ()
     {
-      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll");
+      Query query = new Query ("Remotion.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll");
       return ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
     }
 

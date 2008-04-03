@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Rubicon.Security.Web">  
+<project xmlns="nant-schema" name="Remotion.Security.Web">  
 
   <target name="build" description="perform a build">
 
@@ -20,9 +20,9 @@
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <include name="${build.outputdir}/Rubicon.Core.dll" />
-        <include name="${build.outputdir}/Rubicon.Security.dll" />
-        <include name="${build.outputdir}/Rubicon.Web.dll" />
+        <include name="${build.outputdir}/Remotion.Core.dll" />
+        <include name="${build.outputdir}/Remotion.Security.dll" />
+        <include name="${build.outputdir}/Remotion.Web.dll" />
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Web.dll"/>

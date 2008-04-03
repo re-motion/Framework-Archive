@@ -1,4 +1,4 @@
-namespace Rubicon.Mixins.Utilities.DependencySort
+namespace Remotion.Mixins.Utilities.DependencySort
 {
   public enum DependencyKind
   {

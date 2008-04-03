@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Security.Web.ExecutionEngine;
-using Rubicon.Security.UnitTests.Web.Domain;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Security.Web.ExecutionEngine;
+using Remotion.Security.UnitTests.Web.Domain;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Security.UnitTests.Web.ExecutionEngine
+namespace Remotion.Security.UnitTests.Web.ExecutionEngine
 {
   [TestFixture]
   public class WxeDemandMethodPermissionAttributeHelperTestForGetSecurableObject
@@ -68,7 +68,7 @@ namespace Rubicon.Security.UnitTests.Web.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (WxeException), ExpectedMessage = "The parameter 'ThisObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
-        + " WxeFunction 'Rubicon.Security.UnitTests.Web.ExecutionEngine.TestFunctionWithThisObject' is null.")]
+        + " WxeFunction 'Remotion.Security.UnitTests.Web.ExecutionEngine.TestFunctionWithThisObject' is null.")]
     public void TestWithParameterNull ()
     {
       _attribute.ParameterName = "ThisObject";
@@ -83,8 +83,8 @@ namespace Rubicon.Security.UnitTests.Web.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (WxeException), ExpectedMessage = "The parameter 'SomeObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
-        + " WxeFunction 'Rubicon.Security.UnitTests.Web.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' does not implement"
-        + " interface 'Rubicon.Security.ISecurableObject'.")]
+        + " WxeFunction 'Remotion.Security.UnitTests.Web.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' does not implement"
+        + " interface 'Remotion.Security.ISecurableObject'.")]
     public void TestWithParameterNotImplementingISecurableObject ()
     {
       _attribute.ParameterName = "SomeObject";
@@ -98,8 +98,8 @@ namespace Rubicon.Security.UnitTests.Web.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (WxeException), ExpectedMessage = "The parameter 'ThisObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
-        + " WxeFunction 'Rubicon.Security.UnitTests.Web.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' is not derived from type"
-        + " 'Rubicon.Security.UnitTests.Web.Domain.OtherSecurableObject'.")]
+        + " WxeFunction 'Remotion.Security.UnitTests.Web.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' is not derived from type"
+        + " 'Remotion.Security.UnitTests.Web.Domain.OtherSecurableObject'.")]
     public void TestWithParameterNotOfMatchingType ()
     {
       WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute ("Show", typeof (OtherSecurableObject));
@@ -125,7 +125,7 @@ namespace Rubicon.Security.UnitTests.Web.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (WxeException),
-       ExpectedMessage = "WxeFunction 'Rubicon.Security.UnitTests.Web.ExecutionEngine.TestFunctionWithoutParameters' has a WxeDemandTargetMethodPermissionAttribute"
+       ExpectedMessage = "WxeFunction 'Remotion.Security.UnitTests.Web.ExecutionEngine.TestFunctionWithoutParameters' has a WxeDemandTargetMethodPermissionAttribute"
        + " applied, but does not define any parameters to supply the 'this-object'.")]
     public void TestWithFunctionWithoutParameters ()
     {
@@ -138,7 +138,7 @@ namespace Rubicon.Security.UnitTests.Web.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (WxeException), ExpectedMessage = "The parameter 'Invalid' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
-        + " WxeFunction 'Rubicon.Security.UnitTests.Web.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' is not a valid parameter"
+        + " WxeFunction 'Remotion.Security.UnitTests.Web.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' is not a valid parameter"
         + " of this function.")]
     public void TestWithInvalidParameterName ()
     {

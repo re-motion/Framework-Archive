@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Specialized;
 using System.Web.UI;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Utilities;
+using Remotion.Development.UnitTesting;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.UnitTests.AspNetFramework
+namespace Remotion.Web.UnitTests.AspNetFramework
 {
 
   public class PageMock : Page

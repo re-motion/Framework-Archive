@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Queries;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
+namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 {
   [TestFixture]
   public class QueryTest : ClientTransactionBaseTest

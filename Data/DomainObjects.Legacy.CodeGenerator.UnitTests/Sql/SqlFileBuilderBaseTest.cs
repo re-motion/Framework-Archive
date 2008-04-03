@@ -2,14 +2,14 @@ using System;
 using System.IO;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Sql;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Legacy.CodeGenerator.Sql;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 
-namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.Sql
+namespace Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.Sql
 {
   //TODO: Run the generated SQL File against a database in the UnitTests and integrate this into the build
   //      Derive ClassWithAllDataTypes from an abstract class to ensure that all data types are selected in a UNION

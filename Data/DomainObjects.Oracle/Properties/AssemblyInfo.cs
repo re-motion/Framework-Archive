@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle ("Rubicon.Data.Oracle")]
+[assembly: AssemblyTitle ("Remotion.Data.Oracle")]
 [assembly: AssemblyDescription ("")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("rubicon")]
-[assembly: AssemblyProduct ("Rubicon.Data.Oracle")]
+[assembly: AssemblyProduct ("Remotion.Data.Oracle")]
 [assembly: AssemblyCopyright ("Copyright © rubicon 2006")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]

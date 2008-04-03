@@ -2,14 +2,14 @@ using System;
 using System.Collections.Specialized;
 using System.Web;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.ExecutionEngine.UrlMapping;
-using Rubicon.Web.UnitTests.AspNetFramework;
-using Rubicon.Web.UnitTests.Configuration;
-using Rubicon.Web.Utilities;
+using Remotion.Development.UnitTesting;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine.UrlMapping;
+using Remotion.Web.UnitTests.AspNetFramework;
+using Remotion.Web.UnitTests.Configuration;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine
 {
 
 [TestFixture]
@@ -38,7 +38,7 @@ public class WxeContextTest
     _currentWxeContext = new WxeContextMock (_currentHttpContext, queryString);
     PrivateInvoke.InvokeNonPublicStaticMethod (typeof (WxeContext), "SetCurrent", _currentWxeContext);
 
-    WebConfigurationMock.Current = new Rubicon.Web.Configuration.WebConfiguration();
+    WebConfigurationMock.Current = new Remotion.Web.Configuration.WebConfiguration();
     WebConfigurationMock.Current.ExecutionEngine.MaximumUrlLength = 100;
 
   }
@@ -64,16 +64,16 @@ public class WxeContextTest
   public virtual void TearDown()
   { 
     WebConfigurationMock.Current = null;
-    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+    Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
   }
 
 	[Test]
   public void GetStaticPermanentUrlWithDefaultWxeHandlerWithoutMappingForFunctionType()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();
-    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+    Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
 
-    string wxeHandler = Rubicon.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
+    string wxeHandler = Remotion.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
     string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, wxeHandler);
     NameValueCollection expectedQueryString = new NameValueCollection();
     expectedQueryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
@@ -89,7 +89,7 @@ public class WxeContextTest
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();
 
-    string wxeHandler = Rubicon.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
+    string wxeHandler = Remotion.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
     string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, _resource);
     string permanentUrl = WxeContext.GetPermanentUrl (_currentHttpContext, _functionType, new NameValueCollection());
     Assert.IsNotNull (permanentUrl);
@@ -143,7 +143,7 @@ public class WxeContextTest
   public void GetStaticPermanentUrlWithoutWxeHandler()
   {
     WebConfigurationMock.Current = null;
-    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+    Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
     WxeContext.GetPermanentUrl (_currentHttpContext, _functionType, new NameValueCollection());
   }
 

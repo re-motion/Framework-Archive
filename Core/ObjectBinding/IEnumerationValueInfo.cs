@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary>
   ///   The <b>IEnumerationValueInfo"</b> interface provides fucntionality for encapsulating a native enumeration value 

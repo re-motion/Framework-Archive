@@ -1,7 +1,7 @@
 using System;
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
 /// <summary>
 /// A DataSource for <see cref="BindableSearchObject"/>s.

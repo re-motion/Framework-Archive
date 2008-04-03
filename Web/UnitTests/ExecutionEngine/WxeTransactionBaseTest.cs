@@ -3,11 +3,11 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Authentication;
 using NUnit.Framework;
-using Rubicon.Data;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Data;
+using Remotion.Development.UnitTesting;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine
 {
 
   [TestFixture]
@@ -431,7 +431,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       catch (WxeNonRecoverableTransactionException ex)
       {
         Assert.AreEqual ("An exception of type AuthenticationException caused a non-recoverable RollbackException.\r\nThe original exception message "
-            + "was: 'testo.'\r\nThe transaction error message was: 'Exception of type 'Rubicon.Web.UnitTests.ExecutionEngine.RollbackException' was "
+            + "was: 'testo.'\r\nThe transaction error message was: 'Exception of type 'Remotion.Web.UnitTests.ExecutionEngine.RollbackException' was "
             + "thrown.'", ex.Message);
         Assert.IsInstanceOfType (typeof (AuthenticationException), ex.InnerException);
         Assert.IsInstanceOfType (typeof (RollbackException), ex.TransactionException);
@@ -457,7 +457,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       catch (WxeNonRecoverableTransactionException ex)
       {
         Assert.AreEqual ("An exception of type AuthenticationException caused a non-recoverable ReleaseException.\r\nThe original exception message "
-            + "was: 'testo.'\r\nThe transaction error message was: 'Exception of type 'Rubicon.Web.UnitTests.ExecutionEngine.ReleaseException' was "
+            + "was: 'testo.'\r\nThe transaction error message was: 'Exception of type 'Remotion.Web.UnitTests.ExecutionEngine.ReleaseException' was "
             + "thrown.'", ex.Message);
         Assert.IsInstanceOfType (typeof (AuthenticationException), ex.InnerException);
         Assert.IsInstanceOfType (typeof (ReleaseException), ex.TransactionException);

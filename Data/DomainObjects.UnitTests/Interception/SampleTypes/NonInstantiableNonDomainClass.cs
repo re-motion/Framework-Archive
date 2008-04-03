@@ -1,4 +1,4 @@
-namespace Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes
+namespace Remotion.Data.DomainObjects.UnitTests.Interception.SampleTypes
 {
   public class NonInstantiableNonDomainClass
   {

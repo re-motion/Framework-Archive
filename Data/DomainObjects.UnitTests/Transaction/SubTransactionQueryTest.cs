@@ -1,12 +1,12 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Queries;
 using NUnit.Framework.SyntaxHelpers;
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
+namespace Remotion.Data.DomainObjects.UnitTests.Transaction
 {
   [TestFixture]
   public class SubTransactionQueryTest : ClientTransactionBaseTest

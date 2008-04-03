@@ -1,10 +1,10 @@
 using System;
 using System.Data.SqlClient;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
   [TestFixture]
   public class SqlProviderLoadDataContainerssTest : SqlProviderBaseTest
@@ -99,7 +99,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     //TODO: Improove this message to state that the passed ClassID and the ClassID in the database to not match.
     [Test]
     [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
-        "Error while reading property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber' of object "
+        "Error while reading property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber' of object "
         + "'Order|895853eb-06cd-4291-b467-160560ae8ec1|System.Guid': The mandatory column 'OrderNo' could not be found.")]
     public void LoadDataContainersWithClassIDFromOtherClass ()
     {
@@ -156,7 +156,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       DataContainer container = Provider.LoadDataContainers (new ObjectID[] { id })[0];
 
-      PropertyValue actualPropertyValue = container.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyOptional"];
+      PropertyValue actualPropertyValue = container.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyOptional"];
 
       Assert.IsNotNull (actualPropertyValue, "PropertyValue");
       Assert.IsNull (actualPropertyValue.Value, "PropertyValue.Value");
@@ -166,19 +166,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void LoadDataContainersWithRelation ()
     {
       DataContainer orderTicketContainer = Provider.LoadDataContainers (new ObjectID[] { DomainObjectIDs.OrderTicket1 })[0];
-      Assert.AreEqual (DomainObjectIDs.Order1, orderTicketContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      Assert.AreEqual (DomainObjectIDs.Order1, orderTicketContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
     }
 
     [Test]
     public void LoadDataContainersWithRelationAndInheritance ()
     {
       DataContainer ceoContainer = Provider.LoadDataContainers (new ObjectID[] { DomainObjectIDs.Ceo7 })[0];
-      Assert.AreEqual (DomainObjectIDs.Partner2, ceoContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"));
+      Assert.AreEqual (DomainObjectIDs.Partner2, ceoContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"));
     }
 
     [Test]
     [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
-        "Error while reading property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumn.Distributor' "
+        "Error while reading property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumn.Distributor' "
         + "of object 'ClassWithoutRelatedClassIDColumn|cd3be83e-fbb7-4251-aae4-b216485c5638|System.Guid':"
         + " Incorrect database format encountered."
         + " Entity 'TableWithoutRelatedClassIDColumn' must have column 'DistributorIDClassID' defined, because opposite class 'Distributor' is part of an inheritance hierarchy.")]
@@ -191,7 +191,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     [Test]
     [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
-        "Error while reading property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumnAndDerivation.Company' "
+        "Error while reading property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumnAndDerivation.Company' "
         + "of object 'ClassWithoutRelatedClassIDColumnAndDerivation|4821d7f7-b586-4435-b572-8a96a44b113e|System.Guid':"
         + " Incorrect database format encountered."
         + " Entity 'TableWithoutRelatedClassIDColumnAndDerivation' must have column 'CompanyIDClassID' defined, because opposite class 'Company' is part of an inheritance hierarchy.")]
@@ -216,7 +216,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     [Test]
     [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
-        "Error while reading property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithRelatedClassIDColumnAndNoInheritance.ClassWithGuidKey' "
+        "Error while reading property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithRelatedClassIDColumnAndNoInheritance.ClassWithGuidKey' "
         +"of object 'ClassWithRelatedClassIDColumnAndNoInheritance|cb72715d-f419-4ab9-8d49-abcba4e9edb4|System.Guid':"
         + " Incorrect database format encountered."
         + " Entity 'TableWithRelatedClassIDColumnAndNoInheritance' must not contain column 'TableWithGuidKeyIDClassID',"

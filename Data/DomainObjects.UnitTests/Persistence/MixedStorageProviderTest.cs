@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Mixins;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Mixins;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 {
   [TestFixture]
   public class MixedStorageProviderTest

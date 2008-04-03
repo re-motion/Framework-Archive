@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
   /// <summary>
   /// Base class for executing code in a separate <see cref="AppDomain"/>.

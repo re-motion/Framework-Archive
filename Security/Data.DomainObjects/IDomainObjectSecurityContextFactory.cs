@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Security.Data.DomainObjects
+namespace Remotion.Security.Data.DomainObjects
 {
   public interface IDomainObjectSecurityContextFactory : ISecurityContextFactory
   {

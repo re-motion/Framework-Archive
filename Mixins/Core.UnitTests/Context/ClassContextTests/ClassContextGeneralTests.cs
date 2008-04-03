@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Context.FluentBuilders;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Development.UnitTesting;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Development.UnitTesting;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Mixins.UnitTests.Context.ClassContextTests
+namespace Remotion.Mixins.UnitTests.Context.ClassContextTests
 {
   [TestFixture]
   public class ClassContextGeneralTests

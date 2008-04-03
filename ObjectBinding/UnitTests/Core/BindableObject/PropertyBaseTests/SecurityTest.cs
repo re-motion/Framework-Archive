@@ -1,13 +1,13 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
-using Rubicon.Security;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.Security;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
 {
   [TestFixture]
   public class SecurityTest : TestBase
@@ -45,7 +45,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyBaseTests
       _securableExplicitInterfaceProperty = new StubPropertyBase (
           new PropertyBase.Parameters (
               _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>),
-              "Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar"),
+              "Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar"),
               typeof (SimpleReferenceType), null, false, false));
       
       _nonSecurablePropertyReadOnly = new StubPropertyBase (

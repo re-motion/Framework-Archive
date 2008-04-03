@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Rubicon.Mixins.Context
+namespace Remotion.Mixins.Context
 {
   public class ClassContextCollector
   {

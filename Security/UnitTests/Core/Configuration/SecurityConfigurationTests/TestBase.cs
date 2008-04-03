@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Security.Configuration;
+using Remotion.Development.UnitTesting;
+using Remotion.Security.Configuration;
 
-namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
+namespace Remotion.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
 {
   public class TestBase
   {

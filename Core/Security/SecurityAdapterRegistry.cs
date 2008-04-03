@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   [Obsolete ("Use SecurityAdapterRegistry instead. (Version: 1.7.41)", true)]
   public abstract class SecurityProviderRegistry

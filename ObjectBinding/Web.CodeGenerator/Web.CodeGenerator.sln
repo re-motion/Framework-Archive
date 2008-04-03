@@ -14,9 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "prereq", "prereq", "{F5218E
 	EndProjectSection
 	ProjectSection(SolutionItems) = preProject
 		..\..\build\buildversion.xml = ..\..\build\buildversion.xml
-		..\..\Commons.build = ..\..\Commons.build
-		..\..\build\Commons.Doc.include.xml = ..\..\build\Commons.Doc.include.xml
-		..\..\build\Commons.include.xml = ..\..\build\Commons.include.xml
+		..\..\Remotion.build = ..\..\Remotion.build
+		..\..\build\Remotion.Doc.include.xml = ..\..\build\Remotion.Doc.include.xml
+		..\..\build\Remotion.include.xml = ..\..\build\Remotion.include.xml
 		..\..\build\properties.include.xml = ..\..\build\properties.include.xml
 	EndProjectSection
 	ProjectSection(FolderStartupServices) = postProject

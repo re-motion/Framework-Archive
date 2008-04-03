@@ -1,10 +1,10 @@
 using System;
 using System.IO;
 using System.Xml;
-using Rubicon.Configuration;
-using Rubicon.Utilities;
+using Remotion.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader
+namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader
 {
   public static class LoaderUtility
   {

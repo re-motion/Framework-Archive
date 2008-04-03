@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   /// <summary>
   /// Defines how the <see cref="TypeFactory"/> and <see cref="ObjectFactory"/> behave when asked to generate a concrete type for a target

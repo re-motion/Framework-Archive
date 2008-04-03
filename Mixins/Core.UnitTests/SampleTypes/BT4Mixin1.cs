@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rubicon.Mixins.UnitTests.SampleTypes
+namespace Remotion.Mixins.UnitTests.SampleTypes
 {
   // no attributes
   public class BT4Mixin1 : Mixin<BaseType4, IBaseType4>

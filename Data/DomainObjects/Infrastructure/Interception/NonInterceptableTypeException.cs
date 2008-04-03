@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Data.DomainObjects;
+using Remotion.Data.DomainObjects;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
+namespace Remotion.Data.DomainObjects.Infrastructure.Interception
 {
   /// <summary>
   /// This exception is thrown when the property interception mechanism cannot be applied to a specific <see cref="DomainObject"/> type

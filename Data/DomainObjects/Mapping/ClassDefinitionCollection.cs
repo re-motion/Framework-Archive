@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Rubicon.Collections;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Mapping
+namespace Remotion.Data.DomainObjects.Mapping
 {
 [Serializable]
 public class ClassDefinitionCollection : CommonCollection

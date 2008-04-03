@@ -1,9 +1,9 @@
 using System;
 using System.Web.UI;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Utilities;
+using Remotion.Development.UnitTesting;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.UnitTests.UI.Controls
+namespace Remotion.Web.UnitTests.UI.Controls
 {
 
 public class ControlInvoker

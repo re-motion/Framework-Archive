@@ -1,9 +1,9 @@
 using System;
 using System.Globalization;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence
+namespace Remotion.Data.DomainObjects.Persistence
 {
   public class ValueConverterBase
   {

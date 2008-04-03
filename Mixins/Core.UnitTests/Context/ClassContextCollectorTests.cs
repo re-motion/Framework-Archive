@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Collections;
-using Rubicon.Mixins.Context;
+using Remotion.Collections;
+using Remotion.Mixins.Context;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.UnitTests.Context
+namespace Remotion.Mixins.UnitTests.Context
 {
   [TestFixture]
   public class ClassContextCollectorTests

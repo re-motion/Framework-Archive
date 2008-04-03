@@ -4,7 +4,7 @@ using System.Text;
 
 #pragma warning disable 0693
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.SampleTypes
+namespace Remotion.Mixins.UnitTests.CodeGeneration.SampleTypes
 {
   public interface IGeneric<T>
   {

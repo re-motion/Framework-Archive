@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
  
   /// <summary>

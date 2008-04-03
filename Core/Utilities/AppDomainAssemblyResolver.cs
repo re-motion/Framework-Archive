@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
   /// <summary>
   /// Helper class for resolving assemblies when executing code in a separate <see cref="AppDomain"/>.

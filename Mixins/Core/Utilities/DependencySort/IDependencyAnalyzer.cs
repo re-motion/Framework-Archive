@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Rubicon.Mixins.Utilities.DependencySort
+namespace Remotion.Mixins.Utilities.DependencySort
 {
   public interface IDependencyAnalyzer<T>
   {

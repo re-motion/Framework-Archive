@@ -5,6 +5,6 @@
 
 namespace $PROJECT_ROOTNAMESPACE$.UI {
     public partial class NavigationTabs {
-        protected Rubicon.Web.UI.Controls.TabbedMenu TheTabbedMenu;
+        protected Remotion.Web.UI.Controls.TabbedMenu TheTabbedMenu;
     }
 }

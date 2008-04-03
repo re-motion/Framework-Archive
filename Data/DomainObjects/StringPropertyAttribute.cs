@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Apply the <see cref="StringPropertyAttribute"/> to properties of type <see cref="string"/>.

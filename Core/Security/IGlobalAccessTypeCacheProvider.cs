@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Collections;
+using Remotion.Collections;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   /// <summary>
   /// Cache for the <see cref="AccessType"/> array, using the <see cref="SecurityContext"/> and the user name (<see cref="string"/>) as key.

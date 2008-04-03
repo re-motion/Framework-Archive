@@ -8,7 +8,7 @@
 
 using System;
 
-namespace Rubicon.ObjectBinding.Web.CodeGenerator
+namespace Remotion.ObjectBinding.Web.CodeGenerator
 {
 	public partial class UiGenerator
 	{

@@ -1,13 +1,13 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.Transaction;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.Transaction;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 {
   [TestFixture]
   public class SerializationTest : SerializationBaseTest

@@ -4,7 +4,7 @@ using System.Web.Caching;
 using System.Web.SessionState;
 using System.Web.UI;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 public interface IUserControl: ITemplateControl, IAttributeAccessor, IUserControlDesignerAccessor

@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Forms.Design;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Design
+namespace Remotion.ObjectBinding.Design
 {
   /// <summary>
   ///   Editor applied to the string property used to set the 

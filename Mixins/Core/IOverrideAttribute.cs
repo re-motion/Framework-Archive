@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   public interface IOverrideAttribute
   {

@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
-using Rubicon.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
   internal class BindableDomainObjectPropertyFinder : ReflectionBasedPropertyFinder
   {

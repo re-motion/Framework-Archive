@@ -1,10 +1,10 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
-using Rubicon.ObjectBinding;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
 /// <summary>
 /// A <see cref="DomainObject"/> that supports 2-way data binding of user controls.
@@ -62,7 +62,7 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   /// Gets a <b>BindableDomainObject</b> that is already loaded or attempts to load it from the datasource.
   /// </summary>
   /// <param name="id">The <see cref="ObjectID"/> of the <b>BindableDomainObject</b> that is loaded.</param>
-  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that is used to load the <b>BindableDomainObject</b>.</param>
+  /// <param name="clientTransaction">The <see cref="Remotion.Data.DomainObjects.ClientTransaction"/> that is used to load the <b>BindableDomainObject</b>.</param>
   /// <returns>The <b>BindableDomainObject</b> with the specified <paramref name="id"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="id"/> or <paramref name="clientTransaction"/>is <see langword="null"/>.</exception>
   /// <exception cref="Persistence.StorageProviderException">
@@ -88,7 +88,7 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   /// Gets a <b>BindableDomainObject</b> that is already loaded or attempts to load it from the datasource.
   /// </summary>
   /// <param name="id">The <see cref="ObjectID"/> of the <b>BindableDomainObject</b> that is loaded.</param>
-  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that us used to load the <b>BindableDomainObject</b>.</param>
+  /// <param name="clientTransaction">The <see cref="Remotion.Data.DomainObjects.ClientTransaction"/> that us used to load the <b>BindableDomainObject</b>.</param>
   /// <param name="includeDeleted">Indicates if the method should return <b>BindableDomainObject</b>s that are already deleted.</param>
   /// <returns>The <b>BindableDomainObject</b> with the specified <paramref name="id"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="id"/> or <paramref name="clientTransaction"/>is <see langword="null"/>.</exception>
@@ -155,7 +155,7 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   /// <summary>
   /// Initializes a new <see cref="BindableDomainObject"/>.
   /// </summary>
-  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <see cref="BindableDomainObject"/>
+  /// <param name="clientTransaction">The <see cref="Remotion.Data.DomainObjects.ClientTransaction"/> the <see cref="BindableDomainObject"/>
 	/// should be part of. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> is <see langword="null"/>.</exception>
   [Obsolete ("This constructor is obsolete, use the BindableDomainObject() one in conjunction with ClientTransactionScope instead.", true)]
@@ -244,7 +244,7 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   /// <param name="property">The property to return. Must not be <see langword="null"/>.</param>
   /// <returns>The value of the property.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="property"/> is not derived from <see cref="BaseProperty"/>.</exception>
+  /// <exception cref="Remotion.Utilities.ArgumentTypeException"><paramref name="property"/> is not derived from <see cref="BaseProperty"/>.</exception>
   object IBusinessObject.GetProperty (IBusinessObjectProperty property)
   {
     return _objectReflector.GetProperty (property);
@@ -271,7 +271,7 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   /// <param name="property">The property to return. Must not be <see langword="null"/>.</param>
   /// <param name="value">The new value for the property.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="property"/> is not derived from <see cref="BaseProperty"/>.</exception>
+  /// <exception cref="Remotion.Utilities.ArgumentTypeException"><paramref name="property"/> is not derived from <see cref="BaseProperty"/>.</exception>
   /// <exception cref="ArgumentException"><paramref name="value"/> is of a type that is incompatible for the <paramref name="property"/>.</exception>
   void IBusinessObject.SetProperty (IBusinessObjectProperty property, object value)
   {

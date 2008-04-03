@@ -4,10 +4,10 @@ using System.Text;
 using System.Windows.Forms;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.ObjectBinding.Design.BindableObject;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding.Design.BindableObject;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.Design.BindableObject
+namespace Remotion.ObjectBinding.UnitTests.Core.Design.BindableObject
 {
   [TestFixture]
   public class TypeTreeViewControllerTest

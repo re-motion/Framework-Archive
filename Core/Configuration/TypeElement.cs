@@ -1,7 +1,7 @@
 using System;
 using System.Configuration;
 
-namespace Rubicon.Configuration
+namespace Remotion.Configuration
 {
   public class TypeElement<TBase> : ConfigurationElement
       where TBase : class
@@ -13,7 +13,7 @@ namespace Rubicon.Configuration
           "type",
           typeof (Type),
           defaultValue,
-          new Rubicon.Utilities.TypeNameConverter (),
+          new Remotion.Utilities.TypeNameConverter (),
           new SubclassTypeValidator (typeof (TBase)),
           ConfigurationPropertyOptions.IsRequired);
     }

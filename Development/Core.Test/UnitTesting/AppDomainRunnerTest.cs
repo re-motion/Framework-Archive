@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
+using Remotion.Development.UnitTesting;
 using System.Reflection;
 
-namespace Rubicon.Development.UnitTests.UnitTesting
+namespace Remotion.Development.UnitTests.UnitTesting
 {
   [TestFixture]
   public class AppDomainRunnerTest

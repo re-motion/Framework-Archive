@@ -2,9 +2,9 @@ using System;
 using System.Data.SqlClient;
 using System.IO;
 using System.Text;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Development.UnitTesting.Data.SqlClient
+namespace Remotion.Development.UnitTesting.Data.SqlClient
 {
   /// <summary>Use the <see cref="DatabaseAgent"/> for setting up the database during unit testing.</summary>
   public class DatabaseAgent

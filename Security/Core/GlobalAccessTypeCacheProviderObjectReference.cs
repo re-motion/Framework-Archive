@@ -1,10 +1,10 @@
 using System;
 using System.Configuration.Provider;
 using System.Runtime.Serialization;
-using Rubicon.Security.Configuration;
-using Rubicon.Utilities;
+using Remotion.Security.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   [Serializable]
   internal class GlobalAccessTypeCacheProviderObjectReference : ISerializable, IObjectReference

@@ -13,13 +13,13 @@ using System.Text;
 
 using log4net;
 
-using Rubicon.Globalization;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
-using Rubicon.Web.UI;
-using Rubicon.Web;
-using Rubicon.Collections;
+using Remotion.Globalization;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
+using Remotion.Web.UI;
+using Remotion.Web;
+using Remotion.Collections;
 
 namespace FormGrid.Test
 {
@@ -39,13 +39,13 @@ public class WebForm1 :
 
   private AutoInitHashtable _listOfFormGridRowInfos =
       new AutoInitHashtable (typeof (FormGridRowInfoCollection));
-  protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer1;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager1;
+  protected Remotion.Web.UI.Controls.ValidationStateViewer ValidationStateViewer1;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager1;
   private AutoInitHashtable _listOfHiddenRows = 
       new AutoInitHashtable (typeof (StringCollection));
 
   protected HtmlGenericControl HtmlHead;
-  protected Rubicon.Web.UI.Controls.FormGridLabel FormGridLabel;
+  protected Remotion.Web.UI.Controls.FormGridLabel FormGridLabel;
   protected System.Web.UI.WebControls.Label ToBeHiddenLabel;
   protected System.Web.UI.WebControls.TextBox ToBeHiddenTextBox;
   protected System.Web.UI.WebControls.DropDownList DropDownList2;
@@ -68,10 +68,10 @@ public class WebForm1 :
   protected System.Web.UI.WebControls.CompareValidator CompareValidator2;
   protected System.Web.UI.WebControls.CompareValidator CompareValidator3;
   protected System.Web.UI.WebControls.CompareValidator Comparevalidator4;
-  protected Rubicon.Web.UI.Controls.FormGridManager GlobalFormGridManager;
+  protected Remotion.Web.UI.Controls.FormGridManager GlobalFormGridManager;
   protected System.Web.UI.WebControls.Label Label1;
-  protected Rubicon.Web.UI.Controls.FormGridLabel AddressLabel;
-  protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
+  protected Remotion.Web.UI.Controls.FormGridLabel AddressLabel;
+  protected Remotion.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
 	
   override protected void OnLoad(System.EventArgs e)
 	{

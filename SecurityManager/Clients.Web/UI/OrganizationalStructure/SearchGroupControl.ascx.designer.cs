@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
+namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure {
     
     
     /// <summary>
@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
         
         /// <summary>
         /// FormGridManager control.
@@ -35,7 +35,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+        protected global::Remotion.Web.UI.Controls.FormGridManager FormGridManager;
         
         /// <summary>
         /// FormGrid control.
@@ -53,7 +53,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.SmartLabel GroupListLabel;
+        protected global::Remotion.Web.UI.Controls.SmartLabel GroupListLabel;
         
         /// <summary>
         /// GroupList control.
@@ -62,6 +62,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocList GroupList;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocList GroupList;
     }
 }

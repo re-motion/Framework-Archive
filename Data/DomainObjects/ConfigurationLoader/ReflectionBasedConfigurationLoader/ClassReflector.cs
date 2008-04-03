@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
-using TypeUtility=Rubicon.Utilities.TypeUtility;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Reflection;
+using Remotion.Utilities;
+using TypeUtility=Remotion.Utilities.TypeUtility;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
+namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   /// <summary>
   /// The <see cref="ClassReflector"/> is used to build a <see cref="ReflectionBasedClassDefinition"/> and the <see cref="RelationDefinition"/> 

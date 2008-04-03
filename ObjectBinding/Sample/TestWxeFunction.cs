@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.ObjectBinding.Sample
+namespace Remotion.ObjectBinding.Sample
 {
   public class TestWxeFunction : WxeFunction
   {

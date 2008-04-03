@@ -2,9 +2,9 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing.Design;
-using Rubicon.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.Web.UI.Design
+namespace Remotion.Web.UI.Design
 {
 public class TabbedMenuDesigner: WebControlDesigner, IServiceProvider
 {

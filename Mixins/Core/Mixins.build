@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Rubicon.Mixins">
+<project xmlns="nant-schema" name="Remotion.Mixins">
 
   <target name="build" description="perform a build">
     <csc  target="library"
@@ -30,7 +30,7 @@
       </sources>
       <references failonempty="true">
         <include asis="true" name="${build.outputdir}/Castle.DynamicProxy.dll"/>
-        <include asis="true" name="${build.outputdir}/Rubicon.Core.dll"/>
+        <include asis="true" name="${build.outputdir}/Remotion.Core.dll"/>
         <include asis="true" name="System.dll"/>
       </references>
     </csc>

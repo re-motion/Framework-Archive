@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
 	/// <summary>
 	/// Provides a default implementation of the <see cref="IConsoleManager"/> interface for the console represented by the <see cref="Console"/>

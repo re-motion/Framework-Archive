@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Security;
+using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Security;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain
+namespace Remotion.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain
 {
   [Instantiable]
   [Serializable]

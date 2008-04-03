@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
   public class ClassDefinitionWithNullEndPointTest : StandardMappingTest
@@ -34,7 +34,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       _clientClass = TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Client");
       _locationClass = TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Location");
 
-      RelationDefinition relation = TestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
+      RelationDefinition relation = TestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
       _clientEndPoint = (AnonymousRelationEndPointDefinition) relation.EndPointDefinitions[0];
       _locationEndPoint = (RelationEndPointDefinition) relation.EndPointDefinitions[1];
     }
@@ -42,8 +42,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetRelationDefinitions ()
     {
-      Assert.IsTrue (_locationClass.GetRelationDefinitions ().Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"));
-      Assert.IsFalse (_clientClass.GetRelationDefinitions ().Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"));
+      Assert.IsTrue (_locationClass.GetRelationDefinitions ().Contains ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client"));
+      Assert.IsFalse (_clientClass.GetRelationDefinitions ().Contains ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client"));
     }
 
     [Test]

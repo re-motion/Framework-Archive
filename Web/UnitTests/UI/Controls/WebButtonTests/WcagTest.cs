@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Web.UnitTests.Configuration;
+using Remotion.Web.UnitTests.Configuration;
 
-namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
+namespace Remotion.Web.UnitTests.UI.Controls.WebButtonTests
 {
 
 [TestFixture]

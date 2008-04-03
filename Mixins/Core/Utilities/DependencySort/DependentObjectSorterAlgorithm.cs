@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Rubicon.Collections;
-using Rubicon.Text;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Text;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Utilities.DependencySort
+namespace Remotion.Mixins.Utilities.DependencySort
 {
   public class DependentObjectSorterAlgorithm<T>
   {

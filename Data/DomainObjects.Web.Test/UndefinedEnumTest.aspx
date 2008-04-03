@@ -1,4 +1,4 @@
-<%@ Page language="c#" Codebehind="UndefinedEnumTest.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.Data.DomainObjects.Web.Test.UndefinedEnumTestPage" %>
+<%@ Page language="c#" Codebehind="UndefinedEnumTest.aspx.cs" AutoEventWireup="false" Inherits="Remotion.Data.DomainObjects.Web.Test.UndefinedEnumTestPage" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
@@ -8,7 +8,7 @@
     <meta content="C#" name="CODE_LANGUAGE">
     <meta content="JavaScript" name="vs_defaultClientScript">
     <meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
-    <rubicon:htmlheadcontents id="HtmlHeadContents" runat="server"></rubicon:htmlheadcontents>
+    <remotion:htmlheadcontents id="HtmlHeadContents" runat="server"></remotion:htmlheadcontents>
   </HEAD>
   <body>
     <form id="SearchObjectForm" method="post" runat="server">
@@ -16,25 +16,25 @@
       <TABLE id="SearchFormGrid" cellSpacing="0" cellPadding="0" width="300" border="0" runat="server">
         <TR>
           <TD style="WIDTH: 214px">Neues Objekt (1):</TD>
-          <TD style="WIDTH: 403px"><rubicon:bocenumvalue id="NewObjectEnumProperty" runat="server" DataSourceControl="NewObjectWithUndefinedEnumDataSource" PropertyIdentifier="UndefinedEnum">
+          <TD style="WIDTH: 403px"><remotion:bocenumvalue id="NewObjectEnumProperty" runat="server" DataSourceControl="NewObjectWithUndefinedEnumDataSource" PropertyIdentifier="UndefinedEnum">
 <ListControlStyle RadioButtonListCellSpacing="" RadioButtonListCellPadding="">
 </ListControlStyle>
-            </rubicon:bocenumvalue></TD>
+            </remotion:bocenumvalue></TD>
         </TR>
         <TR>
           <TD style="WIDTH: 214px"> Bestehendes Objekt (2):</TD>
-          <TD style="WIDTH: 403px"><rubicon:bocenumvalue id="ExistingObjectEnumProperty" runat="server" DataSourceControl="ExistingObjectWithUndefinedEnumDataSource" PropertyIdentifier="UndefinedEnum">
+          <TD style="WIDTH: 403px"><remotion:bocenumvalue id="ExistingObjectEnumProperty" runat="server" DataSourceControl="ExistingObjectWithUndefinedEnumDataSource" PropertyIdentifier="UndefinedEnum">
 <ListControlStyle RadioButtonListCellSpacing="" RadioButtonListCellPadding="">
 </ListControlStyle>
-            </rubicon:bocenumvalue></TD>
+            </remotion:bocenumvalue></TD>
         </TR>
         <TR>
           <TD style="WIDTH: 214px">
       <P>Search Objekt (3):</P></TD>
-          <TD style="WIDTH: 403px"><rubicon:bocenumvalue id="SearchObjectEnumProperty" runat="server" DataSourceControl="SearchObjectWithUndefinedEnumDataSource" PropertyIdentifier="UndefinedEnum" Required="False">
+          <TD style="WIDTH: 403px"><remotion:bocenumvalue id="SearchObjectEnumProperty" runat="server" DataSourceControl="SearchObjectWithUndefinedEnumDataSource" PropertyIdentifier="UndefinedEnum" Required="False">
 <ListControlStyle RadioButtonListCellSpacing="" RadioButtonListCellPadding="">
 </ListControlStyle>
-            </rubicon:bocenumvalue></TD>
+            </remotion:bocenumvalue></TD>
         </TR>
       </TABLE>
 <P>Visuelle Checks des gerenderten BocEnumValue 
@@ -52,7 +52,7 @@ Controls:</P>
 <P>Für den&nbsp;Abschluss des Tests muss "Value1" bei (1) ausgewählt werden und 
 beim Klicken auf "Test fortsetzen" darf keine Exception kommen.</P>
 <P>
-      <asp:button id="TestButton" runat="server" Text="Test fortsetzten"></asp:button><rubicon:formgridmanager id="FormGridManager" runat="server"></rubicon:formgridmanager><rubicon:BindableObjectDataSourceControl id="ExistingObjectWithUndefinedEnumDataSource" runat="server" Type="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithUndefinedEnum, Rubicon.Data.DomainObjects.Web.Test"></rubicon:BindableObjectDataSourceControl><rubicon:BindableObjectDataSourceControl id="NewObjectWithUndefinedEnumDataSource" runat="server" Type="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithUndefinedEnum, Rubicon.Data.DomainObjects.Web.Test"></rubicon:BindableObjectDataSourceControl>
-      <rubicon:BindableObjectDataSourceControl id="SearchObjectWithUndefinedEnumDataSource" runat="server" Type="Rubicon.Data.DomainObjects.Web.Test.Domain.SearchObjectWithUndefinedEnum, Rubicon.Data.DomainObjects.Web.Test"></rubicon:BindableObjectDataSourceControl></P></form>
+      <asp:button id="TestButton" runat="server" Text="Test fortsetzten"></asp:button><remotion:formgridmanager id="FormGridManager" runat="server"></remotion:formgridmanager><remotion:BindableObjectDataSourceControl id="ExistingObjectWithUndefinedEnumDataSource" runat="server" Type="Remotion.Data.DomainObjects.Web.Test.Domain.ClassWithUndefinedEnum, Remotion.Data.DomainObjects.Web.Test"></remotion:BindableObjectDataSourceControl><remotion:BindableObjectDataSourceControl id="NewObjectWithUndefinedEnumDataSource" runat="server" Type="Remotion.Data.DomainObjects.Web.Test.Domain.ClassWithUndefinedEnum, Remotion.Data.DomainObjects.Web.Test"></remotion:BindableObjectDataSourceControl>
+      <remotion:BindableObjectDataSourceControl id="SearchObjectWithUndefinedEnumDataSource" runat="server" Type="Remotion.Data.DomainObjects.Web.Test.Domain.SearchObjectWithUndefinedEnum, Remotion.Data.DomainObjects.Web.Test"></remotion:BindableObjectDataSourceControl></P></form>
   </body>
 </HTML>

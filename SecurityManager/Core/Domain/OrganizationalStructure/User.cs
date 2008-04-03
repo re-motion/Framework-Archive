@@ -2,18 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Remoting.Messaging;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Globalization;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Globalization;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.Security;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
+namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.User")]
+  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.User")]
   [PermanentGuid ("759DA370-E2C4-4221-B878-BE378C916042")]
   [Instantiable]
   [DBTable]
@@ -60,7 +60,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       ArgumentUtility.CheckNotNull ("userName", userName);
 
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByUserName");
+      Query query = new Query ("Remotion.SecurityManager.Domain.OrganizationalStructure.User.FindByUserName");
       query.Parameters.Add ("@userName", userName);
 
       DomainObjectCollection users = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
@@ -74,7 +74,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       ArgumentUtility.CheckNotNull ("tenantID", tenantID);
 
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByTenantID");
+      Query query = new Query ("Remotion.SecurityManager.Domain.OrganizationalStructure.User.FindByTenantID");
       query.Parameters.Add ("@tenantID", tenantID);
 
       return ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);

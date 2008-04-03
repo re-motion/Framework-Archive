@@ -1,13 +1,13 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using NUnit.Framework.SyntaxHelpers;
 using System.Collections.Generic;
-using Rubicon.Collections;
+using Remotion.Collections;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
   public class DomainObjectGraphTraverserTest : ClientTransactionBaseTest

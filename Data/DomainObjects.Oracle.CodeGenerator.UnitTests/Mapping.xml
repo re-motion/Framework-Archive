@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\Schemas\Mapping.xsd">
 	<classes>
 		<class id="Company">
-			<type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Company, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Company, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
 			<storageProviderID>FirstStorageProvider</storageProviderID>
 			<properties>
 				<property name="Name">
@@ -27,12 +27,12 @@
 		</class>
     
 		<class id="Customer" baseClass="Company">
-			<type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Customer, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
 			<entity name="Customer"/>
 			<storageProviderID>FirstStorageProvider</storageProviderID>
 			<properties>
 				<property name="Type">
-					<type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+					<type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Customer+CustomerType, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
 					<column>CustomerType</column>
 				</property>
         <property name="PropertyWithIdenticalNameInDifferentInheritanceBranches">
@@ -41,7 +41,7 @@
           <maxLength>100</maxLength>
         </property>
 				<relationProperty name="Orders" relationID="CustomerToOrder" cardinality="many" isMandatory="false">
-					<collectionType>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</collectionType>
+					<collectionType>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</collectionType>
 					<sortExpression>Number ASC</sortExpression>
 				</relationProperty>
         <relationProperty name="PrimaryOfficial" relationID="OfficialToCustomer" cardinality="one" isMandatory="true">
@@ -52,7 +52,7 @@
 		</class>
 
     <class id="Partner" baseClass="Company">
-      <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Partner, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Partner, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
         <property name="Description">
@@ -69,7 +69,7 @@
     </class>
 
     <class id="DevelopmentPartner" baseClass="Partner">
-      <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.DevelopmentPartner, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.DevelopmentPartner, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
       <entity name="DevelopmentPartner"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -82,13 +82,13 @@
     </class>
 
     <class id="AbstractWithoutConcreteClass" baseClass="Company">
-      <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.AbstractWithoutConcreteClass, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.AbstractWithoutConcreteClass, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties/>
     </class>
     
     <class id="Address">
-      <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Address, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Address, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
       <entity name="Address"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -112,7 +112,7 @@
     </class>
     
     <class id="Order">
-      <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Order, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
       <entity name="Order"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -121,7 +121,7 @@
           <column>Number</column>
         </property>
         <property name="Priority">
-          <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.OrderPriority, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+          <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.OrderPriority, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
           <column>Priority</column>
         </property>
         <relationProperty name="Customer" relationID="CustomerToOrder" cardinality="one" isMandatory="true">
@@ -135,7 +135,7 @@
     </class>
 
     <class id="OrderItem">
-      <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.OrderItem, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.OrderItem, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
       <entity name="OrderItem"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -155,7 +155,7 @@
     </class>
 
     <class id="Official">
-      <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Official, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Official, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
       <entity name="Official"/>
       <storageProviderID>SecondStorageProvider</storageProviderID>
       <properties>
@@ -165,22 +165,22 @@
           <maxLength>100</maxLength>
         </property>
         <property name="ResponsibleForOrderPriority">
-          <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.OrderPriority, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+          <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.OrderPriority, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
           <column>ResponsibleForOrderPriority</column>
         </property>
         <property name="ResponsibleForCustomerType">
-          <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+          <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Customer+CustomerType, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
           <column>ResponsibleForCustomerType</column>
         </property>
 
         <relationProperty name="Orders" relationID="OfficialToOrder" cardinality="many" isMandatory="false">
-          <collectionType>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</collectionType>
+          <collectionType>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</collectionType>
         </relationProperty>
       </properties>
     </class>
 
     <class id="SpecialOfficial" baseClass="Official">
-      <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Official, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Official, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
       <storageProviderID>SecondStorageProvider</storageProviderID>
       <properties>
         <property name="Speciality">
@@ -192,7 +192,7 @@
     </class>
     
     <class id="Ceo">
-      <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Ceo, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Ceo, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
       <entity name="Ceo"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -208,7 +208,7 @@
     </class>
 
     <class id="ClassWithBoolean">
-      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.ClassWithBoolean, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.ClassWithBoolean, Remotion.Data.DomainObjects.CodeGenerator.UnitTests</type>
       <entity name="ClassWithBoolean"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -220,7 +220,7 @@
     </class>
 
     <class id="ClassWithAllDataTypes">
-      <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.ClassWithAllDataTypes, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
       <entity name="TableWithAllDataTypes"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -249,7 +249,7 @@
           <column>Double</column>
         </property>
         <property name="EnumProperty">
-          <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+          <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.ClassWithAllDataTypes+EnumType, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
           <column>Enum</column>
         </property>
         <property name="GuidProperty">
@@ -407,7 +407,7 @@
     </class>
 
     <class id="Employee">
-      <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Employee, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.Employee, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
       <entity name="Employee"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -425,7 +425,7 @@
     </class>
 
     <class id="ClassWithRelations">
-      <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.ClassWithRelations, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.ClassWithRelations, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
       <entity name="ClassWithRelations"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -437,7 +437,7 @@
     </class>
     
     <class id="ConcreteClass">
-      <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.ConcreteClass, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.ConcreteClass, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
       <entity name="ConcreteClass"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -450,7 +450,7 @@
     </class>
 
     <class id="DerivedClass" baseClass="ConcreteClass">
-      <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.DerivedClass, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.DerivedClass, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
         <property name="PropertyInDerivedClass">
@@ -462,7 +462,7 @@
     </class>
 
     <class id="SecondDerivedClass" baseClass="ConcreteClass">
-      <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.SecondDerivedClass, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.SecondDerivedClass, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
       <entity name="ConcreteClass"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -479,7 +479,7 @@
     </class>
 
     <class id="DerivedOfDerivedClass" baseClass="DerivedClass">
-      <type>Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.DerivedOfDerivedClass, Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.TestDomain.DerivedOfDerivedClass, Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests</type>
       <entity name="ConcreteClass"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>

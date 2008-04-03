@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Mixins;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
+namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
 {
   [CLSCompliant (false)]
   [Extends (typeof (ClassWithAllDataTypes), MixinTypeArguments = new Type[] { typeof (ClassWithAllDataTypes) })]

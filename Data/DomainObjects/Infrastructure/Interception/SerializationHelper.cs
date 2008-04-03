@@ -1,11 +1,11 @@
 using System;
 using System.Runtime.Serialization;
 using System.Reflection;
-using Rubicon.CodeGeneration;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Utilities;
+using Remotion.CodeGeneration;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
+namespace Remotion.Data.DomainObjects.Infrastructure.Interception
 {
   [Serializable]
   public class SerializationHelper : IObjectReference, ISerializable, IDeserializationCallback

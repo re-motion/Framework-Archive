@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
-using Rubicon.Collections;
-using Rubicon.ObjectBinding.Web;
+using Remotion.Collections;
+using Remotion.ObjectBinding.Web;
 
-namespace Rubicon.ObjectBinding.Reflection.Legacy
+namespace Remotion.ObjectBinding.Reflection.Legacy
 {
 
 public class ReflectionBusinessObjectProvider: BusinessObjectProvider

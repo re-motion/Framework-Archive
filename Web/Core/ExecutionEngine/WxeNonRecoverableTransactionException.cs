@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
   public class WxeNonRecoverableTransactionException : Exception
   {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary>
   /// Specifies that only the date component of a <see cref="DateTime"/> property should be used by the <b>ObjectBinding</b> infrastructure.

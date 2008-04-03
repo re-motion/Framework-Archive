@@ -7,7 +7,7 @@
     
   <classes>
 		<class id="Company">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Company, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Company, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Company" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -19,7 +19,7 @@
 			</properties>
 		</class>
 		<class id="Customer" baseClass="Company">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Company" />
 			<storageProviderID>OtherStorageProvider</storageProviderID>
 			<properties>
@@ -29,7 +29,7 @@
 					<nullable>true</nullable>					
 				</property>
 				<property name="Type">
-					<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+					<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer+CustomerType, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 					<column>CustomerType</column>
 				</property>
 			</properties>

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Validation;
-using Rubicon.Utilities;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Validation;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Validation
+namespace Remotion.Mixins.Validation
 {
   public static class ConsoleDumper
   {

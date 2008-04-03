@@ -6,22 +6,22 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Globalization;
-using Rubicon.Logging;
-using Rubicon.NullableValueTypes;
-using Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
-using Rubicon.ObjectBinding.Web.UI.Design;
-using Rubicon.Security;
-using Rubicon.Utilities;
-using Rubicon.Web;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Globalization;
+using Remotion.Logging;
+using Remotion.NullableValueTypes;
+using Remotion.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
+using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Security;
+using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 using System.Collections.Generic;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> 
@@ -266,7 +266,7 @@ public class BocList:
   ///   <see cref="M:IResourceManager.GetString (Enum)">IResourceManager.GetString (Enum)</see>. 
   /// </remarks>
   [ResourceIdentifiers]
-  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocList")]
+  [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocList")]
   public enum ResourceIdentifier
   {
     EmptyListMessage,
@@ -5755,7 +5755,7 @@ public class BocList:
   [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
   [DefaultValue ((string) null)]
   [PersistenceMode (PersistenceMode.Attribute)]
-  [TypeConverter (typeof (Rubicon.Web.UI.Design.StringArrayConverter))]
+  [TypeConverter (typeof (Remotion.Web.UI.Design.StringArrayConverter))]
   public string[] HiddenMenuItems 
   {
     get 

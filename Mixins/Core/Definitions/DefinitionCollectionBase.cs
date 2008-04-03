@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   public abstract class DefinitionCollectionBase<TKey, TValue> : IEnumerable<TValue>
       where TValue : IVisitableDefinition

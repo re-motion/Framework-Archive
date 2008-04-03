@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting.Data.SqlClient;
+using Remotion.Development.UnitTesting.Data.SqlClient;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
+namespace Remotion.Data.DomainObjects.UnitTests.TableInheritance
 {
   [SetUpFixture]
   public class TableInheritanceSetUpFixture

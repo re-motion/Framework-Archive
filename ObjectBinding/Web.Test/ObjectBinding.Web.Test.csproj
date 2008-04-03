@@ -405,8 +405,8 @@
     <Content Include="Images\DeleteItemDisabled.gif" />
     <Content Include="Images\EditItem.gif" />
     <Content Include="Images\NullIcon.gif" />
-    <Content Include="Images\Rubicon.ObjectBinding.Sample.Job.gif" />
-    <Content Include="Images\Rubicon.ObjectBinding.Sample.Person.gif" />
+    <Content Include="Images\Remotion.ObjectBinding.Sample.Job.gif" />
+    <Content Include="Images\Remotion.ObjectBinding.Sample.Person.gif" />
     <Content Include="IndividualControlTests\AutoCompleteService.asmx" />
     <Content Include="IndividualControlTests\BocAutoCompleteReferenceValueUserControl.ascx" />
     <Content Include="IndividualControlTests\BocBooleanValueUserControl.ascx">

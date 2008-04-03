@@ -1,12 +1,12 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.Context;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Mixins.Context.FluentBuilders;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Utilities;
+using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.UnitTests.Context.ClassContextTests
+namespace Remotion.Mixins.UnitTests.Context.ClassContextTests
 {
   [TestFixture]
   public class ClassContextInheritanceTests

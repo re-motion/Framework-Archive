@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Utilities;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.AccessControl
+namespace Remotion.SecurityManager.Domain.AccessControl
 {
   public sealed class SecurityToken
   {

@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Rubicon.Data.DomainObjects.UnitTests
+namespace Remotion.Data.DomainObjects.UnitTests
 {
   public class SerializationBaseTest : ClientTransactionBaseTest
   {

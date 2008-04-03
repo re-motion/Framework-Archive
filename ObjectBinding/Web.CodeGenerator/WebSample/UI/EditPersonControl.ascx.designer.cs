@@ -11,18 +11,18 @@
 namespace WebSample.UI {
     
     public partial class EditPersonControl {
-        protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-        protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
+        protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+        protected Remotion.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
         protected System.Web.UI.HtmlControls.HtmlTable PersonFormGrid;
-        protected Rubicon.Web.UI.Controls.SmartLabel FirstNameLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-        protected Rubicon.Web.UI.Controls.SmartLabel LastNameLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-        protected Rubicon.Web.UI.Controls.SmartLabel EMailAddressLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue EMailAddressField;
-        protected Rubicon.Web.UI.Controls.SmartLabel LocationLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue LocationField;
-        protected Rubicon.Web.UI.Controls.SmartLabel PhoneNumbersLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocList PhoneNumbersField;
+        protected Remotion.Web.UI.Controls.SmartLabel FirstNameLabel;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+        protected Remotion.Web.UI.Controls.SmartLabel LastNameLabel;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+        protected Remotion.Web.UI.Controls.SmartLabel EMailAddressLabel;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue EMailAddressField;
+        protected Remotion.Web.UI.Controls.SmartLabel LocationLabel;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue LocationField;
+        protected Remotion.Web.UI.Controls.SmartLabel PhoneNumbersLabel;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocList PhoneNumbersField;
     }
 }

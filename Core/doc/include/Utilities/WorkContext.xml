@@ -60,14 +60,14 @@ catch (Exception e)
   <EnableTracing>
     <remarks>
       The default value is <see langword="false"/>. You can change this value in your code, or use the 
-      "Rubicon.WorkContext.EnableTracing" 
+      "Remotion.WorkContext.EnableTracing" 
       appSettings key in your application's configuration file to set it to <see langword="true"/>.
     </remarks>
     <example>
       <code><![CDATA[
 <configuration>
   <appSettings>
-    <add key="Rubicon.WorkContext.EnableTracing" value="true" />
+    <add key="Remotion.WorkContext.EnableTracing" value="true" />
   </appSettings>
 </configuration>
       ]]></code>

@@ -1,10 +1,10 @@
 using System;
 using System.Data.SqlClient;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
   [TestFixture]
   public class SqlProviderTest : SqlProviderBaseTest

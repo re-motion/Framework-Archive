@@ -1,7 +1,7 @@
 using System;
 using System.Configuration;
 
-namespace Rubicon.Configuration
+namespace Remotion.Configuration
 {
   /// <summary>Base class for all configuration sections using the <see cref="ProviderHelperBase"/> to manage their provider sections.</summary>
   public abstract class ExtendedConfigurationSection: ConfigurationSection

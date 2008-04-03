@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
+namespace Remotion.Data.DomainObjects.UnitTests.TableInheritance
 {
   public class TableInheritanceConfiguration: BaseConfiguration
   {

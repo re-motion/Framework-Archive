@@ -1,16 +1,16 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Development.UnitTesting;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.Security;
-using Rubicon.Security.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Development.UnitTesting;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.Security;
+using Remotion.Security.Data.DomainObjects;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
+namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
   [TestFixture]
   public class TenantTest : DomainTest

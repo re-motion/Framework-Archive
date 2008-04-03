@@ -4,7 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 
-namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
 
 public class SqlProvider : RdbmsProvider

@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.SecurityManager.UnitTests.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.SecurityManager.UnitTests.Domain.AccessControl;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
+namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 {
   [TestFixture]
   public class SecurableClassValidationResultTest : DomainTest

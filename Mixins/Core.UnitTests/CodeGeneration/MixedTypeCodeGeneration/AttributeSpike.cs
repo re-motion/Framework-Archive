@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.MixedTypeCodeGeneration
+namespace Remotion.Mixins.UnitTests.CodeGeneration.MixedTypeCodeGeneration
 {
   [TestFixture]
   public class AttributeSpike

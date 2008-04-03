@@ -1,7 +1,7 @@
 using System;
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 {
 [Serializable]
 public class Order : TestDomainBase

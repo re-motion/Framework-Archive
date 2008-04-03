@@ -1,13 +1,13 @@
 using System;
-using Rubicon.Security.Metadata;
+using Remotion.Security.Metadata;
 
-namespace Rubicon.Security.UnitTests.Core.Metadata
+namespace Remotion.Security.UnitTests.Core.Metadata
 {
 
   public static class AbstractRoles
   {
-    public static readonly EnumValueInfo Clerk = new EnumValueInfo ("Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain", "Clerk", 0);
-    public static readonly EnumValueInfo Secretary = new EnumValueInfo ("Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain", "Secretary", 1);
-    public static readonly EnumValueInfo Administrator = new EnumValueInfo ("Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRoles, Rubicon.Security.UnitTests.TestDomain", "Administrator", 0);
+    public static readonly EnumValueInfo Clerk = new EnumValueInfo ("Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain", "Clerk", 0);
+    public static readonly EnumValueInfo Secretary = new EnumValueInfo ("Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain", "Secretary", 1);
+    public static readonly EnumValueInfo Administrator = new EnumValueInfo ("Remotion.Security.UnitTests.TestDomain.SpecialAbstractRoles, Remotion.Security.UnitTests.TestDomain", "Administrator", 0);
   }
 }

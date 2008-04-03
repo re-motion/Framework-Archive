@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Rhino.Mocks.Constraints;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.MockConstraints
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.MockConstraints
 {
   public class ContainsConstraint : AbstractConstraint
   {

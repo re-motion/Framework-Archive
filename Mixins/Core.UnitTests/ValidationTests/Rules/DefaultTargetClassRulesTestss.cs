@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.UnitTests.ValidationTests.ValidationSampleTypes;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Mixins.Validation;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.ValidationTests.ValidationSampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Validation;
 
-namespace Rubicon.Mixins.UnitTests.ValidationTests.Rules
+namespace Remotion.Mixins.UnitTests.ValidationTests.Rules
 {
   [TestFixture]
   public class DefaultTargetClassRulesTests : ValidationTestBase
@@ -15,7 +15,7 @@ namespace Rubicon.Mixins.UnitTests.ValidationTests.Rules
     {
       TargetClassDefinition bc = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (DateTime));
       DefaultValidationLog log = Validator.Validate (bc);
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustNotBeSealed", log));
+      Assert.IsTrue (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustNotBeSealed", log));
       Assert.AreEqual (0, log.GetNumberOfWarnings ());
     }
 
@@ -33,7 +33,7 @@ namespace Rubicon.Mixins.UnitTests.ValidationTests.Rules
       TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (IBaseType2));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustNotBeAnInterface", log));
+      Assert.IsTrue (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustNotBeAnInterface", log));
     }
 
     [Test]
@@ -43,7 +43,7 @@ namespace Rubicon.Mixins.UnitTests.ValidationTests.Rules
           typeof (NullMixin));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustHavePublicOrProtectedCtor", log));
+      Assert.IsTrue (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustHavePublicOrProtectedCtor", log));
     }
 
 		[Test]
@@ -53,7 +53,7 @@ namespace Rubicon.Mixins.UnitTests.ValidationTests.Rules
 					typeof (NullMixin));
 			DefaultValidationLog log = Validator.Validate (definition);
 
-			Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustBePublic", log));
+			Assert.IsTrue (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustBePublic", log));
 		}
 
 		[Test]
@@ -63,7 +63,7 @@ namespace Rubicon.Mixins.UnitTests.ValidationTests.Rules
 					typeof (NullMixin));
 			DefaultValidationLog log = Validator.Validate (definition);
 
-			Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustBePublic", log));
+			Assert.IsTrue (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustBePublic", log));
 		}
 
 		[Test]

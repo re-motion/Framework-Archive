@@ -12,22 +12,22 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Collections;
 using System.Reflection;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Development;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Development;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.Reflection;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.CodeGenerator
+namespace Remotion.ObjectBinding.Web.CodeGenerator
 {
 	public partial class UiGenerator: IDisposable 
 	{
@@ -169,7 +169,7 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 				if (! type.IsClass)
 					continue;
 
-				if (! HasInterface(type, "Rubicon.ObjectBinding.IBusinessObject"))
+				if (! HasInterface(type, "Remotion.ObjectBinding.IBusinessObject"))
 					continue;
 
 				Type domainType = type;
@@ -569,7 +569,7 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 
 			foreach (PropertyBase property in properties)
 			{
-				if (! HasInterface(property.GetType(), "Rubicon.ObjectBinding.IBusinessObjectReferenceProperty") || isList != property.IsList)
+				if (! HasInterface(property.GetType(), "Remotion.ObjectBinding.IBusinessObjectReferenceProperty") || isList != property.IsList)
 					continue;
 
 			  Type itemType = property.IsList ? property.ListInfo.ItemType : property.PropertyType;

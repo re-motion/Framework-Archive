@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
-using Rubicon.ObjectBinding.Design;
-using Rubicon.Web.UI.Design;
+using Remotion.ObjectBinding.Design;
+using Remotion.Web.UI.Design;
 
-namespace Rubicon.ObjectBinding.Web.UI.Design
+namespace Remotion.ObjectBinding.Web.UI.Design
 {
 
 /// <summary>

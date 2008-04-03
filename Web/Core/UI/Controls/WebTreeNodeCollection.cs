@@ -2,11 +2,11 @@ using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Web.UI;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Design;
-using Rubicon.Web.Utilities;
+using Remotion.Utilities;
+using Remotion.Web.UI.Design;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 /// <summary> A collection of <see cref="WebTreeNode"/> objects. </summary>

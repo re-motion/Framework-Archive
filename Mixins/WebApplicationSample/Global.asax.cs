@@ -8,11 +8,11 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Security;
 using System.Web.SessionState;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.Context;
+using Remotion.Mixins;
 using System.Diagnostics;
-using Rubicon.Mixins.Definitions;
+using Remotion.Mixins.Definitions;
 using System.Reflection;
 
 namespace WebApplicationSample

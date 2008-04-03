@@ -1,4 +1,4 @@
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary> The <b>IBusinessObjectBooleanProperty</b> interface is used for accessing <see cref="bool"/> values. </summary>
   public interface IBusinessObjectBooleanProperty: IBusinessObjectProperty

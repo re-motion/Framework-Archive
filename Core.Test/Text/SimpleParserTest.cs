@@ -1,5 +1,5 @@
 using System;
 
-namespace Rubicon.Core.UnitTests.Text
+namespace Remotion.Core.UnitTests.Text
 {
 }

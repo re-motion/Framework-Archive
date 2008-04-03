@@ -3,11 +3,11 @@ using System.Collections.Specialized;
 using System.Threading;
 using System.Web;
 using NUnit.Framework;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.ExecutionEngine.UrlMapping;
-using Rubicon.Web.UnitTests.AspNetFramework;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine.UrlMapping;
+using Remotion.Web.UnitTests.AspNetFramework;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine
 {
   [TestFixture]
   public class WxeHandlerTest : WxeTest
@@ -68,10 +68,10 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
       _functionType = typeof (TestFunction);
       _functionTypeName = _functionType.AssemblyQualifiedName;
-      _invalidFunctionTypeName = "Rubicon.Web.UnitTests::ExecutionEngine.InvalidFunction";
+      _invalidFunctionTypeName = "Remotion.Web.UnitTests::ExecutionEngine.InvalidFunction";
 
       Thread.Sleep (20);
-      Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+      Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
     }
 
     [TearDown]
@@ -84,7 +84,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       WxeFunctionStateManager.Current.Abort (_functionStateExpired);
       WxeFunctionStateManager.Current.Abort (_functionStateWithChildFunction);
 
-      Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+      Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
       System.Runtime.Remoting.Messaging.CallContext.SetData (typeof (WxeFunctionStateManager).AssemblyQualifiedName, null);
       base.TearDown ();
     }
@@ -293,7 +293,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       queryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
       HttpContextHelper.SetQueryString (context, queryString);
 
-      Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+      Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
 
       WxeFunctionState functionState = _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
       Assert.IsNotNull (functionState);
@@ -310,7 +310,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       queryString.Add (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
       HttpContextHelper.SetQueryString (context, queryString);
 
-      Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+      Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
 
       _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
     }
@@ -324,7 +324,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       queryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
       HttpContextHelper.SetQueryString (context, queryString);
 
-      Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+      Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
 
       _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
     }

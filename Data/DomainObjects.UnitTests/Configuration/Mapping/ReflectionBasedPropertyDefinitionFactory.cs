@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   /// <summary>
   /// Provides simple factory methods to manually create ReflectionBasedPropertyDefinition objects for testing. The definition objects will have

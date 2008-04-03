@@ -35,7 +35,7 @@ namespace OBWTest.IndividualControlTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+        protected global::Remotion.Web.UI.Controls.FormGridManager FormGridManager;
         
         /// <summary>
         /// CurrentObject control.
@@ -44,7 +44,7 @@ namespace OBWTest.IndividualControlTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
         
         /// <summary>
         /// FormGrid control.
@@ -62,7 +62,7 @@ namespace OBWTest.IndividualControlTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
         
         /// <summary>
         /// LastNameField control.
@@ -71,7 +71,7 @@ namespace OBWTest.IndividualControlTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
         
         /// <summary>
         /// CVField control.
@@ -80,7 +80,7 @@ namespace OBWTest.IndividualControlTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocLiteral CVField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocLiteral CVField;
         
         /// <summary>
         /// CVFieldValueLabel control.
@@ -98,7 +98,7 @@ namespace OBWTest.IndividualControlTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocLiteral UnboundCVField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocLiteral UnboundCVField;
         
         /// <summary>
         /// UnboundCVFieldValueLabel control.
@@ -116,7 +116,7 @@ namespace OBWTest.IndividualControlTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.WebButton CVTestSetNullButton;
+        protected global::Remotion.Web.UI.Controls.WebButton CVTestSetNullButton;
         
         /// <summary>
         /// CVTestSetNewValueButton control.
@@ -125,6 +125,6 @@ namespace OBWTest.IndividualControlTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.WebButton CVTestSetNewValueButton;
+        protected global::Remotion.Web.UI.Controls.WebButton CVTestSetNewValueButton;
     }
 }

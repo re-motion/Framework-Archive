@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   public class BooleanEnumerationValueInfo : IEnumerationValueInfo
   {

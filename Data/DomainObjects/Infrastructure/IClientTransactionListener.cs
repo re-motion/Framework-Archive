@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Queries;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
   /// Defines an interface for objects listening for events occuring in the scope of a ClientTransaction.

@@ -1,11 +1,11 @@
 using System;
 using System.Configuration;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Utilities;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Queries.Configuration
+namespace Remotion.Data.DomainObjects.Queries.Configuration
 {
   /// <summary>
   /// Represents the current query configuration.

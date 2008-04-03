@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
+using Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
+namespace Remotion.Data.DomainObjects.UnitTests.TableInheritance
 {
   public class DomainObjectIDs
   {

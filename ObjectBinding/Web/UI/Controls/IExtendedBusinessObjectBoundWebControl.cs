@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   //TODO: doc
   public interface IExtendedBusinessObjectBoundWebControl : IBusinessObjectBoundWebControl

@@ -2,11 +2,11 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.EnumerationPropertyTests
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.EnumerationPropertyTests
 {
   [TestFixture]
   public class GetAllValues : EnumerationTestBase

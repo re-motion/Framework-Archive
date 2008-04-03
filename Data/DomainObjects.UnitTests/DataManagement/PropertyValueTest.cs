@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.Resources;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins.Context;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.UnitTests.Resources;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins.Context;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
+namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
   public class PropertyValueTest : StandardMappingTest

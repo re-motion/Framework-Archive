@@ -1,6 +1,6 @@
-using Rubicon.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary>
   ///   Extends an <see cref="IBusinessObjectBoundWebControl"/> with functionality for validating the control's 

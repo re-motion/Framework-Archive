@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Rubicon.Utilities;
-using Rubicon.Collections;
+using Remotion.Utilities;
+using Remotion.Collections;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   [DebuggerDisplay ("Count = {Count}")]
   public class MultiDefinitionCollection<TKey, TValue> : DefinitionCollectionBase<TKey, TValue>

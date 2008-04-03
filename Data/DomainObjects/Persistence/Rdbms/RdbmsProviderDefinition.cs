@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Specialized;
 using System.Configuration;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Utilities;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
   public class RdbmsProviderDefinition: StorageProviderDefinition
   {

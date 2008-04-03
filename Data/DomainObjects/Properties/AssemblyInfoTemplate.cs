@@ -7,7 +7,7 @@ using System.Reflection;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle("Rubicon DomainObjects Library")]
+[assembly: AssemblyTitle("Remotion DomainObjects Library")]
 [assembly: AssemblyDescription("Framework for working with and persisting domain models.")]
 [assembly: AssemblyConfiguration("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]

@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using log4net;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
 using log4net.Layout;
 using System.Configuration;
 
-namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
+namespace Remotion.Data.DomainObjects.Oracle.CodeGenerator
 {
   public static class LogUtility
   {
@@ -43,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
               consoleAppender.Layout = new PatternLayout ("%m\r\n\r\n");
               BasicConfigurator.Configure (consoleAppender);
             }
-            s_logger = LogManager.GetLogger ("Rubicon.Data.DomainObjects.Oracle.CodeGenerator");
+            s_logger = LogManager.GetLogger ("Remotion.Data.DomainObjects.Oracle.CodeGenerator");
           }
         }
 

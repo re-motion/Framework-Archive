@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
-using Rubicon.Collections;
+using Remotion.Collections;
 
-namespace Rubicon.Core.UnitTests.Collections
+namespace Remotion.Core.UnitTests.Collections
 {
   [TestFixture]
   [Obsolete ("LazyInterlockedCache is marked obsolete because it is still in prototype state.")]

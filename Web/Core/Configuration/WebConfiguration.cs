@@ -3,19 +3,19 @@ using System.Configuration;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
-using Rubicon.Xml;
+using Remotion.Xml;
 
-namespace Rubicon.Web.Configuration
+namespace Remotion.Web.Configuration
 {
 
-/// <summary> The configuration section for <b>Rubicon.Web</b>. </summary>
+/// <summary> The configuration section for <b>Remotion.Web</b>. </summary>
 /// <include file='doc\include\Configuration\WebConfiguration.xml' path='WebConfiguration/Class/*' />
 [XmlType (WebConfiguration.ElementName, Namespace = WebConfiguration.SchemaUri)]
 public class WebConfiguration: IConfigurationSectionHandler
 {
   /// <summary> The name of the configuration section in the configuration file. </summary>
-  /// <remarks> <c>rubicon.web</c> </remarks>
-  public const string ElementName = "rubicon.web";
+  /// <remarks> <c>remotion.web</c> </remarks>
+  public const string ElementName = "remotion.web";
 
   /// <summary> The namespace of the configuration section schema. </summary>
   /// <remarks> <c>http://www.rubicon-it.com/commons/web/configuration</c> </remarks>

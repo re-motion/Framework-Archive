@@ -1,12 +1,12 @@
 using System;
 using System.Data.SqlClient;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.UnitTests.Database;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.TableInheritance;
-using Rubicon.Development.UnitTesting.Data.SqlClient;
+using Remotion.Data.DomainObjects.UnitTests.Database;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.TableInheritance;
+using Remotion.Development.UnitTesting.Data.SqlClient;
 
-namespace Rubicon.Data.DomainObjects.UnitTests
+namespace Remotion.Data.DomainObjects.UnitTests
 {
   [SetUpFixture]
   public class SetUpFixture

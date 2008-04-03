@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Security.UnitTests.Core.SampleDomain;
+using Remotion.Security.UnitTests.Core.SampleDomain;
 
-namespace Rubicon.Security.UnitTests.Core.NullSecurityClientTests
+namespace Remotion.Security.UnitTests.Core.NullSecurityClientTests
 {
   [TestFixture]
   public class CheckAccessTest

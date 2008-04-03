@@ -1,6 +1,6 @@
 using System;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 using DomainSample;
 using WebSample.Classes;
 
@@ -17,7 +17,7 @@ namespace WebSample.UI
 			get { return CurrentObject; }
 		}
 
-		protected void PhoneNumbersField_MenuItemClick(object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
+		protected void PhoneNumbersField_MenuItemClick(object sender, Remotion.Web.UI.Controls.WebMenuItemClickEventArgs e)
 		{
 			if (e.Item.ItemID == "AddMenuItem")
 			{

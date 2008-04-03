@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Transport
+namespace Remotion.Data.DomainObjects.Transport
 {
   /// <summary>
   /// Collects domain objects to be transported to another system.
@@ -202,7 +202,7 @@ namespace Rubicon.Data.DomainObjects.Transport
 
     /// <summary>
     /// Gets a the objects loaded into this transporter (including their contents) in a binary format for transport to another system using <see cref="BinaryExportStrategy"/>.
-    /// At the target system, the data can be loaded via <see cref="LoadTransportData"/>.
+    /// At the target system, the data can be loaded via <see cref="LoadTransportData(byte[])"/>.
     /// </summary>
     /// <returns>The loaded objects in a binary format.</returns>
     public byte[] GetBinaryTransportData ()
@@ -212,9 +212,9 @@ namespace Rubicon.Data.DomainObjects.Transport
 
     /// <summary>
     /// Gets a the objects loaded into this transporter (including their contents) in a binary format for transport to another system.
-    /// At the target system, the data can be loaded via <see cref="LoadTransportData(byte[],BinaryImportStrategy)"/>.
+    /// At the target system, the data can be loaded via <see cref="LoadTransportData(byte[],IImportStrategy)"/>.
     /// </summary>
-    /// <param name="strategy">The strategy to be used for exporting data. This must match the strategy used with <see cref="LoadTransportData(byte[],BinaryImportStrategy)"/>.</param>
+    /// <param name="strategy">The strategy to be used for exporting data. This must match the strategy used with <see cref="LoadTransportData(byte[],IImportStrategy)"/>.</param>
     /// <returns>The loaded objects in a binary format.</returns>
     public byte[] GetBinaryTransportData (IExportStrategy strategy)
     {

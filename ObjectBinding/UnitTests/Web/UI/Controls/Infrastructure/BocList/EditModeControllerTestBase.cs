@@ -1,21 +1,21 @@
 using System;
 using System.Collections.Specialized;
 using NUnit.Framework;
-using Rubicon.NullableValueTypes;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
-using Rubicon.ObjectBinding.UnitTests.Web.Domain;
-using Rubicon.Utilities;
-using Rubicon.Web.UnitTests.UI.Controls;
+using Remotion.NullableValueTypes;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
+using Remotion.ObjectBinding.UnitTests.Web.Domain;
+using Remotion.Utilities;
+using Remotion.Web.UnitTests.UI.Controls;
 
-namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
 {
   public class EditModeControllerTestBase : BocTest
   {
     private StringCollection _actualEvents;
 
-    private Rubicon.ObjectBinding.Web.UI.Controls.BocList _bocList;
+    private Remotion.ObjectBinding.Web.UI.Controls.BocList _bocList;
     private EditModeController _controller;
     private ControlInvoker _controllerInvoker;
 
@@ -64,7 +64,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
       _columns[0] = _stringValueSimpleColumn;
       _columns[1] = _int32ValueSimpleColumn;
 
-      _bocList = new Rubicon.ObjectBinding.Web.UI.Controls.BocList();
+      _bocList = new Remotion.ObjectBinding.Web.UI.Controls.BocList();
       _bocList.ID = "BocList";
       NamingContainer.Controls.Add (_bocList);
 
@@ -88,7 +88,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
       get { return _actualEvents; }
     }
 
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocList BocList
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocList BocList
     {
       get { return _bocList; }
     }

@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.Queries.Configuration;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Queries
 {
   [TestFixture]
   public class QueryDefinitionTest : StandardMappingTest
@@ -26,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "The collectionType of query 'QueryID' must be 'Rubicon.Data.DomainObjects.DomainObjectCollection' or derived from it.\r\n"
+        "The collectionType of query 'QueryID' must be 'Remotion.Data.DomainObjects.DomainObjectCollection' or derived from it.\r\n"
         + "Parameter name: collectionType")]
     public void InitializeInvalidCollectionType ()
     {

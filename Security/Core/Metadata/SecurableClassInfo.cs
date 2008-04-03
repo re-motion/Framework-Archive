@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Rubicon.Security.Metadata
+namespace Remotion.Security.Metadata
 {
 
   public class SecurableClassInfo : MetadataInfo

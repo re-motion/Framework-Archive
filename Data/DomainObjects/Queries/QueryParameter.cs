@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Queries
+namespace Remotion.Data.DomainObjects.Queries
 {
 /// <summary>
 /// Represents a parameter that is used in a query.
@@ -37,7 +37,7 @@ public class QueryParameter
   /// <param name="value">The value of the parameter.</param>
   /// <param name="parameterType">The <see cref="QueryParameterType"/> of the parameter.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="name"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="name"/> is an empty string.</exception>
+  /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="name"/> is an empty string.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="parameterType"/> is not a valid enum value.</exception>
   public QueryParameter (string name, object value, QueryParameterType parameterType)
   {

@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Sql;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Utilities;
+using Remotion.Data.DomainObjects.Legacy.CodeGenerator.Sql;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 
-namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.Sql
+namespace Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.Sql
 {
   public class SqlFileBuilderMock : SqlFileBuilderBase
   {

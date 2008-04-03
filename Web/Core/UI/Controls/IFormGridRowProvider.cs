@@ -2,7 +2,7 @@ using System;
 using System.Collections.Specialized;
 using System.Web.UI.HtmlControls;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 /// <summary>

@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration.SampleTypes
+namespace Remotion.Core.UnitTests.CodeGeneration.SampleTypes
 {
   [Simple (S = "whazzup1")]
   [Simple (S = "whazzup2")]

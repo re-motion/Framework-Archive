@@ -15,20 +15,20 @@
           <nullable>true</nullable>
         </property>
         <property name="Type">
-          <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+          <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer+CustomerType, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
           <column>CustomerType</column>
         </property>
         <relationProperty name="Orders" relationID="CustomerToOrder" cardinality="many" isMandatory="false">
-          <collectionType>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.Legacy.UnitTests</collectionType>
+          <collectionType>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.Legacy.UnitTests</collectionType>
           <sortExpression>OrderNo asc</sortExpression>
         </relationProperty>
       </properties>
       <storageProviderID>TestDomain</storageProviderID>
       <entity name="Company"/>
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
     </class>
     <class id="Order">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Order, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <entity name="Order"/>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
@@ -52,7 +52,7 @@
       </properties>
     </class>
     <class id="Official">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Official, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Official, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <entity name="Official"/>
       <storageProviderID>UnitTestStorageProviderStub</storageProviderID>
       <properties>

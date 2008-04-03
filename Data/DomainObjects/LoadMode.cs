@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Indicates whether a <see cref="DomainObject"/> was loaded as a whole or if only its <see cref="DataContainer"/> was loaded.

@@ -9,9 +9,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.ExecutionEngine
 {
   public class ProfilingForm : WxePage
   {

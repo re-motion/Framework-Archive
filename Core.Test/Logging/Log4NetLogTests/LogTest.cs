@@ -1,9 +1,9 @@
 using System;
 using log4net.Core;
 using NUnit.Framework;
-using Rubicon.Logging;
+using Remotion.Logging;
 
-namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
+namespace Remotion.Core.UnitTests.Logging.Log4NetLogTests
 {
   [TestFixture]
   public class LogTest : BaseTest

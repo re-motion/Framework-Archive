@@ -10,7 +10,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>Rubicon.ObjectBinding.Web</AssemblyName>
+    <AssemblyName>Remotion.ObjectBinding.Web</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -19,7 +19,7 @@
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.ObjectBinding.Web</RootNamespace>
+    <RootNamespace>Remotion.ObjectBinding.Web</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -60,7 +60,7 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\Rubicon.ObjectBinding.Web.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Remotion.ObjectBinding.Web.xml</DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
@@ -318,7 +318,7 @@
     <Content Include="Doc\include\UI\Controls\BocTreeView.xml" />
     <Content Include="Doc\include\UI\Controls\BocLiteral.xml" />
     <Content Include="Doc\include\UI\Controls\IBusinessObjectDataSourceControl.xml" />
-    <Content Include="Doc\WhatsNew_Rubicon.ObjectBinding.Web.txt" />
+    <Content Include="Doc\WhatsNew_Remotion.ObjectBinding.Web.txt" />
     <Content Include="Res\HTML\BocBooleanValue.css" />
     <Content Include="Res\HTML\BocBooleanValue.js" />
     <Content Include="Res\HTML\BocCheckBox.js" />

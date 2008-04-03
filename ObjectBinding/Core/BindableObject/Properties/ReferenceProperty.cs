@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Mixins;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Utilities;
+using Remotion.Mixins;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.BindableObject.Properties
+namespace Remotion.ObjectBinding.BindableObject.Properties
 {
   public class ReferenceProperty : PropertyBase, IBusinessObjectReferenceProperty
   {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlMapping 
-    application="Rubicon.Web.UnitTests"
+    application="Remotion.Web.UnitTests"
     xmlns="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
 		<add 
-		    type="Rubicon.Web.UnitTests.ExecutionEngine.UrlMapping.FirstMappedFunction, Rubicon.Web.UnitTests" />
+		    type="Remotion.Web.UnitTests.ExecutionEngine.UrlMapping.FirstMappedFunction, Remotion.Web.UnitTests" />
 </urlMapping>

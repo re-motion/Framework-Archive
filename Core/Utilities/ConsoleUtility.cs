@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
 	/// <summary>
 	/// Provides utility methods for managing consoles.

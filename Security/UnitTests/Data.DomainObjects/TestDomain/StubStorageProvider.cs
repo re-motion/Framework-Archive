@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Utilities;
 
-namespace Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain
+namespace Remotion.Security.UnitTests.Data.DomainObjects.TestDomain
 {
   public class StubStorageProvider : StorageProvider
   {

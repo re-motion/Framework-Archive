@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
   public class RelationDefinitionTest : StandardMappingTest
@@ -22,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       _customerClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Customer)];
       _orderClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
-      _customerToOrder = TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"];
+      _customerToOrder = TestMappingConfiguration.Current.RelationDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"];
       _customerEndPoint = (VirtualRelationEndPointDefinition) _customerToOrder.EndPointDefinitions[0];
       _orderEndPoint = (RelationEndPointDefinition) _customerToOrder.EndPointDefinitions[1];
     }
@@ -40,68 +40,68 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       RelationDefinition relation = new RelationDefinition ("myRelation", _customerEndPoint, _orderEndPoint);
 
-      Assert.IsTrue (relation.IsEndPoint ("Order", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
-      Assert.IsTrue (relation.IsEndPoint ("Customer", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
-      Assert.IsFalse (relation.IsEndPoint ("Order", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
-      Assert.IsFalse (relation.IsEndPoint ("Customer", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
+      Assert.IsTrue (relation.IsEndPoint ("Order", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
+      Assert.IsTrue (relation.IsEndPoint ("Customer", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
+      Assert.IsFalse (relation.IsEndPoint ("Order", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
+      Assert.IsFalse (relation.IsEndPoint ("Customer", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
     }
 
     [Test]
     public void GetEndPointDefinition ()
     {
-      Assert.AreSame (_orderEndPoint, _customerToOrder.GetEndPointDefinition ("Order", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
-      Assert.AreSame (_customerEndPoint, _customerToOrder.GetEndPointDefinition ("Customer", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
+      Assert.AreSame (_orderEndPoint, _customerToOrder.GetEndPointDefinition ("Order", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
+      Assert.AreSame (_customerEndPoint, _customerToOrder.GetEndPointDefinition ("Customer", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
     }
 
     [Test]
     public void GetOppositeEndPointDefinition ()
     {
-      Assert.AreSame (_customerEndPoint, _customerToOrder.GetOppositeEndPointDefinition ("Order", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
-      Assert.AreSame (_orderEndPoint, _customerToOrder.GetOppositeEndPointDefinition ("Customer", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
+      Assert.AreSame (_customerEndPoint, _customerToOrder.GetOppositeEndPointDefinition ("Order", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
+      Assert.AreSame (_orderEndPoint, _customerToOrder.GetOppositeEndPointDefinition ("Customer", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
     }
 
     [Test]
     public void GetEndPointDefinitionForUndefinedProperty ()
     {
-      Assert.IsNull (_customerToOrder.GetEndPointDefinition ("Order", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
+      Assert.IsNull (_customerToOrder.GetEndPointDefinition ("Order", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
     }
 
     [Test]
     public void GetOppositeEndPointDefinitionForUndefinedProperty ()
     {
-      Assert.IsNull (_customerToOrder.GetOppositeEndPointDefinition ("Order", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
+      Assert.IsNull (_customerToOrder.GetOppositeEndPointDefinition ("Order", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
     }
 
     [Test]
     public void GetEndPointDefinitionForUndefinedClass ()
     {
-      Assert.IsNull (_customerToOrder.GetEndPointDefinition ("OrderTicket", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Customer"));
+      Assert.IsNull (_customerToOrder.GetEndPointDefinition ("OrderTicket", "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Customer"));
     }
 
     [Test]
     public void GetOppositeEndPointDefinitionForUndefinedClass ()
     {
-      Assert.IsNull (_customerToOrder.GetOppositeEndPointDefinition ("OrderTicket", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Customer"));
+      Assert.IsNull (_customerToOrder.GetOppositeEndPointDefinition ("OrderTicket", "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Customer"));
     }
 
     [Test]
     public void GetOppositeClassDefinition ()
     {
-      Assert.AreSame (_customerClass, _customerToOrder.GetOppositeClassDefinition ("Order", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
-      Assert.AreSame (_orderClass, _customerToOrder.GetOppositeClassDefinition ("Customer", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
+      Assert.AreSame (_customerClass, _customerToOrder.GetOppositeClassDefinition ("Order", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
+      Assert.AreSame (_orderClass, _customerToOrder.GetOppositeClassDefinition ("Customer", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
     }
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage = 
-        "Relation 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' has no association with class 'Customer' "
-        + "and property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders'.")]
+        "Relation 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' has no association with class 'Customer' "
+        + "and property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders'.")]
     public void GetMandatoryOppositeRelationEndPointDefinitionWithNotAssociatedRelationDefinitionID ()
     {
-      RelationDefinition orderToOrderItem = TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"];
+      RelationDefinition orderToOrderItem = TestMappingConfiguration.Current.RelationDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"];
 
       IRelationEndPointDefinition wrongEndPointDefinition =
           orderToOrderItem.GetMandatoryOppositeRelationEndPointDefinition (
-              _customerClass.GetMandatoryRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
+              _customerClass.GetMandatoryRelationEndPointDefinition ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       orderToOrderItem.GetMandatoryOppositeRelationEndPointDefinition (wrongEndPointDefinition);
     }
@@ -117,13 +117,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void Contains ()
     {
-      RelationDefinition relationDefinition = MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"];
+      RelationDefinition relationDefinition = MappingConfiguration.Current.RelationDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"];
 
-      Assert.IsFalse (relationDefinition.Contains (TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[0]));
-      Assert.IsFalse (relationDefinition.Contains (TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[1]));
+      Assert.IsFalse (relationDefinition.Contains (TestMappingConfiguration.Current.RelationDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[0]));
+      Assert.IsFalse (relationDefinition.Contains (TestMappingConfiguration.Current.RelationDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[1]));
 
-      Assert.IsTrue (relationDefinition.Contains (MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[0]));
-      Assert.IsTrue (relationDefinition.Contains (MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[1]));
+      Assert.IsTrue (relationDefinition.Contains (MappingConfiguration.Current.RelationDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[0]));
+      Assert.IsTrue (relationDefinition.Contains (MappingConfiguration.Current.RelationDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[1]));
     }
   }
 }

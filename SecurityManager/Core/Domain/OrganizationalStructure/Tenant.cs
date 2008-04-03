@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Remoting.Messaging;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Globalization;
-using Rubicon.Security;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Globalization;
+using Remotion.Security;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
+namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Tenant")]
+  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Tenant")]
   [PermanentGuid ("BD8FB1A4-E300-4663-AB1E-D6BD7B106619")]
   [Instantiable]
   [DBTable]
@@ -61,7 +61,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public static DomainObjectCollection FindAll ()
     {
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Tenant.FindAll");
+      Query query = new Query ("Remotion.SecurityManager.Domain.OrganizationalStructure.Tenant.FindAll");
       return ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
     }
 
@@ -69,7 +69,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
 
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Tenant.FindByUnqiueIdentifier");
+      Query query = new Query ("Remotion.SecurityManager.Domain.OrganizationalStructure.Tenant.FindByUnqiueIdentifier");
       query.Parameters.Add ("@uniqueIdentifier", uniqueIdentifier);
 
       DomainObjectCollection tenants = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);

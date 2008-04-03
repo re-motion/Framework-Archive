@@ -1,11 +1,11 @@
 using System;
 using System.Reflection;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.DataManagement
+namespace Remotion.Data.DomainObjects.DataManagement
 {
   public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   {

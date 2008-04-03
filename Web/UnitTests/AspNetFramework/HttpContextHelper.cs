@@ -3,10 +3,10 @@ using System.Collections.Specialized;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.SessionState;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Utilities;
+using Remotion.Development.UnitTesting;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.UnitTests.AspNetFramework
+namespace Remotion.Web.UnitTests.AspNetFramework
 {
 
 /// <summary> 
@@ -39,7 +39,7 @@ public class HttpContextHelper
     Type virtualPathType = Type.GetType ("System.Web.VirtualPath, " + assemblyName, true);
     object virtualPath = PrivateInvoke.InvokePublicStaticMethod (virtualPathType, "Create", s_appVirtualDir);
     PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppVPath", virtualPath);
-    PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppId", "Rubicon.Web.UnitTests");
+    PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppId", "Remotion.Web.UnitTests");
     Type buildManagerType = typeof (System.Web.Compilation.BuildManager);
     PrivateInvoke.SetNonPublicStaticProperty (buildManagerType, "SkipTopLevelCompilationExceptions", true);
     HttpContext context = new HttpContext (workerRequest);

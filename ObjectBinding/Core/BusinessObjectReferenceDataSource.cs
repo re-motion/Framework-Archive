@@ -1,10 +1,10 @@
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
-using Rubicon.ObjectBinding.Design;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding.Design;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary>
   ///   This data source provides access to the objects returned by other data sources using the specified property.

@@ -2,14 +2,14 @@ using System;
 using System.Web;
 using System.Web.UI.WebControls;
 
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -18,34 +18,34 @@ namespace OBWTest.IndividualControlTests
 public class BocReferenceValueUserControl : BaseUserControl
 {
   protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField;
   protected System.Web.UI.WebControls.Label PartnerFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue ReadOnlyPartnerField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue ReadOnlyPartnerField;
   protected System.Web.UI.WebControls.Label ReadOnlyPartnerFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue UnboundPartnerField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue UnboundPartnerField;
   protected System.Web.UI.WebControls.Label UnboundPartnerFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue UnboundReadOnlyPartnerField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue UnboundReadOnlyPartnerField;
   protected System.Web.UI.WebControls.Label UnboundReadOnlyPartnerFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue DisabledPartnerField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue DisabledPartnerField;
   protected System.Web.UI.WebControls.Label DisabledPartnerFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue DisabledReadOnlyPartnerField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue DisabledReadOnlyPartnerField;
   protected System.Web.UI.WebControls.Label DisabledReadOnlyPartnerFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue DisabledUnboundPartnerField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue DisabledUnboundPartnerField;
   protected System.Web.UI.WebControls.Label DisabledUnboundPartnerFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue DisabledUnboundReadOnlyPartnerField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue DisabledUnboundReadOnlyPartnerField;
   protected System.Web.UI.WebControls.Label DisabledUnboundReadOnlyPartnerFieldValueLabel;
   protected System.Web.UI.WebControls.Label PartnerFieldSelectionChangedLabel;
   protected System.Web.UI.WebControls.Label PartnerFieldMenuClickEventArgsLabel;
-  protected Rubicon.Web.UI.Controls.WebButton PartnerTestSetNullButton;
-  protected Rubicon.Web.UI.Controls.WebButton PartnerTestSetNewItemButton;
-  protected Rubicon.Web.UI.Controls.WebButton ReadOnlyPartnerTestSetNullButton;
-  protected Rubicon.Web.UI.Controls.WebButton ReadOnlyPartnerTestSetNewItemButton;
+  protected Remotion.Web.UI.Controls.WebButton PartnerTestSetNullButton;
+  protected Remotion.Web.UI.Controls.WebButton PartnerTestSetNewItemButton;
+  protected Remotion.Web.UI.Controls.WebButton ReadOnlyPartnerTestSetNullButton;
+  protected Remotion.Web.UI.Controls.WebButton ReadOnlyPartnerTestSetNewItemButton;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected System.Web.UI.WebControls.Label PartnerCommandClickLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
@@ -160,13 +160,13 @@ public class BocReferenceValueUserControl : BaseUserControl
       DisabledUnboundPartnerField.SetBusinessObjectList (objects);
     }
 
-    UnboundPartnerField.Property = (Rubicon.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
+    UnboundPartnerField.Property = (Remotion.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
     //UnboundPartnerField.LoadUnboundValue (person.Partner, IsPostBack);
-    UnboundReadOnlyPartnerField.Property = (Rubicon.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
+    UnboundReadOnlyPartnerField.Property = (Remotion.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
     UnboundReadOnlyPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity)person.Partner, IsPostBack);
-    DisabledUnboundPartnerField.Property = (Rubicon.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
+    DisabledUnboundPartnerField.Property = (Remotion.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
     DisabledUnboundPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
-    DisabledUnboundReadOnlyPartnerField.Property = (Rubicon.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
+    DisabledUnboundReadOnlyPartnerField.Property = (Remotion.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
     DisabledUnboundReadOnlyPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
   
     if (!IsPostBack)
@@ -239,12 +239,12 @@ public class BocReferenceValueUserControl : BaseUserControl
       PartnerFieldSelectionChangedLabel.Text = "not set";
   }
 
-  private void PartnerField_MenuItemClick(object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
+  private void PartnerField_MenuItemClick(object sender, Remotion.Web.UI.Controls.WebMenuItemClickEventArgs e)
   {
     PartnerFieldMenuClickEventArgsLabel.Text = e.Item.Text;
   }
 
-  private void ReadOnlyPartnerField_CommandClick(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocCommandClickEventArgs e)
+  private void ReadOnlyPartnerField_CommandClick(object sender, Remotion.ObjectBinding.Web.UI.Controls.BocCommandClickEventArgs e)
   {
     PartnerCommandClickLabel.Text = "ReadOnlyPartnerField clicked";
   }

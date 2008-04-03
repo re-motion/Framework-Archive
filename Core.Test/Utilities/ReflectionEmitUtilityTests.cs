@@ -2,9 +2,9 @@ using System;
 using NUnit.Framework;
 using System.Reflection;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Utilities
+namespace Remotion.Core.UnitTests.Utilities
 {
   [TestFixture]
   public class ReflectionEmitUtilityTests

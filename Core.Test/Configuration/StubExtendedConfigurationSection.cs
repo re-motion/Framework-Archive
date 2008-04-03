@@ -1,8 +1,8 @@
 using System;
 using System.Configuration;
-using Rubicon.Configuration;
+using Remotion.Configuration;
 
-namespace Rubicon.Core.UnitTests.Configuration
+namespace Remotion.Core.UnitTests.Configuration
 {
   public class StubExtendedConfigurationSection : ExtendedConfigurationSection
   {

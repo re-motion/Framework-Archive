@@ -2,10 +2,10 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Web.UI.Design;
-using Rubicon.Design;
-using Rubicon.Utilities;
+using Remotion.Design;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.UI.Design
+namespace Remotion.Web.UI.Design
 {
   /// <summary>
   /// Implementation of the <see cref="IDesignModeHelper"/> interface for environments implementing the <see cref="IWebApplication"/> designer service.

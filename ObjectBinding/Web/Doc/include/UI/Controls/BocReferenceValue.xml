@@ -29,7 +29,7 @@
           <description>
             <para> 
               Level A conform if advanced features are turned off. This can be enforced by the 
-              <see cref="Rubicon.Web.Configuration.WebConfiguration.Wcag"/> configuration entry.
+              <see cref="Remotion.Web.Configuration.WebConfiguration.Wcag"/> configuration entry.
             </para>
             <para> Priority 1 checkpoint 6.3 is not met by the following advacned features:</para>
             <list type="bullet">
@@ -52,7 +52,7 @@
       <para>
         See the <see cref="CreateValidators"/> method for the validators provided by this control.        
       </para><para>
-        Provide the external resources for this control. See <see cref="T:Rubicon.Web.ResourceUrlResolver"/> 
+        Provide the external resources for this control. See <see cref="T:Remotion.Web.ResourceUrlResolver"/> 
         for details on this subject.
       </para><para>
         If the <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
@@ -69,7 +69,7 @@
         The control provides a default <b>CSS Class</b>, applied to the top level element: <c>bocReferenceValue</c>.
       </para><para>
         The control supports auto-postback. Use the <see cref="DropDownListStyle"/>'s 
-        <see cref="Rubicon.ObjectBinding.Web.UI.Controls.DropDownListStyle.AutoPostBack"/> property to enable this
+        <see cref="Remotion.ObjectBinding.Web.UI.Controls.DropDownListStyle.AutoPostBack"/> property to enable this
         behavior.
       </para><para>
         Use the <see cref="SetBusinessObjectList"/> method to programmatically populate the list of 

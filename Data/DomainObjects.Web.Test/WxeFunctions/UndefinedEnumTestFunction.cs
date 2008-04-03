@@ -1,12 +1,12 @@
 using System;
 
-using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
-using Rubicon.Data.DomainObjects.Web.Test.Domain;
-using Rubicon.Mixins;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Data.DomainObjects.Web.ExecutionEngine;
+using Remotion.Data.DomainObjects.Web.Test.Domain;
+using Remotion.Mixins;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
  
-namespace Rubicon.Data.DomainObjects.Web.Test.WxeFunctions
+namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 {
 [Serializable]
 public class UndefinedEnumTestFunction : WxeTransactedFunction

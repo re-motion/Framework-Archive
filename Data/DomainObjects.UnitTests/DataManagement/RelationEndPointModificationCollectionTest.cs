@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
+namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
   public class RelationEndPointModificationCollectionTest : ClientTransactionBaseTest

@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   [AttributeUsage (AttributeTargets.Enum)]
   public class AccessTypeAttribute : Attribute

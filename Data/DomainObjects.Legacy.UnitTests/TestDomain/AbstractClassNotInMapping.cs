@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain
 {
   public abstract class AbstractClassNotInMapping : TestDomainBase
   {

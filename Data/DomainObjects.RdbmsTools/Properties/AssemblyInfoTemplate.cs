@@ -8,8 +8,8 @@ using System.Runtime.CompilerServices;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle ("Rubicon DomainObjects Database Tools Library")]
-[assembly: AssemblyDescription ("Library for generation of sql scripts for the Rubicon DomainObjects Library")]
+[assembly: AssemblyTitle ("Remotion DomainObjects Database Tools Library")]
+[assembly: AssemblyDescription ("Library for generation of sql scripts for the Remotion DomainObjects Library")]
 [assembly: AssemblyConfiguration ("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]
 [assembly: AssemblyProduct("@productname@")]

@@ -1,10 +1,10 @@
 using System;
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.Design;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Design;
+using Remotion.Data.DomainObjects.ConfigurationLoader;
+using Remotion.Data.DomainObjects.Design;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Design;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [DesignModeMappingLoader(typeof (FakeDesignModeMappingLoader))]
   public class FakeMappingLoader: IMappingLoader

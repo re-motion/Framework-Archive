@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence
+namespace Remotion.Data.DomainObjects.Persistence
 {
   public class PersistenceManager : IDisposable
   {

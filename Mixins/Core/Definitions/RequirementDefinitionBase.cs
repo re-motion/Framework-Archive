@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Rubicon.Mixins.Utilities;
-using Rubicon.Collections;
-using Rubicon.Utilities;
+using Remotion.Mixins.Utilities;
+using Remotion.Collections;
+using Remotion.Utilities;
 using System.Reflection;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   [DebuggerDisplay ("{Type}, TargetClass = {TargetClass.Type}")]
   public abstract class RequirementDefinitionBase : IVisitableDefinition

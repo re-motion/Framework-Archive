@@ -1,6 +1,6 @@
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
+namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
 {
   public interface IMixinAddingPeristentProperties
   {

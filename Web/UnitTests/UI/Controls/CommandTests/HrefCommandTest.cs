@@ -3,11 +3,11 @@ using System.Collections.Specialized;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UnitTests.AspNetFramework;
-using Rubicon.Web.Utilities;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UnitTests.AspNetFramework;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
+namespace Remotion.Web.UnitTests.UI.Controls.CommandTests
 {
   [TestFixture]
   public class HrefCommandTest : BaseTest

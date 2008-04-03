@@ -4,7 +4,7 @@ using System.Text;
 using NUnit.Framework;
 using System.IO;
 
-namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.IntegrationTests
+namespace Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.IntegrationTests
 {
   [TestFixture]
   public class EnumBuilderTest : MappingBaseTest
@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.IntegrationT
       using (StringWriter stringWriter = new StringWriter ())
       {
         TypeName typeName = new TypeName (
-            "Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.IntegrationTests.TestDomain.OrderPriority", "Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests");
+            "Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.IntegrationTests.TestDomain.OrderPriority", "Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests");
 
         EnumBuilder.Build (stringWriter, typeName, false);
         Assert.AreEqual (GetFile (@"OrderPriority.cs"), stringWriter.ToString ());

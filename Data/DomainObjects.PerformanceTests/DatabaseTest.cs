@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.PerformanceTests.Database;
+using Remotion.Data.DomainObjects.PerformanceTests.Database;
 
-namespace Rubicon.Data.DomainObjects.PerformanceTests
+namespace Remotion.Data.DomainObjects.PerformanceTests
 {
   public class DatabaseTest
   {

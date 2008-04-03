@@ -2,12 +2,12 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFinderTests
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFinderTests
 {
   [TestFixture]
   public class PropertyFinderBaseTest : PropertyFinderBaseTestBase
@@ -70,20 +70,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFin
                   {
                       GetProperty (typeof (ClassWithInterface), "Property"),
                       GetProperty (typeof (ClassWithInterface), "ImplicitProperty"),
-                      GetProperty (typeof (ClassWithInterface), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.IInterfaceWithProperties.ExplicitManagedProperty")
+                      GetProperty (typeof (ClassWithInterface), "Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.IInterfaceWithProperties.ExplicitManagedProperty")
                   }));
     }
 
     [Test]
     [ExpectedException (typeof (MappingException),
         ExpectedMessage =
-        "The 'Rubicon.Data.DomainObjects.StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute, "
+        "The 'Remotion.Data.DomainObjects.StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n  "
+        + "Type: Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute, "
         + "property: Int32")]
     public void FindPropertyInfos_ForDerivedClassHavingAnOverriddenPropertyWithMappingAttribute ()
     {
       Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
-          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute",
+          "Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute",
           true,
           false);
       PropertyFinderBase propertyFinder = new StubPropertyFinderBase (type, false);

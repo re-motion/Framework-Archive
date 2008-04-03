@@ -2,13 +2,13 @@ using System;
 using System.Web;
 using System.Web.UI.WebControls;
 
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -16,8 +16,8 @@ namespace OBWTest.IndividualControlTests
 public class EmptyUserControl : BaseUserControl
 {
   protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {

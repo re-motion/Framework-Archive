@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
   public class RelationEndPointDefinitionTest : StandardMappingTest
@@ -16,13 +16,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      RelationDefinition customerToOrder = TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"];
+      RelationDefinition customerToOrder = TestMappingConfiguration.Current.RelationDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"];
 
       _customerEndPoint = (VirtualRelationEndPointDefinition) customerToOrder.GetEndPointDefinition (
-          "Customer", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
+          "Customer", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
 
       _orderEndPoint = (RelationEndPointDefinition) customerToOrder.GetEndPointDefinition (
-          "Order", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer");
+          "Order", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer");
     }
 
     [Test]
@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       RelationEndPointDefinition endPoint = new RelationEndPointDefinition (
           ClassDefinitionFactory.CreateOrderDefinitionWithResolvedCustomerProperty (), 
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", 
+          "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", 
           true);
 
       Assert.IsTrue (endPoint.IsPropertyTypeResolved);
@@ -48,17 +48,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void CorrespondsToForVirtualEndPoint ()
     {
-      Assert.IsTrue (_customerEndPoint.CorrespondsTo ("Customer", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
+      Assert.IsTrue (_customerEndPoint.CorrespondsTo ("Customer", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
       Assert.IsFalse (_customerEndPoint.CorrespondsTo ("Customer", "NonExistingProperty"));
-      Assert.IsFalse (_customerEndPoint.CorrespondsTo ("OrderTicket", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
+      Assert.IsFalse (_customerEndPoint.CorrespondsTo ("OrderTicket", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
     }
 
     [Test]
     public void CorrespondsTo ()
     {
-      Assert.IsTrue (_orderEndPoint.CorrespondsTo ("Order", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
+      Assert.IsTrue (_orderEndPoint.CorrespondsTo ("Order", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
       Assert.IsFalse (_orderEndPoint.CorrespondsTo ("Order", "NonExistingProperty"));
-      Assert.IsFalse (_orderEndPoint.CorrespondsTo ("Partner", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
+      Assert.IsFalse (_orderEndPoint.CorrespondsTo ("Partner", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
     }
 
     [Test]
@@ -66,7 +66,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       RelationEndPointDefinition definition = new RelationEndPointDefinition (
           TestMappingConfiguration.Current.ClassDefinitions[typeof (OrderTicket)], 
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", 
+          "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", 
           true);
 
       Assert.IsNull (definition.RelationDefinition);

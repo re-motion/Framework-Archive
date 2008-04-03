@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.UnitTests.SampleTypes
+namespace Remotion.Mixins.UnitTests.SampleTypes
 {
   [Extends (typeof (ClassWithMixedMixin))]
   public class MixinMixingClass : Mixin<ClassWithMixedMixin, MixinMixingClass.IRequirements>

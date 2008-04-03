@@ -1,10 +1,10 @@
 using System;
 using System.Web;
 using System.Web.SessionState;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.Utilities;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.ExecutionEngine
 {
   public class RedirectedSubWxeFunction: WxeFunction
   {

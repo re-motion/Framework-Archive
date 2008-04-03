@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Mixins;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors
 {
   [DBTable]
   [Instantiable]

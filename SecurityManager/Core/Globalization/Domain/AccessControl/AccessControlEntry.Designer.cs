@@ -16,7 +16,7 @@ using System.Globalization;
 using System.Resources;
 using System.Runtime.CompilerServices;
 
-namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
+namespace Remotion.SecurityManager.Globalization.Domain.AccessControl {
     using System;
     
     
@@ -47,7 +47,7 @@ namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
         internal static ResourceManager ResourceManager {
             get {
                 if (ReferenceEquals(resourceMan, null)) {
-                    ResourceManager temp = new ResourceManager("Rubicon.SecurityManager.Globalization.Domain.AccessControl.AccessControlEntry", typeof(AccessControlEntry).Assembly);
+                    ResourceManager temp = new ResourceManager("Remotion.SecurityManager.Globalization.Domain.AccessControl.AccessControlEntry", typeof(AccessControlEntry).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

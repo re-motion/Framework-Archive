@@ -1,16 +1,16 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 using Mock_Is = Rhino.Mocks.Constraints.Is;
 using Mock_Property = Rhino.Mocks.Constraints.Property;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
+namespace Remotion.Data.DomainObjects.UnitTests.Transaction
 {
   [TestFixture]
   public class ClientTransactionListenerTest : ClientTransactionBaseTest

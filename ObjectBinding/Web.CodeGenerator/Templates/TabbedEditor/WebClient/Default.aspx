@@ -5,7 +5,7 @@
 
 <head runat="server">
   <title>$USER_APPNAME$</title>
-  <link type="text/css" rel="stylesheet" href="./res/Rubicon.Web/HTML/Style.css">
+  <link type="text/css" rel="stylesheet" href="./res/Remotion.Web/HTML/Style.css">
   <script language="javascript" type="text/javascript">
   function StartApp(url)
   {

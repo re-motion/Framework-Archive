@@ -9,18 +9,18 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Web.Test.Domain;
-using Rubicon.Data.DomainObjects.Web.Test.WxeFunctions;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Web.Test.Domain;
+using Remotion.Data.DomainObjects.Web.Test.WxeFunctions;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Data.DomainObjects.Web.Test
+namespace Remotion.Data.DomainObjects.Web.Test
 {
 	public class EditObjectPage : WxePage
 	{
-    protected Rubicon.Web.UI.Controls.HtmlHeadContents Htmlheadcontents1;
+    protected Remotion.Web.UI.Controls.HtmlHeadContents Htmlheadcontents1;
 
     protected ControlWithAllDataTypes ControlWithAllDataTypesControl;
 

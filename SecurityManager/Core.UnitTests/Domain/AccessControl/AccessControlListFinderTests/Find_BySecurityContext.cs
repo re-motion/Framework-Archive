@@ -1,12 +1,12 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.SecurityManager.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects;
+using Remotion.Security;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.SecurityManager.UnitTests.TestDomain;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlListFinderTests
+namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlListFinderTests
 {
   [TestFixture]
   public class Find_BySecurityContext : DomainTest
@@ -47,7 +47,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
 
     [Test]
     [ExpectedException (typeof (AccessControlException),
-        ExpectedMessage = "The securable class 'Rubicon.SecurityManager.UnitTests.TestDomain.PremiumOrder, Rubicon.SecurityManager.UnitTests' cannot be found.")]
+        ExpectedMessage = "The securable class 'Remotion.SecurityManager.UnitTests.TestDomain.PremiumOrder, Remotion.SecurityManager.UnitTests' cannot be found.")]
     public void Fail_WithUnkownSecurableClassDefinition ()
     {
       SecurityContext context = new SecurityContext (typeof (PremiumOrder));

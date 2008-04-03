@@ -1,12 +1,12 @@
 using System;
 using System.Web.UI;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Utilities;
-using SecurityManagerUser = Rubicon.SecurityManager.Domain.OrganizationalStructure.User;
+using Remotion.Data.DomainObjects;
+using Remotion.Security;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Utilities;
+using SecurityManagerUser = Remotion.SecurityManager.Domain.OrganizationalStructure.User;
 
-namespace Rubicon.SecurityManager.Clients.Web
+namespace Remotion.SecurityManager.Clients.Web
 {
   public partial class DefaultPage : Page
   {

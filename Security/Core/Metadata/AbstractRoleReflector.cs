@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Security.Metadata
+namespace Remotion.Security.Metadata
 {
 
-  public class AbstractRoleReflector : Rubicon.Security.Metadata.IAbstractRoleReflector
+  public class AbstractRoleReflector : Remotion.Security.Metadata.IAbstractRoleReflector
   {
     // types
 

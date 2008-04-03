@@ -7,9 +7,9 @@ using log4net.Core;
 using log4net.Repository;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Logging;
+using Remotion.Logging;
 
-namespace Rubicon.Core.UnitTests.Logging
+namespace Remotion.Core.UnitTests.Logging
 {
   [TestFixture]
   public class Log4NetTraceListenerTest

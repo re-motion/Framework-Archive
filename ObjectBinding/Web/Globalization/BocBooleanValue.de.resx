@@ -39,16 +39,16 @@
     <resheader name="Writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue.TrueDescription">
+    <data name="Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue.TrueDescription">
         <value>Ja</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue.FalseDescription">
+    <data name="Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue.FalseDescription">
         <value>Nein</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue.NullDescription">
+    <data name="Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue.NullDescription">
         <value>Unbestimmt</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue.NullItemValidationMessage">
+    <data name="Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue.NullItemValidationMessage">
         <value>Bitte setzen Sie das Feld auf Ja oder Nein.</value>
     </data>
 </root>

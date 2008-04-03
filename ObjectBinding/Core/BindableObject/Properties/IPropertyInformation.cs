@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace Rubicon.ObjectBinding.BindableObject.Properties
+namespace Remotion.ObjectBinding.BindableObject.Properties
 {
   /// <summary>
   /// Provides information about a property of a bindable object and offers a way to get or set the property's value.

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Rubicon.Security.MSBuild.Tasks">  
+<project xmlns="nant-schema" name="Remotion.Security.MSBuild.Tasks">  
 
   <target name="build" description="perform a build">
 
@@ -18,8 +18,8 @@
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <include name="${build.outputdir}/Rubicon.Core.dll" />
-        <include name="${build.outputdir}/Rubicon.Security.dll" />
+        <include name="${build.outputdir}/Remotion.Core.dll" />
+        <include name="${build.outputdir}/Remotion.Security.dll" />
         <include asis="true" name="Microsoft.Build.Framework.dll"/>
         <include asis="true" name="Microsoft.Build.Utilities.dll"/>
         <include asis="true" name="System.dll"/>

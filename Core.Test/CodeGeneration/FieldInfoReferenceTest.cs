@@ -4,12 +4,12 @@ using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using NUnit.Framework;
-using Rubicon.CodeGeneration;
-using Rubicon.CodeGeneration.DPExtensions;
-using Rubicon.Core.UnitTests.CodeGeneration.SampleTypes;
-using Rubicon.Development.UnitTesting;
+using Remotion.CodeGeneration;
+using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Core.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration
+namespace Remotion.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class FieldInfoReferenceTest : SnippetGenerationBaseTest

@@ -11,11 +11,11 @@
   </HEAD>
   <body MS_POSITIONING="GridLayout">
     <form id="Form1" method="post" runat="server">
-      <rubicon:BocTextValue id=DateOfBirthField style="Z-INDEX: 106; LEFT: 376px; POSITION: absolute; TOP: 192px" runat="server" 
+      <remotion:BocTextValue id=DateOfBirthField style="Z-INDEX: 106; LEFT: 376px; POSITION: absolute; TOP: 192px" runat="server" 
         PropertyIdentifier="DateOfBirth" DataSource="<%# reflectionBusinessObjectDataSource1 %>">
-      </rubicon:BocTextValue>
-      <rubicon:SmartLabel id="BocPropertyLabel3" style="Z-INDEX: 107; LEFT: 64px; POSITION: absolute; TOP: 192px"
-        runat="server" ForControl="DateOfBirthField"></rubicon:SmartLabel>
+      </remotion:BocTextValue>
+      <remotion:SmartLabel id="BocPropertyLabel3" style="Z-INDEX: 107; LEFT: 64px; POSITION: absolute; TOP: 192px"
+        runat="server" ForControl="DateOfBirthField"></remotion:SmartLabel>
       <cc1:BocTextValueValidator id="BocTextValueValidator1" style="Z-INDEX: 108; LEFT: 584px; POSITION: absolute; TOP: 200px"
         runat="server" ControlToValidate="DateOfBirthField"></cc1:BocTextValueValidator>
       <asp:button id="SaveButton" style="Z-INDEX: 103; LEFT: 48px; POSITION: absolute; TOP: 400px"

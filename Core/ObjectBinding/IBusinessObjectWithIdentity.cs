@@ -1,4 +1,4 @@
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary>
   ///   The <see cref="IBusinessObjectWithIdentity"/> interface provides functionality to uniquely identify a business object 

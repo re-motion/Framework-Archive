@@ -1,6 +1,6 @@
 using System;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.Data.DomainObjects.ObjectBinding;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.Data.DomainObjects.ObjectBinding;
 
 namespace $PROJECT_ROOTNAMESPACE$
 {

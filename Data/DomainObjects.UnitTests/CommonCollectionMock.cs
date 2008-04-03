@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.UnitTests
+namespace Remotion.Data.DomainObjects.UnitTests
 {
   public class CommonCollectionMock : CommonCollection
   {

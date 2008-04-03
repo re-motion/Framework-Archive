@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
   [DBTable ("TableWithoutClassIDColumn")]
   [TestDomain]

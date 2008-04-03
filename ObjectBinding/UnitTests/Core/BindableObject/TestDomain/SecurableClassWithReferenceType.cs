@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Security;
+using Remotion.Security;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
 {
   public class SecurableClassWithReferenceType<T> : ClassWithReferenceType<T>, ISecurableObject
       where T: class

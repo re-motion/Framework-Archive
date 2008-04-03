@@ -5,15 +5,15 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Globalization;
-using Rubicon.NullableValueTypes;
-using Rubicon.Utilities;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Globalization;
+using Remotion.NullableValueTypes;
+using Remotion.Utilities;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> This control can be used to display or edit enumeration values. </summary>
@@ -36,11 +36,11 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   /// <summary> A list of control specific resources. </summary>
   /// <remarks> 
   ///   Resources will be accessed using 
-  ///   <see cref="M:Rubicon.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+  ///   <see cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
   ///   See the documentation of <b>GetString</b> for further details.
   /// </remarks>
   [ResourceIdentifiers]
-  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocEnumValue")]
+  [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocEnumValue")]
   protected enum ResourceIdentifier
   {
     /// <summary> The text rendered for the null item in the list. </summary>
@@ -183,7 +183,7 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   }
 
   /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-  /// <exception cref="Rubicon.Web.UI.WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
+  /// <exception cref="Remotion.Web.UI.WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity ()
   {
     if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
@@ -835,7 +835,7 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   /// </summary>
   /// <value> 
   ///   <see langword="false"/> if the <see cref="ListControlStyle"/>'s 
-  ///   <see cref="Rubicon.ObjectBinding.Web.UI.Controls.ListControlStyle.ControlType"/> is set to 
+  ///   <see cref="Remotion.ObjectBinding.Web.UI.Controls.ListControlStyle.ControlType"/> is set to 
   ///   <see cref="ListControlType.DropDownList"/> or <see cref="ListControlType.ListBox"/>. 
   /// </value>
   public override bool UseLabel

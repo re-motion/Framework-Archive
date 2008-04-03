@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain.Metadata;
+using Remotion.Data.DomainObjects;
+using Remotion.SecurityManager.Domain.Metadata;
 
-namespace Rubicon.SecurityManager.Domain.AccessControl
+namespace Remotion.SecurityManager.Domain.AccessControl
 {
   [Serializable]
   [Instantiable]

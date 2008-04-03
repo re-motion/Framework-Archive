@@ -8,11 +8,11 @@ using System.Runtime.CompilerServices;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle ("Rubicon DomainObjects CodeGenerator UnitTests")]
+[assembly: AssemblyTitle ("Remotion DomainObjects CodeGenerator UnitTests")]
 [assembly: AssemblyDescription ("UnitTests for the DomainObjects CodeGenerator Library")]
 [assembly: AssemblyConfiguration (".NET Framework: net-2.0, build type: debug")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
-[assembly: AssemblyProduct("Rubicon .NET Commons")]
+[assembly: AssemblyProduct("Remotion")]
 [assembly: AssemblyCopyright("(c) 2003 - 2007 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
@@ -58,6 +58,6 @@ using System.Runtime.CompilerServices;
 //
 #pragma warning disable 1699
 [assembly: AssemblyDelaySign (false)]
-[assembly: AssemblyKeyFile(@"\Development\global/rubicon.snk")]
+[assembly: AssemblyKeyFile(@"\Development\global/remotion.snk")]
 [assembly: AssemblyKeyName("")]
 #pragma warning restore 1699

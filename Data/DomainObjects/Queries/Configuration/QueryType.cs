@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.Queries.Configuration
+namespace Remotion.Data.DomainObjects.Queries.Configuration
 {
 /// <summary>
 /// Indicates the type of a <see cref="QueryDefinition"/>.

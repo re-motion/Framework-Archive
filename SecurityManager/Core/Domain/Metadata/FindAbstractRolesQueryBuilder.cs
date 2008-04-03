@@ -1,11 +1,11 @@
 using System.Text;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Security;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Security;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.Metadata
+namespace Remotion.SecurityManager.Domain.Metadata
 {
   public class FindAbstractRolesQueryBuilder : QueryBuilder
   {

@@ -9,7 +9,7 @@
 using System;
 using System.Xml;
 
-namespace Rubicon.ObjectBinding.Web.CodeGenerator
+namespace Remotion.ObjectBinding.Web.CodeGenerator
 {
 	// TODO: Refactoring: Use Serialization later
 	public class Configuration

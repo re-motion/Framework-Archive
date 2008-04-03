@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.Utilities.Singleton
+namespace Remotion.Mixins.Utilities.Singleton
 {
   public class ThreadSafeSingletonBase<TSelf, TCreator>
       where TSelf : class

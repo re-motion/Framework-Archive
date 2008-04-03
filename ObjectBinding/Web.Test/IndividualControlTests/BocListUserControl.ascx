@@ -5,65 +5,65 @@
 
 <table id=FormGrid width="80%" runat="server">
   <tr>
-    <td colSpan=2><rubicon:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" ReadOnly="True" datasourcecontrol="CurrentObject"></rubicon:boctextvalue>&nbsp;<rubicon:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" ReadOnly="True" datasourcecontrol="CurrentObject"></rubicon:boctextvalue></td></tr>
+    <td colSpan=2><remotion:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" ReadOnly="True" datasourcecontrol="CurrentObject"></remotion:boctextvalue>&nbsp;<remotion:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" ReadOnly="True" datasourcecontrol="CurrentObject"></remotion:boctextvalue></td></tr>
   <tr>
     <td>Jobs</td>
-    <td><rubicon:boclist id=JobList runat="server" datasourcecontrol="CurrentObject" showallproperties="True" showavailableviewslist="False" showsortingorder="True" propertyidentifier="Jobs" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="2" selection="SingleRadioButton" index="Disabled">
-</rubicon:boclist></td></tr>
+    <td><remotion:boclist id=JobList runat="server" datasourcecontrol="CurrentObject" showallproperties="True" showavailableviewslist="False" showsortingorder="True" propertyidentifier="Jobs" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="2" selection="SingleRadioButton" index="Disabled">
+</remotion:boclist></td></tr>
   <tr>
     <td></td>
     <td></td></tr>
   <tr>
     <td colSpan=2><ros:TestBocList id=ChildrenList runat="server" datasourcecontrol="CurrentObject" propertyidentifier="ChildrenAsObjects" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="4" indexoffset="100" RowMenuDisplay="Manual" ShowEmptyListMessage="True" enableselection="True" Index="InitialOrder" Selection="Multiple">
 <fixedcolumns>
-<rubicon:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit"></rubicon:BocRowEditModeColumnDefinition>
-<rubicon:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
+<remotion:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit"></remotion:BocRowEditModeColumnDefinition>
+<remotion:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
 <persistedcommand>
-<rubicon:BocListItemCommand ToolTip="An Event Command" CommandStateType="Rubicon.ObjectBinding.Sample::PersonListItemCommandState" Type="Event"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand ToolTip="An Event Command" CommandStateType="Remotion.ObjectBinding.Sample::PersonListItemCommandState" Type="Event"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocCommandColumnDefinition>
-<rubicon:BocCommandColumnDefinition ItemID="Href" Text="Href">
+</remotion:BocCommandColumnDefinition>
+<remotion:BocCommandColumnDefinition ItemID="Href" Text="Href">
 <persistedcommand>
-<rubicon:BocListItemCommand HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}" Type="Href"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}" Type="Href"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocCommandColumnDefinition>
-<rubicon:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName" IsDynamic="True">
+</remotion:BocCommandColumnDefinition>
+<remotion:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName" IsDynamic="True">
 <persistedcommand>
-<rubicon:BocListItemCommand WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" WxeFunctionCommand-Parameters="id" Type="WxeFunction"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" WxeFunctionCommand-Parameters="id" Type="WxeFunction"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
 
 <persistedcommand>
-<rubicon:BocListItemCommand></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand></remotion:BocListItemCommand>
 </PersistedCommand>
 <propertypathbindings>
-<rubicon:PropertyPathBinding PropertyPathIdentifier="LastName" IsDynamic="True"></rubicon:PropertyPathBinding>
-<rubicon:PropertyPathBinding PropertyPathIdentifier="FirstName" IsDynamic="True"></rubicon:PropertyPathBinding>
+<remotion:PropertyPathBinding PropertyPathIdentifier="LastName" IsDynamic="True"></remotion:PropertyPathBinding>
+<remotion:PropertyPathBinding PropertyPathIdentifier="FirstName" IsDynamic="True"></remotion:PropertyPathBinding>
 </PropertyPathBindings>
-</rubicon:BocCompoundColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" EnforceWidth="True" Width="6em" ColumnTitle="Partner" IsDynamic="True" EnableIcon="True" >
+</remotion:BocCompoundColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" EnforceWidth="True" Width="6em" ColumnTitle="Partner" IsDynamic="True" EnableIcon="True" >
 <persistedcommand>
-<rubicon:BocListItemCommand></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName" ColumnTitle="Parter" IsDynamic="True">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName" ColumnTitle="Parter" IsDynamic="True">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="Event"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="Event"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" ColumnTitle="LastName" IsReadOnly="True" IsDynamic="True">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" ColumnTitle="LastName" IsReadOnly="True" IsDynamic="True">
 <persistedcommand>
-<rubicon:BocListItemCommand></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocCustomColumnDefinition ItemID="CustomCell" PropertyPathIdentifier="LastName" CustomCellType="Rubicon.ObjectBinding.Sample::PersonCustomCell" Mode="ControlInEditedRow" ColumnTitle="Custom Cell" IsDynamic="True"></rubicon:BocCustomColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased" IsSortable="False" ColumnTitle="Deceased" IsDynamic="True">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocCustomColumnDefinition ItemID="CustomCell" PropertyPathIdentifier="LastName" CustomCellType="Remotion.ObjectBinding.Sample::PersonCustomCell" Mode="ControlInEditedRow" ColumnTitle="Custom Cell" IsDynamic="True"></remotion:BocCustomColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased" IsSortable="False" ColumnTitle="Deceased" IsDynamic="True">
 <persistedcommand>
-<rubicon:BocListItemCommand></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" Width="0%" ColumnTitle="Menu"></rubicon:BocDropDownMenuColumnDefinition>
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" Width="0%" ColumnTitle="Menu"></remotion:BocDropDownMenuColumnDefinition>
 </FixedColumns>
 </ros:TestBocList></td></tr>
 <%--  <tr>
@@ -72,41 +72,41 @@
   <tr>
     <td colSpan=2><ros:testboclist id=Testboclist1 runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" indexoffset="100" ShowEmptyListMessage="True" enableselection="True" Index="SortedOrder" Selection="Multiple" rowmenudisplay="Automatic" readonly="True">
 <fixedcolumns>
-<rubicon:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName">
+<remotion:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName">
 <persistedcommand>
-<rubicon:BocListItemCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
 <propertypathbindings>
-<rubicon:PropertyPathBinding PropertyPathIdentifier="LastName"></rubicon:PropertyPathBinding>
-<rubicon:PropertyPathBinding PropertyPathIdentifier="FirstName"></rubicon:PropertyPathBinding>
+<remotion:PropertyPathBinding PropertyPathIdentifier="LastName"></remotion:PropertyPathBinding>
+<remotion:PropertyPathBinding PropertyPathIdentifier="FirstName"></remotion:PropertyPathBinding>
 </PropertyPathBindings>
 
 <persistedcommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocCompoundColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" EnforceWidth="True" Width="4em" ColumnTitle="Partner">
+</remotion:BocCompoundColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" EnforceWidth="True" Width="4em" ColumnTitle="Partner">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="Event"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="Event"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" IsReadOnly="True">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" IsReadOnly="True">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
+</remotion:BocSimpleColumnDefinition>
 </FixedColumns>
 </ros:testboclist></td></tr>
   <tr>
@@ -115,85 +115,85 @@
   <tr>
     <td colSpan=2><ros:testboclist id=EmptyList runat="server" datasourcecontrol="EmptyDataSourceControl" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="4" RowMenuDisplay="Manual" ShowEmptyListMessage="True" enableselection="True" Index="InitialOrder" Selection="Multiple" required="True" readonly="False">
 <listmenuitems>
-<rubicon:BocMenuItem Text="test" ItemID="test">
+<remotion:BocMenuItem Text="test" ItemID="test">
 <persistedcommand>
-<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
+<remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
 </PersistedCommand>
-</rubicon:BocMenuItem>
+</remotion:BocMenuItem>
 </ListMenuItems>
 
 <optionsmenuitems>
-<rubicon:BocMenuItem Text="test" ItemID="test">
+<remotion:BocMenuItem Text="test" ItemID="test">
 <persistedcommand>
-<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
+<remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
 </PersistedCommand>
-</rubicon:BocMenuItem>
+</remotion:BocMenuItem>
 </OptionsMenuItems>
 
 <fixedcolumns>
-<rubicon:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" EditText="Edit"></rubicon:BocRowEditModeColumnDefinition>
-<rubicon:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
+<remotion:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" EditText="Edit"></remotion:BocRowEditModeColumnDefinition>
+<remotion:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="Event" CommandStateType="Rubicon.ObjectBinding.Sample::PersonListItemCommandState" ToolTip="An Event Command"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="Event" CommandStateType="Remotion.ObjectBinding.Sample::PersonListItemCommandState" ToolTip="An Event Command"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocCommandColumnDefinition>
-<rubicon:BocCommandColumnDefinition ItemID="Href" Text="Href">
+</remotion:BocCommandColumnDefinition>
+<remotion:BocCommandColumnDefinition ItemID="Href" Text="Href">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="Href" HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="Href" HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocCommandColumnDefinition>
-<rubicon:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName">
+</remotion:BocCommandColumnDefinition>
+<remotion:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName">
 <persistedcommand>
-<rubicon:BocListItemCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
 <propertypathbindings>
-<rubicon:PropertyPathBinding PropertyPathIdentifier="LastName"></rubicon:PropertyPathBinding>
-<rubicon:PropertyPathBinding PropertyPathIdentifier="FirstName"></rubicon:PropertyPathBinding>
+<remotion:PropertyPathBinding PropertyPathIdentifier="LastName"></remotion:PropertyPathBinding>
+<remotion:PropertyPathBinding PropertyPathIdentifier="FirstName"></remotion:PropertyPathBinding>
 </PropertyPathBindings>
 
 <persistedcommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocCompoundColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" ColumnTitle="Partner">
+</remotion:BocCompoundColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" ColumnTitle="Partner">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="Event"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="Event"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" IsReadOnly="True">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" IsReadOnly="True">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocCustomColumnDefinition ItemID="CustomCell" PropertyPathIdentifier="LastName" CustomCellType="Rubicon.ObjectBinding.Sample::PersonCustomCell" Mode="ControlInEditedRow" ColumnTitle="Custom Cell"></rubicon:BocCustomColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocCustomColumnDefinition ItemID="CustomCell" PropertyPathIdentifier="LastName" CustomCellType="Remotion.ObjectBinding.Sample::PersonCustomCell" Mode="ControlInEditedRow" ColumnTitle="Custom Cell"></remotion:BocCustomColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" Width="0%" ColumnTitle="Menu"></rubicon:BocDropDownMenuColumnDefinition>
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" Width="0%" ColumnTitle="Menu"></remotion:BocDropDownMenuColumnDefinition>
 </FixedColumns>
 </ros:testboclist><ros:testboclistvalidator id=EmptyListValidator runat="server" errormessage="List is empty." enableclientscript="False" controltovalidate="EmptyList"></ros:testboclistvalidator></td></tr>
   <tr>
     <td></td>
     <td></td></tr>
   <tr>
-    <td colSpan=2><rubicon:boclist id=AllColumnsList runat="server" datasourcecontrol="EmptyDataSourceControl">
+    <td colSpan=2><remotion:boclist id=AllColumnsList runat="server" datasourcecontrol="EmptyDataSourceControl">
 <fixedcolumns>
-<rubicon:BocAllPropertiesPlacehoderColumnDefinition CssClass="test" Width="80%"></rubicon:BocAllPropertiesPlacehoderColumnDefinition>
-<rubicon:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" EditText="Edit"></rubicon:BocRowEditModeColumnDefinition>
+<remotion:BocAllPropertiesPlacehoderColumnDefinition CssClass="test" Width="80%"></remotion:BocAllPropertiesPlacehoderColumnDefinition>
+<remotion:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" EditText="Edit"></remotion:BocRowEditModeColumnDefinition>
 </FixedColumns>
-</rubicon:boclist></td></tr>--%>
+</remotion:boclist></td></tr>--%>
 </table>
 <p><asp:button id=ChildrenListEndEditModeButton runat="server" Text="End Edit Mode"></asp:button><asp:button id=ChildrenListAddAndEditButton runat="server" Text="Add and Edit"></asp:button></p>
 <p><asp:checkbox id=ChildrenListEventCheckBox runat="server" Text="ChildrenList Event raised" enableviewstate="False" Enabled="False"></asp:checkbox></p>
 <p><asp:label id=ChildrenListEventArgsLabel runat="server" enableviewstate="False"></asp:label></p>
 <div style="BORDER-RIGHT: black thin solid; BORDER-TOP: black thin solid; BORDER-LEFT: black thin solid; BORDER-BOTTOM: black thin solid; BACKGROUND-COLOR: #ffff99" runat="server" visible="false" ID="NonVisualControls">
-<rubicon:formgridmanager id=FormGridManager runat="server"/><rubicon:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Rubicon.ObjectBinding.Sample::Person"/><rubicon:BindableObjectDataSourceControl id=EmptyDataSourceControl runat="server" Type="Rubicon.ObjectBinding.Sample::Person"/></div>
+<remotion:formgridmanager id=FormGridManager runat="server"/><remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person"/><remotion:BindableObjectDataSourceControl id=EmptyDataSourceControl runat="server" Type="Remotion.ObjectBinding.Sample::Person"/></div>

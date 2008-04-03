@@ -1,15 +1,15 @@
 using System;
 using System.Security.Principal;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Security.Configuration;
-using Rubicon.Security.Data.DomainObjects;
-using Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain;
-using Rubicon.Security.Metadata;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Development.UnitTesting;
+using Remotion.Security.Configuration;
+using Remotion.Security.Data.DomainObjects;
+using Remotion.Security.UnitTests.Data.DomainObjects.TestDomain;
+using Remotion.Security.Metadata;
+using Remotion.Utilities;
 
-namespace Rubicon.Security.UnitTests.Data.DomainObjects.SecurityClientTransactionExtensionTests
+namespace Remotion.Security.UnitTests.Data.DomainObjects.SecurityClientTransactionExtensionTests
 {
   public delegate bool HasAccessDelegate (ISecurityProvider securityProvider, IPrincipal user, params AccessType[] requiredAccessTypes);
   public delegate bool HasStatelessAccessDelegate (Type type, ISecurityProvider securityProvider, IPrincipal user, params AccessType[] requiredAccessTypes);

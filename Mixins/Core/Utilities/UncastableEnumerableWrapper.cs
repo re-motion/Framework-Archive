@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Rubicon.Mixins.Utilities
+namespace Remotion.Mixins.Utilities
 {
   /// <summary>
   /// Wraps an enumerable object so that the wrapped object cannot be cast back to its original type.

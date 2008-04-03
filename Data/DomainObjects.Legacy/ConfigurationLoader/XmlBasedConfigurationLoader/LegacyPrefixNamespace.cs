@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader
+namespace Remotion.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader
 {
   public sealed class LegacyPrefixNamespace
   {

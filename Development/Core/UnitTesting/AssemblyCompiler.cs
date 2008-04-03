@@ -4,9 +4,9 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using Microsoft.CSharp;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Development.UnitTesting
+namespace Remotion.Development.UnitTesting
 {
   [Serializable]
   public class AssemblyCompiler

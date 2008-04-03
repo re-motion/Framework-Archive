@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\Schemas\Mapping.xsd">
 	<classes>
 		<class id="ClassWithAllDataTypes">
-			<type>Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.Web.Legacy.Test</type>
+			<type>Remotion.Data.DomainObjects.Web.Legacy.Test.Domain.ClassWithAllDataTypes, Remotion.Data.DomainObjects.Web.Legacy.Test</type>
 			<entity name="TableWithAllDataTypes" />
 			<storageProviderID>RpaTest</storageProviderID>
 			<properties>
@@ -35,7 +35,7 @@
 					<column>Double</column>
 				</property>
 				<property name="EnumProperty">
-					<type>Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.Web.Legacy.Test</type>
+					<type>Remotion.Data.DomainObjects.Web.Legacy.Test.Domain.ClassWithAllDataTypes+EnumType, Remotion.Data.DomainObjects.Web.Legacy.Test</type>
 					<column>Enum</column>
 				</property>
 				<property name="GuidProperty">
@@ -216,7 +216,7 @@
 		</class>
 				
 		<class id="ClassForRelationTest">
-			<type>Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain.ClassForRelationTest, Rubicon.Data.DomainObjects.Web.Legacy.Test</type>
+			<type>Remotion.Data.DomainObjects.Web.Legacy.Test.Domain.ClassForRelationTest, Remotion.Data.DomainObjects.Web.Legacy.Test</type>
 			<entity name="TableForRelationTest" />
 			<storageProviderID>RpaTest</storageProviderID>
 			<properties>
@@ -237,19 +237,19 @@
 		</class>
 
     <class id="ClassWithoutProperties">
-      <type>Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain.ClassWithoutProperties, Rubicon.Data.DomainObjects.Web.Legacy.Test</type>    
+      <type>Remotion.Data.DomainObjects.Web.Legacy.Test.Domain.ClassWithoutProperties, Remotion.Data.DomainObjects.Web.Legacy.Test</type>    
       <entity name="TableWithoutColumns"></entity>
       <storageProviderID>RpaTest</storageProviderID>
       <properties />
     </class>
     
     <class id="ClassWithUndefinedEnum">
-      <type>Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain.ClassWithUndefinedEnum, Rubicon.Data.DomainObjects.Web.Legacy.Test</type>    
+      <type>Remotion.Data.DomainObjects.Web.Legacy.Test.Domain.ClassWithUndefinedEnum, Remotion.Data.DomainObjects.Web.Legacy.Test</type>    
       <entity name="TableWithUndefinedEnum"></entity>
       <storageProviderID>RpaTest</storageProviderID>
       <properties>
         <property name="UndefinedEnum">
-          <type>Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain.UndefinedEnum, Rubicon.Data.DomainObjects.Web.Legacy.Test</type>
+          <type>Remotion.Data.DomainObjects.Web.Legacy.Test.Domain.UndefinedEnum, Remotion.Data.DomainObjects.Web.Legacy.Test</type>
           <column>UndefinedEnum</column>
         </property>
       </properties>

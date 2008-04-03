@@ -1,16 +1,16 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SecurityManagerCurrentTenantControl.ascx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.CurrentTenantControl" %>
+<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SecurityManagerCurrentTenantControl.ascx.cs" Inherits="Remotion.SecurityManager.Clients.Web.UI.CurrentTenantControl" %>
  <div>
-  <rubicon:BocReferenceValue ID="CurrentUserField" runat="server" ReadOnly="True">
+  <remotion:BocReferenceValue ID="CurrentUserField" runat="server" ReadOnly="True">
     <PersistedCommand>
-      <rubicon:BocCommand />
+      <remotion:BocCommand />
     </PersistedCommand>
-  </rubicon:BocReferenceValue>
+  </remotion:BocReferenceValue>
 </div>
 <div>
-  <rubicon:BocReferenceValue ID="CurrentTenantField" runat="server" Required="True" OnSelectionChanged="CurrentTenantField_SelectionChanged" OnCommandClick="CurrentTenantField_CommandClick">
+  <remotion:BocReferenceValue ID="CurrentTenantField" runat="server" Required="True" OnSelectionChanged="CurrentTenantField_SelectionChanged" OnCommandClick="CurrentTenantField_CommandClick">
     <PersistedCommand>
-      <rubicon:BocCommand Show="ReadOnly" Type="Event" />
+      <remotion:BocCommand Show="ReadOnly" Type="Event" />
     </PersistedCommand>
     <DropDownListStyle AutoPostBack="True" />
-  </rubicon:BocReferenceValue>
+  </remotion:BocReferenceValue>
 </div>

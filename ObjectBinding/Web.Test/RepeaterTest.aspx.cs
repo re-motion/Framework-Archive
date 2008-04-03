@@ -8,12 +8,12 @@ using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Web.UI;
-using ObjectBoundRepeater=Rubicon.ObjectBinding.Sample.ObjectBoundRepeater;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI;
+using ObjectBoundRepeater=Remotion.ObjectBinding.Sample.ObjectBoundRepeater;
 
 namespace OBWTest
 {
@@ -23,10 +23,10 @@ namespace OBWTest
 public class RepeaterTest : SmartPage
 {
   protected BindableObjectDataSourceControl CurrentObject;
-  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   protected ObjectBoundRepeater Repeater2;
   protected ObjectBoundRepeater Repeater3;
-  protected Rubicon.Web.UI.Controls.WebButton SaveButton;
+  protected Remotion.Web.UI.Controls.WebButton SaveButton;
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{

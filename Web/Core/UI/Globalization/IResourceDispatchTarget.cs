@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Web.UI;
-using Rubicon.Globalization;
+using Remotion.Globalization;
 
-namespace Rubicon.Web.UI.Globalization
+namespace Remotion.Web.UI.Globalization
 {
 
 /// <summary>

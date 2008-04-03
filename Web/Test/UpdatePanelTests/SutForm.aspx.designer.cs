@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.Web.Test.UpdatePanelTests {
+namespace Remotion.Web.Test.UpdatePanelTests {
     
     
     /// <summary>
@@ -44,6 +44,6 @@ namespace Rubicon.Web.Test.UpdatePanelTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.Test.UpdatePanelTests.SutUserControl SutUserControl;
+        protected global::Remotion.Web.Test.UpdatePanelTests.SutUserControl SutUserControl;
     }
 }

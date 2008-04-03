@@ -1,11 +1,11 @@
 using System;
 using System.Reflection;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
+namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   /// <summary>Used to create the <see cref="PropertyDefinition"/> from a <see cref="PropertyInfo"/>.</summary>
   //TODO: Validation: check that only non-virtual relation endpoints are returned as propertydefinition.

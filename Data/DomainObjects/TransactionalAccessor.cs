@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Provides an indexing mechanism to easily access a <see cref="DomainObject">DomainObject's</see> property in different

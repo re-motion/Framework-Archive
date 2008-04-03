@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
 /// <summary>
 /// Indicates the state of a <see cref="DomainObject"/>.

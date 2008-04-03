@@ -2,14 +2,14 @@ using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Web.UI;
+using Remotion.Web.UI;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 /// <summary>
 ///   This interfaces declares advanced properties and methods for data-aware web controls.
-///   <seealso cref="Rubicon.Web.UI.Controls.FormGridManager"/>
+///   <seealso cref="Remotion.Web.UI.Controls.FormGridManager"/>
 /// </summary>
 public interface ISmartControl: IControl
 {

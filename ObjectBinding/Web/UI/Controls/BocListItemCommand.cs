@@ -1,14 +1,14 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.Collections;
-using Rubicon.Security;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
+using Remotion.Collections;
+using Remotion.Security;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
   //  TODO: BocListItemCommand: Move long comment blocks to xml-file

@@ -1,9 +1,9 @@
 using System;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Design
+namespace Remotion.ObjectBinding.Design
 {
   public class PropertyPathPickerControl : EditorControlBase
   {

@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Web.UI.WebControls;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 public class LengthValidator : BaseValidator
 {

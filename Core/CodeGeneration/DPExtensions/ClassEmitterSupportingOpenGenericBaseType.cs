@@ -4,9 +4,9 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators.Emitters;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.CodeGeneration.DPExtensions
+namespace Remotion.CodeGeneration.DPExtensions
 {
   internal class ClassEmitterSupportingOpenGenericBaseType : ClassEmitter
   {

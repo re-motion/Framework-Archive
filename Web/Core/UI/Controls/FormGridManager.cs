@@ -5,14 +5,14 @@ using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Rubicon.Globalization;
-using Rubicon.Logging;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Design;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Globalization;
+using Remotion.Logging;
+using Remotion.Utilities;
+using Remotion.Web.UI.Design;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 /// <summary> Transforms one or more tables into form grids. </summary>
@@ -45,7 +45,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   /// <summary> A list of form grid manager wide resources. </summary>
   /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
   [ResourceIdentifiers]
-  [MultiLingualResources ("Rubicon.Web.Globalization.FormGridManager")]
+  [MultiLingualResources ("Remotion.Web.Globalization.FormGridManager")]
   protected enum ResourceIdentifier
   {
     /// <summary>The alternate text for the required icon.</summary>

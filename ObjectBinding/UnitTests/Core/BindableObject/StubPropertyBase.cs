@@ -1,7 +1,7 @@
 using System;
-using Rubicon.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.BindableObject.Properties;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
 {
   public class StubPropertyBase : PropertyBase
   {

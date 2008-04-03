@@ -1,9 +1,9 @@
 using System;
 using System.Globalization;
 using System.Text;
-using Rubicon.NullableValueTypes;
+using Remotion.NullableValueTypes;
 
-namespace Rubicon.Text.CommandLine
+namespace Remotion.Text.CommandLine
 {
 
 public abstract class CommandLineValueArgument: CommandLineArgument

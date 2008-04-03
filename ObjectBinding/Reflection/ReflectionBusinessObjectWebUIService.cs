@@ -1,9 +1,9 @@
 using System;
 using System.Web.UI.WebControls;
-using Rubicon.ObjectBinding.Web;
-using Rubicon.Web.UI.Controls;
+using Remotion.ObjectBinding.Web;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Reflection
+namespace Remotion.ObjectBinding.Reflection
 {
 
 public class ReflectionBusinessObjectWebUIService: IBusinessObjectWebUIService

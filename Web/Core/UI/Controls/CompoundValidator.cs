@@ -3,9 +3,9 @@ using System.Collections;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 /// <summary>
@@ -18,7 +18,7 @@ namespace Rubicon.Web.UI.Controls
 ///   </para><para>
 ///     Inheritors should override <see cref="CreateChildValidators"/> to create specific validators. Also,
 ///     they can override <see cref="ControlToValidate"/> and decorate it with an attribute derived from
-///     <see cref="Rubicon.Web.UI.Design.ControlToStringConverter"/> in order to provide a pick list in the VS.NET property editor.
+///     <see cref="Remotion.Web.UI.Design.ControlToStringConverter"/> in order to provide a pick list in the VS.NET property editor.
 ///   </para>
 /// </remarks>
 public abstract class CompoundValidator: WebControl, IBaseValidator

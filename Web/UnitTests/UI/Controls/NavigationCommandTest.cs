@@ -4,14 +4,14 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.ExecutionEngine.UrlMapping;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UnitTests.AspNetFramework;
-using Rubicon.Web.UnitTests.Configuration;
-using Rubicon.Web.Utilities;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine.UrlMapping;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UnitTests.AspNetFramework;
+using Remotion.Web.UnitTests.Configuration;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UnitTests.UI.Controls
+namespace Remotion.Web.UnitTests.UI.Controls
 {
 
 [TestFixture]
@@ -78,7 +78,7 @@ public class NavigationCommandTest
   public virtual void TearDown()
   { 
     WebConfigurationMock.Current = null;
-    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+    Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
   }
 
   [Test]
@@ -115,7 +115,7 @@ public class NavigationCommandTest
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();    
     
-    string wxeHandler = Rubicon.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
+    string wxeHandler = Remotion.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
     
     string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, wxeHandler);
     NameValueCollection expectedQueryString = new NameValueCollection();
@@ -211,7 +211,7 @@ public class NavigationCommandTest
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();    
     
-    string wxeHandler = Rubicon.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
+    string wxeHandler = Remotion.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
     
     NameValueCollection additionalUrlParameters = new NameValueCollection();
     additionalUrlParameters.Add ("Parameter2", "Value2");

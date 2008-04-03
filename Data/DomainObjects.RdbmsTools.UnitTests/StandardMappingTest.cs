@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests
+namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests
 {
   public class StandardMappingTest
   {

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Web
+namespace Remotion.ObjectBinding.Web
 {
   public sealed class BusinessObjectWithIdentityProxy
   {

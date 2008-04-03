@@ -7,7 +7,7 @@
 		<class id="Company">
 			<!-- Example: Leading and trailing whitespace in type element is ignored. Thus linebreaks can be applied for formatting purposes. -->
 			<type>
-			  Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Company, Rubicon.Data.DomainObjects.Legacy.UnitTests
+			  Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Company, Remotion.Data.DomainObjects.Legacy.UnitTests
 			</type>
 			<entity name="Company"/>
 			<storageProviderID>TestDomain</storageProviderID>
@@ -25,7 +25,7 @@
 			</properties>
 		</class>
 		<class id="Customer" baseClass="Company">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Company"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -35,19 +35,19 @@
 					<nullable>true</nullable>
 				</property>
 				<property name="Type">
-					<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+					<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer+CustomerType, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 					<column>CustomerType</column>
 				</property>
 				<relationProperty name="Orders" relationID="CustomerToOrder" cardinality="many" isMandatory="false">
 					<collectionType>
-						Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.Legacy.UnitTests
+						Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.Legacy.UnitTests
 					</collectionType>
 					<sortExpression>OrderNo asc</sortExpression>
 				</relationProperty>
 			</properties>
 		</class>
 		<class id="Supplier" baseClass="Partner">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Supplier, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Supplier, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Company"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -58,7 +58,7 @@
 			</properties>
 		</class>
 		<class id="Distributor" baseClass="Partner">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Distributor, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Distributor, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Company"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -72,7 +72,7 @@
 		<!-- Partner is defined after its derivations Supplier and Distributor thus showing that there is no specific order
 		     assumed when Mapping.xml is read. -->
 		<class id="Partner" baseClass="Company">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Partner, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Partner, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Company"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -82,7 +82,7 @@
 			</properties>
 		</class>
 		<class id="Ceo">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Ceo, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Ceo, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Ceo"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -97,7 +97,7 @@
 			</properties>
 		</class>
 		<class id="Person">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Person, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Person, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Person"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -110,7 +110,7 @@
 			</properties>
 		</class>
 		<class id="Order">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Order, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Order"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -133,7 +133,7 @@
 			</properties>
 		</class>
 		<class id="OrderItem">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.OrderItem, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.OrderItem, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="OrderItem"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -152,7 +152,7 @@
 			</properties>
 		</class>
 		<class id="OrderTicket">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.OrderTicket, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.OrderTicket, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="OrderTicket"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -167,7 +167,7 @@
 			</properties>
 		</class>
 		<class id="Official">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Official, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Official, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Official"/>
 			<storageProviderID>UnitTestStorageProviderStub</storageProviderID>
 			<properties>
@@ -180,13 +180,13 @@
 			</properties>
 		</class>
     <class id="SpecialOfficial" baseClass="Official">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.SpecialOfficial, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.SpecialOfficial, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Official"/>
 			<storageProviderID>UnitTestStorageProviderStub</storageProviderID>
 			<properties />
 		</class>
     <class id="IndustrialSector">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.IndustrialSector, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.IndustrialSector, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="IndustrialSector"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -199,7 +199,7 @@
 			</properties>
 		</class>
 		<class id="Employee">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Employee, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Employee, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Employee"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -216,7 +216,7 @@
 			</properties>
 		</class>
 		<class id="Computer">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Computer, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Computer, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Computer"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -231,7 +231,7 @@
 			</properties>
 		</class>
 		<class id="Client">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Client, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Client, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Client"></entity>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -242,7 +242,7 @@
 			</properties>
 		</class>
 		<class id="Location">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Location, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Location, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Location"></entity>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -253,7 +253,7 @@
 			</properties>
 		</class>
 		<class id="FileSystemItem">
-		  <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.FileSystemItem, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+		  <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.FileSystemItem, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 		  <entity name="FileSystemItem"/>
 		  <storageProviderID>TestDomain</storageProviderID>
 		  <properties>
@@ -263,7 +263,7 @@
 		  </properties>
 		</class>
 		<class id="Folder" baseClass="FileSystemItem">
-		  <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Folder, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+		  <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Folder, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 		  <entity name="FileSystemItem"/>
 		  <storageProviderID>TestDomain</storageProviderID>
 		  <properties>
@@ -271,13 +271,13 @@
 		  </properties>
 		</class>
 		<class id="File" baseClass="FileSystemItem">
-		  <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.File, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+		  <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.File, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 		  <entity name="FileSystemItem"/>
 		  <storageProviderID>TestDomain</storageProviderID>
 		  <properties/>
 		</class>
 		<class id="ClassWithAllDataTypes">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithAllDataTypes, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="TableWithAllDataTypes"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -306,7 +306,7 @@
 					<column>Double</column>
 				</property>
 				<property name="EnumProperty">
-					<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+					<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithAllDataTypes+EnumType, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 					<column>Enum</column>
 				</property>
 				<property name="GuidProperty">
@@ -467,7 +467,7 @@
 			</properties>
 		</class>
 		<class id="ClassWithGuidKey">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithGuidKey, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithGuidKey, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="TableWithGuidKey"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -478,31 +478,31 @@
 			</properties>
 		</class>
 		<class id="ClassWithKeyOfInvalidType">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithKeyOfInvalidType, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithKeyOfInvalidType, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="TableWithKeyOfInvalidType"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties/>
 		</class>
 		<class id="ClassWithoutIDColumn">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithoutIDColumn, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithoutIDColumn, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="TableWithoutIDColumn"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties/>
 		</class>
 		<class id="ClassWithoutClassIDColumn">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithoutClassIDColumn, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithoutClassIDColumn, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="TableWithoutClassIDColumn"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties/>
 		</class>
 		<class id="ClassWithoutTimestampColumn">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithoutTimestampColumn, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithoutTimestampColumn, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="TableWithoutTimestampColumn"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties/>
 		</class>
 		<class id="ClassWithValidRelations">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithValidRelations, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithValidRelations, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="TableWithValidRelations"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -516,7 +516,7 @@
 		</class>
 		<!-- Contains foreign key of type guid with non-optional relation, which does not refer to an existing row. -->
 		<class id="ClassWithInvalidRelation">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithInvalidRelation, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithInvalidRelation, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="TableWithInvalidRelation"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -526,7 +526,7 @@
 			</properties>
 		</class>
 		<class id="ClassWithoutRelatedClassIDColumn">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumn, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumn, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="TableWithoutRelatedClassIDColumn"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -536,7 +536,7 @@
 			</properties>
 		</class>
 		<class id="ClassWithoutRelatedClassIDColumnAndDerivation">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumnAndDerivation, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumnAndDerivation, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="TableWithoutRelatedClassIDColumnAndDerivation"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -546,7 +546,7 @@
 			</properties>
 		</class>
     <class id="ClassWithOptionalOneToOneRelationAndOppositeDerivedClass">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithOptionalOneToOneRelationAndOppositeDerivedClass, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithOptionalOneToOneRelationAndOppositeDerivedClass, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <entity name="TableWithOptionalOneToOneRelationAndOppositeDerivedClass"/>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
@@ -557,7 +557,7 @@
       </properties>
     </class>
     <class id="ClassWithRelatedClassIDColumnAndNoInheritance">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithRelatedClassIDColumnAndNoInheritance, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithRelatedClassIDColumnAndNoInheritance, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="TableWithRelatedClassIDColumnAndNoInheritance"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>

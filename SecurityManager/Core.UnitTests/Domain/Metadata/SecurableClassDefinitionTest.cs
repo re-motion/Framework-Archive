@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.SecurityManager.Domain;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.SecurityManager.UnitTests.Domain.AccessControl;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.SecurityManager.Domain;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.SecurityManager.UnitTests.Domain.AccessControl;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
+namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 {
   [TestFixture]
   public class SecurableClassDefinitionTest : DomainTest
@@ -223,7 +223,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       using (ClientTransaction.NewRootTransaction ().EnterNonDiscardingScope ())
       {
-        SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName ("Rubicon.SecurityManager.UnitTests.TestDomain.Invoice");
+        SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName ("Remotion.SecurityManager.UnitTests.TestDomain.Invoice");
 
         MetadataObjectAssert.AreEqual (invoiceClass, testHelper.Transaction, foundClass);
       }
@@ -537,7 +537,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     [ExpectedException (typeof (ConstraintViolationException),
         ExpectedMessage =
-        "The securable class definition 'Rubicon.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice."
+        "The securable class definition 'Remotion.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice."
         )]
     public void Commit_TwoStateCombinations ()
     {

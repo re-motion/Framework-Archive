@@ -2,14 +2,14 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.Security;
+using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain;
+using Remotion.Mixins;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.Security;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
+namespace Remotion.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
 {
   [TestFixture]
   public class GetDisplayNameTest : ObjectBindingBaseTest
@@ -39,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjec
 
       Assert.That (
           ((IBusinessObject) bindableObjectMixin).DisplayName,
-          Is.EqualTo ("Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain.BindableSampleDomainObject, Rubicon.Data.DomainObjects.UnitTests"));
+          Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain.BindableSampleDomainObject, Remotion.Data.DomainObjects.UnitTests"));
     }
 
     [Test]

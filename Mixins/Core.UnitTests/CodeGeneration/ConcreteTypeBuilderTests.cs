@@ -1,17 +1,17 @@
 using System;
 using Rhino.Mocks;
-using Rubicon.Mixins.CodeGeneration.DynamicProxy;
-using Rubicon.Mixins.UnitTests.CodeGeneration.SampleTypes;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.CodeGeneration.DynamicProxy;
+using Remotion.Mixins.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
-using Rubicon.Mixins.CodeGeneration;
+using Remotion.Mixins.CodeGeneration;
 using System.Reflection;
-using Rubicon.Development.UnitTesting;
+using Remotion.Development.UnitTesting;
 using System.Threading;
-using Rubicon.Mixins.Definitions;
+using Remotion.Mixins.Definitions;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration
+namespace Remotion.Mixins.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class ConcreteTypeBuilderTests : CodeGenerationBaseTest
@@ -175,7 +175,7 @@ namespace Rubicon.Mixins.UnitTests.CodeGeneration
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot load assembly 'Rubicon.Mixins.Generated.Signed' into the cache "
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot load assembly 'Remotion.Mixins.Generated.Signed' into the cache "
         + "because it has the same name as one of the dynamic assemblies used by the mixin engine. Having two assemblies with the same name loaded "
             + "into one AppDomain can cause strange and sporadic TypeLoadExceptions.\r\nParameter name: assembly")]
     public void LoadThrows_WhenLoadedAssemblyHasSameName_AsSigned ()
@@ -186,7 +186,7 @@ namespace Rubicon.Mixins.UnitTests.CodeGeneration
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot load assembly 'Rubicon.Mixins.Generated.Unsigned' into the cache "
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot load assembly 'Remotion.Mixins.Generated.Unsigned' into the cache "
         + "because it has the same name as one of the dynamic assemblies used by the mixin engine. Having two assemblies with the same name loaded "
             + "into one AppDomain can cause strange and sporadic TypeLoadExceptions.\r\nParameter name: assembly")]
     public void LoadThrows_WhenLoadedAssemblyHasSameName_AsUnsigned ()
@@ -399,8 +399,8 @@ namespace Rubicon.Mixins.UnitTests.CodeGeneration
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "No concrete mixin type is required for the given configuration "
-        + "(mixin Rubicon.Mixins.UnitTests.CodeGeneration.SampleTypes.MixinWithOverridableMember and target class "
-            + "Rubicon.Mixins.UnitTests.SampleTypes.NullTarget).",
+        + "(mixin Remotion.Mixins.UnitTests.CodeGeneration.SampleTypes.MixinWithOverridableMember and target class "
+            + "Remotion.Mixins.UnitTests.SampleTypes.NullTarget).",
         MatchType = MessageMatch.Contains)]
     public void GetConcreteMixinTypeThrowsIfNoMixinTypeGenerated ()
     {

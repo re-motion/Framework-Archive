@@ -1,12 +1,12 @@
 using System;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.UnitTests.MockConstraints;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.UnitTests.MockConstraints;
+using Remotion.Utilities;
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 using Mocks_List = Rhino.Mocks.Constraints.List;
 using Mocks_Property = Rhino.Mocks.Constraints.Property;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
+namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
   public abstract class ClientTransactionMockEventReceiver
   {

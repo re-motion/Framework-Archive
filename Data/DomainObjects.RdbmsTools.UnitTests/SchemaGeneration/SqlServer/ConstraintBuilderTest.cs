@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer;
-using Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain;
-using Rubicon.Mixins.Context;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer;
+using Remotion.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlServer
+namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlServer
 {
   [TestFixture]
   public class ConstraintBuilderTest : StandardMappingTest

@@ -1,9 +1,9 @@
 using System;
 
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.ObjectBinding;
+using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain
+namespace Remotion.Data.DomainObjects.Web.Legacy.Test.Domain
 {
 [UndefinedEnumValue (UndefinedEnum.Undefined)]
 public enum UndefinedEnum

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Reflection.Legacy
+namespace Remotion.ObjectBinding.Reflection.Legacy
 {
 
 public class ReflectionBusinessObjectDataSource: BusinessObjectDataSource

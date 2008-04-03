@@ -2,13 +2,13 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Rubicon.Mixins;
+using Remotion.Mixins;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle ("Rubicon.Mixins samples")]
-[assembly: AssemblyDescription ("Examples illustrating the usage of the Rubicon Mixins library")]
+[assembly: AssemblyTitle ("Remotion.Mixins samples")]
+[assembly: AssemblyDescription ("Examples illustrating the usage of the Remotion Mixins library")]
 [assembly: AssemblyConfiguration ("@buildinfo@")]
 [assembly: AssemblyCompany ("@company@")]
 [assembly: AssemblyProduct ("@productname@")]

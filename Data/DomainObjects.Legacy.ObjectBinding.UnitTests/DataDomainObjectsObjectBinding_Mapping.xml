@@ -2,7 +2,7 @@
 <mapping application="UnitTests" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\Schemas\Mapping.xsd">
   <classes>
     <class id="Order">
-      <type>Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.Legacy.ObjectBinding.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.Order, Remotion.Data.DomainObjects.Legacy.ObjectBinding.UnitTests</type>
       <entity name="Order"/>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
@@ -16,19 +16,19 @@
         </property>
         <relationProperty name="OrderTicket" relationID="OrderToOrderTicket" cardinality="one" isMandatory="true"/>
         <relationProperty name="OrderItems" relationID="OrderToOrderItem" cardinality="many" isMandatory="true">
-          <collectionType>Rubicon.Data.DomainObjects.ObjectList`1[[Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.OrderItem, Rubicon.Data.DomainObjects.Legacy.ObjectBinding.UnitTests]], Rubicon.Data.DomainObjects</collectionType>
+          <collectionType>Remotion.Data.DomainObjects.ObjectList`1[[Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.OrderItem, Remotion.Data.DomainObjects.Legacy.ObjectBinding.UnitTests]], Remotion.Data.DomainObjects</collectionType>
         </relationProperty>
       </properties>
     </class>
     <class id="SecurableOrder" baseClass="Order">
-      <type>Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.SecurableOrder, Rubicon.Data.DomainObjects.Legacy.ObjectBinding.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.SecurableOrder, Remotion.Data.DomainObjects.Legacy.ObjectBinding.UnitTests</type>
       <entity name="Order"/>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
       </properties>
     </class>
     <class id="OrderItem">
-      <type>Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.OrderItem, Rubicon.Data.DomainObjects.Legacy.ObjectBinding.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.OrderItem, Remotion.Data.DomainObjects.Legacy.ObjectBinding.UnitTests</type>
       <entity name="OrderItem"/>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
@@ -47,7 +47,7 @@
       </properties>
     </class>
     <class id="OrderTicket">
-      <type>Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.OrderTicket, Rubicon.Data.DomainObjects.Legacy.ObjectBinding.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.OrderTicket, Remotion.Data.DomainObjects.Legacy.ObjectBinding.UnitTests</type>
       <entity name="OrderTicket"/>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>

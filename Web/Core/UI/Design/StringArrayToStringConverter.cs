@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.UI.Design
+namespace Remotion.Web.UI.Design
 {
 
 public class StringArrayConverter : TypeConverter

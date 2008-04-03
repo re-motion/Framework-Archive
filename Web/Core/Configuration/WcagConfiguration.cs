@@ -1,7 +1,7 @@
 using System;
 using System.Xml.Serialization;
 
-namespace Rubicon.Web.Configuration
+namespace Remotion.Web.Configuration
 {
 
 /// <summary> Enumeration listing the possible WCAG conformance levels. </summary>

@@ -4,7 +4,7 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Rubicon Development Support Library Unit Tests")]
+[assembly: AssemblyTitle("Remotion Development Support Library Unit Tests")]
 [assembly: AssemblyConfiguration("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]
 [assembly: AssemblyProduct("@productname@")]

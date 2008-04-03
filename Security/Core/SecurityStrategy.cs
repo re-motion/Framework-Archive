@@ -1,10 +1,10 @@
 using System;
 using System.Security.Principal;
-using Rubicon.Collections;
-using Rubicon.Security.Configuration;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Security.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   [Serializable]
   public class SecurityStrategy : ISecurityStrategy

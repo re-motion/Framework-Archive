@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Queries;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Transaction
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Transaction
 {
   [Serializable]
   public class ClientTransactionExtensionWithQueryFiltering : IClientTransactionExtension

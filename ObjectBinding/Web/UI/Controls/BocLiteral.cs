@@ -4,12 +4,12 @@ using System.Drawing.Design;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.ObjectBinding.Design;
-using Rubicon.ObjectBinding.Web.UI.Design;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
+using Remotion.ObjectBinding.Design;
+using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
   /// <summary> This control can be used to render text without any escaping applied. </summary>

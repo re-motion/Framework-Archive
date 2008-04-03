@@ -6,14 +6,14 @@
 		xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0 ..\DomainObjects\Schemas\StorageProviders.xsd">
 		
 	<storageProvider id="FirstStorageProvider">
-		<type>Rubicon.Data.DomainObjects.Persistence.Rdbms.SqlProvider, Rubicon.Data.DomainObjects</type>
-		<configuration type="Rubicon.Data.DomainObjects.Persistence.Rdbms.RdbmsProviderDefinition, Rubicon.Data.DomainObjects">
+		<type>Remotion.Data.DomainObjects.Persistence.Rdbms.SqlProvider, Remotion.Data.DomainObjects</type>
+		<configuration type="Remotion.Data.DomainObjects.Persistence.Rdbms.RdbmsProviderDefinition, Remotion.Data.DomainObjects">
 			<connectionString xmlns="http://www.rubicon-it.com/Data/DomainObjects/Persistence/Rdbms">Integrated Security=SSPI;Initial Catalog=CodeGeneratorUnitTests1;Data Source=localhost</connectionString>		
 		</configuration>
 	</storageProvider>
 	<storageProvider id="SecondStorageProvider">
-    <type>Rubicon.Data.DomainObjects.Persistence.Rdbms.SqlProvider, Rubicon.Data.DomainObjects</type>
-    <configuration type="Rubicon.Data.DomainObjects.Persistence.Rdbms.RdbmsProviderDefinition, Rubicon.Data.DomainObjects">
+    <type>Remotion.Data.DomainObjects.Persistence.Rdbms.SqlProvider, Remotion.Data.DomainObjects</type>
+    <configuration type="Remotion.Data.DomainObjects.Persistence.Rdbms.RdbmsProviderDefinition, Remotion.Data.DomainObjects">
       <connectionString xmlns="http://www.rubicon-it.com/Data/DomainObjects/Persistence/Rdbms">Integrated Security=SSPI;Initial Catalog=CodeGeneratorUnitTests2;Data Source=localhost</connectionString>
     </configuration>
   </storageProvider>

@@ -1,12 +1,12 @@
 using System;
 using System.IO;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Reflection;
-using Rubicon.Mixins.CodeGeneration.DynamicProxy;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Reflection;
+using Remotion.Mixins.CodeGeneration.DynamicProxy;
 
-namespace Rubicon.Mixins.UnitTests
+namespace Remotion.Mixins.UnitTests
 {
   public abstract class CodeGenerationBaseTest
   {

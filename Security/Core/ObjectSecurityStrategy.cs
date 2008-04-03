@@ -1,8 +1,8 @@
 using System;
 using System.Security.Principal;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   [Serializable]
   public class ObjectSecurityStrategy : IObjectSecurityStrategy

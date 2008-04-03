@@ -7,8 +7,8 @@
     <ProjectGuid>{206D49DB-D152-412D-90ED-AB3D4B018FF7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Data.DomainObjects.ObjectBinding.Web</RootNamespace>
-    <AssemblyName>Rubicon.Data.DomainObjects.ObjectBinding.Web</AssemblyName>
+    <RootNamespace>Remotion.Data.DomainObjects.ObjectBinding.Web</RootNamespace>
+    <AssemblyName>Remotion.Data.DomainObjects.ObjectBinding.Web</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

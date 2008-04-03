@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Text.CommandLine;
+using Remotion.Text.CommandLine;
 
-namespace Rubicon.SecurityManager.Metadata.Importer
+namespace Remotion.SecurityManager.Metadata.Importer
 {
   [Flags]
   public enum OperationMode

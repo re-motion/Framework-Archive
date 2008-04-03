@@ -1,8 +1,8 @@
 using System;
 using System.Web.UI;
-using Rubicon.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.Web.UI
+namespace Remotion.Web.UI
 {
 
 /// <summary>

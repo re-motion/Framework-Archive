@@ -1,13 +1,13 @@
 using System;
 using System.IO;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Utilities;
-using Rubicon.Logging;
-using Rubicon.Mixins.Validation;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
+using Remotion.Utilities;
+using Remotion.Logging;
+using Remotion.Mixins.Validation;
 
-namespace Rubicon.Mixins.MixerTool
+namespace Remotion.Mixins.MixerTool
 {
   [Serializable]
   public class MixerRunner : AppDomainRunnerBase
@@ -19,7 +19,7 @@ namespace Rubicon.Mixins.MixerTool
       AppDomainSetup setup = new AppDomainSetup ();
       setup.ApplicationName = "Mixer";
       setup.ApplicationBase = parameters.BaseDirectory;
-      setup.DynamicBase = Path.Combine (Path.GetTempPath (), "Rubicon"); // necessary for AppDomainRunnerBase and AppDomainRunnerBase
+      setup.DynamicBase = Path.Combine (Path.GetTempPath (), "Remotion"); // necessary for AppDomainRunnerBase and AppDomainRunnerBase
 
       if (!string.IsNullOrEmpty (parameters.ConfigFile))
       {

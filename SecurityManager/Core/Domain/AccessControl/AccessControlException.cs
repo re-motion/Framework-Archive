@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.SecurityManager.Domain.AccessControl
+namespace Remotion.SecurityManager.Domain.AccessControl
 {
   [Serializable]
   public class AccessControlException : Exception

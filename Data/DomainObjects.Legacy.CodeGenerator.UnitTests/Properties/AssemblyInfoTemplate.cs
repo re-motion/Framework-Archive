@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle ("Rubicon DomainObjects CodeGenerator UnitTests")]
+[assembly: AssemblyTitle ("Remotion DomainObjects CodeGenerator UnitTests")]
 [assembly: AssemblyDescription ("UnitTests for the DomainObjects CodeGenerator Library")]
 [assembly: AssemblyConfiguration ("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]

@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.Mapping
+namespace Remotion.Data.DomainObjects.Legacy.Mapping
 {
 [Serializable]
 public class MandatoryMappingTypeNotFoundException : DomainObjectException

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Security.Metadata
+namespace Remotion.Security.Metadata
 {
   public class MetadataExtractor
   {

@@ -1,11 +1,11 @@
 using System;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.SecurityManager.Clients.Web.Globalization.Classes;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.SecurityManager.Clients.Web.Globalization.Classes;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Clients.Web.Classes
+namespace Remotion.SecurityManager.Clients.Web.Classes
 {
   public class SecurableClassDefinitionTreeView : BocTreeView
   {

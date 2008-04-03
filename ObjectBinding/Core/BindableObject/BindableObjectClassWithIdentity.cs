@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Mixins;
-using Rubicon.Utilities;
+using Remotion.Mixins;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Remotion.ObjectBinding.BindableObject
 {
   //TODO: doc
   public class BindableObjectClassWithIdentity : BindableObjectClass, IBusinessObjectClassWithIdentity

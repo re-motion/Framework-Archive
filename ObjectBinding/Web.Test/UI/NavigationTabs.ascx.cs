@@ -2,11 +2,11 @@ using System;
 using System.Reflection;
 using System.Web.UI.WebControls;
 
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject.Properties;
 
-using Rubicon.Web.Configuration;
+using Remotion.Web.Configuration;
 
 namespace OBWTest.UI
 {
@@ -15,8 +15,8 @@ namespace OBWTest.UI
 	/// </summary>
 	public class NavigationTabs : System.Web.UI.UserControl
 	{
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue WaiConformanceLevelField;
-    protected Rubicon.Web.UI.Controls.TabbedMenu TabbedMenu;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue WaiConformanceLevelField;
+    protected Remotion.Web.UI.Controls.TabbedMenu TabbedMenu;
 
 		private void Page_Load(object sender, System.EventArgs e)
 		{

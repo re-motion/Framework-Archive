@@ -1,9 +1,9 @@
 using System;
 using System.Web.UI;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI.Controls;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   public abstract class BocTreeViewMenuItemProvider : WebTreeViewMenuItemProvider
   {

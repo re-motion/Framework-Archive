@@ -1,42 +1,42 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="EditRoleControl.ascx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditRoleControl" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="EditRoleControl.ascx.cs" Inherits="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditRoleControl" %>
 
-<rubicon:FormGridManager ID="FormGridManager" runat="server" ValidatorVisibility="HideValidators" />
-<rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Rubicon.SecurityManager.Domain.OrganizationalStructure.Role, Rubicon.SecurityManager" />
+<remotion:FormGridManager ID="FormGridManager" runat="server" ValidatorVisibility="HideValidators" />
+<remotion:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Remotion.SecurityManager.Domain.OrganizationalStructure.Role, Remotion.SecurityManager" />
 <table id="FormGrid" runat="server" cellpadding="0" cellspacing="0">
   <tr class="underlinedMarkerCellRow">
     <td class="formGridTitleCell" style="white-space: nowrap;" colspan="2">
-      <rubicon:SmartLabel runat="server" id="RoleLabel" Text="###" />
+      <remotion:SmartLabel runat="server" id="RoleLabel" Text="###" />
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <rubicon:BocReferenceValue runat="server" ID="UserField" DataSourceControl="CurrentObject" PropertyIdentifier="User">
+      <remotion:BocReferenceValue runat="server" ID="UserField" DataSourceControl="CurrentObject" PropertyIdentifier="User">
         <PersistedCommand>
-          <rubicon:BocCommand />
+          <remotion:BocCommand />
         </PersistedCommand>
-      </rubicon:BocReferenceValue>
+      </remotion:BocReferenceValue>
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <rubicon:BocReferenceValue runat="server" ID="GroupField" DataSourceControl="CurrentObject" PropertyIdentifier="Group" OnSelectionChanged="GroupField_SelectionChanged">
+      <remotion:BocReferenceValue runat="server" ID="GroupField" DataSourceControl="CurrentObject" PropertyIdentifier="Group" OnSelectionChanged="GroupField_SelectionChanged">
         <PersistedCommand>
-          <rubicon:BocCommand />
+          <remotion:BocCommand />
         </PersistedCommand>
         <DropDownListStyle AutoPostBack="True" />
-      </rubicon:BocReferenceValue>
+      </remotion:BocReferenceValue>
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <rubicon:BocReferenceValue runat="server" ID="PositionField" DataSourceControl="CurrentObject" PropertyIdentifier="Position">
+      <remotion:BocReferenceValue runat="server" ID="PositionField" DataSourceControl="CurrentObject" PropertyIdentifier="Position">
         <PersistedCommand>
-          <rubicon:BocCommand />
+          <remotion:BocCommand />
         </PersistedCommand>
-      </rubicon:BocReferenceValue>
+      </remotion:BocReferenceValue>
     </td>
   </tr>
 </table>

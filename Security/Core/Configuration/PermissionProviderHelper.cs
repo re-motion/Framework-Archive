@@ -2,11 +2,11 @@ using System;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Configuration.Provider;
-using Rubicon.Configuration;
-using Rubicon.Security.Metadata;
-using Rubicon.Utilities;
+using Remotion.Configuration;
+using Remotion.Security.Metadata;
+using Remotion.Utilities;
 
-namespace Rubicon.Security.Configuration
+namespace Remotion.Security.Configuration
 {
   /// <summary>Helper class that loads implementations of <see cref="IPermissionProvider"/> from the <see cref="SecurityConfiguration"/> section.</summary>
   public class PermissionProviderHelper : ProviderHelperBase<IPermissionProvider>

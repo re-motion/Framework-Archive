@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Text;
-using Rubicon.Utilities;
-using Rubicon.Collections;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Text;
+using Remotion.Utilities;
+using Remotion.Collections;
 
-namespace Rubicon.Data.DomainObjects.Mapping
+namespace Remotion.Data.DomainObjects.Mapping
 {
   /// <summary><see cref="ClassDefinition"/> used when loading the mapping from the reflection meta data.</summary>
   [Serializable]
@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNull ("classType", classType);
       ArgumentUtility.CheckNotNull ("persistentMixins", persistentMixins);
       if (!classType.IsSubclassOf (typeof (DomainObject)))
-        throw CreateMappingException ("Type '{0}' of class '{1}' is not derived from 'Rubicon.Data.DomainObjects.DomainObject'.", classType, ID);
+        throw CreateMappingException ("Type '{0}' of class '{1}' is not derived from 'Remotion.Data.DomainObjects.DomainObject'.", classType, ID);
      
       _classType = classType;
       _persistentMixins = new Set<Type> (persistentMixins);

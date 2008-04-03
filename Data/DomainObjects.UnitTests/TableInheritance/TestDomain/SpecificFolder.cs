@@ -1,17 +1,17 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
+namespace Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_SpecificFolder")]
   [Instantiable]
   public abstract class SpecificFolder : Folder
   {
-    public static SpecificFolder NewObject()
+    public new static SpecificFolder NewObject()
     {
       return NewObject<SpecificFolder> ().With ();
     }
 
-    public static SpecificFolder GetObject (ObjectID id)
+    public new static SpecificFolder GetObject (ObjectID id)
     {
       return DomainObject.GetObject<SpecificFolder> (id);
     }

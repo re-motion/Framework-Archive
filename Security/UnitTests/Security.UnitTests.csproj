@@ -7,8 +7,8 @@
     <ProjectGuid>{EF86BF16-81EF-4F51-B2B1-DB3C7C1E4CDE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Security.UnitTests</RootNamespace>
-    <AssemblyName>Rubicon.Security.UnitTests</AssemblyName>
+    <RootNamespace>Remotion.Security.UnitTests</RootNamespace>
+    <AssemblyName>Remotion.Security.UnitTests</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -260,7 +260,7 @@
     <LocalizationFiles Include="Core\Metadata\LocalizationFiles\OneLocalizationFile.Localization.de.xml" />
   </ItemGroup>
   <ItemGroup>
-    <MappingFiles Include="Data.DomainObjects\Rubicon.Security.UnitTests.Data.DomainObjects.Queries.xml" />
+    <MappingFiles Include="Data.DomainObjects\Remotion.Security.UnitTests.Data.DomainObjects.Queries.xml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

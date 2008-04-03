@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Specialized;
-using Rubicon.Configuration;
-using Rubicon.Security.Metadata;
+using Remotion.Configuration;
+using Remotion.Security.Metadata;
 
-namespace Rubicon.Security.UnitTests.Core.Configuration
+namespace Remotion.Security.UnitTests.Core.Configuration
 {
   public class PermissionProviderMock : ExtendedProviderBase, IPermissionProvider
   {

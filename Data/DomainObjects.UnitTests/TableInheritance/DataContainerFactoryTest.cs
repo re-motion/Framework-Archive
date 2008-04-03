@@ -1,10 +1,10 @@
 using System;
 using System.Data;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
+namespace Remotion.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
   public class DataContainerFactoryTest : SqlProviderBaseTest
@@ -28,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
           }
           catch (RdbmsProviderException ex)
           {
-            string expectedBeginOfMessage = string.Format ("Error while reading property 'Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Order.Customer' of object '{0}':", id);
+            string expectedBeginOfMessage = string.Format ("Error while reading property 'Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Order.Customer' of object '{0}':", id);
             Assert.IsTrue (ex.Message.StartsWith (expectedBeginOfMessage));
           }
         }

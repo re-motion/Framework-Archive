@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Definitions.Building;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Definitions.Building;
 
-namespace Rubicon.Mixins.UnitTests
+namespace Remotion.Mixins.UnitTests
 {
   public static class UnvalidatedDefinitionBuilder
   {

@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Reflection;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Text.CommandLine
+namespace Remotion.Text.CommandLine
 {
 
 [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]

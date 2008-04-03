@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Text;
 
-namespace Rubicon.Text.CommandLine
+namespace Remotion.Text.CommandLine
 {
 
 public class CommandLineEnumArgument: CommandLineValueArgument

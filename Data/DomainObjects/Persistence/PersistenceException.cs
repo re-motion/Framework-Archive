@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Data.DomainObjects.Persistence
+namespace Remotion.Data.DomainObjects.Persistence
 {
 [Serializable]
 public class PersistenceException : DomainObjectException 

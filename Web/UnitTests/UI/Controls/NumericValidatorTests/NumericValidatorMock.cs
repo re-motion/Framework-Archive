@@ -1,9 +1,9 @@
 using System;
 using System.Web.UI;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.Web.UnitTests.UI.Controls.NumericValidatorTests
+namespace Remotion.Web.UnitTests.UI.Controls.NumericValidatorTests
 {
   public class NumericValidatorMock : NumericValidator
   {

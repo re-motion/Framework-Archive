@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Collections;
-using Rubicon.Mixins;
-using Rubicon.Mixins.Context;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Mixins;
+using Remotion.Mixins.Context;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Context.FluentBuilders
+namespace Remotion.Mixins.Context.FluentBuilders
 {
   /// <summary>
   /// Assists <see cref="MixinConfigurationBuilder"/> by providing a fluent interface for building <see cref="ClassContext"/> objects.

@@ -3,10 +3,10 @@ using System.Globalization;
 using System.IO;
 using System.Xml;
 using NUnit.Framework;
-using Rubicon.Security.Metadata;
-using Rubicon.Security.UnitTests.Core.XmlAsserter;
+using Remotion.Security.Metadata;
+using Remotion.Security.UnitTests.Core.XmlAsserter;
 
-namespace Rubicon.Security.UnitTests.Core.Metadata
+namespace Remotion.Security.UnitTests.Core.Metadata
 {
   [TestFixture]
   public class MetadataLocalizationToXmlConverterTest
@@ -30,7 +30,7 @@ namespace Rubicon.Security.UnitTests.Core.Metadata
     public void Convert_OneLocalizedName ()
     {
       LocalizedName[] localizedNames = new LocalizedName[1];
-      localizedNames[0] = new LocalizedName ("b8621bc9-9ab3-4524-b1e4-582657d6b420", "Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain", "Beamter");
+      localizedNames[0] = new LocalizedName ("b8621bc9-9ab3-4524-b1e4-582657d6b420", "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain", "Beamter");
 
       MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter ();
 
@@ -38,7 +38,7 @@ namespace Rubicon.Security.UnitTests.Core.Metadata
 
       string expectedXml = @"<?xml version=""1.0""?>
           <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
-            <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain"">
+            <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain"">
     Beamter
   </localizedName>
           </localizedNames>
@@ -51,7 +51,7 @@ namespace Rubicon.Security.UnitTests.Core.Metadata
     public void Convert_TwoLocalizedNames ()
     {
       LocalizedName[] localizedNames = new LocalizedName[2];
-      localizedNames[0] = new LocalizedName ("b8621bc9-9ab3-4524-b1e4-582657d6b420", "Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain", "Beamter");
+      localizedNames[0] = new LocalizedName ("b8621bc9-9ab3-4524-b1e4-582657d6b420", "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain", "Beamter");
       localizedNames[1] = new LocalizedName ("93969f13-65d7-49f4-a456-a1686a4de3de", "Confidentiality", "Vertraulichkeit");
 
       MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter ();
@@ -60,7 +60,7 @@ namespace Rubicon.Security.UnitTests.Core.Metadata
 
       string expectedXml = @"<?xml version=""1.0""?>
           <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
-            <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain"">
+            <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain"">
     Beamter
   </localizedName>
             <localizedName ref=""93969f13-65d7-49f4-a456-a1686a4de3de"" comment=""Confidentiality"">
@@ -76,7 +76,7 @@ namespace Rubicon.Security.UnitTests.Core.Metadata
     public void Convert_OneLocalizedNameForInvariantCulture ()
     {
       LocalizedName[] localizedNames = new LocalizedName[1];
-      localizedNames[0] = new LocalizedName ("b8621bc9-9ab3-4524-b1e4-582657d6b420", "Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain", "Beamter");
+      localizedNames[0] = new LocalizedName ("b8621bc9-9ab3-4524-b1e4-582657d6b420", "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain", "Beamter");
 
       MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter ();
 
@@ -84,7 +84,7 @@ namespace Rubicon.Security.UnitTests.Core.Metadata
 
       string expectedXml = @"<?xml version=""1.0""?>
           <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture="""">
-            <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain"">
+            <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain"">
     Beamter
   </localizedName>
           </localizedNames>

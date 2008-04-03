@@ -2,16 +2,16 @@ using System;
 using System.ComponentModel;
 using System.Web;
 using System.Web.SessionState;
-using Rubicon.Logging;
-using Rubicon.Utilities;
-using Rubicon.Web.Configuration;
-using Rubicon.Web.Utilities;
+using Remotion.Logging;
+using Remotion.Utilities;
+using Remotion.Web.Configuration;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
   /// <summary> 
   ///   The <see cref="IHttpHandler"/> implementation responsible for handling requests to the 
-  ///   <b>rubicon Execution Engine.</b>
+  ///   <b>Web Execution Engine.</b>
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/Class/*' />
   public class WxeHandler : IHttpHandler, IRequiresSessionState

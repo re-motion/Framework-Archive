@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="GroupTypeListForm.aspx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupTypeListForm" MasterPageFile="../SecurityManagerMasterPage.Master"  %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="GroupTypeListForm.aspx.cs" Inherits="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupTypeListForm" MasterPageFile="../SecurityManagerMasterPage.Master"  %>
 <%@ Register TagPrefix="securityManager" Src="GroupTypeListControl.ascx" TagName="GroupTypeListControl" %>
 <%@ Register TagPrefix="securityManager" Src="../ErrorMessageControl.ascx" TagName="ErrorMessageControl" %>
 

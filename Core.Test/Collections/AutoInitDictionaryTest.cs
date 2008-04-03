@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Collections;
+using Remotion.Collections;
 
-namespace Rubicon.Core.UnitTests.Collections
+namespace Remotion.Core.UnitTests.Collections
 {
   [TestFixture]
   public class AutoInitDictionaryTest

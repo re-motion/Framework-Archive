@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace Rubicon.Security.Metadata
+namespace Remotion.Security.Metadata
 {
   public interface IMetadataLocalizationConverter
   {

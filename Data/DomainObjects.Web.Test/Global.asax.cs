@@ -5,16 +5,16 @@ using System.Configuration;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.SessionState;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Mapping.Configuration;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Web.Test.Domain;
-using Rubicon.ObjectBinding.BindableObject;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.Configuration;
+using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Web.Test.Domain;
+using Remotion.ObjectBinding.BindableObject;
 
-namespace Rubicon.Data.DomainObjects.Web.Test
+namespace Remotion.Data.DomainObjects.Web.Test
 {
   /// <summary>
   /// Summary description for Global.

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Mixins.Definitions;
+using Remotion.Mixins.Definitions;
 
-namespace Rubicon.Mixins.UnitTests.SampleTypes
+namespace Remotion.Mixins.UnitTests.SampleTypes
 {
   [Extends (typeof (BaseType3))]
   [Serializable]

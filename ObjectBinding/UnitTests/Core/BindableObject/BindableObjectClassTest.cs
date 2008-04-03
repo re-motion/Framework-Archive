@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
-using Rubicon.Utilities;
-using TypeUtility=Rubicon.Mixins.TypeUtility;
-using Rubicon.Mixins;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.Utilities;
+using TypeUtility=Remotion.Mixins.TypeUtility;
+using Remotion.Mixins;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
 {
   [TestFixture]
   public class BindableObjectClassTest : TestBase
@@ -33,7 +33,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       Assert.That (bindableObjectClass.ConcreteType, Is.SameAs (Mixins.TypeUtility.GetConcreteMixedType (typeof (SimpleBusinessObjectClass))));
       Assert.That (
           bindableObjectClass.Identifier,
-          Is.EqualTo ("Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleBusinessObjectClass, Rubicon.ObjectBinding.UnitTests"));
+          Is.EqualTo ("Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests"));
       Assert.That (bindableObjectClass.RequiresWriteBack, Is.False);
       Assert.That (bindableObjectClass.BusinessObjectProvider, Is.SameAs (_bindableObjectProvider));
     }
@@ -50,8 +50,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [Test]
     [ExpectedException (typeof (ArgumentException),
         ExpectedMessage =
-        "Type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleReferenceType' does not implement the "
-        + "'Rubicon.ObjectBinding.IBusinessObject' interface via the 'Rubicon.ObjectBinding.BindableObject.BindableObjectMixinBase`1'.\r\n"
+        "Type 'Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleReferenceType' does not implement the "
+        + "'Remotion.ObjectBinding.IBusinessObject' interface via the 'Remotion.ObjectBinding.BindableObject.BindableObjectMixinBase`1'.\r\n"
         + "Parameter name: concreteType")]
     public void Initialize_WithTypeNotUsingBindableObjectMixin ()
     {
@@ -61,8 +61,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [Test]
     [ExpectedException (typeof (ArgumentException),
         ExpectedMessage =
-        "Type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ManualBusinessObject' does not implement the "
-        + "'Rubicon.ObjectBinding.IBusinessObject' interface via the 'Rubicon.ObjectBinding.BindableObject.BindableObjectMixinBase`1'.\r\n"
+        "Type 'Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ManualBusinessObject' does not implement the "
+        + "'Remotion.ObjectBinding.IBusinessObject' interface via the 'Remotion.ObjectBinding.BindableObject.BindableObjectMixinBase`1'.\r\n"
         + "Parameter name: concreteType")]
     public void Initialize_WithUnmixedType ()
     {
@@ -72,8 +72,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [Test]
     [ExpectedException (typeof (ArgumentException),
         ExpectedMessage =
-        "Type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ManualBusinessObject' does not implement the "
-        + "'Rubicon.ObjectBinding.IBusinessObject' interface via the 'Rubicon.ObjectBinding.BindableObject.BindableObjectMixinBase`1'.\r\n"
+        "Type 'Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ManualBusinessObject' does not implement the "
+        + "'Remotion.ObjectBinding.IBusinessObject' interface via the 'Remotion.ObjectBinding.BindableObject.BindableObjectMixinBase`1'.\r\n"
         + "Parameter name: concreteType")]
     public void Initialize_WithMixedTypeManuallyImplementingBindableObjectMixin ()
     {
@@ -110,7 +110,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [ExpectedException (typeof (KeyNotFoundException),
         ExpectedMessage =
         "The property 'Invalid' was not found on business object class "
-        + "'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithAllDataTypes, Rubicon.ObjectBinding.UnitTests'.")]
+        + "'Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithAllDataTypes, Remotion.ObjectBinding.UnitTests'.")]
     public void GetPropertyDefinition_WithInvalidPropertyName ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithAllDataTypes), _bindableObjectProvider, DefaultMetadataFactory.Instance);
@@ -149,8 +149,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
               CreateProperty (type, "ReadOnlyAttributeScalar"),
               CreateProperty (type, "ReadOnlyNonPublicSetterScalar"),
               CreateProperty (type, "Array"),
-              CreateProperty (type, "Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar"),
-              CreateProperty (type, "Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceReadOnlyScalar")
+              CreateProperty (type, "Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar"),
+              CreateProperty (type, "Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceReadOnlyScalar")
           };
 
       ClassReflector classReflector = new ClassReflector (type, _bindableObjectProvider, DefaultMetadataFactory.Instance);

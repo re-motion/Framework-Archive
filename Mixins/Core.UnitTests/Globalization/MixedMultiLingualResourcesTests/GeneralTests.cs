@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Globalization;
-using Rubicon.Mixins.Globalization;
+using Remotion.Globalization;
+using Remotion.Mixins.Globalization;
 
-namespace Rubicon.Mixins.UnitTests.Globalization.MixedMultiLingualResourcesTests
+namespace Remotion.Mixins.UnitTests.Globalization.MixedMultiLingualResourcesTests
 {
 	[TestFixture]
 	public class GeneralTests

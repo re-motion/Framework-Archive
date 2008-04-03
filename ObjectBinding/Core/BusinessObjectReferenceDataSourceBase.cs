@@ -1,6 +1,6 @@
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary>
   ///   This <see langword="abstract"/> class provides base functionality usually required by an implementation of

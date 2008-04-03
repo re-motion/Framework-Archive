@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Specialized;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
   /// <summary>
   ///   Utility class for <see cref="NameValueCollection"/>

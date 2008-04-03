@@ -5,7 +5,7 @@ using System.Xml;
 using System.Xml.Schema;
 using log4net;
 
-namespace Rubicon.Xml
+namespace Remotion.Xml
 {
   public class XmlSchemaValidationHandler
   {
@@ -94,7 +94,7 @@ namespace Rubicon.Xml
           lineInfoMessage = string.Format (" Line {0}, position {1}.", _firstError.LineNumber, _firstError.LinePosition);
 
         throw _firstException;
-        //throw new RubiconXmlSchemaValidationException (
+        //throw new RemotionXmlSchemaValidationException (
         //    string.Format (
         //        "Schema verification failed with {0} errors and {1} warnings in '{2}'. First error: {3}{4}",
         //        _errors,

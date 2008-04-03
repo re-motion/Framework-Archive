@@ -5,11 +5,11 @@ using System.Runtime.Remoting.Messaging;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UI
+namespace Remotion.Web.UI
 {
 
 /// <summary>
@@ -28,7 +28,7 @@ namespace Rubicon.Web.UI
 /// </example>
 public sealed class HtmlHeadAppender
 {
-  private const string c_contextKey = "Rubicon.Web.UI.HtmlHeadAppender.Current";
+  private const string c_contextKey = "Remotion.Web.UI.HtmlHeadAppender.Current";
 
   public enum Priority
   {

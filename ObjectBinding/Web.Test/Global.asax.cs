@@ -1,9 +1,9 @@
 using System;
 using System.IO;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web;
-using Rubicon.Web.Configuration;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web;
+using Remotion.Web.Configuration;
 
 namespace OBWTest
 {

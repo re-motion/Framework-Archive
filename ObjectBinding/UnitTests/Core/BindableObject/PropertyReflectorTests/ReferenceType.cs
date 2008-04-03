@@ -2,11 +2,11 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorTests
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorTests
 {
   [TestFixture]
   public class ReferenceType : TestBase
@@ -121,7 +121,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
     public void GetMetadata_WithReadWriteExplicitInterfaceScalar ()
     {
       IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>),
-          "Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar");
+          "Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar");
       PropertyReflector propertyReflector = new PropertyReflector (IPropertyInformation, _businessObjectProvider);
 
       Assert.AreSame (typeof (SimpleReferenceType), GetUnderlyingType (propertyReflector));
@@ -141,7 +141,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorT
     public void GetMetadata_WithReadWriteExplicitInterfaceReadOnlyScalar ()
     {
       IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>),
-          "Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceReadOnlyScalar");
+          "Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceReadOnlyScalar");
       PropertyReflector propertyReflector = new PropertyReflector (IPropertyInformation, _businessObjectProvider);
 
       Assert.AreSame (typeof (SimpleReferenceType), GetUnderlyingType (propertyReflector));

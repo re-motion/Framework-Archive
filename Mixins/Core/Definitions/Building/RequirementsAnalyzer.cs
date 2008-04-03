@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Definitions.Building
+namespace Remotion.Mixins.Definitions.Building
 {
   public class RequirementsAnalyzer
   {

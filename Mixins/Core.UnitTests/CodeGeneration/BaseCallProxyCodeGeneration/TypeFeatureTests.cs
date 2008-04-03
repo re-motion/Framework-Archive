@@ -1,10 +1,10 @@
 using System;
-using Rubicon.Mixins.CodeGeneration;
+using Remotion.Mixins.CodeGeneration;
 using NUnit.Framework;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using System.Reflection;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.BaseCallProxyCodeGeneration
+namespace Remotion.Mixins.UnitTests.CodeGeneration.BaseCallProxyCodeGeneration
 {
   [TestFixture]
   public class TypeFeatureTests : CodeGenerationBaseTest
@@ -56,7 +56,7 @@ namespace Rubicon.Mixins.UnitTests.CodeGeneration.BaseCallProxyCodeGeneration
         Type t = TypeFactory.GetConcreteType (typeof (BaseType3));
         Type proxyType = t.GetNestedType ("BaseCallProxy");
 
-        Assert.IsNotNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType3.IfcMethod", BindingFlags.Public | BindingFlags.Instance));
+        Assert.IsNotNull (proxyType.GetMethod ("Remotion.Mixins.UnitTests.SampleTypes.BaseType3.IfcMethod", BindingFlags.Public | BindingFlags.Instance));
       }
     }
 
@@ -68,11 +68,11 @@ namespace Rubicon.Mixins.UnitTests.CodeGeneration.BaseCallProxyCodeGeneration
         Type t = TypeFactory.GetConcreteType (typeof (BaseType1));
         Type proxyType = t.GetNestedType ("BaseCallProxy");
 
-        Assert.IsNotNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType1.VirtualMethod", BindingFlags.Public | BindingFlags.Instance));
-        Assert.IsNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType1.get_VirtualProperty", BindingFlags.Public | BindingFlags.Instance));
-        Assert.IsNotNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType1.set_VirtualProperty", BindingFlags.Public | BindingFlags.Instance));
-        Assert.IsNotNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType1.add_VirtualEvent", BindingFlags.Public | BindingFlags.Instance));
-        Assert.IsNotNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType1.remove_VirtualEvent", BindingFlags.Public | BindingFlags.Instance));
+        Assert.IsNotNull (proxyType.GetMethod ("Remotion.Mixins.UnitTests.SampleTypes.BaseType1.VirtualMethod", BindingFlags.Public | BindingFlags.Instance));
+        Assert.IsNull (proxyType.GetMethod ("Remotion.Mixins.UnitTests.SampleTypes.BaseType1.get_VirtualProperty", BindingFlags.Public | BindingFlags.Instance));
+        Assert.IsNotNull (proxyType.GetMethod ("Remotion.Mixins.UnitTests.SampleTypes.BaseType1.set_VirtualProperty", BindingFlags.Public | BindingFlags.Instance));
+        Assert.IsNotNull (proxyType.GetMethod ("Remotion.Mixins.UnitTests.SampleTypes.BaseType1.add_VirtualEvent", BindingFlags.Public | BindingFlags.Instance));
+        Assert.IsNotNull (proxyType.GetMethod ("Remotion.Mixins.UnitTests.SampleTypes.BaseType1.remove_VirtualEvent", BindingFlags.Public | BindingFlags.Instance));
       }
 
       using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (BT1Mixin2)).EnterScope())
@@ -80,8 +80,8 @@ namespace Rubicon.Mixins.UnitTests.CodeGeneration.BaseCallProxyCodeGeneration
         Type t = TypeFactory.GetConcreteType (typeof (BaseType1));
         Type proxyType = t.GetNestedType ("BaseCallProxy");
 
-        Assert.IsNotNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType1.get_VirtualProperty", BindingFlags.Public | BindingFlags.Instance));
-        Assert.IsNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType1.set_VirtualProperty", BindingFlags.Public | BindingFlags.Instance));
+        Assert.IsNotNull (proxyType.GetMethod ("Remotion.Mixins.UnitTests.SampleTypes.BaseType1.get_VirtualProperty", BindingFlags.Public | BindingFlags.Instance));
+        Assert.IsNull (proxyType.GetMethod ("Remotion.Mixins.UnitTests.SampleTypes.BaseType1.set_VirtualProperty", BindingFlags.Public | BindingFlags.Instance));
       }
 
     }

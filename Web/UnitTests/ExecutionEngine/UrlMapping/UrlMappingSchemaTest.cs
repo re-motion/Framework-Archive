@@ -2,9 +2,9 @@ using System;
 using System.Xml;
 using System.Xml.Schema;
 using NUnit.Framework;
-using Rubicon.Web.ExecutionEngine.UrlMapping;
+using Remotion.Web.ExecutionEngine.UrlMapping;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine.UrlMapping
+namespace Remotion.Web.UnitTests.ExecutionEngine.UrlMapping
 {
 
 [TestFixture]

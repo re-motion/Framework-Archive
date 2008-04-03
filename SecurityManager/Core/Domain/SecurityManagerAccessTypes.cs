@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Security;
+using Remotion.Security;
 
-namespace Rubicon.SecurityManager.Domain
+namespace Remotion.SecurityManager.Domain
 {
   [AccessType]
   public enum SecurityManagerAccessTypes

@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence
+namespace Remotion.Data.DomainObjects.Persistence
 {
 [Serializable]
 public class ObjectNotFoundException : StorageProviderException

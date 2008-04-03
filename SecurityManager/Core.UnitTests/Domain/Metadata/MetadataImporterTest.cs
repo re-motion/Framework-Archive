@@ -2,9 +2,9 @@ using System;
 using System.Xml;
 using System.Xml.Schema;
 using NUnit.Framework;
-using Rubicon.SecurityManager.Domain.Metadata;
+using Remotion.SecurityManager.Domain.Metadata;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
+namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 {
   [TestFixture]
   public class MetadataImporterTest : DomainTest
@@ -51,7 +51,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
           @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
-              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"" />
+              <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File"" />
             </classes>
             <stateProperties />
             <accessTypes />
@@ -70,7 +70,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
         SecurableClassDefinition actualClass1 = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
         Assert.AreEqual (0, actualClass1.Index);
-        Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", actualClass1.Name);
+        Assert.AreEqual ("Remotion.Security.UnitTests.TestDomain.File", actualClass1.Name);
       }
     }
 
@@ -81,8 +81,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
           @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
-              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"" />
-              <class id=""00000000-0000-0000-0002-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.Directory"" />
+              <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File"" />
+              <class id=""00000000-0000-0000-0002-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.Directory"" />
             </classes>
             <stateProperties />
             <accessTypes />
@@ -101,11 +101,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
         SecurableClassDefinition actualClass1 = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
         Assert.AreEqual (0, actualClass1.Index);
-        Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", actualClass1.Name);
+        Assert.AreEqual ("Remotion.Security.UnitTests.TestDomain.File", actualClass1.Name);
 
         SecurableClassDefinition actualClass2 = _importer.Classes[new Guid ("00000000-0000-0000-0002-000000000000")];
         Assert.AreEqual (1, actualClass2.Index);
-        Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.Directory", actualClass2.Name);
+        Assert.AreEqual ("Remotion.Security.UnitTests.TestDomain.Directory", actualClass2.Name);
       }
     }
 
@@ -119,9 +119,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
             <stateProperties />
             <accessTypes />
             <abstractRoles>
-              <abstractRole id=""00000003-0001-0000-0000-000000000000"" name=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
-              <abstractRole id=""00000003-0002-0000-0000-000000000000"" name=""Secretary|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain"" value=""1"" />
-              <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRoles, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
+              <abstractRole id=""00000003-0001-0000-0000-000000000000"" name=""Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain"" value=""0"" />
+              <abstractRole id=""00000003-0002-0000-0000-000000000000"" name=""Secretary|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain"" value=""1"" />
+              <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Remotion.Security.UnitTests.TestDomain.SpecialAbstractRoles, Remotion.Security.UnitTests.TestDomain"" value=""0"" />
             </abstractRoles>
           </securityMetadata>
           ";
@@ -155,9 +155,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
             <classes />
             <stateProperties />
             <accessTypes>
-              <accessType id=""1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"" name=""Create|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""0"" />
-              <accessType id=""62dfcd92-a480-4d57-95f1-28c0f5996b3a"" name=""Read|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""1"" />
-              <accessType id=""11186122-6de0-4194-b434-9979230c41fd"" name=""Edit|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""2"" />
+              <accessType id=""1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"" name=""Create|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""0"" />
+              <accessType id=""62dfcd92-a480-4d57-95f1-28c0f5996b3a"" name=""Read|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""1"" />
+              <accessType id=""11186122-6de0-4194-b434-9979230c41fd"" name=""Edit|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""2"" />
             </accessTypes>
             <abstractRoles />
           </securityMetadata>
@@ -236,8 +236,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
           @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
-              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"" />
-              <class id=""00000000-0000-0000-0002-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.PaperFile"" base=""00000000-0000-0000-0001-000000000000"" />
+              <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File"" />
+              <class id=""00000000-0000-0000-0002-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.PaperFile"" base=""00000000-0000-0000-0001-000000000000"" />
             </classes>
             <stateProperties />
             <accessTypes />
@@ -272,7 +272,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
           @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
-              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"">
+              <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File"">
                 <stateProperties>
                   <statePropertyRef>00000000-0000-0000-0001-000000000001</statePropertyRef>
                 </stateProperties>
@@ -321,7 +321,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
           @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
-              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"">
+              <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File"">
                 <accessTypes>
                   <accessTypeRef>62dfcd92-a480-4d57-95f1-28c0f5996b3a</accessTypeRef>
                 </accessTypes>
@@ -331,14 +331,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
             <stateProperties />
 
             <accessTypes>
-              <accessType id=""1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"" name=""Create|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""0"" />
-              <accessType id=""62dfcd92-a480-4d57-95f1-28c0f5996b3a"" name=""Read|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""1"" />
-              <accessType id=""11186122-6de0-4194-b434-9979230c41fd"" name=""Edit|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""2"" />
-              <accessType id=""305fbb40-75c8-423a-84b2-b26ea9e7cae7"" name=""Delete|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""3"" />
-              <accessType id=""67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6"" name=""Search|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""4"" />
-              <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""5"" />
-              <accessType id=""00000002-0001-0000-0000-000000000000"" name=""Journalize|Rubicon.Security.UnitTests.TestDomain.DomainAccessTypes, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
-              <accessType id=""00000002-0002-0000-0000-000000000000"" name=""Archive|Rubicon.Security.UnitTests.TestDomain.DomainAccessTypes, Rubicon.Security.UnitTests.TestDomain"" value=""1"" />
+              <accessType id=""1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"" name=""Create|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""0"" />
+              <accessType id=""62dfcd92-a480-4d57-95f1-28c0f5996b3a"" name=""Read|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""1"" />
+              <accessType id=""11186122-6de0-4194-b434-9979230c41fd"" name=""Edit|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""2"" />
+              <accessType id=""305fbb40-75c8-423a-84b2-b26ea9e7cae7"" name=""Delete|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""3"" />
+              <accessType id=""67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6"" name=""Search|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""4"" />
+              <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""5"" />
+              <accessType id=""00000002-0001-0000-0000-000000000000"" name=""Journalize|Remotion.Security.UnitTests.TestDomain.DomainAccessTypes, Remotion.Security.UnitTests.TestDomain"" value=""0"" />
+              <accessType id=""00000002-0002-0000-0000-000000000000"" name=""Archive|Remotion.Security.UnitTests.TestDomain.DomainAccessTypes, Remotion.Security.UnitTests.TestDomain"" value=""1"" />
             </accessTypes>
             
             <abstractRoles />
@@ -368,7 +368,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
           @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
-              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"">
+              <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File"">
                 <stateProperties>
                   <statePropertyRef>00000000-0000-0000-0001-000000000001</statePropertyRef>
                 </stateProperties>
@@ -384,7 +384,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
                 </accessTypes>
               </class>
 
-              <class id=""00000000-0000-0000-0002-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.PaperFile"" base=""00000000-0000-0000-0001-000000000000"">
+              <class id=""00000000-0000-0000-0002-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.PaperFile"" base=""00000000-0000-0000-0001-000000000000"">
                 <stateProperties>
                   <statePropertyRef>00000000-0000-0000-0001-000000000001</statePropertyRef>
                   <statePropertyRef>00000000-0000-0000-0002-000000000001</statePropertyRef>
@@ -417,20 +417,20 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
             </stateProperties>
 
             <accessTypes>
-              <accessType id=""1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"" name=""Create|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""0"" />
-              <accessType id=""62dfcd92-a480-4d57-95f1-28c0f5996b3a"" name=""Read|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""1"" />
-              <accessType id=""11186122-6de0-4194-b434-9979230c41fd"" name=""Edit|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""2"" />
-              <accessType id=""305fbb40-75c8-423a-84b2-b26ea9e7cae7"" name=""Delete|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""3"" />
-              <accessType id=""67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6"" name=""Search|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""4"" />
-              <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""5"" />
-              <accessType id=""00000002-0001-0000-0000-000000000000"" name=""Journalize|Rubicon.Security.UnitTests.TestDomain.DomainAccessTypes, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
-              <accessType id=""00000002-0002-0000-0000-000000000000"" name=""Archive|Rubicon.Security.UnitTests.TestDomain.DomainAccessTypes, Rubicon.Security.UnitTests.TestDomain"" value=""1"" />
+              <accessType id=""1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"" name=""Create|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""0"" />
+              <accessType id=""62dfcd92-a480-4d57-95f1-28c0f5996b3a"" name=""Read|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""1"" />
+              <accessType id=""11186122-6de0-4194-b434-9979230c41fd"" name=""Edit|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""2"" />
+              <accessType id=""305fbb40-75c8-423a-84b2-b26ea9e7cae7"" name=""Delete|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""3"" />
+              <accessType id=""67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6"" name=""Search|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""4"" />
+              <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""5"" />
+              <accessType id=""00000002-0001-0000-0000-000000000000"" name=""Journalize|Remotion.Security.UnitTests.TestDomain.DomainAccessTypes, Remotion.Security.UnitTests.TestDomain"" value=""0"" />
+              <accessType id=""00000002-0002-0000-0000-000000000000"" name=""Archive|Remotion.Security.UnitTests.TestDomain.DomainAccessTypes, Remotion.Security.UnitTests.TestDomain"" value=""1"" />
             </accessTypes>
 
             <abstractRoles>
-              <abstractRole id=""00000003-0001-0000-0000-000000000000"" name=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
-              <abstractRole id=""00000003-0002-0000-0000-000000000000"" name=""Secretary|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain"" value=""1"" />
-              <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRoles, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
+              <abstractRole id=""00000003-0001-0000-0000-000000000000"" name=""Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain"" value=""0"" />
+              <abstractRole id=""00000003-0002-0000-0000-000000000000"" name=""Secretary|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain"" value=""1"" />
+              <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Remotion.Security.UnitTests.TestDomain.SpecialAbstractRoles, Remotion.Security.UnitTests.TestDomain"" value=""0"" />
             </abstractRoles>
           </securityMetadata>";
 
@@ -465,7 +465,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       string metadataXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
-              <class id=""00000000-0000-0000-0002-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.Directory"" base=""00000000-0000-0000-0001-000000000000"" />
+              <class id=""00000000-0000-0000-0002-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.Directory"" base=""00000000-0000-0000-0001-000000000000"" />
             </classes>
             <stateProperties />
             <accessTypes />
@@ -484,7 +484,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       string metadataXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
-              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"">
+              <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File"">
                 <stateProperties>
                   <statePropertyRef>00000000-0000-0000-0001-000000000001</statePropertyRef>
                 </stateProperties>
@@ -514,7 +514,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       string metadataXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
-              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"">
+              <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File"">
                 <accessTypes>
                   <accessTypeRef>62dfcd92-a480-4d57-95f1-28c0f5996b3a</accessTypeRef>
                 </accessTypes>
@@ -524,13 +524,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
             <stateProperties />
 
             <accessTypes>
-              <accessType id=""1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"" name=""Create|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""0"" />
-              <accessType id=""11186122-6de0-4194-b434-9979230c41fd"" name=""Edit|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""2"" />
-              <accessType id=""305fbb40-75c8-423a-84b2-b26ea9e7cae7"" name=""Delete|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""3"" />
-              <accessType id=""67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6"" name=""Search|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""4"" />
-              <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""5"" />
-              <accessType id=""00000002-0001-0000-0000-000000000000"" name=""Journalize|Rubicon.Security.UnitTests.TestDomain.DomainAccessTypes, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
-              <accessType id=""00000002-0002-0000-0000-000000000000"" name=""Archive|Rubicon.Security.UnitTests.TestDomain.DomainAccessTypes, Rubicon.Security.UnitTests.TestDomain"" value=""1"" />
+              <accessType id=""1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"" name=""Create|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""0"" />
+              <accessType id=""11186122-6de0-4194-b434-9979230c41fd"" name=""Edit|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""2"" />
+              <accessType id=""305fbb40-75c8-423a-84b2-b26ea9e7cae7"" name=""Delete|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""3"" />
+              <accessType id=""67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6"" name=""Search|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""4"" />
+              <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find|Remotion.Security.GeneralAccessTypes, Remotion.Security"" value=""5"" />
+              <accessType id=""00000002-0001-0000-0000-000000000000"" name=""Journalize|Remotion.Security.UnitTests.TestDomain.DomainAccessTypes, Remotion.Security.UnitTests.TestDomain"" value=""0"" />
+              <accessType id=""00000002-0002-0000-0000-000000000000"" name=""Archive|Remotion.Security.UnitTests.TestDomain.DomainAccessTypes, Remotion.Security.UnitTests.TestDomain"" value=""1"" />
             </accessTypes>
             
             <abstractRoles />

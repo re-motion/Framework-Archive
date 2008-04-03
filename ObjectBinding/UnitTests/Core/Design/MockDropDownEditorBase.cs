@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Forms.Design;
-using Rubicon.ObjectBinding.Design;
+using Remotion.ObjectBinding.Design;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.Design
+namespace Remotion.ObjectBinding.UnitTests.Core.Design
 {
   public abstract class MockDropDownEditorBase : DropDownEditorBase
   {

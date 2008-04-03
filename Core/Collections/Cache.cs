@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Collections
+namespace Remotion.Collections
 {
   //TODO: Doc
   [Serializable]

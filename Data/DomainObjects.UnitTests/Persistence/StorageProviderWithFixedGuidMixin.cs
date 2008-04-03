@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Mixins;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 {
   public class StorageProviderWithFixedGuidMixin : IStorageProviderWithFixedGuid
   {

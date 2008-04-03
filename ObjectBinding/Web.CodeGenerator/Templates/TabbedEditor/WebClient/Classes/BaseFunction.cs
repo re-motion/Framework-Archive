@@ -1,5 +1,5 @@
 using System;
-using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
+using Remotion.Data.DomainObjects.Web.ExecutionEngine;
 
 namespace $PROJECT_ROOTNAMESPACE$.Classes
 {

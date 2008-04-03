@@ -1,16 +1,16 @@
 using System;
 using System.Data.SqlClient;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.Resources;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.Resources;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
   [TestFixture]
   public class SqlProviderSaveExistingTest : SqlProviderBaseTest
@@ -35,8 +35,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       {
         DataContainer classWithAllDataTypes = LoadDataContainer (sqlProvider, DomainObjectIDs.ClassWithAllDataTypes1);
 
-        Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value1, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"]);
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"] = ClassWithAllDataTypes.EnumType.Value2;
+        Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value1, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"]);
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"] = ClassWithAllDataTypes.EnumType.Value2;
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (classWithAllDataTypes);
@@ -48,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       {
         DataContainer classWithAllDataTypes = LoadDataContainer (sqlProvider, DomainObjectIDs.ClassWithAllDataTypes1);
 
-        Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value2, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"]);
+        Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value2, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"]);
       }
     }
 
@@ -59,37 +59,37 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       {
         DataContainer classWithAllDataTypes = LoadDataContainer (sqlProvider, DomainObjectIDs.ClassWithAllDataTypes1);
 
-        Assert.AreEqual (false, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"]);
-        Assert.AreEqual (85, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ByteProperty"]);
-        Assert.AreEqual (new DateTime (2005, 1, 1), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateProperty"]);
-        Assert.AreEqual (new DateTime (2005, 1, 1, 17, 0, 0), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateTimeProperty"]);
-        Assert.AreEqual (123456.789, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DecimalProperty"]);
-        Assert.AreEqual (987654.321, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DoubleProperty"]);
-        Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value1, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"]);
-        Assert.AreEqual (new Guid ("{236C2DCE-43BD-45ad-BDE6-15F8C05C4B29}"), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty"]);
-        Assert.AreEqual (32767, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int16Property"]);
-        Assert.AreEqual (2147483647, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"]);
-        Assert.AreEqual (9223372036854775807, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int64Property"]);
-        Assert.AreEqual (6789.321, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.SingleProperty"]);
-        Assert.AreEqual ("abcdeföäü", classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"]);
-        Assert.AreEqual ("12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890", classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength"]);
-        ResourceManager.IsEqualToImage1 ((byte[]) classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"]);
+        Assert.AreEqual (false, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"]);
+        Assert.AreEqual (85, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ByteProperty"]);
+        Assert.AreEqual (new DateTime (2005, 1, 1), classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateProperty"]);
+        Assert.AreEqual (new DateTime (2005, 1, 1, 17, 0, 0), classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateTimeProperty"]);
+        Assert.AreEqual (123456.789, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DecimalProperty"]);
+        Assert.AreEqual (987654.321, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DoubleProperty"]);
+        Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value1, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"]);
+        Assert.AreEqual (new Guid ("{236C2DCE-43BD-45ad-BDE6-15F8C05C4B29}"), classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty"]);
+        Assert.AreEqual (32767, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int16Property"]);
+        Assert.AreEqual (2147483647, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"]);
+        Assert.AreEqual (9223372036854775807, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int64Property"]);
+        Assert.AreEqual (6789.321, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.SingleProperty"]);
+        Assert.AreEqual ("abcdeföäü", classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"]);
+        Assert.AreEqual ("12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890", classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength"]);
+        ResourceManager.IsEqualToImage1 ((byte[]) classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"]);
 
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"] = true;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ByteProperty"] = (byte) 42;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateProperty"] = new DateTime (1972, 10, 26);
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateTimeProperty"] = new DateTime (1974, 10, 26, 15, 17, 19);
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DecimalProperty"] = (decimal) 564.956;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DoubleProperty"] = 5334.2456;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"] = ClassWithAllDataTypes.EnumType.Value0;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty"] = new Guid ("{98E0FE88-7DB4-4f6c-A1C1-86682D5C95C9}");
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int16Property"] = (short) 67;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"] = 42424242;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int64Property"] = 424242424242424242;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.SingleProperty"] = (float) 42.42;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"] = "zyxwvuZaphodBeeblebrox";
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength"] = "123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876";
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"] = ResourceManager.GetImage2 ();
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"] = true;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ByteProperty"] = (byte) 42;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateProperty"] = new DateTime (1972, 10, 26);
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateTimeProperty"] = new DateTime (1974, 10, 26, 15, 17, 19);
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DecimalProperty"] = (decimal) 564.956;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DoubleProperty"] = 5334.2456;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"] = ClassWithAllDataTypes.EnumType.Value0;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty"] = new Guid ("{98E0FE88-7DB4-4f6c-A1C1-86682D5C95C9}");
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int16Property"] = (short) 67;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"] = 42424242;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int64Property"] = 424242424242424242;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.SingleProperty"] = (float) 42.42;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"] = "zyxwvuZaphodBeeblebrox";
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength"] = "123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876";
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"] = ResourceManager.GetImage2 ();
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (classWithAllDataTypes);
@@ -101,21 +101,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       {
         DataContainer classWithAllDataTypes = LoadDataContainer (sqlProvider, DomainObjectIDs.ClassWithAllDataTypes1);
 
-        Assert.AreEqual (true, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"]);
-        Assert.AreEqual (42, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ByteProperty"]);
-        Assert.AreEqual (new DateTime (1972, 10, 26), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateProperty"]);
-        Assert.AreEqual (new DateTime (1974, 10, 26, 15, 17, 19), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateTimeProperty"]);
-        Assert.AreEqual (564.956, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DecimalProperty"]);
-        Assert.AreEqual (5334.2456, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DoubleProperty"]);
-        Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value0, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"]);
-        Assert.AreEqual (new Guid ("{98E0FE88-7DB4-4f6c-A1C1-86682D5C95C9}"), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty"]);
-        Assert.AreEqual (67, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int16Property"]);
-        Assert.AreEqual (42424242, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"]);
-        Assert.AreEqual (424242424242424242, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int64Property"]);
-        Assert.AreEqual (42.42, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.SingleProperty"]);
-        Assert.AreEqual ("zyxwvuZaphodBeeblebrox", classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"]);
-        Assert.AreEqual ("123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876", classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength"]);
-        ResourceManager.IsEqualToImage2 ((byte[]) classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"]);
+        Assert.AreEqual (true, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"]);
+        Assert.AreEqual (42, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ByteProperty"]);
+        Assert.AreEqual (new DateTime (1972, 10, 26), classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateProperty"]);
+        Assert.AreEqual (new DateTime (1974, 10, 26, 15, 17, 19), classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateTimeProperty"]);
+        Assert.AreEqual (564.956, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DecimalProperty"]);
+        Assert.AreEqual (5334.2456, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DoubleProperty"]);
+        Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value0, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"]);
+        Assert.AreEqual (new Guid ("{98E0FE88-7DB4-4f6c-A1C1-86682D5C95C9}"), classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty"]);
+        Assert.AreEqual (67, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int16Property"]);
+        Assert.AreEqual (42424242, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"]);
+        Assert.AreEqual (424242424242424242, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int64Property"]);
+        Assert.AreEqual (42.42, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.SingleProperty"]);
+        Assert.AreEqual ("zyxwvuZaphodBeeblebrox", classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"]);
+        Assert.AreEqual ("123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876", classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength"]);
+        ResourceManager.IsEqualToImage2 ((byte[]) classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"]);
       }
     }
 
@@ -126,33 +126,33 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       {
         DataContainer classWithAllDataTypes = LoadDataContainer (sqlProvider, DomainObjectIDs.ClassWithAllDataTypes1);
 
-        Assert.AreEqual (true, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"]);
-        Assert.AreEqual ((byte) 78, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"]);
-        Assert.AreEqual (new DateTime (2005, 2, 1), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"]);
-        Assert.AreEqual (new DateTime (2005, 2, 1, 5, 0, 0), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty"]);
-        Assert.AreEqual (765.098m, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"]);
-        Assert.AreEqual (654321.789d, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty"]);
-        Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value2, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"]);
-        Assert.AreEqual (new Guid ("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}"), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"]);
-        Assert.AreEqual ((short) 12000, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"]);
-        Assert.AreEqual (-2147483647, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"]);
-        Assert.AreEqual (3147483647L, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"]);
-        Assert.AreEqual (12.456F, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty"]);
-        Assert.IsNull (classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"]);
+        Assert.AreEqual (true, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"]);
+        Assert.AreEqual ((byte) 78, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"]);
+        Assert.AreEqual (new DateTime (2005, 2, 1), classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"]);
+        Assert.AreEqual (new DateTime (2005, 2, 1, 5, 0, 0), classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty"]);
+        Assert.AreEqual (765.098m, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"]);
+        Assert.AreEqual (654321.789d, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty"]);
+        Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value2, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"]);
+        Assert.AreEqual (new Guid ("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}"), classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"]);
+        Assert.AreEqual ((short) 12000, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"]);
+        Assert.AreEqual (-2147483647, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"]);
+        Assert.AreEqual (3147483647L, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"]);
+        Assert.AreEqual (12.456F, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty"]);
+        Assert.IsNull (classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"]);
 
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"] = false;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"] = (byte) 100;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"] = new DateTime (2007, 1, 18);
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty"] = new DateTime (2005, 1, 18, 10, 10, 10);
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"] = 20.123m;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty"] = 56.87d;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"] = ClassWithAllDataTypes.EnumType.Value0;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"] = new Guid ("{10FD9EDE-F3BB-4bb9-9434-9B121C6733A0}");
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"] = (short) -43;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"] = -42;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"] = -41L;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty"] = -40F;
-        classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"] = ResourceManager.GetImage1 ();
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"] = false;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"] = (byte) 100;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"] = new DateTime (2007, 1, 18);
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty"] = new DateTime (2005, 1, 18, 10, 10, 10);
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"] = 20.123m;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty"] = 56.87d;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"] = ClassWithAllDataTypes.EnumType.Value0;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"] = new Guid ("{10FD9EDE-F3BB-4bb9-9434-9B121C6733A0}");
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"] = (short) -43;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"] = -42;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"] = -41L;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty"] = -40F;
+        classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"] = ResourceManager.GetImage1 ();
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (classWithAllDataTypes);
@@ -164,19 +164,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       {
         DataContainer classWithAllDataTypes = LoadDataContainer (sqlProvider, DomainObjectIDs.ClassWithAllDataTypes1);
 
-        Assert.AreEqual (false, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"]);
-        Assert.AreEqual ((byte) 100, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"]);
-        Assert.AreEqual (new DateTime (2007, 1, 18), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"]);
-        Assert.AreEqual (new DateTime (2005, 1, 18, 10, 10, 10), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty"]);
-        Assert.AreEqual (20.123m, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"]);
-        Assert.AreEqual (56.87d, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty"]);
-        Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value0, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"]);
-        Assert.AreEqual (new Guid ("{10FD9EDE-F3BB-4bb9-9434-9B121C6733A0}"), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"]);
-        Assert.AreEqual ((short) -43, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"]);
-        Assert.AreEqual (-42, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"]);
-        Assert.AreEqual (-41L, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"]);
-        Assert.AreEqual (-40F, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty"]);
-        ResourceManager.IsEqualToImage1 ((byte[]) classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"]);
+        Assert.AreEqual (false, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"]);
+        Assert.AreEqual ((byte) 100, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"]);
+        Assert.AreEqual (new DateTime (2007, 1, 18), classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"]);
+        Assert.AreEqual (new DateTime (2005, 1, 18, 10, 10, 10), classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty"]);
+        Assert.AreEqual (20.123m, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"]);
+        Assert.AreEqual (56.87d, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty"]);
+        Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value0, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"]);
+        Assert.AreEqual (new Guid ("{10FD9EDE-F3BB-4bb9-9434-9B121C6733A0}"), classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"]);
+        Assert.AreEqual ((short) -43, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"]);
+        Assert.AreEqual (-42, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"]);
+        Assert.AreEqual (-41L, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"]);
+        Assert.AreEqual (-40F, classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty"]);
+        ResourceManager.IsEqualToImage1 ((byte[]) classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"]);
       }
     }
 
@@ -190,7 +190,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         classWithAllDataTypes1 = LoadDataContainer (sqlProvider, DomainObjectIDs.ClassWithAllDataTypes1);
-        classWithAllDataTypes1["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"] = ResourceManager.GetImage1 ();
+        classWithAllDataTypes1["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"] = ResourceManager.GetImage1 ();
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (classWithAllDataTypes1);
@@ -205,33 +205,33 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         // need to make sure only one DomainObjectReference exists for the current ClientTransaction
         PrivateInvoke.InvokeNonPublicMethod (classWithAllDataTypes2, "SetDomainObject", classWithAllDataTypes1.DomainObject);
 
-        Assert.AreEqual (true, classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"]);
-        Assert.AreEqual ((byte) 78, classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"]);
-        Assert.AreEqual (new DateTime (2005, 2, 1), classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"]);
-        Assert.AreEqual (new DateTime (2005, 2, 1, 5, 0, 0), classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty"]);
-        Assert.AreEqual (765.098m, classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"]);
-        Assert.AreEqual (654321.789d, classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty"]);
-        Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value2, classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"]);
-        Assert.AreEqual (new Guid ("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}"), classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"]);
-        Assert.AreEqual ((short) 12000, classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"]);
-        Assert.AreEqual (-2147483647, classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"]);
-        Assert.AreEqual (3147483647L, classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"]);
-        Assert.AreEqual (12.456F, classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty"]);
-        ResourceManager.IsEqualToImage1 ((byte[]) classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"]);
+        Assert.AreEqual (true, classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"]);
+        Assert.AreEqual ((byte) 78, classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"]);
+        Assert.AreEqual (new DateTime (2005, 2, 1), classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"]);
+        Assert.AreEqual (new DateTime (2005, 2, 1, 5, 0, 0), classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty"]);
+        Assert.AreEqual (765.098m, classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"]);
+        Assert.AreEqual (654321.789d, classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty"]);
+        Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value2, classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"]);
+        Assert.AreEqual (new Guid ("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}"), classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"]);
+        Assert.AreEqual ((short) 12000, classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"]);
+        Assert.AreEqual (-2147483647, classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"]);
+        Assert.AreEqual (3147483647L, classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"]);
+        Assert.AreEqual (12.456F, classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty"]);
+        ResourceManager.IsEqualToImage1 ((byte[]) classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"]);
 
-        classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"] = null;
-        classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"] = null;
-        classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"] = null;
-        classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty"] = null;
-        classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"] = null;
-        classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty"] = null;
-        classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"] = null;
-        classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"] = null;
-        classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"] = null;
-        classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"] = null;
-        classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"] = null;
-        classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty"] = null;
-        classWithAllDataTypes2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"] = null;
+        classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"] = null;
+        classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"] = null;
+        classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"] = null;
+        classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty"] = null;
+        classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"] = null;
+        classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty"] = null;
+        classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"] = null;
+        classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"] = null;
+        classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"] = null;
+        classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"] = null;
+        classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"] = null;
+        classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty"] = null;
+        classWithAllDataTypes2["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"] = null;
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (classWithAllDataTypes2);
@@ -243,19 +243,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       {
         DataContainer classWithAllDataTypes = LoadDataContainer (sqlProvider, DomainObjectIDs.ClassWithAllDataTypes1);
 
-        Assert.IsNull (classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"]);
-        Assert.IsNull (classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"]);
-        Assert.IsNull (classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"]);
-        Assert.IsNull (classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty"]);
-        Assert.IsNull (classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"]);
-        Assert.IsNull (classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty"]);
-        Assert.IsNull (classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"]);
-        Assert.IsNull (classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"]);
-        Assert.IsNull (classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"]);
-        Assert.IsNull (classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"]);
-        Assert.IsNull (classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"]);
-        Assert.IsNull (classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty"]);
-        Assert.IsNull (classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"]);
+        Assert.IsNull (classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"]);
+        Assert.IsNull (classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"]);
+        Assert.IsNull (classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"]);
+        Assert.IsNull (classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty"]);
+        Assert.IsNull (classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"]);
+        Assert.IsNull (classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty"]);
+        Assert.IsNull (classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"]);
+        Assert.IsNull (classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"]);
+        Assert.IsNull (classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"]);
+        Assert.IsNull (classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"]);
+        Assert.IsNull (classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"]);
+        Assert.IsNull (classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty"]);
+        Assert.IsNull (classWithAllDataTypes["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"]);
       }
     }
 
@@ -283,11 +283,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
         DataContainer orderItemContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.OrderItem1);
 
-        Assert.AreEqual (1, orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
-        Assert.AreEqual ("Mainboard", orderItemContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product"]);
+        Assert.AreEqual (1, orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
+        Assert.AreEqual ("Mainboard", orderItemContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product"]);
 
-        orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
-        orderItemContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product"] = "Raumschiff";
+        orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
+        orderItemContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product"] = "Raumschiff";
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (orderContainer);
@@ -302,8 +302,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
         DataContainer orderItemContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.OrderItem1);
 
-        Assert.AreEqual (10, orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
-        Assert.AreEqual ("Raumschiff", orderItemContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product"]);
+        Assert.AreEqual (10, orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
+        Assert.AreEqual ("Raumschiff", orderItemContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product"]);
       }
     }
 
@@ -320,8 +320,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         // need to make sure only one DomainObjectReference exists for the current ClientTransaction
         PrivateInvoke.InvokeNonPublicMethod (orderContainer2, "SetDomainObject", orderContainer1.DomainObject);
 
-        orderContainer1["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
-        orderContainer2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 11;
+        orderContainer1["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
+        orderContainer2["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 11;
 
         DataContainerCollection collection1 = new DataContainerCollection ();
         collection1.Add (orderContainer1);
@@ -341,7 +341,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
-        orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
+        orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
         collection.Add (orderContainer);
       }
 
@@ -353,7 +353,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
-        Assert.AreEqual (10, orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
+        Assert.AreEqual (10, orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
       }
     }
 
@@ -367,10 +367,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
 
         PropertyDefinition newDefinition =
-            TestMappingConfiguration.Current.ClassDefinitions[typeof (OrderItem)]["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product"];
+            TestMappingConfiguration.Current.ClassDefinitions[typeof (OrderItem)]["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product"];
 
         orderContainer.PropertyValues.Add (new PropertyValue (newDefinition, "Raumschiff"));
-        orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product"] = "Auto";
+        orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product"] = "Auto";
 
         collection.Add (orderContainer);
         sqlProvider.Save (collection);
@@ -387,7 +387,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
 
         oldTimestamp = orderContainer.Timestamp;
-        orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
+        orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
         collection.Add (orderContainer);
 
         sqlProvider.Save (collection);
@@ -408,7 +408,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       {
         orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
         oldTimestamp = orderContainer.Timestamp;
-        orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
+        orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
         collection.Add (orderContainer);
       }
 
@@ -437,8 +437,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         oldOrderTimestamp = orderContainer.Timestamp;
         oldOrderItemTimestamp = orderItemContainer.Timestamp;
 
-        orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
-        orderItemContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product"] = "Raumschiff";
+        orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
+        orderItemContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product"] = "Raumschiff";
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (orderContainer);
@@ -459,7 +459,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       {
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
 
-        orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
+        orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (orderContainer);
@@ -472,7 +472,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
-        Assert.AreEqual (10, orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
+        Assert.AreEqual (10, orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
       }
     }
 
@@ -484,7 +484,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         sqlProvider.BeginTransaction ();
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
 
-        orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
+        orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (orderContainer);
@@ -496,7 +496,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
-        Assert.AreEqual (10, orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
+        Assert.AreEqual (10, orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
       }
     }
 
@@ -510,11 +510,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
         DataContainerCollection orderTicketContainers = sqlProvider.LoadDataContainersByRelatedID (
             TestMappingConfiguration.Current.ClassDefinitions[typeof (OrderTicket)],
-            "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order",
+            "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order",
             DomainObjectIDs.Order1);
         ClientTransactionMock.SetClientTransaction (orderTicketContainers[0]);
 
-        orderTicketContainers[0]["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.FileName"] = "C:\newFile.jpg";
+        orderTicketContainers[0]["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.FileName"] = "C:\newFile.jpg";
 
         sqlProvider.Save (orderTicketContainers);
         sqlProvider.Commit ();
@@ -523,7 +523,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer orderTicketContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.OrderTicket1);
-        Assert.AreEqual ("C:\newFile.jpg", orderTicketContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.FileName"]);
+        Assert.AreEqual ("C:\newFile.jpg", orderTicketContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.FileName"]);
       }
     }
 
@@ -537,7 +537,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
 
         oldTimestamp = orderContainer.Timestamp;
-        orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
+        orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (orderContainer);
@@ -550,7 +550,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
-        Assert.AreEqual (10, orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
+        Assert.AreEqual (10, orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
         Assert.IsFalse (oldTimestamp.Equals (orderContainer.Timestamp));
       }
     }
@@ -563,7 +563,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
-        orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
+        orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (orderContainer);
@@ -581,7 +581,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         sqlProvider.BeginTransaction ();
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
 
-        orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
+        orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (orderContainer);
@@ -594,7 +594,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
-        Assert.AreEqual (1, orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
+        Assert.AreEqual (1, orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
       }
     }
 
@@ -606,7 +606,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Order1);
-        orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
+        orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (orderContainer);
@@ -650,7 +650,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer orderContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.OrderWithoutOrderItem);
-        Assert.AreEqual (DomainObjectIDs.Official2, orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official"]);
+        Assert.AreEqual (DomainObjectIDs.Official2, orderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Official"]);
       }
     }
 
@@ -671,7 +671,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer ceoContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Ceo1);
-        Assert.AreEqual (DomainObjectIDs.Partner1, ceoContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"]);
+        Assert.AreEqual (DomainObjectIDs.Partner1, ceoContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"]);
       }
     }
 
@@ -692,7 +692,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer ceoContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Ceo1);
-        Assert.AreEqual (DomainObjectIDs.Supplier1, ceoContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"]);
+        Assert.AreEqual (DomainObjectIDs.Supplier1, ceoContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"]);
       }
     }
 
@@ -714,7 +714,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer computerContainer = LoadDataContainer (sqlProvider, DomainObjectIDs.Computer1);
-        Assert.IsNull (computerContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
+        Assert.IsNull (computerContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
       }
     }
 

@@ -1,10 +1,10 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.Globalization;
-using Rubicon.Web.UI.Controls;
+using Remotion.Globalization;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
  
 /// <summary> A collection of <see cref="BusinessObjectControlItem"/> objects. </summary>

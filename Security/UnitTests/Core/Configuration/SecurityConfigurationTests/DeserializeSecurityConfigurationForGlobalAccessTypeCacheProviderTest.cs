@@ -1,10 +1,10 @@
 using System;
 using System.Configuration;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Development.UnitTesting.Configuration;
+using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.Configuration;
 
-namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
+namespace Remotion.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
 {
   [TestFixture]
   public class DeserializeSecurityConfigurationForGlobalAccessTypeCacheProviderTest: TestBase
@@ -12,7 +12,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Test]
     public void Test_FallbackToDefaultWellKnownDefaultGlobalAccessTypeCacheProvider()
     {
-      string xmlFragment = @"<rubicon.security />";
+      string xmlFragment = @"<remotion.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
       Assert.AreEqual (2, Configuration.GlobalAccessTypeCacheProviders.Count);
@@ -23,7 +23,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Test]
     public void Test_GlobalAccessTypeCacheProviderIsAlwaysSameInstance()
     {
-      string xmlFragment = @"<rubicon.security />";
+      string xmlFragment = @"<remotion.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Assert.AreSame (Configuration.GlobalAccessTypeCacheProvider, Configuration.GlobalAccessTypeCacheProvider);
     }
@@ -31,7 +31,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Test]
     public void Test_WithNoGlobalAccessTypeCacheProvider()
     {
-      string xmlFragment = @"<rubicon.security defaultGlobalAccessTypeCacheProvider=""None"" />";
+      string xmlFragment = @"<remotion.security defaultGlobalAccessTypeCacheProvider=""None"" />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Assert.IsInstanceOfType (typeof (NullGlobalAccessTypeCacheProvider), Configuration.GlobalAccessTypeCacheProvider);
     }
@@ -39,7 +39,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Test]
     public void Test_WithRevisionBasedAccessTypeCacheProvider()
     {
-      string xmlFragment = @"<rubicon.security defaultGlobalAccessTypeCacheProvider=""RevisionBased"" />";
+      string xmlFragment = @"<remotion.security defaultGlobalAccessTypeCacheProvider=""RevisionBased"" />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
       Assert.IsInstanceOfType (typeof (RevisionBasedAccessTypeCacheProvider), Configuration.GlobalAccessTypeCacheProvider);
@@ -50,11 +50,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     {
       string xmlFragment =
           @"
-          <rubicon.security defaultGlobalAccessTypeCacheProvider=""Custom"">
+          <remotion.security defaultGlobalAccessTypeCacheProvider=""Custom"">
             <globalAccessTypeCacheProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
             </globalAccessTypeCacheProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
@@ -67,11 +67,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     {
       string xmlFragment =
           @"
-          <rubicon.security>
+          <remotion.security>
             <globalAccessTypeCacheProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
             </globalAccessTypeCacheProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
@@ -88,11 +88,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     {
       string xmlFragment =
           @"
-          <rubicon.security defaultGlobalAccessTypeCacheProvider=""Invalid"">
+          <remotion.security defaultGlobalAccessTypeCacheProvider=""Invalid"">
             <globalAccessTypeCacheProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
             </globalAccessTypeCacheProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
@@ -106,11 +106,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     {
       string xmlFragment =
           @"
-          <rubicon.security defaultGlobalAccessTypeCacheProvider=""None"">
+          <remotion.security defaultGlobalAccessTypeCacheProvider=""None"">
             <globalAccessTypeCacheProviders>
-              <add name=""None"" type=""Rubicon.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
+              <add name=""None"" type=""Remotion.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
             </globalAccessTypeCacheProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
     }
@@ -122,11 +122,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     {
       string xmlFragment =
           @"
-          <rubicon.security defaultGlobalAccessTypeCacheProvider=""RevisionBased"">
+          <remotion.security defaultGlobalAccessTypeCacheProvider=""RevisionBased"">
             <globalAccessTypeCacheProviders>
-              <add name=""RevisionBased"" type=""Rubicon.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
+              <add name=""RevisionBased"" type=""Remotion.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
             </globalAccessTypeCacheProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
     }
@@ -139,11 +139,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     {
       string xmlFragment =
           @"
-          <rubicon.security defaultGlobalAccessTypeCacheProvider="""">
+          <remotion.security defaultGlobalAccessTypeCacheProvider="""">
             <globalAccessTypeCacheProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
             </globalAccessTypeCacheProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
@@ -156,11 +156,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     {
       string xmlFragment =
           @"
-          <rubicon.security>
+          <remotion.security>
             <globalAccessTypeCacheProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.GlobalAccessTypeCacheProviderMock"" />
             </globalAccessTypeCacheProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Configuration.GlobalAccessTypeCacheProviders.Clear();
@@ -168,16 +168,16 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
 
     [Test]
     [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException),
-        ExpectedMessage = "Provider must implement the interface 'Rubicon.Security.IGlobalAccessTypeCacheProvider'.")]
+        ExpectedMessage = "Provider must implement the interface 'Remotion.Security.IGlobalAccessTypeCacheProvider'.")]
     public void InstantiateProvider_WithTypeNotImplementingRequiredInterface()
     {
       string xmlFragment =
           @"
-          <rubicon.security>
+          <remotion.security>
             <globalAccessTypeCacheProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.UserProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.UserProviderMock"" />
             </globalAccessTypeCacheProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 

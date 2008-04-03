@@ -1,11 +1,11 @@
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
+namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 {
   [TestFixture]
   public class DomainObjectTest : ClientTransactionBaseTest

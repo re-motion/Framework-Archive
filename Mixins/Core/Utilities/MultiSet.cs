@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Rubicon.Collections;
+using Remotion.Collections;
 
-namespace Rubicon.Mixins.Utilities
+namespace Remotion.Mixins.Utilities
 {
   [DebuggerDisplay ("Count = {_items.Count}")]
   internal class MultiSet<T> : IEnumerable<T>

@@ -1,8 +1,8 @@
 using System;
 using System.Windows.Forms;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Design.BindableObject
+namespace Remotion.ObjectBinding.Design.BindableObject
 {
   public class SearchFieldController : ControllerBase
   {

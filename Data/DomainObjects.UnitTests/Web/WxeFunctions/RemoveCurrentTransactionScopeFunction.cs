@@ -1,12 +1,12 @@
 using System;
 
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Web.ExecutionEngine;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
 using NUnit.Framework;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Web.WxeFunctions
+namespace Remotion.Data.DomainObjects.UnitTests.Web.WxeFunctions
 {
 [Serializable]
 public class RemoveCurrentTransactionScopeFunction : WxeTransactedFunction

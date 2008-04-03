@@ -1,9 +1,9 @@
 using System;
 using System.Text;
 using System.Web.UI;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.Utilities
+namespace Remotion.Web.Utilities
 {
   /// <summary> Utility class for client-side scripts. </summary>
   public static class ScriptUtility

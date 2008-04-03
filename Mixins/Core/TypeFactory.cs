@@ -1,12 +1,12 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Validation;
-using Rubicon.Utilities;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Validation;
+using Remotion.Utilities;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   /// <summary>
   /// Provides support for combining mixins and target classes into concrete, "mixed", instantiable types.

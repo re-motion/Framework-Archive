@@ -1,7 +1,7 @@
 ﻿using System;
-using Rubicon.Security;
+using Remotion.Security;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
   [Obsolete ("Use IWxeSecurityAdapter instead. (Version: 1.7.41)", true)]
   public interface IWxeSecurityProvider : IWxeSecurityAdapter, ISecurityProviderObsolete

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Rubicon.SecurityManager.Domain.AccessControl
+namespace Remotion.SecurityManager.Domain.AccessControl
 {
   public class AccessControlEntryPriorityComparer : IComparer<AccessControlEntry>
   {

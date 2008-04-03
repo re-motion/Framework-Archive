@@ -4,9 +4,9 @@ using System.IO;
 using System.Text;
 using System.Web;
 using System.Web.UI;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.Utilities
+namespace Remotion.Web.Utilities
 {
 /// <summary>
 /// Provided helper functions for working with URLs.

@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Specialized;
 using System.Runtime.Remoting.Messaging;
-using Rubicon.Collections;
-using Rubicon.Configuration;
-using Rubicon.Security.Configuration;
+using Remotion.Collections;
+using Remotion.Configuration;
+using Remotion.Security.Configuration;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   using CacheType = InterlockedCache<Tuple<SecurityContext, string>, AccessType[]>;
 

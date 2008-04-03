@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.StorageProviders
 {
   public class StubStorageGroup1Attribute: StorageGroupAttribute
   {

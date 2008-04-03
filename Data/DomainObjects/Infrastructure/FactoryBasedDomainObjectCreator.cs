@@ -1,11 +1,11 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
   // Creates new domain object instances via the DPInterceptedDomainObjectFactory.
   // Needed constructors:

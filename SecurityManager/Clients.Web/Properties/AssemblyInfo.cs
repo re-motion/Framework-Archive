@@ -6,11 +6,11 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle ("Rubicon Security Manager Web Interface")]
+[assembly: AssemblyTitle ("Remotion Security Manager Web Interface")]
 //[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration (".NET Framework: net-2.0, build type: debug")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
-[assembly: AssemblyProduct ("Rubicon Security Manager")]
+[assembly: AssemblyProduct ("Remotion Security Manager")]
 [assembly: AssemblyCopyright ("(c) 2006 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture("")]		
@@ -55,6 +55,6 @@ using System.Reflection;
 //
 #pragma warning disable 1699
 [assembly: AssemblyDelaySign (false)]
-[assembly: AssemblyKeyFile(@"\Development\global/rubicon.snk")]
+[assembly: AssemblyKeyFile(@"\Development\global/remotion.snk")]
 [assembly: AssemblyKeyName("")]
 #pragma warning restore 1699

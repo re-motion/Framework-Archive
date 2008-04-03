@@ -1,18 +1,18 @@
 using System;
 using System.Collections;
 using System.Reflection;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Globalization;
-using Rubicon.ObjectBinding;
-using Rubicon.Security;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Globalization;
+using Remotion.ObjectBinding;
+using Remotion.Security;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
   /// <summary>
-  /// The default implementation of <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> for the DomainObjects framework.
+  /// The default implementation of <see cref="Remotion.ObjectBinding.IBusinessObjectProperty"/> for the DomainObjects framework.
   /// </summary>
-  /// <remarks>See the documentation of <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> for additional documentation for each member.</remarks>
+  /// <remarks>See the documentation of <see cref="Remotion.ObjectBinding.IBusinessObjectProperty"/> for additional documentation for each member.</remarks>
   public class BaseProperty: IBusinessObjectProperty
   {
     private PropertyInfo _propertyInfo;
@@ -90,8 +90,8 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
 
     /// <summary> Gets the type of the property. </summary>
     /// <remarks> 
-    ///   This is the type of elements returned by the <see cref="Rubicon.ObjectBinding.IBusinessObject.GetProperty"/> method
-    ///   and set via the <see cref="Rubicon.ObjectBinding.IBusinessObject.SetProperty"/> method.
+    ///   This is the type of elements returned by the <see cref="Remotion.ObjectBinding.IBusinessObject.GetProperty"/> method
+    ///   and set via the <see cref="Remotion.ObjectBinding.IBusinessObject.SetProperty"/> method.
     /// </remarks>
     public virtual Type PropertyType
     {

@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Context.FluentBuilders;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Utilities;
-using Rubicon.Utilities;
-using Rubicon.Mixins.Validation;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Utilities;
+using Remotion.Utilities;
+using Remotion.Mixins.Validation;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   /// <summary>
   /// Constitutes a mixin configuration (ie. a set of classes associated with mixins) and manages the mixin configuration for the

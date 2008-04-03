@@ -1,6 +1,6 @@
-using Rubicon.Data.DomainObjects;
+using Remotion.Data.DomainObjects;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
+namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   /// <summary>The storage class options available in the persistence framework.</summary>
   public enum StorageClass

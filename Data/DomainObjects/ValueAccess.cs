@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// An value indicating whether the original or current value of a <see cref="PropertyValue"/> is being accessed.

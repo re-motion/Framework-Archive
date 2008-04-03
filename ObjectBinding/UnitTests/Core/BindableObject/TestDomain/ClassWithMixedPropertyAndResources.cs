@@ -1,11 +1,11 @@
 using System;
-using Rubicon.Globalization;
-using Rubicon.Mixins;
+using Remotion.Globalization;
+using Remotion.Mixins;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
 {
   [BindableObject]
-  [MultiLingualResources ("Rubicon.ObjectBinding.UnitTests.Core.Globalization.ClassWithMixedPropertyAndResources")]
+  [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.Core.Globalization.ClassWithMixedPropertyAndResources")]
   [Uses (typeof (MixinAddingProperty))]
   public class ClassWithMixedPropertyAndResources
   {

@@ -1,16 +1,16 @@
 using System;
 using System.ComponentModel.Design;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Reflection;
-using Rubicon.Security.Metadata;
-using Rubicon.SecurityManager.Domain;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.Text.CommandLine;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
+using Remotion.Security.Metadata;
+using Remotion.SecurityManager.Domain;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.Text.CommandLine;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Metadata.Importer
+namespace Remotion.SecurityManager.Metadata.Importer
 {
   public class Program
   {

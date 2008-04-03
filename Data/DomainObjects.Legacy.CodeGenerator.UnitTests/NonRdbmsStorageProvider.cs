@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Persistence;
 
-namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
+namespace Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
 {
   public class NonRdbmsStorageProvider : StorageProvider
   {
@@ -28,17 +28,17 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
       throw new NotSupportedException ("The method or operation is not supported.");
     }
 
-    public override Rubicon.Data.DomainObjects.DataManagement.DataContainerCollection LoadDataContainersByRelatedID (Rubicon.Data.DomainObjects.Mapping.ClassDefinition classDefinition, string propertyName, ObjectID relatedID)
+    public override Remotion.Data.DomainObjects.DataManagement.DataContainerCollection LoadDataContainersByRelatedID (Remotion.Data.DomainObjects.Mapping.ClassDefinition classDefinition, string propertyName, ObjectID relatedID)
     {
       throw new NotSupportedException ("The method or operation is not supported.");
     }
 
-    public override void Save (Rubicon.Data.DomainObjects.DataManagement.DataContainerCollection dataContainers)
+    public override void Save (Remotion.Data.DomainObjects.DataManagement.DataContainerCollection dataContainers)
     {
       throw new NotSupportedException ("The method or operation is not supported.");
     }
 
-    public override void SetTimestamp (Rubicon.Data.DomainObjects.DataManagement.DataContainerCollection dataContainers)
+    public override void SetTimestamp (Remotion.Data.DomainObjects.DataManagement.DataContainerCollection dataContainers)
     {
       throw new NotSupportedException ("The method or operation is not supported.");
     }
@@ -58,17 +58,17 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
       throw new NotSupportedException ("The method or operation is not supported.");
     }
 
-    public override ObjectID CreateNewObjectID (Rubicon.Data.DomainObjects.Mapping.ClassDefinition classDefinition)
+    public override ObjectID CreateNewObjectID (Remotion.Data.DomainObjects.Mapping.ClassDefinition classDefinition)
     {
       throw new NotSupportedException ("The method or operation is not supported.");
     }
 
-    public override Rubicon.Data.DomainObjects.DataManagement.DataContainerCollection ExecuteCollectionQuery (Rubicon.Data.DomainObjects.Queries.IQuery query)
+    public override Remotion.Data.DomainObjects.DataManagement.DataContainerCollection ExecuteCollectionQuery (Remotion.Data.DomainObjects.Queries.IQuery query)
     {
       throw new NotSupportedException ("The method or operation is not supported.");
     }
 
-    public override object ExecuteScalarQuery (Rubicon.Data.DomainObjects.Queries.IQuery query)
+    public override object ExecuteScalarQuery (Remotion.Data.DomainObjects.Queries.IQuery query)
     {
       throw new NotSupportedException ("The method or operation is not supported.");
     }

@@ -4,9 +4,9 @@ using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
 using log4net.Layout;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Logging
+namespace Remotion.Logging
 {
   /// <summary>
   /// Implementation of <see cref="ILogManager"/> for <b>log4net</b>.

@@ -1,18 +1,18 @@
 using System;
 using System.ComponentModel;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Mapping.Configuration;
-using Rubicon.Design;
-using Rubicon.Utilities;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.ConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.Configuration;
+using Remotion.Design;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Design
+namespace Remotion.Data.DomainObjects.Design
 {
   /// <summary>
   /// The <see cref="DomainObjectsDesignModeHelper"/> is inteded to encapsulate design mode specific initialization code for <see cref="IComponent"/>
-  /// implementations in the <see cref="N:Rubicon.Data.DomainObjects"/> namespace, such as data sources.
+  /// implementations in the <see cref="N:Remotion.Data.DomainObjects"/> namespace, such as data sources.
   /// </summary>
   public class DomainObjectsDesignModeHelper
   {

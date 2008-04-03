@@ -1,10 +1,10 @@
 using System;
 using System.IO;
 using NUnit.Framework;
-using Rubicon.Web.ExecutionEngine.UrlMapping;
-using Rubicon.Web.UnitTests.Configuration;
+using Remotion.Web.ExecutionEngine.UrlMapping;
+using Remotion.Web.UnitTests.Configuration;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine.UrlMapping
+namespace Remotion.Web.UnitTests.ExecutionEngine.UrlMapping
 {
 
   [TestFixture]

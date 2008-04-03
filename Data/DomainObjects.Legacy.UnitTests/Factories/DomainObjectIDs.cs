@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Factories
 {
   public class DomainObjectIDs
   {

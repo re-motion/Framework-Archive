@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
 
   /// <summary> A collection of business object properties that result in each other. </summary>

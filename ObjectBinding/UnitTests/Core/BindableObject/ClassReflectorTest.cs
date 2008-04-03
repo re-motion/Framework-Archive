@@ -2,12 +2,12 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
 using System.Reflection;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
 {
   [TestFixture]
   public class ClassReflectorTest : TestBase
@@ -59,8 +59,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain."
-        + "ClassWithManualIdentity' does not implement the 'Rubicon.ObjectBinding.IBusinessObject' interface via the 'Rubicon.ObjectBinding."
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Type 'Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain."
+        + "ClassWithManualIdentity' does not implement the 'Remotion.ObjectBinding.IBusinessObject' interface via the 'Remotion.ObjectBinding."
         + "BindableObject.BindableObjectMixinBase`1'.\r\nParameter name: concreteType")]
     public void GetMetadata_ForBindableObjectWithManualIdentity ()
     {

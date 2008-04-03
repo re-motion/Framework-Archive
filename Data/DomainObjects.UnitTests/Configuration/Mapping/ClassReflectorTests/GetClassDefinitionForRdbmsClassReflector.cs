@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
-using Rubicon.Mixins.Context;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflectorTests
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflectorTests
 {
   [TestFixture]
   public class GetClassDefinitionForRdbmsClassReflector: TestBase
@@ -152,13 +152,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "The 'Rubicon.Data.DomainObjects.StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute, "
+        ExpectedMessage = "The 'Remotion.Data.DomainObjects.StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n  "
+        + "Type: Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute, "
         + "property: Int32")]
     public void GetClassDefinition_ForDerivedClassHavingAnOverriddenPropertyWithMappingAttribute()
     {
       Type derivedClass = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
-          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute",
+          "Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute",
           true,
           false);
       ClassReflector classReflector = new RdbmsClassReflector (derivedClass);

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Xml;
+using Remotion.Xml;
 
-namespace Rubicon.Web.ExecutionEngine.UrlMapping
+namespace Remotion.Web.ExecutionEngine.UrlMapping
 {
 
 public class UrlMappingSchema: SchemaLoaderBase

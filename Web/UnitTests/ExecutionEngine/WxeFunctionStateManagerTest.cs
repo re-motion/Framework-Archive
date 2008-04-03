@@ -5,13 +5,13 @@ using System.Threading;
 using System.Web.SessionState;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Collections;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Reflection;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UnitTests.AspNetFramework;
+using Remotion.Collections;
+using Remotion.Development.UnitTesting;
+using Remotion.Reflection;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UnitTests.AspNetFramework;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine
 {
   [TestFixture]
   public class WxeFunctionStateManagerTest

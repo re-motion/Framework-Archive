@@ -2,15 +2,15 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.UnitTests.CodeGeneration.SampleTypes;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework.SyntaxHelpers;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.MixedTypeCodeGeneration
+namespace Remotion.Mixins.UnitTests.CodeGeneration.MixedTypeCodeGeneration
 {
   [TestFixture]
   public class TypeFeatureTests : CodeGenerationBaseTest

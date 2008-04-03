@@ -2,18 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Security.Principal;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Globalization;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Globalization;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.Security;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
+namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Group")]
+  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Group")]
   [PermanentGuid ("AA1761A4-226C-4ebe-91F0-8FFF4974B175")]
   [Instantiable]
   [DBTable]
@@ -68,7 +68,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       ArgumentUtility.CheckNotNull ("tenantID", tenantID);
 
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByTenantID");
+      Query query = new Query ("Remotion.SecurityManager.Domain.OrganizationalStructure.Group.FindByTenantID");
       query.Parameters.Add ("@tenantID", tenantID);
 
       return ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
@@ -78,7 +78,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
 
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByUnqiueIdentifier");
+      Query query = new Query ("Remotion.SecurityManager.Domain.OrganizationalStructure.Group.FindByUnqiueIdentifier");
       query.Parameters.Add ("@uniqueIdentifier", uniqueIdentifier);
 
       DomainObjectCollection groups = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);

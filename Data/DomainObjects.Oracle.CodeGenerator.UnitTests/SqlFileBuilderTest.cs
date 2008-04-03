@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using System.IO;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.NullableValueTypes;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.NullableValueTypes;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using System.Reflection;
-using Rubicon.Data.DomainObjects.CodeGenerator.Sql;
+using Remotion.Data.DomainObjects.CodeGenerator.Sql;
 
-namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
+namespace Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
 {
   //TODO: Run the generated SQL File against a database in the UnitTests and integrate this into the build
   //      Derive ClassWithAllDataTypes from an abstract class to ensure that all data types are selected in a UNION

@@ -1,7 +1,7 @@
 using System.Configuration;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Configuration
+namespace Remotion.Configuration
 {
   /// <summary>Use the <see cref="ConfigurationWrapper"/> to encapsulate the access to the configiration data.</summary>
   /// <remarks>

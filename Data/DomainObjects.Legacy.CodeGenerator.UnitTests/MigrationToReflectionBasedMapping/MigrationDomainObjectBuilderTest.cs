@@ -1,10 +1,10 @@
 using System;
 using System.IO;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Legacy.CodeGenerator.MigrationToReflectionBasedMapping;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
+using Remotion.Data.DomainObjects.Legacy.CodeGenerator.MigrationToReflectionBasedMapping;
+using Remotion.Data.DomainObjects.Legacy.Mapping;
 
-namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping
+namespace Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping
 {
   [TestFixture]
   public class MigrationDomainObjectBuilderTest : MappingForMigrationBaseTest

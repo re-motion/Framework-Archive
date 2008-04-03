@@ -1,9 +1,9 @@
 using System;
 using System.IO;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.MigrationToReflectionBasedMapping
+namespace Remotion.Data.DomainObjects.Legacy.CodeGenerator.MigrationToReflectionBasedMapping
 {
   public class MigrationDomainModelBuilder : DomainModelBuilder
   {

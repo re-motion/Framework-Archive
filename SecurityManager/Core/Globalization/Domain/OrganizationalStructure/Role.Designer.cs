@@ -16,7 +16,7 @@ using System.Globalization;
 using System.Resources;
 using System.Runtime.CompilerServices;
 
-namespace Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure {
+namespace Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure {
     using System;
     
     
@@ -47,7 +47,7 @@ namespace Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure {
         internal static ResourceManager ResourceManager {
             get {
                 if (ReferenceEquals(resourceMan, null)) {
-                    ResourceManager temp = new ResourceManager("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Role", typeof(Role).Assembly);
+                    ResourceManager temp = new ResourceManager("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Role", typeof(Role).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

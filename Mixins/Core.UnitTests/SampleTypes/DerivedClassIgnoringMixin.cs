@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.UnitTests.SampleTypes
+namespace Remotion.Mixins.UnitTests.SampleTypes
 {
   [IgnoresMixin (typeof (DerivedNullMixin))]
   [IgnoresMixin (typeof (GenericMixinWithVirtualMethod<>))]

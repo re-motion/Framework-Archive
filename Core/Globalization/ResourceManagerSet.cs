@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using Rubicon.Logging;
-using Rubicon.Text;
-using Rubicon.Utilities;
+using Remotion.Logging;
+using Remotion.Text;
+using Remotion.Utilities;
 
-namespace Rubicon.Globalization
+namespace Remotion.Globalization
 {
   /// <summary>
   ///   Combines one or more <see cref="IResourceManager"/> instances to a set that can be accessed using a single interface.
@@ -69,7 +69,7 @@ namespace Rubicon.Globalization
     /// <summary>
     ///   Searches for all string resources inside the resource manager whose name is prefixed with a matching tag.
     /// </summary>
-    /// <seealso cref="M:Rubicon.Globalization.IResourceManager.GetAllStrings(System.String)"/>
+    /// <seealso cref="M:Remotion.Globalization.IResourceManager.GetAllStrings(System.String)"/>
     public NameValueCollection GetAllStrings (string prefix)
     {
       NameValueCollection result = new NameValueCollection();
@@ -89,7 +89,7 @@ namespace Rubicon.Globalization
     /// <summary>
     ///   Gets the value of the specified string resource. 
     /// </summary>
-    /// <seealso cref="M:Rubicon.Globalization.IResourceManager.GetString(System.String)"/>
+    /// <seealso cref="M:Remotion.Globalization.IResourceManager.GetString(System.String)"/>
     public string GetString (string id)
     {
       for (int i = Count - 1; i >= 0; --i)
@@ -106,7 +106,7 @@ namespace Rubicon.Globalization
     /// <summary>
     ///   Gets the value of the specified string resource. 
     /// </summary>
-    /// <seealso cref="M:Rubicon.Globalization.IResourceManager.GetString(System.Enum)"/>
+    /// <seealso cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)"/>
     public string GetString (Enum enumValue)
     {
       return GetString (ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue));

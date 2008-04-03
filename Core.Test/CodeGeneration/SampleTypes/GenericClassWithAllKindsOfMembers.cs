@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration.SampleTypes
+namespace Remotion.Core.UnitTests.CodeGeneration.SampleTypes
 {
   public class GenericClassWithAllKindsOfMembers<T>
   {

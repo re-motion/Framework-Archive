@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain.Metadata;
+using Remotion.Data.DomainObjects;
+using Remotion.SecurityManager.Domain.Metadata;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
+namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
 {
   [TestFixture]
   public class FindTest : DomainTest

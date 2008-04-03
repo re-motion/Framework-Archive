@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Mixins;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
+namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
 {
   [Serializable]
   public class MixinAddingInterface : Mixin<DomainObject>, IInterfaceAddedByMixin

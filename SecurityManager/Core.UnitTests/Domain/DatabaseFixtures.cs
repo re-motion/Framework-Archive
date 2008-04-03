@@ -1,10 +1,10 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Data.DomainObjects;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain
+namespace Remotion.SecurityManager.UnitTests.Domain
 {
   public class DatabaseFixtures
   {
@@ -48,12 +48,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       {
         AbstractRoleDefinition qualityManagerRole = AbstractRoleDefinition.NewObject (
             Guid.NewGuid (),
-            "QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRoles, Rubicon.SecurityManager.UnitTests",
+            "QualityManager|Remotion.SecurityManager.UnitTests.TestDomain.ProjectRoles, Remotion.SecurityManager.UnitTests",
             0);
         qualityManagerRole.Index = 1;
         AbstractRoleDefinition developerRole = AbstractRoleDefinition.NewObject (
             Guid.NewGuid (),
-            "Developer|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRoles, Rubicon.SecurityManager.UnitTests",
+            "Developer|Remotion.SecurityManager.UnitTests.TestDomain.ProjectRoles, Remotion.SecurityManager.UnitTests",
             1);
         developerRole.Index = 0;
 
@@ -245,7 +245,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       using (transaction.EnterNonDiscardingScope ())
       {
         Guid metadataItemID = new Guid ("00000004-0001-0000-0000-000000000000");
-        string abstractRoleName = "Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRoles, Rubicon.Security.UnitTests.TestDomain";
+        string abstractRoleName = "Administrator|Remotion.Security.UnitTests.TestDomain.SpecialAbstractRoles, Remotion.Security.UnitTests.TestDomain";
         AbstractRoleDefinition administratorAbstractRole = AbstractRoleDefinition.NewObject (metadataItemID, abstractRoleName, 0);
 
         ClientTransactionScope.CurrentTransaction.Commit ();
@@ -305,7 +305,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (
           ClientTransactionScope.CurrentTransaction,
           new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"),
-          "Rubicon.SecurityManager.UnitTests.TestDomain.Order, Rubicon.SecurityManager.UnitTests");
+          "Remotion.SecurityManager.UnitTests.TestDomain.Order, Remotion.SecurityManager.UnitTests");
       return classDefinition;
     }
 

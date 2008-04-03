@@ -1,6 +1,6 @@
 using System;
-using Rubicon.Mixins;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins;
+using Remotion.Mixins.UnitTests.SampleTypes;
 
 [assembly: Mix (typeof (TargetClassForGlobalMix), typeof (MixinForGlobalMix),
     AdditionalDependencies = new Type[] {typeof (AdditionalDependencyForGlobalMix)},

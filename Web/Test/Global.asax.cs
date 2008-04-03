@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.SessionState;
 
-namespace Rubicon.Web.Test
+namespace Remotion.Web.Test
 {
   /// <summary>
   /// Summary description for Global.

@@ -2,12 +2,12 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.Globalization;
-using Rubicon.Logging;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Globalization;
+using Remotion.Globalization;
+using Remotion.Logging;
+using Remotion.Utilities;
+using Remotion.Web.UI.Globalization;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 /// <summary>

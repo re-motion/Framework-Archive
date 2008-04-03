@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Specialized;
 using System.Web;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UnitTests.AspNetFramework;
-using Rubicon.Web.UnitTests.ExecutionEngine;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UnitTests.AspNetFramework;
+using Remotion.Web.UnitTests.ExecutionEngine;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Web
+namespace Remotion.Data.DomainObjects.UnitTests.Web
 {
   [CLSCompliant (false)]
   public class WxeFunctionBaseTest : StandardMappingTest

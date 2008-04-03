@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Mixins.CodeGeneration;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.CodeGeneration;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration
+namespace Remotion.Mixins.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class NamespaceChangingNameProviderTests

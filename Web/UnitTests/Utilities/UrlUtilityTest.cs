@@ -3,9 +3,9 @@ using System.Collections.Specialized;
 using System.Text;
 using System.Web;
 using NUnit.Framework;
-using Rubicon.Web.Utilities;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UnitTests.Utilities
+namespace Remotion.Web.UnitTests.Utilities
 {
 
 [TestFixture]

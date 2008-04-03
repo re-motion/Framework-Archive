@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.Utilities;
-using Rubicon.Collections;
+using Remotion.Utilities;
+using Remotion.Collections;
 
-namespace Rubicon.Mixins.Utilities
+namespace Remotion.Mixins.Utilities
 {
   public static class ReflectionUtility
   {

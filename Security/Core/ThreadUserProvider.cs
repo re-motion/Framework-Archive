@@ -2,9 +2,9 @@ using System;
 using System.Collections.Specialized;
 using System.Security.Principal;
 using System.Threading;
-using Rubicon.Configuration;
+using Remotion.Configuration;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   public class ThreadUserProvider: ExtendedProviderBase, IUserProvider
   {

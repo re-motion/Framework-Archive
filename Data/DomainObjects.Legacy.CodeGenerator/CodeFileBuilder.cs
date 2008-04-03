@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Text.RegularExpressions;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Legacy.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
+namespace Remotion.Data.DomainObjects.Legacy.CodeGenerator
 {
 public class CodeFileBuilder: FileBuilder
 {
@@ -64,11 +64,11 @@ public class CodeFileBuilder: FileBuilder
   private static readonly string s_fileHeader = 
       "using System;\r\n"
       + "\r\n" 
-      + "using Rubicon.Data.DomainObjects;\r\n"
-      + "using Rubicon.Data.DomainObjects.ObjectBinding;\r\n"
-      + "using Rubicon.NullableValueTypes;\r\n"
-      + "using Rubicon.Globalization;\r\n"
-      + "using Rubicon.Utilities;\r\n"
+      + "using Remotion.Data.DomainObjects;\r\n"
+      + "using Remotion.Data.DomainObjects.ObjectBinding;\r\n"
+      + "using Remotion.NullableValueTypes;\r\n"
+      + "using Remotion.Globalization;\r\n"
+      + "using Remotion.Utilities;\r\n"
       + "\r\n";
   private static readonly string s_serializableAttribute = 
       "  [Serializable]\r\n";

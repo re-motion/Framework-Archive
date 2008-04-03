@@ -19,14 +19,14 @@ namespace OBWTest.IndividualControlTests {
     /// </remarks>
     public partial class IndividualControlTestForm {
 
-      protected Rubicon.Web.UI.Controls.WebButton SaveAndRestartButton;
+      protected Remotion.Web.UI.Controls.WebButton SaveAndRestartButton;
       protected System.Web.UI.WebControls.PlaceHolder UserControlPlaceHolder;
-      protected Rubicon.Web.UI.Controls.WebButton SaveButton;
-      protected Rubicon.Web.UI.Controls.WebButton PostBackButton;
+      protected Remotion.Web.UI.Controls.WebButton SaveButton;
+      protected Remotion.Web.UI.Controls.WebButton PostBackButton;
       protected System.Web.UI.WebControls.Literal Stack;
       protected System.Web.UI.UpdatePanel StackUpdatePanel;
 
-      protected Rubicon.Web.UI.Controls.WebButton CancelButton;
+      protected Remotion.Web.UI.Controls.WebButton CancelButton;
       
         /// <summary>
         /// HtmlHeadContents control.
@@ -35,7 +35,7 @@ namespace OBWTest.IndividualControlTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+        protected global::Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
         
         /// <summary>
         /// Form control.
@@ -62,6 +62,6 @@ namespace OBWTest.IndividualControlTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
     }
 }

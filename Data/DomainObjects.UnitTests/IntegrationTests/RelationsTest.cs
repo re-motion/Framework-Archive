@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
+namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 {
   [TestFixture]
   public class RelationsTest : ClientTransactionBaseTest
@@ -21,13 +21,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
       Assert.IsTrue (orderEventReceiver.HasRelationChangingEventBeenCalled);
       Assert.IsTrue (orderTicketEventReceiver.HasRelationChangingEventBeenCalled);
-      Assert.AreSame (orderTicket, orderEventReceiver.GetChangingRelatedDomainObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
-      Assert.AreSame (order, orderTicketEventReceiver.GetChangingRelatedDomainObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      Assert.AreSame (orderTicket, orderEventReceiver.GetChangingRelatedDomainObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
+      Assert.AreSame (order, orderTicketEventReceiver.GetChangingRelatedDomainObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
 
       Assert.IsTrue (orderEventReceiver.HasRelationChangedEventBeenCalled);
       Assert.IsTrue (orderTicketEventReceiver.HasRelationChangedEventBeenCalled);
-      Assert.AreSame (null, orderEventReceiver.GetChangedRelatedDomainObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
-      Assert.AreSame (null, orderTicketEventReceiver.GetChangedRelatedDomainObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      Assert.AreSame (null, orderEventReceiver.GetChangedRelatedDomainObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
+      Assert.AreSame (null, orderTicketEventReceiver.GetChangedRelatedDomainObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
     }
 
   }

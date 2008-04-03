@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Security.Web.ExecutionEngine;
-using Rubicon.Security.UnitTests.Web.Domain;
+using Remotion.Security.Web.ExecutionEngine;
+using Remotion.Security.UnitTests.Web.Domain;
 
-namespace Rubicon.Security.UnitTests.Web.ExecutionEngine
+namespace Remotion.Security.UnitTests.Web.ExecutionEngine
 {
   [TestFixture]
   public class WxeDemandMethodPermissionAttributeHelperTest

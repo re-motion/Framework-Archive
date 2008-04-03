@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Specialized;
 using System.Security.Principal;
-using Rubicon.Configuration;
+using Remotion.Configuration;
 
-namespace Rubicon.Security.UnitTests.Core.Configuration
+namespace Remotion.Security.UnitTests.Core.Configuration
 {
   public class UserProviderMock : ExtendedProviderBase, IUserProvider
   {

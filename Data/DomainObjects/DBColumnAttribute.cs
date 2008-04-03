@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>Overrides the name used as the column name in the <b>RDBMS</b>.</summary>
   [AttributeUsage (AttributeTargets.Property, AllowMultiple = false, Inherited = true)]

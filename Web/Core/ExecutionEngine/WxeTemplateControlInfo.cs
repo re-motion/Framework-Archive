@@ -1,13 +1,13 @@
 using System;
 using System.Web;
 using System.Web.UI;
-using Rubicon.Collections;
-using Rubicon.Globalization;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Collections;
+using Remotion.Globalization;
+using Remotion.Utilities;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
 
 public class WxeTemplateControlInfo
@@ -80,7 +80,7 @@ public class WxeTemplateControlInfo
   /// </param>
   protected IResourceManager GetResourceManager (Type localResourcesType)
   {
-    Rubicon.Utilities.ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
+    Remotion.Utilities.ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
 
     //  Provider has already been identified.
     if (_cachedResourceManager != null)

@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
 using System.IO;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Text.CommandLine;
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Text.CommandLine;
+using Remotion.Data.DomainObjects.ConfigurationLoader;
 
-namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Console
+namespace Remotion.Data.DomainObjects.Legacy.CodeGenerator.Console
 {
 
 [Flags]
@@ -69,7 +69,7 @@ public class Arguments
   [CommandLineStringArgument ("sqlBuilder", true,
       Description = "The assembly qualified type name of the SqlFileBuilder to use for generating the SQL scripts.",
       Placeholder = "Namespace.ClassName,AssemblyName")]
-  public string SqlBuilderTypeName = typeof (Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Sql.SqlServer.SqlFileBuilder).AssemblyQualifiedName;
+  public string SqlBuilderTypeName = typeof (Remotion.Data.DomainObjects.Legacy.CodeGenerator.Sql.SqlServer.SqlFileBuilder).AssemblyQualifiedName;
 
   public void CheckArguments()
   {

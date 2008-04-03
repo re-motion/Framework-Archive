@@ -2,13 +2,13 @@ using System;
 using System.Reflection.Emit;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.CodeGeneration;
+using Remotion.CodeGeneration;
 
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
-using Rubicon.CodeGeneration.DPExtensions;
+using Remotion.CodeGeneration.DPExtensions;
 using System.Reflection;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration
+namespace Remotion.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class AttributeReplicatorTest

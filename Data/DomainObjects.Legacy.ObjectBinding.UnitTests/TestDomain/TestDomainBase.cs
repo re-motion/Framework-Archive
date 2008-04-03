@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 {
 [Serializable]
 public class TestDomainBase : BindableDomainObject

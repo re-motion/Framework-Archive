@@ -2,13 +2,13 @@ using System;
 using System.Web;
 using System.Web.UI.WebControls;
 
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -17,23 +17,23 @@ namespace OBWTest.IndividualControlTests
 public class BocListUserControl : BaseUserControl
 {
   protected System.Web.UI.HtmlControls.HtmlTable Table3;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocList JobList;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocList JobList;
   protected TestBocList ChildrenList;
   protected TestBocList EmptyList;
   protected System.Web.UI.WebControls.Button ChildrenListEndEditModeButton;
   protected System.Web.UI.WebControls.Button ChildrenListAddAndEditButton;
   protected System.Web.UI.WebControls.CheckBox ChildrenListEventCheckBox;
   protected System.Web.UI.WebControls.Label ChildrenListEventArgsLabel;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl EmptyDataSourceControl;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl EmptyDataSourceControl;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected TestBocListValidator EmptyListValidator;
   protected TestBocList Testboclist1;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocList AllColumnsList;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocList AllColumnsList;
   protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
@@ -312,7 +312,7 @@ public class BocListUserControl : BaseUserControl
     ChildrenList.EndRowEditMode (true);
   }
 
-  private void ChildrenList_ListItemCommandClick(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocListItemCommandClickEventArgs e)
+  private void ChildrenList_ListItemCommandClick(object sender, Remotion.ObjectBinding.Web.UI.Controls.BocListItemCommandClickEventArgs e)
   {
     ChildrenListEventCheckBox.Checked = true;
     ChildrenListEventArgsLabel.Text += string.Format ("ColumnID: {0}<br>", e.Column.ItemID);
@@ -324,12 +324,12 @@ public class BocListUserControl : BaseUserControl
       ChildrenList.SwitchRowIntoEditMode (e.ListIndex);
   }
 
-  private void ChildrenList_MenuItemClick(object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
+  private void ChildrenList_MenuItemClick(object sender, Remotion.Web.UI.Controls.WebMenuItemClickEventArgs e)
   {
     ChildrenListEventArgsLabel.Text = e.Item.ItemID;
   }
 
-  private void ChildrenList_DataRowRender(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocListDataRowRenderEventArgs e)
+  private void ChildrenList_DataRowRender(object sender, Remotion.ObjectBinding.Web.UI.Controls.BocListDataRowRenderEventArgs e)
   {
     if (e.ListIndex == 3)
       e.IsEditableRow = false;
@@ -351,12 +351,12 @@ public class BocListUserControl : BaseUserControl
   {
   }
 
-  private void ChildrenList_SortingOrderChanging(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocListSortingOrderChangeEventArgs e)
+  private void ChildrenList_SortingOrderChanging(object sender, Remotion.ObjectBinding.Web.UI.Controls.BocListSortingOrderChangeEventArgs e)
   {
   
   }
 
-  private void ChildrenList_SortingOrderChanged(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocListSortingOrderChangeEventArgs e)
+  private void ChildrenList_SortingOrderChanged(object sender, Remotion.ObjectBinding.Web.UI.Controls.BocListSortingOrderChangeEventArgs e)
   {
   
   }

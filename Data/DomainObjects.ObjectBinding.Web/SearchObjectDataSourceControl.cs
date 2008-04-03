@@ -1,11 +1,11 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.Data.DomainObjects.ObjectBinding.Infrastructure;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.UI.Controls;
+using Remotion.Data.DomainObjects.ObjectBinding.Infrastructure;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Web.UI.Controls;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.Web
+namespace Remotion.Data.DomainObjects.ObjectBinding.Web
 {
 public class SearchObjectDataSourceControl : BusinessObjectDataSourceControl, IForceLegacyReferenceMarker
 {

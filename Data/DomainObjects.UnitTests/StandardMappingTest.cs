@@ -1,11 +1,11 @@
 using System;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Database;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Database;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
 
-namespace Rubicon.Data.DomainObjects.UnitTests
+namespace Remotion.Data.DomainObjects.UnitTests
 {
   public class StandardMappingTest: DatabaseTest
   {

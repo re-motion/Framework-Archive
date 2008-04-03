@@ -1,9 +1,9 @@
 using System;
 using System.Xml.Schema;
 using NUnit.Framework;
-using Rubicon.Xml;
+using Remotion.Xml;
 
-namespace Rubicon.Core.UnitTests.Xml
+namespace Remotion.Core.UnitTests.Xml
 {
   [TestFixture]
   public class SchemaLoaderBaseTest

@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Development.UnitTesting
+namespace Remotion.Development.UnitTesting
 {
   /// <summary>
   /// Provides quick serialization and deserialization functionality for unit tests.

@@ -3,19 +3,19 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.Infrastructure.Interception;
-using Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes;
-using Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure.Interception;
+using Remotion.Data.DomainObjects.UnitTests.Interception.SampleTypes;
+using Remotion.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Utilities;
 using File=System.IO.File;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Interception
+namespace Remotion.Data.DomainObjects.UnitTests.Interception
 {
   [TestFixture]
   public class TypeGeneratorTest : ClientTransactionBaseTest
@@ -346,7 +346,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests."
         + "Interception.SampleTypes.NonInstantiableAbstractClassWithProps as its member get_Foo (on type NonInstantiableAbstractClassWithProps) is "
         + "abstract (and not an automatic property).")]
     public void ThrowsOnAbstractPropertyNotInMapping ()
@@ -355,9 +355,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests."
         + "Interception.SampleTypes.NonInstantiableClassWithAutomaticRelatedCollectionSetter, "
-        + "automatic properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data."
+        + "automatic properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Remotion.Data."
         + "DomainObjects.UnitTests.Interception.SampleTypes.NonInstantiableClassWithAutomaticRelatedCollectionSetter."
         + "RelatedObjects'.")]
     public void ThrowsOnAbstractRelatedObjectCollectionSetter ()
@@ -366,7 +366,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests."
         + "Interception.SampleTypes.NonInstantiableAbstractClass as its member Foo (on type NonInstantiableAbstractClass) is abstract (and not an "
         + "automatic property).")]
     public void ThrowsOnAbstractMethod ()
@@ -376,7 +376,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException),
-        ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.Interception."
+        ExpectedMessage = "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests.Interception."
         + "SampleTypes.NonInstantiableSealedClass as it is sealed.")]
     public void ThrowsOnSealedBaseType ()
     {
@@ -384,7 +384,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests."
         + "Interception.SampleTypes.NonInstantiableAbstractClassWithoutAttribute as it is abstract and not instantiable.")]
     public void ThrowsOnAbstractClassWithoutInstantiableAttribute ()
     {
@@ -392,7 +392,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage = "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests."
         + "Interception.SampleTypes.NonInstantiableNonDomainClass as it is not part of the mapping.")]
     public void ThrowsOnClassWithoutClassDefinition ()
     {

@@ -3,10 +3,10 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
-using Rubicon.Utilities;
-using Rubicon.Web.UnitTests.AspNetFramework;
+using Remotion.Utilities;
+using Remotion.Web.UnitTests.AspNetFramework;
 
-namespace Rubicon.Web.UnitTests.UI.Controls
+namespace Remotion.Web.UnitTests.UI.Controls
 {
 
 [TestFixture]

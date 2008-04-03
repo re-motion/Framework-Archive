@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Mixins;
+using Remotion.Mixins;
 
-namespace Rubicon.ObjectBinding.UnitTests.Web.Domain
+namespace Remotion.ObjectBinding.UnitTests.Web.Domain
 {
   [BindableObject]
   public class TypeWithString

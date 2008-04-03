@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Web.UI;
-using Rubicon.Web.UnitTests.AspNetFramework;
+using Remotion.Web.UI;
+using Remotion.Web.UnitTests.AspNetFramework;
 
-namespace Rubicon.Web.UnitTests.UI.Controls
+namespace Remotion.Web.UnitTests.UI.Controls
 {
 
   public class WebControlTest

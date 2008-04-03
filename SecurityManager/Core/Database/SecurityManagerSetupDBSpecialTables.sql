@@ -1,4 +1,4 @@
-USE RubiconSecurityManager
+USE RemotionSecurityManager
 GO
 
 -- Drop all tables that will be created below

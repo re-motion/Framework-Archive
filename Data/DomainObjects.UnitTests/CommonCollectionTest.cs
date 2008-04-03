@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Rubicon.Data.DomainObjects.UnitTests
+namespace Remotion.Data.DomainObjects.UnitTests
 {
   [TestFixture]
   public class CommonCollectionTest

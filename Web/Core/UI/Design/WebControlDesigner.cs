@@ -2,10 +2,10 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Web.UI.Design;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.Web.UI.Design
+namespace Remotion.Web.UI.Design
 {
   /// <summary>
   ///   A desinger that requries the complete loading of the control.

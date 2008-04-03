@@ -1,11 +1,11 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Web.UI;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI;
 
-namespace Rubicon.ObjectBinding.Sample
+namespace Remotion.ObjectBinding.Sample
 {
   public class PersonCustomCell: BocCustomColumnDefinitionCell
   {

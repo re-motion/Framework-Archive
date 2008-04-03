@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.UnitTests.SampleTypes
+namespace Remotion.Mixins.UnitTests.SampleTypes
 {
   [Extends (typeof (BaseType7))]
   public class BT7Mixin0 : Mixin<object, IBT7Mixin2>

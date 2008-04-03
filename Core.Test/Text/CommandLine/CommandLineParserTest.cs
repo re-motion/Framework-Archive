@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
-using Rubicon.NullableValueTypes;
-using Rubicon.Text.CommandLine;
+using Remotion.Development.UnitTesting;
+using Remotion.NullableValueTypes;
+using Remotion.Text.CommandLine;
 
-namespace Rubicon.Core.UnitTests.Text.CommandLine
+namespace Remotion.Core.UnitTests.Text.CommandLine
 {
 
 public enum IncrementalTestOptions { no, nor, normal, anything };

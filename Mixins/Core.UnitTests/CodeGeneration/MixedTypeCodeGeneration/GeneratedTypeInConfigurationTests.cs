@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.CodeGeneration;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.CodeGeneration.DynamicProxy;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.CodeGeneration;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.CodeGeneration.DynamicProxy;
+using Remotion.Mixins.UnitTests.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.MixedTypeCodeGeneration
+namespace Remotion.Mixins.UnitTests.CodeGeneration.MixedTypeCodeGeneration
 {
   [TestFixture]
   public class GeneratedTypeInConfigurationTests : CodeGenerationBaseTest

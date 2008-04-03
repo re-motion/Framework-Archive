@@ -16,7 +16,7 @@ using System.Globalization;
 using System.Resources;
 using System.Runtime.CompilerServices;
 
-namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
+namespace Remotion.SecurityManager.Clients.Web.Globalization.UI {
     using System;
     
     
@@ -47,7 +47,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         internal static ResourceManager ResourceManager {
             get {
                 if (ReferenceEquals(resourceMan, null)) {
-                    ResourceManager temp = new ResourceManager("Rubicon.SecurityManager.Clients.Web.Globalization.UI.GlobalResources", typeof(GlobalResources).Assembly);
+                    ResourceManager temp = new ResourceManager("Remotion.SecurityManager.Clients.Web.Globalization.UI.GlobalResources", typeof(GlobalResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

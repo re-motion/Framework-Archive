@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.Web.Test.MultiplePostBackCatching {
+namespace Remotion.Web.Test.MultiplePostBackCatching {
     
     
     /// <summary>
@@ -35,7 +35,7 @@ namespace Rubicon.Web.Test.MultiplePostBackCatching {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+        protected global::Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
         
         /// <summary>
         /// Form control.

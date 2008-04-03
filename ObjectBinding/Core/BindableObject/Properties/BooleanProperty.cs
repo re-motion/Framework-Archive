@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Globalization;
+using Remotion.Globalization;
 
-namespace Rubicon.ObjectBinding.BindableObject.Properties
+namespace Remotion.ObjectBinding.BindableObject.Properties
 {
   public class BooleanProperty : PropertyBase, IBusinessObjectBooleanProperty, IBusinessObjectEnumerationProperty
   {

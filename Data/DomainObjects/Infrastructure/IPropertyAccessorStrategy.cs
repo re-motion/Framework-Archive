@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
   internal interface IPropertyAccessorStrategy
   {

@@ -1,15 +1,15 @@
 using System;
 using System.Web.Compilation;
 using System.Web.UI;
-using Rubicon.Globalization;
-using Rubicon.Utilities;
+using Remotion.Globalization;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.UI.Globalization
+namespace Remotion.Web.UI.Globalization
 {
 
 /// <summary> Specifies the location of the resources used by a <see cref="Page"/> or <see cref="UserControl"/>. </summary>
 /// <remarks>
-///   The <see cref="WebMultiLingualResourcesAttribute"/> enhances the <b>rubicon</b> globalization system with 
+///   The <see cref="WebMultiLingualResourcesAttribute"/> enhances the globalization system with 
 ///   support for the new compilation model introduced with ASP.NET 2.0.
 /// </remarks>
 /// <example>
@@ -31,7 +31,7 @@ namespace Rubicon.Web.UI.Globalization
 ///   </note>
 ///   <code lang="C#">
 /// using System.Web.UI;
-/// using Rubicon.Web.UI.Globalization;
+/// using Remotion.Web.UI.Globalization;
 /// 
 /// namespace MyCompany.MyProject.Client.Web.UI
 /// {
@@ -66,7 +66,7 @@ namespace Rubicon.Web.UI.Globalization
 ///     <b>Base Name</b> as <see cref="Type"/> version:
 ///   <code lang="C#">
 /// using System.Web.UI;
-/// using Rubicon.Web.UI.Globalization;
+/// using Remotion.Web.UI.Globalization;
 /// 
 /// [WebMultiLingualResources (typeof (Resources.MyForm))]
 /// public class MyForm : Page
@@ -76,7 +76,7 @@ namespace Rubicon.Web.UI.Globalization
 ///     <b>Base Name</b> as <see cref="String"/> version:
 ///   <code lang="C#">
 /// using System.Web.UI;
-/// using Rubicon.Web.UI.Globalization;
+/// using Remotion.Web.UI.Globalization;
 /// 
 /// [WebMultiLingualResources ("Resources.MyForm")]
 /// public class MyForm : Page
@@ -98,7 +98,7 @@ namespace Rubicon.Web.UI.Globalization
 ///       Search and Replace any occurance of <see cref="MultiLingualResourcesAttribute"/> with
 ///       <see cref="WebMultiLingualResourcesAttribute"/>. (Necessary for projects implemented before the 
 ///       <see cref="WebMultiLingualResourcesAttribute"/> has become available with verison 1.4 of the
-///       <b>rubicon Commons</b> library. 
+///       library. 
 ///     </item>
 ///     <item> 
 ///       Search and Replace any occurance of 

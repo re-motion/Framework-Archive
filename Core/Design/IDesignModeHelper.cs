@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.Design;
 
-namespace Rubicon.Design
+namespace Remotion.Design
 {
   /// <summary>
   /// The <see cref="IDesignModeHelper"/> interface defines methods to encapsulate the access to various design-mode properties of a project.

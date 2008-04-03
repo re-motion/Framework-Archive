@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 {
   [TestFixture]
   public class RelationsTest : ClientTransactionBaseTest

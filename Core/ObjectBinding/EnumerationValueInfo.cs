@@ -1,6 +1,6 @@
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary> Default implementation of the <see cref="IEnumerationValueInfo"/> interface. </summary>
   public class EnumerationValueInfo : IEnumerationValueInfo

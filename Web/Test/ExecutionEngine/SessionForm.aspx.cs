@@ -10,49 +10,49 @@ using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Rubicon.Collections;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.Test.ExecutionEngine;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
+using Remotion.Collections;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Test.ExecutionEngine;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.ExecutionEngine
 {
   public class SessionForm : WxePage
   {
-    protected Rubicon.Web.UI.Controls.WebButton PostBackButton;
+    protected Remotion.Web.UI.Controls.WebButton PostBackButton;
     protected System.Web.UI.WebControls.LinkButton LinkButton1;
-    protected Rubicon.Web.UI.Controls.WebButton OpenSelfButton;
+    protected Remotion.Web.UI.Controls.WebButton OpenSelfButton;
     protected System.Web.UI.WebControls.Button Button1;
-    protected Rubicon.Web.UI.Controls.WebButton Button1Button;
-    protected Rubicon.Web.UI.Controls.WebButton Submit1Button;
-    protected Rubicon.Web.UI.Controls.WebButton Button2Button;
-    protected Rubicon.Web.UI.Controls.WebButton ExecuteButton;
-    protected Rubicon.Web.UI.Controls.WebButton ExecuteNoRepostButton;
+    protected Remotion.Web.UI.Controls.WebButton Button1Button;
+    protected Remotion.Web.UI.Controls.WebButton Submit1Button;
+    protected Remotion.Web.UI.Controls.WebButton Button2Button;
+    protected Remotion.Web.UI.Controls.WebButton ExecuteButton;
+    protected Remotion.Web.UI.Controls.WebButton ExecuteNoRepostButton;
     protected System.Web.UI.WebControls.Label FunctionTokenLabel;
     protected System.Web.UI.WebControls.Label PostBackIDLabel;
-    protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionWithPermanentUrlInNewWindowButton;
-    protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionInNewWindowButton;
-    protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionWithPermanentUrlButton;
-    protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionButton;
+    protected Remotion.Web.UI.Controls.WebButton OpenSampleFunctionWithPermanentUrlInNewWindowButton;
+    protected Remotion.Web.UI.Controls.WebButton OpenSampleFunctionInNewWindowButton;
+    protected Remotion.Web.UI.Controls.WebButton OpenSampleFunctionWithPermanentUrlButton;
+    protected Remotion.Web.UI.Controls.WebButton OpenSampleFunctionButton;
     protected System.Web.UI.WebControls.HyperLink CurrentFunctionPermaLink;
     protected System.Web.UI.WebControls.HyperLink SampleFunctionPermaLink;
-    protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionWithPermanentUrlInNewWindowButton;
-    protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionInNewWindowButton;
-    protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionButton;
-    protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionWithPermanentUrlButton;
-    protected Rubicon.Web.UI.Controls.WebButton ContextOpenSampleFunctionInNewWindowButton;
-    protected Rubicon.Web.UI.Controls.WebButton ContextOpenSampleFunctionWithPermanentUrlInNewWindowButton;
-    protected Rubicon.Web.UI.Controls.WebButton ContextOpenSampleFunctionButton;
-    protected Rubicon.Web.UI.Controls.WebButton ContextOpenSampleFunctionWithPermanentUrlButton;
-    protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionByRedirectDoNotReturnButton;
-    protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionWithPermanentUrlByDoNotReturnRedirectButton;
-    protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionByRedirectButton;
-    protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionWithPermanentUrlByRedirectButton;
+    protected Remotion.Web.UI.Controls.WebButton OpenSessionFunctionWithPermanentUrlInNewWindowButton;
+    protected Remotion.Web.UI.Controls.WebButton OpenSessionFunctionInNewWindowButton;
+    protected Remotion.Web.UI.Controls.WebButton OpenSessionFunctionButton;
+    protected Remotion.Web.UI.Controls.WebButton OpenSessionFunctionWithPermanentUrlButton;
+    protected Remotion.Web.UI.Controls.WebButton ContextOpenSampleFunctionInNewWindowButton;
+    protected Remotion.Web.UI.Controls.WebButton ContextOpenSampleFunctionWithPermanentUrlInNewWindowButton;
+    protected Remotion.Web.UI.Controls.WebButton ContextOpenSampleFunctionButton;
+    protected Remotion.Web.UI.Controls.WebButton ContextOpenSampleFunctionWithPermanentUrlButton;
+    protected Remotion.Web.UI.Controls.WebButton OpenSampleFunctionByRedirectDoNotReturnButton;
+    protected Remotion.Web.UI.Controls.WebButton OpenSampleFunctionWithPermanentUrlByDoNotReturnRedirectButton;
+    protected Remotion.Web.UI.Controls.WebButton OpenSampleFunctionByRedirectButton;
+    protected Remotion.Web.UI.Controls.WebButton OpenSampleFunctionWithPermanentUrlByRedirectButton;
     protected System.Web.UI.WebControls.Label ViewStateTokenLabel;
-    protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+    protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 
     private void Page_Load(object sender, System.EventArgs e)
@@ -77,9 +77,9 @@ namespace Rubicon.Web.Test.ExecutionEngine
     protected override void OnPreRender (EventArgs e)
     {
       base.OnPreRender (e);
-      Rubicon.Web.UI.HtmlHeadAppender.Current.RegisterStylesheetLink (
+      Remotion.Web.UI.HtmlHeadAppender.Current.RegisterStylesheetLink (
           "style", 
-          Rubicon.Web.ResourceUrlResolver.GetResourceUrl (this, typeof (WxePage), Rubicon.Web.ResourceType.Html, "Style.css"));
+          Remotion.Web.ResourceUrlResolver.GetResourceUrl (this, typeof (WxePage), Remotion.Web.ResourceType.Html, "Style.css"));
     }
 
     override protected void OnInit(EventArgs e)
@@ -123,7 +123,7 @@ namespace Rubicon.Web.Test.ExecutionEngine
       this.ContextOpenSampleFunctionInNewWindowButton.Click += new System.EventHandler(this.ContextOpenSampleFunctionInNewWindowButton_Click);
       this.ContextOpenSampleFunctionWithPermanentUrlButton.Click += new System.EventHandler(this.ContextOpenSampleFunctionWithPermanentUrlButton_Click);
       this.ContextOpenSampleFunctionWithPermanentUrlInNewWindowButton.Click += new System.EventHandler(this.ContextOpenSampleFunctionWithPermanentUrlInNewWindowButton_Click);
-      this.ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.Always;
+      this.ShowAbortConfirmation = Remotion.Web.UI.ShowAbortConfirmation.Always;
       this.Load += new System.EventHandler(this.Page_Load);
 
     }

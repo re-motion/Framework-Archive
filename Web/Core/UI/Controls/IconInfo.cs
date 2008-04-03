@@ -5,12 +5,12 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.Design;
 using System.Web.UI.WebControls;
-using Rubicon.Globalization;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Globalization;
+using Remotion.Utilities;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 [TypeConverter (typeof (IconInfoConverter))]

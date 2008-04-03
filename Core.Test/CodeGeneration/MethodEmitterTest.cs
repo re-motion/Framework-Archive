@@ -2,13 +2,13 @@ using System;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using NUnit.Framework;
-using Rubicon.CodeGeneration;
+using Remotion.CodeGeneration;
 using System.Reflection;
-using Rubicon.Core.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.Core.UnitTests.CodeGeneration.SampleTypes;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Development.UnitTesting;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration
+namespace Remotion.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class MethodEmitterTest : CodeGenerationBaseTest

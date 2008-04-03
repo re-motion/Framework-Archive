@@ -1,9 +1,9 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.Data;
-using Rubicon.Utilities;
+using Remotion.Data;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
 
   /// <summary> A <see cref="WxeFunction"/> with an excapsulated <see cref="WxeTransactionBase{TTransaction}"/>. </summary>

@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.SecurityManager.Domain
+namespace Remotion.SecurityManager.Domain
 {
   [Serializable]
   public class ConstraintViolationException : SecurityManagerException

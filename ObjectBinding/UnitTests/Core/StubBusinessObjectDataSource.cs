@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core
+namespace Remotion.ObjectBinding.UnitTests.Core
 {
   public class StubBusinessObjectDataSource : BusinessObjectDataSource
   {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rubicon.Collections
+namespace Remotion.Collections
 {
   /// <summary>
   /// Provides equality and hash codes for arrays. Use <see cref="GetComparer"/> to get an instance.

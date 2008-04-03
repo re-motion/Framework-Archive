@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
+namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure {
     
     public partial class PositionListForm {
-        protected Rubicon.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
-        protected Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.PositionListControl PositionListControl;
+        protected Remotion.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
+        protected Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.PositionListControl PositionListControl;
     }
 }

@@ -8,10 +8,10 @@ using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.Web.UI.Controls;
-using Rubicon.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Sample;
+using Remotion.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls;
 
 
 namespace OBWTest
@@ -19,27 +19,27 @@ namespace OBWTest
 
 public class WebForm1 : System.Web.UI.Page
 {
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel1;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+  protected Remotion.Web.UI.Controls.SmartLabel BocPropertyLabel1;
   protected System.Web.UI.WebControls.Button SaveButton;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel2;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue DateOfBirthField;
-  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel3;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue HeightField;
-  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel4;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator2;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+  protected Remotion.Web.UI.Controls.SmartLabel BocPropertyLabel2;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue DateOfBirthField;
+  protected Remotion.Web.UI.Controls.SmartLabel BocPropertyLabel3;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue HeightField;
+  protected Remotion.Web.UI.Controls.SmartLabel BocPropertyLabel4;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator2;
   protected System.Web.UI.WebControls.Label Label1;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue GenderField;
-  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel5;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField;
-  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel1;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue PartnerFirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue GenderField;
+  protected Remotion.Web.UI.Controls.SmartLabel BocPropertyLabel5;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField;
+  protected Remotion.Web.UI.Controls.SmartLabel SmartLabel1;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue PartnerFirstNameField;
   protected System.Web.UI.WebControls.Label Label2;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObjectDataSource;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BusinessObjectReferenceDataSourceControl PartnerDataSource;
-  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel2;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObjectDataSource;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BusinessObjectReferenceDataSourceControl PartnerDataSource;
+  protected Remotion.Web.UI.Controls.SmartLabel SmartLabel2;
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject.Properties;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
 {
   public class UseSpecialMetadataFactoryAttribute : UseCustomMetadataFactoryAttribute
   {

@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.MixinTypeCodeGeneration
+namespace Remotion.Mixins.UnitTests.CodeGeneration.MixinTypeCodeGeneration
 {
   [TestFixture]
   public class OverrideTests : CodeGenerationBaseTest

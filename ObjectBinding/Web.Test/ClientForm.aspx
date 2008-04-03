@@ -9,7 +9,7 @@
 <meta content=C# name=CODE_LANGUAGE>
 <meta content=JavaScript name=vs_defaultClientScript>
 <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema>
-<rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
+<remotion:htmlheadcontents id=HtmlHeadContents runat="server"></remotion:htmlheadcontents>
 
 <script language="javascript">
   var _keepAliveLocation = 'WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormKeepAliveWxeFunction,OBWTest';
@@ -145,8 +145,8 @@
     <input type="hidden" id="smartNavigationScrollTop">
     <input type="hidden" id="smartNavigationScrollElement">
     <input type="hidden" id="smartNavigationFocus">
-      <rubicon:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
-      </rubicon:tabbedmultiview></p>
+      <remotion:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
+      </remotion:tabbedmultiview></p>
 <p>&nbsp;</p>
     </form>
   </body>

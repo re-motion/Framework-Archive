@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
 {
   public abstract class ClassWithOtherBusinessObjectImplementation : IBusinessObject
   {

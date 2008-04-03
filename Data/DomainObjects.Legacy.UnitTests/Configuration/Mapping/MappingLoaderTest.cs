@@ -2,16 +2,16 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using NUnit.Framework;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Development.UnitTesting.Configuration;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.ConfigurationLoader;
+using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.Factories;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Development.UnitTesting.Configuration;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 {
   [TestFixture]
   public class MappingLoaderTest: StandardMappingTest
@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithConfigurationFileFromAppSettings()
     {
-      _configurationWrapper.SetUpAppSetting ("Rubicon.Data.DomainObjects.Mapping.ConfigurationFile", "DataDomainObjectsLegacy_MappingWithMinimumData.xml");
+      _configurationWrapper.SetUpAppSetting ("Remotion.Data.DomainObjects.Mapping.ConfigurationFile", "DataDomainObjectsLegacy_MappingWithMinimumData.xml");
       MappingLoader loader = new MappingLoader();
       string configurationFile = Path.GetFullPath (@"DataDomainObjectsLegacy_MappingWithMinimumData.xml");
 

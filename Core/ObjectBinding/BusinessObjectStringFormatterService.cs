@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Globalization;
 using System.Text;
-using Rubicon.Collections;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   //TODO: doc
   public class BusinessObjectStringFormatterService : IBusinessObjectStringFormatterService

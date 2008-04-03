@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
   /// <summary>
   /// This utility class provides methods for dealing with enumeration values.

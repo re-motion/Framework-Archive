@@ -1,13 +1,13 @@
 using System;
 using System.Xml;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.ConfigurationLoader;
+using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 {
   [TestFixture]
   public class RelationDefinitionLoaderWithUnresolvedTypesTest : StandardMappingTest

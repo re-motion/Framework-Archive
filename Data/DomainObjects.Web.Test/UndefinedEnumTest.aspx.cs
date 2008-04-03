@@ -9,25 +9,25 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
-using Rubicon.Data.DomainObjects.Web.Test.Domain;
-using Rubicon.ObjectBinding;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Data.DomainObjects.Web.Test.WxeFunctions;
+using Remotion.Data.DomainObjects.Web.Test.Domain;
+using Remotion.ObjectBinding;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Data.DomainObjects.Web.Test.WxeFunctions;
 
-namespace Rubicon.Data.DomainObjects.Web.Test
+namespace Remotion.Data.DomainObjects.Web.Test
 {
 public class UndefinedEnumTestPage : WxePage
 {
   protected System.Web.UI.HtmlControls.HtmlTable SearchFormGrid;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl ExistingObjectWithUndefinedEnumDataSource;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl NewObjectWithUndefinedEnumDataSource;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue ExistingObjectEnumProperty;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue NewObjectEnumProperty;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue SearchObjectEnumProperty;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl SearchObjectWithUndefinedEnumDataSource;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl ExistingObjectWithUndefinedEnumDataSource;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl NewObjectWithUndefinedEnumDataSource;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue ExistingObjectEnumProperty;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue NewObjectEnumProperty;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue SearchObjectEnumProperty;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl SearchObjectWithUndefinedEnumDataSource;
   protected System.Web.UI.WebControls.Button TestButton;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
   private UndefinedEnumTestFunction MyFunction 
   {

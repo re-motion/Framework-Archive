@@ -1,9 +1,9 @@
 ﻿using System;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
   /// Public interface for a factory creating instances of domain objects.
@@ -11,7 +11,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   /// <remarks>
   /// This interface is used internally by <see cref="DomainObject.NewObject"/> and will likely not be used directly.
   /// If a factory does need to be accessed directly,
-  /// <see cref="Rubicon.Data.DomainObjects.Configuration.DomainObjectsConfiguration"/> can be used to access the currently used implementation
+  /// <see cref="Remotion.Data.DomainObjects.Configuration.DomainObjectsConfiguration"/> can be used to access the currently used implementation
   /// of this interface.
   /// </remarks>
   public interface IDomainObjectFactory

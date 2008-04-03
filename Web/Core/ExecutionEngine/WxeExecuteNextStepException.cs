@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
 
 /// <summary> This exception is used by the execution engine to end the execution of a <see cref="WxePageStep"/>. </summary>

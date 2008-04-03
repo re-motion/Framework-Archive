@@ -1,12 +1,12 @@
 using System;
 using System.Security.Principal;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.SecurityManager.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects;
+using Remotion.Security;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.UnitTests.TestDomain;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
+namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 {
   [TestFixture]
   public class SecurityTokenBuilderTest : DomainTest
@@ -46,7 +46,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurityToken token = builder.CreateToken (ClientTransactionScope.CurrentTransaction, CreateTestUser (), context);
 
       Assert.AreEqual (1, token.AbstractRoles.Count);
-      Assert.AreEqual ("QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRoles, Rubicon.SecurityManager.UnitTests", token.AbstractRoles[0].Name);
+      Assert.AreEqual ("QualityManager|Remotion.SecurityManager.UnitTests.TestDomain.ProjectRoles, Remotion.SecurityManager.UnitTests", token.AbstractRoles[0].Name);
     }
 
     [Test]
@@ -61,7 +61,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The abstract role 'Undefined|Rubicon.SecurityManager.UnitTests.TestDomain.UndefinedAbstractRoles, Rubicon.SecurityManager.UnitTests' could not be found.")]
+    [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The abstract role 'Undefined|Remotion.SecurityManager.UnitTests.TestDomain.UndefinedAbstractRoles, Remotion.SecurityManager.UnitTests' could not be found.")]
     public void Create_WithNotExistingAbstractRole ()
     {
       SecurityContext context = CreateContext (ProjectRoles.Developer, UndefinedAbstractRoles.Undefined, ProjectRoles.QualityManager);

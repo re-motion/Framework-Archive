@@ -2,13 +2,13 @@ using System;
 using Castle.DynamicProxy;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Mixins.Definitions;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Definitions;
 
-namespace Rubicon.Mixins.UnitTests
+namespace Remotion.Mixins.UnitTests
 {
   [TestFixture]
   public class MixinTargetMockUtilityTests
@@ -18,7 +18,7 @@ namespace Rubicon.Mixins.UnitTests
     {
       ConcreteTypeBuilder.SetCurrent (null);
       // ensure compatibility with Rhino.Mocks
-      ((Rubicon.Mixins.CodeGeneration.DynamicProxy.ModuleManager) ConcreteTypeBuilder.Current.Scope).Scope = new ModuleScope (false);
+      ((Remotion.Mixins.CodeGeneration.DynamicProxy.ModuleManager) ConcreteTypeBuilder.Current.Scope).Scope = new ModuleScope (false);
     }
 
     [TearDown]

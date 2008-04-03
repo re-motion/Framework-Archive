@@ -1,15 +1,15 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.Data.DomainObjects;
-using Rubicon.NullableValueTypes;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.SecurityManager.Clients.Web.Classes;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Controls;
+using Remotion.Data.DomainObjects;
+using Remotion.NullableValueTypes;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.SecurityManager.Clients.Web.Classes;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.SecurityManager.Clients.Web.UI
+namespace Remotion.SecurityManager.Clients.Web.UI
 {
   public partial class CurrentTenantControl : UserControl
   {

@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.Context;
 using NUnit.Framework.SyntaxHelpers;
 using System.Collections;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.UnitTests.Context
+namespace Remotion.Mixins.UnitTests.Context
 {
   [TestFixture]
   public class ReadOnlyContextCollectionTests

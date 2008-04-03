@@ -1,12 +1,12 @@
 using System;
 using System.Reflection;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Rubicon.CodeGeneration;
-using Rubicon.CodeGeneration.DPExtensions;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Utilities;
+using Remotion.CodeGeneration;
+using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Mixins.Definitions;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.Mixins.CodeGeneration.DynamicProxy
 {
   internal class BaseCallMethodGenerator
   {

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.DataManagement
+namespace Remotion.Data.DomainObjects.DataManagement
 {
 public interface IEndPoint : INullObject
 {

@@ -3,15 +3,15 @@ using System.Configuration;
 using System.IO;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Development.UnitTesting.Configuration;
-using Rubicon.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.Configuration;
+using Remotion.Data.DomainObjects.Configuration;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Queries
 {
   [TestFixture]
   public class QueryConfigurationTest : StandardMappingTest

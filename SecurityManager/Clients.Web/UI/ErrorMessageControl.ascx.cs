@@ -1,8 +1,8 @@
 using System;
 using System.Web.UI;
-using Rubicon.SecurityManager.Clients.Web.Globalization.UI;
+using Remotion.SecurityManager.Clients.Web.Globalization.UI;
 
-namespace Rubicon.SecurityManager.Clients.Web.UI
+namespace Remotion.SecurityManager.Clients.Web.UI
 {
   public partial class ErrorMessageControl : UserControl
   {

@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Rubicon.Collections;
-using Rubicon.NullableValueTypes;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.NullableValueTypes;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.Mapping
+namespace Remotion.Data.DomainObjects.Legacy.Mapping
 {
 public class TypeInfo
 {

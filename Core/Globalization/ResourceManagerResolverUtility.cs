@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Globalization
+namespace Remotion.Globalization
 {
 	/// <summary>
 	/// Encapsulates the algorithms used to access resource containers defined by resource attributes.

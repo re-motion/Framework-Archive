@@ -2,12 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.Context;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Mixins.Context.FluentBuilders;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.Mixins.UnitTests.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests.Context
+namespace Remotion.Mixins.UnitTests.Context
 {
   [TestFixture]
   public class DeclarativeConfigurationBuilderTests

@@ -1,1 +1,1 @@
-<%@ webhandler language="C#" class="Rubicon.Web.ExecutionEngine.WxeHandler, Rubicon.Web" %>
+<%@ webhandler language="C#" class="Remotion.Web.ExecutionEngine.WxeHandler, Remotion.Web" %>

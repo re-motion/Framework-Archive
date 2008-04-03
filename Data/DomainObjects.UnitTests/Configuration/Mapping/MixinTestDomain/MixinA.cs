@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain
 {
   public class MixinA : MixinBase
   {

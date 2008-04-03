@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
+namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl {
     
     
     /// <summary>
@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
         
         /// <summary>
         /// FormGridManager control.
@@ -35,7 +35,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+        protected global::Remotion.Web.UI.Controls.FormGridManager FormGridManager;
         
         /// <summary>
         /// FormGrid control.
@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.WebButton DeleteAccessControlEntryButton;
+        protected global::Remotion.Web.UI.Controls.WebButton DeleteAccessControlEntryButton;
         
         /// <summary>
         /// TenantLabel control.
@@ -71,7 +71,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.SmartLabel TenantLabel;
+        protected global::Remotion.Web.UI.Controls.SmartLabel TenantLabel;
         
         /// <summary>
         /// TenantField control.
@@ -80,7 +80,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue TenantField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue TenantField;
         
         /// <summary>
         /// SpecificTenantField control.
@@ -89,7 +89,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue SpecificTenantField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue SpecificTenantField;
         
         /// <summary>
         /// SpecificAbstractRoleLabel control.
@@ -98,7 +98,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.SmartLabel SpecificAbstractRoleLabel;
+        protected global::Remotion.Web.UI.Controls.SmartLabel SpecificAbstractRoleLabel;
         
         /// <summary>
         /// SpecificAbstractRoleField control.
@@ -107,7 +107,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue SpecificAbstractRoleField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue SpecificAbstractRoleField;
         
         /// <summary>
         /// SpecificPositionLabel control.
@@ -116,7 +116,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.SmartLabel SpecificPositionLabel;
+        protected global::Remotion.Web.UI.Controls.SmartLabel SpecificPositionLabel;
         
         /// <summary>
         /// SpecificPositionField control.
@@ -125,7 +125,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue SpecificPositionField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue SpecificPositionField;
         
         /// <summary>
         /// SpecificPositionAndGroupLinkingLabel control.
@@ -143,7 +143,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue GroupField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue GroupField;
         
         /// <summary>
         /// PriorityLabel control.
@@ -152,7 +152,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.SmartLabel PriorityLabel;
+        protected global::Remotion.Web.UI.Controls.SmartLabel PriorityLabel;
         
         /// <summary>
         /// PriorityField control.
@@ -161,7 +161,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue PriorityField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue PriorityField;
         
         /// <summary>
         /// ActualPriorityLabel control.
@@ -179,7 +179,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.FormGridLabel PermissionsLabel;
+        protected global::Remotion.Web.UI.Controls.FormGridLabel PermissionsLabel;
         
         /// <summary>
         /// PermissionsPlaceHolder control.

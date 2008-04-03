@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins.Context;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins.Context;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Mixins.UnitTests.Context
+namespace Remotion.Mixins.UnitTests.Context
 {
   [TestFixture]
   public class SynchronizedReadOnlyContextCollectionTests

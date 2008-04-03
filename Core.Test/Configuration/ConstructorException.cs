@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Core.UnitTests.Configuration
+namespace Remotion.Core.UnitTests.Configuration
 {
   public class ConstructorException : Exception
   {

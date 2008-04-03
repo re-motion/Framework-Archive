@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Collections;
-using Rubicon.Mixins.Utilities;
+using Remotion.Collections;
+using Remotion.Mixins.Utilities;
 using System.Reflection;
-using Rubicon.Text;
-using Rubicon.Utilities;
+using Remotion.Text;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Definitions.Building
+namespace Remotion.Mixins.Definitions.Building
 {
   public class RequiredMethodDefinitionBuilder
   {

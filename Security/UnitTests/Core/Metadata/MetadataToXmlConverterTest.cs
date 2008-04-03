@@ -3,13 +3,13 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 using NUnit.Framework;
-using Rubicon.Security.Metadata;
-using Rubicon.Security.UnitTests.Core.XmlAsserter;
-using Rubicon.Security.UnitTests.TestDomain;
-using File=Rubicon.Security.UnitTests.TestDomain.File;
+using Remotion.Security.Metadata;
+using Remotion.Security.UnitTests.Core.XmlAsserter;
+using Remotion.Security.UnitTests.TestDomain;
+using File=Remotion.Security.UnitTests.TestDomain.File;
 using IOFile = System.IO.File;
 
-namespace Rubicon.Security.UnitTests.Core.Metadata
+namespace Remotion.Security.UnitTests.Core.Metadata
 {
   [TestFixture]
   public class MetadataToXmlConverterTest

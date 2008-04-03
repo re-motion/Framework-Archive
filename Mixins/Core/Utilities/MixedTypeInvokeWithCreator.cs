@@ -1,15 +1,15 @@
 using System;
 using System.Reflection;
 using System.Reflection.Emit;
-using Rubicon.Collections;
-using Rubicon.Mixins.Context;
-using Rubicon.Reflection;
-using Rubicon.Text;
+using Remotion.Collections;
+using Remotion.Mixins.Context;
+using Remotion.Reflection;
+using Remotion.Text;
 
-namespace Rubicon.Mixins.Utilities
+namespace Remotion.Mixins.Utilities
 {
   using CacheKey = Tuple<Type, Type>;
-  using Rubicon.Utilities; // target type, delegate type
+  using Remotion.Utilities; // target type, delegate type
 
   internal class MixedTypeInvokeWithCreator : TypesafeActivator.ConstructorLookupInfo
   {

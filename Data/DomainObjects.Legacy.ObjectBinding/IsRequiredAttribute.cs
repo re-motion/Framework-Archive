@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
 /// <summary>
 /// Specifies if a property or field is required.

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Context
+namespace Remotion.Mixins.Context
 {
   [Serializable]
   public class ClassContextEventArgs : EventArgs

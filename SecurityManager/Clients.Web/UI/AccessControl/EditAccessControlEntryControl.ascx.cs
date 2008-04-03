@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.HtmlControls;
-using Rubicon.Data.DomainObjects;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Clients.Web.Classes;
-using Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.Web.UI.Globalization;
+using Remotion.Data.DomainObjects;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Security;
+using Remotion.SecurityManager.Clients.Web.Classes;
+using Remotion.SecurityManager.Clients.Web.Globalization.UI.AccessControl;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.Web.UI.Globalization;
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
+namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 {
   [WebMultiLingualResources (typeof (AccessControlResources))]
   public partial class EditAccessControlEntryControl : BaseControl

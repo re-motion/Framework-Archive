@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Utilities
+namespace Remotion.Core.UnitTests.Utilities
 {
   [TestFixture]
   public class AssertionTest
@@ -12,14 +12,14 @@ namespace Rubicon.Core.UnitTests.Utilities
     [Test]
     public void TestIsTrueHolds ()
     {
-      Rubicon.Utilities.Assertion.IsTrue (true);
+      Remotion.Utilities.Assertion.IsTrue (true);
     }
 
     [Test]
-    [ExpectedException (typeof (Rubicon.Utilities.AssertionException))]
+    [ExpectedException (typeof (Remotion.Utilities.AssertionException))]
     public void TestIsTrueFails ()
     {
-      Rubicon.Utilities.Assertion.IsTrue (false);
+      Remotion.Utilities.Assertion.IsTrue (false);
     }
   }
 }

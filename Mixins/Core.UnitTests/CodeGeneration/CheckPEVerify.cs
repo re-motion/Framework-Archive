@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration
+namespace Remotion.Mixins.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class CheckPEVerify : CodeGenerationBaseTest

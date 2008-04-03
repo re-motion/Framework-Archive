@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Xml;
+using Remotion.Xml;
 
-namespace Rubicon.Security.Metadata
+namespace Remotion.Security.Metadata
 {
   public class SecurityMetadataLocalizationSchema : SchemaLoaderBase
   {

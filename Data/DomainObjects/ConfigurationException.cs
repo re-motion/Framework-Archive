@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
 /// <summary>
 /// BaseClass for exceptions that are related to the configuraton of the persistence framework.

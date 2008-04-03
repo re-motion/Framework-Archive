@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.Utilities;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.Metadata
+namespace Remotion.SecurityManager.Domain.Metadata
 {
   public class SecurableClassValidationResult
   {

@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Rubicon.Globalization
+namespace Remotion.Globalization
 {
   public interface IResourcesAttribute
   {

@@ -6,7 +6,7 @@ using System.IO;
 using System.Text;
 using System.Data;
 
-namespace Rubicon.Data.DomainObjects.Oracle.ExecSql
+namespace Remotion.Data.DomainObjects.Oracle.ExecSql
 {
   class Program
   {

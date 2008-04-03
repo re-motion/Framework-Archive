@@ -1,14 +1,14 @@
 using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Collections;
-using Rubicon.Mixins.Context.FluentBuilders;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Definitions.Building.DependencySorting;
-using Rubicon.Mixins.UnitTests.Definitions.DependencySorting.SampleTypes;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Definitions.Building.DependencySorting;
+using Remotion.Mixins.UnitTests.Definitions.DependencySorting.SampleTypes;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.UnitTests.Definitions.DependencySorting
+namespace Remotion.Mixins.UnitTests.Definitions.DependencySorting
 {
   [TestFixture]
   public class DependentMixinGrouperTests

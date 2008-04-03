@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
   [Instantiable]
@@ -23,7 +23,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     [StorageClassNone]
     public virtual OrderWithNewPropertyAccess OriginalOrder
     {
-      get { return Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItemWithNewPropertyAccess.Order"].GetOriginalValue <OrderWithNewPropertyAccess>(); }
+      get { return Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItemWithNewPropertyAccess.Order"].GetOriginalValue <OrderWithNewPropertyAccess>(); }
     }
   }
 }

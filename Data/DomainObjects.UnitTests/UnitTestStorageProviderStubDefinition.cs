@@ -1,9 +1,9 @@
 using System;
 using System.Xml;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests
+namespace Remotion.Data.DomainObjects.UnitTests
 {
   public class UnitTestStorageProviderStubDefinition : StorageProviderDefinition
   {

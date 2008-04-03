@@ -1,10 +1,10 @@
 using System;
 using System.Threading;
 using System.Web.UI;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.Web.Test.UpdatePanelTests
+namespace Remotion.Web.Test.UpdatePanelTests
 {
   public partial class SutUserControl : System.Web.UI.UserControl
   {

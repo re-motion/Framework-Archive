@@ -1,9 +1,9 @@
 using System;
 using System.Web.UI;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Sample
+namespace Remotion.ObjectBinding.Sample
 {
   public class PersonListItemCommandState: IBocListItemCommandState
   {

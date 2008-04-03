@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
+namespace Remotion.Data.DomainObjects.UnitTests.Transaction
 {
   [TestFixture]
   public class RollbackEventsWithNewObjectTest : ClientTransactionBaseTest

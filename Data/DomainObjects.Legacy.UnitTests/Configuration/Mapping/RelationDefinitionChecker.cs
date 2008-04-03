@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 {
   public class RelationDefinitionChecker
   {

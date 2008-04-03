@@ -1,11 +1,11 @@
 using System;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Utilities;
-using Rubicon.Mixins.Validation;
-using Rubicon.Reflection;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Utilities;
+using Remotion.Mixins.Validation;
+using Remotion.Reflection;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   /// <summary>
   /// Provides support for instantiating type which are combined with mixins.

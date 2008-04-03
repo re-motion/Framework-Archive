@@ -7,8 +7,8 @@
     <ProjectGuid>{C38242F1-5E19-460C-B506-2B4E00470358}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Data.DomainObjects.RdbmsTools.UnitTests</RootNamespace>
-    <AssemblyName>Rubicon.Data.DomainObjects.RdbmsTools.UnitTests</AssemblyName>
+    <RootNamespace>Remotion.Data.DomainObjects.RdbmsTools.UnitTests</RootNamespace>
+    <AssemblyName>Remotion.Data.DomainObjects.RdbmsTools.UnitTests</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

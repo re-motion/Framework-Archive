@@ -1,8 +1,8 @@
 ﻿using System;
-using Rubicon.Security;
+using Remotion.Security;
 using System.Web.UI;
 
-namespace Rubicon.Web.UI
+namespace Remotion.Web.UI
 {
   [Obsolete ("Use IWebSecurityAdapter instead. (Version: 1.7.41)", true)]
   public interface IWebSecurityProvider : IWebSecurityAdapter, ISecurityProviderObsolete

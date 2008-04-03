@@ -3,11 +3,11 @@ using System.Collections;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
   /// <summary> Object bound tree view. </summary>

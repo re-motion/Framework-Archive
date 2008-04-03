@@ -5,7 +5,7 @@
     elementFormDefault="qualified" 
     attributeFormDefault="unqualified" 
     targetNamespace="http://www.rubicon-it.com/commons/web/configuration">
-  <xs:element name="rubicon.web">
+  <xs:element name="remotion.web">
     <xs:complexType>
       <xs:all>
         <xs:element name="executionEngine" minOccurs="0" maxOccurs="1">

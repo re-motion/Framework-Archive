@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
   [DBTable]
@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     [StorageClassNone]
     internal int NamePropertyOfInvalidType
     {
-      set { Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].SetValue (value); }
+      set { Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].SetValue (value); }
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]
@@ -45,8 +45,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     [DBBidirectionalRelation ("Company")]
     private ClassWithoutRelatedClassIDColumnAndDerivation ClassWithoutRelatedClassIDColumnAndDerivation
     {
-      get { return (ClassWithoutRelatedClassIDColumnAndDerivation) GetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.ClassWithoutRelatedClassIDColumnAndDerivation"); }
-      set { SetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.ClassWithoutRelatedClassIDColumnAndDerivation", value); }
+      get { return (ClassWithoutRelatedClassIDColumnAndDerivation) GetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.ClassWithoutRelatedClassIDColumnAndDerivation"); }
+      set { SetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.ClassWithoutRelatedClassIDColumnAndDerivation", value); }
     }
   }
 }

@@ -7,8 +7,8 @@
     <ProjectGuid>{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</RootNamespace>
-    <AssemblyName>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</AssemblyName>
+    <RootNamespace>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</RootNamespace>
+    <AssemblyName>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

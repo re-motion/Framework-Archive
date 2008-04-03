@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   /// <summary>
   /// Indicates that an interface acts as a complete interface for a class instantiated via <see cref="ObjectFactory"/>.

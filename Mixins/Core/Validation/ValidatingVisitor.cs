@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Utilities;
+using Remotion.Mixins.Definitions;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Validation
+namespace Remotion.Mixins.Validation
 {
   public class ValidatingVisitor : IDefinitionVisitor
   {

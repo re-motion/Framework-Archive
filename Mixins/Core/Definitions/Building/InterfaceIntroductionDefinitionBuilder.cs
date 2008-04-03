@@ -1,9 +1,9 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Rubicon.Collections;
+using Remotion.Collections;
 
-namespace Rubicon.Mixins.Definitions.Building
+namespace Remotion.Mixins.Definitions.Building
 {
   public class InterfaceIntroductionDefinitionBuilder
   {

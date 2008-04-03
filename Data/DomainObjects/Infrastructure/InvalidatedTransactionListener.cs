@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Queries;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
   [Serializable]
   public class InvalidatedTransactionListener : IClientTransactionListener

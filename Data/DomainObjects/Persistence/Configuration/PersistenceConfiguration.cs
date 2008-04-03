@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using Rubicon.Configuration;
-using Rubicon.Utilities;
+using Remotion.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence.Configuration
+namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
   public class PersistenceConfiguration: ExtendedConfigurationSection
   {

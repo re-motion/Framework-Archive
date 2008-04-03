@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   public partial class MixinConfiguration
   {

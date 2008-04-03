@@ -1,8 +1,8 @@
 using System;
 using System.Xml.Serialization;
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.ObjectBinding.Sample
+namespace Remotion.ObjectBinding.Sample
 {
   [XmlRoot ("Job")]
   [XmlType]

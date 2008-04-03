@@ -3,12 +3,12 @@ using System.Collections;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Globalization;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Globalization;
+using Remotion.Utilities;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 /// <summary>
@@ -25,7 +25,7 @@ public class ValidationStateViewer : WebControl, IControl
   /// <summary> A list of validation state viewer wide resources. </summary>
   /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
   [ResourceIdentifiers]
-  [MultiLingualResources ("Rubicon.Web.Globalization.ValidationStateViewer")]
+  [MultiLingualResources ("Remotion.Web.Globalization.ValidationStateViewer")]
   protected enum ResourceIdentifier
   {
     /// <summary>The summary message displayed if validation errors where found. </summary>
@@ -51,7 +51,7 @@ public class ValidationStateViewer : WebControl, IControl
 
   /// <summary>
   ///   The Text displayed if <see cref="ValidationStateViewer.ValidationErrorStyle"/> is set to 
-  ///   <see cref="Rubicon.Web.UI.Controls.ValidationErrorStyle.Notice"/>.
+  ///   <see cref="Remotion.Web.UI.Controls.ValidationErrorStyle.Notice"/>.
   /// </summary>
   private string _noticeText;
   /// <summary> The style in which the validation errors should be displayed on the page. </summary>
@@ -264,7 +264,7 @@ public class ValidationStateViewer : WebControl, IControl
 
   /// <summary>
   ///   The Text displayed if <see cref="ValidationStateViewer.ValidationErrorStyle"/> is set to 
-  ///   <see cref="Rubicon.Web.UI.Controls.ValidationErrorStyle.Notice"/>
+  ///   <see cref="Remotion.Web.UI.Controls.ValidationErrorStyle.Notice"/>
   /// </summary>
   /// <value> A string. </value>
   [CategoryAttribute("Appearance")]

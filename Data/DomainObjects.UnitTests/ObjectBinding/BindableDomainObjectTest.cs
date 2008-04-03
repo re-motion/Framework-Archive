@@ -1,14 +1,14 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding;
-using TypeUtility=Rubicon.Utilities.TypeUtility;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins;
+using Remotion.ObjectBinding;
+using TypeUtility=Remotion.Utilities.TypeUtility;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding
+namespace Remotion.Data.DomainObjects.UnitTests.ObjectBinding
 {
   [TestFixture]
   public class BindableDomainObjectTest : ObjectBindingBaseTest

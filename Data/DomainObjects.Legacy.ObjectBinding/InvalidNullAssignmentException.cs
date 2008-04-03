@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
 /// <summary>
 /// The exception that is thrown when attempting to assign <see langword="null"/> to a property that does not support it.

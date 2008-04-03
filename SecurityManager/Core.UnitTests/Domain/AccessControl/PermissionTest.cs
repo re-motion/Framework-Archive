@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain.AccessControl;
+using Remotion.Data.DomainObjects;
+using Remotion.SecurityManager.Domain.AccessControl;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
+namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 {
   [TestFixture]
   public class PermissionTest : DomainTest

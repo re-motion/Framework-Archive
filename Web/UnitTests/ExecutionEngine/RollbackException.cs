@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine
 {
   public class RollbackException : Exception
   {

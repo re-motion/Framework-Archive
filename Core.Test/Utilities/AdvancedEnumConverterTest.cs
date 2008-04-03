@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Utilities
+namespace Remotion.Core.UnitTests.Utilities
 {
   [TestFixture]
   public class AdvancedEnumConverterTest
@@ -117,7 +117,7 @@ namespace Rubicon.Core.UnitTests.Utilities
 
     [Test]
     [ExpectedException (typeof (ArgumentOutOfRangeException), ExpectedMessage =
-        "The value -1 is not supported for enumeration 'Rubicon.Core.UnitTests.Utilities.AdvancedEnumConverterTest+Int32Enum'.")]
+        "The value -1 is not supported for enumeration 'Remotion.Core.UnitTests.Utilities.AdvancedEnumConverterTest+Int32Enum'.")]
     public void ConvertFromInt32_WithUndefinedValue()
     {
       _int32EnumConverter.ConvertFrom (-1);

@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Web.Test
+namespace Remotion.Web.Test
 {
   public class IDEventArgs : EventArgs
   {

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.Queries.Configuration;
 
-namespace Rubicon.Data.DomainObjects.Queries
+namespace Remotion.Data.DomainObjects.Queries
 {
 /// <summary>
 /// Represents an executable query.
@@ -16,16 +16,16 @@ public interface IQuery
   /// <summary>
   /// Gets the statement of the query.
   /// </summary>
-  /// <remarks>The statement must be understood by the <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> responsible for executing the query.</remarks>
+  /// <remarks>The statement must be understood by the <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> responsible for executing the query.</remarks>
   string Statement { get; }
 
   /// <summary>
-  /// Gets the unique ID of the <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> responsible for executing the query.
+  /// Gets the unique ID of the <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> responsible for executing the query.
   /// </summary>
   string StorageProviderID { get; }
 
   /// <summary>
-  /// Gets the type of the collection if the query returns a collection of <see cref="Rubicon.Data.DomainObjects.DomainObject"/>s.
+  /// Gets the type of the collection if the query returns a collection of <see cref="Remotion.Data.DomainObjects.DomainObject"/>s.
   /// </summary> 
   Type CollectionType { get; }
 

@@ -1,7 +1,7 @@
 using System;
 using System.Security.Principal;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   /// <summary>
   /// Represents a nullable <see cref="IPrincipal"/> according to the "Null Object Pattern".

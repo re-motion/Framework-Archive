@@ -1,12 +1,12 @@
 using System;
 using System.Security.Principal;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Security.Data.DomainObjects;
-using Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Security.Data.DomainObjects;
+using Remotion.Security.UnitTests.Data.DomainObjects.TestDomain;
 
-namespace Rubicon.Security.UnitTests.Data.DomainObjects.SecurityClientTransactionExtensionTests
+namespace Remotion.Security.UnitTests.Data.DomainObjects.SecurityClientTransactionExtensionTests
 {
   [TestFixture]
   public class PropertyValueChangingTest
@@ -40,7 +40,7 @@ namespace Rubicon.Security.UnitTests.Data.DomainObjects.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, true);
       _testHelper.ReplayAll ();
 
-      _extension.PropertyValueChanging (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain.SecurableObject.StringProperty"], "old", "new");
+      _extension.PropertyValueChanging (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Remotion.Security.UnitTests.Data.DomainObjects.TestDomain.SecurableObject.StringProperty"], "old", "new");
 
       _testHelper.VerifyAll ();
     }
@@ -56,7 +56,7 @@ namespace Rubicon.Security.UnitTests.Data.DomainObjects.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, false);
       _testHelper.ReplayAll ();
 
-      _extension.PropertyValueChanging (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain.SecurableObject.StringProperty"], "old", "new");
+      _extension.PropertyValueChanging (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Remotion.Security.UnitTests.Data.DomainObjects.TestDomain.SecurableObject.StringProperty"], "old", "new");
     }
 
     [Test]
@@ -69,7 +69,7 @@ namespace Rubicon.Security.UnitTests.Data.DomainObjects.SecurityClientTransactio
 
       using (new SecurityFreeSection ())
       {
-        _extension.PropertyValueChanging (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain.SecurableObject.StringProperty"], "old", "new");
+        _extension.PropertyValueChanging (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Remotion.Security.UnitTests.Data.DomainObjects.TestDomain.SecurableObject.StringProperty"], "old", "new");
       }
 
       _testHelper.VerifyAll ();
@@ -83,7 +83,7 @@ namespace Rubicon.Security.UnitTests.Data.DomainObjects.SecurityClientTransactio
       _testHelper.AddExtension (_extension);
       _testHelper.ReplayAll ();
 
-      _extension.PropertyValueChanging (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain.NonSecurableObject.StringProperty"], "old", "new");
+      _extension.PropertyValueChanging (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Remotion.Security.UnitTests.Data.DomainObjects.TestDomain.NonSecurableObject.StringProperty"], "old", "new");
 
       _testHelper.VerifyAll ();
     }
@@ -103,7 +103,7 @@ namespace Rubicon.Security.UnitTests.Data.DomainObjects.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, hasAccess);
       _testHelper.ReplayAll ();
 
-      _extension.PropertyValueChanging (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain.SecurableObject.StringProperty"], "old", "new");
+      _extension.PropertyValueChanging (new RootClientTransaction(), dataContainer, dataContainer.PropertyValues["Remotion.Security.UnitTests.Data.DomainObjects.TestDomain.SecurableObject.StringProperty"], "old", "new");
 
       _testHelper.VerifyAll ();
     }

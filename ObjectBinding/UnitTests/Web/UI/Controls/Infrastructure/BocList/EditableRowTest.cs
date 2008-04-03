@@ -2,18 +2,18 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
-using Rubicon.ObjectBinding.UnitTests.Web.Domain;
-using Rubicon.Web.UI.Controls;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
+using Remotion.ObjectBinding.UnitTests.Web.Domain;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
 {
   [TestFixture]
   public class EditableRowTest : BocTest
   {
-    private Rubicon.ObjectBinding.Web.UI.Controls.BocList _bocList;
+    private Remotion.ObjectBinding.Web.UI.Controls.BocList _bocList;
     private EditableRow _editableRow;
 
     private IBusinessObject _value01;
@@ -38,7 +38,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
     {
       base.SetUp();
 
-      _bocList = new Rubicon.ObjectBinding.Web.UI.Controls.BocList();
+      _bocList = new Remotion.ObjectBinding.Web.UI.Controls.BocList();
       _bocList.ID = "BocList";
       NamingContainer.Controls.Add (_bocList);
 

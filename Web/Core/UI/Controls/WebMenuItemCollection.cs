@@ -3,11 +3,11 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Web.UI;
-using Rubicon.Collections;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Design;
+using Remotion.Collections;
+using Remotion.Utilities;
+using Remotion.Web.UI.Design;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 /// <summary> A collection of <see cref="WebMenuItem"/> objects. </summary>

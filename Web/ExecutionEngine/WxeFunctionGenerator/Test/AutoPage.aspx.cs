@@ -7,7 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine;
 
 namespace Test
 {
@@ -148,9 +148,9 @@ namespace Test
 
   //internal struct AutoPageVariables
   //{
-  //  private /*readonly*/ Rubicon.Collections.NameObjectCollection Variables;
+  //  private /*readonly*/ Remotion.Collections.NameObjectCollection Variables;
 
-  //  public AutoPageVariables (Rubicon.Collections.NameObjectCollection variables)
+  //  public AutoPageVariables (Remotion.Collections.NameObjectCollection variables)
   //  {
   //    Variables = variables;
   //  }

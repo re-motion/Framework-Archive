@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using System.IO;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.NullableValueTypes;
-using Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Sql.SqlServer;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Sql;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.NullableValueTypes;
+using Remotion.Data.DomainObjects.Legacy.CodeGenerator.Sql.SqlServer;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Legacy.CodeGenerator.Sql;
 using System.Reflection;
 
-namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.Sql.SqlServer
+namespace Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.Sql.SqlServer
 {
   //TODO: Run the generated SQL File against a database in the UnitTests and integrate this into the build
   //      Derive ClassWithAllDataTypes from an abstract class to ensure that all data types are selected in a UNION

@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.UnitTests.SampleTypes
+namespace Remotion.Mixins.UnitTests.SampleTypes
 {
   [CopyCustomAttributes (typeof (AttributeSource), typeof (AttributeWithParameters2), typeof (AttributeWithParameters3))]
   public class MixinIndirectlyAddingFilteredAttributes : Mixin<object>

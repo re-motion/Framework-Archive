@@ -1,4 +1,4 @@
-<%@ Page language="c#" Codebehind="default.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.Data.DomainObjects.Web.Legacy.Test.DefaultPage" %>
+<%@ Page language="c#" Codebehind="default.aspx.cs" AutoEventWireup="false" Inherits="Remotion.Data.DomainObjects.Web.Legacy.Test.DefaultPage" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
   <HEAD>
@@ -11,10 +11,10 @@
   <body >
     <form id="Form1" method="post" runat="server">
       
-      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Legacy.Test.WxeFunctions.EditObjectFunction, Rubicon.Data.DomainObjects.Web.Legacy.Test">Bestehendes Objekt editieren</a><br>
-      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Legacy.Test.WxeFunctions.NewObjectFunction, Rubicon.Data.DomainObjects.Web.Legacy.Test">Neues Objekt editieren</a><br>
-      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Legacy.Test.WxeFunctions.SearchFunction, Rubicon.Data.DomainObjects.Web.Legacy.Test" target="_blank">Objekt suchen</a><br>
-      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Legacy.Test.WxeFunctions.UndefinedEnumTestFunction,Rubicon.Data.DomainObjects.Web.Legacy.Test">UndefinedEnumTest</a><br> 
+      <a href="WxeHandler.ashx?WxeFunctionType=Remotion.Data.DomainObjects.Web.Legacy.Test.WxeFunctions.EditObjectFunction, Remotion.Data.DomainObjects.Web.Legacy.Test">Bestehendes Objekt editieren</a><br>
+      <a href="WxeHandler.ashx?WxeFunctionType=Remotion.Data.DomainObjects.Web.Legacy.Test.WxeFunctions.NewObjectFunction, Remotion.Data.DomainObjects.Web.Legacy.Test">Neues Objekt editieren</a><br>
+      <a href="WxeHandler.ashx?WxeFunctionType=Remotion.Data.DomainObjects.Web.Legacy.Test.WxeFunctions.SearchFunction, Remotion.Data.DomainObjects.Web.Legacy.Test" target="_blank">Objekt suchen</a><br>
+      <a href="WxeHandler.ashx?WxeFunctionType=Remotion.Data.DomainObjects.Web.Legacy.Test.WxeFunctions.UndefinedEnumTestFunction,Remotion.Data.DomainObjects.Web.Legacy.Test">UndefinedEnumTest</a><br> 
 
     </form>
   </body>

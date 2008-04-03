@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <remarks>
   ///   This class must be inherited from, overwriting <see cref="DataSource"/>.

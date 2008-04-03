@@ -2,12 +2,12 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.EnumerationPropertyTests
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.EnumerationPropertyTests
 {
   [TestFixture]
   public class Common : EnumerationTestBase
@@ -29,8 +29,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.EnumerationPropert
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
         ExpectedMessage =
-        "The property 'NullableScalar' defined on type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithValueType`1[Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.EnumWithUndefinedValue]'"
-        + " must not be nullable since the property's type already defines a 'Rubicon.ObjectBinding.UndefinedEnumValueAttribute'.")]
+        "The property 'NullableScalar' defined on type 'Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithValueType`1[Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.EnumWithUndefinedValue]'"
+        + " must not be nullable since the property's type already defines a 'Remotion.ObjectBinding.UndefinedEnumValueAttribute'.")]
     public void Initialize_NullableWithUndefinedValue ()
     {
       CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValue>), "NullableScalar");
@@ -39,8 +39,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.EnumerationPropert
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
         ExpectedMessage =
-        "The enum type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.EnumWithUndefinedValueFromOtherType' "
-        + "defines a 'Rubicon.ObjectBinding.UndefinedEnumValueAttribute' with an enum value that belongs to a different enum type.")]
+        "The enum type 'Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.EnumWithUndefinedValueFromOtherType' "
+        + "defines a 'Remotion.ObjectBinding.UndefinedEnumValueAttribute' with an enum value that belongs to a different enum type.")]
     public void Initialize_WithUndefinedEnumValueFromOtherType ()
     {
       CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValueFromOtherType>), "Scalar");

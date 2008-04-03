@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.DataManagement
+namespace Remotion.Data.DomainObjects.DataManagement
 {
 public class DataContainerMap : IEnumerable, IFlattenedSerializable
 {

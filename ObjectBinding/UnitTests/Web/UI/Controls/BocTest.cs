@@ -1,12 +1,12 @@
 using System;
 using System.Web.UI;
 using NUnit.Framework;
-using Rubicon.Web.UI;
-using Rubicon.Web.UnitTests.AspNetFramework;
-using Rubicon.Web.UnitTests.UI;
-using Rubicon.Web.UnitTests.UI.Controls;
+using Remotion.Web.UI;
+using Remotion.Web.UnitTests.AspNetFramework;
+using Remotion.Web.UnitTests.UI;
+using Remotion.Web.UnitTests.UI.Controls;
 
-namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 {
 
 public class BocTest

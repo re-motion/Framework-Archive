@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.SecurityManager.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects;
+using Remotion.Security;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.SecurityManager.UnitTests.TestDomain;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefinitionTests
+namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefinitionTests
 {
   [TestFixture]
   public class TestWithTwoTenants : DomainTest
@@ -41,7 +41,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefiniti
       DomainObjectCollection result = AbstractRoleDefinition.Find (new EnumWrapper[] { new EnumWrapper (ProjectRoles.QualityManager) });
 
       Assert.AreEqual (1, result.Count);
-      Assert.AreEqual ("QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRoles, Rubicon.SecurityManager.UnitTests", ((AbstractRoleDefinition) result[0]).Name);
+      Assert.AreEqual ("QualityManager|Remotion.SecurityManager.UnitTests.TestDomain.ProjectRoles, Remotion.SecurityManager.UnitTests", ((AbstractRoleDefinition) result[0]).Name);
     }
 
     [Test]

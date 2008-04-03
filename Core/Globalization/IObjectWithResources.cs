@@ -1,4 +1,4 @@
-namespace Rubicon.Globalization
+namespace Remotion.Globalization
 {
 
 /// <summary>

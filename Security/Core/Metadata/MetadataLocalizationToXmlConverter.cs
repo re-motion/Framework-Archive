@@ -1,9 +1,9 @@
 using System;
 using System.Globalization;
 using System.Xml;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Security.Metadata
+namespace Remotion.Security.Metadata
 {
   public class MetadataLocalizationToXmlConverter : IMetadataLocalizationConverter
   {

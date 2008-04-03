@@ -1,9 +1,9 @@
 using System;
 
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Data.DomainObjects.Web.Test.WxeFunctions
+namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 {
 [Serializable]
 public class WxeTestPageFunction : WxeFunction

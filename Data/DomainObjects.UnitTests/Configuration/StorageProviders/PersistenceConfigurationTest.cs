@@ -2,13 +2,13 @@ using System;
 using System.Configuration;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Development.UnitTesting.Configuration;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.Configuration;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.StorageProviders
 {
   [TestFixture]
   public class PersistenceConfigurationTest
@@ -66,9 +66,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
       string xmlFragment =
           @"<storage defaultProviderDefinition=""Rdbms"">
             <providerDefinitions>
-              <add type=""Rubicon.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" 
+              <add type=""Remotion.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" 
                   name=""Rdbms"" 
-                  providerType=""Rubicon.Data.DomainObjects::Persistence.Rdbms.SqlProvider""
+                  providerType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlProvider""
                   connectionString=""Rdbms""/>
             </providerDefinitions>
           </storage>";
@@ -90,9 +90,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
       string xmlFragment =
           @"<storage defaultProviderDefinition=""Invalid"">
             <providerDefinitions>
-              <add type=""Rubicon.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" 
+              <add type=""Remotion.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" 
                   name=""Rdbms"" 
-                  providerType=""Rubicon.Data.DomainObjects::Persistence.Rdbms.SqlProvider""
+                  providerType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlProvider""
                   connectionString=""Rdbms""/>
             </providerDefinitions>
           </storage>";
@@ -108,15 +108,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
       string xmlFragment =
           @"<storage defaultProviderDefinition=""Rdbms"">
             <groups>
-              <add type=""Rubicon.Data.DomainObjects.UnitTests::Configuration.StorageProviders.StubStorageGroup1Attribute"" 
+              <add type=""Remotion.Data.DomainObjects.UnitTests::Configuration.StorageProviders.StubStorageGroup1Attribute"" 
                   provider=""Rdbms""/>
-              <add type=""Rubicon.Data.DomainObjects.UnitTests::Configuration.StorageProviders.StubStorageGroup2Attribute"" 
+              <add type=""Remotion.Data.DomainObjects.UnitTests::Configuration.StorageProviders.StubStorageGroup2Attribute"" 
                   provider=""Rdbms""/>
             </groups>
             <providerDefinitions>
-              <add type=""Rubicon.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" 
+              <add type=""Remotion.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" 
                   name=""Rdbms"" 
-                  providerType=""Rubicon.Data.DomainObjects::Persistence.Rdbms.SqlProvider""
+                  providerType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlProvider""
                   connectionString=""Rdbms""/>
             </providerDefinitions>
           </storage>";
@@ -142,9 +142,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
               <add type=""Invalid, Assembly"" provider=""Rdbms""/>
             </groups>
             <providerDefinitions>
-              <add type=""Rubicon.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" 
+              <add type=""Remotion.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" 
                   name=""Rdbms"" 
-                  providerType=""Rubicon.Data.DomainObjects::Persistence.Rdbms.SqlProvider""
+                  providerType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlProvider""
                   connectionString=""Rdbms""/>
             </providerDefinitions>
           </storage>";

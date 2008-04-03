@@ -1,4 +1,4 @@
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary>
   ///   Extends an <see cref="IBusinessObjectBoundControl"/> with the option of writing the 

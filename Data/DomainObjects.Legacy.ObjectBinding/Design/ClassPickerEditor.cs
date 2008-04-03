@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms.Design;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.Design
+namespace Remotion.Data.DomainObjects.ObjectBinding.Design
 {
 
 public class ClassPickerEditor: UITypeEditor

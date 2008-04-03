@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.DataManagement
+namespace Remotion.Data.DomainObjects.DataManagement
 {
   public class RelationEndPointModificationCollection
   {

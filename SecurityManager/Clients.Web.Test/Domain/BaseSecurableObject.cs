@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Security;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
-namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
+namespace Remotion.SecurityManager.Clients.Web.Test.Domain
 {
   [PermanentGuid ("C9FC9EC0-9F41-4636-9A4C-4927A9B47E85")]
   public abstract class BaseSecurableObject : BaseObject, ISecurableObject, ISecurityContextFactory

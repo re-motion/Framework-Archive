@@ -8,7 +8,7 @@
 
 using System;
 
-namespace Rubicon.ObjectBinding.Web.CodeGenerator
+namespace Remotion.ObjectBinding.Web.CodeGenerator
 {
 	public enum DefinedPlaceholder {
 		// for each class

@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Schemas;
+using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Schemas;
 
-namespace Rubicon.Data.DomainObjects.Legacy.Schemas
+namespace Remotion.Data.DomainObjects.Legacy.Schemas
 {
   public class LegacySchemaLoader: SchemaLoader
   {

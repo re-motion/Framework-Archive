@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Provides an enumeration to configure <see cref="ClientTransactionScope">ClientTransctionScope's</see> automatic rollback behavior.

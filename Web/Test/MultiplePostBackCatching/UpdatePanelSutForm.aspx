@@ -1,11 +1,11 @@
 <%@ Page Language="c#" Codebehind="UpdatePanelSutForm.aspx.cs" AutoEventWireup="True"
-  Inherits="Rubicon.Web.Test.MultiplePostBackCatching.UpdatePanelSutForm" SmartNavigation="False" %>
+  Inherits="Remotion.Web.Test.MultiplePostBackCatching.UpdatePanelSutForm" SmartNavigation="False" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head" runat="server">
   <title>MultiplePostbackCatching Inside UpdatePanel</title>
-  <rubicon:HtmlHeadContents ID="HtmlHeadContents" runat="server" />
+  <remotion:HtmlHeadContents ID="HtmlHeadContents" runat="server" />
 </head>
 <body>
   <form id="Form" runat="server">

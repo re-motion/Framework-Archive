@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Specialized;
 using System.Security.Principal;
-using Rubicon.Configuration;
+using Remotion.Configuration;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   /// <summary>
   /// Represents a nullable <see cref="IUserProvider"/> according to the "Null Object Pattern".

@@ -1,8 +1,8 @@
 using System;
 using System.Text;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Validation
+namespace Remotion.Mixins.Validation
 {
   [Serializable]
   public struct ValidationResultItem : IDefaultValidationResultItem

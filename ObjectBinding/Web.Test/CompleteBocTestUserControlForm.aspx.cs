@@ -9,9 +9,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Text;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
-using Rubicon.Utilities;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
+using Remotion.Utilities;
 
 namespace OBWTest
 {
@@ -19,8 +19,8 @@ namespace OBWTest
   public class CompleteBocUserControlForm : SingleBocTestWxeBasePage
 
 {
-    protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer1;
-  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+    protected Remotion.Web.UI.Controls.ValidationStateViewer ValidationStateViewer1;
+  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{

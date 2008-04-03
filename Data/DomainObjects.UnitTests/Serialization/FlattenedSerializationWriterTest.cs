@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
+namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 {
   [TestFixture]
   public class FlattenedSerializationWriterTest

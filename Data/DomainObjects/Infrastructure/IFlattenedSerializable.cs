@@ -1,4 +1,4 @@
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
   public interface IFlattenedSerializable
   {

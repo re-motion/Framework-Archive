@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Mixins;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
+namespace Remotion.Data.DomainObjects.UnitTests.Transaction
 {
   public interface IClientTransactionWithID
   {

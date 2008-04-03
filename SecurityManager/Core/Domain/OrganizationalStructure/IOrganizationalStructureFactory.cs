@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects;
+using Remotion.Data.DomainObjects;
 
-namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
+namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   public interface IOrganizationalStructureFactory
   {

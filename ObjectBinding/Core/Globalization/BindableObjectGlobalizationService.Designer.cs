@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.ObjectBinding.Globalization {
+namespace Remotion.ObjectBinding.Globalization {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Rubicon.ObjectBinding.Globalization {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.ObjectBinding.Globalization.BindableObjectGlobalizationService", typeof(BindableObjectGlobalizationService).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Remotion.ObjectBinding.Globalization.BindableObjectGlobalizationService", typeof(BindableObjectGlobalizationService).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -63,18 +63,18 @@ namespace Rubicon.ObjectBinding.Globalization {
         /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
-        internal static string Rubicon_ObjectBinding_BindableObject_BindableObjectGlobalizationService_False {
+        internal static string Remotion_ObjectBinding_BindableObject_BindableObjectGlobalizationService_False {
             get {
-                return ResourceManager.GetString("Rubicon.ObjectBinding.BindableObject.BindableObjectGlobalizationService.False", resourceCulture);
+                return ResourceManager.GetString("Remotion.ObjectBinding.BindableObject.BindableObjectGlobalizationService.False", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
-        internal static string Rubicon_ObjectBinding_BindableObject_BindableObjectGlobalizationService_True {
+        internal static string Remotion_ObjectBinding_BindableObject_BindableObjectGlobalizationService_True {
             get {
-                return ResourceManager.GetString("Rubicon.ObjectBinding.BindableObject.BindableObjectGlobalizationService.True", resourceCulture);
+                return ResourceManager.GetString("Remotion.ObjectBinding.BindableObject.BindableObjectGlobalizationService.True", resourceCulture);
             }
         }
     }

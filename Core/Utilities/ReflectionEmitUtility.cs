@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using Rubicon.Text;
-using Rubicon.Utilities;
+using Remotion.Text;
+using Remotion.Utilities;
 using System.Collections;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
   public static class ReflectionEmitUtility
   {

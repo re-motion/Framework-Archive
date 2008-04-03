@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.Web.Test.UpdatePanelTests {
+namespace Remotion.Web.Test.UpdatePanelTests {
     
     
     /// <summary>
@@ -116,7 +116,7 @@ namespace Rubicon.Web.Test.UpdatePanelTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.WebButton AsyncPostBackInsideUpdatePanelWebButton;
+        protected global::Remotion.Web.UI.Controls.WebButton AsyncPostBackInsideUpdatePanelWebButton;
         
         /// <summary>
         /// SyncPostBackInsideUpdatePanelWebButton control.
@@ -125,7 +125,7 @@ namespace Rubicon.Web.Test.UpdatePanelTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.WebButton SyncPostBackInsideUpdatePanelWebButton;
+        protected global::Remotion.Web.UI.Controls.WebButton SyncPostBackInsideUpdatePanelWebButton;
         
         /// <summary>
         /// DropDownMenuInsideUpdatePanel control.
@@ -134,7 +134,7 @@ namespace Rubicon.Web.Test.UpdatePanelTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.DropDownMenu DropDownMenuInsideUpdatePanel;
+        protected global::Remotion.Web.UI.Controls.DropDownMenu DropDownMenuInsideUpdatePanel;
         
         /// <summary>
         /// PostBackCountOutsideUpdatePanelLabel control.

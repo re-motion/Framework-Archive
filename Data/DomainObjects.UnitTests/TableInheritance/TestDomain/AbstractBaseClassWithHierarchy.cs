@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
+namespace Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_AbstractBaseClassWithHierarchy")]
   [TableInheritanceTestDomain]

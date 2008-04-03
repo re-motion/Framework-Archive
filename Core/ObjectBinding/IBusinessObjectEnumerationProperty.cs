@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary> 
   ///   The <b>IBusinessObjectEnumerationProperty</b> interface is used for accessing the values of an enumeration. 
@@ -9,7 +9,7 @@ namespace Rubicon.ObjectBinding
   ///   This property is not restrained to the enumerations derived from the <see cref="Enum"/> type. 
   ///   <note type="inotes">
   ///     The native value must be serializable if this property is to be bound to the 
-  ///     <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue"/> control.
+  ///     <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue"/> control.
   ///   </note>
   /// </remarks>
   public interface IBusinessObjectEnumerationProperty: IBusinessObjectProperty

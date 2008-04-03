@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
   /// <summary>
   /// Utility class for finding custom attributes via their type or an interface implemented by the type.

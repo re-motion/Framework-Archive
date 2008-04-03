@@ -1,14 +1,14 @@
 using System;
 using System.Reflection;
 using Castle.DynamicProxy;
-using Rubicon.CodeGeneration;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Mixins.Utilities;
+using Remotion.CodeGeneration;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Utilities;
 using NUnit.Framework;
 
-namespace Rubicon.Mixins.UnitTests
+namespace Remotion.Mixins.UnitTests
 {
   [TestFixture]
   public class MixinReflectionTests

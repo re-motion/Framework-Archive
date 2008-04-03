@@ -1,9 +1,9 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.ObjectBinding;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
 /// <summary>
 /// A class that can be used to store search paramers and supports 2-way data binding of user controls.
@@ -72,7 +72,7 @@ public abstract class BindableSearchObject : IBusinessObject, IDeserializationCa
   /// <param name="property">The property to return. Must not be <see langword="null"/>.</param>
   /// <returns>The value of the property.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="property"/> is not derived from <see cref="BaseProperty"/>.</exception>
+  /// <exception cref="Remotion.Utilities.ArgumentTypeException"><paramref name="property"/> is not derived from <see cref="BaseProperty"/>.</exception>
   object IBusinessObject.GetProperty (IBusinessObjectProperty property)
   {
     return _objectReflector.GetProperty (property);
@@ -99,7 +99,7 @@ public abstract class BindableSearchObject : IBusinessObject, IDeserializationCa
   /// <param name="property">The property to return. Must not be <see langword="null"/>.</param>
   /// <param name="value">The new value for the property.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="property"/> is not derived from <see cref="BaseProperty"/>.</exception>
+  /// <exception cref="Remotion.Utilities.ArgumentTypeException"><paramref name="property"/> is not derived from <see cref="BaseProperty"/>.</exception>
   /// <exception cref="ArgumentException"><paramref name="value"/> is of a type that is incompatible for the <paramref name="property"/>.</exception>
   void IBusinessObject.SetProperty (IBusinessObjectProperty property, object value)
   {

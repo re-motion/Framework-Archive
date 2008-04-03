@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Mixins;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
   public class BindableDomainObjectAttribute : UsesAttribute

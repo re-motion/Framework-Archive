@@ -1,7 +1,7 @@
 using NUnit.Framework;
-using Rubicon.Mixins.Validation;
+using Remotion.Mixins.Validation;
 
-namespace Rubicon.Mixins.UnitTests.ValidationTests
+namespace Remotion.Mixins.UnitTests.ValidationTests
 {
   public class ValidationTestBase
   {

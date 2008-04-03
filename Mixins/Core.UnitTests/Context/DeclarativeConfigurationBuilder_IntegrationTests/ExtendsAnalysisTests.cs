@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.Context;
 using NUnit.Framework;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Utilities;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.UnitTests.Context.DeclarativeConfigurationBuilder_IntegrationTests
+namespace Remotion.Mixins.UnitTests.Context.DeclarativeConfigurationBuilder_IntegrationTests
 {
   [TestFixture]
   public class ExtendsAnalysisTests

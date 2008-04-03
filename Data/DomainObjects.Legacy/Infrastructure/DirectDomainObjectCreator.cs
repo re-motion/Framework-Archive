@@ -1,10 +1,10 @@
 using System;
 using System.Reflection;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Reflection;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.Infrastructure
+namespace Remotion.Data.DomainObjects.Legacy.Infrastructure
 {
   // Creates new domain object instances via a Reflection-based constructor call.
   // Needed constructors:

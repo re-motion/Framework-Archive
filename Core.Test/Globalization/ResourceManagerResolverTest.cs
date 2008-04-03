@@ -1,14 +1,14 @@
 using System;
 using System.Resources;
 using NUnit.Framework;
-using Rubicon.Collections;
-using Rubicon.Core.UnitTests.Globalization.SampleTypes;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Globalization;
+using Remotion.Collections;
+using Remotion.Core.UnitTests.Globalization.SampleTypes;
+using Remotion.Development.UnitTesting;
+using Remotion.Globalization;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Globalization
+namespace Remotion.Core.UnitTests.Globalization
 {
   [TestFixture]
   public class ResourceManagerResolverTest
@@ -135,7 +135,7 @@ namespace Rubicon.Core.UnitTests.Globalization
     }
 
     [Test]
-    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Rubicon.Core.UnitTests.Globalization.SampleTypes."
+    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.Core.UnitTests.Globalization.SampleTypes."
         + "ClassWithoutMultiLingualResourcesAttributes and its base classes do not define the attribute MultiLingualResourcesAttribute.")]
     public void FindFirstResourceDefinitions_NoSuccessException ()
     {
@@ -174,7 +174,7 @@ namespace Rubicon.Core.UnitTests.Globalization
     }
 
     [Test]
-    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Rubicon.Core.UnitTests.Globalization.SampleTypes."
+    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.Core.UnitTests.Globalization.SampleTypes."
         + "ClassWithoutMultiLingualResourcesAttributes and its base classes do not define the attribute MultiLingualResourcesAttribute.")]
     public void GetResourceManager_NoDefiningType_NoSuccess ()
     {
@@ -216,7 +216,7 @@ namespace Rubicon.Core.UnitTests.Globalization
     }
 
     [Test]
-    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Rubicon.Core.UnitTests.Globalization.SampleTypes."
+    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.Core.UnitTests.Globalization.SampleTypes."
         + "ClassWithoutMultiLingualResourcesAttributes and its base classes do not define the attribute MultiLingualResourcesAttribute.")]
     public void GetResourceManager_DefiningType_NoSuccess ()
     {

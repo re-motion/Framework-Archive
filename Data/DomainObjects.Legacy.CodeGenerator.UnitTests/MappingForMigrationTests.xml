@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\Schemas\Mapping.xsd">
 	<classes>
 		<class id="Company">
-			<type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Company, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Company, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
 			<storageProviderID>FirstStorageProvider</storageProviderID>
 			<properties>
 				<property name="Name">
@@ -27,12 +27,12 @@
 		</class>
     
 		<class id="Customer" baseClass="Company">
-			<type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Customer, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Customer, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
 			<entity name="Customer"/>
 			<storageProviderID>FirstStorageProvider</storageProviderID>
 			<properties>
 				<property name="Type">
-					<type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+					<type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Customer+CustomerType, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
 					<column>CustomerType</column>
 				</property>
         <property name="PropertyWithIdenticalNameInDifferentInheritanceBranches">
@@ -41,7 +41,7 @@
           <maxLength>100</maxLength>
         </property>
 				<relationProperty name="Orders" relationID="CustomerToOrder" cardinality="many" isMandatory="false">
-					<collectionType>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</collectionType>
+					<collectionType>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.OrderCollection, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</collectionType>
 					<sortExpression>Number ASC</sortExpression>
 				</relationProperty>
         <relationProperty name="PrimaryOfficial" relationID="OfficialToCustomer" cardinality="one" isMandatory="true">
@@ -52,7 +52,7 @@
 		</class>
 
     <class id="Partner" baseClass="Company">
-      <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Partner, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Partner, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
         <property name="Description">
@@ -69,7 +69,7 @@
     </class>
 
     <class id="DevelopmentPartner" baseClass="Partner">
-      <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.DevelopmentPartner, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.DevelopmentPartner, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
       <entity name="DevelopmentPartner"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -82,13 +82,13 @@
     </class>
 
     <class id="AbstractWithoutConcreteClass" baseClass="Company">
-      <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.AbstractWithoutConcreteClass, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.AbstractWithoutConcreteClass, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties/>
     </class>
     
     <class id="Address">
-      <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Address, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Address, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
       <entity name="Address"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -112,7 +112,7 @@
     </class>
     
     <class id="Order">
-      <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Order, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Order, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
       <entity name="Order"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -121,7 +121,7 @@
           <column>Number</column>
         </property>
         <property name="Priority">
-          <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.OrderPriority, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+          <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.OrderPriority, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
           <column>Priority</column>
         </property>
         <relationProperty name="Customer" relationID="CustomerToOrder" cardinality="one" isMandatory="true">
@@ -135,7 +135,7 @@
     </class>
 
     <class id="OrderItem">
-      <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.OrderItem, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.OrderItem, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
       <entity name="OrderItem"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -155,7 +155,7 @@
     </class>
 
     <class id="Official">
-      <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Official, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Official, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
       <entity name="Official"/>
       <storageProviderID>SecondStorageProvider</storageProviderID>
       <properties>
@@ -165,22 +165,22 @@
           <maxLength>100</maxLength>
         </property>
         <property name="ResponsibleForOrderPriority">
-          <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.OrderPriority, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+          <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.OrderPriority, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
           <column>ResponsibleForOrderPriority</column>
         </property>
         <property name="ResponsibleForCustomerType">
-          <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+          <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Customer+CustomerType, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
           <column>ResponsibleForCustomerType</column>
         </property>
 
         <relationProperty name="Orders" relationID="OfficialToOrder" cardinality="many" isMandatory="false">
-          <collectionType>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</collectionType>
+          <collectionType>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.OrderCollection, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</collectionType>
         </relationProperty>
       </properties>
     </class>
 
     <class id="SpecialOfficial" baseClass="Official">
-      <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Official, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Official, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
       <storageProviderID>SecondStorageProvider</storageProviderID>
       <properties>
         <property name="Speciality">
@@ -192,7 +192,7 @@
     </class>
     
     <class id="Ceo">
-      <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Ceo, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Ceo, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
       <entity name="Ceo"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -208,7 +208,7 @@
     </class>
 
     <class id="ClassWithAllDataTypes">
-      <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.ClassWithAllDataTypes, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
       <entity name="TableWithAllDataTypes"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -237,7 +237,7 @@
           <column>Double</column>
         </property>
         <property name="EnumProperty">
-          <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+          <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.ClassWithAllDataTypes+EnumType, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
           <column>Enum</column>
         </property>
         <property name="GuidProperty">
@@ -399,7 +399,7 @@
     </class>
 
     <class id="Employee">
-      <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Employee, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.Employee, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
       <entity name="Employee"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -417,7 +417,7 @@
     </class>
 
     <class id="ClassWithRelations">
-      <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.ClassWithRelations, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.ClassWithRelations, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
       <entity name="ClassWithRelations"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -429,7 +429,7 @@
     </class>
     
     <class id="ConcreteClass">
-      <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.ConcreteClass, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.ConcreteClass, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
       <entity name="ConcreteClass"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -442,7 +442,7 @@
     </class>
 
     <class id="DerivedClass" baseClass="ConcreteClass">
-      <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.DerivedClass, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.DerivedClass, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
         <property name="PropertyInDerivedClass">
@@ -454,7 +454,7 @@
     </class>
 
     <class id="SecondDerivedClass" baseClass="ConcreteClass">
-      <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.SecondDerivedClass, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.SecondDerivedClass, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
       <entity name="ConcreteClass"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -471,7 +471,7 @@
     </class>
 
     <class id="DerivedOfDerivedClass" baseClass="DerivedClass">
-      <type>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.DerivedOfDerivedClass, Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.MigrationToReflectionBasedMapping.TestDomain.DerivedOfDerivedClass, Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests</type>
       <entity name="ConcreteClass"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>

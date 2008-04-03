@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditGroupForm.aspx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupForm" MasterPageFile="../SecurityManagerMasterPage.Master"  %>
-<%@ Register Assembly="Rubicon.Web" Namespace="Rubicon.Web.UI.Controls" TagPrefix="rubicon" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditGroupForm.aspx.cs" Inherits="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupForm" MasterPageFile="../SecurityManagerMasterPage.Master"  %>
+<%@ Register Assembly="Remotion.Web" Namespace="Remotion.Web.UI.Controls" TagPrefix="remotion" %>
 <%@ Register TagPrefix="securityManager" Src="EditGroupControl.ascx" TagName="EditGroupControl" %>
 <%@ Register TagPrefix="securityManager" Src="../ErrorMessageControl.ascx" TagName="ErrorMessageControl" %>
 
@@ -13,10 +13,10 @@
   <table cellpadding="0" cellspacing="0">
     <tr>
       <td>
-        <rubicon:WebButton ID="SaveButton" runat="server" Text="$res:Save" OnClick="SaveButton_Click" CausesValidation="false"/>
+        <remotion:WebButton ID="SaveButton" runat="server" Text="$res:Save" OnClick="SaveButton_Click" CausesValidation="false"/>
       </td>
       <td>
-        <rubicon:WebButton ID="CancelButton" runat="server" Text="$res:Cancel" style="margin-left: 5px;" 
+        <remotion:WebButton ID="CancelButton" runat="server" Text="$res:Cancel" style="margin-left: 5px;" 
           OnClick="CancelButton_Click" CausesValidation="false"/>
       </td>
     </tr>

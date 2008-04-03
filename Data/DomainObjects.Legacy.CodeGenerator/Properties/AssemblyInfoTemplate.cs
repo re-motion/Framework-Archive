@@ -8,8 +8,8 @@ using System.Runtime.CompilerServices;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle("Rubicon DomainObjects CodeGenerator Library")]
-[assembly: AssemblyDescription("Library for generation of sql scripts and domain model code for the Rubicon DomainObjects Library")]
+[assembly: AssemblyTitle("Remotion DomainObjects CodeGenerator Library")]
+[assembly: AssemblyDescription("Library for generation of sql scripts and domain model code for the Remotion DomainObjects Library")]
 [assembly: AssemblyConfiguration("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]
 [assembly: AssemblyProduct("@productname@")]

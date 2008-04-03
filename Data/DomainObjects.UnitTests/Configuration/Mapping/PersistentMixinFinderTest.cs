@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Mixins;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Mixins;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
   public class PersistentMixinFinderTest
@@ -40,8 +40,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage = "The persistence-relevant mixin "
-        + "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PersistentMixinFinderTest+GenericMixin`1 applied to class "
-        + "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order has open generic type parameters. All type parameters of the mixin must be "
+        + "Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.PersistentMixinFinderTest+GenericMixin`1 applied to class "
+        + "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order has open generic type parameters. All type parameters of the mixin must be "
         + "specified when it is applied to a DomainObject.")]
     public void ForInvalidOpenGenericMixin ()
     {

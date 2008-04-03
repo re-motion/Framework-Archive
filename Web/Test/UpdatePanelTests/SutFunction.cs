@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Web.Test.UpdatePanelTests
+namespace Remotion.Web.Test.UpdatePanelTests
 {
   public class SutFunction : WxeFunction
   {

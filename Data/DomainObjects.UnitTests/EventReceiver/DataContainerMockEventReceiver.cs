@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
+namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
   public abstract class DataContainerMockEventReceiver
   {

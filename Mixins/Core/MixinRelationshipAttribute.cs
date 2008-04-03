@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   public class MixinRelationshipAttribute : Attribute
   {

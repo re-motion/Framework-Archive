@@ -1,7 +1,7 @@
 using System;
-using Rubicon.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 {
 
 public class BocListSortingOrderEntryMock : BocListSortingOrderEntry

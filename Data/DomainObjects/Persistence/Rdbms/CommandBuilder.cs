@@ -1,9 +1,9 @@
 using System;
 using System.Data;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
   public abstract class CommandBuilder
   {
@@ -53,7 +53,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
     }
 
     /// <remarks>
-    /// This method cannot be used for binary (BLOB) <paramref name="parameterValues"/>. Use the overload with a <see cref="Rubicon.Data.DomainObjects.PropertyValue"/> instead.
+    /// This method cannot be used for binary (BLOB) <paramref name="parameterValues"/>. Use the overload with a <see cref="Remotion.Data.DomainObjects.PropertyValue"/> instead.
     /// </remarks>
     public IDataParameter AddCommandParameter (IDbCommand command, string parameterName, object parameterValue)
     {

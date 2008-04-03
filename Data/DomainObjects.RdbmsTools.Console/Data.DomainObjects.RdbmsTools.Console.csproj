@@ -7,7 +7,7 @@
     <ProjectGuid>{A6505EE0-0F6B-4CB6-ACC7-1C05C0E236BC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Data.DomainObjects.RdbmsTools.Console</RootNamespace>
+    <RootNamespace>Remotion.Data.DomainObjects.RdbmsTools.Console</RootNamespace>
     <AssemblyName>dbschema</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

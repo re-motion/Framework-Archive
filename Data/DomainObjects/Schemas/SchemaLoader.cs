@@ -1,11 +1,11 @@
 using System;
 using System.Xml.Schema;
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Utilities;
-using Rubicon.Xml;
+using Remotion.Data.DomainObjects.ConfigurationLoader;
+using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Utilities;
+using Remotion.Xml;
 
-namespace Rubicon.Data.DomainObjects.Schemas
+namespace Remotion.Data.DomainObjects.Schemas
 {
   public class SchemaLoader : SchemaLoaderBase
   {

@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using Castle.DynamicProxy;
 using NUnit.Framework;
-using Rubicon.CodeGeneration;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.CodeGeneration;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Mixins.Utilities;
+using Remotion.Mixins.Utilities;
 
-namespace Rubicon.Mixins.UnitTests
+namespace Remotion.Mixins.UnitTests
 {
   [TestFixture]
   public class TypeUtilityTests

@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.UnitTests.ValidationTests.ValidationSampleTypes;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Mixins.Validation;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.ValidationTests.ValidationSampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Validation;
 
-namespace Rubicon.Mixins.UnitTests.ValidationTests.Rules
+namespace Remotion.Mixins.UnitTests.ValidationTests.Rules
 {
   [TestFixture]
   public class DefaultInterfaceIntroductionRulesTests : ValidationTestBase
@@ -16,7 +16,7 @@ namespace Rubicon.Mixins.UnitTests.ValidationTests.Rules
       TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType2), typeof (MixinIntroducingInternalInterface));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.IntroducedInterfaceMustBePublic", log));
+      Assert.IsTrue (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.IntroducedInterfaceMustBePublic", log));
     }
   }
 }

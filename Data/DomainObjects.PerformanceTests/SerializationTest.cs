@@ -1,11 +1,11 @@
 using System;
 using System.Diagnostics;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.PerformanceTests.TestDomain;
-using Rubicon.Development.UnitTesting;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.PerformanceTests.TestDomain;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.PerformanceTests
+namespace Remotion.Data.DomainObjects.PerformanceTests
 {
   // Reference system: Dell Dimension 9200, Intel Core 2 @ 2,66 GHz, 3,93 GB RAM; run in Release mode
 

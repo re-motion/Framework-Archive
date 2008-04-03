@@ -4,20 +4,20 @@ using System.IO;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Design;
-using Rubicon.Data.DomainObjects.Development;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Mapping.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Design;
+using Remotion.Data.DomainObjects.Development;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Design
+namespace Remotion.Data.DomainObjects.UnitTests.Design
 {
   [TestFixture]
   public class DesignModeMappingReflectorTest
@@ -100,7 +100,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
           {
             try
             {
-              Compile (@"Design\DelaySignAssembly", @"Design.Dlls\Rubicon.Data.DomainObjects.UnitTests.Design.DelaySignAssembly.dll");
+              Compile (@"Design\DelaySignAssembly", @"Design.Dlls\Remotion.Data.DomainObjects.UnitTests.Design.DelaySignAssembly.dll");
               Assert.Fail ("Expected FileLoadException");
             }
             catch (FileLoadException)
@@ -110,7 +110,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
             catch (AssemblyCompilationException)
             {
               // file gets locked on multiple executions
-              Assert.IsTrue (System.IO.File.Exists (@"Design.Dlls\Rubicon.Data.DomainObjects.UnitTests.Design.DelaySignAssembly.dll"));
+              Assert.IsTrue (System.IO.File.Exists (@"Design.Dlls\Remotion.Data.DomainObjects.UnitTests.Design.DelaySignAssembly.dll"));
             }
           });
 
@@ -151,7 +151,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
       AssemblyCompiler compiler = new AssemblyCompiler (
           sourceDirectory,
           outputAssembly,
-          new string[] {"Rubicon.Core.dll", "Rubicon.Data.DomainObjects.dll", "Rubicon.Mixins.dll"});
+          new string[] {"Remotion.Core.dll", "Remotion.Data.DomainObjects.dll", "Remotion.Mixins.dll"});
 
       compiler.Compile();
     }

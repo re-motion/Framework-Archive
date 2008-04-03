@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Development.UnitTesting
+namespace Remotion.Development.UnitTesting
 {
   /// <summary>
   /// Provides utility functions for accessing non-public types and members.

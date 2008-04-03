@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
 /// <summary>
 /// The exception that is thrown when a <see cref="PropertyValue"/> is set with a value that is exceeds the <see cref="PropertyValue.MaxLength"/> of the property.

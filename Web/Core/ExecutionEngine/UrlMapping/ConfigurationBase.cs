@@ -1,7 +1,7 @@
 using System;
 using System.Xml.Serialization;
 
-namespace Rubicon.Web.ExecutionEngine.UrlMapping
+namespace Remotion.Web.ExecutionEngine.UrlMapping
 {
 /// <summary> Represents the common information all configuration classes provide. </summary>
 public class ConfigurationBase

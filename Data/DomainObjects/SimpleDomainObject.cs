@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Reflection;
+using Remotion.Reflection;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Represents a <see cref="DomainObject"/> that can be instantiated (via <see cref="NewObject"/>), retrieved (via

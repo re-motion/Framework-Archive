@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.Test.MultiplePostBackCatching
+namespace Remotion.Web.Test.MultiplePostBackCatching
 {
   public class TestExpectationsGenerator
   {

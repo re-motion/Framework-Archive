@@ -3,13 +3,13 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
+using Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 using System.IO;
-using Rubicon.Development.UnitTesting;
+using Remotion.Development.UnitTesting;
 using File=System.IO.File;
 
-namespace Rubicon.Data.DomainObjects.UnitTests
+namespace Remotion.Data.DomainObjects.UnitTests
 {
   [TestFixture]
   public class ReflectionUtilityTest : StandardMappingTest
@@ -20,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
       PropertyInfo propertyInfo = typeof (DerivedClassWithMixedProperties).GetProperty ("Int32");
 
       Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.Int32",
+          "Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.Int32",
           ReflectionUtility.GetPropertyName (propertyInfo));
     }
        

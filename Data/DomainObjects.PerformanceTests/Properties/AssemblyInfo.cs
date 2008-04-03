@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Rubicon.Data.DomainObjects;
+using Remotion.Data.DomainObjects;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -9,11 +9,11 @@ using Rubicon.Data.DomainObjects;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle("Performance Tests for Rubicon DomainObjects Library")]
-[assembly: AssemblyDescription("Performance Tests for Rubicon DomainObjects Library")]
+[assembly: AssemblyTitle("Performance Tests for Remotion DomainObjects Library")]
+[assembly: AssemblyDescription("Performance Tests for Remotion DomainObjects Library")]
 [assembly: AssemblyConfiguration(".NET Framework: net-1.1, build type: release")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
-[assembly: AssemblyProduct("Rubicon .NET Commons")]
+[assembly: AssemblyProduct("Remotion")]
 [assembly: AssemblyCopyright("(c) 2003 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		

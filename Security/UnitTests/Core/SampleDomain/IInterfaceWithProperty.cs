@@ -1,4 +1,4 @@
-namespace Rubicon.Security.UnitTests.Core.SampleDomain
+namespace Remotion.Security.UnitTests.Core.SampleDomain
 {
   public interface IInterfaceWithProperty
   {

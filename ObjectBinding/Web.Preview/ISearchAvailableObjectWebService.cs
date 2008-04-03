@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.ObjectBinding.Web
+namespace Remotion.ObjectBinding.Web
 {
   public interface ISearchAvailableObjectWebService
   {

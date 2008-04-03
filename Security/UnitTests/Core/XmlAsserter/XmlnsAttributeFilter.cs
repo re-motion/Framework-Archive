@@ -1,8 +1,8 @@
 using System;
 using System.Xml;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Security.UnitTests.Core.XmlAsserter
+namespace Remotion.Security.UnitTests.Core.XmlAsserter
 {
   public class XmlnsAttributeEventArgs : EventArgs
   {

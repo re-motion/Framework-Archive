@@ -17,7 +17,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Console</RootNamespace>
+    <RootNamespace>Remotion.Data.DomainObjects.Legacy.CodeGenerator.Console</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>

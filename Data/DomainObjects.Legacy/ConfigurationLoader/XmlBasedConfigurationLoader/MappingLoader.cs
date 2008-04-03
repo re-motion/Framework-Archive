@@ -2,15 +2,15 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Design;
-using Rubicon.Data.DomainObjects.Legacy.Design;
-using Rubicon.Data.DomainObjects.Legacy.Schemas;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.ConfigurationLoader;
+using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Design;
+using Remotion.Data.DomainObjects.Legacy.Design;
+using Remotion.Data.DomainObjects.Legacy.Schemas;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader
+namespace Remotion.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader
 {
   [DesignModeMappingLoader (typeof (DesignModeXmlBasedMappingLoader))]
   public class MappingLoader: BaseFileLoader, IMappingLoader
@@ -19,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigur
 
     // static members and constants
 
-    public const string ConfigurationAppSettingKey = "Rubicon.Data.DomainObjects.Mapping.ConfigurationFile";
+    public const string ConfigurationAppSettingKey = "Remotion.Data.DomainObjects.Mapping.ConfigurationFile";
     public const string DefaultConfigurationFile = "Mapping.xml";
 
     public static MappingLoader Create()

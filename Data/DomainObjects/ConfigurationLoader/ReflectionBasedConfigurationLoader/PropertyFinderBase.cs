@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
+namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   /// <summary>The <see cref="PropertyFinderBase"/> is used to find all <see cref="PropertyInfo"/> objects relevant for the mapping.</summary>
   /// <remarks>Derived classes must have a cosntructor with a matching the <see cref="PropertyFinderBase"/>'s constructor signature. </remarks>
@@ -107,7 +107,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
-      Type originalDeclaringType = Rubicon.Utilities.ReflectionUtility.GetOriginalDeclaringType (propertyInfo);
+      Type originalDeclaringType = Remotion.Utilities.ReflectionUtility.GetOriginalDeclaringType (propertyInfo);
       if (originalDeclaringType.IsGenericType && propertyInfo.DeclaringType.IsGenericType)
         return originalDeclaringType.GetGenericTypeDefinition() == propertyInfo.DeclaringType.GetGenericTypeDefinition();
       return originalDeclaringType == propertyInfo.DeclaringType;

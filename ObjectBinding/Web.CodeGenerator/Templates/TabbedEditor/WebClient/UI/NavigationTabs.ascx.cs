@@ -1,5 +1,5 @@
 using System;
-using Rubicon.Web.UI.Globalization;
+using Remotion.Web.UI.Globalization;
 
 namespace $PROJECT_ROOTNAMESPACE$.UI
 {

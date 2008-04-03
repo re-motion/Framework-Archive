@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
   public class RemoveFromOneToManyRelationTest : ClientTransactionBaseTest
@@ -39,8 +39,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.AreEqual (true, _subordinateEventReceiver.HasRelationChangingEventBeenCalled);
       Assert.AreEqual (true, _subordinateEventReceiver.HasRelationChangedEventBeenCalled);
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _subordinateEventReceiver.ChangingRelationPropertyName);
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _subordinateEventReceiver.ChangedRelationPropertyName);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _subordinateEventReceiver.ChangingRelationPropertyName);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _subordinateEventReceiver.ChangedRelationPropertyName);
       Assert.AreSame (_supervisor, _subordinateEventReceiver.OldRelatedObject);
       Assert.IsNull (_subordinateEventReceiver.NewRelatedObject);
 
@@ -51,8 +51,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.AreEqual (true, _supervisorEventReceiver.HasRelationChangingEventBeenCalled);
       Assert.AreEqual (true, _supervisorEventReceiver.HasRelationChangedEventBeenCalled);
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates", _supervisorEventReceiver.ChangingRelationPropertyName);
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates", _supervisorEventReceiver.ChangedRelationPropertyName);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates", _supervisorEventReceiver.ChangingRelationPropertyName);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates", _supervisorEventReceiver.ChangedRelationPropertyName);
       Assert.AreSame (_subordinate, _supervisorEventReceiver.OldRelatedObject);
       Assert.IsNull (_supervisorEventReceiver.NewRelatedObject);
 
@@ -78,7 +78,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       {
         Assert.IsTrue (_subordinateEventReceiver.HasRelationChangingEventBeenCalled);
         Assert.IsFalse (_subordinateEventReceiver.HasRelationChangedEventBeenCalled);
-        Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _subordinateEventReceiver.ChangingRelationPropertyName);
+        Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _subordinateEventReceiver.ChangingRelationPropertyName);
         Assert.IsNull (_subordinateEventReceiver.ChangedRelationPropertyName);
         Assert.AreSame (_supervisor, _subordinateEventReceiver.OldRelatedObject);
         Assert.IsNull (_subordinateEventReceiver.NewRelatedObject);
@@ -119,7 +119,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       {
         Assert.IsTrue (_subordinateEventReceiver.HasRelationChangingEventBeenCalled);
         Assert.IsFalse (_subordinateEventReceiver.HasRelationChangedEventBeenCalled);
-        Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _subordinateEventReceiver.ChangingRelationPropertyName);
+        Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _subordinateEventReceiver.ChangingRelationPropertyName);
         Assert.IsNull (_subordinateEventReceiver.ChangedRelationPropertyName);
         Assert.AreSame (_supervisor, _subordinateEventReceiver.OldRelatedObject);
         Assert.IsNull (_subordinateEventReceiver.NewRelatedObject);
@@ -159,7 +159,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       {
         Assert.IsTrue (_subordinateEventReceiver.HasRelationChangingEventBeenCalled);
         Assert.IsFalse (_subordinateEventReceiver.HasRelationChangedEventBeenCalled);
-        Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _subordinateEventReceiver.ChangingRelationPropertyName);
+        Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _subordinateEventReceiver.ChangingRelationPropertyName);
         Assert.IsNull (_subordinateEventReceiver.ChangedRelationPropertyName);
         Assert.AreSame (_supervisor, _subordinateEventReceiver.OldRelatedObject);
         Assert.IsNull (_subordinateEventReceiver.NewRelatedObject);
@@ -171,7 +171,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
         Assert.AreEqual (true, _supervisorEventReceiver.HasRelationChangingEventBeenCalled);
         Assert.IsFalse (_supervisorEventReceiver.HasRelationChangedEventBeenCalled);
-        Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates", _supervisorEventReceiver.ChangingRelationPropertyName);
+        Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates", _supervisorEventReceiver.ChangingRelationPropertyName);
         Assert.IsNull (_supervisorEventReceiver.ChangedRelationPropertyName);
         Assert.AreSame (_subordinate, _supervisorEventReceiver.OldRelatedObject);
         Assert.IsNull (_supervisorEventReceiver.NewRelatedObject);
@@ -208,7 +208,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _supervisor.Subordinates.Remove (_subordinate);
 
-			Assert.IsNull ((ObjectID) _subordinate.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"));
+			Assert.IsNull ((ObjectID) _subordinate.InternalDataContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"));
     }
 
     [Test]

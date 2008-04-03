@@ -4,7 +4,7 @@ using System.Text;
 using System.Runtime.Serialization;
 using System.Diagnostics;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
   /// <summary>
   /// This exception is thrown when an assertion fails.

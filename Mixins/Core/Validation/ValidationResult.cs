@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Utilities;
-using Rubicon.Text;
+using Remotion.Mixins.Definitions;
+using Remotion.Utilities;
+using Remotion.Text;
 
-namespace Rubicon.Mixins.Validation
+namespace Remotion.Mixins.Validation
 {
   [Serializable]
   public struct ValidationResult

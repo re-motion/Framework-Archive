@@ -1,14 +1,14 @@
 <namespaces>
-  <namespace name="Rubicon.Data">
-    The <B>Rubicon.Data</B> namespace contains an interface for transaction handling in rubicon libraries.
+  <namespace name="Remotion.Data">
+    The <B>Remotion.Data</B> namespace contains an interface for transaction handling in the Remotion libraries.
   </namespace>  
 <!--
-  <namespace name="Rubicon.NullableValueTypes">
+  <namespace name="Remotion.NullableValueTypes">
 summary
   </namespace>
 -->  
 <!--
-  <namespace name="Rubicon.Globalization">
+  <namespace name="Remotion.Globalization">
 summary
   </namespace>
 -->  

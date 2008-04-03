@@ -2,11 +2,11 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
-using Rubicon.ObjectBinding;
-using Rubicon.Development.UnitTesting;
+using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
+using Remotion.ObjectBinding;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.Serialization
+namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.Serialization
 {
 [TestFixture]
 public class SerializationTest : DatabaseTest

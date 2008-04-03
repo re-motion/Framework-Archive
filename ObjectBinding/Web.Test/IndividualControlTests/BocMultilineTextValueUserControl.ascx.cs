@@ -2,14 +2,14 @@ using System;
 using System.Web;
 using System.Web.UI.WebControls;
 
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -17,32 +17,32 @@ namespace OBWTest.IndividualControlTests
 public class BocMultilineTextValueUserControl : BaseUserControl
 {
   protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue CVField;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue CVField;
   protected System.Web.UI.WebControls.Label CVFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue ReadOnlyCVField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue ReadOnlyCVField;
   protected System.Web.UI.WebControls.Label ReadOnlyCVFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue UnboundCVField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue UnboundCVField;
   protected System.Web.UI.WebControls.Label UnboundCVFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue UnboundReadOnlyCVField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue UnboundReadOnlyCVField;
   protected System.Web.UI.WebControls.Label UnboundReadOnlyCVFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue DisabledCVField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue DisabledCVField;
   protected System.Web.UI.WebControls.Label DisabledCVFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue DisabledReadOnlyCVField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue DisabledReadOnlyCVField;
   protected System.Web.UI.WebControls.Label DisabledReadOnlyCVFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue DisabledUnboundCVField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue DisabledUnboundCVField;
   protected System.Web.UI.WebControls.Label DisabledUnboundCVFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue DisabledUnboundReadOnlyCVField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue DisabledUnboundReadOnlyCVField;
   protected System.Web.UI.WebControls.Label DisabledUnboundReadOnlyCVFieldValueLabel;
   protected System.Web.UI.WebControls.Label CVFieldTextChangedLabel;
-  protected Rubicon.Web.UI.Controls.WebButton CVTestSetNullButton;
-  protected Rubicon.Web.UI.Controls.WebButton CVTestSetNewValueButton;
-  protected Rubicon.Web.UI.Controls.WebButton ReadOnlyCVTestSetNullButton;
-  protected Rubicon.Web.UI.Controls.WebButton ReadOnlyCVTestSetNewValueButton;
+  protected Remotion.Web.UI.Controls.WebButton CVTestSetNullButton;
+  protected Remotion.Web.UI.Controls.WebButton CVTestSetNewValueButton;
+  protected Remotion.Web.UI.Controls.WebButton ReadOnlyCVTestSetNullButton;
+  protected Remotion.Web.UI.Controls.WebButton ReadOnlyCVTestSetNewValueButton;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
@@ -66,13 +66,13 @@ public class BocMultilineTextValueUserControl : BaseUserControl
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    UnboundCVField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
+    UnboundCVField.Property = (Remotion.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     //UnboundCVField.LoadUnboundValue (person.CV, IsPostBack);
-    UnboundReadOnlyCVField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
+    UnboundReadOnlyCVField.Property = (Remotion.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     UnboundReadOnlyCVField.LoadUnboundValue (person.CV, IsPostBack);
-    DisabledUnboundCVField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
+    DisabledUnboundCVField.Property = (Remotion.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     DisabledUnboundCVField.LoadUnboundValue (person.CV, IsPostBack);
-    DisabledUnboundReadOnlyCVField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
+    DisabledUnboundReadOnlyCVField.Property = (Remotion.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     DisabledUnboundReadOnlyCVField.LoadUnboundValue (person.CV, IsPostBack);
     
     if (!IsPostBack)

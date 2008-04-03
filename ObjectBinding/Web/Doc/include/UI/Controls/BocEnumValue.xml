@@ -56,7 +56,7 @@
         The control provides a default <b>CSS Class</b>, applied to the top level element: <c>bocEnumValue</c>.
       </para><para>
         The control supports auto-postback. Use the <see cref="ListControlStyle"/>'s 
-        <see cref="Rubicon.ObjectBinding.Web.UI.Controls.ListControlStyle.AutoPostBack"/> property to enable this behavior.
+        <see cref="Remotion.ObjectBinding.Web.UI.Controls.ListControlStyle.AutoPostBack"/> property to enable this behavior.
       </para>
 
       <h4 class="dtH4">Localization Support</h4>
@@ -65,7 +65,7 @@
         enum. See the <b>ResourceIdentifier</b>'s documentation for details on localization.
       </para><para>
         The control supports resource dispatching to its properties through the 
-        <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>.
+        <see cref="Remotion.Web.UI.Globalization.ResourceDispatcher"/>.
         Use the following resource identifiers for dispatching strings to the <b>BocEnumValue</b>
         or use the <b>global resource identifier</b> syntax for setting the resource identifier in the propery.
       </para>

@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.BindableObject;
+using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.BindableObject;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
+namespace Remotion.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
 {
   [TestFixture]
   public class IdentityTest : ObjectBindingBaseTest

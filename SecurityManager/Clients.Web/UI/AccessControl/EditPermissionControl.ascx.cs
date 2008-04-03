@@ -1,10 +1,10 @@
 using System;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.SecurityManager.Clients.Web.Classes;
-using Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.SecurityManager.Clients.Web.Classes;
+using Remotion.SecurityManager.Clients.Web.Globalization.UI.AccessControl;
+using Remotion.Web.UI.Globalization;
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
+namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 {
   [WebMultiLingualResources (typeof (AccessControlResources))]
   public partial class EditPermissionControl : BaseControl

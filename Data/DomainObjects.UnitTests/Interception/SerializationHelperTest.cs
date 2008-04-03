@@ -1,13 +1,13 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.Infrastructure.Interception;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using System.Runtime.Serialization;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Interception
+namespace Remotion.Data.DomainObjects.UnitTests.Interception
 {
   [TestFixture]
   public class SerializationHelperTest : ClientTransactionBaseTest
@@ -215,7 +215,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (SerializationException), ExpectedMessage = "The deserialization constructor on type "
-        + "Rubicon.Data.DomainObjects.UnitTests.Interception.SerializationHelperTest+SerializableClassImplementingISerializableNotCallingBaseCtor "
+        + "Remotion.Data.DomainObjects.UnitTests.Interception.SerializationHelperTest+SerializableClassImplementingISerializableNotCallingBaseCtor "
         + "did not call DomainObject's base deserialization constructor.")]
     public void OnDeserializationThrowsIfISerializableBaseCtorNotCalled ()
     {
@@ -226,7 +226,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (SerializationException), ExpectedMessage = "The GetObjectData method on type "
-        + "Rubicon.Data.DomainObjects.UnitTests.Interception.SerializationHelperTest+SerializableClassImplementingISerializableNotCallingBaseGetObjectData"
+        + "Remotion.Data.DomainObjects.UnitTests.Interception.SerializationHelperTest+SerializableClassImplementingISerializableNotCallingBaseGetObjectData"
         +" did not call DomainObject's BaseGetObjectData method.")]
     public void DeserializationCtorThrowsIfBaseGetObjectDataNotCalled ()
     {

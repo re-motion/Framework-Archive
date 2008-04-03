@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Security.UnitTests.Core.SampleDomain;
-using Rubicon.Development.UnitTesting;
+using Remotion.Security.UnitTests.Core.SampleDomain;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Security.UnitTests.Core
+namespace Remotion.Security.UnitTests.Core
 {
   [TestFixture]
   public class EnumWrapperTest
@@ -14,21 +14,21 @@ namespace Rubicon.Security.UnitTests.Core
       EnumWrapper wrapper = new EnumWrapper (TestAccessTypes.First);
 
       Assert.AreEqual ("First", wrapper.Name);
-      Assert.AreEqual ("Rubicon.Security.UnitTests.Core.SampleDomain.TestAccessTypes, Rubicon.Security.UnitTests", wrapper.TypeName);
+      Assert.AreEqual ("Remotion.Security.UnitTests.Core.SampleDomain.TestAccessTypes, Remotion.Security.UnitTests", wrapper.TypeName);
     }
 
     [Test]
     public void InitializeFromString ()
     {
-      EnumWrapper wrapper = new EnumWrapper ("First", "Rubicon.Security.UnitTests::Core.SampleDomain.TestAccessTypes");
+      EnumWrapper wrapper = new EnumWrapper ("First", "Remotion.Security.UnitTests::Core.SampleDomain.TestAccessTypes");
 
       Assert.AreEqual ("First", wrapper.Name);
-      Assert.AreEqual ("Rubicon.Security.UnitTests.Core.SampleDomain.TestAccessTypes, Rubicon.Security.UnitTests", wrapper.TypeName);
+      Assert.AreEqual ("Remotion.Security.UnitTests.Core.SampleDomain.TestAccessTypes, Remotion.Security.UnitTests", wrapper.TypeName);
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Enumerated type 'Rubicon.Security.UnitTests.Core.SampleDomain.TestFlags' cannot be wrapped. "
+        ExpectedMessage = "Enumerated type 'Remotion.Security.UnitTests.Core.SampleDomain.TestFlags' cannot be wrapped. "
         + "Only enumerated types without the System.FlagsAttribute can be wrapped.\r\nParameter name: enumValue")]
     public void InitializeWithEnumHavingFlagsAttribute ()
     {
@@ -45,8 +45,8 @@ namespace Rubicon.Security.UnitTests.Core
       Assert.IsTrue (expected.Equals (new EnumWrapper (TestAccessTypes.First)));
       Assert.IsTrue (new EnumWrapper (TestAccessTypes.First).Equals (expected));
 
-      Assert.IsTrue (expected.Equals (new EnumWrapper ("First", "Rubicon.Security.UnitTests.Core.SampleDomain.TestAccessTypes, Rubicon.Security.UnitTests")));
-      Assert.IsTrue (new EnumWrapper ("First", "Rubicon.Security.UnitTests.Core.SampleDomain.TestAccessTypes, Rubicon.Security.UnitTests").Equals (expected));
+      Assert.IsTrue (expected.Equals (new EnumWrapper ("First", "Remotion.Security.UnitTests.Core.SampleDomain.TestAccessTypes, Remotion.Security.UnitTests")));
+      Assert.IsTrue (new EnumWrapper ("First", "Remotion.Security.UnitTests.Core.SampleDomain.TestAccessTypes, Remotion.Security.UnitTests").Equals (expected));
       
       Assert.IsFalse (expected.Equals (new EnumWrapper (TestAccessTypes.Second)));
       Assert.IsFalse (new EnumWrapper (TestAccessTypes.Second).Equals (expected));
@@ -63,32 +63,32 @@ namespace Rubicon.Security.UnitTests.Core
       EnumWrapper expected = new EnumWrapper (TestAccessTypes.First);
 
       Assert.AreEqual (expected.GetHashCode (), new EnumWrapper (TestAccessTypes.First).GetHashCode ());
-      Assert.AreEqual (expected.GetHashCode (), new EnumWrapper ("First", "Rubicon.Security.UnitTests.Core.SampleDomain.TestAccessTypes, Rubicon.Security.UnitTests").GetHashCode ());
+      Assert.AreEqual (expected.GetHashCode (), new EnumWrapper ("First", "Remotion.Security.UnitTests.Core.SampleDomain.TestAccessTypes, Remotion.Security.UnitTests").GetHashCode ());
     }
 
     [Test]
     [ExpectedException (typeof (TypeLoadException))]
     public void GetEnum_FromInvalidTypeName ()
     {
-      EnumWrapper wrapper = new EnumWrapper ("First", "Rubicon.Security.UnitTests::Core.SampleDomain.Invalid");
+      EnumWrapper wrapper = new EnumWrapper ("First", "Remotion.Security.UnitTests::Core.SampleDomain.Invalid");
 
       wrapper.GetEnum ();
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The type 'Rubicon.Security.UnitTests.Core.SampleDomain.SimpleType, Rubicon.Security.UnitTests' is not an enumerated type.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The type 'Remotion.Security.UnitTests.Core.SampleDomain.SimpleType, Remotion.Security.UnitTests' is not an enumerated type.")]
     public void GetEnum_FromTypeNotEnum ()
     {
-      EnumWrapper wrapper = new EnumWrapper ("First", "Rubicon.Security.UnitTests::Core.SampleDomain.SimpleType");
+      EnumWrapper wrapper = new EnumWrapper ("First", "Remotion.Security.UnitTests::Core.SampleDomain.SimpleType");
 
       wrapper.GetEnum ();
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The enumerated type 'Rubicon.Security.UnitTests.Core.SampleDomain.TestAccessTypes, Rubicon.Security.UnitTests' does not define the value 'Invalid'.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The enumerated type 'Remotion.Security.UnitTests.Core.SampleDomain.TestAccessTypes, Remotion.Security.UnitTests' does not define the value 'Invalid'.")]
     public void GetEnum_FromInvalidName ()
     {
-      EnumWrapper wrapper = new EnumWrapper ("Invalid", "Rubicon.Security.UnitTests::Core.SampleDomain.TestAccessTypes");
+      EnumWrapper wrapper = new EnumWrapper ("Invalid", "Remotion.Security.UnitTests::Core.SampleDomain.TestAccessTypes");
 
       wrapper.GetEnum ();
     }

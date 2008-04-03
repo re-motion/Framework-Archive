@@ -1,7 +1,7 @@
 using System;
 using System.Xml.Serialization;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary> The <see langword="abstract"/> default implementation of the <see cref="IBusinessObject"/> interface. </summary>
   [Serializable]

@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Collections
+namespace Remotion.Collections
 {
   public static class Tuple
   {

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Collections;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Context.FluentBuilders
+namespace Remotion.Mixins.Context.FluentBuilders
 {
   internal class InheritanceAwareMixinConfigurationBuilder
   {

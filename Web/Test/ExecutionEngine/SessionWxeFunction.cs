@@ -1,9 +1,9 @@
 using System;
 using System.Web;
 using System.Web.SessionState;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.ExecutionEngine
 {
   public class SessionWxeFunction: WxeFunction
   {

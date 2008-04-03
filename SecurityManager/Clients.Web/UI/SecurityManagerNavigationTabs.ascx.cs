@@ -1,9 +1,9 @@
 using System;
 using System.Web;
 using System.Web.UI;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Clients.Web.UI
+namespace Remotion.SecurityManager.Clients.Web.UI
 {
   public partial class SecurityManagerNavigationTabs : UserControl
   {

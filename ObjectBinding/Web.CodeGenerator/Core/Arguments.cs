@@ -7,9 +7,9 @@
 // --------------------------------------------------------------------------------------
 
 using System;
-using Rubicon.Text.CommandLine;
+using Remotion.Text.CommandLine;
 
-namespace Rubicon.ObjectBinding.Web.CodeGenerator
+namespace Remotion.ObjectBinding.Web.CodeGenerator
 {
 	internal class Arguments
 	{

@@ -1,11 +1,11 @@
 using System;
-using Rubicon.Mixins.Definitions.Building;
-using Rubicon.Mixins.Utilities.Singleton;
-using Rubicon.Collections;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Validation;
+using Remotion.Mixins.Definitions.Building;
+using Remotion.Mixins.Utilities.Singleton;
+using Remotion.Collections;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Validation;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   public class TargetClassDefinitionCache : ThreadSafeSingletonBase<TargetClassDefinitionCache, DefaultInstanceCreator<TargetClassDefinitionCache>>
   {

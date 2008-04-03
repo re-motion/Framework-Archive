@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.NullableValueTypes;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Legacy.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.NullableValueTypes;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests
 {
   public class UnitTestStorageProviderStub : StorageProvider
   {

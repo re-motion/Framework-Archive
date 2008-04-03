@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
+namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure {
     
     
     /// <summary>
@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+        protected global::Remotion.Web.UI.Controls.FormGridManager FormGridManager;
         
         /// <summary>
         /// CurrentObject control.
@@ -35,7 +35,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
         
         /// <summary>
         /// FormGrid control.
@@ -53,7 +53,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.SmartLabel GroupLabel;
+        protected global::Remotion.Web.UI.Controls.SmartLabel GroupLabel;
         
         /// <summary>
         /// ShortName control.
@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue ShortName;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue ShortName;
         
         /// <summary>
         /// NameField control.
@@ -71,7 +71,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue NameField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue NameField;
         
         /// <summary>
         /// GroupTypeField control.
@@ -80,7 +80,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue GroupTypeField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue GroupTypeField;
         
         /// <summary>
         /// ParentField control.
@@ -89,7 +89,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue ParentField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue ParentField;
         
         /// <summary>
         /// ChildrenList control.
@@ -98,7 +98,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocList ChildrenList;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocList ChildrenList;
         
         /// <summary>
         /// RolesList control.
@@ -107,6 +107,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocList RolesList;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocList RolesList;
     }
 }

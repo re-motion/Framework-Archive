@@ -2,19 +2,19 @@ using System;
 using System.Data.SqlClient;
 using System.IO;
 using NUnit.Framework;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Development;
-using Rubicon.Data.DomainObjects.Legacy;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Mapping.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Development.UnitTesting.Data.SqlClient;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Development;
+using Remotion.Data.DomainObjects.Legacy;
+using Remotion.Data.DomainObjects.Legacy.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Development.UnitTesting.Data.SqlClient;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
+namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
   [SetUpFixture]
   public class SetUpFixture

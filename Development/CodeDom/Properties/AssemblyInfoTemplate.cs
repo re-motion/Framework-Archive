@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Rubicon Extended CodeDOM Library")]
+[assembly: AssemblyTitle("Remotion Extended CodeDOM Library")]
 [assembly: AssemblyDescription("CodeDOM Enhancements")]
 [assembly: AssemblyConfiguration("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]

@@ -5,9 +5,9 @@ using System.Windows.Forms.Design;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.ObjectBinding.Design;
+using Remotion.ObjectBinding.Design;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.Design
+namespace Remotion.ObjectBinding.UnitTests.Core.Design
 {
   [TestFixture]
   public class DropDownEditorBaseTest

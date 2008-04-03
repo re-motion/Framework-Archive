@@ -7,9 +7,9 @@ using log4net.Core;
 using log4net.Layout;
 using log4net.Util;
 using NUnit.Framework;
-using Rubicon.Logging;
+using Remotion.Logging;
 
-namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
+namespace Remotion.Core.UnitTests.Logging.Log4NetLogTests
 {
   [TestFixture]
   public class LogToEventLogTest
@@ -17,7 +17,7 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
     private static readonly string s_eventLogName = typeof (LogToEventLogTest).Assembly.GetName().Name.Replace ('.', '_');
     private static readonly string s_eventLogSource = typeof (LogToEventLogTest).Name;
     private ILogger _logger;
-    private Rubicon.Logging.ILog _log;
+    private Remotion.Logging.ILog _log;
     private EventLog _testEventLog;
 
     [TestFixtureSetUp]

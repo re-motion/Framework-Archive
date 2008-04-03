@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   [AttributeUsage (AttributeTargets.Method, AllowMultiple=false)]
   public class DemandMethodPermissionAttribute : BaseDemandPermissionAttribute

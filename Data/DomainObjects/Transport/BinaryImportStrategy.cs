@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Rubicon.Data.DomainObjects.Transport
+namespace Remotion.Data.DomainObjects.Transport
 {
   /// <summary>
   /// Represents an import strategy for <see cref="DomainObject"/> instances using binary serialization. This matches <see cref="BinaryExportStrategy"/>.

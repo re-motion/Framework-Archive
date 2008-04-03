@@ -1,13 +1,13 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using log4net.Config;
 using log4net.Appender;
 using log4net.Layout;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
+namespace Remotion.Data.DomainObjects.UnitTests.Transaction
 {
   [TestFixture]
   public class ReadOnlyClientTransactionTest : ClientTransactionBaseTest

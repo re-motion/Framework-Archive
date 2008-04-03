@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 
-namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer
+namespace Remotion.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer
 {
   public class FileBuilder : FileBuilderBase
   {

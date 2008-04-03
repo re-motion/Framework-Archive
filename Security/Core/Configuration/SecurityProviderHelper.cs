@@ -3,11 +3,11 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Configuration.Provider;
 using System.Reflection;
-using Rubicon.Configuration;
-using Rubicon.Security;
-using Rubicon.Utilities;
+using Remotion.Configuration;
+using Remotion.Security;
+using Remotion.Utilities;
 
-namespace Rubicon.Security.Configuration
+namespace Remotion.Security.Configuration
 {
   /// <summary>Helper class that loads implementations of <see cref="ISecurityProvider"/> from the <see cref="SecurityConfiguration"/> section.</summary>
   public class SecurityProviderHelper : ProviderHelperBase<ISecurityProvider>
@@ -75,8 +75,8 @@ namespace Rubicon.Security.Configuration
           {
             _securityManagerSecurityServiceType = GetType (
                 DefaultProviderNameProperty,
-                new AssemblyName ("Rubicon.SecurityManager"),
-                "Rubicon.SecurityManager.SecurityService");
+                new AssemblyName ("Remotion.SecurityManager"),
+                "Remotion.SecurityManager.SecurityService");
           }
         }
       }

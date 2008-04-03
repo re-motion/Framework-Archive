@@ -1,12 +1,12 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.Resources;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
-using Rubicon.NullableValueTypes;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.Factories;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.Resources;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Remotion.NullableValueTypes;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Persistence.Rdbms
 {
   [TestFixture]
   public class SqlProviderCreateNewDataContainerTest : SqlProviderBaseTest

@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.IO;
 
-namespace Rubicon.Security.Metadata
+namespace Remotion.Security.Metadata
 {
   public class LocalizationFileNameStrategy
   {

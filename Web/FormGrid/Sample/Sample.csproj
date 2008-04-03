@@ -99,14 +99,14 @@
                     HintPath = "References\log4net.dll"
                 />
                 <Reference
-                    Name = "rubicon.web"
-                    AssemblyName = "Rubicon.Web"
-                    HintPath = "..\..\core\bin\debug\rubicon.web.dll"
+                    Name = "Remotion.Web"
+                    AssemblyName = "Remotion.Web"
+                    HintPath = "..\..\core\bin\debug\Remotion.Web.dll"
                 />
                 <Reference
-                    Name = "Rubicon.Core"
-                    AssemblyName = "Rubicon.Core"
-                    HintPath = "References\Rubicon.Core.dll"
+                    Name = "Remotion.Core"
+                    AssemblyName = "Remotion.Core"
+                    HintPath = "References\Remotion.Core.dll"
                 />
             </References>
         </Build>
@@ -169,19 +169,19 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "References\Rubicon.Core.dll"
+                    RelPath = "References\Remotion.Core.dll"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "References\Rubicon.Core.pdb"
+                    RelPath = "References\Remotion.Core.pdb"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "References\Rubicon.Web.dll"
+                    RelPath = "References\Remotion.Web.dll"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "References\Rubicon.Web.pdb"
+                    RelPath = "References\Remotion.Web.pdb"
                     BuildAction = "Content"
                 />
                 <Folder RelPath = "References\de\" />
@@ -190,15 +190,15 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "References\en\Rubicon.Web.resources.dll"
+                    RelPath = "References\en\Remotion.Web.resources.dll"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "References\fr\Rubicon.Web.resources.dll"
+                    RelPath = "References\fr\Remotion.Web.resources.dll"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "References\it\Rubicon.Web.resources.dll"
+                    RelPath = "References\it\Remotion.Web.resources.dll"
                     BuildAction = "Content"
                 />
             </Include>

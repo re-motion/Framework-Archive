@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Represents the method that will handle a <b>PropertyChanging</b> event.
@@ -88,7 +88,7 @@ namespace Rubicon.Data.DomainObjects
     }
 
     /// <summary>
-    /// Gets the <see cref="Rubicon.Data.DomainObjects.PropertyValue"/> object that is being changed.
+    /// Gets the <see cref="Remotion.Data.DomainObjects.PropertyValue"/> object that is being changed.
     /// </summary>
     public PropertyValue PropertyValue
     {

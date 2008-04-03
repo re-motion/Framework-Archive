@@ -3,19 +3,19 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing.Design;
 using System.Web.UI;
-using Rubicon.Data.DomainObjects.Design;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.ObjectBinding.Design;
-using Rubicon.Data.DomainObjects.ObjectBinding.Web.Design;
-using Rubicon.Design;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Design;
-using Rubicon.Web.Utilities;
-using Rubicon.Data.DomainObjects.ObjectBinding.Infrastructure;
+using Remotion.Data.DomainObjects.Design;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.ObjectBinding.Design;
+using Remotion.Data.DomainObjects.ObjectBinding.Web.Design;
+using Remotion.Design;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI.Design;
+using Remotion.Web.Utilities;
+using Remotion.Data.DomainObjects.ObjectBinding.Infrastructure;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.Web
+namespace Remotion.Data.DomainObjects.ObjectBinding.Web
 {
   [Designer (typeof (DomainObjectDataSourceDesigner))]
   public class DomainObjectDataSourceControl: BusinessObjectDataSourceControl, IForceLegacyReferenceMarker

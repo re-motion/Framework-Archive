@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
-using Rubicon;
-using Rubicon.Utilities;
+using Remotion;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Utilities.Singleton
+namespace Remotion.Mixins.Utilities.Singleton
 {
   public class ThreadSafeSingleton<T>
       where T : class

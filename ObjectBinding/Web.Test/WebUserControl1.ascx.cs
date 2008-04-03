@@ -1,4 +1,4 @@
-using Rubicon.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls;
 
 namespace OBWTest
 {
@@ -8,8 +8,8 @@ namespace OBWTest
 	using System.Web;
 	using System.Web.UI.WebControls;
 	using System.Web.UI.HtmlControls;
-  using Rubicon.ObjectBinding;
-  using Rubicon.ObjectBinding.Web;
+  using Remotion.ObjectBinding;
+  using Remotion.ObjectBinding.Web;
 
 	/// <summary>
 	///		Summary description for WebUserControl1.
@@ -17,10 +17,10 @@ namespace OBWTest
 	[Obsolete ("DataSourceUserControl is obsolete, rendering this implementation obsoelte as well.")]
 	public class WebUserControl1 : DataSourceUserControl
 	{
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl reflectionBusinessObjectDataSource1;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl reflectionBusinessObjectDataSource1;
 
 		private void Page_Load(object sender, System.EventArgs e)
 		{
@@ -28,7 +28,7 @@ namespace OBWTest
 
 
 		}
-    protected override Rubicon.ObjectBinding.IBusinessObjectDataSource DataSource
+    protected override Remotion.ObjectBinding.IBusinessObjectDataSource DataSource
     {
       get { return base.DataSource;
       }

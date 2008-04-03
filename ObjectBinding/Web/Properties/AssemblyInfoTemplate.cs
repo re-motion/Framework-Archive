@@ -2,14 +2,14 @@ using System;
 using System.Reflection;
 using System.Web.UI;
 
-[assembly: TagPrefix ("Rubicon.ObjectBinding.Web.UI.Controls", "rubicon")]
+[assembly: TagPrefix ("Remotion.ObjectBinding.Web.UI.Controls", "remotion")]
 
 //
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Rubicon BusinessObjectControls Library")]
+[assembly: AssemblyTitle("Remotion BusinessObjectControls Library")]
 [assembly: AssemblyDescription("Web controls for 2-way databinding with BusinessObjects.")]
 [assembly: AssemblyConfiguration("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]

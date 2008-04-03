@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Specialized;
 using System.Configuration.Provider;
-using Rubicon.Configuration;
+using Remotion.Configuration;
 
-namespace Rubicon.Core.UnitTests.Configuration
+namespace Remotion.Core.UnitTests.Configuration
 {
   public abstract class FakeProviderBase : ExtendedProviderBase
   {

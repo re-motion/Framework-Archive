@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Globalization;
-using Rubicon.ObjectBinding;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Globalization;
+using Remotion.ObjectBinding;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.AccessControl
+namespace Remotion.SecurityManager.Domain.AccessControl
 {
   [Serializable]
-  [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.AccessControl.AccessControlEntry")]
+  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.AccessControl.AccessControlEntry")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
@@ -113,7 +113,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     private ObjectList<Permission> GetPermissions ()
     {
-      return Properties["Rubicon.SecurityManager.Domain.AccessControl.AccessControlEntry.Permissions"].GetValue<ObjectList<Permission>>();
+      return Properties["Remotion.SecurityManager.Domain.AccessControl.AccessControlEntry.Permissions"].GetValue<ObjectList<Permission>>();
     }
 
     public AccessTypeDefinition[] GetAllowedAccessTypes ()

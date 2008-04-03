@@ -1,12 +1,12 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Mixins;
-using Rubicon.Mixins.Validation;
-using Rubicon.Development.UnitTesting;
+using Remotion.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Mixins;
+using Remotion.Mixins.Validation;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
+namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
 {
   [TestFixture]
   public class DomainObjectMixinBaseClassTest : ClientTransactionBaseTest

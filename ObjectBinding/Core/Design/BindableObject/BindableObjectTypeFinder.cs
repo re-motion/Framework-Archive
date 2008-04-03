@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using Rubicon.Mixins;
-using Rubicon.Mixins.Context;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.Utilities;
+using Remotion.Mixins;
+using Remotion.Mixins.Context;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.Utilities;
 using System.Collections;
 
-namespace Rubicon.ObjectBinding.Design.BindableObject
+namespace Remotion.ObjectBinding.Design.BindableObject
 {
   public class BindableObjectTypeFinder
   {

@@ -1,12 +1,12 @@
 using System;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using NUnit.Framework;
-using Rubicon.CodeGeneration;
+using Remotion.CodeGeneration;
 using System.Reflection;
-using Rubicon.CodeGeneration.DPExtensions;
-using Rubicon.Development.UnitTesting;
+using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration
+namespace Remotion.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class IfStatementTest : SnippetGenerationBaseTest

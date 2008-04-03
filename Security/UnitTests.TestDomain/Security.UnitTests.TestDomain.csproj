@@ -7,8 +7,8 @@
     <ProjectGuid>{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Security.UnitTests.TestDomain</RootNamespace>
-    <AssemblyName>Rubicon.Security.UnitTests.TestDomain</AssemblyName>
+    <RootNamespace>Remotion.Security.UnitTests.TestDomain</RootNamespace>
+    <AssemblyName>Remotion.Security.UnitTests.TestDomain</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -70,7 +70,7 @@
   <Target Name="BeforeBuild">
   </Target>
   
-  <UsingTask TaskName="Rubicon.Security.MSBuild.Tasks.ExtractSecurityMetadata" AssemblyFile="..\..\Security\MSBuild.Tasks\bin\Debug\Rubicon.Security.MSBuild.Tasks.dll" />
+  <UsingTask TaskName="Remotion.Security.MSBuild.Tasks.ExtractSecurityMetadata" AssemblyFile="..\..\Security\MSBuild.Tasks\bin\Debug\Remotion.Security.MSBuild.Tasks.dll" />
   <Target Name="AfterBuild">
     <ExtractSecurityMetadata Assemblies="$(TargetPath)" OutputFilename="$(TargetDir)\security-metadata.xml" />
   </Target>-->

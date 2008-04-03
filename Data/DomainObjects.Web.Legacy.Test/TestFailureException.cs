@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Data.DomainObjects.Web.Legacy.Test
+namespace Remotion.Data.DomainObjects.Web.Legacy.Test
 {
 [Serializable]
 public class TestFailureException : ApplicationException

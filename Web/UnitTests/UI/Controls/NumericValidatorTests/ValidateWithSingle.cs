@@ -2,9 +2,9 @@ using System;
 using System.Globalization;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.Web.UnitTests.UI.Controls.NumericValidatorTests
+namespace Remotion.Web.UnitTests.UI.Controls.NumericValidatorTests
 {
   [TestFixture]
   public class ValidateWithSingle : TestBase

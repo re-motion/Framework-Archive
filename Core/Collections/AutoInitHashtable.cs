@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Rubicon.Utilities;
-using Rubicon.Reflection;
+using Remotion.Utilities;
+using Remotion.Reflection;
 
-namespace Rubicon.Collections
+namespace Remotion.Collections
 {
   /// <summary>
   ///   A hashtable that automatically creates new value objects when queried for a specific key.

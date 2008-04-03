@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Collections;
-using Rubicon.ObjectBinding;
+using Remotion.Collections;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BusinessObjectPropertyPathTests
+namespace Remotion.ObjectBinding.UnitTests.Core.BusinessObjectPropertyPathTests
 {
   public class StubBusinessObjectProvider : BusinessObjectProvider
   {

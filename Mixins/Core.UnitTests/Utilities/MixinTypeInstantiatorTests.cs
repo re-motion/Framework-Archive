@@ -1,10 +1,10 @@
 using System;
-using Rubicon.Mixins.Definitions.Building;
+using Remotion.Mixins.Definitions.Building;
 using NUnit.Framework;
-using Rubicon.Mixins.Utilities;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Utilities;
+using Remotion.Mixins.UnitTests.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests.Utilities
+namespace Remotion.Mixins.UnitTests.Utilities
 {
   [TestFixture]
   public class MixinTypeInstantiatorTests

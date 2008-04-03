@@ -4,18 +4,18 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
-using Rubicon.CodeGeneration;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Collections;
-using Rubicon.Utilities;
+using Remotion.CodeGeneration;
+using Remotion.Mixins.Definitions;
+using Remotion.Collections;
+using Remotion.Utilities;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Rubicon.CodeGeneration.DPExtensions;
+using Remotion.CodeGeneration.DPExtensions;
 
-using Rubicon.Text;
-using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
+using Remotion.Text;
+using ReflectionUtility=Remotion.Mixins.Utilities.ReflectionUtility;
 
-namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.Mixins.CodeGeneration.DynamicProxy
 {
   internal class TypeGenerator : ITypeGenerator
   {

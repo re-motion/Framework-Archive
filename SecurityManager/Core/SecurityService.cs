@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Specialized;
 using System.Security.Principal;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Logging;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Domain;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.Utilities;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects;
+using Remotion.Logging;
+using Remotion.Security;
+using Remotion.SecurityManager.Domain;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager
+namespace Remotion.SecurityManager
 {
   public class SecurityService: ExtendedProviderBase, ISecurityProvider
   {

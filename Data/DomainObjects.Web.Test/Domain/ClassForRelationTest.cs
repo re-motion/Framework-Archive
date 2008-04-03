@@ -1,11 +1,11 @@
 using System;
-using Rubicon.ObjectBinding;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.Globalization;
+using Remotion.ObjectBinding;
+using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.Globalization;
 
-namespace Rubicon.Data.DomainObjects.Web.Test.Domain
+namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
-  [MultiLingualResources ("Rubicon.Data.DomainObjects.Web.Test.Globalization.ClassForRelationTest")]
+  [MultiLingualResources ("Remotion.Data.DomainObjects.Web.Test.Globalization.ClassForRelationTest")]
   [Serializable]
   [DBTable ("TableForRelationTest")]
   [Instantiable]

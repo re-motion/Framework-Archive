@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Mixins.Context;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Mixins.Context;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
+namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
 {
   [TestFixture]
   public class ObjectIDTest : StandardMappingTest
@@ -277,7 +277,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "The ClassID 'Order' and the ClassType 'Rubicon.Data.DomainObjects.UnitTests.ObjectIDs.ObjectIDTest+InvalidDomainObject'"
+        "The ClassID 'Order' and the ClassType 'Remotion.Data.DomainObjects.UnitTests.ObjectIDs.ObjectIDTest+InvalidDomainObject'"
         + " do not refer to the same ClassDefinition in the mapping configuration.\r\nParameter name: classDefinition")]
     public void InitializeWithUnknownClassDefinitionType ()
     {
@@ -303,7 +303,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The ClassID 'Order' and the ClassType 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer'"
+        ExpectedMessage = "The ClassID 'Order' and the ClassType 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer'"
         + " do not refer to the same ClassDefinition in the mapping configuration.\r\nParameter name: classDefinition")]
     public void InitializeWithInvalidClassDefinition ()
     {
@@ -357,7 +357,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Rubicon.Data.DomainObjects.ObjectID does not support values of type 'System.Byte'.\r\nParameter name: value")]
+        ExpectedMessage = "Remotion.Data.DomainObjects.ObjectID does not support values of type 'System.Byte'.\r\nParameter name: value")]
     public void InitializeWithInvalidType ()
     {
       ObjectID id = new ObjectID ("Official", (byte) 1);

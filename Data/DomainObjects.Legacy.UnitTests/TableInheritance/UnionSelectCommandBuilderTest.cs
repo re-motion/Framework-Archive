@@ -2,12 +2,12 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain;
+using Remotion.Data.DomainObjects.Legacy.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance
 {
   [TestFixture]
   public class UnionSelectCommandBuilderTest : SqlProviderBaseTest

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration
+namespace Remotion.Data.DomainObjects.RdbmsTools.SchemaGeneration
 {
   public abstract class TableBuilderBase
   {

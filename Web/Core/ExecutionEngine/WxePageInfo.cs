@@ -3,13 +3,13 @@ using System.Collections.Specialized;
 using System.Text;
 using System.Web;
 using System.Web.UI;
-using Rubicon.Collections;
-using Rubicon.Globalization;
-using Rubicon.Utilities;
-using Rubicon.Web.UI;
-using Rubicon.Web.Utilities;
+using Remotion.Collections;
+using Remotion.Globalization;
+using Remotion.Utilities;
+using Remotion.Web.UI;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
 
 public class WxePageInfo: WxeTemplateControlInfo, IDisposable
@@ -17,11 +17,11 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// <summary> A list of resources. </summary>
   /// <remarks> 
   ///   Resources will be accessed using 
-  ///   <see cref="M:Rubicon.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+  ///   <see cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
   ///   See the documentation of <b>GetString</b> for further details.
   /// </remarks>
   [ResourceIdentifiers]
-  [MultiLingualResources ("Rubicon.Web.Globalization.WxePageInfo")]
+  [MultiLingualResources ("Remotion.Web.Globalization.WxePageInfo")]
   protected enum ResourceIdentifier
   {
     /// <summary> Displayed when the user attempts to submit while the page is already aborting. </summary>
@@ -333,7 +333,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction)">IWxePage.ExecuteFunction(WxeFunction)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunction(Remotion.Web.ExecutionEngine.WxeFunction)">IWxePage.ExecuteFunction(WxeFunction)</see>.
   /// </summary>
   public void ExecuteFunction (WxeFunction function)
   {
@@ -341,7 +341,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,Boolean,Boolean)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunction(Remotion.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,Boolean,Boolean)</see>.
   /// </summary>
   public void ExecuteFunction (WxeFunction function, bool createPermaUrl, bool useParentPermaUrl)
   {
@@ -349,7 +349,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunction(WxeFunction,Boolean,Boolean,NameValueCollection)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunction(Remotion.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunction(WxeFunction,Boolean,Boolean,NameValueCollection)</see>.
   /// </summary>
   public void ExecuteFunction (
       WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters)
@@ -367,7 +367,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control)">IWxePage.ExecuteFunctionNoRepost (WxeFunction,Control)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Remotion.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control)">IWxePage.ExecuteFunctionNoRepost (WxeFunction,Control)</see>.
   /// </summary>
   public void ExecuteFunctionNoRepost (WxeFunction function, Control sender)
   {
@@ -375,7 +375,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionNoRepost(WxeFunction,Control,Boolean)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Remotion.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionNoRepost(WxeFunction,Control,Boolean)</see>.
   /// </summary>
   public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget)
   {
@@ -383,7 +383,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionNoRepost (WxeFunction,Control,Boolean,Boolean)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Remotion.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionNoRepost (WxeFunction,Control,Boolean,Boolean)</see>.
   /// </summary>
   public void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, bool createPermaUrl, bool useParentPermaUrl)
@@ -392,7 +392,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionNoRepost (WxeFunction,Control,Boolean,Boolean,NameValueCollection)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Remotion.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionNoRepost (WxeFunction,Control,Boolean,Boolean,NameValueCollection)</see>.
   /// </summary>
   public void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, 
@@ -402,7 +402,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean,Boolean)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Remotion.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean,Boolean)</see>.
   /// </summary>
   public void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, bool usesEventTarget, bool createPermaUrl, bool useParentPermaUrl)
@@ -411,7 +411,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean,Boolean,NameValueCollection)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Remotion.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean,Boolean,NameValueCollection)</see>.
   /// </summary>
   public void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, bool usesEventTarget, 
@@ -449,7 +449,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternal(WxeFunction,Boolean,Boolean,NameValueCollection)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Remotion.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternal(WxeFunction,Boolean,Boolean,NameValueCollection)</see>.
   /// </summary>
   public void ExecuteFunctionExternal (
       WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
@@ -458,7 +458,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternal(WxeFunction,Boolean,Boolean,NameValueCollection,Boolean,NameValueCollection)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Remotion.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternal(WxeFunction,Boolean,Boolean,NameValueCollection,Boolean,NameValueCollection)</see>.
   /// </summary>
   public void ExecuteFunctionExternal (
       WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters, 
@@ -478,7 +478,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
   #region ExecuteFunctionExternalNoRepost
 //  /// <summary>
-//  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternalNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternalNoRepost(WxeFunction,Control,Boolean,Boolean,NameValueCollection)</see>.
+//  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternalNoRepost(Remotion.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternalNoRepost(WxeFunction,Control,Boolean,Boolean,NameValueCollection)</see>.
 //  /// </summary>
 //  public void ExecuteFunctionExternalNoRepost (
 //      WxeFunction function, Control sender,
@@ -488,7 +488,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 //  }
 //
 //  /// <summary>
-//  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternalNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternalNoRepost(WxeFunctionControl,Boolean,Boolean,Boolean,NameValueCollection)</see>.
+//  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternalNoRepost(Remotion.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternalNoRepost(WxeFunctionControl,Boolean,Boolean,Boolean,NameValueCollection)</see>.
 //  /// </summary>
 //  public void ExecuteFunctionExternalNoRepost (
 //      WxeFunction function, Control sender, bool usesEventTarget,
@@ -498,7 +498,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 //  }
 //
 //  /// <summary>
-//  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternalNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternalNoRepost(WxeFunction,Control,Boolean,Boolean,NameValueCollection,Boolean,NameValueCollection)</see>.
+//  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternalNoRepost(Remotion.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternalNoRepost(WxeFunction,Control,Boolean,Boolean,NameValueCollection,Boolean,NameValueCollection)</see>.
 //  /// </summary>
 //  public void ExecuteFunctionExternalNoRepost (
 //      WxeFunction function, Control sender,
@@ -510,7 +510,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 //  }
 //
 //  /// <summary>
-//  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternalNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternalNoRepost(WxeFunction,Control,Boolean,Boolean,Boolean,NameValueCollection,Boolean,NameValueCollection)</see>.
+//  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternalNoRepost(Remotion.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternalNoRepost(WxeFunction,Control,Boolean,Boolean,Boolean,NameValueCollection,Boolean,NameValueCollection)</see>.
 //  /// </summary>
 //  public void ExecuteFunctionExternalNoRepost (
 //      WxeFunction function, Control sender, bool usesEventTarget,
@@ -531,7 +531,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   #endregion
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,Control,Boolean)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Remotion.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,Control,Boolean)</see>.
   /// </summary>
   public void ExecuteFunctionExternal (WxeFunction function, string target, Control sender, bool returningPostback)
   {
@@ -539,7 +539,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,String,Control,Boolean)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Remotion.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,String,Control,Boolean)</see>.
   /// </summary>
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback)
@@ -548,7 +548,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,Control,Boolean,Boolean,Boolean)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Remotion.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,Control,Boolean,Boolean,Boolean)</see>.
   /// </summary>
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, Control sender, bool returningPostback, 
@@ -558,7 +558,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,Control,Boolean,Boolean,Boolean,NameValueCollection)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Remotion.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,Control,Boolean,Boolean,Boolean,NameValueCollection)</see>.
   /// </summary>
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, Control sender, bool returningPostback, 
@@ -568,7 +568,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,String,Control,Boolean,Boolean,Boolean)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Remotion.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,String,Control,Boolean,Boolean,Boolean)</see>.
   /// </summary>
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback, 
@@ -578,7 +578,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,String,Control,Boolean,Boolean,Boolean,NameValueCollection)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Remotion.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,String,Control,Boolean,Boolean,Boolean,NameValueCollection)</see>.
   /// </summary>
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback, 
@@ -673,7 +673,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.GetPermanentUrlParameters()">IWxePage.GetPermanentUrlParameters()</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.GetPermanentUrlParameters()">IWxePage.GetPermanentUrlParameters()</see>.
   /// </summary>
   public NameValueCollection GetPermanentUrlParameters()
   {
@@ -687,7 +687,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.GetPermanentUrl()">IWxePage.GetPermanentUrl()</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.GetPermanentUrl()">IWxePage.GetPermanentUrl()</see>.
   /// </summary>
   public string GetPermanentUrl ()
   {
@@ -695,7 +695,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
   
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.GetPermanentUrl(System.Collections.Specialized.NameValueCollection)">IWxePage.GetPermanentUrl(NameValueCollection)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.GetPermanentUrl(System.Collections.Specialized.NameValueCollection)">IWxePage.GetPermanentUrl(NameValueCollection)</see>.
   /// </summary>
   public string GetPermanentUrl (NameValueCollection urlParameters)
   {
@@ -703,7 +703,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
   
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.GetPermanentUrl(System.Type,System.Collections.Specialized.NameValueCollection)">IWxePage.GetPermanentUrl(Type,NameValueCollection)</see>.
+  ///   Implements <see cref="M:Remotion.Web.ExecutionEngine.IWxePage.GetPermanentUrl(System.Type,System.Collections.Specialized.NameValueCollection)">IWxePage.GetPermanentUrl(Type,NameValueCollection)</see>.
   /// </summary>
   public string GetPermanentUrl (Type functionType, NameValueCollection urlParameters)
   {
@@ -819,7 +819,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="Rubicon.Web.UI.IWindowStateManager.GetData">Rubicon.Web.UI.IWindowStateManager.GetData</see>.
+  ///   Implements <see cref="Remotion.Web.UI.IWindowStateManager.GetData">Remotion.Web.UI.IWindowStateManager.GetData</see>.
   /// </summary>
   public object GetData (string key)
   {
@@ -828,7 +828,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="Rubicon.Web.UI.IWindowStateManager.SetData">Rubicon.Web.UI.IWindowStateManager.SetData</see>.
+  ///   Implements <see cref="Remotion.Web.UI.IWindowStateManager.SetData">Remotion.Web.UI.IWindowStateManager.SetData</see>.
   /// </summary>
   public void SetData (string key, object value)
   {

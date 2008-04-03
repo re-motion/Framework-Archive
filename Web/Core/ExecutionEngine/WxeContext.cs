@@ -3,11 +3,11 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
-using Rubicon.Utilities;
-using Rubicon.Web.UI;
-using Rubicon.Web.Utilities;
+using Remotion.Utilities;
+using Remotion.Web.UI;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
 
 /// <summary>
@@ -56,7 +56,7 @@ public class WxeContext
   /// <remarks> Call this method only from pages not implementing <see cref="IWxePage"/>. </remarks>
   /// <exception cref="WxeException">
   ///   Thrown if no mapping for the <paramref name="functionType"/> has been defined, and the 
-  ///   <see cref="Rubicon.Web.Configuration.ExecutionEngineConfiguration.DefaultWxeHandler"/> is not set. 
+  ///   <see cref="Remotion.Web.Configuration.ExecutionEngineConfiguration.DefaultWxeHandler"/> is not set. 
   /// </exception>
   /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="httpContext" or @name="functionType" or @name="urlParameters"]' />
   public static string GetPermanentUrl (HttpContext httpContext, Type functionType, NameValueCollection urlParameters)

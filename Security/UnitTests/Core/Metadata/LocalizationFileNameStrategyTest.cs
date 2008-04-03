@@ -2,9 +2,9 @@ using System;
 using System.Globalization;
 using System.IO;
 using NUnit.Framework;
-using Rubicon.Security.Metadata;
+using Remotion.Security.Metadata;
 
-namespace Rubicon.Security.UnitTests.Core.Metadata
+namespace Remotion.Security.UnitTests.Core.Metadata
 {
   [TestFixture]
   public class LocalizationFileNameStrategyTest

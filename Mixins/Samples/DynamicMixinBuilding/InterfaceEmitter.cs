@@ -2,9 +2,9 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators.Emitters;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Samples.DynamicMixinBuilding
+namespace Remotion.Mixins.Samples.DynamicMixinBuilding
 {
   internal class InterfaceEmitter : AbstractTypeEmitter
   {

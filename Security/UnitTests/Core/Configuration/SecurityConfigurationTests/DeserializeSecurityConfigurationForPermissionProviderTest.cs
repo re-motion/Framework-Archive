@@ -1,11 +1,11 @@
 using System;
 using System.Configuration;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Development.UnitTesting.Configuration;
-using Rubicon.Security.Metadata;
+using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.Configuration;
+using Remotion.Security.Metadata;
 
-namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
+namespace Remotion.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
 {
   [TestFixture]
   public class DeserializeSecurityConfigurationForPermissionProviderTest: TestBase
@@ -13,7 +13,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Test]
     public void Test_FallbackToDefaultWellKnownDefaultPermissionProvider()
     {
-      string xmlFragment = @"<rubicon.security />";
+      string xmlFragment = @"<remotion.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
       Assert.AreEqual (1, Configuration.PermissionProviders.Count);
@@ -24,7 +24,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Test]
     public void Test_PermissionProviderIsAlwaysSameInstance()
     {
-      string xmlFragment = @"<rubicon.security />";
+      string xmlFragment = @"<remotion.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Assert.AreSame (Configuration.PermissionProvider, Configuration.PermissionProvider);
     }
@@ -34,11 +34,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     {
       string xmlFragment =
           @"
-          <rubicon.security defaultPermissionProvider=""Custom"">
+          <remotion.security defaultPermissionProvider=""Custom"">
             <permissionProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
             </permissionProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
@@ -51,11 +51,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     {
       string xmlFragment =
           @"
-          <rubicon.security>
+          <remotion.security>
             <permissionProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
             </permissionProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
@@ -72,11 +72,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     {
       string xmlFragment =
           @"
-          <rubicon.security defaultPermissionProvider=""Invalid"">
+          <remotion.security defaultPermissionProvider=""Invalid"">
             <permissionProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
             </permissionProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
@@ -90,11 +90,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     {
       string xmlFragment =
           @"
-          <rubicon.security defaultPermissionProvider=""Reflection"">
+          <remotion.security defaultPermissionProvider=""Reflection"">
             <permissionProviders>
-              <add name=""Reflection"" type=""Rubicon.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
+              <add name=""Reflection"" type=""Remotion.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
             </permissionProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
     }
@@ -106,11 +106,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     {
       string xmlFragment =
           @"
-          <rubicon.security defaultPermissionProvider="""">
+          <remotion.security defaultPermissionProvider="""">
             <permissionProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
             </permissionProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
@@ -123,11 +123,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     {
       string xmlFragment =
           @"
-          <rubicon.security>
+          <remotion.security>
             <permissionProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
             </permissionProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Configuration.PermissionProviders.Clear();
@@ -135,16 +135,16 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
 
     [Test]
     [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException),
-        ExpectedMessage = "Provider must implement the interface 'Rubicon.Security.Metadata.IPermissionProvider'.")]
+        ExpectedMessage = "Provider must implement the interface 'Remotion.Security.Metadata.IPermissionProvider'.")]
     public void InstantiateProvider_WithTypeNotImplementingRequiredInterface()
     {
       string xmlFragment =
           @"
-          <rubicon.security>
+          <remotion.security>
             <permissionProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.UserProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.UserProviderMock"" />
             </permissionProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 

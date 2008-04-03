@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.ObjectBinding;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.ObjectBinding;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.Metadata
+namespace Remotion.SecurityManager.Domain.Metadata
 {
   [Serializable]
   [Instantiable]
@@ -32,7 +32,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
-      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindByName");
+      Query query = new Query ("Remotion.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindByName");
       query.Parameters.Add ("@name", name);
 
       DomainObjectCollection result = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
@@ -44,13 +44,13 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public static DomainObjectCollection FindAll ()
     {
-      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAll");
+      Query query = new Query ("Remotion.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAll");
       return ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
     }
 
     public static DomainObjectCollection FindAllBaseClasses ()
     {
-      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAllBaseClasses");
+      Query query = new Query ("Remotion.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAllBaseClasses");
       return ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
     }
 

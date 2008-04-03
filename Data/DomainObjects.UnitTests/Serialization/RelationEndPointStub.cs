@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Infrastructure;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
+namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 {
   [Serializable]
   public class RelationEndPointStub : RelationEndPoint

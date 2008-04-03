@@ -7,8 +7,8 @@
     <ProjectGuid>{F9D890F8-EB08-4D58-BDFA-6C6540F15795}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.SecurityManager.Clients.Web.Test.SetupDB</RootNamespace>
-    <AssemblyName>Rubicon.SecurityManager.Clients.Web.Test.SetupDB</AssemblyName>
+    <RootNamespace>Remotion.SecurityManager.Clients.Web.Test.SetupDB</RootNamespace>
+    <AssemblyName>Remotion.SecurityManager.Clients.Web.Test.SetupDB</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

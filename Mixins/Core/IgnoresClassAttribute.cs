@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   /// <summary>
   /// Defines that a mixin is not applied to a specific class, even when it is explicitly or implicitly configured for that class via

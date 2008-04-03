@@ -1,11 +1,11 @@
 using System;
 using System.Data.SqlTypes;
 
-namespace Rubicon.NullableValueTypes
+namespace Remotion.NullableValueTypes
 {
 /// <summary>
 ///   Base interface for value types that support the nullable semantics of the 
-///   <see cref="Rubicon.NullableValueTypes"/> namespace.
+///   <see cref="Remotion.NullableValueTypes"/> namespace.
 /// </summary>
 /// <include file='doc\include\NullableValueTypes\include.xml' path='Comments/INaNullable/remarks' />
 public interface INaNullable: INullable

@@ -1,10 +1,10 @@
 using System.Configuration;
 using NUnit.Framework;
-using Rubicon.Configuration;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Development.UnitTesting.Configuration;
+using Remotion.Configuration;
+using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.Configuration;
 
-namespace Rubicon.Core.UnitTests.Configuration
+namespace Remotion.Core.UnitTests.Configuration
 {
   [TestFixture]
   public class TypeElementTest
@@ -19,7 +19,7 @@ namespace Rubicon.Core.UnitTests.Configuration
       ConfigurationProperty property = properties["type"];
       Assert.IsNotNull (property);
       Assert.IsNull (property.DefaultValue);
-      Assert.IsInstanceOfType (typeof (Rubicon.Utilities.TypeNameConverter), property.Converter);
+      Assert.IsInstanceOfType (typeof (Remotion.Utilities.TypeNameConverter), property.Converter);
       Assert.IsInstanceOfType (typeof (SubclassTypeValidator), property.Validator);
       Assert.IsTrue (property.IsRequired);
     }
@@ -63,7 +63,7 @@ namespace Rubicon.Core.UnitTests.Configuration
     {
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
 
-      string xmlFragment = @"<theElement type=""Rubicon.Core.UnitTests::Configuration.SampleType"" />";
+      string xmlFragment = @"<theElement type=""Remotion.Core.UnitTests::Configuration.SampleType"" />";
       ConfigurationHelper.DeserializeElement (typeElement, xmlFragment);
 
       Assert.AreEqual (typeof (SampleType), typeElement.Type);

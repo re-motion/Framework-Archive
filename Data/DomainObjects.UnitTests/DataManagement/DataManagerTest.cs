@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
+namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
   /// <summary>
   /// 
@@ -63,8 +63,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       _dataManager.RegisterExistingDataContainer (container2);
 
       container1.SetValue (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber",
-          (int) container1.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber") + 1);
+          "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber",
+          (int) container1.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber") + 1);
 
       DomainObjectCollection domainObjects = _dataManager.GetDomainObjects (new StateType[] { StateType.Changed });
       Assert.IsNotNull (domainObjects);
@@ -127,7 +127,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       DataContainer container = TestDataContainerFactory.CreateOrder1DataContainer ();
       _dataManager.RegisterExistingDataContainer (container);
-      container["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 42;
+      container["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 42;
 
       DomainObjectCollection changedObjects = _dataManager.GetChangedDomainObjects ();
       Assert.AreEqual (1, changedObjects.Count);
@@ -142,7 +142,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       _dataManager.RegisterExistingDataContainer (container1);
       _dataManager.RegisterExistingDataContainer (container2);
 
-      container2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.FileName"] = @"C:\NewFile.jpg";
+      container2["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.FileName"] = @"C:\NewFile.jpg";
 
       DomainObjectCollection changedObjects = _dataManager.GetChangedDomainObjects ();
       Assert.AreEqual (1, changedObjects.Count);
@@ -163,7 +163,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       _dataManager.RegisterExistingDataContainer (orderTicket2);
       _dataManager.RegisterExistingDataContainer (orderWithoutOrderItemDataContainer);
 
-      RelationEndPointID order1EndPointID = new RelationEndPointID (order1.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+      RelationEndPointID order1EndPointID = new RelationEndPointID (order1.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
       ClientTransactionMock.SetRelatedObject (order1EndPointID, orderTicket2.DomainObject);
 
       DomainObjectCollection changedObjects = _dataManager.GetChangedDomainObjects ();
@@ -222,13 +222,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       DataContainer container = TestDataContainerFactory.CreateOrder1DataContainer ();
       _dataManager.RegisterExistingDataContainer (container);
-      container["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 42;
+      container["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 42;
 
       _dataManager.Commit ();
 
       Assert.AreEqual (0, _dataManager.GetChangedDomainObjects ().Count);
-      Assert.AreEqual (42, container.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].OriginalValue);
-      Assert.AreEqual (42, container["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
+      Assert.AreEqual (42, container.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].OriginalValue);
+      Assert.AreEqual (42, container["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
       Assert.AreEqual (StateType.Unchanged, container.State);
     }
 
@@ -247,16 +247,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       _dataManager.RegisterExistingDataContainer (orderTicket2);
       _dataManager.RegisterExistingDataContainer (orderWithoutOrderItemDataContainer);
 
-      RelationEndPointID order1EndPointID = new RelationEndPointID (order1.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+      RelationEndPointID order1EndPointID = new RelationEndPointID (order1.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
       ClientTransactionMock.SetRelatedObject (order1EndPointID, orderTicket2.DomainObject);
 
       _dataManager.Commit ();
 
       Assert.AreEqual (0, _dataManager.GetChangedDomainObjects ().Count);
       Assert.AreSame (orderTicket2.DomainObject, ClientTransactionMock.GetRelatedObject (order1EndPointID));
-      Assert.AreSame (order1.DomainObject, ClientTransactionMock.GetRelatedObject (new RelationEndPointID (orderTicket2.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order")));
-      Assert.IsNull (ClientTransactionMock.GetRelatedObject (new RelationEndPointID (orderTicket1.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order")));
-      Assert.IsNull (ClientTransactionMock.GetRelatedObject (new RelationEndPointID (orderWithoutOrderItemDataContainer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket")));
+      Assert.AreSame (order1.DomainObject, ClientTransactionMock.GetRelatedObject (new RelationEndPointID (orderTicket2.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order")));
+      Assert.IsNull (ClientTransactionMock.GetRelatedObject (new RelationEndPointID (orderTicket1.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order")));
+      Assert.IsNull (ClientTransactionMock.GetRelatedObject (new RelationEndPointID (orderWithoutOrderItemDataContainer.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket")));
       Assert.IsFalse (_dataManager.RelationEndPointMap.HasRelationChanged (order1));
       Assert.IsFalse (_dataManager.RelationEndPointMap.HasRelationChanged (orderWithoutOrderItemDataContainer));
       Assert.IsFalse (_dataManager.RelationEndPointMap.HasRelationChanged (orderTicket1));
@@ -274,7 +274,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       Assert.AreEqual (0, _dataManager.GetChangedDomainObjects ().Count);
       Assert.IsNull (order1.Customer);
-      Assert.AreEqual (0, ClientTransactionMock.GetOriginalRelatedObjects (new RelationEndPointID (customer1.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders")).Count);
+      Assert.AreEqual (0, ClientTransactionMock.GetOriginalRelatedObjects (new RelationEndPointID (customer1.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders")).Count);
       Assert.AreEqual (0, customer1.Orders.Count);
     }
 
@@ -299,8 +299,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       computer.Employee = employee;
 
-      RelationEndPointID employeeEndPointID = new RelationEndPointID (employee.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer");
-      RelationEndPointID computerEndPointID = new RelationEndPointID (computer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee");
+      RelationEndPointID employeeEndPointID = new RelationEndPointID (employee.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer");
+      RelationEndPointID computerEndPointID = new RelationEndPointID (computer.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee");
 
       ObjectEndPoint employeeEndPoint = (ObjectEndPoint) _dataManager.RelationEndPointMap[employeeEndPointID];
       ObjectEndPoint computerEndPoint = (ObjectEndPoint) _dataManager.RelationEndPointMap[computerEndPointID];
@@ -322,8 +322,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       orderItem.Order = order;
 
-      RelationEndPointID orderEndPointID = new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
-      RelationEndPointID orderItemEndPointID = new RelationEndPointID (orderItem.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
+      RelationEndPointID orderEndPointID = new RelationEndPointID (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      RelationEndPointID orderItemEndPointID = new RelationEndPointID (orderItem.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
 
       ObjectEndPoint orderItemEndPoint = (ObjectEndPoint) _dataManager.RelationEndPointMap[orderItemEndPointID];
       Assert.AreEqual (order.ID, orderItemEndPoint.OppositeObjectID);

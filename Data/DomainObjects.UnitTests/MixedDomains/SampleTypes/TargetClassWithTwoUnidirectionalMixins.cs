@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Mixins;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
+namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
 {
   [Uses (typeof (MixinAddingUnidirectionalRelation1))]
   [Uses (typeof (MixinAddingUnidirectionalRelation2))]

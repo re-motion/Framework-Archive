@@ -1,7 +1,7 @@
 using System;
 using System.Security.Principal;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   /// <summary>Defines an interface for retrieving the current user.</summary>
   public interface IUserProvider : INullObject

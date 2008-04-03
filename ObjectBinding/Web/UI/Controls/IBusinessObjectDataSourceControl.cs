@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary>
   ///  The <b>IBusinessObjectDataSourceControl</b> interface defines the methods and 

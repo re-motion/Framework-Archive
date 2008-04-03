@@ -8,11 +8,11 @@ using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.BindableObject;
 
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
 
 namespace OBWTest
 {
@@ -20,10 +20,10 @@ namespace OBWTest
 public class WebForm2: System.Web.UI.Page
 {
   protected System.Web.UI.WebControls.Button SaveButton;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue DateOfBirthField;
-  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel3;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl reflectionBusinessObjectDataSource1;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue DateOfBirthField;
+  protected Remotion.Web.UI.Controls.SmartLabel BocPropertyLabel3;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl reflectionBusinessObjectDataSource1;
 
 	private void Page_Load (object sender, System.EventArgs e)
 	{

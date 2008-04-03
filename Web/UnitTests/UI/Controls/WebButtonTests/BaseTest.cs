@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Security;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI;
-using Rubicon.Web.UnitTests.Configuration;
+using Remotion.Security;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI;
+using Remotion.Web.UnitTests.Configuration;
 
-namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
+namespace Remotion.Web.UnitTests.UI.Controls.WebButtonTests
 {
   public class BaseTest : WebControlTest
   {

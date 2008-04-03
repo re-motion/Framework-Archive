@@ -3,11 +3,11 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using NUnit.Framework;
-using Rubicon.CodeGeneration;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.CodeGeneration.DynamicProxy;
+using Remotion.CodeGeneration;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.CodeGeneration.DynamicProxy;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.MixinTypeCodeGeneration
+namespace Remotion.Mixins.UnitTests.CodeGeneration.MixinTypeCodeGeneration
 {
   [TestFixture]
   public class GeneratedTypeInConfigurationTests : CodeGenerationBaseTest

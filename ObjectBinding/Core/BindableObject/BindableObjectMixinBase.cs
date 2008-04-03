@@ -1,12 +1,12 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.Mixins;
-using Rubicon.Mixins.Context;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.Utilities;
+using Remotion.Mixins;
+using Remotion.Mixins.Context;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Remotion.ObjectBinding.BindableObject
 {
   /// <summary>
   /// Provides a base class for mixins introducing <see cref="IBusinessObject"/> to arbitrary target classes.

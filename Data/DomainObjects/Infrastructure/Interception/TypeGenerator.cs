@@ -4,12 +4,12 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Rubicon.CodeGeneration;
-using Rubicon.CodeGeneration.DPExtensions;
-using Rubicon.Collections;
-using Rubicon.Utilities;
+using Remotion.CodeGeneration;
+using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Collections;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
+namespace Remotion.Data.DomainObjects.Infrastructure.Interception
 {
   public class TypeGenerator
   {

@@ -1,22 +1,22 @@
 using System;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.NullableValueTypes;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.NullableValueTypes;
 
-using Rubicon.Globalization;
-using Rubicon.ObjectBinding;
-using Rubicon.Utilities;
+using Remotion.Globalization;
+using Remotion.ObjectBinding;
+using Remotion.Utilities;
 
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain
+namespace Remotion.Data.DomainObjects.Web.Legacy.Test.Domain
 {
-[MultiLingualResources ("Rubicon.Data.DomainObjects.Web.Legacy.Test.Globalization.ClassWithAllDataTypes")]
+[MultiLingualResources ("Remotion.Data.DomainObjects.Web.Legacy.Test.Globalization.ClassWithAllDataTypes")]
 [Serializable]
 public class ClassWithAllDataTypes : BindableDomainObject
 {
   // types
-  [EnumDescriptionResource ("Rubicon.Data.DomainObjects.Web.Legacy.Test.Globalization.ClassWithAllDataTypes")]
+  [EnumDescriptionResource ("Remotion.Data.DomainObjects.Web.Legacy.Test.Globalization.ClassWithAllDataTypes")]
   public enum EnumType
   {
     Value0 = 0,

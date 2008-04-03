@@ -1,10 +1,10 @@
 using System;
 using System.Xml;
 
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
+namespace Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
 {
   public class NonRdbmsStorageProviderDefinition : StorageProviderDefinition
   {

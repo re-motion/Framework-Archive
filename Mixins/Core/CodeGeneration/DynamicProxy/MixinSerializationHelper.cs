@@ -3,15 +3,15 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
-using Rubicon.CodeGeneration;
-using Rubicon.Mixins;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Definitions.Building;
-using Rubicon.Mixins.Utilities;
-using Rubicon.Utilities;
-using Rubicon.Mixins.Context;
+using Remotion.CodeGeneration;
+using Remotion.Mixins;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Definitions.Building;
+using Remotion.Mixins.Utilities;
+using Remotion.Utilities;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.Mixins.CodeGeneration.DynamicProxy
 {
   [Serializable]
   public class MixinSerializationHelper : IObjectReference, ISerializable, IDeserializationCallback

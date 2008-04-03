@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.Mixins.Utilities;
-using Rubicon.Collections;
-using Rubicon.Utilities;
-using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
+using Remotion.Mixins.Utilities;
+using Remotion.Collections;
+using Remotion.Utilities;
+using ReflectionUtility=Remotion.Mixins.Utilities.ReflectionUtility;
 
-namespace Rubicon.Mixins.Definitions.Building
+namespace Remotion.Mixins.Definitions.Building
 {
   public class MemberDefinitionBuilder
   {

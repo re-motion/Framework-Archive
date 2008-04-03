@@ -10,26 +10,26 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Text;
-using Rubicon.Web.Utilities;
-using Rubicon.Utilities;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.ObjectBinding;
+using Remotion.Web.Utilities;
+using Remotion.Utilities;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding;
 
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Collections;
-using Rubicon.Web.UI.Controls;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Collections;
+using Remotion.Web.UI.Controls;
 
 namespace OBWTest
 {
 
 public class ClientForm : TestWxeBasePage
 {
-  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
-  protected Rubicon.Web.UI.Controls.WebTabStrip PagesTabStrip;
-  protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
-  protected Rubicon.Web.UI.Controls.TabbedMultiView MultiView;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue BocDateTimeValue1;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue1;
+  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected Remotion.Web.UI.Controls.WebTabStrip PagesTabStrip;
+  protected Remotion.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
+  protected Remotion.Web.UI.Controls.TabbedMultiView MultiView;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue BocDateTimeValue1;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue1;
   private PlaceHolder _wxeControlsPlaceHolder;
   private IDataEditControl[] _dataEditControls;
   private DropDownMenu _ddm = new DropDownMenu();
@@ -44,10 +44,10 @@ public class ClientForm : TestWxeBasePage
     List<IDataEditControl> dataEditControls = new List<IDataEditControl>();
     // load editor pages
     IDataEditControl dataEditControl;
-    dataEditControl = AddPage ("TestTabbedPersonDetailsUserControl", "Person Details", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Person.gif"), "TestTabbedPersonDetailsUserControl.ascx");
+    dataEditControl = AddPage ("TestTabbedPersonDetailsUserControl", "Person Details", new IconInfo ("Images/Remotion.ObjectBinding.Sample.Person.gif"), "TestTabbedPersonDetailsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add (dataEditControl);
-    dataEditControl = AddPage ("TestTabbedPersonJobsUserControl", "Jobs", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Job.gif"), "TestTabbedPersonJobsUserControl.ascx");
+    dataEditControl = AddPage ("TestTabbedPersonJobsUserControl", "Jobs", new IconInfo ("Images/Remotion.ObjectBinding.Sample.Job.gif"), "TestTabbedPersonJobsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add (dataEditControl);
     _dataEditControls = (IDataEditControl[]) dataEditControls.ToArray();
@@ -71,7 +71,7 @@ public class ClientForm : TestWxeBasePage
     MultiView.Views.Add (view);
 
     UserControl control = (UserControl) this.LoadControl (path);
-    control.ID = Rubicon.Text.IdentifierGenerator.HtmlStyle.GetValidIdentifier (System.IO.Path.GetFileNameWithoutExtension (path));
+    control.ID = Remotion.Text.IdentifierGenerator.HtmlStyle.GetValidIdentifier (System.IO.Path.GetFileNameWithoutExtension (path));
 
     //EgoFormPageUserControl formPageControl = control as EgoFormPageUserControl;
     //if (formPageControl != null)

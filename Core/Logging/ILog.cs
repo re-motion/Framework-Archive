@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Logging
+namespace Remotion.Logging
 {
   /// <summary>
   /// The <see cref="ILog"/> interface declares methods for logging messages.

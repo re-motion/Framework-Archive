@@ -1,9 +1,9 @@
 using System;
 using System.Web.UI;
-using Rubicon.Web;
-using Rubicon.Web.UI;
+using Remotion.Web;
+using Remotion.Web.UI;
 
-namespace Rubicon.SecurityManager.Clients.Web.UI
+namespace Remotion.SecurityManager.Clients.Web.UI
 {
   public partial class SecurityManagerMasterPage : MasterPage
   {

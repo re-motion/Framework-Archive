@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.Collections;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Definitions.Building.DependencySorting;
-using Rubicon.Mixins.Utilities.DependencySort;
-using Rubicon.Text;
-using Rubicon.Utilities;
-using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
+using Remotion.Collections;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions.Building.DependencySorting;
+using Remotion.Mixins.Utilities.DependencySort;
+using Remotion.Text;
+using Remotion.Utilities;
+using ReflectionUtility=Remotion.Mixins.Utilities.ReflectionUtility;
 
-namespace Rubicon.Mixins.Definitions.Building
+namespace Remotion.Mixins.Definitions.Building
 {
   public class TargetClassDefinitionBuilder
   {

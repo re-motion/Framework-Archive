@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.Resources;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins.Context;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.Resources;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins.Context;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
+namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
   public class DataContainerTest : ClientTransactionBaseTest
@@ -41,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The ClassDefinition 'Rubicon.Data.DomainObjects.Mapping."
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The ClassDefinition 'Remotion.Data.DomainObjects.Mapping."
         + "ReflectionBasedClassDefinition: Order' of the ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not part of the current"
         + " mapping.\r\nParameter name: id")]
     public void ClassDefinitionNotInMapping ()
@@ -175,7 +175,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void GetObjectID ()
     {
       DataContainer dataContainer = TestDataContainerFactory.CreateOrder1DataContainer ();
-      ObjectID id = (ObjectID) dataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer");
+      ObjectID id = (ObjectID) dataContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer");
       Assert.IsNotNull (id);
     }
 
@@ -206,13 +206,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       DataContainer container = TestDataContainerFactory.CreateOrder1DataContainer ();
 
-      container["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 42;
+      container["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 42;
       Assert.AreEqual (StateType.Changed, container.State);
-      Assert.AreEqual (42, container.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
+      Assert.AreEqual (42, container.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
 
-      container["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 1;
+      container["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 1;
       Assert.AreEqual (StateType.Unchanged, container.State);
-      Assert.AreEqual (1, container.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
+      Assert.AreEqual (1, container.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
     }
 
     [Test]
@@ -229,8 +229,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       DataContainer dataContainer = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
 
-      ResourceManager.IsEqualToImage1 ((byte[]) dataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
-      Assert.IsNull (dataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"));
+      ResourceManager.IsEqualToImage1 ((byte[]) dataContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
+      Assert.IsNull (dataContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"));
     }
 
     [Test]
@@ -238,11 +238,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       DataContainer dataContainer = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
 
-      dataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"] = new byte[0];
-      ResourceManager.IsEmptyImage ((byte[]) dataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
+      dataContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"] = new byte[0];
+      ResourceManager.IsEmptyImage ((byte[]) dataContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
 
-      dataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"] = null;
-      Assert.IsNull (dataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"));
+      dataContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"] = null;
+      Assert.IsNull (dataContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"));
     }
 
     private void CheckIfDataContainersAreEqual (DataContainer expected, DataContainer actual, bool checkID)
@@ -297,12 +297,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreSame (typeof (Order), original.DomainObjectType);
       Assert.IsFalse (original.IsDiscarded);
       Assert.AreEqual (4, original.PropertyValues.Count);
-      Assert.IsNotNull (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Definition);
-      Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasChanged);
-      Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasBeenTouched);
-      Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].IsDiscarded);
-      Assert.AreEqual (1, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].OriginalValue);
-      Assert.AreEqual (1, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Value);
+      Assert.IsNotNull (original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Definition);
+      Assert.IsFalse (original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasChanged);
+      Assert.IsFalse (original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasBeenTouched);
+      Assert.IsFalse (original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].IsDiscarded);
+      Assert.AreEqual (1, original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].OriginalValue);
+      Assert.AreEqual (1, original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Value);
       Assert.AreEqual (StateType.Unchanged, original.State);
       Assert.IsNotNull (original.Timestamp);
 
@@ -319,7 +319,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void CloneLoadedChanged ()
     {
       DataContainer original = Order.GetObject (DomainObjectIDs.Order1).InternalDataContainer;
-      original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Value = 75;
+      original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Value = 75;
 
       Assert.IsNotNull (original);
       Assert.AreEqual (DomainObjectIDs.Order1, original.ID);
@@ -329,12 +329,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreSame (typeof (Order), original.DomainObjectType);
       Assert.IsFalse (original.IsDiscarded);
       Assert.AreEqual (4, original.PropertyValues.Count);
-      Assert.IsNotNull (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Definition);
-      Assert.IsTrue (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasChanged);
-      Assert.IsTrue (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasBeenTouched);
-      Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].IsDiscarded);
-      Assert.AreEqual (1, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].OriginalValue);
-      Assert.AreEqual (75, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Value);
+      Assert.IsNotNull (original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Definition);
+      Assert.IsTrue (original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasChanged);
+      Assert.IsTrue (original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasBeenTouched);
+      Assert.IsFalse (original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].IsDiscarded);
+      Assert.AreEqual (1, original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].OriginalValue);
+      Assert.AreEqual (75, original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Value);
       Assert.AreEqual (StateType.Changed, original.State);
       Assert.IsNotNull (original.Timestamp);
 
@@ -361,12 +361,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreSame (typeof (Order), original.DomainObjectType);
       Assert.IsFalse (original.IsDiscarded);
       Assert.AreEqual (4, original.PropertyValues.Count);
-      Assert.IsNotNull (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Definition);
-      Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasChanged);
-      Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasBeenTouched);
-      Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].IsDiscarded);
-      Assert.AreEqual (0, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].OriginalValue);
-      Assert.AreEqual (0, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Value);
+      Assert.IsNotNull (original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Definition);
+      Assert.IsFalse (original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasChanged);
+      Assert.IsFalse (original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasBeenTouched);
+      Assert.IsFalse (original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].IsDiscarded);
+      Assert.AreEqual (0, original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].OriginalValue);
+      Assert.AreEqual (0, original.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Value);
       Assert.AreEqual (StateType.New, original.State);
       Assert.IsNull (original.Timestamp);
 
@@ -426,8 +426,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The ID parameter specifies class 'Rubicon.Data.DomainObjects.Mapping."
-        + "ReflectionBasedClassDefinition: Official', but the state source is of class 'Rubicon.Data.DomainObjects.Mapping."
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The ID parameter specifies class 'Remotion.Data.DomainObjects.Mapping."
+        + "ReflectionBasedClassDefinition: Official', but the state source is of class 'Remotion.Data.DomainObjects.Mapping."
         + "ReflectionBasedClassDefinition: Order'.\r\nParameter name: stateSource")]
     public void CreateAndCopyStateThrowsWhenWrongClassDefinition ()
     {

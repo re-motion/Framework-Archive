@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Castle.DynamicProxy;
 
-namespace Rubicon.CodeGeneration.DPExtensions
+namespace Remotion.CodeGeneration.DPExtensions
 {
   public static class AssemblySaver
   {

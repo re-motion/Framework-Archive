@@ -1,4 +1,4 @@
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Remotion.ObjectBinding.BindableObject
 {
   //TODO: doc
   public interface ISearchAvailableObjectsService : IBusinessObjectService

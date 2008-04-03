@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Legacy.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 {
   [TestFixture]
   public class ConstructionOfVirtualRelationEndPointDefinitionTest : StandardMappingTest
@@ -26,10 +26,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     [ExpectedException (typeof (MappingException),
         ExpectedMessage = "Relation definition error: Virtual property 'Dummy' of class 'Company' is of type"
-            + "'Rubicon.Data.DomainObjects.DomainObject',"
-            + " but must be derived from 'Rubicon.Data.DomainObjects.DomainObject' or "
-            + " 'Rubicon.Data.DomainObjects.DomainObjectCollection' or must be"
-            + " 'Rubicon.Data.DomainObjects.DomainObjectCollection'.")]
+            + "'Remotion.Data.DomainObjects.DomainObject',"
+            + " but must be derived from 'Remotion.Data.DomainObjects.DomainObject' or "
+            + " 'Remotion.Data.DomainObjects.DomainObjectCollection' or must be"
+            + " 'Remotion.Data.DomainObjects.DomainObjectCollection'.")]
     public void VirtualEndPointOfDomainObjectType ()
     {
       XmlBasedClassDefinition companyDefinition = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
@@ -59,7 +59,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     [ExpectedException (typeof (MappingException),
         ExpectedMessage = "The property type of a virtual end point of a one-to-one relation"
-        + " must be derived from 'Rubicon.Data.DomainObjects.DomainObject'.")]
+        + " must be derived from 'Remotion.Data.DomainObjects.DomainObject'.")]
     public void VirtualEndPointWithCardinalityOneAndWrongPropertyType ()
     {
       XmlBasedClassDefinition companyDefinition = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
@@ -71,7 +71,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     [ExpectedException (typeof (MappingException),
         ExpectedMessage = "The property type of a virtual end point of a one-to-many relation"
-        + " must be or be derived from 'Rubicon.Data.DomainObjects.DomainObjectCollection'.")]
+        + " must be or be derived from 'Remotion.Data.DomainObjects.DomainObjectCollection'.")]
     public void VirtualEndPointWithCardinalityManyAndWrongPropertyType ()
     {
       XmlBasedClassDefinition companyDefinition = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));

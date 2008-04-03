@@ -7,8 +7,8 @@
     <ProjectGuid>{18C1D36B-CC05-4334-BF29-DE5A886DA89D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Mixins</RootNamespace>
-    <AssemblyName>Rubicon.Mixins</AssemblyName>
+    <RootNamespace>Remotion.Mixins</RootNamespace>
+    <AssemblyName>Remotion.Mixins</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -23,7 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Rubicon.Mixins.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Remotion.Mixins.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">

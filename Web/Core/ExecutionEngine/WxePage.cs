@@ -2,10 +2,10 @@ using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.Collections;
-using Rubicon.Web.UI;
+using Remotion.Collections;
+using Remotion.Web.UI;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
   /// <summary>
 ///   <b>WxePage</b> is the default implementation of the <see cref="IWxePage"/> interface. Use this type
@@ -64,7 +64,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   /// </summary>
   /// <remarks>
   ///   This overload allows you to specify whether the current event was caused by the <c>__EVENTTARGET</c> field.
-  ///   When in doubt, use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control)">ExecuteFunctionNoRepost(WxeFunction,Control)</see>.
+  ///   When in doubt, use <see cref="M:Remotion.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Remotion.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control)">ExecuteFunctionNoRepost(WxeFunction,Control)</see>.
   /// </remarks>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget"]' />
   public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget)
@@ -108,7 +108,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   /// </summary>
   /// <remarks>
   ///   This overload allows you to specify whether the current event was caused by the <c>__EVENTTARGET</c> field.
-  ///   When in doubt, use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean)">ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean)</see>.
+  ///   When in doubt, use <see cref="M:Remotion.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Remotion.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean)">ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean)</see>.
   /// </remarks>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   public void ExecuteFunctionNoRepost (
@@ -123,7 +123,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   /// </summary>
   /// <remarks>
   ///   This overload allows you to specify whether the current event was caused by the <c>__EVENTTARGET</c> field.
-  ///   When in doubt, use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean,NameValueCollection)</see>.
+  ///   When in doubt, use <see cref="M:Remotion.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Remotion.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean,NameValueCollection)</see>.
   /// </remarks>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
   public void ExecuteFunctionNoRepost (
@@ -520,7 +520,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   ///   disposeable pattern.
   ///   <note type="inheritinfo">
   ///     Do not override this method.
-  ///     Use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.Dispose(System.Boolean)">Dispose(Boolean)</see> instead.
+  ///     Use <see cref="M:Remotion.Web.ExecutionEngine.WxePage.Dispose(System.Boolean)">Dispose(Boolean)</see> instead.
   ///   </note>
   /// </remarks>
   public override void Dispose()

@@ -10,11 +10,11 @@
 <meta content=C# name=CODE_LANGUAGE>
 <meta content=JavaScript name=vs_defaultClientScript>
 <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema>
-<rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
+<remotion:htmlheadcontents id=HtmlHeadContents runat="server"></remotion:htmlheadcontents>
   </head>
 <body>
 <form id=Form method=post runat="server">
-<rubicon:LazyContainer runat="server" id="LazyContainer"><rubicon:bocTextValue id="TextField" runat="server" readonly="True"></rubicon:bocTextValue></rubicon:LazyContainer>
+<remotion:LazyContainer runat="server" id="LazyContainer"><remotion:bocTextValue id="TextField" runat="server" readonly="True"></remotion:bocTextValue></remotion:LazyContainer>
 <p><asp:Button id="PostBackButton" runat="server" Text="PostBack"></asp:Button></p>
 <table id="FormGrid" cellspacing="1" cellpadding="1" width="300" border="1" runat="server">
   <tr>
@@ -24,11 +24,11 @@
     <td><asp:textbox id="TextBox1" runat="server"></asp:textbox><asp:requiredfieldvalidator id="RequiredFieldValidator1" runat="server" ErrorMessage="RequiredFieldValidator" ControlToValidate="TextBox1" enableclientscript="False"></asp:requiredfieldvalidator></td></tr>
   <tr>
     <td></td>
-    <td><rubicon:boctextvalue id="field" runat=server required="True" valuetype="String">
+    <td><remotion:boctextvalue id="field" runat=server required="True" valuetype="String">
 <textboxstyle textmode="SingleLine">
-</TextBoxStyle></rubicon:boctextvalue></td></tr>
+</TextBoxStyle></remotion:boctextvalue></td></tr>
 </table>
-<rubicon:formgridmanager id="fgm" runat="server"/>
+<remotion:formgridmanager id="fgm" runat="server"/>
 </form>
 
   </body>

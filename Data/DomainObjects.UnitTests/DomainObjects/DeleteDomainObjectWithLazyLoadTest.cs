@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
   public class DeleteDomainObjectWithLazyLoadTest : ClientTransactionBaseTest
@@ -17,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.IsNull (orderTicket.Order);
       Assert.IsNull (order.OrderTicket);
-			Assert.IsNull (orderTicket.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
+			Assert.IsNull (orderTicket.InternalDataContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
       Assert.AreEqual (StateType.Changed, order.State);
 			Assert.AreEqual (StateType.Unchanged, order.InternalDataContainer.State);
     }
@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       computerWithoutEmployee.Delete ();
 
       Assert.IsNull (computerWithoutEmployee.Employee);
-			Assert.IsNull (computerWithoutEmployee.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"]);
+			Assert.IsNull (computerWithoutEmployee.InternalDataContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"]);
     }
 
     [Test]
@@ -42,7 +42,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.IsNull (orderTicket.Order);
       Assert.IsNull (order.OrderTicket);
-			Assert.IsNull (orderTicket.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
+			Assert.IsNull (orderTicket.InternalDataContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
 			Assert.AreEqual (StateType.Changed, orderTicket.InternalDataContainer.State);
     }
 
@@ -67,8 +67,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (0, supervisor.Subordinates.Count);
       Assert.IsNull (subordinate1.Supervisor);
       Assert.IsNull (subordinate2.Supervisor);
-			Assert.IsNull (subordinate1.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"]);
-			Assert.IsNull (subordinate2.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"]);
+			Assert.IsNull (subordinate1.InternalDataContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"]);
+			Assert.IsNull (subordinate2.InternalDataContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"]);
 			Assert.AreEqual (StateType.Changed, subordinate1.InternalDataContainer.State);
 			Assert.AreEqual (StateType.Changed, subordinate2.InternalDataContainer.State);
     }
@@ -93,7 +93,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.IsNull (orderItem.Order);
       Assert.AreEqual (1, order.OrderItems.Count);
       Assert.IsFalse (order.OrderItems.Contains (orderItem.ID));
-			Assert.IsNull (orderItem.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"]);
+			Assert.IsNull (orderItem.InternalDataContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"]);
       Assert.AreEqual (StateType.Changed, order.State);
 			Assert.AreEqual (StateType.Unchanged, order.InternalDataContainer.State);
     }

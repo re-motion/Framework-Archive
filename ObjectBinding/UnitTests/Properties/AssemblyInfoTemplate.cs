@@ -1,12 +1,12 @@
 using System.Reflection;
-using Rubicon.Mixins;
+using Remotion.Mixins;
 
 //
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Rubicon BusinessObject Library Unit Tests")]
+[assembly: AssemblyTitle("Remotion BusinessObject Library Unit Tests")]
 [assembly: AssemblyConfiguration("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]
 [assembly: AssemblyProduct("@productname@")]

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
+using Remotion.Development.UnitTesting;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Development.UnitTests.UnitTesting
+namespace Remotion.Development.UnitTests.UnitTesting
 {
   [TestFixture]
   public class SerializerTest

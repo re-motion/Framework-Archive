@@ -5,16 +5,16 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Globalization;
-using Rubicon.NullableValueTypes;
-using Rubicon.Utilities;
-using Rubicon.Web;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Globalization;
+using Remotion.NullableValueTypes;
+using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> This control can be used to display or edit date/time values. </summary>
@@ -42,11 +42,11 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
   /// <summary> A list of control specific resources. </summary>
   /// <remarks> 
   ///   Resources will be accessed using 
-  ///   <see cref="M:Rubicon.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+  ///   <see cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
   ///   See the documentation of <b>GetString</b> for further details.
   /// </remarks>
   [ResourceIdentifiers]
-  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocDateTimeValue")]
+  [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocDateTimeValue")]
   protected enum ResourceIdentifier
   {
     /// <summary> The validation error message displayed when no input is provided. </summary>

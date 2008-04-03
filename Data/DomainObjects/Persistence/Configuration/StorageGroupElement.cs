@@ -1,9 +1,9 @@
 using System;
 using System.Configuration;
-using Rubicon.Configuration;
-using Rubicon.Utilities;
+using Remotion.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence.Configuration
+namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
   public class StorageGroupElement: ConfigurationElement, INamedConfigurationElement
   {

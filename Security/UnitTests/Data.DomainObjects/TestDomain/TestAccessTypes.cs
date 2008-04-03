@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain
+namespace Remotion.Security.UnitTests.Data.DomainObjects.TestDomain
 {
 
   [AccessType]

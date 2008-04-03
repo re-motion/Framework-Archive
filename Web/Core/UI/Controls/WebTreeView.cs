@@ -5,12 +5,12 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Globalization;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Globalization;
+using Remotion.Utilities;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
   /// <summary> A tree view. </summary>
   /// <include file='doc\include\UI\Controls\WebTreeView.xml' path='WebTreeView/Class/*' />
@@ -411,7 +411,7 @@ namespace Rubicon.Web.UI.Controls
       if (resourceManager == null)
         return;
 
-      if (Rubicon.Web.Utilities.ControlHelper.IsDesignMode ((Control) this))
+      if (Remotion.Web.Utilities.ControlHelper.IsDesignMode ((Control) this))
         return;
 
       string key;

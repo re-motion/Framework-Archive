@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 using System.IO;
 
-namespace Rubicon.Development.UnitTesting
+namespace Remotion.Development.UnitTesting
 {
   [Serializable]
   public class AppDomainRunner : AppDomainRunnerBase

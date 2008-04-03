@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Security.Metadata;
-using Rubicon.Security.UnitTests.Core.SampleDomain;
+using Remotion.Security.Metadata;
+using Remotion.Security.UnitTests.Core.SampleDomain;
 
-namespace Rubicon.Security.UnitTests.Core.Metadata.PermissionReflectorTests
+namespace Remotion.Security.UnitTests.Core.Metadata.PermissionReflectorTests
 {
   [TestFixture]
   public class GetRequiredPropertyReadPermissionsTest

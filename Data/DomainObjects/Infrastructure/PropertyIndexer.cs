@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
   /// Provides an indexer to access a specific property of a domain object. Instances of this value type are returned by

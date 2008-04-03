@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Queries;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Interface for extending the <see cref="ClientTransaction"/> by observing events within the DomainObjects framework.
@@ -80,7 +80,7 @@ namespace Rubicon.Data.DomainObjects
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> instance for which the event is raised.</param>
     /// <param name="domainObject">
     ///   The <see cref="DomainObject"/> that was deleted. This object might already be discarded.<br/>
-    ///   For more information why and when an object is discarded see <see cref="Rubicon.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
+    ///   For more information why and when an object is discarded see <see cref="Remotion.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
     /// </param>
     /// <remarks>
     ///   <para>

@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Security.Web.UI;
-using Rubicon.Security.UnitTests.Web.ExecutionEngine;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI;
+using Remotion.Security.Web.UI;
+using Remotion.Security.UnitTests.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI;
 
-namespace Rubicon.Security.UnitTests.Web.UI.WebSecurityAdapterTests
+namespace Remotion.Security.UnitTests.Web.UI.WebSecurityAdapterTests
 {
   [TestFixture]
   public class PermissionFromWxeFunctionTest

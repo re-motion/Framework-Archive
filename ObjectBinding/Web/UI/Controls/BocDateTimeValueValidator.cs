@@ -5,10 +5,10 @@ using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Design;
+using Remotion.Utilities;
+using Remotion.Web.UI.Design;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> Validates a <see cref="BocDateTimeValue"/> control. </summary>

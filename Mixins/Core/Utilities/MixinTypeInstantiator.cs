@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Mixins.Definitions.Building;
-using Rubicon.Utilities;
+using Remotion.Mixins.Definitions.Building;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Utilities
+namespace Remotion.Mixins.Utilities
 {
   [Serializable]
   public class MixinTypeInstantiator

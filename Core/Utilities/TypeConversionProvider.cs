@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using Rubicon.Collections;
-using Rubicon.NullableValueTypes;
+using Remotion.Collections;
+using Remotion.NullableValueTypes;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
   /// <summary> 
   ///   Provides functionality to get the <see cref="TypeConverter"/> for a <see cref="Type"/> and to convert a value

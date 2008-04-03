@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Security.Web.ExecutionEngine
+namespace Remotion.Security.Web.ExecutionEngine
 {
   public class WxeDemandMethodPermissionAttributeHelper
   {

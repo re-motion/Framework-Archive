@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web;
 using System.Web.SessionState;
-using Rubicon.Collections;
-using Rubicon.Logging;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Logging;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
   public class WxeFunctionStateManager
   {

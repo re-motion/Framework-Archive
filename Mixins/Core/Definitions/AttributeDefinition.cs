@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   [DebuggerDisplay("{AttributeType}")]
   public class AttributeDefinition: IVisitableDefinition

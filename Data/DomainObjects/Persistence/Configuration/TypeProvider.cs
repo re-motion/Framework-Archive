@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Configuration.StorageProviders
+namespace Remotion.Data.DomainObjects.Configuration.StorageProviders
 {
   public class TypeProvider
   {

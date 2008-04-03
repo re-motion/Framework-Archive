@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
-using Rubicon.ObjectBinding.BindableObject;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.ObjectBinding.BindableObject;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectMixinTests
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectMixinTests
 {
   [TestFixture]
   public class DefaultValueTest

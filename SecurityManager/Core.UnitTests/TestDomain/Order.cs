@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Security;
+using Remotion.Security;
 
-namespace Rubicon.SecurityManager.UnitTests.TestDomain
+namespace Remotion.SecurityManager.UnitTests.TestDomain
 {
   public class Order : ISecurableObject
   {

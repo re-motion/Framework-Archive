@@ -2,12 +2,12 @@ using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Web.UI;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.Design.BindableObject;
-using Rubicon.ObjectBinding.Web.UI.Design;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.Design.BindableObject;
+using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   [Designer (typeof (BindableObjectDataSourceDesigner))]
   public class BindableObjectDataSourceControl : BusinessObjectDataSourceControl

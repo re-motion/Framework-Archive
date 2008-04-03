@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence.Configuration
+namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
 [Obsolete("(Version (1.7.42)", true)]
 public sealed class StorageProviderDefinitionCollection : CommonCollection

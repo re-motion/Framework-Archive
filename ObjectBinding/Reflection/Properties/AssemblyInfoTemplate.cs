@@ -6,7 +6,7 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Rubicon BusinessObjects Reflection Sample Library")]
+[assembly: AssemblyTitle("Remotion BusinessObjects Reflection Sample Library")]
 [assembly: AssemblyDescription("A sample library that uses Reflection to provide BusinessObjects functionality for .NET types.")]
 [assembly: AssemblyConfiguration("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]

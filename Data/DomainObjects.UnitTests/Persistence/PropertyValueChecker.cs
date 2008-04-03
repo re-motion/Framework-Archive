@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.UnitTests.Resources;
+using Remotion.Data.DomainObjects.UnitTests.Resources;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 {
   public class PropertyValueChecker
   {

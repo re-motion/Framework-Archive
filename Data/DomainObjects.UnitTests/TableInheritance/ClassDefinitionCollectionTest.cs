@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
-using Rubicon.Mixins.Context;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
+namespace Remotion.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
   public class ClassDefinitionCollectionTest : TableInheritanceMappingTest

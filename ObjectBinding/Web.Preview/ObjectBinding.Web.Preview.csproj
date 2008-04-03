@@ -7,8 +7,8 @@
     <ProjectGuid>{6D58BB53-8709-48F9-8EF9-0D65B11A162C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.ObjectBinding.Web</RootNamespace>
-    <AssemblyName>Rubicon.ObjectBinding.Web.Preview</AssemblyName>
+    <RootNamespace>Remotion.ObjectBinding.Web</RootNamespace>
+    <AssemblyName>Remotion.ObjectBinding.Web.Preview</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

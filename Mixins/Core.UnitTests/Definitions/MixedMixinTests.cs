@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Mixins.UnitTests.Definitions
+namespace Remotion.Mixins.UnitTests.Definitions
 {
   [TestFixture]
   public class MixedMixinTests

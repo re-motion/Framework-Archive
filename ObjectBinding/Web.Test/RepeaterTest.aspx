@@ -9,16 +9,16 @@
 <meta content="Microsoft Visual Studio .NET 7.1" name=GENERATOR>
 <meta content=C# name=CODE_LANGUAGE>
 <meta content=JavaScript name=vs_defaultClientScript>
-<meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema><rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
+<meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema><remotion:htmlheadcontents id=HtmlHeadContents runat="server"></remotion:htmlheadcontents>
   </head>
 <body MS_POSITIONING="FlowLayout">
-<form id=Form1 method=post runat="server"><rubicon:webbutton id=SaveButton runat="server" Text="Save"></rubicon:webbutton>
+<form id=Form1 method=post runat="server"><remotion:webbutton id=SaveButton runat="server" Text="Save"></remotion:webbutton>
 <ros:ObjectBoundRepeater id=Repeater2 runat="server" propertyidentifier="Children" datasourcecontrol="CurrentObject">
 <itemtemplate>
     <div>
-    <rubicon:boctextvalue id="FirstNameField" runat="server" ReadOnly="true" DataSourceControl="ItemDataSourceControl" PropertyIdentifier="FirstName">
-</rubicon:boctextvalue>
-<rubicon:bindableobjectdatasourcecontrol id="ItemDataSourceControl" runat="server" Type="Rubicon.ObjectBinding.Sample::Person"/>
+    <remotion:boctextvalue id="FirstNameField" runat="server" ReadOnly="true" DataSourceControl="ItemDataSourceControl" PropertyIdentifier="FirstName">
+</remotion:boctextvalue>
+<remotion:bindableobjectdatasourcecontrol id="ItemDataSourceControl" runat="server" Type="Remotion.ObjectBinding.Sample::Person"/>
 </div>
 </ItemTemplate>
 </ros:ObjectBoundRepeater>
@@ -39,6 +39,6 @@
 </ItemTemplate>
 </ros:ObjectBoundRepeater>
 <hr>
-<rubicon:bindableobjectdatasourcecontrol id=CurrentObject runat="server" Type="Rubicon.ObjectBinding.Sample::Person"/></form>
+<remotion:bindableobjectdatasourcecontrol id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person"/></form>
   </body>
 </html>

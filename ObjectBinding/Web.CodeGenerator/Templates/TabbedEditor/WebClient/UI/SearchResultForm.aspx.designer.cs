@@ -7,10 +7,10 @@ namespace $PROJECT_ROOTNAMESPACE$.UI
 {
 	public partial class SearchResult$DOMAIN_CLASSNAME$Form
 	{
-		protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
-		protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl $DOMAIN_CLASSNAME$SearchDataSource;
-		protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+		protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+		protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl $DOMAIN_CLASSNAME$SearchDataSource;
+		protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
 		protected $PROJECT_ROOTNAMESPACE$.UI.NavigationTabs NavigationTabs;
-		protected Rubicon.ObjectBinding.Web.UI.Controls.BocList $DOMAIN_CLASSNAME$List;
+		protected Remotion.ObjectBinding.Web.UI.Controls.BocList $DOMAIN_CLASSNAME$List;
 	}
 }

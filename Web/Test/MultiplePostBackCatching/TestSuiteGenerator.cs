@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Utilities;
-using Rubicon.Web.Utilities;
+using Remotion.Utilities;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.Test.MultiplePostBackCatching
+namespace Remotion.Web.Test.MultiplePostBackCatching
 {
   public class TestSuiteGenerator
   {

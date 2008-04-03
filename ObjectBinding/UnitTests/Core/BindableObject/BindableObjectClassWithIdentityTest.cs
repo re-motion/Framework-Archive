@@ -2,11 +2,11 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
 {
   [TestFixture]
   public class BindableObjectClassWithIdentityTest : TestBase
@@ -31,7 +31,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       Assert.That (bindableObjectClass.TargetType, Is.SameAs (typeof (ClassWithIdentity)));
       Assert.That (
           bindableObjectClass.Identifier,
-          Is.EqualTo ("Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithIdentity, Rubicon.ObjectBinding.UnitTests"));
+          Is.EqualTo ("Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithIdentity, Remotion.ObjectBinding.UnitTests"));
       Assert.That (bindableObjectClass.RequiresWriteBack, Is.False);
       Assert.That (bindableObjectClass.BusinessObjectProvider, Is.SameAs (_bindableObjectProvider));
     }
@@ -75,9 +75,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
         ExpectedMessage =
-        "The 'Rubicon.ObjectBinding.BindableObject.IGetObjectService' required for loading objectes of type "
-        + "'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithIdentity' is not registered with the "
-        + "'Rubicon.ObjectBinding.BindableObject.BindableObjectProvider'.")]
+        "The 'Remotion.ObjectBinding.BindableObject.IGetObjectService' required for loading objectes of type "
+        + "'Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithIdentity' is not registered with the "
+        + "'Remotion.ObjectBinding.BindableObject.BindableObjectProvider'.")]
     public void GetObject_WithoutService ()
     {
       BindableObjectClassWithIdentity bindableObjectClass =

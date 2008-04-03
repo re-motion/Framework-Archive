@@ -7,8 +7,8 @@
     <ProjectGuid>{9721D3BE-8894-47D1-8AD7-7AEC0EB1E2D4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Data.DomainObjects.Oracle.CodeGenerator</RootNamespace>
-    <AssemblyName>Rubicon.Data.DomainObjects.Oracle.CodeGenerator</AssemblyName>
+    <RootNamespace>Remotion.Data.DomainObjects.Oracle.CodeGenerator</RootNamespace>
+    <AssemblyName>Remotion.Data.DomainObjects.Oracle.CodeGenerator</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

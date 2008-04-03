@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.UnitTests.ValidationTests.ValidationSampleTypes;
-using Rubicon.Mixins.Validation;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.ValidationTests.ValidationSampleTypes;
+using Remotion.Mixins.Validation;
 
-namespace Rubicon.Mixins.UnitTests.ValidationTests.Rules
+namespace Remotion.Mixins.UnitTests.ValidationTests.Rules
 {
   [TestFixture]
   public class DefaultPropertyRulesTests : ValidationTestBase
@@ -16,7 +16,7 @@ namespace Rubicon.Mixins.UnitTests.ValidationTests.Rules
       DefaultValidationLog log =
           Validator.Validate (definition.Properties[typeof (BaseWithGetterOnly).GetProperty ("Property")].Overrides[0]);
 
-      Assert.IsTrue (HasWarning ("Rubicon.Mixins.Validation.Rules.DefaultPropertyRules.NewMemberAddedByOverride", log));
+      Assert.IsTrue (HasWarning ("Remotion.Mixins.Validation.Rules.DefaultPropertyRules.NewMemberAddedByOverride", log));
     }
   }
 }

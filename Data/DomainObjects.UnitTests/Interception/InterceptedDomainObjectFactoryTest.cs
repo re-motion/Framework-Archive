@@ -3,17 +3,17 @@ using System.IO;
 using System.Runtime.Serialization;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Interception.SampleTypes;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
+using Remotion.Reflection;
+using Remotion.Utilities;
 using File=System.IO.File;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Interception
+namespace Remotion.Data.DomainObjects.UnitTests.Interception
 {
   [TestFixture]
   public class InterceptedDomainObjectFactoryTest : ClientTransactionBaseTest
@@ -58,8 +58,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage = "Argument concreteBaseType is a "
-        + "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Official, which cannot be assigned to type "
-        + "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.\r\nParameter name: concreteBaseType")]
+        + "Remotion.Data.DomainObjects.UnitTests.TestDomain.Official, which cannot be assigned to type "
+        + "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.\r\nParameter name: concreteBaseType")]
     public void GetConcreteDomainObjectTypeForSpecificBaseType_ThrowsOnInvalidSpecificType ()
     {
       ClassDefinition orderDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Order));
@@ -80,7 +80,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       _factory.GetConcreteDomainObjectType (typeof (Order));
       string[] paths = _factory.SaveGeneratedAssemblies ();
       Assert.AreEqual (1, paths.Length);
-      Assert.AreEqual (Path.Combine (_assemblyDirectory, "Rubicon.Data.DomainObjects.Generated.Signed.dll"), paths[0]);
+      Assert.AreEqual (Path.Combine (_assemblyDirectory, "Remotion.Data.DomainObjects.Generated.Signed.dll"), paths[0]);
       Assert.IsTrue (File.Exists (paths[0]));
     }
 
@@ -95,7 +95,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests.TestDomain."
         + "AbstractClass as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.\r\nParameter name: baseType")]
     public void AbstractWithoutInstantiableAttributeCannotBeInstantiated ()
     {
@@ -103,7 +103,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests.TestDomain."
         + "AbstractClass as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.\r\nParameter name: baseTypeClassDefinition")]
     public void AbstractWithoutInstantiableAttributeCannotBeInstantiated_WithSpecificType ()
     {
@@ -111,7 +111,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests."
         + "Interception.SampleTypes.NonInstantiableAbstractClass as its member Foo (on type NonInstantiableAbstractClass) is abstract (and not an "
         + "automatic property).\r\nParameter name: baseType")]
     public void AbstractWithMethodCannotBeInstantiated ()
@@ -121,7 +121,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type "
-        + "Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes.NonInstantiableAbstractClassWithProps as its "
+        + "Remotion.Data.DomainObjects.UnitTests.Interception.SampleTypes.NonInstantiableAbstractClassWithProps as its "
         + "member get_Foo (on type NonInstantiableAbstractClassWithProps) is abstract (and not an automatic property)."
         + "\r\nParameter name: baseType")]
     public void AbstractWithNonAutoPropertiesCannotBeInstantiated ()
@@ -130,9 +130,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests."
         + "Interception.SampleTypes.NonInstantiableClassWithAutomaticRelatedCollectionSetter, automatic "
-        + "properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data.DomainObjects."
+        + "properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Remotion.Data.DomainObjects."
         + "UnitTests.Interception.SampleTypes.NonInstantiableClassWithAutomaticRelatedCollectionSetter."
         + "RelatedObjects'.\r\nParameter name: baseType")]
     public void AbstractWithAutoCollectionSetterCannotBeInstantiated ()
@@ -141,7 +141,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.Interception."
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests.Interception."
         + "SampleTypes.NonInstantiableSealedClass as it is sealed.\r\nParameter name: baseType")]
     public void SealedCannotBeInstantiated ()
     {
@@ -184,7 +184,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order was not "
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type Remotion.Data.DomainObjects.UnitTests.TestDomain.Order was not "
         + "created by InterceptedDomainObjectFactory.GetConcreteDomainObjectType.\r\nParameter name: type")]
     public void GetTypesafeConstructorInvokerThrowsOnTypeNotCreatedByFactory ()
     {
@@ -209,7 +209,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object's type "
-        + "Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes.DOWithConstructors was not "
+        + "Remotion.Data.DomainObjects.UnitTests.Interception.SampleTypes.DOWithConstructors was not "
         + "created by InterceptedDomainObjectFactory.GetConcreteDomainObjectType.\r\nParameter name: instance")]
     public void PrepareUnconstructedInstanceThrowsOnTypeNotCreatedByFactory ()
     {

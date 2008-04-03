@@ -1,7 +1,7 @@
-using Rubicon.ObjectBinding.Web.UI.Design;
-using Rubicon.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary>
   ///   Provides functionality for binding an <see cref="ISmartControl"/> to an <see cref="IBusinessObject"/> using
@@ -9,7 +9,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
   /// </summary>
   /// <remarks>
   ///   <para>
-  ///     See the <see href="Rubicon.ObjectBinding.html">Rubicon.ObjectBinding</see> namespace documentation for general information on the 
+  ///     See the <see href="Remotion.ObjectBinding.html">Remotion.ObjectBinding</see> namespace documentation for general information on the 
   ///     data binding process.
   ///   </para><para>
   ///     See <see cref="BusinessObjectBoundWebControl"/> for the <see langword="abstract"/> default implementation.

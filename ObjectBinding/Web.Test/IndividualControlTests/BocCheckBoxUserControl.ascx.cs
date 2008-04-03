@@ -2,14 +2,14 @@ using System;
 using System.Web;
 using System.Web.UI.WebControls;
 
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -17,33 +17,33 @@ namespace OBWTest.IndividualControlTests
 public class BocCheckBoxUserControl : BaseUserControl
 {
   protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox DeceasedField;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox DeceasedField;
   protected System.Web.UI.WebControls.Label DeceasedFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox ReadOnlyDeceasedField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox ReadOnlyDeceasedField;
   protected System.Web.UI.WebControls.Label ReadOnlyDeceasedFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox UnboundDeceasedField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox UnboundDeceasedField;
   protected System.Web.UI.WebControls.Label UnboundDeceasedFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox UnboundReadOnlyDeceasedField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox UnboundReadOnlyDeceasedField;
   protected System.Web.UI.WebControls.Label UnboundReadOnlyDeceasedFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox DisabledDeceasedField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox DisabledDeceasedField;
   protected System.Web.UI.WebControls.Label DisabledDeceasedFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox DisabledReadOnlyDeceasedField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox DisabledReadOnlyDeceasedField;
   protected System.Web.UI.WebControls.Label DisabledReadOnlyDeceasedFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox DisabledUnboundDeceasedField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox DisabledUnboundDeceasedField;
   protected System.Web.UI.WebControls.Label DisabledUnboundDeceasedFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox DisabledUnboundReadOnlyDeceasedField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox DisabledUnboundReadOnlyDeceasedField;
   protected System.Web.UI.WebControls.Label DisabledUnboundReadOnlyDeceasedFieldValueLabel;
   protected System.Web.UI.WebControls.Label DeceasedFieldCheckedChangedLabel;
   protected System.Web.UI.WebControls.Label UnboundDeceasedFieldCheckedChangedLabel;
-  protected Rubicon.Web.UI.Controls.WebButton DeceasedTestSetNullButton;
-  protected Rubicon.Web.UI.Controls.WebButton DeceasedTestToggleValueButton;
-  protected Rubicon.Web.UI.Controls.WebButton ReadOnlyDeceasedTestSetNullButton;
-  protected Rubicon.Web.UI.Controls.WebButton ReadOnlyDeceasedTestToggleValueButton;
+  protected Remotion.Web.UI.Controls.WebButton DeceasedTestSetNullButton;
+  protected Remotion.Web.UI.Controls.WebButton DeceasedTestToggleValueButton;
+  protected Remotion.Web.UI.Controls.WebButton ReadOnlyDeceasedTestSetNullButton;
+  protected Remotion.Web.UI.Controls.WebButton ReadOnlyDeceasedTestToggleValueButton;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
@@ -68,13 +68,13 @@ public class BocCheckBoxUserControl : BaseUserControl
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    UnboundDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Deceased");
+    UnboundDeceasedField.Property = (Remotion.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Deceased");
     //UnboundDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    UnboundReadOnlyDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Deceased");
+    UnboundReadOnlyDeceasedField.Property = (Remotion.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Deceased");
     UnboundReadOnlyDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    DisabledUnboundDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Deceased");
+    DisabledUnboundDeceasedField.Property = (Remotion.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Deceased");
     DisabledUnboundDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    DisabledUnboundReadOnlyDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Deceased");
+    DisabledUnboundReadOnlyDeceasedField.Property = (Remotion.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Deceased");
     DisabledUnboundReadOnlyDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
 
     if (! IsPostBack)

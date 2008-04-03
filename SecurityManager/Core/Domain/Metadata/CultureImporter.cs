@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Security.Metadata;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Security.Metadata;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.Metadata
+namespace Remotion.SecurityManager.Domain.Metadata
 {
   public class CultureImporter
   {

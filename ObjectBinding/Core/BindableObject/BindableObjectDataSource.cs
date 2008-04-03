@@ -1,10 +1,10 @@
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
-using Rubicon.ObjectBinding.Design.BindableObject;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding.Design.BindableObject;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Remotion.ObjectBinding.BindableObject
 {
   //TODO: Doc
   public class BindableObjectDataSource : BusinessObjectDataSource

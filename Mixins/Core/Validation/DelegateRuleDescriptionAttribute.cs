@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.Validation
+namespace Remotion.Mixins.Validation
 {
   [AttributeUsage (AttributeTargets.Method)]
   public class DelegateRuleDescriptionAttribute : Attribute

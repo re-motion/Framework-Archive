@@ -7,8 +7,8 @@
     <ProjectGuid>{DFAEF7A9-2127-41D7-8D5B-BC71724EB8AB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Mixins.UnitTests</RootNamespace>
-    <AssemblyName>Rubicon.Mixins.UnitTests</AssemblyName>
+    <RootNamespace>Remotion.Mixins.UnitTests</RootNamespace>
+    <AssemblyName>Remotion.Mixins.UnitTests</AssemblyName>
     <StartupObject>
     </StartupObject>
     <FileUpgradeFlags>

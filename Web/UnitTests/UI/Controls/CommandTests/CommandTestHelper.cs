@@ -2,14 +2,14 @@ using System;
 using System.Web;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
-using Rubicon.Security;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UnitTests.AspNetFramework;
-using Rubicon.Web.Utilities;
+using Remotion.Security;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UnitTests.AspNetFramework;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
+namespace Remotion.Web.UnitTests.UI.Controls.CommandTests
 {
   public class CommandTestHelper
   {

@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.BindableObject.Properties
+namespace Remotion.ObjectBinding.BindableObject.Properties
 {
   public class GuidProperty : PropertyBase, IBusinessObjectStringProperty
   {

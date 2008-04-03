@@ -3,11 +3,11 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Configuration;
 using System.Configuration.Provider;
-using Rubicon.Collections;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Utilities;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Configuration
+namespace Remotion.Configuration
 {
   /// <summary>Base class for all providers.</summary>
   /// <remarks>

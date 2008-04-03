@@ -2,15 +2,15 @@ using System;
 using System.Collections;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
+using Remotion.Utilities;
 
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
   public class DomainObjectCollectionTest : ClientTransactionBaseTest
@@ -74,9 +74,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (ArgumentTypeException),
-        ExpectedMessage = "Values of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor' cannot be added to this collection. "
-        + "Values must be of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer' "
-        + "or derived from 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer'.\r\nParameter name: domainObject")]
+        ExpectedMessage = "Values of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Distributor' cannot be added to this collection. "
+        + "Values must be of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer' "
+        + "or derived from 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer'.\r\nParameter name: domainObject")]
     public void InvalidDerivedType ()
     {
       Distributor distributor = Distributor.GetObject (DomainObjectIDs.Distributor2);

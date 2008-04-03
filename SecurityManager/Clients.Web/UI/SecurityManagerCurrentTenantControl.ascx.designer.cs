@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.UI {
+namespace Remotion.SecurityManager.Clients.Web.UI {
     
     
     /// <summary>
@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue CurrentUserField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue CurrentUserField;
         
         /// <summary>
         /// CurrentTenantField control.
@@ -35,6 +35,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue CurrentTenantField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue CurrentTenantField;
     }
 }

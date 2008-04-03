@@ -4,16 +4,16 @@ using System.ComponentModel.Design;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Design;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.Resources;
-using Rubicon.Design;
-using Rubicon.Development.UnitTesting.IO;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Design;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.Resources;
+using Remotion.Design;
+using Remotion.Development.UnitTesting.IO;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Design
+namespace Remotion.Data.DomainObjects.UnitTests.Design
 {
   [TestFixture]
   public class DomainObjectsDesignModeHelperTest

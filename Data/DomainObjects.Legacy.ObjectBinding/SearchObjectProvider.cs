@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Collections;
-using Rubicon.ObjectBinding;
+using Remotion.Collections;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
   // TODO: Why have a different SearchObjectProvider? Remove this class?
   public class SearchObjectProvider : BusinessObjectProvider

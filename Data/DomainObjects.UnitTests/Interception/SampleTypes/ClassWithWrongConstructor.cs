@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes
+namespace Remotion.Data.DomainObjects.UnitTests.Interception.SampleTypes
 {
   [DBTable]
   public class ClassWithWrongConstructor : DomainObject

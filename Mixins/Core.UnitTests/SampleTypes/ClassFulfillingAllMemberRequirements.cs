@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon;
+using Remotion;
 
-namespace Rubicon.Mixins.UnitTests.SampleTypes
+namespace Remotion.Mixins.UnitTests.SampleTypes
 {
   [Uses (typeof (MixinRequiringAllMembersFace))]
   [Uses (typeof (MixinRequiringAllMembersBase))]

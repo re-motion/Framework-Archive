@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using NUnit.Framework;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
+namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
   [Serializable]
   public class SequenceEventReceiver : EventReceiverBase

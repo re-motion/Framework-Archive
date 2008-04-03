@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
-using Rubicon.NullableValueTypes;
-using Rubicon.Utilities;
+using Remotion.NullableValueTypes;
+using Remotion.Utilities;
 
-namespace Rubicon.Text.CommandLine
+namespace Remotion.Text.CommandLine
 {
   public class CommandLineClassParser: CommandLineParser
   {
@@ -57,7 +57,7 @@ namespace Rubicon.Text.CommandLine
         {
           NaBoolean naboolval = (NaBoolean) value;
           if (naboolval.IsNull)
-            throw new ApplicationException (string.Format ("{0} {1}: Cannot convert Rubicon.NaBoolean.Null to System.Boolean. Use NaBoolean type for optional attributes without default values.", fieldOrProperty.MemberType, fieldOrProperty.Name));
+            throw new ApplicationException (string.Format ("{0} {1}: Cannot convert Remotion.NaBoolean.Null to System.Boolean. Use NaBoolean type for optional attributes without default values.", fieldOrProperty.MemberType, fieldOrProperty.Name));
           value = (bool) naboolval;
         }
 

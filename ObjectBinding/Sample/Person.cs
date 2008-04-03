@@ -1,10 +1,10 @@
 using System;
 using System.Xml.Serialization;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Sample;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Sample
+namespace Remotion.ObjectBinding.Sample
 {
   [XmlRoot ("Person")]
   [XmlType]

@@ -1,6 +1,6 @@
-using Rubicon.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader
+namespace Remotion.Data.DomainObjects.ConfigurationLoader
 {
   public interface IMappingLoader
   {

@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
 using System.Web.UI.WebControls;
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.ObjectBinding;
-using Rubicon.Web.UI.Controls;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Sample
+namespace Remotion.ObjectBinding.Sample
 {
   public class PersonTreeView: BocTreeView
   {

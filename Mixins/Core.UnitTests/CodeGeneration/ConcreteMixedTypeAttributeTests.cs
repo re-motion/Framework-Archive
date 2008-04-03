@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Context.FluentBuilders;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Mixins.Definitions;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Definitions;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration
+namespace Remotion.Mixins.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class ConcreteMixedTypeAttributeTests

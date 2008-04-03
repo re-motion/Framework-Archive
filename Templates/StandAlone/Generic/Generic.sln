@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Templates.Generic.Web", "http://localhost/dev/libraries/Commons/Templates/StandAlone/Generic/Web/Rubicon.Templates.Generic.Web.csproj", "{C6B81EB1-582A-457D-A210-63214815F0C3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Remotion.Templates.Generic.Web", "http://localhost/dev/libraries/Commons/Templates/StandAlone/Generic/Web/Remotion.Templates.Generic.Web.csproj", "{C6B81EB1-582A-457D-A210-63214815F0C3}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -9,7 +9,7 @@ Global
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {2107ABD0-6557-45E4-9305-F97BD83DE571}
-		SccProjectUniqueName1 = http://localhost/dev/libraries/Commons/Templates/StandAlone/Generic/Web/Rubicon.Templates.Generic.Web.csproj
+		SccProjectUniqueName1 = http://localhost/dev/libraries/Commons/Templates/StandAlone/Generic/Web/Remotion.Templates.Generic.Web.csproj
 		SccProjectName1 = \u0022$/libraries/Commons/Templates/StandAlone/Generic/Web\u0022,\u0020ISJBAAAA
 		SccLocalPath1 = Web
 		CanCheckoutShared = false

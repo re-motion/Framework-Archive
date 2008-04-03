@@ -1,6 +1,6 @@
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="obr" Namespace="Remotion.ObjectBinding.Reflection" Assembly="Remotion.ObjectBinding.Reflection" %>
+<%@ Register TagPrefix="rwc" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Remotion.ObjectBinding.Web.Controls" Assembly="Remotion.ObjectBinding.Web" %>
 <%@ Page language="c#" Codebehind="TestTabStripWithoutWxeForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabStripWithoutWxeForm"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>

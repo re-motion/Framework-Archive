@@ -1,8 +1,8 @@
 using System;
 
-using Rubicon.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.Templates.Generic.Web.Classes
+namespace Remotion.Templates.Generic.Web.Classes
 {
 
 public class WxeTabControl : TabControl

@@ -1,17 +1,17 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Development;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.Database;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Mapping.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Development;
+using Remotion.Data.DomainObjects.Legacy.Mapping;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.Database;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.Factories;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Queries.Configuration;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests
 {
   public class StandardMappingTest: DatabaseTest
   {

@@ -1,4 +1,4 @@
-namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
   public abstract class OrderWithNewPropertyAccessBase: DomainObject
   {

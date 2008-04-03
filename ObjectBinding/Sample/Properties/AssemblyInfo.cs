@@ -1,6 +1,6 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Rubicon.Mixins;
+using Remotion.Mixins;
 
 //
 // General Information about an assembly is controlled through the following 

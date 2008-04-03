@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Remoting.Messaging;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   public sealed class SecurityFreeSection : IDisposable
   {

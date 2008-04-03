@@ -3,10 +3,10 @@ using System.Collections;
 using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
+using Remotion.Reflection;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Reflection.Legacy
+namespace Remotion.ObjectBinding.Reflection.Legacy
 {
 
 public class ReflectionBusinessObjectStorage

@@ -2,12 +2,12 @@ using System;
 using System.Text;
 using System.ComponentModel;
 
-using Rubicon.NullableValueTypes;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Data.DomainObjects.ObjectBinding;
+using Remotion.NullableValueTypes;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain
+namespace Remotion.Data.DomainObjects.Web.Legacy.Test.Domain
 {
 [Serializable]
 public class ClassWithAllDataTypesSearch : BindableSearchObject

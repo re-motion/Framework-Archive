@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Data.DomainObjects;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
+namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 {
   public class AccessControlTestHelper
   {
@@ -27,22 +27,22 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public SecurableClassDefinition CreateOrderClassDefinition ()
     {
-      return CreateClassDefinition ("Rubicon.SecurityManager.UnitTests.TestDomain.Order");
+      return CreateClassDefinition ("Remotion.SecurityManager.UnitTests.TestDomain.Order");
     }
 
     public SecurableClassDefinition CreateSpecialOrderClassDefinition (SecurableClassDefinition orderClassDefinition)
     {
-      return CreateClassDefinition ("Rubicon.SecurityManager.UnitTests.TestDomain.SpecialOrder", orderClassDefinition);
+      return CreateClassDefinition ("Remotion.SecurityManager.UnitTests.TestDomain.SpecialOrder", orderClassDefinition);
     }
 
     public SecurableClassDefinition CreatePremiumOrderClassDefinition (SecurableClassDefinition orderClassDefinition)
     {
-      return CreateClassDefinition ("Rubicon.SecurityManager.UnitTests.TestDomain.PremiumOrder", orderClassDefinition);
+      return CreateClassDefinition ("Remotion.SecurityManager.UnitTests.TestDomain.PremiumOrder", orderClassDefinition);
     }
 
     public SecurableClassDefinition CreateInvoiceClassDefinition ()
     {
-      return CreateClassDefinition ("Rubicon.SecurityManager.UnitTests.TestDomain.Invoice");
+      return CreateClassDefinition ("Remotion.SecurityManager.UnitTests.TestDomain.Invoice");
     }
 
     public SecurableClassDefinition CreateClassDefinition (string name)

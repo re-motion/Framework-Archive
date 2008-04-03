@@ -1,9 +1,9 @@
 using System;
 using System.Runtime.Remoting.Messaging;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Utilities.Singleton;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Utilities.Singleton;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   /// <summary>
   /// Allows users to specify configuration settings when a mixed type is instantiated.

@@ -4,9 +4,9 @@ using System.ComponentModel.Design;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.Design;
+using Remotion.Design;
 
-namespace Rubicon.Core.UnitTests.Design
+namespace Remotion.Core.UnitTests.Design
 {
   [TestFixture]
   public class DesignModeHelperBaseTest

@@ -2,20 +2,20 @@
 <SmartNavigationConfiguration>
   <Class>
     <remarks> 
-      See the <see cref="WebConfiguration"/> for details on registering the <c>rubicon.web</c> configuration section.
+      See the <see cref="WebConfiguration"/> for details on registering the <c>remotion.web</c> configuration section.
     </remarks>
     <seealso cref="WebConfiguration"/>
     <example>
-      Setting the <c>smartNavigation</c> entry's values in the <c>rubicon.web</c> configuration section.
+      Setting the <c>smartNavigation</c> entry's values in the <c>remotion.web</c> configuration section.
       <code>
 <![CDATA[
-<rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"> 
+<remotion.web xmlns="http://www.rubicon-it.com/commons/web/configuration"> 
   <smartNavigation 
       enableScrolling="true" 
       enableFocusing="true" 
   />
   <!-- Other configuration section entries. -->
-</rubicon.web>
+</remotion.web>
 ]]></code>
     </example>
   </Class>

@@ -1,11 +1,11 @@
 using System;
-using Rubicon.Security;
-using Rubicon.Utilities;
+using Remotion.Security;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
+namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [SecurityState]
-  [EnumDescriptionResource ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Delegation")]
+  [EnumDescriptionResource ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Delegation")]
   public enum Delegation
   {
     Disabled = 0,

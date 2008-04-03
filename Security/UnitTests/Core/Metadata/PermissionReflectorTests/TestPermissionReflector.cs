@@ -1,9 +1,9 @@
 using System;
 using System.Reflection;
-using Rubicon.Collections;
-using Rubicon.Security.Metadata;
+using Remotion.Collections;
+using Remotion.Security.Metadata;
 
-namespace Rubicon.Security.UnitTests.Core.Metadata.PermissionReflectorTests
+namespace Remotion.Security.UnitTests.Core.Metadata.PermissionReflectorTests
 {
   public class TestPermissionReflector : PermissionReflector
   {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rubicon.Data.DomainObjects.Persistence
+namespace Remotion.Data.DomainObjects.Persistence
 {
   /// <summary>
   /// Thrown when the process of loading multiple objects at the same time fails.

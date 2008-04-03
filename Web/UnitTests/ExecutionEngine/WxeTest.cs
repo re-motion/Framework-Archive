@@ -1,11 +1,11 @@
 using System;
 using System.Web;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UnitTests.AspNetFramework;
+using Remotion.Development.UnitTesting;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UnitTests.AspNetFramework;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine
 {
 
 public class WxeTest

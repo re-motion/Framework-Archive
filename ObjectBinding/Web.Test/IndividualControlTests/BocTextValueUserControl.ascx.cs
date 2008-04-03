@@ -2,14 +2,14 @@ using System;
 using System.Web;
 using System.Web.UI.WebControls;
 
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -17,40 +17,40 @@ namespace OBWTest.IndividualControlTests
 public class BocTextValueUserControl : BaseUserControl
 {
   protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
   protected System.Web.UI.WebControls.Label FirstNameFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue ReadOnlyFirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue ReadOnlyFirstNameField;
   protected System.Web.UI.WebControls.Label ReadOnlyFirstNameFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue UnboundFirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue UnboundFirstNameField;
   protected System.Web.UI.WebControls.Label UnboundFirstNameFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue UnboundReadOnlyFirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue UnboundReadOnlyFirstNameField;
   protected System.Web.UI.WebControls.Label UnboundReadOnlyFirstNameFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue IncomeField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue IncomeField;
   protected System.Web.UI.WebControls.Label Label1;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue HeightField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue HeightField;
   protected System.Web.UI.WebControls.Label Label4;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue DateOfBirthField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue DateOfBirthField;
   protected System.Web.UI.WebControls.Label Label2;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue DateOfDeathField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue DateOfDeathField;
   protected System.Web.UI.WebControls.Label Label3;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue DisabledFirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue DisabledFirstNameField;
   protected System.Web.UI.WebControls.Label DisabledFirstNameFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue DisabledReadOnlyFirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue DisabledReadOnlyFirstNameField;
   protected System.Web.UI.WebControls.Label DisabledReadOnlyFirstNameFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue DisabledUnboundFirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue DisabledUnboundFirstNameField;
   protected System.Web.UI.WebControls.Label DisabledUnboundFirstNameFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue DisabledUnboundReadOnlyFirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue DisabledUnboundReadOnlyFirstNameField;
   protected System.Web.UI.WebControls.Label DisabledUnboundReadOnlyFirstNameFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue2;
-  protected Rubicon.Web.UI.Controls.WebButton FirstNameTestSetNullButton;
-  protected Rubicon.Web.UI.Controls.WebButton FirstNameTestSetNewValueButton;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue2;
+  protected Remotion.Web.UI.Controls.WebButton FirstNameTestSetNullButton;
+  protected Remotion.Web.UI.Controls.WebButton FirstNameTestSetNewValueButton;
   protected System.Web.UI.WebControls.Label FirstNameFieldTextChangedLabel;
-  protected Rubicon.Web.UI.Controls.WebButton ReadOnlyFirstNameTestSetNullButton;
-  protected Rubicon.Web.UI.Controls.WebButton ReadOnlyFirstNameTestSetNewValueButton;
+  protected Remotion.Web.UI.Controls.WebButton ReadOnlyFirstNameTestSetNullButton;
+  protected Remotion.Web.UI.Controls.WebButton ReadOnlyFirstNameTestSetNewValueButton;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
@@ -94,13 +94,13 @@ public class BocTextValueUserControl : BaseUserControl
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    UnboundFirstNameField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
+    UnboundFirstNameField.Property = (Remotion.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     //UnboundFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    UnboundReadOnlyFirstNameField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
+    UnboundReadOnlyFirstNameField.Property = (Remotion.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     UnboundReadOnlyFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    DisabledUnboundFirstNameField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
+    DisabledUnboundFirstNameField.Property = (Remotion.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     DisabledUnboundFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    DisabledUnboundReadOnlyFirstNameField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
+    DisabledUnboundReadOnlyFirstNameField.Property = (Remotion.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     DisabledUnboundReadOnlyFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
 
     if (!IsPostBack)

@@ -3,9 +3,9 @@ using System.Collections.Specialized;
 using System.Configuration.Provider;
 using System.Security.Principal;
 using System.Web;
-using Rubicon.Configuration;
+using Remotion.Configuration;
 
-namespace Rubicon.Security.Web
+namespace Remotion.Security.Web
 {
   public class HttpContextUserProvider : ExtendedProviderBase, IUserProvider
   {

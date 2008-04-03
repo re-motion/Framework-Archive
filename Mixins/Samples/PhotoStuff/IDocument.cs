@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rubicon.Mixins.Samples.PhotoStuff
+namespace Remotion.Mixins.Samples.PhotoStuff
 {
   public interface IDocument
   {

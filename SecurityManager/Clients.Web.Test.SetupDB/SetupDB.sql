@@ -1,4 +1,4 @@
-USE RubiconSecurityManagerWebClientTest
+USE RemotionSecurityManagerWebClientTest
 GO
 
 -- Drop all views that will be created below

@@ -1,10 +1,10 @@
 using System;
 using System.Data.SqlClient;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.Resources;
-using Rubicon.Development.UnitTesting.Data.SqlClient;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.Resources;
+using Remotion.Development.UnitTesting.Data.SqlClient;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Database
+namespace Remotion.Data.DomainObjects.UnitTests.Database
 {
   public class StandardMappingDatabaseAgent : DatabaseAgent
   {

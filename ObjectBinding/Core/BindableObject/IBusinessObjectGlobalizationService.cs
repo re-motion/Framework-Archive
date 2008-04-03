@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
-using Rubicon.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.BindableObject.Properties;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Remotion.ObjectBinding.BindableObject
 {
   //TODO: doc
   public interface IBindableObjectGlobalizationService : IBusinessObjectService

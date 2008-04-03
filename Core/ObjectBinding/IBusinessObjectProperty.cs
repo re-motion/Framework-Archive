@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary>
   ///   The <b>IBusinessObjectProperty</b> interface provides functionality common to all business object property 

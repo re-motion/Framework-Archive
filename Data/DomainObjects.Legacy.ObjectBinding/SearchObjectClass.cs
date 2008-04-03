@@ -1,15 +1,15 @@
 using System;
-using Rubicon.ObjectBinding;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
 /// <summary>
-/// The implementation of <see cref="Rubicon.ObjectBinding.IBusinessObjectClass"/> for the <see cref="BindableSearchObject"/>.
+/// The implementation of <see cref="Remotion.ObjectBinding.IBusinessObjectClass"/> for the <see cref="BindableSearchObject"/>.
 /// </summary>
 /// <remarks>
 ///   <para>
-///     See the documentation of <see cref="Rubicon.ObjectBinding.IBusinessObjectClassWithIdentity"/> for further information.
+///     See the documentation of <see cref="Remotion.ObjectBinding.IBusinessObjectClassWithIdentity"/> for further information.
 ///   </para>
 ///   <para>
 ///     This class is used with <see cref="BindableSearchObject"/> and <see cref="SearchObjectDataSource"/>.
@@ -59,7 +59,7 @@ public class SearchObjectClass : IBusinessObjectClass
   }
 
   /// <summary>
-  /// Returns an <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> representing the given <paramref name="propertyIdentifier"/>.
+  /// Returns an <see cref="Remotion.ObjectBinding.IBusinessObjectProperty"/> representing the given <paramref name="propertyIdentifier"/>.
   /// </summary>
   /// <param name="propertyIdentifier">The name of the property.</param>
   /// <returns>An instance of <see cref="BaseProperty"/> or derived type representing the given <paramref name="propertyIdentifier"/>, or <see langword="null"/> if not found.</returns>
@@ -69,7 +69,7 @@ public class SearchObjectClass : IBusinessObjectClass
   }
 
   /// <summary>
-  /// Returns an array of <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> for all properties of the type that was passed in the constructor.
+  /// Returns an array of <see cref="Remotion.ObjectBinding.IBusinessObjectProperty"/> for all properties of the type that was passed in the constructor.
   /// </summary>
   /// <returns>An array of instances of <see cref="BaseProperty"/> or a derived type for each property. If no properties can be found, an empty array is returned.</returns>
   public IBusinessObjectProperty[] GetPropertyDefinitions ()

@@ -2,13 +2,13 @@ using System;
 using System.Collections.Specialized;
 using System.Web;
 using NUnit.Framework;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UnitTests.AspNetFramework;
-using Rubicon.Web.UnitTests.Configuration;
-using Rubicon.Web.Utilities;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UnitTests.AspNetFramework;
+using Remotion.Web.UnitTests.Configuration;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UnitTests.UI.Controls
+namespace Remotion.Web.UnitTests.UI.Controls
 {
 
 [TestFixture]

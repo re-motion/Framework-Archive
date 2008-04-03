@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
+namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
   [Serializable]
   public class PropertyValueContainerEventReceiver : EventReceiverBase

@@ -1,12 +1,12 @@
 using System;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.Infrastructure.Interception;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.Infrastructure.Interception;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
+using Remotion.Utilities;
 using System.Reflection;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
   /// Provides functionality for creating instances of DomainObjects which intercept property calls.

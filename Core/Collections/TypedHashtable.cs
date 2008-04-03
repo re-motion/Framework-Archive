@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Runtime.Serialization;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Collections
+namespace Remotion.Collections
 {
   [Serializable]
   public class Hashtable<TKey, TValue> : System.Collections.Generic.Dictionary<TKey, TValue>

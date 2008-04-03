@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
 {
   [TestFixture]
   public class PropertyInfoAdapterTest
@@ -24,7 +24,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       _adapter = new PropertyInfoAdapter (_property);
       _explicitInterfaceAdapter = new PropertyInfoAdapter (
           typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty (
-              "Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar",
+              "Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar",
               BindingFlags.NonPublic | BindingFlags.Instance));
     }
 
@@ -90,7 +90,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
       PropertyInfoAdapter readOnlyExplicitAdapter =
           new PropertyInfoAdapter (
               typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty (
-                  "Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceReadOnlyScalar", BindingFlags.NonPublic | BindingFlags.Instance));
+                  "Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IInterfaceWithReferenceType<T>.ExplicitInterfaceReadOnlyScalar", BindingFlags.NonPublic | BindingFlags.Instance));
       Assert.IsFalse (readOnlyExplicitAdapter.CanBeSetFromOutside);
     }
 

@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Data.DomainObjects.Mapping
+namespace Remotion.Data.DomainObjects.Mapping
 {
 [Serializable]
 public class MappingException : ConfigurationException

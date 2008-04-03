@@ -1,9 +1,9 @@
 using System;
 using Rhino.Mocks;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Utilities;
+using Remotion.Development.UnitTesting;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests
+namespace Remotion.Data.DomainObjects.UnitTests
 {
   public class RhinoMocksRepositoryAdapter : IMockRepository
   {

@@ -1,10 +1,10 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Utilities;
-using Rubicon.Development.UnitTesting;
+using Remotion.Utilities;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Core.UnitTests.Utilities.ReflectionUtilityTests
+namespace Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests
 {
   [TestFixture]
   public class GetOriginalDeclaringType

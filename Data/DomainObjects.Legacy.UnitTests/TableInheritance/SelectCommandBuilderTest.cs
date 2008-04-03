@@ -2,10 +2,10 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance
 {
   [TestFixture]
   public class SelectCommandBuilderTest : SqlProviderBaseTest

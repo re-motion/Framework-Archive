@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.DataManagement
+namespace Remotion.Data.DomainObjects.DataManagement
 {
   public class ObjectEndPointModification : RelationEndPointModification
   {

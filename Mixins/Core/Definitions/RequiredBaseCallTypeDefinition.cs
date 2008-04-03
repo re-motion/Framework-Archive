@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 using System.Reflection;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   public class RequiredBaseCallTypeDefinition : RequirementDefinitionBase
   {

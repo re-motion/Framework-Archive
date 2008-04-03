@@ -34,7 +34,7 @@
 			<param name="ConversionPattern" value="%d - %m%n" />
 		</layout>
   </appender>
-	<logger name="Rubicon.Web.UI.Globalization.ResourceDispatcher">
+	<logger name="Remotion.Web.UI.Globalization.ResourceDispatcher">
 		<level value="ERROR" />
 		<appender-ref ref="FailedResourcesLogFileAppender" />
 	</logger>

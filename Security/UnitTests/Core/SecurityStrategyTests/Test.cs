@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Collections;
-using Rubicon.Security.Configuration;
-using Rubicon.Security.UnitTests.Core.SampleDomain;
-using Rubicon.Development.UnitTesting;
+using Remotion.Collections;
+using Remotion.Security.Configuration;
+using Remotion.Security.UnitTests.Core.SampleDomain;
+using Remotion.Development.UnitTesting;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Security.UnitTests.Core.SecurityStrategyTests
+namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
 {
   [TestFixture]
   public class Test

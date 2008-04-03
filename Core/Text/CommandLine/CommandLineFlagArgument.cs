@@ -1,8 +1,8 @@
 using System;
 using System.Text;
-using Rubicon.NullableValueTypes;
+using Remotion.NullableValueTypes;
 
-namespace Rubicon.Text.CommandLine
+namespace Remotion.Text.CommandLine
 {
 
 public class CommandLineFlagArgument: CommandLineArgument

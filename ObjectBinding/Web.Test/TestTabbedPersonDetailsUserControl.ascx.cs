@@ -1,27 +1,27 @@
 using System;
 using System.Collections.Specialized;
 using System.Web.UI.HtmlControls;
-using Rubicon.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls;
 
-using Rubicon.ObjectBinding;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI;
-using Rubicon.Collections;
+using Remotion.ObjectBinding;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI;
+using Remotion.Collections;
 
 namespace OBWTest
 {
 public class TestTabbedPersonDetailsUserControl : 
     DataEditUserControl, IControl, IFormGridRowProvider
 {
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfBirthField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue DeceasedField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfDeathField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfBirthField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue DeceasedField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfDeathField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   private AutoInitHashtable _listOfFormGridRowInfos =
       new AutoInitHashtable (typeof (FormGridRowInfoCollection));

@@ -3,11 +3,11 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using Rubicon.Utilities;
-using Rubicon.Web.Utilities;
+using Remotion.Utilities;
+using Remotion.Web.Utilities;
 using System.Web.UI.WebControls;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
 
   [DesignTimeVisible (false)]
@@ -162,13 +162,13 @@ namespace Rubicon.Web.ExecutionEngine
       if (!ControlHelper.IsDesignMode (this))
       {
         ScriptManager scriptManager = ScriptManager.GetCurrent (Page);
-        if (!Rubicon.Web.UI.HtmlHeadAppender.Current.HasAppended && (scriptManager == null || !scriptManager.IsInAsyncPostBack))
+        if (!Remotion.Web.UI.HtmlHeadAppender.Current.HasAppended && (scriptManager == null || !scriptManager.IsInAsyncPostBack))
         {
-          throw new WxeException ("The Rubicon.Web.UI.Controls.HtmlHeadContents control is missing on the page. Please add this control to the 'head' section of the document or specify the runat=server attribute for the 'head' section to allow for an automatically generated HtmlHeadContents control.");
+          throw new WxeException ("The Remotion.Web.UI.Controls.HtmlHeadContents control is missing on the page. Please add this control to the 'head' section of the document or specify the runat=server attribute for the 'head' section to allow for an automatically generated HtmlHeadContents control.");
         }
 
         if (Page.MaintainScrollPositionOnPostBack)
-          throw new WxeException ("Enabling the ASP.NET smart navigation by setting System.Web.UI.Page.MaintainScrollPositionOnPostBack to true is not supported on WXE Pages. Use the smart navigation feature integrated into rubicon framework instead.");
+          throw new WxeException ("Enabling the ASP.NET smart navigation by setting System.Web.UI.Page.MaintainScrollPositionOnPostBack to true is not supported on WXE Pages. Use the smart navigation feature integrated into remotion framework instead.");
       }
       base.Render (writer);
     }

@@ -1,10 +1,10 @@
 using System;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Utilities;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.Definitions;
+using Remotion.Utilities;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   /// <summary>
   /// Provides methods that support isolated testing of mixins by initializing them with mock versions of their TThis and TBase parameters.
@@ -83,7 +83,7 @@ namespace Rubicon.Mixins
     /// For use with Rhino Mocks, be sure to configure the current <see cref="ConcreteTypeBuilder"/>'s <see cref="IModuleManager"/> to
     /// generate transient modules instead of persistent ones (which is the default). The following example code shows how to do this:
     /// <code>
-    /// ((Rubicon.Mixins.CodeGeneration.DynamicProxy.ModuleManager) ConcreteTypeBuilder.Current.Scope).Scope = new ModuleScope (false);
+    /// ((Remotion.Mixins.CodeGeneration.DynamicProxy.ModuleManager) ConcreteTypeBuilder.Current.Scope).Scope = new ModuleScope (false);
     /// </code>
     /// </para>
     /// </remarks>
@@ -123,7 +123,7 @@ namespace Rubicon.Mixins
     /// For use with Rhino Mocks, be sure to configure the current <see cref="ConcreteTypeBuilder"/>'s <see cref="IModuleManager"/> to
     /// generate transient modules instead of persistent ones (which is the default). The following example code shows how to do this:
     /// <code>
-    /// ((Rubicon.Mixins.CodeGeneration.DynamicProxy.ModuleManager) ConcreteTypeBuilder.Current.Scope).Scope = new ModuleScope (false);
+    /// ((Remotion.Mixins.CodeGeneration.DynamicProxy.ModuleManager) ConcreteTypeBuilder.Current.Scope).Scope = new ModuleScope (false);
     /// </code>
     /// </para>
     /// </remarks>

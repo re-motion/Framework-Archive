@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary>
   ///   <b>BusinessObjectReferenceSearchDataSourceControl</b> is used to supply an <see cref="IBusinessObjectClass"/>

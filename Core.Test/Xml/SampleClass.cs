@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Rubicon.Core.UnitTests.Xml
+namespace Remotion.Core.UnitTests.Xml
 {
   [XmlType (SampleClass.ElementName, Namespace = SampleClass.SchemaUri)]
   public class SampleClass

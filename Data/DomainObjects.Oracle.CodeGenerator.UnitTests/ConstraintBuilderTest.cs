@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.NullableValueTypes;
+using Remotion.Data.DomainObjects.CodeGenerator.Sql.SqlServer;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.NullableValueTypes;
 using System.Collections;
 using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
 
-namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
+namespace Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
 {
   [TestFixture]
   public class ConstraintBuilderTest : MappingBaseTest

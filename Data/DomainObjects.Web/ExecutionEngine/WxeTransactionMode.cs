@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
+namespace Remotion.Data.DomainObjects.Web.ExecutionEngine
 {
 /// <summary>
 /// Indicates the behavior of a <see cref="WxeTransactedFunction"/>.

@@ -1,10 +1,10 @@
 using System;
 using System.Reflection;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
+namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 {
   public class SecurableClassDefinitionWrapper
   {

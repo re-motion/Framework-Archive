@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
   public class DeleteNewDomainObjectTest : ClientTransactionBaseTest
@@ -24,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       _newOrder = Order.NewObject ();
       _newOrderContainer = _newOrder.InternalDataContainer;
       _newOrderPropertyValues = _newOrderContainer.PropertyValues;
-      _orderNumberValue = _newOrderPropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      _orderNumberValue = _newOrderPropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
       _newOrderTicket = OrderTicket.NewObject (_newOrder);
     }
 
@@ -82,7 +82,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void DomainObjectGetRelatedObject ()
     {
       _newOrder.Delete ();
-      _newOrder.GetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+      _newOrder.GetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
     }
 
     [Test]
@@ -90,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void DomainObjectGetRelatedObjects ()
     {
       _newOrder.Delete ();
-      _newOrder.GetRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      _newOrder.GetRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
     }
 
     [Test]
@@ -98,7 +98,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void DomainObjectGetOriginalRelatedObject ()
     {
       _newOrder.Delete ();
-      _newOrder.GetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+      _newOrder.GetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
     }
 
     [Test]
@@ -106,7 +106,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void DomainObjectGetOriginalRelatedObjects ()
     {
       _newOrder.Delete ();
-      _newOrder.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      _newOrder.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
     }
 
     [Test]
@@ -114,7 +114,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void DomainObjectSetRelatedObject ()
     {
       _newOrder.Delete ();
-      _newOrder.SetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _newOrderTicket);
+      _newOrder.SetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _newOrderTicket);
     }
 
     [Test]
@@ -132,7 +132,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void DataContainerGetIndexer ()
     {
       _newOrder.Delete ();
-      int orderNumber = (int) _newOrderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      int orderNumber = (int) _newOrderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
     }
 
     [Test]
@@ -140,7 +140,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void DataContainerSetIndexer ()
     {
       _newOrder.Delete ();
-      _newOrderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
+      _newOrderContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
     }
 
     [Test]
@@ -148,7 +148,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void DataContainerGetValue ()
     {
       _newOrder.Delete ();
-      _newOrderContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
+      _newOrderContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
     }
 
     [Test]
@@ -156,7 +156,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void DataContainerSetValue ()
     {
       _newOrder.Delete ();
-      _newOrderContainer.SetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber", 10);
+      _newOrderContainer.SetValue ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber", 10);
     }
 
     [Test]
@@ -237,14 +237,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void PropertyValueCollectionContainsPropertyName ()
     {
       _newOrder.Delete ();
-      bool contains = _newOrderPropertyValues.Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
+      bool contains = _newOrderPropertyValues.Contains ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
     }
 
     [Test]
     [ExpectedException (typeof (ObjectDiscardedException))]
     public void PropertyValueCollectionContainsPropertyValue ()
     {
-      PropertyValue propertyValue = _newOrderPropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      PropertyValue propertyValue = _newOrderPropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
 
       _newOrder.Delete ();
 
@@ -264,7 +264,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void PropertyValueCollectionStringIndexer ()
     {
       _newOrder.Delete ();
-      PropertyValue propertyValue = _newOrderPropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      PropertyValue propertyValue = _newOrderPropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
     }
 
     [Test]
@@ -473,8 +473,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ChangeState[] expectedStates = new ChangeState[]
     {
       new ObjectDeletionState (_newOrder, "1. Deleting event of order"),
-      new RelationChangeState (_newOrderTicket, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _newOrder, null, "2. Relation changing event of orderTicket"),
-      new RelationChangeState (_newOrderTicket, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", null, null, "3. Relation changed event of orderTicket"),
+      new RelationChangeState (_newOrderTicket, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _newOrder, null, "2. Relation changing event of orderTicket"),
+      new RelationChangeState (_newOrderTicket, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", null, null, "3. Relation changed event of orderTicket"),
       new ObjectDeletionState (_newOrder, "4. Deleted event of order")
     };
 

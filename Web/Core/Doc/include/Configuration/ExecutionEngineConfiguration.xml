@@ -3,14 +3,14 @@
 
   <Class>
     <remarks> 
-      See the <see cref="WebConfiguration"/> for details on registering the <c>rubicon.web</c> configuration section.
+      See the <see cref="WebConfiguration"/> for details on registering the <c>remotion.web</c> configuration section.
     </remarks>
     <seealso cref="WebConfiguration"/>
     <example>
-      Setting the <c>executionEngine</c> entry's values in the <c>rubicon.web</c> configuration section.
+      Setting the <c>executionEngine</c> entry's values in the <c>remotion.web</c> configuration section.
       <code>
 <![CDATA[
-<rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"> 
+<remotion.web xmlns="http://www.rubicon-it.com/commons/web/configuration"> 
   <executionEngine 
       defaultWxeHandler="~/WxeHandler.ashx"
       enableSessionManagement="true" 
@@ -19,7 +19,7 @@
       urlMappingFile="C:\ProjectDirectory\UrlMapping.xml"
   />
   <!-- Other configuration section entries. -->
-</rubicon.web>
+</remotion.web>
 ]]></code>
       <note>
         The values used for the <see cref="DefaultWxeHandler">defaultWxeHandler</see> and 

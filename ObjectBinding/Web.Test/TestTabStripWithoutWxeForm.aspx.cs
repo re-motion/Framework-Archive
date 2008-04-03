@@ -9,28 +9,28 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.SessionState;
-using Rubicon.Collections;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Reflection;
-using Rubicon.ObjectBinding.Web.Controls;
-using Rubicon.Utilities;
-using Rubicon.Web;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
+using Remotion.Collections;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Reflection;
+using Remotion.ObjectBinding.Web.Controls;
+using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
 
 namespace OBWTest
 {
 
 public class TestTabStripWithoutWxeForm : Page, IWindowStateManager
 {
-  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   private IDataEditControl[] _dataEditControls;
-  protected Rubicon.Web.UI.Controls.WebTabStrip PagesTabStrip;
-  protected Rubicon.Web.UI.Controls.TabStripMenu NavigationTabs;
-  protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
-  protected Rubicon.Web.UI.Controls.TabbedMultiView MultiView;
+  protected Remotion.Web.UI.Controls.WebTabStrip PagesTabStrip;
+  protected Remotion.Web.UI.Controls.TabStripMenu NavigationTabs;
+  protected Remotion.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
+  protected Remotion.Web.UI.Controls.TabbedMultiView MultiView;
   private bool _currentObjectSaved = false;
 
 	private void Page_Load(object sender, System.EventArgs e)
@@ -96,7 +96,7 @@ public class TestTabStripWithoutWxeForm : Page, IWindowStateManager
     MultiView.Views.Add (view);
 
     UserControl control = (UserControl) this.LoadControl (path);
-    control.ID = Rubicon.Text.IdentifierGenerator.HtmlStyle.GetValidIdentifier (System.IO.Path.GetFileNameWithoutExtension (path));
+    control.ID = Remotion.Text.IdentifierGenerator.HtmlStyle.GetValidIdentifier (System.IO.Path.GetFileNameWithoutExtension (path));
 
     //EgoFormPageUserControl formPageControl = control as EgoFormPageUserControl;
     //if (formPageControl != null)
@@ -215,8 +215,8 @@ public class TestTabStripWithoutWxeForm : Page, IWindowStateManager
   {
     foreach (UserControl control in _dataEditControls)
     {
-      Rubicon.Web.UI.Controls.FormGridManager formGridManager = 
-          control.FindControl("FormGridManager") as Rubicon.Web.UI.Controls.FormGridManager;
+      Remotion.Web.UI.Controls.FormGridManager formGridManager = 
+          control.FindControl("FormGridManager") as Remotion.Web.UI.Controls.FormGridManager;
       if (formGridManager != null)
         formGridManager.Validate();
     }

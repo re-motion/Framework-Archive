@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data;
-using Rubicon.Utilities;
+using Remotion.Data;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
   public class WxeTransactedFunctionEventArgs<TTransaction> : EventArgs
     where TTransaction : class, ITransaction

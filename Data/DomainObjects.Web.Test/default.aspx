@@ -1,4 +1,4 @@
-<%@ Page language="c#" Codebehind="default.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.Data.DomainObjects.Web.Test.DefaultPage" %>
+<%@ Page language="c#" Codebehind="default.aspx.cs" AutoEventWireup="false" Inherits="Remotion.Data.DomainObjects.Web.Test.DefaultPage" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
   <HEAD>
@@ -11,11 +11,11 @@
   <body >
     <form id="Form1" method="post" runat="server">
       
-      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Test.WxeFunctions.EditObjectFunction, Rubicon.Data.DomainObjects.Web.Test">Bestehendes Objekt editieren</a><br>
-      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Test.WxeFunctions.NewObjectFunction, Rubicon.Data.DomainObjects.Web.Test">Neues Objekt editieren</a><br>
-      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Test.WxeFunctions.SearchFunction, Rubicon.Data.DomainObjects.Web.Test" target="_blank">Objekt suchen</a><br>
-      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Test.WxeFunctions.WxeTestPageFunction,Rubicon.Data.DomainObjects.Web.Test&amp;ClassWithAllDataTypesID=ClassWithAllDataTypes|3f647d79-0caf-4a53-baa7-a56831f8ce2d|System.Guid" target="_blank">WxeFunctionTest</a><br>
-      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Test.WxeFunctions.UndefinedEnumTestFunction,Rubicon.Data.DomainObjects.Web.Test">UndefinedEnumTest</a><br> 
+      <a href="WxeHandler.ashx?WxeFunctionType=Remotion.Data.DomainObjects.Web.Test.WxeFunctions.EditObjectFunction, Remotion.Data.DomainObjects.Web.Test">Bestehendes Objekt editieren</a><br>
+      <a href="WxeHandler.ashx?WxeFunctionType=Remotion.Data.DomainObjects.Web.Test.WxeFunctions.NewObjectFunction, Remotion.Data.DomainObjects.Web.Test">Neues Objekt editieren</a><br>
+      <a href="WxeHandler.ashx?WxeFunctionType=Remotion.Data.DomainObjects.Web.Test.WxeFunctions.SearchFunction, Remotion.Data.DomainObjects.Web.Test" target="_blank">Objekt suchen</a><br>
+      <a href="WxeHandler.ashx?WxeFunctionType=Remotion.Data.DomainObjects.Web.Test.WxeFunctions.WxeTestPageFunction,Remotion.Data.DomainObjects.Web.Test&amp;ClassWithAllDataTypesID=ClassWithAllDataTypes|3f647d79-0caf-4a53-baa7-a56831f8ce2d|System.Guid" target="_blank">WxeFunctionTest</a><br>
+      <a href="WxeHandler.ashx?WxeFunctionType=Remotion.Data.DomainObjects.Web.Test.WxeFunctions.UndefinedEnumTestFunction,Remotion.Data.DomainObjects.Web.Test">UndefinedEnumTest</a><br> 
 
     </form>
   </body>

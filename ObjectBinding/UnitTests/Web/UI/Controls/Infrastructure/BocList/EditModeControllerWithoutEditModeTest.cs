@@ -1,9 +1,9 @@
 using System;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
-using Rubicon.Globalization;
+using Remotion.Globalization;
 
-namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
 {
 
 [TestFixture]

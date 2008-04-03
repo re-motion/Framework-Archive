@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Collections;
-using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Infrastructure;
+using Remotion.Collections;
+using Remotion.Utilities;
+using Remotion.Data.DomainObjects.Infrastructure;
 
-namespace Rubicon.Data.DomainObjects.Transport
+namespace Remotion.Data.DomainObjects.Transport
 {
   /// <summary>
   /// Assists in importing data exported by a <see cref="DomainObjectTransporter"/> object. This class is used by

@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace Rubicon.Globalization
+namespace Remotion.Globalization
 {
 
 /// <summary>

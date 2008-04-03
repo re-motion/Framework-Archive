@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
   public class DeleteDomainObjectTest : ClientTransactionBaseTest
@@ -67,7 +67,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (ObjectDeletedException))]
     public void ModifyDeletedObject ()
     {
-			PropertyValue propertyValue = _order.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+			PropertyValue propertyValue = _order.InternalDataContainer.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
 
       _order.Delete ();
 
@@ -83,7 +83,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (3, _order.OrderNumber);
       Assert.AreEqual (new DateTime (2005, 3, 1), _order.DeliveryDate);
 			Assert.IsNotNull (_order.InternalDataContainer.Timestamp);
-			Assert.IsNotNull (_order.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
+			Assert.IsNotNull (_order.InternalDataContainer.PropertyValues["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
     }
 
     [Test]

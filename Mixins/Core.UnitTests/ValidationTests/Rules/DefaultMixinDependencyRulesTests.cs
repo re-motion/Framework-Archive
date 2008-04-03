@@ -1,12 +1,12 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Context.FluentBuilders;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Mixins.Validation;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Validation;
 
-namespace Rubicon.Mixins.UnitTests.ValidationTests.Rules
+namespace Remotion.Mixins.UnitTests.ValidationTests.Rules
 {
   [TestFixture]
   public class DefaultMixinDependencyRulesTests : ValidationTestBase
@@ -19,7 +19,7 @@ namespace Rubicon.Mixins.UnitTests.ValidationTests.Rules
       TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (context);
       DefaultValidationLog log = Validator.Validate (definition.Mixins[typeof (MixinWithAdditionalClassDependency)]);
 
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMixinDependencyRules.DependencyMustBeSatisfiedByAnotherMixin", log));
+      Assert.IsTrue (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultMixinDependencyRules.DependencyMustBeSatisfiedByAnotherMixin", log));
     }
 
     [Test]
@@ -30,7 +30,7 @@ namespace Rubicon.Mixins.UnitTests.ValidationTests.Rules
       TargetClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (context);
       DefaultValidationLog log = Validator.Validate (definition.Mixins[typeof (MixinWithAdditionalInterfaceDependency)]);
 
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMixinDependencyRules.DependencyMustBeSatisfiedByAnotherMixin", log));
+      Assert.IsTrue (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultMixinDependencyRules.DependencyMustBeSatisfiedByAnotherMixin", log));
     }
 
   }

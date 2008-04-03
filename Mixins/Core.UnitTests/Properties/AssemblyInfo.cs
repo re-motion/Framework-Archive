@@ -2,16 +2,16 @@ using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Rubicon.Mixins;
+using Remotion.Mixins;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle ("Rubicon.Mixins.UnitTests")]
+[assembly: AssemblyTitle ("Remotion.Mixins.UnitTests")]
 [assembly: AssemblyDescription ("Unit tests for Mixins assembly")]
 [assembly: AssemblyConfiguration (".NET Framework: net-2.0, build type: debug")]
 [assembly: AssemblyCompany ("rubicon informationstechnologie gmbh")]
-[assembly: AssemblyProduct ("Rubicon .NET Commons")]
+[assembly: AssemblyProduct ("Remotion .NET Commons")]
 [assembly: AssemblyCopyright ("(c) 2003 - 2007 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
@@ -57,6 +57,6 @@ using Rubicon.Mixins;
 
 //#pragma warning disable 1699
 //[assembly: AssemblyDelaySign (false)]
-//[assembly: AssemblyKeyFile (@"\Development\global/rubicon.snk")]
+//[assembly: AssemblyKeyFile (@"\Development\global/remotion.snk")]
 //[assembly: AssemblyKeyName ("")]
 //#pragma warning restore 1699

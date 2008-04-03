@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// When the <see cref="InstantiableAttribute"/> is defined on a type, it signals that this type can be instantiated by the

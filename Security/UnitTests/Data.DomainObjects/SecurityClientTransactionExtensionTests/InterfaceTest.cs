@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Security.Data.DomainObjects;
+using Remotion.Data.DomainObjects;
+using Remotion.Security.Data.DomainObjects;
 
-namespace Rubicon.Security.UnitTests.Data.DomainObjects.SecurityClientTransactionExtensionTests
+namespace Remotion.Security.UnitTests.Data.DomainObjects.SecurityClientTransactionExtensionTests
 {
   [TestFixture]
   public class InterfaceTest

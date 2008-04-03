@@ -3,15 +3,15 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Globalization;
-using Rubicon.ObjectBinding.Design;
-using Rubicon.Security;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Globalization;
+using Remotion.ObjectBinding.Design;
+using Remotion.Security;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   public interface IBocSortableColumnDefinition: IControlItem
   {

@@ -3,10 +3,10 @@ using System.Collections.Specialized;
 using System.Web;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UnitTests.AspNetFramework;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UnitTests.AspNetFramework;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine
 {
   [TestFixture]
   public class WxeTransactionBaseExecuteTest

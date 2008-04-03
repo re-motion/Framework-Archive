@@ -1,77 +1,77 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="EditGroupTypeControl.ascx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupTypeControl" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="EditGroupTypeControl.ascx.cs" Inherits="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupTypeControl" %>
 
-<rubicon:FormGridManager ID="FormGridManager" runat="server" ValidatorVisibility="HideValidators" />
-<rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Rubicon.SecurityManager.Domain.OrganizationalStructure.GroupType, Rubicon.SecurityManager" />
+<remotion:FormGridManager ID="FormGridManager" runat="server" ValidatorVisibility="HideValidators" />
+<remotion:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Remotion.SecurityManager.Domain.OrganizationalStructure.GroupType, Remotion.SecurityManager" />
 <table id="FormGrid" runat="server" cellpadding="0" cellspacing="0">
   <tr class="underlinedMarkerCellRow">
     <td class="formGridTitleCell" style="white-space: nowrap;" colspan="2">
-      <rubicon:SmartLabel runat="server" id="GroupTypeLabel" Text="###" />
+      <remotion:SmartLabel runat="server" id="GroupTypeLabel" Text="###" />
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <rubicon:BocTextValue ID="NameField" runat="server" DataSourceControl="CurrentObject"
+      <remotion:BocTextValue ID="NameField" runat="server" DataSourceControl="CurrentObject"
         PropertyIdentifier="Name">
         <TextBoxStyle MaxLength="100" />
-      </rubicon:BocTextValue>
+      </remotion:BocTextValue>
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <rubicon:BocList ID="GroupsList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Groups" OnMenuItemClick="GroupsList_MenuItemClick" Selection="Multiple" ShowEmptyListMessage="true" ShowEmptyListReadOnlyMode="true">
+      <remotion:BocList ID="GroupsList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Groups" OnMenuItemClick="GroupsList_MenuItemClick" Selection="Multiple" ShowEmptyListMessage="true" ShowEmptyListReadOnlyMode="true">
         <FixedColumns>
-          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
+          <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
             <PersistedCommand>
-              <rubicon:BocListItemCommand />
+              <remotion:BocListItemCommand />
             </PersistedCommand>
-          </rubicon:BocSimpleColumnDefinition>
+          </remotion:BocSimpleColumnDefinition>
         </FixedColumns>
         <ListMenuItems>
-          <rubicon:BocMenuItem ItemID="AddItem" Text="$res:Add">
+          <remotion:BocMenuItem ItemID="AddItem" Text="$res:Add">
             <PersistedCommand>
-              <rubicon:BocMenuItemCommand Show="EditMode" />
+              <remotion:BocMenuItemCommand Show="EditMode" />
             </PersistedCommand>
-          </rubicon:BocMenuItem>
-          <rubicon:BocMenuItem ItemID="RemoveItem" RequiredSelection="OneOrMore" Text="$res:Remove">
+          </remotion:BocMenuItem>
+          <remotion:BocMenuItem ItemID="RemoveItem" RequiredSelection="OneOrMore" Text="$res:Remove">
             <PersistedCommand>
-              <rubicon:BocMenuItemCommand Show="EditMode" />
+              <remotion:BocMenuItemCommand Show="EditMode" />
             </PersistedCommand>
-          </rubicon:BocMenuItem>
+          </remotion:BocMenuItem>
         </ListMenuItems>
-      </rubicon:BocList>
+      </remotion:BocList>
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <rubicon:BocList ID="PositionsList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Positions" OnMenuItemClick="PositionsList_MenuItemClick" Selection="Multiple">
+      <remotion:BocList ID="PositionsList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Positions" OnMenuItemClick="PositionsList_MenuItemClick" Selection="Multiple">
         <FixedColumns>
-          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Position">
+          <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Position">
             <PersistedCommand>
-              <rubicon:BocListItemCommand />
+              <remotion:BocListItemCommand />
             </PersistedCommand>
-          </rubicon:BocSimpleColumnDefinition>
+          </remotion:BocSimpleColumnDefinition>
         </FixedColumns>
         <ListMenuItems>
-          <rubicon:BocMenuItem ItemID="NewItem" Text="$res:New">
+          <remotion:BocMenuItem ItemID="NewItem" Text="$res:New">
             <PersistedCommand>
-              <rubicon:BocMenuItemCommand Show="EditMode" />
+              <remotion:BocMenuItemCommand Show="EditMode" />
             </PersistedCommand>
-          </rubicon:BocMenuItem>
-          <rubicon:BocMenuItem ItemID="EditItem" RequiredSelection="OneOrMore" Text="$res:Edit">
+          </remotion:BocMenuItem>
+          <remotion:BocMenuItem ItemID="EditItem" RequiredSelection="OneOrMore" Text="$res:Edit">
             <PersistedCommand>
-              <rubicon:BocMenuItemCommand Show="EditMode" />
+              <remotion:BocMenuItemCommand Show="EditMode" />
             </PersistedCommand>
-          </rubicon:BocMenuItem>
-          <rubicon:BocMenuItem ItemID="DeleteItem" RequiredSelection="OneOrMore" Text="$res:Delete">
+          </remotion:BocMenuItem>
+          <remotion:BocMenuItem ItemID="DeleteItem" RequiredSelection="OneOrMore" Text="$res:Delete">
             <PersistedCommand>
-              <rubicon:BocMenuItemCommand Show="EditMode" />
+              <remotion:BocMenuItemCommand Show="EditMode" />
             </PersistedCommand>
-          </rubicon:BocMenuItem>
+          </remotion:BocMenuItem>
         </ListMenuItems>
-      </rubicon:BocList>
+      </remotion:BocList>
     </td>
   </tr>
 </table>

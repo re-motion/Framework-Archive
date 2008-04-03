@@ -1,8 +1,8 @@
 using System;
 using System.Web;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine
 {
 
 /// <summary> Exposes non-public members of the <see cref="WxeHandler"/> type. </summary>

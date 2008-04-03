@@ -1,19 +1,19 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.MockConstraints;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Legacy.Mapping;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.MockConstraints;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain;
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 using Mocks_List = Rhino.Mocks.Constraints.List;
 using Mocks_Property = Rhino.Mocks.Constraints.Property;
-using Rubicon.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 {
   [TestFixture]
   public class DomainObjectTest : ClientTransactionBaseTest

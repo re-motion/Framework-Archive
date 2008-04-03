@@ -1,7 +1,7 @@
 using System;
 using System.Web.UI;
 
-namespace Rubicon.Web.UnitTests.AspNetFramework
+namespace Remotion.Web.UnitTests.AspNetFramework
 {
 
   public class ControlMock : Control

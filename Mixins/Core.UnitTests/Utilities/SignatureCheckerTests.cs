@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Utilities;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Utilities;
 using NUnit.Framework;
 using System.Reflection;
 
-namespace Rubicon.Mixins.UnitTestsUtilities
+namespace Remotion.Mixins.UnitTestsUtilities
 {
   [TestFixture]
   public class SignatureCheckerTests

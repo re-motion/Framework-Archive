@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
 {
   [BindableObject]
   public class ClassWithValueType<T>

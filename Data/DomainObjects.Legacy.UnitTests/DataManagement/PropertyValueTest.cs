@@ -1,13 +1,13 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.Resources;
-using Rubicon.NullableValueTypes;
+using Remotion.Data.DomainObjects.Legacy.Mapping;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.Resources;
+using Remotion.NullableValueTypes;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.DataManagement
 {
   [TestFixture]
   public class PropertyValueTest : StandardMappingTest

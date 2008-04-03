@@ -4,18 +4,18 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.UnitTests.TableInheritance;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.UnitTests.TableInheritance;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 using Mocks_List = Rhino.Mocks.Constraints.List;
-using Rubicon.Development.UnitTesting;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
   [TestFixture]
   public class DataContainerLoaderTest : SqlProviderBaseTest

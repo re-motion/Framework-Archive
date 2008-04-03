@@ -1,10 +1,10 @@
 using System;
 using System.Web.UI.WebControls;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.Web;
-using Rubicon.Web.UI.Controls;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.Web;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Sample
+namespace Remotion.ObjectBinding.Sample
 {
 
 public class ReflectionBusinessObjectWebUIService: IBusinessObjectWebUIService

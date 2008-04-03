@@ -1,14 +1,14 @@
 using System;
-using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.SecurityManager.Clients.Web.Classes;
-using Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure;
-using Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.Data.DomainObjects.Web.ExecutionEngine;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.SecurityManager.Clients.Web.Classes;
+using Remotion.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure;
+using Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
+namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {
   [WebMultiLingualResources (typeof (EditGroupTypeControlResources))]
   public partial class EditGroupTypeControl : BaseControl

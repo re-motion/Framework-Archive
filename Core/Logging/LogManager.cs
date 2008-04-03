@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Logging
+namespace Remotion.Logging
 {
   /// <summary>
   /// Use this class to create a logger implementing <see cref="ILog"/> from the current <see cref="ILogManager"/>.

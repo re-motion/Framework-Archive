@@ -1,10 +1,10 @@
 using System;
 using System.Reflection;
 using System.Reflection.Emit;
-using Rubicon.CodeGeneration;
-using Rubicon.Utilities;
+using Remotion.CodeGeneration;
+using Remotion.Utilities;
 
-namespace Rubicon.CodeGeneration.DPExtensions
+namespace Remotion.CodeGeneration.DPExtensions
 {
   public static class AttributeReplicator
   {

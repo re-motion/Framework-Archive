@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
-using Rubicon.Design;
+using Remotion.Design;
 
-namespace Rubicon.Core.UnitTests.Design
+namespace Remotion.Core.UnitTests.Design
 {
   public class StubDesignModeHelper: DesignModeHelperBase
   {

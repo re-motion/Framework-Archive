@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> Represents the sorting direction for an individual column. </summary>

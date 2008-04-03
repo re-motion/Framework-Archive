@@ -1,10 +1,10 @@
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Mixins;
+using Remotion.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains
+namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
 {
   [TestFixture]
   public class DomainObjectMixinHookTest : ClientTransactionBaseTest

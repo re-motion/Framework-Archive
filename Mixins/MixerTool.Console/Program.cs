@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Mixins.MixerTool;
-using Rubicon.Text.CommandLine;
-using Rubicon.Utilities;
+using Remotion.Mixins.MixerTool;
+using Remotion.Text.CommandLine;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.MixerTool.Console
+namespace Remotion.Mixins.MixerTool.Console
 {
   class Program
   {

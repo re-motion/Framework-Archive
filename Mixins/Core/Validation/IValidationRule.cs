@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Mixins.Definitions;
+using Remotion.Mixins.Definitions;
 
-namespace Rubicon.Mixins.Validation
+namespace Remotion.Mixins.Validation
 {
   public interface IValidationRule
   {

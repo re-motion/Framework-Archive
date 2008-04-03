@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Security;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Security;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 {
   public class SecurableSearchObject : BindableSearchObject, ISecurableObject
   {

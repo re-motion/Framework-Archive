@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
 /// <summary>
 /// Represents the method that will handle the <see cref="DomainObjectCollection.Adding"/>, <see cref="DomainObjectCollection.Added"/>, 
@@ -21,7 +21,7 @@ public class DomainObjectCollectionChangeEventArgs : EventArgs
   /// <summary>
   /// Initializes a new instance of the <b>DomainObjectCollectionChangingEventArgs</b> class.
   /// </summary>
-  /// <param name="domainObject">The <see cref="Rubicon.Data.DomainObjects.DomainObject"/> that is being added or removed to the collection. Must not be <see langword="null"/>.</param>
+  /// <param name="domainObject">The <see cref="Remotion.Data.DomainObjects.DomainObject"/> that is being added or removed to the collection. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
   public DomainObjectCollectionChangeEventArgs (DomainObject domainObject)
   {
@@ -30,7 +30,7 @@ public class DomainObjectCollectionChangeEventArgs : EventArgs
   }
 
   /// <summary>
-  /// Gets the <see cref="Rubicon.Data.DomainObjects.DomainObject"/> that is being added or removed.
+  /// Gets the <see cref="Remotion.Data.DomainObjects.DomainObject"/> that is being added or removed.
   /// </summary>
   public DomainObject DomainObject
   {

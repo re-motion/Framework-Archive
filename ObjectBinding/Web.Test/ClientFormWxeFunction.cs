@@ -2,8 +2,8 @@ using System;
 using System.Web;
 using System.Web.SessionState;
 
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.ObjectBinding.Sample;
+using Remotion.Web.ExecutionEngine;
 
 namespace OBWTest
 {

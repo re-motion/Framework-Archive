@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   [Obsolete ("Use ISecurityAdapter instead. (Version: 1.7.41)")]
   public interface ISecurityProviderObsolete : ISecurityAdapter

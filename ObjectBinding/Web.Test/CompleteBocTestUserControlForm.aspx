@@ -11,12 +11,12 @@
 <meta content=C# name=CODE_LANGUAGE>
 <meta content=JavaScript name=vs_defaultClientScript>
 <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema>
-<rubicon:htmlheadcontents runat="server" id="HtmlHeadContents"></rubicon:htmlheadcontents>
+<remotion:htmlheadcontents runat="server" id="HtmlHeadContents"></remotion:htmlheadcontents>
   </head>
 <body>
 <form id=Form method=post runat="server">
 <h1>CompleteBocTest: UserControl Form</h1>
 <p><iuc:CompleteBocTestUserControl id="CompleteBocTestUserControl" runat="server"></iuc:CompleteBocTestUserControl></p>
-<p><rubicon:ValidationStateViewer id="ValidationStateViewer1" runat="server" noticetext="Es sind fehlerhafte Eingaben gefunden worden." visible="true"></rubicon:ValidationStateViewer></p></form>
+<p><remotion:ValidationStateViewer id="ValidationStateViewer1" runat="server" noticetext="Es sind fehlerhafte Eingaben gefunden worden." visible="true"></remotion:ValidationStateViewer></p></form>
   </body>
 </html>

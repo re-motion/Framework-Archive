@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors
 {
   public abstract class ClassWithInvalidBidirectionalRelationLeftSide : ClassWithInvalidBidirectionalRelationLeftSideNotInMapping
   {

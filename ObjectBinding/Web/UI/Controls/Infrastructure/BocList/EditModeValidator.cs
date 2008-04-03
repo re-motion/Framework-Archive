@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI.WebControls;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList
+namespace Remotion.ObjectBinding.Web.UI.Controls.Infrastructure.BocList
 {
 
 [ToolboxItem (false)]

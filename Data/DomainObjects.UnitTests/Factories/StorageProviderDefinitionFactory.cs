@@ -1,10 +1,10 @@
 using System;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.UnitTests.TableInheritance;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.UnitTests.TableInheritance;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Factories
+namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
   public static class StorageProviderDefinitionFactory
   {

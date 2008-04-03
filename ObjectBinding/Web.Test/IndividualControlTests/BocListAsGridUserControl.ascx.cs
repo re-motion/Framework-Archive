@@ -2,13 +2,13 @@ using System;
 using System.Web;
 using System.Web.UI.WebControls;
 
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -16,27 +16,27 @@ namespace OBWTest.IndividualControlTests
 public class BocListAsGridUserControl : BaseUserControl
 {
   protected System.Web.UI.HtmlControls.HtmlTable Table3;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
   protected TestBocList ChildrenList;
   protected TestBocList EmptyList;
   protected System.Web.UI.WebControls.CheckBox ChildrenListEventCheckBox;
   protected System.Web.UI.WebControls.Label ChildrenListEventArgsLabel;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl EmptyDataSourceControl;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl EmptyDataSourceControl;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected TestBocListValidator EmptyListValidator;
   protected TestBocList Testboclist1;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocList AllColumnsList;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocList AllColumnsList;
   protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Rubicon.Web.UI.Controls.WebButton SwitchToEditModeButton;
-  protected Rubicon.Web.UI.Controls.WebButton EndEditModeButton;
-  protected Rubicon.Web.UI.Controls.WebButton AddRowButton;
-  protected Rubicon.Web.UI.Controls.WebButton AddRowsButton;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue NumberOfNewRowsField;
-  protected Rubicon.Web.UI.Controls.WebButton RemoveRows;
-  protected Rubicon.Web.UI.Controls.WebButton CancelEditModeButton;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected Remotion.Web.UI.Controls.WebButton SwitchToEditModeButton;
+  protected Remotion.Web.UI.Controls.WebButton EndEditModeButton;
+  protected Remotion.Web.UI.Controls.WebButton AddRowButton;
+  protected Remotion.Web.UI.Controls.WebButton AddRowsButton;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue NumberOfNewRowsField;
+  protected Remotion.Web.UI.Controls.WebButton RemoveRows;
+  protected Remotion.Web.UI.Controls.WebButton CancelEditModeButton;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
@@ -50,10 +50,10 @@ public class BocListAsGridUserControl : BaseUserControl
     AddRowsButton.Click += new EventHandler (AddRowsButton_Click);
     RemoveRows.Click += new EventHandler (RemoveRows_Click);
     
-    ChildrenList.ListItemCommandClick += new Rubicon.ObjectBinding.Web.UI.Controls.BocListItemCommandClickEventHandler(this.ChildrenList_ListItemCommandClick);
-    ChildrenList.MenuItemClick += new Rubicon.Web.UI.Controls.WebMenuItemClickEventHandler(this.ChildrenList_MenuItemClick);
+    ChildrenList.ListItemCommandClick += new Remotion.ObjectBinding.Web.UI.Controls.BocListItemCommandClickEventHandler(this.ChildrenList_ListItemCommandClick);
+    ChildrenList.MenuItemClick += new Remotion.Web.UI.Controls.WebMenuItemClickEventHandler(this.ChildrenList_MenuItemClick);
     
-    ChildrenList.DataRowRender += new Rubicon.ObjectBinding.Web.UI.Controls.BocListDataRowRenderEventHandler(this.ChildrenList_DataRowRender);
+    ChildrenList.DataRowRender += new Remotion.ObjectBinding.Web.UI.Controls.BocListDataRowRenderEventHandler(this.ChildrenList_DataRowRender);
 
     ChildrenList.EditableRowChangesCanceling += new BocListEditableRowChangesEventHandler (ChildrenList_EditableRowChangesCanceling);
     ChildrenList.EditableRowChangesCanceled += new BocListItemEventHandler (ChildrenList_EditableRowChangesCanceled);

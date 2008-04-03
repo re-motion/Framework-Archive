@@ -1,10 +1,10 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
 public interface IBocMenuItemContainer

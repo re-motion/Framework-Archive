@@ -1,9 +1,9 @@
 using System;
-using Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure
+namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure
 {
   [Serializable]
   public class SearchGroupFormFunction : BaseTransactedFunction

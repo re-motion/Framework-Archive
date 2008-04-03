@@ -1,4 +1,4 @@
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary> 
   ///   The <b>IBusinessObjectStringProperty</b> provides additional meta data for <see cref="string"/> values.

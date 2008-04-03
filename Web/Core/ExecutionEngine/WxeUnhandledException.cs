@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
   /// <summary>
   ///   Encapsulates an exception when it is re-thrown by a <see cref="WxeFunction"/>.

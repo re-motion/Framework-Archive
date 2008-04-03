@@ -1,13 +1,13 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
-using Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
-using Rubicon.ObjectBinding;
-using Rubicon.Security;
-using StringProperty=Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes.StringProperty;
+using Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes;
+using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
+using Remotion.ObjectBinding;
+using Remotion.Security;
+using StringProperty=Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes.StringProperty;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
+namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
 {
   [TestFixture]
   public class BasePropertySecurityTest

@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Validation;
-using Rubicon.Mixins.Validation.Rules;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Validation;
+using Remotion.Mixins.Validation.Rules;
 
-namespace Rubicon.Mixins.UnitTests.ValidationTests.ValidationSampleTypes
+namespace Remotion.Mixins.UnitTests.ValidationTests.ValidationSampleTypes
 {
   public class ThrowingRuleSet : IRuleSet
   {

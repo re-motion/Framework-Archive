@@ -4,10 +4,10 @@ using System.Reflection;
 using System.Web;
 using System.Xml;
 using System.Xml.Schema;
-using Rubicon.Utilities;
-using Rubicon.Xml;
+using Remotion.Utilities;
+using Remotion.Xml;
 
-namespace Rubicon.Web.ExecutionEngine.UrlMapping
+namespace Remotion.Web.ExecutionEngine.UrlMapping
 {
   public class UrlMappingLoader
   {

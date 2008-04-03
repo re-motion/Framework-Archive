@@ -4,7 +4,7 @@ using Castle.DynamicProxy.Generators.Emitters;
 using System.Reflection.Emit;
 using System.Reflection;
 
-namespace Rubicon.CodeGeneration.DPExtensions
+namespace Remotion.CodeGeneration.DPExtensions
 {
   public class AutomaticMethodInvocationExpression : TypedMethodInvocationExpression
   {

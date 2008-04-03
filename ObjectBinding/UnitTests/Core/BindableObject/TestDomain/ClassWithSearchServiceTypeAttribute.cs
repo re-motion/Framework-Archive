@@ -1,7 +1,7 @@
 using System;
-using Rubicon.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
 {
   [BindableObject]
   [SearchAvailableObjectsServiceType (typeof (ISearchServiceOnType))]

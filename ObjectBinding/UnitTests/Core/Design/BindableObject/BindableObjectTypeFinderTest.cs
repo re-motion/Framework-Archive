@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.Design.BindableObject;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.Design.BindableObject;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.Design.BindableObject
+namespace Remotion.ObjectBinding.UnitTests.Core.Design.BindableObject
 {
   [TestFixture]
   public class BindableObjectTypeFinderTest

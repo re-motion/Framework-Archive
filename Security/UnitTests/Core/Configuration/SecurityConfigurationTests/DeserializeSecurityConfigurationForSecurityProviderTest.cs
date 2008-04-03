@@ -1,11 +1,11 @@
 using System;
 using System.Configuration;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Development.UnitTesting.Configuration;
-using Rubicon.Utilities;
+using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
+namespace Remotion.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
 {
   [TestFixture]
   public class DeserializeSecurityConfigurationForSecurityProviderTest : TestBase
@@ -13,7 +13,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Test]
     public void Test_WithDefaultService ()
     {
-      string xmlFragment = @"<rubicon.security />";
+      string xmlFragment = @"<remotion.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Assert.IsInstanceOfType (typeof (NullSecurityProvider), Configuration.SecurityProvider);
     }
@@ -21,7 +21,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Test]
     public void Test_SecurityProviderIsAlwaysSameInstance ()
     {
-      string xmlFragment = @"<rubicon.security />";
+      string xmlFragment = @"<remotion.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Assert.AreSame (Configuration.SecurityProvider, Configuration.SecurityProvider);
     }
@@ -29,7 +29,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Test]
     public void Test_WithNullSecurityProvider ()
     {
-      string xmlFragment = @"<rubicon.security defaultSecurityProvider=""None"" />";
+      string xmlFragment = @"<remotion.security defaultSecurityProvider=""None"" />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Assert.IsInstanceOfType (typeof (NullSecurityProvider), Configuration.SecurityProvider);
     }
@@ -38,7 +38,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [ExpectedException (typeof (ConfigurationErrorsException))]
     public void Test_WithInvalidServiceType ()
     {
-      string xmlFragment = @"<rubicon.security defaultSecurityProvider=""Invalid"" />";
+      string xmlFragment = @"<remotion.security defaultSecurityProvider=""Invalid"" />";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Dev.Null = Configuration.SecurityProvider;
@@ -48,9 +48,9 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Explicit]
     public void Test_WithSecurityManagerService ()
     {
-      string xmlFragment = @"<rubicon.security defaultSecurityProvider=""SecurityManagerService"" />";
+      string xmlFragment = @"<remotion.security defaultSecurityProvider=""SecurityManagerService"" />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-      Type expectedType = TypeUtility.GetType ("Rubicon.SecurityManager::SecurityService", true, false);
+      Type expectedType = TypeUtility.GetType ("Remotion.SecurityManager::SecurityService", true, false);
 
       Assert.IsInstanceOfType (expectedType, Configuration.SecurityProvider);
     }
@@ -59,11 +59,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     public void Test_WithCustomService ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultSecurityProvider=""Custom"">
+          <remotion.security defaultSecurityProvider=""Custom"">
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
             </securityProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
@@ -74,11 +74,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     public void Test_WithSecurityProvidersAndFallbackToDefaultWellKnownDefaultSecurityProvider ()
     {
       string xmlFragment = @"
-          <rubicon.security>
+          <remotion.security>
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
             </securityProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
@@ -94,11 +94,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     public void Test_WithCustomSecurityProviderAndInvalidName ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultSecurityProvider=""Invalid"">
+          <remotion.security defaultSecurityProvider=""Invalid"">
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
             </securityProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
@@ -110,11 +110,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     public void Test_DuplicateWellKnownSecurityProviderForNullSecurityProvider ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultSecurityProvider=""None"">
+          <remotion.security defaultSecurityProvider=""None"">
             <securityProviders>
-              <add name=""None"" type=""Rubicon.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
+              <add name=""None"" type=""Remotion.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
             </securityProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
     }
@@ -124,11 +124,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     public void Test_DuplicateWellKnownSecurityProviderForSecurityManagerSecurityService ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultSecurityProvider=""SecurityManager"">
+          <remotion.security defaultSecurityProvider=""SecurityManager"">
             <securityProviders>
-              <add name=""SecurityManager"" type=""Rubicon.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
+              <add name=""SecurityManager"" type=""Remotion.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
             </securityProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
     }
@@ -139,11 +139,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     public void Test_WithCustomSecurityProviderNameEmpty ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultSecurityProvider="""">
+          <remotion.security defaultSecurityProvider="""">
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
             </securityProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
@@ -156,27 +156,27 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     {
       string xmlFragment =
           @"
-          <rubicon.security>
+          <remotion.security>
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.SecurityProviderMock"" />
             </securityProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Configuration.SecurityProviders.Clear ();
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), ExpectedMessage = "Provider must implement the interface 'Rubicon.Security.ISecurityProvider'.")]
+    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), ExpectedMessage = "Provider must implement the interface 'Remotion.Security.ISecurityProvider'.")]
     public void InstantiateProvider_WithTypeNotImplementingRequiredInterface ()
     {
       string xmlFragment =
           @"
-          <rubicon.security>
+          <remotion.security>
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.UserProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.UserProviderMock"" />
             </securityProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 

@@ -1,5 +1,5 @@
 using System;
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
 	/// <summary>
 	/// Provides an API for manipulating the Console. This abstracts the <see cref="Console"/> class and thus enables unit testing of

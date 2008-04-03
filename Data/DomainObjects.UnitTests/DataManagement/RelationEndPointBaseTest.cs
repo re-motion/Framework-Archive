@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.DataManagement;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
+namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
   public class RelationEndPointBaseTest : ClientTransactionBaseTest
   {

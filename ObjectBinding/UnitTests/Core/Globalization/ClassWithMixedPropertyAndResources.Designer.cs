@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.Globalization {
+namespace Remotion.ObjectBinding.UnitTests.Core.Globalization {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.Globalization {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.ObjectBinding.UnitTests.Core.Globalization.ClassWithMixedPropertyAndResou" +
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Remotion.ObjectBinding.UnitTests.Core.Globalization.ClassWithMixedPropertyAndResou" +
                             "rces", typeof(ClassWithMixedPropertyAndResources).Assembly);
                     resourceMan = temp;
                 }
@@ -64,9 +64,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.Globalization {
         /// <summary>
         ///   Looks up a localized string similar to Resourced!.
         /// </summary>
-        internal static string property_Rubicon_ObjectBinding_UnitTests_Core_BindableObject_TestDomain_IMixinAddingProperty_MixedProperty {
+        internal static string property_Remotion_ObjectBinding_UnitTests_Core_BindableObject_TestDomain_IMixinAddingProperty_MixedProperty {
             get {
-                return ResourceManager.GetString("property:Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IMixinAdd" +
+                return ResourceManager.GetString("property:Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.IMixinAdd" +
                         "ingProperty.MixedProperty", resourceCulture);
             }
         }

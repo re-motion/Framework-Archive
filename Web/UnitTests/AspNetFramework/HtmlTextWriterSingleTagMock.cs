@@ -3,7 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Web.UI;
 
-namespace Rubicon.Web.UnitTests.AspNetFramework
+namespace Remotion.Web.UnitTests.AspNetFramework
 {
 
 public class HtmlTextWriterSingleTagMock: HtmlTextWriter

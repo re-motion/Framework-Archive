@@ -8,15 +8,15 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Text;
 using System.Reflection;
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
-using Rubicon.NullableValueTypes;
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding.Sample;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
+using Remotion.NullableValueTypes;
+using Remotion.ObjectBinding;
 
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Globalization;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Globalization;
+using Remotion.Web.UI.Globalization;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
@@ -26,44 +26,44 @@ namespace OBWTest.Design
 {
 public class DesignTestCheckBoxForm : DesignTestWxeBasePage
 {
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-  protected Rubicon.Web.UI.Controls.WebButton PostBackButton;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox1;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox2;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox3;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox4;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox17;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox18;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox5;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox6;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox7;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox8;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox19;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox9;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox10;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox11;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox12;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox22;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox23;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox13;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox14;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox15;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox16;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox20;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox21;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox24;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox25;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox26;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox27;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox28;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox29;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox30;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox31;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox32;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox33;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox34;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox35;
-  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected Remotion.Web.UI.Controls.WebButton PostBackButton;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox1;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox2;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox3;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox4;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox17;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox18;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox5;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox6;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox7;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox8;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox19;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox9;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox10;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox11;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox12;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox22;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox23;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox13;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox14;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox15;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox16;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox20;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox21;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox24;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox25;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox26;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox27;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox28;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox29;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox30;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox31;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox32;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox33;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox34;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox35;
+  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
   private void Page_Load(object sender, System.EventArgs e)
 	{
@@ -96,7 +96,7 @@ public class DesignTestCheckBoxForm : DesignTestWxeBasePage
 	private void InitializeComponent()
 	{    
     this.EnableAbort = false;
-    this.ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.Always;
+    this.ShowAbortConfirmation = Remotion.Web.UI.ShowAbortConfirmation.Always;
     this.Load += new System.EventHandler(this.Page_Load);
 
   }

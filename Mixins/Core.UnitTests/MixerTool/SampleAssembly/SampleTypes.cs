@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.UnitTests.MixerTool.SampleAssembly
+namespace Remotion.Mixins.UnitTests.MixerTool.SampleAssembly
 {
   public class BaseType
   {

@@ -1,11 +1,11 @@
 using System;
 using System.Data;
 using System.Globalization;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.NullableValueTypes;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.NullableValueTypes;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
   public class ValueConverter : ValueConverterBase
   {

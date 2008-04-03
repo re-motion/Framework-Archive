@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Mapping
+namespace Remotion.Data.DomainObjects.Mapping
 {
 [Serializable]
 public class RelationDefinitionCollection : CommonCollection

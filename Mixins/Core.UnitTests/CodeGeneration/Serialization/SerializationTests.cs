@@ -1,10 +1,10 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.Serialization
+namespace Remotion.Mixins.UnitTests.CodeGeneration.Serialization
 {
   [TestFixture]
   public class SerializationTests : CodeGenerationBaseTest

@@ -1,11 +1,11 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.ObjectBinding;
+using Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
+namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
 {
   [TestFixture]
   public class EnumerationPropertyTest

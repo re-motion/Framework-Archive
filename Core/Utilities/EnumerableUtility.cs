@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
   /// <summary>
   /// Provides helper functions for <see cref="IEnumerable{T}"/> objects.
@@ -14,7 +14,7 @@ namespace Rubicon.Utilities
   {
     public static IEnumerable<TResult> Select<TSource, TResult> (IEnumerable<TSource> source, Func<TSource, TResult> selector)
     {
-      Rubicon.Utilities.ArgumentUtility.CheckNotNull ("source", source);
+      Remotion.Utilities.ArgumentUtility.CheckNotNull ("source", source);
 
       foreach (TSource item in source)
         yield return selector (item);

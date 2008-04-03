@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Mapping
+namespace Remotion.Data.DomainObjects.Mapping
 {
   [Serializable]
   [DebuggerDisplay ("{GetType().Name}: {PropertyName}")]

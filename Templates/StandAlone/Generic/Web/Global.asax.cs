@@ -5,11 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.SessionState;
 
-using Rubicon.Utilities;
-using Rubicon.Web;
-using Rubicon.Web.Utilities;
+using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Templates.Generic.Web 
+namespace Remotion.Templates.Generic.Web 
 {
 
 public class Global : System.Web.HttpApplication, IResourceUrlResolver

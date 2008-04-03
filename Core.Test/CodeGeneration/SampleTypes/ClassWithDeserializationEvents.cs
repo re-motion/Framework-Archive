@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.Core.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.Core.UnitTests.CodeGeneration.SampleTypes;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration.SampleTypes
+namespace Remotion.Core.UnitTests.CodeGeneration.SampleTypes
 {
   [Serializable]
   public class ClassWithDeserializationEvents : BaseClassWithDeserializationEvents, IDeserializationCallback

@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Logging;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Logging;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
   /// A listener implementation logging all transaction events.

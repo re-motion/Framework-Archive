@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Legacy.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Factories
 {
   public class TestMappingConfiguration
   {
@@ -144,7 +144,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
               customer,
               "Type",
               "CustomerType",
-              "Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.Legacy.UnitTests"));
+              "Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer+CustomerType, Remotion.Data.DomainObjects.Legacy.UnitTests"));
 
       return customer;
     }
@@ -314,7 +314,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
           classWithAllDataTypes, 
           "EnumProperty",
           "Enum",
-          "Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.Legacy.UnitTests"));
+          "Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithAllDataTypes+EnumType, Remotion.Data.DomainObjects.Legacy.UnitTests"));
 
       classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition (classWithAllDataTypes, "GuidProperty", "Guid", "guid"));
       classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition (classWithAllDataTypes, "Int16Property", "Int16", "int16"));

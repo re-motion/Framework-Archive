@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 {
   public class StubValueConverterBase : ValueConverterBase
   {

@@ -1,20 +1,20 @@
 using System;
 using System.IO;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Development;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration;
-using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Development;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.RdbmsTools.SchemaGeneration;
+using Remotion.Utilities;
+using Remotion.Data.DomainObjects.Queries.Configuration;
 
-namespace Rubicon.Data.DomainObjects.RdbmsTools
+namespace Remotion.Data.DomainObjects.RdbmsTools
 {
   /// <summary>
   /// The <see cref="RdbmsToolsRunner"/> type contains the encapsulates the execution of the various functionality provided by the 
-  /// <b>Rubicon.Data.DomainObjects.RdbmsTools</b> assembly.
+  /// <b>Remotion.Data.DomainObjects.RdbmsTools</b> assembly.
   /// </summary>
   [Serializable]
   public class RdbmsToolsRunner : AppDomainRunnerBase
@@ -24,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools
       AppDomainSetup appDomainSetup = new AppDomainSetup();
       appDomainSetup.ApplicationName = "RdbmsTools";
       appDomainSetup.ApplicationBase = rdbmsToolsParameter.BaseDirectory;
-      appDomainSetup.DynamicBase = Path.Combine (Path.GetTempPath(), "Rubicon");
+      appDomainSetup.DynamicBase = Path.Combine (Path.GetTempPath(), "Remotion");
       if (!string.IsNullOrEmpty (rdbmsToolsParameter.ConfigFile))
       {
         appDomainSetup.ConfigurationFile = rdbmsToolsParameter.ConfigFile;

@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.AccessControl
+namespace Remotion.SecurityManager.Domain.AccessControl
 {
-  [EnumDescriptionResource ("Rubicon.SecurityManager.Globalization.Domain.AccessControl.GroupSelection")]
+  [EnumDescriptionResource ("Remotion.SecurityManager.Globalization.Domain.AccessControl.GroupSelection")]
   public enum GroupSelection
   {
     All = 0,

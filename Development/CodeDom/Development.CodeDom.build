@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Rubicon.Development.CodeDom">
+<project xmlns="nant-schema" name="Remotion.Development.CodeDom">
 
   <target name="build" description="perform a build">
 
@@ -23,7 +23,7 @@
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <include name="${build.outputdir}/Rubicon.Core.dll" />
+        <include name="${build.outputdir}/Remotion.Core.dll" />
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="VJSharpCodeProvider.dll"/>

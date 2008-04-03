@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence.Configuration
+namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
 [Serializable]
 public class IdentityTypeNotSupportedException : StorageProviderConfigurationException

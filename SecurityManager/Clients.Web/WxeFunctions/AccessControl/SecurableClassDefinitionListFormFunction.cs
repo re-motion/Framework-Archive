@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Clients.Web.UI.AccessControl;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Data.DomainObjects;
+using Remotion.SecurityManager.Clients.Web.UI.AccessControl;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.AccessControl
+namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl
 {
   [Serializable]
   public class SecurableClassDefinitionListFormFunction : FormFunction

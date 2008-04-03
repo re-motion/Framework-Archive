@@ -5,11 +5,11 @@ using System.Runtime.Serialization;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
-using Rubicon.CodeGeneration;
-using Rubicon.Core.UnitTests.CodeGeneration.SampleTypes;
-using Rubicon.Development.UnitTesting;
+using Remotion.CodeGeneration;
+using Remotion.Core.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration
+namespace Remotion.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class SerializationEventRaiserTest

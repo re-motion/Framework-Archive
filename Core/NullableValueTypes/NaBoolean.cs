@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Data.SqlTypes;
 using System.Globalization;
 
-namespace Rubicon.NullableValueTypes
+namespace Remotion.NullableValueTypes
 {
 
 /// <summary>

@@ -2,9 +2,9 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Design
+namespace Remotion.ObjectBinding.Design
 {
   [TypeDescriptionProvider (typeof (EditorControlBaseClassProvider))]
   public abstract class EditorControlBase : UserControl

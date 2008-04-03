@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   [AttributeUsage (AttributeTargets.Property, AllowMultiple = false)]
   public class DemandPropertyWritePermissionAttribute : BaseDemandPermissionAttribute

@@ -7,8 +7,8 @@
     <ProjectGuid>{B915A0FD-92E5-42C5-BEB9-EB4D382563D7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Data.DomainObjects.ObjectBinding</RootNamespace>
-    <AssemblyName>Rubicon.Data.DomainObjects.ObjectBinding</AssemblyName>
+    <RootNamespace>Remotion.Data.DomainObjects.ObjectBinding</RootNamespace>
+    <AssemblyName>Remotion.Data.DomainObjects.ObjectBinding</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

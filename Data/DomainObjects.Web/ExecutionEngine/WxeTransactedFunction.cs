@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
 using System.Collections;
 
-namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
+namespace Remotion.Data.DomainObjects.Web.ExecutionEngine
 {
   /// <summary>
-  /// A <see cref="WxeFunction"/> that will always have a <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.
+  /// A <see cref="WxeFunction"/> that will always have a <see cref="Remotion.Data.DomainObjects.ClientTransaction"/>.
   /// </summary>
   /// <remarks>
   /// <para>A <b>WxeTransactedFunction</b> always creates a new <see cref="ClientTransaction"/>, unless <see cref="WxeTransactionMode.None"/>
@@ -104,9 +104,9 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
     }
 
     /// <summary>
-    /// Creates a new <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> object.
+    /// Creates a new <see cref="Remotion.Data.DomainObjects.ClientTransaction"/> object.
     /// </summary>
-    /// <returns>A new <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.</returns>
+    /// <returns>A new <see cref="Remotion.Data.DomainObjects.ClientTransaction"/>.</returns>
     /// <remarks>Derived class should override this method to provide specific implemenations of <see cref="ClientTransaction"/>s.</remarks>
     protected override ClientTransaction CreateRootTransaction ()
     {

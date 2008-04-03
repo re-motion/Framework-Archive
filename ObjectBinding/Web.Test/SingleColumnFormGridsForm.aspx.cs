@@ -13,17 +13,17 @@ namespace OBWTest
 {
 public class SingleColumnFormGridsForm : System.Web.UI.Page
 {
-  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
-  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel1;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
+  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected Remotion.Web.UI.Controls.SmartLabel SmartLabel1;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
   protected System.Web.UI.HtmlControls.HtmlTable LeftFormGrid;
-  protected Rubicon.Web.UI.Controls.SmartLabel Smartlabel2;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue Boctextvalue2;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormgridManager;
+  protected Remotion.Web.UI.Controls.SmartLabel Smartlabel2;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue Boctextvalue2;
+  protected Remotion.Web.UI.Controls.FormGridManager FormgridManager;
   protected System.Web.UI.HtmlControls.HtmlTable RightFormGrid;
-  protected Rubicon.Web.UI.Controls.SmartLabel Smartlabel3;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocList BocList1;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.Web.UI.Controls.SmartLabel Smartlabel3;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocList BocList1;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{

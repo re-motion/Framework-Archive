@@ -1,4 +1,4 @@
-namespace Rubicon.Data.DomainObjects.Transport
+namespace Remotion.Data.DomainObjects.Transport
 {
   /// <summary>
   /// Implements a strategy to export a set of <see cref="DomainObject"/> instances to a byte array. The exported objects are

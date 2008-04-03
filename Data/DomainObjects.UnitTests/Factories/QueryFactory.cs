@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Factories
+namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
   public static class QueryFactory
   {

@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-namespace Rubicon.Web.UI.Design
+namespace Remotion.Web.UI.Design
 {
 
 public class CollectionEditorServiceProvider: IServiceProvider, IWindowsFormsEditorService
@@ -71,7 +71,7 @@ public class CollectionEditorServiceProvider: IServiceProvider, IWindowsFormsEdi
     propertyGrid.HelpVisible = true;
     propertyGrid.BackColor = SystemColors.Control;
     
-    if (! Rubicon.Utilities.StringUtility.IsNullOrEmpty (_title))
+    if (! Remotion.Utilities.StringUtility.IsNullOrEmpty (_title))
       dialog.Text = _title;
     return dialog.ShowDialog();
   }

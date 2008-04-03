@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Rubicon.Mixins.Utilities;
-using Rubicon.Utilities;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.Utilities;
+using Remotion.Utilities;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   [DebuggerDisplay ("{Type}")]
   public class TargetClassDefinition : ClassDefinitionBase, IAttributeIntroductionTargetDefinition

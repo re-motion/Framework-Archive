@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   public abstract class BaseDemandPermissionAttribute : Attribute
   {
@@ -39,7 +39,7 @@ namespace Rubicon.Security
       if (!permissionType.IsDefined (typeof (AccessTypeAttribute), false))
       {
         string message = string.Format (string.Format ("Enumerated Type '{0}' cannot be used as an access type. Valid access types must have the "
-                + "Rubicon.Security.AccessTypeAttribute applied.", permissionType.FullName));
+                + "Remotion.Security.AccessTypeAttribute applied.", permissionType.FullName));
 
         throw new ArgumentException (message, "accessType");
       }

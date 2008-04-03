@@ -1,9 +1,9 @@
 using System;
 using System.Xml.Serialization;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding.BindableObject;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject;
 
-namespace Rubicon.ObjectBinding.Sample
+namespace Remotion.ObjectBinding.Sample
 {
   [Serializable]
   [BindableObjectWithIdentity]

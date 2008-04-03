@@ -1,10 +1,10 @@
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Development.UnitTesting;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
+namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 {
   [TestFixture]
   public class ObjectIDTest : StandardMappingTest

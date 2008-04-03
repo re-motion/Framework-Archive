@@ -1,1 +1,1 @@
-<%@ Application Codebehind="Global.asax.cs" Inherits="Rubicon.Templates.Generic.Web.Global" %>
+<%@ Application Codebehind="Global.asax.cs" Inherits="Remotion.Templates.Generic.Web.Global" %>

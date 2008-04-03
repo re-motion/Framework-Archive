@@ -2,9 +2,9 @@ using System;
 using System.Reflection;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.CodeGeneration
+namespace Remotion.CodeGeneration
 {
   public enum PropertyKind
   {

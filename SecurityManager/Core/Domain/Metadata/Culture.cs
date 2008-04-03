@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.Metadata
+namespace Remotion.SecurityManager.Domain.Metadata
 {
   [Serializable]
   [Instantiable]
@@ -18,7 +18,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public static Culture Find (string name)
     {
-      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.Culture.Find");
+      Query query = new Query ("Remotion.SecurityManager.Domain.Metadata.Culture.Find");
       query.Parameters.Add ("@cultureName", name);
 
       DomainObjectCollection result = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);

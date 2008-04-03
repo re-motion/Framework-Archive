@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
+namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes
 {
   [DBTable]
   public class DOWithVirtualPropertiesAndMethods : DomainObject

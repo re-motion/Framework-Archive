@@ -6,10 +6,10 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.Web.Utilities
+namespace Remotion.Web.Utilities
 {
 
   public static class ControlHelper
@@ -185,7 +185,7 @@ namespace Rubicon.Web.Utilities
       {
         //  WORKAROUND: In Designmode the very first call to FindControl results in a duplicate entry.
         //  Once that initial confusion has passed, everything seems to work just fine.
-        //  Reason unknown (bug in Rubicon-code or bug in Framework-code)
+        //  Reason unknown (bug in Remotion-code or bug in Framework-code)
         return namingContainer.FindControl (controlID);
       }
       catch (HttpException)

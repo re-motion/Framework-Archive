@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Mixins.Context;
-using Rubicon.Utilities;
+using Remotion.Mixins.Context;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   /// <summary>
   /// Configures that a class and a mixin should be mixed together.

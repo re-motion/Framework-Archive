@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.SecurityManager.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Security;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.SecurityManager.UnitTests.TestDomain;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
+namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 {
   [TestFixture]
   public class FindAbstractRolesQueryBuilderTest : DomainTest
@@ -18,7 +18,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       Assert.AreEqual (1, query.Parameters.Count);
       Assert.IsTrue (query.Parameters.Contains ("@p0"));
-      Assert.AreEqual ("QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRoles, Rubicon.SecurityManager.UnitTests", query.Parameters["@p0"].Value);
+      Assert.AreEqual ("QualityManager|Remotion.SecurityManager.UnitTests.TestDomain.ProjectRoles, Remotion.SecurityManager.UnitTests", query.Parameters["@p0"].Value);
       Assert.AreEqual ("SELECT * FROM [AbstractRoleDefinitionView] WHERE [Name] = @p0", query.Statement);
     }
   }

@@ -3,10 +3,10 @@ using System.IO;
 using System.Text;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Development.UnitTesting.IO;
+using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.IO;
 
-namespace Rubicon.Development.UnitTests.UnitTesting.IO
+namespace Remotion.Development.UnitTests.UnitTesting.IO
 {
   [TestFixture]
   public class TempFileTest

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Rubicon.Data.DomainObjects.Legacy.ObjectBinding">
+<project xmlns="nant-schema" name="Remotion.Data.DomainObjects.Legacy.ObjectBinding">
   
   <target name="build" description="perform a build">
     <csc  target="library"
@@ -23,18 +23,18 @@
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <include asis="true" name="${build.outputdir}/Rubicon.Core.dll"/>
-        <include asis="true" name="${build.outputdir}/Rubicon.Data.DomainObjects.dll"/>
-        <include asis="true" name="${build.outputdir}/Rubicon.Data.DomainObjects.Legacy.dll"/>
-        <include asis="true" name="${build.outputdir}/Rubicon.Mixins.dll"/>
-        <include asis="true" name="${build.outputdir}/Rubicon.ObjectBinding.dll"/>
+        <include asis="true" name="${build.outputdir}/Remotion.Core.dll"/>
+        <include asis="true" name="${build.outputdir}/Remotion.Data.DomainObjects.dll"/>
+        <include asis="true" name="${build.outputdir}/Remotion.Data.DomainObjects.Legacy.dll"/>
+        <include asis="true" name="${build.outputdir}/Remotion.Mixins.dll"/>
+        <include asis="true" name="${build.outputdir}/Remotion.ObjectBinding.dll"/>
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Drawing.dll"/>
         <include asis="true" name="System.Windows.Forms.dll"/>
         <include asis="true" name="System.Xml.dll"/>
       </references>
-      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Data.DomainObjects.ObjectBinding">
+      <resources failonempty="true" dynamicprefix="true" prefix="Remotion.Data.DomainObjects.ObjectBinding">
         <include name="Globalization/*.resx" />
       </resources>
     </csc>

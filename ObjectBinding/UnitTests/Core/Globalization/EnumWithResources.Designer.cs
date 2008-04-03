@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.Globalization {
+namespace Remotion.ObjectBinding.UnitTests.Core.Globalization {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.Globalization {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.ObjectBinding.UnitTests.Core.Globalization.EnumWithResources", typeof(EnumWithResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Remotion.ObjectBinding.UnitTests.Core.Globalization.EnumWithResources", typeof(EnumWithResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -63,9 +63,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.Globalization {
         /// <summary>
         ///   Looks up a localized string similar to Value 1.
         /// </summary>
-        internal static string Rubicon_ObjectBinding_UnitTests_Core_BindableObject_TestDomain_EnumWithResources_Value1 {
+        internal static string Remotion_ObjectBinding_UnitTests_Core_BindableObject_TestDomain_EnumWithResources_Value1 {
             get {
-                return ResourceManager.GetString("Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.EnumWithResources." +
+                return ResourceManager.GetString("Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.EnumWithResources." +
                         "Value1", resourceCulture);
             }
         }
@@ -73,9 +73,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.Globalization {
         /// <summary>
         ///   Looks up a localized string similar to Value 2.
         /// </summary>
-        internal static string Rubicon_ObjectBinding_UnitTests_Core_BindableObject_TestDomain_EnumWithResources_Value2 {
+        internal static string Remotion_ObjectBinding_UnitTests_Core_BindableObject_TestDomain_EnumWithResources_Value2 {
             get {
-                return ResourceManager.GetString("Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.EnumWithResources." +
+                return ResourceManager.GetString("Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.EnumWithResources." +
                         "Value2", resourceCulture);
             }
         }
@@ -83,9 +83,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.Globalization {
         /// <summary>
         ///   Looks up a localized string similar to Value 3.
         /// </summary>
-        internal static string Rubicon_ObjectBinding_UnitTests_Core_BindableObject_TestDomain_EnumWithResources_Value3 {
+        internal static string Remotion_ObjectBinding_UnitTests_Core_BindableObject_TestDomain_EnumWithResources_Value3 {
             get {
-                return ResourceManager.GetString("Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.EnumWithResources." +
+                return ResourceManager.GetString("Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.EnumWithResources." +
                         "Value3", resourceCulture);
             }
         }

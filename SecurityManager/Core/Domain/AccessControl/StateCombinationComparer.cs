@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.SecurityManager.Domain.Metadata;
+using Remotion.SecurityManager.Domain.Metadata;
 
-namespace Rubicon.SecurityManager.Domain.AccessControl
+namespace Remotion.SecurityManager.Domain.AccessControl
 {
   public class StateCombinationComparer : IEqualityComparer<StateCombination>
   {

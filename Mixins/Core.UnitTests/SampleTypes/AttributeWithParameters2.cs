@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.UnitTests.SampleTypes
+namespace Remotion.Mixins.UnitTests.SampleTypes
 {
   [AttributeUsage (AttributeTargets.All, AllowMultiple = true)]
   public class AttributeWithParameters2 : Attribute

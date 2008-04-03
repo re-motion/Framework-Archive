@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Mixins;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Data.DomainObjects.Mapping
+namespace Remotion.Data.DomainObjects.Mapping
 {
   public static class PersistentMixinFinder
   {

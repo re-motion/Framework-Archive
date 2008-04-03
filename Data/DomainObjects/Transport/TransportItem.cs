@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Transport
+namespace Remotion.Data.DomainObjects.Transport
 {
   /// <summary>
   /// Represents a <see cref="DomainObject"/> instance when it is to be transported by <see cref="DomainObjectTransporter"/>.

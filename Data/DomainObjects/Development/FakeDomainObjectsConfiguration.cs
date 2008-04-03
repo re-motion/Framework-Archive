@@ -1,11 +1,11 @@
 using System;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Mapping.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Mapping.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Development
+namespace Remotion.Data.DomainObjects.Development
 {
   /// <summary>
   /// Fake implementation of the <see cref="IDomainObjectsConfiguration"/> interface. Use this class for programmatically setting up the configuration 

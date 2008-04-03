@@ -1,13 +1,13 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
-using Rubicon.Security.Configuration;
-using Rubicon.Security.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Web.ExecutionEngine;
+using Remotion.Security.Configuration;
+using Remotion.Security.Data.DomainObjects;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
+namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
 {
   [Serializable]
   public abstract class BaseTransactedFunction : WxeTransactedFunction

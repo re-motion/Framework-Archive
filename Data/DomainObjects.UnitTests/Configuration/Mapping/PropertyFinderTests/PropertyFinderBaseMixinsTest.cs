@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain;
-using Rubicon.Mixins.Context;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFinderTests
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFinderTests
 {
   [TestFixture]
   public class PropertyFinderBaseMixinsTest : PropertyFinderBaseTestBase

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.AccessControl
+namespace Remotion.SecurityManager.Domain.AccessControl
 {
   [Serializable]
   [Instantiable]

@@ -11,15 +11,15 @@ using System.Web.UI.HtmlControls;
 using System.Text;
 using System.Globalization;
 using System.Threading;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
-using Rubicon.NullableValueTypes;
-using Rubicon.Web;
-using Rubicon.Web.UI;
-using Rubicon.Utilities;
-using Rubicon.Globalization;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
+using Remotion.NullableValueTypes;
+using Remotion.Web;
+using Remotion.Web.UI;
+using Remotion.Utilities;
+using Remotion.Globalization;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Web.UI.Controls;
 
 namespace OBWTest
 {
@@ -27,14 +27,14 @@ namespace OBWTest
 public class TestForm : Page
 {
   protected System.Web.UI.WebControls.Button PostBackButton;
-  protected Rubicon.Web.UI.Controls.LazyContainer LazyContainer;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue TextField;
+  protected Remotion.Web.UI.Controls.LazyContainer LazyContainer;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue TextField;
   protected System.Web.UI.WebControls.TextBox TextBox1;
   protected System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.Web.UI.Controls.FormGridManager fgm;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue field;
-  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected Remotion.Web.UI.Controls.FormGridManager fgm;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue field;
+  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 	#region Web Form Designer generated code
 

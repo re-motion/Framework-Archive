@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.UnitTests.ValidationTests.ValidationSampleTypes
+namespace Remotion.Mixins.UnitTests.ValidationTests.ValidationSampleTypes
 {
   internal class InternalNester
   {

@@ -8,16 +8,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
+namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl {
     
     public partial class EditPermissionsForm {
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObjectHeaderControls;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue NameField;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObjectHeaderControls;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue NameField;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
         protected System.Web.UI.WebControls.CustomValidator DuplicateStateCombinationsValidator;
         protected System.Web.UI.WebControls.PlaceHolder AccessControlListsPlaceHolder;
-        protected Rubicon.Web.UI.Controls.WebButton SaveButton;
-        protected Rubicon.Web.UI.Controls.WebButton CancelButton;
-        protected Rubicon.Web.UI.Controls.WebButton NewAccessControlListButton;
+        protected Remotion.Web.UI.Controls.WebButton SaveButton;
+        protected Remotion.Web.UI.Controls.WebButton CancelButton;
+        protected Remotion.Web.UI.Controls.WebButton NewAccessControlListButton;
     }
 }

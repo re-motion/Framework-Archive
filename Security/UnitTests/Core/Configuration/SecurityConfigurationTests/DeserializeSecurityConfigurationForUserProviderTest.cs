@@ -1,11 +1,11 @@
 using System;
 using System.Configuration;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Development.UnitTesting.Configuration;
-using Rubicon.Security.Web;
+using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.Configuration;
+using Remotion.Security.Web;
 
-namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
+namespace Remotion.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
 {
   [TestFixture]
   public class DeserializeSecurityConfigurationForUserProviderTest : TestBase
@@ -13,7 +13,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Test]
     public void Test_WithDefaultUserProvider ()
     {
-      string xmlFragment = @"<rubicon.security />";
+      string xmlFragment = @"<remotion.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Assert.IsInstanceOfType (typeof (ThreadUserProvider), Configuration.UserProvider);
     }
@@ -21,7 +21,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Test]
     public void Test_UserProviderIsAlwaysSameInstance ()
     {
-      string xmlFragment = @"<rubicon.security />";
+      string xmlFragment = @"<remotion.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Assert.AreSame (Configuration.UserProvider, Configuration.UserProvider);
     }
@@ -29,7 +29,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Test]
     public void Test_WithThreadUserProvider ()
     {
-      string xmlFragment = @"<rubicon.security defaultUserProvider=""Thread"" />";
+      string xmlFragment = @"<remotion.security defaultUserProvider=""Thread"" />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Assert.IsInstanceOfType (typeof (ThreadUserProvider), Configuration.UserProvider);
     }
@@ -37,7 +37,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Test]
     public void Test_WithHttpContextUserProvider ()
     {
-      string xmlFragment = @"<rubicon.security defaultUserProvider=""HttpContext"" />";
+      string xmlFragment = @"<remotion.security defaultUserProvider=""HttpContext"" />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Assert.IsInstanceOfType (typeof (HttpContextUserProvider), Configuration.UserProvider);
     }
@@ -46,11 +46,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     public void Test_WithCustomUserProvider ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultUserProvider=""Custom"">
+          <remotion.security defaultUserProvider=""Custom"">
             <userProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.UserProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.UserProviderMock"" />
             </userProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
@@ -61,11 +61,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     public void Test_WithUserProvidersAndFallbackToDefaultWellKnownDefaultUserProvider ()
     {
       string xmlFragment = @"
-          <rubicon.security>
+          <remotion.security>
             <userProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.UserProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.UserProviderMock"" />
             </userProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
@@ -81,11 +81,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     public void Test_WithCustomUserProviderAndInvalidName ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultUserProvider=""Invalid"">
+          <remotion.security defaultUserProvider=""Invalid"">
             <userProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.UserProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.UserProviderMock"" />
             </userProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
@@ -98,11 +98,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     public void Test_DuplicateWellKnownUserProviderForThreadUserProvider ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultUserProvider=""Thread"">
+          <remotion.security defaultUserProvider=""Thread"">
             <userProviders>
-              <add name=""Thread"" type=""Rubicon.Security.UnitTests::Core.Configuration.UserProviderMock"" />
+              <add name=""Thread"" type=""Remotion.Security.UnitTests::Core.Configuration.UserProviderMock"" />
             </userProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
     }
@@ -113,11 +113,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     public void Test_DuplicateWellKnownUserProviderForHttpContextUserProvider ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultUserProvider=""HttpContext"">
+          <remotion.security defaultUserProvider=""HttpContext"">
             <userProviders>
-              <add name=""HttpContext"" type=""Rubicon.Security.UnitTests::Core.Configuration.UserProviderMock"" />
+              <add name=""HttpContext"" type=""Remotion.Security.UnitTests::Core.Configuration.UserProviderMock"" />
             </userProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
     }
@@ -128,11 +128,11 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     public void Test_WithCustomUserProviderNameEmpty ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultUserProvider="""">
+          <remotion.security defaultUserProvider="""">
             <userProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.UserProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.UserProviderMock"" />
             </userProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
@@ -145,27 +145,27 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     {
       string xmlFragment =
           @"
-          <rubicon.security>
+          <remotion.security>
             <userProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.UserProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.UserProviderMock"" />
             </userProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Configuration.UserProviders.Clear ();
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), ExpectedMessage = "Provider must implement the interface 'Rubicon.Security.IUserProvider'.")]
+    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), ExpectedMessage = "Provider must implement the interface 'Remotion.Security.IUserProvider'.")]
     public void InstantiateProvider_WithTypeNotImplementingRequiredInterface ()
     {
       string xmlFragment =
           @"
-          <rubicon.security>
+          <remotion.security>
             <userProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
+              <add name=""Custom"" type=""Remotion.Security.UnitTests::Core.Configuration.PermissionProviderMock"" />
             </userProviders>
-          </rubicon.security>";
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 

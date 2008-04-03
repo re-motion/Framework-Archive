@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Security;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Security;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine
 {
 
   [TestFixture]

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.SampleTypes
+namespace Remotion.Mixins.UnitTests.CodeGeneration.SampleTypes
 {
   public interface IVeryGenericMixin
   {

@@ -1,9 +1,9 @@
 using System;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using Rubicon.Security.Metadata;
+using Remotion.Security.Metadata;
 
-namespace Rubicon.Security.MSBuild.Tasks
+namespace Remotion.Security.MSBuild.Tasks
 {
   public class ExtractSecurityMetadata : Task
   {

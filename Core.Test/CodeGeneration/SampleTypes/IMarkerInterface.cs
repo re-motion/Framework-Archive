@@ -1,4 +1,4 @@
-namespace Rubicon.Core.UnitTests.CodeGeneration.SampleTypes
+namespace Remotion.Core.UnitTests.CodeGeneration.SampleTypes
 {
   public interface IMarkerInterface
   {

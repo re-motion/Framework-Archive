@@ -1,7 +1,7 @@
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Transport
+namespace Remotion.Data.DomainObjects.UnitTests.Transport
 {
   public class OnlyProcessComputersStrategy : IGraphTraversalStrategy
   {

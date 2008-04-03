@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// The <see cref="DBStorageGroupAttribute"/> is the standard <see cref="StorageGroupAttribute"/> for types persisted into a database.

@@ -2,10 +2,10 @@ using System;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Configuration.Provider;
-using Rubicon.Configuration;
-using Rubicon.Utilities;
+using Remotion.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Security.Configuration
+namespace Remotion.Security.Configuration
 {
   /// <summary>Helper class that loads implementations of <see cref="IUserProvider"/> from the <see cref="SecurityConfiguration"/> section.</summary>
   public class UserProviderHelper : ProviderHelperBase<IUserProvider>
@@ -73,8 +73,8 @@ namespace Rubicon.Security.Configuration
           {
             _httpContextUserProviderType = GetTypeWithMatchingVersionNumber (
                 DefaultProviderNameProperty,
-                "Rubicon.Security.Web",
-                "Rubicon.Security.Web.HttpContextUserProvider");
+                "Remotion.Security.Web",
+                "Remotion.Security.Web.HttpContextUserProvider");
           }
         }
       }

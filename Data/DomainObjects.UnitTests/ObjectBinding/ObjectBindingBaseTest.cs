@@ -1,10 +1,10 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.Security;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.Security;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding
+namespace Remotion.Data.DomainObjects.UnitTests.ObjectBinding
 {
   public class ObjectBindingBaseTest : ClientTransactionBaseTest
   {

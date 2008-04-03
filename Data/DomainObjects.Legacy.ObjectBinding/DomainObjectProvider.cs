@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
-using Rubicon.Collections;
-using Rubicon.ObjectBinding;
+using Remotion.Collections;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
   /// <summary>
   /// The default implementation of BusinessObjectProvider for the DomainObjects framework. This class is a Singleton.

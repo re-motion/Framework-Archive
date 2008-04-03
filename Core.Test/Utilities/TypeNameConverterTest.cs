@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Utilities
+namespace Remotion.Core.UnitTests.Utilities
 {
   [TestFixture]
   public class TypeNameConverterTest
@@ -48,7 +48,7 @@ namespace Rubicon.Core.UnitTests.Utilities
 
       Assert.AreEqual ("", _converter.ConvertTo (null, null, null, destinationType));
       Assert.AreEqual (
-          "Rubicon.Core.UnitTests.Utilities.TypeNameConverterTest, Rubicon.Core.UnitTests", 
+          "Remotion.Core.UnitTests.Utilities.TypeNameConverterTest, Remotion.Core.UnitTests", 
           (string) _converter.ConvertTo (null, null, typeof (TypeNameConverterTest), destinationType));
     }
 
@@ -58,10 +58,10 @@ namespace Rubicon.Core.UnitTests.Utilities
       Assert.AreEqual (null, _converter.ConvertFrom (null, null, ""));
       Assert.AreEqual (
           typeof (TypeNameConverterTest),
-          _converter.ConvertFrom (null, null, "Rubicon.Core.UnitTests.Utilities.TypeNameConverterTest, Rubicon.Core.UnitTests"));
+          _converter.ConvertFrom (null, null, "Remotion.Core.UnitTests.Utilities.TypeNameConverterTest, Remotion.Core.UnitTests"));
       Assert.AreEqual (
           typeof (TypeNameConverterTest),
-          _converter.ConvertFrom (null, null, "Rubicon.Core.UnitTests::Utilities.TypeNameConverterTest"));
+          _converter.ConvertFrom (null, null, "Remotion.Core.UnitTests::Utilities.TypeNameConverterTest"));
     }
   }
 }

@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Security.Metadata;
-using Rubicon.Security.UnitTests.TestDomain;
+using Remotion.Security.Metadata;
+using Remotion.Security.UnitTests.TestDomain;
 
-namespace Rubicon.Security.UnitTests.Core.Metadata
+namespace Remotion.Security.UnitTests.Core.Metadata
 {
 
   [TestFixture]
@@ -86,14 +86,14 @@ namespace Rubicon.Security.UnitTests.Core.Metadata
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type of the property 'ID' in type 'Rubicon.Security.UnitTests.TestDomain.File' is not an enumerated type.\r\nParameter name: property")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type of the property 'ID' in type 'Remotion.Security.UnitTests.TestDomain.File' is not an enumerated type.\r\nParameter name: property")]
     public void GetMetadataWithInvalidType ()
     {
       new StatePropertyReflector().GetMetadata (typeof (PaperFile).GetProperty ("ID"), _cache);
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type of the property 'SimpleEnum' in type 'Rubicon.Security.UnitTests.TestDomain.File' does not have the Rubicon.Security.SecurityStateAttribute applied.\r\nParameter name: property")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type of the property 'SimpleEnum' in type 'Remotion.Security.UnitTests.TestDomain.File' does not have the Remotion.Security.SecurityStateAttribute applied.\r\nParameter name: property")]
     public void GetMetadataWithInvalidEnum ()
     {
       new StatePropertyReflector ().GetMetadata (typeof (PaperFile).GetProperty ("SimpleEnum"), _cache);

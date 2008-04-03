@@ -5,11 +5,11 @@ using System.Configuration;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.SessionState;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Mapping.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Mapping.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 
-namespace Rubicon.Data.DomainObjects.Web.Legacy.Test 
+namespace Remotion.Data.DomainObjects.Web.Legacy.Test 
 {
 	/// <summary>
 	/// Summary description for Global.

@@ -4,94 +4,94 @@
 <html>
 <head>
   <title>Test Tabbed Form</title>
-  <rubicon:HtmlHeadContents ID="HtmlHeadContents" runat="server" />
+  <remotion:HtmlHeadContents ID="HtmlHeadContents" runat="server" />
 </head>
 <body>
   <form id="Form" method="post" runat="server">
-    <rubicon:TabbedMultiView ID="MultiView" runat="server" CssClass="tabbedMultiView">
+    <remotion:TabbedMultiView ID="MultiView" runat="server" CssClass="tabbedMultiView">
       <TopControls>
-        <rubicon:TabbedMenu ID="NavigationTabs" runat="server" StatusText="Status Text" SubMenuBackgroundColor-IsEmpty="True" SubMenuBackgroundColor-A="0" SubMenuBackgroundColor-B="0"
+        <remotion:TabbedMenu ID="NavigationTabs" runat="server" StatusText="Status Text" SubMenuBackgroundColor-IsEmpty="True" SubMenuBackgroundColor-A="0" SubMenuBackgroundColor-B="0"
           SubMenuBackgroundColor-IsNamedColor="False" SubMenuBackgroundColor-IsKnownColor="False" SubMenuBackgroundColor-Name="0" SubMenuBackgroundColor-G="0"
           SubMenuBackgroundColor-R="0" SubMenuBackgroundColor-IsSystemColor="False">
           <Tabs>
-            <rubicon:MainMenuTab Text="Tab 1" ItemID="Tab1">
+            <remotion:MainMenuTab Text="Tab 1" ItemID="Tab1">
               <SubMenuTabs>
-                <rubicon:SubMenuTab Text="Event" ItemID="EventTab">
+                <remotion:SubMenuTab Text="Event" ItemID="EventTab">
                   <PersistedCommand>
-                    <rubicon:NavigationCommand Type="Event"></rubicon:NavigationCommand>
+                    <remotion:NavigationCommand Type="Event"></remotion:NavigationCommand>
                   </PersistedCommand>
-                </rubicon:SubMenuTab>
-                <rubicon:SubMenuTab Text="Href" ItemID="HrefTab">
+                </remotion:SubMenuTab>
+                <remotion:SubMenuTab Text="Href" ItemID="HrefTab">
                   <PersistedCommand>
-                    <rubicon:NavigationCommand Type="Href" HrefCommand-Href="StartForm.aspx"></rubicon:NavigationCommand>
+                    <remotion:NavigationCommand Type="Href" HrefCommand-Href="StartForm.aspx"></remotion:NavigationCommand>
                   </PersistedCommand>
-                </rubicon:SubMenuTab>
-                <rubicon:SubMenuTab Text="Client Wxe" ItemID="ClientWxeTab">
+                </remotion:SubMenuTab>
+                <remotion:SubMenuTab Text="Client Wxe" ItemID="ClientWxeTab">
                   <PersistedCommand>
-                    <rubicon:NavigationCommand Type="WxeFunction" WxeFunctionCommand-Parameters="false" WxeFunctionCommand-MappingID="TestTabbedForm"></rubicon:NavigationCommand>
+                    <remotion:NavigationCommand Type="WxeFunction" WxeFunctionCommand-Parameters="false" WxeFunctionCommand-MappingID="TestTabbedForm"></remotion:NavigationCommand>
                   </PersistedCommand>
-                </rubicon:SubMenuTab>
-                <rubicon:SubMenuTab Text="Invisible Tab" ItemID="InvisibleTab" IsVisible="False">
+                </remotion:SubMenuTab>
+                <remotion:SubMenuTab Text="Invisible Tab" ItemID="InvisibleTab" IsVisible="False">
                   <PersistedCommand>
-                    <rubicon:NavigationCommand Type="Event"></rubicon:NavigationCommand>
+                    <remotion:NavigationCommand Type="Event"></remotion:NavigationCommand>
                   </PersistedCommand>
-                </rubicon:SubMenuTab>
-                <rubicon:SubMenuTab Text="Disabled Tab" ItemID="DisabledTab" Icon-Url="Images/DeleteItem.gif" IsDisabled="True">
+                </remotion:SubMenuTab>
+                <remotion:SubMenuTab Text="Disabled Tab" ItemID="DisabledTab" Icon-Url="Images/DeleteItem.gif" IsDisabled="True">
                   <PersistedCommand>
-                    <rubicon:NavigationCommand Type="Event"></rubicon:NavigationCommand>
+                    <remotion:NavigationCommand Type="Event"></remotion:NavigationCommand>
                   </PersistedCommand>
-                </rubicon:SubMenuTab>
+                </remotion:SubMenuTab>
               </SubMenuTabs>
               <PersistedCommand>
-                <rubicon:NavigationCommand Type="None"></rubicon:NavigationCommand>
+                <remotion:NavigationCommand Type="None"></remotion:NavigationCommand>
               </PersistedCommand>
-            </rubicon:MainMenuTab>
-            <rubicon:MainMenuTab Text="Tab 2" ItemID="Tab2">
+            </remotion:MainMenuTab>
+            <remotion:MainMenuTab Text="Tab 2" ItemID="Tab2">
               <SubMenuTabs>
-                <rubicon:SubMenuTab Text="Sub Tab 2.1" ItemID="SubTab1">
+                <remotion:SubMenuTab Text="Sub Tab 2.1" ItemID="SubTab1">
                   <PersistedCommand>
-                    <rubicon:NavigationCommand Type="Event"></rubicon:NavigationCommand>
+                    <remotion:NavigationCommand Type="Event"></remotion:NavigationCommand>
                   </PersistedCommand>
-                </rubicon:SubMenuTab>
-                <rubicon:SubMenuTab Text="Sub Tab 2.2" ItemID="SubTab2">
+                </remotion:SubMenuTab>
+                <remotion:SubMenuTab Text="Sub Tab 2.2" ItemID="SubTab2">
                   <PersistedCommand>
-                    <rubicon:NavigationCommand Type="Event"></rubicon:NavigationCommand>
+                    <remotion:NavigationCommand Type="Event"></remotion:NavigationCommand>
                   </PersistedCommand>
-                </rubicon:SubMenuTab>
-                <rubicon:SubMenuTab Text="Sub Tab 2.3" ItemID="SubTab23">
+                </remotion:SubMenuTab>
+                <remotion:SubMenuTab Text="Sub Tab 2.3" ItemID="SubTab23">
                   <PersistedCommand>
-                    <rubicon:NavigationCommand Type="Event"></rubicon:NavigationCommand>
+                    <remotion:NavigationCommand Type="Event"></remotion:NavigationCommand>
                   </PersistedCommand>
-                </rubicon:SubMenuTab>
+                </remotion:SubMenuTab>
               </SubMenuTabs>
               <PersistedCommand>
-                <rubicon:NavigationCommand Type="None"></rubicon:NavigationCommand>
+                <remotion:NavigationCommand Type="None"></remotion:NavigationCommand>
               </PersistedCommand>
-            </rubicon:MainMenuTab>
-            <rubicon:MainMenuTab Text="Tab 3" ItemID="Tab3" IsVisible="False">
+            </remotion:MainMenuTab>
+            <remotion:MainMenuTab Text="Tab 3" ItemID="Tab3" IsVisible="False">
               <PersistedCommand>
-                <rubicon:NavigationCommand Type="Event"></rubicon:NavigationCommand>
+                <remotion:NavigationCommand Type="Event"></remotion:NavigationCommand>
               </PersistedCommand>
-            </rubicon:MainMenuTab>
-            <rubicon:MainMenuTab Text="Tab 4" ItemID="Tab4">
+            </remotion:MainMenuTab>
+            <remotion:MainMenuTab Text="Tab 4" ItemID="Tab4">
               <PersistedCommand>
-                <rubicon:NavigationCommand Type="Event"></rubicon:NavigationCommand>
+                <remotion:NavigationCommand Type="Event"></remotion:NavigationCommand>
               </PersistedCommand>
-            </rubicon:MainMenuTab>
-            <rubicon:MainMenuTab Text="Tab 5" ItemID="Tab5" Icon-Url="Images/DeleteItem.gif" IsDisabled="True">
+            </remotion:MainMenuTab>
+            <remotion:MainMenuTab Text="Tab 5" ItemID="Tab5" Icon-Url="Images/DeleteItem.gif" IsDisabled="True">
               <PersistedCommand>
-                <rubicon:NavigationCommand Type="Event"></rubicon:NavigationCommand>
+                <remotion:NavigationCommand Type="Event"></remotion:NavigationCommand>
               </PersistedCommand>
-            </rubicon:MainMenuTab>
+            </remotion:MainMenuTab>
           </Tabs>
-        </rubicon:TabbedMenu>
+        </remotion:TabbedMenu>
         <system.web.ui.htmlcontrols.htmlgenericcontrol>Test Tabbed Form</system.web.ui.htmlcontrols.htmlgenericcontrol>
-        <rubicon:ValidationStateViewer ID="ValidationStateViewer"></rubicon:ValidationStateViewer>
+        <remotion:ValidationStateViewer ID="ValidationStateViewer"></remotion:ValidationStateViewer>
       </TopControls>
       <Views>
-        <rubicon:TabView ID="first" Title="First">
-          <rubicon:WebTabStrip ID="PagesTabStrip" runat="server" Style="margin: 3em">
-          </rubicon:WebTabStrip>
+        <remotion:TabView ID="first" Title="First">
+          <remotion:WebTabStrip ID="PagesTabStrip" runat="server" Style="margin: 3em">
+          </remotion:WebTabStrip>
           <asp:Literal ID="Literal" runat="server">
           01 foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar<br />
           02 foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar<br />
@@ -144,14 +144,14 @@
           49 foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar<br />
           50 foo bar foo bar foo bar foo bar foo bar foo bar foo bar foo bar<br />
           </asp:Literal>
-        </rubicon:TabView>
-        <rubicon:TabView ID="second" Title="Second">
-        </rubicon:TabView>
+        </remotion:TabView>
+        <remotion:TabView ID="second" Title="Second">
+        </remotion:TabView>
       </Views>
       <BottomControls>
-        <rubicon:SmartHyperLink ID="SmartHyperLink1" runat="server" NavigateUrl="~/Start.aspx">test</rubicon:SmartHyperLink>
+        <remotion:SmartHyperLink ID="SmartHyperLink1" runat="server" NavigateUrl="~/Start.aspx">test</remotion:SmartHyperLink>
       </BottomControls>
-    </rubicon:TabbedMultiView>
+    </remotion:TabbedMultiView>
   </form>
 </body>
 </html>

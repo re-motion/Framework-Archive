@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain
 {
   public class NonDomainObjectMixin : Mixin<DomainObject>
   {

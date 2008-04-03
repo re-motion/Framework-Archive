@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   public interface IDefinitionCollection<TKey, TValue> : IEnumerable<TValue>
   {

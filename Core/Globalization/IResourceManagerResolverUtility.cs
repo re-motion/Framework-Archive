@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Globalization
+namespace Remotion.Globalization
 {
 	public interface IResourceManagerResolverUtility
 	{

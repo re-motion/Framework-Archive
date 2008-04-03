@@ -2,18 +2,18 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Development;
-using Rubicon.Data.DomainObjects.Mapping.Configuration;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Development;
+using Remotion.Data.DomainObjects.Mapping.Configuration;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.UnitTests.Interception.SampleTypes;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
+using Remotion.Utilities;
+using Remotion.Data.DomainObjects.Infrastructure;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Interception
+namespace Remotion.Data.DomainObjects.UnitTests.Interception
 {
   [TestFixture]
   public class InterceptedPropertyIntegrationTest : ClientTransactionBaseTest
@@ -101,7 +101,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests."
                                                                       + "Interception.SampleTypes.NonInstantiableAbstractClass as its member Foo (on type NonInstantiableAbstractClass) is abstract (and not an "
                                                                       + "automatic property).", MatchType = MessageMatch.Contains)]
     public void AbstractWithMethodCannotBeInstantiated ()
@@ -111,7 +111,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type "
-                                                                      + "Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes.NonInstantiableAbstractClassWithProps "
+                                                                      + "Remotion.Data.DomainObjects.UnitTests.Interception.SampleTypes.NonInstantiableAbstractClassWithProps "
                                                                       + "as its member get_Foo (on type NonInstantiableAbstractClassWithProps) is abstract (and not an automatic property).",
         MatchType = MessageMatch.Contains)]
     public void AbstractWithNonAutoPropertiesCannotBeInstantiated ()
@@ -120,9 +120,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException(typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+    [ExpectedException(typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests."
                                                                      + "Interception.SampleTypes.NonInstantiableClassWithAutomaticRelatedCollectionSetter, automatic "
-                                                                     + "properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data.DomainObjects."
+                                                                     + "properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Remotion.Data.DomainObjects."
                                                                      + "UnitTests.Interception.SampleTypes.NonInstantiableClassWithAutomaticRelatedCollectionSetter."
                                                                      + "RelatedObjects'.",
         MatchType = MessageMatch.Contains)]
@@ -132,7 +132,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.Interception."
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests.Interception."
                                                                       + "SampleTypes.NonInstantiableSealedClass as it is sealed.",
         MatchType = MessageMatch.Contains)]
     public void SealedCannotBeInstantiated ()
@@ -148,7 +148,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.Data.DomainObjects.UnitTests.TestDomain."
                                                                            + "Order does not support the requested constructor with signature (System.String, System.String, System.String, "
                                                                            + "System.Object).")]
     public void WrongConstructorCannotBeInstantiated ()
@@ -166,7 +166,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.Interception."
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.Data.DomainObjects.UnitTests.Interception."
                                                                            + "SampleTypes.ClassWithWrongConstructor does not support the requested constructor with signature ().")]
     public void ConstructorMismatch1 ()
     {
@@ -174,7 +174,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.Interception."
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.Data.DomainObjects.UnitTests.Interception."
                                                                            + "SampleTypes.ClassWithWrongConstructor does not support the requested constructor with signature "
                                                                            + "(System.Double).")]
     public void ConstructorMismatch2 ()
@@ -304,7 +304,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
       Assert.AreSame (newOrder, item.Order);
     }
 
-    [Test][ExpectedException(typeof(ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
+    [Test][ExpectedException(typeof(ArgumentException), ExpectedMessage = "Cannot instantiate type Remotion.Data.DomainObjects.UnitTests.TestDomain."
                                                                           + "AbstractClass as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.\r\nParameter name: baseType")]
     public void CannotInstantiateReallyAbstractClass ()
     {
@@ -334,7 +334,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Interception
     public void PreparePropertyAccessCorrectlySetsCurrentProperty()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      order.PreparePropertyAccess ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
+      order.PreparePropertyAccess ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
       int orderNumber;
       try
       {

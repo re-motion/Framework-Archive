@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {
   [TestFixture]
   public class ValueTypes: BaseTest
@@ -16,7 +16,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty", actual.PropertyName);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty", actual.PropertyName);
       Assert.AreSame (typeof (bool), actual.PropertyType);
       Assert.IsFalse (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty", actual.PropertyName);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty", actual.PropertyName);
       Assert.AreSame (typeof (bool?), actual.PropertyType);
       Assert.IsTrue (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty", actual.PropertyName);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty", actual.PropertyName);
       Assert.AreSame (typeof (ClassWithAllDataTypes.EnumType), actual.PropertyType);
       Assert.IsFalse (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
@@ -58,7 +58,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsOptional", actual.PropertyName);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsOptional", actual.PropertyName);
       Assert.AreSame (typeof (ObjectID), actual.PropertyType);
       Assert.IsTrue (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
@@ -68,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage = 
         "The property type System.Object is not supported.\r\n"
-        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.ValueTypes, "
+        + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.ValueTypes, "
         + "property: ObjectProperty")]
     public void GetMetadata_WithInvalidPropertyType()
     {

@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
+namespace Remotion.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
   public class SqlProviderTest : SqlProviderBaseTest
@@ -16,9 +16,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       DataContainer customerContainer = Provider.LoadDataContainer (DomainObjectIDs.Customer);
       Assert.IsNotNull (customerContainer);
       Assert.AreEqual (DomainObjectIDs.Customer, customerContainer.ID);
-      Assert.AreEqual ("UnitTests", customerContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.CreatedBy"));
-      Assert.AreEqual ("Zaphod", customerContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Person.FirstName"));
-      Assert.AreEqual (CustomerType.Premium, customerContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Customer.CustomerType"));
+      Assert.AreEqual ("UnitTests", customerContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.CreatedBy"));
+      Assert.AreEqual ("Zaphod", customerContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Person.FirstName"));
+      Assert.AreEqual (CustomerType.Premium, customerContainer.GetValue ("Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Customer.CustomerType"));
     }
 
     [Test]
@@ -26,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
       ClassDefinition domainBaseClass = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (DomainBase));
 
-      DataContainerCollection loadedDataContainers = Provider.LoadDataContainersByRelatedID (domainBaseClass, "Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client", DomainObjectIDs.Client);
+      DataContainerCollection loadedDataContainers = Provider.LoadDataContainersByRelatedID (domainBaseClass, "Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client", DomainObjectIDs.Client);
 
       Assert.IsNotNull (loadedDataContainers);
       Assert.AreEqual (4, loadedDataContainers.Count);

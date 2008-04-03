@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Development.UnitTesting
+namespace Remotion.Development.UnitTesting
 {
   public class PEVerifyException : Exception
   {

@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.EventReceiver
 {
   public class DomainObjectRelationCheckEventReceiver : DomainObjectEventReceiver
   {

@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   [Serializable]
   public class SecurityConfigurationException : SecurityException

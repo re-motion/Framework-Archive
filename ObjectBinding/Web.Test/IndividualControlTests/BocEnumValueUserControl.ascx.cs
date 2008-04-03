@@ -2,14 +2,14 @@ using System;
 using System.Web;
 using System.Web.UI.WebControls;
 
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -17,40 +17,40 @@ namespace OBWTest.IndividualControlTests
 public class BocEnumValueUserControl : BaseUserControl
 {
   protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue GenderField;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue GenderField;
   protected System.Web.UI.WebControls.Label GenderFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue ReadOnlyGenderField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue ReadOnlyGenderField;
   protected System.Web.UI.WebControls.Label ReadOnlyGenderFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField;
   protected System.Web.UI.WebControls.Label MarriageStatusFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue UnboundMarriageStatusField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue UnboundMarriageStatusField;
   protected System.Web.UI.WebControls.Label UnboundMarriageStatusFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue UnboundReadOnlyMarriageStatusField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue UnboundReadOnlyMarriageStatusField;
   protected System.Web.UI.WebControls.Label UnboundReadOnlyMarriageStatusFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue DeceasedAsEnumField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DeceasedAsEnumField;
   protected System.Web.UI.WebControls.Label DeceasedAsEnumFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledGenderField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledGenderField;
   protected System.Web.UI.WebControls.Label DisabledGenderFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledReadOnlyGenderField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledReadOnlyGenderField;
   protected System.Web.UI.WebControls.Label DisabledReadOnlyGenderFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledMarriageStatusField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledMarriageStatusField;
   protected System.Web.UI.WebControls.Label DisabledMarriageStatusFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledUnboundMarriageStatusField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledUnboundMarriageStatusField;
   protected System.Web.UI.WebControls.Label DisabledUnboundMarriageStatusFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledUnboundReadOnlyMarriageStatusField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledUnboundReadOnlyMarriageStatusField;
   protected System.Web.UI.WebControls.Label DisabledUnboundReadOnlyMarriageStatusFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue InstanceEnumField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue InstanceEnumField;
   protected System.Web.UI.WebControls.Label InstanceEnumFieldValueLabel;
   protected System.Web.UI.WebControls.Label GenderFieldSelectionChangedLabel;
-  protected Rubicon.Web.UI.Controls.WebButton GenderTestSetNullButton;
-  protected Rubicon.Web.UI.Controls.WebButton GenderTestSetDisabledGenderButton;
-  protected Rubicon.Web.UI.Controls.WebButton GenderTestSetMarriedButton;
-  protected Rubicon.Web.UI.Controls.WebButton ReadOnlyGenderTestSetNullButton;
-  protected Rubicon.Web.UI.Controls.WebButton ReadOnlyGenderTestSetNewItemButton;
+  protected Remotion.Web.UI.Controls.WebButton GenderTestSetNullButton;
+  protected Remotion.Web.UI.Controls.WebButton GenderTestSetDisabledGenderButton;
+  protected Remotion.Web.UI.Controls.WebButton GenderTestSetMarriedButton;
+  protected Remotion.Web.UI.Controls.WebButton ReadOnlyGenderTestSetNullButton;
+  protected Remotion.Web.UI.Controls.WebButton ReadOnlyGenderTestSetNewItemButton;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   
   private string _instanceEnum;
@@ -86,13 +86,13 @@ public class BocEnumValueUserControl : BaseUserControl
 
     GenderField.LoadUnboundValue ((Gender?)null, IsPostBack);
 
-    UnboundMarriageStatusField.Property = (Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
+    UnboundMarriageStatusField.Property = (Remotion.ObjectBinding.IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
     //UnboundMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
-    UnboundReadOnlyMarriageStatusField.Property = (Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
+    UnboundReadOnlyMarriageStatusField.Property = (Remotion.ObjectBinding.IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
     UnboundReadOnlyMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
-    DisabledUnboundMarriageStatusField.Property = (Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
+    DisabledUnboundMarriageStatusField.Property = (Remotion.ObjectBinding.IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
     DisabledUnboundMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
-    DisabledUnboundReadOnlyMarriageStatusField.Property = (Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
+    DisabledUnboundReadOnlyMarriageStatusField.Property = (Remotion.ObjectBinding.IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
     DisabledUnboundReadOnlyMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
 
     if (!IsPostBack)

@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\..\..\..\DomainObjects\Schemas\Mapping.xsd">
   <classes>
 		<class id="Company">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Company, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Company, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Company" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>

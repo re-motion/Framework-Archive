@@ -3,7 +3,7 @@
 <mapping application="UnitTests" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\..\DomainObjects\Schemas\Mapping.xsd">
   <classes>
     <class id="Client">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.Client, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.Client, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <entity name="TableInheritance_Client"></entity>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
@@ -19,7 +19,7 @@
     </class>
 
     <class id="HistoryEntry">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.HistoryEntry, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.HistoryEntry, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <entity name="TableInheritance_HistoryEntry"></entity>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
@@ -39,7 +39,7 @@
     </class>
 
     <class id="AbstractClassWithoutDerivations">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.AbstractClassWithoutDerivations, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.AbstractClassWithoutDerivations, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
         <relationProperty relationID="DomainBaseToAbstractClassWithoutDerivations" name="DomainBase" cardinality="one" isMandatory="false">
@@ -49,7 +49,7 @@
     </class>
 
     <class id="DomainBase">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.DomainBase, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.DomainBase, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
         <property name="CreatedBy">
@@ -72,7 +72,7 @@
     </class>
 
     <class id="Person" baseClass="DomainBase">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.Person, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.Person, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <entity name="TableInheritance_Person" />
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
@@ -100,11 +100,11 @@
     </class>
 
     <class id="Customer" baseClass="Person">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.Customer, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.Customer, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
         <property name="CustomerType">
-          <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.CustomerType, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+          <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.CustomerType, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
           <column>CustomerType</column>
         </property>
         <property name="CustomerSince">
@@ -119,7 +119,7 @@
     </class>
 
     <class id="OrganizationalUnit" baseClass="DomainBase">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.OrganizationalUnit, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.OrganizationalUnit, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <entity name="TableInheritance_OrganizationalUnit" />
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
@@ -132,7 +132,7 @@
     </class>
 
     <class id="Region">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.Region, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.Region, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <entity name="TableInheritance_Region"/>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
@@ -146,7 +146,7 @@
     </class>
 
     <class id="Order">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.Order, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.Order, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <entity name="TableInheritance_Order"/>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
@@ -165,7 +165,7 @@
     </class>
 
     <class id="Address">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.Address, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.Address, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <entity name="TableInheritance_Address" />
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
@@ -196,7 +196,7 @@
     </class>
 
     <class id="FileSystemItem">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.FileSystemItem, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.FileSystemItem, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
         <property name="Name">
@@ -211,7 +211,7 @@
     </class>
 
     <class id="Folder" baseClass="FileSystemItem">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.Folder, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.Folder, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <entity name="TableInheritance_Folder"/>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
@@ -228,7 +228,7 @@
     </class>
 
     <class id="File" baseClass="FileSystemItem">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.File, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.File, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <entity name="TableInheritance_File"/>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
@@ -246,7 +246,7 @@
     </class>
 
     <class id="AbstractBaseClassWithHierarchy">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.AbstractBaseClassWithHierarchy, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.AbstractBaseClassWithHierarchy, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
         <property name="Name">
@@ -272,7 +272,7 @@
     </class>
 
     <class id="DerivedClassWithEntityWithHierarchy" baseClass="AbstractBaseClassWithHierarchy">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.DerivedClassWithEntityWithHierarchy, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.DerivedClassWithEntityWithHierarchy, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <entity name="TableInheritance_DerivedClassWithEntityWithHierarchy"/>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
@@ -294,7 +294,7 @@
     </class>
 
     <class id="DerivedClassWithEntityFromBaseClassWithHierarchy" baseClass="DerivedClassWithEntityWithHierarchy">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.DerivedClassWithEntityFromBaseClassWithHierarchy, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.DerivedClassWithEntityFromBaseClassWithHierarchy, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
         <relationProperty relationID="DerivedClassWithEntityFromBaseClassWithHierarchy" name="ParentDerivedClassWithEntityFromBaseClassWithHierarchy" cardinality="one" isMandatory="false">
@@ -317,7 +317,7 @@
     <!-- Classes with invalid database structure for exception testing only -->
 
     <class id="BaseClassWithInvalidRelationClassIDColumns">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.BaseClassWithInvalidRelationClassIDColumns, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.BaseClassWithInvalidRelationClassIDColumns, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <entity name="TableInheritance_BaseClassWithInvalidRelationClassIDColumns" />
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
@@ -357,7 +357,7 @@
     </class>
 
     <class id="DerivedClassWithInvalidRelationClassIDColumns" baseClass="BaseClassWithInvalidRelationClassIDColumns">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.DerivedClassWithInvalidRelationClassIDColumns, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.DerivedClassWithInvalidRelationClassIDColumns, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <storageProviderID>TestDomain</storageProviderID>
       <properties />
     </class>

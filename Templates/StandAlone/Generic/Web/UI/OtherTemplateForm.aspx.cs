@@ -9,23 +9,23 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Templates.Generic.Web.Classes;
-using Rubicon.Globalization;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.UI;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Templates.Generic.Web.Classes;
+using Remotion.Globalization;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.UI;
 
-namespace Rubicon.Templates.Generic.Web.UI
+namespace Remotion.Templates.Generic.Web.UI
 {
 
 public class OtherTemplateForm : BaseWxePage
 {
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue BocTextValue;
-  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel;
-  protected Rubicon.Web.UI.Controls.WebButton SubmitButton;
-  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected Remotion.ObjectBinding.Web.Controls.BocTextValue BocTextValue;
+  protected Remotion.Web.UI.Controls.SmartLabel SmartLabel;
+  protected Remotion.Web.UI.Controls.WebButton SubmitButton;
+  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 	#region Web Form Designer generated code
 	override protected void OnInit(EventArgs e)

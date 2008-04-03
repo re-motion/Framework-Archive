@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.NullableValueTypes;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI;
+using Remotion.NullableValueTypes;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary>
   ///   <b>BusinessObjectBoundEditableWebControl</b> is the <see langword="abstract"/> default implementation of 

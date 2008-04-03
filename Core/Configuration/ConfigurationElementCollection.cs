@@ -1,8 +1,8 @@
 using System;
 using System.Configuration;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Configuration
+namespace Remotion.Configuration
 {
   public interface INamedConfigurationElement
   {

@@ -1,9 +1,9 @@
 using System;
 using System.Threading;
 using System.Globalization;
-using Rubicon.Globalization;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI.Globalization;
+using Remotion.Globalization;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI.Globalization;
 
 namespace WebSample.Classes
 {
@@ -36,10 +36,10 @@ namespace WebSample.Classes
 		protected override void OnPreRender(EventArgs e)
 		{
 			// register CSS
-			string url = Rubicon.Web.ResourceUrlResolver.GetResourceUrl(
-					this, typeof(Rubicon.Web.ResourceUrlResolver), Rubicon.Web.ResourceType.Html, "style.css");
+			string url = Remotion.Web.ResourceUrlResolver.GetResourceUrl(
+					this, typeof(Remotion.Web.ResourceUrlResolver), Remotion.Web.ResourceType.Html, "style.css");
 
-			Rubicon.Web.UI.HtmlHeadAppender.Current.RegisterStylesheetLink(GetType() + "style", url);
+			Remotion.Web.UI.HtmlHeadAppender.Current.RegisterStylesheetLink(GetType() + "style", url);
 
 			// globalization
 			IResourceManager rm = ResourceManagerUtility.GetResourceManager(this);

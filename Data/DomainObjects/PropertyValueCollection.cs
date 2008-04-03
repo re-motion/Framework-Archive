@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
 /// <summary>
 /// A typed collection for <see cref="PropertyValue"/> objects.
@@ -114,7 +114,7 @@ public class PropertyValueCollection : CommonCollection
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
+  /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="System.ArgumentException">The given <paramref name="propertyName"/> does not exist in the collection.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public PropertyValue this [string propertyName]  
@@ -243,7 +243,7 @@ public class PropertyValueCollection : CommonCollection
   /// Gets a value indicating the discarded status of the <see cref="PropertyValueCollection"/>.
   /// </summary>
   /// <remarks>
-  /// For more information why and when a <see cref="PropertyValueCollection"/> is discarded see <see cref="Rubicon.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
+  /// For more information why and when a <see cref="PropertyValueCollection"/> is discarded see <see cref="Remotion.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
   /// </remarks>
   public bool IsDiscarded
   {

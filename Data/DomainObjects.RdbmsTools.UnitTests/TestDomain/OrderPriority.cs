@@ -1,4 +1,4 @@
-namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
 {
   public enum OrderPriority
   {

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.EventReceiver
 {
   public class PropertyDefinitionCollectionEventReceiver : EventReceiverBase
   {

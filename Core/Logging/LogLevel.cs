@@ -1,4 +1,4 @@
-namespace Rubicon.Logging
+namespace Remotion.Logging
 {
   /// <summary>
   /// Defines the log levels available when logging through the <see cref="ILog"/> interface.

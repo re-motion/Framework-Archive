@@ -39,13 +39,13 @@
   <query id="OrderQuery" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
     <statement>select [Order].* from [Order] where [CustomerID] = @customerID order by [OrderNo] asc;</statement>
-    <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
+    <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
   <query id="OrderByOfficialQuery" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
     <statement>select [Order].* from [Order] where [OfficialID] = @officialID order by [OrderNo] asc;</statement>
-    <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
+    <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
   <query id="CustomerTypeQuery" type="collection">
@@ -66,7 +66,7 @@
   <query id="QueryWithSpecificCollectionType" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
     <statement>select * from [Order];</statement>
-    <collectionType>Rubicon.Data.DomainObjects.UnitTests::TestDomain.SpecificOrderCollection</collectionType>
+    <collectionType>Remotion.Data.DomainObjects.UnitTests::TestDomain.SpecificOrderCollection</collectionType>
   </query>
 
   <query id="QueryWithAllDataTypes" type="collection">
@@ -122,13 +122,13 @@
   <query id="StoredProcedureQuery" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
     <statement>rpf_testSPQuery</statement>
-    <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
+    <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
   <query id="StoredProcedureQueryWithParameter" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
     <statement>exec rpf_testSPQueryWithParameter @customerID</statement>
-    <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
+    <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
 </queries>

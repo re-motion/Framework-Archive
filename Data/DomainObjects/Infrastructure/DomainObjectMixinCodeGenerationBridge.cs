@@ -1,13 +1,13 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Rubicon.CodeGeneration;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Mixins;
-using Rubicon.Utilities;
+using Remotion.CodeGeneration;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Mixins;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
   /// Forms a bridge between domain objects and mixins by supporting generation and deserialization of mixed domain objects.

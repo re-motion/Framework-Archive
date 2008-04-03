@@ -5,11 +5,11 @@ using System.Drawing.Design;
 using System.Globalization;
 using System.Reflection;
 using System.Web.UI;
-using Rubicon.ObjectBinding.Design;
-using Rubicon.Utilities;
-using Rubicon.Web.Utilities;
+using Remotion.ObjectBinding.Design;
+using Remotion.Utilities;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> A column definition using <see cref="BocCustomColumnDefinitionCell"/> for rendering the data. </summary>
   public class BocCustomColumnDefinition : BocColumnDefinition, IBusinessObjectClassSource, IBocSortableColumnDefinition

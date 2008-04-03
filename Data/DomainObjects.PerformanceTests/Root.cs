@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Queries.Configuration;
 using System.Reflection;
 
-namespace Rubicon.Data.DomainObjects.PerformanceTests
+namespace Remotion.Data.DomainObjects.PerformanceTests
 {
   /// <summary>
   /// This class is the root to execute a single test in the profiler.

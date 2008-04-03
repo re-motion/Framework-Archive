@@ -2,11 +2,11 @@ using System;
 using System.ComponentModel.Design;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Core.UnitTests.Design;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
+using Remotion.Core.UnitTests.Design;
+using Remotion.Reflection;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Reflection
+namespace Remotion.Core.UnitTests.Reflection
 {
   [TestFixture]
   public class ContextAwareTypeDiscoveryServiceTest

@@ -2,13 +2,13 @@ using System;
 using System.Web;
 using System.Web.UI.WebControls;
 
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -39,13 +39,13 @@ namespace OBWTest.IndividualControlTests
 
       Person person = (Person) CurrentObject.BusinessObject;
 
-      UnboundPartnerField.Property = (Rubicon.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Partner");
+      UnboundPartnerField.Property = (Remotion.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Partner");
       //UnboundPartnerField.LoadUnboundValue (person.Partner, IsPostBack);
-      UnboundReadOnlyPartnerField.Property = (Rubicon.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
+      UnboundReadOnlyPartnerField.Property = (Remotion.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
       UnboundReadOnlyPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
-      DisabledUnboundPartnerField.Property = (Rubicon.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
+      DisabledUnboundPartnerField.Property = (Remotion.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
       DisabledUnboundPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
-      DisabledUnboundReadOnlyPartnerField.Property = (Rubicon.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
+      DisabledUnboundReadOnlyPartnerField.Property = (Remotion.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
       DisabledUnboundReadOnlyPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
 
       if (!IsPostBack)

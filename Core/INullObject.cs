@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon
+namespace Remotion
 {
   /// <summary>
   /// Represents a nullable object according to the "Null Object Pattern".

@@ -1,9 +1,9 @@
 using System;
 using System.Configuration;
 using System.Configuration.Provider;
-using Rubicon.Configuration;
+using Remotion.Configuration;
 
-namespace Rubicon.Data.DomainObjects.Persistence.Configuration
+namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
   public class StorageProviderDefinitionHelper: ProviderHelperBase<StorageProviderDefinition>
   {

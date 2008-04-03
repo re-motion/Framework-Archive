@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Reflection;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Reflection.Legacy
+namespace Remotion.ObjectBinding.Reflection.Legacy
 {
 
 public class ReflectionBusinessObjectClass: IBusinessObjectClassWithIdentity

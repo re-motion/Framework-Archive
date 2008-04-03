@@ -3,13 +3,13 @@ using System.Security.Principal;
 using System.Threading;
 using System.Web;
 using System.Web.SessionState;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Utilities;
-using SecurityManagerUser = Rubicon.SecurityManager.Domain.OrganizationalStructure.User;
+using Remotion.Data.DomainObjects;
+using Remotion.Security;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Utilities;
+using SecurityManagerUser = Remotion.SecurityManager.Domain.OrganizationalStructure.User;
 
-namespace Rubicon.SecurityManager.Clients.Web.Classes
+namespace Remotion.SecurityManager.Clients.Web.Classes
 {
   public class SecurityManagerHttpApplication : HttpApplication
   {

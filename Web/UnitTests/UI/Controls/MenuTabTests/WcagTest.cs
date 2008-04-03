@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UnitTests.Configuration;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UnitTests.Configuration;
 
-namespace Rubicon.Web.UnitTests.UI.Controls.MenuTabTests
+namespace Remotion.Web.UnitTests.UI.Controls.MenuTabTests
 {
   [TestFixture]
   public class WcagTest : BaseTest

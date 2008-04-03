@@ -3,14 +3,14 @@ using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
 using NUnit.Framework;
-using Rubicon.Logging;
+using Remotion.Logging;
 
-namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
+namespace Remotion.Core.UnitTests.Logging.Log4NetLogTests
 {
   public class BaseTest
   {
     private ILogger _logger;
-    private Rubicon.Logging.ILog _log;
+    private Remotion.Logging.ILog _log;
     private MemoryAppender _memoryAppender;
 
     [SetUp]

@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.SecurityManager.UnitTests.TestDomain
+namespace Remotion.SecurityManager.UnitTests.TestDomain
 {
   public class SpecialOrder : Order
   {

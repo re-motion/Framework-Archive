@@ -1,9 +1,9 @@
 using System;
 using System.Reflection;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Mixins.Utilities.Serialization
+namespace Remotion.Mixins.Utilities.Serialization
 {
   public static class ReflectionObjectSerializer
   {

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
+using Remotion.Data.DomainObjects.Web.ExecutionEngine;
 
-namespace Rubicon.Data.DomainObjects.Web.Test.WxeFunctions
+namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 {
   public class ParentPageStepTestTransactedFunction : WxeTransactedFunction
   {

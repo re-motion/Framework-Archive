@@ -1,16 +1,16 @@
 using System;
 using NUnit.Framework;
-using Rubicon.CodeGeneration;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Samples;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.CodeGeneration;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Samples;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using System.Collections.Generic;
-using Rubicon.Development.UnitTesting;
+using Remotion.Development.UnitTesting;
 using System.Collections;
-using Rubicon.Mixins.Utilities;
+using Remotion.Mixins.Utilities;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.MixinTypeCodeGeneration
+namespace Remotion.Mixins.UnitTests.CodeGeneration.MixinTypeCodeGeneration
 {
   [TestFixture]
   public class StrongNameTests : CodeGenerationBaseTest

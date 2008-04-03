@@ -1,17 +1,17 @@
 using System;
 using System.Web;
 using System.Web.UI;
-using Rubicon.Utilities;
-using Rubicon.Web.Configuration;
+using Remotion.Utilities;
+using Remotion.Web.Configuration;
 
-namespace Rubicon.Web
+namespace Remotion.Web
 {
 
 /// <summary> Utility methods for URL resolving. </summary>
 public sealed class ResourceUrlResolver
 {
-  private const string c_designTimeRootDefault = "C:\\Rubicon.Resources";
-  private const string c_designTimeRootEnvironmentVaribaleName = "RUBICONRESOURCES";
+  private const string c_designTimeRootDefault = "C:\\Remotion.Resources";
+  private const string c_designTimeRootEnvironmentVaribaleName = "REMOTIONRESOURCES";
 
   /// <summary>
   ///   Returns the physical URL of a resource item.
@@ -25,11 +25,11 @@ public sealed class ResourceUrlResolver
   ///     <c>&lt;resource root&gt;/&lt;definingType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl</c> is used.
   ///   </para><para>
   ///     The <b>resource root</b> is loaded from the application configuration,
-  ///     <see cref="Rubicon.Web.Configuration.WebConfiguration.Resources">WebConfiguration.Resources</see>, and 
-  ///     defaults to <c>/&lt;AppDir&gt;/res</c>, e.g. <c>/WebApplication/res/Rubicon.Web/Image/Help.gif</c>.
+  ///     <see cref="Remotion.Web.Configuration.WebConfiguration.Resources">WebConfiguration.Resources</see>, and 
+  ///     defaults to <c>/&lt;AppDir&gt;/res</c>, e.g. <c>/WebApplication/res/Remotion.Web/Image/Help.gif</c>.
   ///   </para><para>
   ///     During design time, the <b>resource root</b> is mapped to the environment variable
-  ///     <c>RUBICONRESOURCES</c>, or if the variable does not exist, <c>C:\Rubicon.Resources</c>.
+  ///     <c>REMOTIONRESOURCES</c>, or if the variable does not exist, <c>C:\Remotion.Resources</c>.
   ///   </para>
   /// </remarks>
   /// <param name="control"> 
@@ -64,11 +64,11 @@ public sealed class ResourceUrlResolver
   ///     Uses the URL &lt;resource root&gt;/&lt;definingType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl.
   ///   </para><para>
   ///     The <b>resource root</b> is loaded from the application configuration,
-  ///     <see cref="Rubicon.Web.Configuration.WebConfiguration.Resources">WebConfiguration.Resources</see>, and 
-  ///     defaults to <c>/&lt;AppDir&gt;/res</c>, e.g. <c>/WebApplication/res/Rubicon.Web/Image/Help.gif</c>.
+  ///     <see cref="Remotion.Web.Configuration.WebConfiguration.Resources">WebConfiguration.Resources</see>, and 
+  ///     defaults to <c>/&lt;AppDir&gt;/res</c>, e.g. <c>/WebApplication/res/Remotion.Web/Image/Help.gif</c>.
   ///   </para><para>
   ///     During design time, the <b>resource root</b> is mapped to the environment variable
-  ///     <c>RUBICONRESOURCES</c>, or if the variable does not exist, <c>C:\Rubicon.Resources</c>.
+  ///     <c>REMOTIONRESOURCES</c>, or if the variable does not exist, <c>C:\Remotion.Resources</c>.
   ///   </para>
   /// </remarks>
   /// <param name="control"> 
@@ -89,7 +89,7 @@ public sealed class ResourceUrlResolver
     ArgumentUtility.CheckNotNull ("resourceType", resourceType);
     ArgumentUtility.CheckNotNullOrEmpty ("relativeUrl", relativeUrl);
 
-    bool isDesignMode = (control == null) ? false : Rubicon.Web.Utilities.ControlHelper.IsDesignMode (control);
+    bool isDesignMode = (control == null) ? false : Remotion.Web.Utilities.ControlHelper.IsDesignMode (control);
     string assemblyRoot = GetAssemblyRoot (isDesignMode, definingType.Assembly);
     string separator = isDesignMode ? @"\" : "/";
     return assemblyRoot + resourceType.Name + separator + relativeUrl;

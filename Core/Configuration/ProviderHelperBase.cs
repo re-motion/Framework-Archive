@@ -5,9 +5,9 @@ using System.Configuration.Provider;
 using System.IO;
 using System.Reflection;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Configuration
+namespace Remotion.Configuration
 {
   /// <summary>Abstract base class for <see cref="ProviderHelperBase{T}"/>.</summary>
   public abstract class ProviderHelperBase
@@ -36,7 +36,7 @@ namespace Rubicon.Configuration
     /// </summary>
     /// <param name="configurationSection">
     /// The <see cref="System.Configuration.ConfigurationSection"/> holding the <see cref="ProviderSettings"/> 
-    /// loaded from the security configuration section for <see cref="Rubicon.Security"/>
+    /// loaded from the security configuration section for <see cref="Remotion.Security"/>
     /// </param>
     protected ProviderHelperBase (ExtendedConfigurationSection configurationSection)
     {

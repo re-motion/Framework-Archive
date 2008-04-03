@@ -1,12 +1,12 @@
-<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Default.aspx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.DefaultPage" %>
+<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Default.aspx.cs" Inherits="Remotion.SecurityManager.Clients.Web.DefaultPage" %>
 
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head runat="server">
   <title>Security Manager</title>
-  <rubicon:HtmlHeadContents ID="HtmlHeadContents" runat="server">
-  </rubicon:HtmlHeadContents>
+  <remotion:HtmlHeadContents ID="HtmlHeadContents" runat="server">
+  </remotion:HtmlHeadContents>
 </head>
 <body>
   <form id="ThisForm" runat="server">
@@ -17,12 +17,12 @@
       <a href="SecurableClassDefinitionList.wxe?WxeReturnToSelf=True&TabbedMenuSelection=AccessControlTab">Berechtigungen verwalten</a>
     </p>
     <p>
-      <rubicon:BocReferenceValue runat="server" ID="UsersField" OnSelectionChanged="UsersField_SelectionChanged">
+      <remotion:BocReferenceValue runat="server" ID="UsersField" OnSelectionChanged="UsersField_SelectionChanged">
         <PersistedCommand>
-          <rubicon:BocCommand />
+          <remotion:BocCommand />
         </PersistedCommand>
         <DropDownListStyle AutoPostBack="True" />
-      </rubicon:BocReferenceValue>
+      </remotion:BocReferenceValue>
     </p>
   </form>
 </body>

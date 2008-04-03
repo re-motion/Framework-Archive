@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 using System.Reflection;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   [DebuggerDisplay ("{InterfaceMember}")]
   public abstract class MemberIntroductionDefinition<TMemberInfo, TMemberDefinition>: IVisitableDefinition

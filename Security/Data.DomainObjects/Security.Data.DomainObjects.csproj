@@ -7,8 +7,8 @@
     <ProjectGuid>{D4397460-CE03-43E6-87F7-3A4E50B8250E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Security.Data.DomainObjects</RootNamespace>
-    <AssemblyName>Rubicon.Security.Data.DomainObjects</AssemblyName>
+    <RootNamespace>Remotion.Security.Data.DomainObjects</RootNamespace>
+    <AssemblyName>Remotion.Security.Data.DomainObjects</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

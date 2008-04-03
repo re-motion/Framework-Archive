@@ -4,15 +4,15 @@ using System.Data;
 using System.Data.SqlClient;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
-using Rubicon.Mixins;
-using Rubicon.Mixins.Context;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
+using Remotion.Mixins;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
+namespace Remotion.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
   public class UnionSelectCommandBuilderTest : SqlProviderBaseTest
@@ -26,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ClassDefinition domainBaseClass = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (DomainBase));
 
       _builder = UnionSelectCommandBuilder.CreateForRelatedIDLookup (
-          Provider, domainBaseClass, domainBaseClass.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client"), DomainObjectIDs.Client);
+          Provider, domainBaseClass, domainBaseClass.GetMandatoryPropertyDefinition ("Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client"), DomainObjectIDs.Client);
     }
 
     [Test]
@@ -49,9 +49,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
       ReflectionBasedClassDefinition clientClass = new ReflectionBasedClassDefinition ("Client", "TableInheritance_Client", TableInheritanceTestDomainProviderID, typeof (Client), false, new List<Type> ());
 
-      domainBaseClass.MyPropertyDefinitions.Add (ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(domainBaseClass, "Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client", "ClientID", typeof (ObjectID)));
+      domainBaseClass.MyPropertyDefinitions.Add (ReflectionBasedPropertyDefinitionFactory.CreateReflectionBasedPropertyDefinition(domainBaseClass, "Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client", "ClientID", typeof (ObjectID)));
 
-      RelationEndPointDefinition domainBaseEndPointDefinition = new RelationEndPointDefinition (domainBaseClass, "Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client", false);
+      RelationEndPointDefinition domainBaseEndPointDefinition = new RelationEndPointDefinition (domainBaseClass, "Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client", false);
 
       VirtualRelationEndPointDefinition clientEndPointDefinition = ReflectionBasedVirtualRelationEndPointDefinitionFactory.CreateReflectionBasedVirtualRelationEndPointDefinition(clientClass, "AssignedObjects", false, CardinalityType.Many, typeof (DomainObjectCollection));
 
@@ -62,7 +62,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       clientClass.MyRelationDefinitions.Add (clientToDomainBaseDefinition);
 
       UnionSelectCommandBuilder builder = UnionSelectCommandBuilder.CreateForRelatedIDLookup (
-          Provider, domainBaseClass, domainBaseClass.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client"), DomainObjectIDs.Client);
+          Provider, domainBaseClass, domainBaseClass.GetMandatoryPropertyDefinition ("Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client"), DomainObjectIDs.Client);
 
       using (IDbCommand command = builder.Create ())
       {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Rubicon.Security.UnitTests">  
+<project xmlns="nant-schema" name="Remotion.Security.UnitTests">  
 
   <target name="build" description="perform a build">
 
@@ -18,15 +18,15 @@
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <include name="${build.test.outputdir}/Rubicon.Core.dll" />
-        <include name="${build.test.outputdir}/Rubicon.Data.DomainObjects.dll" />
-        <include name="${build.test.outputdir}/Rubicon.Development.dll" />
-        <include name="${build.test.outputdir}/Rubicon.Security.dll" />
-        <include name="${build.test.outputdir}/Rubicon.Security.Data.DomainObjects.dll" />
-        <include name="${build.test.outputdir}/Rubicon.Security.UnitTests.TestDomain.dll" />
-        <include name="${build.test.outputdir}/Rubicon.Security.Web.dll" />
-        <include name="${build.test.outputdir}/Rubicon.Web.dll" />
-        <include name="${build.test.outputdir}/Rubicon.Web.UnitTests.dll" />
+        <include name="${build.test.outputdir}/Remotion.Core.dll" />
+        <include name="${build.test.outputdir}/Remotion.Data.DomainObjects.dll" />
+        <include name="${build.test.outputdir}/Remotion.Development.dll" />
+        <include name="${build.test.outputdir}/Remotion.Security.dll" />
+        <include name="${build.test.outputdir}/Remotion.Security.Data.DomainObjects.dll" />
+        <include name="${build.test.outputdir}/Remotion.Security.UnitTests.TestDomain.dll" />
+        <include name="${build.test.outputdir}/Remotion.Security.Web.dll" />
+        <include name="${build.test.outputdir}/Remotion.Web.dll" />
+        <include name="${build.test.outputdir}/Remotion.Web.UnitTests.dll" />
         <include name="${build.test.outputdir}/nunit.framework.dll" />
         <include name="${build.test.outputdir}/Rhino.Mocks.dll" />
         <include asis="true" name="System.dll"/>
@@ -44,7 +44,7 @@
     
     <copy todir="${build.test.outputdir}" flatten="true" overwrite="true">
       <fileset failonempty="true">
-        <include name="Data.DomainObjects/Rubicon.Security.UnitTests.Data.DomainObjects.*.xml" />
+        <include name="Data.DomainObjects/Remotion.Security.UnitTests.Data.DomainObjects.*.xml" />
       </fileset>
     </copy>
 

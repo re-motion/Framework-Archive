@@ -1,7 +1,7 @@
 using System.ComponentModel;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
   public class SubMenuTab : MenuTab
   {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Text;
 using System.ComponentModel;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Collections
+namespace Remotion.Collections
 {
   /// <summary>
   /// A simple thread-safe cache.

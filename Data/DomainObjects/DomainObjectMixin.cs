@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Mixins;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Base class for mixins adding persistent properties to domain objects.
@@ -105,7 +105,7 @@ namespace Rubicon.Data.DomainObjects
     /// <summary>
     /// Called when the mixin's target domain object has been loaded.
     /// </summary>
-    /// <param name="loadMode">Specifies whether the whole domain object or only the <see cref="Rubicon.Data.DomainObjects.DataContainer"/> has been
+    /// <param name="loadMode">Specifies whether the whole domain object or only the <see cref="Remotion.Data.DomainObjects.DataContainer"/> has been
     /// newly loaded.</param>
     protected virtual void OnDomainObjectLoaded (LoadMode loadMode)
     {

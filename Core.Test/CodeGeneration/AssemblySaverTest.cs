@@ -3,10 +3,10 @@ using System.IO;
 using System.Reflection;
 using NUnit.Framework;
 using Castle.DynamicProxy;
-using Rubicon.CodeGeneration;
-using Rubicon.CodeGeneration.DPExtensions;
+using Remotion.CodeGeneration;
+using Remotion.CodeGeneration.DPExtensions;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration
+namespace Remotion.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class AssemblySaverTest

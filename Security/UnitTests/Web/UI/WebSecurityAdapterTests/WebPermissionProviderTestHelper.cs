@@ -1,10 +1,10 @@
 using System;
 using System.Security.Principal;
 using Rhino.Mocks;
-using Rubicon.Security.UnitTests.Web.Domain;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Security.UnitTests.Web.Domain;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Security.UnitTests.Web.UI.WebSecurityAdapterTests
+namespace Remotion.Security.UnitTests.Web.UI.WebSecurityAdapterTests
 {
   public class WebPermissionProviderTestHelper
   {

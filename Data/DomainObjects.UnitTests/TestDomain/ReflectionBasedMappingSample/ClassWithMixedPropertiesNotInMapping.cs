@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample
+namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample
 {
   public abstract class ClassWithMixedPropertiesNotInMapping : DomainObject
   {

@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {
   [TestFixture]
   public class RelationProperty: BaseTest
@@ -17,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.NoAttribute",
+          "Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.NoAttribute",
           actual.PropertyName);
       Assert.AreSame (typeof (ObjectID), actual.PropertyType);
       Assert.IsTrue (actual.IsNullable);
@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.NotNullable",
+          "Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.NotNullable",
           actual.PropertyName);
       Assert.AreSame (typeof (ObjectID), actual.PropertyType);
       Assert.IsTrue (actual.IsNullable);
@@ -43,9 +43,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "The 'Rubicon.Data.DomainObjects.MandatoryAttribute' may be only applied to properties assignable to types "
-        + "'Rubicon.Data.DomainObjects.DomainObject' or 'Rubicon.Data.DomainObjects.ObjectList`1[T]'.\r\n"
-        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.RelationProperty, "
+        ExpectedMessage = "The 'Remotion.Data.DomainObjects.MandatoryAttribute' may be only applied to properties assignable to types "
+        + "'Remotion.Data.DomainObjects.DomainObject' or 'Remotion.Data.DomainObjects.ObjectList`1[T]'.\r\n"
+        + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.RelationProperty, "
         + "property: Int32Property")]
     public void GetMetadata_WithAttributeAppliedToInvalidProperty()
     {

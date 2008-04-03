@@ -7,13 +7,13 @@ namespace $PROJECT_ROOTNAMESPACE$.UI
 {
 	public partial class Edit$DOMAIN_CLASSNAME$Control
 	{
-		protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-		protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+		protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+		protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 		protected System.Web.UI.HtmlControls.HtmlTable $DOMAIN_CLASSNAME$FormGrid;
-		protected Rubicon.Web.UI.Controls.FormGridLabel $DOMAIN_CLASSNAME$GridLabel;
+		protected Remotion.Web.UI.Controls.FormGridLabel $DOMAIN_CLASSNAME$GridLabel;
 
     $REPEAT_FOREACHREFERENCEDPROPERTY_BEGIN$(isList=true)
-		protected Rubicon.ObjectBinding.Web.UI.Controls.BocList $DOMAIN_PROPERTYNAME$Field;
+		protected Remotion.ObjectBinding.Web.UI.Controls.BocList $DOMAIN_PROPERTYNAME$Field;
     $REPEAT_FOREACHREFERENCEDPROPERTY_END$
 	}
 }

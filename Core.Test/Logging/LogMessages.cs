@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Logging
+namespace Remotion.Core.UnitTests.Logging
 {
   public enum LogMessages
   {

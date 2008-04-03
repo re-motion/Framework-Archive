@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel;
-using Rubicon.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
+namespace Remotion.Web.UnitTests.UI.Controls.WebButtonTests
 {
 
 /// <summary> Exposes non-public members of the <see cref="WebButton"/> type. </summary>

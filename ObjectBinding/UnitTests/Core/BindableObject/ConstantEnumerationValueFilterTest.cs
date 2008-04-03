@@ -2,11 +2,11 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
 {
   [TestFixture]
   public class ConstantEnumerationValueFilterTest : EnumerationTestBase

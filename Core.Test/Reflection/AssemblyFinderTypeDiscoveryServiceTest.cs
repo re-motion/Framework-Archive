@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Reflection;
+using Remotion.Reflection;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Core.UnitTests.Reflection
+namespace Remotion.Core.UnitTests.Reflection
 {
   [TestFixture]
   public class AssemblyFinderTypeDiscoveryServiceTest

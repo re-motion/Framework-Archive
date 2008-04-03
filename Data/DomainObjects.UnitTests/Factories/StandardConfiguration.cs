@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Factories
+namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
   public class StandardConfiguration: BaseConfiguration
   {

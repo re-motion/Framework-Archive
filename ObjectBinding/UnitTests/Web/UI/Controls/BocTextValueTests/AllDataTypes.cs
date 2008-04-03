@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.ObjectBinding.UnitTests.Web.Domain;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.UnitTests.Web.Domain;
 
-namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.BocTextValueTests
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocTextValueTests
 {
   [TestFixture]
   public class AllDataTypes : BocTest

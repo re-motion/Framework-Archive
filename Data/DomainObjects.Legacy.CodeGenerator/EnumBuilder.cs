@@ -1,8 +1,8 @@
 using System;
 using System.IO;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
+namespace Remotion.Data.DomainObjects.Legacy.CodeGenerator
 {
   public class EnumBuilder : CodeFileBuilder
   {

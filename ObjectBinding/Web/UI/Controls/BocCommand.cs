@@ -1,12 +1,12 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.Collections;
-using Rubicon.Security;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI.Controls;
+using Remotion.Collections;
+using Remotion.Security;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
 [TypeConverter (typeof (ExpandableObjectConverter))]

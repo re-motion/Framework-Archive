@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Security.UnitTests.Core
+namespace Remotion.Security.UnitTests.Core
 {
   public class SecurityAdapterRegistryMock : SecurityAdapterRegistry
   {

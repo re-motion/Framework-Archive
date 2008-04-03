@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
   public class CommitDomainObjectTest : ClientTransactionBaseTest
@@ -115,13 +115,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void OriginalDomainObjectCollectionIsSameAfterCommit ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      DomainObjectCollection originalOrderItems = order.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      DomainObjectCollection originalOrderItems = order.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       OrderItem orderItem = OrderItem.NewObject (order);
 
       ClientTransactionMock.Commit ();
 
-      Assert.AreSame (originalOrderItems, order.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"));
-      Assert.IsTrue (order.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems").IsReadOnly);
+      Assert.AreSame (originalOrderItems, order.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"));
+      Assert.IsTrue (order.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems").IsReadOnly);
     }
   }
 }

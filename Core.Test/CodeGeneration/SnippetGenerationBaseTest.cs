@@ -1,10 +1,10 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.CodeGeneration;
-using Rubicon.Development.UnitTesting;
+using Remotion.CodeGeneration;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration
+namespace Remotion.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class SnippetGenerationBaseTest : CodeGenerationBaseTest

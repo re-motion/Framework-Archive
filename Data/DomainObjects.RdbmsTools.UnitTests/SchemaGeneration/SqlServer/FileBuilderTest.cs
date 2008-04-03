@@ -2,11 +2,11 @@ using System;
 using System.IO;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration;
-using Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.RdbmsTools.SchemaGeneration;
+using Remotion.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer;
 
-namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlServer
+namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlServer
 {
   //TODO: Run the generated SQL File against a database in the UnitTests and integrate this into the build
   //      Derive ClassWithAllDataTypes from an abstract class to ensure that all data types are selected in a UNION

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Principal;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   /// <summary>Encapsulates the security checks.</summary>
   /// <remarks><note type="implementnotes">Implementations are free to decide whether they provide caching.</note></remarks>

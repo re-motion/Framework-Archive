@@ -4,11 +4,11 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Rubicon.CodeGeneration;
-using Rubicon.CodeGeneration.DPExtensions;
-using Rubicon.Utilities;
+using Remotion.CodeGeneration;
+using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Samples.DynamicMixinBuilding
+namespace Remotion.Mixins.Samples.DynamicMixinBuilding
 {
   internal class DynamicMixinTypeGenerator
   {

@@ -4,12 +4,12 @@ using System.Text;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.Development.UnitTesting;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
-using Rubicon.Utilities;
+using Remotion.Development.UnitTesting;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectDataSourceTests
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectDataSourceTests
 {
   [TestFixture]
   public class RunTime:TestBase
@@ -68,8 +68,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectData
     [Test]
     [ExpectedException (typeof (ArgumentException),
         ExpectedMessage =
-        "Type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleReferenceType' does not implement the "
-        + "'Rubicon.ObjectBinding.IBusinessObject' interface via the 'Rubicon.ObjectBinding.BindableObject.BindableObjectMixinBase`1'.\r\n"
+        "Type 'Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleReferenceType' does not implement the "
+        + "'Remotion.ObjectBinding.IBusinessObject' interface via the 'Remotion.ObjectBinding.BindableObject.BindableObjectMixinBase`1'.\r\n"
         + "Parameter name: concreteType")]
     public void GetBusinessObjectClass_WithTypeNotUsingBindableObjectMixin ()
     {

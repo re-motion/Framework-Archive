@@ -16,7 +16,7 @@ using System.Globalization;
 using System.Resources;
 using System.Runtime.CompilerServices;
 
-namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
+namespace Remotion.SecurityManager.Globalization.Domain.AccessControl {
     using System;
     
     
@@ -47,7 +47,7 @@ namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
         internal static ResourceManager ResourceManager {
             get {
                 if (ReferenceEquals(resourceMan, null)) {
-                    ResourceManager temp = new ResourceManager("Rubicon.SecurityManager.Globalization.Domain.AccessControl.TenantSelection", typeof(TenantSelection).Assembly);
+                    ResourceManager temp = new ResourceManager("Remotion.SecurityManager.Globalization.Domain.AccessControl.TenantSelection", typeof(TenantSelection).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -71,27 +71,27 @@ namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
         /// <summary>
         ///   Looks up a localized string similar to Any Tenant.
         /// </summary>
-        internal static string Rubicon_SecurityManager_Domain_AccessControl_TenantSelection_All {
+        internal static string Remotion_SecurityManager_Domain_AccessControl_TenantSelection_All {
             get {
-                return ResourceManager.GetString("Rubicon.SecurityManager.Domain.AccessControl.TenantSelection.All", resourceCulture);
+                return ResourceManager.GetString("Remotion.SecurityManager.Domain.AccessControl.TenantSelection.All", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Tenant of the Object or parents.
         /// </summary>
-        internal static string Rubicon_SecurityManager_Domain_AccessControl_TenantSelection_OwningTenant {
+        internal static string Remotion_SecurityManager_Domain_AccessControl_TenantSelection_OwningTenant {
             get {
-                return ResourceManager.GetString("Rubicon.SecurityManager.Domain.AccessControl.TenantSelection.OwningTenant", resourceCulture);
+                return ResourceManager.GetString("Remotion.SecurityManager.Domain.AccessControl.TenantSelection.OwningTenant", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Specific Tenant.
         /// </summary>
-        internal static string Rubicon_SecurityManager_Domain_AccessControl_TenantSelection_SpecificTenant {
+        internal static string Remotion_SecurityManager_Domain_AccessControl_TenantSelection_SpecificTenant {
             get {
-                return ResourceManager.GetString("Rubicon.SecurityManager.Domain.AccessControl.TenantSelection.SpecificTenant", resourceCulture);
+                return ResourceManager.GetString("Remotion.SecurityManager.Domain.AccessControl.TenantSelection.SpecificTenant", resourceCulture);
             }
         }
     }

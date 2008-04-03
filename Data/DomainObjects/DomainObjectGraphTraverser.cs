@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Provides a mechanism for retrieving all the <see cref="DomainObject"/> instances directly or indirectly referenced by a root object via

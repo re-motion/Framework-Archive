@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects;
+using Remotion.Data.DomainObjects;
 
-namespace Rubicon.Data.DomainObjects.Transport
+namespace Remotion.Data.DomainObjects.Transport
 {
   /// <summary>
   /// Implements a strategy to import a set of transported <see cref="DomainObject"/> instances from a byte array. The imported objects

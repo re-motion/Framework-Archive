@@ -4,7 +4,7 @@ using System.CodeDom.Compiler;
 using System.IO;
 using System.Text;
 
-namespace Rubicon.Development.CodeDom
+namespace Remotion.Development.CodeDom
 {
 
 public class ExtendedCSharpCodeProvider: ExtendedCodeProvider

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   //TODO: Hashcode basebase
   /// <summary>Collects all security-specific information for an instance or type, and is passed as parameter during the permission check.</summary>

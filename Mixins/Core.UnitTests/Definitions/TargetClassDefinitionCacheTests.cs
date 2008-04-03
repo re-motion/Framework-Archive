@@ -1,12 +1,12 @@
 using System;
 using System.Threading;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
-using Rubicon.Mixins.Validation;
+using Remotion.Mixins.Validation;
 
-namespace Rubicon.Mixins.UnitTests.Definitions
+namespace Remotion.Mixins.UnitTests.Definitions
 {
   [TestFixture]
   public class TargetClassDefinitionCacheTests

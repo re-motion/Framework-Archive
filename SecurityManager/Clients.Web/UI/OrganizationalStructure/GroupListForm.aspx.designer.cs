@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
+namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure {
     
     public partial class GroupListForm {
-        protected Rubicon.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
-        protected Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupListControl GroupListControl;
+        protected Remotion.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
+        protected Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupListControl GroupListControl;
     }
 }

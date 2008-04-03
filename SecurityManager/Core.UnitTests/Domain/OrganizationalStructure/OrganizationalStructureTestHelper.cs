@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Data.DomainObjects;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
+namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
   public class OrganizationalStructureTestHelper
   {

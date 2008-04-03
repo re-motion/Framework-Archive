@@ -1,7 +1,7 @@
 using System;
 using System.Web.UI;
 
-namespace Rubicon.Web
+namespace Remotion.Web
 {
 /// <summary>
 ///   Resolve the relative image URL into an absolute image url.

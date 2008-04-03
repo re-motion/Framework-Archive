@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
+namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
 public class DomainObjectIDs
 {

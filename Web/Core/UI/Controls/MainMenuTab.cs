@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Web.UI;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
   public class MainMenuTab : MenuTab
   {

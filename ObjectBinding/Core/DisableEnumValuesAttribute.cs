@@ -1,9 +1,9 @@
 using System;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.Reflection;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   //TODO: doc
   [AttributeUsage (AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]

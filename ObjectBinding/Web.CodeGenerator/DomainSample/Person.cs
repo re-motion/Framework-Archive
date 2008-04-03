@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.Globalization; // TODO: adjust DOGen
-using Rubicon.NullableValueTypes;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.Globalization; // TODO: adjust DOGen
+using Remotion.NullableValueTypes;
 
 namespace DomainSample
 {

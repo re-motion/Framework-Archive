@@ -1,4 +1,4 @@
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary>
   ///   This interface provides functionality to access to the <see cref="IBusinessObject"/> returned by other 

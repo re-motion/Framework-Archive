@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   /// <summary>
   /// Indicates that an ordinal name comparison can be used to determine the order between two mixins when these override the same methods

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Rubicon.Data.DomainObjects.Legacy.UnitTests">
+<project xmlns="nant-schema" name="Remotion.Data.DomainObjects.Legacy.UnitTests">
   
   <target name="build" description="perform a build">
     <csc  target="library"
@@ -19,17 +19,17 @@
       <references failonempty="true">
         <include asis="true" name="${build.test.outputdir}/nunit.framework.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rhino.Mocks.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Core.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Development.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.Legacy.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Mixins.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Core.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Development.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Data.DomainObjects.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Data.DomainObjects.Legacy.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Mixins.dll"/>
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="System.Xml.dll"/>
       </references>
-      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Data.DomainObjects.Legacy.UnitTests">
+      <resources failonempty="true" dynamicprefix="true" prefix="Remotion.Data.DomainObjects.Legacy.UnitTests">
         <include name="Resources/*.*" />
         <exclude name="Resources/*.cs" />
       </resources>

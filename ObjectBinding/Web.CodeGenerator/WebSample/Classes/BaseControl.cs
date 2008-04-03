@@ -1,6 +1,6 @@
 using System;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
+using Remotion.ObjectBinding.Web.UI.Controls;
 
 namespace WebSample.Classes
 {

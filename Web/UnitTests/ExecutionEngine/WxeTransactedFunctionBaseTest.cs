@@ -5,14 +5,14 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Data;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Data;
+using Remotion.Web.ExecutionEngine;
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 using Mocks_List = Rhino.Mocks.Constraints.List;
 using Mocks_Property = Rhino.Mocks.Constraints.Property;
-using Rubicon.Development.UnitTesting;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine
 {
   public interface IWxeTransactionFunctionEventSink
   {

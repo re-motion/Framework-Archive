@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Security.Web.ExecutionEngine;
-using Rubicon.Security.UnitTests.Web.Domain;
+using Remotion.Security.Web.ExecutionEngine;
+using Remotion.Security.UnitTests.Web.Domain;
 
-namespace Rubicon.Security.UnitTests.Web.ExecutionEngine
+namespace Remotion.Security.UnitTests.Web.ExecutionEngine
 {
   [TestFixture]
   public class WxeDemandTargetStaticMethodPermissionAttributeTest
@@ -41,7 +41,7 @@ namespace Rubicon.Security.UnitTests.Web.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Enumerated type 'Rubicon.Security.UnitTests.Web.Domain.MethodNameEnum' is not declared as a nested type.\r\nParameter name: methodNameEnum")]
+        ExpectedMessage = "Enumerated type 'Remotion.Security.UnitTests.Web.Domain.MethodNameEnum' is not declared as a nested type.\r\nParameter name: methodNameEnum")]
     public void Initialize_WithMethodNameEnumNotNestedType ()
     {
       new WxeDemandTargetStaticMethodPermissionAttribute (MethodNameEnum.Show);
@@ -49,8 +49,8 @@ namespace Rubicon.Security.UnitTests.Web.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The declaring type of enumerated type 'Rubicon.Security.UnitTests.Web.Domain.SimpleType+MethodNameEnum' does not implement interface"
-        + " 'Rubicon.Security.ISecurableObject'.\r\nParameter name: methodNameEnum")]
+        ExpectedMessage = "The declaring type of enumerated type 'Remotion.Security.UnitTests.Web.Domain.SimpleType+MethodNameEnum' does not implement interface"
+        + " 'Remotion.Security.ISecurableObject'.\r\nParameter name: methodNameEnum")]
     public void Initialize_WithMethodNameEnumNotHavingValidDeclaringType ()
     {
       new WxeDemandTargetStaticMethodPermissionAttribute (SimpleType.MethodNameEnum.Show);
@@ -58,7 +58,7 @@ namespace Rubicon.Security.UnitTests.Web.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Enumerated type 'Rubicon.Security.UnitTests.Web.Domain.MethodNameEnum' is not declared as a nested type.\r\nParameter name: methodNameEnum")]
+        ExpectedMessage = "Enumerated type 'Remotion.Security.UnitTests.Web.Domain.MethodNameEnum' is not declared as a nested type.\r\nParameter name: methodNameEnum")]
     public void Initialize_WithMethodNameEnumNotNestedTypeAndSecurableClass ()
     {
       new WxeDemandTargetStaticMethodPermissionAttribute (MethodNameEnum.Show, typeof (DerivedSecurableObject));
@@ -66,8 +66,8 @@ namespace Rubicon.Security.UnitTests.Web.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The declaring type of enumerated type 'Rubicon.Security.UnitTests.Web.Domain.SimpleType+MethodNameEnum' does not implement interface"
-        + " 'Rubicon.Security.ISecurableObject'.\r\nParameter name: methodNameEnum")]
+        ExpectedMessage = "The declaring type of enumerated type 'Remotion.Security.UnitTests.Web.Domain.SimpleType+MethodNameEnum' does not implement interface"
+        + " 'Remotion.Security.ISecurableObject'.\r\nParameter name: methodNameEnum")]
     public void Initialize_WithMethodNameEnumNotHavingValidDeclaringTypeAndSecurableClass ()
     {
       new WxeDemandTargetStaticMethodPermissionAttribute (SimpleType.MethodNameEnum.Show, typeof (DerivedSecurableObject));
@@ -75,8 +75,8 @@ namespace Rubicon.Security.UnitTests.Web.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Type 'Rubicon.Security.UnitTests.Web.Domain.OtherSecurableObject' cannot be assigned to the declaring type of enumerated type"
-        + " 'Rubicon.Security.UnitTests.Web.Domain.SecurableObject+Method'.\r\nParameter name: securableClass")]
+        ExpectedMessage = "Type 'Remotion.Security.UnitTests.Web.Domain.OtherSecurableObject' cannot be assigned to the declaring type of enumerated type"
+        + " 'Remotion.Security.UnitTests.Web.Domain.SecurableObject+Method'.\r\nParameter name: securableClass")]
     public void TestWithParameterNotOfNotMatchingType ()
     {
       new WxeDemandTargetStaticMethodPermissionAttribute (SecurableObject.Method.Show, typeof (OtherSecurableObject));

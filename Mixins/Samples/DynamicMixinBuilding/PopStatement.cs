@@ -2,7 +2,7 @@ using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
-namespace Rubicon.Mixins.Samples.DynamicMixinBuilding
+namespace Remotion.Mixins.Samples.DynamicMixinBuilding
 {
   internal class PopStatement : Statement
   {

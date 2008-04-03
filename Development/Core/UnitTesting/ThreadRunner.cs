@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace Rubicon.Development.UnitTesting
+namespace Remotion.Development.UnitTesting
 {
   public static class ThreadRunner
   {

@@ -4,9 +4,9 @@ using System.Globalization;
 using System.Reflection;
 using System.Resources;
 using System.Threading;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Globalization
+namespace Remotion.Globalization
 {
 
 [Obsolete ("Use MultiLingualResourceAttribute instead.")]

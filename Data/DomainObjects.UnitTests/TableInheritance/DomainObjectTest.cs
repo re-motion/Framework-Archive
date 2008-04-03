@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
+namespace Remotion.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
   public class DomainObjectTest : TableInheritanceMappingTest
@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (PersistenceException), ExpectedMessage = 
-        "The property 'Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.HistoryEntry.Owner' of the loaded DataContainer "
+        "The property 'Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.HistoryEntry.Owner' of the loaded DataContainer "
         + "'TI_HistoryEntry|2c7fb7b3-eb16-43f9-bdde-b8b3f23a93d2|System.Guid' refers to ClassID 'TI_OrganizationalUnit', "
         + "but the actual ClassID is 'TI_Person'.")]
     public void SameIDInDifferentConcreteTables ()

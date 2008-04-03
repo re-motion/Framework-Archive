@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Development.UnitTesting;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
+namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 {
   [TestFixture]
   public class DataManagerTest : ClientTransactionBaseTest

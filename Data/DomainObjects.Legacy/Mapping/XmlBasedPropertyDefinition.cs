@@ -1,9 +1,9 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.Mapping
+namespace Remotion.Data.DomainObjects.Legacy.Mapping
 {
   [Serializable]
   public class XmlBasedPropertyDefinition: PropertyDefinition

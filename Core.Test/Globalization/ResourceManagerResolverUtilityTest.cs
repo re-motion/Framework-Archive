@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Core.UnitTests.Globalization.SampleTypes;
-using Rubicon.Globalization;
+using Remotion.Core.UnitTests.Globalization.SampleTypes;
+using Remotion.Globalization;
 
-namespace Rubicon.Core.UnitTests.Globalization
+namespace Remotion.Core.UnitTests.Globalization
 {
   [TestFixture]
   public class ResourceManagerResolverUtilityTest

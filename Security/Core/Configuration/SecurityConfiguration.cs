@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Configuration.Provider;
-using Rubicon.Configuration;
-using Rubicon.Security.Metadata;
+using Remotion.Configuration;
+using Remotion.Security.Metadata;
 
-namespace Rubicon.Security.Configuration
+namespace Remotion.Security.Configuration
 {
-  /// <summary> The configuration section for <see cref="Rubicon.Security"/>. </summary>
+  /// <summary> The configuration section for <see cref="Remotion.Security"/>. </summary>
   /// <threadsafety static="true" instance="true" />
   public class SecurityConfiguration : ExtendedConfigurationSection
   {
@@ -20,7 +20,7 @@ namespace Rubicon.Security.Configuration
     static SecurityConfiguration()
     {
       s_current = new DoubleCheckedLockingContainer<SecurityConfiguration> (
-          delegate { return (SecurityConfiguration) ConfigurationManager.GetSection ("rubicon.security") ?? new SecurityConfiguration(); });
+          delegate { return (SecurityConfiguration) ConfigurationManager.GetSection ("remotion.security") ?? new SecurityConfiguration(); });
     }
 
     public static SecurityConfiguration Current

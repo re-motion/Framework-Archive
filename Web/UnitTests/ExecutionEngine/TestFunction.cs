@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Utilities;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine
 {
   public class TestFunction : WxeFunction
   {

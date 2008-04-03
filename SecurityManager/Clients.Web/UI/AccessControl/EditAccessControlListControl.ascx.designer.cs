@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
+namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl {
     
     
     /// <summary>
@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
         
         /// <summary>
         /// AccessControlListTitle control.
@@ -44,7 +44,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.WebButton NewStateCombinationButton;
+        protected global::Remotion.Web.UI.Controls.WebButton NewStateCombinationButton;
         
         /// <summary>
         /// NewAccessControlEntryButton control.
@@ -53,7 +53,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.WebButton NewAccessControlEntryButton;
+        protected global::Remotion.Web.UI.Controls.WebButton NewAccessControlEntryButton;
         
         /// <summary>
         /// DeleteAccessControlListButton control.
@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.WebButton DeleteAccessControlListButton;
+        protected global::Remotion.Web.UI.Controls.WebButton DeleteAccessControlListButton;
         
         /// <summary>
         /// StateCombinationControls control.

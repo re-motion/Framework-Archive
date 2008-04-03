@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Mixins.Context;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
   public class ConstructionOfVirtualRelationEndPointDefinitionTest : StandardMappingTest
@@ -27,10 +27,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     [ExpectedException (typeof (MappingException),
         ExpectedMessage = "Relation definition error: Virtual property 'Dummy' of class 'Company' is of type"
-            + "'Rubicon.Data.DomainObjects.DomainObject',"
-            + " but must be derived from 'Rubicon.Data.DomainObjects.DomainObject' or "
-            + " 'Rubicon.Data.DomainObjects.DomainObjectCollection' or must be"
-            + " 'Rubicon.Data.DomainObjects.DomainObjectCollection'.")]
+            + "'Remotion.Data.DomainObjects.DomainObject',"
+            + " but must be derived from 'Remotion.Data.DomainObjects.DomainObject' or "
+            + " 'Remotion.Data.DomainObjects.DomainObjectCollection' or must be"
+            + " 'Remotion.Data.DomainObjects.DomainObjectCollection'.")]
     public void VirtualEndPointOfDomainObjectType ()
     {
       ReflectionBasedClassDefinition companyDefinition = new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company), false, new List<Type>());
@@ -57,7 +57,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     [ExpectedException (typeof (MappingException),
         ExpectedMessage = "The property type of a virtual end point of a one-to-one relation"
-        + " must be derived from 'Rubicon.Data.DomainObjects.DomainObject'.")]
+        + " must be derived from 'Remotion.Data.DomainObjects.DomainObject'.")]
     public void VirtualEndPointWithCardinalityOneAndWrongPropertyType ()
     {
       ReflectionBasedClassDefinition companyDefinition = new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company), false, new List<Type>());
@@ -68,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     [ExpectedException (typeof (MappingException),
         ExpectedMessage = "The property type of a virtual end point of a one-to-many relation"
-        + " must be or be derived from 'Rubicon.Data.DomainObjects.DomainObjectCollection'.")]
+        + " must be or be derived from 'Remotion.Data.DomainObjects.DomainObjectCollection'.")]
     public void VirtualEndPointWithCardinalityManyAndWrongPropertyType ()
     {
       ReflectionBasedClassDefinition companyDefinition = new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company), false, new List<Type>());

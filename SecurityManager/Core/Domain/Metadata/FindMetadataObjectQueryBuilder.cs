@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Queries;
 
-namespace Rubicon.SecurityManager.Domain.Metadata
+namespace Remotion.SecurityManager.Domain.Metadata
 {
   public class FindMetadataObjectQueryBuilder
   {
@@ -60,7 +60,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     private Query CreateFindStateDefinitionQuery (Guid metadataItemID, int stateValue)
     {
-      Query query = CreateBaseQuery ("Rubicon.SecurityManager.Domain.Metadata.MetadataObject.Find.StateDefinition", metadataItemID);
+      Query query = CreateBaseQuery ("Remotion.SecurityManager.Domain.Metadata.MetadataObject.Find.StateDefinition", metadataItemID);
       query.Parameters.Add ("@stateValue", stateValue);
 
       return query;
@@ -68,7 +68,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     private Query CreateFindMetadataObjectQuery (Guid metadataItemID)
     {
-      return CreateBaseQuery ("Rubicon.SecurityManager.Domain.Metadata.MetadataObject.Find", metadataItemID);
+      return CreateBaseQuery ("Remotion.SecurityManager.Domain.Metadata.MetadataObject.Find", metadataItemID);
     }
 
     private Query CreateBaseQuery (string queryID, Guid metadataItemID)

@@ -1,9 +1,9 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.BaseCallProxyCodeGeneration
+namespace Remotion.Mixins.UnitTests.CodeGeneration.BaseCallProxyCodeGeneration
 {
   [TestFixture]
   public class InstantiationTests : CodeGenerationBaseTest

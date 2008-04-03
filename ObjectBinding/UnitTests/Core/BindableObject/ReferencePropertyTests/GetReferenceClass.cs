@@ -2,13 +2,13 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.ReferencePropertyTests
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.ReferencePropertyTests
 {
   [TestFixture]
   public class GetReferenceClass : TestBase
@@ -57,9 +57,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.ReferencePropertyT
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
         ExpectedMessage =
-        "The 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithOtherBusinessObjectImplementation' type does not use the "
-        + "'Rubicon.ObjectBinding.BindableObject' implementation of 'Rubicon.ObjectBinding.IBusinessObject' and there is no "
-        + "'Rubicon.ObjectBinding.IBusinessObjectClassService' registered with the 'Rubicon.ObjectBinding.BindableObject.BindableObjectProvider'.")]
+        "The 'Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithOtherBusinessObjectImplementation' type does not use the "
+        + "'Remotion.ObjectBinding.BindableObject' implementation of 'Remotion.ObjectBinding.IBusinessObject' and there is no "
+        + "'Remotion.ObjectBinding.IBusinessObjectClassService' registered with the 'Remotion.ObjectBinding.BindableObject.BindableObjectProvider'.")]
     public void UseBusinessObjectClassService_WithoutService ()
     {
       IBusinessObjectReferenceProperty property = CreateProperty ("Scalar", typeof (ClassWithOtherBusinessObjectImplementation));
@@ -70,9 +70,9 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.ReferencePropertyT
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
         ExpectedMessage =
-        "The GetBusinessObjectClass method of 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.StubBusinessObjectClassService', registered "
-        + "with the 'Rubicon.ObjectBinding.BindableObject.BindableObjectProvider', failed to return an 'Rubicon.ObjectBinding.IBusinessObjectClass' "
-        + "for type 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithOtherBusinessObjectImplementation'.")]
+        "The GetBusinessObjectClass method of 'Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.StubBusinessObjectClassService', registered "
+        + "with the 'Remotion.ObjectBinding.BindableObject.BindableObjectProvider', failed to return an 'Remotion.ObjectBinding.IBusinessObjectClass' "
+        + "for type 'Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithOtherBusinessObjectImplementation'.")]
     public void UseBusinessObjectClassService_WithServiceReturningNull ()
     {
       IBusinessObjectReferenceProperty property = CreateProperty ("Scalar", typeof (ClassWithOtherBusinessObjectImplementation));

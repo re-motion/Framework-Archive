@@ -11,11 +11,11 @@
 namespace WebSample.UI {
     
     public partial class SearchResultPersonForm {
-        protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
-        protected Rubicon.Data.DomainObjects.ObjectBinding.Web.SearchObjectDataSourceControl PersonSearchDataSource;
-        protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+        protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+        protected Remotion.Data.DomainObjects.ObjectBinding.Web.SearchObjectDataSourceControl PersonSearchDataSource;
+        protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
         protected WebSample.UI.NavigationTabs NavigationTabs;
         protected System.Web.UI.HtmlControls.HtmlForm Form1;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocList PersonList;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocList PersonList;
     }
 }

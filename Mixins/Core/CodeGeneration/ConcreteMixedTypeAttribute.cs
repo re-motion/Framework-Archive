@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Utilities;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
+using Remotion.Utilities;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Rubicon.Mixins.Context.FluentBuilders;
+using Remotion.Mixins.Context.FluentBuilders;
 
-namespace Rubicon.Mixins.CodeGeneration
+namespace Remotion.Mixins.CodeGeneration
 {
   [CLSCompliant (false)]
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = true)]

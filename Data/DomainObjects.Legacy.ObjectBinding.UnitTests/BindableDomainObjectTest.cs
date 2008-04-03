@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
-using Rubicon.ObjectBinding;
-using Rubicon.Security;
+using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
+using Remotion.ObjectBinding;
+using Remotion.Security;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
+namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
   [TestFixture]
   public class BindableDomainObjectTest : DatabaseTest

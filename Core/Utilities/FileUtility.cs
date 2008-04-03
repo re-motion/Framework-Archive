@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Threading;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
   // TODO: comment http://at-vie-svn.int.rubicon-it.com/wiki/pmwiki.php/KnowledgeBase/FileDeleteKannAsynchronSein
   public static class FileUtility

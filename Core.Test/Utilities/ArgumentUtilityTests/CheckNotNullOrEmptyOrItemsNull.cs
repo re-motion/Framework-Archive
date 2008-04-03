@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Utilities.ArgumentUtilityTests
+namespace Remotion.Core.UnitTests.Utilities.ArgumentUtilityTests
 {
 	[TestFixture]
 	public class CheckNotNullOrEmptyOrItemsNull

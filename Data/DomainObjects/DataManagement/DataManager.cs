@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Infrastructure;
+using Remotion.Utilities;
+using Remotion.Data.DomainObjects.Infrastructure;
 
-namespace Rubicon.Data.DomainObjects.DataManagement
+namespace Remotion.Data.DomainObjects.DataManagement
 {
 [Serializable]
 public class DataManager : ISerializable, IDeserializationCallback

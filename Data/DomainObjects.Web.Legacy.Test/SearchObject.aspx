@@ -1,5 +1,5 @@
-<%@ Page language="c#" Codebehind="SearchObject.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.Data.DomainObjects.Web.Legacy.Test.SearchObjectPage" %>
-<%@ Register TagPrefix="rubicon" TagName="ControlWithAllDataTypes" Src="ControlWithAllDataTypes.ascx" %>
+<%@ Page language="c#" Codebehind="SearchObject.aspx.cs" AutoEventWireup="false" Inherits="Remotion.Data.DomainObjects.Web.Legacy.Test.SearchObjectPage" %>
+<%@ Register TagPrefix="remotion" TagName="ControlWithAllDataTypes" Src="ControlWithAllDataTypes.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
   <HEAD>
@@ -8,100 +8,100 @@
     <meta content="C#" name="CODE_LANGUAGE">
     <meta content="JavaScript" name="vs_defaultClientScript">
     <meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
-    <rubicon:htmlheadcontents id="HtmlHeadContents" runat="server"></rubicon:htmlheadcontents>
+    <remotion:htmlheadcontents id="HtmlHeadContents" runat="server"></remotion:htmlheadcontents>
   </HEAD>
   <body>
     <form id="SearchObjectForm" method="post" runat="server">
       <TABLE id="SearchFormGrid" cellSpacing="0" cellPadding="0" width="300" border="0" runat="server">
         <TR>
           <TD></TD>
-          <TD><rubicon:boctextvalue id="StringPropertyValue" runat="server" DataSourceControl="CurrentSearchObject"
+          <TD><remotion:boctextvalue id="StringPropertyValue" runat="server" DataSourceControl="CurrentSearchObject"
               PropertyIdentifier="StringProperty">
               <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-            </rubicon:boctextvalue></TD>
+            </remotion:boctextvalue></TD>
         </TR>
         <TR>
           <TD></TD>
-          <TD><rubicon:boctextvalue id="BytePropertyFromTextBox" runat="server" DataSourceControl="CurrentSearchObject"
+          <TD><remotion:boctextvalue id="BytePropertyFromTextBox" runat="server" DataSourceControl="CurrentSearchObject"
               PropertyIdentifier="BytePropertyFrom">
               <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-            </rubicon:boctextvalue></TD>
+            </remotion:boctextvalue></TD>
         </TR>
         <TR>
           <TD></TD>
-          <TD><rubicon:boctextvalue id="BytePropertyToTextBox" runat="server" DataSourceControl="CurrentSearchObject"
+          <TD><remotion:boctextvalue id="BytePropertyToTextBox" runat="server" DataSourceControl="CurrentSearchObject"
               PropertyIdentifier="BytePropertyTo">
               <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
-            </rubicon:boctextvalue></TD>
+            </remotion:boctextvalue></TD>
         </TR>
         <TR>
           <TD></TD>
-          <TD><rubicon:bocenumvalue id="EnumPropertyValue" runat="server" DataSourceControl="CurrentSearchObject" PropertyIdentifier="EnumProperty">
+          <TD><remotion:bocenumvalue id="EnumPropertyValue" runat="server" DataSourceControl="CurrentSearchObject" PropertyIdentifier="EnumProperty">
               <ListControlStyle RadioButtonListCellSpacing="" RadioButtonListCellPadding=""></ListControlStyle>
-            </rubicon:bocenumvalue></TD>
+            </remotion:bocenumvalue></TD>
         </TR>
         <TR>
           <TD></TD>
           <TD>
-            <rubicon:BocDateTimeValue id="DatePropertyFromValue" runat="server" PropertyIdentifier="DatePropertyFrom"
-              DataSourceControl="CurrentSearchObject"></rubicon:BocDateTimeValue></TD>
+            <remotion:BocDateTimeValue id="DatePropertyFromValue" runat="server" PropertyIdentifier="DatePropertyFrom"
+              DataSourceControl="CurrentSearchObject"></remotion:BocDateTimeValue></TD>
         </TR>
         <TR>
           <TD></TD>
           <TD>
-            <rubicon:BocDateTimeValue id="DatePropertyToValue" runat="server" PropertyIdentifier="DatePropertyTo" DataSourceControl="CurrentSearchObject"></rubicon:BocDateTimeValue></TD>
+            <remotion:BocDateTimeValue id="DatePropertyToValue" runat="server" PropertyIdentifier="DatePropertyTo" DataSourceControl="CurrentSearchObject"></remotion:BocDateTimeValue></TD>
         </TR>
         <TR>
           <TD></TD>
           <TD>
-            <rubicon:BocDateTimeValue id="DateTimeFromValue" runat="server" DataSourceControl="CurrentSearchObject" PropertyIdentifier="DateTimePropertyFrom"></rubicon:BocDateTimeValue></TD>
+            <remotion:BocDateTimeValue id="DateTimeFromValue" runat="server" DataSourceControl="CurrentSearchObject" PropertyIdentifier="DateTimePropertyFrom"></remotion:BocDateTimeValue></TD>
         </TR>
         <TR>
           <TD></TD>
           <TD>
-            <rubicon:BocDateTimeValue id="BocDateTimeValue2" runat="server" PropertyIdentifier="DateTimePropertyTo" DataSourceControl="CurrentSearchObject"></rubicon:BocDateTimeValue></TD>
+            <remotion:BocDateTimeValue id="BocDateTimeValue2" runat="server" PropertyIdentifier="DateTimePropertyTo" DataSourceControl="CurrentSearchObject"></remotion:BocDateTimeValue></TD>
         </TR>
       </TABLE>
-      <asp:button id="SearchButton" runat="server" Text="Suchen"></asp:button><rubicon:boclist id="ResultList" runat="server" DataSourceControl="FoundObjects">
+      <asp:button id="SearchButton" runat="server" Text="Suchen"></asp:button><remotion:boclist id="ResultList" runat="server" DataSourceControl="FoundObjects">
 <FixedColumns>
-<rubicon:BocRowEditModeColumnDefinition SaveText="Speichern" CancelText="Abbrechen" EditText="Bearbeiten" ColumnTitle="Aktion"></rubicon:BocRowEditModeColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="StringProperty">
+<remotion:BocRowEditModeColumnDefinition SaveText="Speichern" CancelText="Abbrechen" EditText="Bearbeiten" ColumnTitle="Aktion"></remotion:BocRowEditModeColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="StringProperty">
 <PersistedCommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="ByteProperty">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="ByteProperty">
 <PersistedCommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="EnumProperty">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="EnumProperty">
 <PersistedCommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DateProperty">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="DateProperty">
 <PersistedCommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DateTimeProperty">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="DateTimeProperty">
 <PersistedCommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="BooleanProperty">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="BooleanProperty">
 <PersistedCommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="NaBooleanProperty">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="NaBooleanProperty">
 <PersistedCommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
+</remotion:BocSimpleColumnDefinition>
 </FixedColumns>
-      </rubicon:boclist><rubicon:formgridmanager id="SearchFormGridManager" runat="server"></rubicon:formgridmanager><rubicon:domainobjectdatasourcecontrol id="FoundObjects" runat="server" TypeName="Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.Web.Legacy.Test"></rubicon:domainobjectdatasourcecontrol>
-      <rubicon:SearchObjectDataSourceControl id="CurrentSearchObject" runat="server" TypeName="Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain.ClassWithAllDataTypesSearch, Rubicon.Data.DomainObjects.Web.Legacy.Test"></rubicon:SearchObjectDataSourceControl></form>
+      </remotion:boclist><remotion:formgridmanager id="SearchFormGridManager" runat="server"></remotion:formgridmanager><remotion:domainobjectdatasourcecontrol id="FoundObjects" runat="server" TypeName="Remotion.Data.DomainObjects.Web.Legacy.Test.Domain.ClassWithAllDataTypes, Remotion.Data.DomainObjects.Web.Legacy.Test"></remotion:domainobjectdatasourcecontrol>
+      <remotion:SearchObjectDataSourceControl id="CurrentSearchObject" runat="server" TypeName="Remotion.Data.DomainObjects.Web.Legacy.Test.Domain.ClassWithAllDataTypesSearch, Remotion.Data.DomainObjects.Web.Legacy.Test"></remotion:SearchObjectDataSourceControl></form>
   </body>
 </HTML>

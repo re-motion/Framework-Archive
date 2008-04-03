@@ -4,21 +4,21 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.Queries;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.UnitTests.Queries;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Development.UnitTesting;
+using Remotion.Reflection;
+using Remotion.Utilities;
 
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 using Mocks_List = Rhino.Mocks.Constraints.List;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
+namespace Remotion.Data.DomainObjects.UnitTests.Transaction
 {
   [TestFixture]
   public class SubTransactionTest : ClientTransactionBaseTest
@@ -784,9 +784,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage = "Values of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order' "
-      + "cannot be added to this collection. Values must be of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem' or derived from "
-      + "'Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.\r\nParameter name: domainObject")]
+    [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage = "Values of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' "
+      + "cannot be added to this collection. Values must be of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem' or derived from "
+      + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.\r\nParameter name: domainObject")]
     public void GetObjects_InvalidType ()
     {
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
@@ -832,7 +832,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
       using (subTransaction.EnterDiscardingScope ())
       {
-        Type unlockerType = typeof (ClientTransaction).Assembly.GetType ("Rubicon.Data.DomainObjects.Infrastructure.TransactionUnlocker");
+        Type unlockerType = typeof (ClientTransaction).Assembly.GetType ("Remotion.Data.DomainObjects.Infrastructure.TransactionUnlocker");
         object unlocker =
             Activator.CreateInstance (unlockerType, BindingFlags.NonPublic | BindingFlags.Instance, null, new object[] {ClientTransactionMock}, null);
         using ((IDisposable) unlocker)

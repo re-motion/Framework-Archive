@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Mapping
+namespace Remotion.Data.DomainObjects.Mapping
 {
   [Serializable]
   [DebuggerDisplay ("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
@@ -132,9 +132,9 @@ namespace Rubicon.Data.DomainObjects.Mapping
       {
         throw CreateMappingException (
             "Relation definition error: Virtual property '{0}' of class '{1}' is of type"
-                + "'{2}', but must be derived from 'Rubicon.Data.DomainObjects.DomainObject' or "
-                    + " 'Rubicon.Data.DomainObjects.DomainObjectCollection' or must be"
-                        + " 'Rubicon.Data.DomainObjects.DomainObjectCollection'.",
+                + "'{2}', but must be derived from 'Remotion.Data.DomainObjects.DomainObject' or "
+                    + " 'Remotion.Data.DomainObjects.DomainObjectCollection' or must be"
+                        + " 'Remotion.Data.DomainObjects.DomainObjectCollection'.",
             propertyName,
             classDefinition.ID,
             propertyType);
@@ -144,7 +144,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
       {
         throw CreateMappingException (
             "The property type of a virtual end point of a one-to-one relation"
-                + " must be derived from 'Rubicon.Data.DomainObjects.DomainObject'.");
+                + " must be derived from 'Remotion.Data.DomainObjects.DomainObject'.");
       }
 
       if (cardinality == CardinalityType.Many
@@ -153,7 +153,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
       {
         throw CreateMappingException (
             "The property type of a virtual end point of a one-to-many relation"
-                + " must be or be derived from 'Rubicon.Data.DomainObjects.DomainObjectCollection'.");
+                + " must be or be derived from 'Remotion.Data.DomainObjects.DomainObjectCollection'.");
       }
     }
 

@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Reflection;
-using Rubicon.Collections;
-using Rubicon.Configuration;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Security.Metadata
+namespace Remotion.Security.Metadata
 {
   public class PermissionReflector: ExtendedProviderBase, IPermissionProvider
   {

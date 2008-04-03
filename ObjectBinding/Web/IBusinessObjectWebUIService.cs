@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web
+namespace Remotion.ObjectBinding.Web
 {
 
 /// <summary>

@@ -2,17 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using Rubicon.Collections;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Validation;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Logging;
-using Rubicon.Mixins.Context;
+using Remotion.Collections;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Validation;
+using Remotion.Reflection;
+using Remotion.Utilities;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Logging;
+using Remotion.Mixins.Context;
 using System.Collections;
 
-namespace Rubicon.Mixins.MixerTool
+namespace Remotion.Mixins.MixerTool
 {
   public class Mixer
   {

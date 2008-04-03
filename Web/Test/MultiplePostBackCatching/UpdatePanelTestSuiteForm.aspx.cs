@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Web.Test.MultiplePostBackCatching;
+using Remotion.Web.Test.MultiplePostBackCatching;
 
-namespace Rubicon.Web.Test.MultiplePostBackCatching
+namespace Remotion.Web.Test.MultiplePostBackCatching
 {
   public partial class UpdatePanelTestSuiteForm : TestBasePage
   {

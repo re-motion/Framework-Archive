@@ -3,10 +3,10 @@ using System.Text;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rhino.Mocks.Constraints;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.RdbmsTools.SchemaGeneration;
 
-namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration
+namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration
 {
   //TODO: Cover execution path from GetColumnList (ClassDefinition) to GetColumn (PropertyDefinition, bool)
   [TestFixture]

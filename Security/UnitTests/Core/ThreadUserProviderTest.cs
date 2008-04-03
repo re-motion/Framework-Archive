@@ -2,9 +2,9 @@ using System;
 using System.Collections.Specialized;
 using System.Threading;
 using NUnit.Framework;
-using Rubicon.Configuration;
+using Remotion.Configuration;
 
-namespace Rubicon.Security.UnitTests.Core
+namespace Remotion.Security.UnitTests.Core
 {
   [TestFixture]
   public class ThreadUserProviderTest

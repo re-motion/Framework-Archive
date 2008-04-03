@@ -11,6 +11,6 @@
 namespace WebSample.UI {
     
     public partial class NavigationTabs {
-        protected Rubicon.Web.UI.Controls.TabbedMenu TheTabbedMenu;
+        protected Remotion.Web.UI.Controls.TabbedMenu TheTabbedMenu;
     }
 }

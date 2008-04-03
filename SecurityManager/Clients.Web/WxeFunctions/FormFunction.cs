@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Data.DomainObjects;
+using Remotion.SecurityManager.Domain;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
+namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
 {
   [Serializable]
   public abstract class FormFunction : BaseTransactedFunction

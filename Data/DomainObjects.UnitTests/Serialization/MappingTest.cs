@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
+namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 {
   [TestFixture]
   public class MappingTest : SerializationBaseTest
@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void PropertyDefinition_InMapping ()
     {
       ClassDefinition orderDefinition = MappingConfiguration.Current.ClassDefinitions["Order"];
-      PropertyDefinition orderNumberDefinition = orderDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
+      PropertyDefinition orderNumberDefinition = orderDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
 
       PropertyDefinition deserializedOrderNumberDefinition = (PropertyDefinition) SerializeAndDeserialize (orderNumberDefinition);
       Assert.AreSame (orderNumberDefinition, deserializedOrderNumberDefinition);
@@ -114,8 +114,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void RelationEndPointDefinition_InMapping ()
     {
-      RelationDefinition relationDefinition = MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"];
-      RelationEndPointDefinition endPointDefinition = (RelationEndPointDefinition) relationDefinition.GetEndPointDefinition ("OrderTicket", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
+      RelationDefinition relationDefinition = MappingConfiguration.Current.RelationDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"];
+      RelationEndPointDefinition endPointDefinition = (RelationEndPointDefinition) relationDefinition.GetEndPointDefinition ("OrderTicket", "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
 
       RelationEndPointDefinition deserializedEndPointDefinition = (RelationEndPointDefinition) SerializeAndDeserialize (endPointDefinition);
       Assert.AreSame (endPointDefinition, deserializedEndPointDefinition);
@@ -155,8 +155,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void VirtualRelationEndPointDefinitionInMapping ()
     {
-      RelationDefinition relationDefinition = MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"];
-      VirtualRelationEndPointDefinition endPointDefinition = (VirtualRelationEndPointDefinition) relationDefinition.GetEndPointDefinition ("Order", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+      RelationDefinition relationDefinition = MappingConfiguration.Current.RelationDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"];
+      VirtualRelationEndPointDefinition endPointDefinition = (VirtualRelationEndPointDefinition) relationDefinition.GetEndPointDefinition ("Order", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
       VirtualRelationEndPointDefinition deserializedEndPointDefinition = (VirtualRelationEndPointDefinition) SerializeAndDeserialize (endPointDefinition);
       Assert.AreSame (endPointDefinition, deserializedEndPointDefinition);
@@ -187,7 +187,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       AnonymousRelationEndPointDefinition clientEndPointDefinition = new AnonymousRelationEndPointDefinition (clientDefinition);
       RelationEndPointDefinition locationEndPointDefinition = new RelationEndPointDefinition (locationDefinition, "Client", true);
 
-      new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", clientEndPointDefinition, locationEndPointDefinition);
+      new RelationDefinition ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client", clientEndPointDefinition, locationEndPointDefinition);
 
       SerializeAndDeserialize (clientEndPointDefinition);
     }
@@ -195,19 +195,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void AnonymousRelationEndPointDefinition_InMapping ()
     {
-      RelationDefinition relationDefinition = MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"];
-      AnonymousRelationEndPointDefinition endPointDefinition = (AnonymousRelationEndPointDefinition) relationDefinition.GetOppositeEndPointDefinition ("Location", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
+      RelationDefinition relationDefinition = MappingConfiguration.Current.RelationDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client"];
+      AnonymousRelationEndPointDefinition endPointDefinition = (AnonymousRelationEndPointDefinition) relationDefinition.GetOppositeEndPointDefinition ("Location", "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
 
       AnonymousRelationEndPointDefinition deserializedEndPointDefinition = (AnonymousRelationEndPointDefinition) SerializeAndDeserialize (endPointDefinition);
       Assert.AreSame (endPointDefinition, deserializedEndPointDefinition);
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "The RelationDefinition 'Rubicon.Data.DomainObjects.UnitTests.TestDomain."
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "The RelationDefinition 'Remotion.Data.DomainObjects.UnitTests.TestDomain."
         + "OrderTicket.Order' cannot be serialized because is is not part of the current mapping.")]
     public void RelationDefinition_NotInMapping ()
     {
-      RelationDefinition relationDefinition = TestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
+      RelationDefinition relationDefinition = TestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
       RelationDefinition deserializedRelationDefinition = (RelationDefinition) SerializeAndDeserialize (relationDefinition);
 
       Assert.IsFalse (ReferenceEquals (relationDefinition, deserializedRelationDefinition));
@@ -217,7 +217,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void RelationDefinition_InMapping ()
     {
-      RelationDefinition relationDefinition = MappingConfiguration.Current.RelationDefinitions.GetMandatory ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
+      RelationDefinition relationDefinition = MappingConfiguration.Current.RelationDefinitions.GetMandatory ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
       RelationDefinition deserializedRelationDefinition = (RelationDefinition) SerializeAndDeserialize (relationDefinition);
 
       Assert.AreSame (relationDefinition, deserializedRelationDefinition);
@@ -291,7 +291,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void PropertyDefinitionWithEnumType ()
     {
       PropertyDefinition enumPropertyDefinition =
-          MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer").MyPropertyDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Type"];
+          MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer").MyPropertyDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Type"];
 
       PropertyDefinition deserializedEnumPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (enumPropertyDefinition);
 

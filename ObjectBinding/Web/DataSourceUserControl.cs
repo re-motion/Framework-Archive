@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.ObjectBinding.Design;
+using Remotion.ObjectBinding.Design;
 
-namespace Rubicon.ObjectBinding.Web
+namespace Remotion.ObjectBinding.Web
 {
 
 [Obsolete ("Implement using IBusinessObjectDataSourceControl.")]

@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects.Configuration.StorageProviders;
+using Remotion.Data.DomainObjects.Configuration.StorageProviders;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.StorageProviders
 {
   [TestFixture]
   public class TypeProviderTest: StandardMappingTest

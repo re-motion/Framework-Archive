@@ -1,6 +1,6 @@
 using System.Windows.Forms;
 
-namespace Rubicon.ObjectBinding.Design.BindableObject
+namespace Remotion.ObjectBinding.Design.BindableObject
 {
   partial class BindableObjectTypePickerControl
   {

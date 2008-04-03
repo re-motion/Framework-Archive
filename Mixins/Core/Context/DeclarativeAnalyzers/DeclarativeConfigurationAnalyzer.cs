@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Collections;
-using Rubicon.Mixins.Context.FluentBuilders;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.Utilities;
 using System.Reflection;
 
-namespace Rubicon.Mixins.Context.DeclarativeAnalyzers
+namespace Remotion.Mixins.Context.DeclarativeAnalyzers
 {
   public class DeclarativeConfigurationAnalyzer
   {

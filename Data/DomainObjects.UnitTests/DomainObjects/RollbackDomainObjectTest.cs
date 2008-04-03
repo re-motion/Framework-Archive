@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
   public class RollbackDomainObjectTest : ClientTransactionBaseTest
@@ -80,15 +80,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       computer.SerialNumber = "1111111111111";
 
-      Assert.AreEqual ("63457-kol-34", computer.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetOriginalValue<string>());
-      Assert.AreEqual ("1111111111111", computer.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetValue<string>());
+      Assert.AreEqual ("63457-kol-34", computer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetOriginalValue<string>());
+      Assert.AreEqual ("1111111111111", computer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetValue<string>());
 
       computer.Delete ();
       ClientTransactionMock.Rollback ();
 
-      Assert.AreEqual ("63457-kol-34", computer.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetOriginalValue<string>());
-      Assert.AreEqual ("63457-kol-34", computer.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetValue<string>());
-      Assert.IsFalse (computer.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].HasChanged);
+      Assert.AreEqual ("63457-kol-34", computer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetOriginalValue<string>());
+      Assert.AreEqual ("63457-kol-34", computer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetValue<string>());
+      Assert.IsFalse (computer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].HasChanged);
     }
 
     [Test]
@@ -97,7 +97,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order order = Order.GetObject (DomainObjectIDs.Order1);
 
       OrderTicket oldOrderTicket = order.OrderTicket;
-      DomainObjectCollection oldOrderItems = order.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      DomainObjectCollection oldOrderItems = order.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       Customer oldCustomer = order.Customer;
       Official oldOfficial = order.Official;
 

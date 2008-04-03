@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Rubicon.Data.DomainObjects">
+<project xmlns="nant-schema" name="Remotion.Data.DomainObjects">
   
   <target name="build" description="perform a build">
     <csc  target="library"
@@ -19,10 +19,10 @@
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <include asis="true" name="${build.outputdir}/Rubicon.Core.dll"/>
-        <include asis="true" name="${build.outputdir}/Rubicon.Data.DomainObjects.dll"/>
-        <include asis="true" name="${build.outputdir}/Rubicon.Mixins.dll"/>
-        <include asis="true" name="${build.outputdir}/Rubicon.Web.dll"/>
+        <include asis="true" name="${build.outputdir}/Remotion.Core.dll"/>
+        <include asis="true" name="${build.outputdir}/Remotion.Data.DomainObjects.dll"/>
+        <include asis="true" name="${build.outputdir}/Remotion.Mixins.dll"/>
+        <include asis="true" name="${build.outputdir}/Remotion.Web.dll"/>
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="System.Xml.dll"/>

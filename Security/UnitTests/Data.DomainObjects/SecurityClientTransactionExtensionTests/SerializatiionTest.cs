@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Security.Data.DomainObjects;
-using Rubicon.Development.UnitTesting;
+using Remotion.Security.Data.DomainObjects;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Security.UnitTests.Data.DomainObjects.SecurityClientTransactionExtensionTests
+namespace Remotion.Security.UnitTests.Data.DomainObjects.SecurityClientTransactionExtensionTests
 {
   [TestFixture]
   public class SerializatiionTest

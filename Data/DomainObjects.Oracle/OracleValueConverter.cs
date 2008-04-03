@@ -1,11 +1,11 @@
 using System;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Utilities;
-using Rubicon.NullableValueTypes;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
+using Remotion.NullableValueTypes;
 
-namespace Rubicon.Data.DomainObjects.Oracle
+namespace Remotion.Data.DomainObjects.Oracle
 {
   public class OracleValueConverter: ValueConverter
   {

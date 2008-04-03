@@ -1,11 +1,11 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.UnitTests.CodeGeneration.SampleTypes;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.BaseCallProxyCodeGeneration
+namespace Remotion.Mixins.UnitTests.CodeGeneration.BaseCallProxyCodeGeneration
 {
   [TestFixture]
   public class BaseCallTests : CodeGenerationBaseTest
@@ -40,15 +40,15 @@ namespace Rubicon.Mixins.UnitTests.CodeGeneration.BaseCallProxyCodeGeneration
           Assert.IsTrue (req.Type.IsAssignableFrom (proxyType));
 
         MethodInfo methodImplementdByMixin =
-            proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.IBT3Mixin4.Foo", BindingFlags.NonPublic | BindingFlags.Instance);
+            proxyType.GetMethod ("Remotion.Mixins.UnitTests.SampleTypes.IBT3Mixin4.Foo", BindingFlags.NonPublic | BindingFlags.Instance);
         Assert.IsNotNull (methodImplementdByMixin);
 
         MethodInfo methodImplementdByBCOverridden =
-            proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.IBaseType31.IfcMethod", BindingFlags.NonPublic | BindingFlags.Instance);
+            proxyType.GetMethod ("Remotion.Mixins.UnitTests.SampleTypes.IBaseType31.IfcMethod", BindingFlags.NonPublic | BindingFlags.Instance);
         Assert.IsNotNull (methodImplementdByBCOverridden);
 
         MethodInfo methodImplementdByBCNotOverridden =
-            proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.IBaseType35.IfcMethod2", BindingFlags.NonPublic | BindingFlags.Instance);
+            proxyType.GetMethod ("Remotion.Mixins.UnitTests.SampleTypes.IBaseType35.IfcMethod2", BindingFlags.NonPublic | BindingFlags.Instance);
         Assert.IsNotNull (methodImplementdByBCNotOverridden);
       }
     }

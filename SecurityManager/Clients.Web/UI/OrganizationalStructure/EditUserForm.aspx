@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditUserForm.aspx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditUserForm" MasterPageFile="../SecurityManagerMasterPage.Master"  %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditUserForm.aspx.cs" Inherits="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditUserForm" MasterPageFile="../SecurityManagerMasterPage.Master"  %>
 <%@ Register TagPrefix="securityManager" Src="EditUserControl.ascx" TagName="EditUserControl" %>
 <%@ Register TagPrefix="securityManager" Src="../ErrorMessageControl.ascx" TagName="ErrorMessageControl" %>
 
@@ -12,10 +12,10 @@
   <table cellpadding="0" cellspacing="0">
     <tr>
       <td>
-        <rubicon:WebButton ID="SaveButton" runat="server" Text="$res:Save" OnClick="SaveButton_Click" CausesValidation="false"/>
+        <remotion:WebButton ID="SaveButton" runat="server" Text="$res:Save" OnClick="SaveButton_Click" CausesValidation="false"/>
       </td>
       <td>
-        <rubicon:WebButton ID="CancelButton" runat="server" Text="$res:Cancel" style="margin-left: 5px;" 
+        <remotion:WebButton ID="CancelButton" runat="server" Text="$res:Cancel" style="margin-left: 5px;" 
           OnClick="CancelButton_Click" CausesValidation="false"/>
       </td>
     </tr>

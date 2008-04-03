@@ -7,7 +7,7 @@
   <classes>
     <!-- This file generates an MappingException when read, due to the lacking " after Company. -->
 		<class id="Company>
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Company, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Company, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Company" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties />

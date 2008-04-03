@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Text;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.Database
+namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.Database
 {
 public class TestDataLoader : IDisposable
 {

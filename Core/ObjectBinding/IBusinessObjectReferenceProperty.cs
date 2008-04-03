@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary> 
   ///   The <b>IBusinessObjectReferenceProperty</b> interface is used for accessing references to other 
@@ -48,7 +48,7 @@ namespace Rubicon.ObjectBinding
     /// </exception>
     /// <remarks> 
     ///   This method is used if the seach statement is entered via the Visual Studio .NET designer, for instance in
-    ///   the <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue"/> control.
+    ///   the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue"/> control.
     ///   <note type="inotes">
     ///     If your object model cannot evaluate a search string, but allows search through a less generic method,
     ///     provide an overload, and document that getting the list of available objects is only possible during runtime.

@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Security.UnitTests.Web.Domain;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Security.UnitTests.Web.Domain;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Security.UnitTests.Web.ExecutionEngine
+namespace Remotion.Security.UnitTests.Web.ExecutionEngine
 {
   public class TestFunctionWithThisObjectAsSecondParameter : WxeFunction
   {

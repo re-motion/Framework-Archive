@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Collections;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.MixerTool;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Collections;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.MixerTool;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using System.Reflection;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Reflection;
+using Remotion.Reflection;
 
-namespace Rubicon.Mixins.UnitTests.MixerTool
+namespace Remotion.Mixins.UnitTests.MixerTool
 {
   [Serializable]
   [TestFixture]

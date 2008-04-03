@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.ObjectBinding;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.Web.Test.Domain
+namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
   [Serializable]
   [BindableObject]

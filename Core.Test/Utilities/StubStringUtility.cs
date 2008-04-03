@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Reflection;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Utilities;
+using Remotion.Development.UnitTesting;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Utilities
+namespace Remotion.Core.UnitTests.Utilities
 {
 
 /// <summary> Exposes non-public members of the <see cref="StringUtility"/> type. </summary>

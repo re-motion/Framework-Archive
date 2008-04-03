@@ -10,7 +10,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>Rubicon.Web</AssemblyName>
+    <AssemblyName>Remotion.Web</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -19,7 +19,7 @@
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Web</RootNamespace>
+    <RootNamespace>Remotion.Web</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -60,7 +60,7 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\Rubicon.Web.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Remotion.Web.xml</DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
@@ -561,7 +561,7 @@
     <Content Include="Doc\include\UI\ISmartPage.xml" />
     <Content Include="Doc\include\UI\SmartPage.xml" />
     <Content Include="Doc\include\Utilities\UrlUtility.xml" />
-    <Content Include="Doc\WhatsNew_Rubicon.Web.txt" />
+    <Content Include="Doc\WhatsNew_Remotion.Web.txt" />
     <Content Include="Res\HTML\ColorScheme_1_3_26.css" />
     <Content Include="Res\HTML\DatePicker.js" />
     <Content Include="Res\HTML\DropDownMenu.css" />

@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
 using System.Reflection;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
-using Rubicon.ObjectBinding;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes;
+using Remotion.ObjectBinding;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
 /// <summary>
 /// A class providing reflection based access to property values of an object.
@@ -100,7 +100,7 @@ public class BusinessObjectReflector
   /// <param name="property">The property to return. Must be of type <see cref="BaseProperty"/> or derived from it and must not be <see langword="null"/>.</param>
   /// <returns>The value of the property.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is a null reference.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="property"/> is not of type <see cref="BaseProperty"/> or derived from it.</exception>
+  /// <exception cref="Remotion.Utilities.ArgumentTypeException"><paramref name="property"/> is not of type <see cref="BaseProperty"/> or derived from it.</exception>
   public object GetProperty (IBusinessObjectProperty property)
   {
     ArgumentUtility.CheckNotNullAndType<BaseProperty> ("property", property);
@@ -117,7 +117,7 @@ public class BusinessObjectReflector
   /// <param name="property">The property to set.  Must be of type <see cref="BaseProperty"/> or derived from it and must not be <see langword="null"/>.</param>
   /// <param name="value">The value that should be assigned to the property.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is a null reference.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="property"/> is not of type <see cref="BaseProperty"/> or derived from it.</exception>
+  /// <exception cref="Remotion.Utilities.ArgumentTypeException"><paramref name="property"/> is not of type <see cref="BaseProperty"/> or derived from it.</exception>
   public void SetProperty (IBusinessObjectProperty property, object value)
   {
     ArgumentUtility.CheckNotNullAndType <BaseProperty> ("property", property);

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Web.Configuration;
+using Remotion.Web.Configuration;
 
-namespace Rubicon.Web.UnitTests.Configuration
+namespace Remotion.Web.UnitTests.Configuration
 {
 
   public static class WebConfigurationFactory

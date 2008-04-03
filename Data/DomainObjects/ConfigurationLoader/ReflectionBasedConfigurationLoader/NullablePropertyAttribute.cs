@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
+namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   public abstract class NullablePropertyAttribute: Attribute, INullablePropertyAttribute
   {

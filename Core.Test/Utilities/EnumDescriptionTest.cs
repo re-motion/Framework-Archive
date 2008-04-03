@@ -2,9 +2,9 @@ using System;
 using System.Globalization;
 using System.Threading;
 using NUnit.Framework;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Utilities
+namespace Remotion.Core.UnitTests.Utilities
 {
 
 public enum EnumWithDescriptions
@@ -17,7 +17,7 @@ public enum EnumWithDescriptions
   Value3 = 3
 }
 
-[EnumDescriptionResource("Rubicon.Core.UnitTests.Resources.strings")]
+[EnumDescriptionResource("Remotion.Core.UnitTests.Resources.strings")]
 public enum EnumFromResource
 {
   Value1 = 1,

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
+namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure {
     
     
     /// <summary>
@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
+        protected global::Remotion.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
         
         /// <summary>
         /// EditTenantControl control.
@@ -35,7 +35,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantControl EditTenantControl;
+        protected global::Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantControl EditTenantControl;
         
         /// <summary>
         /// SaveButton control.
@@ -44,7 +44,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.WebButton SaveButton;
+        protected global::Remotion.Web.UI.Controls.WebButton SaveButton;
         
         /// <summary>
         /// CancelButton control.
@@ -53,6 +53,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.WebButton CancelButton;
+        protected global::Remotion.Web.UI.Controls.WebButton CancelButton;
     }
 }

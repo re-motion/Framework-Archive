@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Queries;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Queries
+namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
   [TestFixture]
   public class QueryParameterCollectionTest : StandardMappingTest

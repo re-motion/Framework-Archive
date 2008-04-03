@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Globalization;
+using Remotion.Globalization;
 
-namespace Rubicon.Mixins.UnitTests.Globalization.SampleTypes
+namespace Remotion.Mixins.UnitTests.Globalization.SampleTypes
 {
   [MultiLingualResources("OnMixin1")]
   public class MixinAddingMultiLingualResourcesAttributes1

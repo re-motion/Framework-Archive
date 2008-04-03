@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   //TODO: doc
   public interface IListInfo

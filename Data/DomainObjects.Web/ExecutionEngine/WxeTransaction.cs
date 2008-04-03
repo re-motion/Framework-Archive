@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
+namespace Remotion.Data.DomainObjects.Web.ExecutionEngine
 {
   /// <summary>
-  /// Creates a scope for a <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.
+  /// Creates a scope for a <see cref="Remotion.Data.DomainObjects.ClientTransaction"/>.
   /// </summary>
   /// <remarks>Derived classes can provide specific implementations of <see cref="ClientTransaction"/>s by overriding
   /// <see cref="WxeTransactionBase{TTransaction}.GetRootTransactionFromFunction"/>,
@@ -49,7 +49,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
     }
 
     /// <summary>
-    /// Gets the current <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> or <see langword="null"/> if none is set.
+    /// Gets the current <see cref="Remotion.Data.DomainObjects.ClientTransaction"/> or <see langword="null"/> if none is set.
     /// </summary>
     /// <remarks>
     /// As opposed to <see cref="ClientTransactionScope.CurrentTransaction"/> this property returns <see langword="null"/>, 

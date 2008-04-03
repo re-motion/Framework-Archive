@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFinderTests
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyFinderTests
 {
   public class StubPropertyFinderBase : PropertyFinderBase
   {

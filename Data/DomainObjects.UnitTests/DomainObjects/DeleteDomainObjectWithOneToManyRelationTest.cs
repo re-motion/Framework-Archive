@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
   public class DeleteDomainObjectWithOneToManyRelationTest : ClientTransactionBaseTest
@@ -33,10 +33,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ChangeState[] expectedStates = new ChangeState[]
     {
       new ObjectDeletionState (_supervisor, "1. Deleting of supervisor"),
-      new RelationChangeState (_subordinate1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _supervisor, null, "2. Relation changing of subordinate1"),
-      new RelationChangeState (_subordinate2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _supervisor, null, "3. Relation changing of subordinate2"),
-      new RelationChangeState (_subordinate1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", null, null, "4. Relation changed of subordinate1"),
-      new RelationChangeState (_subordinate2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", null, null, "5. Relation changed of subordinate2"),
+      new RelationChangeState (_subordinate1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _supervisor, null, "2. Relation changing of subordinate1"),
+      new RelationChangeState (_subordinate2, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _supervisor, null, "3. Relation changing of subordinate2"),
+      new RelationChangeState (_subordinate1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", null, null, "4. Relation changed of subordinate1"),
+      new RelationChangeState (_subordinate2, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", null, null, "5. Relation changed of subordinate2"),
       new ObjectDeletionState (_supervisor, "6. Deleted of supervisor")
     };
 
@@ -76,7 +76,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         ChangeState[] expectedStates = new ChangeState[]
             {
               new ObjectDeletionState (_supervisor, "1. Deleting of supervisor"),
-              new RelationChangeState (_subordinate1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _supervisor, null, "2. Relation changing of subordinate1")
+              new RelationChangeState (_subordinate1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _supervisor, null, "2. Relation changing of subordinate1")
             };
 
         _eventReceiver.Check (expectedStates);
@@ -93,8 +93,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (0, _supervisor.Subordinates.Count);
       Assert.IsNull (_subordinate1.Supervisor);
       Assert.IsNull (_subordinate2.Supervisor);
-			Assert.IsNull (_subordinate1.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"]);
-			Assert.IsNull (_subordinate2.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"]);
+			Assert.IsNull (_subordinate1.InternalDataContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"]);
+			Assert.IsNull (_subordinate2.InternalDataContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"]);
 			Assert.AreEqual (StateType.Changed, _subordinate1.InternalDataContainer.State);
 			Assert.AreEqual (StateType.Changed, _subordinate2.InternalDataContainer.State);
     }
@@ -120,7 +120,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void GetOriginalRelatedObjects ()
     {
       _supervisor.Delete ();
-      DomainObjectCollection originalSubordinates = _supervisor.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates");
+      DomainObjectCollection originalSubordinates = _supervisor.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates");
 
       Assert.IsNotNull (originalSubordinates);
       Assert.AreEqual (2, originalSubordinates.Count);

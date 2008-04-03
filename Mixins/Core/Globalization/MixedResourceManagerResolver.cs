@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
-using Rubicon.Globalization;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Utilities;
-using Rubicon.Collections;
+using Remotion.Globalization;
+using Remotion.Mixins.Definitions;
+using Remotion.Utilities;
+using Remotion.Collections;
 
-namespace Rubicon.Mixins.Globalization
+namespace Remotion.Mixins.Globalization
 {
   public class MixedResourceManagerResolver<TAttribute> : ResourceManagerResolver<TAttribute>
       where TAttribute : Attribute, IResourcesAttribute

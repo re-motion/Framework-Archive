@@ -4,15 +4,15 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Rubicon.Mixins.Utilities.Serialization;
+using Remotion.Mixins.Utilities.Serialization;
 using NUnit.Framework;
 using System.Runtime.Serialization;
-using Rubicon;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Utilities;
+using Remotion;
+using Remotion.Development.UnitTesting;
+using Remotion.Utilities;
 using AssertionException=NUnit.Framework.AssertionException;
 
-namespace Rubicon.Mixins.UnitTests.Utilities.Serialization
+namespace Remotion.Mixins.UnitTests.Utilities.Serialization
 {
   [TestFixture]
   public class SafeReflectionSerializationTests

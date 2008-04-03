@@ -4,10 +4,10 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain
+namespace Remotion.SecurityManager.UnitTests.Domain
 {
   public class DatabaseHelper
   {

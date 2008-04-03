@@ -1,11 +1,11 @@
 using System;
 using System.Reflection;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.ObjectBinding.BindableObject.Properties;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
   public class BindableDomainObjectMetadataFactory : IMetadataFactory
   {

@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core
+namespace Remotion.ObjectBinding.UnitTests.Core
 {
   [TestFixture]
   public class ListInfoTest

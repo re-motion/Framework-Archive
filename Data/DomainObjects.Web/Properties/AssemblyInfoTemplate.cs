@@ -8,8 +8,8 @@ using System.Web.UI;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle("Rubicon DomainObjects Web Library")]
-[assembly: AssemblyDescription("Class library for using Rubicon Web Execution Engine and the Rubicon Persistence Framework in web applications.")]
+[assembly: AssemblyTitle("Remotion DomainObjects Web Library")]
+[assembly: AssemblyDescription("Class library for using Remotion Web Execution Engine and the Remotion Persistence Framework in web applications.")]
 [assembly: AssemblyConfiguration("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]
 [assembly: AssemblyProduct("@productname@")]
@@ -61,4 +61,4 @@ using System.Web.UI;
 [assembly: AssemblyKeyFile(@"@keyfile@")]
 [assembly: AssemblyKeyName("")]
 #pragma warning restore 1699
-[assembly: TagPrefix ("Rubicon.Data.DomainObjects.Web", "dw")]
+[assembly: TagPrefix ("Remotion.Data.DomainObjects.Web", "dw")]

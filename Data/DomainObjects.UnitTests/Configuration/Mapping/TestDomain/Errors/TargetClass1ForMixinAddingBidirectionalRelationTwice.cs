@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors;
-using Rubicon.Mixins;
+using Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors
 {
   [DBTable]
   [Uses (typeof (MixinAddingBidirectionalRelationTwice))]

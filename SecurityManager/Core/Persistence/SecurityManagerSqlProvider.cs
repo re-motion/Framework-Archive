@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 
-namespace Rubicon.SecurityManager.Persistence
+namespace Remotion.SecurityManager.Persistence
 {
   public class SecurityManagerSqlProvider : SqlProvider
   {

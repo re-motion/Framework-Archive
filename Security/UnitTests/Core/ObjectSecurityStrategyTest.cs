@@ -2,13 +2,13 @@ using System;
 using System.Security.Principal;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Collections;
-using Rubicon.Security.Configuration;
-using Rubicon.Security.UnitTests.Core.Configuration;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Security.UnitTests.Core.SampleDomain;
+using Remotion.Collections;
+using Remotion.Security.Configuration;
+using Remotion.Security.UnitTests.Core.Configuration;
+using Remotion.Development.UnitTesting;
+using Remotion.Security.UnitTests.Core.SampleDomain;
 
-namespace Rubicon.Security.UnitTests.Core
+namespace Remotion.Security.UnitTests.Core
 {
   [TestFixture]
   public class ObjectSecurityStrategyTest

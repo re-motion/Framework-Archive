@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using Rubicon.Security.Metadata;
-using Rubicon.Security.Configuration;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Security.Metadata;
+using Remotion.Security.Configuration;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Security.Web.ExecutionEngine
+namespace Remotion.Security.Web.ExecutionEngine
 {
   [Obsolete ("Use WxeSecurityAdapter instead. (Version: 1.7.41)", true)]
   public class WxeSecurityProvider : WxeSecurityAdapter, IWxeSecurityProvider

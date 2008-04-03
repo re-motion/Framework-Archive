@@ -2,11 +2,11 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing.Design;
-using Rubicon.Data.DomainObjects.ObjectBinding.Design;
-using Rubicon.ObjectBinding;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.ObjectBinding.Design;
+using Remotion.ObjectBinding;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
 /// <summary>
 /// A DataSource for <see cref="BindableDomainObject"/>s.

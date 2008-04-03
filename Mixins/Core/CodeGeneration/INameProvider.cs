@@ -1,6 +1,6 @@
-using Rubicon.Mixins.Definitions;
+using Remotion.Mixins.Definitions;
 
-namespace Rubicon.Mixins.CodeGeneration
+namespace Remotion.Mixins.CodeGeneration
 {
   public interface INameProvider
   {

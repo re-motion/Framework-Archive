@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Web.UnitTests
+namespace Remotion.Web.UnitTests
 {
   public class WxeDelegateStep : WxeStep
   {

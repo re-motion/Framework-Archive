@@ -1,14 +1,14 @@
 using System;
 using System.Configuration;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Mapping.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Mapping.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Queries.Configuration;
 
-namespace Rubicon.Data.DomainObjects.Configuration
+namespace Remotion.Data.DomainObjects.Configuration
 {
   /// <summary>
-  /// <see cref="ConfigurationSectionGroup"/> for grouping the <see cref="ConfigurationSection"/> in the <b>Rubicon.Data.DomainObjects</b> namespace.
+  /// <see cref="ConfigurationSectionGroup"/> for grouping the <see cref="ConfigurationSection"/> in the <b>Remotion.Data.DomainObjects</b> namespace.
   /// </summary>
   public sealed class DomainObjectsConfiguration: ConfigurationSectionGroup, IDomainObjectsConfiguration
   {
@@ -86,7 +86,7 @@ namespace Rubicon.Data.DomainObjects.Configuration
 
     private string ConfigKey
     {
-      get { return string.IsNullOrEmpty (SectionGroupName) ? "rubicon.data.domainObjects" : SectionGroupName; }
+      get { return string.IsNullOrEmpty (SectionGroupName) ? "remotion.data.domainObjects" : SectionGroupName; }
     }
   }
 }

@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Mixins.Context;
-using Rubicon.Utilities;
+using Remotion.Mixins.Context;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   /// <summary>
   /// Indicates that a class integrates a mixin to implement some part of its functionality or public interface.

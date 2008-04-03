@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.BindableObject.Properties
+namespace Remotion.ObjectBinding.BindableObject.Properties
 {
   //TODO: doc
   public class EnumerationProperty : PropertyBase, IBusinessObjectEnumerationProperty

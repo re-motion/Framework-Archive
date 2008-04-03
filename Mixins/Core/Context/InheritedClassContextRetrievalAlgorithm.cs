@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Context
+namespace Remotion.Mixins.Context
 {
   public class InheritedClassContextRetrievalAlgorithm
   {

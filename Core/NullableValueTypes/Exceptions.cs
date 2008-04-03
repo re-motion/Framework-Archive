@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.NullableValueTypes
+namespace Remotion.NullableValueTypes
 {
 
 /// <summary>

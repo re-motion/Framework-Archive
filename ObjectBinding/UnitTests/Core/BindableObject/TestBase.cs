@@ -1,12 +1,12 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.Security;
+using Remotion.Development.UnitTesting;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.Security;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
 {
   public class TestBase
   {

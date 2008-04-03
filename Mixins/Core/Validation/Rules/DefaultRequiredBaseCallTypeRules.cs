@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Mixins.Definitions;
+using Remotion.Mixins.Definitions;
 
-namespace Rubicon.Mixins.Validation.Rules
+namespace Remotion.Mixins.Validation.Rules
 {
   public class DefaultRequiredBaseCallTypeRules : RuleSetBase
   {

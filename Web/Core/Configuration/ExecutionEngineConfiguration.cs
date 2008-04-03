@@ -1,12 +1,12 @@
 using System;
 using System.Xml.Serialization;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Web.Configuration
+namespace Remotion.Web.Configuration
 {
 
-/// <summary> Configuration section entry for configuring the <b>Rubicon.Web.ExecutionEngine</b>. </summary>
+/// <summary> Configuration section entry for configuring the <b>Remotion.Web.ExecutionEngine</b>. </summary>
 /// <include file='doc\include\Configuration\ExecutionEngineConfiguration.xml' path='ExecutionEngineConfiguration/Class/*' />
 [XmlType (Namespace = WebConfiguration.SchemaUri)]
 public class ExecutionEngineConfiguration

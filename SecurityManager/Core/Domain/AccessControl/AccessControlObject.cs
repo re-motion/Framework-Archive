@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.SecurityManager.Domain.AccessControl
+namespace Remotion.SecurityManager.Domain.AccessControl
 {
   [Serializable]
   public abstract class AccessControlObject : BaseSecurityManagerObject

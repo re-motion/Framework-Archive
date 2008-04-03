@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.Validation.Rules
+namespace Remotion.Mixins.Validation.Rules
 {
   public interface IRuleSet
   {

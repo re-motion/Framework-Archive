@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Web.UI.Controls;
+using Remotion.Data.DomainObjects;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI.Globalization;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 using $PROJECT_ROOTNAMESPACE$;
 using $PROJECT_ROOTNAMESPACE$.Classes;
 using $DOMAIN_ROOTNAMESPACE$;

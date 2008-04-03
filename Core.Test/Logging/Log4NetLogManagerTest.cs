@@ -1,7 +1,7 @@
 using NUnit.Framework;
-using Rubicon.Logging;
+using Remotion.Logging;
 
-namespace Rubicon.Core.UnitTests.Logging
+namespace Remotion.Core.UnitTests.Logging
 {
   [TestFixture]
   public class Log4NetLogManagerTest
@@ -27,7 +27,7 @@ namespace Rubicon.Core.UnitTests.Logging
 
       Assert.IsInstanceOfType (typeof (Log4NetLog), log);
       Log4NetLog log4NetLog = (Log4NetLog) log;
-      Assert.AreEqual ("Rubicon.Core.UnitTests.Logging.SampleType", log4NetLog.Logger.Name);
+      Assert.AreEqual ("Remotion.Core.UnitTests.Logging.SampleType", log4NetLog.Logger.Name);
     }
   }
 }

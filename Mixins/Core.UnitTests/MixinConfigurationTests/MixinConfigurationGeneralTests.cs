@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.Mixins.Context.FluentBuilders;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.Context;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Mixins.UnitTests.MixinConfigurationTests
+namespace Remotion.Mixins.UnitTests.MixinConfigurationTests
 {
   [TestFixture]
   public class MixinConfigurationGeneralTests
@@ -230,7 +230,7 @@ namespace Rubicon.Mixins.UnitTests.MixinConfigurationTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The given destination configuration object conflicts with the source "
-          + "configuration: The interface Rubicon.Mixins.UnitTests.SampleTypes.IBaseType33 has already been associated with a class context.\r\n"
+          + "configuration: The interface Remotion.Mixins.UnitTests.SampleTypes.IBaseType33 has already been associated with a class context.\r\n"
           + "Parameter name: destination")]
     public void CopyTo_ThrowsWhenConflictWithRegisteredInterface ()
     {

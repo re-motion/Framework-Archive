@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Text.CommandLine;
+using Remotion.Text.CommandLine;
 
-namespace Rubicon.Core.UnitTests.Text.CommandLine
+namespace Remotion.Core.UnitTests.Text.CommandLine
 {
   public class Arguments
   {

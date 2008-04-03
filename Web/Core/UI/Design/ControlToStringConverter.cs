@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 
-namespace Rubicon.Web.UI.Design
+namespace Remotion.Web.UI.Design
 {
 
 /// <summary>

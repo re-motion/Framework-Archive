@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Security.Web.ExecutionEngine
+namespace Remotion.Security.Web.ExecutionEngine
 {
   public class WxeDemandCreatePermissionAttribute : WxeDemandTargetPermissionAttribute
   {

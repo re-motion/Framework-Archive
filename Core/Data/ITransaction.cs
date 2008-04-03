@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data
+namespace Remotion.Data
 {
 
 /// <summary> The <b>ITransaction</b> interface provides functionality needed when working with a transaction. </summary>

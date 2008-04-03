@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects;
+using Remotion.Data.DomainObjects;
 
-namespace Rubicon.SecurityManager.Domain
+namespace Remotion.SecurityManager.Domain
 {
   public class SecurityManagerStorageGroupAttribute : DBStorageGroupAttribute
   {

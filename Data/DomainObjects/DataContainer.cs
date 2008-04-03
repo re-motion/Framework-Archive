@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Represents a container for the persisted properties of a DomainObject.
@@ -26,7 +26,7 @@ namespace Rubicon.Data.DomainObjects
     // static members and constants
 
     /// <summary>
-    /// Creates an empty <see cref="DataContainer"/> for a new <see cref="Rubicon.Data.DomainObjects.DomainObject"/>. The <see cref="DataContainer"/>
+    /// Creates an empty <see cref="DataContainer"/> for a new <see cref="Remotion.Data.DomainObjects.DomainObject"/>. The <see cref="DataContainer"/>
     /// contains a new <see cref="PropertyValue"/> object for every <see cref="PropertyDefinition"/> in the respective <see cref="ClassDefinition"/>.
     /// </summary>
     /// <remarks>
@@ -54,7 +54,7 @@ namespace Rubicon.Data.DomainObjects
     }
 
     /// <summary>
-    /// Creates an empty <see cref="DataContainer"/> for an existing <see cref="Rubicon.Data.DomainObjects.DomainObject"/>. The <see cref="DataContainer"/>
+    /// Creates an empty <see cref="DataContainer"/> for an existing <see cref="Remotion.Data.DomainObjects.DomainObject"/>. The <see cref="DataContainer"/>
     /// does not contain any <see cref="PropertyValue"/> objects.
     /// </summary>
     /// <remarks>
@@ -171,7 +171,7 @@ namespace Rubicon.Data.DomainObjects
     /// </summary>
     /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
     /// <exception cref="System.ArgumentException">The given <paramref name="propertyName"/> does not exist in the data container.</exception>
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
     public object this [string propertyName]
@@ -198,7 +198,7 @@ namespace Rubicon.Data.DomainObjects
     /// <param name="propertyName">The name of the <see cref="PropertyValue"/>. Must not be <see langword="null"/>.</param>
     /// <returns>The value of the <see cref="PropertyValue"/>.</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
     /// <exception cref="System.ArgumentException">The given <paramref name="propertyName"/> does not exist in the data container.</exception>
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
     public object GetValue (string propertyName)
@@ -215,7 +215,7 @@ namespace Rubicon.Data.DomainObjects
     /// <param name="propertyName">The name of the <see cref="PropertyValue"/>. Must not be <see langword="null"/>.</param>
     /// <param name="value">The value the <see cref="PropertyValue"/> is set to.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
     /// <exception cref="System.ArgumentException">The given <paramref name="propertyName"/> does not exist in the data container.</exception>
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
     public void SetValue (string propertyName, object value)
@@ -228,7 +228,7 @@ namespace Rubicon.Data.DomainObjects
 
 
     /// <summary>
-    /// Gets the <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> which the <see cref="DataContainer"/> is part of.
+    /// Gets the <see cref="Remotion.Data.DomainObjects.ClientTransaction"/> which the <see cref="DataContainer"/> is part of.
     /// </summary>
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
     public ClientTransaction ClientTransaction
@@ -245,7 +245,7 @@ namespace Rubicon.Data.DomainObjects
     }
 
     /// <summary>
-    /// Gets the <see cref="Rubicon.Data.DomainObjects.DomainObject"/> associated with the <see cref="DataContainer"/>.
+    /// Gets the <see cref="Remotion.Data.DomainObjects.DomainObject"/> associated with the <see cref="DataContainer"/>.
     /// </summary>
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
     public DomainObject DomainObject
@@ -287,7 +287,7 @@ namespace Rubicon.Data.DomainObjects
     }
 
     /// <summary>
-    /// Gets the <see cref="Type"/> of the <see cref="Rubicon.Data.DomainObjects.DomainObject"/> of the <see cref="DataContainer"/>.
+    /// Gets the <see cref="Type"/> of the <see cref="Remotion.Data.DomainObjects.DomainObject"/> of the <see cref="DataContainer"/>.
     /// </summary>
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
     public Type DomainObjectType
@@ -365,7 +365,7 @@ namespace Rubicon.Data.DomainObjects
     /// Gets a value indicating the discarded status of the <see cref="DataContainer"/>.
     /// </summary>
     /// <remarks>
-    /// For more information why and when a <see cref="DataContainer"/> is discarded see <see cref="Rubicon.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
+    /// For more information why and when a <see cref="DataContainer"/> is discarded see <see cref="Remotion.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
     /// </remarks>
     public bool IsDiscarded
     {

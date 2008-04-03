@@ -2,11 +2,11 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Globalization;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Globalization;
+using Remotion.Globalization;
+using Remotion.Utilities;
+using Remotion.Web.UI.Globalization;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
   /// <summary> A node for the <see cref="WebTreeView"/>. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]

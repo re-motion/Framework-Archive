@@ -7,10 +7,10 @@
 // --------------------------------------------------------------------------------------
 
 using System;
-using Rubicon.Text.CommandLine;
-using Rubicon.ObjectBinding.Web.CodeGenerator;
+using Remotion.Text.CommandLine;
+using Remotion.ObjectBinding.Web.CodeGenerator;
 
-namespace Rubicon.ObjectBinding.Web.CodeGenerator
+namespace Remotion.ObjectBinding.Web.CodeGenerator
 {
 	internal class Program
 	{

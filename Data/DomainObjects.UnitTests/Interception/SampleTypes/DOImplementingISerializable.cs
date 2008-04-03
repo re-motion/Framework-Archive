@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes
+namespace Remotion.Data.DomainObjects.UnitTests.Interception.SampleTypes
 {
   [DBTable]
   [Instantiable]

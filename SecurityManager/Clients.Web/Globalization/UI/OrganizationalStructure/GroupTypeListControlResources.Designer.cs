@@ -16,7 +16,7 @@ using System.Globalization;
 using System.Resources;
 using System.Runtime.CompilerServices;
 
-namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure {
+namespace Remotion.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure {
     using System;
     
     
@@ -47,7 +47,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         internal static ResourceManager ResourceManager {
             get {
                 if (ReferenceEquals(resourceMan, null)) {
-                    ResourceManager temp = new ResourceManager("Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure.Grou" +
+                    ResourceManager temp = new ResourceManager("Remotion.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure.Grou" +
                             "pTypeListControlResources", typeof(GroupTypeListControlResources).Assembly);
                     resourceMan = temp;
                 }

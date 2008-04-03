@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Queries.Configuration
+namespace Remotion.Data.DomainObjects.Queries.Configuration
 {
   /// <summary>
   /// Represents a collection of <see cref="QueryDefinition"/>s.

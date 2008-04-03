@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Globalization;
-using Rubicon.Mixins;
-using Rubicon.Utilities;
+using Remotion.Globalization;
+using Remotion.Mixins;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Globalization
+namespace Remotion.Mixins.Globalization
 {
   /// <summary>
   /// Provides a variant of <see cref="MultiLingualResources"/> that can be used to have mixins add resource identifiers to a target

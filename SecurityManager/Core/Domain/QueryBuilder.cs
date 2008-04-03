@@ -1,11 +1,11 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain
+namespace Remotion.SecurityManager.Domain
 {
   public abstract class QueryBuilder
   {

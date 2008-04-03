@@ -1,18 +1,18 @@
 using System;
 using System.Configuration;
 using System.IO;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Legacy.CodeGenerator.MigrationToReflectionBasedMapping;
-using Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Sql;
-using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Text.CommandLine;
-using Rubicon.Utilities;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Legacy.CodeGenerator.MigrationToReflectionBasedMapping;
+using Remotion.Data.DomainObjects.Legacy.CodeGenerator.Sql;
+using Remotion.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Legacy.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Text.CommandLine;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Console
+namespace Remotion.Data.DomainObjects.Legacy.CodeGenerator.Console
 {
   public class MainClass
   {

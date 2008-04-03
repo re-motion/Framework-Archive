@@ -2,14 +2,14 @@ using System;
 using System.Security.Principal;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Security.Configuration;
-using Rubicon.Security.Metadata;
-using Rubicon.Security.Web.ExecutionEngine;
-using Rubicon.Security.UnitTests.Web.Configuration;
-using Rubicon.Security.UnitTests.Web.Domain;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Security.Configuration;
+using Remotion.Security.Metadata;
+using Remotion.Security.Web.ExecutionEngine;
+using Remotion.Security.UnitTests.Web.Configuration;
+using Remotion.Security.UnitTests.Web.Domain;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Security.UnitTests.Web.ExecutionEngine
+namespace Remotion.Security.UnitTests.Web.ExecutionEngine
 {
   [TestFixture]
   public class WxeSecurityAdapterTestWithPermissionsFromInstanceMethod

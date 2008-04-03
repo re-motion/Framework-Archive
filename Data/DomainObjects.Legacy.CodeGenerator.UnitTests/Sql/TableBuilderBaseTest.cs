@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using Rhino.Mocks.Constraints;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.NullableValueTypes;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.NullableValueTypes;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Sql;
+using Remotion.Data.DomainObjects.Legacy.CodeGenerator.Sql;
 
-namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.Sql
+namespace Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.Sql
 {
   //TODO: Cover execution path from GetColumnList (ClassDefinition) to GetColumn (PropertyDefinition, bool)
   [TestFixture]

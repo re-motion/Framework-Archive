@@ -1,12 +1,12 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.Globalization;
-using Rubicon.Security;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Globalization;
+using Remotion.Globalization;
+using Remotion.Security;
+using Remotion.Utilities;
+using Remotion.Web.UI.Globalization;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
   [TypeConverter (typeof (ExpandableObjectConverter))]
   public class WebMenuItem : IControlItem
@@ -87,7 +87,7 @@ namespace Rubicon.Web.UI.Controls
 
     private void OwnerControl_PreRender (object sender, EventArgs e)
     {
-      if (Rubicon.Web.Utilities.ControlHelper.IsDesignMode (_ownerControl))
+      if (Remotion.Web.Utilities.ControlHelper.IsDesignMode (_ownerControl))
         return;
       PreRender ();
     }

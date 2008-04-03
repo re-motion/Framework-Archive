@@ -2,9 +2,9 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Web.UI.WebControls;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
   /// <summary> Summary validates the text for a valid numeric value. </summary>
   /// <remarks> Validation is performed using the respective data type's <b>Parse</b> method. </remarks>

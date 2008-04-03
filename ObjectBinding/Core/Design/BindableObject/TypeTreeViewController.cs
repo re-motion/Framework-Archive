@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Design.BindableObject
+namespace Remotion.ObjectBinding.Design.BindableObject
 {
   public class TypeTreeViewController : ControllerBase
   {

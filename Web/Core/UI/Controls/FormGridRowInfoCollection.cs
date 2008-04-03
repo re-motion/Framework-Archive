@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 /// <summary> A read only collection of <see cref="FormGridManager.FormGridRow"/> objects. </summary>

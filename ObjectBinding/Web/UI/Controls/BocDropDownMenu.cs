@@ -2,13 +2,13 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.ObjectBinding.Web.UI.Design;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
 [ToolboxData("<{0}:BocDropDownMenu runat=server></{0}:BocDropDownMenu>")]
@@ -56,7 +56,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   }
  
   /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-  /// <exception cref="Rubicon.Web.UI.WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
+  /// <exception cref="Remotion.Web.UI.WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity ()
   {
     if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
@@ -287,7 +287,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   }
 
   /// <summary> 
-  ///   Handles the <see cref="Rubicon.Web.UI.Controls.DropDownMenu.EventCommandClick"/> event of the 
+  ///   Handles the <see cref="Remotion.Web.UI.Controls.DropDownMenu.EventCommandClick"/> event of the 
   ///   <see cref="DropDownMenu"/>.
   /// </summary>
   /// <param name="sender"> The source of the event. </param>
@@ -330,7 +330,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   }
 
   /// <summary> 
-  ///   Handles the <see cref="Rubicon.Web.UI.Controls.DropDownMenu.WxeFunctionCommandClick"/> event of the 
+  ///   Handles the <see cref="Remotion.Web.UI.Controls.DropDownMenu.WxeFunctionCommandClick"/> event of the 
   ///   <see cref="DropDownMenu"/>. 
   /// </summary>
   /// <param name="sender"> The source of the event. </param>
@@ -377,11 +377,11 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     }
   }
   /// <summary> 
-  ///   Gets or sets a flag that determines whether the <see cref="Rubicon.Web.UI.Controls.DropDownMenu.TitleIcon"/> 
+  ///   Gets or sets a flag that determines whether the <see cref="Remotion.Web.UI.Controls.DropDownMenu.TitleIcon"/> 
   ///   is shown in front of the <see cref="Value"/>.
   /// </summary>
   /// <value> 
-  ///   <see langword="true"/> to show the <see cref="Rubicon.Web.UI.Controls.DropDownMenu.TitleIcon"/>. 
+  ///   <see langword="true"/> to show the <see cref="Remotion.Web.UI.Controls.DropDownMenu.TitleIcon"/>. 
   ///   The default value is <see langword="true"/>. 
   /// </value>
   /// <remarks> 
@@ -406,7 +406,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
   [DefaultValue ((string) null)]
   [PersistenceMode (PersistenceMode.Attribute)]
-  [TypeConverter (typeof (Rubicon.Web.UI.Design.StringArrayConverter))]
+  [TypeConverter (typeof (Remotion.Web.UI.Design.StringArrayConverter))]
   public string[] HiddenMenuItems 
   {
     get 

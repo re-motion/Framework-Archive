@@ -1,10 +1,10 @@
 using System;
 using System.Data;
 using System.Text;
-using Rubicon.Mixins;
-using Rubicon.Utilities;
+using Remotion.Mixins;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
   public class WhereClauseBuilder
   {

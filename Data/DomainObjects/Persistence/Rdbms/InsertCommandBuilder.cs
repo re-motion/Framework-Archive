@@ -1,9 +1,9 @@
 using System;
 using System.Data;
 using System.Text;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
   public class InsertCommandBuilder: CommandBuilder
   {

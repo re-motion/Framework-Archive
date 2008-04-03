@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.AccessControl
+namespace Remotion.SecurityManager.Domain.AccessControl
 {
-  [EnumDescriptionResource ("Rubicon.SecurityManager.Globalization.Domain.AccessControl.TenantSelection")]
+  [EnumDescriptionResource ("Remotion.SecurityManager.Globalization.Domain.AccessControl.TenantSelection")]
   public enum TenantSelection
   {
     All = 0,

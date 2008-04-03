@@ -1,6 +1,6 @@
-using Rubicon.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Defines a strategy to use when traversing a <see cref="DomainObject"/> graph using a <see cref="DomainObjectGraphTraverser"/>.

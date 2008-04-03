@@ -1,8 +1,8 @@
 using System;
 
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Templates.Generic.Web.WxeFunctions
+namespace Remotion.Templates.Generic.Web.WxeFunctions
 {
 public class BaseFunction : WxeFunction
 {
@@ -18,7 +18,7 @@ public class BaseFunction : WxeFunction
 
   private void Initialize ()
   {
-    ReturnUrl = "WxeHandler.ashx?WxeFunctionType=Rubicon.Templates.Generic.Web.WxeFunctions.TemplateFunction,Rubicon.Templates.Generic.Web";
+    ReturnUrl = "WxeHandler.ashx?WxeFunctionType=Remotion.Templates.Generic.Web.WxeFunctions.TemplateFunction,Remotion.Templates.Generic.Web";
   }
 
   // methods and properties

@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
   public class ConstructionTest : ClientTransactionBaseTest

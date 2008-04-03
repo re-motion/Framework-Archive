@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.UnitTests.SampleTypes
+namespace Remotion.Mixins.UnitTests.SampleTypes
 {
   public interface ICBaseType3 : IBaseType31, IBaseType32, IBaseType33, IBaseType34, IBaseType35
   { }

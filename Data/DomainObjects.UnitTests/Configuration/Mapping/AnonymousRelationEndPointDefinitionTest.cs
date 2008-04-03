@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
   public class AnonymousRelationEndPointDefinitionTest : StandardMappingTest
@@ -60,9 +60,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void RelationDefinitionNotNull ()
     {
       RelationEndPointDefinition oppositeEndPoint = new RelationEndPointDefinition (
-          MappingConfiguration.Current.ClassDefinitions[typeof (Location)], "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", true);
+          MappingConfiguration.Current.ClassDefinitions[typeof (Location)], "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client", true);
 
-      RelationDefinition relationDefinition = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", _definition, oppositeEndPoint);
+      RelationDefinition relationDefinition = new RelationDefinition ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client", _definition, oppositeEndPoint);
 
       Assert.IsNotNull (_definition.RelationDefinition);
     }

@@ -51,19 +51,19 @@
     <data name="auto:ValidationStateViewer:NoticeText">
         <value>Die Eingaben sind fehlerhaft oder unvollständig.</value>
     </data>
-    <data name="Rubicon.Web.UI.Controls.FormGridManager.ValidationErrorInfoAlternateText" mimetype="	">
+    <data name="Remotion.Web.UI.Controls.FormGridManager.ValidationErrorInfoAlternateText" mimetype="	">
         <value>!</value>
     </data>
-    <data name="Rubicon.Web.UI.Controls.FormGridManager.RequiredFieldAlternateText" mimetype="	">
+    <data name="Remotion.Web.UI.Controls.FormGridManager.RequiredFieldAlternateText" mimetype="	">
         <value>*</value>
     </data>
-    <data name="Rubicon.Web.UI.Controls.FormGridManager.RequiredFieldTitle" mimetype="	">
+    <data name="Remotion.Web.UI.Controls.FormGridManager.RequiredFieldTitle" mimetype="	">
         <value>Bitte diese Zeile ausfüllen</value>
     </data>
-    <data name="Rubicon.Web.UI.Controls.FormGridManager.HelpAlternateText" mimetype="	">
+    <data name="Remotion.Web.UI.Controls.FormGridManager.HelpAlternateText" mimetype="	">
         <value>?</value>
     </data>
-    <data name="Rubicon.Web.UI.Controls.FormGridManager.HelpTitle" mimetype="	">
+    <data name="Remotion.Web.UI.Controls.FormGridManager.HelpTitle" mimetype="	">
         <value>zur Hilfe</value>
     </data>
     <data name="auto:GlobalFormGridManager:TableDesignTimeFormGrid:ZipField_Label:Text">

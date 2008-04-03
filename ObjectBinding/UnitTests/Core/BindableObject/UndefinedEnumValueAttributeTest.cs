@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.ObjectBinding;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
 {
   [TestFixture]
   public class UndefinedEnumValueAttributeTest : TestBase

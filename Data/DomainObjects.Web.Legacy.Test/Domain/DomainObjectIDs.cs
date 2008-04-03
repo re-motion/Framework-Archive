@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain
+namespace Remotion.Data.DomainObjects.Web.Legacy.Test.Domain
 {
 public class DomainObjectIDs
 {

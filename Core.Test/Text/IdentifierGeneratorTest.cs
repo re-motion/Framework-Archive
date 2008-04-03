@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Text;
+using Remotion.Text;
 
-namespace Rubicon.Core.UnitTests.Text
+namespace Remotion.Core.UnitTests.Text
 {
 
 [TestFixture]

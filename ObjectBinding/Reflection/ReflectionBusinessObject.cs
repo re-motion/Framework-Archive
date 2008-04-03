@@ -2,9 +2,9 @@ using System;
 using System.ComponentModel;
 using System.Reflection;
 using System.Xml.Serialization;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Reflection.Legacy
+namespace Remotion.ObjectBinding.Reflection.Legacy
 {
 
 /// <summary>

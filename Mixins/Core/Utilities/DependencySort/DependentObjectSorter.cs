@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Utilities.DependencySort
+namespace Remotion.Mixins.Utilities.DependencySort
 {
   public class DependentObjectSorter<T>
   {

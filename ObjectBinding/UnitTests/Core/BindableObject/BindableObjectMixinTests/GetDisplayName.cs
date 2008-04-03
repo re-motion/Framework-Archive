@@ -2,12 +2,12 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
-using Rubicon.Security;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.Security;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectMixinTests
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectMixinTests
 {
   [TestFixture]
   public class GetDisplayName : TestBase
@@ -37,7 +37,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectMixi
 
       Assert.That (
           ((IBusinessObject) bindableObjectMixin).DisplayName,
-          Is.EqualTo ("Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleBusinessObjectClass, Rubicon.ObjectBinding.UnitTests"));
+          Is.EqualTo ("Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests"));
     }
 
     [Test]
@@ -93,7 +93,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectMixi
       _mockRepository.VerifyAll ();
       Assert.That (
           actual,
-          NUnit.Framework.SyntaxHelpers.Text.StartsWith ("Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SecurableClassWithReferenceType"));
+          NUnit.Framework.SyntaxHelpers.Text.StartsWith ("Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SecurableClassWithReferenceType"));
     }
   }
 }

@@ -1,4 +1,4 @@
-namespace Rubicon.Mixins.Utilities.Singleton
+namespace Remotion.Mixins.Utilities.Singleton
 {
   public interface IInstanceCreator<T>
   {

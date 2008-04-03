@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.EventReceiver
 {
   [Serializable]
   public class ObjectDeletionState : ChangeState

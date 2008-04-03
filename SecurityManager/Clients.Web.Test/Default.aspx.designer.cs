@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.Test {
+namespace Remotion.SecurityManager.Clients.Web.Test {
     
     
     /// <summary>
@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+        protected global::Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
         
         /// <summary>
         /// form1 control.
@@ -53,6 +53,6 @@ namespace Rubicon.SecurityManager.Clients.Web.Test {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue UsersField;
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue UsersField;
     }
 }

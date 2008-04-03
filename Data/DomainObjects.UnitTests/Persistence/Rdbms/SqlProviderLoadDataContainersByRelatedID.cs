@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
   [TestFixture]
   public class SqlProviderLoadDataContainersByRelatedID : SqlProviderBaseTest
@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       DataContainerCollection collection = Provider.LoadDataContainersByRelatedID (
           TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)],
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer",
+          "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer",
           DomainObjectIDs.Customer1);
 
       Assert.IsNotNull (collection);
@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       DataContainerCollection collection = Provider.LoadDataContainersByRelatedID (
           TestMappingConfiguration.Current.ClassDefinitions[typeof (Distributor)],
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson",
+          "Remotion.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson",
           DomainObjectIDs.Person6);
 
       Assert.AreEqual (1, collection.Count);
@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
 
       DataContainerCollection orderContainers = Provider.LoadDataContainersByRelatedID (
-          orderDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", DomainObjectIDs.Customer1);
+          orderDefinition, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", DomainObjectIDs.Customer1);
 
       Assert.AreEqual (2, orderContainers.Count);
       Assert.AreEqual (DomainObjectIDs.Order1, orderContainers[0].ID);
@@ -56,7 +56,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
 
-      DataContainerCollection orderContainers = Provider.LoadDataContainersByRelatedID (orderDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official", DomainObjectIDs.Official1);
+      DataContainerCollection orderContainers = Provider.LoadDataContainersByRelatedID (orderDefinition, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Official", DomainObjectIDs.Official1);
       Assert.IsNotNull (orderContainers);
       Assert.AreEqual (5, orderContainers.Count);
     }

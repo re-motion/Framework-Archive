@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 using System.Diagnostics;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
 /// <summary>
-/// Base class for all collections of Rubicon.Data.DomainObjects.
+/// Base class for all collections of Remotion.Data.DomainObjects.
 /// </summary>
 [Serializable]
 [DebuggerDisplay ("Collection: {GetType().Name} - Count: {Count}")]

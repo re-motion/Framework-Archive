@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
 
 /// <summary>
@@ -10,7 +10,7 @@ namespace Rubicon.ObjectBinding
 /// </summary>
 /// <remarks>
 ///   <para>
-///     See the <see href="Rubicon.ObjectBinding.html">Rubicon.ObjectBinding</see> namespace documentation for general 
+///     See the <see href="Remotion.ObjectBinding.html">Remotion.ObjectBinding</see> namespace documentation for general 
 ///     information on the data binding process.
 ///   </para>
 /// </remarks>

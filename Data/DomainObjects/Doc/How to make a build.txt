@@ -2,7 +2,7 @@
   * Installation NAnt Version 0.84: \\at-vie-dc-02\Install\NAnt
 		zB nach c:\program files\nant
 		bin verzeichnis in PATH aufnehmen
-  * Rubicon.Nant.Tasks.dll von SourceSafe rubicon\tools\NantTasks\NantTasks\bin in das lokale 
+  * Remotion.Nant.Tasks.dll von SourceSafe rubicon\tools\NantTasks\NantTasks\bin in das lokale 
 	  NAnt-bin Verzeichnis (C:\Program Files\NAnt\bin) kopieren.
   * NAnt.exe.config im NAnt-bin Verzeichnis: default .net Framework auf 1.1 setzen
     Zeile 21: <platform name="win32" default="net-1.1">
@@ -22,4 +22,4 @@
   11.   Source Safe Label mit der Versionsnummer vergeben.
   12.	C:\Development\libraries\Commons\trunk\Data\build\bin\DomainObjects_debug_<VERSION>.zip und
 		C:\Development\libraries\Commons\trunk\Data\build\bin\DomainObjects_release_<VERSION>.zip
-		nach \\At-vie-dc-02\Install\Rubicon.Data.DomainObjects kopieren
+		nach \\At-vie-dc-02\Install\Remotion.Data.DomainObjects kopieren

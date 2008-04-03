@@ -1,3 +1,3 @@
 using System;
-using Rubicon.Data.DomainObjects;
+using Remotion.Data.DomainObjects;
 

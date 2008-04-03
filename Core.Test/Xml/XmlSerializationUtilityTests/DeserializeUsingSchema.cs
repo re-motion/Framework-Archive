@@ -3,9 +3,9 @@ using System.IO;
 using System.Xml;
 using System.Xml.Schema;
 using NUnit.Framework;
-using Rubicon.Xml;
+using Remotion.Xml;
 
-namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
+namespace Remotion.Core.UnitTests.Xml.XmlSerializationUtilityTests
 {
   [TestFixture]
   public class DeserializeUsingSchema

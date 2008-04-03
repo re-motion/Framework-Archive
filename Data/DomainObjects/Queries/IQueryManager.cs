@@ -1,7 +1,7 @@
-using Rubicon.Data.DomainObjects;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Queries
+namespace Remotion.Data.DomainObjects.Queries
 {
   /// <summary>
   /// <see cref="IQueryManager"/> provides an interface for methods to execute queries within a <see cref="ClientTransaction"/>.
@@ -9,7 +9,7 @@ namespace Rubicon.Data.DomainObjects.Queries
   public interface IQueryManager
   {
     /// <summary>
-    /// Gets the <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that is associated with the <see cref="RootQueryManager"/>.
+    /// Gets the <see cref="Remotion.Data.DomainObjects.ClientTransaction"/> that is associated with the <see cref="RootQueryManager"/>.
     /// </summary>
     ClientTransaction ClientTransaction { get; }
 
@@ -20,13 +20,13 @@ namespace Rubicon.Data.DomainObjects.Queries
     /// <returns>The scalar value that is returned by the query.</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="query"/> is <see langword="null"/>.</exception>
     /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Scalar"/>.</exception>
-    /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
+    /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     ///   The <see cref="IQuery.StorageProviderID"/> of <paramref name="query"/> could not be found.
     /// </exception>
-    /// <exception cref="Rubicon.Data.DomainObjects.Persistence.PersistenceException">
-    ///   The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
+    /// <exception cref="Remotion.Data.DomainObjects.Persistence.PersistenceException">
+    ///   The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
     /// </exception>
-    /// <exception cref="Rubicon.Data.DomainObjects.Persistence.StorageProviderException">
+    /// <exception cref="Remotion.Data.DomainObjects.Persistence.StorageProviderException">
     ///   An error occurred while executing the query.
     /// </exception>
     object GetScalar (IQuery query);
@@ -38,13 +38,13 @@ namespace Rubicon.Data.DomainObjects.Queries
     /// <returns>A collection containing the <see cref="DomainObject"/>s returned by the query.</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="query"/> is <see langword="null"/>.</exception>
     /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.</exception>
-    /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
+    /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     ///   The <see cref="IQuery.StorageProviderID"/> of <paramref name="query"/> could not be found.
     /// </exception>
-    /// <exception cref="Rubicon.Data.DomainObjects.Persistence.PersistenceException">
-    ///   The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
+    /// <exception cref="Remotion.Data.DomainObjects.Persistence.PersistenceException">
+    ///   The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
     /// </exception>
-    /// <exception cref="Rubicon.Data.DomainObjects.Persistence.StorageProviderException">
+    /// <exception cref="Remotion.Data.DomainObjects.Persistence.StorageProviderException">
     ///   An error occurred while executing the query.
     /// </exception>
     DomainObjectCollection GetCollection (IQuery query);
@@ -59,13 +59,13 @@ namespace Rubicon.Data.DomainObjects.Queries
     /// <exception cref="InvalidTypeException">The objects returned by the <paramref name="query"/> do not match the expected type
     ///   <typeparamref name="T"/> or the configured collection type is not assignable to <see cref="ObjectList{T}"/> with the given <typeparamref name="T"/>.</exception>
     /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.</exception>
-    /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
+    /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     ///   The <see cref="IQuery.StorageProviderID"/> of <paramref name="query"/> could not be found.
     /// </exception>
-    /// <exception cref="Rubicon.Data.DomainObjects.Persistence.PersistenceException">
-    ///   The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
+    /// <exception cref="Remotion.Data.DomainObjects.Persistence.PersistenceException">
+    ///   The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
     /// </exception>
-    /// <exception cref="Rubicon.Data.DomainObjects.Persistence.StorageProviderException">
+    /// <exception cref="Remotion.Data.DomainObjects.Persistence.StorageProviderException">
     ///   An error occurred while executing the query.
     /// </exception>
     ObjectList<T> GetCollection<T> (IQuery query) where T : DomainObject;

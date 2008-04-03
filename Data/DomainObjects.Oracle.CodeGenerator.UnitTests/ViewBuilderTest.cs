@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
+namespace Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
 {
   [TestFixture]
   public class ViewBuilderTest : MappingBaseTest

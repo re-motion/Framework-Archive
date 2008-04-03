@@ -1,10 +1,10 @@
 using System;
 using System.Globalization;
 using NUnit.Framework;
-using Rubicon.NullableValueTypes;
+using Remotion.NullableValueTypes;
 using System.Data.SqlTypes;
 
-namespace Rubicon.Core.UnitTests.NullableValueTypes
+namespace Remotion.Core.UnitTests.NullableValueTypes
 {
 
 [TestFixture]

@@ -7,8 +7,8 @@
     <ProjectGuid>{28A3431B-A3A8-4E8D-BDA8-CB3CC7EA2894}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.SecurityManager.Metadata.Importer</RootNamespace>
-    <AssemblyName>Rubicon.SecurityManager.Metadata.Importer</AssemblyName>
+    <RootNamespace>Remotion.SecurityManager.Metadata.Importer</RootNamespace>
+    <AssemblyName>Remotion.SecurityManager.Metadata.Importer</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

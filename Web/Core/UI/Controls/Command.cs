@@ -5,16 +5,16 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Collections;
-using Rubicon.Globalization;
-using Rubicon.Security;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.ExecutionEngine.UrlMapping;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Collections;
+using Remotion.Globalization;
+using Remotion.Security;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine.UrlMapping;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
   //  TODO: Command: Move long comment blocks to xml-file
@@ -971,7 +971,7 @@ namespace Rubicon.Web.UI.Controls
   /// </summary>
   public delegate void CommandClickEventHandler (object sender, CommandClickEventArgs e);
 
-  /// <summary> Provides data for the <see cref="Rubicon.Web.UI.Controls.Command.Click"/> event. </summary>
+  /// <summary> Provides data for the <see cref="Remotion.Web.UI.Controls.Command.Click"/> event. </summary>
   public class CommandClickEventArgs : EventArgs
   {
     private Command _command;

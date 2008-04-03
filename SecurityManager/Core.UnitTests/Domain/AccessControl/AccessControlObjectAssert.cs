@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
+namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 {
   public static class AccessControlObjectAssert
   {

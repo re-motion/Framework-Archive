@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rubicon.Mixins.Samples.PhotoStuff.Variant2
+namespace Remotion.Mixins.Samples.PhotoStuff.Variant2
 {
   public class Document : IDocument
   {

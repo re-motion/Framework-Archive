@@ -1,16 +1,16 @@
 using System;
 using System.Globalization;
 using System.Threading;
-using Rubicon.Globalization;
-using Rubicon.SecurityManager.Clients.Web.Globalization.UI;
-using Rubicon.SecurityManager.Clients.Web.WxeFunctions;
-using Rubicon.Web;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.Globalization;
+using Remotion.SecurityManager.Clients.Web.Globalization.UI;
+using Remotion.SecurityManager.Clients.Web.WxeFunctions;
+using Remotion.Web;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 
-namespace Rubicon.SecurityManager.Clients.Web.Classes
+namespace Remotion.SecurityManager.Clients.Web.Classes
 {
   [WebMultiLingualResources (typeof (GlobalResources))]
   public abstract class BasePage : WxePage, IObjectWithResources 

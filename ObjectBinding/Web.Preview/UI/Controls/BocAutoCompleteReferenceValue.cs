@@ -6,18 +6,18 @@ using System.Web.UI;
 using System.Web.UI.Design;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
-using Rubicon.Globalization;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.UI.Design;
-using Rubicon.Utilities;
-using Rubicon.Web;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Globalization;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 using System.Drawing.Design;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
   [ValidationProperty ("BusinessObjectID")]
@@ -42,11 +42,11 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     /// <summary> A list of control specific resources. </summary>
     /// <remarks> 
     ///   Resources will be accessed using 
-    ///   <see cref="M:Rubicon.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+    ///   <see cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocAutoCompleteReferenceValue")]
+    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocAutoCompleteReferenceValue")]
     protected enum ResourceIdentifier
     {
       /// <summary> The validation error message displayed when the null item is selected. </summary>

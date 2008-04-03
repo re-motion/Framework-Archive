@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 using System.Reflection;
 using System.Diagnostics;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   [DebuggerDisplay ("{_type.FullName} introduced via {_implementer.FullName}")]
   public class InterfaceIntroductionDefinition : IVisitableDefinition

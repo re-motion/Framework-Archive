@@ -1,10 +1,10 @@
 using System;
 using System.Reflection;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
+namespace Remotion.Data.DomainObjects.Infrastructure.Interception
 {
   internal class InterceptedPropertyCollector
   {

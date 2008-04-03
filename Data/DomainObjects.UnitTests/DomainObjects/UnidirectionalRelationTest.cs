@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
   public class UnidirectionalRelationTest : RelationChangeBaseTest
@@ -35,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       _location.Client = _newClient;
 
       Assert.AreSame (_newClient, _location.Client);
-      Assert.AreEqual (_newClient.ID, _location.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"]);
+      Assert.AreEqual (_newClient.ID, _location.InternalDataContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client"]);
       Assert.AreEqual (StateType.Changed, _location.State);
       Assert.AreEqual (StateType.Unchanged, _oldClient.State);
       Assert.AreEqual (StateType.Unchanged, _newClient.State);
@@ -50,8 +50,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       ChangeState[] expectedStates = new ChangeState[]
     {
-      new RelationChangeState (_location, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", _oldClient, _newClient, "1. Changing event of location"),
-      new RelationChangeState (_location, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, null, "2. Changed event of location")
+      new RelationChangeState (_location, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client", _oldClient, _newClient, "1. Changing event of location"),
+      new RelationChangeState (_location, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, null, "2. Changed event of location")
     };
 
       eventReceiver.Check (expectedStates);
@@ -71,17 +71,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetRelatedObject ()
     {
-      Assert.AreSame (_oldClient, _location.GetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"));
+      Assert.AreSame (_oldClient, _location.GetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client"));
     }
 
     [Test]
     public void GetOriginalRelatedObject ()
     {
-      Assert.AreSame (_oldClient, _location.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"));
+      Assert.AreSame (_oldClient, _location.GetOriginalRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client"));
 
       _location.Client = _newClient;
 
-      Assert.AreSame (_oldClient, _location.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"));
+      Assert.AreSame (_oldClient, _location.GetOriginalRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client"));
     }
 
     [Test]
@@ -106,8 +106,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       ChangeState[] expectedStates = new ChangeState[]
     {
-      new RelationChangeState (location, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, client1, "1. Changing event of location"),
-      new RelationChangeState (location, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, null, "2. Changed event of location")
+      new RelationChangeState (location, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, client1, "1. Changing event of location"),
+      new RelationChangeState (location, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, null, "2. Changed event of location")
     };
 
       eventReceiver.Check (expectedStates);

@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Remoting.Messaging;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Manages a thread's <see cref="CurrentTransaction"/> in a scoped way. Optionally, it can also automatically roll back a transaction at the end
@@ -93,7 +93,7 @@ namespace Rubicon.Data.DomainObjects
       return new ClientTransactionScope (null, DomainObjects.AutoRollbackBehavior.None);
     }
 
-    private const string c_callContextScopeKey = "Rubicon.Data.DomainObjects.ClientTransactionScope.ActiveScope";
+    private const string c_callContextScopeKey = "Remotion.Data.DomainObjects.ClientTransactionScope.ActiveScope";
 
     private readonly ClientTransactionScope _previousScope;
     private readonly ClientTransaction _scopedTransaction;

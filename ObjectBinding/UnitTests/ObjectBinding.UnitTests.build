@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Rubicon.ObjectBinding.UnitTests">  
+<project xmlns="nant-schema" name="Remotion.ObjectBinding.UnitTests">  
 
   <target name="build" description="perform a build">
 
@@ -18,13 +18,13 @@
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <include name="${build.test.outputdir}/Rubicon.Core.dll" />
-        <include name="${build.test.outputdir}/Rubicon.Development.dll" />
-        <include name="${build.test.outputdir}/Rubicon.Mixins.dll" />
-        <include name="${build.test.outputdir}/Rubicon.ObjectBinding.dll" />
-        <include name="${build.test.outputdir}/Rubicon.ObjectBinding.Web.dll" />
-        <include name="${build.test.outputdir}/Rubicon.Web.dll" />
-        <include name="${build.test.outputdir}/Rubicon.Web.UnitTests.dll" />
+        <include name="${build.test.outputdir}/Remotion.Core.dll" />
+        <include name="${build.test.outputdir}/Remotion.Development.dll" />
+        <include name="${build.test.outputdir}/Remotion.Mixins.dll" />
+        <include name="${build.test.outputdir}/Remotion.ObjectBinding.dll" />
+        <include name="${build.test.outputdir}/Remotion.ObjectBinding.Web.dll" />
+        <include name="${build.test.outputdir}/Remotion.Web.dll" />
+        <include name="${build.test.outputdir}/Remotion.Web.UnitTests.dll" />
         <include name="${build.test.outputdir}/nunit.framework.dll" />
         <include name="${build.test.outputdir}/Rhino.Mocks.dll" />
         <include asis="true" name="System.dll"/>
@@ -32,7 +32,7 @@
         <include asis="true" name="System.Web.dll"/>
         <include asis="true" name="System.Windows.Forms.dll"/>
       </references>
-      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.ObjectBinding.UnitTests">
+      <resources failonempty="true" dynamicprefix="true" prefix="Remotion.ObjectBinding.UnitTests">
         <include name="Core/Globalization/**/*.resx" />
       </resources>
     </csc>

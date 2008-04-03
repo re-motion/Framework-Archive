@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectMixinTests
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectMixinTests
 {
   [TestFixture]
   public class SetProperty : TestBase
@@ -42,7 +42,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.BindableObjectMixi
 
     [Test]
     [ExpectedException (typeof (KeyNotFoundException), ExpectedMessage = "The property 'StringWithoutSetter' was not found on business object class "
-        + "'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleBusinessObjectClass, Rubicon.ObjectBinding.UnitTests'.")]
+        + "'Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests'.")]
     [Ignore ("TODO: discuss desired behavior")]
     public void WithoutSetter ()
     {

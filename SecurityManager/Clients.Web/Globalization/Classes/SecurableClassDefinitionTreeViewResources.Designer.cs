@@ -16,7 +16,7 @@ using System.Globalization;
 using System.Resources;
 using System.Runtime.CompilerServices;
 
-namespace Rubicon.SecurityManager.Clients.Web.Globalization.Classes {
+namespace Remotion.SecurityManager.Clients.Web.Globalization.Classes {
     using System;
     
     
@@ -47,7 +47,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.Classes {
         internal static ResourceManager ResourceManager {
             get {
                 if (ReferenceEquals(resourceMan, null)) {
-                    ResourceManager temp = new ResourceManager("Rubicon.SecurityManager.Clients.Web.Globalization.Classes.SecurableClassDefinitio" +
+                    ResourceManager temp = new ResourceManager("Remotion.SecurityManager.Clients.Web.Globalization.Classes.SecurableClassDefinitio" +
                             "nTreeViewResources", typeof(SecurableClassDefinitionTreeViewResources).Assembly);
                     resourceMan = temp;
                 }

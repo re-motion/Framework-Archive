@@ -8,12 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
+namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure {
     
     public partial class EditGroupForm {
-        protected Rubicon.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
-        protected Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupControl EditGroupControl;
-        protected Rubicon.Web.UI.Controls.WebButton SaveButton;
-        protected Rubicon.Web.UI.Controls.WebButton CancelButton;
+        protected Remotion.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
+        protected Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupControl EditGroupControl;
+        protected Remotion.Web.UI.Controls.WebButton SaveButton;
+        protected Remotion.Web.UI.Controls.WebButton CancelButton;
     }
 }

@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary> 
   ///   The <see cref="IBusinessObject"/> interface provides functionality to get and set the state of a business object.

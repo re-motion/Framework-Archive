@@ -1,11 +1,11 @@
 using System;
 using System.Configuration;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Infrastructure;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.ConfigurationLoader;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Infrastructure;
 
-namespace Rubicon.Data.DomainObjects.Mapping.Configuration
+namespace Remotion.Data.DomainObjects.Mapping.Configuration
 {
   public class MappingLoaderConfiguration: ExtendedConfigurationSection
   {

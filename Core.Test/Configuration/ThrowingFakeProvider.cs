@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Specialized;
 
-namespace Rubicon.Core.UnitTests.Configuration
+namespace Remotion.Core.UnitTests.Configuration
 {
   public class ThrowingFakeProvider : FakeProviderBase, IFakeProvider
   {

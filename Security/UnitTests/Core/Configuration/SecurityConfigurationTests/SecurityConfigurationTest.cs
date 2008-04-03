@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting.Configuration;
-using Rubicon.Security.Configuration;
-using Rubicon.Security.Metadata;
+using Remotion.Development.UnitTesting.Configuration;
+using Remotion.Security.Configuration;
+using Remotion.Security.Metadata;
 
-namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
+namespace Remotion.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
 {
   [TestFixture]
   public class SecurityConfigurationTest: TestBase
@@ -25,7 +25,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Test]
     public void DeserializeSecurityConfiguration_WithNamespace()
     {
-      string xmlFragment = @"<rubicon.security xmlns=""http://www.rubicon-it.com/Security/Configuration"" />";
+      string xmlFragment = @"<remotion.security xmlns=""http://www.rubicon-it.com/Security/Configuration"" />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       // Succeeded
     }
@@ -33,7 +33,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Test]
     public void DeserializeSecurityConfiguration_WithDefaultFunctionalSecurityStrategy()
     {
-      string xmlFragment = @"<rubicon.security />";
+      string xmlFragment = @"<remotion.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Assert.IsInstanceOfType (typeof (FunctionalSecurityStrategy), Configuration.FunctionalSecurityStrategy);
     }
@@ -41,7 +41,7 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     [Test]
     public void FunctionalSecurityStrategyIsAlwaysSameInstance()
     {
-      string xmlFragment = @"<rubicon.security />";
+      string xmlFragment = @"<remotion.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Assert.AreSame (Configuration.FunctionalSecurityStrategy, Configuration.FunctionalSecurityStrategy);
     }
@@ -51,9 +51,9 @@ namespace Rubicon.Security.UnitTests.Core.Configuration.SecurityConfigurationTes
     {
       string xmlFragment =
           @"
-          <rubicon.security>
-            <functionalSecurityStrategy type=""Rubicon.Security.UnitTests::Core.Configuration.FunctionalSecurityStrategyMock"" />
-          </rubicon.security>";
+          <remotion.security>
+            <functionalSecurityStrategy type=""Remotion.Security.UnitTests::Core.Configuration.FunctionalSecurityStrategyMock"" />
+          </remotion.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 

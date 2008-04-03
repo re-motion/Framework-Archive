@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Development.UnitTesting;
+using Remotion.Data.DomainObjects;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain
+namespace Remotion.Security.UnitTests.Data.DomainObjects.TestDomain
 {
   [Instantiable]
   [DBTable]

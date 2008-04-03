@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Rubicon.Security.Metadata
+namespace Remotion.Security.Metadata
 {
   public interface IAbstractRoleReflector
   {

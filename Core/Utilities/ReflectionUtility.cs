@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
   public static class ReflectionUtility
   {

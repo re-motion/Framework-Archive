@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
+namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
   public class RelationEndPointMapTest : ClientTransactionBaseTest
@@ -47,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void GetRelatedObject ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      RelationEndPointID endPointID = new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+      RelationEndPointID endPointID = new RelationEndPointID (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
       DomainObject orderTicket = _map.GetRelatedObject (endPointID, false);
 
       Assert.IsNotNull (orderTicket);
@@ -63,7 +63,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       location.Client.Delete ();
 
-      RelationEndPointID endPointID = new RelationEndPointID (location.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
+      RelationEndPointID endPointID = new RelationEndPointID (location.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
       _map.GetRelatedObject (endPointID, false);
     }
 
@@ -74,7 +74,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       location.Client.Delete ();
 
-      RelationEndPointID endPointID = new RelationEndPointID (location.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
+      RelationEndPointID endPointID = new RelationEndPointID (location.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
       DomainObject client = _map.GetRelatedObject (endPointID, true);
       Assert.IsNotNull (client);
       Assert.AreEqual (DomainObjectIDs.Client1, client.ID);
@@ -89,7 +89,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       location.Client = newClient;
       location.Client.Delete ();
 
-      RelationEndPointID endPointID = new RelationEndPointID (location.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
+      RelationEndPointID endPointID = new RelationEndPointID (location.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
       DomainObject client = _map.GetRelatedObject (endPointID, true);
       Assert.IsNotNull (client);
       Assert.AreSame (newClient, client);
@@ -100,7 +100,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void GetOriginalRelatedObjectsWithLazyLoad ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      RelationEndPointID endPointID = new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      RelationEndPointID endPointID = new RelationEndPointID (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       DomainObjectCollection originalOrderItems = _map.GetOriginalRelatedObjects (endPointID);
       DomainObjectCollection orderItems = _map.GetRelatedObjects (endPointID);
 
@@ -111,7 +111,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void GetOriginalRelatedObjectWithLazyLoad ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      RelationEndPointID endPointID = new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+      RelationEndPointID endPointID = new RelationEndPointID (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
       DomainObject originalOrderTicket = _map.GetOriginalRelatedObject (endPointID);
       DomainObject orderTicket = _map.GetRelatedObject (endPointID, false);
 
@@ -124,7 +124,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void GetRelatedObjectWithEndPointIDOfWrongCardinality ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      _map.GetRelatedObject (new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), false);
+      _map.GetRelatedObject (new RelationEndPointID (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), false);
     }
 
     [Test]
@@ -133,7 +133,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void GetOriginalRelatedObjectWithEndPointIDOfWrongCardinality ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      _map.GetOriginalRelatedObject (new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"));
+      _map.GetOriginalRelatedObject (new RelationEndPointID (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"));
     }
 
     [Test]
@@ -142,7 +142,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void SetRelatedObjectWithEndPointIDOfWrongCardinality ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      _map.SetRelatedObject (new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), OrderItem.NewObject ());
+      _map.SetRelatedObject (new RelationEndPointID (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), OrderItem.NewObject ());
     }
 
     [Test]
@@ -151,7 +151,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void GetRelatedObjectsWithEndPointIDOfWrongCardinality ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      _map.GetRelatedObjects (new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
+      _map.GetRelatedObjects (new RelationEndPointID (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
     }
 
     [Test]
@@ -160,12 +160,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void GetOriginalRelatedObjectsWithEndPointIDOfWrongCardinality ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      _map.GetOriginalRelatedObjects (new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
+      _map.GetOriginalRelatedObjects (new RelationEndPointID (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
     }
 
     [Test]
     [ExpectedException (typeof (ClientTransactionsDifferException),
-     ExpectedMessage = "Property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' of DomainObject 'Order|.*' cannot be set to DomainObject 'OrderTicket|.*', because the objects do not belong to the same ClientTransaction.",
+     ExpectedMessage = "Property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' of DomainObject 'Order|.*' cannot be set to DomainObject 'OrderTicket|.*', because the objects do not belong to the same ClientTransaction.",
         MatchType = MessageMatch.Regex)]
     public void SetRelatedObjectWithOtherClientTransaction ()
     {
@@ -176,12 +176,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       {
         orderTicket2 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
       }
-      _map.SetRelatedObject (new RelationEndPointID (order1.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"), orderTicket2);
+      _map.SetRelatedObject (new RelationEndPointID (order1.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"), orderTicket2);
     }
 
     [Test]
     [ExpectedException (typeof (ClientTransactionsDifferException),
-       ExpectedMessage = "Cannot insert DomainObject '.*'  at position 2 into collection of property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction.",
+       ExpectedMessage = "Cannot insert DomainObject '.*'  at position 2 into collection of property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction.",
        MatchType = MessageMatch.Regex)]
     public void PerformCollectionAddWithOtherClientTransaction ()
     {
@@ -198,7 +198,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     [Test]
     [ExpectedException (typeof (ClientTransactionsDifferException),
-        ExpectedMessage = "Cannot insert DomainObject '.*' at position 0 into collection of property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction.",
+        ExpectedMessage = "Cannot insert DomainObject '.*' at position 0 into collection of property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction.",
         MatchType = MessageMatch.Regex)]
     public void PerformCollectionInsertWithOtherClientTransaction ()
     {
@@ -215,7 +215,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     [Test]
     [ExpectedException (typeof (ClientTransactionsDifferException),
-       ExpectedMessage = "Cannot remove DomainObject '.*' from collection of property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction.",
+       ExpectedMessage = "Cannot remove DomainObject '.*' from collection of property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction.",
         MatchType = MessageMatch.Regex)]
     public void PerformCollectionRemoveWithOtherClientTransaction ()
     {
@@ -251,7 +251,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       catch (ClientTransactionsDifferException ex)
       {
         string expectedMessage = "Cannot replace DomainObject at position 1 with DomainObject 'OrderItem|0d7196a5-8161-4048-820d-b1bbdabe3293|"
-            + "System.Guid' in collection of property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject "
+            + "System.Guid' in collection of property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject "
             + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction.";
         Assert.AreEqual (expectedMessage, ex.Message);
       }

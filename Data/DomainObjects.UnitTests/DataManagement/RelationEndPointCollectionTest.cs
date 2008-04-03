@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
+namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
   public class RelationEndPointCollectionTest : RelationEndPointBaseTest
@@ -16,7 +16,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       base.SetUp ();
 
       OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
-      _orderTicketEndPoint = CreateObjectEndPoint (orderTicket, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", DomainObjectIDs.Order1);
+      _orderTicketEndPoint = CreateObjectEndPoint (orderTicket, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", DomainObjectIDs.Order1);
       _endPoints = new RelationEndPointCollection (ClientTransactionMock);
     }
 

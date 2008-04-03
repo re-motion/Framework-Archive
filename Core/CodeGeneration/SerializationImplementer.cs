@@ -3,9 +3,9 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.CodeGeneration
+namespace Remotion.CodeGeneration
 {
   public static class SerializationImplementer
   {

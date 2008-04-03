@@ -5,9 +5,9 @@ using System.Xml.Serialization;
 using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators.Emitters;
 using NUnit.Framework;
-using Rubicon.Xml;
+using Remotion.Xml;
 
-namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
+namespace Remotion.Core.UnitTests.Xml.XmlSerializationUtilityTests
 {
   [TestFixture]
   public class GetNamespaceTest

@@ -4,9 +4,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.Web.UnitTests.UI.Controls.NumericValidatorTests
+namespace Remotion.Web.UnitTests.UI.Controls.NumericValidatorTests
 {
   public class TestBase
   {

@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
   public class RelationDefinitionCollectionTest : StandardMappingTest
@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      _relationDefinition = TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"];
+      _relationDefinition = TestMappingConfiguration.Current.RelationDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"];
       _collection = new RelationDefinitionCollection ();
     }
 
@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void RelationDefinitionIndexer ()
     {
       _collection.Add (_relationDefinition);
-      Assert.AreSame (_relationDefinition, _collection["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
+      Assert.AreSame (_relationDefinition, _collection["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
     }
 
     [Test]
@@ -58,13 +58,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void ContainsRelationDefinitionIDTrue ()
     {
       _collection.Add (_relationDefinition);
-      Assert.IsTrue (_collection.Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      Assert.IsTrue (_collection.Contains ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
     }
 
     [Test]
     public void ContainsRelationDefinitionIDFalse ()
     {
-      Assert.IsFalse (_collection.Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      Assert.IsFalse (_collection.Contains ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
     }
 
     [Test]

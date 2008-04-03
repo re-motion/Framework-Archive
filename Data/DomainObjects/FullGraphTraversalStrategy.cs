@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   public sealed class FullGraphTraversalStrategy : IGraphTraversalStrategy
   {

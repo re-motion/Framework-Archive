@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
 using NUnit.Framework;
-using Rubicon.Collections;
+using Remotion.Collections;
 using System.Collections.Generic;
-using Rubicon.Utilities;
-using Rubicon.Development.UnitTesting;
+using Remotion.Utilities;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Core.UnitTests.Collections
+namespace Remotion.Core.UnitTests.Collections
 {
   [TestFixture]
   public class SetTest

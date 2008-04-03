@@ -3,10 +3,10 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Text;
 using System.Text.RegularExpressions;
-using Rubicon.Collections;
+using Remotion.Collections;
 using R = System.Text.RegularExpressions;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
   /// <summary>
   /// Utility methods for handling types.
@@ -117,8 +117,8 @@ namespace Rubicon.Utilities
     /// </summary>
     /// <remarks>
     ///   Abbreviated type names use the format <c>assemblyname::subnamespace.type</c>. For instance, the
-    ///   abbreviated type name <c>"Rubicon.Web::Utilities.ControlHelper"</c> would result in the standard
-    ///   type name <c>"Rubicon.Web.Utilities.ControlHelper, Rubicon.Web"</c>.
+    ///   abbreviated type name <c>"Remotion.Web::Utilities.ControlHelper"</c> would result in the standard
+    ///   type name <c>"Remotion.Web.Utilities.ControlHelper, Remotion.Web"</c>.
     /// </remarks>
     /// <param name="abbreviatedTypeName"> A standard or abbreviated type name. </param>
     /// <returns> A standard type name as expected by <see cref="Type.GetType"/>. </returns>

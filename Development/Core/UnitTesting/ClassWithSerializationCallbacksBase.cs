@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Development.UnitTesting
+namespace Remotion.Development.UnitTesting
 {
   [Serializable]
   public abstract class ClassWithSerializationCallbacksBase : IDeserializationCallback

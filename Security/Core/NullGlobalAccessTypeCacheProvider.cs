@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Specialized;
 using System.Configuration.Provider;
-using Rubicon.Collections;
-using Rubicon.Configuration;
+using Remotion.Collections;
+using Remotion.Configuration;
 using System.Runtime.Serialization;
-using Rubicon.Security.Configuration;
+using Remotion.Security.Configuration;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   /// <summary>
   /// Represents a nullable <see cref="IGlobalAccessTypeCacheProvider"/> according to the "Null Object Pattern".

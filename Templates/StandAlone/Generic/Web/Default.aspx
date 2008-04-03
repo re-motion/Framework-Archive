@@ -1,5 +1,5 @@
-<%@ Page language="c#" Codebehind="default.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.Templates.Generic.Web.Default" %>
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Page language="c#" Codebehind="default.aspx.cs" AutoEventWireup="false" Inherits="Remotion.Templates.Generic.Web.Default" %>
+<%@ Register TagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
 <!doctype HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" >
 <html>
   <head>
@@ -8,7 +8,7 @@
     <meta name="CODE_LANGUAGE" Content="C#">
     <meta name="vs_defaultClientScript" content="JavaScript">
     <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
-    <rubicon:htmlheadcontents id="HtmlHeadContents" runat="server"></rubicon:htmlheadcontents>
+    <remotion:htmlheadcontents id="HtmlHeadContents" runat="server"></remotion:htmlheadcontents>
     <script language="javascript" type="text/javascript">
 	    function StartApp ()
 	    { 
@@ -29,7 +29,7 @@
 	        windowTop = 5; 
 	      }   
 	      
-        window.open ("WxeHandler.ashx?WxeFunctionType=Rubicon.Templates.Generic.Web.WxeFunctions.TemplateFunction,Rubicon.Templates.Generic.Web", "_blank",
+        window.open ("WxeHandler.ashx?WxeFunctionType=Remotion.Templates.Generic.Web.WxeFunctions.TemplateFunction,Remotion.Templates.Generic.Web", "_blank",
 			      "width=" + windowMaxWidth + ",height=" + windowMaxHeight + ",top=" + windowTop + ",left=" + windowLeft + "," + 
 			      "resizable=yes,location=yes,menubar=no,status=no,toolbar=no,scrollbars=no" ); <%-- use "location=no" in production environments --%>
 	    }	    

@@ -2,7 +2,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Rubicon.Web.Test
+namespace Remotion.Web.Test
 {
   public class PostBackEventHandler : WebControl, IPostBackEventHandler
   {

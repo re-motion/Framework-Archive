@@ -342,13 +342,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_BuildFiles", "_BuildFiles"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 	ProjectSection(SolutionItems) = preProject
-		Build-CommonsLocal.ps1 = Build-CommonsLocal.ps1
-		Build-CommonsLocalDoc.ps1 = Build-CommonsLocalDoc.ps1
+		Build-RemotionLocal.ps1 = Build-RemotionLocal.ps1
+		Build-RemotionLocalDoc.ps1 = Build-RemotionLocalDoc.ps1
 		buildall.cmd = buildall.cmd
 		build\buildversion.xml = build\buildversion.xml
-		Commons.build = Commons.build
-		build\Commons.Doc.include.build = build\Commons.Doc.include.build
-		build\Commons.include.build = build\Commons.include.build
+		Remotion.build = Remotion.build
+		build\Remotion.Doc.include.build = build\Remotion.Doc.include.build
+		build\Remotion.include.build = build\Remotion.include.build
 		build\properties.include.build = build\properties.include.build
 	EndProjectSection
 	ProjectSection(FolderStartupServices) = postProject

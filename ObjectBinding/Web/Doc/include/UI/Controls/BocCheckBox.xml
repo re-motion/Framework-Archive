@@ -31,7 +31,7 @@
             <para>
               Priority 1 checkpoint 6.3 is not met if the label provding a textual representation of the value 
               is also rendered. This can be enforced by the 
-              <see cref="Rubicon.Web.Configuration.WebConfiguration.Wcag"/> configuration entry.
+              <see cref="Remotion.Web.Configuration.WebConfiguration.Wcag"/> configuration entry.
             </para><para>
               Enabling auto post back can break compliance with priority 1 checkpoint 6.3 if the post back is 
               required for using the page.
@@ -45,7 +45,7 @@
         Place an <see cref="HtmlHeadContents"/> control on every <b>ASPX</b> page displaying the 
         <b>BocCheckBox</b>.
       </para><para>
-        Provide the external resources for this control. See <see cref="T:Rubicon.Web.ResourceUrlResolver"/> 
+        Provide the external resources for this control. See <see cref="T:Remotion.Web.ResourceUrlResolver"/> 
         for details on this subject.
       </para><para>
         This control does not require or provide a validator.        
@@ -66,7 +66,7 @@
         enum. See the <b>ResourceIdentifier</b>'s documentation for details on localization.
       </para><para>
         The control supports resource dispatching to its properties through the 
-        <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>.
+        <see cref="Remotion.Web.UI.Globalization.ResourceDispatcher"/>.
         Use the following resource identifiers for dispatching strings to the <b>BocCheckBox</b>
         or use the <b>global resource identifier</b> syntax for setting the resource identifier in the propery.
       </para>

@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.UnitTests.SampleTypes
+namespace Remotion.Mixins.UnitTests.SampleTypes
 {
   [Uses (typeof (MixinAcceptingAlphabeticOrdering1))]
   [Uses (typeof (MixinAcceptingAlphabeticOrdering2))]

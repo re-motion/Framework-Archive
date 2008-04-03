@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Design
+namespace Remotion.ObjectBinding.Web.UI.Design
 {
 public class BusinessObjectDataSourceControlConverter : StringConverter
 {

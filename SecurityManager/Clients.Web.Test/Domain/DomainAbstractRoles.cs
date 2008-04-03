@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Security;
+using Remotion.Security;
 
-namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
+namespace Remotion.SecurityManager.Clients.Web.Test.Domain
 {
   [AbstractRole]
 	public enum DomainAbstractRoles

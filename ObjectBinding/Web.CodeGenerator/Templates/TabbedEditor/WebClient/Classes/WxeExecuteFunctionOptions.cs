@@ -1,11 +1,11 @@
 ﻿// remove this file from the application project when using a newer egora FX build that contains WxeExecuteFunctionOptions
 
 using System;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine;
 using System.Collections.Specialized;
 using System.Web.UI;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
   public class WxeExecuteFunctionExternalException : WxeException
   {

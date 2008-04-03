@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace Rubicon.Development.UnitTesting
+namespace Remotion.Development.UnitTesting
 {
   public interface ISerializationEventReceiver
   {

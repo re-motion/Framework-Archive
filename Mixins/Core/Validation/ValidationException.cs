@@ -1,10 +1,10 @@
 using System;
 using System.Runtime.Serialization;
 using System.Text;
-using Rubicon.Mixins;
-using Rubicon.Utilities;
+using Remotion.Mixins;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Validation
+namespace Remotion.Mixins.Validation
 {
   /// <summary>
   /// Thrown when there is an error in the mixin configuration which is detected during validation of the configuration. The problem prevents

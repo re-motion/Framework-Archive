@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Context
+namespace Remotion.Context
 {
 //  Irgendwos CurrentIrgendwos 
 //{

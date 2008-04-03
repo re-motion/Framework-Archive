@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   [DebuggerDisplay ("Count = {Count}")]
   public class CovariantDefinitionCollectionWrapper<TKey, TValue, TValueBase> : IDefinitionCollection<TKey, TValueBase>

@@ -1,6 +1,6 @@
 using System;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 using $DOMAIN_ROOTNAMESPACE$;
 using $PROJECT_ROOTNAMESPACE$.Classes;
 
@@ -18,7 +18,7 @@ namespace $PROJECT_ROOTNAMESPACE$.UI
     }
 
     $REPEAT_FOREACHREFERENCEDPROPERTY_BEGIN$(isList=true)
-    protected void $DOMAIN_PROPERTYNAME$Field_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
+    protected void $DOMAIN_PROPERTYNAME$Field_MenuItemClick (object sender, Remotion.Web.UI.Controls.WebMenuItemClickEventArgs e)
     {
       if (e.Item.ItemID == "AddMenuItem")
       {

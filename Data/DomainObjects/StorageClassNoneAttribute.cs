@@ -1,6 +1,6 @@
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>Defines the property as not managed by the persistence framework.</summary>
   public sealed class StorageClassNoneAttribute : StorageClassAttribute

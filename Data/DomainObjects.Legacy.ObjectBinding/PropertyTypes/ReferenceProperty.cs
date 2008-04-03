@@ -1,12 +1,12 @@
 using System;
 using System.Reflection;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.ObjectBinding;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
+namespace Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
   public class ReferenceProperty: NullableProperty, IBusinessObjectReferenceProperty
   {
@@ -71,7 +71,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 
     public IBusinessObject Create (IBusinessObject referencingObject)
     {
-      throw new NotSupportedException ("Create method is not supported by Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes.ReferenceProperty.");
+      throw new NotSupportedException ("Create method is not supported by Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes.ReferenceProperty.");
     }
 
     private IBusinessObjectClass GetReferenceClassFromService ()

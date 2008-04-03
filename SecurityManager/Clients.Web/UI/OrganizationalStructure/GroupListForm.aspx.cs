@@ -1,9 +1,9 @@
 using System;
-using Rubicon.SecurityManager.Clients.Web.Classes;
-using Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure;
-using Rubicon.Web.UI.Globalization;
+using Remotion.SecurityManager.Clients.Web.Classes;
+using Remotion.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure;
+using Remotion.Web.UI.Globalization;
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
+namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {
   [WebMultiLingualResources (typeof (GroupListFormResources))]
   public partial class GroupListForm : BasePage

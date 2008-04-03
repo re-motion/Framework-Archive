@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 /// <summary> Represents the method that handles an event raised by a <see cref="WebTreeNode"/>. </summary>

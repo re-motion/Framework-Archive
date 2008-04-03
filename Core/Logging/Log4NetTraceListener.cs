@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Logging
+namespace Remotion.Logging
 {
   //TODO: #### use Write/WriteLine with Verbose/Debug?
 

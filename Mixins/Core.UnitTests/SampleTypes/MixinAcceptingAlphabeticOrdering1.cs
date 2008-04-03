@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.UnitTests.SampleTypes
+namespace Remotion.Mixins.UnitTests.SampleTypes
 {
   [AcceptsAlphabeticOrdering]
   public class MixinAcceptingAlphabeticOrdering1 : Mixin<object, object>

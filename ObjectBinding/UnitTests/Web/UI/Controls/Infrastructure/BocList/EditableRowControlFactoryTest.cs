@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
-using Rubicon.ObjectBinding.UnitTests.Web.Domain;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
+using Remotion.ObjectBinding.UnitTests.Web.Domain;
 
-namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
 {
   [TestFixture]
   public class EditableRowControlFactoryTest

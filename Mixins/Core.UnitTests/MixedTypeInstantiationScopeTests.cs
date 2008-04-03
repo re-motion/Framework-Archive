@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Rubicon.Mixins.UnitTests
+namespace Remotion.Mixins.UnitTests
 {
   [TestFixture]
   public class MixedTypeInstantiationScopeTests

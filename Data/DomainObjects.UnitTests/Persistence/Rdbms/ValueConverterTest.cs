@@ -1,12 +1,12 @@
 using System;
 using System.Data;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
   [TestFixture]
   public class ValueConverterTest : StandardMappingTest
@@ -47,36 +47,36 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (ConverterException), ExpectedMessage = "Invalid null value for not-nullable property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Type' encountered. Class: 'Customer'.")]
+    [ExpectedException (typeof (ConverterException), ExpectedMessage = "Invalid null value for not-nullable property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Type' encountered. Class: 'Customer'.")]
     public void GetNullValueForEnum ()
     {
       ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");
-      PropertyDefinition enumProperty = customerDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Type"];
+      PropertyDefinition enumProperty = customerDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Type"];
 
       _converter.GetValue (customerDefinition, enumProperty, DBNull.Value);
     }
 
     [Test]
-    [ExpectedException (typeof (ConverterException), ExpectedMessage = "Invalid null value for not-nullable relation property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company' encountered. Class: 'Ceo'.")]
+    [ExpectedException (typeof (ConverterException), ExpectedMessage = "Invalid null value for not-nullable relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company' encountered. Class: 'Ceo'.")]
     public void GetValueForCeoWithCompanyIDAndCompanyIDClassIDNull ()
     {
       IDbCommand command = CreateCeoCommand (new Guid ("{2927059E-AE59-49a7-8B59-B959E579C629}"));
       using (IDataReader reader = command.ExecuteReader ())
       {
         Assert.IsTrue (reader.Read ());
-        _converter.GetValue (_ceoDefinition, _ceoDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"], reader);
+        _converter.GetValue (_ceoDefinition, _ceoDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"], reader);
       }
     }
 
     [Test]
-    [ExpectedException (typeof (ConverterException), ExpectedMessage = "Invalid null value for not-nullable relation property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company' encountered. Class: 'Ceo'.")]
+    [ExpectedException (typeof (ConverterException), ExpectedMessage = "Invalid null value for not-nullable relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company' encountered. Class: 'Ceo'.")]
     public void GetValueForCeoWithCompanyIDNull ()
     {
       IDbCommand command = CreateCeoCommand (new Guid ("{523B490A-5B18-4f22-AF5B-BD9A4DA3F629}"));
       using (IDataReader reader = command.ExecuteReader ())
       {
         Assert.IsTrue (reader.Read ());
-        _converter.GetValue (_ceoDefinition, _ceoDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"], reader);
+        _converter.GetValue (_ceoDefinition, _ceoDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"], reader);
       }
     }
 
@@ -89,7 +89,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       {
         Assert.IsTrue (reader.Read ());
 
-        _converter.GetValue (_ceoDefinition, _ceoDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"], reader);
+        _converter.GetValue (_ceoDefinition, _ceoDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"], reader);
       }
     }
 
@@ -107,7 +107,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         Assert.IsTrue (reader.Read ());
         _converter.GetValue (
             classWithOptionalOneToOneRelationAndOppositeDerivedClass,
-            classWithOptionalOneToOneRelationAndOppositeDerivedClass["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithOptionalOneToOneRelationAndOppositeDerivedClass.Company"], 
+            classWithOptionalOneToOneRelationAndOppositeDerivedClass["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithOptionalOneToOneRelationAndOppositeDerivedClass.Company"], 
             reader);
       }
     }
@@ -119,7 +119,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (IDataReader reader = command.ExecuteReader ())
       {
         Assert.IsTrue (reader.Read ());
-        ObjectID actualID = (ObjectID) _converter.GetValue (_ceoDefinition, _ceoDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"], reader);
+        ObjectID actualID = (ObjectID) _converter.GetValue (_ceoDefinition, _ceoDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"], reader);
 
         Assert.AreEqual (DomainObjectIDs.Company1, actualID);
       }
@@ -134,7 +134,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         Assert.IsTrue (reader.Read ());
 
         ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Folder");
-        PropertyDefinition parentFolderProperty = folderDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder");
+        PropertyDefinition parentFolderProperty = folderDefinition.GetMandatoryPropertyDefinition ("Remotion.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder");
 
         Assert.IsNull (_converter.GetValue (folderDefinition, parentFolderProperty, reader));
       }
@@ -150,7 +150,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         Assert.IsTrue (reader.Read ());
 
         ClassDefinition fileDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("File");
-        PropertyDefinition parentFolderProperty = fileDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder");
+        PropertyDefinition parentFolderProperty = fileDefinition.GetMandatoryPropertyDefinition ("Remotion.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder");
 
         Assert.IsNull (_converter.GetValue (fileDefinition, parentFolderProperty, reader));
       }
@@ -166,7 +166,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         Assert.IsTrue (reader.Read ());
 
         ClassDefinition fileDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("File");
-        PropertyDefinition parentFolderProperty = fileDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder");
+        PropertyDefinition parentFolderProperty = fileDefinition.GetMandatoryPropertyDefinition ("Remotion.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder");
 
         Assert.IsNull (_converter.GetValue (fileDefinition, parentFolderProperty, reader));
       }

@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Mixins.Validation;
+using Remotion.Mixins.Validation;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   /// <summary>
   /// Thrown when there is a severe error in the mixin configuration which is detected during configuration analysis. The problem prevents

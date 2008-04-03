@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Mixins;
-using Rubicon.Mixins.CodeGeneration;
+using Remotion.Mixins;
+using Remotion.Mixins.CodeGeneration;
 using System.Reflection;
 
-namespace Rubicon.Mixins.Samples.UnitTests
+namespace Remotion.Mixins.Samples.UnitTests
 {
   [TestFixture]
   public class EquatableMixinTests

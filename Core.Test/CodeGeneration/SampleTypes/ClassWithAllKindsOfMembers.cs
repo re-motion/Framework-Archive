@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Development.UnitTesting;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration.SampleTypes
+namespace Remotion.Core.UnitTests.CodeGeneration.SampleTypes
 {
   public class ClassWithAllKindsOfMembers
   {

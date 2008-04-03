@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.ConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Mapping
+namespace Remotion.Data.DomainObjects.Mapping
 {
   public class MappingConfiguration
   {
@@ -75,16 +75,16 @@ namespace Rubicon.Data.DomainObjects.Mapping
     
     // construction and disposing
 
-    [Obsolete ("Use Rubicon.Data.DomainObjects.Legacy.Mapping.XmlBasedMappingConfiguration.Create (string). (Version 1.7.42)", true)]
+    [Obsolete ("Use Remotion.Data.DomainObjects.Legacy.Mapping.XmlBasedMappingConfiguration.Create (string). (Version 1.7.42)", true)]
     public MappingConfiguration (string configurationFile)
     {
-      throw new InvalidOperationException ("Use Rubicon.Data.DomainObjects.Legacy.Mapping.XmlBasedMappingConfiguration.Create (string).");
+      throw new InvalidOperationException ("Use Remotion.Data.DomainObjects.Legacy.Mapping.XmlBasedMappingConfiguration.Create (string).");
     }
 
-    [Obsolete ("Use Rubicon.Data.DomainObjects.Legacy.Mapping.XmlBasedMappingConfiguration.Create (string, bool). (Version 1.7.42)", true)]
+    [Obsolete ("Use Remotion.Data.DomainObjects.Legacy.Mapping.XmlBasedMappingConfiguration.Create (string, bool). (Version 1.7.42)", true)]
     public MappingConfiguration (string configurationFile, bool resolveTypes)
     {
-      throw new InvalidOperationException ("Use Rubicon.Data.DomainObjects.Legacy.Mapping.XmlBasedMappingConfiguration.Create (string, bool).");
+      throw new InvalidOperationException ("Use Remotion.Data.DomainObjects.Legacy.Mapping.XmlBasedMappingConfiguration.Create (string, bool).");
     }
 
     public MappingConfiguration (IMappingLoader loader)

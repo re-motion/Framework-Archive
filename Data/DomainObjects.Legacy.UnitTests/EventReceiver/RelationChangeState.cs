@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.EventReceiver
 {
   [Serializable]
   public class RelationChangeState : ChangeState

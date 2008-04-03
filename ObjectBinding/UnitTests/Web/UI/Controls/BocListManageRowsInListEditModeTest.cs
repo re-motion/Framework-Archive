@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.ObjectBinding.UnitTests.Web.Domain;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.UnitTests.Web.Domain;
 
-namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 {
   [TestFixture]
   public class BocListManageRowsInListEditModeTest : BocTest

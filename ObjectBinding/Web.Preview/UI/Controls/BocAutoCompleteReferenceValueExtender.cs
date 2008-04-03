@@ -5,14 +5,14 @@ using System.Web.UI;
 using System.ComponentModel;
 using AjaxControlToolkit;
 
-[assembly: WebResource (Rubicon.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValueExtender.ScriptReference, "text/javascript")]
+[assembly: WebResource (Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValueExtender.ScriptReference, "text/javascript")]
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   [TargetControlType (typeof (Control))]
   [ToolboxItem (false)]
   //[Designer (typeof (BocAutoCompleteReferenceValueExtenderDesigner))]
-  [ClientScriptResource ("Rubicon.UI.BocAutoCompleteReferenceValueBehavior", BocAutoCompleteReferenceValueExtender.ScriptReference)]
+  [ClientScriptResource ("Remotion.UI.BocAutoCompleteReferenceValueBehavior", BocAutoCompleteReferenceValueExtender.ScriptReference)]
   [RequiredScript (typeof (CommonToolkitScripts))]
   [RequiredScript (typeof (PopupExtender))]
   [RequiredScript (typeof (TimerScript))]
@@ -20,7 +20,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
   {
     // constants
 
-    internal const string ScriptReference = "Rubicon.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValueBehavior.js";
+    internal const string ScriptReference = "Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValueBehavior.js";
 
     // types
 

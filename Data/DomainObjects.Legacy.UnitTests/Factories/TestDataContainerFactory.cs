@@ -1,11 +1,11 @@
 using System;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.Resources;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
-using Rubicon.NullableValueTypes;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.Resources;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Remotion.NullableValueTypes;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Factories
 {
   public class TestDataContainerFactory
   {

@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\..\..\..\DomainObjects\Schemas\Mapping.xsd">
   <classes>
 		<class id="Customer">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Company" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -16,7 +16,7 @@
 					<nullable>true</nullable>					
 				</property>
 				<property name="Type">
-					<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+					<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer+CustomerType, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 					<!-- The column does not comply with mapping, because property 'CustomerSince' already refers to it. -->
 					<column>CustomerSince</column>
 				</property>

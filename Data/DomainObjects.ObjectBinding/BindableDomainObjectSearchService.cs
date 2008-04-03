@@ -1,11 +1,11 @@
 using System;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.BindableObject;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.BindableObject;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
   public class BindableDomainObjectSearchService : ISearchAvailableObjectsService
   {

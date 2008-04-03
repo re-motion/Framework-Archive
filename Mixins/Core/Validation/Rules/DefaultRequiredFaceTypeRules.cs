@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Validation;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Validation;
 
-namespace Rubicon.Mixins.Validation.Rules
+namespace Remotion.Mixins.Validation.Rules
 {
   public class DefaultRequiredFaceTypeRules : RuleSetBase
   {

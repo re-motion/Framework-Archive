@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel.Design;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Design
+namespace Remotion.Design
 {
   /// <summary>
   /// Base implementation of the <see cref="IDesignModeHelper"/> interface.

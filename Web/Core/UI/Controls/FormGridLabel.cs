@@ -3,12 +3,12 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Globalization;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
-using Rubicon.Utilities;
+using Remotion.Globalization;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 /// <summary>

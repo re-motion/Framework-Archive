@@ -5,11 +5,11 @@ using System.Reflection.Emit;
 using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Rubicon.CodeGeneration.DPExtensions;
-using Rubicon.Collections;
-using Rubicon.Utilities;
+using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Collections;
+using Remotion.Utilities;
 
-namespace Rubicon.CodeGeneration
+namespace Remotion.CodeGeneration
 {
   public class CustomClassEmitter : IAttributableEmitter
   {

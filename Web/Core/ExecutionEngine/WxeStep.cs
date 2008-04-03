@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel;
-using Rubicon.Collections;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
 
 /// <summary> Performs a single operation in a web application as part of a <see cref="WxeFunction"/>. </summary>
@@ -70,7 +70,7 @@ public abstract class WxeStep
   /// </overloads>
   /// <summary> Executes the <see cref="WxeStep"/>. </summary>
   /// <remarks> 
-  ///   Invokes <see cref="M:Rubicon.Web.ExecutionEngine.WxeStep.Execute(Rubicon.Web.ExecutionEngine.WxeContext">WxeContext</see>,
+  ///   Invokes <see cref="M:Remotion.Web.ExecutionEngine.WxeStep.Execute(Remotion.Web.ExecutionEngine.WxeContext">WxeContext</see>,
   ///   passing the <see cref="WxeContext.Current"/> <see cref="WxeContext"/> as argument.
   ///   <note>
   ///     This method should only be invoked by the WXE infrastructure.

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Mapping;
 using NUnit.Framework;
 
-namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
+namespace Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
 {
   public class MappingBaseTest 
   {

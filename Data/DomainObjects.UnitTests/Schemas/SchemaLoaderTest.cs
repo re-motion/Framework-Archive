@@ -1,10 +1,10 @@
 using System;
 using System.Xml.Schema;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Schemas;
+using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Schemas;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Schemas
+namespace Remotion.Data.DomainObjects.UnitTests.Schemas
 {
   [TestFixture]
   public class SchemaLoaderTest

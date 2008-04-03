@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
   // Required for mocking
   public interface IDataContainerLoaderHelper

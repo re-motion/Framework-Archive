@@ -1,4 +1,4 @@
-USE RubiconSecurityManager
+USE RemotionSecurityManager
 GO
 
 ALTER TABLE [Tenant]

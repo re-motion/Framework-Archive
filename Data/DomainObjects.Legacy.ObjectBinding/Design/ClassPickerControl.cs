@@ -1,8 +1,8 @@
 using System;
 using System.Windows.Forms.Design;
-using Rubicon.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.Design
+namespace Remotion.Data.DomainObjects.ObjectBinding.Design
 {
 
 public class ClassPickerControl: System.Windows.Forms.UserControl

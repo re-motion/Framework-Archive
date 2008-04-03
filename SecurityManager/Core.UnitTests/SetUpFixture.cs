@@ -3,26 +3,26 @@ using System.ComponentModel.Design;
 using System.Data.SqlClient;
 using System.IO;
 using NUnit.Framework;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Development;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Mapping.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Development.UnitTesting.Data.SqlClient;
-using Rubicon.Reflection;
-using Rubicon.SecurityManager.Domain;
-using Rubicon.SecurityManager.Persistence;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Development;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Development.UnitTesting.Data.SqlClient;
+using Remotion.Reflection;
+using Remotion.SecurityManager.Domain;
+using Remotion.SecurityManager.Persistence;
 
-namespace Rubicon.SecurityManager.UnitTests
+namespace Remotion.SecurityManager.UnitTests
 {
   [SetUpFixture]
   public class SetUpFixture
   {
-    private const string c_testDomainConnectionString = "Integrated Security=SSPI;Initial Catalog=RubiconSecurityManager;Data Source=localhost";
+    private const string c_testDomainConnectionString = "Integrated Security=SSPI;Initial Catalog=RemotionSecurityManager;Data Source=localhost";
     private const string c_masterConnectionString = "Integrated Security=SSPI;Initial Catalog=master;Data Source=localhost";
 
     [SetUp]

@@ -1,9 +1,9 @@
 using System;
 using System.Text;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Mixins;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
   public class WhereClauseBuilderMixin : Mixin<WhereClauseBuilderMixin.IRequirements>
   {

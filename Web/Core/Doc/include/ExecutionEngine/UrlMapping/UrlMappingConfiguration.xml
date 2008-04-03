@@ -11,14 +11,14 @@
         Use this class's <see cref="Current"/> property to read the configuration settings from your code. 
       </para><para>
         In order to use URL mapping for the execution engine, you must enter the mapping in an XML file and 
-        specify the physical path of the file in the <c>executionEngine</c> element of the <c>rubicon.web</c> 
+        specify the physical path of the file in the <c>executionEngine</c> element of the <c>remotion.web</c> 
         configuration section.
         <note>
-          See the <see cref="Rubicon.Web.Configuration.WebConfiguration"/> for details on registering the 
-          <c>rubicon.web</c> configuration section.
+          See the <see cref="Remotion.Web.Configuration.WebConfiguration"/> for details on registering the 
+          <c>remotion.web</c> configuration section.
         </note>
         <note>
-          See the <see cref="Rubicon.Web.Configuration.ExecutionEngineConfiguration"/> for details on the 
+          See the <see cref="Remotion.Web.Configuration.ExecutionEngineConfiguration"/> for details on the 
           <c>executionEngine</c> element in the configuration section.
         </note>
       </para><para>
@@ -33,14 +33,14 @@
           at least the following verbs: <c>GET</c>, <c>HEAD</c>, <c>POST</c>, <c>DEBUG</c>. Uncheck the 
           "Verifiy that file exists" option.
         </note>
-        You also have to register the <see cref="Rubicon.Web.ExecutionEngine.WxeHandler"/> (or a derived version)
+        You also have to register the <see cref="Remotion.Web.ExecutionEngine.WxeHandler"/> (or a derived version)
         in your application's configuration file. The following code snipped shows how to register the extension
-        <c>wxe</c> for the standard <see cref="Rubicon.Web.ExecutionEngine.WxeHandler"/>.
+        <c>wxe</c> for the standard <see cref="Remotion.Web.ExecutionEngine.WxeHandler"/>.
         <code>
 <![CDATA[        
 <system.web>
   <httpHandlers>
-    <add verb="*" path="*.wxe" type="Rubicon.Web.ExecutionEngine.WxeHandler, Rubicon.Web" />
+    <add verb="*" path="*.wxe" type="Remotion.Web.ExecutionEngine.WxeHandler, Remotion.Web" />
   </httpHandlers>
 </system.web>
 ]]></code>
@@ -50,23 +50,23 @@
         IntelliSense for the mapping file.
       </para>
     </remarks>
-    <seealso cref="Rubicon.Web.Configuration.ExecutionEngineConfiguration"/>
-    <seealso cref="Rubicon.Web.Configuration.WebConfiguration"/>
+    <seealso cref="Remotion.Web.Configuration.ExecutionEngineConfiguration"/>
+    <seealso cref="Remotion.Web.Configuration.WebConfiguration"/>
     <example>
       An example for specifying the 
-      <see cref="Rubicon.Web.Configuration.ExecutionEngineConfiguration.UrlMappingFile">urlMappingFile</see>
-      attribute with the <see cref="Rubicon.Web.Configuration.ExecutionEngineConfiguration">executionEngine</see> 
+      <see cref="Remotion.Web.Configuration.ExecutionEngineConfiguration.UrlMappingFile">urlMappingFile</see>
+      attribute with the <see cref="Remotion.Web.Configuration.ExecutionEngineConfiguration">executionEngine</see> 
       configuration section element.
       <code>
 <![CDATA[
-<rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"> 
+<remotion.web xmlns="http://www.rubicon-it.com/commons/web/configuration"> 
   <!-- The configuration section entries. -->
   <executionEngine
       urlMappingFile="C:\ProjectDirectory\UrlMapping.xml"
       <!-- Other elements of the executionEngine section. -->
   />
   <!-- Other configuration section entries. -->
-</rubicon.web>
+</remotion.web>
 ]]></code>
     </example>
     

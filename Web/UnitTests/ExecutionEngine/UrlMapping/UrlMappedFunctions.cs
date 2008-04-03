@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine.UrlMapping
+namespace Remotion.Web.UnitTests.ExecutionEngine.UrlMapping
 {
 
 public class FirstMappedFunction: WxeFunction

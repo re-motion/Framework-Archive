@@ -7,8 +7,8 @@
     <ProjectGuid>{9731FCDD-0F9F-41C5-B691-8AA9101CE249}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Mixins.Samples</RootNamespace>
-    <AssemblyName>Rubicon.Mixins.Samples</AssemblyName>
+    <RootNamespace>Remotion.Mixins.Samples</RootNamespace>
+    <AssemblyName>Remotion.Mixins.Samples</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

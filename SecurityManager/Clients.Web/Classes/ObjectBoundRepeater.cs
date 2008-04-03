@@ -1,6 +1,6 @@
 // Requires:
 // System.dll, System.Design.dll, System.Drawing.dll, System.Web.dll
-// Rubicon.Core.dll, Rubicon.ObjectBinding.dll, Rubicon.ObjectBinding.Web.dll, Rubicon.Web.dll
+// Remotion.Core.dll, Remotion.ObjectBinding.dll, Remotion.ObjectBinding.Web.dll, Remotion.Web.dll
 
 using System;
 using System.Collections;
@@ -9,16 +9,16 @@ using System.Drawing.Design;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.NullableValueTypes;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Design;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.ObjectBinding.Web.UI.Design;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
+using Remotion.NullableValueTypes;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Design;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.SecurityManager.Clients.Web.Classes
+namespace Remotion.SecurityManager.Clients.Web.Classes
 {
   public class ObjectBoundRepeater : Repeater, IBusinessObjectBoundEditableWebControl
   {

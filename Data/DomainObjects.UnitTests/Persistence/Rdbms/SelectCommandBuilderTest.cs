@@ -1,12 +1,12 @@
 using System;
 using System.Data;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Mixins;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
   [TestFixture]
   public class SelectCommandBuilderTest : SqlProviderBaseTest
@@ -18,7 +18,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       Provider.Connect ();
       SelectCommandBuilder builder = SelectCommandBuilder.CreateForRelatedIDLookup (
-          Provider, orderDefinition, orderDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"), DomainObjectIDs.Customer1);
+          Provider, orderDefinition, orderDefinition.GetMandatoryPropertyDefinition ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"), DomainObjectIDs.Customer1);
 
       using (IDbCommand command = builder.Create ())
       {
@@ -36,7 +36,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       SelectCommandBuilder.CreateForRelatedIDLookup (
           Provider, 
           orderDefinition, 
-          orderDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"), 
+          orderDefinition.GetMandatoryPropertyDefinition ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"), 
           DomainObjectIDs.Customer1);
     }
 
@@ -51,7 +51,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         SelectCommandBuilder builder = SelectCommandBuilder.CreateForRelatedIDLookup (
             Provider,
             orderDefinition,
-            orderDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"),
+            orderDefinition.GetMandatoryPropertyDefinition ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"),
             DomainObjectIDs.Customer1);
 
         using (IDbCommand command = builder.Create())

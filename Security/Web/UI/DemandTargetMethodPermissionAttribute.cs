@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Security.Web.UI
+namespace Remotion.Security.Web.UI
 {
   public class DemandTargetMethodPermissionAttribute : DemandTargetPermissionAttribute
   {

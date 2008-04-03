@@ -1,6 +1,6 @@
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests.SampleTypes
+namespace Remotion.Mixins.UnitTests.SampleTypes
 {
   [AcceptsAlphabeticOrdering]
   public class MixinAddingBT1AttributeToMember

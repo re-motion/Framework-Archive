@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
+namespace Remotion.Core.UnitTests.Utilities.AttributeUtilityTests
 {
   public class ComplexAttributeTarget
   {

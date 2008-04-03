@@ -5,12 +5,12 @@ using System.Text;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.EnumerationPropertyTests
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.EnumerationPropertyTests
 {
   [TestFixture]
   public class GetValueInfoByValue : EnumerationTestBase
@@ -82,8 +82,8 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.EnumerationPropert
     [Test]
     [ExpectedException (typeof (ArgumentException),
         ExpectedMessage =
-        "Object must be the same type as the enum. The type passed in was 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.EnumWithUndefinedValue'; "
-        + "the enum type was 'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.TestEnum'.")]
+        "Object must be the same type as the enum. The type passed in was 'Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.EnumWithUndefinedValue'; "
+        + "the enum type was 'Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.TestEnum'.")]
     public void EnumValueFromOtherType ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");

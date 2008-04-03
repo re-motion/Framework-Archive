@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
+namespace Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
 public class StringProperty : BaseProperty, IBusinessObjectStringProperty
 {

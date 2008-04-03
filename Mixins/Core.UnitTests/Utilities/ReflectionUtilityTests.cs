@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Mixins.Utilities;
+using Remotion.Mixins.Utilities;
 using NUnit.Framework;
-using Rubicon;
-using Rubicon.Collections;
+using Remotion;
+using Remotion.Collections;
 using System.Reflection;
 
-namespace Rubicon.Mixins.UnitTests.Utilities
+namespace Remotion.Mixins.UnitTests.Utilities
 {
   [TestFixture]
   public class ReflectionUtilityTests
@@ -94,7 +94,7 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       Assert.AreEqual (1, arguments.Count);
       Assert.IsNotNull (arguments.Find (delegate (Type arg) { return arg.Name == "T3"; }));
 
-      Type thisAttribute = typeof (Mixin).Assembly.GetType ("Rubicon.Mixins.ThisAttribute");
+      Type thisAttribute = typeof (Mixin).Assembly.GetType ("Remotion.Mixins.ThisAttribute");
       arguments = new List<Type> (ReflectionUtility.GetGenericParametersAssociatedWithAttribute (typeof (C<,,>), thisAttribute));
       Assert.AreEqual (1, arguments.Count);
       Assert.IsNotNull (arguments.Find (delegate (Type arg) { return arg.Name == "T2"; }));
@@ -158,7 +158,7 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       Assert.IsTrue (ReflectionUtility.IsPublicOrProtected (typeof (ClassWithAllVisibilityMethods).GetMethod ("ProtectedInternal", bf)));
       Assert.IsFalse (ReflectionUtility.IsPublicOrProtected (typeof (ClassWithAllVisibilityMethods).GetMethod ("Internal", bf)));
       Assert.IsFalse (ReflectionUtility.IsPublicOrProtected (typeof (ClassWithAllVisibilityMethods).GetMethod ("Private", bf)));
-      Assert.IsFalse (ReflectionUtility.IsPublicOrProtected (typeof (ClassWithAllVisibilityMethods).GetMethod ("Rubicon.Mixins.UnitTests.Utilities.ReflectionUtilityTests.IInterface.Explicit", bf)));
+      Assert.IsFalse (ReflectionUtility.IsPublicOrProtected (typeof (ClassWithAllVisibilityMethods).GetMethod ("Remotion.Mixins.UnitTests.Utilities.ReflectionUtilityTests.IInterface.Explicit", bf)));
     }
 
     [Test]
@@ -170,7 +170,7 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       Assert.IsTrue (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("ProtectedInternal", bf)));
       Assert.IsFalse (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("Internal", bf)));
       Assert.IsFalse (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("Private", bf)));
-      Assert.IsTrue (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("Rubicon.Mixins.UnitTests.Utilities.ReflectionUtilityTests.IInterface.Explicit", bf)));
+      Assert.IsTrue (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("Remotion.Mixins.UnitTests.Utilities.ReflectionUtilityTests.IInterface.Explicit", bf)));
     }
 
     [Test]

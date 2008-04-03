@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.Data.DomainObjects.Web.Test {
+namespace Remotion.Data.DomainObjects.Web.Test {
     
     
     /// <summary>

@@ -2,12 +2,12 @@ using System;
 using System.Security.Principal;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Security.Configuration;
-using Rubicon.Security.Metadata;
-using Rubicon.Security.UnitTests.Core.Configuration;
-using Rubicon.Security.UnitTests.Core.SampleDomain;
+using Remotion.Security.Configuration;
+using Remotion.Security.Metadata;
+using Remotion.Security.UnitTests.Core.Configuration;
+using Remotion.Security.UnitTests.Core.SampleDomain;
 
-namespace Rubicon.Security.UnitTests.Core
+namespace Remotion.Security.UnitTests.Core
 {
   [TestFixture]
   public class ObjectSecurityAdapterTest

@@ -1,13 +1,13 @@
 using System;
 
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Web.ExecutionEngine;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
 
-using Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain;
+using Remotion.Data.DomainObjects.Web.Legacy.Test.Domain;
 
-namespace Rubicon.Data.DomainObjects.Web.Legacy.Test.WxeFunctions
+namespace Remotion.Data.DomainObjects.Web.Legacy.Test.WxeFunctions
 {
 [Serializable]
 public class NoAutoCommitTestTransactedFunction : WxeTransactedFunction

@@ -10,13 +10,13 @@
     <meta name="CODE_LANGUAGE" Content="C#">
     <meta name="vs_defaultClientScript" content="JavaScript">
     <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
-    <rubicon:HtmlHeadContents id="HtmlHeadContents" runat="server"></rubicon:HtmlHeadContents>
+    <remotion:HtmlHeadContents id="HtmlHeadContents" runat="server"></remotion:HtmlHeadContents>
   </HEAD>
   <body>
     <form id="Form1" method="post" runat="server">
       <div visible="false" runat="server" style="BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; FONT-SIZE: x-small; BORDER-LEFT: black 1px solid; BORDER-BOTTOM: black 1px solid; FONT-FAMILY: Verdana, Arial, Sans-Serif; BACKGROUND-COLOR: #ffffe0">
-        <rubicon:FormGridManager id="FormGridManager" runat="server"></rubicon:FormGridManager>
-        <rubicon:BindableObjectDataSourceControl id="DataSource" runat="server" Type="Rubicon.ObjectBinding.Sample::Person" />
+        <remotion:FormGridManager id="FormGridManager" runat="server"></remotion:FormGridManager>
+        <remotion:BindableObjectDataSourceControl id="DataSource" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
       </div>
       <TABLE id="NameFormGrid" runat="server" style="WIDTH: 100%">
         <TR>
@@ -27,7 +27,7 @@
         <TR>
           <TD></TD>
           <TD>
-            <rubicon:BocTextValue id="BocTextValue1" runat="server"></rubicon:BocTextValue></TD>
+            <remotion:BocTextValue id="BocTextValue1" runat="server"></remotion:BocTextValue></TD>
         </TR>
         <TR>
           <TD></TD>
@@ -35,8 +35,8 @@
         </TR>
       </TABLE>
       <P>
-        <rubicon:UserControlBinding id="UserControlBinding1" runat="server" UserControlPath="address.ascx" DataSourceControl="DataSource"
-          PropertyIdentifier="Partner"></rubicon:UserControlBinding></P>
+        <remotion:UserControlBinding id="UserControlBinding1" runat="server" UserControlPath="address.ascx" DataSourceControl="DataSource"
+          PropertyIdentifier="Partner"></remotion:UserControlBinding></P>
     </form>
   </body>
 </HTML>

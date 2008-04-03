@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Rubicon.Mixins;
-using Rubicon.Mixins.Utilities.Singleton;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Collections;
-using Rubicon.Utilities;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins;
+using Remotion.Mixins.Utilities.Singleton;
+using Remotion.Mixins.Definitions;
+using Remotion.Collections;
+using Remotion.Utilities;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Mixins.CodeGeneration
+namespace Remotion.Mixins.CodeGeneration
 {
   /// <summary>
   /// Provides a way to build concrete types for target and mixin classes in mixin configurations and maintains a cache for built types.

@@ -3,7 +3,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core
+namespace Remotion.ObjectBinding.UnitTests.Core
 {
   [TestFixture]
   public class BusinessObjectDataSourceTest

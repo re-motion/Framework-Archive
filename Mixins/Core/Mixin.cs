@@ -1,12 +1,12 @@
 using System;
 using System.Diagnostics;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Utilities;
-using Rubicon.Mixins.Utilities;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Utilities;
+using Remotion.Mixins.Utilities;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   /// <summary>
   /// Provides reflective access to the mixins integrated with a target class.

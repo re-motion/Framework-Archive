@@ -2,9 +2,9 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BusinessObjectStringFormatterServiceTests
+namespace Remotion.ObjectBinding.UnitTests.Core.BusinessObjectStringFormatterServiceTests
 {
   [TestFixture]
   public class GetPropertyString_WithEnumerationProperty

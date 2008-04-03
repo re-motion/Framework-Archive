@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Validation;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Validation;
 
-namespace Rubicon.Mixins.UnitTests.ValidationTests
+namespace Remotion.Mixins.UnitTests.ValidationTests
 {
   [TestFixture]
   public class DelegateRuleDescriptionTests
@@ -26,7 +26,7 @@ namespace Rubicon.Mixins.UnitTests.ValidationTests
     public void DefaultDescription ()
     {
       IValidationRule rule = new DelegateValidationRule<TargetClassDefinition> (NonDescribedSampleRule);
-      Assert.AreEqual ("Rubicon.Mixins.UnitTests.ValidationTests.DelegateRuleDescriptionTests.NonDescribedSampleRule", rule.RuleName);
+      Assert.AreEqual ("Remotion.Mixins.UnitTests.ValidationTests.DelegateRuleDescriptionTests.NonDescribedSampleRule", rule.RuleName);
       Assert.AreEqual ("Non described sample rule", rule.Message);
     }
 
@@ -34,7 +34,7 @@ namespace Rubicon.Mixins.UnitTests.ValidationTests
     public void DescriptionAttribute_NoChanges ()
     {
       IValidationRule rule = new DelegateValidationRule<TargetClassDefinition> (DescribedSampleRule_NoChanges);
-      Assert.AreEqual ("Rubicon.Mixins.UnitTests.ValidationTests.DelegateRuleDescriptionTests.DescribedSampleRule_NoChanges", rule.RuleName);
+      Assert.AreEqual ("Remotion.Mixins.UnitTests.ValidationTests.DelegateRuleDescriptionTests.DescribedSampleRule_NoChanges", rule.RuleName);
       Assert.AreEqual ("Described sample rule_ no changes", rule.Message);
     }
 

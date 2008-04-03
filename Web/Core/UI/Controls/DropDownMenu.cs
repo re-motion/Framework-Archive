@@ -3,11 +3,11 @@ using System.ComponentModel;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Design;
-using Rubicon.Web.Utilities;
+using Remotion.Utilities;
+using Remotion.Web.UI.Design;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
   /// <include file='doc\include\UI\Controls\DropDownMenu.xml' path='DropDownMenu/Class/*' />

@@ -1,10 +1,10 @@
 using System;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
   public class BindableDomainObjectGetObjectService : IGetObjectService
   {

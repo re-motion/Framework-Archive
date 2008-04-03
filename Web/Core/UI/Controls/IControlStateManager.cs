@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 public interface IControlStateManager

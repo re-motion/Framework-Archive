@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Rubicon.Data.DomainObjects.Legacy.ObjectBinding.UnitTests">
+<project xmlns="nant-schema" name="Remotion.Data.DomainObjects.Legacy.ObjectBinding.UnitTests">
   
   <target name="build" description="perform a build">
     <csc  target="library"
@@ -15,13 +15,13 @@
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Core.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.Legacy.ObjectBinding.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.Legacy.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Development.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.ObjectBinding.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Mixins.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Core.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Data.DomainObjects.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Data.DomainObjects.Legacy.ObjectBinding.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Data.DomainObjects.Legacy.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Development.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.ObjectBinding.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Mixins.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rhino.Mocks.dll"/>
         <include asis="true" name="${build.test.outputdir}/nunit.framework.dll"/>
         <include asis="true" name="System.dll"/>

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Development.UnitTesting;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Security.UnitTests.Core.SampleDomain
+namespace Remotion.Security.UnitTests.Core.SampleDomain
 {
   public class SecurableObject : ISecurableObject, IInterfaceWithProperty
   {

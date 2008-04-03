@@ -2,7 +2,7 @@ using System;
 using log4net.Core;
 using NUnit.Framework;
 
-namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
+namespace Remotion.Core.UnitTests.Logging.Log4NetLogTests
 {
   [TestFixture]
   public class WarningTest : BaseTest

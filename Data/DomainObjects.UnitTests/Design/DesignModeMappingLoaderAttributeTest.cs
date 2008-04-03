@@ -4,10 +4,10 @@ using System.ComponentModel.Design;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.Design;
+using Remotion.Data.DomainObjects.ConfigurationLoader;
+using Remotion.Data.DomainObjects.Design;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Design
+namespace Remotion.Data.DomainObjects.UnitTests.Design
 {
   [TestFixture]
   public class DesignModeMappingLoaderAttributeTest

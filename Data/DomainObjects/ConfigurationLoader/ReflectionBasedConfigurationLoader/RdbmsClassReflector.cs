@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
+namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   /// <summary>
   /// The <see cref="RdbmsClassReflector"/> is used introduce <b>RDBMS</b> specific information into the building the 

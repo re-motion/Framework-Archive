@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Development.UnitTesting;
+using Remotion.Web.ExecutionEngine;
 using NUnit.Framework;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine
 {
 
   /// <summary> Provides a test implementation of the <see langword="abstract"/> <see cref="WxeTransactionBase{TTransaction}"/> type. </summary>

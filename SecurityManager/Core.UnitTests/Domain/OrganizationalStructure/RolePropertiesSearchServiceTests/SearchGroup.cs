@@ -1,13 +1,13 @@
 using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Data.DomainObjects;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using System.Collections.Generic;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.RolePropertiesSearchServiceTests
+namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.RolePropertiesSearchServiceTests
 {
   [TestFixture]
   public class SearchGroup : DomainTest

@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Rubicon.Collections;
+using Remotion.Collections;
 
-namespace Rubicon.Mixins.Definitions.Building.DependencySorting
+namespace Remotion.Mixins.Definitions.Building.DependencySorting
 {
   // groups mixins based on dependencies and common overridden methods
   public class DependentMixinGrouper

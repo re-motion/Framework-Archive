@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Development.UnitTesting;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain
 {
   [Serializable]
   public class TestDomainBase : DomainObject

@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.AccessControl;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
+namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 {
   [TestFixture]
   public class AccessControlEntryValidationResultTest

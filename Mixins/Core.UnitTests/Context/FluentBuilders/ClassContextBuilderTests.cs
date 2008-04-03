@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
-using Rubicon.Mixins.Context.FluentBuilders;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Mixins.Context;
-using Rubicon.Utilities;
+using Remotion.Mixins.Context;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.UnitTests.Context.FluentBuilders
+namespace Remotion.Mixins.UnitTests.Context.FluentBuilders
 {
   [TestFixture]
   public class ClassContextBuilderTests
@@ -117,48 +117,48 @@ namespace Rubicon.Mixins.UnitTests.Context.FluentBuilders
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Rubicon.Mixins.UnitTests.SampleTypes.BT2Mixin1 is already configured as a "
-        + "mixin for type Rubicon.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Remotion.Mixins.UnitTests.SampleTypes.BT2Mixin1 is already configured as a "
+        + "mixin for type Remotion.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
     public void AddMixin_Twice ()
     {
       _classBuilder.AddMixin (typeof (BT2Mixin1)).AddMixin (typeof (BT2Mixin1));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Rubicon.Mixins.UnitTests.SampleTypes.GenericMixinWithVirtualMethod`1 is "
-        + "already configured as a mixin for type Rubicon.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Remotion.Mixins.UnitTests.SampleTypes.GenericMixinWithVirtualMethod`1 is "
+        + "already configured as a mixin for type Remotion.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
     public void AddMixin_Twice_Generic1 ()
     {
       _classBuilder.AddMixin (typeof (GenericMixinWithVirtualMethod<>)).AddMixin (typeof (GenericMixinWithVirtualMethod<>));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Rubicon.Mixins.UnitTests.SampleTypes.GenericMixinWithVirtualMethod`1 is "
-        + "already configured as a mixin for type Rubicon.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Remotion.Mixins.UnitTests.SampleTypes.GenericMixinWithVirtualMethod`1 is "
+        + "already configured as a mixin for type Remotion.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
     public void AddMixin_Twice_Generic2 ()
     {
       _classBuilder.AddMixin (typeof (GenericMixinWithVirtualMethod<object>)).AddMixin (typeof (GenericMixinWithVirtualMethod<>));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Rubicon.Mixins.UnitTests.SampleTypes.GenericMixinWithVirtualMethod`1 is "
-        + "already configured as a mixin for type Rubicon.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Remotion.Mixins.UnitTests.SampleTypes.GenericMixinWithVirtualMethod`1 is "
+        + "already configured as a mixin for type Remotion.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
     public void AddMixin_Twice_Generic3 ()
     {
       _classBuilder.AddMixin (typeof (GenericMixinWithVirtualMethod<>)).AddMixin (typeof (GenericMixinWithVirtualMethod<object>));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Rubicon.Mixins.UnitTests.SampleTypes.GenericMixinWithVirtualMethod`1 is "
-        + "already configured as a mixin for type Rubicon.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Remotion.Mixins.UnitTests.SampleTypes.GenericMixinWithVirtualMethod`1 is "
+        + "already configured as a mixin for type Remotion.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
     public void AddMixin_Twice_Generic4 ()
     {
       _classBuilder.AddMixin (typeof (GenericMixinWithVirtualMethod<string>)).AddMixin (typeof (GenericMixinWithVirtualMethod<object>));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Rubicon.Mixins.UnitTests.SampleTypes.BT2Mixin1 is already configured as a "
-        + "mixin for type Rubicon.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Remotion.Mixins.UnitTests.SampleTypes.BT2Mixin1 is already configured as a "
+        + "mixin for type Remotion.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
     public void AddMixin_ConflictWithParentContext ()
     {
       ClassContext parentContext = new ClassContext (typeof (BaseType2), typeof (BT2Mixin1));
@@ -354,16 +354,16 @@ namespace Rubicon.Mixins.UnitTests.Context.FluentBuilders
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Rubicon.Mixins.UnitTests.SampleTypes.IBT6Mixin1 is already configured as a "
-        + "complete interface for type Rubicon.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Remotion.Mixins.UnitTests.SampleTypes.IBT6Mixin1 is already configured as a "
+        + "complete interface for type Remotion.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
     public void AddCompleteInterface_Twice ()
     {
       _classBuilder.AddCompleteInterface (typeof (IBT6Mixin1)).AddCompleteInterface (typeof (IBT6Mixin1));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Rubicon.Mixins.UnitTests.SampleTypes.IBT6Mixin1 is already configured as a "
-        + "complete interface for type Rubicon.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Remotion.Mixins.UnitTests.SampleTypes.IBT6Mixin1 is already configured as a "
+        + "complete interface for type Remotion.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
     public void AddCompleteInterface_ConflictWithParentContext ()
     {
       ClassContext parentContext = new ClassContext (typeof (BaseType2), new MixinContext[0], new Type[]{typeof (IBT6Mixin1)});
@@ -431,8 +431,8 @@ namespace Rubicon.Mixins.UnitTests.Context.FluentBuilders
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The mixin type Rubicon.Mixins.UnitTests.SampleTypes.BT2Mixin1 has already "
-        + "been suppressed for target type Rubicon.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The mixin type Remotion.Mixins.UnitTests.SampleTypes.BT2Mixin1 has already "
+        + "been suppressed for target type Remotion.Mixins.UnitTests.SampleTypes.BaseType2.", MatchType = MessageMatch.Contains)]
     public void SuppressMixin_Twice ()
     {
       _classBuilder.SuppressMixin (typeof (BT2Mixin1));

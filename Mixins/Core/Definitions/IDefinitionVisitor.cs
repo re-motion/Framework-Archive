@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   public interface IDefinitionVisitor
   {

@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Specialized;
 using NUnit.Framework;
-using Rubicon.Collections;
-using Rubicon.Configuration;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Security.Configuration;
+using Remotion.Collections;
+using Remotion.Configuration;
+using Remotion.Development.UnitTesting;
+using Remotion.Security.Configuration;
 
-namespace Rubicon.Security.UnitTests.Core
+namespace Remotion.Security.UnitTests.Core
 {
   [TestFixture]
   public class NullGlobalAccessTypeCacheProviderTest

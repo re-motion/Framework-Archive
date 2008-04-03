@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.PerformanceTests.TestDomain
+namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
 {
   [Instantiable]
   [DBTable]

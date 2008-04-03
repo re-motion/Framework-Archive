@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Data.DomainObjects;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
+namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
   [TestFixture]
   public class UserPropertiesSearchServiceTest : DomainTest
@@ -80,7 +80,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     [ExpectedException (typeof (ArgumentException),
         ExpectedMessage =
-        "The property 'Tenant' is not supported by the 'Rubicon.SecurityManager.Domain.OrganizationalStructure.UserPropertiesSearchService' type.",
+        "The property 'Tenant' is not supported by the 'Remotion.SecurityManager.Domain.OrganizationalStructure.UserPropertiesSearchService' type.",
         MatchType = MessageMatch.Contains)]
     public void Search_WithInvalidProperty ()
     {

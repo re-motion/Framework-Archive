@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Collections;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Context
+namespace Remotion.Mixins.Context
 {
   public class ClassContextDeriver
   {

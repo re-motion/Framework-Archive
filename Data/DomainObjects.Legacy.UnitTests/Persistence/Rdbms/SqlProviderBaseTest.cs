@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Persistence.Rdbms
 {
   public class SqlProviderBaseTest : ClientTransactionBaseTest
   {

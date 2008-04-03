@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
 using System.Reflection;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Development.UnitTesting;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
+namespace Remotion.Data.DomainObjects.UnitTests.Transaction
 {
   [TestFixture]
   public class InvalidatedTransactionListenerTest

@@ -1,9 +1,9 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
+namespace Remotion.Core.UnitTests.Utilities.AttributeUtilityTests
 {
   [TestFixture]
   public class GetCustomAttributesFromMemberInfoTest

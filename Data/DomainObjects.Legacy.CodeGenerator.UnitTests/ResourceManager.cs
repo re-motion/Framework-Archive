@@ -1,8 +1,8 @@
 using System;
 using System.IO;
-using Assertion=Rubicon.Utilities.Assertion;
+using Assertion=Remotion.Utilities.Assertion;
 
-namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
+namespace Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
 {
   public static class ResourceManager
   {    

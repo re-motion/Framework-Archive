@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Resources
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Resources
 {
 public sealed class ResourceManager
 {
@@ -23,17 +23,17 @@ public sealed class ResourceManager
 
   public static byte[] GetImage1 ()
   {
-    return GetResource ("Rubicon.Data.DomainObjects.Legacy.UnitTests.Resources.Image1.png");
+    return GetResource ("Remotion.Data.DomainObjects.Legacy.UnitTests.Resources.Image1.png");
   }
 
   public static byte[] GetImage2 ()
   {
-    return GetResource ("Rubicon.Data.DomainObjects.Legacy.UnitTests.Resources.Image2.png");
+    return GetResource ("Remotion.Data.DomainObjects.Legacy.UnitTests.Resources.Image2.png");
   }
 
   public static byte[] GetImageLarger1MB ()
   {
-    return GetResource ("Rubicon.Data.DomainObjects.Legacy.UnitTests.Resources.ImageLarger1MB.bmp");
+    return GetResource ("Remotion.Data.DomainObjects.Legacy.UnitTests.Resources.ImageLarger1MB.bmp");
   }
 
   public static void IsEqualToImage1 (byte[] actual)

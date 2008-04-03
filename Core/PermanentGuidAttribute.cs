@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon
+namespace Remotion
 {
   /// <summary>
   ///   Supplies an identifier that should remain constant even accross refactorings. Can be applied to reference types, properties and fields.

@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Security;
-using Rubicon.Security.Configuration;
-using Rubicon.SecurityManager.Clients.Web.Test.Domain;
-using Rubicon.Utilities;
-using SecurityManagerUser = Rubicon.SecurityManager.Domain.OrganizationalStructure.User;
+using Remotion.Data.DomainObjects;
+using Remotion.Security;
+using Remotion.Security.Configuration;
+using Remotion.SecurityManager.Clients.Web.Test.Domain;
+using Remotion.Utilities;
+using SecurityManagerUser = Remotion.SecurityManager.Domain.OrganizationalStructure.User;
 
-namespace Rubicon.SecurityManager.Clients.Web.Test
+namespace Remotion.SecurityManager.Clients.Web.Test
 {
   public partial class _Default : System.Web.UI.Page
   {

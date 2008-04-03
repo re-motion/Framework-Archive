@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.Web.Test.Domain
+namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
   public static class DomainObjectIDs
   {

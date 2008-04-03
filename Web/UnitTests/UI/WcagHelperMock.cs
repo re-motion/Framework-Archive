@@ -1,8 +1,8 @@
 using System;
 using System.Web.UI;
-using Rubicon.Web.UI;
+using Remotion.Web.UI;
 
-namespace Rubicon.Web.UnitTests.UI
+namespace Remotion.Web.UnitTests.UI
 {
 /// <summary> Provides programmatically accessible feedback on the WCAG conformance </summary>
 public class WcagHelperMock: WcagHelper

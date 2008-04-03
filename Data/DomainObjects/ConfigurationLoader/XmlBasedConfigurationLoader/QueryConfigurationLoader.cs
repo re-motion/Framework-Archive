@@ -2,10 +2,10 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Data.DomainObjects.Schemas;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.Schemas;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader
+namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader
 {
   public class QueryConfigurationLoader : BaseFileLoader
   {

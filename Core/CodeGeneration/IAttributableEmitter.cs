@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Text;
 using System.Reflection.Emit;
 
-namespace Rubicon.CodeGeneration
+namespace Remotion.CodeGeneration
 {
   public interface IAttributableEmitter
   {

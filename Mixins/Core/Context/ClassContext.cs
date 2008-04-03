@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Collections;
-using Rubicon.Mixins;
-using Rubicon.Mixins.Utilities;
-using Rubicon.Mixins.Utilities.Serialization;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Mixins;
+using Remotion.Mixins.Utilities;
+using Remotion.Mixins.Utilities.Serialization;
+using Remotion.Utilities;
 using System.Runtime.Serialization;
 using System.Text;
-using ReflectionUtility=Rubicon.Utilities.ReflectionUtility;
+using ReflectionUtility=Remotion.Utilities.ReflectionUtility;
 
-namespace Rubicon.Mixins.Context
+namespace Remotion.Mixins.Context
 {
   /// <summary>
   /// Holds the mixin configuration information for a single mixin target class.
@@ -269,7 +269,7 @@ namespace Rubicon.Mixins.Context
       {
         foreach (MixinContext mixin in Mixins)
         {
-          if (Rubicon.Utilities.ReflectionUtility.CanAscribe (mixin.MixinType, suppressedType))
+          if (Remotion.Utilities.ReflectionUtility.CanAscribe (mixin.MixinType, suppressedType))
             mixinsAfterSuppression.Remove (mixin.MixinType);
         }
       }

@@ -9,13 +9,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Text;
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
-using Rubicon.NullableValueTypes;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding.Sample;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
+using Remotion.NullableValueTypes;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
+using Remotion.ObjectBinding;
 
 
 namespace OBWTest
@@ -24,10 +24,10 @@ namespace OBWTest
 public class PersonsForm : SingleBocTestWxeBasePage
 {
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocList PersonList;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocList PersonList;
   protected System.Web.UI.WebControls.Button PostBackButton;
 
 	private void Page_Load(object sender, System.EventArgs e)

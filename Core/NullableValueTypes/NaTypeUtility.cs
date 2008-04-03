@@ -2,7 +2,7 @@ using System;
 using System.Xml;
 using System.Xml.Schema;
 
-namespace Rubicon.NullableValueTypes
+namespace Remotion.NullableValueTypes
 {
 
 /// <summary>
@@ -116,7 +116,7 @@ public sealed class NaTypeUtility
   public static void AddMapping (Type nullableType)
   {
     if (! IsNaNullableType (nullableType))
-      throw new ArgumentException ("Specified type must implement Rubicon.INaNullable.", "nullableType");
+      throw new ArgumentException ("Specified type must implement Remotion.INaNullable.", "nullableType");
 
     Type basicType = GetBasicType (nullableType);
     Type[][] newMappings = new Type[s_typeMappings.Length + 1][];
@@ -202,8 +202,8 @@ public sealed class NaTypeUtility
     if (basicTypes != null && basicTypes.Length > 0)
       return basicTypes[0].BasicType;
 
-    throw new NotSupportedException ("Types that implement Rubicon.INaNullable must specify a "
-        + "Rubicon.NullableValueTypes.NaBasicTypeAttribute attribute. This attribute is missing from type " + nullableType.FullName + ".");
+    throw new NotSupportedException ("Types that implement Remotion.INaNullable must specify a "
+        + "Remotion.NullableValueTypes.NaBasicTypeAttribute attribute. This attribute is missing from type " + nullableType.FullName + ".");
   }
 
   public static XmlSchema CreateXmlSchema (string name, string xmlType)

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Mixins;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain
+namespace Remotion.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain
 {
   [Instantiable]
   [Serializable]

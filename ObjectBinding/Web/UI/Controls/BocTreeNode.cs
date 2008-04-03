@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel;
-using Rubicon.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
 public abstract class BocTreeNode: WebTreeNode

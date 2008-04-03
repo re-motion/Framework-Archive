@@ -3,13 +3,13 @@ using System.Threading;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Web.UI;
-using Rubicon.Globalization;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.UI.Controls;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Data.DomainObjects;
-using Rubicon.ObjectBinding;
+using Remotion.Globalization;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Data.DomainObjects;
+using Remotion.ObjectBinding;
 
 
 namespace $PROJECT_ROOTNAMESPACE$.Classes

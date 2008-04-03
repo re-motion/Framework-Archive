@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Development.UnitTesting;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Development.UnitTesting;
 
 #pragma warning disable 0618
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
   public abstract class TestDomainBase : DomainObject

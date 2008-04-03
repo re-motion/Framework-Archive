@@ -1,5 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="true" Codebehind="SutUserControl.ascx.cs"
-  Inherits="Rubicon.Web.Test.UpdatePanelTests.SutUserControl" %>
+  Inherits="Remotion.Web.Test.UpdatePanelTests.SutUserControl" %>
 <asp:ScriptManagerProxy ID="ScriptManagerProxy" runat="server" />
 <asp:UpdatePanel ID="UpdatePanel" runat="server">
   <ContentTemplate>
@@ -19,23 +19,23 @@
         <asp:LinkButton ID="SyncPostBackInsideUpdatePanelLinkButton" runat="server" Text="LinkButton: Sync PostBack Inside Update Panel" /><br />
         <asp:HyperLink ID="AsyncCommandInsideUpdatePanelHyperLink" runat="server">HyperLink: Async Command Inside Update Panel</asp:HyperLink><br />
         <asp:HyperLink ID="SyncCommandInsideUpdatePanelHyperLink" runat="server">HyperLink: Sync Command Inside Update Panel</asp:HyperLink><br />
-        <rubicon:WebButton ID="AsyncPostBackInsideUpdatePanelWebButton" runat="server" Text="WebButton: Async PostBack Inside Update Panel" /><br />
-        <rubicon:WebButton ID="SyncPostBackInsideUpdatePanelWebButton" runat="server" Text="WebButton: Sync PostBack Inside Update Panel" RequiresSynchronousPostBack="true" /><br />
+        <remotion:WebButton ID="AsyncPostBackInsideUpdatePanelWebButton" runat="server" Text="WebButton: Async PostBack Inside Update Panel" /><br />
+        <remotion:WebButton ID="SyncPostBackInsideUpdatePanelWebButton" runat="server" Text="WebButton: Sync PostBack Inside Update Panel" RequiresSynchronousPostBack="true" /><br />
         <br />
-        <rubicon:DropDownMenu ID="DropDownMenuInsideUpdatePanel" runat="server" TitleText="DropDownMenu Inside UpdatePanel" Width="20em">
+        <remotion:DropDownMenu ID="DropDownMenuInsideUpdatePanel" runat="server" TitleText="DropDownMenu Inside UpdatePanel" Width="20em">
         <MenuItems>
-          <rubicon:WebMenuItem ItemID="EventWithSyncPostBack" Text="Event With Sync PostBack">
+          <remotion:WebMenuItem ItemID="EventWithSyncPostBack" Text="Event With Sync PostBack">
             <PersistedCommand>
-              <rubicon:Command Type="Event" EventCommand-RequiresSynchronousPostBack="True" />
+              <remotion:Command Type="Event" EventCommand-RequiresSynchronousPostBack="True" />
             </PersistedCommand>
-          </rubicon:WebMenuItem>
-          <rubicon:WebMenuItem ItemID="EventWithAsyncPostBack" Text="Event With Async PostBack">
+          </remotion:WebMenuItem>
+          <remotion:WebMenuItem ItemID="EventWithAsyncPostBack" Text="Event With Async PostBack">
             <PersistedCommand>
-              <rubicon:Command Type="Event" />
+              <remotion:Command Type="Event" />
             </PersistedCommand>
-          </rubicon:WebMenuItem>
+          </remotion:WebMenuItem>
         </MenuItems>
-        </rubicon:DropDownMenu>
+        </remotion:DropDownMenu>
       </div>
     </div>
   </ContentTemplate>

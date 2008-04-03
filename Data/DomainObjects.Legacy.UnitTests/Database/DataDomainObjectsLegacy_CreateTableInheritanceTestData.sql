@@ -14,7 +14,7 @@ delete from [TableInheritance_Folder]
 
 
 -- Client
-insert into [TableInheritance_Client] (ID, ClassID, [Name]) values ('{F7AD91EF-AC75-4fe3-A427-E40312B12917}', 'Client', 'rubicon')
+insert into [TableInheritance_Client] (ID, ClassID, [Name]) values ('{F7AD91EF-AC75-4fe3-A427-E40312B12917}', 'Client', 'remotion')
 
 -- Note: This client has an OrganizationalUnit assigned with an invalid ClassID:
 insert into [TableInheritance_Client] (ID, ClassID, [Name]) values ('{58535280-84EC-41d9-9F8F-BCAC64BB3709}', 'Client', 'ClientWithOrganizationalUnitWithInvalidClassID')

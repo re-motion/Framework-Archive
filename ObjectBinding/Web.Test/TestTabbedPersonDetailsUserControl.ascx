@@ -7,36 +7,36 @@
 <table id="FormGrid" runat="server" style="MARGIN-TOP: 0%">
   <tr>
     <td></td>
-    <td><rubicon:boctextvalue id="LastNameField" required="true" runat="server" propertyidentifier="LastName" datasourcecontrol="CurrentObject">
+    <td><remotion:boctextvalue id="LastNameField" required="true" runat="server" propertyidentifier="LastName" datasourcecontrol="CurrentObject">
 <textboxstyle textmode="SingleLine" autopostback="True">
-</TextBoxStyle></rubicon:boctextvalue></td></tr>
+</TextBoxStyle></remotion:boctextvalue></td></tr>
   <tr>
     <td></td>
-    <td><rubicon:boctextvalue id="FirstNameField" runat="server" propertyidentifier="FirstName" datasourcecontrol="CurrentObject"></rubicon:boctextvalue></td></tr>
+    <td><remotion:boctextvalue id="FirstNameField" runat="server" propertyidentifier="FirstName" datasourcecontrol="CurrentObject"></remotion:boctextvalue></td></tr>
   <tr>
     <td></td>
-    <td><rubicon:bocdatetimevalue id="DateOfBirthField" runat="server" propertyidentifier="DateOfBirth" datasourcecontrol="CurrentObject" >
+    <td><remotion:bocdatetimevalue id="DateOfBirthField" runat="server" propertyidentifier="DateOfBirth" datasourcecontrol="CurrentObject" >
 <datetimetextboxstyle autopostback="True">
-</DateTimeTextBoxStyle></rubicon:bocdatetimevalue></td></tr>
+</DateTimeTextBoxStyle></remotion:bocdatetimevalue></td></tr>
   <tr>
     <td></td>
-    <td><rubicon:bocbooleanvalue id="DeceasedField" runat="server" propertyidentifier="Deceased" datasourcecontrol="CurrentObject" nullitemerrormessage="Eingabe erforderlich" autopostback="True"></rubicon:bocbooleanvalue></td></tr>
+    <td><remotion:bocbooleanvalue id="DeceasedField" runat="server" propertyidentifier="Deceased" datasourcecontrol="CurrentObject" nullitemerrormessage="Eingabe erforderlich" autopostback="True"></remotion:bocbooleanvalue></td></tr>
   <tr>
     <td></td>
-    <td><rubicon:bocdatetimevalue id="DateOfDeathField" runat="server" propertyidentifier="DateOfDeath" datasourcecontrol="CurrentObject" ></rubicon:bocdatetimevalue></td></tr>
+    <td><remotion:bocdatetimevalue id="DateOfDeathField" runat="server" propertyidentifier="DateOfDeath" datasourcecontrol="CurrentObject" ></remotion:bocdatetimevalue></td></tr>
   <tr>
     <td></td>
-    <td><rubicon:bocenumvalue id="MarriageStatusField" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="CurrentObject" nullitemerrormessage="Eingabe erforderlich">
+    <td><remotion:bocenumvalue id="MarriageStatusField" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="CurrentObject" nullitemerrormessage="Eingabe erforderlich">
 <listcontrolstyle autopostback="True" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
-</ListControlStyle></rubicon:bocenumvalue></td></tr>
+</ListControlStyle></remotion:bocenumvalue></td></tr>
   <tr>
     <td></td>
-    <td><rubicon:bocreferencevalue id="PartnerField" runat="server" propertyidentifier="Partner" datasourcecontrol="CurrentObject" nullitemerrormessage="Eingabe erforderlich">
+    <td><remotion:bocreferencevalue id="PartnerField" runat="server" propertyidentifier="Partner" datasourcecontrol="CurrentObject" nullitemerrormessage="Eingabe erforderlich">
 <dropdownliststyle autopostback="True">
 </DropDownListStyle>
 
 <persistedcommand>
-<rubicon:BocCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></rubicon:BocCommand>
-</PersistedCommand></rubicon:bocreferencevalue></td></tr>
+<remotion:BocCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></remotion:BocCommand>
+</PersistedCommand></remotion:bocreferencevalue></td></tr>
 </table>
-<p><rubicon:formgridmanager id="FormGridManager" runat="server" visible="true"></rubicon:formgridmanager><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Rubicon.ObjectBinding.Sample::Person" /></p>
+<p><remotion:formgridmanager id="FormGridManager" runat="server" visible="true"></remotion:formgridmanager><remotion:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" /></p>

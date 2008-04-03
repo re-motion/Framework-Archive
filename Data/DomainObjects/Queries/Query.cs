@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Queries
+namespace Remotion.Data.DomainObjects.Queries
 {
 /// <summary>
 /// Represents a default implementation of <see cref="IQuery"/>.

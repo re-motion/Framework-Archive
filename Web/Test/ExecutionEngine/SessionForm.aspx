@@ -1,5 +1,5 @@
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Page language="c#" Codebehind="SessionForm.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.Web.Test.ExecutionEngine.SessionForm" smartNavigation="False"%>
+<%@ Register TagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
+<%@ Page language="c#" Codebehind="SessionForm.aspx.cs" AutoEventWireup="false" Inherits="Remotion.Web.Test.ExecutionEngine.SessionForm" smartNavigation="False"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" >
 <html>
   <head>
@@ -10,7 +10,7 @@
 <meta content=JavaScript name=vs_defaultClientScript>
 <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema>
 -->
-<rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
+<remotion:htmlheadcontents id=HtmlHeadContents runat="server"></remotion:htmlheadcontents>
 <!--<body MS_POSITIONING="FlowLayout">-->
   </head>
 <body>
@@ -32,41 +32,41 @@
     <p><asp:label id="FunctionTokenLabel" runat="server">Token</asp:label>, 
     <asp:label id="PostBackIDLabel" runat="server">PostBackID</asp:label>,
     <asp:label id="ViewStateTokenLabel" runat="server">ViewStateToken</asp:label></p>
-    <rubicon:WebButton id="PostBackButton" runat="server" Text="PostBack"></rubicon:WebButton><rubicon:WebButton id="OpenSelfButton" runat="server" Text="Open Self"></rubicon:WebButton> 
+    <remotion:WebButton id="PostBackButton" runat="server" Text="PostBack"></remotion:WebButton><remotion:WebButton id="OpenSelfButton" runat="server" Text="Open Self"></remotion:WebButton> 
     <asp:linkbutton id="LinkButton1" runat="server">LinkButton</asp:linkbutton>
     <a id="LinkButton2" href="#" onclick="__doPostBack('LinkButton1',''); return false;">LinkButton 2</a>
 <p>
 <asp:button id="Button1" runat="server" Text="Button"></asp:button>
 </p><p>
-<rubicon:webbutton id="Button1Button" runat="server" Text="Button 1" UseSubmitBehavior="False"></rubicon:webbutton>
+<remotion:webbutton id="Button1Button" runat="server" Text="Button 1" UseSubmitBehavior="False"></remotion:webbutton>
 </p><p>
-<rubicon:webbutton id="Submit1Button" runat="server" Text="Submit 1"></rubicon:webbutton>
+<remotion:webbutton id="Submit1Button" runat="server" Text="Submit 1"></remotion:webbutton>
 </p><p>
-<rubicon:webbutton id="ExecuteButton" runat="server" Text="Execute"></rubicon:webbutton>
+<remotion:webbutton id="ExecuteButton" runat="server" Text="Execute"></remotion:webbutton>
 </p><p>
-<rubicon:webbutton id="ExecuteNoRepostButton" runat="server" Text="Execute, No Repost"></rubicon:webbutton>
+<remotion:webbutton id="ExecuteNoRepostButton" runat="server" Text="Execute, No Repost"></remotion:webbutton>
 </p><p>
-<rubicon:webbutton id="Button2Button" runat="server" Text="Button 2" UseSubmitBehavior="False"></rubicon:webbutton>
+<remotion:webbutton id="Button2Button" runat="server" Text="Button 2" UseSubmitBehavior="False"></remotion:webbutton>
 </p>
-      <p><rubicon:WebButton id="OpenSampleFunctionButton" runat="server" Text="Open Sample Function"></rubicon:WebButton><br>
-<rubicon:WebButton id="OpenSampleFunctionWithPermanentUrlButton" runat="server" Text="Open Sample Function with Permant URL"></rubicon:WebButton><br>
-<rubicon:WebButton id="OpenSampleFunctionInNewWindowButton" runat="server" Text="Open Sample Function in New Window"></rubicon:WebButton><br>
-<rubicon:WebButton id="OpenSampleFunctionWithPermanentUrlInNewWindowButton" runat="server" Text="Open Sample Function with Permanent URL in New Window"></rubicon:WebButton><br>
+      <p><remotion:WebButton id="OpenSampleFunctionButton" runat="server" Text="Open Sample Function"></remotion:WebButton><br>
+<remotion:WebButton id="OpenSampleFunctionWithPermanentUrlButton" runat="server" Text="Open Sample Function with Permant URL"></remotion:WebButton><br>
+<remotion:WebButton id="OpenSampleFunctionInNewWindowButton" runat="server" Text="Open Sample Function in New Window"></remotion:WebButton><br>
+<remotion:WebButton id="OpenSampleFunctionWithPermanentUrlInNewWindowButton" runat="server" Text="Open Sample Function with Permanent URL in New Window"></remotion:WebButton><br>
 
-<rubicon:WebButton id="OpenSessionFunctionButton" runat="server" Text="Open Session Function"></rubicon:WebButton><br>
-<rubicon:WebButton id="OpenSessionFunctionWithPermanentUrlButton" runat="server" Text="Open Session Function with Permanent URL"></rubicon:WebButton><br>
-<rubicon:WebButton id="OpenSessionFunctionInNewWindowButton" runat="server" Text="Open Session Function in New Window"></rubicon:WebButton><br>
-<rubicon:WebButton id="OpenSessionFunctionWithPermanentUrlInNewWindowButton" runat="server" Text="Open Session Function with Permanent URL in New Window"></rubicon:WebButton><br>
+<remotion:WebButton id="OpenSessionFunctionButton" runat="server" Text="Open Session Function"></remotion:WebButton><br>
+<remotion:WebButton id="OpenSessionFunctionWithPermanentUrlButton" runat="server" Text="Open Session Function with Permanent URL"></remotion:WebButton><br>
+<remotion:WebButton id="OpenSessionFunctionInNewWindowButton" runat="server" Text="Open Session Function in New Window"></remotion:WebButton><br>
+<remotion:WebButton id="OpenSessionFunctionWithPermanentUrlInNewWindowButton" runat="server" Text="Open Session Function with Permanent URL in New Window"></remotion:WebButton><br>
 
-<rubicon:webbutton id="OpenSampleFunctionByRedirectButton" runat="server" Text="Open Sample Function by Redirect"></rubicon:webbutton><br>
-<rubicon:webbutton id="OpenSampleFunctionByRedirectDoNotReturnButton" runat="server" Text="Open Sample Function by Redirect, do not return to Caller"></rubicon:webbutton><br>
-<rubicon:webbutton id="OpenSampleFunctionWithPermanentUrlByRedirectButton" runat="server" Text="Open Sample Function with Permanent URL by Redirect"></rubicon:webbutton><br>
-<rubicon:webbutton id="OpenSampleFunctionWithPermanentUrlByDoNotReturnRedirectButton" runat="server" Text="Open Sample Function with Permanent URL by Redirect, do not return to Caller"></rubicon:webbutton><br>
+<remotion:webbutton id="OpenSampleFunctionByRedirectButton" runat="server" Text="Open Sample Function by Redirect"></remotion:webbutton><br>
+<remotion:webbutton id="OpenSampleFunctionByRedirectDoNotReturnButton" runat="server" Text="Open Sample Function by Redirect, do not return to Caller"></remotion:webbutton><br>
+<remotion:webbutton id="OpenSampleFunctionWithPermanentUrlByRedirectButton" runat="server" Text="Open Sample Function with Permanent URL by Redirect"></remotion:webbutton><br>
+<remotion:webbutton id="OpenSampleFunctionWithPermanentUrlByDoNotReturnRedirectButton" runat="server" Text="Open Sample Function with Permanent URL by Redirect, do not return to Caller"></remotion:webbutton><br>
 
-<rubicon:WebButton id="ContextOpenSampleFunctionButton" runat="server" Text="WxeContext: Open Sample Function"></rubicon:WebButton><br>
-<rubicon:WebButton id="ContextOpenSampleFunctionInNewWindowButton" runat="server" Text="WxeContext: Open Sample Function in New Window"></rubicon:WebButton><br>
-<rubicon:WebButton id="ContextOpenSampleFunctionWithPermanentUrlButton" runat="server" Text="WxeContext: Open Sample Function with Permanent URL"></rubicon:WebButton><br>
-<rubicon:WebButton id="ContextOpenSampleFunctionWithPermanentUrlInNewWindowButton" runat="server" Text="WxeContext: Open Sample Function with Permanent URL in New Window"></rubicon:WebButton><br>
+<remotion:WebButton id="ContextOpenSampleFunctionButton" runat="server" Text="WxeContext: Open Sample Function"></remotion:WebButton><br>
+<remotion:WebButton id="ContextOpenSampleFunctionInNewWindowButton" runat="server" Text="WxeContext: Open Sample Function in New Window"></remotion:WebButton><br>
+<remotion:WebButton id="ContextOpenSampleFunctionWithPermanentUrlButton" runat="server" Text="WxeContext: Open Sample Function with Permanent URL"></remotion:WebButton><br>
+<remotion:WebButton id="ContextOpenSampleFunctionWithPermanentUrlInNewWindowButton" runat="server" Text="WxeContext: Open Sample Function with Permanent URL in New Window"></remotion:WebButton><br>
 Permalink this: <asp:HyperLink id="CurrentFunctionPermaLink" runat="server"></asp:HyperLink><br>Permalink 
 Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLink></p>
 <p><a href="javascript:alert('script in href');">script in href</a></p>

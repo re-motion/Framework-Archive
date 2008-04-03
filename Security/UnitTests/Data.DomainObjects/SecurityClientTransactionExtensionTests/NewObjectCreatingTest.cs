@@ -1,11 +1,11 @@
 using System;
 using System.Security.Principal;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Security.Data.DomainObjects;
-using Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain;
+using Remotion.Data.DomainObjects;
+using Remotion.Security.Data.DomainObjects;
+using Remotion.Security.UnitTests.Data.DomainObjects.TestDomain;
 
-namespace Rubicon.Security.UnitTests.Data.DomainObjects.SecurityClientTransactionExtensionTests
+namespace Remotion.Security.UnitTests.Data.DomainObjects.SecurityClientTransactionExtensionTests
 {
   [TestFixture]
   public class NewObjectCreatingTest

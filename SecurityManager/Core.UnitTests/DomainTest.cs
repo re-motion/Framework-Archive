@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.ObjectBinding.BindableObject;
+using Remotion.Data.DomainObjects;
+using Remotion.ObjectBinding.BindableObject;
 
-namespace Rubicon.SecurityManager.UnitTests
+namespace Remotion.SecurityManager.UnitTests
 {
   public abstract class DomainTest
   {

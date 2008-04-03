@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer;
-using Rubicon.Text.CommandLine;
+using Remotion.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer;
+using Remotion.Text.CommandLine;
 
-namespace Rubicon.Data.DomainObjects.RdbmsTools
+namespace Remotion.Data.DomainObjects.RdbmsTools
 {
   [Flags]
   public enum OperationMode

@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Reflection;
 using System.Resources;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Globalization
+namespace Remotion.Globalization
 {
 /// <summary>
 ///   Attribute for specifying the resource container for a type.

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer;
-using Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain;
-using Rubicon.Mixins.Context;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer;
+using Remotion.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlServer
+namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlServer
 {
   [TestFixture]
   public class TableBuilderTest : StandardMappingTest
@@ -93,11 +93,11 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
       Assert.AreEqual (
           "uniqueidentifier",
           _tableBuilder.GetSqlDataType (
-              OrderItemClass.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain.OrderItem.Order")));
+              OrderItemClass.GetMandatoryPropertyDefinition ("Remotion.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain.OrderItem.Order")));
       Assert.AreEqual (
           "varchar (255)",
           _tableBuilder.GetSqlDataType (
-              CustomerClass.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain.Customer.PrimaryOfficial")));
+              CustomerClass.GetMandatoryPropertyDefinition ("Remotion.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain.Customer.PrimaryOfficial")));
     }
 
     [Test]

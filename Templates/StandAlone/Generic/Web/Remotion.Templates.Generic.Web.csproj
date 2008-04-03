@@ -13,7 +13,7 @@
             <Settings
                 ApplicationIcon = ""
                 AssemblyKeyContainerName = ""
-                AssemblyName = "Rubicon.Templates.Generic.Web"
+                AssemblyName = "Remotion.Templates.Generic.Web"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
                 DefaultHTMLPageLayout = "Grid"
@@ -22,7 +22,7 @@
                 OutputType = "Library"
                 PreBuildEvent = ""
                 PostBuildEvent = ""
-                RootNamespace = "Rubicon.Templates.Generic.Web"
+                RootNamespace = "Remotion.Templates.Generic.Web"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
             >
@@ -94,24 +94,24 @@
                     HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
-                    Name = "Rubicon.Web"
-                    AssemblyName = "Rubicon.Web"
-                    HintPath = "..\..\..\References\Rubicon.Web.dll"
+                    Name = "Remotion.Web"
+                    AssemblyName = "Remotion.Web"
+                    HintPath = "..\..\..\References\Remotion.Web.dll"
                 />
                 <Reference
-                    Name = "Rubicon.Core"
-                    AssemblyName = "Rubicon.Core"
-                    HintPath = "..\..\..\References\Rubicon.Core.dll"
+                    Name = "Remotion.Core"
+                    AssemblyName = "Remotion.Core"
+                    HintPath = "..\..\..\References\Remotion.Core.dll"
                 />
                 <Reference
-                    Name = "rubicon.objectbinding.web"
-                    AssemblyName = "Rubicon.ObjectBinding.Web"
-                    HintPath = "..\..\..\..\objectbinding\web\bin\debug\rubicon.objectbinding.web.dll"
+                    Name = "Remotion.ObjectBinding.Web"
+                    AssemblyName = "Remotion.ObjectBinding.Web"
+                    HintPath = "..\..\..\..\objectbinding\web\bin\debug\Remotion.ObjectBinding.Web.dll"
                 />
                 <Reference
-                    Name = "Rubicon.ObjectBinding"
-                    AssemblyName = "Rubicon.ObjectBinding"
-                    HintPath = "..\..\..\..\objectbinding\web\bin\debug\Rubicon.ObjectBinding.dll"
+                    Name = "Remotion.ObjectBinding"
+                    AssemblyName = "Remotion.ObjectBinding"
+                    HintPath = "..\..\..\..\objectbinding\web\bin\debug\Remotion.ObjectBinding.dll"
                 />
                 <Reference
                     Name = "System.Design"

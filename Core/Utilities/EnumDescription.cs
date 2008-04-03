@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Resources;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
   /// <summary>
   /// Use this attribute to specify a clear text representation of a certain enumeration value.

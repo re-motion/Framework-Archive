@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Specialized;
 
-namespace Rubicon.Globalization
+namespace Remotion.Globalization
 {
   /// <summary>
   ///   An interface for defining a string resource manager.

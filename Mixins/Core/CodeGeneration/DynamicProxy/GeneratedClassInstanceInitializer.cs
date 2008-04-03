@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Utilities;
-using Rubicon.Utilities;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.Mixins.CodeGeneration.DynamicProxy
 {
   public static class GeneratedClassInstanceInitializer
   {

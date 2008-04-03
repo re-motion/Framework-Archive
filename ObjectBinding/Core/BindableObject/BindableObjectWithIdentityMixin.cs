@@ -1,15 +1,15 @@
 using System;
 using System.Diagnostics;
-using Rubicon.Mixins;
+using Remotion.Mixins;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Remotion.ObjectBinding.BindableObject
 {
   //TODO: doc
   [Serializable]
   [CopyCustomAttributes (typeof (BindableObjectWithIdentityMixin.DebuggerDisplay))]
   public abstract class BindableObjectWithIdentityMixin : BindableObjectMixin, IBusinessObjectWithIdentity
   {
-    [DebuggerDisplay ("{UniqueIdentifier} ({((Rubicon.Mixins.IMixinTarget)this).Configuration.Type.FullName})")]
+    [DebuggerDisplay ("{UniqueIdentifier} ({((Remotion.Mixins.IMixinTarget)this).Configuration.Type.FullName})")]
     public class DebuggerDisplay // the attributes of this class are copied to the target class
     {
     }

@@ -2,10 +2,10 @@ using System;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
-using Rubicon.Mixins.Context.DeclarativeAnalyzers;
-using Rubicon.Mixins.Context.FluentBuilders;
+using Remotion.Mixins.Context.DeclarativeAnalyzers;
+using Remotion.Mixins.Context.FluentBuilders;
 
-namespace Rubicon.Mixins.UnitTests.Context.DeclarativeAnalyzers
+namespace Remotion.Mixins.UnitTests.Context.DeclarativeAnalyzers
 {
   [TestFixture]
   public class CompleteInterfaceAnalyzerTests

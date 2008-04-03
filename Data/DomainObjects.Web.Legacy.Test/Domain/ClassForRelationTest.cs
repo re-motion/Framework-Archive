@@ -1,15 +1,15 @@
 using System;
 
-using Rubicon.Globalization;
-using Rubicon.NullableValueTypes;
+using Remotion.Globalization;
+using Remotion.NullableValueTypes;
 
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.ObjectBinding;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain
+namespace Remotion.Data.DomainObjects.Web.Legacy.Test.Domain
 {
-[MultiLingualResources ("Rubicon.Data.DomainObjects.Web.Legacy.Test.Globalization.ClassForRelationTest")]
+[MultiLingualResources ("Remotion.Data.DomainObjects.Web.Legacy.Test.Globalization.ClassForRelationTest")]
 [Serializable]
 public class ClassForRelationTest : BindableDomainObject
 {

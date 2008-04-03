@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Mixins;
+using Remotion.Mixins;
 using System.Reflection;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Samples
+namespace Remotion.Mixins.Samples
 {
   public class EquatableMixin<T> : Mixin<T>, IEquatable<T>
      where T : class

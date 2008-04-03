@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Security.UnitTests.Core
+namespace Remotion.Security.UnitTests.Core
 {
   [TestFixture]
   public class SecurityFreeSectionTest

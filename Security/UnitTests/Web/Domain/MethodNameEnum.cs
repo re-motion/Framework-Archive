@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Security.UnitTests.Web.Domain
+namespace Remotion.Security.UnitTests.Web.Domain
 {
   public enum MethodNameEnum
   {

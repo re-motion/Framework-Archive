@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.UnitTests.SampleTypes
+namespace Remotion.Mixins.UnitTests.SampleTypes
 {
   [NonIntroduced (typeof (ISimpleInterface))]
   public class MixinSuppressingSimpleInterface : ISimpleInterface

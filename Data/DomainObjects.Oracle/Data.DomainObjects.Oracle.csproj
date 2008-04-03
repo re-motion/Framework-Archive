@@ -7,8 +7,8 @@
     <ProjectGuid>{44A79CAF-3C82-43B8-9B3B-47C306C29EB9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Data.DomainObjects.Oracle</RootNamespace>
-    <AssemblyName>Rubicon.Data.DomainObjects.Oracle</AssemblyName>
+    <RootNamespace>Remotion.Data.DomainObjects.Oracle</RootNamespace>
+    <AssemblyName>Remotion.Data.DomainObjects.Oracle</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,13 +29,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Oracle.DataAccess, Version=10.2.0.100, Culture=neutral, PublicKeyToken=89b483f429c47342" />
-    <Reference Include="Rubicon.Core, Version=1.7.30.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+    <Reference Include="Remotion.Core, Version=1.7.30.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Core.dll</HintPath>
+      <HintPath>..\References\Remotion.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Rubicon.Data.DomainObjects, Version=1.7.30.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+    <Reference Include="Remotion.Data.DomainObjects, Version=1.7.30.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Data.DomainObjects.dll</HintPath>
+      <HintPath>..\References\Remotion.Data.DomainObjects.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

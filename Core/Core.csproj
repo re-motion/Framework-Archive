@@ -10,7 +10,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>Rubicon.Core</AssemblyName>
+    <AssemblyName>Remotion.Core</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -19,7 +19,7 @@
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon</RootNamespace>
+    <RootNamespace>Remotion</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -60,7 +60,7 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\Rubicon.Core.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Remotion.Core.xml</DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
@@ -460,7 +460,7 @@
     <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="doc\mcee_cs.dat" />
     <Content Include="Core.build" />
-    <Content Include="doc\Building Rubicon.Commons.txt" />
+    <Content Include="doc\Building Remotion.txt" />
     <Content Include="doc\include\GettingStartedTemplate.html" />
     <Content Include="doc\include\Globalization\MultiLingualResourcesAttribute.xml" />
     <Content Include="doc\include\Globalization\ResourceManagerWrapper.xml" />
@@ -473,7 +473,7 @@
     <Content Include="doc\include\Text\CommandLine\CommandLineParser.xml" />
     <Content Include="doc\include\Utilities\EqualityUtility.xml" />
     <Content Include="doc\include\Utilities\WorkContext.xml" />
-    <Content Include="doc\WhatsNew_Rubicon.Core.txt" />
+    <Content Include="doc\WhatsNew_Remotion.Core.txt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

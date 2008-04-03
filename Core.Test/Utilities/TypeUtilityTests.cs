@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Utilities
+namespace Remotion.Core.UnitTests.Utilities
 {
   public class GenericType<T1, T2>
   {
@@ -15,8 +15,8 @@ namespace Rubicon.Core.UnitTests.Utilities
     public void TestAbbreviatedTypeName()
     {
       AssertTransformation (  
-          "Rubicon.Core.UnitTests::Utilities.TypeUtilityTests",
-          "Rubicon.Core.UnitTests.Utilities.TypeUtilityTests, Rubicon.Core.UnitTests");
+          "Remotion.Core.UnitTests::Utilities.TypeUtilityTests",
+          "Remotion.Core.UnitTests.Utilities.TypeUtilityTests, Remotion.Core.UnitTests");
     }
 
     [Test]
@@ -70,7 +70,7 @@ namespace Rubicon.Core.UnitTests.Utilities
     [Test]
     public void TestGetType()
     {
-      Type t = TypeUtility.GetType ("Rubicon.Core.UnitTests::Utilities.TypeUtilityTests", true);
+      Type t = TypeUtility.GetType ("Remotion.Core.UnitTests::Utilities.TypeUtilityTests", true);
       Assert.AreEqual (typeof (TypeUtilityTests), t);
     }
 

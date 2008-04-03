@@ -1,4 +1,4 @@
-namespace Rubicon.Mixins.CodeGeneration
+namespace Remotion.Mixins.CodeGeneration
 {
   public interface IGeneratedMixinType
   {

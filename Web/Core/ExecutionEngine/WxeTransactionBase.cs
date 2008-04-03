@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Data;
-using Rubicon.Logging;
-using Rubicon.Utilities;
+using Remotion.Data;
+using Remotion.Logging;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
 
   /// <summary> Creates a scope for a transaction. </summary>
@@ -12,7 +12,7 @@ namespace Rubicon.Web.ExecutionEngine
   public abstract class WxeTransactionBase<TTransaction> : WxeStepList
     where TTransaction : class, ITransaction
   {
-    private static readonly ILog s_log = LogManager.GetLogger ("Rubicon.Web.ExecutionEngine.WxeTransactionBase");
+    private static readonly ILog s_log = LogManager.GetLogger ("Remotion.Web.ExecutionEngine.WxeTransactionBase");
 
     /// <summary> Finds out wheter the specified step is part of a <see cref="WxeTransactionBase{TTransaction}"/>. </summary>
     /// <returns> 

@@ -2,13 +2,13 @@ using System;
 using System.Collections.Specialized;
 using System.Configuration;
 using NUnit.Framework;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Development.UnitTesting.Configuration;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.Configuration;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
   [TestFixture]
   public class RdbmsProviderDefinitionTest : StandardMappingTest
@@ -42,7 +42,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       NameValueCollection config = new NameValueCollection();
       config.Add ("description", "The Description");
-      config.Add ("providerType", "Rubicon.Data.DomainObjects::Persistence.Rdbms.SqlProvider");
+      config.Add ("providerType", "Remotion.Data.DomainObjects::Persistence.Rdbms.SqlProvider");
       config.Add ("connectionString", "SqlProvider");
 
       RdbmsProviderDefinition provider = new RdbmsProviderDefinition ("Provider", config);
@@ -94,7 +94,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     [Test]
     [ExpectedException (typeof (IdentityTypeNotSupportedException),
-        ExpectedMessage = "The StorageProvider 'Rubicon.Data.DomainObjects.Persistence.Rdbms.SqlProvider' does not support identity values of type 'System.String'.")]
+        ExpectedMessage = "The StorageProvider 'Remotion.Data.DomainObjects.Persistence.Rdbms.SqlProvider' does not support identity values of type 'System.String'.")]
     public void CheckInvalidIdentityType()
     {
       _definition.CheckIdentityType (typeof (string));

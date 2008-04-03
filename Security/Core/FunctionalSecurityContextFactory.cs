@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   [Serializable]
   public class FunctionalSecurityContextFactory : ISecurityContextFactory

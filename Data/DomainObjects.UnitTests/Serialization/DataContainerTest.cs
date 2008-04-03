@@ -1,17 +1,17 @@
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
+namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 {
   [TestFixture]
   public class DataContainerTest : ClientTransactionBaseTest
   {
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Type 'Rubicon.Data.DomainObjects.DataContainer' in Assembly "
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Type 'Remotion.Data.DomainObjects.DataContainer' in Assembly "
         + ".* is not marked as serializable.", MatchType = MessageMatch.Regex)]
     public void DataContainerIsNotSerializable ()
     {

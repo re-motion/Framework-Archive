@@ -2,10 +2,10 @@ using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Web.UI;
-using Rubicon.ObjectBinding.Web.UI.Design;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> A BocListView is a named collection of column definitions. </summary>

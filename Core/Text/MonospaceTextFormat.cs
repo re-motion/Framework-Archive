@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace Rubicon.Text
+namespace Remotion.Text
 {
 
 /// <summary>

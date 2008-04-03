@@ -1,11 +1,11 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Collections;
+using Remotion.Data.DomainObjects;
+using Remotion.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Collections;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
   /// Indicates the kind of a <see cref="DomainObject">DomainObject's</see> property.

@@ -2,16 +2,16 @@ using System;
 using System.Security.Principal;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Collections;
-using Rubicon.Security.Configuration;
-using Rubicon.Security.UnitTests.Core.Configuration;
-using Rubicon.Security.UnitTests.Core.MockConstraints;
-using Rubicon.Security.UnitTests.Core.SampleDomain;
+using Remotion.Collections;
+using Remotion.Security.Configuration;
+using Remotion.Security.UnitTests.Core.Configuration;
+using Remotion.Security.UnitTests.Core.MockConstraints;
+using Remotion.Security.UnitTests.Core.SampleDomain;
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 using Mocks_List = Rhino.Mocks.Constraints.List;
 using Mocks_Property = Rhino.Mocks.Constraints.Property;
 
-namespace Rubicon.Security.UnitTests.Core
+namespace Remotion.Security.UnitTests.Core
 {
 
   [TestFixture]
@@ -67,7 +67,7 @@ namespace Rubicon.Security.UnitTests.Core
     public void HasAccess_WithAccessGranted ()
     {
       Expect.Call (_mockSecurityStrategy.HasAccess (null, null, null, null)).Return (true).Constraints (
-          new FunctionalSecurityContextFactoryConstraint ("Rubicon.Security.UnitTests.Core.SampleDomain.SecurableObject, Rubicon.Security.UnitTests"),
+          new FunctionalSecurityContextFactoryConstraint ("Remotion.Security.UnitTests.Core.SampleDomain.SecurableObject, Remotion.Security.UnitTests"),
           Mocks_Is.Same (_stubSecurityProvider),
           Mocks_Is.Same (_user),
           Mocks_List.Equal (_accessTypeResult));
@@ -83,7 +83,7 @@ namespace Rubicon.Security.UnitTests.Core
     public void HasAccess_WithAccessDenied ()
     {
       Expect.Call (_mockSecurityStrategy.HasAccess (null, null, null, null)).Return (false).Constraints (
-          new FunctionalSecurityContextFactoryConstraint ("Rubicon.Security.UnitTests.Core.SampleDomain.SecurableObject, Rubicon.Security.UnitTests"),
+          new FunctionalSecurityContextFactoryConstraint ("Remotion.Security.UnitTests.Core.SampleDomain.SecurableObject, Remotion.Security.UnitTests"),
           Mocks_Is.Same (_stubSecurityProvider),
           Mocks_Is.Same (_user),
           Mocks_List.Equal (_accessTypeResult));

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.ObjectBinding.Web.UI.Design;
+using Remotion.ObjectBinding.Web.UI.Design;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Design
+namespace Remotion.Data.DomainObjects.ObjectBinding.Web.Design
 {
   public class DomainObjectDataSourceDesigner: BocDataSourceDesigner
   {

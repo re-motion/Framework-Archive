@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Mapping
+namespace Remotion.Data.DomainObjects.Mapping
 {
   [Serializable]
   public class ReflectionBasedPropertyDefinition: PropertyDefinition

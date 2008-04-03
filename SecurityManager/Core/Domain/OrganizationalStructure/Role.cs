@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Globalization;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.Security;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Globalization;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.Security;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
+namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Role")]
+  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Role")]
   [PermanentGuid ("23C68C62-5B0F-4857-8DF2-C161C0077745")]
   [Instantiable]
   [DBTable]

@@ -2,12 +2,12 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.ReferencePropertyTests
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.ReferencePropertyTests
 {
   [TestFixture]
   public class SearchAvailableObjects : TestBase
@@ -49,7 +49,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.ReferencePropertyT
     [ExpectedException (typeof (NotSupportedException),
         ExpectedMessage =
         "Searching is not supported for reference property 'SearchServiceFromType' of business object class "
-        + "'Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithSearchServiceTypeAttribute, Rubicon.ObjectBinding.UnitTests'.")]
+        + "'Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain.ClassWithSearchServiceTypeAttribute, Remotion.ObjectBinding.UnitTests'.")]
     public void Search_WithSearchNotSupported ()
     {
       IBusinessObject businessObject = (IBusinessObject) ObjectFactory.Create<ClassWithSearchServiceTypeAttribute>().With();

@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
   /// <summary>
   /// The <see cref="TypeConverterResult"/> structure encapsulates the reult of the <see cref="TypeConversionProvider.GetTypeConverter(Type,Type)"/>

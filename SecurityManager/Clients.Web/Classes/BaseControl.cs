@@ -1,12 +1,12 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Globalization;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.SecurityManager.Clients.Web.WxeFunctions;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.Data.DomainObjects;
+using Remotion.Globalization;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.SecurityManager.Clients.Web.WxeFunctions;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 
-namespace Rubicon.SecurityManager.Clients.Web.Classes
+namespace Remotion.SecurityManager.Clients.Web.Classes
 {
   public abstract class BaseControl : DataEditUserControl, IObjectWithResources
   {

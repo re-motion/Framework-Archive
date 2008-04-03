@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Rubicon.Data.DomainObjects;
+using Remotion.Data.DomainObjects;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -9,7 +9,7 @@ using Rubicon.Data.DomainObjects;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle ("Rubicon DomainObjects Database Tools UnitTests")]
+[assembly: AssemblyTitle ("Remotion DomainObjects Database Tools UnitTests")]
 [assembly: AssemblyDescription ("UnitTests for the DomainObjects Database Tools Library")]
 [assembly: AssemblyConfiguration ("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]

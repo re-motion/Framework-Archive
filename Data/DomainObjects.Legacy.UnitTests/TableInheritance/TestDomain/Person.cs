@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain
 {
   public class Person : DomainBase
   {

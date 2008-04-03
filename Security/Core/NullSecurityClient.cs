@@ -1,10 +1,10 @@
 using System;
 using System.Security.Principal;
-using Rubicon.Collections;
-using Rubicon.Security.Metadata;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Security.Metadata;
+using Remotion.Utilities;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   /// <summary>
   /// Represents a nullable <see cref="SecurityClient"/> according to the "Null Object Pattern".

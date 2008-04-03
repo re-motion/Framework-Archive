@@ -1,8 +1,8 @@
 using System;
 using System.Web.UI;
-using Rubicon.Collections;
+using Remotion.Collections;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
 
 public class WxeUserControl: UserControl, IWxeTemplateControl

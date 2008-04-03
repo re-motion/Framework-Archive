@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 using NUnit.Framework;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Utilities
+namespace Remotion.Core.UnitTests.Utilities
 {
   [TestFixture]
   public class FileUtilityTest

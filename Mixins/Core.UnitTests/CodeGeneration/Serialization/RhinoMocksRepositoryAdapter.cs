@@ -1,9 +1,9 @@
 using System;
 using Rhino.Mocks;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Utilities;
+using Remotion.Development.UnitTesting;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.Serialization
+namespace Remotion.Mixins.UnitTests.CodeGeneration.Serialization
 {
   public class RhinoMocksRepositoryAdapter : IMockRepository
   {

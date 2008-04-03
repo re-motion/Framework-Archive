@@ -1,12 +1,12 @@
 using System;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.Globalization;
-using Rubicon.ObjectBinding;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.Globalization;
+using Remotion.ObjectBinding;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Web.Test.Domain
+namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
-  [MultiLingualResources ("Rubicon.Data.DomainObjects.Web.Test.Globalization.ClassWithAllDataTypes")]
+  [MultiLingualResources ("Remotion.Data.DomainObjects.Web.Test.Globalization.ClassWithAllDataTypes")]
   [Serializable]
   [DBTable ("TableWithAllDataTypes")]
   [Instantiable]
@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
   public abstract class ClassWithAllDataTypes : BindableDomainObject
   {
     // types
-    [EnumDescriptionResource ("Rubicon.Data.DomainObjects.Web.Test.Globalization.ClassWithAllDataTypes")]
+    [EnumDescriptionResource ("Remotion.Data.DomainObjects.Web.Test.Globalization.ClassWithAllDataTypes")]
     public enum EnumType
     {
       Value1 = 1,

@@ -1,9 +1,9 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Mixins.UnitTests.Context.DeclarativeConfigurationBuilder_IntegrationTests
+namespace Remotion.Mixins.UnitTests.Context.DeclarativeConfigurationBuilder_IntegrationTests
 {
   [TestFixture]
   public class DeclarativeConfigurationBuilderGenericInheritanceTests

@@ -1,12 +1,12 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AutoPage.aspx.cs" Inherits="Test.AutoPage" %>
-<%@ Register TagPrefix="rubicon" Assembly="Rubicon.Web" Namespace="Rubicon.Web.UI.Controls" %>
+<%@ Register TagPrefix="remotion" Assembly="Remotion.Web" Namespace="Remotion.Web.UI.Controls" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
     <title>Untitled Page</title>
-    <rubicon:HtmlHeadContents runat="server" />
+    <remotion:HtmlHeadContents runat="server" />
 </head>
 <body>
     <form id="form1" runat="server">

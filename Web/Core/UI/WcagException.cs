@@ -2,7 +2,7 @@ using System;
 using System.Runtime.Serialization;
 using System.Web.UI;
 
-namespace Rubicon.Web.UI
+namespace Remotion.Web.UI
 {
 
 public class WcagException: Exception

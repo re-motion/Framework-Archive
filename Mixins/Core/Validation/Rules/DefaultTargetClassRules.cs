@@ -1,10 +1,10 @@
 using System;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Utilities;
-using Rubicon.Mixins.Validation;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Utilities;
+using Remotion.Mixins.Validation;
 using System.Reflection;
 
-namespace Rubicon.Mixins.Validation.Rules
+namespace Remotion.Mixins.Validation.Rules
 {
   public class DefaultTargetClassRules : RuleSetBase
   {

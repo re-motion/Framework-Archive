@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Utilities.ReflectionUtilityTests
+namespace Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests
 {
   [TestFixture]
   public class GetAscribedGenericArguments_WithGenericClass
@@ -112,8 +112,8 @@ namespace Rubicon.Core.UnitTests.Utilities.ReflectionUtilityTests
     [Test]
     [ExpectedException (typeof (ArgumentTypeException),
         ExpectedMessage =
-        "Argument type has type Rubicon.Core.UnitTests.Utilities.ReflectionUtilityTests.BaseType when type "
-        + "Rubicon.Core.UnitTests.Utilities.ReflectionUtilityTests.GenericType`1[T] was expected.\r\n"
+        "Argument type has type Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests.BaseType when type "
+        + "Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests.GenericType`1[T] was expected.\r\n"
         + "Parameter name: type")]
     public void BaseType ()
     {

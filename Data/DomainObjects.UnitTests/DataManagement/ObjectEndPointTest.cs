@@ -1,12 +1,12 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Utilities;
-using Rubicon.Development.UnitTesting;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Utilities;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
+namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
   public class ObjectEndPointTest : RelationEndPointBaseTest
@@ -19,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       base.SetUp ();
 
-      _endPointID = new RelationEndPointID (DomainObjectIDs.OrderItem1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
+      _endPointID = new RelationEndPointID (DomainObjectIDs.OrderItem1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
       _oppositeObjectID = DomainObjectIDs.Order1;
 
       _endPoint = CreateObjectEndPoint (_endPointID, _oppositeObjectID);
@@ -186,7 +186,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
         MappingConfiguration.Current.ClassDefinitions["OrderItem"],
         endPointDefinition.ClassDefinition);
 
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", endPointDefinition.PropertyName);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", endPointDefinition.PropertyName);
     }
 
     [Test]
@@ -199,7 +199,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
         MappingConfiguration.Current.ClassDefinitions["Order"],
         oppositeEndPointDefinition.ClassDefinition);
 
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", oppositeEndPointDefinition.PropertyName);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", oppositeEndPointDefinition.PropertyName);
     }
 
     [Test]
@@ -207,14 +207,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       RelationDefinition relationDefinition = _endPoint.RelationDefinition;
       Assert.IsNotNull (relationDefinition);
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", relationDefinition.ID);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", relationDefinition.ID);
     }
 
     [Test]
     public void IsVirtual ()
     {
       DataContainer orderContainer = TestDataContainerFactory.CreateOrder1DataContainer ();
-      RelationEndPoint orderEndPoint = CreateObjectEndPoint (orderContainer, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", DomainObjectIDs.OrderTicket1);
+      RelationEndPoint orderEndPoint = CreateObjectEndPoint (orderContainer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", DomainObjectIDs.OrderTicket1);
 
       Assert.AreEqual (true, orderEndPoint.IsVirtual);
     }
@@ -229,7 +229,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void ID ()
     {
       Assert.IsNotNull (_endPoint.ID);
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", _endPoint.ID.PropertyName);
+      Assert.AreEqual ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", _endPoint.ID.PropertyName);
       Assert.AreEqual (DomainObjectIDs.OrderItem1, _endPoint.ID.ObjectID);
     }
 

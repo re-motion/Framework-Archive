@@ -9,13 +9,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Text;
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
-using Rubicon.Utilities;
-using Rubicon.Collections;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding.Sample;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
+using Remotion.Utilities;
+using Remotion.Collections;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding;
 
 
 namespace OBWTest
@@ -31,19 +31,19 @@ namespace OBWTest
 
     protected System.Web.UI.WebControls.Button PostBackButton;
     protected System.Web.UI.WebControls.Button SaveButton;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-    protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue TextField;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue MultilineTextField;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateTimeField;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue EnumField;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue ReferenceField;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue BooleanField;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocList ListField;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+    protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue TextField;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue MultilineTextField;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateTimeField;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue EnumField;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue ReferenceField;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BooleanField;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocList ListField;
     protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-    protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+    protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
   private void Page_Load(object sender, System.EventArgs e)
 	{

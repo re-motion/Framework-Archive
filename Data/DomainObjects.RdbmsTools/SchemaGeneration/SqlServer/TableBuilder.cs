@@ -1,10 +1,10 @@
 using System;
 using System.Text;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer
+namespace Remotion.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer
 {
   public class TableBuilder : TableBuilderBase
   {

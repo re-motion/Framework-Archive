@@ -1,28 +1,28 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="GroupListControl.ascx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupListControl" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="GroupListControl.ascx.cs" Inherits="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.GroupListControl" %>
 
-<rubicon:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Rubicon.SecurityManager.Domain.OrganizationalStructure.Group, Rubicon.SecurityManager" />
-<rubicon:FormGridManager ID="FormGridManager" runat="server" ValidatorVisibility="HideValidators" />
+<remotion:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Remotion.SecurityManager.Domain.OrganizationalStructure.Group, Remotion.SecurityManager" />
+<remotion:FormGridManager ID="FormGridManager" runat="server" ValidatorVisibility="HideValidators" />
 <table cellpadding="0" cellspacing="0" style="width: 100%; height: 100%;">
   <tr>
     <td style="height: 100%;">
       <table id="FormGrid" runat="server" cellpadding="0" cellspacing="0" style="width: 100%; height: 100%;">
         <tr class="underlinedMarkerCellRow">
           <td class="formGridTitleCell" style="white-space: nowrap;">
-            <rubicon:SmartLabel runat="server" id="GroupListLabel" Text="###"/>
+            <remotion:SmartLabel runat="server" id="GroupListLabel" Text="###"/>
           </td>
           <td style="DISPLAY: none;WIDTH: 100%"></td>
         </tr>
         <tr>
           <td style="height: 100%; vertical-align: top;">
-            <rubicon:BocList ID="GroupList" runat="server" DataSourceControl="CurrentObject" OnListItemCommandClick="GroupList_ListItemCommandClick" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
+            <remotion:BocList ID="GroupList" runat="server" DataSourceControl="CurrentObject" OnListItemCommandClick="GroupList_ListItemCommandClick" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
               <FixedColumns>
-                <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
+                <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
                   <PersistedCommand>
-                    <rubicon:BocListItemCommand Type="Event" />
+                    <remotion:BocListItemCommand Type="Event" />
                   </PersistedCommand>
-                </rubicon:BocSimpleColumnDefinition>
+                </remotion:BocSimpleColumnDefinition>
               </FixedColumns>
-            </rubicon:BocList>
+            </remotion:BocList>
           </td>
         </tr>
       </table>
@@ -30,7 +30,7 @@
   </tr>
   <tr>
     <td style="padding-left: 5px; padding-top: 5px;">
-      <rubicon:WebButton ID="NewGroupButton" runat="server" OnClick="NewGroupButton_Click" />
+      <remotion:WebButton ID="NewGroupButton" runat="server" OnClick="NewGroupButton_Click" />
     </td>
   </tr>
 </table>

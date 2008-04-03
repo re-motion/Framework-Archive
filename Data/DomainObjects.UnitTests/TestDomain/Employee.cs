@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
   [DBTable]
@@ -39,8 +39,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     [DBBidirectionalRelation ("Employee")]
     public Computer Computer
     {
-      get { return Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"].GetValue<Computer>(); }
-      set { Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"].SetValue (value); }
+      get { return Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"].GetValue<Computer>(); }
+      set { Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"].SetValue (value); }
     }
 
     public void DeleteWithSubordinates ()

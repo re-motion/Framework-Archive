@@ -1,9 +1,9 @@
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.ObjectBinding.Web.UI.Design;
-using Rubicon.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary>
   ///   <b>BusinessObjectDataSourceControl</b> is the default implementation of
@@ -22,7 +22,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
   ///     this property.
   ///   </para>
   ///   <note>
-  ///     Please refer to the <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />'s
+  ///     Please refer to the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />'s
   ///     documentation for an examples of the <b>LoadValues</b> and the <b>SaveValues</b> patterns.
   ///   </note>
   /// </remarks>
@@ -46,7 +46,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     ///   Executes the <see cref="IBusinessObjectDataSource.LoadValues"/> method of the encapsulated 
     ///   <see cref="IBusinessObjectDataSource"/>.
     ///   <note>
-    ///     Please refer to the <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />'s
+    ///     Please refer to the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />'s
     ///     remarks section for an example of the <b>LoadValues Pattern</b>.
     ///   </note>
     /// </remarks>
@@ -64,7 +64,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     ///   Executes the <see cref="IBusinessObjectDataSource.SaveValues"/> method of the encapsulated 
     ///   <see cref="IBusinessObjectDataSource"/>.
     ///   <note>
-    ///     Please refer to the <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />'s
+    ///     Please refer to the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />'s
     ///     remarks section for an example of the <b>SaveValues Pattern</b>.
     ///   </note>
     /// </remarks>

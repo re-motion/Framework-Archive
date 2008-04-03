@@ -2,10 +2,10 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing.Design;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Web.UI.Design;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI.Design;
 
-namespace Rubicon.ObjectBinding.Web.UI.Design
+namespace Remotion.ObjectBinding.Web.UI.Design
 {
 public class BocListDesigner: WebControlDesigner, IServiceProvider
 {

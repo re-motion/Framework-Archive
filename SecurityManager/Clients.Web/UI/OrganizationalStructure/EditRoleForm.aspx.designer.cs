@@ -8,12 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
+namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure {
     
     public partial class EditRoleForm {
-        protected Rubicon.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
-        protected Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditRoleControl EditRoleControl;
-        protected Rubicon.Web.UI.Controls.WebButton CloseButton;
-        protected Rubicon.Web.UI.Controls.WebButton CancelButton;
+        protected Remotion.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
+        protected Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditRoleControl EditRoleControl;
+        protected Remotion.Web.UI.Controls.WebButton CloseButton;
+        protected Remotion.Web.UI.Controls.WebButton CancelButton;
     }
 }

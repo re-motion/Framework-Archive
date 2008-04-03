@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
-using Rubicon.Data.DomainObjects.Web.Test.Domain;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Data.DomainObjects.Web.ExecutionEngine;
+using Remotion.Data.DomainObjects.Web.Test.Domain;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Data.DomainObjects.Web.Test.WxeFunctions
+namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 {
   [Serializable]
   public class NoAutoCommitTestTransactedFunction: WxeTransactedFunction

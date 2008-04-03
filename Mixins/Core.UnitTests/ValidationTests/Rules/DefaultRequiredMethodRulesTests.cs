@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Mixins.Validation;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Validation;
 
-namespace Rubicon.Mixins.UnitTests.ValidationTests.Rules
+namespace Remotion.Mixins.UnitTests.ValidationTests.Rules
 {
   [TestFixture]
   public class DefaultRequiredMethodRulesTests : ValidationTestBase
@@ -19,7 +19,7 @@ namespace Rubicon.Mixins.UnitTests.ValidationTests.Rules
         DefaultValidationLog log = Validator.Validate (definition);
 
         Assert.IsTrue (
-            HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultRequiredMethodRules.RequiredBaseCallMethodMustBePublicOrProtected", log));
+            HasFailure ("Remotion.Mixins.Validation.Rules.DefaultRequiredMethodRules.RequiredBaseCallMethodMustBePublicOrProtected", log));
       }
     }
 

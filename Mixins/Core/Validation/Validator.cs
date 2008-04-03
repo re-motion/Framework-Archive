@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Validation;
-using Rubicon.Mixins.Validation.Rules;
-using Rubicon.Utilities;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Validation;
+using Remotion.Mixins.Validation.Rules;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Validation
+namespace Remotion.Mixins.Validation
 {
   public static class Validator
   {

@@ -2,10 +2,10 @@ using System;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Configuration.Internal;
-using Rubicon.Configuration;
-using Rubicon.Utilities;
+using Remotion.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Development.UnitTesting.Configuration
+namespace Remotion.Development.UnitTesting.Configuration
 {
   /// <summary>
   /// The <see cref="ConfigSystemHelper"/> class is intended to inject a fake implementation of the <see cref="IInternalConfigSystem"/> interface

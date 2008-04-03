@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Specialized;
 
-namespace Rubicon.Globalization
+namespace Remotion.Globalization
 {
   /// <summary> A <b>Null Object</b> implementation of <see cref="IResourceManager"/>. </summary>
   /// <remarks> 
@@ -47,7 +47,7 @@ namespace Rubicon.Globalization
 
     string IResourceManager.Name
     {
-      get { return "Rubicon.Globalization.NullResourceManager"; }
+      get { return "Remotion.Globalization.NullResourceManager"; }
     }
 
     bool INullObject.IsNull

@@ -2,14 +2,14 @@ using System;
 using System.Web;
 using System.Web.UI.WebControls;
 
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -17,46 +17,46 @@ namespace OBWTest.IndividualControlTests
 public class BocDateTimeValueUserControl : BaseUserControl
 {
   protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue BirthdayField;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue BirthdayField;
   protected System.Web.UI.WebControls.Label BirthdayFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue ReadOnlyBirthdayField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue ReadOnlyBirthdayField;
   protected System.Web.UI.WebControls.Label ReadOnlyBirthdayFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue UnboundBirthdayField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue UnboundBirthdayField;
   protected System.Web.UI.WebControls.Label UnboundBirthdayFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue UnboundRequiredBirthdayField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue UnboundRequiredBirthdayField;
   protected System.Web.UI.WebControls.Label UnboundRequiredBirthdayFieldLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue UnboundReadOnlyBirthdayField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue UnboundReadOnlyBirthdayField;
   protected System.Web.UI.WebControls.Label UnboundReadOnlyBirthdayFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfDeathField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfDeathField;
   protected System.Web.UI.WebControls.Label DateOfDeathFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue ReadOnlyDateOfDeathField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue ReadOnlyDateOfDeathField;
   protected System.Web.UI.WebControls.Label ReadOnlyDateOfDeathFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue UnboundDateOfDeathField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue UnboundDateOfDeathField;
   protected System.Web.UI.WebControls.Label UnboundDateOfDeathFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue UnboundReadOnlyDateOfDeathField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue UnboundReadOnlyDateOfDeathField;
   protected System.Web.UI.WebControls.Label UnboundReadOnlyDateOfDeathFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DirectlySetBocDateTimeValueField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DirectlySetBocDateTimeValueField;
   protected System.Web.UI.WebControls.Label DirectlySetBocDateTimeValueFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue ReadOnlyDirectlySetBocDateTimeValueField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue ReadOnlyDirectlySetBocDateTimeValueField;
   protected System.Web.UI.WebControls.Label ReadOnlyDirectlySetBocDateTimeValueFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DisabledBirthdayField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DisabledBirthdayField;
   protected System.Web.UI.WebControls.Label DisabledBirthdayFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DisabledReadOnlyBirthdayField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DisabledReadOnlyBirthdayField;
   protected System.Web.UI.WebControls.Label DisabledReadOnlyBirthdayFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DisabledUnboundBirthdayField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DisabledUnboundBirthdayField;
   protected System.Web.UI.WebControls.Label DisabledUnboundBirthdayFieldValueLabel;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DisabledUnboundReadOnlyBirthdayField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DisabledUnboundReadOnlyBirthdayField;
   protected System.Web.UI.WebControls.Label DisabledUnboundReadOnlyBirthdayFieldValueLabel;
-  protected Rubicon.Web.UI.Controls.WebButton BirthdayTestSetNullButton;
-  protected Rubicon.Web.UI.Controls.WebButton BirthdayTestSetNewValueButton;
+  protected Remotion.Web.UI.Controls.WebButton BirthdayTestSetNullButton;
+  protected Remotion.Web.UI.Controls.WebButton BirthdayTestSetNewValueButton;
   protected System.Web.UI.WebControls.Label BirthdayFieldDateTimeChangedLabel;
-  protected Rubicon.Web.UI.Controls.WebButton ReadOnlyBirthdayTestSetNullButton;
-  protected Rubicon.Web.UI.Controls.WebButton ReadOnlyBirthdayTestSetNewValueButton;
+  protected Remotion.Web.UI.Controls.WebButton ReadOnlyBirthdayTestSetNullButton;
+  protected Remotion.Web.UI.Controls.WebButton ReadOnlyBirthdayTestSetNewValueButton;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
@@ -80,19 +80,19 @@ public class BocDateTimeValueUserControl : BaseUserControl
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    UnboundBirthdayField.Property = (Rubicon.ObjectBinding.IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
+    UnboundBirthdayField.Property = (Remotion.ObjectBinding.IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
     //UnboundBirthdayField.LoadUnboundValue (person.DateOFBirth, IsPostBack);
-    UnboundReadOnlyBirthdayField.Property = (Rubicon.ObjectBinding.IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
+    UnboundReadOnlyBirthdayField.Property = (Remotion.ObjectBinding.IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
     UnboundReadOnlyBirthdayField.LoadUnboundValue (person.DateOfBirth, IsPostBack);
 
-    UnboundDateOfDeathField.Property = (Rubicon.ObjectBinding.IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfDeath");
+    UnboundDateOfDeathField.Property = (Remotion.ObjectBinding.IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfDeath");
     UnboundDateOfDeathField.LoadUnboundValue (person.DateOfDeath, IsPostBack);
-    //UnboundReadOnlyDateOfDeathField.Property = (Rubicon.ObjectBinding.IBusinessObjectDateProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfDeath");
+    //UnboundReadOnlyDateOfDeathField.Property = (Remotion.ObjectBinding.IBusinessObjectDateProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfDeath");
     UnboundReadOnlyDateOfDeathField.LoadUnboundValue (person.DateOfDeath, IsPostBack);
 
-    DisabledUnboundBirthdayField.Property = (Rubicon.ObjectBinding.IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
+    DisabledUnboundBirthdayField.Property = (Remotion.ObjectBinding.IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
     DisabledUnboundBirthdayField.LoadUnboundValue (person.DateOfBirth, IsPostBack);
-    DisabledUnboundReadOnlyBirthdayField.Property = (Rubicon.ObjectBinding.IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
+    DisabledUnboundReadOnlyBirthdayField.Property = (Remotion.ObjectBinding.IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
     DisabledUnboundReadOnlyBirthdayField.LoadUnboundValue (person.DateOfBirth, IsPostBack);
 
     DirectlySetBocDateTimeValueField.LoadUnboundValue (DateTime.Now, IsPostBack);

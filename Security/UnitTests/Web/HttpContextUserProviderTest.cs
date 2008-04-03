@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Specialized;
 using NUnit.Framework;
-using Rubicon.Security.Web;
+using Remotion.Security.Web;
 
-namespace Rubicon.Security.UnitTests.Web
+namespace Remotion.Security.UnitTests.Web
 {
   [TestFixture]
   public class HttpContextUserProviderTest

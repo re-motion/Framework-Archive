@@ -1,12 +1,12 @@
 using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
-using Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
-using Rubicon.ObjectBinding;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes;
+using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
+namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
   [TestFixture]
   public class DomainObjectClassTest : DatabaseTest

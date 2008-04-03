@@ -13,13 +13,13 @@
           <nullable>true</nullable>
         </property>
         <property name="Type">
-          <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+          <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer+CustomerType, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
           <column>CustomerType</column>
         </property>
       </properties>
       <storageProviderID>TestDomain</storageProviderID>
       <entity name="Company"/>
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
     </class>
   </classes>
 </mapping>

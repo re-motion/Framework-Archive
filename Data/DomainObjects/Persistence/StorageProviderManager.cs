@@ -1,10 +1,10 @@
 using System;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Mixins;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Mixins;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence
+namespace Remotion.Data.DomainObjects.Persistence
 {
 public class StorageProviderManager : IDisposable
 {

@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   /// <summary>
   /// Specifies the type of items for properties returning an <see cref="IList"/>.

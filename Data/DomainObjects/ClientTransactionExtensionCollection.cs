@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// A collection of <see cref="IClientTransactionExtension"/>s.

@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Core.UnitTests.Globalization.SampleTypes
+namespace Remotion.Core.UnitTests.Globalization.SampleTypes
 {
   public class ClassWithoutMultiLingualResourcesAttributes
   {

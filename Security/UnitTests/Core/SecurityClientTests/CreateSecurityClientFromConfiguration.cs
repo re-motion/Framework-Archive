@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Security.Configuration;
-using Rubicon.Security.UnitTests.Core.Configuration;
+using Remotion.Security.Configuration;
+using Remotion.Security.UnitTests.Core.Configuration;
 
-namespace Rubicon.Security.UnitTests.Core.SecurityClientTests
+namespace Remotion.Security.UnitTests.Core.SecurityClientTests
 {
   [TestFixture]
   public class CreateSecurityClientFromConfiguration

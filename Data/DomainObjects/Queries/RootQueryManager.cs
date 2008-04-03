@@ -1,12 +1,12 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Queries
+namespace Remotion.Data.DomainObjects.Queries
 {
 /// <summary>
 /// <see cref="RootQueryManager"/> provides methods to execute queries within a <see cref="RootClientTransaction"/>.
@@ -28,7 +28,7 @@ public class RootQueryManager : IQueryManager
   /// Initializes a new instance of the <see cref="RootQueryManager"/> class. 
   /// </summary>
   /// <remarks>
-  /// All <see cref="DomainObject"/>s that are loaded by the <b>RootQueryManager</b> will exist within the given <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.
+  /// All <see cref="DomainObject"/>s that are loaded by the <b>RootQueryManager</b> will exist within the given <see cref="Remotion.Data.DomainObjects.ClientTransaction"/>.
   /// </remarks>
   /// <param name="clientTransaction">The <see cref="RootClientTransaction"/> to be used in the <b>RootQueryManager</b>. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> is <see langword="null"/>.</exception>
@@ -42,7 +42,7 @@ public class RootQueryManager : IQueryManager
   // methods and properties
 
   /// <summary>
-  /// Gets the <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that is associated with the <see cref="RootQueryManager"/>.
+  /// Gets the <see cref="Remotion.Data.DomainObjects.ClientTransaction"/> that is associated with the <see cref="RootQueryManager"/>.
   /// </summary>
   public ClientTransaction ClientTransaction
   {
@@ -56,13 +56,13 @@ public class RootQueryManager : IQueryManager
   /// <returns>The scalar value that is returned by the query.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="query"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Scalar"/>.</exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
+  /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
   ///   The <see cref="IQuery.StorageProviderID"/> of <paramref name="query"/> could not be found.
   /// </exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.Persistence.PersistenceException">
-  ///   The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
+  /// <exception cref="Remotion.Data.DomainObjects.Persistence.PersistenceException">
+  ///   The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
   /// </exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.Persistence.StorageProviderException">
+  /// <exception cref="Remotion.Data.DomainObjects.Persistence.StorageProviderException">
   ///   An error occurred while executing the query.
   /// </exception>
   public object GetScalar (IQuery query)
@@ -86,13 +86,13 @@ public class RootQueryManager : IQueryManager
   /// <returns>A collection containing the <see cref="DomainObject"/>s returned by the query.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="query"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.</exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
+  /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
   ///   The <see cref="IQuery.StorageProviderID"/> of <paramref name="query"/> could not be found.
   /// </exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.Persistence.PersistenceException">
-  ///   The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
+  /// <exception cref="Remotion.Data.DomainObjects.Persistence.PersistenceException">
+  ///   The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
   /// </exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.Persistence.StorageProviderException">
+  /// <exception cref="Remotion.Data.DomainObjects.Persistence.StorageProviderException">
   ///   An error occurred while executing the query.
   /// </exception>
   public DomainObjectCollection GetCollection (IQuery query)
@@ -134,13 +134,13 @@ public class RootQueryManager : IQueryManager
   /// <exception cref="InvalidTypeException">The objects returned by the <paramref name="query"/> do not match the expected type
   /// <typeparamref name="T"/> or the configured collection type is not assignable to <see cref="ObjectList{T}"/> with the given <typeparamref name="T"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.</exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
+  /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
   /// The <see cref="IQuery.StorageProviderID"/> of <paramref name="query"/> could not be found.
   /// </exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.Persistence.PersistenceException">
-  /// The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
+  /// <exception cref="Remotion.Data.DomainObjects.Persistence.PersistenceException">
+  /// The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
   /// </exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.Persistence.StorageProviderException">
+  /// <exception cref="Remotion.Data.DomainObjects.Persistence.StorageProviderException">
   /// An error occurred while executing the query.
   /// </exception>
   public ObjectList<T> GetCollection<T> (IQuery query) where T : DomainObject

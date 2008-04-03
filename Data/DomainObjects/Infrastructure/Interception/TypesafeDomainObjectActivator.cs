@@ -1,10 +1,10 @@
 using System;
 using System.Reflection;
-using Rubicon.Reflection;
-using Rubicon.Text;
-using Rubicon.Utilities;
+using Remotion.Reflection;
+using Remotion.Text;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
+namespace Remotion.Data.DomainObjects.Infrastructure.Interception
 {
   internal static class TypesafeDomainObjectActivator
   {

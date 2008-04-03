@@ -1,13 +1,13 @@
 using System;
 using System.Reflection;
-using Rubicon.Data.DomainObjects.Design;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.Utilities;
-using Rubicon.Mixins;
+using Remotion.Data.DomainObjects.Design;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.Utilities;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
   public class BindableDomainObjectPropertyReflector : PropertyReflector
   {

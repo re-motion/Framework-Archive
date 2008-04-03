@@ -1,13 +1,13 @@
 using System;
 using System.Data;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.SecurityManager.Domain;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.SecurityManager.Domain;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Persistence
+namespace Remotion.SecurityManager.Persistence
 {
   public class RevisionStorageProviderExtension
   {
@@ -50,7 +50,7 @@ namespace Rubicon.SecurityManager.Persistence
       using (IDbCommand command = connection.CreateCommand ())
       {
         command.Transaction = transaction;
-        QueryDefinition queryDefintion = DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory ("Rubicon.SecurityManager.Domain.Revision.IncrementRevision");
+        QueryDefinition queryDefintion = DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory ("Remotion.SecurityManager.Domain.Revision.IncrementRevision");
         command.CommandText = queryDefintion.Statement;
 
         command.ExecuteNonQuery ();

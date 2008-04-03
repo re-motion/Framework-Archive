@@ -8,11 +8,11 @@ using System.Web.UI;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle("Rubicon DomainObjects Web Library")]
-[assembly: AssemblyDescription("Class library for using Rubicon Web Execution Engine and the Rubicon Persistence Framework in web applications.")]
+[assembly: AssemblyTitle("Remotion DomainObjects Web Library")]
+[assembly: AssemblyDescription("Class library for using Remotion Web Execution Engine and the Remotion Persistence Framework in web applications.")]
 [assembly: AssemblyConfiguration(".NET Framework: net-2.0, build type: debug")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
-[assembly: AssemblyProduct("Rubicon .NET Commons")]
+[assembly: AssemblyProduct("Remotion")]
 [assembly: AssemblyCopyright("(c) 2003 - 2007 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -58,7 +58,7 @@ using System.Web.UI;
 //
 #pragma warning disable 1699
 [assembly: AssemblyDelaySign (false)]
-[assembly: AssemblyKeyFile(@"\Development\global/rubicon.snk")]
+[assembly: AssemblyKeyFile(@"\Development\global/remotion.snk")]
 [assembly: AssemblyKeyName("")]
 #pragma warning restore 1699
-[assembly: TagPrefix ("Rubicon.Data.DomainObjects.Web", "dw")]
+[assembly: TagPrefix ("Remotion.Data.DomainObjects.Web", "dw")]

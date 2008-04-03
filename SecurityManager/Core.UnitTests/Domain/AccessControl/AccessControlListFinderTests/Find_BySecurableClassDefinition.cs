@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.SecurityManager.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects;
+using Remotion.Security;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.SecurityManager.UnitTests.TestDomain;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlListFinderTests
+namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlListFinderTests
 {
   [TestFixture]
   public class Find_BySecurableClassDefinition : DomainTest
@@ -74,7 +74,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
 
     [Test]
     [ExpectedException (typeof (AccessControlException),
-        ExpectedMessage = "The state 'None' is not defined for the property 'State' of the securable class 'Rubicon.SecurityManager.UnitTests.TestDomain.Order, Rubicon.SecurityManager.UnitTests' or its base classes.")]
+        ExpectedMessage = "The state 'None' is not defined for the property 'State' of the securable class 'Remotion.SecurityManager.UnitTests.TestDomain.Order, Remotion.SecurityManager.UnitTests' or its base classes.")]
     public void Fail_WithSecurityContextContainsStateWithInvalidValue ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
@@ -89,7 +89,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
 
     [Test]
     [ExpectedException (typeof (AccessControlException),
-        ExpectedMessage = "The ACL for the securable class 'Rubicon.SecurityManager.UnitTests.TestDomain.Order, Rubicon.SecurityManager.UnitTests' could not be found.")]
+        ExpectedMessage = "The ACL for the securable class 'Remotion.SecurityManager.UnitTests.TestDomain.Order, Remotion.SecurityManager.UnitTests' could not be found.")]
     public void Fail_WithSecurityContextContainsInvalidState ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();

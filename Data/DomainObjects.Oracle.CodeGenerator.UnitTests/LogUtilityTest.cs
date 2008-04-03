@@ -7,7 +7,7 @@ using log4net.Config;
 using log4net.Core;
 using log4net;
 
-namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
+namespace Remotion.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
 {
   [TestFixture]
   public class LogUtilityTest

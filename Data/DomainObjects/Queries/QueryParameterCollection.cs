@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Queries
+namespace Remotion.Data.DomainObjects.Queries
 {
 /// <summary>
 /// Represents a collection of <see cref="QueryParameter"/> objects.
@@ -54,7 +54,7 @@ public class QueryParameterCollection : CommonCollection
   /// <param name="parameterName">The <see cref="QueryParameter.Name"/> of the new parameter. Must not be <see langword="null"/>.</param>
   /// <param name="parameterValue">The <see cref="QueryParameter.Value"/> of the new parameter.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="parameterName"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="parameterName"/> is an empty string.</exception>
+  /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="parameterName"/> is an empty string.</exception>
   public void Add (string parameterName, object parameterValue)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
@@ -71,7 +71,7 @@ public class QueryParameterCollection : CommonCollection
   /// <exception cref="System.ArgumentNullException">
   ///   <paramref name="parameterName"/> is <see langword="null"/>.
   /// </exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="parameterName"/> is an empty string.</exception>
+  /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="parameterName"/> is an empty string.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="parameterType"/> is not a valid enum value.</exception>
   public void Add (string parameterName, object parameterValue, QueryParameterType parameterType)
   {

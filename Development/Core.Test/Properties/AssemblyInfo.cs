@@ -4,10 +4,10 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Rubicon Development Support Library Unit Tests")]
+[assembly: AssemblyTitle("Remotion Development Support Library Unit Tests")]
 [assembly: AssemblyConfiguration(".NET Framework: net-2.0, build type: debug")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
-[assembly: AssemblyProduct("Rubicon .NET Commons")]
+[assembly: AssemblyProduct("Remotion")]
 [assembly: AssemblyCopyright("(c) 2003 - 2007 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
@@ -52,6 +52,6 @@ using System.Reflection;
 //
 #pragma warning disable 1699
 [assembly: AssemblyDelaySign (false)]
-//[assembly: AssemblyKeyFile(@"\Development\global/rubicon.snk")]
+//[assembly: AssemblyKeyFile(@"\Development\global/remotion.snk")]
 [assembly: AssemblyKeyName("")]
 #pragma warning restore 1699

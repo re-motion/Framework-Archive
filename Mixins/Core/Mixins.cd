@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Font Name="Tahoma" Size="8.25" />
-  <Class Name="Rubicon.Mixins.Mixin">
+  <Class Name="Remotion.Mixins.Mixin">
     <Position X="3.25" Y="4" Width="2.25" />
     <TypeIdentifier>
       <FileName>Mixin.cs</FileName>
       <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
-  <Class Name="Rubicon.Mixins.Mixin&lt;TThis, TBase&gt;">
+  <Class Name="Remotion.Mixins.Mixin&lt;TThis, TBase&gt;">
     <Position X="3.25" Y="2.25" Width="2.25" />
     <TypeIdentifier>
       <FileName>Mixin.cs</FileName>
@@ -18,7 +18,7 @@
       <Field Name="_base" Hidden="true" />
     </Members>
   </Class>
-  <Class Name="Rubicon.Mixins.Mixin&lt;TThis&gt;">
+  <Class Name="Remotion.Mixins.Mixin&lt;TThis&gt;">
     <Position X="3.25" Y="0.5" Width="2.25" />
     <TypeIdentifier>
       <FileName>Mixin.cs</FileName>
@@ -32,7 +32,7 @@
       <Field Name="_this" Hidden="true" />
     </Members>
   </Class>
-  <Class Name="Rubicon.Mixins.UsesAttribute">
+  <Class Name="Remotion.Mixins.UsesAttribute">
     <Position X="0.5" Y="1.25" Width="2.5" />
     <TypeIdentifier>
       <FileName>UsesAttribute.cs</FileName>
@@ -43,7 +43,7 @@
       <Field Name="_mixinType" Hidden="true" />
     </Members>
   </Class>
-  <Class Name="Rubicon.Mixins.ExtendsAttribute">
+  <Class Name="Remotion.Mixins.ExtendsAttribute">
     <Position X="0.5" Y="3" Width="2.5" />
     <TypeIdentifier>
       <FileName>ExtendsAttribute.cs</FileName>
@@ -53,14 +53,14 @@
       <Field Name="_targetType" Hidden="true" />
     </Members>
   </Class>
-  <Class Name="Rubicon.Mixins.OverrideAttribute" Collapsed="true">
+  <Class Name="Remotion.Mixins.OverrideAttribute" Collapsed="true">
     <Position X="0.5" Y="4.75" Width="2.5" />
     <TypeIdentifier>
       <FileName>OverrideAttribute.cs</FileName>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
-  <Class Name="Rubicon.Mixins.CompleteInterfaceAttribute">
+  <Class Name="Remotion.Mixins.CompleteInterfaceAttribute">
     <Position X="0.5" Y="5.5" Width="2.5" />
     <TypeIdentifier>
       <FileName>CompleteInterfaceAttribute.cs</FileName>
@@ -70,14 +70,14 @@
       <Field Name="_targetType" Hidden="true" />
     </Members>
   </Class>
-  <Class Name="Rubicon.Mixins.ContainsMixinInfoAttribute" Collapsed="true">
+  <Class Name="Remotion.Mixins.ContainsMixinInfoAttribute" Collapsed="true">
     <Position X="0.5" Y="0.5" Width="2.5" />
     <TypeIdentifier>
       <FileName>ContainsMixinInfoAttribute.cs</FileName>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
-  <Class Name="Rubicon.Mixins.Definitions.MixinDefinition" Collapsed="true">
+  <Class Name="Remotion.Mixins.Definitions.MixinDefinition" Collapsed="true">
     <Position X="7" Y="0.5" Width="2.5" />
     <TypeIdentifier>
       <FileName>Definitions\MixinDefinition.cs</FileName>
@@ -85,21 +85,21 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Rubicon.Mixins.TypeFactory">
+  <Class Name="Remotion.Mixins.TypeFactory">
     <Position X="7" Y="2.25" Width="2.75" />
     <TypeIdentifier>
       <FileName>TypeFactory.cs</FileName>
       <HashCode>AAAAAAAAAAAAAAAQAAAAAAABAAAAAAAQAAAAAAACAAA=</HashCode>
     </TypeIdentifier>
   </Class>
-  <Class Name="Rubicon.Mixins.ObjectFactory">
+  <Class Name="Remotion.Mixins.ObjectFactory">
     <Position X="7" Y="4" Width="2.75" />
     <TypeIdentifier>
       <FileName>ObjectFactory.cs</FileName>
       <HashCode>AAAAAAAAAAAAAAAAAEAAgAAAAAAAAEAAAAAAAAAAAIA=</HashCode>
     </TypeIdentifier>
   </Class>
-  <Class Name="Rubicon.Mixins.MixinConfiguration">
+  <Class Name="Remotion.Mixins.MixinConfiguration">
     <Position X="10.5" Y="0.5" Width="2.5" />
     <TypeIdentifier>
       <FileName>MixinConfiguration.cs</FileName>
@@ -115,7 +115,7 @@
     </Members>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Rubicon.Mixins.Context.ApplicationContext" Collapsed="true">
+  <Class Name="Remotion.Mixins.Context.ApplicationContext" Collapsed="true">
     <Position X="10.5" Y="3.25" Width="2.5" />
     <TypeIdentifier>
       <FileName>Context\ApplicationContext.cs</FileName>

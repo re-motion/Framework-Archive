@@ -1,4 +1,4 @@
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
+namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   public interface ILengthConstrainedPropertyAttribute: IMappingAttribute
   {

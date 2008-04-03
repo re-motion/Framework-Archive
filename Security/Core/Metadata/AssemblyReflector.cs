@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Security.Metadata
+namespace Remotion.Security.Metadata
 {
 
   public class AssemblyReflector

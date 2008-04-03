@@ -16,7 +16,7 @@ using System.Globalization;
 using System.Resources;
 using System.Runtime.CompilerServices;
 
-namespace Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure {
+namespace Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure {
     using System;
     
     
@@ -47,7 +47,7 @@ namespace Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure {
         internal static ResourceManager ResourceManager {
             get {
                 if (ReferenceEquals(resourceMan, null)) {
-                    ResourceManager temp = new ResourceManager("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Delegation", typeof(Delegation).Assembly);
+                    ResourceManager temp = new ResourceManager("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Delegation", typeof(Delegation).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -71,18 +71,18 @@ namespace Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure {
         /// <summary>
         ///   Looks up a localized string similar to Disabled.
         /// </summary>
-        internal static string Rubicon_SecurityManager_Domain_OrganizationalStructure_Delegation_Disabled {
+        internal static string Remotion_SecurityManager_Domain_OrganizationalStructure_Delegation_Disabled {
             get {
-                return ResourceManager.GetString("Rubicon.SecurityManager.Domain.OrganizationalStructure.Delegation.Disabled", resourceCulture);
+                return ResourceManager.GetString("Remotion.SecurityManager.Domain.OrganizationalStructure.Delegation.Disabled", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enabled.
         /// </summary>
-        internal static string Rubicon_SecurityManager_Domain_OrganizationalStructure_Delegation_Enabled {
+        internal static string Remotion_SecurityManager_Domain_OrganizationalStructure_Delegation_Enabled {
             get {
-                return ResourceManager.GetString("Rubicon.SecurityManager.Domain.OrganizationalStructure.Delegation.Enabled", resourceCulture);
+                return ResourceManager.GetString("Remotion.SecurityManager.Domain.OrganizationalStructure.Delegation.Enabled", resourceCulture);
             }
         }
     }

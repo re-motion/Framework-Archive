@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Specialized;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Configuration.StorageProviders;
-using Rubicon.Utilities;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Configuration.StorageProviders;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Persistence.Configuration
+namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
   public abstract class StorageProviderDefinition: ExtendedProviderBase
   {

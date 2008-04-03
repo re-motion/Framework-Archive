@@ -1,8 +1,8 @@
 using System;
-using Rubicon.ObjectBinding;
-using Rubicon.Data.DomainObjects.Queries;
+using Remotion.ObjectBinding;
+using Remotion.Data.DomainObjects.Queries;
 
-namespace Rubicon.Data.DomainObjects.Web.Test.Domain
+namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
   [BindableObject]
   public class SearchObjectWithUndefinedEnum

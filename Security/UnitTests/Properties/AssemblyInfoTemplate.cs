@@ -1,13 +1,13 @@
 using System;
 using System.Reflection;
-using Rubicon.Data.DomainObjects;
+using Remotion.Data.DomainObjects;
 
 //
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle ("Rubicon Security Library Unittests")]
+[assembly: AssemblyTitle ("Remotion Security Library Unittests")]
 [assembly: AssemblyConfiguration ("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]
 [assembly: AssemblyProduct("@productname@")]

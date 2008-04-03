@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Reflection;
-using Rubicon.Mixins;
-using Rubicon.Collections;
-using Rubicon.Mixins.Context.DeclarativeAnalyzers;
-using Rubicon.Mixins.Context.FluentBuilders;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
+using Remotion.Mixins;
+using Remotion.Collections;
+using Remotion.Mixins.Context.DeclarativeAnalyzers;
+using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.Reflection;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Context
+namespace Remotion.Mixins.Context
 {
   /// <summary>
   /// Provides support for building mixin configuration data from the declarative mixin configuration attributes

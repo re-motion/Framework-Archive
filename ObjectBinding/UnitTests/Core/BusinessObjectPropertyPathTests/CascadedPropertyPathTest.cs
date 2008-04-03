@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BusinessObjectPropertyPathTests
+namespace Remotion.ObjectBinding.UnitTests.Core.BusinessObjectPropertyPathTests
 {
   [TestFixture]
   public class CascadedPropertyPathTest

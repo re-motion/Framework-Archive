@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Mixins.Globalization;
-using Rubicon.Mixins.UnitTests.Globalization.SampleTypes;
+using Remotion.Mixins.Globalization;
+using Remotion.Mixins.UnitTests.Globalization.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests.Globalization.MixedMultiLingualResourcesTests
+namespace Remotion.Mixins.UnitTests.Globalization.MixedMultiLingualResourcesTests
 {
   [TestFixture]
   public class ExistsResourceTests

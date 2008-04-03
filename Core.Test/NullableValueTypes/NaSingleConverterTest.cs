@@ -2,9 +2,9 @@ using System;
 using System.Globalization;
 using System.Threading;
 using NUnit.Framework;
-using Rubicon.NullableValueTypes;
+using Remotion.NullableValueTypes;
 
-namespace Rubicon.Core.UnitTests.NullableValueTypes
+namespace Remotion.Core.UnitTests.NullableValueTypes
 {
 
 [TestFixture]

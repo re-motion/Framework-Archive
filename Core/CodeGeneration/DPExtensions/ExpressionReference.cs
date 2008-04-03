@@ -5,7 +5,7 @@ using System.Text;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Castle.DynamicProxy.Generators.Emitters;
 
-namespace Rubicon.CodeGeneration.DPExtensions
+namespace Remotion.CodeGeneration.DPExtensions
 {
   // Converts an expression to a reference by saving it as a temporary local variable at time of emitting
   public class ExpressionReference : TypeReference

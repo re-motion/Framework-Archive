@@ -1,11 +1,11 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.NullableValueTypes;
-using Rubicon.ObjectBinding.Web.UI.Design;
-using Rubicon.Web.UI.Controls;
+using Remotion.NullableValueTypes;
+using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary>
   ///   <b>BusinessObjectReferenceDataSourceControl</b> provides an <see cref="IBusinessObjectReferenceDataSource"/>

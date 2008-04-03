@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain
 {
   public abstract class BaseClassWithInvalidRelationClassIDColumns : DomainObject
   {

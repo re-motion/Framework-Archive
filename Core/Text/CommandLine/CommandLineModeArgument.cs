@@ -3,7 +3,7 @@ using System.Collections;
 using System.Reflection;
 using System.Text;
 
-namespace Rubicon.Text.CommandLine
+namespace Remotion.Text.CommandLine
 {
 
 public abstract class CommandLineGroupArgument: CommandLineArgument

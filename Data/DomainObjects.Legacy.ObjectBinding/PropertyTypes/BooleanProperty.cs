@@ -1,12 +1,12 @@
 using System;
 using System.Reflection;
-using Rubicon.Globalization;
-using Rubicon.NullableValueTypes;
-using Rubicon.ObjectBinding;
+using Remotion.Globalization;
+using Remotion.NullableValueTypes;
+using Remotion.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
+namespace Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
-  [MultiLingualResources ("Rubicon.Data.DomainObjects.ObjectBinding.Globalization.BooleanProperty")]
+  [MultiLingualResources ("Remotion.Data.DomainObjects.ObjectBinding.Globalization.BooleanProperty")]
   public class BooleanProperty: NullableProperty, IBusinessObjectBooleanProperty, IBusinessObjectEnumerationProperty
   {
     private BooleanToEnumPropertyConverter _booleanToEnumConverter;

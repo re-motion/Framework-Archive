@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using NUnit.Framework;
-using Rubicon.Collections;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Definitions.Building.DependencySorting;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Mixins.Utilities.DependencySort;
+using Remotion.Collections;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Definitions.Building.DependencySorting;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Utilities.DependencySort;
 using System.Threading;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Mixins.UnitTests.Definitions.DependencySorting
+namespace Remotion.Mixins.UnitTests.Definitions.DependencySorting
 {
   [TestFixture]
   public class MixinDependencyAnalyzerTest
@@ -73,9 +73,9 @@ namespace Rubicon.Mixins.UnitTests.Definitions.DependencySorting
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The following mixins are applied to the same base class "
-        + "Rubicon.Mixins.UnitTests.SampleTypes.NullTarget and require a clear base call ordering, but do not provide enough dependency information: "
-        + "Rubicon.Mixins.UnitTests.SampleTypes.NullMixin, Rubicon.Mixins.UnitTests.SampleTypes.NullMixin2, "
-        + "Rubicon.Mixins.UnitTests.SampleTypes.NullMixin4.\r\nPlease supply additional dependencies to the mixin definitions, use the "
+        + "Remotion.Mixins.UnitTests.SampleTypes.NullTarget and require a clear base call ordering, but do not provide enough dependency information: "
+        + "Remotion.Mixins.UnitTests.SampleTypes.NullMixin, Remotion.Mixins.UnitTests.SampleTypes.NullMixin2, "
+        + "Remotion.Mixins.UnitTests.SampleTypes.NullMixin4.\r\nPlease supply additional dependencies to the mixin definitions, use the "
         + "AcceptsAlphabeticOrderingAttribute, or adjust the mixin configuration accordingly.")]
     public void ResolveEqualRoots_Throws ()
     {
@@ -152,8 +152,8 @@ namespace Rubicon.Mixins.UnitTests.Definitions.DependencySorting
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The following mixins are applied to the same base class "
-        + "Rubicon.Mixins.UnitTests.SampleTypes.NullTarget and require a clear base call ordering, but do not provide enough dependency information: "
-        + "Rubicon.Mixins.UnitTests.SampleTypes.NullMixin, Rubicon.Mixins.UnitTests.SampleTypes.NullMixin2, Rubicon.Mixins.UnitTests.SampleTypes."
+        + "Remotion.Mixins.UnitTests.SampleTypes.NullTarget and require a clear base call ordering, but do not provide enough dependency information: "
+        + "Remotion.Mixins.UnitTests.SampleTypes.NullMixin, Remotion.Mixins.UnitTests.SampleTypes.NullMixin2, Remotion.Mixins.UnitTests.SampleTypes."
        + "MixinAcceptingAlphabeticOrdering1.\r\nPlease supply additional dependencies to the mixin definitions, use the "
        + "AcceptsAlphabeticOrderingAttribute, or adjust the mixin configuration accordingly.")]
     public void ResolveEqualRoots_WithEnabledAlphabeticOrdering_TwoNonAccepters ()

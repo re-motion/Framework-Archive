@@ -10,7 +10,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>Rubicon.Data.DomainObjects</AssemblyName>
+    <AssemblyName>Remotion.Data.DomainObjects</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -19,7 +19,7 @@
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Data.DomainObjects</RootNamespace>
+    <RootNamespace>Remotion.Data.DomainObjects</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -37,7 +37,7 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\Debug\Rubicon.Data.DomainObjects.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Remotion.Data.DomainObjects.XML</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
@@ -58,7 +58,7 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\Rubicon.Data.DomainObjects.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Remotion.Data.DomainObjects.XML</DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
@@ -552,7 +552,7 @@
     <Content Include="Doc\How to make a build.txt" />
     <Content Include="Doc\include\DomainObjects.xml" />
     <Content Include="Doc\include\NamespaceDoc.xml" />
-    <Content Include="Doc\WhatsNew_Rubicon.Data.DomainObjects.txt" />
+    <Content Include="Doc\WhatsNew_Remotion.Data.DomainObjects.txt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

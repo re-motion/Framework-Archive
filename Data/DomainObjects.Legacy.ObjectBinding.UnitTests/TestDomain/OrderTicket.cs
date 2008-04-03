@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 {
 public class OrderTicket : TestDomainBase
 {

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Interception.SampleTypes
+namespace Remotion.Data.DomainObjects.UnitTests.Interception.SampleTypes
 {
   [Serializable]
   public class DOHidingVirtualProperties : DOWithVirtualProperties

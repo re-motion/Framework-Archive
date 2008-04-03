@@ -5,7 +5,7 @@
 
     <!-- Class Person is invalid, because its underlying type is not abstract but it contains no entity element. -->
     <class id="Person">
-      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.Person, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <type>Remotion.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain.Person, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
       <storageProviderID>TestDomain</storageProviderID>
       <properties />
     </class>

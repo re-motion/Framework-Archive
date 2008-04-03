@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Remoting.Messaging;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   internal class MixinConfigurationScope : IDisposable
   {

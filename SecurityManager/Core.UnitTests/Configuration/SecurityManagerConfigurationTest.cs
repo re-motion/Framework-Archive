@@ -1,9 +1,9 @@
 using System;
 using System.Configuration;
 using NUnit.Framework;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
-namespace Rubicon.SecurityManager.UnitTests.Configuration
+namespace Remotion.SecurityManager.UnitTests.Configuration
 {
   [TestFixture]
   public class SecurityManagerConfigurationTest
@@ -19,7 +19,7 @@ namespace Rubicon.SecurityManager.UnitTests.Configuration
     [Test]
     public void DeserializeSection_DefaultFactory ()
     {
-      string xmlFragment = @"<rubicon.securityManager />";
+      string xmlFragment = @"<remotion.securityManager />";
       _configuration.DeserializeSection (xmlFragment);
 
       Assert.IsNotNull (_configuration.OrganizationalStructureFactory);
@@ -29,7 +29,7 @@ namespace Rubicon.SecurityManager.UnitTests.Configuration
     [Test]
     public void DeserializeSection_WithNamespace ()
     {
-      string xmlFragment = @"<rubicon.securityManager xmlns=""http://www.rubicon-it.com/SecurityManager/Configuration"" />";
+      string xmlFragment = @"<remotion.securityManager xmlns=""http://www.rubicon-it.com/SecurityManager/Configuration"" />";
       _configuration.DeserializeSection (xmlFragment);
 
       Assert.IsNotNull (_configuration.OrganizationalStructureFactory);
@@ -40,9 +40,9 @@ namespace Rubicon.SecurityManager.UnitTests.Configuration
     public void DeserializeSection_CustomFactory ()
     {
       string xmlFragment = @"
-          <rubicon.securityManager xmlns=""http://www.rubicon-it.com/SecurityManager/Configuration"">
-            <organizationalStructureFactory type=""Rubicon.SecurityManager.UnitTests::Configuration.TestOrganizationalStructureFactory"" />
-          </rubicon.securityManager>";
+          <remotion.securityManager xmlns=""http://www.rubicon-it.com/SecurityManager/Configuration"">
+            <organizationalStructureFactory type=""Remotion.SecurityManager.UnitTests::Configuration.TestOrganizationalStructureFactory"" />
+          </remotion.securityManager>";
       _configuration.DeserializeSection (xmlFragment);
 
       Assert.IsNotNull (_configuration.OrganizationalStructureFactory);
@@ -54,9 +54,9 @@ namespace Rubicon.SecurityManager.UnitTests.Configuration
     public void DeserializeSection_InvalidFactoryType ()
     {
       string xmlFragment = @"
-          <rubicon.securityManager>
+          <remotion.securityManager>
             <organizationalStructureFactory type=""Invalid"" />
-          </rubicon.securityManager>";
+          </remotion.securityManager>";
       _configuration.DeserializeSection (xmlFragment);
       IOrganizationalStructureFactory factory = _configuration.OrganizationalStructureFactory;
     }

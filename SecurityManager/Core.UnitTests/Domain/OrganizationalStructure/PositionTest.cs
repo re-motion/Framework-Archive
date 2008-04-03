@@ -1,13 +1,13 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Security;
-using Rubicon.Security.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.SecurityManager.UnitTests.Domain.AccessControl;
+using Remotion.Data.DomainObjects;
+using Remotion.Security;
+using Remotion.Security.Data.DomainObjects;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.SecurityManager.UnitTests.Domain.AccessControl;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
+namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
   [TestFixture]
   public class PositionTest : DomainTest

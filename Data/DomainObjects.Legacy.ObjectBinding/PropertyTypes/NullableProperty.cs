@@ -1,10 +1,10 @@
 using System;
 using System.Reflection;
-using Rubicon.NullableValueTypes;
-using Rubicon.ObjectBinding;
-using Rubicon.Utilities;
+using Remotion.NullableValueTypes;
+using Remotion.ObjectBinding;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
+namespace Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
   public class NullableProperty: BaseProperty
   {

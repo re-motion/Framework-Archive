@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 using Rhino.Mocks;
-using Rubicon.Security.Metadata;
-using Rubicon.Security.UnitTests.Core.SampleDomain;
+using Remotion.Security.Metadata;
+using Remotion.Security.UnitTests.Core.SampleDomain;
 
-namespace Rubicon.Security.UnitTests.Core.SecurityClientTests
+namespace Remotion.Security.UnitTests.Core.SecurityClientTests
 {
   public class SecurityClientTestHelper
   {

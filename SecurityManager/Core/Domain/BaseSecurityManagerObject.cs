@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.ObjectBinding;
 
-namespace Rubicon.SecurityManager.Domain
+namespace Remotion.SecurityManager.Domain
 {
   [Serializable]
   public abstract class BaseSecurityManagerObject : BindableDomainObject

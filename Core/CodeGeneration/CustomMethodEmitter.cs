@@ -3,10 +3,10 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Rubicon.CodeGeneration.DPExtensions;
-using Rubicon.Utilities;
+using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Utilities;
 
-namespace Rubicon.CodeGeneration
+namespace Remotion.CodeGeneration
 {
   public class CustomMethodEmitter : IAttributableEmitter
   {

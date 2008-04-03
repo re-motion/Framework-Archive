@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Collections
+namespace Remotion.Collections
 {
   //TODO: Doc
   public interface ICache<TKey, TValue> : INullObject

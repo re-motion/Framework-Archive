@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   [Obsolete ("Use ObjectSecurityProvider instead. (Version: 1.7.41)", true)]
   public class ObjectSecurityProvider : ObjectSecurityAdapter, IObjectSecurityProvider

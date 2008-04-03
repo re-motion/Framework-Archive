@@ -3,12 +3,12 @@ using System.Collections;
 using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
-using Rubicon.Collections;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Sample
+namespace Remotion.ObjectBinding.Sample
 {
   public class XmlReflectionBusinessObjectStorageProvider : IGetObjectService
   {

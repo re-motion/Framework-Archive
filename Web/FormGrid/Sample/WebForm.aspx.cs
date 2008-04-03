@@ -9,13 +9,13 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Text;
 
-using Rubicon.Collections;
-using Rubicon.Globalization;
-using Rubicon.Web;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Collections;
+using Remotion.Globalization;
+using Remotion.Web;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 
 namespace FormGrid.Sample
 {
@@ -58,9 +58,9 @@ public class WebForm :
   protected System.Web.UI.WebControls.TextBox FirstNameField;
   protected System.Web.UI.WebControls.TextBox LastNameField;
   protected System.Web.UI.WebControls.Label CombinedName_Label;
-  protected Rubicon.Web.UI.Controls.FormGridManager GlobalFormGridManager;
-  protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
-  protected Rubicon.Web.UI.Controls.FormGridLabel AddressLabel;
+  protected Remotion.Web.UI.Controls.FormGridManager GlobalFormGridManager;
+  protected Remotion.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
+  protected Remotion.Web.UI.Controls.FormGridLabel AddressLabel;
   protected System.Web.UI.WebControls.Button SubmitButton;
 
 	override protected void OnInit(EventArgs e)

@@ -1,17 +1,17 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.ObjectBinding;
-using Rubicon.SecurityManager.Domain;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Development.UnitTesting;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.ObjectBinding;
+using Remotion.SecurityManager.Domain;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Data.DomainObjects;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain
+namespace Remotion.SecurityManager.UnitTests.Domain
 {
   [TestFixture]
   public class SerializationTest

@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Collections;
+using Remotion.Collections;
 
-namespace Rubicon.Core.UnitTests.Collections
+namespace Remotion.Core.UnitTests.Collections
 {
   using TestTuple = Tuple<int, string, double, DateTime>;
 

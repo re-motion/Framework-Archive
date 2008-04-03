@@ -1,4 +1,4 @@
-namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
+namespace Remotion.Core.UnitTests.Utilities.AttributeUtilityTests
 {
   public interface ICustomAttribute
   { }

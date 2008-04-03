@@ -2,21 +2,21 @@
 <configuration>
 
   <configSections>
-    <sectionGroup name="rubicon.data.domainObjects" type="Rubicon.Data.DomainObjects.Configuration.DomainObjectsConfiguration, Rubicon.Data.DomainObjects">
-      <section name="storage" type="Rubicon.Data.DomainObjects.Persistence.Configuration.PersistenceConfiguration, Rubicon.Data.DomainObjects" />
+    <sectionGroup name="remotion.data.domainObjects" type="Remotion.Data.DomainObjects.Configuration.DomainObjectsConfiguration, Remotion.Data.DomainObjects">
+      <section name="storage" type="Remotion.Data.DomainObjects.Persistence.Configuration.PersistenceConfiguration, Remotion.Data.DomainObjects" />
     </sectionGroup>
   </configSections>
 
-  <rubicon.data.domainObjects xmlns="http://www.rubicon-it.com/Data/DomainObjects/Configuration/2.0">
+  <remotion.data.domainObjects xmlns="http://www.rubicon-it.com/Data/DomainObjects/Configuration/2.0">
     <storage defaultProviderDefinition="Test">
       <providerDefinitions>
-        <add type="Rubicon.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"
+        <add type="Remotion.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"
             name="Test"
-            providerType="Rubicon.Data.DomainObjects::Persistence.Rdbms.SqlProvider"
+            providerType="Remotion.Data.DomainObjects::Persistence.Rdbms.SqlProvider"
             connectionString="Test"/>
       </providerDefinitions>
     </storage>
-  </rubicon.data.domainObjects>
+  </remotion.data.domainObjects>
 
   <connectionStrings>
     <add name="Test" connectionString="Integrated Security=SSPI;Initial Catalog=Test;Data Source=localhost" />

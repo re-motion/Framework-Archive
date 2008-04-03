@@ -1,11 +1,11 @@
 using System;
 using System.Xml.Schema;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Legacy.Schemas;
+using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Legacy.Schemas;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Schemas
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Schemas
 {
   [TestFixture]
   public class LegacySchemaLoaderTest

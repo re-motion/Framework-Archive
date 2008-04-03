@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.Utilities;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Remotion.ObjectBinding.BindableObject
 {
   public class PropertyReflector
   {

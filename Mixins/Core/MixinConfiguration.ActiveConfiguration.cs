@@ -1,13 +1,13 @@
 using System;
 using System.Runtime.Remoting.Messaging;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Mixins
+namespace Remotion.Mixins
 {
   public partial class MixinConfiguration
   {
     private static readonly CallContextSingleton<MixinConfiguration> _activeConfiguration =
-        new CallContextSingleton<MixinConfiguration> ("Rubicon.Mixins.MixinConfiguration._activeConfiguration",
+        new CallContextSingleton<MixinConfiguration> ("Remotion.Mixins.MixinConfiguration._activeConfiguration",
         delegate { return CopyMasterConfiguration (); });
 
     /// <summary>

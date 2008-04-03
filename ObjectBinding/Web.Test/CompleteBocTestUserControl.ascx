@@ -7,54 +7,54 @@
 
 <table id="FormGrid" runat="server">
   <tr>
-    <td colspan="2"><rubicon:boctextvalue id="FirstNameField" runat="server" PropertyIdentifier="FirstName" datasourcecontrol="CurrentObject" ReadOnly="True"></rubicon:boctextvalue>&nbsp;<rubicon:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject" ReadOnly="True"></rubicon:boctextvalue></td></tr>
+    <td colspan="2"><remotion:boctextvalue id="FirstNameField" runat="server" PropertyIdentifier="FirstName" datasourcecontrol="CurrentObject" ReadOnly="True"></remotion:boctextvalue>&nbsp;<remotion:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject" ReadOnly="True"></remotion:boctextvalue></td></tr>
   <tr>
     <td></td>
-    <td><rubicon:BocTextValue id="TextField" runat="server" propertyidentifier="FirstName" datasourcecontrol="CurrentObject"></rubicon:BocTextValue></td></tr>
+    <td><remotion:BocTextValue id="TextField" runat="server" propertyidentifier="FirstName" datasourcecontrol="CurrentObject"></remotion:BocTextValue></td></tr>
   <tr>
     <td></td>
-    <td><rubicon:BocMultilineTextValue id="MultilineTextField" runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject">
+    <td><remotion:BocMultilineTextValue id="MultilineTextField" runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject">
 <textboxstyle textmode="MultiLine">
-</TextBoxStyle></rubicon:BocMultilineTextValue></td></tr>
+</TextBoxStyle></remotion:BocMultilineTextValue></td></tr>
   <tr>
     <td></td>
-    <td><rubicon:BocDateTimeValue id="DateTimeField" runat="server" propertyidentifier="DateOfBirth" datasourcecontrol="CurrentObject"  incompleteerrormessage="Unvollständige Daten" invaliddateandtimeerrormessage="Ungültiges Datum oder Zeit" invaliddateerrormessage="Ungültiges Datum" invalidtimeerrormessage="Ungültige Zeit" ></rubicon:BocDateTimeValue></td></tr>
+    <td><remotion:BocDateTimeValue id="DateTimeField" runat="server" propertyidentifier="DateOfBirth" datasourcecontrol="CurrentObject"  incompleteerrormessage="Unvollständige Daten" invaliddateandtimeerrormessage="Ungültiges Datum oder Zeit" invaliddateerrormessage="Ungültiges Datum" invalidtimeerrormessage="Ungültige Zeit" ></remotion:BocDateTimeValue></td></tr>
   <tr>
     <td style="HEIGHT: 18px"></td>
-    <td style="HEIGHT: 18px"><rubicon:BocEnumValue id="EnumField" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="CurrentObject">
+    <td style="HEIGHT: 18px"><remotion:BocEnumValue id="EnumField" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="CurrentObject">
 <listcontrolstyle radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
-</ListControlStyle></rubicon:BocEnumValue></td></tr>
+</ListControlStyle></remotion:BocEnumValue></td></tr>
   <tr>
     <td></td>
-    <td><rubicon:BocReferenceValue id="ReferenceField" runat="server" propertyidentifier="Partner" datasourcecontrol="CurrentObject">
-</rubicon:BocReferenceValue></td></tr>
+    <td><remotion:BocReferenceValue id="ReferenceField" runat="server" propertyidentifier="Partner" datasourcecontrol="CurrentObject">
+</remotion:BocReferenceValue></td></tr>
   <tr>
     <td></td>
-    <td><rubicon:BocBooleanValue id="BooleanField" runat="server" propertyidentifier="Deceased" datasourcecontrol="CurrentObject"></rubicon:BocBooleanValue></td></tr>
+    <td><remotion:BocBooleanValue id="BooleanField" runat="server" propertyidentifier="Deceased" datasourcecontrol="CurrentObject"></remotion:BocBooleanValue></td></tr>
   <tr>
     <td></td>
     <td></td></tr>
   <tr>
-    <td colspan="2"><rubicon:BocList id="ListField" runat="server" propertyidentifier="Jobs" datasourcecontrol="CurrentObject" showsortingorder="True" enableselection="True" alwaysshowpageinfo="True" selection="Multiple">
+    <td colspan="2"><remotion:BocList id="ListField" runat="server" propertyidentifier="Jobs" datasourcecontrol="CurrentObject" showsortingorder="True" enableselection="True" alwaysshowpageinfo="True" selection="Multiple">
 <fixedcolumns>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Title">
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Title">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="StartDate">
+</remotion:BocSimpleColumnDefinition>
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="StartDate">
 <persistedcommand>
-<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
+<remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
-</rubicon:BocSimpleColumnDefinition>
-</FixedColumns></rubicon:BocList></td></tr></table>
-<p><rubicon:formgridmanager id="FormGridManager" runat="server" visible="true"></rubicon:formgridmanager><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Rubicon.ObjectBinding.Sample::Person"></rubicon:BindableObjectDataSourceControl></p>
+</remotion:BocSimpleColumnDefinition>
+</FixedColumns></remotion:BocList></td></tr></table>
+<p><remotion:formgridmanager id="FormGridManager" runat="server" visible="true"></remotion:formgridmanager><remotion:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person"></remotion:BindableObjectDataSourceControl></p>
 <p><asp:button id="SaveButton" runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></p>
-<rubicon:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView" width="100%" height="10%">
+<remotion:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView" width="100%" height="10%">
 <views> 
- <rubicon:tabview id="first" title="First">
- </rubicon:tabview>
- <rubicon:tabview id="second" title="Second">
- </rubicon:tabview>
+ <remotion:tabview id="first" title="First">
+ </remotion:tabview>
+ <remotion:tabview id="second" title="Second">
+ </remotion:tabview>
 </Views>
-</rubicon:tabbedmultiview>
+</remotion:tabbedmultiview>

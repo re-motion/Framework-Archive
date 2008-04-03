@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Utilities;
 
-namespace Rubicon.Security.Data.DomainObjects
+namespace Remotion.Security.Data.DomainObjects
 {
   [Serializable]
   public class SecurityClientTransactionExtension : IClientTransactionExtension

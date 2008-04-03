@@ -2,29 +2,29 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using System.IO;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Reflection;
+using Remotion.Development.UnitTesting;
+using Remotion.Reflection;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration
+namespace Remotion.Mixins.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class ModuleManagerTests
   {
     private IModuleManager _moduleManager;
-    private const string c_signedAssemblyFileName = "Rubicon.Mixins.Generated.Signed.dll";
-    private const string c_unsignedAssemblyFileName = "Rubicon.Mixins.Generated.Unsigned.dll";
+    private const string c_signedAssemblyFileName = "Remotion.Mixins.Generated.Signed.dll";
+    private const string c_unsignedAssemblyFileName = "Remotion.Mixins.Generated.Unsigned.dll";
 
     [SetUp]
     public void SetUp ()
     {
       ConcreteTypeBuilder.SetCurrent (null);
       _moduleManager = ConcreteTypeBuilder.Current.Scope;
-      _moduleManager.SignedAssemblyName = "Rubicon.Mixins.Generated.Signed";
-      _moduleManager.UnsignedAssemblyName = "Rubicon.Mixins.Generated.Unsigned";
+      _moduleManager.SignedAssemblyName = "Remotion.Mixins.Generated.Signed";
+      _moduleManager.UnsignedAssemblyName = "Remotion.Mixins.Generated.Unsigned";
       _moduleManager.SignedModulePath = c_signedAssemblyFileName;
       _moduleManager.UnsignedModulePath = c_unsignedAssemblyFileName;
       DeleteSavedAssemblies();
@@ -195,7 +195,7 @@ namespace Rubicon.Mixins.UnitTests.CodeGeneration
       _moduleManager.SaveAssemblies();
       AssemblyName assemblyName = AssemblyName.GetAssemblyName (c_signedAssemblyFileName);
 
-      Assert.IsTrue (Rubicon.Mixins.Utilities.ReflectionUtility.IsAssemblySigned (assemblyName));
+      Assert.IsTrue (Remotion.Mixins.Utilities.ReflectionUtility.IsAssemblySigned (assemblyName));
     }
 
     [Test]
@@ -206,7 +206,7 @@ namespace Rubicon.Mixins.UnitTests.CodeGeneration
       _moduleManager.SaveAssemblies();
       AssemblyName assemblyName = AssemblyName.GetAssemblyName (c_unsignedAssemblyFileName);
 
-      Assert.IsFalse (Rubicon.Mixins.Utilities.ReflectionUtility.IsAssemblySigned (assemblyName));
+      Assert.IsFalse (Remotion.Mixins.Utilities.ReflectionUtility.IsAssemblySigned (assemblyName));
     }
 
     [Test]
@@ -217,7 +217,7 @@ namespace Rubicon.Mixins.UnitTests.CodeGeneration
       _moduleManager.SaveAssemblies();
       AssemblyName assemblyName = AssemblyName.GetAssemblyName (c_unsignedAssemblyFileName);
 
-      Assert.AreEqual ("Rubicon.Mixins.Generated.Unsigned", assemblyName.Name);
+      Assert.AreEqual ("Remotion.Mixins.Generated.Unsigned", assemblyName.Name);
     }
 
     [Test]
@@ -228,7 +228,7 @@ namespace Rubicon.Mixins.UnitTests.CodeGeneration
       _moduleManager.SaveAssemblies();
       AssemblyName assemblyName = AssemblyName.GetAssemblyName (c_signedAssemblyFileName);
 
-      Assert.AreEqual ("Rubicon.Mixins.Generated.Signed", assemblyName.Name);
+      Assert.AreEqual ("Remotion.Mixins.Generated.Signed", assemblyName.Name);
     }
 
     [Test]
@@ -280,14 +280,14 @@ namespace Rubicon.Mixins.UnitTests.CodeGeneration
     private Type GetUnsignedConcreteType ()
     {
       Type t = TypeFactory.GetConcreteType (typeof (BaseType1), GenerationPolicy.ForceGeneration);
-      Assert.IsFalse (Rubicon.Mixins.Utilities.ReflectionUtility.IsAssemblySigned (t.Assembly));
+      Assert.IsFalse (Remotion.Mixins.Utilities.ReflectionUtility.IsAssemblySigned (t.Assembly));
       return t;
     }
 
     private Type GetSignedConcreteType ()
     {
       Type t = TypeFactory.GetConcreteType (typeof (List<int>), GenerationPolicy.ForceGeneration);
-      Assert.IsTrue (Rubicon.Mixins.Utilities.ReflectionUtility.IsAssemblySigned (t.Assembly));
+      Assert.IsTrue (Remotion.Mixins.Utilities.ReflectionUtility.IsAssemblySigned (t.Assembly));
       return t;
     }
 

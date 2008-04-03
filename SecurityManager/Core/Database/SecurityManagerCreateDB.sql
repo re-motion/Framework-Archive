@@ -1,25 +1,25 @@
 USE master
 
-IF EXISTS (SELECT * FROM sysdatabases WHERE name = 'RubiconSecurityManager')
+IF EXISTS (SELECT * FROM sysdatabases WHERE name = 'RemotionSecurityManager')
 BEGIN
-  ALTER DATABASE RubiconSecurityManager SET SINGLE_USER WITH ROLLBACK IMMEDIATE
-  DROP DATABASE RubiconSecurityManager
+  ALTER DATABASE RemotionSecurityManager SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+  DROP DATABASE RemotionSecurityManager
 END
 GO
 
-CREATE DATABASE RubiconSecurityManager
+CREATE DATABASE RemotionSecurityManager
 ON PRIMARY (
-	Name = 'RubiconSecurityManager_Data',
-	Filename = 'C:\Databases\RubiconSecurityManager.mdf',
+	Name = 'RemotionSecurityManager_Data',
+	Filename = 'C:\Databases\RemotionSecurityManager.mdf',
 	Size = 10MB
 )
 LOG ON (
-	Name = 'RubiconSecurityManager_Log',
-	Filename = 'C:\Databases\RubiconSecurityManager.ldf',
+	Name = 'RemotionSecurityManager_Log',
+	Filename = 'C:\Databases\RemotionSecurityManager.ldf',
 	Size = 10MB
 )
 GO
 
-ALTER DATABASE RubiconSecurityManager SET RECOVERY SIMPLE
-BACKUP LOG RubiconSecurityManager WITH TRUNCATE_ONLY
+ALTER DATABASE RemotionSecurityManager SET RECOVERY SIMPLE
+BACKUP LOG RemotionSecurityManager WITH TRUNCATE_ONLY
 GO

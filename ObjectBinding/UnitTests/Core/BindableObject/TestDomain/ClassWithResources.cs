@@ -1,10 +1,10 @@
 using System;
-using Rubicon.Globalization;
+using Remotion.Globalization;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
 {
   [BindableObject]
-  [MultiLingualResources ("Rubicon.ObjectBinding.UnitTests.Core.Globalization.ClassWithResources")]
+  [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.Core.Globalization.ClassWithResources")]
   public class ClassWithResources
   {
     private string _value1;

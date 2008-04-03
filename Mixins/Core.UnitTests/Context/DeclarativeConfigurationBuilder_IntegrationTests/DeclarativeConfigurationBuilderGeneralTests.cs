@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Reflection;
 using Rhino.Mocks;
-using Rubicon.Design;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Design;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
-using Rubicon.Mixins.Context;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
-using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
+using Remotion.Mixins.Context;
+using Remotion.Reflection;
+using Remotion.Utilities;
+using ReflectionUtility=Remotion.Mixins.Utilities.ReflectionUtility;
 using System.IO;
 
-namespace Rubicon.Mixins.UnitTests.Context.DeclarativeConfigurationBuilder_IntegrationTests
+namespace Remotion.Mixins.UnitTests.Context.DeclarativeConfigurationBuilder_IntegrationTests
 {
   [TestFixture]
   public class DeclarativeConfigurationBuilderGeneralTests

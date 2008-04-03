@@ -4,7 +4,7 @@
 <html>
 <head>
   <title>SingleTestTreeView</title>
-  <rubicon:HtmlHeadContents runat="server" ID="HtmlHeadContents" />
+  <remotion:HtmlHeadContents runat="server" ID="HtmlHeadContents" />
 </head>
 <body>
   <form id="Form" method="post" runat="server">
@@ -18,7 +18,7 @@
           <asp:Button ID="RefreshPesonTreeViewButton" runat="server" Text="Refresh"></asp:Button>
         </td>
         <td valign="top" width="33%">
-          <rubicon:WebTreeView ID="WebTreeView" runat="server" CssClass="TreeBlock" Width="150px" EnableScrollBars="True" />
+          <remotion:WebTreeView ID="WebTreeView" runat="server" CssClass="TreeBlock" Width="150px" EnableScrollBars="True" />
           <p>
             <asp:Button ID="PostBackButton" runat="server" Text="PostBack"></asp:Button></p>
           <p>
@@ -35,8 +35,8 @@
         </td>
       </tr>
     </table>
-    <rubicon:FormGridManager ID="FormGridManager" runat="server" />
-    <rubicon:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Rubicon.ObjectBinding.Sample::Person" />
+    <remotion:FormGridManager ID="FormGridManager" runat="server" />
+    <remotion:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
   </form>
 </body>
 </html>

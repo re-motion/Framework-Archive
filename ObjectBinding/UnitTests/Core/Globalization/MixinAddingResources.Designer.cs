@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.Globalization {
+namespace Remotion.ObjectBinding.UnitTests.Core.Globalization {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Core.Globalization {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.ObjectBinding.UnitTests.Core.Globalization.MixinAddingResources", typeof(MixinAddingResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Remotion.ObjectBinding.UnitTests.Core.Globalization.MixinAddingResources", typeof(MixinAddingResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

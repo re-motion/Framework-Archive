@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Legacy.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.Factories;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 {
   [TestFixture]
   public class ClassDefinitionCollectionTest : StandardMappingTest
@@ -73,7 +73,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       catch (ArgumentException e)
       {
         Assert.AreEqual (
-            "A ClassDefinition with Type 'Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Order' is already part of this collection.\r\nParameter name: value",
+            "A ClassDefinition with Type 'Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Order' is already part of this collection.\r\nParameter name: value",
             e.Message);
 
         Assert.IsFalse (_collection.Contains ("OtherID"));
@@ -81,10 +81,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Order' and "
-        + "'Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer' both have the same class ID 'Order'. Use the ClassIDAttribute to define "
-        + "unique IDs for these classes. The assemblies involved are 'Rubicon.Data.DomainObjects.Legacy.UnitTests, Version=.*, "
-        + "Culture=neutral, PublicKeyToken=.*' and 'Rubicon.Data.DomainObjects.Legacy.UnitTests, Version=.*, "
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Order' and "
+        + "'Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer' both have the same class ID 'Order'. Use the ClassIDAttribute to define "
+        + "unique IDs for these classes. The assemblies involved are 'Remotion.Data.DomainObjects.Legacy.UnitTests, Version=.*, "
+        + "Culture=neutral, PublicKeyToken=.*' and 'Remotion.Data.DomainObjects.Legacy.UnitTests, Version=.*, "
         + "Culture=neutral, PublicKeyToken=.*'.", MatchType = MessageMatch.Regex)]
     public void AddTwiceWithSameClassID ()
     {
@@ -151,7 +151,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "Mapping does not contain class 'Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping.ClassDefinitionCollectionTest'.")]
+        ExpectedMessage = "Mapping does not contain class 'Remotion.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping.ClassDefinitionCollectionTest'.")]
     public void GetMandatoryForInvalidClass ()
     {
       TestMappingConfiguration.Current.ClassDefinitions.GetMandatory (this.GetType ());

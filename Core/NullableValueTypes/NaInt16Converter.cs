@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.NullableValueTypes
+namespace Remotion.NullableValueTypes
 {
 
 /// <summary> Specialization of <see cref="TypeConverter"/> for values of the type <see cref="NaInt16"/>. </summary>

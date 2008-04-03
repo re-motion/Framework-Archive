@@ -11,14 +11,14 @@
 namespace WebSample.UI {
     
     public partial class EditPersonForm {
-        protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+        protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
         protected System.Web.UI.HtmlControls.HtmlForm TheForm;
-        protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
-        protected Rubicon.Web.UI.Controls.TabbedMultiView MultiView;
+        protected Remotion.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
+        protected Remotion.Web.UI.Controls.TabbedMultiView MultiView;
         protected WebSample.UI.NavigationTabs TheNavigationTabs;
-        protected Rubicon.Web.UI.Controls.TabView EditPersonView;
+        protected Remotion.Web.UI.Controls.TabView EditPersonView;
         protected WebSample.UI.EditPersonControl EditPersonControl;
-        protected Rubicon.Web.UI.Controls.WebButton SaveButton;
-        protected Rubicon.Web.UI.Controls.WebButton CancelButton;
+        protected Remotion.Web.UI.Controls.WebButton SaveButton;
+        protected Remotion.Web.UI.Controls.WebButton CancelButton;
     }
 }

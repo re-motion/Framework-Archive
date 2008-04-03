@@ -83,29 +83,29 @@ TODO: <folder>
 	<!-- TODO: remove ignore="ID;IsDiscarded;ClientTransaction;State" -->
 	<properties ignore="ID;IsDiscarded;ClientTransaction;State"	>
 		<controlMappings>
-      <mapping propertyType="Rubicon.ObjectBinding.IBusinessObjectStringProperty" control="rubicon:BocTextValue" />
-      <mapping propertyType="Rubicon.ObjectBinding.IBusinessObjectInt32Property" control="rubicon:BocTextValue" />
-      <mapping propertyType="Rubicon.ObjectBinding.IBusinessObjectDateTimeProperty" control="rubicon:BocDateTimeValue" />
-      <mapping propertyType="Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty" control="rubicon:BocEnumValue" />
-      <mapping propertyType="Rubicon.ObjectBinding.IBusinessObjectStringProperty" isList="true" control="rubicon:BocMultilineTextValue" />
+      <mapping propertyType="Remotion.ObjectBinding.IBusinessObjectStringProperty" control="remotion:BocTextValue" />
+      <mapping propertyType="Remotion.ObjectBinding.IBusinessObjectInt32Property" control="remotion:BocTextValue" />
+      <mapping propertyType="Remotion.ObjectBinding.IBusinessObjectDateTimeProperty" control="remotion:BocDateTimeValue" />
+      <mapping propertyType="Remotion.ObjectBinding.IBusinessObjectEnumerationProperty" control="remotion:BocEnumValue" />
+      <mapping propertyType="Remotion.ObjectBinding.IBusinessObjectStringProperty" isList="true" control="remotion:BocMultilineTextValue" />
 
-      <mapping propertyType="Rubicon.ObjectBinding.IBusinessObjectReferenceProperty" isList="true" control="rubicon:BocList">
+      <mapping propertyType="Remotion.ObjectBinding.IBusinessObjectReferenceProperty" isList="true" control="remotion:BocList">
 				<additionalAttributes>
 					OnMenuItemClick="$DOMAIN_PROPERTYNAME$Field_MenuItemClick"
 				</additionalAttributes>
 				<additionalElements>
 <![CDATA[<FixedColumns>
-          <rubicon:BocAllPropertiesPlacehoderColumnDefinition />
-          <rubicon:BocRowEditModeColumnDefinition CancelText="$res:Cancel" EditText="$res:Edit" SaveText="$res:Save" />
+          <remotion:BocAllPropertiesPlacehoderColumnDefinition />
+          <remotion:BocRowEditModeColumnDefinition CancelText="$res:Cancel" EditText="$res:Edit" SaveText="$res:Save" />
         </FixedColumns>
         <ListMenuItems>
-          <rubicon:BocMenuItem ItemID="AddMenuItem" Text="$res:Add" />
+          <remotion:BocMenuItem ItemID="AddMenuItem" Text="$res:Add" />
         </ListMenuItems>
 ]]>
 				</additionalElements>
 			</mapping>
 
-			<mapping propertyType="Rubicon.ObjectBinding.IBusinessObjectReferenceProperty" isList="false" control="rubicon:BocReferenceValue">
+			<mapping propertyType="Remotion.ObjectBinding.IBusinessObjectReferenceProperty" isList="false" control="remotion:BocReferenceValue">
 				<additionalAttributes>
 					Select="All$DOMAIN_PROPERTYNAME$s"
 				</additionalAttributes>

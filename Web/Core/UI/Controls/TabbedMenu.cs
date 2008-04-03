@@ -5,14 +5,14 @@ using System.Drawing;
 using System.Drawing.Design;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Globalization;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI.Design;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Globalization;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI.Design;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
   /// <summary>
@@ -534,7 +534,7 @@ namespace Rubicon.Web.UI.Controls
     /// </param>
     protected IResourceManager GetResourceManager (Type localResourcesType)
     {
-      //Rubicon.Utilities.ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
+      //Remotion.Utilities.ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
 
       //  Provider has already been identified.
       if (_cachedResourceManager != null)

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Mixins.Context.FluentBuilders;
-using Rubicon.Utilities;
+using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Context.DeclarativeAnalyzers
+namespace Remotion.Mixins.Context.DeclarativeAnalyzers
 {
   public abstract class RelationAnalyzerBase
   {

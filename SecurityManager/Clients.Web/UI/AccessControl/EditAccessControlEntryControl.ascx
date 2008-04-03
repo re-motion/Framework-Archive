@@ -1,77 +1,77 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="EditAccessControlEntryControl.ascx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl" %>
-<%@ Register TagPrefix="securityManager" Assembly="Rubicon.SecurityManager.Clients.Web" Namespace="Rubicon.SecurityManager.Clients.Web.Classes" %>
+<%@ Control Language="C#" AutoEventWireup="true" Codebehind="EditAccessControlEntryControl.ascx.cs" Inherits="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl" %>
+<%@ Register TagPrefix="securityManager" Assembly="Remotion.SecurityManager.Clients.Web" Namespace="Remotion.SecurityManager.Clients.Web.Classes" %>
 <%@ Register TagPrefix="securityManager" Src="EditPermissionControl.ascx" TagName="EditPermissionControl" %>
-<rubicon:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Rubicon.SecurityManager.Domain.AccessControl.AccessControlEntry, Rubicon.SecurityManager" />
-<rubicon:FormGridManager ID="FormGridManager" runat="server" ShowHelpProviders="False" ShowRequiredMarkers="False" />
+<remotion:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Remotion.SecurityManager.Domain.AccessControl.AccessControlEntry, Remotion.SecurityManager" />
+<remotion:FormGridManager ID="FormGridManager" runat="server" ShowHelpProviders="False" ShowRequiredMarkers="False" />
 <table id="FormGrid" runat="server" class="accessControlEntry">
   <tr>
     <td class="accessControlEntryTitleCell" colspan="2">
       <h3 ID="AccessControlEntryTitle" runat="server">###</h3>
       <div class="accessControlEntryButtons">
-        <rubicon:WebButton ID="DeleteAccessControlEntryButton" runat="server" Text="$res:DeleteAccessControlEntryButton" OnClick="DeleteAccessControlEntryButton_Click" CausesValidation="false" />
+        <remotion:WebButton ID="DeleteAccessControlEntryButton" runat="server" Text="$res:DeleteAccessControlEntryButton" OnClick="DeleteAccessControlEntryButton_Click" CausesValidation="false" />
       </div>
     </td>
   </tr>
   <tr>
-    <td><rubicon:SmartLabel ID="TenantLabel" runat="server" ForControl="TenantField"/></td>
+    <td><remotion:SmartLabel ID="TenantLabel" runat="server" ForControl="TenantField"/></td>
     <td>
       <table cellpadding="0" cellspacing="0">
         <tr>
-          <td><rubicon:BocEnumValue ID="TenantField" runat="server" PropertyIdentifier="Tenant" DataSourceControl="CurrentObject" OnSelectionChanged="TenantField_SelectionChanged" Width="20em" >
+          <td><remotion:BocEnumValue ID="TenantField" runat="server" PropertyIdentifier="Tenant" DataSourceControl="CurrentObject" OnSelectionChanged="TenantField_SelectionChanged" Width="20em" >
             <ListControlStyle AutoPostBack="True" RadioButtonListCellPadding="" RadioButtonListCellSpacing="" />
-          </rubicon:BocEnumValue></td>
+          </remotion:BocEnumValue></td>
           <td>
-            <rubicon:BocReferenceValue ID="SpecificTenantField" runat="server" PropertyIdentifier="SpecificTenant" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.OrganizationalStructure.Tenant.FindAll" Required="True" >
+            <remotion:BocReferenceValue ID="SpecificTenantField" runat="server" PropertyIdentifier="SpecificTenant" DataSourceControl="CurrentObject" Select="Remotion.SecurityManager.Domain.OrganizationalStructure.Tenant.FindAll" Required="True" >
               <PersistedCommand>
-                <rubicon:BocCommand />
+                <remotion:BocCommand />
               </PersistedCommand>
-            </rubicon:BocReferenceValue>
+            </remotion:BocReferenceValue>
           </td>
         </tr>
       </table>
     </td>
   </tr>
   <tr>
-    <td><rubicon:SmartLabel ID="SpecificAbstractRoleLabel" runat="server" ForControl="SpecificAbstractRoleField"/></td>
-    <td><rubicon:BocReferenceValue ID="SpecificAbstractRoleField" runat="server" PropertyIdentifier="SpecificAbstractRole" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll" >
+    <td><remotion:SmartLabel ID="SpecificAbstractRoleLabel" runat="server" ForControl="SpecificAbstractRoleField"/></td>
+    <td><remotion:BocReferenceValue ID="SpecificAbstractRoleField" runat="server" PropertyIdentifier="SpecificAbstractRole" DataSourceControl="CurrentObject" Select="Remotion.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll" >
       <PersistedCommand>
-        <rubicon:BocCommand />
+        <remotion:BocCommand />
       </PersistedCommand>
       <DropDownListStyle AutoPostBack="True" />
-    </rubicon:BocReferenceValue></td>
+    </remotion:BocReferenceValue></td>
  </tr>
   <tr>
-    <td><rubicon:SmartLabel ID="SpecificPositionLabel" runat="server" ForControl="SpecificPositionField"/></td>
+    <td><remotion:SmartLabel ID="SpecificPositionLabel" runat="server" ForControl="SpecificPositionField"/></td>
     <td>
       <table cellpadding="0" cellspacing="0">
         <tr>
           <td>
-            <rubicon:BocReferenceValue ID="SpecificPositionField" runat="server" PropertyIdentifier="SpecificPosition" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindAll" OnSelectionChanged="SpecificPositionField_SelectionChanged" >
+            <remotion:BocReferenceValue ID="SpecificPositionField" runat="server" PropertyIdentifier="SpecificPosition" DataSourceControl="CurrentObject" Select="Remotion.SecurityManager.Domain.OrganizationalStructure.Position.FindAll" OnSelectionChanged="SpecificPositionField_SelectionChanged" >
               <PersistedCommand>
-                <rubicon:BocCommand />
+                <remotion:BocCommand />
               </PersistedCommand>
               <DropDownListStyle AutoPostBack="True" />
-            </rubicon:BocReferenceValue>
+            </remotion:BocReferenceValue>
           </td>
           <td>&nbsp;<asp:label id="SpecificPositionAndGroupLinkingLabel" runat="server" Text="###" />&nbsp;</td>
-          <td><rubicon:BocEnumValue ID="GroupField" runat="server" PropertyIdentifier="Group" DataSourceControl="CurrentObject" width="20em">
+          <td><remotion:BocEnumValue ID="GroupField" runat="server" PropertyIdentifier="Group" DataSourceControl="CurrentObject" width="20em">
             <ListControlStyle AutoPostBack="True" RadioButtonListCellPadding="" RadioButtonListCellSpacing="" />
-          </rubicon:BocEnumValue></td>
+          </remotion:BocEnumValue></td>
         </tr>
       </table>
     </td>
   </tr>
   <tr>
-    <td><rubicon:SmartLabel ID="PriorityLabel" runat="server" ForControl="PriorityField"/></td>
+    <td><remotion:SmartLabel ID="PriorityLabel" runat="server" ForControl="PriorityField"/></td>
     <td>
-      <rubicon:BocTextValue ID="PriorityField" runat="server" PropertyIdentifier="Priority" DataSourceControl="CurrentObject" Width="10em" >
+      <remotion:BocTextValue ID="PriorityField" runat="server" PropertyIdentifier="Priority" DataSourceControl="CurrentObject" Width="10em" >
         <TextBoxStyle AutoPostBack="True" />
-      </rubicon:BocTextValue>
+      </remotion:BocTextValue>
       / <asp:label id="ActualPriorityLabel" runat="server" Text="###" />
     </td>
   </tr>
   <tr>
-    <td><rubicon:FormGridLabel ID="PermissionsLabel" runat="server" Text="###" /></td>
+    <td><remotion:FormGridLabel ID="PermissionsLabel" runat="server" Text="###" /></td>
     <td>
       <asp:PlaceHolder ID="PermissionsPlaceHolder" runat="server" />
       <%--

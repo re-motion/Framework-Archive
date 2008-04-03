@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects;
+using Remotion.Data.DomainObjects;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Simple
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Simple
 {
   public abstract class Class: DomainObject
   {

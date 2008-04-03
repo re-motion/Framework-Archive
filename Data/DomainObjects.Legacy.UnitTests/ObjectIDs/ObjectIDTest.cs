@@ -1,13 +1,13 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Legacy.Mapping;
+using Remotion.Data.DomainObjects.Legacy.UnitTests;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.ObjectIDs
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.ObjectIDs
 {
   [TestFixture]
   public class ObjectIDTest : StandardMappingTest
@@ -315,7 +315,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.ObjectIDs
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The ClassID 'Order' and the ClassType 'Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer'"
+        ExpectedMessage = "The ClassID 'Order' and the ClassType 'Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer'"
         + " do not refer to the same ClassDefinition in the mapping configuration.\r\nParameter name: classDefinition")]
     public void InitializeWithInvalidClassDefinition ()
     {
@@ -369,7 +369,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.ObjectIDs
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Rubicon.Data.DomainObjects.ObjectID does not support values of type 'System.Byte'.\r\nParameter name: value")]
+        ExpectedMessage = "Remotion.Data.DomainObjects.ObjectID does not support values of type 'System.Byte'.\r\nParameter name: value")]
     public void InitializeWithInvalidType ()
     {
       ObjectID id = new ObjectID ("Official", (byte) 1);

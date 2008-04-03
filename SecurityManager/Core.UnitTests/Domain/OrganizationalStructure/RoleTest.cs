@@ -5,16 +5,16 @@ using System.Security.Principal;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.Security;
-using Rubicon.Security.Configuration;
-using Rubicon.SecurityManager.Domain;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.SecurityManager.UnitTests.Configuration;
+using Remotion.Data.DomainObjects;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.Security;
+using Remotion.Security.Configuration;
+using Remotion.SecurityManager.Domain;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.SecurityManager.UnitTests.Configuration;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
+namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
   [TestFixture]
   public class RoleTest : DomainTest

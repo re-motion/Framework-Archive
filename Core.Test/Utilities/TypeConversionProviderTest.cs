@@ -1,10 +1,10 @@
 using System;
 using System.ComponentModel;
 using NUnit.Framework;
-using Rubicon.NullableValueTypes;
-using Rubicon.Utilities;
+using Remotion.NullableValueTypes;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Utilities
+namespace Remotion.Core.UnitTests.Utilities
 {
 
 [TestFixture]

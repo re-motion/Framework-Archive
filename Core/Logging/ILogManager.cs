@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Logging
+namespace Remotion.Logging
 {
   /// <summary>
   /// The <see cref="ILogManager"/> interface declares the methods available for retrieving a logger that implements

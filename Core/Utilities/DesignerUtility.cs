@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel.Design;
-using Rubicon.Design;
+using Remotion.Design;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
   //TODO: doc
   public static class DesignerUtility

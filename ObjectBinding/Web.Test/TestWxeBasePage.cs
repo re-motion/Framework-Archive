@@ -5,14 +5,14 @@ using System.Web.UI.HtmlControls;
 using System.Globalization;
 using System.Collections;
 using System.Threading;
-using Rubicon.Web;
-using Rubicon.Web.UI;
-using Rubicon.Web.Utilities;
-using Rubicon.Utilities;
-using Rubicon.Globalization;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.UI.Controls;
+using Remotion.Web;
+using Remotion.Web.UI;
+using Remotion.Web.Utilities;
+using Remotion.Utilities;
+using Remotion.Globalization;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.UI.Controls;
 using System.Web;
 
 namespace OBWTest
@@ -48,7 +48,7 @@ public class TestWxeBasePage:
       WxeControls.AddAt (0, _nextButton);
     }
 
-    ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.Always;
+    ShowAbortConfirmation = Remotion.Web.UI.ShowAbortConfirmation.Always;
     EnableAbort = false;
     base.OnInit (e);
     RegisterEventHandlers();

@@ -6,26 +6,26 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using Rubicon.Collections;
-using Rubicon.Globalization;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Collections;
+using Remotion.Globalization;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 using System.Collections.Generic;
 
-namespace Rubicon.Web.UI
+namespace Remotion.Web.UI
 {
   public class SmartPageInfo
   {
     /// <summary> A list of resources. </summary>
     /// <remarks> 
     ///   Resources will be accessed using 
-    ///   <see cref="M:Rubicon.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+    ///   <see cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Rubicon.Web.Globalization.SmartPageInfo")]
+    [MultiLingualResources ("Remotion.Web.Globalization.SmartPageInfo")]
     protected enum ResourceIdentifier
     {
       /// <summary> Displayed when the user attempts to leave the page. </summary>
@@ -157,7 +157,7 @@ namespace Rubicon.Web.UI
     /// </param>
     protected IResourceManager GetResourceManager (Type localResourcesType)
     {
-      Rubicon.Utilities.ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
+      Remotion.Utilities.ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
 
       //  Provider has already been identified.
       if (_cachedResourceManager != null)
@@ -552,7 +552,7 @@ namespace Rubicon.Web.UI
     }
 
     /// <summary>
-    ///   Implements <see cref="M:Rubicon.Web.UI.ISmartNavigablePage.SetFocus(Rubicon.Web.UI.Controls.IFocusableControl)">ISmartNavigablePage.SetFocus(IFocusableControl)</see>.
+    ///   Implements <see cref="M:Remotion.Web.UI.ISmartNavigablePage.SetFocus(Remotion.Web.UI.Controls.IFocusableControl)">ISmartNavigablePage.SetFocus(IFocusableControl)</see>.
     /// </summary>
     public void SetFocus (IFocusableControl control)
     {
@@ -563,7 +563,7 @@ namespace Rubicon.Web.UI
     }
 
     /// <summary>
-    ///   Implements <see cref="M:Rubicon.Web.UI.ISmartNavigablePage.SetFocus(System.String)">ISmartNavigablePage.SetFocus(String)</see>.
+    ///   Implements <see cref="M:Remotion.Web.UI.ISmartNavigablePage.SetFocus(System.String)">ISmartNavigablePage.SetFocus(String)</see>.
     /// </summary>
     public void SetFocus (string id)
     {
@@ -572,7 +572,7 @@ namespace Rubicon.Web.UI
     }
 
     /// <summary>
-    ///   Implements <see cref="Rubicon.Web.UI.ISmartNavigablePage.RegisterNavigationControl">ISmartNavigablePage.RegisterNavigationControl</see>.
+    ///   Implements <see cref="Remotion.Web.UI.ISmartNavigablePage.RegisterNavigationControl">ISmartNavigablePage.RegisterNavigationControl</see>.
     /// </summary>
     public void RegisterNavigationControl (INavigationControl control)
     {
@@ -581,7 +581,7 @@ namespace Rubicon.Web.UI
     }
 
     /// <summary>
-    ///   Implements <see cref="Rubicon.Web.UI.ISmartNavigablePage.AppendNavigationUrlParameters">ISmartNavigablePage.AppendNavigationUrlParameters</see>.
+    ///   Implements <see cref="Remotion.Web.UI.ISmartNavigablePage.AppendNavigationUrlParameters">ISmartNavigablePage.AppendNavigationUrlParameters</see>.
     /// </summary>
     public string AppendNavigationUrlParameters (string url)
     {
@@ -590,7 +590,7 @@ namespace Rubicon.Web.UI
     }
 
     /// <summary>
-    ///   Implements <see cref="Rubicon.Web.UI.ISmartNavigablePage.GetNavigationUrlParameters">ISmartNavigablePage.GetNavigationUrlParameters</see>.
+    ///   Implements <see cref="Remotion.Web.UI.ISmartNavigablePage.GetNavigationUrlParameters">ISmartNavigablePage.GetNavigationUrlParameters</see>.
     /// </summary>
     public NameValueCollection GetNavigationUrlParameters ()
     {

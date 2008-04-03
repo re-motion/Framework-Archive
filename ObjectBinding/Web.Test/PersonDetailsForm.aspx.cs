@@ -8,14 +8,14 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Text;
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
-using Rubicon.NullableValueTypes;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Sample;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
+using Remotion.NullableValueTypes;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Web.UI.Controls;
 
 
 namespace OBWTest
@@ -26,19 +26,19 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
 {
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected System.Web.UI.WebControls.Button SaveButton;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue GenderField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue BirthdayField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue DeceasedField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue CVField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocList JobList;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BusinessObjectReferenceDataSourceControl PartnerDataSource;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue ParterFirstNameField;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue GenderField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue BirthdayField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue DeceasedField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue CVField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocList JobList;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BusinessObjectReferenceDataSourceControl PartnerDataSource;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue ParterFirstNameField;
   protected System.Web.UI.WebControls.Button PostBackButton;
 
 	private void Page_Load(object sender, System.EventArgs e)

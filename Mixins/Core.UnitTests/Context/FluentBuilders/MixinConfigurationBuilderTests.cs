@@ -2,12 +2,12 @@ using System;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Context.FluentBuilders;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Mixins.UnitTests.Context.FluentBuilders
+namespace Remotion.Mixins.UnitTests.Context.FluentBuilders
 {
   [TestFixture]
   public class MixinConfigurationBuilderTests

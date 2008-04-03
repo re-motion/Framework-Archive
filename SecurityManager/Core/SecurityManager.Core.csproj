@@ -7,8 +7,8 @@
     <ProjectGuid>{990B8638-A08F-4A94-B01A-E7DAEF089F27}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.SecurityManager</RootNamespace>
-    <AssemblyName>Rubicon.SecurityManager</AssemblyName>
+    <RootNamespace>Remotion.SecurityManager</RootNamespace>
+    <AssemblyName>Remotion.SecurityManager</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -303,7 +303,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Database\SecurityManagerSetupConstraints.sql" />
-    <Content Include="Doc\Whats_New.Rubicon.SecurityManager.txt" />
+    <Content Include="Doc\Whats_New.Remotion.SecurityManager.txt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

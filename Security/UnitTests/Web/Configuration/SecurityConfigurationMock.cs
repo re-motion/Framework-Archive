@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Security.Configuration;
+using Remotion.Security.Configuration;
 
-namespace Rubicon.Security.UnitTests.Web.Configuration
+namespace Remotion.Security.UnitTests.Web.Configuration
 {
   public class SecurityConfigurationMock : SecurityConfiguration
   {

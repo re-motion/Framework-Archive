@@ -5,10 +5,10 @@ using System.ComponentModel.Design;
 using System.Configuration;
 using System.IO;
 using System.Reflection;
-using Rubicon.Design;
-using Rubicon.Utilities;
+using Remotion.Design;
+using Remotion.Utilities;
 
-namespace Rubicon.Design
+namespace Remotion.Design
 {
   /// <summary>
   /// Implementation of the <see cref="IDesignModeHelper"/> interface for the <b>EnvDTE</b> (i.e. Visual Studio) designer.

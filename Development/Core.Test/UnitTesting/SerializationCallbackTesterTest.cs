@@ -2,9 +2,9 @@ using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
 using Rhino.Mocks.Exceptions;
-using Rubicon.Development.UnitTesting;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Development.UnitTests.UnitTesting
+namespace Remotion.Development.UnitTests.UnitTesting
 {
   [TestFixture]
   public class SerializationCallbackTesterTest

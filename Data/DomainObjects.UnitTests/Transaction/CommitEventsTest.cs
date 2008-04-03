@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
+namespace Remotion.Data.DomainObjects.UnitTests.Transaction
 {
   [TestFixture]
   public class CommitEventsTest : ClientTransactionBaseTest
@@ -296,7 +296,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
     private void Customer_CommittingForCommittedEventForObjectChangedBackToOriginal (object sender, EventArgs e)
     {
-      _customer.Name = _customer.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].GetOriginalValue<string>();
+      _customer.Name = _customer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].GetOriginalValue<string>();
     }
   }
 }

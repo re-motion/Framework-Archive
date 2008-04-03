@@ -1,18 +1,18 @@
 using System;
 using System.Reflection;
-using Rubicon.Collections;
-using Rubicon.Globalization;
-using Rubicon.Mixins.Globalization;
-using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Globalization;
+using Remotion.Mixins.Globalization;
+using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Remotion.ObjectBinding.BindableObject
 {
   //TODO: doc
   public class BindableObjectGlobalizationService : IBindableObjectGlobalizationService
   {
     [ResourceIdentifiers]
-    [MultiLingualResources ("Rubicon.ObjectBinding.Globalization.BindableObjectGlobalizationService")]
+    [MultiLingualResources ("Remotion.ObjectBinding.Globalization.BindableObjectGlobalizationService")]
     private enum ResourceIdentifier
     {
       True,

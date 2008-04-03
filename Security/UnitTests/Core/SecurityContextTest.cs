@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Security.UnitTests.Core.SampleDomain;
-using Rubicon.Security.UnitTests.TestDomain;
-using Rubicon.Utilities;
-using Rubicon.Development.UnitTesting;
+using Remotion.Security.UnitTests.Core.SampleDomain;
+using Remotion.Security.UnitTests.TestDomain;
+using Remotion.Utilities;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Security.UnitTests.Core
+namespace Remotion.Security.UnitTests.Core
 {
   [TestFixture]
   public class SecurityContextTest
@@ -24,8 +24,8 @@ namespace Rubicon.Security.UnitTests.Core
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-       ExpectedMessage = "Enumerated Type 'Rubicon.Security.UnitTests.Core.SampleDomain.SimpleEnum' cannot be used as an abstract role. "
-        + "Valid abstract roles must have the Rubicon.Security.AbstractRoleAttribute applied.\r\nParameter name: abstractRoles")]
+       ExpectedMessage = "Enumerated Type 'Remotion.Security.UnitTests.Core.SampleDomain.SimpleEnum' cannot be used as an abstract role. "
+        + "Valid abstract roles must have the Remotion.Security.AbstractRoleAttribute applied.\r\nParameter name: abstractRoles")]
     public void CreateSecurityContextWithInvalidAbstractRole ()
     {
       // SimpleEnum does not have AbstractRoleAttribute
@@ -55,8 +55,8 @@ namespace Rubicon.Security.UnitTests.Core
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-       ExpectedMessage = "Enumerated Type 'Rubicon.Security.UnitTests.Core.SampleDomain.SimpleEnum' cannot be used as a security state. "
-        + "Valid security states must have the Rubicon.Security.SecurityStateAttribute applied.\r\nParameter name: states")]
+       ExpectedMessage = "Enumerated Type 'Remotion.Security.UnitTests.Core.SampleDomain.SimpleEnum' cannot be used as a security state. "
+        + "Valid security states must have the Remotion.Security.SecurityStateAttribute applied.\r\nParameter name: states")]
     public void CreateSecurityContextWithInvalidState ()
     {
       // SimpleEnum does not have SecurityStateAttribute
@@ -78,7 +78,7 @@ namespace Rubicon.Security.UnitTests.Core
     public void GetClassName ()
     {
       SecurityContext context = CreateTestSecurityContext ();
-      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File, Rubicon.Security.UnitTests.TestDomain", context.Class);
+      Assert.AreEqual ("Remotion.Security.UnitTests.TestDomain.File, Remotion.Security.UnitTests.TestDomain", context.Class);
     }
 
     [Test]

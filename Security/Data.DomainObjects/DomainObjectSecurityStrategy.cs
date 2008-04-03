@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using Rubicon.Utilities;
+using Remotion.Utilities;
 using System.Security.Principal;
 
-namespace Rubicon.Security.Data.DomainObjects
+namespace Remotion.Security.Data.DomainObjects
 {
   [Flags]
   public enum RequiredSecurityForStates

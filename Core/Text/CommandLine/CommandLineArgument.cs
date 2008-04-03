@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace Rubicon.Text.CommandLine
+namespace Remotion.Text.CommandLine
 {
 /// <summary>
 /// The base class for command line argument definitions

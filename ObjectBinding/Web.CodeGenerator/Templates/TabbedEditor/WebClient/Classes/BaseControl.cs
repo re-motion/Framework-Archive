@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Web.UI.Globalization;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.ExecutionEngine;
 
 namespace $PROJECT_ROOTNAMESPACE$.Classes
 {

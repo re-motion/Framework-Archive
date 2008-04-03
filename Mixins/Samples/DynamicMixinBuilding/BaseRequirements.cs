@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Castle.DynamicProxy;
-using Rubicon.CodeGeneration;
-using Rubicon.Utilities;
+using Remotion.CodeGeneration;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Samples.DynamicMixinBuilding
+namespace Remotion.Mixins.Samples.DynamicMixinBuilding
 {
   internal class BaseRequirements
   {

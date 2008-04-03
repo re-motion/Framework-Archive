@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Mixins;
+using Remotion.Mixins;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain
 {
   [Uses (typeof (MixinBase))]
   public abstract class TargetClassBase : DomainObject

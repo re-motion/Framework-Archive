@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 
-namespace Rubicon.ObjectBinding.Design
+namespace Remotion.ObjectBinding.Design
 {
   internal class EditorControlBaseClassProvider : TypeDescriptionProvider
   {

@@ -1,10 +1,10 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.BindableObject;
+using Remotion.Data.DomainObjects;
+using Remotion.Mixins;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.BindableObject;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
   /// <summary>
   /// Provides a base class for bindable <see cref="DomainObject"/> classes.

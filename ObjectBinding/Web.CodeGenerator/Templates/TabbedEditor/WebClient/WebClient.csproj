@@ -35,33 +35,33 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Rubicon.Core, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+    <Reference Include="Remotion.Core, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\egoraFX\Rubicon.Core.dll</HintPath>
+      <HintPath>..\..\egoraFX\Remotion.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Rubicon.Data.DomainObjects, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+    <Reference Include="Remotion.Data.DomainObjects, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\egoraFX\Rubicon.Data.DomainObjects.dll</HintPath>
+      <HintPath>..\..\egoraFX\Remotion.Data.DomainObjects.dll</HintPath>
     </Reference>
-    <Reference Include="Rubicon.Data.DomainObjects.ObjectBinding, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+    <Reference Include="Remotion.Data.DomainObjects.ObjectBinding, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\egoraFX\Rubicon.Data.DomainObjects.ObjectBinding.dll</HintPath>
+      <HintPath>..\..\egoraFX\Remotion.Data.DomainObjects.ObjectBinding.dll</HintPath>
     </Reference>
-    <Reference Include="Rubicon.Data.DomainObjects.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+    <Reference Include="Remotion.Data.DomainObjects.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\egoraFX\Rubicon.Data.DomainObjects.Web.dll</HintPath>
+      <HintPath>..\..\egoraFX\Remotion.Data.DomainObjects.Web.dll</HintPath>
     </Reference>
-    <Reference Include="Rubicon.ObjectBinding, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+    <Reference Include="Remotion.ObjectBinding, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\egoraFX\Rubicon.ObjectBinding.dll</HintPath>
+      <HintPath>..\..\egoraFX\Remotion.ObjectBinding.dll</HintPath>
     </Reference>
-    <Reference Include="Rubicon.ObjectBinding.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+    <Reference Include="Remotion.ObjectBinding.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\egoraFX\Rubicon.ObjectBinding.Web.dll</HintPath>
+      <HintPath>..\..\egoraFX\Remotion.ObjectBinding.Web.dll</HintPath>
     </Reference>
-    <Reference Include="Rubicon.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+    <Reference Include="Remotion.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\egoraFX\Rubicon.Web.dll</HintPath>
+      <HintPath>..\..\egoraFX\Remotion.Web.dll</HintPath>
     </Reference>
     
     <Reference Include="System" />

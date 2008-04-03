@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Factories
 {
   public sealed class StorageProviderDefinitionFactory
   {

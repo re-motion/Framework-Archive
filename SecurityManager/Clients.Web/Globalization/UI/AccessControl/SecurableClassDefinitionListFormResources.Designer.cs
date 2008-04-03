@@ -16,7 +16,7 @@ using System.Globalization;
 using System.Resources;
 using System.Runtime.CompilerServices;
 
-namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
+namespace Remotion.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
     using System;
     
     
@@ -47,7 +47,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         internal static ResourceManager ResourceManager {
             get {
                 if (ReferenceEquals(resourceMan, null)) {
-                    ResourceManager temp = new ResourceManager("Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl.SecurableClass" +
+                    ResourceManager temp = new ResourceManager("Remotion.SecurityManager.Clients.Web.Globalization.UI.AccessControl.SecurableClass" +
                             "DefinitionListFormResources", typeof(SecurableClassDefinitionListFormResources).Assembly);
                     resourceMan = temp;
                 }

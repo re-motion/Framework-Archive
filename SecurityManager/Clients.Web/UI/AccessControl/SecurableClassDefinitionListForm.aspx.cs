@@ -1,15 +1,15 @@
 using System;
 using System.Web.UI;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.SecurityManager.Clients.Web.Classes;
-using Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl;
-using Rubicon.SecurityManager.Clients.Web.WxeFunctions.AccessControl;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.SecurityManager.Clients.Web.Classes;
+using Remotion.SecurityManager.Clients.Web.Globalization.UI.AccessControl;
+using Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
+namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 {
   [WebMultiLingualResources (typeof (SecurableClassDefinitionListFormResources))]
   public partial class SecurableClassDefinitionListForm : BasePage

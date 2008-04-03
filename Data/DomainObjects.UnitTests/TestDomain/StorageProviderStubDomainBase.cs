@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure;
 
 #pragma warning disable 0618
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
   public abstract class StorageProviderStubDomainBase : DomainObject

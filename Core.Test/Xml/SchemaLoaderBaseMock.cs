@@ -1,9 +1,9 @@
 using System;
 using System.Xml.Schema;
-using Rubicon.Utilities;
-using Rubicon.Xml;
+using Remotion.Utilities;
+using Remotion.Xml;
 
-namespace Rubicon.Core.UnitTests.Xml
+namespace Remotion.Core.UnitTests.Xml
 {
   public class SchemaLoaderBaseMock : SchemaLoaderBase
   {

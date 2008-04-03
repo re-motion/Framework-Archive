@@ -4,7 +4,7 @@ using System.Data;
 using System.IO;
 using System.Text;
 
-namespace Rubicon.Data.DomainObjects.PerformanceTests.Database
+namespace Remotion.Data.DomainObjects.PerformanceTests.Database
 {
 public class TestDataLoader : IDisposable
 {

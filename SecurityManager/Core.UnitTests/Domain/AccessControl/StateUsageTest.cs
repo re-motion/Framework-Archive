@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.SecurityManager.Domain.Metadata;
+using Remotion.Data.DomainObjects;
+using Remotion.SecurityManager.Domain;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.Metadata;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
+namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 {
   [TestFixture]
   public class StateUsageTest : DomainTest
@@ -22,7 +22,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     [Test]
     [ExpectedException (typeof (ConstraintViolationException),
-       ExpectedMessage = "The securable class definition 'Rubicon.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice.")]
+       ExpectedMessage = "The securable class definition 'Remotion.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice.")]
     public void ValidateDuringCommit_ByTouchOnClass ()
     {
       SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();

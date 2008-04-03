@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.Legacy.Mapping
+namespace Remotion.Data.DomainObjects.Legacy.Mapping
 {
   public static class XmlBasedMappingConfiguration
   {

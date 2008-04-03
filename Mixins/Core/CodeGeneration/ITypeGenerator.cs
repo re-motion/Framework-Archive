@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Collections;
-using Rubicon.Mixins.Definitions;
+using Remotion.Collections;
+using Remotion.Mixins.Definitions;
 
-namespace Rubicon.Mixins.CodeGeneration
+namespace Remotion.Mixins.CodeGeneration
 {
   public interface ITypeGenerator
   {

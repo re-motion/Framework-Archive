@@ -2,24 +2,24 @@ using System;
 using System.Collections.Specialized;
 using System.Web.UI.HtmlControls;
 using System.Web.UI;
-using Rubicon.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls;
 
-using Rubicon.ObjectBinding;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI;
-using Rubicon.Collections;
+using Remotion.ObjectBinding;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI;
+using Remotion.Collections;
 
 namespace OBWTest
 {
 public class TestTabbedPersonJobsUserControl : 
     DataEditUserControl, IControl, IFormGridRowProvider
 {
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocList ListField;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocList ListField;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue MultilineTextField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue MultilineTextField;
 
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
   private AutoInitHashtable _listOfFormGridRowInfos =
       new AutoInitHashtable (typeof (FormGridRowInfoCollection));
   private AutoInitHashtable _listOfHiddenRows = 

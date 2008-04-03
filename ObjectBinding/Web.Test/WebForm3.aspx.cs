@@ -8,10 +8,10 @@ using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
 
 namespace OBWTest
 {
@@ -20,14 +20,14 @@ namespace OBWTest
 	/// </summary>
 	public class WebForm3: System.Web.UI.Page
 	{
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-    protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel1;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+    protected Remotion.Web.UI.Controls.SmartLabel BocPropertyLabel1;
     protected System.Web.UI.WebControls.Button SaveButton;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue HeightField;
-    protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel2;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue HeightField;
+    protected Remotion.Web.UI.Controls.SmartLabel BocPropertyLabel2;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
     protected System.Web.UI.WebControls.RadioButtonList RadioButtonList1;
-    protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl reflectionBusinessObjectDataSource1;
+    protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl reflectionBusinessObjectDataSource1;
   
 		private void Page_Load (object sender, System.EventArgs e)
 		{

@@ -7,8 +7,8 @@
     <ProjectGuid>{E6A8B6CE-2E19-4C01-9D41-63899FE52020}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Data.DomainObjects.Legacy</RootNamespace>
-    <AssemblyName>Rubicon.Data.DomainObjects.Legacy</AssemblyName>
+    <RootNamespace>Remotion.Data.DomainObjects.Legacy</RootNamespace>
+    <AssemblyName>Remotion.Data.DomainObjects.Legacy</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

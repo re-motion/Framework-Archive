@@ -1,7 +1,7 @@
 using System;
-using Rubicon.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BindableObject;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
   public class UseBindableDomainObjectMetadataFactoryAttribute : UseCustomMetadataFactoryAttribute

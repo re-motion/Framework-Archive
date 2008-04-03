@@ -1,16 +1,16 @@
 using System;
 using System.ComponentModel;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Globalization;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Globalization;
+using Remotion.Security;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.Utilities;
 
-namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
+namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupType")]
+  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupType")]
   [PermanentGuid ("BDBB9696-177B-4b73-98CF-321B2FBEAD0C")]
   [Instantiable]
   [DBTable]
@@ -29,7 +29,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public static DomainObjectCollection FindAll ()
     {
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.GroupType.FindAll");
+      Query query = new Query ("Remotion.SecurityManager.Domain.OrganizationalStructure.GroupType.FindAll");
       return ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
     }
 

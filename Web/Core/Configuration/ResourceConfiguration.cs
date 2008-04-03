@@ -1,7 +1,7 @@
 using System;
 using System.Xml.Serialization;
 
-namespace Rubicon.Web.Configuration
+namespace Remotion.Web.Configuration
 {
 
 /// <summary> Configuration section entry for specifying the resources root. </summary>
@@ -17,7 +17,7 @@ public class ResourceConfiguration
   public string Root
   {
     get { return _root; }
-    set { _root = Rubicon.Utilities.StringUtility.NullToEmpty(value).Trim ('/'); }
+    set { _root = Remotion.Utilities.StringUtility.NullToEmpty(value).Trim ('/'); }
   }
 
 }

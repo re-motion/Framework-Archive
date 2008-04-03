@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace Rubicon.Text.CommandLine
+namespace Remotion.Text.CommandLine
 {
 
 /// <summary>

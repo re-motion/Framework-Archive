@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Web.UI;
-using Rubicon.Globalization;
-using Rubicon.Utilities;
+using Remotion.Globalization;
+using Remotion.Utilities;
 
-namespace Rubicon.Web.UI.Globalization
+namespace Remotion.Web.UI.Globalization
 {
 /// <summary>
 ///   Functionality for working with <see cref="IResourceManager"/> in Controls.

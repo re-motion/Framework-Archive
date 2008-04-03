@@ -1,11 +1,11 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Globalization;
+using Remotion.Data.DomainObjects;
+using Remotion.Globalization;
 
-namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
+namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupTypePosition")]
+  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupTypePosition")]
   [PermanentGuid ("E2BF5572-DDFF-4319-8824-B41653950860")]
   [Instantiable]
   [DBTable]

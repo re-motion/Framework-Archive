@@ -1,4 +1,4 @@
-namespace Rubicon.Mixins.UnitTests.ValidationTests.ValidationSampleTypes
+namespace Remotion.Mixins.UnitTests.ValidationTests.ValidationSampleTypes
 {
   public class BaseWithGetterOnly
   {

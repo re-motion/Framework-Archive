@@ -1,11 +1,11 @@
 using System;
 using System.IO;
 using NUnit.Framework;
-using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Development.UnitTesting.Configuration;
+using Remotion.Configuration;
+using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Development.UnitTesting.Configuration;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration
 {
   [TestFixture]
   public class LoaderUtilityTest
@@ -55,7 +55,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
     [Test]
     public void GetTypeWithTypeUtilityNotation ()
     {
-      Assert.AreEqual (typeof (LoaderUtility), LoaderUtility.GetType ("Rubicon.Data.DomainObjects::ConfigurationLoader.XmlBasedConfigurationLoader.LoaderUtility"));
+      Assert.AreEqual (typeof (LoaderUtility), LoaderUtility.GetType ("Remotion.Data.DomainObjects::ConfigurationLoader.XmlBasedConfigurationLoader.LoaderUtility"));
     }
   }
 }

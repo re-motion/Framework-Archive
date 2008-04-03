@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Data.DomainObjects.Mapping;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Mapping;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
   public class PropertyIndexerTest : ClientTransactionBaseTest
@@ -19,15 +19,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void WorksForExistingProperty()
     {
       PropertyIndexer indexer = new PropertyIndexer (IndustrialSector.NewObject());
-      Assert.IsNotNull (indexer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name"]);
+      Assert.IsNotNull (indexer["Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name"]);
       Assert.AreSame (
           MappingConfiguration.Current.ClassDefinitions[typeof (IndustrialSector)]
-              .GetPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name"),
-          indexer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name"].PropertyDefinition);
+              .GetPropertyDefinition ("Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name"),
+          indexer["Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name"].PropertyDefinition);
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object type Remotion.Data.DomainObjects.UnitTests.TestDomain."
         + "IndustrialSector does not have a mapping property named 'Bla'.\r\nParameter name: propertyName")]
     public void ThrowsForNonExistingProperty ()
     {
@@ -59,12 +59,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       }
 
       Assert.That (propertyNames, Is.EquivalentTo (new string[] {
-        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber",
-        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.DeliveryDate",
-        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official",
-        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket",
-        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer",
-        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"
+        "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber",
+        "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.DeliveryDate",
+        "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Official",
+        "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket",
+        "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer",
+        "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"
       }));
     }
 
@@ -79,12 +79,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       }
 
       Assert.That (propertyNames, Is.EquivalentTo (new string[] {
-        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber",
-        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.DeliveryDate",
-        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official",
-        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket",
-        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer",
-        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"
+        "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber",
+        "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.DeliveryDate",
+        "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Official",
+        "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket",
+        "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer",
+        "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"
       }));
     }
 
@@ -92,9 +92,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void Contains ()
     {
       Order order = Order.NewObject ();
-      Assert.IsTrue (order.Properties.Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
-      Assert.IsTrue (order.Properties.Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official"));
-      Assert.IsTrue (order.Properties.Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
+      Assert.IsTrue (order.Properties.Contains ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
+      Assert.IsTrue (order.Properties.Contains ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Official"));
+      Assert.IsTrue (order.Properties.Contains ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
       Assert.IsFalse (order.Properties.Contains ("OrderTicket"));
       Assert.IsFalse (order.Properties.Contains ("Bla"));
     }
@@ -103,7 +103,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void ShortNameAndType ()
     {
       Order order = Order.NewObject ();
-      Assert.AreEqual (order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"],
+      Assert.AreEqual (order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"],
           order.Properties[typeof (Order), "OrderNumber"]);
     }
 
@@ -124,7 +124,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void Find ()
     {
       Order order = Order.NewObject ();
-      Assert.AreEqual (order.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"],
+      Assert.AreEqual (order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"],
         order.Properties.Find (typeof (Order), "OrderNumber"));
     }
 
@@ -163,7 +163,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object type Remotion.Data.DomainObjects.UnitTests.TestDomain."
         + "Distributor does not have or inherit a mapping property with the short name 'Frobbers'.", MatchType = MessageMatch.Contains)]
     public void FindNonExistingProperty ()
     {

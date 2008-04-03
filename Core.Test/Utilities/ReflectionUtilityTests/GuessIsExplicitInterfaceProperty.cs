@@ -1,9 +1,9 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Utilities.ReflectionUtilityTests
+namespace Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests
 {
   [TestFixture]
   public class GuessIsExplicitInterfaceProperty
@@ -176,7 +176,7 @@ namespace Rubicon.Core.UnitTests.Utilities.ReflectionUtilityTests
 
       Assert.AreEqual ("Property01", properties[0].Name);
       Assert.AreEqual ("Property02", properties[1].Name);
-      Assert.AreEqual ("Rubicon.Core.UnitTests.Utilities.ReflectionUtilityTests.GuessIsExplicitInterfaceProperty.Interface.Property03",
+      Assert.AreEqual ("Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests.GuessIsExplicitInterfaceProperty.Interface.Property03",
           properties[2].Name);
 
       Assert.IsFalse (ReflectionUtility.GuessIsExplicitInterfaceProperty (properties[0]));

@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
   /// <summary>
   /// Specifies that a WXE function should automatically be created by the WXE function generator (wxegen.exe).

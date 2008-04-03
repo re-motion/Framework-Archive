@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
+namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure {
     
     
     /// <summary>
@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
+        protected global::Remotion.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
         
         /// <summary>
         /// TenantListControl control.
@@ -35,6 +35,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.TenantListControl TenantListControl;
+        protected global::Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.TenantListControl TenantListControl;
     }
 }

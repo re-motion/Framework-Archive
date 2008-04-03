@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Web.Configuration;
+using Remotion.Development.UnitTesting;
+using Remotion.Web.Configuration;
 
-namespace Rubicon.Web.UnitTests.Configuration
+namespace Remotion.Web.UnitTests.Configuration
 {
 
 /// <summary> 

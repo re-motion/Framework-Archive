@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Security;
-using Rubicon.Security.Data.DomainObjects;
+using Remotion.Data.DomainObjects;
+using Remotion.Security;
+using Remotion.Security.Data.DomainObjects;
 
-namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
+namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [PermanentGuid ("8DBA42FE-ECD9-4b10-8F79-48E7A1119414")]
   [Serializable]

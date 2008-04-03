@@ -5,19 +5,19 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Globalization;
-using Rubicon.Logging;
-using Rubicon.NullableValueTypes;
-using Rubicon.ObjectBinding.Web.UI.Design;
-using Rubicon.Utilities;
-using Rubicon.Web;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Globalization;
+using Remotion.Logging;
+using Remotion.NullableValueTypes;
+using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 /// <summary> This control can be used to display or edit reference values. </summary>
 /// <include file='doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/Class/*' />
@@ -55,11 +55,11 @@ public class BocReferenceValue:
   /// <summary> A list of control specific resources. </summary>
   /// <remarks> 
   ///   Resources will be accessed using 
-  ///   <see cref="M:Rubicon.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+  ///   <see cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
   ///   See the documentation of <b>GetString</b> for further details.
   /// </remarks>
   [ResourceIdentifiers]
-  [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocReferenceValue")]
+  [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocReferenceValue")]
   protected enum ResourceIdentifier
   {
     /// <summary> Label displayed in the OptionsMenu. </summary>
@@ -1697,7 +1697,7 @@ public class BocReferenceValue:
   /// <summary> Controls the persisting of the <see cref="Command"/>. </summary>
   /// <remarks> 
   ///   <para>
-  ///     Does not persist <see cref="BocCommand"/> objects with a <see cref="Rubicon.Web.UI.Controls.Command.Type"/> 
+  ///     Does not persist <see cref="BocCommand"/> objects with a <see cref="Remotion.Web.UI.Controls.Command.Type"/> 
   ///     set to <see cref="CommandType.None"/>.
   ///   </para><para>
   ///     Used by <see cref="ShouldSerializePersistedCommand"/>.
@@ -1717,7 +1717,7 @@ public class BocReferenceValue:
   /// <summary> Sets the <see cref="Command"/> to its default value. </summary>
   /// <remarks> 
   ///   The default value is a <see cref="BocCommand"/> object with a 
-  ///   <see cref="Rubicon.Web.UI.Controls.Command.Type"/> set to <see cref="CommandType.None"/>.
+  ///   <see cref="Remotion.Web.UI.Controls.Command.Type"/> set to <see cref="CommandType.None"/>.
   /// </remarks>
   private void ResetCommand()
   {
@@ -1880,7 +1880,7 @@ public class BocReferenceValue:
   [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
   [DefaultValue ((string) null)]
   [PersistenceMode (PersistenceMode.Attribute)]
-  [TypeConverter (typeof (Rubicon.Web.UI.Design.StringArrayConverter))]
+  [TypeConverter (typeof (Remotion.Web.UI.Design.StringArrayConverter))]
   public string[] HiddenMenuItems 
   {
     get 

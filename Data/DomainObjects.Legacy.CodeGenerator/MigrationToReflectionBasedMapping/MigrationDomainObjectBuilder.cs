@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.NullableValueTypes;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Legacy.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.NullableValueTypes;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.MigrationToReflectionBasedMapping
+namespace Remotion.Data.DomainObjects.Legacy.CodeGenerator.MigrationToReflectionBasedMapping
 {
   public class MigrationDomainObjectBuilder : DomainObjectBuilder
   {

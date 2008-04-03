@@ -1,13 +1,13 @@
 using System;
 using System.Web.UI.WebControls;
-using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
-using Rubicon.Data.DomainObjects.Web.Test.Domain;
-using Rubicon.Data.DomainObjects.Web.Test.WxeFunctions;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI.Controls;
+using Remotion.Data.DomainObjects.Web.ExecutionEngine;
+using Remotion.Data.DomainObjects.Web.Test.Domain;
+using Remotion.Data.DomainObjects.Web.Test.WxeFunctions;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI.Controls;
 
-namespace Rubicon.Data.DomainObjects.Web.Test
+namespace Remotion.Data.DomainObjects.Web.Test
 {
   public class WxeTestPage: WxePage
   {

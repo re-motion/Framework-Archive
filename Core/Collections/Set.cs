@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Collections;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Collections
+namespace Remotion.Collections
 {
   /// <summary>
   /// Implements a set collection data type.

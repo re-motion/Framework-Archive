@@ -3,10 +3,10 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Web;
 using System.Web.UI;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 //  TODO: Command: Move long comment blocks to xml-file

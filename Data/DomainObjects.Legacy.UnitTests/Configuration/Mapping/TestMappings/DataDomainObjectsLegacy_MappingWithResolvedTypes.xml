@@ -4,7 +4,7 @@
 		<class id="Customer">
 		  <!-- Note: Type contains leading and trailing whitespace -->
 			<type>
-			  Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.Legacy.UnitTests
+			  Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer, Remotion.Data.DomainObjects.Legacy.UnitTests
 			</type>
 			<entity name="Company"/>
 			<storageProviderID>TestDomain</storageProviderID>
@@ -17,21 +17,21 @@
 				<property name="Type">
 				  <!-- Note: Type contains leading and trailing whitespace -->
 					<type>
-					  Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.Legacy.UnitTests
+					  Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer+CustomerType, Remotion.Data.DomainObjects.Legacy.UnitTests
 					</type>
 					<column>CustomerType</column>
 				</property>
 				<relationProperty name="Orders" relationID="CustomerToOrder" cardinality="many" isMandatory="false">
 				  <!-- Note: Type contains leading and trailing whitespace -->
 					<collectionType>
-						Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.Legacy.UnitTests
+						Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.Legacy.UnitTests
 					</collectionType>
 					<sortExpression>OrderNo asc</sortExpression>
 				</relationProperty>
 			</properties>
 		</class>
 		<class id="Order">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Order, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="Order"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -51,7 +51,7 @@
 			</properties>
 		</class>
 		<class id="OrderItem">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.OrderItem, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.OrderItem, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="OrderItem"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -70,7 +70,7 @@
 			</properties>
 		</class>
 		<class id="OrderTicket">
-			<type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.OrderTicket, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+			<type>Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.OrderTicket, Remotion.Data.DomainObjects.Legacy.UnitTests</type>
 			<entity name="OrderTicket"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>

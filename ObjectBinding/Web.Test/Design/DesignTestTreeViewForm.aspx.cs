@@ -8,15 +8,15 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Text;
 using System.Reflection;
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
-using Rubicon.NullableValueTypes;
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding.Sample;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
+using Remotion.NullableValueTypes;
+using Remotion.ObjectBinding;
 
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Globalization;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Globalization;
+using Remotion.Web.UI.Globalization;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
@@ -26,10 +26,10 @@ namespace OBWTest.Design
 {
 public class DesignTestTreeViewForm : DesignTestWxeBasePage
 {
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-  protected Rubicon.Web.UI.Controls.WebButton PostBackButton;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected Remotion.Web.UI.Controls.WebButton PostBackButton;
   protected PersonTreeView PersonTreeView;
-  protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
   private void Page_Load(object sender, System.EventArgs e)
 	{
@@ -62,7 +62,7 @@ public class DesignTestTreeViewForm : DesignTestWxeBasePage
 	private void InitializeComponent()
 	{    
     this.EnableAbort = false;
-    this.ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.Always;
+    this.ShowAbortConfirmation = Remotion.Web.UI.ShowAbortConfirmation.Always;
     this.Load += new System.EventHandler(this.Page_Load);
 
   }

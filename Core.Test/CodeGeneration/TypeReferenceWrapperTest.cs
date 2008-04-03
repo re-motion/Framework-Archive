@@ -3,9 +3,9 @@ using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.CodeGeneration.DPExtensions;
+using Remotion.CodeGeneration.DPExtensions;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration
+namespace Remotion.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class TypeReferenceWrapperTest

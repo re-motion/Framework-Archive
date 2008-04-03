@@ -4,12 +4,12 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Globalization;
-using Rubicon.NullableValueTypes;
-using Rubicon.Utilities;
-using Rubicon.Web.Utilities;
+using Remotion.Globalization;
+using Remotion.NullableValueTypes;
+using Remotion.Utilities;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList
+namespace Remotion.ObjectBinding.Web.UI.Controls.Infrastructure.BocList
 {
 
 [ToolboxItem (false)]

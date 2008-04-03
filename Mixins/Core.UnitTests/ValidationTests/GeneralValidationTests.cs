@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Mixins.UnitTests.ValidationTests.ValidationSampleTypes;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Mixins.Validation;
+using Remotion.Mixins.UnitTests.ValidationTests.ValidationSampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Validation;
 using NUnit.Framework;
-using Rubicon.Mixins.Definitions;
+using Remotion.Mixins.Definitions;
 
-namespace Rubicon.Mixins.UnitTests.ValidationTests
+namespace Remotion.Mixins.UnitTests.ValidationTests
 {
   [TestFixture]
   public class GeneralValidationTests : ValidationTestBase
@@ -186,9 +186,9 @@ namespace Rubicon.Mixins.UnitTests.ValidationTests
       DefaultValidationLog log = Validator.Validate (definition);
 
       ValidationException exception = new ValidationException (log);
-      Assert.AreEqual ("Some parts of the mixin configuration could not be validated." + Environment.NewLine + "Rubicon.Mixins.UnitTests."
-          + "ValidationTests.ValidationSampleTypes.AbstractMixinWithoutBase.AbstractMethod (Rubicon.Mixins.UnitTests.ValidationTests.ValidationSampleTypes."
-          + "AbstractMixinWithoutBase -> Rubicon.Mixins.UnitTests.SampleTypes.ClassOverridingSingleMixinMethod): There were 1 errors, 0 warnings, and 0 unexpected "
+      Assert.AreEqual ("Some parts of the mixin configuration could not be validated." + Environment.NewLine + "Remotion.Mixins.UnitTests."
+          + "ValidationTests.ValidationSampleTypes.AbstractMixinWithoutBase.AbstractMethod (Remotion.Mixins.UnitTests.ValidationTests.ValidationSampleTypes."
+          + "AbstractMixinWithoutBase -> Remotion.Mixins.UnitTests.SampleTypes.ClassOverridingSingleMixinMethod): There were 1 errors, 0 warnings, and 0 unexpected "
           + "exceptions. First error: A target class overrides a method from one of its mixins, but the mixin is not derived from one of the "
           + "Mixin<...> base classes." + Environment.NewLine + "See Log.GetResults() for a full list of issues.", exception.Message);
 

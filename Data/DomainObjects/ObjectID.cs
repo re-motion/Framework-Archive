@@ -1,12 +1,12 @@
 using System;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Utilities;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Uniquely identifies a domain object.
@@ -71,7 +71,7 @@ namespace Rubicon.Data.DomainObjects
     ///   An <see cref="ObjectID"/> instance equivalent to the object ID contained in <paramref name="objectIDString"/>. Must not be <see langword="null"/>.
     /// </returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="objectIDString"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="objectIDString"/> is an empty string.</exception>
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="objectIDString"/> is an empty string.</exception>
     /// <exception cref="System.FormatException">
     ///   <paramref name="objectIDString"/> does not contain the string representation of an object ID.
     /// </exception>
@@ -141,7 +141,7 @@ namespace Rubicon.Data.DomainObjects
     ///   <paramref name="classID"/> is <see langword="null"/>.<br /> -or- <br />
     ///   <paramref name="value"/> is <see langword="null"/>.
     /// </exception>
-    /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException">
     ///   <paramref name="classID"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
     ///   <paramref name="value"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
     ///   <paramref name="value"/> is an empty <see cref="System.Guid"/>.
@@ -149,8 +149,8 @@ namespace Rubicon.Data.DomainObjects
     /// <exception cref="System.ArgumentException">
     ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters. Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
     /// </exception>
-    /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
-    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/>.
+    /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
+    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classID"/> could not be found in the mapping configuration.
     public ObjectID (string classID, object value)
@@ -170,15 +170,15 @@ namespace Rubicon.Data.DomainObjects
     ///   <paramref name="classType"/> is <see langword="null"/>.<br /> -or- <br />
     ///   <paramref name="value"/> is <see langword="null"/>.
     /// </exception>
-    /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException">
     ///   <paramref name="value"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
     ///   <paramref name="value"/> is an empty <see cref="System.Guid"/>.
     /// </exception>
     /// <exception cref="System.ArgumentException">
     ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters. Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
     /// </exception>
-    /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
-    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/>.
+    /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
+    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classType"/> could not be found in the mapping configuration.
     public ObjectID (Type classType, object value)
@@ -198,15 +198,15 @@ namespace Rubicon.Data.DomainObjects
     ///   <paramref name="classDefinition"/> is <see langword="null"/>.<br /> -or- <br />
     ///   <paramref name="value"/> is <see langword="null"/>.
     /// </exception>
-    /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException">
     ///   <paramref name="value"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
     ///   <paramref name="value"/> is an empty <see cref="System.Guid"/>.
     /// </exception>
     /// <exception cref="System.ArgumentException">
     ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters. Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
     /// </exception>
-    /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
-    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/>.
+    /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
+    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classDefinition"/> could not be found in the mapping configuration.
     public ObjectID (ClassDefinition classDefinition, object value)
@@ -351,7 +351,7 @@ namespace Rubicon.Data.DomainObjects
       Type valueType = value.GetType();
 
       if (valueType != typeof (Guid) && valueType != typeof (int) && valueType != typeof (string))
-        throw CreateArgumentException (argumentName, "Rubicon.Data.DomainObjects.ObjectID does not support values of type '{0}'.", valueType);
+        throw CreateArgumentException (argumentName, "Remotion.Data.DomainObjects.ObjectID does not support values of type '{0}'.", valueType);
 
       if (valueType == typeof (string) && ((string) value).IndexOf (c_escapedDelimiterPlaceholder) >= 0)
       {

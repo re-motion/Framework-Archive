@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.Services;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web;
 
 namespace OBWTest.IndividualControlTests
 {

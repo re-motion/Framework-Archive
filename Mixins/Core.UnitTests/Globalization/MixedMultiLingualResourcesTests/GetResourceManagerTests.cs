@@ -1,18 +1,18 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Collections;
-using Rubicon.Globalization;
-using Rubicon.Mixins.Globalization;
+using Remotion.Collections;
+using Remotion.Globalization;
+using Remotion.Mixins.Globalization;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Mixins.UnitTests.Globalization.SampleTypes;
+using Remotion.Mixins.UnitTests.Globalization.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests.Globalization.MixedMultiLingualResourcesTests
+namespace Remotion.Mixins.UnitTests.Globalization.MixedMultiLingualResourcesTests
 {
   [TestFixture]
   public class GetResourceManagerTests
   {
     [Test]
-    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Rubicon.Mixins.UnitTests.Globalization.SampleTypes."
+    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.Mixins.UnitTests.Globalization.SampleTypes."
         + "ClassWithoutMultiLingualResourcesAttributes and its base classes do not define the attribute MultiLingualResourcesAttribute.")]
     public void NoAttributes_NoInheritance ()
     {
@@ -20,7 +20,7 @@ namespace Rubicon.Mixins.UnitTests.Globalization.MixedMultiLingualResourcesTests
     }
 
     [Test]
-    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Rubicon.Mixins.UnitTests.Globalization.SampleTypes."
+    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.Mixins.UnitTests.Globalization.SampleTypes."
         + "ClassWithoutMultiLingualResourcesAttributes and its base classes do not define the attribute MultiLingualResourcesAttribute.")]
     public void NoAttributes_Inheritance ()
     {

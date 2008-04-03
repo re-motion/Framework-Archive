@@ -1,10 +1,10 @@
 using System;
 using System.Configuration;
 using System.IO;
-using Rubicon.Configuration;
-using Rubicon.Utilities;
+using Remotion.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Queries.Configuration
+namespace Remotion.Data.DomainObjects.Queries.Configuration
 {
   public class QueryFileElement : ConfigurationElement, INamedConfigurationElement
   {

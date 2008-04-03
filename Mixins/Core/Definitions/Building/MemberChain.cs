@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Rubicon.Utilities;
-using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
+using Remotion.Utilities;
+using ReflectionUtility=Remotion.Mixins.Utilities.ReflectionUtility;
 
-namespace Rubicon.Mixins.Definitions.Building
+namespace Remotion.Mixins.Definitions.Building
 {
   /// <summary>
   /// MemberChain takes an enumeration of members and orders them according to the hierarchy of their declaring types. This can be used

@@ -18,18 +18,18 @@
     <seealso cref="WcagConfiguration"/>
     <example>
       Register the configuration section in the configuration file within the <c>configSections</c> element
-      and create the configuration section for <c>rubicon.web</c>. The <c>configSections</c> element must 
+      and create the configuration section for <c>remotion.web</c>. The <c>configSections</c> element must 
       precede all configuration sections.
       <code>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;configuration&gt;
 
   &lt;configSections&gt;
-    &lt;section name="rubicon.web" type="Rubicon.Web.Configuration.WebConfiguration, Rubicon.Web" /&gt;
+    &lt;section name="remotion.web" type="Remotion.Web.Configuration.WebConfiguration, Remotion.Web" /&gt;
     &lt;!-- Other configuration section registrations. --&gt;
   &lt;/configSections&gt;
   
-  &lt;rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"&gt; 
+  &lt;remotion.web xmlns="http://www.rubicon-it.com/commons/web/configuration"&gt; 
     &lt;!-- The configuration section entries. --&gt;
     &lt;<see cref="ExecutionEngineConfiguration">executionEngine</see> 
         defaultWxeHandler="~/WxeHandler.ashx"
@@ -49,7 +49,7 @@
         <see cref="WaiConformanceLevel">conformanceLevel</see>="Undefined" 
         <see cref="WcagDebugMode">debugging</see>="Disabled" 
     /&gt;
-  &lt;/rubicon.web&gt;
+  &lt;/remotion.web&gt;
 
   &lt;!-- Other configuration sections. --&gt;
 &lt;/configuration&gt;

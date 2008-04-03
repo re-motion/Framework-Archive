@@ -2,18 +2,18 @@ using System;
 using System.Reflection;
 using System.Web.UI;
 
-[assembly: TagPrefix ("Rubicon.Web.UI.Controls", "rubicon")]
+[assembly: TagPrefix ("Remotion.Web.UI.Controls", "remotion")]
 
 //
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Rubicon Controls Library for Web Applications")]
+[assembly: AssemblyTitle("Remotion Controls Library for Web Applications")]
 [assembly: AssemblyDescription("Common Controls for Web Applications")]
 [assembly: AssemblyConfiguration(".NET Framework: net-2.0, build type: debug")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
-[assembly: AssemblyProduct("Rubicon .NET Commons")]
+[assembly: AssemblyProduct("Remotion")]
 [assembly: AssemblyCopyright("(c) 2003 - 2007 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
@@ -58,6 +58,6 @@ using System.Web.UI;
 //
 #pragma warning disable 1699
 [assembly: AssemblyDelaySign (false)]
-[assembly: AssemblyKeyFile(@"\Development\global/rubicon.snk")]
+[assembly: AssemblyKeyFile(@"\Development\global/remotion.snk")]
 [assembly: AssemblyKeyName("")]
 #pragma warning restore 1699

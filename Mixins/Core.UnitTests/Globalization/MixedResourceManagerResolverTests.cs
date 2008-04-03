@@ -2,14 +2,14 @@ using System;
 using System.Resources;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Collections;
-using Rubicon.Globalization;
-using Rubicon.Mixins.Globalization;
-using Rubicon.Mixins.UnitTests.Globalization.SampleTypes;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Utilities;
+using Remotion.Collections;
+using Remotion.Globalization;
+using Remotion.Mixins.Globalization;
+using Remotion.Mixins.UnitTests.Globalization.SampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.UnitTests.Globalization
+namespace Remotion.Mixins.UnitTests.Globalization
 {
   [TestFixture]
   public class MixedResourceManagerResolverTests
@@ -110,7 +110,7 @@ namespace Rubicon.Mixins.UnitTests.Globalization
     }
 
     [Test]
-    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Rubicon.Mixins.UnitTests.Globalization.SampleTypes."
+    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.Mixins.UnitTests.Globalization.SampleTypes."
         + "ClassWithoutMultiLingualResourcesAttributes and its base classes do not define the attribute MultiLingualResourcesAttribute.")]
     public void FindFirstResourceDefinitions_NoSuccessException ()
     {
@@ -152,7 +152,7 @@ namespace Rubicon.Mixins.UnitTests.Globalization
     }
 
     [Test]
-    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Rubicon.Mixins.UnitTests.Globalization.SampleTypes."
+    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.Mixins.UnitTests.Globalization.SampleTypes."
         + "ClassWithoutMultiLingualResourcesAttributes and its base classes do not define the attribute MultiLingualResourcesAttribute.")]
     public void GetResourceManager_NoDefiningType_NoSuccess ()
     {
@@ -162,7 +162,7 @@ namespace Rubicon.Mixins.UnitTests.Globalization
     [Test]
     [ExpectedException (typeof (MissingManifestResourceException), ExpectedMessage = "Could not find any resources appropriate for the specified "
         + "culture or the neutral culture.  Make sure \"OnTarget.resources\" was correctly embedded or linked into assembly "
-        + "\"Rubicon.Mixins.UnitTests\" at compile time, or that all the satellite assemblies required are loadable and fully signed.")]
+        + "\"Remotion.Mixins.UnitTests\" at compile time, or that all the satellite assemblies required are loadable and fully signed.")]
     public void GetResourceManager_ForGeneratedType_GetString ()
     {
       using (MixinConfiguration.BuildNew ().ForClass<ClassWithMultiLingualResourcesAttributes> ().AddMixin<NullMixin>().EnterScope ())

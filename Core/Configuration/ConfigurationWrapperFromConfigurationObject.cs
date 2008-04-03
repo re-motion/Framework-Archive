@@ -2,9 +2,9 @@ using System;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Reflection;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Configuration
+namespace Remotion.Configuration
 {
   /// <summary>
   /// Concrete implementation of <see cref="ConfigurationWrapper"/> that uses an instance of the <see cref="System.Configuration.Configuration"/>

@@ -22,7 +22,7 @@
           <description>
             <para>
               Priority 1 checkpoint 6.3 is not met unless the <see cref="UseLegacyButton"/> flag is set. This can 
-              be enforced by the <see cref="Rubicon.Web.Configuration.WebConfiguration.Wcag"/> configuration entry.
+              be enforced by the <see cref="Remotion.Web.Configuration.WebConfiguration.Wcag"/> configuration entry.
             </para>
           </description>
         </item>        
@@ -31,8 +31,8 @@
       <h4 class="dtH4">Usage Notes</h4>
       <note type="caution">
         If <see cref="UseLegacyButton"/> is <see langword="false"/>, 
-        and the <see cref="Rubicon.Web.Configuration.WcagConfiguration.ConformanceLevel">WebConfiguration.Wcag.ConformanceLevel</see> 
-        is set to <see cref="Rubicon.Web.Configuration.WaiConformanceLevel.Undefined"/>, and the browser's 
+        and the <see cref="Remotion.Web.Configuration.WcagConfiguration.ConformanceLevel">WebConfiguration.Wcag.ConformanceLevel</see> 
+        is set to <see cref="Remotion.Web.Configuration.WaiConformanceLevel.Undefined"/>, and the browser's 
         client-side scripting is disabled, then the <b>WebButton</b> will not fire click events. 
       </note>
       <para>

@@ -1,13 +1,13 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.MixerTool;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Reflection;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.MixerTool;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Reflection;
 
-namespace Rubicon.Mixins.UnitTests.MixerTool
+namespace Remotion.Mixins.UnitTests.MixerTool
 {
   [Serializable]
   [TestFixture]

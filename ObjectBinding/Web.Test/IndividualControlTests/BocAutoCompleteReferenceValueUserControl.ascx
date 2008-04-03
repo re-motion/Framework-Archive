@@ -1,24 +1,24 @@
 <%@ Control Language="c#" AutoEventWireup="True" Codebehind="BocAutoCompleteReferenceValueUserControl.ascx.cs" Inherits="OBWTest.IndividualControlTests.BocAutoCompleteReferenceValueUserControl"
   TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
-<rubicon:FormGridManager ID="FormGridManager" runat="server" />
-<rubicon:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Rubicon.ObjectBinding.Sample::Person"/>
+<remotion:FormGridManager ID="FormGridManager" runat="server" />
+<remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person"/>
 <table id="FormGrid" runat="server">
   <tr>
     <td colspan="4">
-      <rubicon:BocTextValue ID="FirstNameField" runat="server" ReadOnly="True" DataSourceControl="CurrentObject" PropertyIdentifier="FirstName">
-      </rubicon:BocTextValue>
-      &nbsp;<rubicon:BocTextValue ID="LastNameField" runat="server" ReadOnly="True" DataSourceControl="CurrentObject" PropertyIdentifier="LastName">
-      </rubicon:BocTextValue>
+      <remotion:BocTextValue ID="FirstNameField" runat="server" ReadOnly="True" DataSourceControl="CurrentObject" PropertyIdentifier="FirstName">
+      </remotion:BocTextValue>
+      &nbsp;<remotion:BocTextValue ID="LastNameField" runat="server" ReadOnly="True" DataSourceControl="CurrentObject" PropertyIdentifier="LastName">
+      </remotion:BocTextValue>
     </td>
   </tr>
   <tr>
     <td>
     </td>
     <td>
-      <rubicon:BocAutoCompleteReferenceValue ID="PartnerField" runat="server" ReadOnly="False" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
+      <remotion:BocAutoCompleteReferenceValue ID="PartnerField" runat="server" ReadOnly="False" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
         Width="75%" ServiceMethod="GetPersonList" ServicePath="~/IndividualControlTests/AutoCompleteService.asmx" args="Test">
         <TextBoxStyle AutoPostBack="True" />
-      </rubicon:BocAutoCompleteReferenceValue>
+      </remotion:BocAutoCompleteReferenceValue>
     </td>
     <td>
       bound, 75%</td>
@@ -29,9 +29,9 @@
     <td><br /><br /><br /><br /><br /><br />
     </td>
     <td>
-      <rubicon:BocAutoCompleteReferenceValue ID="ReadOnlyPartnerField" runat="server" ReadOnly="True" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
+      <remotion:BocAutoCompleteReferenceValue ID="ReadOnlyPartnerField" runat="server" ReadOnly="True" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
         Width="75%">
-      </rubicon:BocAutoCompleteReferenceValue>
+      </remotion:BocAutoCompleteReferenceValue>
     </td>
     <td>
       bound, read-only, 75%</td>
@@ -42,9 +42,9 @@
     <td>
     </td>
     <td>
-      <rubicon:BocAutoCompleteReferenceValue ID="UnboundPartnerField" runat="server" Required="True" Width="15em" ServiceMethod="GetPersonList" 
+      <remotion:BocAutoCompleteReferenceValue ID="UnboundPartnerField" runat="server" Required="True" Width="15em" ServiceMethod="GetPersonList" 
       ServicePath="~/IndividualControlTests/AutoCompleteService.asmx">
-      </rubicon:BocAutoCompleteReferenceValue>
+      </remotion:BocAutoCompleteReferenceValue>
     </td>
     <td>
       <p>
@@ -57,8 +57,8 @@
     <td>
     </td>
     <td>
-      <rubicon:BocAutoCompleteReferenceValue ID="UnboundReadOnlyPartnerField" runat="server" ReadOnly="True" Width="15em">
-      </rubicon:BocAutoCompleteReferenceValue>
+      <remotion:BocAutoCompleteReferenceValue ID="UnboundReadOnlyPartnerField" runat="server" ReadOnly="True" Width="15em">
+      </remotion:BocAutoCompleteReferenceValue>
     </td>
     <td>
       <p>
@@ -71,9 +71,9 @@
     <td>
     </td>
     <td>
-      <rubicon:BocAutoCompleteReferenceValue ID="DisabledPartnerField" runat="server" ReadOnly="False" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
+      <remotion:BocAutoCompleteReferenceValue ID="DisabledPartnerField" runat="server" ReadOnly="False" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
         Enabled="False" Width="75%" >
-      </rubicon:BocAutoCompleteReferenceValue>
+      </remotion:BocAutoCompleteReferenceValue>
     </td>
     <td>
       disabled, bound, 75%</td>
@@ -84,9 +84,9 @@
     <td>
     </td>
     <td>
-      <rubicon:BocAutoCompleteReferenceValue ID="DisabledReadOnlyPartnerField" runat="server" ReadOnly="True" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
+      <remotion:BocAutoCompleteReferenceValue ID="DisabledReadOnlyPartnerField" runat="server" ReadOnly="True" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
         Enabled="False">
-      </rubicon:BocAutoCompleteReferenceValue>
+      </remotion:BocAutoCompleteReferenceValue>
     </td>
     <td>
       disabled, bound, read-only</td>
@@ -97,8 +97,8 @@
     <td>
     </td>
     <td>
-      <rubicon:BocAutoCompleteReferenceValue ID="DisabledUnboundPartnerField" runat="server" Required="True" Enabled="False" Width="15em">
-      </rubicon:BocAutoCompleteReferenceValue>
+      <remotion:BocAutoCompleteReferenceValue ID="DisabledUnboundPartnerField" runat="server" Required="True" Enabled="False" Width="15em">
+      </remotion:BocAutoCompleteReferenceValue>
     </td>
     <td>
       <p>
@@ -111,8 +111,8 @@
     <td>
     </td>
     <td>
-      <rubicon:BocAutoCompleteReferenceValue ID="DisabledUnboundReadOnlyPartnerField" runat="server" ReadOnly="True" Enabled="False" Width="15em">
-      </rubicon:BocAutoCompleteReferenceValue>
+      <remotion:BocAutoCompleteReferenceValue ID="DisabledUnboundReadOnlyPartnerField" runat="server" ReadOnly="True" Enabled="False" Width="15em">
+      </remotion:BocAutoCompleteReferenceValue>
     </td>
     <td>
       <p>
@@ -133,10 +133,10 @@
   <asp:Label ID="PartnerFieldMenuClickEventArgsLabel" runat="server" EnableViewState="False">#</asp:Label></p>
 <p>
   <br>
-  <rubicon:WebButton ID="PartnerTestSetNullButton" runat="server" Text="Partner Set Null" />
-  <rubicon:WebButton ID="PartnerTestSetNewItemButton" runat="server" Text="Partner Set New Item" />
+  <remotion:WebButton ID="PartnerTestSetNullButton" runat="server" Text="Partner Set Null" />
+  <remotion:WebButton ID="PartnerTestSetNewItemButton" runat="server" Text="Partner Set New Item" />
 </p>
 <p>
-  <rubicon:WebButton ID="ReadOnlyPartnerTestSetNullButton" runat="server" Text="Read Only Partner Set Null" />
-  <rubicon:WebButton ID="ReadOnlyPartnerTestSetNewItemButton" runat="server" Text="Read Only Partner Set New Item" />
+  <remotion:WebButton ID="ReadOnlyPartnerTestSetNullButton" runat="server" Text="Read Only Partner Set Null" />
+  <remotion:WebButton ID="ReadOnlyPartnerTestSetNewItemButton" runat="server" Text="Read Only Partner Set New Item" />
 </p>

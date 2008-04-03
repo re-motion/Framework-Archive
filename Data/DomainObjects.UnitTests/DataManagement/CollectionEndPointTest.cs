@@ -1,12 +1,12 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Utilities;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Development.UnitTesting;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
+namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
   public class CollectionEndPointTest : RelationEndPointBaseTest
@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       base.SetUp ();
 
-      _customerEndPointID = new RelationEndPointID (DomainObjectIDs.Customer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
+      _customerEndPointID = new RelationEndPointID (DomainObjectIDs.Customer1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
       _order1 = Order.GetObject (DomainObjectIDs.Order1);
       _order2 = Order.GetObject (DomainObjectIDs.OrderWithoutOrderItem);
 
@@ -210,7 +210,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       Assert.AreEqual (_customerEndPoint.OriginalOppositeDomainObjects.Count, _customerEndPoint.OppositeDomainObjects.Count);
 
-      RelationEndPointModification modification = _customerEndPoint.CreateModification (CreateObjectEndPoint (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _customerEndPoint.ObjectID));
+      RelationEndPointModification modification = _customerEndPoint.CreateModification (CreateObjectEndPoint (_order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _customerEndPoint.ObjectID));
       modification.Begin ();
       modification.Perform ();
       modification.End ();
@@ -225,7 +225,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       RelationEndPointModification modification =
           _customerEndPoint.CreateModification (
-              CreateObjectEndPoint (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _customerEndPoint.ObjectID));
+              CreateObjectEndPoint (_order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _customerEndPoint.ObjectID));
       modification.Perform();
 
       Assert.IsTrue (_customerEndPoint.OriginalOppositeDomainObjects.Count != _customerEndPoint.OppositeDomainObjects.Count);
@@ -236,7 +236,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       Assert.AreEqual (_customerEndPoint.OriginalOppositeDomainObjects.Count, _customerEndPoint.OppositeDomainObjects.Count);
 
-      RelationEndPointModification modification = _customerEndPoint.CreateModification (CreateObjectEndPoint (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _customerEndPoint.ObjectID));
+      RelationEndPointModification modification = _customerEndPoint.CreateModification (CreateObjectEndPoint (_order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _customerEndPoint.ObjectID));
       modification.Begin ();
       _customerEndPoint.PerformDelete ();
       modification.End ();

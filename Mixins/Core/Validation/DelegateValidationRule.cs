@@ -1,10 +1,10 @@
 using System;
 using System.Text;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Utilities;
+using Remotion.Mixins.Definitions;
+using Remotion.Utilities;
 using System.Reflection;
 
-namespace Rubicon.Mixins.Validation
+namespace Remotion.Mixins.Validation
 {
   [Serializable]
   public class DelegateValidationRule<TDefinition> : IValidationRule<TDefinition> where TDefinition : IVisitableDefinition

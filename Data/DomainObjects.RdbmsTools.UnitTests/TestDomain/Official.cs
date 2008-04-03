@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
 {
   [DBTable]
   [SecondStorageGroupAttribute]

@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.RolePropertiesSearchServiceTests
+namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.RolePropertiesSearchServiceTests
 {
   [TestFixture]
   public class SearchOtherProperty : DomainTest
@@ -36,7 +36,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.RoleP
     [Test]
     [ExpectedException (typeof (ArgumentException),
         ExpectedMessage = 
-        "The property 'Tenant' is not supported by the 'Rubicon.SecurityManager.Domain.OrganizationalStructure.RolePropertiesSearchService' type.",
+        "The property 'Tenant' is not supported by the 'Remotion.SecurityManager.Domain.OrganizationalStructure.RolePropertiesSearchService' type.",
         MatchType = MessageMatch.Contains)]
     public void Search_WithInvalidProperty ()
     {

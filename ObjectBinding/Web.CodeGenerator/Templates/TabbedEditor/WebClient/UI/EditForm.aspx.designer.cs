@@ -7,15 +7,15 @@ namespace $PROJECT_ROOTNAMESPACE$.UI
 {
 	public partial class Edit$DOMAIN_CLASSNAME$Form
 	{
-		protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+		protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 		protected $PROJECT_ROOTNAMESPACE$.UI.NavigationTabs TheNavigationTabs;
-    protected Rubicon.Web.UI.Controls.TabbedMultiView MultiView;
-		protected Rubicon.Web.UI.Controls.TabView Edit$DOMAIN_CLASSNAME$View;
+    protected Remotion.Web.UI.Controls.TabbedMultiView MultiView;
+		protected Remotion.Web.UI.Controls.TabView Edit$DOMAIN_CLASSNAME$View;
 		protected $PROJECT_ROOTNAMESPACE$.UI.Edit$DOMAIN_CLASSNAME$Control Edit$DOMAIN_CLASSNAME$Control;
 		protected System.Web.UI.HtmlControls.HtmlForm ThisForm;
-		protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-		protected Rubicon.Web.UI.Controls.WebButton SaveButton;
-		protected Rubicon.Web.UI.Controls.WebButton CancelButton;
+		protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+		protected Remotion.Web.UI.Controls.WebButton SaveButton;
+		protected Remotion.Web.UI.Controls.WebButton CancelButton;
 	}
 }

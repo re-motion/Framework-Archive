@@ -1,9 +1,9 @@
 using System;
 using System.Text;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Development.UnitTests.UnitTesting
+namespace Remotion.Development.UnitTests.UnitTesting
 {
 
 public class PublicClass
@@ -43,9 +43,9 @@ public class PublicClass
 [TestFixture]
 public class TestCreateInstance
 {
-  const string c_assemblyName = "Rubicon.Development.UnitTests";
-  const string c_publicClassName = "Rubicon.Development.UnitTests.UnitTesting.PublicClass";
-  const string c_internalClassName = "Rubicon.Development.UnitTests.UnitTesting.PublicClass+InternalClass";
+  const string c_assemblyName = "Remotion.Development.UnitTests";
+  const string c_publicClassName = "Remotion.Development.UnitTests.UnitTesting.PublicClass";
+  const string c_internalClassName = "Remotion.Development.UnitTests.UnitTesting.PublicClass+InternalClass";
 
   [Test]
   public void TestCreateInstances()

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
 	/// <summary>
 	/// Provides a DataContainer-like interface for a DomainObject without actually accessing the object's DataContainer.

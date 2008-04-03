@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Security.Metadata
+namespace Remotion.Security.Metadata
 {
   public interface IPermissionProvider
   {

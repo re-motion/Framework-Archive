@@ -2,10 +2,10 @@ using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Web.UI;
-using Rubicon.ObjectBinding.Design;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding.Design;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary>
   ///   A <see cref="PropertyPathBinding"/> encapsulates the creation of a 
@@ -96,7 +96,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
       if (OwnerControl == null)
         throw new InvalidOperationException ("The property path could not be resolved because the object is not part of an IBusinessObjectBoundControl.");
 
-      bool isDesignMode = Rubicon.Web.Utilities.ControlHelper.IsDesignMode (OwnerControl);
+      bool isDesignMode = Remotion.Web.Utilities.ControlHelper.IsDesignMode (OwnerControl);
       bool isDataSourceNull = DataSource == null;
       bool isBusinessObjectClassNull = BusinessObjectClass == null;
 

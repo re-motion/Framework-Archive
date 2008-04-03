@@ -11,33 +11,33 @@
 namespace OBWTest.IndividualControlTests {
     
     public partial class BocAutoCompleteReferenceValueUserControl {
-        protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+        protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
         protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue PartnerField;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue PartnerField;
         protected System.Web.UI.WebControls.Label PartnerFieldValueLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue ReadOnlyPartnerField;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue ReadOnlyPartnerField;
         protected System.Web.UI.WebControls.Label ReadOnlyPartnerFieldValueLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue UnboundPartnerField;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue UnboundPartnerField;
         protected System.Web.UI.WebControls.Label UnboundPartnerFieldValueLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue UnboundReadOnlyPartnerField;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue UnboundReadOnlyPartnerField;
         protected System.Web.UI.WebControls.Label UnboundReadOnlyPartnerFieldValueLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue DisabledPartnerField;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue DisabledPartnerField;
         protected System.Web.UI.WebControls.Label DisabledPartnerFieldValueLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue DisabledReadOnlyPartnerField;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue DisabledReadOnlyPartnerField;
         protected System.Web.UI.WebControls.Label DisabledReadOnlyPartnerFieldValueLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue DisabledUnboundPartnerField;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue DisabledUnboundPartnerField;
         protected System.Web.UI.WebControls.Label DisabledUnboundPartnerFieldValueLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue DisabledUnboundReadOnlyPartnerField;
+        protected Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue DisabledUnboundReadOnlyPartnerField;
         protected System.Web.UI.WebControls.Label DisabledUnboundReadOnlyPartnerFieldValueLabel;
         protected System.Web.UI.WebControls.Label PartnerCommandClickLabel;
         protected System.Web.UI.WebControls.Label PartnerFieldSelectionChangedLabel;
         protected System.Web.UI.WebControls.Label PartnerFieldMenuClickEventArgsLabel;
-        protected Rubicon.Web.UI.Controls.WebButton PartnerTestSetNullButton;
-        protected Rubicon.Web.UI.Controls.WebButton PartnerTestSetNewItemButton;
-        protected Rubicon.Web.UI.Controls.WebButton ReadOnlyPartnerTestSetNullButton;
-        protected Rubicon.Web.UI.Controls.WebButton ReadOnlyPartnerTestSetNewItemButton;
+        protected Remotion.Web.UI.Controls.WebButton PartnerTestSetNullButton;
+        protected Remotion.Web.UI.Controls.WebButton PartnerTestSetNewItemButton;
+        protected Remotion.Web.UI.Controls.WebButton ReadOnlyPartnerTestSetNullButton;
+        protected Remotion.Web.UI.Controls.WebButton ReadOnlyPartnerTestSetNewItemButton;
     }
 }

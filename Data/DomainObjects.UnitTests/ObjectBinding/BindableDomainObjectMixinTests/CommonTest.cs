@@ -1,13 +1,13 @@
 using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Collections;
-using Rubicon.Development.UnitTesting;
-using Rubicon.ObjectBinding;
-using Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain;
-using Rubicon.ObjectBinding.BindableObject;
+using Remotion.Collections;
+using Remotion.Development.UnitTesting;
+using Remotion.ObjectBinding;
+using Remotion.Data.DomainObjects.UnitTests.ObjectBinding.TestDomain;
+using Remotion.ObjectBinding.BindableObject;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
+namespace Remotion.Data.DomainObjects.UnitTests.ObjectBinding.BindableDomainObjectMixinTests
 {
   [TestFixture]
   public class CommonTest : ObjectBindingBaseTest

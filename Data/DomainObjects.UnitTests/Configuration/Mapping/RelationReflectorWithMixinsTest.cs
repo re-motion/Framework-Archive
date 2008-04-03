@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
   public class RelationReflectorWithMixinsTest : StandardMappingTest
@@ -114,7 +114,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           (VirtualRelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[1];
       Assert.AreSame (_relatedClassDefinition, oppositeEndPointDefinition.ClassDefinition);
       Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.RelationTargetForPersistentMixin.RelationProperty1",
+          "Remotion.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.RelationTargetForPersistentMixin.RelationProperty1",
           oppositeEndPointDefinition.PropertyName);
       Assert.AreSame (typeof (TargetClassForPersistentMixin), oppositeEndPointDefinition.PropertyType);
       Assert.AreSame (actualRelationDefinition, oppositeEndPointDefinition.RelationDefinition);
@@ -161,7 +161,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           (VirtualRelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[1];
       Assert.AreSame (_relatedClassDefinition, oppositeEndPointDefinition.ClassDefinition);
       Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.RelationTargetForPersistentMixin.RelationProperty4",
+          "Remotion.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes.RelationTargetForPersistentMixin.RelationProperty4",
           oppositeEndPointDefinition.PropertyName);
       Assert.AreSame (typeof (ObjectList<TargetClassForPersistentMixin>), oppositeEndPointDefinition.PropertyType);
       Assert.AreSame (actualRelationDefinition, oppositeEndPointDefinition.RelationDefinition);

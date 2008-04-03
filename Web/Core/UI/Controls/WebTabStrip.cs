@@ -5,14 +5,14 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Globalization;
-using Rubicon.Logging;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Design;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Globalization;
+using Remotion.Logging;
+using Remotion.Utilities;
+using Remotion.Web.UI.Design;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 /// <include file='doc\include\UI\Controls\WebTabStrip.xml' path='WebTabStrip/Class/*' />
@@ -467,7 +467,7 @@ public class WebTabStrip :
     if (resourceManager == null)
       return;
 
-    if (Rubicon.Web.Utilities.ControlHelper.IsDesignMode ((Control) this))
+    if (Remotion.Web.Utilities.ControlHelper.IsDesignMode ((Control) this))
       return;
     Tabs.LoadResources (resourceManager);
   }

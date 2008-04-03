@@ -1,10 +1,10 @@
 using System;
-using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Web.ExecutionEngine;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using NUnit.Framework;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Web.WxeFunctions
+namespace Remotion.Data.DomainObjects.UnitTests.Web.WxeFunctions
 {
   public class ResetTestTransactedFunction : WxeTransactedFunction
   {

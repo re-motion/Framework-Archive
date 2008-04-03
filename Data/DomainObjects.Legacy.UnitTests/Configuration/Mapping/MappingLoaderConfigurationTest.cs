@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Mapping.Configuration;
-using Rubicon.Development.UnitTesting.Configuration;
+using Remotion.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping.Configuration;
+using Remotion.Development.UnitTesting.Configuration;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 {
   [TestFixture]
   public class MappingLoaderConfigurationTest
@@ -22,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       string xmlFragment =
           @"<mapping>
-            <loader type=""Rubicon.Data.DomainObjects.Legacy::ConfigurationLoader.XmlBasedConfigurationLoader.MappingLoader""/>
+            <loader type=""Remotion.Data.DomainObjects.Legacy::ConfigurationLoader.XmlBasedConfigurationLoader.MappingLoader""/>
           </mapping>";
 
       ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);

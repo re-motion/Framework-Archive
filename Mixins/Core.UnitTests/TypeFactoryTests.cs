@@ -1,12 +1,12 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.Mixins;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Definitions;
+using Remotion.Mixins;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
 using NUnit.Framework;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests
+namespace Remotion.Mixins.UnitTests
 {
   [TestFixture]
   public class TypeFactoryTests

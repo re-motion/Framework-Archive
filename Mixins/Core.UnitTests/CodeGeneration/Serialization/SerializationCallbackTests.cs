@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins.UnitTests.CodeGeneration.Serialization;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins.UnitTests.CodeGeneration.Serialization;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.Serialization
+namespace Remotion.Mixins.UnitTests.CodeGeneration.Serialization
 {
   [TestFixture]
   public class SerializationCallbackTests

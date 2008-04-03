@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace Rubicon.ObjectBinding.Web.CodeGenerator
+namespace Remotion.ObjectBinding.Web.CodeGenerator
 {
 	class Replacer
 	{

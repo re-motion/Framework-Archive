@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
+namespace Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_DerivedClassWithEntityWithHierarchy")]
   [DBTable ("TableInheritance_DerivedClassWithEntityWithHierarchy")]

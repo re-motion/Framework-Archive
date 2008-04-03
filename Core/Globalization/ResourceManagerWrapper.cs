@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Resources;
-using Rubicon.Logging;
-using Rubicon.Utilities;
+using Remotion.Logging;
+using Remotion.Utilities;
 
-namespace Rubicon.Globalization
+namespace Remotion.Globalization
 {
   /// <summary>
   ///   A wrapper for the .net Framework <c>ResourceManager</c> implementation.
@@ -85,7 +85,7 @@ namespace Rubicon.Globalization
     ///   Searches for all string resources inside the resource manager whose name is prefixed 
     ///   with a matching tag.
     /// </summary>
-    /// <seealso cref="M:Rubicon.Globalization.IResourceManager.GetAllStrings(System.String)"/>
+    /// <seealso cref="M:Remotion.Globalization.IResourceManager.GetAllStrings(System.String)"/>
     /// <include file='doc\include\Globalization\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/GetAllStrings/remarks' />
     public NameValueCollection GetAllStrings (string prefix)
     {
@@ -121,7 +121,7 @@ namespace Rubicon.Globalization
     /// <summary>
     ///   Gets the value of the specified string resource. 
     /// </summary>
-    /// <seealso cref="M:Rubicon.Globalization.IResourceManager.GetString(System.Enum)"/>
+    /// <seealso cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)"/>
     public string GetString (Enum enumValue)
     {
       ArgumentUtility.CheckNotNull ("enumValue", enumValue);
@@ -131,7 +131,7 @@ namespace Rubicon.Globalization
     /// <summary>
     ///   Gets the value of the specified string resource. 
     /// </summary>
-    /// <seealso cref="M:Rubicon.Globalization.IResourceManager.GetString(System.String)"/>
+    /// <seealso cref="M:Remotion.Globalization.IResourceManager.GetString(System.String)"/>
     public string GetString (string id)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);

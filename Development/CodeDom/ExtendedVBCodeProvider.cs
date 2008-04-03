@@ -3,7 +3,7 @@ using System.Text;
 using System.CodeDom;
 using System.IO;
 
-namespace Rubicon.Development.CodeDom
+namespace Remotion.Development.CodeDom
 {
 
 public class ExtendedVBCodeProvider: ExtendedCodeProvider

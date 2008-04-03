@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Utility class for methods using reflection.
@@ -180,7 +180,7 @@ namespace Rubicon.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
-      Type originalDeclaringType = Rubicon.Utilities.ReflectionUtility.GetOriginalDeclaringType (propertyInfo);
+      Type originalDeclaringType = Remotion.Utilities.ReflectionUtility.GetOriginalDeclaringType (propertyInfo);
       if (originalDeclaringType.IsGenericType)
         return GetPropertyName (originalDeclaringType.GetGenericTypeDefinition (), propertyInfo.Name);
       else
@@ -206,7 +206,7 @@ namespace Rubicon.Data.DomainObjects
     /// </returns>
     public static bool IsObjectList (Type type)
     {
-      return Rubicon.Utilities.ReflectionUtility.CanAscribe (type, typeof (ObjectList<>));
+      return Remotion.Utilities.ReflectionUtility.CanAscribe (type, typeof (ObjectList<>));
     }
 
     /// <summary>
@@ -222,7 +222,7 @@ namespace Rubicon.Data.DomainObjects
     /// </exception>
     public static Type GetObjectListTypeParameter (Type type)
     {
-      Type[] typeParameters = Rubicon.Utilities.ReflectionUtility.GetAscribedGenericArguments (type, typeof (ObjectList<>));
+      Type[] typeParameters = Remotion.Utilities.ReflectionUtility.GetAscribedGenericArguments (type, typeof (ObjectList<>));
       if (typeParameters == null)
         return null;
       return typeParameters[0];

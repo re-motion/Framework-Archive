@@ -6,9 +6,9 @@ using System.Web.UI.Design;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rubicon.Web.UI.Design;
+using Remotion.Web.UI.Design;
 
-namespace Rubicon.Web.UnitTests.UI.Design
+namespace Remotion.Web.UnitTests.UI.Design
 {
   [TestFixture]
   public class WebDesignModeHelperTest

@@ -4,15 +4,15 @@ using System.Diagnostics;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Rubicon.CodeGeneration;
-using Rubicon.CodeGeneration.DPExtensions;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Utilities;
-using Rubicon.Utilities;
+using Remotion.CodeGeneration;
+using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Utilities;
+using Remotion.Utilities;
 using System.Runtime.Serialization;
 using System.Reflection;
 
-namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.Mixins.CodeGeneration.DynamicProxy
 {
   internal class MixinTypeGenerator : IMixinTypeGenerator
   {
@@ -178,7 +178,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementGetObjectData ()
     {
-      Rubicon.CodeGeneration.SerializationImplementer.ImplementGetObjectDataByDelegation (Emitter, delegate (CustomMethodEmitter newMethod, bool baseIsISerializable)
+      Remotion.CodeGeneration.SerializationImplementer.ImplementGetObjectDataByDelegation (Emitter, delegate (CustomMethodEmitter newMethod, bool baseIsISerializable)
           {
             return new MethodInvocationExpression (
                 null,

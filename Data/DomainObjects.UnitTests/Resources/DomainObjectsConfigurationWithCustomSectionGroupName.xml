@@ -2,21 +2,21 @@
 <configuration>
 
   <configSections>
-    <sectionGroup name="domainObjects" type="Rubicon.Data.DomainObjects.Configuration.DomainObjectsConfiguration, Rubicon.Data.DomainObjects">
-      <section name="storage" type="Rubicon.Data.DomainObjects.Persistence.Configuration.PersistenceConfiguration, Rubicon.Data.DomainObjects" />
-      <section name="mapping" type="Rubicon.Data.DomainObjects.Mapping.Configuration.MappingLoaderConfiguration, Rubicon.Data.DomainObjects" />
+    <sectionGroup name="domainObjects" type="Remotion.Data.DomainObjects.Configuration.DomainObjectsConfiguration, Remotion.Data.DomainObjects">
+      <section name="storage" type="Remotion.Data.DomainObjects.Persistence.Configuration.PersistenceConfiguration, Remotion.Data.DomainObjects" />
+      <section name="mapping" type="Remotion.Data.DomainObjects.Mapping.Configuration.MappingLoaderConfiguration, Remotion.Data.DomainObjects" />
     </sectionGroup>
   </configSections>
 
   <domainObjects xmlns="http://www.rubicon-it.com/Data/DomainObjects/Configuration/2.0">
     <mapping>
-      <loader type="Rubicon.Data.DomainObjects.UnitTests::Configuration.Mapping.FakeMappingLoader"/>
+      <loader type="Remotion.Data.DomainObjects.UnitTests::Configuration.Mapping.FakeMappingLoader"/>
     </mapping>
     <storage defaultProviderDefinition="Test">
       <providerDefinitions>
-        <add type="Rubicon.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"
+        <add type="Remotion.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"
             name="Test"
-            providerType="Rubicon.Data.DomainObjects::Persistence.Rdbms.SqlProvider"
+            providerType="Remotion.Data.DomainObjects::Persistence.Rdbms.SqlProvider"
             connectionString="Test"/>
       </providerDefinitions>
     </storage>

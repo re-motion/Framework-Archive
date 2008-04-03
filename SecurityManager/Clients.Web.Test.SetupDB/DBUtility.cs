@@ -7,7 +7,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Rubicon.SecurityManager.Clients.Web.Test.SetupDB
+namespace Remotion.SecurityManager.Clients.Web.Test.SetupDB
 {
 
 public class DBUtility

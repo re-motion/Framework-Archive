@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
   public class TransactionalAccessorTest : ClientTransactionBaseTest
@@ -52,7 +52,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (InvalidTypeException), ExpectedMessage = 
-        "Actual type 'System.Int32' of property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber' does not match expected type "
+        "Actual type 'System.Int32' of property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber' does not match expected type "
         + "'System.Double'.")]
     public void TransactionalAccessorThrowsOnInvalidT ()
     {

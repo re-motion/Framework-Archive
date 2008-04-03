@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Reflection;
-using Rubicon.ObjectBinding;
-using Rubicon.Security;
-using Rubicon.Utilities;
+using Remotion.ObjectBinding;
+using Remotion.Security;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.BindableObject.Properties
+namespace Remotion.ObjectBinding.BindableObject.Properties
 {
   public abstract class PropertyBase : IBusinessObjectProperty
   {

@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Mixins;
-using Rubicon.ObjectBinding.BindableObject;
+using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
   //TODO: doc
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]

@@ -1,13 +1,13 @@
 using System;
 using System.Security.Principal;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Security.Data.DomainObjects;
-using Rubicon.Security.UnitTests.Data.DomainObjects.TestDomain;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Development.UnitTesting;
+using Remotion.Security.Data.DomainObjects;
+using Remotion.Security.UnitTests.Data.DomainObjects.TestDomain;
 
-namespace Rubicon.Security.UnitTests.Data.DomainObjects.SecurityClientTransactionExtensionTests
+namespace Remotion.Security.UnitTests.Data.DomainObjects.SecurityClientTransactionExtensionTests
 {
   [TestFixture]
   public class RelationReadingTest

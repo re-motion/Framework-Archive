@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects;
+using Remotion.Data.DomainObjects;
 
-namespace Rubicon.Data.DomainObjects.Transport
+namespace Remotion.Data.DomainObjects.Transport
 {
   /// <summary>
   /// Indicates a problem when exporting or importing <see cref="DomainObject"/> instances using <see cref="DomainObjectTransporter"/>. Usually,

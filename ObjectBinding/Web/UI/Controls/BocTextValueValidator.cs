@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Web.UI.WebControls;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Design;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Design;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary>

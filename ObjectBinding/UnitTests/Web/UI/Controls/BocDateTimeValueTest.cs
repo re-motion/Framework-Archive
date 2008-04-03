@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.NullableValueTypes;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.ObjectBinding.UnitTests.Web.Domain;
-using Rubicon.Web.UnitTests.Configuration;
+using Remotion.NullableValueTypes;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.UnitTests.Web.Domain;
+using Remotion.Web.UnitTests.Configuration;
 
-namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 {
   [TestFixture]
   public class BocDateTimeValueTest: BocTest

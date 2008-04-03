@@ -1,9 +1,9 @@
 using System.Configuration;
-using Rubicon.Data.DomainObjects.Mapping.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.Mapping.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Queries.Configuration;
 
-namespace Rubicon.Data.DomainObjects.Configuration
+namespace Remotion.Data.DomainObjects.Configuration
 {
   /// <summary>
   /// The <see cref="IDomainObjectsConfiguration"/> interface is an abstraction for the <see cref="ConfigurationSectionGroup"/> and the fake 

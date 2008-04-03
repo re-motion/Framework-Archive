@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 using System.Runtime.Serialization;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   /// <summary>Represents an access type enum value.</summary>
   /// <remarks>
-  /// Use the static <see cref="O:Rubicon.Security.AccessType.Get"/> methods to convert an enum to an access type.
-  /// <note>For the set of basic access types see <see cref="T:Rubicon.Security.GeneralAccessTypes"/>.</note>
+  /// Use the static <see cref="O:Remotion.Security.AccessType.Get"/> methods to convert an enum to an access type.
+  /// <note>For the set of basic access types see <see cref="T:Remotion.Security.GeneralAccessTypes"/>.</note>
   /// </remarks>
   [Serializable]
   public sealed class AccessType : IObjectReference

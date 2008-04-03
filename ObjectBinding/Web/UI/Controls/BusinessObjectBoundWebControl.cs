@@ -4,16 +4,16 @@ using System.Drawing.Design;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Globalization;
-using Rubicon.ObjectBinding.Design;
-using Rubicon.ObjectBinding.Web.UI.Design;
-using Rubicon.Utilities;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Globalization;
+using Remotion.ObjectBinding.Design;
+using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Utilities;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary>
   ///   <b>BusinessObjectBoundWebControl</b> is the <see langword="abstract"/> default implementation of 
@@ -304,7 +304,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     /// </param>
     protected IResourceManager GetResourceManager (Type localResourcesType)
     {
-      Rubicon.Utilities.ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
+      Remotion.Utilities.ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
 
       //  Provider has already been identified.
       if (_cachedResourceManager != null)

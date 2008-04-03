@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 
-namespace Rubicon.ObjectBinding
+namespace Remotion.ObjectBinding
 {
 
 /// <summary>
@@ -10,12 +10,12 @@ namespace Rubicon.ObjectBinding
 /// </summary>
 /// <remarks>
 ///   <para>
-///     The <see cref="Rubicon.ObjectBinding.Design.PropertyPathPickerControl"/> uses this interface 
+///     The <see cref="Remotion.ObjectBinding.Design.PropertyPathPickerControl"/> uses this interface 
 ///     to query the <see cref="IBusinessObjectClass"/> of an <see cref="IBusinessObjectReferenceProperty"/>
 ///     or an <see cref="IBusinessObjectDataSource"/>, respectively.
 ///   </para><para>
-///     Implemented by <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocSimpleColumnDefinition"/> 
-///     and <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.PropertyPathBinding"/>.
+///     Implemented by <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocSimpleColumnDefinition"/> 
+///     and <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.PropertyPathBinding"/>.
 ///   </para>
 /// </remarks>
 public interface IBusinessObjectClassSource
@@ -26,7 +26,7 @@ public interface IBusinessObjectClassSource
   /// </summary>
   /// <value> 
   ///   The <see cref="IBusinessObjectClass"/> to be queried for the properties offered by the 
-  ///   <see cref="Rubicon.ObjectBinding.Design.PropertyPathPickerControl"/>.
+  ///   <see cref="Remotion.ObjectBinding.Design.PropertyPathPickerControl"/>.
   /// </value>
   IBusinessObjectClass BusinessObjectClass { get; }
 }

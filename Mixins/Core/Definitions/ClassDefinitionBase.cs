@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.Collections;
-using Rubicon.Utilities;
-using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
+using Remotion.Collections;
+using Remotion.Utilities;
+using ReflectionUtility=Remotion.Mixins.Utilities.ReflectionUtility;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   public abstract class ClassDefinitionBase : IAttributableDefinition, IVisitableDefinition
   {

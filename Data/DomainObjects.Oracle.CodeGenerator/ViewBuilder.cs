@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.CodeGenerator.Sql;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.CodeGenerator.Sql;
 
-namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
+namespace Remotion.Data.DomainObjects.Oracle.CodeGenerator
 {
   public class ViewBuilder : ViewBuilderBase
   {

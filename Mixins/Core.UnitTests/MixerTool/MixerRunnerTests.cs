@@ -1,12 +1,12 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Mixins.MixerTool;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins.MixerTool;
 using System.IO;
 using System.Reflection;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests.MixerTool
+namespace Remotion.Mixins.UnitTests.MixerTool
 {
   [TestFixture]
   [Serializable]
@@ -18,8 +18,8 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
       Assert.AreEqual (Environment.CurrentDirectory, Parameters.AssemblyOutputDirectory);
       Assert.AreEqual (Environment.CurrentDirectory, Parameters.BaseDirectory);
       Assert.AreEqual ("", Parameters.ConfigFile);
-      Assert.AreEqual ("Rubicon.Mixins.Persistent.Signed", Parameters.SignedAssemblyName);
-      Assert.AreEqual ("Rubicon.Mixins.Persistent.Unsigned", Parameters.UnsignedAssemblyName);
+      Assert.AreEqual ("Remotion.Mixins.Persistent.Signed", Parameters.SignedAssemblyName);
+      Assert.AreEqual ("Remotion.Mixins.Persistent.Unsigned", Parameters.UnsignedAssemblyName);
       Assert.AreEqual (false, Parameters.KeepTypeNames);
     }
 
@@ -37,7 +37,7 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
     {
       string basePath = Path.Combine (Environment.CurrentDirectory, "TempBasePath");
       string localSampleTypesPath = Path.Combine (Environment.CurrentDirectory, "SampleTypes.dll");
-      string localGeneratedPath = Path.Combine (Environment.CurrentDirectory, "Rubicon.Mixins.Generated.Unsigned.dll");
+      string localGeneratedPath = Path.Combine (Environment.CurrentDirectory, "Remotion.Mixins.Generated.Unsigned.dll");
       string remoteSampleTypesPath = Path.Combine (basePath, "SampleTypes.dll");
 
       if (Directory.Exists (basePath))
@@ -51,10 +51,10 @@ namespace Rubicon.Mixins.UnitTests.MixerTool
       if (File.Exists (localGeneratedPath))
         File.Delete (localGeneratedPath);
 
-      File.Copy (typeof (ExtendsAttribute).Assembly.Location, Path.Combine (basePath, "Rubicon.Mixins.dll"));
+      File.Copy (typeof (ExtendsAttribute).Assembly.Location, Path.Combine (basePath, "Remotion.Mixins.dll"));
 
       AssemblyCompiler compiler = new AssemblyCompiler ("MixerTool\\SampleAssembly", remoteSampleTypesPath,
-          Path.Combine (basePath, "Rubicon.Mixins.dll"));
+          Path.Combine (basePath, "Remotion.Mixins.dll"));
       compiler.CompileInSeparateAppDomain ();
 
       Parameters.BaseDirectory = basePath;

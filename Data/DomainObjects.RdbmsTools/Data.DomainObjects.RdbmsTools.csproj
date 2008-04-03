@@ -7,8 +7,8 @@
     <ProjectGuid>{C5E0C110-5BC5-4E30-B3CF-4C6012FEE1EF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Data.DomainObjects.RdbmsTools</RootNamespace>
-    <AssemblyName>Rubicon.Data.DomainObjects.RdbmsTools</AssemblyName>
+    <RootNamespace>Remotion.Data.DomainObjects.RdbmsTools</RootNamespace>
+    <AssemblyName>Remotion.Data.DomainObjects.RdbmsTools</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

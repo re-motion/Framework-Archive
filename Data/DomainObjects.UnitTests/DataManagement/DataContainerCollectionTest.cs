@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.DataManagement;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
+namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
   public class DataContainerCollectionTest : ClientTransactionBaseTest
@@ -175,7 +175,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       _collection.Add (_dataContainer);
       _collection.Add (TestDataContainerFactory.CreateCustomer1DataContainer ());
 
-      _dataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
+      _dataContainer["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
 
       DataContainerCollection changedContainers = _collection.GetByState (StateType.Changed);
 

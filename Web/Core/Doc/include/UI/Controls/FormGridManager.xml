@@ -715,7 +715,7 @@ Example for a row with labels and the controls in adjecent row.
           Class: <c>formGridValidationMessageCell</c>
         </para><para>
           Only used when <see cref="ValidatorVisibility"/> is set to 
-          <see cref="Rubicon.Web.UI.Controls.ValidatorVisibility.ValidationMessageAfterControlsColumn"/>
+          <see cref="Remotion.Web.UI.Controls.ValidatorVisibility.ValidationMessageAfterControlsColumn"/>
         </para>
       </remarks>
   </CssClassValidationMessagesCell>

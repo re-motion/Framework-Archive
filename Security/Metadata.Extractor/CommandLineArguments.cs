@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Text.CommandLine;
+using Remotion.Text.CommandLine;
 
-namespace Rubicon.Security.Metadata.Extractor
+namespace Remotion.Security.Metadata.Extractor
 {
   public class CommandLineArguments
   {

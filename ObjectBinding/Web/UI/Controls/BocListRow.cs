@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
-using Rubicon.Logging;
-using Rubicon.Utilities;
+using Remotion.Logging;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   public interface IBocListSortingOrderProvider
   {

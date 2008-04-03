@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.SecurityManager.Domain.AccessControl
+namespace Remotion.SecurityManager.Domain.AccessControl
 {
   public enum UserSelection
   {

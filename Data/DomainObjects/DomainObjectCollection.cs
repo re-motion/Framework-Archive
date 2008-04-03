@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Represents a collection of <see cref="DomainObject"/>s.
@@ -736,7 +736,7 @@ namespace Rubicon.Data.DomainObjects
     /// <summary>
     /// Gets or sets the element at the specified index. 
     /// </summary>
-    /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="value"/> is not of type <see cref="DomainObject"/> or a derived type.</exception>
+    /// <exception cref="Remotion.Utilities.ArgumentTypeException"><paramref name="value"/> is not of type <see cref="DomainObject"/> or a derived type.</exception>
     object IList.this [int index]
     {
       get { return this[index]; }
@@ -759,7 +759,7 @@ namespace Rubicon.Data.DomainObjects
     ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
     /// </exception>
     /// <exception cref="System.ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="value"/> is not of type <see cref="DomainObject"/> or a derived type.</exception>
+    /// <exception cref="Remotion.Utilities.ArgumentTypeException"><paramref name="value"/> is not of type <see cref="DomainObject"/> or a derived type.</exception>
     void IList.Insert (int index, object value)
     {
       ArgumentUtility.CheckNotNullAndType<DomainObject> ("value", value);
@@ -823,7 +823,7 @@ namespace Rubicon.Data.DomainObjects
     ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
     /// </exception>
     /// <exception cref="System.ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="value"/> is not of type <see cref="DomainObject"/> or a derived type.</exception>
+    /// <exception cref="Remotion.Utilities.ArgumentTypeException"><paramref name="value"/> is not of type <see cref="DomainObject"/> or a derived type.</exception>
     int IList.Add (object value)
     {
       ArgumentUtility.CheckNotNullAndType<DomainObject> ("value", value);

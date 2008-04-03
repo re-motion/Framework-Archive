@@ -8,20 +8,20 @@ using log4net.Config;
 using log4net.Core;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.SecurityManager.UnitTests.Domain;
-using Rubicon.SecurityManager.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects;
+using Remotion.Security;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.SecurityManager.UnitTests.Domain;
+using Remotion.SecurityManager.UnitTests.TestDomain;
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 using Mocks_List = Rhino.Mocks.Constraints.List;
 using Mocks_Property = Rhino.Mocks.Constraints.Property;
-using SecurityContext=Rubicon.Security.SecurityContext;
+using SecurityContext=Remotion.Security.SecurityContext;
 using log4net.Filter;
 
-namespace Rubicon.SecurityManager.UnitTests
+namespace Remotion.SecurityManager.UnitTests
 {
   [TestFixture]
   public class SecurityServiceTest : DomainTest
@@ -60,7 +60,7 @@ namespace Rubicon.SecurityManager.UnitTests
       _memoryAppender = new MemoryAppender();
       
       LoggerMatchFilter acceptFilter = new LoggerMatchFilter ();
-      acceptFilter.LoggerToMatch = "Rubicon.SecurityManager";
+      acceptFilter.LoggerToMatch = "Remotion.SecurityManager";
       acceptFilter.AcceptOnMatch = true;
       _memoryAppender.AddFilter (acceptFilter);
 

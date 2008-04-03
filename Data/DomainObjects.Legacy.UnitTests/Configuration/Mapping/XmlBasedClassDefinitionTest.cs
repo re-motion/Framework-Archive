@@ -1,14 +1,14 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Legacy.Mapping;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Legacy.Mapping;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.Factories;
+using Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 {
   [TestFixture]
   public class XmlBasedClassDefinitionTest : StandardMappingTest
@@ -48,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
       XmlBasedClassDefinition actual = new XmlBasedClassDefinition (
           "Order", "OrderTable", "StorageProvider",
-          "Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.Legacy.UnitTests", true);
+          "Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Order, Remotion.Data.DomainObjects.Legacy.UnitTests", true);
 
       _checker.Check (expected, actual);
     }
@@ -68,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
       XmlBasedClassDefinition actual = new XmlBasedClassDefinition (
           "Distributor", "Company", DatabaseTest.c_testDomainProviderID, 
-          "Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Distributor, Rubicon.Data.DomainObjects.Legacy.UnitTests", true, CreatePartnerClass ());
+          "Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.Distributor, Remotion.Data.DomainObjects.Legacy.UnitTests", true, CreatePartnerClass ());
 
       _checker.Check (expected, actual);
     }
@@ -232,9 +232,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "Type 'Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassNotDerivedFromDomainObject'"
+        ExpectedMessage = "Type 'Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassNotDerivedFromDomainObject'"
         + " of class 'Company' is not derived from"
-        + " 'Rubicon.Data.DomainObjects.DomainObject'.")]
+        + " 'Remotion.Data.DomainObjects.DomainObject'.")]
     public void ClassTypeWithInvalidDerivation ()
     {
       XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition (
@@ -243,8 +243,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "Type 'Rubicon.Data.DomainObjects.DomainObject' of class 'Company' is not derived from"
-        + " 'Rubicon.Data.DomainObjects.DomainObject'.")]
+        ExpectedMessage = "Type 'Remotion.Data.DomainObjects.DomainObject' of class 'Company' is not derived from"
+        + " 'Remotion.Data.DomainObjects.DomainObject'.")]
     public void ClassTypeDomainObject ()
     {
       XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition (
@@ -828,7 +828,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     public void CreatorIsDirectCreator ()
     {
       object creatorInstance = PrivateInvoke.GetPublicStaticField (
-          typeof (XmlBasedClassDefinition).Assembly.GetType ("Rubicon.Data.DomainObjects.Legacy.Infrastructure.DirectDomainObjectCreator", true),
+          typeof (XmlBasedClassDefinition).Assembly.GetType ("Remotion.Data.DomainObjects.Legacy.Infrastructure.DirectDomainObjectCreator", true),
           "Instance");
       Assert.AreEqual (creatorInstance, PrivateInvoke.InvokeNonPublicMethod (_orderClass, "GetDomainObjectCreator"));
     }

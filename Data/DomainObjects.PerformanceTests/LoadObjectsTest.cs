@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.PerformanceTests.TestDomain;
+using Remotion.Data.DomainObjects.PerformanceTests.TestDomain;
 
-namespace Rubicon.Data.DomainObjects.PerformanceTests
+namespace Remotion.Data.DomainObjects.PerformanceTests
 {
   [TestFixture]
   public class LoadObjectsTest: DatabaseTest

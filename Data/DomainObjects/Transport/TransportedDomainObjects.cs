@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Transport;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Transport;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Transport
+namespace Remotion.Data.DomainObjects.Transport
 {
   /// <summary>
   /// Represents the data transported via a <see cref="DomainObjectTransporter"/> object on the target system.

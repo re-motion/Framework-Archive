@@ -1,12 +1,12 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.UnitTests.ValidationTests.ValidationSampleTypes;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Mixins.CodeGeneration;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.ValidationTests.ValidationSampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.CodeGeneration;
 
-namespace Rubicon.Mixins.UnitTests
+namespace Remotion.Mixins.UnitTests
 {
   [TestFixture]
   public class ObjectFactoryTests
@@ -74,8 +74,8 @@ namespace Rubicon.Mixins.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The mixin Rubicon.Mixins.UnitTests.SampleTypes.MixinWithProtectedOverrider "
-        + "applied to base type Rubicon.Mixins.UnitTests.SampleTypes.BaseType1 needs to have a subclass generated at runtime. It is therefore not "
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The mixin Remotion.Mixins.UnitTests.SampleTypes.MixinWithProtectedOverrider "
+        + "applied to base type Remotion.Mixins.UnitTests.SampleTypes.BaseType1 needs to have a subclass generated at runtime. It is therefore not "
             + "possible to use the given object of type MixinWithProtectedOverrider as a mixin instance.", MatchType = MessageMatch.Contains)]
     public void ThrowsOnBaseMixinInstanceWhenGeneratedTypeIsNeeded ()
     {
@@ -250,7 +250,7 @@ namespace Rubicon.Mixins.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Cannot instantiate mixin Rubicon.Mixins.UnitTests."
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Cannot instantiate mixin Remotion.Mixins.UnitTests."
         + "ValidationTests.ValidationSampleTypes.MixinWithPrivateCtorAndVirtualMethod, there is no visible default constructor.")]
     public void ThrowsWhenMixinWithoutPublicDefaultCtorShouldBeInstantiated ()
     {
@@ -348,7 +348,7 @@ namespace Rubicon.Mixins.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Mixins.UnitTests.ObjectFactoryTests+"
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.Mixins.UnitTests.ObjectFactoryTests+"
         + "TargetClassWithProtectedCtors does not contain a public constructor with signature ().")]
     public void ProtectedDefaultConstructor_Mixed ()
     {
@@ -359,7 +359,7 @@ namespace Rubicon.Mixins.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Mixins.UnitTests.ObjectFactoryTests+"
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.Mixins.UnitTests.ObjectFactoryTests+"
         + "TargetClassWithProtectedCtors does not contain a public constructor with signature (System.Int32).")]
     public void ProtectedNonDefaultConstructor_Mixed ()
     {
@@ -370,7 +370,7 @@ namespace Rubicon.Mixins.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Mixins.UnitTests.ObjectFactoryTests+"
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.Mixins.UnitTests.ObjectFactoryTests+"
         + "TargetClassWithProtectedCtors does not contain a public constructor with signature ().")]
     public void ProtectedDefaultConstructor_NonMixed ()
     {
@@ -381,7 +381,7 @@ namespace Rubicon.Mixins.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Mixins.UnitTests.ObjectFactoryTests+"
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.Mixins.UnitTests.ObjectFactoryTests+"
         + "TargetClassWithProtectedCtors does not contain a public constructor with signature (System.Int32).")]
     public void ProtectedNonDefaultConstructor_NonMixed ()
     {

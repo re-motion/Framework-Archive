@@ -4,7 +4,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 
-namespace Rubicon.SecurityManager.Clients.Web.Test.SetupDB
+namespace Remotion.SecurityManager.Clients.Web.Test.SetupDB
 {
 public class SetupDB
 {

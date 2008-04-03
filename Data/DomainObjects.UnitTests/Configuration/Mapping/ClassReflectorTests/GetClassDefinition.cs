@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.MixinTestDomain;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflectorTests
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflectorTests
 {
   [TestFixture]
   public class GetClassDefinition : TestBase
@@ -165,9 +165,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "The domain object type cannot redefine the 'Rubicon.Data.DomainObjects.StorageGroupAttribute' already defined on base type "
-        + "'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.BaseClassWithStorageGroupAttribute'.\r\n"
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.Derived2ClassWithStorageGroupAttribute")]
+        "The domain object type cannot redefine the 'Remotion.Data.DomainObjects.StorageGroupAttribute' already defined on base type "
+        + "'Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.BaseClassWithStorageGroupAttribute'.\r\n"
+        + "Type: Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.Derived2ClassWithStorageGroupAttribute")]
     public void GetClassDefinition_ForDerivedClassWithRedefinedStorageGroupAttribute ()
     {
       Type type = GetTypeFromDomainWithErrors ("Derived2ClassWithStorageGroupAttribute");
@@ -181,7 +181,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     [ExpectedException (typeof (MappingException), ExpectedMessage =
         "The domain object type has a legacy infrastructure constructor for loading (a nonpublic constructor taking a single DataContainer "
         + "argument). The reflection-based mapping does not use this constructor any longer and requires it to be removed.\r\n"
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithLegacyLoadConstructor")]
+        + "Type: Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithLegacyLoadConstructor")]
     public void GetClassDefinition_ForClassWithLegacyLoadConstructor ()
     {
       Type type = GetTypeFromDomainWithErrors ("ClassWithLegacyLoadConstructor");
@@ -202,7 +202,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage =
         "Generic domain objects are not supported.\r\n"
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.GenericClass`1")]
+        + "Type: Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.GenericClass`1")]
     public void GetClassDefinition_ForOpenGenericClass ()
     {
       Type type = GetTypeFromDomainWithErrors ("GenericClass`1");
@@ -214,11 +214,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping."
-        + "TestDomain.Errors.ClassWithSameClassID' and 'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors."
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping."
+        + "TestDomain.Errors.ClassWithSameClassID' and 'Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors."
         + "OtherClassWithSameClassID' both have the same class ID 'DefinedID'. Use the ClassIDAttribute to define unique IDs for these "
-        + "classes. The assemblies involved are 'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors, "
-        + "Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' and 'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain."
+        + "classes. The assemblies involved are 'Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors, "
+        + "Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' and 'Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain."
         + "Errors, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null'.")]
     public void GetClassDefinition_ForClassesWithSameClassID ()
     {
@@ -306,7 +306,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     private static Type GetTypeFromDomainWithErrors (string typename)
     {
       Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
-          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors." + typename,
+          "Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors." + typename,
           true,
           false);
 

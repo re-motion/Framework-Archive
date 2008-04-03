@@ -1,12 +1,12 @@
 using System;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Definitions.Building;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Definitions.Building;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using System.Reflection;
 
-namespace Rubicon.Mixins.UnitTests.Definitions
+namespace Remotion.Mixins.UnitTests.Definitions
 {
   [TestFixture]
   public class TargetClassDefinitionBuilderTests
@@ -77,43 +77,43 @@ namespace Rubicon.Mixins.UnitTests.Definitions
       BindingFlags bf = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
       Assert.IsTrue (cweii.Methods.ContainsKey (typeof (ClassWithExplicitInterfaceImplementation).GetMethod (
-          "Rubicon.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.Method", bf)));
+          "Remotion.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.Method", bf)));
 
       Assert.IsTrue (
           cweii.Properties.ContainsKey (
               typeof (ClassWithExplicitInterfaceImplementation).GetProperty (
-                  "Rubicon.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.Property", bf)));
+                  "Remotion.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.Property", bf)));
       Assert.AreEqual (
           typeof (ClassWithExplicitInterfaceImplementation).GetMethod (
-              "Rubicon.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.get_Property", bf),
+              "Remotion.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.get_Property", bf),
           cweii.Properties[
               typeof (ClassWithExplicitInterfaceImplementation).GetProperty (
-                  "Rubicon.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.Property", bf)].GetMethod.
+                  "Remotion.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.Property", bf)].GetMethod.
               MemberInfo);
       Assert.AreEqual (
           typeof (ClassWithExplicitInterfaceImplementation).GetMethod (
-              "Rubicon.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.set_Property", bf),
+              "Remotion.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.set_Property", bf),
           cweii.Properties[
               typeof (ClassWithExplicitInterfaceImplementation).GetProperty (
-                  "Rubicon.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.Property", bf)].SetMethod.
+                  "Remotion.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.Property", bf)].SetMethod.
               MemberInfo);
 
       Assert.IsTrue (
           cweii.Events.ContainsKey (
               typeof (ClassWithExplicitInterfaceImplementation).GetEvent (
-                  "Rubicon.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.Event", bf)));
+                  "Remotion.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.Event", bf)));
       Assert.AreEqual (
           typeof (ClassWithExplicitInterfaceImplementation).GetMethod (
-              "Rubicon.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.add_Event", bf),
+              "Remotion.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.add_Event", bf),
           cweii.Events[
               typeof (ClassWithExplicitInterfaceImplementation).GetEvent (
-                  "Rubicon.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.Event", bf)].AddMethod.MemberInfo);
+                  "Remotion.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.Event", bf)].AddMethod.MemberInfo);
       Assert.AreEqual (
           typeof (ClassWithExplicitInterfaceImplementation).GetMethod (
-              "Rubicon.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.remove_Event", bf),
+              "Remotion.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.remove_Event", bf),
           cweii.Events[
               typeof (ClassWithExplicitInterfaceImplementation).GetEvent (
-                  "Rubicon.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.Event", bf)].RemoveMethod.
+                  "Remotion.Mixins.UnitTests.Definitions.TargetClassDefinitionBuilderTests.IInterfaceWithAllMembers.Event", bf)].RemoveMethod.
               MemberInfo);
       
     }

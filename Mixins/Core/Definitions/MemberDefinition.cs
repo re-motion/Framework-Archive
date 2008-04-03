@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   [DebuggerDisplay ("{MemberInfo}, DeclaringClass = {DeclaringClass.Type}")]
   public abstract class MemberDefinition : IAttributeIntroductionTargetDefinition, IVisitableDefinition

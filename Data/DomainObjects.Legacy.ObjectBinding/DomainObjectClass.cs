@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.ObjectBinding;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.ObjectBinding;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
 /// <summary>
-/// The implementation of <see cref="Rubicon.ObjectBinding.IBusinessObjectClassWithIdentity"/> for the <see cref="BindableDomainObject"/>.
+/// The implementation of <see cref="Remotion.ObjectBinding.IBusinessObjectClassWithIdentity"/> for the <see cref="BindableDomainObject"/>.
 /// </summary>
 /// <remarks>
 ///   <para>
-///     See the documentation of <see cref="Rubicon.ObjectBinding.IBusinessObjectClassWithIdentity"/> for further information.
+///     See the documentation of <see cref="Remotion.ObjectBinding.IBusinessObjectClassWithIdentity"/> for further information.
 ///   </para>
 ///   <para>
 ///     This class is used with <see cref="BindableDomainObject"/> and <see cref="DomainObjectDataSource"/>.
@@ -86,7 +86,7 @@ public class DomainObjectClass: IBusinessObjectClassWithIdentity
   }
 
   /// <summary>
-  /// Returns an <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> representing the given <paramref name="propertyIdentifier"/>.
+  /// Returns an <see cref="Remotion.ObjectBinding.IBusinessObjectProperty"/> representing the given <paramref name="propertyIdentifier"/>.
   /// </summary>
   /// <param name="propertyIdentifier">The name of the property.</param>
   /// <returns>An instance of <see cref="BaseProperty"/> or derived type representing the given <paramref name="propertyIdentifier"/>, or <see langword="null"/> if not found.</returns>
@@ -96,7 +96,7 @@ public class DomainObjectClass: IBusinessObjectClassWithIdentity
   }
 
   /// <summary>
-  /// Returns an array of <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> for all properties of the type that was passed in the constructor.
+  /// Returns an array of <see cref="Remotion.ObjectBinding.IBusinessObjectProperty"/> for all properties of the type that was passed in the constructor.
   /// </summary>
   /// <returns>An array of instances of <see cref="BaseProperty"/> or a derived type for each property. If no properties can be found, an empty array is returned.</returns>
   public IBusinessObjectProperty[] GetPropertyDefinitions ()

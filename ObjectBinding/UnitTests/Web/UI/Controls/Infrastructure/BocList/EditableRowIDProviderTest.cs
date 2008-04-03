@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
-using Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
+using Remotion.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
 
-namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
 {
 
 [TestFixture]

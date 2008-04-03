@@ -3,21 +3,21 @@ using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Rubicon.Logging;
-using Rubicon.Utilities;
+using Remotion.Logging;
+using Remotion.Utilities;
 
-namespace Rubicon.Xml
+namespace Remotion.Xml
 {
   [Serializable]
   [Obsolete ("try to get to original exception")]
-  public class RubiconXmlSchemaValidationException: XmlException
+  public class RemotionXmlSchemaValidationException: XmlException
   {
     private string _rawMessage;
     private string _fileName;
     //private int _lineNumber;
     //private int _linePosition;
 
-    public RubiconXmlSchemaValidationException (string message, string fileName, int lineNumber, int linePosition, Exception innerException)
+    public RemotionXmlSchemaValidationException (string message, string fileName, int lineNumber, int linePosition, Exception innerException)
         : base (message, innerException, lineNumber, linePosition)
     {
       _rawMessage = message;
@@ -26,7 +26,7 @@ namespace Rubicon.Xml
       //_linePosition = linePosition;
     }
 
-    protected RubiconXmlSchemaValidationException (SerializationInfo info, StreamingContext context)
+    protected RemotionXmlSchemaValidationException (SerializationInfo info, StreamingContext context)
       : base (info, context)
     {
       _rawMessage = info.GetString ("_rawMessage");

@@ -1,12 +1,12 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Utilities;
-using Rubicon.CodeGeneration;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
+using Remotion.Utilities;
+using Remotion.CodeGeneration;
 
-namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.Mixins.CodeGeneration.DynamicProxy
 {
   [Serializable]
   public class SerializationHelper : IObjectReference, ISerializable, IDeserializationCallback

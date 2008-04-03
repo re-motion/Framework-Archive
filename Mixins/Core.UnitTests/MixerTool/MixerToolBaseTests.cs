@@ -2,12 +2,12 @@ using System;
 using System.IO;
 using System.Reflection;
 using NUnit.Framework;
-using Rubicon.Collections;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Mixins.Context;
-using Rubicon.Mixins.MixerTool;
+using Remotion.Collections;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.MixerTool;
 
-namespace Rubicon.Mixins.UnitTests.MixerTool
+namespace Remotion.Mixins.UnitTests.MixerTool
 {
   [Serializable]
   public class MixerToolBaseTests

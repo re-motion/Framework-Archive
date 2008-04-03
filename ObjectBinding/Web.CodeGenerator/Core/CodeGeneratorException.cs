@@ -8,7 +8,7 @@
 
 using System;
 
-namespace Rubicon.ObjectBinding.Web.CodeGenerator
+namespace Remotion.ObjectBinding.Web.CodeGenerator
 {
 	// OBLXExxxx (UiGenerator error)
 	public enum ErrorCode {

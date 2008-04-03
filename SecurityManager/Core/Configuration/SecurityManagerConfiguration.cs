@@ -1,9 +1,9 @@
 using System;
 using System.Configuration;
-using Rubicon.Configuration;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Configuration;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
-namespace Rubicon.SecurityManager.Configuration
+namespace Remotion.SecurityManager.Configuration
 {
   public class SecurityManagerConfiguration : ConfigurationSection
   {
@@ -12,7 +12,7 @@ namespace Rubicon.SecurityManager.Configuration
     static SecurityManagerConfiguration()
     {
       s_current = new DoubleCheckedLockingContainer<SecurityManagerConfiguration> (
-          delegate { return (SecurityManagerConfiguration) ConfigurationManager.GetSection ("rubicon.securityManager") ?? new SecurityManagerConfiguration(); });
+          delegate { return (SecurityManagerConfiguration) ConfigurationManager.GetSection ("remotion.securityManager") ?? new SecurityManagerConfiguration (); });
     }
 
     public static SecurityManagerConfiguration Current

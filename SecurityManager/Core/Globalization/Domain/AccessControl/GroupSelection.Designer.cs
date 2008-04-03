@@ -16,7 +16,7 @@ using System.Globalization;
 using System.Resources;
 using System.Runtime.CompilerServices;
 
-namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
+namespace Remotion.SecurityManager.Globalization.Domain.AccessControl {
     using System;
     
     
@@ -47,7 +47,7 @@ namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
         internal static ResourceManager ResourceManager {
             get {
                 if (ReferenceEquals(resourceMan, null)) {
-                    ResourceManager temp = new ResourceManager("Rubicon.SecurityManager.Globalization.Domain.AccessControl.GroupSelection", typeof(GroupSelection).Assembly);
+                    ResourceManager temp = new ResourceManager("Remotion.SecurityManager.Globalization.Domain.AccessControl.GroupSelection", typeof(GroupSelection).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -71,18 +71,18 @@ namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
         /// <summary>
         ///   Looks up a localized string similar to Any Group (0).
         /// </summary>
-        internal static string Rubicon_SecurityManager_Domain_AccessControl_GroupSelection_All {
+        internal static string Remotion_SecurityManager_Domain_AccessControl_GroupSelection_All {
             get {
-                return ResourceManager.GetString("Rubicon.SecurityManager.Domain.AccessControl.GroupSelection.All", resourceCulture);
+                return ResourceManager.GetString("Remotion.SecurityManager.Domain.AccessControl.GroupSelection.All", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Group of the Object or parent groups (2).
         /// </summary>
-        internal static string Rubicon_SecurityManager_Domain_AccessControl_GroupSelection_OwningGroup {
+        internal static string Remotion_SecurityManager_Domain_AccessControl_GroupSelection_OwningGroup {
             get {
-                return ResourceManager.GetString("Rubicon.SecurityManager.Domain.AccessControl.GroupSelection.OwningGroup", resourceCulture);
+                return ResourceManager.GetString("Remotion.SecurityManager.Domain.AccessControl.GroupSelection.OwningGroup", resourceCulture);
             }
         }
     }

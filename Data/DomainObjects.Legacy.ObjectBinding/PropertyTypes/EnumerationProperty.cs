@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Reflection;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.ObjectBinding;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.ObjectBinding;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
+namespace Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
   //TODO Doc: The disabled prefix feature is not documented anywhere. Should it be? => See comment on c_disabledPrefix.
   public class EnumerationProperty : BaseProperty, IBusinessObjectEnumerationProperty

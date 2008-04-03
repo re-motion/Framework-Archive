@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.Schema;
 
-namespace Rubicon.Xml
+namespace Remotion.Xml
 {
   public abstract class SchemaLoaderBase
   {

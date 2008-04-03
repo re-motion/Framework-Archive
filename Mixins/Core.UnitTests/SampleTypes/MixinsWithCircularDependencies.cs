@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Mixins.UnitTests.SampleTypes
+namespace Remotion.Mixins.UnitTests.SampleTypes
 {
   public class MixinWithCircularThisDependency1 : Mixin<ICircular2>, ICircular1
   {

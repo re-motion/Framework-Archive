@@ -1,91 +1,91 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="EditUserControl.ascx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditUserControl" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="EditUserControl.ascx.cs" Inherits="Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditUserControl" %>
 
-<rubicon:FormGridManager ID="FormGridManager" runat="server" ValidatorVisibility="HideValidators" />
-<rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Rubicon.SecurityManager.Domain.OrganizationalStructure.User, Rubicon.SecurityManager" />
+<remotion:FormGridManager ID="FormGridManager" runat="server" ValidatorVisibility="HideValidators" />
+<remotion:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Remotion.SecurityManager.Domain.OrganizationalStructure.User, Remotion.SecurityManager" />
 <table id="FormGrid" runat="server" cellpadding="0" cellspacing="0">
   <tr class="underlinedMarkerCellRow">
     <td class="formGridTitleCell" style="white-space: nowrap;" colspan="2">
-      <rubicon:SmartLabel runat="server" id="UserLabel" Text="###" />
+      <remotion:SmartLabel runat="server" id="UserLabel" Text="###" />
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <rubicon:BocTextValue runat="server" ID="UserNameField" DataSourceControl="CurrentObject" PropertyIdentifier="UserName"></rubicon:BocTextValue>    
+      <remotion:BocTextValue runat="server" ID="UserNameField" DataSourceControl="CurrentObject" PropertyIdentifier="UserName"></remotion:BocTextValue>    
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <rubicon:BocTextValue ID="TitleField" runat="server" DataSourceControl="CurrentObject"
+      <remotion:BocTextValue ID="TitleField" runat="server" DataSourceControl="CurrentObject"
         PropertyIdentifier="Title">
         <TextBoxStyle MaxLength="100" />
-      </rubicon:BocTextValue>
+      </remotion:BocTextValue>
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <rubicon:BocTextValue ID="FirstnameField" runat="server" DataSourceControl="CurrentObject"
+      <remotion:BocTextValue ID="FirstnameField" runat="server" DataSourceControl="CurrentObject"
         PropertyIdentifier="FirstName">
         <TextBoxStyle MaxLength="100" />
-      </rubicon:BocTextValue>
+      </remotion:BocTextValue>
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <rubicon:BocTextValue ID="LastNameField" runat="server" DataSourceControl="CurrentObject"
+      <remotion:BocTextValue ID="LastNameField" runat="server" DataSourceControl="CurrentObject"
         PropertyIdentifier="LastName">
         <TextBoxStyle MaxLength="100" />
-      </rubicon:BocTextValue>
+      </remotion:BocTextValue>
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <rubicon:BocReferenceValue ID="OwningGroupField" runat="server" DataSourceControl="CurrentObject"
+      <remotion:BocReferenceValue ID="OwningGroupField" runat="server" DataSourceControl="CurrentObject"
         PropertyIdentifier="OwningGroup">
         <PersistedCommand>
-          <rubicon:BocCommand />
+          <remotion:BocCommand />
         </PersistedCommand>
-      </rubicon:BocReferenceValue>
+      </remotion:BocReferenceValue>
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <rubicon:BocList ID="RolesList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Roles" OnMenuItemClick="RolesList_MenuItemClick" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
+      <remotion:BocList ID="RolesList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Roles" OnMenuItemClick="RolesList_MenuItemClick" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
         <FixedColumns>
-          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Group">
+          <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Group">
             <PersistedCommand>
-              <rubicon:BocListItemCommand />
+              <remotion:BocListItemCommand />
             </PersistedCommand>
-          </rubicon:BocSimpleColumnDefinition>
-          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Position">
+          </remotion:BocSimpleColumnDefinition>
+          <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Position">
             <PersistedCommand>
-              <rubicon:BocListItemCommand />
+              <remotion:BocListItemCommand />
             </PersistedCommand>
-          </rubicon:BocSimpleColumnDefinition>
+          </remotion:BocSimpleColumnDefinition>
         </FixedColumns>
         <ListMenuItems>
-          <rubicon:BocMenuItem ItemID="NewItem" Text="$res:New">
+          <remotion:BocMenuItem ItemID="NewItem" Text="$res:New">
             <PersistedCommand>
-              <rubicon:BocMenuItemCommand Show="EditMode" />
+              <remotion:BocMenuItemCommand Show="EditMode" />
             </PersistedCommand>
-          </rubicon:BocMenuItem>
-          <rubicon:BocMenuItem ItemID="EditItem" RequiredSelection="ExactlyOne" Text="$res:Edit">
+          </remotion:BocMenuItem>
+          <remotion:BocMenuItem ItemID="EditItem" RequiredSelection="ExactlyOne" Text="$res:Edit">
             <PersistedCommand>
-              <rubicon:BocMenuItemCommand Show="EditMode" />
+              <remotion:BocMenuItemCommand Show="EditMode" />
             </PersistedCommand>
-          </rubicon:BocMenuItem>
-          <rubicon:BocMenuItem ItemID="DeleteItem" RequiredSelection="OneOrMore" Text="$res:Delete">
+          </remotion:BocMenuItem>
+          <remotion:BocMenuItem ItemID="DeleteItem" RequiredSelection="OneOrMore" Text="$res:Delete">
             <PersistedCommand>
-              <rubicon:BocMenuItemCommand Show="EditMode" />
+              <remotion:BocMenuItemCommand Show="EditMode" />
             </PersistedCommand>
-          </rubicon:BocMenuItem>
+          </remotion:BocMenuItem>
         </ListMenuItems>
-      </rubicon:BocList>
+      </remotion:BocList>
     </td>
   </tr>
 </table>

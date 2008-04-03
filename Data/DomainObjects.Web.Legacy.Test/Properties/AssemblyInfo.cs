@@ -7,11 +7,11 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Rubicon Persistence Adapter Test Project")]
-[assembly: AssemblyDescription("Test Project for the Rubicon Persistence Adapter Library")]
+[assembly: AssemblyTitle("Remotion Persistence Adapter Test Project")]
+[assembly: AssemblyDescription("Test Project for the Remotion Persistence Adapter Library")]
 [assembly: AssemblyConfiguration(".NET Framework: net-1.1, build type: release")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
-[assembly: AssemblyProduct("Rubicon .NET Commons")]
+[assembly: AssemblyProduct("Remotion")]
 [assembly: AssemblyCopyright("(c) 2005 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
@@ -62,6 +62,6 @@ using System.Runtime.CompilerServices;
 
 #pragma warning disable 1699
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile(@"\development\global\rubicon.snk")]
+[assembly: AssemblyKeyFile(@"\development\global\remotion.snk")]
 [assembly: AssemblyKeyName("")]
 #pragma warning restore 1699

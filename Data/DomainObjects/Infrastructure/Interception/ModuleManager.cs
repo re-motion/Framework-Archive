@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using Castle.DynamicProxy;
-using Rubicon.Utilities;
-using Rubicon.CodeGeneration.DPExtensions;
+using Remotion.Utilities;
+using Remotion.CodeGeneration.DPExtensions;
 using System.IO;
 
-namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
+namespace Remotion.Data.DomainObjects.Infrastructure.Interception
 {
   public class ModuleManager
   {
-    public const string StrongAssemblyName = "Rubicon.Data.DomainObjects.Generated.Signed";
-    public const string WeakAssemblyName = "Rubicon.Data.DomainObjects.Generated.Unsigned";
+    public const string StrongAssemblyName = "Remotion.Data.DomainObjects.Generated.Signed";
+    public const string WeakAssemblyName = "Remotion.Data.DomainObjects.Generated.Unsigned";
 
     private readonly string _directory;
     private ModuleScope _scope;

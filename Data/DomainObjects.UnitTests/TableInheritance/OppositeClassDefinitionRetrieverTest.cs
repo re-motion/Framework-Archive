@@ -2,13 +2,13 @@ using System;
 using System.Data;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
-using FileSystemItem=Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.FileSystemItem;
-using Folder=Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Folder;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
+using FileSystemItem=Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.FileSystemItem;
+using Folder=Remotion.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Folder;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
+namespace Remotion.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
   public class OppositeClassDefinitionRetrieverTest : SqlProviderBaseTest

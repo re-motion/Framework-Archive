@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Development.UnitTests.UnitTesting
+namespace Remotion.Development.UnitTests.UnitTesting
 {
 
   public class TypeWithFields

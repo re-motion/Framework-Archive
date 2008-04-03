@@ -7,8 +7,8 @@
     <ProjectGuid>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Security</RootNamespace>
-    <AssemblyName>Rubicon.Security</AssemblyName>
+    <RootNamespace>Remotion.Security</RootNamespace>
+    <AssemblyName>Remotion.Security</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -116,7 +116,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Doc\Whats_New.Rubicon.Security.txt" />
+    <Content Include="Doc\Whats_New.Remotion.Security.txt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

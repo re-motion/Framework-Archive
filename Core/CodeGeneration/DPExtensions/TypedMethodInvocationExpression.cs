@@ -3,9 +3,9 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.CodeGeneration.DPExtensions
+namespace Remotion.CodeGeneration.DPExtensions
 {
   /// <summary>
   /// Replacement for <see cref="MethodInvocationExpression"/> with value type support.

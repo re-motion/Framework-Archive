@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.DomainObjects.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.Web.Test.Domain
+namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
   [Serializable]
   [DBTable ("TableWithUndefinedEnum")]

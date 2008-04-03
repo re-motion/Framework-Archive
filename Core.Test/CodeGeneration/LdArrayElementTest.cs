@@ -2,12 +2,12 @@ using System;
 using System.Reflection;
 using Castle.DynamicProxy.Generators.Emitters;
 using NUnit.Framework;
-using Rubicon.CodeGeneration;
-using Rubicon.CodeGeneration.DPExtensions;
-using Rubicon.Core.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.CodeGeneration;
+using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Core.UnitTests.CodeGeneration.SampleTypes;
 using System.Reflection.Emit;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration
+namespace Remotion.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class LdArrayElementTest : SnippetGenerationBaseTest

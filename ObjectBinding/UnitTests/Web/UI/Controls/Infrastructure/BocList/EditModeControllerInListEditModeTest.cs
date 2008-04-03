@@ -2,12 +2,12 @@ using System;
 using System.Collections.Specialized;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
-using Rubicon.Globalization;
-using Rubicon.NullableValueTypes;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
+using Remotion.Globalization;
+using Remotion.NullableValueTypes;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
 
-namespace Rubicon.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList
 {
 
 [TestFixture]
@@ -514,7 +514,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Assert.AreEqual (1, validators.Length);
     Assert.IsInstanceOfType (typeof (EditModeValidator), validators[0]);
     Assert.AreEqual (BocList.ID, validators[0].ControlToValidate);
-    Assert.AreEqual (resourceManager.GetString (Rubicon.ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier.ListEditModeErrorMessage), validators[0].ErrorMessage);
+    Assert.AreEqual (resourceManager.GetString (Remotion.ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier.ListEditModeErrorMessage), validators[0].ErrorMessage);
   }
 
   [Test]
@@ -610,8 +610,8 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Controller.SwitchListIntoEditMode (Columns, Columns);
 
     EditableRow row = (EditableRow) Controller.Controls[2];
-    Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue stringValueField = 
-        (Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue) row.GetEditControl (0);
+    Remotion.ObjectBinding.Web.UI.Controls.BocTextValue stringValueField = 
+        (Remotion.ObjectBinding.Web.UI.Controls.BocTextValue) row.GetEditControl (0);
     stringValueField.Value = "New Value";
 
     Assert.IsTrue (Controller.IsDirty());

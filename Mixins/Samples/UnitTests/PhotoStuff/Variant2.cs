@@ -1,11 +1,11 @@
 using System;
-using Rubicon.Mixins;
-using Rubicon.Mixins.Samples.PhotoStuff;
-using Rubicon.Mixins.Samples.PhotoStuff.Variant2;
+using Remotion.Mixins;
+using Remotion.Mixins.Samples.PhotoStuff;
+using Remotion.Mixins.Samples.PhotoStuff.Variant2;
 using NUnit.Framework;
 using System.Reflection;
 
-namespace Rubicon.Mixins.Samples.UnitTests.PhotoStuff
+namespace Remotion.Mixins.Samples.UnitTests.PhotoStuff
 {
   [TestFixture]
   public class Variant2

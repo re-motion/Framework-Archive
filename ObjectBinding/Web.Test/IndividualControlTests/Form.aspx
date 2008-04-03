@@ -5,21 +5,21 @@
 <html>
 <head>
   <title>IndividualControlTestForm</title>
-  <rubicon:HtmlHeadContents ID="HtmlHeadContents" runat="server" />
+  <remotion:HtmlHeadContents ID="HtmlHeadContents" runat="server" />
 </head>
 <body>
   <form id="Form" runat="server">
     <asp:ScriptManager ID="ScriptManager" runat="server" />
-    <rubicon:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Rubicon.ObjectBinding.Sample::Person" />
-    <rubicon:SingleView ID="SingleView" runat="server">
+    <remotion:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
+    <remotion:SingleView ID="SingleView" runat="server">
       <TopControls>
         <obwt:NavigationTabs ID="NavigationTabs" runat="server" />
         <asp:PlaceHolder ID="ButtonPlaceHolder" runat="server">
           <div>
-            <rubicon:WebButton ID="PostBackButton" runat="server" Text="Post Back"/>&nbsp;
-            <rubicon:WebButton ID="SaveButton" runat="server" Width="10em" Text="Save" />&nbsp;
-            <rubicon:WebButton ID="SaveAndRestartButton" runat="server" Width="10em" Text="Save &amp; Restart" />&nbsp;
-            <rubicon:WebButton ID="CancelButton" runat="server" Width="10em" Text="Cancel" />
+            <remotion:WebButton ID="PostBackButton" runat="server" Text="Post Back"/>&nbsp;
+            <remotion:WebButton ID="SaveButton" runat="server" Width="10em" Text="Save" />&nbsp;
+            <remotion:WebButton ID="SaveAndRestartButton" runat="server" Width="10em" Text="Save &amp; Restart" />&nbsp;
+            <remotion:WebButton ID="CancelButton" runat="server" Width="10em" Text="Cancel" />
           </div>
         </asp:PlaceHolder>
       </TopControls>
@@ -39,7 +39,7 @@
           </contenttemplate>
         </asp:UpdatePanel>
      </BottomControls>
-    </rubicon:SingleView>
+    </remotion:SingleView>
   </form>
 </body>
 </html>

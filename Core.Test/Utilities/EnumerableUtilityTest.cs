@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using System.Collections;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Core.UnitTests.Utilities
+namespace Remotion.Core.UnitTests.Utilities
 {
   [TestFixture]
   public class EnumerableUtilityTest

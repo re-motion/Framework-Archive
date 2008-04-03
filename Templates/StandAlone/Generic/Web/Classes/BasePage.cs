@@ -2,13 +2,13 @@ using System;
 using System.Collections;
 using System.Web.UI;
 
-using Rubicon.Web;
-using Rubicon.Web.UI;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Globalization;
+using Remotion.Web;
+using Remotion.Web.UI;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI.Globalization;
+using Remotion.Globalization;
 
-namespace Rubicon.Templates.Generic.Web.Classes
+namespace Remotion.Templates.Generic.Web.Classes
 {
 
 public class BasePage : Page, IObjectWithResources

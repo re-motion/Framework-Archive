@@ -3,24 +3,24 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
 using Castle.DynamicProxy;
-using Rubicon.CodeGeneration.DPExtensions;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
+using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Mixins.Definitions;
+using Remotion.Reflection;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.Mixins.CodeGeneration.DynamicProxy
 {
   // This class is not safe for multi-threaded usage. When using it, ensure that its methods and properties are not used from multiple
   // threads at the same time.
   public class ModuleManager : IModuleManager
   {
-    public const string DefaultWeakModulePath = "Rubicon.Mixins.Generated.Unsigned.dll";
-    public const string DefaultStrongModulePath = "Rubicon.Mixins.Generated.Signed.dll";
+    public const string DefaultWeakModulePath = "Remotion.Mixins.Generated.Unsigned.dll";
+    public const string DefaultStrongModulePath = "Remotion.Mixins.Generated.Signed.dll";
 
-    private string _weakAssemblyName = "Rubicon.Mixins.Generated.Unsigned";
+    private string _weakAssemblyName = "Remotion.Mixins.Generated.Unsigned";
     private string _weakModulePath = DefaultWeakModulePath;
 
-    private string _strongAssemblyName = "Rubicon.Mixins.Generated.Signed";
+    private string _strongAssemblyName = "Remotion.Mixins.Generated.Signed";
     private string _strongModulePath = DefaultStrongModulePath;
 
     private ModuleScope _scope;

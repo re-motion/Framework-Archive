@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.Context;
 
-namespace Rubicon.Mixins.UnitTests.MixinConfigurationTests
+namespace Remotion.Mixins.UnitTests.MixinConfigurationTests
 {
   [TestFixture]
   public class MixinConfigurationInheritanceTests

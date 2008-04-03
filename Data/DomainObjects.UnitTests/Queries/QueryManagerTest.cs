@@ -1,12 +1,12 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Queries
+namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
   [TestFixture]
   public class QueryManagerTest : ClientTransactionBaseTest
@@ -87,7 +87,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Queries
 
     [Test]
     [ExpectedException (typeof (InvalidTypeException), ExpectedMessage = "The query returned an object of type "
-        + "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer, which cannot be added to an ObjectList<Order>.")]
+        + "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer, which cannot be added to an ObjectList<Order>.")]
     public void GetCollectionWithObjectListThrowsWhenInvalidT ()
     {
       Query query = new Query ("CustomerTypeQuery");
@@ -98,7 +98,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Queries
 
     [Test]
     [ExpectedException (typeof (InvalidTypeException), ExpectedMessage = "The query definition specifies a collection type of "
-        + "Rubicon.Data.DomainObjects.UnitTests.TestDomain.SpecificOrderCollection, which is not compatible with ObjectList<Order>.")]
+        + "Remotion.Data.DomainObjects.UnitTests.TestDomain.SpecificOrderCollection, which is not compatible with ObjectList<Order>.")]
     public void GetCollectionWithObjectListThrowsWhenUnassignableCollectionType ()
     {
       Query query = new Query ("QueryWithSpecificCollectionType");

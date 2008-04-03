@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Definitions.Building;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Definitions.Building;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using System.Reflection;
-using Rubicon.Mixins.Context;
+using Remotion.Mixins.Context;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.Mixins.UnitTests.Definitions
+namespace Remotion.Mixins.UnitTests.Definitions
 {
   [TestFixture]
   public class DependencyDefinitionBuilderTests
@@ -64,8 +64,8 @@ namespace Rubicon.Mixins.UnitTests.Definitions
 
     [Test]
     [ExpectedException (typeof (ConfigurationException),
-        ExpectedMessage = "The dependency IBT3Mixin4 (mixins Rubicon.Mixins.UnitTests.SampleTypes.BT3Mixin7Face applied to class "
-                          + "Rubicon.Mixins.UnitTests.SampleTypes.BaseType3) is not fulfilled - public or protected method Foo could not be found on the base class.")]
+        ExpectedMessage = "The dependency IBT3Mixin4 (mixins Remotion.Mixins.UnitTests.SampleTypes.BT3Mixin7Face applied to class "
+                          + "Remotion.Mixins.UnitTests.SampleTypes.BaseType3) is not fulfilled - public or protected method Foo could not be found on the base class.")]
     public void ThrowsIfAggregateThisDependencyIsNotFullyImplemented ()
     {
       UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Face));
@@ -73,8 +73,8 @@ namespace Rubicon.Mixins.UnitTests.Definitions
 
     [Test]
     [ExpectedException (typeof (ConfigurationException),
-        ExpectedMessage = "The dependency IBT3Mixin4 (mixins Rubicon.Mixins.UnitTests.SampleTypes.BT3Mixin7Base applied to class "
-                          + "Rubicon.Mixins.UnitTests.SampleTypes.BaseType3) is not fulfilled - public or protected method Foo could not be found on the base class.")]
+        ExpectedMessage = "The dependency IBT3Mixin4 (mixins Remotion.Mixins.UnitTests.SampleTypes.BT3Mixin7Base applied to class "
+                          + "Remotion.Mixins.UnitTests.SampleTypes.BaseType3) is not fulfilled - public or protected method Foo could not be found on the base class.")]
     public void ThrowsIfAggregateBaseDependencyIsNotFullyImplemented ()
     {
       UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Base));
@@ -105,7 +105,7 @@ namespace Rubicon.Mixins.UnitTests.Definitions
       Assert.AreEqual (typeof (IBaseType31).GetMembers().Length, req1.Methods.Count);
 
       RequiredMethodDefinition member1 = req1.Methods[typeof (IBaseType31).GetMethod ("IfcMethod")];
-      Assert.AreEqual ("Rubicon.Mixins.UnitTests.SampleTypes.IBaseType31.IfcMethod", member1.FullName);
+      Assert.AreEqual ("Remotion.Mixins.UnitTests.SampleTypes.IBaseType31.IfcMethod", member1.FullName);
       Assert.AreSame (req1, member1.DeclaringRequirement);
       Assert.AreSame (req1, member1.Parent);
 
@@ -116,7 +116,7 @@ namespace Rubicon.Mixins.UnitTests.Definitions
       Assert.AreEqual (typeof (IBT3Mixin4).GetMembers().Length, req2.Methods.Count);
 
       RequiredMethodDefinition member2 = req2.Methods[typeof (IBT3Mixin4).GetMethod ("Foo")];
-      Assert.AreEqual ("Rubicon.Mixins.UnitTests.SampleTypes.IBT3Mixin4.Foo", member2.FullName);
+      Assert.AreEqual ("Remotion.Mixins.UnitTests.SampleTypes.IBT3Mixin4.Foo", member2.FullName);
       Assert.AreSame (req2, member2.DeclaringRequirement);
       Assert.AreSame (req2, member2.Parent);
 
@@ -327,7 +327,7 @@ namespace Rubicon.Mixins.UnitTests.Definitions
 
       ThisDependencyDefinition d1 = m7.ThisDependencies[typeof (ICBaseType3BT3Mixin4)];
       Assert.IsNull (d1.GetImplementer ());
-      Assert.AreEqual ("Rubicon.Mixins.UnitTests.SampleTypes.ICBaseType3BT3Mixin4", d1.FullName);
+      Assert.AreEqual ("Remotion.Mixins.UnitTests.SampleTypes.ICBaseType3BT3Mixin4", d1.FullName);
       Assert.AreSame (m7, d1.Parent);
 
       Assert.IsTrue (d1.IsAggregate);

@@ -2,11 +2,11 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Design;
-using Rubicon.Web.Utilities;
+using Remotion.Utilities;
+using Remotion.Web.UI.Design;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
   [ToolboxData ("<{0}:SingleView id=\"SingleView\" runat=\"server\">\r\n\t<View>\r\n\t</View>\r\n</{0}:SingleView>")]
   //[Designer( typeof (SingleViewDesigner))]

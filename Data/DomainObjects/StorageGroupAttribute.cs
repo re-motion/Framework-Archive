@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>The <see cref="StorageGroupAttribute"/> is the base class for defining storage groups in the domain layer.</summary>
   /// <remarks>

@@ -1,7 +1,7 @@
 using System;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Data.DomainObjects.Web.Test
+namespace Remotion.Data.DomainObjects.Web.Test
 {
   public partial class ImmediatelyReturningPage : WxePage
   {

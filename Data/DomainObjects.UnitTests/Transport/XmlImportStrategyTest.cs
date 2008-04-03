@@ -1,11 +1,11 @@
 using System;
 using System.Text;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Transport;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Transport;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Transport
+namespace Remotion.Data.DomainObjects.UnitTests.Transport
 {
   [TestFixture]
   public class XmlImportStrategyTest : ClientTransactionBaseTest

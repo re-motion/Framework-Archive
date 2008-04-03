@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Security.UnitTests.Core.SampleDomain;
+using Remotion.Development.UnitTesting;
+using Remotion.Security.UnitTests.Core.SampleDomain;
 
-namespace Rubicon.Security.UnitTests.Core
+namespace Remotion.Security.UnitTests.Core
 {
 
   [TestFixture]
@@ -33,8 +33,8 @@ namespace Rubicon.Security.UnitTests.Core
     [Test]
     [Ignore]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Enumerated type 'Rubicon.Security.UnitTests.Core.SampleDomain.TestAccessTypesWithoutAccessTypeAttribute' cannot be used as an access type. "
-        + "Valid access types must have the Rubicon.Security.AccessTypeAttribute applied.\r\nParameter name: accessType")]
+        ExpectedMessage = "Enumerated type 'Remotion.Security.UnitTests.Core.SampleDomain.TestAccessTypesWithoutAccessTypeAttribute' cannot be used as an access type. "
+        + "Valid access types must have the Remotion.Security.AccessTypeAttribute applied.\r\nParameter name: accessType")]
     public void GetAccessTypeFromEnumWithoutAccessTypeAttribute ()
     {
       AccessType.Get (new EnumWrapper (TestAccessTypesWithoutAccessTypeAttribute.First));

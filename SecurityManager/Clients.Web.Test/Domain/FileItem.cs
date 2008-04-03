@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Data.DomainObjects;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
-namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
+namespace Remotion.SecurityManager.Clients.Web.Test.Domain
 {
   [PermanentGuid ("DF0A8DB4-943C-4bd1-8B3B-276C8AA16BDB")]
   [Instantiable]

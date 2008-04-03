@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using NUnit.Framework;
-using Rubicon.CodeGeneration;
-using Rubicon.Core.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.CodeGeneration;
+using Remotion.Core.UnitTests.CodeGeneration.SampleTypes;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration
+namespace Remotion.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class ClassEmitterGenericsTest : CodeGenerationBaseTest

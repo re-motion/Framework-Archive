@@ -1,4 +1,4 @@
-namespace Rubicon.Core.UnitTests.Logging
+namespace Remotion.Core.UnitTests.Logging
 {
   public class SampleType
   {

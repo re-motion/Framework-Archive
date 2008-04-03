@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration.Internal;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Development.UnitTesting.Configuration
+namespace Remotion.Development.UnitTesting.Configuration
 {
   /// <summary>
   /// Fake implementation of the <see cref="IInternalConfigSystem"/> interface. Used by the <see cref="ConfigSystemHelper"/> to fake the 

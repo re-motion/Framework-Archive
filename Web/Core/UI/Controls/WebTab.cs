@@ -3,12 +3,12 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.Globalization;
-using Rubicon.Utilities;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
+using Remotion.Globalization;
+using Remotion.Utilities;
+using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.UI.Controls
+namespace Remotion.Web.UI.Controls
 {
 
 [TypeConverter (typeof (ExpandableObjectConverter))]
@@ -61,7 +61,7 @@ public class WebTab: IControlItem, IControlStateManager
 
   private void OwnerControl_PreRender(object sender, EventArgs e)
   {
-    if (Rubicon.Web.Utilities.ControlHelper.IsDesignMode (_ownerControl))
+    if (Remotion.Web.Utilities.ControlHelper.IsDesignMode (_ownerControl))
       return;
     PreRender();
   }

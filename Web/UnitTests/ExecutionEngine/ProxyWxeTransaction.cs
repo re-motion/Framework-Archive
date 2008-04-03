@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Data;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Development.UnitTesting;
+using Remotion.Data;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine
 {
 
   /// <summary> Provides a test implementation of the <see langword="abstract"/> <see cref="WxeTransactionBase{TTransaction}"/> type. </summary>

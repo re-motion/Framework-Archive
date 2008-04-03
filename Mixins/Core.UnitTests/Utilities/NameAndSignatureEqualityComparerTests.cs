@@ -1,12 +1,12 @@
 using System;
-using Rubicon.Mixins.Utilities;
+using Remotion.Mixins.Utilities;
 using NUnit.Framework;
 using System.Reflection;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.UnitTests.SampleTypes;
 using System.Collections.Generic;
-using Rubicon;
+using Remotion;
 
-namespace Rubicon.Mixins.UnitTests.Utilities
+namespace Remotion.Mixins.UnitTests.Utilities
 {
   [TestFixture]
   public class NameAndSignatureEqualityComparerTests

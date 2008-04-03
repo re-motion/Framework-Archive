@@ -1,9 +1,9 @@
 using System;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.TestDomain
 {
-  [EnumDescriptionResource ("Rubicon.ObjectBinding.UnitTests.Core.Globalization.EnumWithResources")]
+  [EnumDescriptionResource ("Remotion.ObjectBinding.UnitTests.Core.Globalization.EnumWithResources")]
   public enum EnumWithResources
   {
     Value1 = 1,

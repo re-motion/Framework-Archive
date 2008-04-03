@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 
-namespace Rubicon.Web.UnitTests.UI
+namespace Remotion.Web.UnitTests.UI
 {
 
   public class SiteMock : ISite

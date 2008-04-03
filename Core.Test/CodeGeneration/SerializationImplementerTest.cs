@@ -3,13 +3,13 @@ using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using NUnit.Framework;
-using Rubicon.CodeGeneration;
+using Remotion.CodeGeneration;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Rubicon.Core.UnitTests.CodeGeneration.SampleTypes;
-using Rubicon.Development.UnitTesting;
+using Remotion.Core.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.Development.UnitTesting;
 
-namespace Rubicon.Core.UnitTests.CodeGeneration
+namespace Remotion.Core.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class SerializationImplementerTest : CodeGenerationBaseTest
@@ -75,7 +75,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
 
     [Test]
     [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "No public or protected deserialization constructor in type "
-        + "Rubicon.Core.UnitTests.CodeGeneration.SampleTypes.SerializableClassWithoutCtor - serialization is not supported.")]
+        + "Remotion.Core.UnitTests.CodeGeneration.SampleTypes.SerializableClassWithoutCtor - serialization is not supported.")]
     public void ImplementGetObjectDataByDelegationThrowsIfBaseHasNoDeserializationCtor ()
     {
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "GetObjectDataByDelegation", typeof (SerializableClassWithoutCtor),
@@ -88,7 +88,7 @@ namespace Rubicon.Core.UnitTests.CodeGeneration
 
     [Test]
     [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "No public or protected GetObjectData in type "
-        + "Rubicon.Core.UnitTests.CodeGeneration.SampleTypes.SerializableClassWithPrivateGetObjectData - serialization is not supported.")]
+        + "Remotion.Core.UnitTests.CodeGeneration.SampleTypes.SerializableClassWithPrivateGetObjectData - serialization is not supported.")]
     public void ImplementGetObjectDataByDelegationThrowsIfBaseHasPrivateGetObjectData ()
     {
       CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "GetObjectDataByDelegation", typeof (SerializableClassWithPrivateGetObjectData),

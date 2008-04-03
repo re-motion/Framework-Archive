@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Remotion.Web.ExecutionEngine
 {
 
 /// <summary>

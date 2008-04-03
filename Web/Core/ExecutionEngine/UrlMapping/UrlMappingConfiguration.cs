@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Xml.Serialization;
-using Rubicon.Utilities;
-using Rubicon.Web.Configuration;
-using Rubicon.Web.Utilities;
+using Remotion.Utilities;
+using Remotion.Web.Configuration;
+using Remotion.Web.Utilities;
 
-namespace Rubicon.Web.ExecutionEngine.UrlMapping
+namespace Remotion.Web.ExecutionEngine.UrlMapping
 {
 
 /// <summary> Contains the configuration data for the URL mapping system of the execution engine. </summary>

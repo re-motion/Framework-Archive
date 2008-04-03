@@ -1,4 +1,4 @@
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.SampleTypes
+namespace Remotion.Mixins.UnitTests.CodeGeneration.SampleTypes
 {
   public class MixinWithOverridableMember : Mixin<object>
   {

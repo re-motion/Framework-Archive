@@ -1,6 +1,6 @@
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>Defines the property as managed in the <see cref="ClientTransaction"/> but not-persisted in the underlying data store.</summary>
   internal sealed class StorageClassTransactionAttribute : StorageClassAttribute

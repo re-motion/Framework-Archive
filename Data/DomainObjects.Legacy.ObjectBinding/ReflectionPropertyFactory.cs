@@ -1,13 +1,13 @@
 using System;
 using System.Reflection;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
-using Rubicon.NullableValueTypes;
-using Rubicon.ObjectBinding;
-using Rubicon.Utilities;
-using StringProperty=Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes.StringProperty;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes;
+using Remotion.NullableValueTypes;
+using Remotion.ObjectBinding;
+using Remotion.Utilities;
+using StringProperty=Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes.StringProperty;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding
+namespace Remotion.Data.DomainObjects.ObjectBinding
 {
 // TODO Doc: 
 public class ReflectionPropertyFactory
@@ -127,7 +127,7 @@ public class ReflectionPropertyFactory
       if (itemType != typeof (BindableDomainObject) && !itemType.IsSubclassOf (typeof (BindableDomainObject)))
       {
         throw new InvalidOperationException (string.Format ("The ItemType defined for the collection property '{0}' "
-            + "must be 'Rubicon.Data.DomainObjects.ObjectBinding.BindableDomainObject' or a subclass of it.", propertyInfo.Name));
+            + "must be 'Remotion.Data.DomainObjects.ObjectBinding.BindableDomainObject' or a subclass of it.", propertyInfo.Name));
       }
     }
     else if (propertyInfo.PropertyType.IsGenericType)

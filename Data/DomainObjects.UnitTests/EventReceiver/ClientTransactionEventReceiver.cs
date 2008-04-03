@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using NUnit.Framework;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
+namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
   public class ClientTransactionEventReceiver
   {

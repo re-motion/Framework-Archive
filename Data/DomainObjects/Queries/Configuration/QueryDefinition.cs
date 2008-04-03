@@ -1,10 +1,10 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Utilities;
+using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Queries;
+using Remotion.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Queries.Configuration
+namespace Remotion.Data.DomainObjects.Queries.Configuration
 {
 /// <summary>
 /// Represents the definition of a query.
@@ -39,15 +39,15 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// Initializes a new instance of the <b>QueryDefinition</b> class.
   /// </summary>
   /// <param name="queryID">The <paramref name="queryID"/> to be associated with this <b>QueryDefinition</b>. Must not be <see langword="null"/>.</param>
-  /// <param name="storageProviderID">The ID of the <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> responsible for executing instances of this <b>QueryDefinition</b>. Must not be <see langword="null"/>.</param>
-  /// <param name="statement">The <paramref name="statement"/> of the <b>QueryDefinition</b>. The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> specified through <paramref name="storageProviderID"/> must understand the syntax of the <paramref name="statement"/>. Must not be <see langword="null"/>.</param>
+  /// <param name="storageProviderID">The ID of the <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> responsible for executing instances of this <b>QueryDefinition</b>. Must not be <see langword="null"/>.</param>
+  /// <param name="statement">The <paramref name="statement"/> of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> specified through <paramref name="storageProviderID"/> must understand the syntax of the <paramref name="statement"/>. Must not be <see langword="null"/>.</param>
   /// <param name="queryType">One of the <see cref="QueryType"/> enumeration constants.</param>
   /// <exception cref="System.ArgumentNullException">
   ///   <paramref name="queryID"/> is <see langword="null"/>.<br /> -or- <br />
   ///   <paramref name="storageProviderID"/> is <see langword="null"/>.<br /> -or- <br />
   ///   <paramref name="statement"/> is <see langword="null"/>.
   /// </exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
+  /// <exception cref="Remotion.Utilities.ArgumentEmptyException">
   ///   <paramref name="queryID"/> is an empty string.<br /> -or- <br />
   ///   <paramref name="storageProviderID"/> is an empty string.<br /> -or- <br />
   ///   <paramref name="statement"/> is an empty string.
@@ -62,8 +62,8 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// Initializes a new instance of the <b>QueryDefinition</b> class.
   /// </summary>
   /// <param name="queryID">The <paramref name="queryID"/> to be associated with this <b>QueryDefinition</b>. Must not be <see langword="null"/>.</param>
-  /// <param name="storageProviderID">The ID of the <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> responsible for executing instances of this <b>QueryDefinition</b>. Must not be <see langword="null"/>.</param>
-  /// <param name="statement">The <paramref name="statement"/> of the <b>QueryDefinition</b>. The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> specified through <paramref name="storageProviderID"/> must understand the syntax of the <paramref name="statement"/>. Must not be <see langword="null"/>.</param>
+  /// <param name="storageProviderID">The ID of the <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> responsible for executing instances of this <b>QueryDefinition</b>. Must not be <see langword="null"/>.</param>
+  /// <param name="statement">The <paramref name="statement"/> of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> specified through <paramref name="storageProviderID"/> must understand the syntax of the <paramref name="statement"/>. Must not be <see langword="null"/>.</param>
   /// <param name="queryType">One of the <see cref="QueryType"/> enumeration constants.</param>
   /// <param name="collectionType">If <paramref name="queryType"/> specifies a collection to be returned, <paramref name="collectionType"/> specifies the type of the collection. If <paramref name="queryType"/> is <see langword="null"/>, <see cref="DomainObjectCollection"/> is used.</param>
   /// <exception cref="System.ArgumentNullException">
@@ -71,7 +71,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   ///   <paramref name="storageProviderID"/> is <see langword="null"/>.<br /> -or- <br />
   ///   <paramref name="statement"/> is <see langword="null"/>.
   /// </exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
+  /// <exception cref="Remotion.Utilities.ArgumentEmptyException">
   ///   <paramref name="queryID"/> is an empty string.<br /> -or- <br />
   ///   <paramref name="storageProviderID"/> is an empty string.<br /> -or- <br />
   ///   <paramref name="statement"/> is an empty string.
@@ -100,7 +100,7 @@ public class QueryDefinition : ISerializable, IObjectReference
         && !collectionType.IsSubclassOf (typeof (DomainObjectCollection)))
     {
       throw new ArgumentException (string.Format (
-          "The collectionType of query '{0}' must be 'Rubicon.Data.DomainObjects.DomainObjectCollection' or derived from it.", queryID), "collectionType");
+          "The collectionType of query '{0}' must be 'Remotion.Data.DomainObjects.DomainObjectCollection' or derived from it.", queryID), "collectionType");
     }
 
     _id = queryID;
@@ -140,7 +140,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   }
 
   /// <summary>
-  /// Gets the ID of the <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> responsible for executing instances of this <b>QueryDefinition</b>.
+  /// Gets the ID of the <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> responsible for executing instances of this <b>QueryDefinition</b>.
   /// </summary>
   public string StorageProviderID
   {
@@ -148,7 +148,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   }
 
   /// <summary>
-  /// Gets the <paramref name="statement"/> of the <b>QueryDefinition</b>. The <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/> specified through <see cref="StorageProviderID"/> must understand the syntax of the <b>Statement</b>.
+  /// Gets the <paramref name="statement"/> of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> specified through <see cref="StorageProviderID"/> must understand the syntax of the <b>Statement</b>.
   /// </summary>
   public string Statement
   {

@@ -8,8 +8,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.SecurityManager.Clients.Web.Test</RootNamespace>
-    <AssemblyName>Rubicon.SecurityManager.Clients.Web.Test</AssemblyName>
+    <RootNamespace>Remotion.SecurityManager.Clients.Web.Test</RootNamespace>
+    <AssemblyName>Remotion.SecurityManager.Clients.Web.Test</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

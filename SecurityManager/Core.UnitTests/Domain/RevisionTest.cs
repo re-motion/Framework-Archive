@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain;
+using Remotion.Data.DomainObjects;
+using Remotion.SecurityManager.Domain;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain
+namespace Remotion.SecurityManager.UnitTests.Domain
 {
   [TestFixture]
   public class RevisionTest : DomainTest

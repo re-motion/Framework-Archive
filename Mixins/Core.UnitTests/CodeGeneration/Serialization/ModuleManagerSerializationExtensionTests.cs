@@ -1,11 +1,11 @@
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Rubicon.Mixins.UnitTests.SampleTypes;
-using Rubicon.Mixins.CodeGeneration;
-using Rubicon.Utilities;
+using Remotion.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.UnitTests.CodeGeneration.Serialization
+namespace Remotion.Mixins.UnitTests.CodeGeneration.Serialization
 {
   [TestFixture]
   public class ModuleManagerSerializationExtensionTests
@@ -42,9 +42,9 @@ namespace Rubicon.Mixins.UnitTests.CodeGeneration.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "TypeTransformer returned type Rubicon.Mixins.UnitTests.SampleTypes.BaseType2, "
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "TypeTransformer returned type Remotion.Mixins.UnitTests.SampleTypes.BaseType2, "
         + "which is not compatible with the serialized mixin configuration. The configuration requires a type assignable to "
-            + "Rubicon.Mixins.UnitTests.SampleTypes.BaseType1.\r\nParameter name: typeTransformer")]
+            + "Remotion.Mixins.UnitTests.SampleTypes.BaseType1.\r\nParameter name: typeTransformer")]
     public void BeginDeserialization_InvalidTransformer ()
     {
       BaseType1 mixedObject = ObjectFactory.Create<BaseType1> ().With ();
@@ -179,7 +179,7 @@ namespace Rubicon.Mixins.UnitTests.CodeGeneration.Serialization
 
     [Test]
     [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage = "Argument objectReference is a "
-        + "Rubicon.Mixins.UnitTests.CodeGeneration.Serialization.ModuleManagerSerializationExtensionTests+DummyReference, which cannot be assigned to type "
+        + "Remotion.Mixins.UnitTests.CodeGeneration.Serialization.ModuleManagerSerializationExtensionTests+DummyReference, which cannot be assigned to type "
             + "System.Runtime.Serialization.IDeserializationCallback.\r\nParameter name: objectReference")]
     public void FinishDeserialization_ThrowsOnUnmixedObjects ()
     {

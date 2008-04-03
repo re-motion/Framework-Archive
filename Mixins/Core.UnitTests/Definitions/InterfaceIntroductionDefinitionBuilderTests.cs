@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.UnitTests.SampleTypes;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.SampleTypes;
 
-namespace Rubicon.Mixins.UnitTests.Definitions
+namespace Remotion.Mixins.UnitTests.Definitions
 {
   [TestFixture]
   public class InterfaceIntroductionDefinitionBuilderTests
@@ -217,7 +217,7 @@ namespace Rubicon.Mixins.UnitTests.Definitions
         Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IExplicit)));
 
         MethodInfo explicitMethod = typeof (MixinWithExplicitImplementation).GetMethod (
-            "Rubicon.Mixins.UnitTests.SampleTypes.IExplicit.Explicit", BindingFlags.Instance | BindingFlags.NonPublic);
+            "Remotion.Mixins.UnitTests.SampleTypes.IExplicit.Explicit", BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.IsNotNull (explicitMethod);
 
         MixinDefinition m1 = bt1.Mixins[typeof (MixinWithExplicitImplementation)];

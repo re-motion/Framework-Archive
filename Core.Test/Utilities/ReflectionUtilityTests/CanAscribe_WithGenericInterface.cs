@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Utilities.ReflectionUtilityTests
+namespace Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests
 {
   [TestFixture]
   public class CanAscribe_WithGenericInterface

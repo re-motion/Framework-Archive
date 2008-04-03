@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Core.UnitTests.Utilities.ArgumentUtilityTests
+namespace Remotion.Core.UnitTests.Utilities.ArgumentUtilityTests
 {
 	[TestFixture]
 	public class CheckType2

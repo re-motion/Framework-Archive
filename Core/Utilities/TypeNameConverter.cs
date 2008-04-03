@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace Rubicon.Utilities
+namespace Remotion.Utilities
 {
 
   public class TypeNameConverter : TypeConverter

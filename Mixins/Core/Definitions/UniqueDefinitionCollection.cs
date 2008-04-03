@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Mixins.Definitions
+namespace Remotion.Mixins.Definitions
 {
   [DebuggerDisplay ("Count = {Count}")]
   public class UniqueDefinitionCollection<TKey, TValue> : DefinitionCollectionBase<TKey, TValue>, IDefinitionCollection<TKey, TValue>

@@ -2,9 +2,9 @@ using System;
 using System.Reflection;
 
 [assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile (@"\Development\global/rubicon.snk")]
+[assembly: AssemblyKeyFile (@"\Development\global/remotion.snk")]
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Design.DelaySignAssembly
+namespace Remotion.Data.DomainObjects.UnitTests.Design.DelaySignAssembly
 {
   public class DelaySignClass
   {

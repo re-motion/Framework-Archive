@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.SecurityManager.UnitTests.Domain;
+using Remotion.Data.DomainObjects;
+using Remotion.SecurityManager.Domain;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.SecurityManager.UnitTests.Domain;
 
-namespace Rubicon.SecurityManager.UnitTests.Persistence
+namespace Remotion.SecurityManager.UnitTests.Persistence
 {
   [TestFixture]
   public class RevisionSqlProviderExtensionTest : DomainTest

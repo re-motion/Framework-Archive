@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using Rubicon.Collections;
-using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Reflection;
-using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Infrastructure;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Reflection;
+using Remotion.Utilities;
+using Remotion.Data.DomainObjects.Infrastructure;
 
-namespace Rubicon.Data.DomainObjects
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Base class for all objects that are persisted by the framework.
@@ -109,7 +109,7 @@ namespace Rubicon.Data.DomainObjects
     /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
     /// </summary>
     /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that is loaded. Must not be <see langword="null"/>.</param>
-    /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that is used to load the <see cref="DomainObject"/>.</param>
+    /// <param name="clientTransaction">The <see cref="Remotion.Data.DomainObjects.ClientTransaction"/> that is used to load the <see cref="DomainObject"/>.</param>
     /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> or <paramref name="clientTransaction"/>is <see langword="null"/>.</exception>
     /// <exception cref="Persistence.StorageProviderException">
@@ -132,7 +132,7 @@ namespace Rubicon.Data.DomainObjects
     /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
     /// </summary>
     /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that is loaded. Must not be <see langword="null"/>.</param>
-    /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that is used to load the <see cref="DomainObject"/>.</param>
+    /// <param name="clientTransaction">The <see cref="Remotion.Data.DomainObjects.ClientTransaction"/> that is used to load the <see cref="DomainObject"/>.</param>
     /// <param name="includeDeleted">Indicates if the method should return <see cref="DomainObject"/>s that are already deleted.</param>
     /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> or <paramref name="clientTransaction"/>is <see langword="null"/>.</exception>
@@ -280,7 +280,7 @@ namespace Rubicon.Data.DomainObjects
     /// <summary>
     /// Initializes a new <see cref="DomainObject"/>.
     /// </summary>
-    /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <see cref="DomainObject"/> should be part of. Must not be <see langword="null"/>.</param>
+    /// <param name="clientTransaction">The <see cref="Remotion.Data.DomainObjects.ClientTransaction"/> the <see cref="DomainObject"/> should be part of. Must not be <see langword="null"/>.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> is <see langword="null"/>.</exception>
     [Obsolete ("This constructor is obsolete, use the DomainObject() one in conjunction with ClientTransactionScope instead.", true)]
     protected DomainObject (ClientTransaction clientTransaction)
@@ -403,7 +403,7 @@ namespace Rubicon.Data.DomainObjects
 
     /// <summary>
     /// Gets the transaction used when this <see cref="DomainObject"/> is accessed. If a <see cref="DomainObject"/> is bound to a specific
-    /// <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>, this property will return that transaction, otherwise it returns
+    /// <see cref="Remotion.Data.DomainObjects.ClientTransaction"/>, this property will return that transaction, otherwise it returns
     /// <see cref="DomainObjects.ClientTransaction.Current"/>.
     /// </summary>
     /// <value>The transaction used by this <see cref="DomainObject"/> when it is accessed.</value>
@@ -508,7 +508,7 @@ namespace Rubicon.Data.DomainObjects
     /// Gets a value indicating the discarded status of the object in the <see cref="ClientTransaction"/>.
     /// </summary>
     /// <remarks>
-    /// For more information why and when an object is discarded see <see cref="Rubicon.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
+    /// For more information why and when an object is discarded see <see cref="Remotion.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
     /// </remarks>
     public bool IsDiscarded
     {
@@ -521,7 +521,7 @@ namespace Rubicon.Data.DomainObjects
     /// <param name="transaction">The transaction to check.</param>
     /// <returns>True if this object is discarded in the given <paramref name="transaction"/>; otherwise, false.</returns>
     /// <remarks>
-    /// For more information why and when an object is discarded see <see cref="Rubicon.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
+    /// For more information why and when an object is discarded see <see cref="Remotion.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
     /// </remarks>
     public bool IsDiscardedInTransaction (ClientTransaction transaction)
     {
@@ -640,7 +640,7 @@ namespace Rubicon.Data.DomainObjects
     /// <see cref="PropertyAccessFinished"/> yourself, be sure to finish the property access with exactly one call to 
     /// <see cref="PropertyAccessFinished"/> from a finally-block.</remarks>
     /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
     /// <exception cref="ArgumentException">The <paramref name="propertyName"/> parameter does not denote a valid property.</exception>
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
     protected internal virtual void PreparePropertyAccess (string propertyName)
@@ -739,7 +739,7 @@ namespace Rubicon.Data.DomainObjects
     /// <param name="propertyName">The name of the property referring to the relation. <paramref name="propertyName"/> must refer to a one-to-one or many-to-one relation. Must not be <see langword="null"/>.</param>
     /// <returns>The <see cref="DomainObject"/> that is the current related object.</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
     /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-one or many-to-one relation.</exception>
     [Obsolete ("This method is obsolete, use 'Properties' instead.")]
@@ -759,7 +759,7 @@ namespace Rubicon.Data.DomainObjects
     /// name. Making an automatic mechanism for this method would thus only lead to confusion or subtle errors and is therefore not implemented.
     /// </remarks>
     /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
     /// <exception cref="System.InvalidCastException"><paramref name="propertyName"/> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.</exception>
     /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-one or many-to-one relation.</exception>
@@ -776,7 +776,7 @@ namespace Rubicon.Data.DomainObjects
     /// <param name="propertyName">The name of the property referring to the relation. <paramref name="propertyName"/> must refer to a one-to-many relation. Must not be <see langword="null"/>.</param>
     /// <returns>A <see cref="DomainObjectCollection"/> containing the current related objects.</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
     /// <exception cref="System.InvalidCastException"><paramref name="propertyName"/> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.</exception>
     /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-many relation.</exception>
@@ -793,7 +793,7 @@ namespace Rubicon.Data.DomainObjects
     /// <param name="propertyName">The name of the property referring to the relation. <paramref name="propertyName"/> must refer to a one-to-many relation. Must not be <see langword="null"/>.</param>
     /// <returns>A <see cref="DomainObjectCollection"/> containing the original related objects.</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
     /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-many relation.</exception>
     [Obsolete ("This method is obsolete, use 'Properties' instead.")]
@@ -809,7 +809,7 @@ namespace Rubicon.Data.DomainObjects
     /// <param name="propertyName">The name of the property referring to the relation, that should relate to <paramref name="newRelatedObject"/>. Must not be <see langword="null"/>.</param>
     /// <param name="newRelatedObject">The new <see cref="DomainObject"/> that should be related; <see langword="null"/> indicates that no object should be referenced.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
     /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
     [Obsolete ("This method is obsolete, use 'Properties' instead.")]
     protected internal void SetRelatedObject (string propertyName, DomainObject newRelatedObject)
@@ -823,7 +823,7 @@ namespace Rubicon.Data.DomainObjects
     /// <summary>
     /// Method is invoked after the loading process of the object is completed.
     /// </summary>
-    /// <param name="loadMode">Specifies whether the whole domain object or only the <see cref="Rubicon.Data.DomainObjects.DataContainer"/> has been
+    /// <param name="loadMode">Specifies whether the whole domain object or only the <see cref="Remotion.Data.DomainObjects.DataContainer"/> has been
     /// newly loaded.</param>
     /// <remarks>
     /// Override this method to initialize <see cref="DomainObject"/>s that are loaded from the datasource.

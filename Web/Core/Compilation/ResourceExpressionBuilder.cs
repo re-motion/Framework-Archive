@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using Rubicon.Utilities;
+using Remotion.Utilities;
 using System.Web.Compilation;
 using System.CodeDom;
 using System.Web.UI;
-using Rubicon.Collections;
-using Rubicon.Globalization;
-using Rubicon.Web.UI.Globalization;
+using Remotion.Collections;
+using Remotion.Globalization;
+using Remotion.Web.UI.Globalization;
 
-namespace Rubicon.Web.Compilation
+namespace Remotion.Web.Compilation
 {
   //TODO: Check if this is realy the optimal solution
   [ExpressionPrefix ("res")]
@@ -29,7 +29,7 @@ namespace Rubicon.Web.Compilation
 
       IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (parent, true);
       if (resourceManager == null)
-        throw new InvalidOperationException ("Rubicon.Web.Compilation.ResourceExpressionBuilder can only be used on controls embedded within a parent implementing IObjectWithResources.");
+        throw new InvalidOperationException ("Remotion.Web.Compilation.ResourceExpressionBuilder can only be used on controls embedded within a parent implementing IObjectWithResources.");
       return resourceManager.GetString (resourceID);
     }
 

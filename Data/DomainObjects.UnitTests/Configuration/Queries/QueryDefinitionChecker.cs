@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.Queries.Configuration;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
+namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Queries
 {
   public class QueryDefinitionChecker
   {

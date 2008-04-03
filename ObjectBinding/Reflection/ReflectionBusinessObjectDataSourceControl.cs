@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
-using Rubicon.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Reflection.Legacy
+namespace Remotion.ObjectBinding.Reflection.Legacy
 {
 
 public class ReflectionBusinessObjectDataSourceControl: BusinessObjectDataSourceControl

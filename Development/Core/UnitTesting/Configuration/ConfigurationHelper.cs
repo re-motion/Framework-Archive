@@ -1,8 +1,8 @@
 using System.Configuration;
 using System.Xml;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Development.UnitTesting.Configuration
+namespace Remotion.Development.UnitTesting.Configuration
 {
   /// <summary>
   /// The <see cref="ConfigurationHelper"/> is a ulitilty class designed to deserialize xml-fragments into configuration elements.

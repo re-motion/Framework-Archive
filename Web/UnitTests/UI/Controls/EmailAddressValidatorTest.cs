@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Rubicon.Web.UnitTests.UI.Controls
+namespace Remotion.Web.UnitTests.UI.Controls
 {
 
 [TestFixture]

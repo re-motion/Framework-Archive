@@ -1,7 +1,7 @@
 using System;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
-namespace Rubicon.SecurityManager.UnitTests.Configuration
+namespace Remotion.SecurityManager.UnitTests.Configuration
 {
   public class TestOrganizationalStructureFactory : OrganizationalStructureFactory
   {

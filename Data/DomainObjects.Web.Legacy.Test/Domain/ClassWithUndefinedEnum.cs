@@ -1,12 +1,12 @@
 using System;
 
-using Rubicon.Globalization;
-using Rubicon.NullableValueTypes;
+using Remotion.Globalization;
+using Remotion.NullableValueTypes;
 
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain
+namespace Remotion.Data.DomainObjects.Web.Legacy.Test.Domain
 {
 [Serializable]
 public class ClassWithUndefinedEnum : BindableDomainObject

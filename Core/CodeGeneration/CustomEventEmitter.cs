@@ -1,9 +1,9 @@
 using System;
 using System.Reflection;
 using System.Reflection.Emit;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.CodeGeneration
+namespace Remotion.CodeGeneration
 {
   public enum EventKind
   {

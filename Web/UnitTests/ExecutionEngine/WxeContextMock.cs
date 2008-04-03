@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Specialized;
 using System.Web;
-using Rubicon.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine
 {
 
 /// <summary> Provides a <see cref="WxeContext"/> for simualating ASP.NET request life cycles. </summary>

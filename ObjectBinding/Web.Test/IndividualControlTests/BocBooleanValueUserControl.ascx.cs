@@ -2,14 +2,14 @@ using System;
 using System.Web;
 using System.Web.UI.WebControls;
 
-using Rubicon.ObjectBinding;
+using Remotion.ObjectBinding;
 
-using Rubicon.ObjectBinding.Sample;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Utilities;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -17,7 +17,7 @@ namespace OBWTest.IndividualControlTests
 public class BocBooleanValueUserControl : BaseUserControl
 {
   protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
   protected System.Web.UI.WebControls.Label DeceasedFieldValueLabel;
   protected System.Web.UI.WebControls.Label ReadOnlyDeceasedFieldValueLabel;
   protected System.Web.UI.WebControls.Label UnboundDeceasedFieldValueLabel;
@@ -27,22 +27,22 @@ public class BocBooleanValueUserControl : BaseUserControl
   protected System.Web.UI.WebControls.Label DisabledUnboundDeceasedFieldValueLabel;
   protected System.Web.UI.WebControls.Label DisabledUnboundReadOnlyDeceasedFieldValueLabel;
   protected System.Web.UI.WebControls.Label DeceasedFieldCheckedChangedLabel;
-  protected Rubicon.Web.UI.Controls.WebButton DeceasedTestSetNullButton;
-  protected Rubicon.Web.UI.Controls.WebButton DeceasedTestToggleValueButton;
-  protected Rubicon.Web.UI.Controls.WebButton ReadOnlyDeceasedTestSetNullButton;
-  protected Rubicon.Web.UI.Controls.WebButton ReadOnlyDeceasedTestToggleValueButton;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue DeceasedField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue ReadOnlyDeceasedField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue UnboundDeceasedField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue UnboundReadOnlyDeceasedField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue DisabledDeceasedField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue DisabledReadOnlyDeceasedField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue DisabledUnboundDeceasedField;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue DisabledUnboundReadOnlyDeceasedField;
+  protected Remotion.Web.UI.Controls.WebButton DeceasedTestSetNullButton;
+  protected Remotion.Web.UI.Controls.WebButton DeceasedTestToggleValueButton;
+  protected Remotion.Web.UI.Controls.WebButton ReadOnlyDeceasedTestSetNullButton;
+  protected Remotion.Web.UI.Controls.WebButton ReadOnlyDeceasedTestToggleValueButton;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue DeceasedField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue ReadOnlyDeceasedField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue UnboundDeceasedField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue UnboundReadOnlyDeceasedField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue DisabledDeceasedField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue DisabledReadOnlyDeceasedField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue DisabledUnboundDeceasedField;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue DisabledUnboundReadOnlyDeceasedField;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
@@ -66,13 +66,13 @@ public class BocBooleanValueUserControl : BaseUserControl
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    UnboundDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Deceased");
+    UnboundDeceasedField.Property = (Remotion.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Deceased");
     //UnboundDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    UnboundReadOnlyDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Deceased");
+    UnboundReadOnlyDeceasedField.Property = (Remotion.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Deceased");
     UnboundReadOnlyDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    DisabledUnboundDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Deceased");
+    DisabledUnboundDeceasedField.Property = (Remotion.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Deceased");
     DisabledUnboundDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    DisabledUnboundReadOnlyDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Deceased");
+    DisabledUnboundReadOnlyDeceasedField.Property = (Remotion.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Deceased");
     DisabledUnboundReadOnlyDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
 
     if (!IsPostBack)

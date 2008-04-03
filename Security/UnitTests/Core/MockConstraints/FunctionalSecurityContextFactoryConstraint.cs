@@ -1,8 +1,8 @@
 using System;
 using Rhino.Mocks.Constraints;
-using Rubicon.Utilities;
+using Remotion.Utilities;
 
-namespace Rubicon.Security.UnitTests.Core.MockConstraints
+namespace Remotion.Security.UnitTests.Core.MockConstraints
 {
   public class FunctionalSecurityContextFactoryConstraint : AbstractConstraint
   {

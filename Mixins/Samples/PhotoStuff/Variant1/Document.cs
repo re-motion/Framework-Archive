@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Mixins;
+using Remotion.Mixins;
 
-namespace Rubicon.Mixins.Samples.PhotoStuff.Variant1
+namespace Remotion.Mixins.Samples.PhotoStuff.Variant1
 {
   public class Document : Mixin<object>, IDocument
   {

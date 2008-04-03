@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
-using Rubicon.Configuration;
-using Rubicon.Utilities;
+using Remotion.Configuration;
+using Remotion.Utilities;
 
-namespace Rubicon.Development.UnitTesting.Configuration
+namespace Remotion.Development.UnitTesting.Configuration
 {
   /// <summary>
   /// Concrete implementation of <see cref="ConfigurationWrapper"/> that fakes the access to the configuration system. Use this class for setting up

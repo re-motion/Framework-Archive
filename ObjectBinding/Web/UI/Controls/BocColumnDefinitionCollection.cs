@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
-using Rubicon.ObjectBinding.Web.UI.Design;
+using Remotion.ObjectBinding.Web.UI.Design;
 
-namespace Rubicon.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> A collection of <see cref="BocColumnDefinition"/> objects. </summary>

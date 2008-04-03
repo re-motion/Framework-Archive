@@ -1,8 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.NullableValueTypes;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.NullableValueTypes;
 
-namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
+namespace Remotion.Data.DomainObjects.Legacy.UnitTests.TestDomain
 {
   [Serializable]
   public class Customer : Company

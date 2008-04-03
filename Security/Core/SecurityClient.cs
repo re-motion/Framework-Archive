@@ -1,11 +1,11 @@
 using System;
 using System.ComponentModel;
 using System.Security.Principal;
-using Rubicon.Security.Configuration;
-using Rubicon.Security.Metadata;
-using Rubicon.Utilities;
+using Remotion.Security.Configuration;
+using Remotion.Security.Metadata;
+using Remotion.Utilities;
 
-namespace Rubicon.Security
+namespace Remotion.Security
 {
   public class SecurityClient:INullObject
   {
