@@ -152,7 +152,7 @@
     <call target="release" />
   </target>
 
-  <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Web, Mixins, Mixins.MixerTool.Console,
+  <target name="all" depends="prereq, Core.Interfaces, Core, Development.Core, Development.CodeDom, Web, Mixins, Mixins.MixerTool.Console,
       ObjectBinding, ObjectBinding.Web, ObjectBinding.Web.Preview, ObjectBinding.Web.CodeGenerator, ObjectBinding.Web.CodeGenerator.Templates, 
       Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.Legacy.ObjectBinding, Data.DomainObjects.Legacy.ObjectBinding.Web, Data.DomainObjects.Web, 
       Data.DomainObjects.RdbmsTools, Data.DomainObjects.RdbmsTools.Console, 
@@ -185,7 +185,15 @@
     <call target="execute-buildstep" if="${build.step.get-sourcefiles}" />
   </target>
 
-  <target name="Core">
+  <target name="Core.Interfaces">
+    <property name="project.name" value="Core.Interfaces" />
+    <property name="project.dir" value="Core.Interfaces" />
+    <property name="project.output" value="Remotion.Interfaces" />
+    <property name="project.extension" value="dll" />
+    <call target="execute-buildstep" />
+  </target>
+
+  <target name="Core" depends="Core.Interfaces">
     <property name="project.name" value="Core" />
     <property name="project.dir" value="Core" />
     <property name="project.output" value="Remotion.Core" />
@@ -209,7 +217,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Data.DomainObjects" depends="Core">
+  <target name="Data.DomainObjects" depends="Core, Mixins">
     <property name="project.name" value="Data.DomainObjects" />
     <property name="project.dir" value="Data/DomainObjects" />
     <property name="project.output" value="Remotion.Data.DomainObjects" />
