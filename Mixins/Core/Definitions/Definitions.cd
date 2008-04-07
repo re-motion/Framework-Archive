@@ -1,26 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Font Name="Tahoma" Size="8.25" />
-  <Class Name="Remotion.Mixins.Definitions.BaseClassDefinition">
-    <Position X="3.75" Y="3.75" Width="2.25" />
+  <Class Name="Remotion.Mixins.Definitions.TargetClassDefinition">
+    <Position X="3.75" Y="4.5" Width="2.25" />
     <TypeIdentifier>
-      <FileName>Definitions\BaseClassDefinition.cs</FileName>
-      <HashCode>AIQAAAAIAAAAEAACAAAAQAEQQAAAACAAAAAQAQQIAIA=</HashCode>
+      <FileName>Definitions\TargetClassDefinition.cs</FileName>
+      <HashCode>AAQAABAMBBAAEAACAAAAQAEQQAAAACgAAAAQAQQIAIA=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="ConfigurationContext" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Field Name="Mixins" />
-      <Field Name="IntroducedInterfaces" />
-      <Field Name="RequiredBaseCallTypes" />
       <Field Name="RequiredFaceTypes" />
+      <Field Name="RequiredBaseCallTypes" />
+      <Field Name="IntroducedInterfaces" />
     </ShowAsCollectionAssociation>
     <Members>
       <Field Name="_configurationContext" Hidden="true" />
+      <Field Name="_introducedAttributes" Hidden="true" />
       <Field Name="_mixinTypeInstantiator" Hidden="true" />
-      <Method Name="Accept" Hidden="true" />
-      <Method Name="BaseClassDefinition" Hidden="true" />
       <Method Name="GetAllMixinEvents" Hidden="true" />
       <Method Name="GetAllMixinMethods" Hidden="true" />
       <Method Name="GetAllMixinProperties" Hidden="true" />
@@ -35,11 +34,11 @@
     </AssociationLine>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Remotion.Mixins.Definitions.BaseClassDefinitionCache">
+  <Class Name="Remotion.Mixins.Definitions.TargetClassDefinitionCache">
     <Position X="0.5" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <FileName>Definitions\BaseClassDefinitionCache.cs</FileName>
-      <HashCode>AAAAAAAAAICCAAAAAAAAAAAQAAAAAAAAAAAEIAAAAAA=</HashCode>
+      <FileName>Definitions\TargetClassDefinitionCache.cs</FileName>
+      <HashCode>AAAAAAAEAICCAAAAAAAAAAAQAAAAAAAAAAAAIAAAAAA=</HashCode>
     </TypeIdentifier>
     <Members>
       <Field Name="_cache" Hidden="true" />
@@ -48,81 +47,70 @@
     </Members>
   </Class>
   <Class Name="Remotion.Mixins.Context.ClassContext" Collapsed="true">
-    <Position X="0.5" Y="4" Width="1.25" />
+    <Position X="0.5" Y="4.75" Width="1.25" />
     <TypeIdentifier>
       <FileName>Context\ClassContext.cs</FileName>
-      <HashCode>ACAAmgAAAiBEACQMgABAgAAAAACAYZAAAQAAQAAYABI=</HashCode>
+      <HashCode>AAAAAAAWACAAgAQEgABAgAEQAAGAAIAAASAAAAAIAAA=</HashCode>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="Remotion.Mixins.Definitions.MixinDefinition">
-    <Position X="10.5" Y="3.75" Width="2.25" />
+    <Position X="10.5" Y="4.5" Width="2.25" />
     <TypeIdentifier>
       <FileName>Definitions\MixinDefinition.cs</FileName>
-      <HashCode>AIAACgAAIAAAAAgACAAAQAAAAgAAAAAAAgAAAAAAAAw=</HashCode>
+      <HashCode>IAAEAAAAIAAAAAgQAAgAwAAQQgAAAAgAAgAAAAAAAAw=</HashCode>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Field Name="InterfaceIntroductions" />
-      <Field Name="BaseDependencies" />
       <Field Name="ThisDependencies" />
+      <Field Name="BaseDependencies" />
+      <Field Name="MixinDependencies" />
     </ShowAsCollectionAssociation>
     <Members>
-      <Field Name="_baseClass" Hidden="true" />
+      <Field Name="_acceptsAlphabeticOrdering" Hidden="true" />
       <Field Name="_mixinIndex" Hidden="true" />
-      <Method Name="Accept" Hidden="true" />
-      <Property Name="BaseClass" Hidden="true" />
+      <Field Name="_targetClass" Hidden="true" />
       <Method Name="GetAllOverrides" Hidden="true" />
-      <Method Name="HasOverriddenMembers" Hidden="true" />
       <Method Name="MixinDefinition" Hidden="true" />
       <Property Name="Parent" Hidden="true" />
     </Members>
-    <AssociationLine Name="InterfaceIntroductions" Type="Remotion.Mixins.Definitions.InterfaceIntroductionDefinition" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="11.344" Y="4.851" />
-        <Point X="11.344" Y="7.187" />
-        <Point X="11" Y="7.187" />
-      </Path>
-    </AssociationLine>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Remotion.Mixins.Definitions.InterfaceIntroductionDefinition">
-    <Position X="8" Y="7" Width="3" />
+    <Position X="8" Y="7.75" Width="3" />
     <TypeIdentifier>
       <FileName>Definitions\InterfaceIntroductionDefinition.cs</FileName>
-      <HashCode>AIAAAgAAiAAAAIQAAAAAQAAYAAAAACAAAQAAAAAAAAA=</HashCode>
+      <HashCode>AIAAAAAAiAAAAIQQAAAAQAAYAAAAACAAAQAAAAAAAAA=</HashCode>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
-      <Field Name="IntroducedEvents" />
       <Field Name="IntroducedMethods" />
       <Field Name="IntroducedProperties" />
+      <Field Name="IntroducedEvents" />
     </ShowAsCollectionAssociation>
     <Members>
       <Field Name="_implementer" Hidden="true" />
       <Field Name="_type" Hidden="true" />
       <Method Name="Accept" Hidden="true" />
-      <Property Name="BaseClass" Hidden="true" />
       <Method Name="InterfaceIntroductionDefinition" Hidden="true" />
       <Property Name="Parent" Hidden="true" />
     </Members>
     <Lollipop Orientation="Bottom" Position="0.232" />
   </Class>
-  <Class Name="Remotion.Mixins.Definitions.ClassDefinition">
+  <Class Name="Remotion.Mixins.Definitions.ClassDefinitionBase">
     <Position X="5.25" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <FileName>Definitions\ClassDefinition.cs</FileName>
-      <HashCode>AIAAAAAAEAAAAIQAAAACQAQAAggAAAAEAQAAAAAKAkA=</HashCode>
+      <FileName>Definitions\ClassDefinitionBase.cs</FileName>
+      <HashCode>AKAAAQAAAAAAAIQECAACQAQEAggAAAgEAQAAAAAKAkA=</HashCode>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
-      <Field Name="Events" />
       <Field Name="Methods" />
       <Field Name="Properties" />
+      <Field Name="Events" />
     </ShowAsCollectionAssociation>
     <Members>
       <Field Name="_customAttributes" Hidden="true" />
+      <Field Name="_implementedInterfaces" Hidden="true" />
       <Field Name="_type" Hidden="true" />
       <Method Name="Accept" Hidden="true" />
-      <Method Name="AcceptForChildren" Hidden="true" />
-      <Method Name="ClassDefinition" Hidden="true" />
       <Method Name="GetAdjustedInterfaceMap" Hidden="true" />
       <Method Name="GetAllMembers" Hidden="true" />
       <Property Name="Parent" Hidden="true" />
@@ -133,7 +121,7 @@
     <Position X="9.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <FileName>Definitions\EventDefinition.cs</FileName>
-      <HashCode>AIIAAAAAAQAAAAABAAgKAAAAAAAIAAAAKAAIAAAAQAQ=</HashCode>
+      <HashCode>AAIAAAAAAQAAAAABAAgKAAAAAAAIAAgAKAAIAAAAQAQ=</HashCode>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
@@ -141,7 +129,7 @@
     <Position X="9.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <FileName>Definitions\MethodDefinition.cs</FileName>
-      <HashCode>AIAAAAAAAQAACAQAAAgCAAAAAAAIAAAACAAIAAAAQAQ=</HashCode>
+      <HashCode>AAAAAAAAARAACAQAAAgCAAAAAAAIAAgACAAIAAAAQAQ=</HashCode>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
@@ -149,7 +137,7 @@
     <Position X="9.75" Y="1" Width="1.5" />
     <TypeIdentifier>
       <FileName>Definitions\PropertyDefinition.cs</FileName>
-      <HashCode>AIAAgAAAAQiBAAAAAAgCAAAAACAIAAAACAAIAAAAQAQ=</HashCode>
+      <HashCode>AAAAgAAAAQiBAAAAAAgCAAAAACAIAAgACAAIAAAAQAQ=</HashCode>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
@@ -157,7 +145,7 @@
     <Position X="12.75" Y="0.75" Width="2.25" />
     <TypeIdentifier>
       <FileName>Definitions\MemberDefinition.cs</FileName>
-      <HashCode>AIAAEgAAEQAAAIAAAAACYAQAACIIAAAECAACADIICAQ=</HashCode>
+      <HashCode>AIAAEgAEBQAAAIAAAAACYAQQACIIAAgECAACADIICAQ=</HashCode>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="Overrides" />
@@ -168,7 +156,6 @@
       <Field Name="_internalOverridesWrapper" Hidden="true" />
       <Field Name="_memberInfo" Hidden="true" />
       <Method Name="Accept" Hidden="true" />
-      <Method Name="AcceptForChildren" Hidden="true" />
       <Method Name="AddOverride" Hidden="true" />
       <Method Name="CanBeOverriddenBy" Hidden="true" />
       <Property Name="DeclaringClass" Hidden="true" />
@@ -180,52 +167,52 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Remotion.Mixins.Definitions.EventIntroductionDefinition" Collapsed="true">
-    <Position X="12.75" Y="9.5" Width="1.5" />
+    <Position X="12.75" Y="10.25" Width="1.5" />
     <TypeIdentifier>
       <FileName>Definitions\EventIntroductionDefinition.cs</FileName>
       <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
     <InheritanceLine Type="Remotion.Mixins.Definitions.MemberIntroductionDefinition&lt;TMemberInfo, TMemberDefinition&gt;" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="15.75" Y="9.062" />
-        <Point X="15.375" Y="9.062" />
+        <Point X="15.75" Y="9.812" />
         <Point X="15.375" Y="9.812" />
-        <Point X="14.25" Y="9.812" />
+        <Point X="15.375" Y="10.562" />
+        <Point X="14.25" Y="10.562" />
       </Path>
     </InheritanceLine>
   </Class>
   <Class Name="Remotion.Mixins.Definitions.MethodIntroductionDefinition" Collapsed="true">
-    <Position X="12.75" Y="7.5" Width="1.5" />
+    <Position X="12.75" Y="8.25" Width="1.5" />
     <TypeIdentifier>
       <FileName>Definitions\MethodIntroductionDefinition.cs</FileName>
       <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
     <InheritanceLine Type="Remotion.Mixins.Definitions.MemberIntroductionDefinition&lt;TMemberInfo, TMemberDefinition&gt;" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="15.75" Y="9.062" />
-        <Point X="15.375" Y="9.062" />
-        <Point X="15.375" Y="7.875" />
-        <Point X="14.25" Y="7.875" />
+        <Point X="15.75" Y="9.812" />
+        <Point X="15.375" Y="9.812" />
+        <Point X="15.375" Y="8.625" />
+        <Point X="14.25" Y="8.625" />
       </Path>
     </InheritanceLine>
   </Class>
   <Class Name="Remotion.Mixins.Definitions.PropertyIntroductionDefinition" Collapsed="true">
-    <Position X="12.75" Y="8.5" Width="1.5" />
+    <Position X="12.75" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <FileName>Definitions\PropertyIntroductionDefinition.cs</FileName>
       <HashCode>AIAAAAAIAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAA=</HashCode>
     </TypeIdentifier>
     <InheritanceLine Type="Remotion.Mixins.Definitions.MemberIntroductionDefinition&lt;TMemberInfo, TMemberDefinition&gt;" FixedFromPoint="true">
       <Path>
-        <Point X="15.75" Y="9.062" />
-        <Point X="15.375" Y="9.062" />
-        <Point X="15.375" Y="8.781" />
-        <Point X="14.25" Y="8.781" />
+        <Point X="15.75" Y="9.812" />
+        <Point X="15.375" Y="9.812" />
+        <Point X="15.375" Y="9.531" />
+        <Point X="14.25" Y="9.531" />
       </Path>
     </InheritanceLine>
   </Class>
   <Class Name="Remotion.Mixins.Definitions.MemberIntroductionDefinition&lt;TMemberInfo, TMemberDefinition&gt;">
-    <Position X="15.75" Y="8.25" Width="2.5" />
+    <Position X="15.75" Y="9" Width="2.5" />
     <TypeIdentifier>
       <FileName>Definitions\MemberIntroductionDefinition.cs</FileName>
       <HashCode>AIAAAAAAAACQAIAAAAAAQAAAAAEACAAAAAAAAAACAAQ=</HashCode>
@@ -242,54 +229,38 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Remotion.Mixins.Definitions.BaseDependencyDefinition" Collapsed="true">
-    <Position X="14.75" Y="3.5" Width="2" />
+    <Position X="16.25" Y="7" Width="2" />
     <TypeIdentifier>
       <FileName>Definitions\BaseDependencyDefinition.cs</FileName>
-      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AIAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Remotion.Mixins.Definitions.ThisDependencyDefinition" Collapsed="true">
-    <Position X="14.75" Y="4.25" Width="2" />
+    <Position X="16.25" Y="6.25" Width="2" />
     <TypeIdentifier>
       <FileName>Definitions\ThisDependencyDefinition.cs</FileName>
-      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AIAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Remotion.Mixins.Definitions.RequiredBaseCallTypeDefinition" Collapsed="true">
-    <Position X="5.25" Y="6.75" Width="2.25" />
+    <Position X="3.5" Y="9.75" Width="2.25" />
     <TypeIdentifier>
       <FileName>Definitions\RequiredBaseCallTypeDefinition.cs</FileName>
-      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Remotion.Mixins.Definitions.RequiredFaceTypeDefinition" Collapsed="true">
-    <Position X="2.25" Y="6.75" Width="2.25" />
+    <Position X="1" Y="9.75" Width="2.25" />
     <TypeIdentifier>
       <FileName>Definitions\RequiredFaceTypeDefinition.cs</FileName>
-      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
-  <Class Name="Remotion.Mixins.Definitions.RequirementDefinitionBase&lt;TSelf, TDependency&gt;">
-    <Position X="3.5" Y="8.25" Width="2.5" />
-    <TypeIdentifier>
-      <FileName>Definitions\RequirementDefinitionBase.cs</FileName>
-      <HashCode>AIAACgAAAABAAIQAAAAAQAACAAAAAAAAAQAABAAAIAA=</HashCode>
-    </TypeIdentifier>
-    <Members>
-      <Field Name="_baseClass" Hidden="true" />
-      <Field Name="_type" Hidden="true" />
-      <Method Name="Accept" Hidden="true" />
-      <Property Name="BaseClass" Hidden="true" />
-      <Property Name="Parent" Hidden="true" />
-      <Method Name="RequirementDefinitionBase" Hidden="true" />
-    </Members>
-    <Lollipop Orientation="Left" Position="0.173" />
-  </Class>
-  <Class Name="Remotion.Mixins.Definitions.DependencyDefinitionBase&lt;TRequirement, TSelf&gt;">
-    <Position X="17.75" Y="4.5" Width="2.5" />
+  <Class Name="Remotion.Mixins.Definitions.DependencyDefinitionBase">
+    <Position X="19.75" Y="6" Width="2.5" />
     <TypeIdentifier>
       <FileName>Definitions\DependencyDefinitionBase.cs</FileName>
-      <HashCode>EIAAAACAiAAAAIAAAAAAQgAgAAAAQAAAACCAAAAAIAA=</HashCode>
+      <HashCode>EJAAAACAiAAAAIAAAAAAQgAgAAAAQAAAACAAAAAAIAA=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Depender" />
@@ -300,16 +271,37 @@
       <Field Name="_requirement" Hidden="true" />
       <Method Name="Accept" Hidden="true" />
       <Method Name="DependencyDefinitionBase" Hidden="true" />
-      <Method Name="HasSameDependerAsAggregator" Hidden="true" />
       <Property Name="Parent" Hidden="true" />
     </Members>
-    <AssociationLine Name="Depender" Type="Remotion.Mixins.Definitions.MixinDefinition" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="17.75" Y="6.08" />
-        <Point X="12.5" Y="6.08" />
-        <Point X="12.5" Y="4.851" />
-      </Path>
-    </AssociationLine>
     <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Remotion.Mixins.Definitions.RequirementDefinitionBase">
+    <Position X="2.75" Y="11.25" Width="3.75" />
+    <TypeIdentifier>
+      <FileName>Definitions\RequirementDefinitionBase.cs</FileName>
+      <HashCode>IIAAAAAAAABAAIQQAAAAQAACAAAAAAAAARAABAAAIEA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_targetClass" Hidden="true" />
+      <Field Name="_type" Hidden="true" />
+      <Method Name="Accept" Hidden="true" />
+      <Property Name="Parent" Hidden="true" />
+      <Method Name="RequirementDefinitionBase" Hidden="true" />
+    </Members>
+    <Lollipop Orientation="Left" Position="0.173" />
+  </Class>
+  <Class Name="Remotion.Mixins.Definitions.MixinDependencyDefinition" Collapsed="true">
+    <Position X="16.25" Y="7.75" Width="2" />
+    <TypeIdentifier>
+      <FileName>Definitions\MixinDependencyDefinition.cs</FileName>
+      <HashCode>AIAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Remotion.Mixins.Definitions.RequiredMixinTypeDefinition" Collapsed="true">
+    <Position X="6" Y="9.75" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>Definitions\RequiredMixinTypeDefinition.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
   </Class>
 </ClassDiagram>

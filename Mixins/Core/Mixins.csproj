@@ -239,11 +239,7 @@
     <None Include="Definitions\Definitions.cd" />
     <None Include="Context\Context.cd" />
     <None Include="Mixins.build" />
-    <None Include="Mixins.cd" />
     <None Include="Validation\Validation.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Validations.txt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
