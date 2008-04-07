@@ -75,10 +75,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Mixins.Samples.build" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
-    <Compile Include="UnitTests\Aktology\AktenTests.cs" />
-    <Compile Include="UnitTests\DisposableMixinTests.cs" />
-    <Compile Include="UnitTests\DynamicMixinBuilderTests.cs" />
-    <Compile Include="UnitTests\EquatableMixinTests.cs" />
+    <Compile Include="UnitTests\Aktology\AktenTest.cs" />
+    <Compile Include="UnitTests\DisposableMixinTest.cs" />
+    <Compile Include="UnitTests\DynamicMixinBuilderTest.cs" />
+    <Compile Include="UnitTests\EquatableMixinTest.cs" />
     <Compile Include="UnitTests\PhotoStuff\Variant3.cs" />
     <Compile Include="UnitTests\PhotoStuff\Variant2.cs" />
     <Compile Include="UnitTests\PhotoStuff\Variant1.cs" />
