@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Remotion.CooNet.UnitTests">  
+<project xmlns="nant-schema" name="Remotion.Core.UnitTests">  
 
   <target name="build" description="perform a build">
 
@@ -10,6 +10,8 @@
           debug="${build.debug}"
           define="${build.csc.define}">
       <nowarn>
+        <!--  unused member warning  -->
+        <warning number="0067" />
       </nowarn> 
       <sources failonempty="true">
         <include name="**/*.cs" />
@@ -23,6 +25,7 @@
         <include name="${build.test.outputdir}/Rhino.Mocks.dll" />
         <include name="${build.test.outputdir}/Remotion.Core.dll" />
         <include name="${build.test.outputdir}/Remotion.Development.dll" />
+        <include name="${build.test.outputdir}/Remotion.Mixins.Samples.dll"/>
         <include name="${build.test.outputdir}/nunit.framework.dll" />
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Configuration.dll"/>
@@ -40,6 +43,11 @@
       </fileset>
     </copy>
 
+    <copy todir="${build.test.outputdir}" overwrite="true">
+      <fileset>
+        <include name="Mixins/MixerTool/SampleAssembly/*.cs" />
+      </fileset>
+    </copy>
   </target>
 
 </project>

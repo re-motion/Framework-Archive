@@ -1,12 +1,10 @@
 using System;
-using System.Reflection.Emit;
-using NUnit.Framework;
-using Rhino.Mocks;
-using Remotion.CodeGeneration;
-
-using Mocks_Is = Rhino.Mocks.Constraints.Is;
-using Remotion.CodeGeneration.DPExtensions;
 using System.Reflection;
+using NUnit.Framework;
+using Remotion.CodeGeneration;
+using Remotion.CodeGeneration.DPExtensions;
+using Rhino.Mocks;
+using Mocks_Is = Rhino.Mocks.Constraints.Is;
 
 namespace Remotion.Core.UnitTests.CodeGeneration
 {

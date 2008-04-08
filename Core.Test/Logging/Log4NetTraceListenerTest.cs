@@ -6,8 +6,8 @@ using log4net.Config;
 using log4net.Core;
 using log4net.Repository;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Remotion.Logging;
+using Rhino.Mocks;
 
 namespace Remotion.Core.UnitTests.Logging
 {

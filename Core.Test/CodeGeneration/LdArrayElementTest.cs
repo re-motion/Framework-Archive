@@ -1,11 +1,10 @@
 using System;
-using System.Reflection;
+using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using NUnit.Framework;
 using Remotion.CodeGeneration;
 using Remotion.CodeGeneration.DPExtensions;
 using Remotion.Core.UnitTests.CodeGeneration.SampleTypes;
-using System.Reflection.Emit;
 
 namespace Remotion.Core.UnitTests.CodeGeneration
 {

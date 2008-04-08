@@ -1,4 +1,5 @@
 using System.Reflection;
+
 //
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -50,8 +51,8 @@ using System.Reflection;
 //   (*) Delay Signing is an advanced option - see the Microsoft .NET Framework
 //       documentation for more information on this.
 //
-#pragma warning disable 1699
-[assembly: AssemblyDelaySign (false)]
-[assembly: AssemblyKeyFile(@"\Development\global/remotion.snk")]
-[assembly: AssemblyKeyName("")]
-#pragma warning restore 1699
+//#pragma warning disable 1699
+//[assembly: AssemblyDelaySign (false)]
+//[assembly: AssemblyKeyFile(@"\Development\global/remotion.snk")]
+//[assembly: AssemblyKeyName("")]
+//#pragma warning restore 1699

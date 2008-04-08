@@ -23,7 +23,6 @@
         <include asis="true" name="${build.outputdir}/Remotion.Data.DomainObjects.dll"/>
         <include asis="true" name="${build.outputdir}/Remotion.Data.DomainObjects.Legacy.dll"/>
         <include asis="true" name="${build.outputdir}/Remotion.Data.DomainObjects.Legacy.ObjectBinding.dll"/>
-        <include asis="true" name="${build.outputdir}/Remotion.Mixins.dll"/>
         <include asis="true" name="${build.outputdir}/Remotion.ObjectBinding.dll"/>
         <include asis="true" name="${build.outputdir}/Remotion.ObjectBinding.Web.dll"/>
         <include asis="true" name="${build.outputdir}/Remotion.Web.dll"/>

@@ -47,7 +47,7 @@ public class NameValueCollectionUtilityTest
     NameValueCollection actual = NameValueCollectionUtility.Clone (_collection);
     
     Assert.IsNotNull (actual);
-    Assert.IsFalse (object.ReferenceEquals (_collection, actual));
+    Assert.IsFalse (ReferenceEquals (_collection, actual));
     Assert.AreEqual (3, actual.Count);
 
     Assert.AreEqual ("FirstKey", actual.GetKey (0));
@@ -123,7 +123,7 @@ public class NameValueCollectionUtilityTest
     NameValueCollection actual = NameValueCollectionUtility.Merge (_collection, null);
     
     Assert.IsNotNull (actual);
-    Assert.IsFalse (object.ReferenceEquals (_collection, actual));
+    Assert.IsFalse (ReferenceEquals (_collection, actual));
     Assert.AreEqual (3, actual.Count);
 
     Assert.AreEqual ("FirstKey", actual.GetKey (0));
@@ -141,7 +141,7 @@ public class NameValueCollectionUtilityTest
     NameValueCollection actual = NameValueCollectionUtility.Merge (null, _collection);
     
     Assert.IsNotNull (actual);
-    Assert.IsFalse (object.ReferenceEquals (_collection, actual));
+    Assert.IsFalse (ReferenceEquals (_collection, actual));
     Assert.AreEqual (3, actual.Count);
 
     Assert.AreEqual ("FirstKey", actual.GetKey (0));
@@ -159,7 +159,7 @@ public class NameValueCollectionUtilityTest
     NameValueCollection actual = NameValueCollectionUtility.Merge (_collection, _otherCollection);
 
     Assert.IsNotNull (actual);
-    Assert.IsFalse (object.ReferenceEquals (_collection, actual));
+    Assert.IsFalse (ReferenceEquals (_collection, actual));
     Assert.AreEqual (5, actual.Count);
 
     Assert.AreEqual ("FirstKey", actual.GetKey (0));

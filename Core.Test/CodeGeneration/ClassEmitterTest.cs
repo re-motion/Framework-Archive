@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
-using NUnit.Framework;
-using Castle.DynamicProxy;
-using Remotion.CodeGeneration;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using NUnit.Framework;
+using Remotion.CodeGeneration;
 using Remotion.CodeGeneration.DPExtensions;
 using Remotion.Core.UnitTests.CodeGeneration.SampleTypes;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Core.UnitTests.CodeGeneration
 {
@@ -576,7 +574,7 @@ namespace Remotion.Core.UnitTests.CodeGeneration
     [Test]
     public void ForceUnsignedTrue ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "GetPublicMethodWrapper", typeof (ClassWithProtectedMethod),
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "GetPublicMethodWrapper", typeof (object),
           Type.EmptyTypes, TypeAttributes.Public, true);
       Type t = classEmitter.BuildType ();
       Assert.IsFalse (StrongNameUtil.IsAssemblySigned (t.Assembly));
@@ -585,7 +583,7 @@ namespace Remotion.Core.UnitTests.CodeGeneration
     [Test]
     public void ForceUnsignedFalse()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "GetPublicMethodWrapper", typeof (ClassWithProtectedMethod),
+      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "GetPublicMethodWrapper", typeof (object),
           Type.EmptyTypes, TypeAttributes.Public, false);
       Type t = classEmitter.BuildType ();
       Assert.IsTrue (StrongNameUtil.IsAssemblySigned (t.Assembly));

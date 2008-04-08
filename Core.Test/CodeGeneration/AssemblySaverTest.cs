@@ -1,8 +1,8 @@
 using System;
 using System.IO;
 using System.Reflection;
-using NUnit.Framework;
 using Castle.DynamicProxy;
+using NUnit.Framework;
 using Remotion.CodeGeneration;
 using Remotion.CodeGeneration.DPExtensions;
 

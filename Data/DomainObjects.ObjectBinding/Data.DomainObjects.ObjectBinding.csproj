@@ -70,10 +70,6 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core %28Core\Core%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Mixins\Core\Mixins.csproj">
-      <Project>{18C1D36B-CC05-4334-BF29-DE5A886DA89D}</Project>
-      <Name>Mixins %28Mixins\Mixins%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.csproj">
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
       <Name>ObjectBinding %28ObjectBinding\ObjectBinding%29</Name>

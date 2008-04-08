@@ -101,10 +101,6 @@
       <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
       <Name>Development.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Mixins\Core\Mixins.csproj">
-      <Project>{18C1D36B-CC05-4334-BF29-DE5A886DA89D}</Project>
-      <Name>Mixins %28Mixins\Mixins%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.csproj">
       <Name>ObjectBinding %28ObjectBinding\ObjectBinding%29</Name>
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
@@ -121,7 +117,7 @@
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
-      <Name>Data.DomainObjects</Name>
+      <Name>Data.DomainObjects %28Data.DomainObjects\Data.DomainObjects%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

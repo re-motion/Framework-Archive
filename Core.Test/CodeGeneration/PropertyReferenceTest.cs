@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using NUnit.Framework;
 using Remotion.CodeGeneration;

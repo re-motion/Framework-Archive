@@ -1,8 +1,6 @@
 using System;
-using System.Globalization;
 using NUnit.Framework;
 using Remotion.NullableValueTypes;
-using System.Data.SqlTypes;
 
 namespace Remotion.Core.UnitTests.NullableValueTypes
 {

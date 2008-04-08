@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Remotion.Utilities;
+using Rhino.Mocks;
 
 namespace Remotion.Core.UnitTests.Utilities
 {

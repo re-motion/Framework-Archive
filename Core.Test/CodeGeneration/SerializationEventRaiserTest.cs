@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Rhino.Mocks;
-using Rhino.Mocks.Interfaces;
 using Remotion.CodeGeneration;
 using Remotion.Core.UnitTests.CodeGeneration.SampleTypes;
 using Remotion.Development.UnitTesting;
+using Rhino.Mocks;
+using Rhino.Mocks.Interfaces;
 
 namespace Remotion.Core.UnitTests.CodeGeneration
 {

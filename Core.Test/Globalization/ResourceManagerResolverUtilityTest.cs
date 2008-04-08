@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Remotion.Core.UnitTests.Globalization.SampleTypes;
 using Remotion.Globalization;
+using Rhino.Mocks;
 
 namespace Remotion.Core.UnitTests.Globalization
 {

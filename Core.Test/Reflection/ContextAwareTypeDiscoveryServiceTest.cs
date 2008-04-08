@@ -1,10 +1,10 @@
 using System;
 using System.ComponentModel.Design;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Remotion.Core.UnitTests.Design;
 using Remotion.Reflection;
 using Remotion.Utilities;
+using Rhino.Mocks;
 
 namespace Remotion.Core.UnitTests.Reflection
 {

@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Collections;
-using System.Collections.Generic;
-using Remotion.Utilities;
 using Remotion.Development.UnitTesting;
+using Remotion.Utilities;
 
 namespace Remotion.Core.UnitTests.Collections
 {

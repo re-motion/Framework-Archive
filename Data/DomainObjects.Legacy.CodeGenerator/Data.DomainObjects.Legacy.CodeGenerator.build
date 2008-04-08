@@ -25,7 +25,6 @@
         <include asis="true" name="${build.outputdir}/Remotion.Core.dll"/>
         <include asis="true" name="${build.outputdir}/Remotion.Data.DomainObjects.dll"/>
         <include asis="true" name="${build.outputdir}/Remotion.Data.DomainObjects.Legacy.dll"/>
-        <include asis="true" name="${build.outputdir}/Remotion.Mixins.dll"/>
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Data.dll"/>

@@ -1,9 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
-using System.Collections;
-using Remotion.Utilities;
 using NUnit.Framework.SyntaxHelpers;
+using Remotion.Utilities;
 
 namespace Remotion.Core.UnitTests.Utilities
 {

@@ -10,7 +10,7 @@ namespace Remotion.Core.UnitTests.Logging.Log4NetLogTests
   public class BaseTest
   {
     private ILogger _logger;
-    private Remotion.Logging.ILog _log;
+    private ILog _log;
     private MemoryAppender _memoryAppender;
 
     [SetUp]

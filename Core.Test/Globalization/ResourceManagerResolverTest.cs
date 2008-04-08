@@ -1,11 +1,11 @@
 using System;
 using System.Resources;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Remotion.Collections;
 using Remotion.Core.UnitTests.Globalization.SampleTypes;
 using Remotion.Development.UnitTesting;
 using Remotion.Globalization;
-using NUnit.Framework.SyntaxHelpers;
 using Remotion.Utilities;
 
 namespace Remotion.Core.UnitTests.Globalization

@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
-using Rhino.Mocks;
-using Remotion.Reflection;
 using NUnit.Framework.SyntaxHelpers;
+using Remotion.Reflection;
+using Rhino.Mocks;
 
 namespace Remotion.Core.UnitTests.Reflection
 {

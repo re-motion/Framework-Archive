@@ -1,6 +1,6 @@
 using System;
-using NUnit.Framework;
 using System.Reflection;
+using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Remotion.Utilities;
 

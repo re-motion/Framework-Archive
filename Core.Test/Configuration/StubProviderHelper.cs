@@ -59,7 +59,7 @@ namespace Remotion.Core.UnitTests.Configuration
       return base.InstantiateProvider (providerSettings, providerType, providerInterfaces);
     }
 
-    protected override void EnsureWellKownProviders (System.Configuration.Provider.ProviderCollection collection)
+    protected override void EnsureWellKownProviders (ProviderCollection collection)
     {
       base.EnsureWellKownProviders (collection);
 

@@ -4,7 +4,7 @@ using Remotion.Collections;
 
 namespace Remotion.Core.UnitTests.Collections
 {
-  using TestTuple = Tuple<int, string>;
+  using TestTuple = Remotion.Collections.Tuple<int, string>;
 
   [TestFixture]
   public class TupelAbTest
@@ -21,7 +21,7 @@ namespace Remotion.Core.UnitTests.Collections
     [Test]
     public void EasyInitialize ()
     {
-      Tuple<int, string> tuple = Tuple.NewTuple (1, "X");
+      TestTuple tuple = Tuple.NewTuple (1, "X");
       Assert.AreEqual (1, tuple.A);
       Assert.AreEqual ("X", tuple.B);
     }

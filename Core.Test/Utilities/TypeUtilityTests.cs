@@ -147,7 +147,7 @@ namespace Remotion.Core.UnitTests.Utilities
     [Test]
     public void AbbreviateWithoutNotFull()
     {
-      string name = TypeUtility.GetAbbreviatedTypeName (typeof (System.Uri), false);
+      string name = TypeUtility.GetAbbreviatedTypeName (typeof (Uri), false);
       Assert.AreEqual ("System::Uri", name);
     }
 
@@ -155,7 +155,7 @@ namespace Remotion.Core.UnitTests.Utilities
     [Ignore ("TODO: SW")]
     public void AbbreviateWithoutFull ()
     {
-      string name = TypeUtility.GetAbbreviatedTypeName (typeof (System.Uri), true);
+      string name = TypeUtility.GetAbbreviatedTypeName (typeof (Uri), true);
       Assert.AreEqual ("System::Uri, XXXXXXXXXXXXXXX", name);
     }
   }

@@ -1,0 +1,12 @@
+namespace Remotion.Core.UnitTests.Mixins.SampleTypes
+{
+  [BT1]
+  public class MixinAddingBT1Attribute
+  {
+  }
+
+  [BT1]
+  public class MixinAddingBT1Attribute2
+  {
+  }
+}

@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Utilities;
 using NUnit.Framework.SyntaxHelpers;
+using Remotion.Utilities;
 
 namespace Remotion.Core.UnitTests.Utilities.AttributeUtilityTests
 {

@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Remotion.Configuration;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Configuration;
+using TypeNameConverter=Remotion.Utilities.TypeNameConverter;
 
 namespace Remotion.Core.UnitTests.Configuration
 {
@@ -19,7 +20,7 @@ namespace Remotion.Core.UnitTests.Configuration
       ConfigurationProperty property = properties["type"];
       Assert.IsNotNull (property);
       Assert.IsNull (property.DefaultValue);
-      Assert.IsInstanceOfType (typeof (Remotion.Utilities.TypeNameConverter), property.Converter);
+      Assert.IsInstanceOfType (typeof (TypeNameConverter), property.Converter);
       Assert.IsInstanceOfType (typeof (SubclassTypeValidator), property.Validator);
       Assert.IsTrue (property.IsRequired);
     }

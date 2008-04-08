@@ -152,7 +152,7 @@
     <call target="release" />
   </target>
 
-  <target name="all" depends="prereq, Core.Interfaces, Core, Development.Core, Development.CodeDom, Web, Mixins, Mixins.MixerTool.Console,
+  <target name="all" depends="prereq, Core.Interfaces, Core, Core.Mixins.MixerTool.Console, Development.Core, Development.CodeDom, Web, 
       ObjectBinding, ObjectBinding.Web, ObjectBinding.Web.Preview, ObjectBinding.Web.CodeGenerator, ObjectBinding.Web.CodeGenerator.Templates, 
       Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.Legacy.ObjectBinding, Data.DomainObjects.Legacy.ObjectBinding.Web, Data.DomainObjects.Web, 
       Data.DomainObjects.RdbmsTools, Data.DomainObjects.RdbmsTools.Console, 
@@ -162,7 +162,7 @@
     <echo message="Target has executed."/>
   </target>
 
-  <target name="all-test" depends="prereq, CoreTest, Development.CoreTest, Mixins.Samples, Mixins.UnitTests, Web.UnitTests, ObjectBinding.UnitTests, 
+  <target name="all-test" depends="prereq, Core.Mixins.Samples, CoreTest, Development.CoreTest, Web.UnitTests, ObjectBinding.UnitTests, 
       Data.DomainObjects.UnitTests, Data.DomainObjects.Legacy.UnitTests, Data.DomainObjects.Legacy.ObjectBinding.UnitTests, 
       Data.DomainObjects.RdbmsTools.UnitTests, Data.DomainObjects.Legacy.CodeGenerator.UnitTests, 
       Security.UnitTests.TestDomain, Security.UnitTests, SecurityManager.Core.UnitTests">
@@ -201,6 +201,14 @@
     <call target="execute-buildstep" />
   </target>
 
+  <target name="Core.Mixins.MixerTool.Console" depends="Core">
+    <property name="project.name" value="Core.Mixins.MixerTool.Console" />
+    <property name="project.dir" value="Core.Mixins.MixerTool.Console" />
+    <property name="project.output" value="Remotion.Mixins.MixerTool.Console" />
+    <property name="project.extension" value="dll" />
+    <call target="execute-buildstep" />
+  </target>
+
   <target name="Development.Core" depends="Core">
     <property name="project.name" value="Development.Core" />
     <property name="project.dir" value="Development/Core" />
@@ -217,7 +225,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Data.DomainObjects" depends="Core, Mixins">
+  <target name="Data.DomainObjects" depends="Core">
     <property name="project.name" value="Data.DomainObjects" />
     <property name="project.dir" value="Data/DomainObjects" />
     <property name="project.output" value="Remotion.Data.DomainObjects" />
@@ -257,7 +265,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Data.DomainObjects.ObjectBinding" depends="Core, Data.DomainObjects, Mixins, ObjectBinding">
+  <target name="Data.DomainObjects.ObjectBinding" depends="Core, Data.DomainObjects, ObjectBinding">
     <property name="project.name" value="Data.DomainObjects.ObjectBinding" />
     <property name="project.dir" value="Data/DomainObjects.ObjectBinding" />
     <property name="project.output" value="Remotion.Data.DomainObjects.ObjectBinding" />
@@ -306,23 +314,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Mixins" depends="Core">
-    <property name="project.name" value="Mixins" />
-    <property name="project.dir" value="Mixins/Core" />
-    <property name="project.output" value="Remotion.Mixins" />
-    <property name="project.extension" value="dll" />
-    <call target="execute-buildstep" />
-  </target>
-
-  <target name="Mixins.MixerTool.Console" depends="Core, Mixins">
-    <property name="project.name" value="Mixins.MixerTool.Console" />
-    <property name="project.dir" value="Mixins/MixerTool.Console" />
-    <property name="project.output" value="TypeMixer" />
-    <property name="project.extension" value="exe" />
-    <call target="execute-buildstep" />
-  </target>
-
-  <target name="ObjectBinding" depends="Core, Mixins">
+  <target name="ObjectBinding" depends="Core">
     <property name="project.name" value="ObjectBinding" />
     <property name="project.dir" value="ObjectBinding/Core" />
     <property name="project.output" value="Remotion.ObjectBinding" />
@@ -330,7 +322,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="ObjectBinding.Web" depends="Core, Mixins, Web, ObjectBinding">
+  <target name="ObjectBinding.Web" depends="Core, Web, ObjectBinding">
     <property name="project.name" value="ObjectBinding.Web" />
     <property name="project.dir" value="ObjectBinding/Web" />
     <property name="project.output" value="Remotion.ObjectBinding.Web" />
@@ -339,7 +331,7 @@
   </target>
 
   <target name="ObjectBinding.Web.CodeGenerator" 
-      depends="Core, Mixins, Web, ObjectBinding, ObjectBinding.Web, Data.DomainObjects, Data.DomainObjects.ObjectBinding">
+      depends="Core, Web, ObjectBinding, ObjectBinding.Web, Data.DomainObjects, Data.DomainObjects.ObjectBinding">
     <property name="project.name" value="ObjectBinding.Web.CodeGenerator" />
     <property name="project.dir" value="ObjectBinding/Web.CodeGenerator/Core" />
     <property name="project.output" value="UIGen" />
@@ -361,7 +353,7 @@
     </copy>
   </target>
 
-  <target name="ObjectBinding.Web.Preview" depends="Core, Mixins, Web, ObjectBinding, ObjectBinding.Web">
+  <target name="ObjectBinding.Web.Preview" depends="Core, Web, ObjectBinding, ObjectBinding.Web">
     <property name="project.name" value="ObjectBinding.Web.Preview" />
     <property name="project.dir" value="ObjectBinding/Web.Preview" />
     <property name="project.output" value="Remotion.ObjectBinding.Web.Preview" />
@@ -436,8 +428,19 @@
   
   <!--======================= UNIT TESTS =======================-->
 
+  <target name="Core.Mixins.Samples">
+    <call target="Core" cascade="false"/>
+
+    <property name="project.name" value="Core.Mixins.Samples" />
+    <property name="project.dir" value="Core.Mixins.Samples" />
+    <property name="project.output" value="Remotion.Mixins.Samples" />
+    <property name="project.extension" value="dll" />
+    <call target="buildtest" />
+  </target>
+  
   <target name="CoreTest">
     <call target="Core" cascade="false"/>
+    <call target="Core.Mixins.Samples" cascade="false"/>
     <call target="Development.Core" cascade="false"/>
 
     <property name="project.name" value="Core.Test" />
@@ -469,35 +472,9 @@
     <call target="buildtest" />
   </target>
 
-  <target name="Mixins.UnitTests">
-    <call target="Core" cascade="false"/>
-    <call target="Development.Core" cascade="false"/>
-    <call target="Mixins" cascade="false"/>
-    <call target="Mixins.Samples" cascade="false"/>
-
-    <property name="project.name" value="Mixins.UnitTests" />
-    <property name="project.dir" value="Mixins/Core.UnitTests" />
-    <property name="project.output" value="Remotion.Mixins.UnitTests" />
-    <property name="project.extension" value="dll" />
-    <call target="buildtest" />
-  </target>
-
-  <target name="Mixins.Samples">
-    <call target="Core" cascade="false"/>
-    <call target="Development.Core" cascade="false"/>
-    <call target="Mixins" cascade="false"/>
-
-    <property name="project.name" value="Mixins.Samples" />
-    <property name="project.dir" value="Mixins/Samples" />
-    <property name="project.output" value="Remotion.Mixins.Samples" />
-    <property name="project.extension" value="dll" />
-    <call target="buildtest" />
-  </target>
-
   <target name="ObjectBinding.UnitTests">
     <call target="Core" cascade="false"/>
     <call target="Development.Core" cascade="false"/>
-    <call target="Mixins" cascade="false"/>
     <call target="ObjectBinding" cascade="false"/>
     <call target="Web" cascade="false"/>
     <call target="Web.UnitTests" cascade="false"/>

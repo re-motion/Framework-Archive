@@ -17,7 +17,7 @@ namespace Remotion.Core.UnitTests.CodeGeneration
     public override void SetUp ()
     {
       base.SetUp ();
-      _classEmitter = new CustomClassEmitter (Scope, this.GetType ().Name, typeof (object));
+      _classEmitter = new CustomClassEmitter (Scope, this.GetType ().Name, typeof (object), Type.EmptyTypes, TypeAttributes.Public, true);
       _methodEmitter = null;
       _builtType = null;
       _builtInstance  = null;

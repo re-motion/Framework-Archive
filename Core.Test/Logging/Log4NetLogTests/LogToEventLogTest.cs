@@ -17,7 +17,7 @@ namespace Remotion.Core.UnitTests.Logging.Log4NetLogTests
     private static readonly string s_eventLogName = typeof (LogToEventLogTest).Assembly.GetName().Name.Replace ('.', '_');
     private static readonly string s_eventLogSource = typeof (LogToEventLogTest).Name;
     private ILogger _logger;
-    private Remotion.Logging.ILog _log;
+    private ILog _log;
     private EventLog _testEventLog;
 
     [TestFixtureSetUp]

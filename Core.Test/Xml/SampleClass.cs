@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace Remotion.Core.UnitTests.Xml
 {
-  [XmlType (SampleClass.ElementName, Namespace = SampleClass.SchemaUri)]
+  [XmlType (ElementName, Namespace = SchemaUri)]
   public class SampleClass
   {
     public const string ElementName = "sampleClass";

@@ -1,10 +1,9 @@
 using System;
-using System.ComponentModel;
 using System.ComponentModel.Design;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rhino.Mocks;
 using Remotion.Design;
+using Rhino.Mocks;
 
 namespace Remotion.Core.UnitTests.Design
 {

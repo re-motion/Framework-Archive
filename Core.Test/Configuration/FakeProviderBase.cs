@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Specialized;
-using System.Configuration.Provider;
 using Remotion.Configuration;
 
 namespace Remotion.Core.UnitTests.Configuration

@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding
       ArgumentUtility.CheckNotNull ("service", service);
 
       ICache<Type, IBusinessObjectService> serviceCache = ServiceCache;
-      Assertion.IsNotNull (serviceCache, "The ServiceCache evaluated and returned null. It should return a null object instead.");
+      Assertion.IsNotNull (serviceCache, "The ServiceCache evaluated and returned null. It should return a non-null object instead.");
       serviceCache.Add (serviceType, service);
     }
 

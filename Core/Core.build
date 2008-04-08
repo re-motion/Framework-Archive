@@ -26,6 +26,7 @@
         <include name="Design/**/*.cs" />
         <include name="Globalization/**/*.cs" />
         <include name="Logging/**/*.cs" />
+        <include name="Mixins/**/*.cs" />
         <include name="NullableValueTypes/**/*.cs" />
         <include name="ObjectBinding/**/*.cs" />
         <include name="Properties/**/*.cs" />

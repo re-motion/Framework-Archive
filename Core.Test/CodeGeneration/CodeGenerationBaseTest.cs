@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using Castle.DynamicProxy;
 using NUnit.Framework;
 using Remotion.CodeGeneration.DPExtensions;

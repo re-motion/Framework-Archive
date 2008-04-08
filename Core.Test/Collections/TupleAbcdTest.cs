@@ -4,7 +4,7 @@ using Remotion.Collections;
 
 namespace Remotion.Core.UnitTests.Collections
 {
-  using TestTuple = Tuple<int, string, double, DateTime>;
+  using TestTuple = Remotion.Collections.Tuple<int, string, double, DateTime>;
 
   [TestFixture]
   public class TupelAbcdTest
@@ -24,7 +24,7 @@ namespace Remotion.Core.UnitTests.Collections
     [Test]
     public void EasyInitialize ()
     {
-      Tuple<int, string, double, DateTime> tuple = Tuple.NewTuple (1, "X", 2.5, date1);
+      TestTuple tuple = Tuple.NewTuple (1, "X", 2.5, date1);
       Assert.AreEqual (1, tuple.A);
       Assert.AreEqual ("X", tuple.B);
       Assert.AreEqual (2.5, tuple.C);

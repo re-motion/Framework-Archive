@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Design
       AssemblyCompiler compiler = new AssemblyCompiler (
           sourceDirectory,
           outputAssembly,
-          new string[] {"Remotion.Core.dll", "Remotion.Data.DomainObjects.dll", "Remotion.Mixins.dll"});
+          new string[] {"Remotion.Core.dll", "Remotion.Data.DomainObjects.dll"});
 
       compiler.Compile();
     }

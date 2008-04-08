@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
-using Remotion.Utilities;
+using Assertion=Remotion.Utilities.Assertion;
+using AssertionException=Remotion.Utilities.AssertionException;
 
 namespace Remotion.Core.UnitTests.Utilities
 {
@@ -12,14 +11,14 @@ namespace Remotion.Core.UnitTests.Utilities
     [Test]
     public void TestIsTrueHolds ()
     {
-      Remotion.Utilities.Assertion.IsTrue (true);
+      Assertion.IsTrue (true);
     }
 
     [Test]
-    [ExpectedException (typeof (Remotion.Utilities.AssertionException))]
+    [ExpectedException (typeof (AssertionException))]
     public void TestIsTrueFails ()
     {
-      Remotion.Utilities.Assertion.IsTrue (false);
+      Assertion.IsTrue (false);
     }
   }
 }

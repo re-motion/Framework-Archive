@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.Serialization;
-using Remotion.Core.UnitTests.CodeGeneration.SampleTypes;
 
 namespace Remotion.Core.UnitTests.CodeGeneration.SampleTypes
 {
