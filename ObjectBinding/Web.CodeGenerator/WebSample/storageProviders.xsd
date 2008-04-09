@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xs:schema 
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-    xmlns:sp="http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0" 
-    xmlns:t="http://www.rubicon-it.com/Data/DomainObjects/Types" 
+    xmlns:sp="http://www.re-motion.org/Data/DomainObjects/Persistence/1.0" 
+    xmlns:t="http://www.re-motion.org/Data/DomainObjects/Types" 
     elementFormDefault="qualified" 
     attributeFormDefault="unqualified"
-    targetNamespace="http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0"
+    targetNamespace="http://www.re-motion.org/Data/DomainObjects/Persistence/1.0"
     xml:lang="en">
 
-  <xs:import namespace="http://www.rubicon-it.com/Data/DomainObjects/Types" schemaLocation="types.xsd" />
+  <xs:import namespace="http://www.re-motion.org/Data/DomainObjects/Types" schemaLocation="types.xsd" />
 
   <xs:element name="storageProviders">
     <xs:complexType>

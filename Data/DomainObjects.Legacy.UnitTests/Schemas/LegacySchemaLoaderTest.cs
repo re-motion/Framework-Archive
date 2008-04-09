@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Schemas
       Assert.IsNotNull (schemaSet);
       Assert.AreEqual (2, schemaSet.Count);
       Assert.IsTrue (schemaSet.Contains (LegacyPrefixNamespace.MappingNamespace.Uri));
-      Assert.IsTrue (schemaSet.Contains ("http://www.rubicon-it.com/Data/DomainObjects/Types"));
+      Assert.IsTrue (schemaSet.Contains ("http://www.re-motion.org/Data/DomainObjects/Types"));
     }
   }
 }

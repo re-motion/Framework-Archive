@@ -30,7 +30,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"" />";
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"" />";
 
       XmlAssert.AreDocumentsEqual (expectedXml, document);
     }
@@ -46,7 +46,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""File"" />
             </classes>
@@ -72,7 +72,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <stateProperties>
               <stateProperty id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""Confidentiality"">
                 <state name=""Normal"" value=""0"" />
@@ -95,7 +95,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <accessTypes>
               <accessType id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""Archive|Domain.AccessType, Domain"" value=""0"" />
             </accessTypes>
@@ -114,7 +114,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <abstractRoles>
               <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Domain.SpecialAbstractRoles, Domain"" value=""0"" />
             </abstractRoles>
@@ -144,7 +144,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""File"" />
               <class id=""00000000-0000-0000-0002-000000000000"" name=""PaperFile"" />
@@ -181,7 +181,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""File"" />
               <class id=""00000000-0000-0000-0002-000000000000"" name=""PaperFile"" base=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" />
@@ -218,7 +218,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <stateProperties>
               <stateProperty id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""Confidentiality"">
                 <state name=""Normal"" value=""0"" />
@@ -251,7 +251,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <accessTypes>
               <accessType id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""Archive|Domain.AccessType, Domain"" value=""0"" />
               <accessType id=""c6995b9b-7fed-42df-a2d1-897600b00fb0"" name=""Journalize|Domain.AccessType, Domain"" value=""1"" />
@@ -275,7 +275,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <abstractRoles>
               <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Domain.SpecialAbstractRoles, Domain"" value=""0"" />
               <abstractRole id=""3b84739a-7f35-4224-989f-3d5b05047cbb"" name=""PowerUser|Domain.SpecialAbstractRoles, Domain"" value=""1"" />
@@ -309,7 +309,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""File"">
                 <stateProperties>
@@ -352,7 +352,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""File"">
                 <accessTypes>
@@ -434,7 +434,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""File"">
                 <stateProperties>

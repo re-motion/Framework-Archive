@@ -20,7 +20,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = converter.Convert (localizedNames, "de");
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"" />
+          <localizedNames xmlns=""http://www.re-motion.org/Security/Metadata/Localization/1.0"" culture=""de"" />
           ";
 
       XmlAssert.AreDocumentsEqual (expectedXml, document);
@@ -37,7 +37,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = converter.Convert (localizedNames, "de");
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
+          <localizedNames xmlns=""http://www.re-motion.org/Security/Metadata/Localization/1.0"" culture=""de"">
             <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain"">
     Beamter
   </localizedName>
@@ -59,7 +59,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = converter.Convert (localizedNames, "de");
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
+          <localizedNames xmlns=""http://www.re-motion.org/Security/Metadata/Localization/1.0"" culture=""de"">
             <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain"">
     Beamter
   </localizedName>
@@ -83,7 +83,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       XmlDocument document = converter.Convert (localizedNames, CultureInfo.InvariantCulture.Name);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture="""">
+          <localizedNames xmlns=""http://www.re-motion.org/Security/Metadata/Localization/1.0"" culture="""">
             <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain"">
     Beamter
   </localizedName>

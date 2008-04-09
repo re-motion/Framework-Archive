@@ -11,10 +11,10 @@ namespace Remotion.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigu
     // static members and constants
 
     public static readonly PrefixNamespace MappingNamespace = new PrefixNamespace (
-        "m", "http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0");
+        "m", "http://www.re-motion.org/Data/DomainObjects/Mapping/1.0");
 
     public static readonly PrefixNamespace StorageProviderConfigurationNamespace = new PrefixNamespace (
-        "sp", "http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0");
+        "sp", "http://www.re-motion.org/Data/DomainObjects/Persistence/1.0");
 
     // member fields
 

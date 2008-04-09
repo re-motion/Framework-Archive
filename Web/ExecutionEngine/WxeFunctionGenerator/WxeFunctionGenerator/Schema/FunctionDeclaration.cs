@@ -13,8 +13,8 @@ namespace WxeFunctionGenerator.Schema
 		public const string ElementName = "WxePageFunction";
 
 		/// <summary> The namespace of the function declaration schema. </summary>
-		/// <remarks> <c>http://www.rubicon-it.com/commons/web/wxefunctiongenerator</c> </remarks>
-		public const string SchemaUri = "http://www.rubicon-it.com/commons/web/wxefunctiongenerator";
+    /// <remarks> <c>http://www.re-motion.org/web/wxefunctiongenerator</c> </remarks>
+    public const string SchemaUri = "http://www.re-motion.org/web/wxefunctiongenerator";
 
 		public static XmlReader GetSchemaReader ()
 		{

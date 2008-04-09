@@ -391,8 +391,8 @@ namespace Remotion.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       catch (MappingException ex)
       {
         string expectedMessage = string.Format (
-            "Error while reading mapping: The namespace 'http://www.rubicon-it.com/Data/DomainObjects/InvalidNamespace' of the root element is invalid."
-                + " Expected namespace: 'http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0'. File: '{0}'.",
+            "Error while reading mapping: The namespace 'http://www.re-motion.org/Data/DomainObjects/InvalidNamespace' of the root element is invalid."
+                + " Expected namespace: 'http://www.re-motion.org/Data/DomainObjects/Mapping/1.0'. File: '{0}'.",
             Path.GetFullPath (configurationFile));
 
         Assert.AreEqual (expectedMessage, ex.Message);

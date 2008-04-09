@@ -18,8 +18,8 @@ public class WebConfiguration: IConfigurationSectionHandler
   public const string ElementName = "remotion.web";
 
   /// <summary> The namespace of the configuration section schema. </summary>
-  /// <remarks> <c>http://www.rubicon-it.com/commons/web/configuration</c> </remarks>
-  public const string SchemaUri = "http://www.rubicon-it.com/commons/web/configuration";
+  /// <remarks> <c>http://www.re-motion.org/web/configuration</c> </remarks>
+  public const string SchemaUri = "http://www.re-motion.org/web/configuration";
 
   /// <summary> Gets an <see cref="XmlReader"/> reader for the schema embedded in the assembly. </summary>
   public static XmlReader GetSchemaReader ()

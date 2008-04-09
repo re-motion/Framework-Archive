@@ -41,7 +41,7 @@ namespace Remotion.Core.UnitTests.Xml.XmlSerializationUtilityTests
       SampleClass actual = (SampleClass) XmlSerializationUtility.DeserializeUsingSchema (
           GetReaderForDefaultFragment (1),
           typeof (SampleClass),
-          "http://www.rubicon-it.com/commons/core/unitTests",
+          "http://www.re-motion.org/core/unitTests",
           GetXmlSchemaSet());
 
       Assert.IsNotNull (actual);
@@ -57,7 +57,7 @@ namespace Remotion.Core.UnitTests.Xml.XmlSerializationUtilityTests
         XmlSerializationUtility.DeserializeUsingSchema (
             GetReaderForDefaultFragment ("data"),
             typeof (SampleClass),
-            "http://www.rubicon-it.com/commons/core/unitTests",
+            "http://www.re-motion.org/core/unitTests",
             GetXmlSchemaSet());
       }
       catch (XmlSchemaValidationException e)
@@ -79,7 +79,7 @@ namespace Remotion.Core.UnitTests.Xml.XmlSerializationUtilityTests
     private XmlReader GetReaderForDefaultFragment (object value)
     {
       string xmlFragment =
-          @"<sampleClass xmlns=""http://www.rubicon-it.com/commons/core/unitTests"">
+          @"<sampleClass xmlns=""http://www.re-motion.org/core/unitTests"">
             <value>{0}</value>
           </sampleClass>";
       return GetReader (string.Format (xmlFragment, value));

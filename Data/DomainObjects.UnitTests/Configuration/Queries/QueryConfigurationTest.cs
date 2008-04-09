@@ -56,8 +56,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Queries
       catch (QueryConfigurationException ex)
       {
         string expectedMessage = string.Format (
-            "Error while reading query configuration: The namespace 'http://www.rubicon-it.com/Data/DomainObjects/InvalidNamespace' of"
-            + " the root element is invalid. Expected namespace: 'http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0'. File: '{0}'.",
+            "Error while reading query configuration: The namespace 'http://www.re-motion.org/Data/DomainObjects/InvalidNamespace' of"
+            + " the root element is invalid. Expected namespace: 'http://www.re-motion.org/Data/DomainObjects/Queries/1.0'. File: '{0}'.",
             Path.GetFullPath (configurationFile));
 
         Assert.AreEqual (expectedMessage, ex.Message);

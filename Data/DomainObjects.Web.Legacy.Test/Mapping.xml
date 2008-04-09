@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mapping 
     application="RplObjectBindingTest" 
-    xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
+    xmlns="http://www.re-motion.org/Data/DomainObjects/Mapping/1.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\Schemas\Mapping.xsd">
+    xsi:schemaLocation="http://www.re-motion.org/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\Schemas\Mapping.xsd">
 	<classes>
 		<class id="ClassWithAllDataTypes">
 			<type>Remotion.Data.DomainObjects.Web.Legacy.Test.Domain.ClassWithAllDataTypes, Remotion.Data.DomainObjects.Web.Legacy.Test</type>

@@ -59,7 +59,7 @@
       configuration section element.
       <code>
 <![CDATA[
-<remotion.web xmlns="http://www.rubicon-it.com/commons/web/configuration"> 
+<remotion.web xmlns="http://www.re-motion.org/web/configuration"> 
   <!-- The configuration section entries. -->
   <executionEngine
       urlMappingFile="C:\ProjectDirectory\UrlMapping.xml"
@@ -85,9 +85,9 @@
       <code>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;urlMapping
-    xmlns="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0" 
+    xmlns="http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd"&gt;
+    xsi:schemaLocation="http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd"&gt;
   &lt;<see cref="UrlMappingEntry">add</see> <see cref="UrlMappingEntry.ID">id</see>="First" <see cref="UrlMappingEntry.FunctionTypeName">type</see>="MyNamespace.MyFirstFunction,MyAssembly" <see cref="UrlMappingEntry.Resource">resource</see>="first.wxe"/&gt;
   &lt;add id="Second" type="MyNamespace.MySecondFunction,MyAssembly" resource="second.wxe"/&gt;
   &lt;add type="MyNamespace.MyFirstFunction,MyAssembly" resource="primary.wxe"/&gt;

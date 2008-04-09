@@ -11,7 +11,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Schemas
     [Test]
     public void Initialize ()
     {
-      Assert.AreEqual ("http://www.rubicon-it.com/Data/DomainObjects/Types", TypesSchemaLoader.Instance.SchemaUri);
+      Assert.AreEqual ("http://www.re-motion.org/Data/DomainObjects/Types", TypesSchemaLoader.Instance.SchemaUri);
     }
 
     [Test]
@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Schemas
 
       Assert.IsNotNull (schemaSet);
       Assert.AreEqual (1, schemaSet.Count);
-      Assert.IsTrue (schemaSet.Contains ("http://www.rubicon-it.com/Data/DomainObjects/Types"));
+      Assert.IsTrue (schemaSet.Contains ("http://www.re-motion.org/Data/DomainObjects/Types"));
     }
   }
 }

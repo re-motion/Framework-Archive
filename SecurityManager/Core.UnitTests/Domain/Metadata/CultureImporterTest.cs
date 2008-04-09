@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       string cultureXml =
           @"
-          <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"" />
+          <localizedNames xmlns=""http://www.re-motion.org/Security/Metadata/Localization/1.0"" culture=""de"" />
           ";
 
       _importer.Import (GetXmlDocument (cultureXml));
@@ -52,7 +52,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     public void Import_OneLocalizedName ()
     {
       string cultureXml = @"
-          <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
+          <localizedNames xmlns=""http://www.re-motion.org/Security/Metadata/Localization/1.0"" culture=""de"">
             <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain"">
               Beamter
             </localizedName>
@@ -77,7 +77,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     public void Import_NotExistingMetadataObject ()
     {
       string cultureXml = @"
-          <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
+          <localizedNames xmlns=""http://www.re-motion.org/Security/Metadata/Localization/1.0"" culture=""de"">
             <localizedName ref=""ad1efa4c-cf5d-46b0-b775-d4e45f2dce7c"" comment=""Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain"">
               Beamter
             </localizedName>
@@ -92,7 +92,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     public void Import_NotExistingMetadataObjectWithoutComment ()
     {
       string cultureXml = @"
-          <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
+          <localizedNames xmlns=""http://www.re-motion.org/Security/Metadata/Localization/1.0"" culture=""de"">
             <localizedName ref=""ad1efa4c-cf5d-46b0-b775-d4e45f2dce7c"">
               Beamter
             </localizedName>
@@ -107,7 +107,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       string cultureXml =
           @"
-          <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
+          <localizedNames xmlns=""http://www.re-motion.org/Security/Metadata/Localization/1.0"" culture=""de"">
             <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain"">
               Beamter
             </localizedName>
@@ -138,7 +138,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     public void Import_InvalidXml ()
     {
       string cultureXml = @"
-          <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
+          <localizedNames xmlns=""http://www.re-motion.org/Security/Metadata/Localization/1.0"" culture=""de"">
             <localizedName rf=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain"">
               Beamter
             </localizedName>,
@@ -155,7 +155,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     public void Import_LocalizedNamesTwice ()
     {
       string cultureXml = @"
-          <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
+          <localizedNames xmlns=""http://www.re-motion.org/Security/Metadata/Localization/1.0"" culture=""de"">
             <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain"">
               Beamte
             </localizedName>
@@ -177,7 +177,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
       _importer = new CultureImporter (_transaction);
 
       cultureXml = @"
-          <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
+          <localizedNames xmlns=""http://www.re-motion.org/Security/Metadata/Localization/1.0"" culture=""de"">
             <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain"">
               Beamter
             </localizedName>

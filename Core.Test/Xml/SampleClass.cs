@@ -9,7 +9,7 @@ namespace Remotion.Core.UnitTests.Xml
   public class SampleClass
   {
     public const string ElementName = "sampleClass";
-    public const string SchemaUri = "http://www.rubicon-it.com/commons/core/unitTests";
+    public const string SchemaUri = "http://www.re-motion.org/core/unitTests";
   
     public static XmlReader GetSchemaReader ()
     {

@@ -12,7 +12,7 @@ namespace Remotion.Security.Metadata
 
     public override string SchemaUri
     {
-      get { return "http://www.rubicon-it.com/Security/Metadata/Localization/1.0"; }
+      get { return "http://www.re-motion.org/Security/Metadata/Localization/1.0"; }
     }
   }
 }

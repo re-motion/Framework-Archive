@@ -36,7 +36,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       xmlDocument.Load (_xmlTempFilename);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"" />";
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"" />";
 
       XmlAssert.AreDocumentsEqual (expectedXml, xmlDocument);
     }
@@ -53,7 +53,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       xmlDocument.Load (_xmlTempFilename);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File, Remotion.Security.UnitTests.TestDomain"">
                 <stateProperties>
@@ -135,7 +135,7 @@ namespace Remotion.Security.UnitTests.Core.Metadata
       xmlDocument.Load (_xmlTempFilename);
 
       string expectedXml = @"<?xml version=""1.0""?>
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File, Remotion.Security.UnitTests.TestDomain"">
                 <stateProperties>

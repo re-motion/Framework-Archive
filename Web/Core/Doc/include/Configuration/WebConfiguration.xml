@@ -29,7 +29,7 @@
     &lt;!-- Other configuration section registrations. --&gt;
   &lt;/configSections&gt;
   
-  &lt;remotion.web xmlns="http://www.rubicon-it.com/commons/web/configuration"&gt; 
+  &lt;remotion.web xmlns="http://www.re-motion.org/web/configuration"&gt; 
     &lt;!-- The configuration section entries. --&gt;
     &lt;<see cref="ExecutionEngineConfiguration">executionEngine</see> 
         defaultWxeHandler="~/WxeHandler.ashx"

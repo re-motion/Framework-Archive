@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.UnitTests.Configuration
     [Test]
     public void DeserializeSection_WithNamespace ()
     {
-      string xmlFragment = @"<remotion.securityManager xmlns=""http://www.rubicon-it.com/SecurityManager/Configuration"" />";
+      string xmlFragment = @"<remotion.securityManager xmlns=""http://www.re-motion.org/SecurityManager/Configuration"" />";
       _configuration.DeserializeSection (xmlFragment);
 
       Assert.IsNotNull (_configuration.OrganizationalStructureFactory);
@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.UnitTests.Configuration
     public void DeserializeSection_CustomFactory ()
     {
       string xmlFragment = @"
-          <remotion.securityManager xmlns=""http://www.rubicon-it.com/SecurityManager/Configuration"">
+          <remotion.securityManager xmlns=""http://www.re-motion.org/SecurityManager/Configuration"">
             <organizationalStructureFactory type=""Remotion.SecurityManager.UnitTests::Configuration.TestOrganizationalStructureFactory"" />
           </remotion.securityManager>";
       _configuration.DeserializeSection (xmlFragment);

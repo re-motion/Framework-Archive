@@ -25,10 +25,10 @@ namespace Remotion.Core.UnitTests.Xml
     [Test]
     public void GetSchemaWithSchemaFile ()
     {
-      SchemaLoaderBaseMock schemaBaseMock = new SchemaLoaderBaseMock ("http://www.rubicon-it.com/Core/Test/Xml/SchemaLoaderBaseMock");
+      SchemaLoaderBaseMock schemaBaseMock = new SchemaLoaderBaseMock ("http://www.re-motion.org/Core/Test/Xml/SchemaLoaderBaseMock");
       XmlSchema xmlSchema = schemaBaseMock.LoadSchema ("SchemaLoaderBaseMock.xsd");
       Assert.IsNotNull (xmlSchema);
-      Assert.AreEqual ("http://www.rubicon-it.com/Core/Test/Xml/SchemaLoaderBaseMock", xmlSchema.TargetNamespace);
+      Assert.AreEqual ("http://www.re-motion.org/Core/Test/Xml/SchemaLoaderBaseMock", xmlSchema.TargetNamespace);
     }
 
     [Test]
@@ -36,7 +36,7 @@ namespace Remotion.Core.UnitTests.Xml
     {
       try
       {
-        SchemaLoaderBaseMock schemaBaseMock = new SchemaLoaderBaseMock ("http://www.rubicon-it.com/Core/Test/Xml/SchemaLoaderBaseMock");
+        SchemaLoaderBaseMock schemaBaseMock = new SchemaLoaderBaseMock ("http://www.re-motion.org/Core/Test/Xml/SchemaLoaderBaseMock");
         schemaBaseMock.LoadSchema ("invalidSchemaFileName.xsd");
 
         Assert.Fail ("ApplicationException was expected.");
@@ -53,10 +53,10 @@ namespace Remotion.Core.UnitTests.Xml
     [Test]
     public void GetSchemaSet ()
     {
-      SchemaLoaderBase schemaBaseMock = new SchemaLoaderBaseMock ("http://www.rubicon-it.com/Core/Test/Xml/SchemaLoaderBaseMock");
+      SchemaLoaderBase schemaBaseMock = new SchemaLoaderBaseMock ("http://www.re-motion.org/Core/Test/Xml/SchemaLoaderBaseMock");
       XmlSchemaSet xmlSchemaSet = schemaBaseMock.LoadSchemaSet ();
       Assert.AreEqual (1, xmlSchemaSet.Count);
-      Assert.IsTrue (xmlSchemaSet.Contains ("http://www.rubicon-it.com/Core/Test/Xml/SchemaLoaderBaseMock"));
+      Assert.IsTrue (xmlSchemaSet.Contains ("http://www.re-motion.org/Core/Test/Xml/SchemaLoaderBaseMock"));
     }
   }
 }

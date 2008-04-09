@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <xs:schema 
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:c="http://www.rubicon-it.com/SecurityManager/Configuration" 
-    targetNamespace="http://www.rubicon-it.com/SecurityManager/Configuration" 
+    xmlns:c="http://www.re-motion.org/SecurityManager/Configuration" 
+    targetNamespace="http://www.re-motion.org/SecurityManager/Configuration" 
     elementFormDefault="qualified" 
     attributeFormDefault="unqualified">
 

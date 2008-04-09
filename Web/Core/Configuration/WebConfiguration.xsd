@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <xs:schema 
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:c="http://www.rubicon-it.com/commons/web/configuration" 
+    xmlns:c="http://www.re-motion.org/web/configuration" 
     elementFormDefault="qualified" 
     attributeFormDefault="unqualified" 
-    targetNamespace="http://www.rubicon-it.com/commons/web/configuration">
+    targetNamespace="http://www.re-motion.org/web/configuration">
   <xs:element name="remotion.web">
     <xs:complexType>
       <xs:all>

@@ -18,7 +18,7 @@ namespace Remotion.Data.DomainObjects.Schemas
     // member fields
 
     private readonly string _schemaFile = "Types.xsd";
-    private readonly string _schemaUri = "http://www.rubicon-it.com/Data/DomainObjects/Types";
+    private readonly string _schemaUri = "http://www.re-motion.org/Data/DomainObjects/Types";
 
     // construction and disposing
 

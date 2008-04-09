@@ -10,7 +10,7 @@
       Setting the <c>executionEngine</c> entry's values in the <c>remotion.web</c> configuration section.
       <code>
 <![CDATA[
-<remotion.web xmlns="http://www.rubicon-it.com/commons/web/configuration"> 
+<remotion.web xmlns="http://www.re-motion.org/web/configuration"> 
   <executionEngine 
       defaultWxeHandler="~/WxeHandler.ashx"
       enableSessionManagement="true" 

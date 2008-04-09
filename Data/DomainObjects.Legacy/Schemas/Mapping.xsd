@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xs:schema 
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-    xmlns:m="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
-    xmlns:t="http://www.rubicon-it.com/Data/DomainObjects/Types" 
+    xmlns:m="http://www.re-motion.org/Data/DomainObjects/Mapping/1.0" 
+    xmlns:t="http://www.re-motion.org/Data/DomainObjects/Types" 
     elementFormDefault="qualified" 
     attributeFormDefault="unqualified" 
-    targetNamespace="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
+    targetNamespace="http://www.re-motion.org/Data/DomainObjects/Mapping/1.0" 
     xml:lang="en">
 
   <!-- TODO: Import should contain schemaLocation to ensure application developer can check its mapping during design time. 
              Before this is done it should be verified that schemaLocation there is no problem when XSD is used as embedded ressource during run time. -->
-  <xs:import namespace="http://www.rubicon-it.com/Data/DomainObjects/Types" />
+  <xs:import namespace="http://www.re-motion.org/Data/DomainObjects/Types" />
 
   <xs:element name="mapping">
     <xs:complexType>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?> 
 <xs:schema id="SecurityMetadataLocalization" 
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:sml="http://www.rubicon-it.com/Security/Metadata/Localization/1.0" 
-    targetNamespace="http://www.rubicon-it.com/Security/Metadata/Localization/1.0"
+    xmlns:sml="http://www.re-motion.org/Security/Metadata/Localization/1.0" 
+    targetNamespace="http://www.re-motion.org/Security/Metadata/Localization/1.0"
     elementFormDefault="qualified"
     attributeFormDefault="unqualified" 
     xml:lang="en">

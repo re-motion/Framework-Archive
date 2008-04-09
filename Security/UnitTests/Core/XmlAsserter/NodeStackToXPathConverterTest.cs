@@ -15,7 +15,7 @@ namespace Remotion.Security.UnitTests.Core.XmlAsserter
     public void SetUp ()
     {
       string xml = @"
-          <t:securityMetadata xmlns=""http://www.rubicon-it.com/Data/Mapping/1.0"" xmlns:t=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <t:securityMetadata xmlns=""http://www.re-motion.org/Data/Mapping/1.0"" xmlns:t=""http://www.re-motion.org/Security/Metadata/1.0"">
             <t:classes>
               <t:class id=""Class1"" />
               <t:class id=""7823-qwer-124"" name=""Class2"" />

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <xs:schema 
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:c="http://www.rubicon-it.com/commons/core/unitTests" 
+    xmlns:c="http://www.re-motion.org/core/unitTests" 
     elementFormDefault="qualified" 
     attributeFormDefault="unqualified" 
-    targetNamespace="http://www.rubicon-it.com/commons/core/unitTests">
+    targetNamespace="http://www.re-motion.org/core/unitTests">
   <xs:element name="sampleClass">
     <xs:complexType>
       <xs:all>

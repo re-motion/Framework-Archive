@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <urlMapping
-    xmlns="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0" 
+    xmlns="http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
+    xsi:schemaLocation="http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
 
   <add type="Remotion.SecurityManager.Clients.Web::WxeFunctions.OrganizationalStructure.EditTenantFormFunction" resource="EditTenant.wxe" />
   <add type="Remotion.SecurityManager.Clients.Web::WxeFunctions.OrganizationalStructure.EditGroupFormFunction" resource="EditGroup.wxe" />

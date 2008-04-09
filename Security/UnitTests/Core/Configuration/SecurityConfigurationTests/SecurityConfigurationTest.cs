@@ -25,7 +25,7 @@ namespace Remotion.Security.UnitTests.Core.Configuration.SecurityConfigurationTe
     [Test]
     public void DeserializeSecurityConfiguration_WithNamespace()
     {
-      string xmlFragment = @"<remotion.security xmlns=""http://www.rubicon-it.com/Security/Configuration"" />";
+      string xmlFragment = @"<remotion.security xmlns=""http://www.re-motion.org/Security/Configuration"" />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       // Succeeded
     }

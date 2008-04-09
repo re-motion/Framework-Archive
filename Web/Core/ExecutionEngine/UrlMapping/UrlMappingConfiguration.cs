@@ -18,8 +18,8 @@ public class UrlMappingConfiguration: ConfigurationBase
   public const string ElementName = "urlMapping";
 
   /// <summary> The namespace of the mapping's schema. </summary>
-  /// <remarks> <c>http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0</c> </remarks>
-  public const string SchemaUri = "http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0";
+  /// <remarks> <c>http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0</c> </remarks>
+  public const string SchemaUri = "http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0";
 
   private static UrlMappingConfiguration s_current = null;
 

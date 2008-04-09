@@ -25,7 +25,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     public void Import_EmptyMetadataFile ()
     {
       string metadataXml = @"
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes />
             <stateProperties />
             <accessTypes />
@@ -49,7 +49,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       string metadataXml =
           @"
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File"" />
             </classes>
@@ -79,7 +79,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       string metadataXml =
           @"
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File"" />
               <class id=""00000000-0000-0000-0002-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.Directory"" />
@@ -114,7 +114,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       string metadataXml =
           @"
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes />
             <stateProperties />
             <accessTypes />
@@ -151,7 +151,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       string metadataXml =
           @"
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes />
             <stateProperties />
             <accessTypes>
@@ -188,7 +188,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       string metadataXml =
           @"
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes />
             <stateProperties>
               <stateProperty id=""00000000-0000-0000-0002-000000000001"" name=""State"">
@@ -234,7 +234,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       string metadataXml =
           @"
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File"" />
               <class id=""00000000-0000-0000-0002-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.PaperFile"" base=""00000000-0000-0000-0001-000000000000"" />
@@ -270,7 +270,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       string metadataXml =
           @"
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File"">
                 <stateProperties>
@@ -319,7 +319,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       string metadataXml =
           @"
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File"">
                 <accessTypes>
@@ -366,7 +366,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       string metadataXml =
           @"
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File"">
                 <stateProperties>
@@ -450,7 +450,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     public void Import_InvalidXml ()
     {
       string metadataXml = @"
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes />
           </securityMetadata>";
 
@@ -463,7 +463,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     public void Import_MissingBaseClass ()
     {
       string metadataXml = @"
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0002-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.Directory"" base=""00000000-0000-0000-0001-000000000000"" />
             </classes>
@@ -482,7 +482,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     public void Import_MissingStateProperty ()
     {
       string metadataXml = @"
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File"">
                 <stateProperties>
@@ -512,7 +512,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     public void Import_MissingAccessType ()
     {
       string metadataXml = @"
-          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+          <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Remotion.Security.UnitTests.TestDomain.File"">
                 <accessTypes>
