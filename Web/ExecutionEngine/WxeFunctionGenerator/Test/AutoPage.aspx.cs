@@ -11,17 +11,6 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Test
 {
-	//[WxePageFunction ("AutoPage.aspx", typeof (WxeFunction))]
-	//[WxePageParameter (1, "InArg", typeof (string), true)]
-	//[WxePageParameter (2, "InOutArg", typeof (string), true, WxeParameterDirection.InOut)]
-	//[WxePageParameter (3, "OutArg", typeof (string), WxeParameterDirection.Out, IsReturnValue = true)]
-	//[WxePageVariable ("Suffix", typeof (string))]
-
-  //[WxeFunctionTargetPage (typeof (AutoPage))]
-  //public class AutoPageFunction
-  //{
-  //}
-
 	// <WxePageFunction pageType="Test.AutoPage" aspxFile="AutoPage.aspx" functionBaseType="WxeFunction">
 	//   <Parameter name="InArg" type="String" required="true" />
 	//   <Parameter name="InOutArg" type="String" required="true" direction="InOut" />

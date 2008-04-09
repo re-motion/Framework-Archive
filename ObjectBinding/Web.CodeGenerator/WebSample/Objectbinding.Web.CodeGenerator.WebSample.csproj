@@ -140,10 +140,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\BaseControl.cs">
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Classes\BasePage.cs">
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -157,14 +155,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\EditPersonControl.ascx.cs">
       <DependentUpon>EditPersonControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UI\EditPersonControl.ascx.designer.cs">
       <DependentUpon>EditPersonControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="UI\EditPersonForm.aspx.cs">
       <DependentUpon>EditPersonForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UI\EditPersonForm.aspx.designer.cs">
       <DependentUpon>EditPersonForm.aspx</DependentUpon>
@@ -178,7 +174,6 @@
     </Compile>
     <Compile Include="UI\SearchResultPersonForm.aspx.cs">
       <DependentUpon>SearchResultPersonForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UI\SearchResultPersonForm.aspx.designer.cs">
       <DependentUpon>SearchResultPersonForm.aspx</DependentUpon>
