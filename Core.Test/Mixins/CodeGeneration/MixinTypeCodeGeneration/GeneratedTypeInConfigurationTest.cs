@@ -8,7 +8,7 @@ using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
+namespace Remotion.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
 {
   [TestFixture]
   public class GeneratedTypeInConfigurationTest : CodeGenerationBaseTest

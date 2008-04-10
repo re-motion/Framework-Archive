@@ -1,8 +1,9 @@
 using System;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.SampleTypes
+namespace Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes
 {
   public class MixinWithThisAsBase : Mixin<BaseType3, IBaseType31>
   {

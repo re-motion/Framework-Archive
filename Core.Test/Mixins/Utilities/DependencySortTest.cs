@@ -5,7 +5,7 @@ using Remotion.Collections;
 using Remotion.Mixins.Utilities.DependencySort;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Mixins.Utilities
+namespace Remotion.UnitTests.Mixins.Utilities
 {
   [TestFixture]
   public class DependencySortTest

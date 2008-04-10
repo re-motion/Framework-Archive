@@ -9,7 +9,7 @@ using NUnit.Framework;
 using Remotion.Logging;
 using Rhino.Mocks;
 
-namespace Remotion.Core.UnitTests.Logging
+namespace Remotion.UnitTests.Logging
 {
   [TestFixture]
   public class Log4NetTraceListenerTest

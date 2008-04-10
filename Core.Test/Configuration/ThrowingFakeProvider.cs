@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Specialized;
 
-namespace Remotion.Core.UnitTests.Configuration
+namespace Remotion.UnitTests.Configuration
 {
   public class ThrowingFakeProvider : FakeProviderBase, IFakeProvider
   {

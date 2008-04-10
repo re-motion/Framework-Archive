@@ -3,7 +3,7 @@ using Remotion.Mixins;
 
 #pragma warning disable 0693
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.SampleTypes
+namespace Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes
 {
   public interface IGeneric<T>
   {

@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Utilities
+namespace Remotion.UnitTests.Utilities
 {
   public class GenericType<T1, T2>
   {
@@ -15,8 +15,8 @@ namespace Remotion.Core.UnitTests.Utilities
     public void TestAbbreviatedTypeName()
     {
       AssertTransformation (  
-          "Remotion.Core.UnitTests::Utilities.TypeUtilityTests",
-          "Remotion.Core.UnitTests.Utilities.TypeUtilityTests, Remotion.Core.UnitTests");
+          "Remotion.UnitTests::Utilities.TypeUtilityTests",
+          "Remotion.UnitTests.Utilities.TypeUtilityTests, Remotion.UnitTests");
     }
 
     [Test]
@@ -70,7 +70,7 @@ namespace Remotion.Core.UnitTests.Utilities
     [Test]
     public void TestGetType()
     {
-      Type t = TypeUtility.GetType ("Remotion.Core.UnitTests::Utilities.TypeUtilityTests", true);
+      Type t = TypeUtility.GetType ("Remotion.UnitTests::Utilities.TypeUtilityTests", true);
       Assert.AreEqual (typeof (TypeUtilityTests), t);
     }
 

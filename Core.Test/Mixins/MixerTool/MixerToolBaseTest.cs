@@ -8,7 +8,7 @@ using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.MixerTool;
 
-namespace Remotion.Core.UnitTests.Mixins.MixerTool
+namespace Remotion.UnitTests.Mixins.MixerTool
 {
   [Serializable]
   public class MixerToolBaseTest

@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using Remotion.Logging;
 
-namespace Remotion.Core.UnitTests.Logging
+namespace Remotion.UnitTests.Logging
 {
   [TestFixture]
   public class LogManagerTest
@@ -23,7 +23,7 @@ namespace Remotion.Core.UnitTests.Logging
 
       Assert.IsInstanceOfType (typeof (Log4NetLog), log);
       Log4NetLog log4NetLog = (Log4NetLog) log;
-      Assert.AreEqual ("Remotion.Core.UnitTests.Logging.SampleType", log4NetLog.Logger.Name);
+      Assert.AreEqual ("Remotion.UnitTests.Logging.SampleType", log4NetLog.Logger.Name);
     }
 
   }

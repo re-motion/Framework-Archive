@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins.Utilities;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.Utilities
+namespace Remotion.UnitTests.Mixins.Utilities
 {
   [TestFixture]
   public class SignatureEqualityComparerTest

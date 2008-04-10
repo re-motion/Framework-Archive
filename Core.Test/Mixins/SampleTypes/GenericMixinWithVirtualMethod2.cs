@@ -1,7 +1,7 @@
 using System;
 using Remotion.Mixins;
 
-namespace Remotion.Core.UnitTests.Mixins.SampleTypes
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
   public class GenericMixinWithVirtualMethod2<T> : Mixin<T>
       where T : class

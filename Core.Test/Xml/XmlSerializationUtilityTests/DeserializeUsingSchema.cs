@@ -5,7 +5,7 @@ using System.Xml.Schema;
 using NUnit.Framework;
 using Remotion.Xml;
 
-namespace Remotion.Core.UnitTests.Xml.XmlSerializationUtilityTests
+namespace Remotion.UnitTests.Xml.XmlSerializationUtilityTests
 {
   [TestFixture]
   public class DeserializeUsingSchema

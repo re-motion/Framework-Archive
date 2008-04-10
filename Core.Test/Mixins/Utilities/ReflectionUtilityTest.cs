@@ -6,7 +6,7 @@ using Remotion.Collections;
 using Remotion.Mixins;
 using Remotion.Mixins.Utilities;
 
-namespace Remotion.Core.UnitTests.Mixins.Utilities
+namespace Remotion.UnitTests.Mixins.Utilities
 {
   [TestFixture]
   public class ReflectionUtilityTest
@@ -158,7 +158,7 @@ namespace Remotion.Core.UnitTests.Mixins.Utilities
       Assert.IsTrue (ReflectionUtility.IsPublicOrProtected (typeof (ClassWithAllVisibilityMethods).GetMethod ("ProtectedInternal", bf)));
       Assert.IsFalse (ReflectionUtility.IsPublicOrProtected (typeof (ClassWithAllVisibilityMethods).GetMethod ("Internal", bf)));
       Assert.IsFalse (ReflectionUtility.IsPublicOrProtected (typeof (ClassWithAllVisibilityMethods).GetMethod ("Private", bf)));
-      Assert.IsFalse (ReflectionUtility.IsPublicOrProtected (typeof (ClassWithAllVisibilityMethods).GetMethod ("Remotion.Core.UnitTests.Mixins.Utilities.ReflectionUtilityTest.IInterface.Explicit", bf)));
+      Assert.IsFalse (ReflectionUtility.IsPublicOrProtected (typeof (ClassWithAllVisibilityMethods).GetMethod ("Remotion.UnitTests.Mixins.Utilities.ReflectionUtilityTest.IInterface.Explicit", bf)));
     }
 
     [Test]
@@ -170,7 +170,7 @@ namespace Remotion.Core.UnitTests.Mixins.Utilities
       Assert.IsTrue (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("ProtectedInternal", bf)));
       Assert.IsFalse (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("Internal", bf)));
       Assert.IsFalse (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("Private", bf)));
-      Assert.IsTrue (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("Remotion.Core.UnitTests.Mixins.Utilities.ReflectionUtilityTest.IInterface.Explicit", bf)));
+      Assert.IsTrue (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("Remotion.UnitTests.Mixins.Utilities.ReflectionUtilityTest.IInterface.Explicit", bf)));
     }
 
     [Test]

@@ -1,7 +1,7 @@
 using System;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Logging
+namespace Remotion.UnitTests.Logging
 {
   public enum LogMessages
   {

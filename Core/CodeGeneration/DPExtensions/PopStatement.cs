@@ -2,9 +2,9 @@ using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
-namespace Remotion.Mixins.Samples.DynamicMixinBuilding
+namespace Remotion.CodeGeneration.DPExtensions
 {
-  internal class PopStatement : Statement
+  public class PopStatement : Statement
   {
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {

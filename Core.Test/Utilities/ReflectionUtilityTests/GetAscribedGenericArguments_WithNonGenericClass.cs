@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests
+namespace Remotion.UnitTests.Utilities.ReflectionUtilityTests
 {
   [TestFixture]
   public class GetAscribedGenericArguments_WithNonGenericClass
@@ -22,8 +22,8 @@ namespace Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests
     [Test]
     [ExpectedException (typeof (ArgumentTypeException),
         ExpectedMessage =
-        "Argument type has type Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests.BaseType when type "
-        + "Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests.DerivedType was expected.\r\n"
+        "Argument type has type Remotion.UnitTests.Utilities.ReflectionUtilityTests.BaseType when type "
+        + "Remotion.UnitTests.Utilities.ReflectionUtilityTests.DerivedType was expected.\r\n"
         + "Parameter name: type")]
     public void BaseType ()
     {

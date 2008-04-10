@@ -1,4 +1,4 @@
-namespace Remotion.Core.UnitTests.Mixins.Utilities.Serialization
+namespace Remotion.UnitTests.Mixins.Utilities.Serialization
 {
   public class GenericType<T>
   {

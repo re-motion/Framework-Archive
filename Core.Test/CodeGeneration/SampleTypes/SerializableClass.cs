@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Remotion.Core.UnitTests.CodeGeneration.SampleTypes
+namespace Remotion.UnitTests.CodeGeneration.SampleTypes
 {
   [Serializable]
   public class SerializableClass : ISerializable

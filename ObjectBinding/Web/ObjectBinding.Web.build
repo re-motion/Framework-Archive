@@ -22,7 +22,7 @@
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <include name="${build.outputdir}/Remotion.Core.dll" />
+        <include name="${build.outputdir}/Remotion.dll" />
         <include name="${build.outputdir}/Remotion.ObjectBinding.dll" />
         <include name="${build.outputdir}/Remotion.Web.dll" />
         <include name="${build.outputdir}/log4net.dll" />

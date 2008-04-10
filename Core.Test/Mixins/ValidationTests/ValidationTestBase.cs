@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using Remotion.Mixins.Validation;
 
-namespace Remotion.Core.UnitTests.Mixins.ValidationTests
+namespace Remotion.UnitTests.Mixins.ValidationTests
 {
   public class ValidationTestBase
   {

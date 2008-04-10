@@ -1,6 +1,6 @@
 using System;
 
-namespace Remotion.Core.UnitTests.Mixins.SampleTypes
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
   public interface ICBaseType3 : IBaseType31, IBaseType32, IBaseType33, IBaseType34, IBaseType35
   { }

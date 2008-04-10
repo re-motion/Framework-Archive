@@ -1,8 +1,9 @@
 using System;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.ValidationTests.ValidationSampleTypes
+namespace Remotion.UnitTests.Mixins.ValidationTests.ValidationSampleTypes
 {
   class MixinWithClassThisDependency : Mixin<BaseType3>
   {

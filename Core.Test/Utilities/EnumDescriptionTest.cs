@@ -4,7 +4,7 @@ using System.Threading;
 using NUnit.Framework;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Utilities
+namespace Remotion.UnitTests.Utilities
 {
 
 public enum EnumWithDescriptions
@@ -17,7 +17,7 @@ public enum EnumWithDescriptions
   Value3 = 3
 }
 
-[EnumDescriptionResource("Remotion.Core.UnitTests.Resources.strings")]
+[EnumDescriptionResource("Remotion.UnitTests.Resources.strings")]
 public enum EnumFromResource
 {
   Value1 = 1,

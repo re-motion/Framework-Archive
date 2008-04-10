@@ -18,7 +18,7 @@
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <include asis="true" name="${build.outputdir}/Remotion.Core.dll"/>
+        <include asis="true" name="${build.outputdir}/Remotion.dll"/>
         <include asis="true" name="${build.outputdir}/Remotion.Data.DomainObjects.dll"/>
         <include asis="true" name="${build.outputdir}/Remotion.Data.DomainObjects.Legacy.dll"/>
         <include asis="true" name="${build.outputdir}/Remotion.Data.DomainObjects.Legacy.CodeGenerator.dll"/>

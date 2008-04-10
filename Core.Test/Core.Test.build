@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Remotion.Core.UnitTests">  
+<project xmlns="nant-schema" name="Remotion.UnitTests">  
 
   <target name="build" description="perform a build">
 
@@ -23,7 +23,8 @@
         <include name="${build.test.outputdir}/Castle.DynamicProxy.dll" />
         <include name="${build.test.outputdir}/log4net.dll" />
         <include name="${build.test.outputdir}/Rhino.Mocks.dll" />
-        <include name="${build.test.outputdir}/Remotion.Core.dll" />
+        <include name="${build.test.outputdir}/Remotion.dll" />
+        <include name="${build.test.outputdir}/Remotion.Interfaces.dll" />
         <include name="${build.test.outputdir}/Remotion.Development.dll" />
         <include name="${build.test.outputdir}/Remotion.Mixins.Samples.dll"/>
         <include name="${build.test.outputdir}/nunit.framework.dll" />
@@ -31,7 +32,7 @@
         <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Data.dll"/>
       </references>
-      <resources failonempty="true" dynamicprefix="true" prefix="Remotion.Core.UnitTests">
+      <resources failonempty="true" dynamicprefix="true" prefix="Remotion.UnitTests">
         <include name="Resources/*.resx" />
         <include name="**/*.xsd" />
       </resources>

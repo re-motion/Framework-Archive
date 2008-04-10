@@ -35,7 +35,7 @@
       <references failonempty="true">
         <include asis="true" name="${build.outputdir}/Castle.Core.dll"/>
         <include asis="true" name="${build.outputdir}/Castle.DynamicProxy.dll"/>
-        <include asis="true" name="${build.outputdir}/Remotion.Core.dll"/>
+        <include asis="true" name="${build.outputdir}/Remotion.dll"/>
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="System.Xml.dll"/>

@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Utilities
+namespace Remotion.UnitTests.Utilities
 {
 	public enum TestEnum
 	{

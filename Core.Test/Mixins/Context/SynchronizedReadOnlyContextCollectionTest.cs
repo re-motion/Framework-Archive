@@ -7,7 +7,7 @@ using Remotion.Development.UnitTesting;
 using Remotion.Mixins.Context;
 using Rhino.Mocks;
 
-namespace Remotion.Core.UnitTests.Mixins.Context
+namespace Remotion.UnitTests.Mixins.Context
 {
   [TestFixture]
   public class SynchronizedReadOnlyContextCollectionTest

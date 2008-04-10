@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Remotion.Core.UnitTests
+namespace Remotion.UnitTests
 {
   [TestFixture]
   public class DoubleCheckedLockingContainerTest

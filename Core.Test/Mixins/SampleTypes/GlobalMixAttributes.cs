@@ -1,5 +1,5 @@
 using System;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 
 [assembly: Mix (typeof (TargetClassForGlobalMix), typeof (MixinForGlobalMix),

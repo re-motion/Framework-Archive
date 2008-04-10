@@ -1,6 +1,6 @@
 using Remotion.Mixins;
 
-namespace Remotion.Core.UnitTests.Mixins.ValidationTests.ValidationSampleTypes
+namespace Remotion.UnitTests.Mixins.ValidationTests.ValidationSampleTypes
 {
   public class MixinOverridingSetterOnly
   {

@@ -4,7 +4,7 @@ using System.Configuration;
 using NUnit.Framework;
 using Remotion.Configuration;
 
-namespace Remotion.Core.UnitTests.Configuration
+namespace Remotion.UnitTests.Configuration
 {
   [TestFixture]
   public class ExtendedProviderBaseTest

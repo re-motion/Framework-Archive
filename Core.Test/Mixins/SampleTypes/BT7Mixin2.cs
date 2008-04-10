@@ -1,7 +1,7 @@
 using System;
 using Remotion.Mixins;
 
-namespace Remotion.Core.UnitTests.Mixins.SampleTypes
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
   public interface IBT7Mixin2Reqs : IBT7Mixin3, IBaseType7
   {

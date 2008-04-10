@@ -6,10 +6,11 @@ using NUnit.Framework.SyntaxHelpers;
 using Remotion.CodeGeneration;
 using Remotion.CodeGeneration.DPExtensions;
 using Remotion.Collections;
-using Remotion.Core.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.UnitTests.CodeGeneration.SampleTypes;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.CodeGeneration
+namespace Remotion.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class CustomAttributeExpressionTest : SnippetGenerationBaseTest

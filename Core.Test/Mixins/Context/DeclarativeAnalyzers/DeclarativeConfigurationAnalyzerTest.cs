@@ -5,7 +5,7 @@ using Remotion.Mixins.Context.DeclarativeAnalyzers;
 using Remotion.Mixins.Context.FluentBuilders;
 using Rhino.Mocks;
 
-namespace Remotion.Core.UnitTests.Mixins.Context.DeclarativeAnalyzers
+namespace Remotion.UnitTests.Mixins.Context.DeclarativeAnalyzers
 {
   [TestFixture]
   public class DeclarativeConfigurationAnalyzerTest

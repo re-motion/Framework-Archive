@@ -4,7 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Remotion.Reflection;
 
-namespace Remotion.Core.UnitTests.Reflection
+namespace Remotion.UnitTests.Reflection
 {
   [TestFixture]
   public class InheritanceHierarchyFilterTest

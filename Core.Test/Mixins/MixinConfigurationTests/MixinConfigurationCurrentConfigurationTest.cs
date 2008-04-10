@@ -1,12 +1,13 @@
 using System;
 using System.Threading;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.Mixins.Context;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.MixinConfigurationTests
+namespace Remotion.UnitTests.Mixins.MixinConfigurationTests
 {
   [TestFixture]
   public class MixinConfigurationCurrentConfigurationTest

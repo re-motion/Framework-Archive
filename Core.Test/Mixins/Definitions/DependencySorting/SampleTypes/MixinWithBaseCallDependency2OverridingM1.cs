@@ -1,7 +1,7 @@
 using System;
 using Remotion.Mixins;
 
-namespace Remotion.Core.UnitTests.Mixins.Definitions.DependencySorting.SampleTypes
+namespace Remotion.UnitTests.Mixins.Definitions.DependencySorting.SampleTypes
 {
   public class MixinWithBaseCallDependency2OverridingM1 : Mixin<object, IBaseCallDependency2>
   {

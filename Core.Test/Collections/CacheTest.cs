@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Development.UnitTesting;
 
-namespace Remotion.Core.UnitTests.Collections
+namespace Remotion.UnitTests.Collections
 {
   [TestFixture]
   public class CacheTest

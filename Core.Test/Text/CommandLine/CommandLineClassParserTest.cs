@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Text.CommandLine;
 
-namespace Remotion.Core.UnitTests.Text.CommandLine
+namespace Remotion.UnitTests.Text.CommandLine
 {
   public class Arguments
   {

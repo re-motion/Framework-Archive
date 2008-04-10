@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Collections;
 
-namespace Remotion.Core.UnitTests.Collections
+namespace Remotion.UnitTests.Collections
 {
   [TestFixture]
   public class AutoInitDictionaryTest

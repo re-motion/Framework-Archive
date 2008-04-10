@@ -6,7 +6,7 @@ using Remotion.Mixins.Context.FluentBuilders;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
 
-namespace Remotion.Core.UnitTests.Mixins.Context.DeclarativeAnalyzers
+namespace Remotion.UnitTests.Mixins.Context.DeclarativeAnalyzers
 {
   [TestFixture]
   public class MixAnalyzerTest

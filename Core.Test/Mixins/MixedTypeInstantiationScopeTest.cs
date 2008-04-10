@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Mixins;
 
-namespace Remotion.Core.UnitTests.Mixins
+namespace Remotion.UnitTests.Mixins
 {
   [TestFixture]
   public class MixedTypeInstantiationScopeTest

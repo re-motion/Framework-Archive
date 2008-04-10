@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.Context;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Mixins.Context.DeclarativeConfigurationBuilder_IntegrationTests
+namespace Remotion.UnitTests.Mixins.Context.DeclarativeConfigurationBuilder_IntegrationTests
 {
   [TestFixture]
   public class ExtendsAnalysisTest

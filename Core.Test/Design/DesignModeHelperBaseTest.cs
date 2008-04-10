@@ -5,7 +5,7 @@ using NUnit.Framework.SyntaxHelpers;
 using Remotion.Design;
 using Rhino.Mocks;
 
-namespace Remotion.Core.UnitTests.Design
+namespace Remotion.UnitTests.Design
 {
   [TestFixture]
   public class DesignModeHelperBaseTest

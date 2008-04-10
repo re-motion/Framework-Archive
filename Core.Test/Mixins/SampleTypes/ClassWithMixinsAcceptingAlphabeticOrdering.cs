@@ -1,7 +1,7 @@
 using System;
 using Remotion.Mixins;
 
-namespace Remotion.Core.UnitTests.Mixins.SampleTypes
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
   [Uses (typeof (MixinAcceptingAlphabeticOrdering1))]
   [Uses (typeof (MixinAcceptingAlphabeticOrdering2))]

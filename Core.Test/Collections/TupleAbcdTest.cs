@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Collections;
 
-namespace Remotion.Core.UnitTests.Collections
+namespace Remotion.UnitTests.Collections
 {
   using TestTuple = Remotion.Collections.Tuple<int, string, double, DateTime>;
 

@@ -1,4 +1,4 @@
-namespace Remotion.Core.UnitTests.Mixins.SampleTypes
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
   public class ClosedGenericClassForMixinIgnoringDerivedClass<T>
   {

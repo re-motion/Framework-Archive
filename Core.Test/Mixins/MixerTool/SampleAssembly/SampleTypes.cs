@@ -1,7 +1,7 @@
 using System;
 using Remotion.Mixins;
 
-namespace Remotion.Core.UnitTests.Mixins.MixerTool.SampleAssembly
+namespace Remotion.UnitTests.Mixins.MixerTool.SampleAssembly
 {
   public class BaseType
   {

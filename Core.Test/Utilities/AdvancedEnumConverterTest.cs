@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Utilities
+namespace Remotion.UnitTests.Utilities
 {
   [TestFixture]
   public class AdvancedEnumConverterTest
@@ -117,7 +117,7 @@ namespace Remotion.Core.UnitTests.Utilities
 
     [Test]
     [ExpectedException (typeof (ArgumentOutOfRangeException), ExpectedMessage =
-        "The value -1 is not supported for enumeration 'Remotion.Core.UnitTests.Utilities.AdvancedEnumConverterTest+Int32Enum'.")]
+        "The value -1 is not supported for enumeration 'Remotion.UnitTests.Utilities.AdvancedEnumConverterTest+Int32Enum'.")]
     public void ConvertFromInt32_WithUndefinedValue()
     {
       _int32EnumConverter.ConvertFrom (-1);

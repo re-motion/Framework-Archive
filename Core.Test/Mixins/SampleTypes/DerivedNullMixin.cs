@@ -1,6 +1,6 @@
 using System;
 
-namespace Remotion.Core.UnitTests.Mixins.SampleTypes
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
   [Serializable]
   public class DerivedNullMixin : NullMixin

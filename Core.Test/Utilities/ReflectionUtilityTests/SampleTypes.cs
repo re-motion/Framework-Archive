@@ -1,6 +1,6 @@
 using System;
 
-namespace Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests
+namespace Remotion.UnitTests.Utilities.ReflectionUtilityTests
 {
   public class ParameterType
   {

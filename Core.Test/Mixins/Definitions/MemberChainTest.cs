@@ -4,7 +4,7 @@ using System.Reflection;
 using NUnit.Framework;
 using Remotion.Mixins.Definitions.Building;
 
-namespace Remotion.Core.UnitTests.Mixins.Definitions
+namespace Remotion.UnitTests.Mixins.Definitions
 {
   [TestFixture]
   public class MemberChainTest

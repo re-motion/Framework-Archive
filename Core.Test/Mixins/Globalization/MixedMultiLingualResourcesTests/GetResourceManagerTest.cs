@@ -2,18 +2,19 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Remotion.Collections;
-using Remotion.Core.UnitTests.Mixins.Globalization.SampleTypes;
+using Remotion.UnitTests.Mixins.Globalization.SampleTypes;
 using Remotion.Globalization;
 using Remotion.Mixins;
 using Remotion.Mixins.Globalization;
+using Remotion.UnitTests.Mixins.Globalization.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.Globalization.MixedMultiLingualResourcesTests
+namespace Remotion.UnitTests.Mixins.Globalization.MixedMultiLingualResourcesTests
 {
   [TestFixture]
   public class GetResourceManagerTest
   {
     [Test]
-    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.Core.UnitTests.Mixins.Globalization.SampleTypes."
+    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.Globalization.SampleTypes."
         + "ClassWithoutMultiLingualResourcesAttributes and its base classes do not define the attribute MultiLingualResourcesAttribute.")]
     public void NoAttributes_NoInheritance ()
     {
@@ -21,7 +22,7 @@ namespace Remotion.Core.UnitTests.Mixins.Globalization.MixedMultiLingualResource
     }
 
     [Test]
-    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.Core.UnitTests.Mixins.Globalization.SampleTypes."
+    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.Globalization.SampleTypes."
         + "ClassWithoutMultiLingualResourcesAttributes and its base classes do not define the attribute MultiLingualResourcesAttribute.")]
     public void NoAttributes_Inheritance ()
     {

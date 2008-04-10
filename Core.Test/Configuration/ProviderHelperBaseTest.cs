@@ -6,7 +6,7 @@ using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Configuration;
 
-namespace Remotion.Core.UnitTests.Configuration
+namespace Remotion.UnitTests.Configuration
 {
   [TestFixture]
   public class ProviderHelperBaseTest
@@ -51,7 +51,7 @@ namespace Remotion.Core.UnitTests.Configuration
           @"
           <stubConfigSection>
             <providers>
-              <add name=""Fake"" type=""Remotion.Core.UnitTests::Configuration.FakeProvider"" />
+              <add name=""Fake"" type=""Remotion.UnitTests::Configuration.FakeProvider"" />
             </providers>
           </stubConfigSection>";
 
@@ -68,7 +68,7 @@ namespace Remotion.Core.UnitTests.Configuration
           @"
           <stubConfigSection defaultProvider=""Fake"">
             <providers>
-              <add name=""Fake"" type=""Remotion.Core.UnitTests::Configuration.FakeProvider"" />
+              <add name=""Fake"" type=""Remotion.UnitTests::Configuration.FakeProvider"" />
             </providers>
           </stubConfigSection>";
 
@@ -106,7 +106,7 @@ namespace Remotion.Core.UnitTests.Configuration
           @"
           <stubConfigSection defaultProvider=""Invalid"">
             <providers>
-              <add name=""Fake"" type=""Remotion.Core.UnitTests::Configuration.FakeProvider"" />
+              <add name=""Fake"" type=""Remotion.UnitTests::Configuration.FakeProvider"" />
             </providers>
           </stubConfigSection>";
 
@@ -124,7 +124,7 @@ namespace Remotion.Core.UnitTests.Configuration
           @"
           <stubConfigSection defaultProvider=""WellKnown"">
             <providers>
-              <add name=""WellKnown"" type=""Remotion.Core.UnitTests::Configuration.FakeProvider"" />
+              <add name=""WellKnown"" type=""Remotion.UnitTests::Configuration.FakeProvider"" />
             </providers>
           </stubConfigSection>";
 
@@ -137,7 +137,7 @@ namespace Remotion.Core.UnitTests.Configuration
       Type type = _providerHelper.GetType (
           _propertyCollection["defaultProvider"],
           typeof (FakeProvider).Assembly.GetName(),
-          "Remotion.Core.UnitTests.Configuration.FakeProvider");
+          "Remotion.UnitTests.Configuration.FakeProvider");
 
       Assert.AreSame (typeof (FakeProvider), type);
     }
@@ -152,7 +152,7 @@ namespace Remotion.Core.UnitTests.Configuration
       _providerHelper.GetType (
           _propertyCollection["defaultProvider"],
           new AssemblyName ("Invalid"),
-          "Remotion.Core.UnitTests.Configuration.FakeProvider");
+          "Remotion.UnitTests.Configuration.FakeProvider");
     }
 
     [Test]
@@ -160,8 +160,8 @@ namespace Remotion.Core.UnitTests.Configuration
     {
       Type type = _providerHelper.GetTypeWithMatchingVersionNumber (
           _propertyCollection["defaultProvider"],
-          "Remotion.Core.UnitTests",
-          "Remotion.Core.UnitTests.Configuration.FakeProvider");
+          "Remotion.UnitTests",
+          "Remotion.UnitTests.Configuration.FakeProvider");
 
       Assert.AreSame (typeof (FakeProvider), type);
     }
@@ -173,13 +173,13 @@ namespace Remotion.Core.UnitTests.Configuration
       _providerHelper.GetTypeWithMatchingVersionNumber (
           _propertyCollection["defaultProvider"],
           "Invalid",
-          "Remotion.Core.UnitTests.Configuration.FakeProvider");
+          "Remotion.UnitTests.Configuration.FakeProvider");
     }
 
     [Test]
     public void InstantiateProvider ()
     {
-      ProviderSettings providerSettings = new ProviderSettings ("Custom", "Remotion.Core.UnitTests::Configuration.FakeProvider");
+      ProviderSettings providerSettings = new ProviderSettings ("Custom", "Remotion.UnitTests::Configuration.FakeProvider");
       providerSettings.Parameters.Add ("description", "The Description");
 
       ProviderBase providerBase = _providerHelper.InstantiateProvider (providerSettings, typeof (FakeProviderBase), typeof (IFakeProvider));
@@ -194,7 +194,7 @@ namespace Remotion.Core.UnitTests.Configuration
     [Test]
     public void InstantiateProvider_WithConstructorException ()
     {
-      ProviderSettings providerSettings = new ProviderSettings ("Custom", "Remotion.Core.UnitTests::Configuration.ThrowingFakeProvider");
+      ProviderSettings providerSettings = new ProviderSettings ("Custom", "Remotion.UnitTests::Configuration.ThrowingFakeProvider");
       providerSettings.Parameters.Add ("description", "The Description");
 
       try
@@ -219,19 +219,19 @@ namespace Remotion.Core.UnitTests.Configuration
 
     [Test]
     [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException),
-        ExpectedMessage = "Provider must implement the class 'Remotion.Core.UnitTests.Configuration.FakeProviderBase'.")]
+        ExpectedMessage = "Provider must implement the class 'Remotion.UnitTests.Configuration.FakeProviderBase'.")]
     public void InstantiateProvider_WithTypeNotDerivedFromRequiredBaseType ()
     {
-      ProviderSettings providerSettings = new ProviderSettings ("Custom", "Remotion.Core.UnitTests::Configuration.FakeOtherProvider");
+      ProviderSettings providerSettings = new ProviderSettings ("Custom", "Remotion.UnitTests::Configuration.FakeOtherProvider");
       _providerHelper.InstantiateProvider (providerSettings, typeof (FakeProviderBase));
     }
 
     [Test]
     [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException),
-        ExpectedMessage = "Provider must implement the interface 'Remotion.Core.UnitTests.Configuration.IFakeProvider'.")]
+        ExpectedMessage = "Provider must implement the interface 'Remotion.UnitTests.Configuration.IFakeProvider'.")]
     public void InstantiateProvider_WithTypeNotImplementingRequiredInterface ()
     {
-      ProviderSettings providerSettings = new ProviderSettings ("Custom", "Remotion.Core.UnitTests::Configuration.FakeProviderBase");
+      ProviderSettings providerSettings = new ProviderSettings ("Custom", "Remotion.UnitTests::Configuration.FakeProviderBase");
       _providerHelper.InstantiateProvider (providerSettings, typeof (FakeProviderBase), typeof (IFakeProvider));
     }
 
@@ -239,7 +239,7 @@ namespace Remotion.Core.UnitTests.Configuration
     public void InstantiateProviders ()
     {
       ProviderSettingsCollection providerSettingsCollection = new ProviderSettingsCollection();
-      providerSettingsCollection.Add (new ProviderSettings ("Custom", "Remotion.Core.UnitTests::Configuration.FakeProvider"));
+      providerSettingsCollection.Add (new ProviderSettings ("Custom", "Remotion.UnitTests::Configuration.FakeProvider"));
       ProviderCollection providerCollection = new ProviderCollection();
 
       _providerHelper.InstantiateProviders (providerSettingsCollection, providerCollection, typeof (FakeProviderBase), typeof (IFakeProvider));

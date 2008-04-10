@@ -5,10 +5,11 @@ using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Remotion.CodeGeneration;
-using Remotion.Core.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.UnitTests.CodeGeneration.SampleTypes;
 using Remotion.Development.UnitTesting;
+using Remotion.UnitTests.CodeGeneration.SampleTypes;
 
-namespace Remotion.Core.UnitTests.CodeGeneration
+namespace Remotion.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class MethodEmitterTest : CodeGenerationBaseTest

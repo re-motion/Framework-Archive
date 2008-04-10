@@ -4,7 +4,7 @@ using System.ComponentModel;
 using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Utilities
+namespace Remotion.UnitTests.Utilities
 {
 
 /// <summary> Exposes non-public members of the <see cref="TypeConversionProvider"/> type. </summary>

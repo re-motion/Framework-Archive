@@ -7,7 +7,7 @@ using Remotion.Development.UnitTesting;
 using Remotion.Mixins.Utilities.Serialization;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Mixins.Utilities.Serialization
+namespace Remotion.UnitTests.Mixins.Utilities.Serialization
 {
   [TestFixture]
   public class SafeReflectionSerializationTest

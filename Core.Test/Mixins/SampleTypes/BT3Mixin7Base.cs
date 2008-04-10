@@ -1,7 +1,7 @@
 using System;
 using Remotion.Mixins;
 
-namespace Remotion.Core.UnitTests.Mixins.SampleTypes
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
   [Serializable]
   public class BT3Mixin7Base : Mixin<IBaseType31, ICBaseType3BT3Mixin4>

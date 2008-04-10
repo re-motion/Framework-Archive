@@ -1,6 +1,6 @@
 using Remotion.Mixins;
 
-namespace Remotion.Core.UnitTests.Mixins.SampleTypes
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
   [Multi]
   [AcceptsAlphabeticOrdering]

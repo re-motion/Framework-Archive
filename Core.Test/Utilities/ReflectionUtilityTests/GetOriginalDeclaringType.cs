@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests
+namespace Remotion.UnitTests.Utilities.ReflectionUtilityTests
 {
   [TestFixture]
   public class GetOriginalDeclaringType

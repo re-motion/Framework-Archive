@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests
+namespace Remotion.UnitTests.Utilities.ReflectionUtilityTests
 {
   [TestFixture]
   public class CanAscribe_WithNonGenericClass

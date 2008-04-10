@@ -5,7 +5,7 @@ using Remotion.CodeGeneration;
 using Remotion.CodeGeneration.DPExtensions;
 using Remotion.Collections;
 
-namespace Remotion.Core.UnitTests.CodeGeneration
+namespace Remotion.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class TypedMethodInvocationExpressionTest : SnippetGenerationBaseTest

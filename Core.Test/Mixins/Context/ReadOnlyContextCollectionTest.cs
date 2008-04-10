@@ -6,7 +6,7 @@ using NUnit.Framework.SyntaxHelpers;
 using Remotion.Mixins.Context;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Mixins.Context
+namespace Remotion.UnitTests.Mixins.Context
 {
   [TestFixture]
   public class ReadOnlyContextCollectionTest

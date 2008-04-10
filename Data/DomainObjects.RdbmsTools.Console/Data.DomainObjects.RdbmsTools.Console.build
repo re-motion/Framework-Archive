@@ -18,7 +18,7 @@
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <include asis="true" name="${build.outputdir}/Remotion.Core.dll"/>
+        <include asis="true" name="${build.outputdir}/Remotion.dll"/>
         <include asis="true" name="${build.outputdir}/Remotion.Data.DomainObjects.dll"/>
         <include asis="true" name="${build.outputdir}/Remotion.Data.DomainObjects.RdbmsTools.dll"/>
         <include asis="true" name="System.dll"/>

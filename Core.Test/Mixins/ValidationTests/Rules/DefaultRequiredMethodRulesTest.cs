@@ -1,11 +1,12 @@
 using System;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Validation;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.ValidationTests.Rules
+namespace Remotion.UnitTests.Mixins.ValidationTests.Rules
 {
   [TestFixture]
   public class DefaultRequiredMethodRulesTest : ValidationTestBase

@@ -1,6 +1,6 @@
 using System;
 
-namespace Remotion.Core.UnitTests.CodeGeneration.SampleTypes
+namespace Remotion.UnitTests.CodeGeneration.SampleTypes
 {
   public class GenericClassWithNested<T>
   {

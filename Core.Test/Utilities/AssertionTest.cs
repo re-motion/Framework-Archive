@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Assertion=Remotion.Utilities.Assertion;
 using AssertionException=Remotion.Utilities.AssertionException;
 
-namespace Remotion.Core.UnitTests.Utilities
+namespace Remotion.UnitTests.Utilities
 {
   [TestFixture]
   public class AssertionTest

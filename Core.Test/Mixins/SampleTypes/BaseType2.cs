@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Remotion.Core.UnitTests.Mixins.SampleTypes
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
   public interface IBaseType2
   {

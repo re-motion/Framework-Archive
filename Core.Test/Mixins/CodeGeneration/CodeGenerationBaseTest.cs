@@ -7,7 +7,7 @@ using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Reflection;
 
-namespace Remotion.Core.UnitTests.Mixins
+namespace Remotion.UnitTests.Mixins
 {
   public abstract class CodeGenerationBaseTest
   {

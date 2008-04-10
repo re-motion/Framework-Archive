@@ -5,7 +5,7 @@ using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Configuration;
 using TypeNameConverter=Remotion.Utilities.TypeNameConverter;
 
-namespace Remotion.Core.UnitTests.Configuration
+namespace Remotion.UnitTests.Configuration
 {
   [TestFixture]
   public class TypeElementTest
@@ -64,7 +64,7 @@ namespace Remotion.Core.UnitTests.Configuration
     {
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
 
-      string xmlFragment = @"<theElement type=""Remotion.Core.UnitTests::Configuration.SampleType"" />";
+      string xmlFragment = @"<theElement type=""Remotion.UnitTests::Configuration.SampleType"" />";
       ConfigurationHelper.DeserializeElement (typeElement, xmlFragment);
 
       Assert.AreEqual (typeof (SampleType), typeElement.Type);

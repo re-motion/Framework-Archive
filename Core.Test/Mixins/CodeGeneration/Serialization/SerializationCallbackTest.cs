@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.Serialization
+namespace Remotion.UnitTests.Mixins.CodeGeneration.Serialization
 {
   [TestFixture]
   public class SerializationCallbackTest

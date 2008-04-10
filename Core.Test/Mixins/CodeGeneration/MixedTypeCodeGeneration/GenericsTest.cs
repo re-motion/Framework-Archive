@@ -1,11 +1,13 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.CodeGeneration.SampleTypes;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
+using Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
+namespace Remotion.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
 {
   [TestFixture]
   public class GenericsTest : CodeGenerationBaseTest

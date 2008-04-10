@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Rhino.Mocks;
 
-namespace Remotion.Core.UnitTests.Mixins.Context.FluentBuilders
+namespace Remotion.UnitTests.Mixins.Context.FluentBuilders
 {
   [TestFixture]
   public class MixinContextBuilderTest
@@ -44,8 +45,8 @@ namespace Remotion.Core.UnitTests.Mixins.Context.FluentBuilders
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The mixin Remotion.Core.UnitTests.Mixins.SampleTypes.BT2Mixin1 already has a "
-        + "dependency on type Remotion.Core.UnitTests.Mixins.SampleTypes.BT1Mixin1.", MatchType = MessageMatch.Contains)]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The mixin Remotion.UnitTests.Mixins.SampleTypes.BT2Mixin1 already has a "
+        + "dependency on type Remotion.UnitTests.Mixins.SampleTypes.BT1Mixin1.", MatchType = MessageMatch.Contains)]
     public void WithDependency_Twice ()
     {
       _mixinBuilder.WithDependency (typeof (BT1Mixin1)).WithDependency (typeof (BT1Mixin1));

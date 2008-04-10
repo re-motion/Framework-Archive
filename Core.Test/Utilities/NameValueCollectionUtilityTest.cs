@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using NUnit.Framework;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Utilities
+namespace Remotion.UnitTests.Utilities
 {
 
 [TestFixture]

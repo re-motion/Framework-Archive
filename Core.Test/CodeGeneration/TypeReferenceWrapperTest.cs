@@ -5,7 +5,7 @@ using NUnit.Framework;
 using Remotion.CodeGeneration.DPExtensions;
 using Rhino.Mocks;
 
-namespace Remotion.Core.UnitTests.CodeGeneration
+namespace Remotion.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class TypeReferenceWrapperTest

@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Remotion.Mixins;
 using Remotion.Mixins.Context;
 
-namespace Remotion.Core.UnitTests.Mixins.Context.DeclarativeConfigurationBuilder_IntegrationTests
+namespace Remotion.UnitTests.Mixins.Context.DeclarativeConfigurationBuilder_IntegrationTests
 {
   [TestFixture]
   public class DeclarativeConfigurationBuilderGenericInheritanceTest

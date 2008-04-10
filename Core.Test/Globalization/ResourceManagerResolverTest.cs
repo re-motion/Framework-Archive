@@ -3,12 +3,13 @@ using System.Resources;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Remotion.Collections;
-using Remotion.Core.UnitTests.Globalization.SampleTypes;
+using Remotion.UnitTests.Globalization.SampleTypes;
 using Remotion.Development.UnitTesting;
 using Remotion.Globalization;
+using Remotion.UnitTests.Globalization.SampleTypes;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Globalization
+namespace Remotion.UnitTests.Globalization
 {
   [TestFixture]
   public class ResourceManagerResolverTest
@@ -135,7 +136,7 @@ namespace Remotion.Core.UnitTests.Globalization
     }
 
     [Test]
-    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.Core.UnitTests.Globalization.SampleTypes."
+    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.UnitTests.Globalization.SampleTypes."
         + "ClassWithoutMultiLingualResourcesAttributes and its base classes do not define the attribute MultiLingualResourcesAttribute.")]
     public void FindFirstResourceDefinitions_NoSuccessException ()
     {
@@ -174,7 +175,7 @@ namespace Remotion.Core.UnitTests.Globalization
     }
 
     [Test]
-    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.Core.UnitTests.Globalization.SampleTypes."
+    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.UnitTests.Globalization.SampleTypes."
         + "ClassWithoutMultiLingualResourcesAttributes and its base classes do not define the attribute MultiLingualResourcesAttribute.")]
     public void GetResourceManager_NoDefiningType_NoSuccess ()
     {
@@ -216,7 +217,7 @@ namespace Remotion.Core.UnitTests.Globalization
     }
 
     [Test]
-    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.Core.UnitTests.Globalization.SampleTypes."
+    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.UnitTests.Globalization.SampleTypes."
         + "ClassWithoutMultiLingualResourcesAttributes and its base classes do not define the attribute MultiLingualResourcesAttribute.")]
     public void GetResourceManager_DefiningType_NoSuccess ()
     {

@@ -1,6 +1,6 @@
 // Requires:
 // System.dll, System.Design.dll, System.Drawing.dll, System.Web.dll
-// Remotion.Core.dll, Remotion.ObjectBinding.dll, Remotion.ObjectBinding.Web.dll, Remotion.Web.dll
+// Remotion.dll, Remotion.ObjectBinding.dll, Remotion.ObjectBinding.Web.dll, Remotion.Web.dll
 
 using System;
 using System.Collections;

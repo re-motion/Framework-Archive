@@ -1,14 +1,15 @@
 using System;
 using System.Collections;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Samples;
 using Remotion.Mixins.Utilities;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
+namespace Remotion.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
 {
   [TestFixture]
   public class StrongNameTest : CodeGenerationBaseTest

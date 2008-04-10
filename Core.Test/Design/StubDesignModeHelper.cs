@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.Design;
 using Remotion.Design;
 
-namespace Remotion.Core.UnitTests.Design
+namespace Remotion.UnitTests.Design
 {
   public class StubDesignModeHelper: DesignModeHelperBase
   {

@@ -3,7 +3,7 @@ using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Definitions.Building;
 
-namespace Remotion.Core.UnitTests.Mixins
+namespace Remotion.UnitTests.Mixins
 {
   public static class UnvalidatedDefinitionBuilder
   {

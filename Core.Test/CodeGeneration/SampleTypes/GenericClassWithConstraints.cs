@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Remotion.Core.UnitTests.CodeGeneration.SampleTypes
+namespace Remotion.UnitTests.CodeGeneration.SampleTypes
 {
   public class GenericClassWithConstraints<TConcreteInterfaceConstraint, TConcreteClassConstraint, TStructConstraint, TClassNewConstraint,
       TSelfConstraint, TComplexSelfConstraint>

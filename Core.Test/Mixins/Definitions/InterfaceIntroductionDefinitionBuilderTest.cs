@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.Definitions;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.Definitions
+namespace Remotion.UnitTests.Mixins.Definitions
 {
   [TestFixture]
   public class InterfaceIntroductionDefinitionBuilderTest
@@ -218,7 +219,7 @@ namespace Remotion.Core.UnitTests.Mixins.Definitions
         Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IExplicit)));
 
         MethodInfo explicitMethod = typeof (MixinWithExplicitImplementation).GetMethod (
-            "Remotion.Core.UnitTests.Mixins.SampleTypes.IExplicit.Explicit", BindingFlags.Instance | BindingFlags.NonPublic);
+            "Remotion.UnitTests.Mixins.SampleTypes.IExplicit.Explicit", BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.IsNotNull (explicitMethod);
 
         MixinDefinition m1 = bt1.Mixins[typeof (MixinWithExplicitImplementation)];

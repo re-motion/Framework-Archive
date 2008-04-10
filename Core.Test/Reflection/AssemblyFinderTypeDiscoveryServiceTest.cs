@@ -7,7 +7,7 @@ using NUnit.Framework.SyntaxHelpers;
 using Remotion.Reflection;
 using Rhino.Mocks;
 
-namespace Remotion.Core.UnitTests.Reflection
+namespace Remotion.UnitTests.Reflection
 {
   [TestFixture]
   public class AssemblyFinderTypeDiscoveryServiceTest

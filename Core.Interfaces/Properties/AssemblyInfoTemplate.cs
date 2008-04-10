@@ -6,9 +6,9 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Remotion Core Library")]
-[assembly: AssemblyDescription("General .NET classes and utilities.")]
-[assembly: AssemblyConfiguration("@buildinfo@")]
+[assembly: AssemblyTitle ("Remotion Core Interfaces Library")]
+[assembly: AssemblyDescription ("Stable interfaces for the Remotion Core library.")]
+[assembly: AssemblyConfiguration ("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]
 [assembly: AssemblyProduct("@productname@")]
 [assembly: AssemblyCopyright("@copyright@")]

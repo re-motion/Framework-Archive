@@ -1,6 +1,6 @@
 using System;
 
-namespace Remotion.Core.UnitTests.Configuration
+namespace Remotion.UnitTests.Configuration
 {
   public interface IFakeProvider
   {

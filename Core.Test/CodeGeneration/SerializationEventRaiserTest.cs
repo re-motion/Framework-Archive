@@ -4,12 +4,13 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.CodeGeneration;
-using Remotion.Core.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.UnitTests.CodeGeneration.SampleTypes;
 using Remotion.Development.UnitTesting;
+using Remotion.UnitTests.CodeGeneration.SampleTypes;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
 
-namespace Remotion.Core.UnitTests.CodeGeneration
+namespace Remotion.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class SerializationEventRaiserTest

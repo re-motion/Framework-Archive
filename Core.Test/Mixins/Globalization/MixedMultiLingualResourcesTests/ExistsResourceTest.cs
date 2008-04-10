@@ -1,10 +1,11 @@
 using System;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.Globalization.SampleTypes;
+using Remotion.UnitTests.Mixins.Globalization.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.Globalization;
+using Remotion.UnitTests.Mixins.Globalization.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.Globalization.MixedMultiLingualResourcesTests
+namespace Remotion.UnitTests.Mixins.Globalization.MixedMultiLingualResourcesTests
 {
   [TestFixture]
   public class ExistsResourceTest

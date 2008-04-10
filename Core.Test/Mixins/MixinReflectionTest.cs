@@ -3,13 +3,14 @@ using System.Reflection;
 using Castle.DynamicProxy;
 using NUnit.Framework;
 using Remotion.CodeGeneration;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Utilities;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins
+namespace Remotion.UnitTests.Mixins
 {
   [TestFixture]
   public class MixinReflectionTest

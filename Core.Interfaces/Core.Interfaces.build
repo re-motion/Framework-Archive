@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Remotion.Core.Interfaces">  
+<project xmlns="nant-schema" name="Remotion.Interfaces.dll">  
 
   <target name="build" description="perform a build">
 
@@ -12,6 +12,7 @@
           define="${build.csc.define}">
       <sources failonempty="true">
         <include name="*.cs" />
+        <include name="Implementation/**/*.cs" />
         <include name="Properties/**/*.cs" />
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>

@@ -7,7 +7,7 @@
     <ProjectGuid>{BD061F4A-A9E6-461E-A804-7999623A0060}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.Interfaces</RootNamespace>
+    <RootNamespace>Remotion</RootNamespace>
     <AssemblyName>Remotion.Interfaces</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -33,6 +33,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementation\ConcreteImplementationAttribute.cs" />
+    <Compile Include="Implementation\FrameworkVersion.cs" />
+    <Compile Include="Implementation\FrameworkVersionRetriever.cs" />
+    <Compile Include="Implementation\VersionDependentImplementationBridge.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
   </ItemGroup>

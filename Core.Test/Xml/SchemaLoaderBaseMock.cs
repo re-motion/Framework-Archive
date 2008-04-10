@@ -3,7 +3,7 @@ using System.Xml.Schema;
 using Remotion.Utilities;
 using Remotion.Xml;
 
-namespace Remotion.Core.UnitTests.Xml
+namespace Remotion.UnitTests.Xml
 {
   public class SchemaLoaderBaseMock : SchemaLoaderBase
   {

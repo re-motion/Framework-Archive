@@ -1,7 +1,8 @@
 using System;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.ValidationTests.ValidationSampleTypes
+namespace Remotion.UnitTests.Mixins.ValidationTests.ValidationSampleTypes
 {
   public class DoubleImplementer : IBaseType2
   {

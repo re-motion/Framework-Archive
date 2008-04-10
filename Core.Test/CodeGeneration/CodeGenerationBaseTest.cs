@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Remotion.CodeGeneration.DPExtensions;
 using Remotion.Development.UnitTesting;
 
-namespace Remotion.Core.UnitTests.CodeGeneration
+namespace Remotion.UnitTests.CodeGeneration
 {
   public abstract class CodeGenerationBaseTest
   {

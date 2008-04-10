@@ -1,12 +1,13 @@
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.Serialization
+namespace Remotion.UnitTests.Mixins.CodeGeneration.Serialization
 {
   [TestFixture]
   public class ModuleManagerSerializationExtensionTest
@@ -43,9 +44,9 @@ namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "TypeTransformer returned type Remotion.Core.UnitTests.Mixins.SampleTypes.BaseType2, "
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "TypeTransformer returned type Remotion.UnitTests.Mixins.SampleTypes.BaseType2, "
         + "which is not compatible with the serialized mixin configuration. The configuration requires a type assignable to "
-            + "Remotion.Core.UnitTests.Mixins.SampleTypes.BaseType1.\r\nParameter name: typeTransformer")]
+            + "Remotion.UnitTests.Mixins.SampleTypes.BaseType1.\r\nParameter name: typeTransformer")]
     public void BeginDeserialization_InvalidTransformer ()
     {
       BaseType1 mixedObject = ObjectFactory.Create<BaseType1> ().With ();
@@ -180,7 +181,7 @@ namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.Serialization
 
     [Test]
     [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage = "Argument objectReference is a "
-        + "Remotion.Core.UnitTests.Mixins.CodeGeneration.Serialization.ModuleManagerSerializationExtensionTest+DummyReference, which cannot be assigned to type "
+        + "Remotion.UnitTests.Mixins.CodeGeneration.Serialization.ModuleManagerSerializationExtensionTest+DummyReference, which cannot be assigned to type "
             + "System.Runtime.Serialization.IDeserializationCallback.\r\nParameter name: objectReference")]
     public void FinishDeserialization_ThrowsOnUnmixedObjects ()
     {

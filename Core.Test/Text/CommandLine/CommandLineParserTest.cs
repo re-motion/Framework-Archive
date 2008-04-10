@@ -4,7 +4,7 @@ using Remotion.Development.UnitTesting;
 using Remotion.NullableValueTypes;
 using Remotion.Text.CommandLine;
 
-namespace Remotion.Core.UnitTests.Text.CommandLine
+namespace Remotion.UnitTests.Text.CommandLine
 {
 
 public enum IncrementalTestOptions { no, nor, normal, anything };

@@ -1,7 +1,7 @@
 using System;
 using Remotion.Globalization;
 
-namespace Remotion.Core.UnitTests.Globalization.SampleTypes
+namespace Remotion.UnitTests.Globalization.SampleTypes
 {
   [MultiLingualResources ("One")]
   [MultiLingualResources ("Two")]

@@ -10,7 +10,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>Remotion.Core</AssemblyName>
+    <AssemblyName>Remotion</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -60,7 +60,7 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\Remotion.Core.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Remotion.xml</DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
@@ -111,6 +111,7 @@
     <Compile Include="CodeGeneration\DPExtensions\ILStatement.cs" />
     <Compile Include="CodeGeneration\DPExtensions\InitObjectExpression.cs" />
     <Compile Include="CodeGeneration\DPExtensions\LoadCalculatedArrayElementExpression.cs" />
+    <Compile Include="CodeGeneration\DPExtensions\PopStatement.cs" />
     <Compile Include="CodeGeneration\DPExtensions\PropertyReference.cs" />
     <Compile Include="CodeGeneration\DPExtensions\SameConditionExpression.cs" />
     <Compile Include="CodeGeneration\DPExtensions\TryFinallyStatement.cs" />
@@ -664,7 +665,7 @@
     <Content Include="doc\include\Text\CommandLine\CommandLineParser.xml" />
     <Content Include="doc\include\Utilities\EqualityUtility.xml" />
     <Content Include="doc\include\Utilities\WorkContext.xml" />
-    <Content Include="doc\WhatsNew_Remotion.Core.txt" />
+    <Content Include="doc\WhatsNew_Remotion.txt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

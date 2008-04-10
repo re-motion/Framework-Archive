@@ -2,7 +2,7 @@ using System;
 using Remotion.Mixins;
 using Remotion.Mixins.Definitions;
 
-namespace Remotion.Core.UnitTests.Mixins.ValidationTests.ValidationSampleTypes
+namespace Remotion.UnitTests.Mixins.ValidationTests.ValidationSampleTypes
 {
   public class MixinImplementingIMixinTarget : IMixinTarget
   {

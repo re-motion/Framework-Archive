@@ -1,13 +1,15 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
-using Remotion.Core.UnitTests.Mixins.ValidationTests.ValidationSampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.ValidationTests.ValidationSampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Definitions;
+using Remotion.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.ValidationTests.ValidationSampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins
+namespace Remotion.UnitTests.Mixins
 {
   [TestFixture]
   public class ObjectFactoryTest
@@ -75,8 +77,8 @@ namespace Remotion.Core.UnitTests.Mixins
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The mixin Remotion.Core.UnitTests.Mixins.SampleTypes.MixinWithProtectedOverrider "
-        + "applied to base type Remotion.Core.UnitTests.Mixins.SampleTypes.BaseType1 needs to have a subclass generated at runtime. It is therefore not "
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The mixin Remotion.UnitTests.Mixins.SampleTypes.MixinWithProtectedOverrider "
+        + "applied to base type Remotion.UnitTests.Mixins.SampleTypes.BaseType1 needs to have a subclass generated at runtime. It is therefore not "
             + "possible to use the given object of type MixinWithProtectedOverrider as a mixin instance.", MatchType = MessageMatch.Contains)]
     public void ThrowsOnBaseMixinInstanceWhenGeneratedTypeIsNeeded ()
     {
@@ -251,7 +253,7 @@ namespace Remotion.Core.UnitTests.Mixins
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Cannot instantiate mixin Remotion.Core.UnitTests.Mixins."
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Cannot instantiate mixin Remotion.UnitTests.Mixins."
         + "ValidationTests.ValidationSampleTypes.MixinWithPrivateCtorAndVirtualMethod, there is no visible default constructor.")]
     public void ThrowsWhenMixinWithoutPublicDefaultCtorShouldBeInstantiated ()
     {
@@ -349,7 +351,7 @@ namespace Remotion.Core.UnitTests.Mixins
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.Core.UnitTests.Mixins.ObjectFactoryTest+"
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.ObjectFactoryTest+"
         + "TargetClassWithProtectedCtors does not contain a public constructor with signature ().")]
     public void ProtectedDefaultConstructor_Mixed ()
     {
@@ -360,7 +362,7 @@ namespace Remotion.Core.UnitTests.Mixins
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.Core.UnitTests.Mixins.ObjectFactoryTest+"
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.ObjectFactoryTest+"
         + "TargetClassWithProtectedCtors does not contain a public constructor with signature (System.Int32).")]
     public void ProtectedNonDefaultConstructor_Mixed ()
     {
@@ -371,7 +373,7 @@ namespace Remotion.Core.UnitTests.Mixins
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.Core.UnitTests.Mixins.ObjectFactoryTest+"
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.ObjectFactoryTest+"
         + "TargetClassWithProtectedCtors does not contain a public constructor with signature ().")]
     public void ProtectedDefaultConstructor_NonMixed ()
     {
@@ -382,7 +384,7 @@ namespace Remotion.Core.UnitTests.Mixins
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.Core.UnitTests.Mixins.ObjectFactoryTest+"
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.ObjectFactoryTest+"
         + "TargetClassWithProtectedCtors does not contain a public constructor with signature (System.Int32).")]
     public void ProtectedNonDefaultConstructor_NonMixed ()
     {

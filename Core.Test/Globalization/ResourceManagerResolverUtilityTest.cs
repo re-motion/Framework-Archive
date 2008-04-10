@@ -1,10 +1,11 @@
 using System;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Globalization.SampleTypes;
+using Remotion.UnitTests.Globalization.SampleTypes;
 using Remotion.Globalization;
+using Remotion.UnitTests.Globalization.SampleTypes;
 using Rhino.Mocks;
 
-namespace Remotion.Core.UnitTests.Globalization
+namespace Remotion.UnitTests.Globalization
 {
   [TestFixture]
   public class ResourceManagerResolverUtilityTest

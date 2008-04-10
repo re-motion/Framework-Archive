@@ -4,7 +4,7 @@ using Remotion.Mixins;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 
-namespace Remotion.Core.UnitTests.Mixins.Definitions
+namespace Remotion.UnitTests.Mixins.Definitions
 {
   [TestFixture]
   public class MixedMixinTest

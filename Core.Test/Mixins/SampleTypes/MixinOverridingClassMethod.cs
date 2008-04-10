@@ -2,7 +2,7 @@ using System;
 using Remotion.Mixins;
 using Remotion.Mixins.Definitions;
 
-namespace Remotion.Core.UnitTests.Mixins.SampleTypes
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
   [Serializable]
   public class MixinOverridingClassMethod : Mixin<object, MixinOverridingClassMethod.IRequirements>, IMixinOverridingClassMethod

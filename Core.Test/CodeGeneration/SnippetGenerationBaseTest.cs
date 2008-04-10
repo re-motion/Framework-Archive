@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Remotion.CodeGeneration;
 using Remotion.Development.UnitTesting;
 
-namespace Remotion.Core.UnitTests.CodeGeneration
+namespace Remotion.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class SnippetGenerationBaseTest : CodeGenerationBaseTest

@@ -3,7 +3,7 @@ using log4net.Core;
 using NUnit.Framework;
 using Remotion.Logging;
 
-namespace Remotion.Core.UnitTests.Logging.Log4NetLogTests
+namespace Remotion.UnitTests.Logging.Log4NetLogTests
 {
   [TestFixture]
   public class ConvertTest

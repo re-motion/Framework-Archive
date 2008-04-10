@@ -2,14 +2,16 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Remotion.Core.UnitTests.Mixins.CodeGeneration.SampleTypes;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Definitions;
+using Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Rhino.Mocks;
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
+namespace Remotion.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
 {
   [TestFixture]
   public class TypeFeatureTest : CodeGenerationBaseTest

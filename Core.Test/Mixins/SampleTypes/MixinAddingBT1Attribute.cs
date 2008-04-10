@@ -1,4 +1,4 @@
-namespace Remotion.Core.UnitTests.Mixins.SampleTypes
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
   [BT1]
   public class MixinAddingBT1Attribute

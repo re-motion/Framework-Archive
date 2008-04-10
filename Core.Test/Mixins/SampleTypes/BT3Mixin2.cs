@@ -2,7 +2,7 @@ using System;
 using Remotion.Mixins;
 using Remotion.Mixins.Definitions;
 
-namespace Remotion.Core.UnitTests.Mixins.SampleTypes
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
   [Extends (typeof (BaseType3))]
   [Serializable]

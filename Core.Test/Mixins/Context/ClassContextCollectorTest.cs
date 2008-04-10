@@ -4,7 +4,7 @@ using NUnit.Framework.SyntaxHelpers;
 using Remotion.Collections;
 using Remotion.Mixins.Context;
 
-namespace Remotion.Core.UnitTests.Mixins.Context
+namespace Remotion.UnitTests.Mixins.Context
 {
   [TestFixture]
   public class ClassContextCollectorTest

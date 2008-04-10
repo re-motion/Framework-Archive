@@ -2,13 +2,14 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Remotion.Collections;
-using Remotion.Core.UnitTests.Mixins.Definitions.DependencySorting.SampleTypes;
+using Remotion.UnitTests.Mixins.Definitions.DependencySorting.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Definitions.Building.DependencySorting;
+using Remotion.UnitTests.Mixins.Definitions.DependencySorting.SampleTypes;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Mixins.Definitions.DependencySorting
+namespace Remotion.UnitTests.Mixins.Definitions.DependencySorting
 {
   [TestFixture]
   public class DependentMixinGrouperTest

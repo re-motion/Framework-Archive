@@ -1,11 +1,12 @@
 using System;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Definitions;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration
+namespace Remotion.UnitTests.Mixins.CodeGeneration
 {
   [TestFixture]
   public class NamespaceChangingNameProviderTest

@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.Definitions;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.Definitions
+namespace Remotion.UnitTests.Mixins.Definitions
 {
   [TestFixture]
   public class DependencyDefinitionBuilderTest
@@ -61,8 +62,8 @@ namespace Remotion.Core.UnitTests.Mixins.Definitions
 
     [Test]
     [ExpectedException (typeof (ConfigurationException),
-        ExpectedMessage = "The dependency IBT3Mixin4 (mixins Remotion.Core.UnitTests.Mixins.SampleTypes.BT3Mixin7Face applied to class "
-                          + "Remotion.Core.UnitTests.Mixins.SampleTypes.BaseType3) is not fulfilled - public or protected method Foo could not be found on the base class.")]
+        ExpectedMessage = "The dependency IBT3Mixin4 (mixins Remotion.UnitTests.Mixins.SampleTypes.BT3Mixin7Face applied to class "
+                          + "Remotion.UnitTests.Mixins.SampleTypes.BaseType3) is not fulfilled - public or protected method Foo could not be found on the base class.")]
     public void ThrowsIfAggregateThisDependencyIsNotFullyImplemented ()
     {
       UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Face));
@@ -70,8 +71,8 @@ namespace Remotion.Core.UnitTests.Mixins.Definitions
 
     [Test]
     [ExpectedException (typeof (ConfigurationException),
-        ExpectedMessage = "The dependency IBT3Mixin4 (mixins Remotion.Core.UnitTests.Mixins.SampleTypes.BT3Mixin7Base applied to class "
-                          + "Remotion.Core.UnitTests.Mixins.SampleTypes.BaseType3) is not fulfilled - public or protected method Foo could not be found on the base class.")]
+        ExpectedMessage = "The dependency IBT3Mixin4 (mixins Remotion.UnitTests.Mixins.SampleTypes.BT3Mixin7Base applied to class "
+                          + "Remotion.UnitTests.Mixins.SampleTypes.BaseType3) is not fulfilled - public or protected method Foo could not be found on the base class.")]
     public void ThrowsIfAggregateBaseDependencyIsNotFullyImplemented ()
     {
       UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Base));
@@ -102,7 +103,7 @@ namespace Remotion.Core.UnitTests.Mixins.Definitions
       Assert.AreEqual (typeof (IBaseType31).GetMembers().Length, req1.Methods.Count);
 
       RequiredMethodDefinition member1 = req1.Methods[typeof (IBaseType31).GetMethod ("IfcMethod")];
-      Assert.AreEqual ("Remotion.Core.UnitTests.Mixins.SampleTypes.IBaseType31.IfcMethod", member1.FullName);
+      Assert.AreEqual ("Remotion.UnitTests.Mixins.SampleTypes.IBaseType31.IfcMethod", member1.FullName);
       Assert.AreSame (req1, member1.DeclaringRequirement);
       Assert.AreSame (req1, member1.Parent);
 
@@ -113,7 +114,7 @@ namespace Remotion.Core.UnitTests.Mixins.Definitions
       Assert.AreEqual (typeof (IBT3Mixin4).GetMembers().Length, req2.Methods.Count);
 
       RequiredMethodDefinition member2 = req2.Methods[typeof (IBT3Mixin4).GetMethod ("Foo")];
-      Assert.AreEqual ("Remotion.Core.UnitTests.Mixins.SampleTypes.IBT3Mixin4.Foo", member2.FullName);
+      Assert.AreEqual ("Remotion.UnitTests.Mixins.SampleTypes.IBT3Mixin4.Foo", member2.FullName);
       Assert.AreSame (req2, member2.DeclaringRequirement);
       Assert.AreSame (req2, member2.Parent);
 
@@ -324,7 +325,7 @@ namespace Remotion.Core.UnitTests.Mixins.Definitions
 
       ThisDependencyDefinition d1 = m7.ThisDependencies[typeof (ICBaseType3BT3Mixin4)];
       Assert.IsNull (d1.GetImplementer ());
-      Assert.AreEqual ("Remotion.Core.UnitTests.Mixins.SampleTypes.ICBaseType3BT3Mixin4", d1.FullName);
+      Assert.AreEqual ("Remotion.UnitTests.Mixins.SampleTypes.ICBaseType3BT3Mixin4", d1.FullName);
       Assert.AreSame (m7, d1.Parent);
 
       Assert.IsTrue (d1.IsAggregate);

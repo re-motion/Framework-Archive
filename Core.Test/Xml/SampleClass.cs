@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Remotion.Core.UnitTests.Xml
+namespace Remotion.UnitTests.Xml
 {
   [XmlType (ElementName, Namespace = SchemaUri)]
   public class SampleClass

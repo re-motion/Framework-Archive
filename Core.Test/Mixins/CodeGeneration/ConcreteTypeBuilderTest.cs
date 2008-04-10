@@ -3,16 +3,18 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Threading;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.CodeGeneration.SampleTypes;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Definitions;
+using Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Rhino.Mocks;
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration
+namespace Remotion.UnitTests.Mixins.CodeGeneration
 {
   [TestFixture]
   public class ConcreteTypeBuilderTest : CodeGenerationBaseTest
@@ -400,8 +402,8 @@ namespace Remotion.Core.UnitTests.Mixins.CodeGeneration
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "No concrete mixin type is required for the given configuration "
-        + "(mixin Remotion.Core.UnitTests.Mixins.CodeGeneration.SampleTypes.MixinWithOverridableMember and target class "
-            + "Remotion.Core.UnitTests.Mixins.SampleTypes.NullTarget).",
+        + "(mixin Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes.MixinWithOverridableMember and target class "
+            + "Remotion.UnitTests.Mixins.SampleTypes.NullTarget).",
         MatchType = MessageMatch.Contains)]
     public void GetConcreteMixinTypeThrowsIfNoMixinTypeGenerated ()
     {

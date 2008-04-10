@@ -2,10 +2,11 @@ using System;
 using System.Reflection;
 using System.Reflection.Emit;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
+namespace Remotion.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
 {
   [TestFixture]
   public class InstantiationTest : CodeGenerationBaseTest
@@ -70,7 +71,7 @@ namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The supplied mixin of type Remotion.Core.UnitTests.Mixins.SampleTypes.BT3Mixin1 is not valid in the current configuration.",
+        ExpectedMessage = "The supplied mixin of type Remotion.UnitTests.Mixins.SampleTypes.BT3Mixin1 is not valid in the current configuration.",
         MatchType = MessageMatch.Contains)]
     public void ThrowsIfWrongMixinInstancesInScope ()
     {

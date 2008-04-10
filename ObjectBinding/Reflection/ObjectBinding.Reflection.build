@@ -19,7 +19,7 @@
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <include name="${build.test.outputdir}/Remotion.Core.dll" />
+        <include name="${build.test.outputdir}/Remotion.dll" />
         <include name="${build.test.outputdir}/Remotion.Web.dll" />
         <include name="${build.test.outputdir}/Remotion.Mixins.dll" />
         <include name="${build.test.outputdir}/Remotion.ObjectBinding.dll" />

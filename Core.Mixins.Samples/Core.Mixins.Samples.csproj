@@ -57,7 +57,6 @@
     <Compile Include="DisposableMixin.cs" />
     <Compile Include="DynamicMixinBuilding\DynamicMixinBuilder.cs" />
     <Compile Include="DynamicMixinBuilding\DynamicMixinTypeGenerator.cs" />
-    <Compile Include="DynamicMixinBuilding\PopStatement.cs" />
     <Compile Include="EquatableMixin.cs" />
     <Compile Include="DynamicMixinBuilding\InterfaceEmitter.cs" />
     <Compile Include="DynamicMixinBuilding\LoadFunctionExpression.cs" />

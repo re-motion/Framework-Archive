@@ -1,6 +1,6 @@
 using Remotion.Mixins;
 
-namespace Remotion.Core.UnitTests.Mixins.SampleTypes
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
   [AcceptsAlphabeticOrdering]
   public class MixinAddingBT1AttributeToMember

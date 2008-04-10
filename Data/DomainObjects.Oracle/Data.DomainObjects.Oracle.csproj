@@ -29,9 +29,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Oracle.DataAccess, Version=10.2.0.100, Culture=neutral, PublicKeyToken=89b483f429c47342" />
-    <Reference Include="Remotion.Core, Version=1.7.30.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+    <Reference Include="Remotion, Version=1.7.30.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Remotion.Core.dll</HintPath>
+      <HintPath>..\References\Remotion.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Data.DomainObjects, Version=1.7.30.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

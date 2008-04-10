@@ -1,7 +1,7 @@
 using System;
 using Remotion.Mixins;
 
-namespace Remotion.Core.UnitTests.Mixins.SampleTypes
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
   [Extends (typeof (TargetClassWithAdditionalDependencies))]
   public class MixinWithNoAdditionalDependency : Mixin<object, ITargetClassWithAdditionalDependencies>

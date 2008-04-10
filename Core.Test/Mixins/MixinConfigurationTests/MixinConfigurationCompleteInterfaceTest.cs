@@ -1,11 +1,12 @@
 using System;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.MixinConfigurationTests
+namespace Remotion.UnitTests.Mixins.MixinConfigurationTests
 {
   [TestFixture]
   public class MixinConfigurationCompleteInterfaceTest

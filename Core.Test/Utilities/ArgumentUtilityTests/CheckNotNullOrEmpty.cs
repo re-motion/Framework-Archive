@@ -4,7 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Utilities.ArgumentUtilityTests
+namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 {
   [TestFixture]
   public class CheckNotNullOrEmpty

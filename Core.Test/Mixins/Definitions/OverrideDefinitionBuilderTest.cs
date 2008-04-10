@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.Definitions;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.Definitions
+namespace Remotion.UnitTests.Mixins.Definitions
 {
   [TestFixture]
   public class OverrideDefinitionBuilderTest
@@ -214,7 +215,7 @@ namespace Remotion.Core.UnitTests.Mixins.Definitions
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The member overridden by "
-                                                                           + "'Remotion.Core.UnitTests.Mixins.SampleTypes.ClassOverridingSpecificMixinMember.VirtualMethod' could not be found.")]
+                                                                           + "'Remotion.UnitTests.Mixins.SampleTypes.ClassOverridingSpecificMixinMember.VirtualMethod' could not be found.")]
     public void TargetClassOverridingSpecificUnconfiguredMixinMethod ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<ClassOverridingSpecificMixinMember> ().Clear().AddMixins (typeof (MixinWithVirtualMethod2)).EnterScope())

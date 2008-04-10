@@ -196,7 +196,7 @@
   <target name="Core" depends="Core.Interfaces">
     <property name="project.name" value="Core" />
     <property name="project.dir" value="Core" />
-    <property name="project.output" value="Remotion.Core" />
+    <property name="project.output" value="Remotion" />
     <property name="project.extension" value="dll" />
     <call target="execute-buildstep" />
   </target>
@@ -445,7 +445,7 @@
 
     <property name="project.name" value="Core.Test" />
     <property name="project.dir" value="Core.Test" />
-    <property name="project.output" value="Remotion.Core.UnitTests" />
+    <property name="project.output" value="Remotion.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
   </target>

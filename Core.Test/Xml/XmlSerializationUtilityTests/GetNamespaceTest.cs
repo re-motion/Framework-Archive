@@ -7,7 +7,7 @@ using Castle.DynamicProxy.Generators.Emitters;
 using NUnit.Framework;
 using Remotion.Xml;
 
-namespace Remotion.Core.UnitTests.Xml.XmlSerializationUtilityTests
+namespace Remotion.UnitTests.Xml.XmlSerializationUtilityTests
 {
   [TestFixture]
   public class GetNamespaceTest

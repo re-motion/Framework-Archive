@@ -1,7 +1,7 @@
 using System;
 using Remotion.Mixins;
 
-namespace Remotion.Core.UnitTests.Mixins.SampleTypes
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
   [CopyCustomAttributes (typeof (AttributeSource))]
   public class MixinIndirectlyAddingAttribute : Mixin<object>

@@ -1,12 +1,13 @@
 using System;
 using NUnit.Framework;
 using Remotion.CodeGeneration;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
+namespace Remotion.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
 {
   [TestFixture]
   public class GeneratedTypeInConfigurationTest : CodeGenerationBaseTest

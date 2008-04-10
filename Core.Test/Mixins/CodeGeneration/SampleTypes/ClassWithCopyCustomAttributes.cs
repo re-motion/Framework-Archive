@@ -1,7 +1,7 @@
 using System;
 using Remotion.Mixins;
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.SampleTypes
+namespace Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes
 {
   [CopyCustomAttributes (typeof (CopyTemplate))]
   public class ClassWithCopyCustomAttributes

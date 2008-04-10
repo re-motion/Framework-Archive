@@ -9,13 +9,13 @@ using log4net.Util;
 using NUnit.Framework;
 using Remotion.Logging;
 
-namespace Remotion.Core.UnitTests.Logging.Log4NetLogTests
+namespace Remotion.UnitTests.Logging.Log4NetLogTests
 {
   [TestFixture]
   public class LogToEventLogTest
   {
-    private static readonly string s_eventLogName = typeof (LogToEventLogTest).Assembly.GetName().Name.Replace ('.', '_');
-    private static readonly string s_eventLogSource = typeof (LogToEventLogTest).Name;
+    private static readonly string s_eventLogName = "Remotion_UnitTests";
+    private static readonly string s_eventLogSource = "LogToEventLogTest_Log";
     private ILogger _logger;
     private ILog _log;
     private EventLog _testEventLog;

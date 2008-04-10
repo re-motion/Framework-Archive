@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Remotion.Utilities;
 using Rhino.Mocks;
 
-namespace Remotion.Core.UnitTests.Utilities
+namespace Remotion.UnitTests.Utilities
 {
 	[TestFixture]
 	public class ConsoleUtilityTest

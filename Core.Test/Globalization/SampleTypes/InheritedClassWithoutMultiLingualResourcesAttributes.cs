@@ -1,6 +1,6 @@
 using System;
 
-namespace Remotion.Core.UnitTests.Globalization.SampleTypes
+namespace Remotion.UnitTests.Globalization.SampleTypes
 {
   public class InheritedClassWithoutMultiLingualResourcesAttributes : ClassWithMultiLingualResourcesAttributes
   {

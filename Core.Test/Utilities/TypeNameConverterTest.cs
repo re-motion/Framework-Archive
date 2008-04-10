@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Utilities
+namespace Remotion.UnitTests.Utilities
 {
   [TestFixture]
   public class TypeNameConverterTest
@@ -48,7 +48,7 @@ namespace Remotion.Core.UnitTests.Utilities
 
       Assert.AreEqual ("", _converter.ConvertTo (null, null, null, destinationType));
       Assert.AreEqual (
-          "Remotion.Core.UnitTests.Utilities.TypeNameConverterTest, Remotion.Core.UnitTests", 
+          "Remotion.UnitTests.Utilities.TypeNameConverterTest, Remotion.UnitTests", 
           (string) _converter.ConvertTo (null, null, typeof (TypeNameConverterTest), destinationType));
     }
 
@@ -58,10 +58,10 @@ namespace Remotion.Core.UnitTests.Utilities
       Assert.AreEqual (null, _converter.ConvertFrom (null, null, ""));
       Assert.AreEqual (
           typeof (TypeNameConverterTest),
-          _converter.ConvertFrom (null, null, "Remotion.Core.UnitTests.Utilities.TypeNameConverterTest, Remotion.Core.UnitTests"));
+          _converter.ConvertFrom (null, null, "Remotion.UnitTests.Utilities.TypeNameConverterTest, Remotion.UnitTests"));
       Assert.AreEqual (
           typeof (TypeNameConverterTest),
-          _converter.ConvertFrom (null, null, "Remotion.Core.UnitTests::Utilities.TypeNameConverterTest"));
+          _converter.ConvertFrom (null, null, "Remotion.UnitTests::Utilities.TypeNameConverterTest"));
     }
   }
 }

@@ -6,7 +6,7 @@ using Remotion.Collections;
 using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Collections
+namespace Remotion.UnitTests.Collections
 {
   [TestFixture]
   public class SetTest

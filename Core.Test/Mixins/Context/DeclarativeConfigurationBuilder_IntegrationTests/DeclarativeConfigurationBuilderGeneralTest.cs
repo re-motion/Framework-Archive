@@ -5,18 +5,19 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Design;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Context;
 using Remotion.Reflection;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Utilities;
 using Rhino.Mocks;
 using ReflectionUtility=Remotion.Mixins.Utilities.ReflectionUtility;
 
-namespace Remotion.Core.UnitTests.Mixins.Context.DeclarativeConfigurationBuilder_IntegrationTests
+namespace Remotion.UnitTests.Mixins.Context.DeclarativeConfigurationBuilder_IntegrationTests
 {
   [TestFixture]
   public class DeclarativeConfigurationBuilderGeneralTest

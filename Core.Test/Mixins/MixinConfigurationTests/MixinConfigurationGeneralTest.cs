@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Mixins.Samples.PhotoStuff.Variant1;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.MixinConfigurationTests
+namespace Remotion.UnitTests.Mixins.MixinConfigurationTests
 {
   [TestFixture]
   public class MixinConfigurationGeneralTest
@@ -233,7 +234,7 @@ namespace Remotion.Core.UnitTests.Mixins.MixinConfigurationTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The given destination configuration object conflicts with the source "
-          + "configuration: The interface Remotion.Core.UnitTests.Mixins.SampleTypes.IBaseType33 has already been associated with a class context.\r\n"
+          + "configuration: The interface Remotion.UnitTests.Mixins.SampleTypes.IBaseType33 has already been associated with a class context.\r\n"
           + "Parameter name: destination")]
     public void CopyTo_ThrowsWhenConflictWithRegisteredInterface ()
     {

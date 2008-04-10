@@ -24,7 +24,7 @@
       </sources>
      
       <references failonempty="true">
-        <include name="${build.test.outputdir}/Remotion.Core.dll" />
+        <include name="${build.test.outputdir}/Remotion.dll" />
         <include name="${build.test.outputdir}/Remotion.Data.DomainObjects.dll" />
         <include name="${build.test.outputdir}/Remotion.Data.DomainObjects.ObjectBinding.dll" />
         <include name="${build.test.outputdir}/Remotion.Development.dll" />

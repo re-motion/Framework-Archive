@@ -1,11 +1,12 @@
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.Serialization
+namespace Remotion.UnitTests.Mixins.CodeGeneration.Serialization
 {
   [TestFixture]
   public class SerializationTest : CodeGenerationBaseTest

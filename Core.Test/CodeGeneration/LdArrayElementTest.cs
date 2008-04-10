@@ -4,9 +4,10 @@ using Castle.DynamicProxy.Generators.Emitters;
 using NUnit.Framework;
 using Remotion.CodeGeneration;
 using Remotion.CodeGeneration.DPExtensions;
-using Remotion.Core.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.UnitTests.CodeGeneration.SampleTypes;
+using Remotion.UnitTests.CodeGeneration.SampleTypes;
 
-namespace Remotion.Core.UnitTests.CodeGeneration
+namespace Remotion.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class LdArrayElementTest : SnippetGenerationBaseTest

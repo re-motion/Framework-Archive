@@ -5,7 +5,7 @@ using System.Configuration.Provider;
 using System.Reflection;
 using Remotion.Configuration;
 
-namespace Remotion.Core.UnitTests.Configuration
+namespace Remotion.UnitTests.Configuration
 {
   public class StubProviderHelper : ProviderHelperBase<IFakeProvider>
   {

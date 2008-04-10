@@ -6,7 +6,7 @@ using Remotion.CodeGeneration.DPExtensions;
 using Rhino.Mocks;
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 
-namespace Remotion.Core.UnitTests.CodeGeneration
+namespace Remotion.UnitTests.CodeGeneration
 {
   [TestFixture]
   public class AttributeReplicatorTest

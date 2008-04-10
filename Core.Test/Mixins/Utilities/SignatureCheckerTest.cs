@@ -4,7 +4,7 @@ using System.Reflection;
 using NUnit.Framework;
 using Remotion.Mixins.Utilities;
 
-namespace Remotion.Core.UnitTests.MixinsUtilities
+namespace Remotion.UnitTests.MixinsUtilities
 {
   [TestFixture]
   public class SignatureCheckerTest

@@ -1,12 +1,14 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.CodeGeneration.SampleTypes;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.Definitions;
+using Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.BaseCallProxyCodeGeneration
+namespace Remotion.UnitTests.Mixins.CodeGeneration.BaseCallProxyCodeGeneration
 {
   [TestFixture]
   public class BaseCallTest : CodeGenerationBaseTest
@@ -41,15 +43,15 @@ namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.BaseCallProxyCodeGenerat
           Assert.IsTrue (req.Type.IsAssignableFrom (proxyType));
 
         MethodInfo methodImplementdByMixin =
-            proxyType.GetMethod ("Remotion.Core.UnitTests.Mixins.SampleTypes.IBT3Mixin4.Foo", BindingFlags.NonPublic | BindingFlags.Instance);
+            proxyType.GetMethod ("Remotion.UnitTests.Mixins.SampleTypes.IBT3Mixin4.Foo", BindingFlags.NonPublic | BindingFlags.Instance);
         Assert.IsNotNull (methodImplementdByMixin);
 
         MethodInfo methodImplementdByBCOverridden =
-            proxyType.GetMethod ("Remotion.Core.UnitTests.Mixins.SampleTypes.IBaseType31.IfcMethod", BindingFlags.NonPublic | BindingFlags.Instance);
+            proxyType.GetMethod ("Remotion.UnitTests.Mixins.SampleTypes.IBaseType31.IfcMethod", BindingFlags.NonPublic | BindingFlags.Instance);
         Assert.IsNotNull (methodImplementdByBCOverridden);
 
         MethodInfo methodImplementdByBCNotOverridden =
-            proxyType.GetMethod ("Remotion.Core.UnitTests.Mixins.SampleTypes.IBaseType35.IfcMethod2", BindingFlags.NonPublic | BindingFlags.Instance);
+            proxyType.GetMethod ("Remotion.UnitTests.Mixins.SampleTypes.IBaseType35.IfcMethod2", BindingFlags.NonPublic | BindingFlags.Instance);
         Assert.IsNotNull (methodImplementdByBCNotOverridden);
       }
     }

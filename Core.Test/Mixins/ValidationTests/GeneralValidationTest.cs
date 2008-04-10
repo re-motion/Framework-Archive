@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
-using Remotion.Core.UnitTests.Mixins.ValidationTests.ValidationSampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.ValidationTests.ValidationSampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Validation;
+using Remotion.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.ValidationTests.ValidationSampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.ValidationTests
+namespace Remotion.UnitTests.Mixins.ValidationTests
 {
   [TestFixture]
   public class GeneralValidationTest : ValidationTestBase
@@ -187,9 +189,9 @@ namespace Remotion.Core.UnitTests.Mixins.ValidationTests
       DefaultValidationLog log = Validator.Validate (definition);
 
       ValidationException exception = new ValidationException (log);
-      Assert.AreEqual ("Some parts of the mixin configuration could not be validated." + Environment.NewLine + "Remotion.Core.UnitTests.Mixins."
-          + "ValidationTests.ValidationSampleTypes.AbstractMixinWithoutBase.AbstractMethod (Remotion.Core.UnitTests.Mixins.ValidationTests.ValidationSampleTypes."
-          + "AbstractMixinWithoutBase -> Remotion.Core.UnitTests.Mixins.SampleTypes.ClassOverridingSingleMixinMethod): There were 1 errors, 0 warnings, and 0 unexpected "
+      Assert.AreEqual ("Some parts of the mixin configuration could not be validated." + Environment.NewLine + "Remotion.UnitTests.Mixins."
+          + "ValidationTests.ValidationSampleTypes.AbstractMixinWithoutBase.AbstractMethod (Remotion.UnitTests.Mixins.ValidationTests.ValidationSampleTypes."
+          + "AbstractMixinWithoutBase -> Remotion.UnitTests.Mixins.SampleTypes.ClassOverridingSingleMixinMethod): There were 1 errors, 0 warnings, and 0 unexpected "
           + "exceptions. First error: A target class overrides a method from one of its mixins, but the mixin is not derived from one of the "
           + "Mixin<...> base classes." + Environment.NewLine + "See Log.GetResults() for a full list of issues.", exception.Message);
 

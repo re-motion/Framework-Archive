@@ -1,6 +1,6 @@
 using System;
 
-namespace Remotion.Core.UnitTests.Mixins.ValidationTests.ValidationSampleTypes
+namespace Remotion.UnitTests.Mixins.ValidationTests.ValidationSampleTypes
 {
   public abstract class AbstractMixinWithoutBase
   {

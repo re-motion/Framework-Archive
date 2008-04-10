@@ -1,14 +1,15 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.MixerTool;
 using Remotion.Reflection;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.MixerTool
+namespace Remotion.UnitTests.Mixins.MixerTool
 {
   [Serializable]
   [TestFixture]

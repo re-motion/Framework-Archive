@@ -1,14 +1,15 @@
 using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Remotion.Core.UnitTests.Mixins.SampleTypes;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.UnitTests.Mixins.SampleTypes;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
 
-namespace Remotion.Core.UnitTests.Mixins.Context.FluentBuilders
+namespace Remotion.UnitTests.Mixins.Context.FluentBuilders
 {
   [TestFixture]
   public class MixinConfigurationBuilderTest

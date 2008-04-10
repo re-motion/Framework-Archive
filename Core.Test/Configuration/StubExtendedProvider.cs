@@ -2,7 +2,7 @@ using System;
 using System.Collections.Specialized;
 using Remotion.Configuration;
 
-namespace Remotion.Core.UnitTests.Configuration
+namespace Remotion.UnitTests.Configuration
 {
   public class StubExtendedProvider: ExtendedProviderBase
   {

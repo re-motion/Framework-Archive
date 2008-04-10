@@ -3,7 +3,7 @@ using System.Reflection;
 using NUnit.Framework;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests
+namespace Remotion.UnitTests.Utilities.ReflectionUtilityTests
 {
   [TestFixture]
   public class GetAscribedGenericArguments_WithGenericInterface
@@ -118,8 +118,8 @@ namespace Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (AmbiguousMatchException), ExpectedMessage = "The type Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests."
-        + "IDoubleInheritingGenericInterface implements the given interface type Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests."
+    [ExpectedException (typeof (AmbiguousMatchException), ExpectedMessage = "The type Remotion.UnitTests.Utilities.ReflectionUtilityTests."
+        + "IDoubleInheritingGenericInterface implements the given interface type Remotion.UnitTests.Utilities.ReflectionUtilityTests."
         + "IGenericInterface`1 more than once.")]
     public void TwoSetsOfArguments ()
     {
@@ -152,8 +152,8 @@ namespace Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests
     [Test]
     [ExpectedException (typeof (ArgumentTypeException),
         ExpectedMessage =
-        "Argument type has type Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests.TypeWithBaseInterface when type "
-        + "Remotion.Core.UnitTests.Utilities.ReflectionUtilityTests.IGenericInterface`1[T] was expected.\r\n"
+        "Argument type has type Remotion.UnitTests.Utilities.ReflectionUtilityTests.TypeWithBaseInterface when type "
+        + "Remotion.UnitTests.Utilities.ReflectionUtilityTests.IGenericInterface`1[T] was expected.\r\n"
         + "Parameter name: type")]
     public void BaseType ()
     {

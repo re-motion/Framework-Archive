@@ -3,7 +3,7 @@ using System.Reflection;
 using NUnit.Framework;
 using Remotion.Utilities;
 
-namespace Remotion.Core.UnitTests.Utilities.AttributeUtilityTests
+namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
 {
   [TestFixture]
   public class GetCustomAttributeFromMemberInfoTest

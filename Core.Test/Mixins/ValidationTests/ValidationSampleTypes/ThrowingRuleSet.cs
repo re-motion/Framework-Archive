@@ -3,7 +3,7 @@ using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Validation;
 using Remotion.Mixins.Validation.Rules;
 
-namespace Remotion.Core.UnitTests.Mixins.ValidationTests.ValidationSampleTypes
+namespace Remotion.UnitTests.Mixins.ValidationTests.ValidationSampleTypes
 {
   public class ThrowingRuleSet : IRuleSet
   {

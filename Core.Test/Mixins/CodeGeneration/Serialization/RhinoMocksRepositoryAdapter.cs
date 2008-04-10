@@ -3,7 +3,7 @@ using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
 using Rhino.Mocks;
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.Serialization
+namespace Remotion.UnitTests.Mixins.CodeGeneration.Serialization
 {
   public class RhinoMocksRepositoryAdapter : IMockRepository
   {

@@ -1,10 +1,11 @@
 using System;
 using NUnit.Framework;
-using Remotion.Core.UnitTests.Mixins.ValidationTests.ValidationSampleTypes;
+using Remotion.UnitTests.Mixins.ValidationTests.ValidationSampleTypes;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Validation;
+using Remotion.UnitTests.Mixins.ValidationTests.ValidationSampleTypes;
 
-namespace Remotion.Core.UnitTests.Mixins.ValidationTests.Rules
+namespace Remotion.UnitTests.Mixins.ValidationTests.Rules
 {
   [TestFixture]
   public class DefaultPropertyRulesTest : ValidationTestBase

@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Validation;
 
-namespace Remotion.Core.UnitTests.Mixins.ValidationTests
+namespace Remotion.UnitTests.Mixins.ValidationTests
 {
   [TestFixture]
   public class DelegateRuleDescriptionTest
@@ -26,7 +26,7 @@ namespace Remotion.Core.UnitTests.Mixins.ValidationTests
     public void DefaultDescription ()
     {
       IValidationRule rule = new DelegateValidationRule<TargetClassDefinition> (NonDescribedSampleRule);
-      Assert.AreEqual ("Remotion.Core.UnitTests.Mixins.ValidationTests.DelegateRuleDescriptionTest.NonDescribedSampleRule", rule.RuleName);
+      Assert.AreEqual ("Remotion.UnitTests.Mixins.ValidationTests.DelegateRuleDescriptionTest.NonDescribedSampleRule", rule.RuleName);
       Assert.AreEqual ("Non described sample rule", rule.Message);
     }
 
@@ -34,7 +34,7 @@ namespace Remotion.Core.UnitTests.Mixins.ValidationTests
     public void DescriptionAttribute_NoChanges ()
     {
       IValidationRule rule = new DelegateValidationRule<TargetClassDefinition> (DescribedSampleRule_NoChanges);
-      Assert.AreEqual ("Remotion.Core.UnitTests.Mixins.ValidationTests.DelegateRuleDescriptionTest.DescribedSampleRule_NoChanges", rule.RuleName);
+      Assert.AreEqual ("Remotion.UnitTests.Mixins.ValidationTests.DelegateRuleDescriptionTest.DescribedSampleRule_NoChanges", rule.RuleName);
       Assert.AreEqual ("Described sample rule_ no changes", rule.Message);
     }
 

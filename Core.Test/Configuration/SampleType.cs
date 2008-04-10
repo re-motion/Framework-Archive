@@ -1,4 +1,4 @@
-namespace Remotion.Core.UnitTests.Configuration
+namespace Remotion.UnitTests.Configuration
 {
   public class SampleType
   {

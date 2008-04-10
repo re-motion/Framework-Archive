@@ -1,6 +1,6 @@
 using Remotion.Mixins;
 
-namespace Remotion.Core.UnitTests.Mixins.CodeGeneration.SampleTypes
+namespace Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes
 {
   public class BaseOverridingMixinMember
   {

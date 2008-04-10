@@ -1,6 +1,6 @@
 using System;
 
-namespace Remotion.Core.UnitTests.Utilities.AttributeUtilityTests
+namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
 {
   public class ComplexAttribute : Attribute
   {

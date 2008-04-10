@@ -3,7 +3,7 @@ using System.Xml.Schema;
 using NUnit.Framework;
 using Remotion.Xml;
 
-namespace Remotion.Core.UnitTests.Xml
+namespace Remotion.UnitTests.Xml
 {
   [TestFixture]
   public class SchemaLoaderBaseTest

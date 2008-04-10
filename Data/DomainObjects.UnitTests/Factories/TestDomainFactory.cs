@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       AssemblyCompiler compiler = new AssemblyCompiler (
           sourceDirectory,
           outputAssembly,
-          ArrayUtility.Combine (new string[] { "Remotion.Core.dll", "Remotion.Data.DomainObjects.dll" }, referencedAssemblies));
+          ArrayUtility.Combine (new string[] { "Remotion.dll", "Remotion.Data.DomainObjects.dll" }, referencedAssemblies));
 
       compiler.Compile ();
       return compiler.CompiledAssembly;

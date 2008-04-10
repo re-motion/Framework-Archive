@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Text;
 
-namespace Remotion.Core.UnitTests.Text
+namespace Remotion.UnitTests.Text
 {
 
 [TestFixture]

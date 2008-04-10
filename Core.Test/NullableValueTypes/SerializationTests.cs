@@ -4,7 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
 using Remotion.NullableValueTypes;
 
-namespace Remotion.Core.UnitTests.NullableValueTypes
+namespace Remotion.UnitTests.NullableValueTypes
 {
 
 [TestFixture]
