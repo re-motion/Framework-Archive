@@ -8,8 +8,6 @@ using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Globalization;
 using Remotion.Mixins;
 using Remotion.Mixins.Globalization;
-using Remotion.UnitTests.Mixins.Globalization.SampleTypes;
-using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Utilities;
 
 namespace Remotion.UnitTests.Mixins.Globalization

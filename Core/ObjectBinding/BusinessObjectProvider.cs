@@ -14,6 +14,7 @@ namespace Remotion.ObjectBinding
     ///    If your object model does not support services, this property should return an instance of type <see cref="NullCache{TKey,TValue}"/>.
     ///   </note>
     /// </remarks>
+#warning Should use Dictionary instead of ICache! Caches are not reliable stores and might lose values over time.
     protected abstract ICache<Type, IBusinessObjectService> ServiceCache { get; }
 
     /// <summary> Retrieves the requested <see cref="IBusinessObjectService"/>. Must not be <see langword="null" />.</summary>

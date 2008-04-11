@@ -322,7 +322,7 @@
     <Compile Include="Mixins\Globalization\SampleTypes\InheritedClassWithoutMultiLingualResourcesAttributes.cs" />
     <Compile Include="Mixins\Globalization\SampleTypes\MixinAddingMultiLingualResourcesAttributes1.cs" />
     <Compile Include="Mixins\Globalization\SampleTypes\MixinAddingMultiLingualResourcesAttributes2.cs" />
-    <Compile Include="Mixins\MixedTypeInstantiationScopeTest.cs" />
+    <Compile Include="Mixins\Utilities\MixedObjectInstantiationScopeTest.cs" />
     <Compile Include="Mixins\MixerTool\MixerRunnerTest.cs" />
     <Compile Include="Mixins\MixerTool\MixerTest.cs" />
     <Compile Include="Mixins\MixerTool\MixerToolBaseTest.cs" />
@@ -487,6 +487,8 @@
     <Compile Include="Mixins\UnvalidatedDefinitionBuilder.cs" />
     <Compile Include="Mixins\Utilities\DependencySortTest.cs" />
     <Compile Include="Mixins\Utilities\GenericTypeInstantiatorTest.cs" />
+    <Compile Include="Mixins\Utilities\MixedObjectInstantiatorTest.cs" />
+    <Compile Include="Mixins\Utilities\MixedTypeConstructorLookupInfoTest.cs" />
     <Compile Include="Mixins\Utilities\MixinTypeInstantiatorTest.cs" />
     <Compile Include="Mixins\Utilities\NameAndSignatureEqualityComparerTest.cs" />
     <Compile Include="Mixins\Utilities\ReflectionUtilityTest.cs" />

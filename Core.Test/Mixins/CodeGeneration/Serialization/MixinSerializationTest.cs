@@ -5,7 +5,6 @@ using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.Mixins.Utilities;
-using Remotion.UnitTests.Mixins.SampleTypes;
 
 namespace Remotion.UnitTests.Mixins.CodeGeneration.Serialization
 {

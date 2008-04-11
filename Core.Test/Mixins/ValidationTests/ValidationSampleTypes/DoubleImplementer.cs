@@ -1,6 +1,5 @@
 using System;
 using Remotion.UnitTests.Mixins.SampleTypes;
-using Remotion.UnitTests.Mixins.SampleTypes;
 
 namespace Remotion.UnitTests.Mixins.ValidationTests.ValidationSampleTypes
 {

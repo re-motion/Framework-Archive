@@ -11,7 +11,7 @@ namespace Remotion.Mixins.CodeGeneration.DynamicProxy
     {
       ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
 
-      object[] mixinInstances = MixedTypeInstantiationScope.Current.SuppliedMixinInstances;
+      object[] mixinInstances = MixedObjectInstantiationScope.Current.SuppliedMixinInstances;
       TargetClassDefinition configuration = mixinTarget.Configuration;
 
       BaseCallProxyInitializer.InitializeFirstProxy (mixinTarget);

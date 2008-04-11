@@ -2,9 +2,9 @@ using System;
 using System.Reflection;
 using System.Reflection.Emit;
 using NUnit.Framework;
+using Remotion.Mixins.Utilities;
 using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
-using Remotion.UnitTests.Mixins.SampleTypes;
 
 namespace Remotion.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
 {
@@ -58,7 +58,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
       Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
       BT3Mixin1 suppliedMixinInstance = new BT3Mixin1 ();
 
-      using (new MixedTypeInstantiationScope (suppliedMixinInstance))
+      using (new MixedObjectInstantiationScope (suppliedMixinInstance))
       {
         BaseType3 bt3 = (BaseType3) Activator.CreateInstance (generatedType);
         Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3));
@@ -78,7 +78,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
       Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType1));
       BT3Mixin1 suppliedMixinInstance = new BT3Mixin1 ();
 
-      using (new MixedTypeInstantiationScope (suppliedMixinInstance))
+      using (new MixedObjectInstantiationScope (suppliedMixinInstance))
       {
         try
         {

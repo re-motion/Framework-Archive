@@ -2,6 +2,7 @@ using System;
 using System.Runtime.Serialization;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Utilities;
 using Remotion.Mixins.Validation;
 using Remotion.Utilities;
 using Remotion.Mixins.Context;
@@ -56,7 +57,7 @@ namespace Remotion.Mixins
     /// The returned type provides the same constructors as <paramref name="targetType"/> does and can thus be instantiated, e.g. via
     /// <see cref="Activator.CreateInstance(Type, object[])"/>. When this happens, all the mixins associated with the generated type are also
     /// instantiated and configured to be used with the target instance. If you need to supply pre-created mixin instances for an object, use
-    /// <see cref="MixedTypeInstantiationScope"/>. See <see cref="ObjectFactory"/> for a simpler way to immediately create instances of mixed types.
+    /// <see cref="MixedObjectInstantiationScope"/>. See <see cref="ObjectFactory"/> for a simpler way to immediately create instances of mixed types.
     /// </para>
     /// <para>
     /// If <paramref name="targetType"/> is already a generated type, this method will not subclass it again.
@@ -95,7 +96,7 @@ namespace Remotion.Mixins
     /// The returned type provides the same constructors as <paramref name="targetType"/> does and can thus be instantiated, e.g. via
     /// <see cref="Activator.CreateInstance(Type, object[])"/>. When this happens, all the mixins associated with the generated type are also
     /// instantiated and configured to be used with the target instance. If you need to supply pre-created mixin instances for an object, use
-    /// <see cref="MixedTypeInstantiationScope"/>. See <see cref="ObjectFactory"/> for a simpler way to immediately create instances of mixed types.
+    /// <see cref="MixedObjectInstantiationScope"/>. See <see cref="ObjectFactory"/> for a simpler way to immediately create instances of mixed types.
     /// </para>
     /// <para>
     /// If <paramref name="targetType"/> is already a generated type, this method will only subclass it again when

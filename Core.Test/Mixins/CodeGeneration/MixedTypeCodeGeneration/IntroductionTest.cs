@@ -7,8 +7,6 @@ using NUnit.Framework.SyntaxHelpers;
 using Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes;
 using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
-using Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes;
-using Remotion.UnitTests.Mixins.SampleTypes;
 
 namespace Remotion.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
 {

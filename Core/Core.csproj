@@ -262,7 +262,7 @@
     <Compile Include="Mixins\IMixinTarget.cs" />
     <Compile Include="Mixins\IOverrideAttribute.cs" />
     <Compile Include="Mixins\MixAttribute.cs" />
-    <Compile Include="Mixins\MixedTypeInstantiationScope.cs" />
+    <Compile Include="Mixins\Utilities\MixedObjectInstantiationScope.cs" />
     <Compile Include="Mixins\MixerTool\Mixer.cs" />
     <Compile Include="Mixins\MixerTool\MixerParameters.cs" />
     <Compile Include="Mixins\MixerTool\MixerRunner.cs" />
@@ -290,9 +290,11 @@
     <Compile Include="Mixins\Utilities\EventNameAndSignatureEqualityComparer.cs" />
     <Compile Include="Mixins\Utilities\EventSignatureEqualityComparaer.cs" />
     <Compile Include="Mixins\Utilities\GenericTypeInstantiator.cs" />
+    <Compile Include="Mixins\Utilities\IMixedObjectInstantiator.cs" />
     <Compile Include="Mixins\Utilities\MethodNameAndSignatureEqualityComparer.cs" />
     <Compile Include="Mixins\Utilities\MethodSignatureEqualityComparer.cs" />
-    <Compile Include="Mixins\Utilities\MixedTypeInvokeWithCreator.cs" />
+    <Compile Include="Mixins\Utilities\MixedObjectInstantiator.cs" />
+    <Compile Include="Mixins\Utilities\MixedTypeConstructorLookupInfo.cs" />
     <Compile Include="Mixins\Utilities\MixinReflector.cs" />
     <Compile Include="Mixins\Utilities\MixinTypeInstantiator.cs" />
     <Compile Include="Mixins\Utilities\MultiSet.cs" />

@@ -6,7 +6,6 @@ using Remotion.Collections;
 using Remotion.UnitTests.Globalization.SampleTypes;
 using Remotion.Development.UnitTesting;
 using Remotion.Globalization;
-using Remotion.UnitTests.Globalization.SampleTypes;
 using Remotion.Utilities;
 
 namespace Remotion.UnitTests.Globalization

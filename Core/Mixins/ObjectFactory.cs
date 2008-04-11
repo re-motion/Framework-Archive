@@ -1,4 +1,5 @@
 using System;
+using Remotion.Implementation;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Utilities;
@@ -304,7 +305,8 @@ namespace Remotion.Mixins
     /// </remarks>
     public static FuncInvokerWrapper<T> Create<T> (bool allowNonPublicConstructors, GenerationPolicy generationPolicy, params object[] preparedMixins)
     {
-      return MixedTypeInvokeWithCreator.CreateConstructorInvoker<T> (typeof (T), generationPolicy, allowNonPublicConstructors, preparedMixins);
+      return VersionDependentImplementationBridge<IMixedObjectInstantiator>.Implementation
+          .CreateConstructorInvoker<T> (typeof (T), generationPolicy, allowNonPublicConstructors, preparedMixins);
     }
 
     /// <summary>
@@ -406,7 +408,8 @@ namespace Remotion.Mixins
     /// </remarks>
     public static FuncInvokerWrapper<object> Create (bool allowNonPublicConstructors, Type baseType, GenerationPolicy generationPolicy, params object[] preparedMixins)
     {
-      return MixedTypeInvokeWithCreator.CreateConstructorInvoker<object> (baseType, generationPolicy, allowNonPublicConstructors, preparedMixins);
+      return VersionDependentImplementationBridge<IMixedObjectInstantiator>.Implementation
+          .CreateConstructorInvoker<object> (baseType, generationPolicy, allowNonPublicConstructors, preparedMixins);
     }
     #endregion
   }

@@ -5,8 +5,6 @@ using Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes;
 using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.Definitions;
-using Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes;
-using Remotion.UnitTests.Mixins.SampleTypes;
 
 namespace Remotion.UnitTests.Mixins.CodeGeneration.BaseCallProxyCodeGeneration
 {

@@ -13,7 +13,6 @@ using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.MixerTool;
 using Remotion.Reflection;
-using Remotion.UnitTests.Mixins.SampleTypes;
 using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Mixins.MixerTool

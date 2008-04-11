@@ -5,7 +5,6 @@ using NUnit.Framework;
 using Remotion.CodeGeneration;
 using Remotion.CodeGeneration.DPExtensions;
 using Remotion.UnitTests.CodeGeneration.SampleTypes;
-using Remotion.UnitTests.CodeGeneration.SampleTypes;
 
 namespace Remotion.UnitTests.CodeGeneration
 {

@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using Remotion.Mixins.Utilities;
 using Rhino.Mocks;
 using Remotion.Data.DomainObjects.UnitTests.MixedDomains.SampleTypes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -19,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
         Assert.IsFalse (mixinInstance.OnLoadedCalled);
         Assert.IsFalse (mixinInstance.OnCreatedCalled);
 
-        using (new MixedTypeInstantiationScope (mixinInstance))
+        using (new MixedObjectInstantiationScope (mixinInstance))
         {
           Order.GetObject (DomainObjectIDs.Order1);
         }
@@ -41,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
         Assert.IsFalse (mixinInstance.OnCreatedCalled);
 
         Order order;
-        using (new MixedTypeInstantiationScope (mixinInstance))
+        using (new MixedObjectInstantiationScope (mixinInstance))
         {
           order = Order.GetObject (DomainObjectIDs.Order1);
         }
@@ -76,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
         Assert.IsFalse (mixinInstance.OnLoadedCalled);
         Assert.IsFalse (mixinInstance.OnCreatedCalled);
 
-        using (new MixedTypeInstantiationScope (mixinInstance))
+        using (new MixedObjectInstantiationScope (mixinInstance))
         {
           using (ClientTransactionMock.CreateSubTransaction().EnterDiscardingScope())
           {
@@ -101,7 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
         Assert.IsFalse (mixinInstance.OnLoadedCalled);
         Assert.IsFalse (mixinInstance.OnCreatedCalled);
 
-        using (new MixedTypeInstantiationScope (mixinInstance))
+        using (new MixedObjectInstantiationScope (mixinInstance))
         {
           Order.GetObject (DomainObjectIDs.Order1);
           Assert.IsTrue (mixinInstance.OnLoadedCalled);
@@ -130,7 +131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
         Assert.IsFalse (mixinInstance.OnLoadedCalled);
         Assert.IsFalse (mixinInstance.OnCreatedCalled);
 
-        using (new MixedTypeInstantiationScope (mixinInstance))
+        using (new MixedObjectInstantiationScope (mixinInstance))
         {
           Order.NewObject ();
         }

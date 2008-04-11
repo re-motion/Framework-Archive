@@ -6,8 +6,6 @@ using Remotion.UnitTests.Mixins.ValidationTests.ValidationSampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Definitions;
-using Remotion.UnitTests.Mixins.SampleTypes;
-using Remotion.UnitTests.Mixins.ValidationTests.ValidationSampleTypes;
 
 namespace Remotion.UnitTests.Mixins
 {
@@ -224,7 +222,7 @@ namespace Remotion.UnitTests.Mixins
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "not been registered",
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "not been registered",
         MatchType = MessageMatch.Contains)]
     public void InterfaceAsTypeArgumentWithoutCompleteness ()
     {
@@ -232,7 +230,7 @@ namespace Remotion.UnitTests.Mixins
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "not been registered",
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "not been registered",
         MatchType = MessageMatch.Regex)]
     public void InterfaceAsTypeArgumentWithoutCompletenessWithMixins ()
     {
@@ -352,7 +350,7 @@ namespace Remotion.UnitTests.Mixins
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.ObjectFactoryTest+"
-        + "TargetClassWithProtectedCtors does not contain a public constructor with signature ().")]
+        + "TargetClassWithProtectedCtors does not contain a constructor with signature () (allowNonPublic: False).")]
     public void ProtectedDefaultConstructor_Mixed ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<TargetClassWithProtectedCtors> ().Clear().AddMixins (typeof (NullMixin)).EnterScope())
@@ -363,7 +361,7 @@ namespace Remotion.UnitTests.Mixins
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.ObjectFactoryTest+"
-        + "TargetClassWithProtectedCtors does not contain a public constructor with signature (System.Int32).")]
+        + "TargetClassWithProtectedCtors does not contain a constructor with signature (System.Int32) (allowNonPublic: False).")]
     public void ProtectedNonDefaultConstructor_Mixed ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<TargetClassWithProtectedCtors> ().Clear().AddMixins (typeof (NullMixin)).EnterScope())
@@ -374,7 +372,7 @@ namespace Remotion.UnitTests.Mixins
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.ObjectFactoryTest+"
-        + "TargetClassWithProtectedCtors does not contain a public constructor with signature ().")]
+        + "TargetClassWithProtectedCtors does not contain a constructor with signature () (allowNonPublic: False).")]
     public void ProtectedDefaultConstructor_NonMixed ()
     {
       using (MixinConfiguration.BuildNew().EnterScope ())
@@ -385,7 +383,7 @@ namespace Remotion.UnitTests.Mixins
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.ObjectFactoryTest+"
-        + "TargetClassWithProtectedCtors does not contain a public constructor with signature (System.Int32).")]
+        + "TargetClassWithProtectedCtors does not contain a constructor with signature (System.Int32) (allowNonPublic: False).")]
     public void ProtectedNonDefaultConstructor_NonMixed ()
     {
       using (MixinConfiguration.BuildNew().EnterScope ())

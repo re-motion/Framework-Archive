@@ -3,7 +3,7 @@ using System.Runtime.Remoting.Messaging;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Utilities.Singleton;
 
-namespace Remotion.Mixins
+namespace Remotion.Mixins.Utilities
 {
   /// <summary>
   /// Allows users to specify configuration settings when a mixed type is instantiated.
@@ -21,67 +21,72 @@ namespace Remotion.Mixins
   /// This class is a singleton bound to the current <see cref="CallContext"/>.
   /// </para>
   /// </remarks>
-  public class MixedTypeInstantiationScope
-      : CallContextSingletonBase<MixedTypeInstantiationScope, DefaultInstanceCreator<MixedTypeInstantiationScope>>, IDisposable
+  public class MixedObjectInstantiationScope
+      : CallContextSingletonBase<MixedObjectInstantiationScope, DefaultInstanceCreator<MixedObjectInstantiationScope>>, IDisposable
   {
     /// <summary>
     /// The mixin instances to be used when a mixed class is instantiated from within the scope.
     /// </summary>
     public readonly object[] SuppliedMixinInstances;
 
-    private MixedTypeInstantiationScope _previous;
-    private bool _disposed = false;
+    private MixedObjectInstantiationScope _previous;
+    private bool _isDisposed = false;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="MixedTypeInstantiationScope"/> class, setting it as the
+    /// Initializes a new instance of the <see cref="MixedObjectInstantiationScope"/> class, setting it as the
     /// <see cref="CallContextSingletonBase{TSelf,TCreator}.Current"/> scope object. The previous scope is restored when this scope's <see cref="Dispose"/>
     /// method is called, e.g. from a <c>using</c> statement. The new scope will not contain any pre-created mixin instances.
     /// </summary>
-    public MixedTypeInstantiationScope ()
+    public MixedObjectInstantiationScope ()
     {
       StorePreviousAndSetCurrent ();
       SuppliedMixinInstances = new object[0];
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="MixedTypeInstantiationScope"/> class, setting it as the
+    /// Initializes a new instance of the <see cref="MixedObjectInstantiationScope"/> class, setting it as the
     /// <see cref="CallContextSingletonBase{TSelf,TCreator}.Current"/> scope object. The previous scope is restored when this scope's <see cref="Dispose"/>
     /// method is called, e.g. from a <c>using</c> statement. The new scope contains the specified pre-created mixin instances.
     /// </summary>
     /// <param name="suppliedMixinInstances">The mixin instances to be used when a mixed type is instantiated from within the scope. The objects
     /// specified must fit the mixin types specified in the mixed type's configuration. Users can also specify instances for a subset of the mixin
     /// types, the remaining ones will be created on demand.</param>
-    public MixedTypeInstantiationScope (params object[] suppliedMixinInstances)
+    public MixedObjectInstantiationScope (params object[] suppliedMixinInstances)
     {
       StorePreviousAndSetCurrent ();
       SuppliedMixinInstances = suppliedMixinInstances;
     }
 
+    public bool IsDisposed
+    {
+      get { return _isDisposed; }
+    }
+
     /// <summary>
-    /// When called for the first time, restores the <see cref="MixedTypeInstantiationScope"/> that was in effect when this scope was created.
+    /// When called for the first time, restores the <see cref="MixedObjectInstantiationScope"/> that was in effect when this scope was created.
     /// </summary>
     public void Dispose ()
     {
-      if (!_disposed)
+      if (!_isDisposed)
       {
         RestorePrevious ();
-        _disposed = true;
+        _isDisposed = true;
       }
     }
 
     private void StorePreviousAndSetCurrent ()
     {
-      if (MixedTypeInstantiationScope.HasCurrent)
-        _previous = MixedTypeInstantiationScope.Current;
+      if (MixedObjectInstantiationScope.HasCurrent)
+        _previous = MixedObjectInstantiationScope.Current;
       else
         _previous = null;
 
-      MixedTypeInstantiationScope.SetCurrent (this);
+      MixedObjectInstantiationScope.SetCurrent (this);
     }
 
     private void RestorePrevious ()
     {
-      MixedTypeInstantiationScope.SetCurrent (_previous);
+      MixedObjectInstantiationScope.SetCurrent (_previous);
     }
   }
 }

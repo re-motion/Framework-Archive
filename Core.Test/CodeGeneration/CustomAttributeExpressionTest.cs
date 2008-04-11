@@ -7,7 +7,6 @@ using Remotion.CodeGeneration;
 using Remotion.CodeGeneration.DPExtensions;
 using Remotion.Collections;
 using Remotion.UnitTests.CodeGeneration.SampleTypes;
-using Remotion.UnitTests.CodeGeneration.SampleTypes;
 using Remotion.Utilities;
 
 namespace Remotion.UnitTests.CodeGeneration

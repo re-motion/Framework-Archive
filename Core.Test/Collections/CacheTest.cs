@@ -131,7 +131,7 @@ namespace Remotion.UnitTests.Collections
       Assert.IsTrue (deserializedCache.TryGetValue ("bla", out result));
       Assert.AreEqual ("foo", result);
 
-      deserializedCache.Add ("whatever", "fred");
+      deserializedCache.GetOrCreateValue ("whatever", delegate { return "fred"; });
       Assert.IsTrue (deserializedCache.TryGetValue ("whatever", out result));
       Assert.IsFalse (_cache.TryGetValue ("whatever", out result));
     }

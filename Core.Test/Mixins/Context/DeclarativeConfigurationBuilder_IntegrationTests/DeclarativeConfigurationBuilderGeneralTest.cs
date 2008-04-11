@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using NUnit.Framework;
@@ -12,7 +11,6 @@ using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Context;
 using Remotion.Reflection;
-using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Utilities;
 using Rhino.Mocks;
 using ReflectionUtility=Remotion.Mixins.Utilities.ReflectionUtility;
