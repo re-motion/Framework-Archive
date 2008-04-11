@@ -1,6 +1,4 @@
 using System;
-using Remotion.Mixins.CodeGeneration;
-using Remotion.Mixins.Context;
 using Remotion.Mixins.Utilities;
 using Remotion.Utilities;
 
@@ -19,16 +17,6 @@ namespace Remotion.Mixins
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
       ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
       return MixinReflector.Get (mixinType, mixinTarget);
-    }
-
-    public ClassContext GetMixinConfigurationFromConcreteType (Type type)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ConcreteMixedTypeAttribute attribute = AttributeUtility.GetCustomAttribute<ConcreteMixedTypeAttribute> (type, true);
-      if (attribute == null)
-        return null;
-      else
-        return attribute.GetClassContext();
     }
   }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Remotion.Implementation;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Context;
 using Remotion.Utilities;
@@ -65,7 +66,7 @@ namespace Remotion.Mixins
     {
       ArgumentUtility.CheckNotNull ("type", type);
       if (IsGeneratedConcreteMixedType (type))
-        return Mixin.GetMixinConfigurationFromConcreteType (type).Type;
+        return GetMixinConfigurationFromConcreteType (type).Type;
       else
         return type;
     }
@@ -165,7 +166,7 @@ namespace Remotion.Mixins
     private static ClassContext GetConcreteClassContext (Type type)
     {
       if (IsGeneratedConcreteMixedType (type))
-        return Mixin.GetMixinConfigurationFromConcreteType (type);
+        return GetMixinConfigurationFromConcreteType (type);
       else
         return MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance (type);
     }
@@ -201,6 +202,23 @@ namespace Remotion.Mixins
       ArgumentUtility.CheckNotNull ("args", args);
 
       return Activator.CreateInstance (GetConcreteMixedType (type), args);
+    }
+
+    /// <summary>
+    /// Returns the <see cref="ClassContext"/> that was used as the mixin configuration when the given concrete mixed <paramref name="type"/>
+    /// was created by the <see cref="TypeFactory"/>.
+    /// </summary>
+    /// <param name="type">The type whose mixin configuration is to be retrieved.</param>
+    /// <returns>The <see cref="ClassContext"/> used when the given concrete mixed <paramref name="type"/> was created, or <see langword="null"/>
+    /// if <paramref name="type"/> is no mixed type.</returns>
+    public static ClassContext GetMixinConfigurationFromConcreteType (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      ConcreteMixedTypeAttribute attribute = AttributeUtility.GetCustomAttribute<ConcreteMixedTypeAttribute> (type, true);
+      if (attribute == null)
+        return null;
+      else
+        return attribute.GetClassContext ();
     }
   }
 }

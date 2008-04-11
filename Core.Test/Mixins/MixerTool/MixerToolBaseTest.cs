@@ -66,7 +66,7 @@ namespace Remotion.UnitTests.Mixins.MixerTool
       Set<ClassContext> contextsFromTypes = new Set<ClassContext> ();
       foreach (Type concreteType in assembly.GetTypes ())
       {
-        ClassContext context = Mixin.GetMixinConfigurationFromConcreteType (concreteType);
+        ClassContext context = TypeUtility.GetMixinConfigurationFromConcreteType (concreteType);
         if (context != null)
           contextsFromTypes.Add (context);
       }

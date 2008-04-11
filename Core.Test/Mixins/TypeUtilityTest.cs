@@ -439,6 +439,30 @@ namespace Remotion.UnitTests.Mixins
       Assert.AreSame (typeof (BaseType1), TypeUtility.GetUnderlyingTargetType (derivedType));
     }
 
+    [Test]
+    public void GetMixinConfigurationFromConcreteType ()
+    {
+      Type bt1Type = TypeFactory.GetConcreteType (typeof (BaseType1));
+      Assert.AreEqual (TypeFactory.GetActiveConfiguration (typeof (BaseType1)).ConfigurationContext,
+          TypeUtility.GetMixinConfigurationFromConcreteType (bt1Type));
+    }
+
+    [Test]
+    public void GetMixinConfigurationFromConcreteTypeNullWhenNoMixedType ()
+    {
+      Assert.IsNull (TypeUtility.GetMixinConfigurationFromConcreteType (typeof (object)));
+    }
+
+    [Test]
+    public void GetMixinConfigurationFromDerivedConcreteType ()
+    {
+      Type concreteType = TypeUtility.GetConcreteMixedType (typeof (BaseType1));
+      CustomClassEmitter customClassEmitter = new CustomClassEmitter (new ModuleScope (false), "Test", concreteType);
+      Type derivedType = customClassEmitter.BuildType ();
+      Assert.AreEqual (TypeFactory.GetActiveConfiguration (typeof (BaseType1)).ConfigurationContext,
+          TypeUtility.GetMixinConfigurationFromConcreteType (derivedType));
+    }
+
     private Type CreateMixedType (Type baseType, params Type[] types)
     {
       using (MixinConfiguration.BuildNew ().ForClass (baseType).AddMixins (types).EnterScope ())

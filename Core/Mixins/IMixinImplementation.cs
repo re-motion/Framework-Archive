@@ -1,6 +1,5 @@
 using System;
 using Remotion.Implementation;
-using Remotion.Mixins.Context;
 
 namespace Remotion.Mixins
 {
@@ -9,6 +8,5 @@ namespace Remotion.Mixins
   {
     TMixin Get<TMixin> (object mixinTarget) where TMixin : class;
     object Get (Type mixinType, object mixinTarget);
-    ClassContext GetMixinConfigurationFromConcreteType (Type type);
   }
 }

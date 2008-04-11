@@ -47,18 +47,6 @@ namespace Remotion.Mixins
     {
       return VersionDependentImplementationBridge<IMixinImplementation>.Implementation.Get (mixinType, mixinTarget);
     }
-
-    /// <summary>
-    /// Returns the <see cref="ClassContext"/> that was used as the mixin configuration when the given concrete mixed <paramref name="type"/>
-    /// was created by the <see cref="TypeFactory"/>.
-    /// </summary>
-    /// <param name="type">The type whose mixin configuration is to be retrieved.</param>
-    /// <returns>The <see cref="ClassContext"/> used when the given concrete mixed <paramref name="type"/> was created, or <see langword="null"/>
-    /// if <paramref name="type"/> is no mixed type.</returns>
-    public static ClassContext GetMixinConfigurationFromConcreteType (Type type)
-    {
-      return VersionDependentImplementationBridge<IMixinImplementation>.Implementation.GetMixinConfigurationFromConcreteType (type);
-    }
   }
 
   /// <summary>

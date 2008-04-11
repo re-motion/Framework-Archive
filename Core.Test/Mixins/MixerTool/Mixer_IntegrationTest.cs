@@ -30,10 +30,10 @@ namespace Remotion.UnitTests.Mixins.MixerTool
               Assert.AreEqual (2, theAssembly.GetTypes ().Length);
               Type generatedType = GetFirstMixedType (theAssembly);
 
-              Assert.IsNotNull (Mixin.GetMixinConfigurationFromConcreteType (generatedType));
+              Assert.IsNotNull (TypeUtility.GetMixinConfigurationFromConcreteType (generatedType));
               Assert.AreEqual (
                   MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance (typeof (BaseType1)),
-                  Mixin.GetMixinConfigurationFromConcreteType (generatedType));
+                  TypeUtility.GetMixinConfigurationFromConcreteType (generatedType));
 
               object instance = Activator.CreateInstance (generatedType);
               Assert.IsTrue (generatedType.IsInstanceOfType (instance));
