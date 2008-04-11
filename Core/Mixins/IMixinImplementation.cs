@@ -3,7 +3,7 @@ using Remotion.Implementation;
 
 namespace Remotion.Mixins
 {
-  [ConcreteImplementation ("Remotion.Mixins.Utilities.MixinImplementation, Remotion, Version = <version>")]
+  [ConcreteImplementation ("Remotion.Mixins.MixinImplementation, Remotion, Version = <version>")]
   public interface IMixinImplementation
   {
     TMixin Get<TMixin> (object mixinTarget) where TMixin : class;
