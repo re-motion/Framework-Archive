@@ -2,6 +2,7 @@ using System;
 using Remotion.Collections;
 using Remotion.Mixins.Context;
 using Remotion.Reflection;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.Utilities
 {
@@ -11,6 +12,8 @@ namespace Remotion.Mixins.Utilities
   {
     public Type ResolveType (Type baseType)
     {
+      ArgumentUtility.CheckNotNull ("baseType", baseType);
+
       Type targetType;
       if (baseType.IsInterface)
       {
@@ -31,6 +34,9 @@ namespace Remotion.Mixins.Utilities
     public FuncInvokerWrapper<T> CreateConstructorInvoker<T> (Type baseTypeOrInterface, GenerationPolicy generationPolicy, bool allowNonPublic,
         params object[] preparedMixins)
     {
+      ArgumentUtility.CheckNotNull ("baseTypeOrInterface", baseTypeOrInterface);
+      ArgumentUtility.CheckNotNull ("preparedMixins", preparedMixins);
+
       Type resolvedTargetType = ResolveType (baseTypeOrInterface);
       Type concreteType = TypeFactory.GetConcreteType (resolvedTargetType, generationPolicy);
 

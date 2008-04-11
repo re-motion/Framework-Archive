@@ -174,8 +174,10 @@
     <Compile Include="Mixins\CodeGeneration\IMixinTypeGenerator.cs" />
     <Compile Include="Mixins\CodeGeneration\IModuleManager.cs" />
     <Compile Include="Mixins\CodeGeneration\INameProvider.cs" />
+    <Compile Include="Mixins\CodeGeneration\ITypeFactoryImplementation.cs" />
     <Compile Include="Mixins\CodeGeneration\ITypeGenerator.cs" />
     <Compile Include="Mixins\CodeGeneration\NamespaceChangingNameProvider.cs" />
+    <Compile Include="Mixins\CodeGeneration\TypeFactoryImplementation.cs" />
     <Compile Include="Mixins\CompleteInterfaceAttribute.cs" />
     <Compile Include="Mixins\ConfigurationException.cs" />
     <Compile Include="Mixins\Context\ClassContext.cs" />
@@ -253,7 +255,7 @@
     <Compile Include="Mixins\Definitions\ThisDependencyDefinition.cs" />
     <Compile Include="Mixins\Definitions\UniqueDefinitionCollection.cs" />
     <Compile Include="Mixins\ExtendsAttribute.cs" />
-    <Compile Include="Mixins\GenerationForceKind.cs" />
+    <Compile Include="Mixins\GenerationPolicy.cs" />
     <Compile Include="Mixins\Globalization\MixedMultiLingualResources.cs" />
     <Compile Include="Mixins\Globalization\MixedResourceManagerResolver.cs" />
     <Compile Include="Mixins\IgnoreForMixinConfigurationAttribute.cs" />
@@ -262,6 +264,7 @@
     <Compile Include="Mixins\IMixinTarget.cs" />
     <Compile Include="Mixins\IOverrideAttribute.cs" />
     <Compile Include="Mixins\MixAttribute.cs" />
+    <Compile Include="Mixins\IMixinImplementation.cs" />
     <Compile Include="Mixins\Utilities\MixedObjectInstantiationScope.cs" />
     <Compile Include="Mixins\MixerTool\Mixer.cs" />
     <Compile Include="Mixins\MixerTool\MixerParameters.cs" />
@@ -295,6 +298,7 @@
     <Compile Include="Mixins\Utilities\MethodSignatureEqualityComparer.cs" />
     <Compile Include="Mixins\Utilities\MixedObjectInstantiator.cs" />
     <Compile Include="Mixins\Utilities\MixedTypeConstructorLookupInfo.cs" />
+    <Compile Include="Mixins\MixinImplementation.cs" />
     <Compile Include="Mixins\Utilities\MixinReflector.cs" />
     <Compile Include="Mixins\Utilities\MixinTypeInstantiator.cs" />
     <Compile Include="Mixins\Utilities\MultiSet.cs" />

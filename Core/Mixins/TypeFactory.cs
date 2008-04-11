@@ -1,10 +1,10 @@
 using System;
 using System.Runtime.Serialization;
+using Remotion.Implementation;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Utilities;
 using Remotion.Mixins.Validation;
-using Remotion.Utilities;
 using Remotion.Mixins.Context;
 
 namespace Remotion.Mixins
@@ -105,12 +105,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static Type GetConcreteType (Type targetType, GenerationPolicy generationPolicy)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      TargetClassDefinition configuration = GetActiveConfiguration (targetType, generationPolicy);
-      if (configuration == null)
-        return targetType;
-      else
-        return ConcreteTypeBuilder.Current.GetConcreteType (configuration);
+      return VersionDependentImplementationBridge<ITypeFactoryImplementation>.Implementation.GetConcreteType (targetType, generationPolicy);
     }
 
     /// <summary>
@@ -136,8 +131,6 @@ namespace Remotion.Mixins
     /// </remarks>
     public static TargetClassDefinition GetActiveConfiguration (Type targetType)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-
       return GetActiveConfiguration (targetType, GenerationPolicy.GenerateOnlyIfConfigured);
     }
 
@@ -165,8 +158,6 @@ namespace Remotion.Mixins
     /// </remarks>
     public static TargetClassDefinition GetActiveConfiguration (Type targetType, GenerationPolicy generationPolicy)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-
       return GetConfiguration (targetType, MixinConfiguration.ActiveConfiguration, generationPolicy);
     }
 
@@ -227,16 +218,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static TargetClassDefinition GetConfiguration (Type targetType, MixinConfiguration mixinConfiguration, GenerationPolicy generationPolicy)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      ArgumentUtility.CheckNotNull ("mixinConfiguration", mixinConfiguration);
-
-      ClassContext context;
-      context = GetContext(targetType, mixinConfiguration, generationPolicy);
-
-      if (context == null)
-        return null;
-      else
-        return TargetClassDefinitionCache.Current.GetTargetClassDefinition (context);
+      return VersionDependentImplementationBridge<ITypeFactoryImplementation>.Implementation.GetConfiguration (targetType, mixinConfiguration, generationPolicy);
     }
 
     /// <summary>
@@ -266,19 +248,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static ClassContext GetContext (Type targetType, MixinConfiguration mixinConfiguration, GenerationPolicy generationPolicy)
     {
-      ClassContext context;
-      if (generationPolicy != GenerationPolicy.ForceGeneration && TypeUtility.IsGeneratedConcreteMixedType (targetType))
-        context = Mixin.GetMixinConfigurationFromConcreteType (targetType);
-      else
-        context = mixinConfiguration.ClassContexts.GetWithInheritance (targetType);
-
-      if (context == null && generationPolicy == GenerationPolicy.ForceGeneration)
-        context = new ClassContext (targetType);
-
-      if (context != null && targetType.IsGenericType && context.Type.IsGenericTypeDefinition)
-        context = context.SpecializeWithTypeArguments (targetType.GetGenericArguments ());
-
-      return context;
+      return VersionDependentImplementationBridge<ITypeFactoryImplementation>.Implementation.GetContext (targetType, mixinConfiguration, generationPolicy);
     }
 
     /// <summary>
@@ -289,8 +259,7 @@ namespace Remotion.Mixins
     /// <remarks>This method is useful when a mixin target instance is created via <see cref="FormatterServices.GetSafeUninitializedObject"/>.</remarks>
     public static void InitializeUnconstructedInstance (IMixinTarget mixinTarget)
     {
-      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
-      ConcreteTypeBuilder.Current.InitializeUnconstructedInstance (mixinTarget);
+      VersionDependentImplementationBridge<ITypeFactoryImplementation>.Implementation.InitializeUnconstructedInstance (mixinTarget);
     }
   }
 }

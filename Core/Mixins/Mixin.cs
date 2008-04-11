@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics;
+using Remotion.Implementation;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Utilities;
-using Remotion.Mixins.Utilities;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Context;
 
@@ -27,8 +27,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static TMixin Get<TMixin> (object mixinTarget) where TMixin : class
     {
-      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
-      return MixinReflector.Get<TMixin> (mixinTarget);
+      return VersionDependentImplementationBridge<IMixinImplementation>.Implementation.Get<TMixin> (mixinTarget);
     }
 
     /// <summary>
@@ -46,9 +45,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static object Get (Type mixinType, object mixinTarget)
     {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
-      return MixinReflector.Get (mixinType, mixinTarget);
+      return VersionDependentImplementationBridge<IMixinImplementation>.Implementation.Get (mixinType, mixinTarget);
     }
 
     /// <summary>
@@ -60,11 +57,7 @@ namespace Remotion.Mixins
     /// if <paramref name="type"/> is no mixed type.</returns>
     public static ClassContext GetMixinConfigurationFromConcreteType (Type type)
     {
-      ConcreteMixedTypeAttribute attribute = AttributeUtility.GetCustomAttribute<ConcreteMixedTypeAttribute> (type, true);
-      if (attribute == null)
-        return null;
-      else
-        return attribute.GetClassContext();
+      return VersionDependentImplementationBridge<IMixinImplementation>.Implementation.GetMixinConfigurationFromConcreteType (type);
     }
   }
 

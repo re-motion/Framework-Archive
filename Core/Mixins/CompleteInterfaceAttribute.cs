@@ -56,7 +56,7 @@ namespace Remotion.Mixins
   [AttributeUsage (AttributeTargets.Interface, AllowMultiple = true, Inherited = false)]
   public class CompleteInterfaceAttribute : Attribute
   {
-    private Type _targetType;
+    private readonly Type _targetType;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CompleteInterfaceAttribute"/> class.
