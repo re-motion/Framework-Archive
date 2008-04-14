@@ -133,9 +133,13 @@
       <Name>Data.DomainObjects.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
-      <Name>Data.DomainObjects %28Data.DomainObjects\Data.DomainObjects%29</Name>
+      <Name>Data.DomainObjects</Name>
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Interfaces\Data.Interfaces.csproj">
+      <Project>{70273934-12F1-49AF-975A-303BAEFE1CAE}</Project>
+      <Name>Data.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

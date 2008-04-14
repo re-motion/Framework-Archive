@@ -7,7 +7,9 @@ using NUnit.Framework;
 namespace Remotion.Security.UnitTests.Core.XmlAsserter
 {
   [CLSCompliant (false)]
+#pragma warning disable 612,618 // Asserters are obsolete
   public abstract class XmlDocumentBaseAsserter : AbstractAsserter
+#pragma warning restore 612,618
   {
     protected delegate void MessageListenerDelegate (string messageInfo);
 

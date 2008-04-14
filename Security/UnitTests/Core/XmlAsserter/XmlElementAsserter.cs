@@ -5,7 +5,9 @@ using NUnit.Framework;
 namespace Remotion.Security.UnitTests.Core.XmlAsserter
 {
   [CLSCompliant (false)]
+#pragma warning disable 612,618 // Asserters are obsolete
   public class XmlElementAsserter : AbstractAsserter
+#pragma warning restore 612,618
   {
     private string _expectedLocalName;
     private string _expectedNamespace;

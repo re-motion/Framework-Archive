@@ -25,6 +25,7 @@
         <include asis="true" name="${build.test.outputdir}/Remotion.dll"/>
         <include asis="true" name="${build.test.outputdir}/Remotion.Interfaces.dll"/>
         <include asis="true" name="${build.test.outputdir}/Remotion.Development.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Data.Interfaces.dll"/>
         <include asis="true" name="${build.test.outputdir}/Remotion.Data.DomainObjects.dll"/>
         <include asis="true" name="${build.test.outputdir}/Remotion.Data.DomainObjects.ObjectBinding.dll"/>
         <include asis="true" name="${build.test.outputdir}/Remotion.Data.DomainObjects.Web.dll"/>

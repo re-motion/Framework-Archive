@@ -5,7 +5,9 @@ using Remotion.Security.Metadata;
 
 namespace Remotion.Security.UnitTests.Core.Metadata
 {
+#pragma warning disable 612,618 // Asserters are obsolete
   public class EnumValueInfoListContentsAsserter : AbstractAsserter
+#pragma warning restore 612,618
   {
     // types
 

@@ -154,7 +154,7 @@
 
   <target name="all" depends="prereq, Core.Interfaces, Core, Core.Mixins.MixerTool.Console, Development.Core, Development.CodeDom, Web, Web.Security, 
       ObjectBinding, ObjectBinding.Web, ObjectBinding.Web.Preview, ObjectBinding.Web.CodeGenerator, ObjectBinding.Web.CodeGenerator.Templates, 
-      Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.Web, 
+      Data.Interfaces, Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.Web, 
       Data.DomainObjects.RdbmsTools, Data.DomainObjects.RdbmsTools.Console, 
       Security.Interfaces, Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Data.DomainObjects, 
       SecurityManager.Core, SecurityManager.Metadata.Importer, SecurityManager.Clients.Web">
@@ -224,7 +224,15 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Data.DomainObjects" depends="Core">
+  <target name="Data.Interfaces" depends="Core">
+    <property name="project.name" value="Data.Interfaces" />
+    <property name="project.dir" value="Data/Interfaces" />
+    <property name="project.output" value="Remotion.Data.Interfaces" />
+    <property name="project.extension" value="dll" />
+    <call target="execute-buildstep" />
+  </target>
+  
+  <target name="Data.DomainObjects" depends="Core, Data.Interfaces">
     <property name="project.name" value="Data.DomainObjects" />
     <property name="project.dir" value="Data/DomainObjects" />
     <property name="project.output" value="Remotion.Data.DomainObjects" />
@@ -264,7 +272,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Web" depends="Core">
+  <target name="Web" depends="Core, Data.Interfaces">
     <property name="project.name" value="Web" />
     <property name="project.dir" value="Web/Core" />
     <property name="project.output" value="Remotion.Web" />

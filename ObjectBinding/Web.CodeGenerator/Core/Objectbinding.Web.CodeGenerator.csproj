@@ -75,7 +75,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\Data\DomainObjects\Data.DomainObjects.csproj">
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
-      <Name>Data.DomainObjects %28Data.DomainObjects\Data.DomainObjects%29</Name>
+      <Name>Data.DomainObjects</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\ObjectBinding.csproj">
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>

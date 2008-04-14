@@ -366,9 +366,6 @@
     <Compile Include="Configuration\TypeElement.cs" />
     <Compile Include="Context\ISafeContextProvider.cs" />
     <Compile Include="Context\SafeContext.cs" />
-    <Compile Include="Data\ITransaction.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DisposableBase.cs" />
     <Compile Include="Globalization\IObjectWithResources.cs">
       <SubType>Code</SubType>
@@ -661,6 +658,9 @@
       <Project>{BD061F4A-A9E6-461E-A804-7999623A0060}</Project>
       <Name>Core.Interfaces</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
