@@ -1,5 +1,5 @@
 using System;
-using Remotion.Security.Web.ExecutionEngine;
+using Remotion.Web.Security.ExecutionEngine;
 using Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.Web.ExecutionEngine;

@@ -1,7 +1,7 @@
 using System;
 using Remotion.Security.Configuration;
 
-namespace Remotion.Security.UnitTests.Web.Configuration
+namespace Remotion.Web.UnitTests.Security.Configuration
 {
   public class SecurityConfigurationMock : SecurityConfiguration
   {

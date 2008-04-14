@@ -1,12 +1,14 @@
 using System;
 using NUnit.Framework;
+using Remotion.Security;
+using Remotion.Web.UnitTests.Security.Configuration;
 using Rhino.Mocks;
 using Remotion.Security.Configuration;
-using Remotion.Security.Web.ExecutionEngine;
-using Remotion.Security.UnitTests.Web.Configuration;
+using Remotion.Web.Security.ExecutionEngine;
+using Remotion.Web.UnitTests.Security.Configuration;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Security.UnitTests.Web.ExecutionEngine
+namespace Remotion.Web.UnitTests.Security.ExecutionEngine
 {
   [TestFixture]
   public class WxeSecurityAdapterTestWithoutPermissionAttribute

@@ -1,8 +1,9 @@
 using System;
 using Remotion.Security.UnitTests.Web.Domain;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UnitTests.Security.Domain;
 
-namespace Remotion.Security.UnitTests.Web.ExecutionEngine
+namespace Remotion.Web.UnitTests.Security.ExecutionEngine
 {
   public class TestFunctionWithThisObjectAsSecondParameter : WxeFunction
   {

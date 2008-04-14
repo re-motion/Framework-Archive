@@ -101,10 +101,6 @@
       <Project>{D4397460-CE03-43E6-87F7-3A4E50B8250E}</Project>
       <Name>Security.Data.DomainObjects</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Security\Web\Security.Web.csproj">
-      <Project>{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}</Project>
-      <Name>Security.Web</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Web\Core\Web.csproj">
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
       <Name>Web %28Web\Web%29</Name>

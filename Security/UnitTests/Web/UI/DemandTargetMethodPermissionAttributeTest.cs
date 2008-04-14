@@ -1,9 +1,10 @@
 using System;
 using NUnit.Framework;
-using Remotion.Security.Web.UI;
-using Remotion.Security.UnitTests.Web.Domain;
+using Remotion.Web.Security.UI;
+using Remotion.Web.UnitTests.Security.Domain;
+using Remotion.Web.UnitTests.Security.Domain;
 
-namespace Remotion.Security.UnitTests.Web.UI
+namespace Remotion.Web.UnitTests.Security.UI
 {
   [TestFixture]
   public class DemandTargetMethodPermissionAttributeTest

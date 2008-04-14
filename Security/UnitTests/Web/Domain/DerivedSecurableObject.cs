@@ -1,6 +1,7 @@
 using System;
+using Remotion.Security;
 
-namespace Remotion.Security.UnitTests.Web.Domain
+namespace Remotion.Web.UnitTests.Security.Domain
 {
   public class DerivedSecurableObject : SecurableObject
   {

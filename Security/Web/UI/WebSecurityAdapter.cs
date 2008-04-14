@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
-
+using Remotion.Security;
 using Remotion.Security.Metadata;
 using Remotion.Security.Configuration;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Security.Web.UI
+namespace Remotion.Web.Security.UI
 {
   [Obsolete ("Use WebSecurityAdapter instead. (Version: 1.7.41)", true)]
   public class WebSecurityProvider : WebSecurityAdapter, IWebSecurityProvider

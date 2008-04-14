@@ -1,8 +1,9 @@
 using System;
+using Remotion.Security;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Security.Web.ExecutionEngine
+namespace Remotion.Web.Security.ExecutionEngine
 {
   public class WxeDemandMethodPermissionAttributeHelper
   {

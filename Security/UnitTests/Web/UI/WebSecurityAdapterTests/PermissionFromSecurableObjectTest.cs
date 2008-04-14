@@ -1,12 +1,15 @@
 using System;
 using NUnit.Framework;
+using Remotion.Security;
 using Remotion.Security.Configuration;
-using Remotion.Security.Web.UI;
-using Remotion.Security.UnitTests.Web.Configuration;
-using Remotion.Security.UnitTests.Web.Domain;
+using Remotion.Web.Security.UI;
+using Remotion.Web.UnitTests.Security.Configuration;
+using Remotion.Web.UnitTests.Security.Domain;
 using Remotion.Web.UI;
+using Remotion.Web.UnitTests.Security.Configuration;
+using Remotion.Web.UnitTests.Security.Domain;
 
-namespace Remotion.Security.UnitTests.Web.UI.WebSecurityAdapterTests
+namespace Remotion.Web.UnitTests.Security.UI.WebSecurityAdapterTests
 {
   [TestFixture]
   public class PermissionFromSecurableObjectTest

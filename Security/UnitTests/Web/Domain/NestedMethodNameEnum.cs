@@ -1,6 +1,6 @@
 using System;
 
-namespace Remotion.Security.UnitTests.Web.Domain
+namespace Remotion.Web.UnitTests.Security.Domain
 {
   public class SimpleType
   {

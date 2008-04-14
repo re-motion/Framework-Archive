@@ -1,7 +1,7 @@
 using System;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Security.UnitTests.Web.ExecutionEngine
+namespace Remotion.Web.UnitTests.Security.ExecutionEngine
 {
   public class TestFunctionWithoutParameters : WxeFunction
   {

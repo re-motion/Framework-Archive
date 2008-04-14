@@ -1,10 +1,12 @@
 using System;
 using System.Security.Principal;
+using Remotion.Security;
+using Remotion.Web.UnitTests.Security.Domain;
 using Rhino.Mocks;
 using Remotion.Security.UnitTests.Web.Domain;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Security.UnitTests.Web.UI.WebSecurityAdapterTests
+namespace Remotion.Web.UnitTests.Security.UI.WebSecurityAdapterTests
 {
   public class WebPermissionProviderTestHelper
   {

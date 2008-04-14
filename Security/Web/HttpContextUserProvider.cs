@@ -4,8 +4,9 @@ using System.Configuration.Provider;
 using System.Security.Principal;
 using System.Web;
 using Remotion.Configuration;
+using Remotion.Security;
 
-namespace Remotion.Security.Web
+namespace Remotion.Web.Security
 {
   public class HttpContextUserProvider : ExtendedProviderBase, IUserProvider
   {

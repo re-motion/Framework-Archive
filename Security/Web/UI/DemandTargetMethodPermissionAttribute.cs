@@ -1,6 +1,6 @@
 using System;
 
-namespace Remotion.Security.Web.UI
+namespace Remotion.Web.Security.UI
 {
   public class DemandTargetMethodPermissionAttribute : DemandTargetPermissionAttribute
   {

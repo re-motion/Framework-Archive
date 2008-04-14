@@ -1,14 +1,17 @@
 using System;
 using System.Security.Principal;
 using NUnit.Framework;
+using Remotion.Security;
+using Remotion.Web.UnitTests.Security.Configuration;
+using Remotion.Web.UnitTests.Security.Domain;
 using Rhino.Mocks;
 using Remotion.Security.Configuration;
-using Remotion.Security.Web.ExecutionEngine;
-using Remotion.Security.UnitTests.Web.Configuration;
-using Remotion.Security.UnitTests.Web.Domain;
+using Remotion.Web.Security.ExecutionEngine;
+using Remotion.Web.UnitTests.Security.Configuration;
+using Remotion.Web.UnitTests.Security.Domain;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Security.UnitTests.Web.ExecutionEngine
+namespace Remotion.Web.UnitTests.Security.ExecutionEngine
 {
   [TestFixture]
   public class WxeSecurityAdapterTestWithPermissionsFromConstructor

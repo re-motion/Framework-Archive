@@ -1,7 +1,8 @@
 using System;
+using Remotion.Security;
 using Remotion.Utilities;
 
-namespace Remotion.Security.Web.ExecutionEngine
+namespace Remotion.Web.Security.ExecutionEngine
 {
   //[DemandTargetStaticMethodPermission (Akt.Methods.Protokollieren)] // default: containing type of nested enum -> Akt
   //[DemandTargetStaticMethodPermission (Akt.Methods.Protokollieren, typeof (Sachakt))]

@@ -1,10 +1,11 @@
 using System;
 using NUnit.Framework;
-using Remotion.Security.Web.ExecutionEngine;
-using Remotion.Security.UnitTests.Web.Domain;
+using Remotion.Web.Security.ExecutionEngine;
+using Remotion.Web.UnitTests.Security.Domain;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UnitTests.Security.Domain;
 
-namespace Remotion.Security.UnitTests.Web.ExecutionEngine
+namespace Remotion.Web.UnitTests.Security.ExecutionEngine
 {
   [TestFixture]
   public class WxeDemandMethodPermissionAttributeHelperTestForGetTypeOfSecurableObject

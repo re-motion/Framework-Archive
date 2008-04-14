@@ -3,7 +3,7 @@ using System.Configuration;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Configuration;
-using Remotion.Security.Web;
+using Remotion.Web.Security;
 
 namespace Remotion.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
 {

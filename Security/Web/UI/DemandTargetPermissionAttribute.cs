@@ -1,8 +1,9 @@
 using System;
+using Remotion.Security;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Security.Web.UI
+namespace Remotion.Web.Security.UI
 {
   public enum PermissionSource
   {

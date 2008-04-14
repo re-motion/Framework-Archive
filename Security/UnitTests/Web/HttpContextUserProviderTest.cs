@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Specialized;
 using NUnit.Framework;
-using Remotion.Security.Web;
+using Remotion.Security;
+using Remotion.Web.Security;
 
-namespace Remotion.Security.UnitTests.Web
+namespace Remotion.Web.UnitTests.Security
 {
   [TestFixture]
   public class HttpContextUserProviderTest
