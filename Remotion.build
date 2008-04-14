@@ -156,7 +156,7 @@
       ObjectBinding, ObjectBinding.Web, ObjectBinding.Web.Preview, ObjectBinding.Web.CodeGenerator, ObjectBinding.Web.CodeGenerator.Templates, 
       Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.Web, 
       Data.DomainObjects.RdbmsTools, Data.DomainObjects.RdbmsTools.Console, 
-      Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Data.DomainObjects, 
+      Security.Interfaces, Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Data.DomainObjects, 
       SecurityManager.Core, SecurityManager.Metadata.Importer, SecurityManager.Clients.Web">
     <echo message="Target has executed."/>
   </target>
@@ -327,7 +327,15 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Security" depends="Core">
+  <target name="Security.Interfaces" depends="Core">
+    <property name="project.name" value="Security.Interfaces" />
+    <property name="project.dir" value="Security/Interfaces" />
+    <property name="project.output" value="Remotion.Security.Interfaces" />
+    <property name="project.extension" value="dll" />
+    <call target="execute-buildstep" />
+  </target>
+  
+  <target name="Security" depends="Core, Security.Interfaces">
     <property name="project.name" value="Security" />
     <property name="project.dir" value="Security/Core" />
     <property name="project.output" value="Remotion.Security" />
