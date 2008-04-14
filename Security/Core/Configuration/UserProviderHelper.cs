@@ -73,8 +73,8 @@ namespace Remotion.Security.Configuration
           {
             _httpContextUserProviderType = GetTypeWithMatchingVersionNumber (
                 DefaultProviderNameProperty,
-                "Remotion.Security.Web",
-                "Remotion.Security.Web.HttpContextUserProvider");
+                "Remotion.Web.Security",
+                "Remotion.Web.Security.HttpContextUserProvider");
           }
         }
       }

@@ -57,7 +57,7 @@
     <Compile Include="UI\DemandTargetWxeFunctionPermissionAttribute.cs" />
     <Compile Include="UI\WebSecurityAdapter.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
-    <None Include="Security.Web.build" />
+    <None Include="Web.Security.build" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core.Interfaces\Core.Interfaces.csproj">
@@ -72,7 +72,7 @@
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
       <Name>Web %28Web\Web%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Core\Security.csproj">
+    <ProjectReference Include="..\..\Security\Core\Security.csproj">
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security %28Security\Security%29</Name>
     </ProjectReference>

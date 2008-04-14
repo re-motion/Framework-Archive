@@ -111,10 +111,18 @@
       <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
+    <ProjectReference Include="..\..\Security\Core\Security.csproj">
+      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
+      <Name>Security %28Security\Security%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Web.csproj">
       <Name>Web %28Web\Web%29</Name>
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Security\Web.Security.csproj">
+      <Project>{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}</Project>
+      <Name>Web.Security</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -233,6 +241,36 @@
     <Compile Include="ExecutionEngine\WxeTransactionMock.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Security\Configuration\SecurityConfigurationMock.cs" />
+    <Compile Include="Security\DeserializeSecurityConfigurationForUserProviderTest.cs" />
+    <Compile Include="Security\Domain\DerivedSecurableObject.cs" />
+    <Compile Include="Security\Domain\MethodNameEnum.cs" />
+    <Compile Include="Security\Domain\NestedMethodNameEnum.cs" />
+    <Compile Include="Security\Domain\OtherSecurableObject.cs" />
+    <Compile Include="Security\Domain\SecurableObject.cs" />
+    <Compile Include="Security\ExecutionEngine\TestFunctionWithoutParameters.cs" />
+    <Compile Include="Security\ExecutionEngine\TestFunctionWithoutPermissions.cs" />
+    <Compile Include="Security\ExecutionEngine\TestFunctionWithPermissionsFromConstructor.cs" />
+    <Compile Include="Security\ExecutionEngine\TestFunctionWithPermissionsFromInstanceMethod.cs" />
+    <Compile Include="Security\ExecutionEngine\TestFunctionWithPermissionsFromStaticMethod.cs" />
+    <Compile Include="Security\ExecutionEngine\TestFunctionWithThisObject.cs" />
+    <Compile Include="Security\ExecutionEngine\TestFunctionWithThisObjectAsSecondParameter.cs" />
+    <Compile Include="Security\ExecutionEngine\WxeDemandCreatePermissionAttributeTest.cs" />
+    <Compile Include="Security\ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTest.cs" />
+    <Compile Include="Security\ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTestForGetSecurableObject.cs" />
+    <Compile Include="Security\ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTestForGetTypeOfSecurableObject.cs" />
+    <Compile Include="Security\ExecutionEngine\WxeDemandTargetMethodPermissionAttributeTest.cs" />
+    <Compile Include="Security\ExecutionEngine\WxeDemandTargetStaticMethodPermissionAttributeTest.cs" />
+    <Compile Include="Security\ExecutionEngine\WxeSecurityAdapterTestWithoutPermissionAttribute.cs" />
+    <Compile Include="Security\ExecutionEngine\WxeSecurityAdapterTestWithPermissionsFromConstructor.cs" />
+    <Compile Include="Security\ExecutionEngine\WxeSecurityAdapterTestWithPermissionsFromInstanceMethod.cs" />
+    <Compile Include="Security\ExecutionEngine\WxeSecurityAdapterTestWithPermissionsFromStaticMethod.cs" />
+    <Compile Include="Security\HttpContextUserProviderTest.cs" />
+    <Compile Include="Security\UI\DemandTargetMethodPermissionAttributeTest.cs" />
+    <Compile Include="Security\UI\DemandTargetWxeFunctionPermissionAttributeTest.cs" />
+    <Compile Include="Security\UI\WebSecurityAdapterTests\PermissionFromSecurableObjectTest.cs" />
+    <Compile Include="Security\UI\WebSecurityAdapterTests\PermissionFromWxeFunctionTest.cs" />
+    <Compile Include="Security\UI\WebSecurityAdapterTests\WebPermissionProviderTestHelper.cs" />
     <Compile Include="UI\Controls\CommandTests\BaseTest.cs" />
     <Compile Include="UI\Controls\CommandTests\CommandTestHelper.cs" />
     <Compile Include="UI\Controls\CommandTests\WxeFunctionCommandTest.cs" />

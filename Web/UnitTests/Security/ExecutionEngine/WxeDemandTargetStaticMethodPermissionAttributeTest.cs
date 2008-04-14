@@ -2,7 +2,6 @@ using System;
 using NUnit.Framework;
 using Remotion.Web.Security.ExecutionEngine;
 using Remotion.Web.UnitTests.Security.Domain;
-using Remotion.Web.UnitTests.Security.Domain;
 
 namespace Remotion.Web.UnitTests.Security.ExecutionEngine
 {
@@ -42,7 +41,7 @@ namespace Remotion.Web.UnitTests.Security.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Enumerated type 'Remotion.Security.UnitTests.Web.Domain.MethodNameEnum' is not declared as a nested type.\r\nParameter name: methodNameEnum")]
+        ExpectedMessage = "Enumerated type 'Remotion.Web.UnitTests.Security.Domain.MethodNameEnum' is not declared as a nested type.\r\nParameter name: methodNameEnum")]
     public void Initialize_WithMethodNameEnumNotNestedType ()
     {
       new WxeDemandTargetStaticMethodPermissionAttribute (MethodNameEnum.Show);
@@ -50,7 +49,7 @@ namespace Remotion.Web.UnitTests.Security.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The declaring type of enumerated type 'Remotion.Security.UnitTests.Web.Domain.SimpleType+MethodNameEnum' does not implement interface"
+        ExpectedMessage = "The declaring type of enumerated type 'Remotion.Web.UnitTests.Security.Domain.SimpleType+MethodNameEnum' does not implement interface"
         + " 'Remotion.Security.ISecurableObject'.\r\nParameter name: methodNameEnum")]
     public void Initialize_WithMethodNameEnumNotHavingValidDeclaringType ()
     {
@@ -59,7 +58,7 @@ namespace Remotion.Web.UnitTests.Security.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Enumerated type 'Remotion.Security.UnitTests.Web.Domain.MethodNameEnum' is not declared as a nested type.\r\nParameter name: methodNameEnum")]
+        ExpectedMessage = "Enumerated type 'Remotion.Web.UnitTests.Security.Domain.MethodNameEnum' is not declared as a nested type.\r\nParameter name: methodNameEnum")]
     public void Initialize_WithMethodNameEnumNotNestedTypeAndSecurableClass ()
     {
       new WxeDemandTargetStaticMethodPermissionAttribute (MethodNameEnum.Show, typeof (DerivedSecurableObject));
@@ -67,7 +66,7 @@ namespace Remotion.Web.UnitTests.Security.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The declaring type of enumerated type 'Remotion.Security.UnitTests.Web.Domain.SimpleType+MethodNameEnum' does not implement interface"
+        ExpectedMessage = "The declaring type of enumerated type 'Remotion.Web.UnitTests.Security.Domain.SimpleType+MethodNameEnum' does not implement interface"
         + " 'Remotion.Security.ISecurableObject'.\r\nParameter name: methodNameEnum")]
     public void Initialize_WithMethodNameEnumNotHavingValidDeclaringTypeAndSecurableClass ()
     {
@@ -76,8 +75,8 @@ namespace Remotion.Web.UnitTests.Security.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "Type 'Remotion.Security.UnitTests.Web.Domain.OtherSecurableObject' cannot be assigned to the declaring type of enumerated type"
-        + " 'Remotion.Security.UnitTests.Web.Domain.SecurableObject+Method'.\r\nParameter name: securableClass")]
+        ExpectedMessage = "Type 'Remotion.Web.UnitTests.Security.Domain.OtherSecurableObject' cannot be assigned to the declaring type of enumerated type"
+        + " 'Remotion.Web.UnitTests.Security.Domain.SecurableObject+Method'.\r\nParameter name: securableClass")]
     public void TestWithParameterNotOfNotMatchingType ()
     {
       new WxeDemandTargetStaticMethodPermissionAttribute (SecurableObject.Method.Show, typeof (OtherSecurableObject));

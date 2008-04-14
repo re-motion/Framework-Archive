@@ -5,7 +5,6 @@ using Remotion.Web.UnitTests.Security.Configuration;
 using Rhino.Mocks;
 using Remotion.Security.Configuration;
 using Remotion.Web.Security.ExecutionEngine;
-using Remotion.Web.UnitTests.Security.Configuration;
 using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.UnitTests.Security.ExecutionEngine

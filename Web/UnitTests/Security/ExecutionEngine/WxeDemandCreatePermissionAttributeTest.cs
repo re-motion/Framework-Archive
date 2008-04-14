@@ -2,7 +2,6 @@ using System;
 using NUnit.Framework;
 using Remotion.Web.Security.ExecutionEngine;
 using Remotion.Web.UnitTests.Security.Domain;
-using Remotion.Web.UnitTests.Security.Domain;
 
 namespace Remotion.Web.UnitTests.Security.ExecutionEngine
 {

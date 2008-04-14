@@ -585,6 +585,10 @@
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
       <Name>Web %28Web\Web%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Web\Security\Web.Security.csproj">
+      <Project>{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}</Project>
+      <Name>Web.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\SecurityManager.Core.csproj">
       <Project>{990B8638-A08F-4A94-B01A-E7DAEF089F27}</Project>
       <Name>SecurityManager.Core</Name>

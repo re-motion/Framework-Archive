@@ -6,8 +6,6 @@ using Remotion.Web.Security.UI;
 using Remotion.Web.UnitTests.Security.Configuration;
 using Remotion.Web.UnitTests.Security.Domain;
 using Remotion.Web.UI;
-using Remotion.Web.UnitTests.Security.Configuration;
-using Remotion.Web.UnitTests.Security.Domain;
 
 namespace Remotion.Web.UnitTests.Security.UI.WebSecurityAdapterTests
 {

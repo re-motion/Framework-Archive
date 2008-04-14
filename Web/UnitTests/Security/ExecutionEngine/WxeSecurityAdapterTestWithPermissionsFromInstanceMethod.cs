@@ -8,8 +8,6 @@ using Rhino.Mocks;
 using Remotion.Security.Configuration;
 using Remotion.Security.Metadata;
 using Remotion.Web.Security.ExecutionEngine;
-using Remotion.Web.UnitTests.Security.Configuration;
-using Remotion.Web.UnitTests.Security.Domain;
 using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.UnitTests.Security.ExecutionEngine

@@ -3,7 +3,6 @@ using System.Security.Principal;
 using Remotion.Security;
 using Remotion.Web.UnitTests.Security.Domain;
 using Rhino.Mocks;
-using Remotion.Security.UnitTests.Web.Domain;
 using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.UnitTests.Security.UI.WebSecurityAdapterTests

@@ -182,35 +182,6 @@
     <Compile Include="Core\XmlAsserter\XmlDocumentSimilarAsserter.cs" />
     <Compile Include="Core\XmlAsserter\XmlElementAsserter.cs" />
     <Compile Include="Core\XmlAsserter\XmlnsAttributeFilter.cs" />
-    <Compile Include="Web\Configuration\SecurityConfigurationMock.cs" />
-    <Compile Include="Web\Domain\DerivedSecurableObject.cs" />
-    <Compile Include="Web\Domain\MethodNameEnum.cs" />
-    <Compile Include="Web\Domain\NestedMethodNameEnum.cs" />
-    <Compile Include="Web\Domain\OtherSecurableObject.cs" />
-    <Compile Include="Web\Domain\SecurableObject.cs" />
-    <Compile Include="Web\ExecutionEngine\TestFunctionWithoutParameters.cs" />
-    <Compile Include="Web\ExecutionEngine\TestFunctionWithoutPermissions.cs" />
-    <Compile Include="Web\ExecutionEngine\TestFunctionWithPermissionsFromConstructor.cs" />
-    <Compile Include="Web\ExecutionEngine\TestFunctionWithPermissionsFromInstanceMethod.cs" />
-    <Compile Include="Web\ExecutionEngine\TestFunctionWithPermissionsFromStaticMethod.cs" />
-    <Compile Include="Web\ExecutionEngine\TestFunctionWithThisObject.cs" />
-    <Compile Include="Web\ExecutionEngine\TestFunctionWithThisObjectAsSecondParameter.cs" />
-    <Compile Include="Web\ExecutionEngine\WxeDemandCreatePermissionAttributeTest.cs" />
-    <Compile Include="Web\ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTest.cs" />
-    <Compile Include="Web\ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTestForGetSecurableObject.cs" />
-    <Compile Include="Web\ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTestForGetTypeOfSecurableObject.cs" />
-    <Compile Include="Web\ExecutionEngine\WxeDemandTargetMethodPermissionAttributeTest.cs" />
-    <Compile Include="Web\ExecutionEngine\WxeDemandTargetStaticMethodPermissionAttributeTest.cs" />
-    <Compile Include="Web\ExecutionEngine\WxeSecurityAdapterTestWithoutPermissionAttribute.cs" />
-    <Compile Include="Web\ExecutionEngine\WxeSecurityAdapterTestWithPermissionsFromConstructor.cs" />
-    <Compile Include="Web\ExecutionEngine\WxeSecurityAdapterTestWithPermissionsFromInstanceMethod.cs" />
-    <Compile Include="Web\ExecutionEngine\WxeSecurityAdapterTestWithPermissionsFromStaticMethod.cs" />
-    <Compile Include="Web\HttpContextUserProviderTest.cs" />
-    <Compile Include="Web\UI\DemandTargetMethodPermissionAttributeTest.cs" />
-    <Compile Include="Web\UI\DemandTargetWxeFunctionPermissionAttributeTest.cs" />
-    <Compile Include="Web\UI\WebSecurityAdapterTests\PermissionFromSecurableObjectTest.cs" />
-    <Compile Include="Web\UI\WebSecurityAdapterTests\PermissionFromWxeFunctionTest.cs" />
-    <Compile Include="Web\UI\WebSecurityAdapterTests\WebPermissionProviderTestHelper.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="Security.UnitTests.build" />
   </ItemGroup>
@@ -230,14 +201,6 @@
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
       <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
       <Name>Development.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Web\Core\Web.csproj">
-      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
-      <Name>Web %28Web\Web%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Web\UnitTests\Web.UnitTests.csproj">
-      <Project>{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}</Project>
-      <Name>Web.UnitTests</Name>
     </ProjectReference>
     <ProjectReference Include="..\UnitTests.TestDomain\Security.UnitTests.TestDomain.csproj">
       <Project>{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}</Project>

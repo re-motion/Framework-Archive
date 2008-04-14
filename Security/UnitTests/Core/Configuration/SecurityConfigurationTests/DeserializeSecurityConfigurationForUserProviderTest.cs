@@ -3,7 +3,6 @@ using System.Configuration;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Configuration;
-using Remotion.Web.Security;
 
 namespace Remotion.Security.UnitTests.Core.Configuration.SecurityConfigurationTests
 {
@@ -32,14 +31,6 @@ namespace Remotion.Security.UnitTests.Core.Configuration.SecurityConfigurationTe
       string xmlFragment = @"<remotion.security defaultUserProvider=""Thread"" />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Assert.IsInstanceOfType (typeof (ThreadUserProvider), Configuration.UserProvider);
-    }
-
-    [Test]
-    public void Test_WithHttpContextUserProvider ()
-    {
-      string xmlFragment = @"<remotion.security defaultUserProvider=""HttpContext"" />";
-      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-      Assert.IsInstanceOfType (typeof (HttpContextUserProvider), Configuration.UserProvider);
     }
 
     [Test]

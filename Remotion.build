@@ -152,11 +152,11 @@
     <call target="release" />
   </target>
 
-  <target name="all" depends="prereq, Core.Interfaces, Core, Core.Mixins.MixerTool.Console, Development.Core, Development.CodeDom, Web, 
+  <target name="all" depends="prereq, Core.Interfaces, Core, Core.Mixins.MixerTool.Console, Development.Core, Development.CodeDom, Web, Web.Security, 
       ObjectBinding, ObjectBinding.Web, ObjectBinding.Web.Preview, ObjectBinding.Web.CodeGenerator, ObjectBinding.Web.CodeGenerator.Templates, 
       Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.Web, 
       Data.DomainObjects.RdbmsTools, Data.DomainObjects.RdbmsTools.Console, 
-      Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Web, Security.Data.DomainObjects, 
+      Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Data.DomainObjects, 
       SecurityManager.Core, SecurityManager.Metadata.Importer, SecurityManager.Clients.Web">
     <echo message="Target has executed."/>
   </target>
@@ -272,6 +272,14 @@
     <call target="execute-buildstep" />
   </target>
 
+  <target name="Web.Security" depends="Core, Security, Web">
+    <property name="project.name" value="Web.Security" />
+    <property name="project.dir" value="Web/Security" />
+    <property name="project.output" value="Remotion.Web.Security" />
+    <property name="project.extension" value="dll" />
+    <call target="execute-buildstep" />
+  </target>
+
   <target name="ObjectBinding" depends="Core">
     <property name="project.name" value="ObjectBinding" />
     <property name="project.dir" value="ObjectBinding/Core" />
@@ -327,14 +335,6 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Security.Web" depends="Core, Security, Web">
-    <property name="project.name" value="Security.Web" />
-    <property name="project.dir" value="Security/Web" />
-    <property name="project.output" value="Remotion.Security.Web" />
-    <property name="project.extension" value="dll" />
-    <call target="execute-buildstep" />
-  </target>
-  
   <target name="Security.Data.DomainObjects" depends="Core, Security, Data.DomainObjects">
     <property name="project.name" value="Security.Data.DomainObjects" />
     <property name="project.dir" value="Security/Data.DomainObjects" />
@@ -422,6 +422,8 @@
     <call target="Core" cascade="false"/>
     <call target="Development.Core" cascade="false"/>
     <call target="Web" cascade="false"/>
+    <call target="Security" cascade="false"/>
+    <call target="Web.Security" cascade="false"/>
 
     <property name="project.name" value="Web.UnitTests" />
     <property name="project.dir" value="Web/UnitTests" />
@@ -483,9 +485,6 @@
     <call target="Security" cascade="false"/>
     <call target="Security.Data.DomainObjects" cascade="false"/>
     <call target="Security.UnitTests.TestDomain" cascade="false"/>
-    <call target="Security.Web" cascade="false"/>
-    <call target="Web" cascade="false"/>
-    <call target="Web.UnitTests" cascade="false"/>
 
     <property name="project.name" value="Security.UnitTests" />
     <property name="project.dir" value="Security/UnitTests" />
