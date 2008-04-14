@@ -111,7 +111,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
       Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
       ConcreteMixedTypeAttribute[] attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false);
       ClassContext context = attributes[0].GetClassContext ();
-      Assert.AreEqual (context, TypeFactory.GetActiveConfiguration (typeof (BaseType3)).ConfigurationContext);
+      Assert.AreEqual (context, TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType3)).ConfigurationContext);
     }
 
     [Test]
@@ -120,7 +120,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
       Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
       ConcreteMixedTypeAttribute[] attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false);
       TargetClassDefinition definition = attributes[0].GetTargetClassDefinition ();
-      Assert.AreSame (definition, TypeFactory.GetActiveConfiguration (typeof (BaseType3)));
+      Assert.AreSame (definition, TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType3)));
     }
 
     [Test]
@@ -137,7 +137,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
       INameProvider nameProviderMock = repository.CreateMock<INameProvider> ();
       ConcreteTypeBuilder.Current.TypeNameProvider = nameProviderMock;
 
-      TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition definition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1));
 
       Expect.Call (nameProviderMock.GetNewTypeName (definition)).Return ("Foo");
 
@@ -157,7 +157,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
       INameProvider nameProviderMock = repository.CreateMock<INameProvider> ();
       ConcreteTypeBuilder.Current.TypeNameProvider = nameProviderMock;
 
-      TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition definition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1));
 
       Expect.Call (nameProviderMock.GetNewTypeName (definition)).Return ("Foo+Bar");
 

@@ -20,9 +20,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
       Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3));
       Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3).This);
       Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3).Base);
-      Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3).Configuration);
       Assert.AreSame (bt3, Mixin.Get<BT3Mixin1> (bt3).This);
-      Assert.AreSame (TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin1)], Mixin.Get<BT3Mixin1> (bt3).Configuration);
     }
 
     [Test]
@@ -47,9 +45,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
       Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3));
       Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3).This);
       Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3).Base);
-      Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3).Configuration);
       Assert.AreSame (bt3, Mixin.Get<BT3Mixin1> (bt3).This);
-      Assert.AreSame (TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin1)], Mixin.Get<BT3Mixin1> (bt3).Configuration);
     }
 
     [Test]
@@ -65,7 +61,6 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixedTypeCodeGeneration
         Assert.AreSame (suppliedMixinInstance, Mixin.Get<BT3Mixin1> (bt3));
         Assert.AreSame (bt3, suppliedMixinInstance.This);
         Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3).Base);
-        Assert.AreSame (TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin1)], Mixin.Get<BT3Mixin1> (bt3).Configuration);
       }
     }
 

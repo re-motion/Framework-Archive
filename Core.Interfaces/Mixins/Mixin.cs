@@ -1,10 +1,7 @@
 using System;
 using System.Diagnostics;
 using Remotion.Implementation;
-using Remotion.Mixins.CodeGeneration;
-using Remotion.Utilities;
-using Remotion.Mixins.Definitions;
-using Remotion.Mixins.Context;
+using Remotion.Mixins.BridgeInterfaces;
 
 namespace Remotion.Mixins
 {
@@ -134,20 +131,16 @@ namespace Remotion.Mixins
       }
     }
 
-    internal void Initialize ([This] TThis @this, [Base] TBase @base, [Configuration] MixinDefinition configuration)
+    internal void Initialize ([This] TThis @this, [Base] TBase @base)
     {
-      Assertion.IsNotNull (@this);
-      Assertion.IsNotNull (@base);
       _base = @base;
-      base.Initialize (@this, configuration);
+      base.Initialize (@this);
     }
 
-    internal void Deserialize ([This] TThis @this, [Base] TBase @base, [Configuration] MixinDefinition configuration)
+    internal void Deserialize ([This] TThis @this, [Base] TBase @base)
     {
-      Assertion.IsNotNull (@this);
-      Assertion.IsNotNull (@base);
       _base = @base;
-      base.Deserialize (@this, configuration);
+      base.Deserialize (@this);
     }
   }
 
@@ -202,8 +195,6 @@ namespace Remotion.Mixins
   {
     [NonSerialized]
     private TThis _this;
-    [NonSerialized]
-    private MixinDefinition _configuration;
 
     /// <summary>
     /// Gets a reference to the mixin's target object.
@@ -224,30 +215,9 @@ namespace Remotion.Mixins
       }
     }
 
-    /// <summary>
-    /// Gets the mixin's configuration data.
-    /// </summary>
-    /// <value>A <see cref="MixinDefinition"/> holding the mixin's configuration data.</value>
-    /// <exception cref="InvalidOperationException">The mixin has not been initialized yet, probably because the property is accessed from the mixin's
-    /// constructor.</exception>
-    /// <remarks>This property must not be accessed from the mixin's constructor; if you need to initialize the mixin by accessing the <see cref="Configuration"/>
-    /// property, override the <see cref="Mixin{TThis}.OnInitialized"/> method.</remarks>
-    protected MixinDefinition Configuration
+    internal void Initialize ([This] TThis @this)
     {
-      [DebuggerStepThrough]
-      get
-      {
-        if (_configuration == null)
-          throw new InvalidOperationException ("Mixin has not been initialized yet.");
-        return _configuration;
-      }
-    }
-
-    internal void Initialize ([This] TThis @this, [Configuration] MixinDefinition configuration)
-    {
-      Assertion.IsNotNull (@this);
       _this = @this;
-      _configuration = @configuration;
       OnInitialized();
     }
 
@@ -259,11 +229,9 @@ namespace Remotion.Mixins
       // nothing
     }
 
-    internal void Deserialize ([This] TThis @this, [Configuration] MixinDefinition configuration)
+    internal void Deserialize ([This] TThis @this)
     {
-      Assertion.IsNotNull (@this);
       _this = @this;
-      _configuration = @configuration;
       OnDeserialized ();
     }
 

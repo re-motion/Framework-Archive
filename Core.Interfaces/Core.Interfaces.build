@@ -13,6 +13,8 @@
       <sources failonempty="true">
         <include name="*.cs" />
         <include name="Implementation/**/*.cs" />
+        <include name="Mixins/**/*.cs" />
+        <include name="Reflection/**/*.cs" />
         <include name="Properties/**/*.cs" />
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>

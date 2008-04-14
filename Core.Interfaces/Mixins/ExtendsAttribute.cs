@@ -1,6 +1,4 @@
 using System;
-using Remotion.Mixins.Context;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {
@@ -9,8 +7,7 @@ namespace Remotion.Mixins
   /// </summary>
   /// <remarks>
   /// <para>
-  /// This attribute is effective for the declarative mixin configuration built via <see cref="DeclarativeConfigurationBuilder.BuildDefaultConfiguration"/>,
-  /// which is in effect by default when an application is started.
+  /// This attribute is effective for the declarative mixin configuration, which is in effect by default when an application is started.
   /// </para>
   /// <para> 
   /// Although the attribute itself is not inherited, its semantics in mixin configuration are: If a base class is configured to be mixed with a
@@ -36,7 +33,8 @@ namespace Remotion.Mixins
     /// <param name="targetType">The target type extended by this mixin.</param>
     public ExtendsAttribute (Type targetType)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
+      if (targetType == null)
+        throw new ArgumentNullException ("targetType");
       _targetType = targetType;
     }
 
@@ -56,13 +54,14 @@ namespace Remotion.Mixins
     /// </summary>
     /// <value>The generic type arguments to close the generic mixin type with.</value>
     /// <remarks>If this attribute is applied to a non-generic mixin class or if the types supplied don't match the mixin's generic parameters,
-    /// a <see cref="ConfigurationException"/> is thrown when the mixin configuration is analyzed.</remarks>
+    /// an exception is thrown when the mixin configuration is analyzed.</remarks>
     public Type[] MixinTypeArguments
     {
       get { return _mixinTypeArguments; }
       set
       {
-        ArgumentUtility.CheckNotNull ("value", value);
+        if (value == null)
+          throw new ArgumentNullException ("value");
         _mixinTypeArguments = value;
       }
     }

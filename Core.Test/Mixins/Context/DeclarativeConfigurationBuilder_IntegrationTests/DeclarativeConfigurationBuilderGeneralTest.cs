@@ -118,7 +118,7 @@ namespace Remotion.UnitTests.Mixins.Context.DeclarativeConfigurationBuilder_Inte
     [Test]
     public void IgnoreForMixinConfiguration()
     {
-      Assert.IsFalse (TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins.ContainsKey (typeof (Foo)));
+      Assert.IsFalse (TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1)).Mixins.ContainsKey (typeof (Foo)));
     }
 
     [Test]

@@ -15,7 +15,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration
     {
       INameProvider nameProvider = NamespaceChangingNameProvider.Instance;
 
-      TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition definition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1));
       string newName = nameProvider.GetNewTypeName (definition);
 
       Assert.AreEqual (typeof (BaseType1).Namespace + ".MixedTypes.BaseType1", newName);
@@ -26,7 +26,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration
     {
       INameProvider nameProvider = NamespaceChangingNameProvider.Instance;
 
-      TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (GenericTargetClass<int>), GenerationPolicy.ForceGeneration);
+      TargetClassDefinition definition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (GenericTargetClass<int>), GenerationPolicy.ForceGeneration);
       string newName = nameProvider.GetNewTypeName (definition);
 
       Assert.AreEqual (typeof (GenericTargetClass<int>).Namespace +

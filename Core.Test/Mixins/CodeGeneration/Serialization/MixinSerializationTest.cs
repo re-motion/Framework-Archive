@@ -56,32 +56,6 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.Serialization
     }
 
     [Test]
-    public void SerializationOfMixinConfigurationWorks ()
-    {
-      BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin1), typeof (BT3Mixin1B)).With ();
-      BT3Mixin1 mixin = Mixin.Get<BT3Mixin1> (bt3);
-      Assert.IsNotNull (mixin.Configuration);
-      Assert.AreSame (((IMixinTarget) bt3).Configuration.Mixins[typeof (BT3Mixin1)], mixin.Configuration);
-
-      BT3Mixin1B mixin2 = Mixin.Get<BT3Mixin1B> (bt3);
-      Assert.IsNotNull (mixin2.Configuration);
-      Assert.AreSame (((IMixinTarget) bt3).Configuration.Mixins[typeof (BT3Mixin1B)], mixin2.Configuration);
-
-      Serializer.SerializeAndDeserialize (mixin);
-
-      BaseType3 bt3A = Serializer.SerializeAndDeserialize (bt3);
-      BT3Mixin1 mixinA = Mixin.Get<BT3Mixin1> (bt3A);
-      Assert.AreNotSame (mixin, mixinA);
-      Assert.IsNotNull (mixinA.Configuration);
-      Assert.AreSame (((IMixinTarget) bt3A).Configuration.Mixins[typeof (BT3Mixin1)], mixinA.Configuration);
-
-      BT3Mixin1B mixin2A = Mixin.Get<BT3Mixin1B> (bt3A);
-      Assert.AreNotSame (mixin2, mixin2A);
-      Assert.IsNotNull (mixin2A.Configuration);
-      Assert.AreSame (((IMixinTarget) bt3A).Configuration.Mixins[typeof (BT3Mixin1B)], mixin2A.Configuration);
-    }
-
-    [Test]
     public void GeneratedTypeHasConfigurationField ()
     {
       ClassOverridingMixinMembers targetInstance = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers)).With ();
@@ -125,7 +99,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.Serialization
     }
 
     [Test]
-    public void GeneratedTypeCorrectlySerializesThisBaseAndConfiguration()
+    public void GeneratedTypeCorrectlySerializesThisAndBase()
     {
       ClassOverridingMixinMembers targetInstance = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers)).With ();
       MixinWithAbstractMembers mixin = Mixin.Get<MixinWithAbstractMembers> (targetInstance);
@@ -133,8 +107,6 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.Serialization
       Assert.AreEqual (targetInstance, MixinReflector.GetTargetProperty (mixin.GetType()).GetValue (mixin, null));
       Assert.AreEqual (MixinReflector.GetBaseCallProxyType(targetInstance),
           MixinReflector.GetBaseProperty (mixin.GetType ()).GetValue (mixin, null).GetType());
-      Assert.AreEqual (((IMixinTarget)targetInstance).Configuration.Mixins[typeof (MixinWithAbstractMembers)],
-          MixinReflector.GetConfigurationProperty (mixin.GetType ()).GetValue (mixin, null));
 
       ClassOverridingMixinMembers targetInstanceA = Serializer.SerializeAndDeserialize (targetInstance);
       MixinWithAbstractMembers mixinA = Mixin.Get<MixinWithAbstractMembers> (targetInstanceA);

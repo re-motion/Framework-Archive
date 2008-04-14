@@ -1,13 +1,13 @@
 using System;
 using Remotion.Collections;
+using Remotion.Mixins.BridgeInterfaces;
 using Remotion.Mixins.Context;
+using Remotion.Mixins.Utilities;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
-namespace Remotion.Mixins.Utilities
+namespace Remotion.Mixins.BridgeImplementations
 {
-  using CacheKey = Tuple<Type, Type>;
-
   public class MixedObjectInstantiator : IMixedObjectInstantiator
   {
     public Type ResolveType (Type baseType)

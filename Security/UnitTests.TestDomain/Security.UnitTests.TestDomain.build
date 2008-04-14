@@ -20,6 +20,7 @@
       </sources>
       <references failonempty="true">
         <include name="${build.test.outputdir}/Remotion.dll" />
+        <include name="${build.test.outputdir}/Remotion.Interfaces.dll" />
         <include name="${build.test.outputdir}/Remotion.Security.dll" />
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Configuration.dll"/>

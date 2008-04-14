@@ -16,6 +16,7 @@
       </sources>
       <references failonempty="true">
         <include asis="true" name="${build.test.outputdir}/Remotion.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Interfaces.dll"/>
         <include asis="true" name="${build.test.outputdir}/Remotion.Data.DomainObjects.dll"/>
         <include asis="true" name="${build.test.outputdir}/Remotion.Data.DomainObjects.RdbmsTools.dll"/>
         <include asis="true" name="${build.test.outputdir}/nunit.framework.dll"/>

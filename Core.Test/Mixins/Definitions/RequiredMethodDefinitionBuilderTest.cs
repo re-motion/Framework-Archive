@@ -49,7 +49,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     [Test]
     public void RequiredFaceMethodsInterfaceImplementedOnBase ()
     {
-      TargetClassDefinition TargetClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirements));
+      TargetClassDefinition TargetClassDefinition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirements));
       MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersFace)];
       Assert.IsNotNull (mixin);
 
@@ -62,7 +62,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     [Test]
     public void RequiredBaseCallMethodsInterfaceImplementedOnBase ()
     {
-      TargetClassDefinition TargetClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirements));
+      TargetClassDefinition TargetClassDefinition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirements));
       MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersBase)];
       Assert.IsNotNull (mixin);
 
@@ -77,7 +77,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     {
       using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClassFulfillingNoMemberRequirements)).Clear().AddMixins (typeof (MixinRequiringAllMembersFace), typeof (MixinFulfillingAllMemberRequirements)).EnterScope())
       {
-        TargetClassDefinition TargetClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingNoMemberRequirements));
+        TargetClassDefinition TargetClassDefinition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassFulfillingNoMemberRequirements));
         MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersFace)];
         Assert.IsNotNull (mixin);
 
@@ -96,7 +96,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     {
       using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClassFulfillingNoMemberRequirements)).Clear().AddMixins (typeof (MixinRequiringAllMembersBase), typeof (MixinFulfillingAllMemberRequirements)).EnterScope())
       {
-        TargetClassDefinition TargetClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingNoMemberRequirements));
+        TargetClassDefinition TargetClassDefinition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassFulfillingNoMemberRequirements));
         MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersBase)];
         Assert.IsNotNull (mixin);
 
@@ -113,7 +113,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     [Test]
     public void RequiredFaceMethodsDuckImplementedOnBase ()
     {
-      TargetClassDefinition TargetClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirementsDuck));
+      TargetClassDefinition TargetClassDefinition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirementsDuck));
       MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersFace)];
       Assert.IsNotNull (mixin);
 
@@ -126,7 +126,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     [Test]
     public void RequiredBaseCallMethodsDuckImplementedOnBase ()
     {
-      TargetClassDefinition TargetClassDefinition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirementsDuck));
+      TargetClassDefinition TargetClassDefinition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirementsDuck));
       MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersBase)];
       Assert.IsNotNull (mixin);
 
@@ -152,7 +152,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinRequiringSingleMethod)).EnterScope())
       {
-        TypeFactory.GetActiveConfiguration (typeof (NullTarget));
+        TargetClassDefinitionUtility.GetActiveConfiguration (typeof (NullTarget));
         Assert.Fail ();
       }
     }
@@ -173,7 +173,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinRequiringSingleProperty)).EnterScope())
       {
-        TypeFactory.GetActiveConfiguration (typeof (NullTarget));
+        TargetClassDefinitionUtility.GetActiveConfiguration (typeof (NullTarget));
         Assert.Fail ();
       }
     }
@@ -194,7 +194,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinRequiringSingleEvent)).EnterScope())
       {
-        TypeFactory.GetActiveConfiguration (typeof (NullTarget));
+        TargetClassDefinitionUtility.GetActiveConfiguration (typeof (NullTarget));
         Assert.Fail ();
       }
     }
@@ -223,7 +223,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     {
       using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingPrivately> ().Clear().AddMixins (typeof (MixinRequiringAllMembersFace)).EnterScope())
       {
-        TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingPrivately));
+        TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassFulfillingPrivately));
       }
     }
 
@@ -251,7 +251,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     {
       using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingInternally> ().Clear().AddMixins (typeof (MixinRequiringAllMembersFace)).EnterScope())
       {
-        TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingInternally));
+        TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassFulfillingInternally));
       }
     }
 
@@ -276,7 +276,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     {
       using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingProtectedly> ().Clear().AddMixins (typeof (MixinRequiringAllMembersFace)).EnterScope())
       {
-        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingProtectedly));
+        TargetClassDefinition definition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassFulfillingProtectedly));
         RequiredFaceTypeDefinition requirement = definition.RequiredFaceTypes[typeof (IMixinRequiringAllMembersRequirements)];
 
         CheckRequiredMethods (requirement, definition, "");
@@ -288,7 +288,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     {
       using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingAllMemberRequirementsExplicitly> ().Clear().AddMixins (typeof (MixinRequiringAllMembersFace)).EnterScope())
       {
-        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirementsExplicitly));
+        TargetClassDefinition definition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassFulfillingAllMemberRequirementsExplicitly));
         RequiredFaceTypeDefinition requirement = definition.RequiredFaceTypes[typeof (IMixinRequiringAllMembersRequirements)];
 
         CheckRequiredMethods (requirement, definition, typeof (IMixinRequiringAllMembersRequirements).FullName + ".");
@@ -298,7 +298,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     [Test]
     public void NoRequiredMethodsWhenFaceRequirementIsClass ()
     {
-      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithStaticMethod));
+      TargetClassDefinition targetClass = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassWithStaticMethod));
       RequiredFaceTypeDefinition requirement = targetClass.RequiredFaceTypes[typeof (ClassWithStaticMethod)];
       Assert.AreEqual (0, requirement.Methods.Count);
     }

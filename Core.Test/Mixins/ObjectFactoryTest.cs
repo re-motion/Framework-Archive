@@ -90,7 +90,7 @@ namespace Remotion.UnitTests.Mixins
     [Test]
     public void AcceptsInstanceOfGeneratedMixinType1 ()
     {
-      TargetClassDefinition configuration = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers));
+      TargetClassDefinition configuration = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassOverridingMixinMembers));
       Type generatedMixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (configuration.Mixins[typeof (MixinWithAbstractMembers)]);
       object mixinInstance = Activator.CreateInstance (generatedMixinType);
 
@@ -103,7 +103,7 @@ namespace Remotion.UnitTests.Mixins
     {
       using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (MixinWithProtectedOverrider)).EnterScope())
       {
-        TargetClassDefinition configuration = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        TargetClassDefinition configuration = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1));
         Type mixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (configuration.Mixins[0]);
         object mixinInstance = Activator.CreateInstance (mixinType);
         BaseType1 bt1 = ObjectFactory.Create<BaseType1> (mixinInstance).With ();
@@ -135,21 +135,6 @@ namespace Remotion.UnitTests.Mixins
         Assert.AreSame (bt3, mixin.This);
         Assert.IsNotNull (mixin.Base);
         Assert.AreNotSame (bt3, mixin.Base);
-      }
-    }
-
-    [Test]
-    public void MixinsAreInitializedWithConfiguration ()
-    {
-      using (MixinConfiguration.BuildFromActive().ForClass<BaseType3> ().Clear().AddMixins (typeof (BT3Mixin1)).EnterScope())
-      {
-        BaseType3 bt3 = ObjectFactory.Create<BaseType3> ().With ();
-        BT3Mixin1 mixin = Mixin.Get<BT3Mixin1> (bt3);
-        Assert.IsNotNull (mixin);
-        Assert.AreSame (bt3, mixin.This);
-        Assert.IsNotNull (mixin.Base);
-        Assert.AreNotSame (bt3, mixin.Base);
-        Assert.AreSame (((IMixinTarget) bt3).Configuration.Mixins[typeof (BT3Mixin1)], mixin.Configuration);
       }
     }
 

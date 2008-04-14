@@ -37,12 +37,12 @@ namespace Remotion.UnitTests.Mixins.Definitions.DependencySorting
           .AddMixin (typeof (MixinAcceptingAlphabeticOrdering2))
           .EnterScope())
       {
-        _independent1 = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (NullMixin)];
-        _independent2 = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (NullMixin2)];
-        _dependentSecond = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (NullMixin3)];
-        _dependentThird = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (NullMixin4)];
-        _alphabeticAccepter = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinAcceptingAlphabeticOrdering1)];
-        _alphabeticAccepter2 = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinAcceptingAlphabeticOrdering2)];
+        _independent1 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (NullMixin)];
+        _independent2 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (NullMixin2)];
+        _dependentSecond = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (NullMixin3)];
+        _dependentThird = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (NullMixin4)];
+        _alphabeticAccepter = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinAcceptingAlphabeticOrdering1)];
+        _alphabeticAccepter2 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinAcceptingAlphabeticOrdering2)];
       }
     }
 

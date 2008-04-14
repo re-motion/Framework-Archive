@@ -1,9 +1,9 @@
 using System;
 using Remotion.Implementation;
 
-namespace Remotion.Mixins
+namespace Remotion.Mixins.BridgeInterfaces
 {
-  [ConcreteImplementation ("Remotion.Mixins.MixinImplementation, Remotion, Version = <version>")]
+  [ConcreteImplementation ("Remotion.Mixins.BridgeImplementations.MixinImplementation, Remotion, Version = <version>")]
   public interface IMixinImplementation
   {
     TMixin Get<TMixin> (object mixinTarget) where TMixin : class;

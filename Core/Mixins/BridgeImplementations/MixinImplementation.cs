@@ -1,8 +1,9 @@
 using System;
+using Remotion.Mixins.BridgeInterfaces;
 using Remotion.Mixins.Utilities;
 using Remotion.Utilities;
 
-namespace Remotion.Mixins
+namespace Remotion.Mixins.BridgeImplementations
 {
   public class MixinImplementation : IMixinImplementation
   {

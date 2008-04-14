@@ -15,7 +15,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     [Test]
     public void MixinsIntroduceAttributes ()
     {
-      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition bt1 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1));
       Assert.AreEqual (2, bt1.CustomAttributes.Count);
       Assert.IsTrue (bt1.CustomAttributes.ContainsKey (typeof (BT1Attribute)));
       Assert.IsTrue (bt1.CustomAttributes.ContainsKey (typeof (DefaultMemberAttribute)));
@@ -37,7 +37,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     [Test]
     public void MixinsIntroduceAttributesToMembers ()
     {
-      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition bt1 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1));
       MethodDefinition member = bt1.Methods[typeof (BaseType1).GetMethod ("VirtualMethod", Type.EmptyTypes)];
       Assert.AreEqual (1, member.CustomAttributes.Count);
       Assert.AreEqual (1, member.IntroducedAttributes.Count);
@@ -127,7 +127,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinIndirectlyAddingAttribute)).EnterScope())
       {
-        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget));
+        TargetClassDefinition definition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (NullTarget));
         Assert.IsFalse (definition.IntroducedAttributes.ContainsKey (typeof (CopyCustomAttributesAttribute)));
         Assert.IsTrue (definition.IntroducedAttributes.ContainsKey (typeof (AttributeWithParameters)));
 
@@ -148,7 +148,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinIndirectlyAddingNonInheritedAttribute)).EnterScope())
       {
-        TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget));
+        TargetClassDefinition definition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (NullTarget));
         Assert.IsFalse (definition.IntroducedAttributes.ContainsKey (typeof (CopyCustomAttributesAttribute)));
         Assert.IsTrue (definition.IntroducedAttributes.ContainsKey (typeof (NonInheritedAttribute)));
       }
@@ -159,7 +159,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinIndirectlyAddingAttribute)).EnterScope())
       {
-        MethodDefinition definition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Methods[typeof (object).GetMethod ("ToString")];
+        MethodDefinition definition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (NullTarget)).Methods[typeof (object).GetMethod ("ToString")];
         Assert.IsFalse (definition.IntroducedAttributes.ContainsKey (typeof (CopyCustomAttributesAttribute)));
         Assert.IsTrue (definition.IntroducedAttributes.ContainsKey (typeof (AttributeWithParameters)));
 

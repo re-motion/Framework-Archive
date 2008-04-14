@@ -1,5 +1,8 @@
 using System;
 using System.Reflection;
+using Remotion.Mixins;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.Utilities;
 
@@ -66,17 +69,6 @@ namespace Remotion.Mixins.Utilities
         return mixinBaseType.GetProperty ("Base", BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
-    public static PropertyInfo GetConfigurationProperty (Type concreteMixinType)
-    {
-      ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);
-
-      Type mixinBaseType = GetMixinBaseType (concreteMixinType);
-      if (mixinBaseType == null)
-        return null;
-      else
-        return mixinBaseType.GetProperty ("Configuration", BindingFlags.NonPublic | BindingFlags.Instance);
-    }
-
     public static MethodInfo GetInitializationMethod (Type concreteMixinType, InitializationMode initializationMode)
     {
       ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);
@@ -105,6 +97,45 @@ namespace Remotion.Mixins.Utilities
       Assertion.IsNotNull (castTarget.FirstBaseCallProxy);
       Type baseCallProxyType = castTarget.FirstBaseCallProxy.GetType();
       return baseCallProxyType;
+    }
+
+    /// <summary>
+    /// Returns the <see cref="ClassContext"/> that was used as the mixin configuration when the given concrete mixed <paramref name="type"/>
+    /// was created by the <see cref="TypeFactory"/>.
+    /// </summary>
+    /// <param name="type">The type whose mixin configuration is to be retrieved.</param>
+    /// <returns>The <see cref="ClassContext"/> used when the given concrete mixed <paramref name="type"/> was created, or <see langword="null"/>
+    /// if <paramref name="type"/> is no mixed type.</returns>
+    public static ClassContext GetClassContextFromConcreteType (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      ConcreteMixedTypeAttribute attribute = AttributeUtility.GetCustomAttribute<ConcreteMixedTypeAttribute> (type, true);
+      if (attribute == null)
+        return null;
+      else
+        return attribute.GetClassContext ();
+    }
+
+    /// <summary>
+    /// Returns the <see cref="MixinDefinition"/> that was used as the mixin configuration for a specific mixin when its target object was created.
+    /// </summary>
+    /// <param name="mixin">The mixin whose configuration should be returned.</param>
+    /// <param name="mixedInstance">The instance containing <paramref name="mixin"/>.</param>
+    /// <returns>The <see cref="MixinDefinition"/> object corresponding to the <paramref name="mixin"/>.</returns>
+    public static MixinDefinition GetMixinConfiguration (object mixin, object mixedInstance)
+    {
+      ArgumentUtility.CheckNotNull ("mixin", mixin);
+      ArgumentUtility.CheckNotNull ("mixedInstance", mixedInstance);
+
+      IMixinTarget mixinTarget = mixedInstance as IMixinTarget;
+      if (mixinTarget == null)
+        throw new ArgumentException ("The given instance is not a mixed object.", "mixedInstance");
+
+      int index = Array.IndexOf (mixinTarget.Mixins, mixin);
+      if (index == -1)
+        throw new ArgumentException ("The given mixin is not a part of the given instance.", "mixin");
+
+      return mixinTarget.Configuration.Mixins[index];
     }
   }
 }

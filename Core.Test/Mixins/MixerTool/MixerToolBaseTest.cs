@@ -7,6 +7,7 @@ using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.MixerTool;
+using Remotion.Mixins.Utilities;
 
 namespace Remotion.UnitTests.Mixins.MixerTool
 {
@@ -66,7 +67,7 @@ namespace Remotion.UnitTests.Mixins.MixerTool
       Set<ClassContext> contextsFromTypes = new Set<ClassContext> ();
       foreach (Type concreteType in assembly.GetTypes ())
       {
-        ClassContext context = TypeUtility.GetMixinConfigurationFromConcreteType (concreteType);
+        ClassContext context = MixinReflector.GetClassContextFromConcreteType (concreteType);
         if (context != null)
           contextsFromTypes.Add (context);
       }

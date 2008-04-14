@@ -33,7 +33,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
 
       using (configuration.EnterScope())
       {
-        TargetClassDefinition def = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        TargetClassDefinition def = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1));
         Assert.IsNotNull (def.ConfigurationContext);
         Assert.AreSame (classContext, def.ConfigurationContext);
       }
@@ -69,7 +69,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     [Test]
     public void TargetClassHasExplicitInterfaceMembers ()
     {
-      TargetClassDefinition cweii = TypeFactory.GetActiveConfiguration (typeof (ClassWithExplicitInterfaceImplementation),
+      TargetClassDefinition cweii = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassWithExplicitInterfaceImplementation),
           GenerationPolicy.ForceGeneration);
       Assert.AreEqual (7, cweii.Methods.Count);
       Assert.AreEqual (1, cweii.Properties.Count);
@@ -122,7 +122,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     [Test]
     public void HasOverriddenMembersTrue ()
     {
-      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition bt1 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1));
       Assert.IsTrue (bt1.HasOverriddenMembers ());
     }
 
@@ -145,21 +145,21 @@ namespace Remotion.UnitTests.Mixins.Definitions
     [Test]
     public void HasProtectedOverridersFalse ()
     {
-      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition bt1 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1));
       Assert.IsFalse (bt1.HasProtectedOverriders ());
     }
 
     [Test]
     public void IsAbstractTrue ()
     {
-      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (AbstractBaseType), GenerationPolicy.ForceGeneration);
+      TargetClassDefinition bt1 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (AbstractBaseType), GenerationPolicy.ForceGeneration);
       Assert.IsTrue (bt1.IsAbstract);
     }
 
     [Test]
     public void IsAbstractFalse ()
     {
-      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition bt1 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1));
       Assert.IsFalse (bt1.IsAbstract);
     }
   }

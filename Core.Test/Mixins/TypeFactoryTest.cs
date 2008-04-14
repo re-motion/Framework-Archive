@@ -18,8 +18,8 @@ namespace Remotion.UnitTests.Mixins
       {
         Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (BaseType1)));
         Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (BaseType2)));
-        Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
-        Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
+        Assert.IsNull (TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1)));
+        Assert.IsNull (TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType2)));
         Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (BaseType1)));
         Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (BaseType2)));
 
@@ -29,8 +29,8 @@ namespace Remotion.UnitTests.Mixins
           Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (BaseType2)));
           Assert.AreSame (
               TargetClassDefinitionCache.Current.GetTargetClassDefinition (new ClassContext (typeof (BaseType1))),
-              TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
-          Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
+              TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1)));
+          Assert.IsNull (TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType2)));
           Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (BaseType1)));
           Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (BaseType2)));
 
@@ -39,14 +39,14 @@ namespace Remotion.UnitTests.Mixins
             Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (BaseType1)));
             Assert.IsTrue (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (BaseType2)));
 
-            Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
+            Assert.IsNotNull (TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1)));
             Assert.AreSame (
                 TargetClassDefinitionCache.Current.GetTargetClassDefinition (new ClassContext (typeof (BaseType1))),
-                TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
-            Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
+                TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1)));
+            Assert.IsNotNull (TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType2)));
             Assert.AreSame (
                 TargetClassDefinitionCache.Current.GetTargetClassDefinition (new ClassContext (typeof (BaseType2))),
-                TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
+                TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType2)));
           }
         }
       }
@@ -59,7 +59,7 @@ namespace Remotion.UnitTests.Mixins
     [Test]
     public void GetActiveConfigurationWithGenericTypes ()
     {
-      TargetClassDefinition def = TypeFactory.GetActiveConfiguration (typeof (GenericTypeWithMixin<int>));
+      TargetClassDefinition def = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (GenericTypeWithMixin<int>));
       Assert.AreEqual (typeof (GenericTypeWithMixin<int>), def.Type);
       Assert.IsTrue (def.Mixins.ContainsKey (typeof (NullMixin)));
     }
@@ -70,12 +70,12 @@ namespace Remotion.UnitTests.Mixins
       using (MixinConfiguration.BuildFromActive().ForClass (typeof (GenericClassExtendedByMixin<int>)).Clear().AddMixins (typeof (MixinExtendingSpecificGenericClass)).EnterScope())
       {
         TargetClassDefinition targetClassDefinition =
-            TypeFactory.GetActiveConfiguration (typeof (GenericClassExtendedByMixin<int>), GenerationPolicy.GenerateOnlyIfConfigured);
+            TargetClassDefinitionUtility.GetActiveConfiguration (typeof (GenericClassExtendedByMixin<int>), GenerationPolicy.GenerateOnlyIfConfigured);
         Assert.IsNotNull (targetClassDefinition);
         Assert.IsTrue (targetClassDefinition.Mixins.ContainsKey (typeof (MixinExtendingSpecificGenericClass)));
 
-        Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (GenericClassExtendedByMixin<string>), GenerationPolicy.GenerateOnlyIfConfigured));
-        Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (GenericClassExtendedByMixin<>), GenerationPolicy.GenerateOnlyIfConfigured));
+        Assert.IsNull (TargetClassDefinitionUtility.GetActiveConfiguration (typeof (GenericClassExtendedByMixin<string>), GenerationPolicy.GenerateOnlyIfConfigured));
+        Assert.IsNull (TargetClassDefinitionUtility.GetActiveConfiguration (typeof (GenericClassExtendedByMixin<>), GenerationPolicy.GenerateOnlyIfConfigured));
       }
     }
 
@@ -83,22 +83,22 @@ namespace Remotion.UnitTests.Mixins
     public void NoDefinitionGeneratedIfNoConfigByDefault()
     {
       Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (object)));
-      Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (object)));
+      Assert.IsNull (TargetClassDefinitionUtility.GetActiveConfiguration (typeof (object)));
     }
 
     [Test]
     public void NoNewDefinitionGeneratedForGeneratedTypeByDefault ()
     {
       Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType1));
-      TargetClassDefinition definition = TypeFactory.GetActiveConfiguration (generatedType);
-      Assert.AreSame (definition, TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
+      TargetClassDefinition definition = TargetClassDefinitionUtility.GetActiveConfiguration (generatedType);
+      Assert.AreSame (definition, TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1)));
     }
 
     [Test]
     public void DefinitionGeneratedIfNoConfigViaPolicy ()
     {
       Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (object)));
-      TargetClassDefinition configuration = TypeFactory.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
+      TargetClassDefinition configuration = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
       Assert.IsNotNull (configuration);
       Assert.AreEqual (typeof (object), configuration.Type);
     }
@@ -107,8 +107,8 @@ namespace Remotion.UnitTests.Mixins
     public void NewDefinitionGeneratedForGeneratedTypeViaPolicy ()
     {
       Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType1));
-      TargetClassDefinition newDefinition = TypeFactory.GetActiveConfiguration (generatedType, GenerationPolicy.ForceGeneration);
-      TargetClassDefinition baseDefinition = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition newDefinition = TargetClassDefinitionUtility.GetActiveConfiguration (generatedType, GenerationPolicy.ForceGeneration);
+      TargetClassDefinition baseDefinition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1));
       Assert.AreNotSame (baseDefinition, newDefinition);
       Assert.AreSame (baseDefinition.Type, newDefinition.Type.BaseType);
     }
@@ -117,8 +117,8 @@ namespace Remotion.UnitTests.Mixins
     public void ForcedDefinitionsAreCached ()
     {
       Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (object)));
-      TargetClassDefinition d1 = TypeFactory.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
-      TargetClassDefinition d2 = TypeFactory.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
+      TargetClassDefinition d1 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
+      TargetClassDefinition d2 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
       Assert.AreSame (d1, d2);
     }
 
@@ -126,8 +126,8 @@ namespace Remotion.UnitTests.Mixins
     public void ForcedGenerationIsNotPersistent ()
     {
       Assert.IsFalse (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (object)));
-      TargetClassDefinition d1 = TypeFactory.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
-      TargetClassDefinition d2 = TypeFactory.GetActiveConfiguration (typeof (object), GenerationPolicy.GenerateOnlyIfConfigured);
+      TargetClassDefinition d1 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (object), GenerationPolicy.ForceGeneration);
+      TargetClassDefinition d2 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (object), GenerationPolicy.GenerateOnlyIfConfigured);
       Assert.IsNotNull (d1);
       Assert.IsNull (d2);
     }

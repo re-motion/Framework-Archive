@@ -18,7 +18,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
     public void GeneratedTypeImplementsMarkerInterface ()
     {
       MixinDefinition mixinDefinition =
-          TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
+          TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
       Assert.IsNotNull (mixinDefinition);
       Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
       Assert.IsTrue (typeof (IGeneratedMixinType).IsAssignableFrom (generatedType));
@@ -28,7 +28,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
     public void GeneratedMixinTypeHasMixinTypeAttribute ()
     {
       MixinDefinition mixinDefinition =
-          TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
+          TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
       Assert.IsNotNull (mixinDefinition);
 
       Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
@@ -43,7 +43,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
     public void MixinTypeAttributeCanBeUsedToGetMixinDefinition ()
     {
       MixinDefinition mixinDefinition =
-          TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
+          TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
       Assert.IsNotNull (mixinDefinition);
 
       Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
@@ -70,7 +70,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
       ConcreteTypeBuilder.Current.MixinTypeNameProvider = nameProviderMock;
 
       MixinDefinition mixinDefinition =
-          TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
+          TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
       Assert.IsNotNull (mixinDefinition);
 
       Expect.Call (nameProviderMock.GetNewTypeName (mixinDefinition)).Return ("Bra");
@@ -92,7 +92,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
       ConcreteTypeBuilder.Current.MixinTypeNameProvider = nameProviderMock;
 
       MixinDefinition mixinDefinition =
-          TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
+          TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
       Assert.IsNotNull (mixinDefinition);
 
       Expect.Call (nameProviderMock.GetNewTypeName (mixinDefinition)).Return ("Bra+Oof");
@@ -112,7 +112,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithProtectedOverriderAndAttributes)).EnterScope())
       {
         MixinDefinition mixinDefinition =
-            TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinWithProtectedOverriderAndAttributes)];
+            TargetClassDefinitionUtility.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinWithProtectedOverriderAndAttributes)];
         Assert.IsNotNull (mixinDefinition);
         Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
         Assert.AreNotSame (typeof (MixinWithProtectedOverrider), generatedType);
@@ -134,7 +134,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithProtectedOverriderAndAttributes)).EnterScope())
       {
         MixinDefinition mixinDefinition =
-            TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinWithProtectedOverriderAndAttributes)];
+            TargetClassDefinitionUtility.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (MixinWithProtectedOverriderAndAttributes)];
         Assert.IsNotNull (mixinDefinition);
         Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
         Assert.AreNotSame (typeof (MixinWithProtectedOverrider), generatedType);

@@ -9,12 +9,12 @@ namespace Remotion.Data.DomainObjects.Mapping
   {
     public static List<Type> GetPersistentMixins (Type type)
     {
-      ClassContext mixinConfiguration = TypeFactory.GetContext (type, MixinConfiguration.ActiveConfiguration, GenerationPolicy.GenerateOnlyIfConfigured);
+      ClassContext mixinConfiguration = TargetClassDefinitionUtility.GetContext (type, MixinConfiguration.ActiveConfiguration, GenerationPolicy.GenerateOnlyIfConfigured);
       List<Type> persistentMixins = new List<Type> ();
       if (mixinConfiguration != null)
       {
         ClassContext parentClassContext =
-            TypeFactory.GetContext (type.BaseType, MixinConfiguration.ActiveConfiguration, GenerationPolicy.GenerateOnlyIfConfigured);
+            TargetClassDefinitionUtility.GetContext (type.BaseType, MixinConfiguration.ActiveConfiguration, GenerationPolicy.GenerateOnlyIfConfigured);
 
         foreach (MixinContext mixin in mixinConfiguration.Mixins)
         {

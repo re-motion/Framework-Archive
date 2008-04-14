@@ -13,11 +13,11 @@ namespace Remotion.Mixins.CodeGeneration.DynamicProxy
     {
       Type baseCallProxyType = MixinReflector.GetBaseCallProxyType (mixinTargetInstance);
       object baseCallProxyInstance = BaseCallProxyInitializer.InstantiateBaseCallProxy (baseCallProxyType, mixinTargetInstance, mixinDefinition.MixinIndex + 1);
-      InvokeMixinInitializationMethod (mixinDefinition, mixinInstance, mixinTargetInstance, baseCallProxyInstance, mode);
+      InvokeMixinInitializationMethod (mixinInstance, mixinTargetInstance, baseCallProxyInstance, mode);
     }
 
-    private static void InvokeMixinInitializationMethod (MixinDefinition mixinDefinition, object mixinInstance, IMixinTarget mixinTargetInstance,
-        object baseCallProxyInstance, MixinReflector.InitializationMode mode)
+    internal static void InvokeMixinInitializationMethod (object mixinInstance, object mixinTargetInstance, object baseCallProxyInstance, 
+        MixinReflector.InitializationMode mode)
     {
       MethodInfo initializationMethod = MixinReflector.GetInitializationMethod (mixinInstance.GetType (), mode);
       if (initializationMethod != null)
@@ -27,21 +27,18 @@ namespace Remotion.Mixins.CodeGeneration.DynamicProxy
         ParameterInfo[] methodArguments = initializationMethod.GetParameters ();
         object[] argumentValues = new object[methodArguments.Length];
         for (int i = 0; i < argumentValues.Length; ++i)
-          argumentValues[i] = GetMixinInitializationArgument (methodArguments[i], mixinTargetInstance, baseCallProxyInstance, mixinDefinition);
+          argumentValues[i] = GetMixinInitializationArgument (methodArguments[i], mixinTargetInstance, baseCallProxyInstance);
 
         initializationMethod.Invoke (mixinInstance, argumentValues);
       }
     }
 
-    private static object GetMixinInitializationArgument (ParameterInfo parameter, IMixinTarget mixinTargetInstance, object baseCallProxyInstance,
-        MixinDefinition mixinDefinition)
+    private static object GetMixinInitializationArgument (ParameterInfo parameter, object mixinTargetInstance, object baseCallProxyInstance)
     {
       if (parameter.IsDefined (typeof (ThisAttribute), false))
         return mixinTargetInstance;
       else if (parameter.IsDefined (typeof (BaseAttribute), false))
         return baseCallProxyInstance;
-      else if (parameter.IsDefined (typeof (ConfigurationAttribute), false))
-        return mixinDefinition;
       else
         throw new NotSupportedException ("Initialization methods can only contain this or base arguments.");
     }

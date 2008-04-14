@@ -18,6 +18,7 @@
       </sources>
       <references failonempty="true">
         <include name="${build.test.outputdir}/Remotion.dll" />
+        <include name="${build.test.outputdir}/Remotion.Interfaces.dll" />
         <include name="${build.test.outputdir}/Remotion.Development.dll" />
         <include name="${build.test.outputdir}/nunit.framework.dll" />
         <include name="${build.test.outputdir}/Rhino.Mocks.dll" />

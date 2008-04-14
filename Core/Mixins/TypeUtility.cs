@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Implementation;
-using Remotion.Mixins.CodeGeneration;
-using Remotion.Mixins.Context;
-using Remotion.Utilities;
+using Remotion.Mixins.BridgeInterfaces;
 
 namespace Remotion.Mixins
 {
@@ -21,8 +19,7 @@ namespace Remotion.Mixins
     /// </returns>
     public static bool IsGeneratedConcreteMixedType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      return typeof (IMixinTarget).IsAssignableFrom (type);
+      return VersionDependentImplementationBridge<ITypeUtilityImplementation>.Implementation.IsGeneratedConcreteMixedType (type);
     }
 
     /// <summary>
@@ -35,10 +32,7 @@ namespace Remotion.Mixins
     /// </returns>
     public static bool IsGeneratedByMixinEngine (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      return IsGeneratedConcreteMixedType (type)
-          || typeof (IGeneratedMixinType).IsAssignableFrom (type)
-          || typeof (IGeneratedBaseCallProxyType).IsAssignableFrom (type);
+      return VersionDependentImplementationBridge<ITypeUtilityImplementation>.Implementation.IsGeneratedByMixinEngine (type);
     }
 
     /// <summary>
@@ -49,11 +43,7 @@ namespace Remotion.Mixins
     /// otherwise, a generated type containing all the mixins currently configured for <paramref name="baseType"/>.</returns>
     public static Type GetConcreteMixedType (Type baseType)
     {
-      ArgumentUtility.CheckNotNull ("baseType", baseType);
-      if (IsGeneratedConcreteMixedType (baseType))
-        return baseType;
-      else
-        return TypeFactory.GetConcreteType (baseType, GenerationPolicy.GenerateOnlyIfConfigured);
+      return VersionDependentImplementationBridge<ITypeUtilityImplementation>.Implementation.GetConcreteMixedType (baseType);
     }
 
     /// <summary>
@@ -64,11 +54,7 @@ namespace Remotion.Mixins
     /// given <paramref name="type"/> was generated.</returns>
     public static Type GetUnderlyingTargetType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      if (IsGeneratedConcreteMixedType (type))
-        return GetMixinConfigurationFromConcreteType (type).Type;
-      else
-        return type;
+      return VersionDependentImplementationBridge<ITypeUtilityImplementation>.Implementation.GetUnderlyingTargetType (type);
     }
 
     /// <summary>
@@ -83,10 +69,7 @@ namespace Remotion.Mixins
     /// </returns>
     public static bool IsAssignableFrom (Type baseOrInterface, Type typeToAssign)
     {
-      ArgumentUtility.CheckNotNull ("baseOrInterface", baseOrInterface);
-      ArgumentUtility.CheckNotNull ("typeToAssign", typeToAssign);
-
-      return baseOrInterface.IsAssignableFrom (GetConcreteMixedType (typeToAssign));
+      return VersionDependentImplementationBridge<ITypeUtilityImplementation>.Implementation.IsAssignableFrom (baseOrInterface, typeToAssign);
     }
 
     /// <summary>
@@ -99,10 +82,7 @@ namespace Remotion.Mixins
     /// </returns>
     public static bool HasMixins (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-
-      ClassContext classContext = GetConcreteClassContext(type);
-      return classContext != null && classContext.Mixins.Count > 0;
+      return VersionDependentImplementationBridge<ITypeUtilityImplementation>.Implementation.HasMixins (type);
     }
 
     /// <summary>
@@ -118,11 +98,7 @@ namespace Remotion.Mixins
     /// check should be broadened to include these properties, <see cref="GetAscribableMixinType"/> should be used.</remarks>
     public static bool HasMixin (Type typeToCheck, Type mixinType)
     {
-      ArgumentUtility.CheckNotNull ("typeToCheck", typeToCheck);
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-
-      ClassContext classContext = GetConcreteClassContext (typeToCheck);
-      return classContext != null && classContext.Mixins.ContainsKey (mixinType);
+      return VersionDependentImplementationBridge<ITypeUtilityImplementation>.Implementation.HasMixin (typeToCheck, mixinType);
     }
 
     /// <summary>
@@ -137,15 +113,7 @@ namespace Remotion.Mixins
     /// </returns>
     public static Type GetAscribableMixinType (Type typeToCheck, Type mixinType)
     {
-      ArgumentUtility.CheckNotNull ("typeToCheck", typeToCheck);
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-
-      foreach (Type configuredMixinType in GetMixinTypes (typeToCheck))
-      {
-        if (ReflectionUtility.CanAscribe (configuredMixinType, mixinType))
-          return configuredMixinType;
-      }
-      return null;
+      return VersionDependentImplementationBridge<ITypeUtilityImplementation>.Implementation.GetAscribableMixinType (typeToCheck, mixinType);
     }
 
     /// <summary>
@@ -160,15 +128,7 @@ namespace Remotion.Mixins
     /// </returns>
     public static bool HasAscribableMixin (Type typeToCheck, Type mixinType)
     {
-      return GetAscribableMixinType (typeToCheck, mixinType) != null;
-    }
-
-    private static ClassContext GetConcreteClassContext (Type type)
-    {
-      if (IsGeneratedConcreteMixedType (type))
-        return GetMixinConfigurationFromConcreteType (type);
-      else
-        return MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance (type);
+      return VersionDependentImplementationBridge<ITypeUtilityImplementation>.Implementation.HasAscribableMixin (typeToCheck, mixinType);
     }
 
     /// <summary>
@@ -179,14 +139,7 @@ namespace Remotion.Mixins
     /// <paramref name="type"/>.</returns>
     public static IEnumerable<Type> GetMixinTypes (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-
-      ClassContext classContext = GetConcreteClassContext (type);
-      if (classContext != null)
-      {
-        foreach (MixinContext mixinContext in classContext.Mixins)
-          yield return mixinContext.MixinType;
-      }
+      return VersionDependentImplementationBridge<ITypeUtilityImplementation>.Implementation.GetMixinTypes (type);
     }
 
     /// <summary>
@@ -198,27 +151,7 @@ namespace Remotion.Mixins
     /// specified <paramref name="args"/>.</returns>
     public static object CreateInstance (Type type, params object[] args)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("args", args);
-
-      return Activator.CreateInstance (GetConcreteMixedType (type), args);
-    }
-
-    /// <summary>
-    /// Returns the <see cref="ClassContext"/> that was used as the mixin configuration when the given concrete mixed <paramref name="type"/>
-    /// was created by the <see cref="TypeFactory"/>.
-    /// </summary>
-    /// <param name="type">The type whose mixin configuration is to be retrieved.</param>
-    /// <returns>The <see cref="ClassContext"/> used when the given concrete mixed <paramref name="type"/> was created, or <see langword="null"/>
-    /// if <paramref name="type"/> is no mixed type.</returns>
-    public static ClassContext GetMixinConfigurationFromConcreteType (Type type)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ConcreteMixedTypeAttribute attribute = AttributeUtility.GetCustomAttribute<ConcreteMixedTypeAttribute> (type, true);
-      if (attribute == null)
-        return null;
-      else
-        return attribute.GetClassContext ();
+      return VersionDependentImplementationBridge<ITypeUtilityImplementation>.Implementation.CreateInstance (type, args);
     }
   }
 }

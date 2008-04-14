@@ -19,7 +19,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.BaseCallProxyCodeGeneration
         Type t = TypeFactory.GetConcreteType (typeof (BaseType3));
         Type proxyType = t.GetNestedType ("BaseCallProxy");
 
-        foreach (RequiredBaseCallTypeDefinition req in TypeFactory.GetActiveConfiguration (typeof (BaseType3)).RequiredBaseCallTypes)
+        foreach (RequiredBaseCallTypeDefinition req in TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType3)).RequiredBaseCallTypes)
           Assert.IsTrue (req.Type.IsAssignableFrom (proxyType));
       }
     }
@@ -33,11 +33,11 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.BaseCallProxyCodeGeneration
         Type proxyType = t.GetNestedType ("BaseCallProxy");
 
         RequiredBaseCallTypeDefinition bt3Mixin4Req =
-            TypeFactory.GetActiveConfiguration (typeof (BaseType3)).RequiredBaseCallTypes[typeof (IBT3Mixin4)];
+            TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType3)).RequiredBaseCallTypes[typeof (IBT3Mixin4)];
         Assert.IsNotNull (bt3Mixin4Req);
         Assert.IsTrue (bt3Mixin4Req.Type.IsAssignableFrom (proxyType));
 
-        foreach (RequiredBaseCallTypeDefinition req in TypeFactory.GetActiveConfiguration (typeof (BaseType3)).RequiredBaseCallTypes)
+        foreach (RequiredBaseCallTypeDefinition req in TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType3)).RequiredBaseCallTypes)
           Assert.IsTrue (req.Type.IsAssignableFrom (proxyType));
 
         MethodInfo methodImplementdByMixin =

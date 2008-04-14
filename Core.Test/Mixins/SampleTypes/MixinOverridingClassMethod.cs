@@ -14,7 +14,6 @@ namespace Remotion.UnitTests.Mixins.SampleTypes
 
     public new object This { get { return base.This; } }
     public new object Base { get { return base.Base; } }
-    public new MixinDefinition Configuration { get { return base.Configuration; } }
 
     [OverrideTarget]
     public string OverridableMethod (int i)

@@ -1,6 +1,4 @@
 using System;
-using Remotion.Mixins.Context;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {
@@ -9,8 +7,7 @@ namespace Remotion.Mixins
   /// </summary>
   /// <remarks>
   /// <para>
-  /// This attribute is effective for the declarative mixin configuration built via <see cref="DeclarativeConfigurationBuilder.BuildDefaultConfiguration"/>,
-  /// which is in effect by default when an application is started.
+  /// This attribute is effective for the declarative mixin configuration, which is in effect by default when an application is started.
   /// </para>
   /// <para> 
   /// The <see cref="MixAttribute"/> is an alternative to <see cref="UsesAttribute"/> and <see cref="ExtendsAttribute"/> allowing assembly-level mixin
@@ -31,8 +28,11 @@ namespace Remotion.Mixins
     /// <param name="mixinType">The mixin type to be mixed with the target type.</param>
     public MixAttribute (Type targetType, Type mixinType)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      if (targetType == null)
+        throw new ArgumentNullException ("targetType");
+      if (mixinType == null)
+        throw new ArgumentNullException ("mixinType");
+
       _targetType = targetType;
       _mixinType = mixinType;
     }

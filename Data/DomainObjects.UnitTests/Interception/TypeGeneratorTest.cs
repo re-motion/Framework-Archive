@@ -55,6 +55,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Interception
 
       Module mixinAssemblyModule = typeof (Mixin).Assembly.ManifestModule;
       File.Copy (mixinAssemblyModule.FullyQualifiedName, Path.Combine (directory, mixinAssemblyModule.Name));
+
+      Module coreAssemblyModule = typeof (ArgumentUtility).Assembly.ManifestModule;
+      File.Copy (coreAssemblyModule.FullyQualifiedName, Path.Combine (directory, coreAssemblyModule.Name));
     }
 
     public override void TearDown ()

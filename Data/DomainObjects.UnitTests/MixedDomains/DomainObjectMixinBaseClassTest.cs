@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     {
       using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClassWithAllDataTypes)).Clear().AddMixins (typeof (MixinWithAccessToDomainObjectProperties<Official>)).EnterScope())
       {
-        TypeFactory.GetActiveConfiguration (typeof (ClassWithAllDataTypes));
+        TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassWithAllDataTypes));
       }
     }
 

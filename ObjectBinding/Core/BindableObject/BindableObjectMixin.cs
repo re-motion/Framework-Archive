@@ -1,4 +1,5 @@
 using System;
+using Remotion.Mixins.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject
 {
@@ -12,7 +13,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
     protected override BindableObjectClass InitializeBindableObjectClass()
     {
-      return BindableObjectProvider.Current.GetBindableObjectClass (Configuration.TargetClass.Type);
+      Type targetType = MixinReflector.GetMixinConfiguration (this, This).TargetClass.Type;
+      return BindableObjectProvider.Current.GetBindableObjectClass (targetType);
     }
   }
 }

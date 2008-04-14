@@ -75,11 +75,11 @@ namespace Remotion.UnitTests.Mixins.ValidationTests
         visitedDefinitions.Add (result.Definition, result.Definition);
       }
 
-      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      TargetClassDefinition bt1 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1));
       Assert.IsTrue (visitedDefinitions.ContainsKey (bt1));
-      TargetClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
+      TargetClassDefinition bt3 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType3));
       Assert.IsTrue (visitedDefinitions.ContainsKey (bt3));
-      TargetClassDefinition btWithAdditionalDependencies = TypeFactory.GetActiveConfiguration (typeof (TargetClassWithAdditionalDependencies));
+      TargetClassDefinition btWithAdditionalDependencies = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (TargetClassWithAdditionalDependencies));
       Assert.IsTrue (visitedDefinitions.ContainsKey (btWithAdditionalDependencies));
 
       MixinDefinition bt1m1 = bt1.Mixins[typeof (BT1Mixin1)];
@@ -202,10 +202,10 @@ namespace Remotion.UnitTests.Mixins.ValidationTests
       IValidationLog sourceLog = new DefaultValidationLog ();
       Exception exception = new Exception ();
 
-      TargetClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1), GenerationPolicy.ForceGeneration);
-      TargetClassDefinition bt2 = TypeFactory.GetActiveConfiguration (typeof (BaseType2), GenerationPolicy.ForceGeneration);
-      TargetClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3), GenerationPolicy.ForceGeneration);
-      TargetClassDefinition bt4 = TypeFactory.GetActiveConfiguration (typeof (BaseType4), GenerationPolicy.ForceGeneration);
+      TargetClassDefinition bt1 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1), GenerationPolicy.ForceGeneration);
+      TargetClassDefinition bt2 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType2), GenerationPolicy.ForceGeneration);
+      TargetClassDefinition bt3 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType3), GenerationPolicy.ForceGeneration);
+      TargetClassDefinition bt4 = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType4), GenerationPolicy.ForceGeneration);
 
       sourceLog.ValidationStartsFor (bt1);
       sourceLog.Succeed (new DelegateValidationRule<TargetClassDefinition> (delegate { }, "Success", "Success"));

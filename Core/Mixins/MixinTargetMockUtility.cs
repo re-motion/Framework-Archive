@@ -1,6 +1,8 @@
 using System;
 using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Utilities;
 using Remotion.Utilities;
 using Remotion.Mixins.Context;
 
@@ -20,22 +22,19 @@ namespace Remotion.Mixins
     /// <param name="mixin">The mixin whose target is to be mocked.</param>
     /// <param name="thisMock">The mock object to use for the mixin's <see cref="Mixin{TThis}.This"/> property.</param>
     /// <param name="baseMock">The mock object to use for the mixin's <see cref="Mixin{TThis,TBase}.Base"/> property.</param>
-    /// <param name="configuration">The configuration to be used for the mixin's <see cref="Mixin{TThis}.Configuration"/> property. Can be 
-    /// <see langword="null"/>.</param>
     /// <remarks>
     /// Use this method if you already have a mixin instance. To mock the target of an abstract mixin which can't be instantiated in isolation,
     /// use the <see cref="CreateMixinWithMockedTarget{TMixin,TThis,TBase}"/> method.
     /// </remarks>
-    public static void MockMixinTarget<TThis, TBase> (Mixin<TThis, TBase> mixin, TThis thisMock, TBase baseMock, MixinDefinition configuration)
+    public static void MockMixinTarget<TThis, TBase> (Mixin<TThis, TBase> mixin, TThis thisMock, TBase baseMock)
         where TThis : class
         where TBase: class
     {
       ArgumentUtility.CheckNotNull ("mixin", mixin);
       ArgumentUtility.CheckNotNull ("thisMock", thisMock);
       ArgumentUtility.CheckNotNull ("baseMock", baseMock);
-      ArgumentUtility.CheckNotNull ("configuration", configuration);
-      
-      mixin.Initialize (thisMock, baseMock, configuration);
+
+      MixinInstanceInitializer.InvokeMixinInitializationMethod (mixin, thisMock, baseMock, MixinReflector.InitializationMode.Construction);
     }
 
     /// <summary>
@@ -44,20 +43,17 @@ namespace Remotion.Mixins
     /// <typeparam name="TThis">The type of the mixin's TThis parameter.</typeparam>
     /// <param name="mixin">The mixin whose target is to be mocked.</param>
     /// <param name="thisMock">The mock object to use for the mixin's <see cref="Mixin{TThis}.This"/> property.</param>
-    /// <param name="configuration">The configuration to be used for the mixin's <see cref="Mixin{TThis}.Configuration"/> property. Can be 
-    /// <see langword="null"/>.</param>
     /// <remarks>
     /// Use this method if you already have a mixin instance. To mock the target of an abstract mixin which can't be instantiated in isolation,
     /// use the <see cref="CreateMixinWithMockedTarget{TMixin,TThis}"/> method.
     /// </remarks>
-    public static void MockMixinTarget<TThis> (Mixin<TThis> mixin, TThis thisMock, MixinDefinition configuration)
+    public static void MockMixinTarget<TThis> (Mixin<TThis> mixin, TThis thisMock)
         where TThis : class
     {
       ArgumentUtility.CheckNotNull ("mixin", mixin);
       ArgumentUtility.CheckNotNull ("thisMock", thisMock);
-      ArgumentUtility.CheckNotNull ("configuration", configuration);
 
-      mixin.Initialize (thisMock, configuration);
+      MixinInstanceInitializer.InvokeMixinInitializationMethod (mixin, thisMock, null, MixinReflector.InitializationMode.Construction);
     }
 
     /// <summary>
@@ -75,9 +71,6 @@ namespace Remotion.Mixins
     /// <para>
     /// This method is useful if a mixin's method should be overridden by the <paramref name="thisMock"/>, especially if the mixin type
     /// is abstract. If you already have a mixin instance to be mocked, use the <see cref="MockMixinTarget{TThis,TBase}"/> method instead.
-    /// </para>
-    /// <para>
-    /// The <see cref="Mixin{TThis}.Configuration"/> property is automatically set and cannot be mocked by this method.
     /// </para>
     /// <para>
     /// For use with Rhino Mocks, be sure to configure the current <see cref="ConcreteTypeBuilder"/>'s <see cref="IModuleManager"/> to
@@ -98,7 +91,7 @@ namespace Remotion.Mixins
 
       MixinDefinition mixinDefinition = GetMixinDefinitionForThisMock<TThis, TMixin> (thisMock);
       TMixin mixin = CreateMixinForMocking<TMixin> (mixinDefinition, args);
-      MockMixinTarget (mixin, thisMock, baseMock, mixinDefinition);
+      MockMixinTarget (mixin, thisMock, baseMock);
       return mixin;
     }
 
@@ -117,9 +110,6 @@ namespace Remotion.Mixins
     /// is abstract. If you already have a mixin instance to be mocked, use the <see cref="MockMixinTarget{TThis}"/> method instead.
     /// </para>
     /// <para>
-    /// The <see cref="Mixin{TThis}.Configuration"/> property is automatically set and cannot be mocked by this method.
-    /// </para>
-    /// <para>
     /// For use with Rhino Mocks, be sure to configure the current <see cref="ConcreteTypeBuilder"/>'s <see cref="IModuleManager"/> to
     /// generate transient modules instead of persistent ones (which is the default). The following example code shows how to do this:
     /// <code>
@@ -136,7 +126,7 @@ namespace Remotion.Mixins
 
       MixinDefinition mixinDefinition = GetMixinDefinitionForThisMock<TThis, TMixin> (thisMock);
       TMixin mixin = CreateMixinForMocking<TMixin> (mixinDefinition, args);
-      MockMixinTarget (mixin, thisMock, mixinDefinition);
+      MockMixinTarget (mixin, thisMock);
       return mixin;
     }
 

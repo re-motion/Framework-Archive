@@ -84,6 +84,10 @@
     <Reference Include="System.Xml">
       <Name>system.xml</Name>
     </Reference>
+    <ProjectReference Include="..\..\Core.Interfaces\Core.Interfaces.csproj">
+      <Project>{BD061F4A-A9E6-461E-A804-7999623A0060}</Project>
+      <Name>Core.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Name>Core %28Core\Core%29</Name>
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>

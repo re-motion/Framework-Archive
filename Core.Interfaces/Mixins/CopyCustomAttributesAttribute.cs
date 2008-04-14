@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using Remotion.Utilities;
 using System.Collections;
 
 namespace Remotion.Mixins
@@ -32,8 +30,10 @@ namespace Remotion.Mixins
 
     public CopyCustomAttributesAttribute (Type attributeSourceType, params Type[] copiedAttributeTypes)
     {
-      ArgumentUtility.CheckNotNull ("attributeSource", attributeSourceType);
-      ArgumentUtility.CheckNotNull ("copiedAttributeTypes", copiedAttributeTypes);
+      if (attributeSourceType == null)
+        throw new ArgumentNullException ("attributeSourceType");
+      if (copiedAttributeTypes == null)
+        throw new ArgumentNullException ("copiedAttributeTypes");
 
       _attributeSourceType = attributeSourceType;
       _attributeSourceMemberName = null;
@@ -42,9 +42,12 @@ namespace Remotion.Mixins
 
     public CopyCustomAttributesAttribute (Type attributeSourceType, string attributeSourceMemberName, params Type[] copiedAttributeTypes)
     {
-      ArgumentUtility.CheckNotNull ("attributeSource", attributeSourceType);
-      ArgumentUtility.CheckNotNullOrEmpty ("attributeSourceMemberName", attributeSourceMemberName);
-      ArgumentUtility.CheckNotNull ("copiedAttributeTypes", copiedAttributeTypes);
+      if (attributeSourceType == null)
+        throw new ArgumentNullException ("attributeSourceType");
+      if (attributeSourceMemberName == null)
+        throw new ArgumentNullException ("attributeSourceMemberName");
+      if (copiedAttributeTypes == null)
+        throw new ArgumentNullException ("copiedAttributeTypes");
 
       _attributeSourceType = attributeSourceType;
       _attributeSourceMemberName = attributeSourceMemberName;
@@ -77,8 +80,6 @@ namespace Remotion.Mixins
 
     public MemberInfo GetAttributeSource (MemberTypes memberType)
     {
-      ArgumentUtility.CheckNotNull ("memberType", memberType);
-
       if (AttributeSourceMemberName == null)
         return AttributeSourceType;
       else
@@ -103,7 +104,8 @@ namespace Remotion.Mixins
 
     public bool IsCopiedAttributeType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      if (type == null)
+        throw new ArgumentNullException ("type");
       return CopiedAttributeTypes.Length == 0 || ((IList) CopiedAttributeTypes).Contains (type);
     }
   }

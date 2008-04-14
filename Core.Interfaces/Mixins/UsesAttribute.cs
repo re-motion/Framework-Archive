@@ -1,6 +1,4 @@
 using System;
-using Remotion.Mixins.Context;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {
@@ -9,8 +7,7 @@ namespace Remotion.Mixins
   /// </summary>
   /// <remarks>
   /// <para>
-  /// This attribute is effective for the declarative mixin configuration built via <see cref="DeclarativeConfigurationBuilder.BuildDefaultConfiguration"/>,
-  /// which is in effect by default when an application is started.
+  /// This attribute is effective for the declarative mixin configuration, which is in effect by default when an application is started.
   /// </para>
   /// <para> 
   /// Although the attribute itself is not inherited, its semantics in mixin configuration are: If a base class is configured to be mixed with a
@@ -34,7 +31,8 @@ namespace Remotion.Mixins
     /// <param name="mixinType">The mixin type the class depends on.</param>
     public UsesAttribute (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      if (mixinType == null)
+        throw new ArgumentNullException ("mixinType");
       _mixinType = mixinType;
     }
 

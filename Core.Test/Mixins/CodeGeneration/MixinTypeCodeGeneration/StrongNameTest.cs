@@ -36,7 +36,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
     {
       using (MixinConfiguration.BuildFromActive().ForClass<ArrayList> ().Clear().AddMixins (typeof (EquatableMixin<>)).EnterScope())
       {
-        MixinDefinition mixinDefinition = TypeFactory.GetActiveConfiguration (typeof (ArrayList)).GetMixinByConfiguredType (typeof (EquatableMixin<>));
+        MixinDefinition mixinDefinition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ArrayList)).GetMixinByConfiguredType (typeof (EquatableMixin<>));
         Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
         Assert.IsTrue (ReflectionUtility.IsAssemblySigned (generatedType.Assembly));
       }
@@ -47,7 +47,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
     {
       using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (UnsignedMixin)).EnterScope())
       {
-        MixinDefinition mixinDefinition = TypeFactory.GetActiveConfiguration (typeof (BaseType1)).GetMixinByConfiguredType (typeof (UnsignedMixin));
+        MixinDefinition mixinDefinition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1)).GetMixinByConfiguredType (typeof (UnsignedMixin));
         Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
         Assert.IsFalse (ReflectionUtility.IsAssemblySigned (generatedType.Assembly));
       }
@@ -59,7 +59,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
       using (MixinConfiguration.BuildFromActive().ForClass<UnsignedClass> ().Clear().AddMixins (typeof (EquatableMixin<>)).EnterScope())
       {
         MixinDefinition mixinDefinition =
-            TypeFactory.GetActiveConfiguration (typeof (UnsignedClass)).GetMixinByConfiguredType (typeof (EquatableMixin<>));
+            TargetClassDefinitionUtility.GetActiveConfiguration (typeof (UnsignedClass)).GetMixinByConfiguredType (typeof (EquatableMixin<>));
         Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
         Assert.IsFalse (ReflectionUtility.IsAssemblySigned (generatedType.Assembly));
 
@@ -72,7 +72,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.MixinTypeCodeGeneration
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (UnsignedMixin)).EnterScope())
       {
-        MixinDefinition mixinDefinition = TypeFactory.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (UnsignedMixin)];
+        MixinDefinition mixinDefinition = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (NullTarget)).Mixins[typeof (UnsignedMixin)];
         Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
         Assert.IsFalse (ReflectionUtility.IsAssemblySigned (generatedType.Assembly));
 

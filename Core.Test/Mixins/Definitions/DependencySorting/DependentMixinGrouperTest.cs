@@ -65,7 +65,7 @@ namespace Remotion.UnitTests.Mixins.Definitions.DependencySorting
 
     private MixinDefinition GetMixin (Type mixinType)
     {
-      return TypeFactory.GetActiveConfiguration (typeof (TargetClass)).Mixins[mixinType];
+      return TargetClassDefinitionUtility.GetActiveConfiguration (typeof (TargetClass)).Mixins[mixinType];
     }
 
     [Test]

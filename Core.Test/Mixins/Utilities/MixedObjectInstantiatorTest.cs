@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Mixins;
-using Remotion.Mixins.Utilities;
+using Remotion.Mixins.BridgeImplementations;
 using NUnit.Framework.SyntaxHelpers;
 using Remotion.UnitTests.Mixins.SampleTypes;
 

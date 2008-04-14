@@ -36,16 +36,13 @@ namespace Remotion.UnitTests.Mixins
 
       IBaseType31 thisMock = repository.CreateMock<IBaseType31>();
       IBaseType31 baseMock = repository.CreateMock<IBaseType31>();
-      TargetClassDefinition targetClassConfiguration = new TargetClassDefinition (new ClassContext (typeof (BaseType3)));
-      MixinDefinition mixinConfiguration = new MixinDefinition (typeof (BT3Mixin1), targetClassConfiguration, false);
 
       BT3Mixin1 mixin = new BT3Mixin1();
 
-      MixinTargetMockUtility.MockMixinTarget (mixin, thisMock, baseMock, mixinConfiguration);
+      MixinTargetMockUtility.MockMixinTarget (mixin, thisMock, baseMock);
 
       Assert.AreSame (thisMock, mixin.This);
       Assert.AreSame (baseMock, mixin.Base);
-      Assert.AreSame (mixinConfiguration, mixin.Configuration);
     }
 
     [Test]
@@ -54,15 +51,10 @@ namespace Remotion.UnitTests.Mixins
       MockRepository repository = new MockRepository ();
 
       IBaseType32 thisMock = repository.CreateMock<IBaseType32> ();
-      TargetClassDefinition targetClassConfiguration = new TargetClassDefinition (new ClassContext (typeof (BaseType3)));
-      MixinDefinition mixinConfiguration = new MixinDefinition (typeof (BT3Mixin1), targetClassConfiguration, false);
-
       BT3Mixin2 mixin = new BT3Mixin2 ();
 
-      MixinTargetMockUtility.MockMixinTarget (mixin, thisMock, mixinConfiguration);
-
+      MixinTargetMockUtility.MockMixinTarget (mixin, thisMock);
       Assert.AreSame (thisMock, mixin.This);
-      Assert.AreSame (mixinConfiguration, mixin.Configuration);
     }
 
     [Test]
@@ -79,14 +71,6 @@ namespace Remotion.UnitTests.Mixins
     {
       BT3Mixin1 mixin = new BT3Mixin1 ();
       Dev.Null = mixin.Base;
-    }
-
-    [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Mixin has not been initialized yet.")]
-    public void UninitializedMixinConfiguration ()
-    {
-      BT3Mixin1 mixin = new BT3Mixin1 ();
-      Dev.Null = mixin.Configuration;
     }
 
     [Test]

@@ -57,7 +57,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.Serialization
       BaseType1 bt1 = ObjectFactory.Create<BaseType1> ().With ();
 
       Assert.IsNotNull (bt1.GetType ().GetField ("__configuration"));
-      Assert.AreSame (TypeFactory.GetActiveConfiguration (typeof (BaseType1)), bt1.GetType ().GetField ("__configuration").GetValue (bt1));
+      Assert.AreSame (TargetClassDefinitionUtility.GetActiveConfiguration (typeof (BaseType1)), bt1.GetType ().GetField ("__configuration").GetValue (bt1));
     }
 
     [Test]
@@ -108,9 +108,6 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.Serialization
         Assert.IsNotNull (Mixin.Get<MixinOverridingClassMethod> (deserialiedInstance).Base);
         Assert.AreEqual ("OverridableBaseType.OverridableMethod(84)",
             ((MixinOverridingClassMethod.IRequirements) Mixin.Get<MixinOverridingClassMethod> (deserialiedInstance).Base).OverridableMethod(84));
-
-        Assert.AreSame (TypeFactory.GetActiveConfiguration (typeof (OverridableBaseType)).Mixins[typeof (MixinOverridingClassMethod)],
-            Mixin.Get<MixinOverridingClassMethod> (deserialiedInstance).Configuration);
       }
     }
 
@@ -233,7 +230,6 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.Serialization
         OnInitializedCalled = true;
         Assert.IsNotNull (This);
         Assert.IsNotNull (Base);
-        Assert.IsNotNull (Configuration);
         base.OnInitialized ();
       }
 
@@ -242,7 +238,6 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.Serialization
         OnDeserializedCalled = true;
         Assert.IsNotNull (This);
         Assert.IsNotNull (Base);
-        Assert.IsNotNull (Configuration);
         base.OnDeserialized ();
       }
     }

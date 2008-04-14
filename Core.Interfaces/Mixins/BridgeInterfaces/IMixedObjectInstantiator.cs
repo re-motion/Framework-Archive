@@ -2,9 +2,9 @@ using System;
 using Remotion.Implementation;
 using Remotion.Reflection;
 
-namespace Remotion.Mixins.Utilities
+namespace Remotion.Mixins.BridgeInterfaces
 {
-  [ConcreteImplementation("Remotion.Mixins.Utilities.MixedObjectInstantiator, Remotion, Version = <version>")]
+  [ConcreteImplementation("Remotion.Mixins.BridgeImplementations.MixedObjectInstantiator, Remotion, Version = <version>")]
   public interface IMixedObjectInstantiator
   {
     FuncInvokerWrapper<T> CreateConstructorInvoker<T> (Type baseTypeOrInterface, GenerationPolicy generationPolicy, bool allowNonPublic,

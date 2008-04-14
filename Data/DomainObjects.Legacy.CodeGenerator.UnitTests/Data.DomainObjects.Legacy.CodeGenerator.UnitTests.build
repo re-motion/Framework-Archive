@@ -21,6 +21,7 @@
       </sources>
       <references failonempty="true">
         <include asis="true" name="${build.test.outputdir}/Remotion.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Remotion.Interfaces.dll"/>
         <include asis="true" name="${build.test.outputdir}/Remotion.Data.DomainObjects.dll"/>
         <include asis="true" name="${build.test.outputdir}/Remotion.Data.DomainObjects.Legacy.dll"/>
         <include asis="true" name="${build.test.outputdir}/Remotion.Data.DomainObjects.Legacy.CodeGenerator.dll"/>

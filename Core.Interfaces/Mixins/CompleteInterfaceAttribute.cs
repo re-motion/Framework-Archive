@@ -1,5 +1,4 @@
 using System;
-using Remotion.Mixins.Context;
 
 namespace Remotion.Mixins
 {
@@ -20,9 +19,8 @@ namespace Remotion.Mixins
   /// inherited, i.e. an interface inheriting from a complete interface does not automatically constitute a complete interface as well.
   /// </para>
   /// <para>
-  /// When the default mixin configuration is built (see <see cref="DeclarativeConfigurationBuilder.BuildDefaultConfiguration"/>), all complete interfaces
-  /// are automatically registered with <see cref="MixinConfiguration.ActiveConfiguration"/> (see
-  /// <see cref="MixinConfiguration.RegisterInterface(Type,Type)"/>). This means that in the default mixin configuration,
+  /// When the default mixin configuration is built via analysis of the declarative attributes, all complete interfaces
+  /// are automatically registered with the active mixin configuration. This means that in the default mixin configuration,
   /// <see cref="ObjectFactory.Create{T}(object[])"/> will be able to create instances from these
   /// interfaces.
   /// </para>
@@ -64,6 +62,9 @@ namespace Remotion.Mixins
     /// <param name="targetType">Target type for which this interface constitutes a complete interface.</param>
     public CompleteInterfaceAttribute (Type targetType)
     {
+      if (targetType == null)
+        throw new ArgumentNullException ("targetType");
+
       _targetType = targetType;
     }
 

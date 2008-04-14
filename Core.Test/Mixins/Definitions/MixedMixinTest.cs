@@ -40,7 +40,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
 
       Assert.AreEqual (c1, c2);
 
-      TargetClassDefinition targetClass = TypeFactory.GetActiveConfiguration (typeof (TargetClass));
+      TargetClassDefinition targetClass = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (TargetClass));
       Assert.AreEqual (typeof (TargetClass), targetClass.Type);
       Assert.AreEqual (1, targetClass.Mixins.Count);
       Assert.AreEqual (typeof (One), targetClass.Mixins[0].Type);
@@ -49,7 +49,7 @@ namespace Remotion.UnitTests.Mixins.Definitions
     [Test]
     public void MixinOnMixinYieldsTargetClassDefinitionForMixin ()
     {
-      TargetClassDefinition targetClassForMixin = TypeFactory.GetActiveConfiguration (typeof (One));
+      TargetClassDefinition targetClassForMixin = TargetClassDefinitionUtility.GetActiveConfiguration (typeof (One));
       Assert.AreEqual (typeof (One), targetClassForMixin.Type);
       Assert.AreEqual (1, targetClassForMixin.Mixins.Count);
       Assert.AreEqual (typeof (Two), targetClassForMixin.Mixins[0].Type);

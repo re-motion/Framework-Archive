@@ -17,11 +17,6 @@ namespace Remotion.UnitTests.Mixins.SampleTypes
     {
       get { return base.Base; }
     }
-
-    public new MixinDefinition Configuration
-    {
-      get { return base.Configuration; }
-    }
   }
 
   [Serializable]
@@ -35,11 +30,6 @@ namespace Remotion.UnitTests.Mixins.SampleTypes
     public new IBaseType31 Base
     {
       get { return base.Base; }
-    }
-
-    public new MixinDefinition Configuration
-    {
-      get { return base.Configuration; }
     }
   }
 }

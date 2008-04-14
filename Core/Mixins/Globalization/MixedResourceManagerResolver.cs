@@ -22,14 +22,14 @@ namespace Remotion.Mixins.Globalization
     {
       return Tuple.NewTuple (
           base.GetResourceManagerSetCacheKey (definingType, includeHierarchy),
-          TypeFactory.GetContext (definingType, MixinConfiguration.ActiveConfiguration, GenerationPolicy.GenerateOnlyIfConfigured));
+          TargetClassDefinitionUtility.GetContext (definingType, MixinConfiguration.ActiveConfiguration, GenerationPolicy.GenerateOnlyIfConfigured));
     }
 
     protected override TAttribute[] FindFirstResourceDefinitionsInBaseTypes (Type concreteType, out Type definingType)
     {
       ArgumentUtility.CheckNotNull ("concreteType", concreteType);
 
-      TargetClassDefinition mixinConfiguration = TypeFactory.GetActiveConfiguration (concreteType);
+      TargetClassDefinition mixinConfiguration = TargetClassDefinitionUtility.GetActiveConfiguration (concreteType);
       if (mixinConfiguration != null)
       {
         foreach (MixinDefinition mixinDefinition in mixinConfiguration.Mixins)
@@ -48,7 +48,7 @@ namespace Remotion.Mixins.Globalization
       ArgumentUtility.CheckNotNull ("resourceManagers", resourceManagers);
       ArgumentUtility.CheckNotNull ("definingType", definingType);
 
-      TargetClassDefinition mixinConfiguration = TypeFactory.GetActiveConfiguration (definingType);
+      TargetClassDefinition mixinConfiguration = TargetClassDefinitionUtility.GetActiveConfiguration (definingType);
       if (mixinConfiguration != null)
       {
         foreach (MixinDefinition mixinDefinition in mixinConfiguration.Mixins)

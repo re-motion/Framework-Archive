@@ -12,11 +12,6 @@ namespace Remotion.UnitTests.Mixins.SampleTypes
     {
       get { return base.This; }
     }
-
-    public new MixinDefinition Configuration
-    {
-      get { return base.Configuration; }
-    }
   }
 
   [Serializable]

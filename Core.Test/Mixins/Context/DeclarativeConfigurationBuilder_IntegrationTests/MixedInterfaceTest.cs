@@ -34,7 +34,7 @@ namespace Remotion.UnitTests.Mixins.Context.DeclarativeConfigurationBuilder_Inte
     [Test]
     public void Definition_ForImplementingClass ()
     {
-      Assert.IsTrue (TypeFactory.GetActiveConfiguration (typeof (ClassWithMixedInterface)).Mixins.ContainsKey (typeof (NullMixin)));
+      Assert.IsTrue (TargetClassDefinitionUtility.GetActiveConfiguration (typeof (ClassWithMixedInterface)).Mixins.ContainsKey (typeof (NullMixin)));
     }
   }
 }
