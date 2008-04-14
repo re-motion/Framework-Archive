@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Remotion.CodeGeneration;
-using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Reflection.CodeGeneration;
+using Remotion.Reflection.CodeGeneration.DPExtensions;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Utilities;
 using Remotion.Utilities;
@@ -178,7 +178,7 @@ namespace Remotion.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementGetObjectData ()
     {
-      Remotion.CodeGeneration.SerializationImplementer.ImplementGetObjectDataByDelegation (Emitter, delegate (CustomMethodEmitter newMethod, bool baseIsISerializable)
+      Remotion.Reflection.CodeGeneration.SerializationImplementer.ImplementGetObjectDataByDelegation (Emitter, delegate (CustomMethodEmitter newMethod, bool baseIsISerializable)
           {
             return new MethodInvocationExpression (
                 null,

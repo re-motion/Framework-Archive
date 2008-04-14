@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Castle.DynamicProxy;
 using Remotion.Utilities;
-using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Reflection.CodeGeneration.DPExtensions;
 using System.IO;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.Interception

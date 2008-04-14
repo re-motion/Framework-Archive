@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Remotion.CodeGeneration;
+using Remotion.Reflection.CodeGeneration;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Mixins;

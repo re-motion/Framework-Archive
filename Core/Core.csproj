@@ -95,32 +95,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallContextSingleton.cs" />
-    <Compile Include="CodeGeneration\CustomClassEmitter.cs" />
-    <Compile Include="CodeGeneration\CustomEventEmitter.cs" />
-    <Compile Include="CodeGeneration\CustomMethodEmitter.cs" />
-    <Compile Include="CodeGeneration\CustomPropertyEmitter.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\AssemblySaver.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\AttributeReplicator.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\ClassEmitterSupportingOpenGenericBaseType.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\ConditionExpression.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\AutomaticMethodInvocationExpression.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\CustomAttributeExpression.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\ExpressionReference.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\FieldInfoReference.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\IfStatement.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\ILStatement.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\InitObjectExpression.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\LoadCalculatedArrayElementExpression.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\PopStatement.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\PropertyReference.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\SameConditionExpression.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\TryFinallyStatement.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\TypedMethodInvocationExpression.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\TypeReferenceWrapper.cs" />
-    <Compile Include="CodeGeneration\DPExtensions\VirtualMethodInvocationExpression.cs" />
-    <Compile Include="CodeGeneration\IAttributableEmitter.cs" />
-    <Compile Include="CodeGeneration\SerializationEventRaiser.cs" />
-    <Compile Include="CodeGeneration\SerializationImplementer.cs" />
+    <Compile Include="Reflection\CodeGeneration\CustomClassEmitter.cs" />
+    <Compile Include="Reflection\CodeGeneration\CustomEventEmitter.cs" />
+    <Compile Include="Reflection\CodeGeneration\CustomMethodEmitter.cs" />
+    <Compile Include="Reflection\CodeGeneration\CustomPropertyEmitter.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\AssemblySaver.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\AttributeReplicator.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\ClassEmitterSupportingOpenGenericBaseType.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\ConditionExpression.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\AutomaticMethodInvocationExpression.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\CustomAttributeExpression.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\ExpressionReference.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\FieldInfoReference.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\IfStatement.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\ILStatement.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\InitObjectExpression.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\LoadCalculatedArrayElementExpression.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\PopStatement.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\PropertyReference.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\SameConditionExpression.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\TryFinallyStatement.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\TypedMethodInvocationExpression.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\TypeReferenceWrapper.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\VirtualMethodInvocationExpression.cs" />
+    <Compile Include="Reflection\CodeGeneration\IAttributableEmitter.cs" />
+    <Compile Include="Reflection\CodeGeneration\SerializationEventRaiser.cs" />
+    <Compile Include="Reflection\CodeGeneration\SerializationImplementer.cs" />
     <Compile Include="Collections\AutoInitDictionary.cs" />
     <Compile Include="Collections\MultiDictionary.cs" />
     <Compile Include="Collections\InterlockedCache.cs" />
@@ -658,9 +658,6 @@
       <Project>{BD061F4A-A9E6-461E-A804-7999623A0060}</Project>
       <Name>Core.Interfaces</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

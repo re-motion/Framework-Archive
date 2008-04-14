@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Remotion.CodeGeneration;
-using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Reflection.CodeGeneration;
+using Remotion.Reflection.CodeGeneration.DPExtensions;
 using Remotion.Mixins.Definitions;
 using Remotion.Utilities;
 

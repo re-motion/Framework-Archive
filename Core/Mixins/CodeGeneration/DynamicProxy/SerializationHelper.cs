@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.Utilities;
-using Remotion.CodeGeneration;
+using Remotion.Reflection.CodeGeneration;
 
 namespace Remotion.Mixins.CodeGeneration.DynamicProxy
 {

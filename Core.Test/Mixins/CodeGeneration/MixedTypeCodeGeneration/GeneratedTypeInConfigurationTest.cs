@@ -1,6 +1,6 @@
 using System;
 using NUnit.Framework;
-using Remotion.CodeGeneration;
+using Remotion.Reflection.CodeGeneration;
 using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;

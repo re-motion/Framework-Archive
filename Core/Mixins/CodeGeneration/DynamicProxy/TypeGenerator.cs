@@ -4,13 +4,13 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
-using Remotion.CodeGeneration;
+using Remotion.Reflection.CodeGeneration;
 using Remotion.Mixins.Definitions;
 using Remotion.Collections;
 using Remotion.Utilities;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Reflection.CodeGeneration.DPExtensions;
 
 using Remotion.Text;
 using ReflectionUtility=Remotion.Mixins.Utilities.ReflectionUtility;

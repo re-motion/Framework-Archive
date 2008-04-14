@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Castle.DynamicProxy;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Remotion.CodeGeneration;
+using Remotion.Reflection.CodeGeneration;
 using Remotion.UnitTests.Mixins.SampleTypes;
 using Remotion.Mixins;
 using Remotion.Mixins.Utilities;

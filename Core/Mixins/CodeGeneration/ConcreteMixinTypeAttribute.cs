@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
-using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Reflection.CodeGeneration.DPExtensions;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.Utilities;

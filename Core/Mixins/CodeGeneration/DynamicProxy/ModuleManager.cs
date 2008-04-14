@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
 using Castle.DynamicProxy;
-using Remotion.CodeGeneration.DPExtensions;
+using Remotion.Reflection.CodeGeneration.DPExtensions;
 using Remotion.Mixins.Definitions;
 using Remotion.Reflection;
 using Remotion.Utilities;
