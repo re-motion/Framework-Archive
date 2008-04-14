@@ -154,17 +154,16 @@
 
   <target name="all" depends="prereq, Core.Interfaces, Core, Core.Mixins.MixerTool.Console, Development.Core, Development.CodeDom, Web, 
       ObjectBinding, ObjectBinding.Web, ObjectBinding.Web.Preview, ObjectBinding.Web.CodeGenerator, ObjectBinding.Web.CodeGenerator.Templates, 
-      Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.Legacy.ObjectBinding, Data.DomainObjects.Legacy.ObjectBinding.Web, Data.DomainObjects.Web, 
+      Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.Web, 
       Data.DomainObjects.RdbmsTools, Data.DomainObjects.RdbmsTools.Console, 
-      Data.DomainObjects.Legacy, Data.DomainObjects.Legacy.CodeGenerator, Data.DomainObjects.Legacy.CodeGenerator.Console, 
       Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Web, Security.Data.DomainObjects, 
       SecurityManager.Core, SecurityManager.Metadata.Importer, SecurityManager.Clients.Web">
     <echo message="Target has executed."/>
   </target>
 
   <target name="all-test" depends="prereq, Core.Mixins.Samples, CoreTest, Development.CoreTest, Web.UnitTests, ObjectBinding.UnitTests, 
-      Data.DomainObjects.UnitTests, Data.DomainObjects.Legacy.UnitTests, Data.DomainObjects.Legacy.ObjectBinding.UnitTests, 
-      Data.DomainObjects.RdbmsTools.UnitTests, Data.DomainObjects.Legacy.CodeGenerator.UnitTests, 
+      Data.DomainObjects.UnitTests, 
+      Data.DomainObjects.RdbmsTools.UnitTests, 
       Security.UnitTests.TestDomain, Security.UnitTests, SecurityManager.Core.UnitTests">
     <echo message="Target has executed."/>
   </target>
@@ -233,22 +232,6 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Data.DomainObjects.Legacy.CodeGenerator" depends="Core, Data.DomainObjects, Data.DomainObjects.Legacy.ObjectBinding">
-    <property name="project.name" value="Data.DomainObjects.Legacy.CodeGenerator" />
-    <property name="project.dir" value="Data/DomainObjects.Legacy.CodeGenerator" />
-    <property name="project.output" value="Remotion.Data.DomainObjects.Legacy.CodeGenerator" />
-    <property name="project.extension" value="dll" />
-    <call target="execute-buildstep" />
-  </target>
-
-  <target name="Data.DomainObjects.Legacy.CodeGenerator.Console" depends="Core, Data.DomainObjects, Data.DomainObjects.Legacy.CodeGenerator">
-    <property name="project.name" value="Data.DomainObjects.Legacy.CodeGenerator.Console" />
-    <property name="project.dir" value="Data/DomainObjects.Legacy.CodeGenerator.Console" />
-    <property name="project.output" value="DOGen" />
-    <property name="project.extension" value="exe" />
-    <call target="execute-buildstep" />
-  </target>
-
   <target name="Data.DomainObjects.RdbmsTools" depends="Core, Data.DomainObjects">
     <property name="project.name" value="Data.DomainObjects.RdbmsTools" />
     <property name="project.dir" value="Data/DomainObjects.RdbmsTools" />
@@ -273,35 +256,10 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Data.DomainObjects.Legacy.ObjectBinding" depends="Core, Data.DomainObjects, Data.DomainObjects.Legacy, ObjectBinding">
-    <property name="project.name" value="Data.DomainObjects.Legacy.ObjectBinding" />
-    <property name="project.dir" value="Data/DomainObjects.Legacy.ObjectBinding" />
-    <property name="project.output" value="Remotion.Data.DomainObjects.Legacy.ObjectBinding" />
-    <property name="project.extension" value="dll" />
-    <call target="execute-buildstep" />
-  </target>
-
-  <target name="Data.DomainObjects.Legacy.ObjectBinding.Web" 
-      depends="Core, Data.DomainObjects, Data.DomainObjects.Legacy, Data.DomainObjects.Legacy.ObjectBinding, ObjectBinding, ObjectBinding.Web, Web">
-    <property name="project.name" value="Data.DomainObjects.Legacy.ObjectBinding.Web" />
-    <property name="project.dir" value="Data/DomainObjects.Legacy.ObjectBinding.Web" />
-    <property name="project.output" value="Remotion.Data.DomainObjects.Legacy.ObjectBinding.Web" />
-    <property name="project.extension" value="dll" />
-    <call target="execute-buildstep" />
-  </target>
-
   <target name="Data.DomainObjects.Web" depends="Core, Data.DomainObjects, Web">
     <property name="project.name" value="Data.DomainObjects.Web" />
     <property name="project.dir" value="Data/DomainObjects.Web" />
     <property name="project.output" value="Remotion.Data.DomainObjects.Web" />
-    <property name="project.extension" value="dll" />
-    <call target="execute-buildstep" />
-  </target>
-
-  <target name="Data.DomainObjects.Legacy" depends="Core, Data.DomainObjects">
-    <property name="project.name" value="Data.DomainObjects.Legacy" />
-    <property name="project.dir" value="Data/DomainObjects.Legacy" />
-    <property name="project.output" value="Remotion.Data.DomainObjects.Legacy" />
     <property name="project.extension" value="dll" />
     <call target="execute-buildstep" />
   </target>
@@ -494,46 +452,6 @@
     <property name="project.name" value="Data.DomainObjects.UnitTests" />
     <property name="project.dir" value="Data/DomainObjects.UnitTests" />
     <property name="project.output" value="Remotion.Data.DomainObjects.UnitTests" />
-    <property name="project.extension" value="dll" />
-    <call target="buildtest" />
-  </target>
-
-  <target name="Data.DomainObjects.Legacy.UnitTests">
-    <call target="Core" cascade="false"/>
-    <call target="Data.DomainObjects" cascade="false"/>
-    <call target="Data.DomainObjects.Legacy" cascade="false"/>
-    <call target="Development.Core" cascade="false"/>
-
-    <property name="project.name" value="Data.DomainObjects.Legacy.UnitTests" />
-    <property name="project.dir" value="Data/DomainObjects.Legacy.UnitTests" />
-    <property name="project.output" value="Remotion.Data.DomainObjects.Legacy.UnitTests" />
-    <property name="project.extension" value="dll" />
-    <call target="buildtest" />
-  </target>
-
-  <target name="Data.DomainObjects.Legacy.ObjectBinding.UnitTests">
-    <call target="Core" cascade="false"/>
-    <call target="Data.DomainObjects" cascade="false"/>
-    <call target="Data.DomainObjects.Legacy.ObjectBinding" cascade="false"/>
-    <call target="Development.Core" cascade="false"/>
-    <call target="ObjectBinding" cascade="false"/>
-
-    <property name="project.name" value="Data.DomainObjects.Legacy.ObjectBinding.UnitTests" />
-    <property name="project.dir" value="Data/DomainObjects.Legacy.ObjectBinding.UnitTests" />
-    <property name="project.output" value="Remotion.Data.DomainObjects.Legacy.ObjectBinding.UnitTests" />
-    <property name="project.extension" value="dll" />
-    <call target="buildtest" />
-  </target>
-
-  <target name="Data.DomainObjects.Legacy.CodeGenerator.UnitTests">
-    <call target="Core" cascade="false"/>
-    <call target="Data.DomainObjects" cascade="false"/>
-    <call target="Data.DomainObjects.Legacy.CodeGenerator" cascade="false"/>
-    <call target="Data.DomainObjects.Legacy.ObjectBinding" cascade="false"/>
-
-    <property name="project.name" value="Data.DomainObjects.Legacy.CodeGenerator.UnitTests" />
-    <property name="project.dir" value="Data/DomainObjects.Legacy.CodeGenerator.UnitTests" />
-    <property name="project.output" value="Remotion.Data.DomainObjects.Legacy.CodeGenerator.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
   </target>
