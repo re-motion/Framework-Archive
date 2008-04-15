@@ -153,7 +153,7 @@
   </target>
 
   <target name="all" depends="prereq, Core.Interfaces, Core, Core.Mixins.MixerTool.Console, Development.Core, Development.CodeDom, Web, Web.Security, 
-      ObjectBinding, ObjectBinding.Web, ObjectBinding.Web.Preview, ObjectBinding.Web.CodeGenerator, ObjectBinding.Web.CodeGenerator.Templates, 
+      ObjectBinding.Interfaces, ObjectBinding, ObjectBinding.Web, ObjectBinding.Web.Preview, ObjectBinding.Web.CodeGenerator, ObjectBinding.Web.CodeGenerator.Templates, 
       Data.Interfaces, Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.Web, 
       Data.DomainObjects.RdbmsTools, Data.DomainObjects.RdbmsTools.Console, 
       Security.Interfaces, Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Data.DomainObjects, 
@@ -288,7 +288,15 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="ObjectBinding" depends="Core">
+  <target name="ObjectBinding.Interfaces" depends="Core">
+    <property name="project.name" value="ObjectBinding.Interfaces" />
+    <property name="project.dir" value="ObjectBinding/Interfaces" />
+    <property name="project.output" value="Remotion.ObjectBinding.Interfaces" />
+    <property name="project.extension" value="dll" />
+    <call target="execute-buildstep" />
+  </target>
+  
+  <target name="ObjectBinding" depends="Core, ObjectBinding.Interfaces">
     <property name="project.name" value="ObjectBinding" />
     <property name="project.dir" value="ObjectBinding/Core" />
     <property name="project.output" value="Remotion.ObjectBinding" />
