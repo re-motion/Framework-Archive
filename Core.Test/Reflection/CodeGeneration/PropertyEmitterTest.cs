@@ -6,7 +6,6 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Remotion.Reflection.CodeGeneration;
 using Remotion.UnitTests.Reflection.CodeGeneration.SampleTypes;
-using Remotion.UnitTests.Reflection.CodeGeneration.SampleTypes;
 
 namespace Remotion.UnitTests.Reflection.CodeGeneration
 {

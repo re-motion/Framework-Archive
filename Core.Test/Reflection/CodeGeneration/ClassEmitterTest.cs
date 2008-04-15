@@ -8,7 +8,6 @@ using NUnit.Framework;
 using Remotion.Reflection.CodeGeneration;
 using Remotion.Reflection.CodeGeneration.DPExtensions;
 using Remotion.UnitTests.Reflection.CodeGeneration.SampleTypes;
-using Remotion.UnitTests.Reflection.CodeGeneration.SampleTypes;
 
 namespace Remotion.UnitTests.Reflection.CodeGeneration
 {

@@ -6,7 +6,6 @@ using NUnit.Framework;
 using Remotion.Reflection.CodeGeneration;
 using Remotion.UnitTests.Reflection.CodeGeneration.SampleTypes;
 using Remotion.Development.UnitTesting;
-using Remotion.UnitTests.Reflection.CodeGeneration.SampleTypes;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
 

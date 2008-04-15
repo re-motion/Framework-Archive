@@ -1,8 +1,10 @@
 using System;
+using System.IO;
 using Castle.DynamicProxy;
 using NUnit.Framework;
 using Remotion.Reflection.CodeGeneration.DPExtensions;
 using Remotion.Development.UnitTesting;
+using Remotion.Utilities;
 
 namespace Remotion.UnitTests.Reflection.CodeGeneration
 {
@@ -16,6 +18,8 @@ namespace Remotion.UnitTests.Reflection.CodeGeneration
     {
       _scope = new ModuleScope (true);
       _assemblySaveSuppressed = false;
+      DeleteIfExists (Path.Combine (_scope.StrongNamedModuleDirectory ?? Environment.CurrentDirectory, _scope.StrongNamedModuleName));
+      DeleteIfExists (Path.Combine (_scope.WeakNamedModuleDirectory ?? Environment.CurrentDirectory, _scope.WeakNamedModuleName));
     }
 
     [TearDown]
@@ -25,8 +29,17 @@ namespace Remotion.UnitTests.Reflection.CodeGeneration
       {
         string[] paths = AssemblySaver.SaveAssemblies (_scope);
         foreach (string path in paths)
+        {
           PEVerifier.VerifyPEFile (path);
+          FileUtility.DeleteAndWaitForCompletion (path);
+        }
       }
+    }
+
+    private void DeleteIfExists (string path)
+    {
+      if (File.Exists (path))
+        FileUtility.DeleteAndWaitForCompletion (path);
     }
 
     public ModuleScope Scope
