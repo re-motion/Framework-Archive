@@ -313,7 +313,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Mixins.Samples", "Core
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Objectbinding.Web.CodeGenerator", "ObjectBinding\Web.CodeGenerator\Core\Objectbinding.Web.CodeGenerator.csproj", "{E8822EE5-E678-4ECF-AAEC-9476696F90B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectXinding.Web.CodeGenerator", "ObjectBinding\Web.CodeGenerator\Core\ObjectXinding.Web.CodeGenerator.csproj", "{E8822EE5-E678-4ECF-AAEC-9476696F90B3}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
