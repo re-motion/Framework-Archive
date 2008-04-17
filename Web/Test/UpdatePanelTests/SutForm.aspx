@@ -7,7 +7,7 @@
   <title>Update Panel SUT</title>
 </head>
 <body>
-  <form id="Form" runat="server">
+  <form id="MyForm" runat="server">
     <asp:ScriptManager ID="ScriptManager" runat="server" />
     <table style="width: 100%; height: 100%;">
       <tr>

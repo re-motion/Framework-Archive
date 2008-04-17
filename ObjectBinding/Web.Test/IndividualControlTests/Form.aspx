@@ -8,7 +8,7 @@
   <remotion:HtmlHeadContents ID="HtmlHeadContents" runat="server" />
 </head>
 <body>
-  <form id="Form" runat="server">
+  <form id="MyForm" runat="server">
     <asp:ScriptManager ID="ScriptManager" runat="server" />
     <remotion:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
     <remotion:SingleView ID="SingleView" runat="server">

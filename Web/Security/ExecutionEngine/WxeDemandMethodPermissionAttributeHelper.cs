@@ -89,7 +89,6 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     public ISecurableObject GetSecurableObject (WxeFunction function)
     {
-      // Ignore obsolete warning, will be removed after next stable build.
       ArgumentUtility.CheckNotNullAndType ("function", function, _functionType);
       
       WxeParameterDeclaration parameterDeclaration = GetParameterDeclaration (function.ParameterDeclarations);

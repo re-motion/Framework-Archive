@@ -8,7 +8,7 @@
   <remotion:HtmlHeadContents ID="HtmlHeadContents" runat="server" />
 </head>
 <body>
-  <form id="Form" runat="server">
+  <form id="MyForm" runat="server">
     <asp:ScriptManager ID="ScriptManager" runat="server" />
     <asp:UpdatePanel ID="UpdatePanel" runat="server">
       <ContentTemplate>

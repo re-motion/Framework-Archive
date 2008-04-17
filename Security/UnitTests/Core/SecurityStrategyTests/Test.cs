@@ -144,7 +144,7 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
       SecurityStrategy strategy =
           new SecurityStrategy (new Cache<string, AccessType[]> (), SecurityConfiguration.Current.GlobalAccessTypeCacheProvider);
       AccessType[] accessTypes = new AccessType[] { AccessType.Get (GeneralAccessTypes.Find) };
-      strategy.LocalCache.Add ("foo", accessTypes);
+      strategy.LocalCache.GetOrCreateValue ("foo", delegate { return accessTypes; });
 
       SecurityStrategy deserializedStrategy = Serializer.SerializeAndDeserialize (strategy);
       Assert.AreNotSame (strategy, deserializedStrategy);

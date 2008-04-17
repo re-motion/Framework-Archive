@@ -6,7 +6,7 @@
   <remotion:HtmlHeadContents ID="HtmlHeadContents" runat="server" />
 </head>
 <body style="overflow: visible;">
-  <form id="Form" runat="server">
+  <form id="MyForm" runat="server">
     <asp:Table ID="TestTable" runat="server" EnableViewState="false" />
   </form>
 </body>

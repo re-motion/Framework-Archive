@@ -2,6 +2,8 @@ using System;
 using System.Xml;
 using NUnit.Framework;
 
+#pragma warning disable 612,618 // Asserters are obsolete
+
 namespace Remotion.Security.UnitTests.Core.XmlAsserter
 {
   public static class XmlAssert
@@ -88,3 +90,6 @@ namespace Remotion.Security.UnitTests.Core.XmlAsserter
     }
   }
 }
+
+#pragma warning restore 612,618
+

@@ -17,7 +17,7 @@ namespace Remotion.Mixins.Definitions
     {
       ArgumentUtility.CheckNotNull ("requirement", requirement);
       ArgumentUtility.CheckNotNull ("depender", depender);
-      ArgumentUtility.CheckType ("aggregator", aggregator, this.GetType ());
+      ArgumentUtility.CheckType ("aggregator", aggregator, GetType ());
 
       _requirement = requirement;
       _depender = depender;

@@ -7,12 +7,12 @@
 <script type="text/javascript">
   function ChangeAutoPostbackListSelection()
   {
-    document.Form.AutoPostbackList.fireEvent ('onChange','');
+    document.MyForm.AutoPostbackList.fireEvent ('onChange','');
   } 
 </script>
 </head>
 <body>
-<form id="Form" runat="server">
+<form id="MyForm" runat="server">
 <asp:PlaceHolder ID="SutPlaceHolder" runat="server" />
 <table style="WIDTH: 100%; HEIGHT: 100%">
   <tr>

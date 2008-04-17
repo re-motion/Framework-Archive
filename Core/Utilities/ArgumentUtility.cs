@@ -95,9 +95,6 @@ namespace Remotion.Utilities
       throw new ArgumentOutOfRangeException (argumentName, actualValue, message);
     }
 
-    [Obsolete (@"Use CheckNotNullAndType<ExpectedType> instead if possible (this obsolete warning will go away in future versions). Example: "
-               + @"Dog d = (Dog) ArgumentUtility.CheckNotNullAndType (""animal"", animal, typeof(Dog));  "
-               + @"-->  Dog d = ArgumentUtility.CheckNotNullAndType<Dog> (""animal"", animal);" )]
     public static object CheckNotNullAndType (string argumentName, object actualValue, Type expectedType)
     {
       if (actualValue == null)
@@ -141,8 +138,6 @@ namespace Remotion.Utilities
       throw new NotImplementedException(); 
     }
 
-    [Obsolete (@"Use CheckType<ExpectedType> instead if possible (this obsolete warning will go away in future versions). Example: "
-               + @"Dog d = ArgumentUtility.CheckType<Dog> (""animal"", animal);" )]
     public static object CheckType (string argumentName, object actualValue, Type expectedType)
     {
       if (actualValue == null)
