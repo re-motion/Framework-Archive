@@ -3,11 +3,6 @@
     The <B>Remotion.Data</B> namespace contains an interface for transaction handling in the Remotion libraries.
   </namespace>  
 <!--
-  <namespace name="Remotion.NullableValueTypes">
-summary
-  </namespace>
--->  
-<!--
   <namespace name="Remotion.Globalization">
 summary
   </namespace>

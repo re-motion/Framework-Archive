@@ -18,7 +18,6 @@
       </nowarn>
       <sources failonempty="true">
         <include name="*.cs" />
-        <include name="NullableValueTypes/**/*.cs" />
         <include name="Properties/**/*.cs" />
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using Remotion.Utilities;
 
@@ -7,7 +8,7 @@ namespace Remotion.Collections
 {
   [Serializable]
   public class Hashtable<TKey, TValue> : System.Collections.Generic.Dictionary<TKey, TValue>
-    where TValue: class
+      where TValue: class
   {
   }
 
@@ -15,7 +16,10 @@ namespace Remotion.Collections
   /// A strongly typed version of <see cref="Hashtable"/>.
   /// </summary>
   [Serializable]
-  [Obsolete ("Use System.Collections.Generic.Dictionary<TKey, TValue> instead. (Note one major difference between Hashtable and Dictionary: Hashtable returns a null reference is a key is not found, while Dictionary throws an exception. Consider using Dictionary.TryGetValue where the Hashtable indexer is used now.")]
+  [Obsolete ("Use System.Collections.Generic.Dictionary<TKey, TValue> instead. (Note one major difference between Hashtable and Dictionary: Hashtable " 
+      + "returns a null reference is a key is not found, while Dictionary throws an exception. Consider using Dictionary.TryGetValue where the " 
+      + "Hashtable indexer is used now.")]
+  [DebuggerDisplay ("Count={Count}")]
   public class TypedHashtable : Hashtable, ISerializable
   {
     private Type _keyType;
@@ -27,61 +31,61 @@ namespace Remotion.Collections
     }
 
     public TypedHashtable (Type keyType, Type valueType, int capacity, float loadFactor, IHashCodeProvider hcp, IComparer comparer)
-      : base (capacity, loadFactor, hcp, comparer)
+        : base (capacity, loadFactor, hcp, comparer)
     {
       Initialize (keyType, valueType);
     }
 
     public TypedHashtable (Type keyType, Type valueType, IDictionary d)
-      : base (d)
+        : base (d)
     {
       Initialize (keyType, valueType);
     }
 
     public TypedHashtable (Type keyType, Type valueType, int capacity)
-      : base (capacity)
+        : base (capacity)
     {
       Initialize (keyType, valueType);
     }
 
     public TypedHashtable (Type keyType, Type valueType, IDictionary d, float loadFactor)
-      : base (d, loadFactor)
+        : base (d, loadFactor)
     {
       Initialize (keyType, valueType);
     }
 
     public TypedHashtable (Type keyType, Type valueType, IHashCodeProvider hcp, IComparer comparer)
-      : base (hcp, comparer)
+        : base (hcp, comparer)
     {
       Initialize (keyType, valueType);
     }
 
     public TypedHashtable (Type keyType, Type valueType, int capacity, float loadFactor)
-      : base (capacity, loadFactor)
+        : base (capacity, loadFactor)
     {
       Initialize (keyType, valueType);
     }
 
     public TypedHashtable (Type keyType, Type valueType, IDictionary d, IHashCodeProvider hcp, IComparer comparer)
-      : base (d, hcp, comparer)
+        : base (d, hcp, comparer)
     {
       Initialize (keyType, valueType);
     }
 
     public TypedHashtable (Type keyType, Type valueType, int capacity, IHashCodeProvider hcp, IComparer comparer)
-      : base (capacity, hcp, comparer)
+        : base (capacity, hcp, comparer)
     {
       Initialize (keyType, valueType);
     }
 
     public TypedHashtable (Type keyType, Type valueType, IDictionary d, float loadFactor, IHashCodeProvider hcp, IComparer comparer)
-      : base (d, loadFactor, hcp, comparer)
+        : base (d, loadFactor, hcp, comparer)
     {
       Initialize (keyType, valueType);
     }
 
     public TypedHashtable (TypedHashtable hashtable)
-      : base (hashtable.EqualityComparer)
+        : base (hashtable.EqualityComparer)
     {
       hcp = hashtable.hcp;
       comparer = hashtable.comparer;
@@ -91,7 +95,7 @@ namespace Remotion.Collections
     }
 
     protected TypedHashtable (SerializationInfo info, StreamingContext context)
-      : base (info, context)
+        : base (info, context)
     {
       _keyType = (Type) info.GetValue ("_keyType", typeof (Type));
       _valueType = (Type) info.GetValue ("_valueType", typeof (Type));
@@ -119,7 +123,7 @@ namespace Remotion.Collections
       base.Add (key, value);
     }
 
-    public override object this[object key]
+    public override object this [object key]
     {
       get { return base[key]; }
       set
@@ -158,7 +162,5 @@ namespace Remotion.Collections
     {
       return new TypedHashtable (this);
     }
-
   }
-
 }

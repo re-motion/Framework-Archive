@@ -1,8 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Remotion.Utilities;
-using Remotion.Reflection;
+using System.Diagnostics;
 
 namespace Remotion.Collections
 {
@@ -14,6 +13,7 @@ namespace Remotion.Collections
   ///   the indexer or removing items. Getting values through the indexer will assign a new object to the specified key if none exists.
   /// </remarks>
   [Serializable]
+  [DebuggerDisplay ("Count={Count}")]
   public class AutoInitDictionary<TKey, TValue> : IDictionary<TKey, TValue>
   {
     private Dictionary<TKey, TValue> _dictionary;

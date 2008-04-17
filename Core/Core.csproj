@@ -95,29 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallContextSingleton.cs" />
-    <Compile Include="NullableValueTypes\Exceptions.cs" />
-    <Compile Include="NullableValueTypes\INaNullable.cs" />
-    <Compile Include="NullableValueTypes\NaBoolean.cs" />
-    <Compile Include="NullableValueTypes\NaBooleanConverter.cs" />
-    <Compile Include="NullableValueTypes\NaByte.cs" />
-    <Compile Include="NullableValueTypes\NaByteConverter.cs" />
-    <Compile Include="NullableValueTypes\NaDateTime.cs" />
-    <Compile Include="NullableValueTypes\NaDateTimeConverter.cs" />
-    <Compile Include="NullableValueTypes\NaDecimal.cs" />
-    <Compile Include="NullableValueTypes\NaDecimalConverter.cs" />
-    <Compile Include="NullableValueTypes\NaDouble.cs" />
-    <Compile Include="NullableValueTypes\NaDoubleConverter.cs" />
-    <Compile Include="NullableValueTypes\NaGuid.cs" />
-    <Compile Include="NullableValueTypes\NaGuidConverter.cs" />
-    <Compile Include="NullableValueTypes\NaInt16.cs" />
-    <Compile Include="NullableValueTypes\NaInt16Converter.cs" />
-    <Compile Include="NullableValueTypes\NaInt32.cs" />
-    <Compile Include="NullableValueTypes\NaInt32Converter.cs" />
-    <Compile Include="NullableValueTypes\NaInt64.cs" />
-    <Compile Include="NullableValueTypes\NaInt64Converter.cs" />
-    <Compile Include="NullableValueTypes\NaSingle.cs" />
-    <Compile Include="NullableValueTypes\NaSingleConverter.cs" />
-    <Compile Include="NullableValueTypes\NaTypeUtility.cs" />
     <Compile Include="Reflection\CodeGeneration\CustomClassEmitter.cs" />
     <Compile Include="Reflection\CodeGeneration\CustomEventEmitter.cs" />
     <Compile Include="Reflection\CodeGeneration\CustomMethodEmitter.cs" />
@@ -588,7 +565,6 @@
     <None Include="Mixins\Definitions\Definitions.cd" />
     <None Include="Mixins\Validation\Validation.cd" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
-    <None Include="doc\mcee_cs.dat" />
     <Content Include="Core.build" />
     <Content Include="doc\Building Remotion.txt" />
     <Content Include="doc\include\GettingStartedTemplate.html" />
@@ -598,7 +574,6 @@
     <Content Include="doc\include\Logging\Log4NetTraceListener.xml" />
     <Content Include="doc\include\MSDN.css" />
     <Content Include="doc\include\NamespaceDoc.xml" />
-    <Content Include="doc\include\NullableValueTypes\include.xml" />
     <Content Include="doc\include\Reflection\TypesafeInvoker.xml" />
     <Content Include="doc\include\Text\CommandLine\CommandLineParser.xml" />
     <Content Include="doc\include\Utilities\EqualityUtility.xml" />
