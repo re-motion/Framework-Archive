@@ -1,71 +1,53 @@
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
-using System.Text;
-using System.Reflection;
-using Remotion.ObjectBinding.Sample;
-using Remotion.Web.UI.Controls;
-using Remotion.Web.Utilities;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding;
-
+using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Globalization;
-using Remotion.Web.UI.Globalization;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-using System.Diagnostics;
+using Remotion.Web.UI.Controls;
 
 namespace OBWTest.Design
 {
 public class DesignTestBooleanValueForm : DesignTestWxeBasePage
 {
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-  protected Remotion.Web.UI.Controls.WebButton PostBackButton;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue1;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue2;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue3;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue4;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue17;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue18;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue5;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue6;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue7;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue8;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue19;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue9;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue10;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue11;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue12;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue22;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue23;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue13;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue14;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue15;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue16;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue20;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue21;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue24;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue25;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue26;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue27;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue28;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue29;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue30;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue31;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue32;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue33;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue34;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue35;
-  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected BindableObjectDataSourceControl CurrentObject;
+  protected WebButton PostBackButton;
+  protected BocBooleanValue BocBooleanValue1;
+  protected BocBooleanValue BocBooleanValue2;
+  protected BocBooleanValue BocBooleanValue3;
+  protected BocBooleanValue BocBooleanValue4;
+  protected BocBooleanValue BocBooleanValue17;
+  protected BocBooleanValue BocBooleanValue18;
+  protected BocBooleanValue BocBooleanValue5;
+  protected BocBooleanValue BocBooleanValue6;
+  protected BocBooleanValue BocBooleanValue7;
+  protected BocBooleanValue BocBooleanValue8;
+  protected BocBooleanValue BocBooleanValue19;
+  protected BocBooleanValue BocBooleanValue9;
+  protected BocBooleanValue BocBooleanValue10;
+  protected BocBooleanValue BocBooleanValue11;
+  protected BocBooleanValue BocBooleanValue12;
+  protected BocBooleanValue BocBooleanValue22;
+  protected BocBooleanValue BocBooleanValue23;
+  protected BocBooleanValue BocBooleanValue13;
+  protected BocBooleanValue BocBooleanValue14;
+  protected BocBooleanValue BocBooleanValue15;
+  protected BocBooleanValue BocBooleanValue16;
+  protected BocBooleanValue BocBooleanValue20;
+  protected BocBooleanValue BocBooleanValue21;
+  protected BocBooleanValue BocBooleanValue24;
+  protected BocBooleanValue BocBooleanValue25;
+  protected BocBooleanValue BocBooleanValue26;
+  protected BocBooleanValue BocBooleanValue27;
+  protected BocBooleanValue BocBooleanValue28;
+  protected BocBooleanValue BocBooleanValue29;
+  protected BocBooleanValue BocBooleanValue30;
+  protected BocBooleanValue BocBooleanValue31;
+  protected BocBooleanValue BocBooleanValue32;
+  protected BocBooleanValue BocBooleanValue33;
+  protected BocBooleanValue BocBooleanValue34;
+  protected BocBooleanValue BocBooleanValue35;
+  protected HtmlHeadContents HtmlHeadContents;
 
-  private void Page_Load(object sender, System.EventArgs e)
+  private void Page_Load(object sender, EventArgs e)
 	{
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
     Person person = Person.GetObject (personID);

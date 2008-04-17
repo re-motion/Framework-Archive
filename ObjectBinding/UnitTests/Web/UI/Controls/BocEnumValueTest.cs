@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.UnitTests.Web.Domain;
 using Remotion.Web.UnitTests.Configuration;
@@ -90,7 +89,7 @@ public class BocEnumValueTest: BocTest
   [Test]
   public void GetTrackedClientIDsInReadOnlyMode()
   {
-    _bocEnumValue.ReadOnly = NaBoolean.True;
+    _bocEnumValue.ReadOnly = true;
     string[] actual = _bocEnumValue.GetTrackedClientIDs();
     Assert.IsNotNull (actual);
     Assert.AreEqual (0, actual.Length);
@@ -99,7 +98,7 @@ public class BocEnumValueTest: BocTest
   [Test]
   public void GetTrackedClientIDsInEditModeAsDropDownList()
   {
-    _bocEnumValue.ReadOnly = NaBoolean.False;
+    _bocEnumValue.ReadOnly = false;
     _bocEnumValue.ListControlStyle.ControlType = ListControlType.DropDownList;
     string[] actual = _bocEnumValue.GetTrackedClientIDs();
     Assert.IsNotNull (actual);
@@ -110,7 +109,7 @@ public class BocEnumValueTest: BocTest
   [Test]
   public void GetTrackedClientIDsInEditModeAsListBox()
   {
-    _bocEnumValue.ReadOnly = NaBoolean.False;
+    _bocEnumValue.ReadOnly = false;
     _bocEnumValue.ListControlStyle.ControlType = ListControlType.ListBox;
     string[] actual = _bocEnumValue.GetTrackedClientIDs();
     Assert.IsNotNull (actual);
@@ -121,13 +120,13 @@ public class BocEnumValueTest: BocTest
   [Test]
   public void GetTrackedClientIDsInEditModeAsRadioButtonList()
   {
-    _bocEnumValue.ReadOnly = NaBoolean.False;
+    _bocEnumValue.ReadOnly = false;
     _bocEnumValue.ListControlStyle.ControlType = ListControlType.RadioButtonList;
     Assert.IsNotNull (_propertyEnumValue, "Could not find property 'EnumValue'.");
     Assert.IsTrue (
         typeof (IBusinessObjectEnumerationProperty).IsAssignableFrom (_propertyEnumValue.GetType()), 
         "Property 'EnumValue' of invalid type.");
-    _bocEnumValue.Property = (IBusinessObjectEnumerationProperty) _propertyEnumValue;
+    _bocEnumValue.Property = _propertyEnumValue;
     _bocEnumValue.RefreshEnumList();
 
     string[] actual = _bocEnumValue.GetTrackedClientIDs();

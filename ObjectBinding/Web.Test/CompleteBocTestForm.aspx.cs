@@ -1,21 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Drawing;
-using System.Web;
-using System.Web.SessionState;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
-using System.Text;
-using Remotion.ObjectBinding.Sample;
-using Remotion.Web.UI.Controls;
-using Remotion.Web.Utilities;
-using Remotion.Utilities;
+using System.Web.UI.WebControls;
 using Remotion.Collections;
-using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
 
 
 namespace OBWTest
@@ -29,23 +21,23 @@ namespace OBWTest
   private AutoInitHashtable _listOfFormGridRowInfos = new AutoInitHashtable (typeof (FormGridRowInfoCollection));
   private AutoInitHashtable _listOfHiddenRows = new AutoInitHashtable (typeof (StringCollection));
 
-    protected System.Web.UI.WebControls.Button PostBackButton;
-    protected System.Web.UI.WebControls.Button SaveButton;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-    protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue TextField;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue MultilineTextField;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateTimeField;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue EnumField;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue ReferenceField;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BooleanField;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BocList ListField;
-    protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-    protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+    protected Button PostBackButton;
+    protected Button SaveButton;
+    protected BindableObjectDataSourceControl CurrentObject;
+    protected FormGridManager FormGridManager;
+    protected BocTextValue LastNameField;
+    protected BocTextValue FirstNameField;
+    protected BocTextValue TextField;
+    protected BocMultilineTextValue MultilineTextField;
+    protected BocDateTimeValue DateTimeField;
+    protected BocEnumValue EnumField;
+    protected BocReferenceValue ReferenceField;
+    protected BocBooleanValue BooleanField;
+    protected BocList ListField;
+    protected HtmlTable FormGrid;
+    protected HtmlHeadContents HtmlHeadContents;
 
-  private void Page_Load(object sender, System.EventArgs e)
+  private void Page_Load(object sender, EventArgs e)
 	{
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
     Person person = Person.GetObject (personID);
@@ -173,7 +165,7 @@ namespace OBWTest
   }
 	#endregion
 
-  private void SaveButton_Click(object sender, System.EventArgs e)
+  private void SaveButton_Click(object sender, EventArgs e)
   {
     bool isValid = FormGridManager.Validate();
     if (isValid)

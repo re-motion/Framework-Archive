@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding.UnitTests.Web.Domain;
 using Remotion.Web.UnitTests.Configuration;
 
@@ -52,7 +51,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     public void EvaluateWaiConformityLevelA()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _bocCheckBox.AutoPostBack = NaBoolean.True;
+      _bocCheckBox.AutoPostBack = true;
       _bocCheckBox.EvaluateWaiConformity();
 
       Assert.IsFalse (WcagHelperMock.HasWarning);
@@ -64,7 +63,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     public void EvaluateWaiConformityDebugLevelAWithAutoPostBackTrue()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocCheckBox.AutoPostBack = NaBoolean.True;
+      _bocCheckBox.AutoPostBack = true;
       _bocCheckBox.EvaluateWaiConformity();
 
       Assert.IsTrue (WcagHelperMock.HasWarning);
@@ -77,7 +76,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [Test]
     public void GetTrackedClientIDsInReadOnlyMode()
     {
-      _bocCheckBox.ReadOnly = NaBoolean.True;
+      _bocCheckBox.ReadOnly = true;
       string[] actual = _bocCheckBox.GetTrackedClientIDs();
       Assert.IsNotNull (actual);
       Assert.AreEqual (0, actual.Length);
@@ -86,7 +85,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [Test]
     public void GetTrackedClientIDsInEditMode()
     {
-      _bocCheckBox.ReadOnly = NaBoolean.False;
+      _bocCheckBox.ReadOnly = false;
       string[] actual = _bocCheckBox.GetTrackedClientIDs();
       Assert.IsNotNull (actual);
       Assert.AreEqual (1, actual.Length);
@@ -115,7 +114,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [Test]
     public void SetValueToNull()
     {
-      _bocCheckBox.DefaultValue = NaBoolean.False;
+      _bocCheckBox.DefaultValue = false;
       _bocCheckBox.IsDirty = false;
       _bocCheckBox.Value = null;
       Assert.AreEqual (false, _bocCheckBox.Value);
@@ -143,7 +142,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [Test]
     public void SetValueToNullableBooleanNull()
     {
-      _bocCheckBox.DefaultValue = NaBoolean.False;
+      _bocCheckBox.DefaultValue = false;
       _bocCheckBox.IsDirty = false;
       _bocCheckBox.Value = null;
       Assert.AreEqual (false, _bocCheckBox.Value);
@@ -172,7 +171,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [Test]
     public void IBusinessObjectBoundControl_SetValueToNull ()
     {
-      _bocCheckBox.DefaultValue = NaBoolean.False;
+      _bocCheckBox.DefaultValue = false;
       _bocCheckBox.IsDirty = false;
       ((IBusinessObjectBoundControl) _bocCheckBox).Value = null;
       Assert.AreEqual (false, ((IBusinessObjectBoundControl) _bocCheckBox).Value);
@@ -200,7 +199,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [Test]
     public void IBusinessObjectBoundControl_SetValueToNullableBooleanNull ()
     {
-      _bocCheckBox.DefaultValue = NaBoolean.False;
+      _bocCheckBox.DefaultValue = false;
       _bocCheckBox.IsDirty = false;
       ((IBusinessObjectBoundControl) _bocCheckBox).Value = null;
       Assert.AreEqual (false, ((IBusinessObjectBoundControl) _bocCheckBox).Value);
@@ -282,7 +281,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     public void LoadValueAndInterimFalseWithValueNullableBooelanNull ()
     {
       _businessObject.NullableBooleanValue = null;
-      _bocCheckBox.DefaultValue = NaBoolean.False;
+      _bocCheckBox.DefaultValue = false;
       _bocCheckBox.DataSource = _dataSource;
       _bocCheckBox.Property = _propertyNullableBooleanValue;
       _bocCheckBox.Value = true;
@@ -333,7 +332,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [Test]
     public void LoadUnboundValueAndInterimFalseWithValueNull()
     {
-      _bocCheckBox.DefaultValue = NaBooleanEnum.False;
+      _bocCheckBox.DefaultValue = false;
       _bocCheckBox.Value = true;
       _bocCheckBox.IsDirty = true;
 
@@ -370,7 +369,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     public void LoadUnboundValueAndInterimFalseWithValueNullableBooelanNull ()
     {
       bool? value = null;
-      _bocCheckBox.DefaultValue = NaBooleanEnum.False;
+      _bocCheckBox.DefaultValue = false;
       _bocCheckBox.Value = true;
       _bocCheckBox.IsDirty = true;
 

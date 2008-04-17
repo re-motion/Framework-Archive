@@ -27,7 +27,7 @@
   <tr>
     <td></td>
     <td><remotion:bocenumvalue id="MarriageStatusField" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="CurrentObject" nullitemerrormessage="Eingabe erforderlich">
-<listcontrolstyle autopostback="True" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle autopostback="True">
 </ListControlStyle></remotion:bocenumvalue></td></tr>
   <tr>
     <td></td>

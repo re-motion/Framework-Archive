@@ -1,3 +1,11 @@
+1.9.0
+=====
+- Umstellung auf re:motion
+- Umstellung von NullableValueTypes auf .NET-Nullables (z.B. NaInt32 => int?)
+  Achtung: Wenn in aspx/ascx-Files für Nullable-Properties der Default-Wert explizit per Attribut zugewiesen wird (à la 'AutoPostBack=""'), dann 
+  führt das zu einem Parse-Fehler. Solche Attribut-Strings müssen entfernt werden.
+  Besonders wichtig: In <listControlStyle>-Tags 'radiobuttonlistcellspacing=""' und 'radiobuttonlistcellpadding=""' per Suchen/Ersetzen entfernen.
+
 1.7.61
 ======
 - BocBooleanValue, BocCheckBox, BocDateTimeValue

@@ -1,22 +1,15 @@
 using System;
 using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Web;
-using System.Web.SessionState;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 
 namespace OBWTest
 {
 	/// <summary>
 	/// Summary description for LeftFrame.
 	/// </summary>
-	public class LeftFrame : System.Web.UI.Page
+	public class LeftFrame : Page
 	{
-		private void Page_Load(object sender, System.EventArgs e)
+		private void Page_Load(object sender, EventArgs e)
 		{
       ArrayList global = (ArrayList) Session["Global"];
       int hashcode = global.GetHashCode();

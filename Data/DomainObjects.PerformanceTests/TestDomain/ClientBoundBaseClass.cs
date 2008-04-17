@@ -1,7 +1,6 @@
 using System;
 
 using Remotion.Data.DomainObjects;
-using Remotion.NullableValueTypes;
 
 namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
 {

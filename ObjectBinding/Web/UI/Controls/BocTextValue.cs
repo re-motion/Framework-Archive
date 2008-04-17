@@ -6,7 +6,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
-using Remotion.NullableValueTypes;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -168,7 +167,7 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   {
     if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
     {
-      if (TextBoxStyle.AutoPostBack)
+      if (TextBoxStyle.AutoPostBack == true)
         WcagHelper.Instance.HandleWarning (1, this, "TextBoxStyle.AutoPostBack");
 
       if (TextBox.AutoPostBack)
@@ -337,7 +336,7 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
       {
         if (isControlWidthEmpty)
         {
-          if (_textBoxStyle.TextMode != TextBoxMode.MultiLine || _textBoxStyle.Columns.IsNull)
+          if (_textBoxStyle.TextMode != TextBoxMode.MultiLine || _textBoxStyle.Columns == null)
             writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultTextBoxWidth);
         }
         else
@@ -491,7 +490,7 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
       validators.Add (requiredValidator);
     }
 
-    if (! _textBoxStyle.MaxLength.IsNull)
+    if (_textBoxStyle.MaxLength != null)
     {
       LengthValidator lengthValidator = new LengthValidator();
       lengthValidator.ID = baseID + "MaxLength";
@@ -660,7 +659,7 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
       IBusinessObjectStringProperty stringProperty = Property as IBusinessObjectStringProperty;
       if (stringProperty != null)
       {
-        if (_textBoxStyle.MaxLength.IsNull)
+        if (_textBoxStyle.MaxLength == null)
         {
           int? length = stringProperty.MaxLength;
           if (length.HasValue)

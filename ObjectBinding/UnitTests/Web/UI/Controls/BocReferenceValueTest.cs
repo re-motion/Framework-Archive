@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding.UnitTests.Web.Domain;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UnitTests.Configuration;
@@ -197,7 +196,7 @@ public class BocReferenceValueTest: BocTest
   [Test]
   public void GetTrackedClientIDsInReadOnlyMode()
   {
-    _bocReferenceValue.ReadOnly = NaBoolean.True;
+    _bocReferenceValue.ReadOnly = true;
     string[] actual = _bocReferenceValue.GetTrackedClientIDs();
     Assert.IsNotNull (actual);
     Assert.AreEqual (0, actual.Length);
@@ -206,7 +205,7 @@ public class BocReferenceValueTest: BocTest
   [Test]
   public void GetTrackedClientIDsInEditMode()
   {
-    _bocReferenceValue.ReadOnly = NaBoolean.False;
+    _bocReferenceValue.ReadOnly = false;
     string[] actual = _bocReferenceValue.GetTrackedClientIDs();
     Assert.IsNotNull (actual);
     Assert.AreEqual (1, actual.Length);

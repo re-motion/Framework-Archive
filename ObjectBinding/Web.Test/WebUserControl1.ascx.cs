@@ -1,34 +1,29 @@
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Web;
 using Remotion.ObjectBinding.Web.UI.Controls;
 
 namespace OBWTest
 {
 	using System;
-	using System.Data;
-	using System.Drawing;
-	using System.Web;
-	using System.Web.UI.WebControls;
-	using System.Web.UI.HtmlControls;
-  using Remotion.ObjectBinding;
-  using Remotion.ObjectBinding.Web;
 
-	/// <summary>
+  /// <summary>
 	///		Summary description for WebUserControl1.
 	/// </summary>
 	[Obsolete ("DataSourceUserControl is obsolete, rendering this implementation obsoelte as well.")]
 	public class WebUserControl1 : DataSourceUserControl
 	{
-    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl reflectionBusinessObjectDataSource1;
+    protected BocTextValueValidator BocTextValueValidator1;
+    protected BocTextValue BocTextValue1;
+    protected BindableObjectDataSourceControl CurrentObject;
+    protected BindableObjectDataSourceControl reflectionBusinessObjectDataSource1;
 
-		private void Page_Load(object sender, System.EventArgs e)
+		private void Page_Load(object sender, EventArgs e)
 		{
 			// Put user code to initialize the page here
 
 
 		}
-    protected override Remotion.ObjectBinding.IBusinessObjectDataSource DataSource
+    protected override IBusinessObjectDataSource DataSource
     {
       get { return base.DataSource;
       }

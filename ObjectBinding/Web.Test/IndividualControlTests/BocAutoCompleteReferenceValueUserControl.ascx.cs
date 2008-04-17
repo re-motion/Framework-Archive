@@ -1,13 +1,9 @@
 using System;
-using System.Web;
 using System.Web.UI.WebControls;
-
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Utilities;
 using Remotion.Web.UI;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
@@ -39,13 +35,13 @@ namespace OBWTest.IndividualControlTests
 
       Person person = (Person) CurrentObject.BusinessObject;
 
-      UnboundPartnerField.Property = (Remotion.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Partner");
+      UnboundPartnerField.Property = (IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Partner");
       //UnboundPartnerField.LoadUnboundValue (person.Partner, IsPostBack);
-      UnboundReadOnlyPartnerField.Property = (Remotion.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
+      UnboundReadOnlyPartnerField.Property = (IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
       UnboundReadOnlyPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
-      DisabledUnboundPartnerField.Property = (Remotion.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
+      DisabledUnboundPartnerField.Property = (IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
       DisabledUnboundPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
-      DisabledUnboundReadOnlyPartnerField.Property = (Remotion.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
+      DisabledUnboundReadOnlyPartnerField.Property = (IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
       DisabledUnboundReadOnlyPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
 
       if (!IsPostBack)
@@ -87,12 +83,12 @@ namespace OBWTest.IndividualControlTests
       return isValid;
     }
 
-    private void PartnerTestSetNullButton_Click (object sender, System.EventArgs e)
+    private void PartnerTestSetNullButton_Click (object sender, EventArgs e)
     {
       PartnerField.Value = null;
     }
 
-    private void PartnerTestSetNewItemButton_Click (object sender, System.EventArgs e)
+    private void PartnerTestSetNewItemButton_Click (object sender, EventArgs e)
     {
       Person person = Person.CreateObject ();
       person.LastName = person.ID.ToByteArray ()[15].ToString ();
@@ -101,12 +97,12 @@ namespace OBWTest.IndividualControlTests
       PartnerField.Value = (IBusinessObjectWithIdentity) person;
     }
 
-    private void ReadOnlyPartnerTestSetNullButton_Click (object sender, System.EventArgs e)
+    private void ReadOnlyPartnerTestSetNullButton_Click (object sender, EventArgs e)
     {
       ReadOnlyPartnerField.Value = null;
     }
 
-    private void ReadOnlyPartnerTestSetNewItemButton_Click (object sender, System.EventArgs e)
+    private void ReadOnlyPartnerTestSetNewItemButton_Click (object sender, EventArgs e)
     {
       Person person = Person.CreateObject ();
       person.LastName = person.ID.ToByteArray ()[15].ToString ();
@@ -115,7 +111,7 @@ namespace OBWTest.IndividualControlTests
       ReadOnlyPartnerField.Value = (IBusinessObjectWithIdentity) person;
     }
 
-    private void PartnerField_SelectionChanged (object sender, System.EventArgs e)
+    private void PartnerField_SelectionChanged (object sender, EventArgs e)
     {
       if (PartnerField.Value != null)
         PartnerFieldSelectionChangedLabel.Text = PartnerField.Value.ToString ();

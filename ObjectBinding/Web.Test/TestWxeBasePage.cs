@@ -1,19 +1,15 @@
 using System;
+using System.Globalization;
+using System.Text;
+using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
-using System.Globalization;
-using System.Collections;
-using System.Threading;
-using Remotion.Web;
-using Remotion.Web.UI;
-using Remotion.Web.Utilities;
-using Remotion.Utilities;
 using Remotion.Globalization;
+using Remotion.Web;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI;
 using Remotion.Web.UI.Globalization;
-using Remotion.Web.UI.Controls;
-using System.Web;
+using Remotion.Web.Utilities;
 
 namespace OBWTest
 {
@@ -48,7 +44,7 @@ public class TestWxeBasePage:
       WxeControls.AddAt (0, _nextButton);
     }
 
-    ShowAbortConfirmation = Remotion.Web.UI.ShowAbortConfirmation.Always;
+    ShowAbortConfirmation = ShowAbortConfirmation.Always;
     EnableAbort = false;
     base.OnInit (e);
     RegisterEventHandlers();
@@ -78,7 +74,7 @@ public class TestWxeBasePage:
 
     LiteralControl stack = new LiteralControl();
 
-    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+    StringBuilder sb = new StringBuilder();
     sb.Append ("<br><div>");
     sb.Append ("<b>Stack:</b><br>");
     for (WxeStep step = CurrentStep; step != null; step = step.ParentStep)
@@ -116,7 +112,7 @@ public class TestWxeBasePage:
 //      return Page.ResolveUrl (resourceType.Name + "/" + relativeUrl);
 //  }
 
-  private void NextButton_Click(object sender, System.EventArgs e)
+  private void NextButton_Click(object sender, EventArgs e)
   {
     ExecuteNextStep();
   }

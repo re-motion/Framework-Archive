@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding.UnitTests.Web.Domain;
 using Remotion.Web.UnitTests.Configuration;
 
@@ -89,7 +88,7 @@ public class BocMultilineTextValueTest: BocTest
   [Test]
   public void GetTrackedClientIDsInReadOnlyMode()
   {
-    _bocMultilineTextValue.ReadOnly = NaBoolean.True;
+    _bocMultilineTextValue.ReadOnly = true;
     string[] actual = _bocMultilineTextValue.GetTrackedClientIDs();
     Assert.IsNotNull (actual);
     Assert.AreEqual (0, actual.Length);
@@ -98,7 +97,7 @@ public class BocMultilineTextValueTest: BocTest
   [Test]
   public void GetTrackedClientIDsInEditMode()
   {
-    _bocMultilineTextValue.ReadOnly = NaBoolean.False;
+    _bocMultilineTextValue.ReadOnly = false;
     string[] actual = _bocMultilineTextValue.GetTrackedClientIDs();
     Assert.IsNotNull (actual);
     Assert.AreEqual (1, actual.Length);

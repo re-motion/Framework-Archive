@@ -1,40 +1,24 @@
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Web;
-using System.Web.SessionState;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
-using System.Text;
-using System.Globalization;
-using System.Threading;
-using Remotion.Web.UI.Controls;
-using Remotion.Web.Utilities;
-using Remotion.NullableValueTypes;
-using Remotion.Web;
-using Remotion.Web.UI;
-using Remotion.Utilities;
-using Remotion.Globalization;
-using Remotion.ObjectBinding;
+using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
 namespace OBWTest
 {
 
 public class TestForm : Page
 {
-  protected System.Web.UI.WebControls.Button PostBackButton;
-  protected Remotion.Web.UI.Controls.LazyContainer LazyContainer;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue TextField;
-  protected System.Web.UI.WebControls.TextBox TextBox1;
-  protected System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
-  protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Remotion.Web.UI.Controls.FormGridManager fgm;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue field;
-  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected Button PostBackButton;
+  protected LazyContainer LazyContainer;
+  protected BocTextValue TextField;
+  protected TextBox TextBox1;
+  protected RequiredFieldValidator RequiredFieldValidator1;
+  protected HtmlTable FormGrid;
+  protected FormGridManager fgm;
+  protected BocTextValue field;
+  protected HtmlHeadContents HtmlHeadContents;
 
 	#region Web Form Designer generated code
 
@@ -75,7 +59,7 @@ public class TestForm : Page
     base.Validate ();
   }
 
-  private void PostBackButton_Click(object sender, System.EventArgs e)
+  private void PostBackButton_Click(object sender, EventArgs e)
   {
   
   }

@@ -2,7 +2,6 @@ using System;
 using System.Data;
 using System.Globalization;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.NullableValueTypes;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms
@@ -24,16 +23,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
         return DBNull.Value;
 
       Type type = value.GetType();
-
-      INaNullable naValueType = value as INaNullable;
-      if (naValueType != null)
-      {
-        if (!naValueType.IsNull)
-          return naValueType.Value;
-        else
-          return DBNull.Value;
-      }
-
       if (type.IsEnum)
         return Convert.ChangeType (value, Enum.GetUnderlyingType (type), CultureInfo.InvariantCulture);
 

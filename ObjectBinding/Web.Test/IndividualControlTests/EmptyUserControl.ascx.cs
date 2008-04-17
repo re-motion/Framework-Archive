@@ -1,23 +1,16 @@
 using System;
-using System.Web;
-using System.Web.UI.WebControls;
-
-using Remotion.ObjectBinding;
-
+using System.Web.UI.HtmlControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Utilities;
-using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
 
 public class EmptyUserControl : BaseUserControl
 {
-  protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected HtmlGenericControl NonVisualControls;
+  protected FormGridManager FormGridManager;
+  protected BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {

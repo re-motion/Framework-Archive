@@ -9,18 +9,18 @@ namespace OBWTest
 {
   public class SingleTestTreeView : SingleBocTestBasePage
   {
-    protected System.Web.UI.WebControls.Label TreeViewLabel;
-    protected System.Web.UI.WebControls.Button PostBackButton;
-    protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-    protected Remotion.Web.UI.Controls.WebTreeView WebTreeView;
+    protected Label TreeViewLabel;
+    protected Button PostBackButton;
+    protected FormGridManager FormGridManager;
+    protected BindableObjectDataSourceControl CurrentObject;
+    protected WebTreeView WebTreeView;
     protected PersonTreeView PersonTreeView;
     protected PersonTreeView PersonTreeViewWithMenus;
-    protected System.Web.UI.WebControls.Button RefreshPesonTreeViewButton;
-    protected System.Web.UI.WebControls.Button Node332Button;
-    protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+    protected Button RefreshPesonTreeViewButton;
+    protected Button Node332Button;
+    protected HtmlHeadContents HtmlHeadContents;
 
-    private void Page_Load (object sender, System.EventArgs e)
+    private void Page_Load (object sender, EventArgs e)
     {
       Guid personID = new Guid (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
       Person person = Person.GetObject (personID);
@@ -120,34 +120,34 @@ namespace OBWTest
     /// </summary>
     private void InitializeComponent ()
     {
-      PersonTreeView.Click += new Remotion.ObjectBinding.Web.UI.Controls.BocTreeNodeClickEventHandler (PersonTreeView_Click);
-      PersonTreeView.SelectionChanged += new Remotion.ObjectBinding.Web.UI.Controls.BocTreeNodeEventHandler (PersonTreeView_SelectionChanged);
-      RefreshPesonTreeViewButton.Click += new System.EventHandler (RefreshPesonTreeViewButton_Click);
-      WebTreeView.Click += new Remotion.Web.UI.Controls.WebTreeNodeClickEventHandler (TreeView_Click);
-      Node332Button.Click += new System.EventHandler (Node332Button_Click);
-      Load += new System.EventHandler (Page_Load);
+      PersonTreeView.Click += new BocTreeNodeClickEventHandler (PersonTreeView_Click);
+      PersonTreeView.SelectionChanged += new BocTreeNodeEventHandler (PersonTreeView_SelectionChanged);
+      RefreshPesonTreeViewButton.Click += new EventHandler (RefreshPesonTreeViewButton_Click);
+      WebTreeView.Click += new WebTreeNodeClickEventHandler (TreeView_Click);
+      Node332Button.Click += new EventHandler (Node332Button_Click);
+      Load += new EventHandler (Page_Load);
     }
 
-    private void TreeView_Click (object sender, Remotion.Web.UI.Controls.WebTreeNodeClickEventArgs e)
+    private void TreeView_Click (object sender, WebTreeNodeClickEventArgs e)
     {
       TreeViewLabel.Text = "Node = " + e.Node.Text;
     }
 
-    private void PersonTreeView_Click (object sender, Remotion.ObjectBinding.Web.UI.Controls.BocTreeNodeClickEventArgs e)
+    private void PersonTreeView_Click (object sender, BocTreeNodeClickEventArgs e)
     {
       TreeViewLabel.Text = "Node = " + e.Node.Text;
     }
 
-    private void RefreshPesonTreeViewButton_Click (object sender, System.EventArgs e)
+    private void RefreshPesonTreeViewButton_Click (object sender, EventArgs e)
     {
       PersonTreeView.RefreshTreeNodes();
     }
 
-    private void PersonTreeView_SelectionChanged (object sender, Remotion.ObjectBinding.Web.UI.Controls.BocTreeNodeEventArgs e)
+    private void PersonTreeView_SelectionChanged (object sender, BocTreeNodeEventArgs e)
     {
     }
 
-    private void Node332Button_Click (object sender, System.EventArgs e)
+    private void Node332Button_Click (object sender, EventArgs e)
     {
       WebTreeNode node3 = (WebTreeNode) WebTreeView.Nodes[3];
       node3.EvaluateExpand();

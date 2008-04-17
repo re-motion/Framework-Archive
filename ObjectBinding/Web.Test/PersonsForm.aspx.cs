@@ -1,21 +1,10 @@
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Web;
-using System.Web.SessionState;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
-using System.Text;
-using Remotion.ObjectBinding.Sample;
-using Remotion.Web.UI.Controls;
-using Remotion.Web.Utilities;
-using Remotion.NullableValueTypes;
-using Remotion.Utilities;
-using Remotion.Web.ExecutionEngine;
+using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
 
 namespace OBWTest
@@ -23,14 +12,14 @@ namespace OBWTest
 
 public class PersonsForm : SingleBocTestWxeBasePage
 {
-  protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocList PersonList;
-  protected System.Web.UI.WebControls.Button PostBackButton;
+  protected HtmlTable FormGrid;
+  protected FormGridManager FormGridManager;
+  protected BindableObjectDataSourceControl CurrentObject;
+  protected HtmlHeadContents HtmlHeadContents;
+  protected BocList PersonList;
+  protected Button PostBackButton;
 
-	private void Page_Load(object sender, System.EventArgs e)
+	private void Page_Load(object sender, EventArgs e)
 	{
     PersonList.Value = (IBusinessObject[]) Variables["objects"];
   }

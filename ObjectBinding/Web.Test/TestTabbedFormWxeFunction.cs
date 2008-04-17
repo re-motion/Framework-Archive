@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.Serialization;
-
 using Remotion.ObjectBinding.Sample;
 using Remotion.Web.ExecutionEngine;
 

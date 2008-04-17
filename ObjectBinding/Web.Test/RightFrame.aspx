@@ -1,4 +1,5 @@
-<%@ Page language="c#" Codebehind="RightFrame.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.RightFrame" %>
+<%@ Page language="c#" Codebehind="RightFrame.aspx.cs" AutoEventWireup="false" Inherits="RightFrame" %>
+<%@ Import namespace="OBWTest"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" > 
 
 <html>

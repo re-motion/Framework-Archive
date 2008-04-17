@@ -11,7 +11,7 @@
   <tr>
     <td></td>
     <td><remotion:bocenumvalue id=GenderField runat="server" PropertyIdentifier="Gender" datasourcecontrol="CurrentObject" nullitemerrormessage="Eingabe erforderlich">
-<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" >
 </ListControlStyle>
 </remotion:bocenumvalue></td>
     <td>
@@ -20,7 +20,7 @@
   <tr>
     <td></td>
     <td><remotion:bocenumvalue id=ReadOnlyGenderField runat="server" PropertyIdentifier="Gender" datasourcecontrol="CurrentObject" ReadOnly="True" Required="True" width="150px">
-<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" >
 </ListControlStyle>
 </remotion:bocenumvalue></td>
     <td>
@@ -29,7 +29,7 @@
   <tr>
     <td></td>
     <td><remotion:bocenumvalue id=MarriageStatusField runat="server" PropertyIdentifier="MarriageStatus" datasourcecontrol="CurrentObject" required="False">
-<listcontrolstyle radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle radiobuttonlistrepeatdirection="Horizontal" >
 </ListControlStyle>
             </remotion:bocenumvalue></td>
     <td>
@@ -38,7 +38,7 @@
   <tr>
     <td></td>
     <td><remotion:bocenumvalue id=UnboundMarriageStatusField runat="server" >
-<listcontrolstyle listboxrows="2" controltype="ListBox" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle listboxrows="2" controltype="ListBox" >
 </ListControlStyle>
             </remotion:bocenumvalue></td>
     <td>
@@ -48,8 +48,7 @@
   <tr>
     <td></td>
     <td><remotion:bocenumvalue id=UnboundReadOnlyMarriageStatusField runat="server" ReadOnly="True">
-              <listcontrolstyle autopostback="" listboxrows="" radionbuttonlistrepeatlayout="Table" controltype="ListBox"
-                radiobuttonlistcellspacing="" radiobuttonlistcellpadding="" radiobuttonlistrepeatcolumns=""></listcontrolstyle>
+              <listcontrolstyle radionbuttonlistrepeatlayout="Table" controltype="ListBox"></listcontrolstyle>
             </remotion:bocenumvalue></td>
     <td>
       <p>unbound, value set, read only</p></td>
@@ -57,14 +56,14 @@
   <tr>
     <td></td>
     <td><remotion:bocenumvalue id=DeceasedAsEnumField runat="server" PropertyIdentifier="Deceased" datasourcecontrol="CurrentObject" required="False">
-              <listcontrolstyle radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding=""></ListControlStyle>
+              <listcontrolstyle radiobuttonlistrepeatdirection="Horizontal"></ListControlStyle>
             </remotion:bocenumvalue></td>
     <td>deceased (bool) as enum</td>
     <td style="WIDTH: 20%"><asp:label id=DeceasedAsEnumFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td></td>
     <td><remotion:bocenumvalue id=DisabledGenderField runat="server" PropertyIdentifier="Gender" datasourcecontrol="CurrentObject" nullitemerrormessage="Eingabe erforderlich" enabled=false>
-<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
 </ListControlStyle>
 </remotion:bocenumvalue></td>
     <td>
@@ -73,7 +72,7 @@
   <tr>
     <td></td>
     <td><remotion:bocenumvalue id=DisabledReadOnlyGenderField runat="server" PropertyIdentifier="Gender" datasourcecontrol="CurrentObject" ReadOnly="True" Required="True" enabled=false>
-<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
 </ListControlStyle>
 </remotion:bocenumvalue></td>
     <td>
@@ -82,8 +81,7 @@
   <tr>
     <td></td>
     <td><remotion:bocenumvalue id=DisabledMarriageStatusField runat="server" PropertyIdentifier="MarriageStatus" datasourcecontrol="CurrentObject" required="False" enabled=false>
-              <listcontrolstyle autopostback="" listboxrows="" radionbuttonlistrepeatlayout="Table" radiobuttonlistrepeatdirection="Horizontal"
-                radiobuttonlistcellspacing="" radiobuttonlistcellpadding="" radiobuttonlistrepeatcolumns=""></listcontrolstyle>
+              <listcontrolstyle radionbuttonlistrepeatlayout="Table" radiobuttonlistrepeatdirection="Horizontal"></listcontrolstyle>
             </remotion:bocenumvalue></td>
     <td>
       <p>disabled, bound, drop-down, required=false</p></td>
@@ -101,8 +99,7 @@
   <tr>
     <td></td>
     <td><remotion:bocenumvalue id=DisabledUnboundReadOnlyMarriageStatusField runat="server" ReadOnly="True" enabled=false>
-              <listcontrolstyle autopostback="" listboxrows="" radionbuttonlistrepeatlayout="Table" controltype="ListBox"
-                radiobuttonlistcellspacing="" radiobuttonlistcellpadding="" radiobuttonlistrepeatcolumns=""></listcontrolstyle>
+              <listcontrolstyle radionbuttonlistrepeatlayout="Table" controltype="ListBox"></listcontrolstyle>
             </remotion:bocenumvalue></td>
     <td>
       <p>disabled, unbound, value set, read only</p></td>

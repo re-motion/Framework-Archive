@@ -1,5 +1,4 @@
 using System;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure;
@@ -50,12 +49,12 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       base.OnLoad (e);
 
       if (CurrentFunction.Position != null)
-        PositionField.ReadOnly = NaBoolean.True;
+        PositionField.ReadOnly = true;
       else
         FillPositionField ();
 
       if (CurrentFunction.GroupType != null)
-        GroupTypeField.ReadOnly = NaBoolean.True;
+        GroupTypeField.ReadOnly = true;
       else
         FillGroupTypeField ();
     }

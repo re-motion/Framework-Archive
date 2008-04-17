@@ -1,19 +1,11 @@
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Web;
-using System.Web.SessionState;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 
 namespace OBWTest
 {
-public class ClientFormExpired : System.Web.UI.Page
+public class ClientFormExpired : Page
 {
-	private void Page_Load(object sender, System.EventArgs e)
+	private void Page_Load(object sender, EventArgs e)
 	{
 		// Put user code to initialize the page here
 	}

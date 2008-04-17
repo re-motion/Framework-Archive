@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Specialized;
 using NUnit.Framework;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
@@ -192,7 +191,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocLis
     protected object CreateControlState (
         object baseControlState,
         bool isListEditModeActive,
-        NaInt32 editableRowIndex,
+        int? editableRowIndex,
         bool isEditNewRow,
         EditableRowIDProvider rowIDProvider)
     {

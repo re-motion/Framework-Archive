@@ -95,6 +95,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallContextSingleton.cs" />
+    <Compile Include="NullableValueTypes\Exceptions.cs" />
+    <Compile Include="NullableValueTypes\INaNullable.cs" />
+    <Compile Include="NullableValueTypes\NaBoolean.cs" />
+    <Compile Include="NullableValueTypes\NaBooleanConverter.cs" />
+    <Compile Include="NullableValueTypes\NaByte.cs" />
+    <Compile Include="NullableValueTypes\NaByteConverter.cs" />
+    <Compile Include="NullableValueTypes\NaDateTime.cs" />
+    <Compile Include="NullableValueTypes\NaDateTimeConverter.cs" />
+    <Compile Include="NullableValueTypes\NaDecimal.cs" />
+    <Compile Include="NullableValueTypes\NaDecimalConverter.cs" />
+    <Compile Include="NullableValueTypes\NaDouble.cs" />
+    <Compile Include="NullableValueTypes\NaDoubleConverter.cs" />
+    <Compile Include="NullableValueTypes\NaGuid.cs" />
+    <Compile Include="NullableValueTypes\NaGuidConverter.cs" />
+    <Compile Include="NullableValueTypes\NaInt16.cs" />
+    <Compile Include="NullableValueTypes\NaInt16Converter.cs" />
+    <Compile Include="NullableValueTypes\NaInt32.cs" />
+    <Compile Include="NullableValueTypes\NaInt32Converter.cs" />
+    <Compile Include="NullableValueTypes\NaInt64.cs" />
+    <Compile Include="NullableValueTypes\NaInt64Converter.cs" />
+    <Compile Include="NullableValueTypes\NaSingle.cs" />
+    <Compile Include="NullableValueTypes\NaSingleConverter.cs" />
+    <Compile Include="NullableValueTypes\NaTypeUtility.cs" />
     <Compile Include="Reflection\CodeGeneration\CustomClassEmitter.cs" />
     <Compile Include="Reflection\CodeGeneration\CustomEventEmitter.cs" />
     <Compile Include="Reflection\CodeGeneration\CustomMethodEmitter.cs" />
@@ -397,75 +420,6 @@
     <Compile Include="Globalization\ResourceManagerWrapper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="NullableValueTypes\Exceptions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\INaNullable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaBoolean.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaBooleanConverter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaByte.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaByteConverter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaDateTime.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaDateTimeConverter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaDecimal.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaDecimalConverter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaDouble.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaDoubleConverter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaGuid.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaGuidConverter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaInt16.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaInt16Converter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaInt32.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaInt32Converter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaInt64.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaInt64Converter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaSingle.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaSingleConverter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaTypeUtility.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ObjectBinding\BusinessObject.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -578,6 +532,7 @@
     <Compile Include="Utilities\EqualityUtility.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
     <Compile Include="Utilities\IConsoleManager.cs" />
+    <Compile Include="Utilities\NullableTypeUtility.cs" />
     <Compile Include="Utilities\ReflectionEmitUtility.cs" />
     <Compile Include="Utilities\TypeConverterResult.cs" />
     <Compile Include="Utilities\TypeConverterType.cs" />

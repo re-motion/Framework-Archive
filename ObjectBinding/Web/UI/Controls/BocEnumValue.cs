@@ -6,7 +6,6 @@ using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
-using Remotion.NullableValueTypes;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -102,7 +101,7 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     if (_listControl == null)
     {
       _listControl = new DropDownList();
-      ReadOnly = NaBoolean.True;
+      ReadOnly = true;
     }
     _listControl.ID = ID + "_Boc_ListControl";
     _listControl.EnableViewState = false;
@@ -188,7 +187,7 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   {
     if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
     {
-      if (ListControlStyle.AutoPostBack)
+      if (ListControlStyle.AutoPostBack == true)
         WcagHelper.Instance.HandleWarning (1, this, "ListControlStyle.AutoPostBack");
 
       if (ListControl.AutoPostBack)

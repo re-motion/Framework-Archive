@@ -1,7 +1,5 @@
 using System;
 using System.Web;
-using System.Web.SessionState;
-
 using Remotion.ObjectBinding.Sample;
 using Remotion.Web.ExecutionEngine;
 

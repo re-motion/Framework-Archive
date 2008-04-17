@@ -1,4 +1,5 @@
-<%@ Page language="c#" Codebehind="LeftFrame.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.LeftFrame" %>
+<%@ Page language="c#" Codebehind="LeftFrame.aspx.cs" AutoEventWireup="false" Inherits="LeftFrame" %>
+<%@ Import namespace="OBWTest"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" > 
 
 <html>

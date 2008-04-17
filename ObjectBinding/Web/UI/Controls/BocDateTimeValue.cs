@@ -6,7 +6,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
-using Remotion.NullableValueTypes;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
@@ -246,13 +245,13 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
   {
     if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
     {
-      if (DateTextBoxStyle.AutoPostBack)
+      if (DateTextBoxStyle.AutoPostBack == true)
         WcagHelper.Instance.HandleWarning (1, this, "DateTextBoxStyle.AutoPostBack");
 
-      if (TimeTextBoxStyle.AutoPostBack)
+      if (TimeTextBoxStyle.AutoPostBack == true)
         WcagHelper.Instance.HandleWarning (1, this, "TimeTextBoxStyle.AutoPostBack");
 
-      if (DateTimeTextBoxStyle.AutoPostBack)
+      if (DateTimeTextBoxStyle.AutoPostBack == true)
         WcagHelper.Instance.HandleWarning (1, this, "DateTimeTextBoxStyle.AutoPostBack");
 
       if (DateTextBox.AutoPostBack)

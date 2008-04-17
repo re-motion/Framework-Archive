@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using Remotion.Data.DomainObjects;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
@@ -100,9 +99,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       base.OnPreRender (e);
 
       if (_isCurrentTenantFieldReadOnly && Tenant.Current != null)
-        CurrentTenantField.ReadOnly = NaBooleanEnum.True;
+        CurrentTenantField.ReadOnly = true;
       else
-        CurrentTenantField.ReadOnly = NaBooleanEnum.False;
+        CurrentTenantField.ReadOnly = false;
 
       User user = ApplicationInstance.LoadUserFromSession ();
       CurrentUserField.LoadUnboundValue (user, false);

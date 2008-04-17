@@ -19,7 +19,7 @@ beachten!</FONT></STRONG></P>
   <TR>
     <TD></TD>
     <TD><remotion:bocenumvalue id="BocEnumValue2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="BooleanProperty">
-        <ListControlStyle RadioButtonListCellPadding="" RadioButtonListCellSpacing=""></ListControlStyle>
+        <ListControlStyle></ListControlStyle>
       </remotion:bocenumvalue></TD>
   </TR>
   <TR>

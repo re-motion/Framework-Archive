@@ -7,7 +7,6 @@ using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Remotion.Reflection.CodeGeneration.DPExtensions;
 using Remotion.Collections;
-using Remotion.Reflection.CodeGeneration.DPExtensions;
 using Remotion.Utilities;
 
 namespace Remotion.Reflection.CodeGeneration

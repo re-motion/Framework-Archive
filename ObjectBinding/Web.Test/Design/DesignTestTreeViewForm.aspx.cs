@@ -1,37 +1,19 @@
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
-using System.Text;
-using System.Reflection;
-using Remotion.ObjectBinding.Sample;
-using Remotion.Web.UI.Controls;
-using Remotion.Web.Utilities;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding;
-
+using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Globalization;
-using Remotion.Web.UI.Globalization;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-using System.Diagnostics;
+using Remotion.Web.UI.Controls;
 
 namespace OBWTest.Design
 {
 public class DesignTestTreeViewForm : DesignTestWxeBasePage
 {
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-  protected Remotion.Web.UI.Controls.WebButton PostBackButton;
+  protected BindableObjectDataSourceControl CurrentObject;
+  protected WebButton PostBackButton;
   protected PersonTreeView PersonTreeView;
-  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected HtmlHeadContents HtmlHeadContents;
 
-  private void Page_Load(object sender, System.EventArgs e)
+  private void Page_Load(object sender, EventArgs e)
 	{
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
     Person person = Person.GetObject (personID);

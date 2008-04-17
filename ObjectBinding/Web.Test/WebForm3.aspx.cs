@@ -1,35 +1,28 @@
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Web;
-using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 using Remotion.ObjectBinding;
-
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
 namespace OBWTest
 {
 	/// <summary>
 	/// Summary description for WebForm3.
 	/// </summary>
-	public class WebForm3: System.Web.UI.Page
+	public class WebForm3: Page
 	{
-    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-    protected Remotion.Web.UI.Controls.SmartLabel BocPropertyLabel1;
-    protected System.Web.UI.WebControls.Button SaveButton;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue HeightField;
-    protected Remotion.Web.UI.Controls.SmartLabel BocPropertyLabel2;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
-    protected System.Web.UI.WebControls.RadioButtonList RadioButtonList1;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl reflectionBusinessObjectDataSource1;
+    protected BocTextValue FirstNameField;
+    protected SmartLabel BocPropertyLabel1;
+    protected Button SaveButton;
+    protected BocTextValue HeightField;
+    protected SmartLabel BocPropertyLabel2;
+    protected BocTextValueValidator BocTextValueValidator1;
+    protected RadioButtonList RadioButtonList1;
+    protected BindableObjectDataSourceControl reflectionBusinessObjectDataSource1;
   
-		private void Page_Load (object sender, System.EventArgs e)
+		private void Page_Load (object sender, EventArgs e)
 		{
       Person p = Person.CreateObject();
       p.FirstName = "Hugo";
@@ -71,7 +64,7 @@ namespace OBWTest
     }
 		#endregion
 
-    private void SaveButton_Click (object sender, System.EventArgs e)
+    private void SaveButton_Click (object sender, EventArgs e)
     {
       Page.Validate();
       if (IsValid)

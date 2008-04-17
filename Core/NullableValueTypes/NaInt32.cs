@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Remotion.Utilities;
 
 namespace Remotion.NullableValueTypes
 {

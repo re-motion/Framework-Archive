@@ -1,15 +1,7 @@
 using System;
-using System.Web;
-using System.Web.UI.WebControls;
-
 using Remotion.ObjectBinding;
-
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Utilities;
-using Remotion.Web.UI;
-using Remotion.Web.UI.Controls;
-using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -20,8 +12,8 @@ namespace OBWTest.IndividualControlTests
     {
       base.RegisterEventHandlers ();
 
-      this.CVTestSetNullButton.Click += new System.EventHandler (this.CVTestSetNullButton_Click);
-      this.CVTestSetNewValueButton.Click += new System.EventHandler (this.CVTestSetNewValueButton_Click);
+      this.CVTestSetNullButton.Click += new EventHandler (this.CVTestSetNullButton_Click);
+      this.CVTestSetNewValueButton.Click += new EventHandler (this.CVTestSetNewValueButton_Click);
     }
 
     public override IBusinessObjectDataSourceControl DataSource
@@ -35,7 +27,7 @@ namespace OBWTest.IndividualControlTests
 
       Person person = (Person) CurrentObject.BusinessObject;
 
-      UnboundCVField.Property = (Remotion.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("CVString");
+      UnboundCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("CVString");
       UnboundCVField.LoadUnboundValue (person.CVString, IsPostBack);
     }
 
@@ -44,12 +36,12 @@ namespace OBWTest.IndividualControlTests
       base.OnPreRender (e);
     }
 
-    private void CVTestSetNullButton_Click (object sender, System.EventArgs e)
+    private void CVTestSetNullButton_Click (object sender, EventArgs e)
     {
       CVField.Value = null;
     }
 
-    private void CVTestSetNewValueButton_Click (object sender, System.EventArgs e)
+    private void CVTestSetNewValueButton_Click (object sender, EventArgs e)
     {
       CVField.Value = "Foo<br/>Bar";
     }

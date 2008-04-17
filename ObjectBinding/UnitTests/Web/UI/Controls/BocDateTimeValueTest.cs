@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.UnitTests.Web.Domain;
 using Remotion.Web.UnitTests.Configuration;
@@ -144,7 +143,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [Test]
     public void GetTrackedClientIDsInReadOnlyMode()
     {
-      _bocDateTimeValue.ReadOnly = NaBoolean.True;
+      _bocDateTimeValue.ReadOnly = true;
       string[] actual = _bocDateTimeValue.GetTrackedClientIDs();
       Assert.IsNotNull (actual);
       Assert.AreEqual (0, actual.Length);
@@ -153,7 +152,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [Test]
     public void GetTrackedClientIDsInEditModeAndValueTypeIsDateTime()
     {
-      _bocDateTimeValue.ReadOnly = NaBoolean.False;
+      _bocDateTimeValue.ReadOnly = false;
       _bocDateTimeValue.ValueType = BocDateTimeValueType.DateTime;
       string[] actual = _bocDateTimeValue.GetTrackedClientIDs();
       Assert.IsNotNull (actual);
@@ -165,7 +164,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [Test]
     public void GetTrackedClientIDsInEditModeAndValueTypeIsDate()
     {
-      _bocDateTimeValue.ReadOnly = NaBoolean.False;
+      _bocDateTimeValue.ReadOnly = false;
       _bocDateTimeValue.ValueType = BocDateTimeValueType.Date;
       string[] actual = _bocDateTimeValue.GetTrackedClientIDs();
       Assert.IsNotNull (actual);
@@ -176,7 +175,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [Test]
     public void GetTrackedClientIDsInEditModeAndValueTypeIsUndefined()
     {
-      _bocDateTimeValue.ReadOnly = NaBoolean.False;
+      _bocDateTimeValue.ReadOnly = false;
       _bocDateTimeValue.ValueType = BocDateTimeValueType.Undefined;
       string[] actual = _bocDateTimeValue.GetTrackedClientIDs();
       Assert.IsNotNull (actual);

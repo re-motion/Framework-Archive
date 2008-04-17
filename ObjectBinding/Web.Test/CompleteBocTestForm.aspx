@@ -37,7 +37,7 @@
   <tr>
     <td style="HEIGHT: 18px"></td>
     <td style="HEIGHT: 18px"><remotion:bocenumvalue id=EnumField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="MarriageStatus" errormessage="Fehler">
-<listcontrolstyle autopostback="True" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle autopostback="True">
 </ListControlStyle></remotion:bocenumvalue></td></tr>
   <tr>
     <td></td>

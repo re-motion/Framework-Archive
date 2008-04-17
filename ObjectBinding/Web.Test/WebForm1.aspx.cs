@@ -1,47 +1,40 @@
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Web;
-using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
-using Remotion.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
 
 namespace OBWTest
 {
 
-public class WebForm1 : System.Web.UI.Page
+public class WebForm1 : Page
 {
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Remotion.Web.UI.Controls.SmartLabel BocPropertyLabel1;
-  protected System.Web.UI.WebControls.Button SaveButton;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Remotion.Web.UI.Controls.SmartLabel BocPropertyLabel2;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue DateOfBirthField;
-  protected Remotion.Web.UI.Controls.SmartLabel BocPropertyLabel3;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue HeightField;
-  protected Remotion.Web.UI.Controls.SmartLabel BocPropertyLabel4;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator2;
-  protected System.Web.UI.WebControls.Label Label1;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue GenderField;
-  protected Remotion.Web.UI.Controls.SmartLabel BocPropertyLabel5;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField;
-  protected Remotion.Web.UI.Controls.SmartLabel SmartLabel1;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue PartnerFirstNameField;
-  protected System.Web.UI.WebControls.Label Label2;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObjectDataSource;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BusinessObjectReferenceDataSourceControl PartnerDataSource;
-  protected Remotion.Web.UI.Controls.SmartLabel SmartLabel2;
+  protected BocTextValue FirstNameField;
+  protected SmartLabel BocPropertyLabel1;
+  protected Button SaveButton;
+  protected BocTextValue LastNameField;
+  protected SmartLabel BocPropertyLabel2;
+  protected BocTextValue DateOfBirthField;
+  protected SmartLabel BocPropertyLabel3;
+  protected BocTextValueValidator BocTextValueValidator1;
+  protected BocTextValue HeightField;
+  protected SmartLabel BocPropertyLabel4;
+  protected BocTextValueValidator BocTextValueValidator2;
+  protected Label Label1;
+  protected BocEnumValue GenderField;
+  protected SmartLabel BocPropertyLabel5;
+  protected BocEnumValue MarriageStatusField;
+  protected SmartLabel SmartLabel1;
+  protected BocTextValue PartnerFirstNameField;
+  protected Label Label2;
+  protected BindableObjectDataSourceControl CurrentObjectDataSource;
+  protected BusinessObjectReferenceDataSourceControl PartnerDataSource;
+  protected SmartLabel SmartLabel2;
 
-	private void Page_Load(object sender, System.EventArgs e)
+	private void Page_Load(object sender, EventArgs e)
 	{
     XmlReflectionBusinessObjectStorageProvider.Current.Reset ();
     Guid personID = new Guid (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
@@ -96,7 +89,7 @@ public class WebForm1 : System.Web.UI.Page
   }
 	#endregion
 
-  private void SaveButton_Click (object sender, System.EventArgs e)
+  private void SaveButton_Click (object sender, EventArgs e)
   {
     if (Page.IsValid)
     {

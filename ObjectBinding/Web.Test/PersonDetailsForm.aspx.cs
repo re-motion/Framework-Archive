@@ -1,21 +1,11 @@
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Drawing;
-using System.Web;
-using System.Web.SessionState;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
-using System.Text;
-using Remotion.ObjectBinding.Sample;
-using Remotion.Web.UI.Controls;
-using Remotion.Web.Utilities;
-using Remotion.NullableValueTypes;
-using Remotion.Utilities;
-using Remotion.Web.ExecutionEngine;
+using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
 
 
 namespace OBWTest
@@ -24,24 +14,24 @@ namespace OBWTest
 public class PersonDetailsForm : SingleBocTestWxeBasePage
 
 {
-  protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected System.Web.UI.WebControls.Button SaveButton;
-  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue GenderField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue BirthdayField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue DeceasedField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue CVField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocList JobList;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BusinessObjectReferenceDataSourceControl PartnerDataSource;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue ParterFirstNameField;
-  protected System.Web.UI.WebControls.Button PostBackButton;
+  protected HtmlTable FormGrid;
+  protected Button SaveButton;
+  protected FormGridManager FormGridManager;
+  protected BocTextValue FirstNameField;
+  protected BocEnumValue GenderField;
+  protected BocReferenceValue PartnerField;
+  protected BocDateTimeValue BirthdayField;
+  protected BocTextValue LastNameField;
+  protected BindableObjectDataSourceControl CurrentObject;
+  protected HtmlHeadContents HtmlHeadContents;
+  protected BocBooleanValue DeceasedField;
+  protected BocMultilineTextValue CVField;
+  protected BocList JobList;
+  protected BusinessObjectReferenceDataSourceControl PartnerDataSource;
+  protected BocTextValue ParterFirstNameField;
+  protected Button PostBackButton;
 
-	private void Page_Load(object sender, System.EventArgs e)
+	private void Page_Load(object sender, EventArgs e)
 	{
     string id = (string) Variables["id"];
     Guid personID = Guid.Empty;
@@ -228,7 +218,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
   }
 	#endregion
 
-  private void SaveButton_Click(object sender, System.EventArgs e)
+  private void SaveButton_Click(object sender, EventArgs e)
   {
     bool isValid = FormGridManager.Validate();
     if (isValid)
@@ -242,7 +232,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     XmlReflectionBusinessObjectStorageProvider.Current.Reset();
   }
 
-  private void PartnerField_SelectionChanged(object sender, System.EventArgs e)
+  private void PartnerField_SelectionChanged(object sender, EventArgs e)
   {
     PartnerField.SaveValue (false);
     PartnerDataSource.LoadValue (false);

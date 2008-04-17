@@ -83,6 +83,6 @@
 <div style="WIDTH: 100%;TEXT-ALIGN: right">
 WAI Conformance Level: 
 <remotion:BocEnumValue id="WaiConformanceLevelField" runat="server">
-<listcontrolstyle autopostback="True" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle autopostback="True">
 </ListControlStyle></remotion:BocEnumValue>
 </div>

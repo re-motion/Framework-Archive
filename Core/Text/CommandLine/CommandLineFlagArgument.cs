@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using Remotion.NullableValueTypes;
 
 namespace Remotion.Text.CommandLine
 {
@@ -9,12 +8,12 @@ public class CommandLineFlagArgument: CommandLineArgument
 {
   // fields
 
-  private NaBoolean _defaultValue;
-  private NaBoolean _value;
+  private readonly bool? _defaultValue;
+  private bool? _value;
 
   // construction and disposal
 
-  public CommandLineFlagArgument (string name, NaBoolean defaultValue)
+  public CommandLineFlagArgument (string name, bool? defaultValue)
     : base (name, true)
   {
     _defaultValue = defaultValue;
@@ -23,12 +22,12 @@ public class CommandLineFlagArgument: CommandLineArgument
   public CommandLineFlagArgument (string name)
     : base (name, true)
   {
-    _defaultValue = NaBoolean.Null;
+    _defaultValue = null;
   }
 
   // properties and methods
 
-  public NaBoolean DefaultValue
+  public bool? DefaultValue
   {
     get { return _defaultValue; }
   }
@@ -40,15 +39,15 @@ public class CommandLineFlagArgument: CommandLineArgument
     switch (value)
     {
       case "": 
-        _value = NaBoolean.True;
+        _value = true;
         break;
 
       case "+":
-        _value = NaBoolean.True;
+        _value = true;
         break;
       
       case "-":
-        _value = NaBoolean.False;
+        _value = false;
         break;
 
       default:
@@ -64,19 +63,19 @@ public class CommandLineFlagArgument: CommandLineArgument
     get { return Value; }
   }
   
-  public NaBoolean Value
+  public bool? Value
   {
-    get { return _value.IsNull ? _defaultValue : _value; }
+    get { return _value ?? _defaultValue; }
   }
 
   public override void AppendSynopsis (StringBuilder sb)
   {
-    if (IsOptional && _defaultValue.IsFalse)
+    if (IsOptional && _defaultValue == false)
     {
       sb.Append (Parser.ArgumentDeclarationPrefix);
       sb.Append (Name);
     }
-    else if (IsOptional && _defaultValue.IsTrue)
+    else if (IsOptional && _defaultValue == true)
     {
       sb.Append (Parser.ArgumentDeclarationPrefix);
       sb.Append (Name);

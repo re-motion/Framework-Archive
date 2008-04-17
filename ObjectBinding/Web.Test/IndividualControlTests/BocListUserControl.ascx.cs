@@ -1,12 +1,9 @@
 using System;
-using System.Web;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-
 using Remotion.ObjectBinding;
-
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
 
@@ -16,24 +13,24 @@ namespace OBWTest.IndividualControlTests
 [WebMultiLingualResources ("OBWTest.Globalization.IndividualControlTests.BocListUserControl")]
 public class BocListUserControl : BaseUserControl
 {
-  protected System.Web.UI.HtmlControls.HtmlTable Table3;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocList JobList;
+  protected HtmlTable Table3;
+  protected BocTextValue FirstNameField;
+  protected BocTextValue LastNameField;
+  protected BocList JobList;
   protected TestBocList ChildrenList;
   protected TestBocList EmptyList;
-  protected System.Web.UI.WebControls.Button ChildrenListEndEditModeButton;
-  protected System.Web.UI.WebControls.Button ChildrenListAddAndEditButton;
-  protected System.Web.UI.WebControls.CheckBox ChildrenListEventCheckBox;
-  protected System.Web.UI.WebControls.Label ChildrenListEventArgsLabel;
-  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl EmptyDataSourceControl;
-  protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
+  protected Button ChildrenListEndEditModeButton;
+  protected Button ChildrenListAddAndEditButton;
+  protected CheckBox ChildrenListEventCheckBox;
+  protected Label ChildrenListEventArgsLabel;
+  protected FormGridManager FormGridManager;
+  protected BindableObjectDataSourceControl EmptyDataSourceControl;
+  protected HtmlTable FormGrid;
   protected TestBocListValidator EmptyListValidator;
   protected TestBocList Testboclist1;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocList AllColumnsList;
-  protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected BocList AllColumnsList;
+  protected HtmlGenericControl NonVisualControls;
+  protected BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
@@ -301,18 +298,18 @@ public class BocListUserControl : BaseUserControl
     }
   }
 
-  private void AddAndEditButton_Click(object sender, System.EventArgs e)
+  private void AddAndEditButton_Click(object sender, EventArgs e)
   {
     Person person = Person.CreateObject (Guid.NewGuid());
     ChildrenList.AddAndEditRow ((IBusinessObject) person);
   }
 
-  private void ChildrenListEndEditModeButton_Click(object sender, System.EventArgs e)
+  private void ChildrenListEndEditModeButton_Click(object sender, EventArgs e)
   {
     ChildrenList.EndRowEditMode (true);
   }
 
-  private void ChildrenList_ListItemCommandClick(object sender, Remotion.ObjectBinding.Web.UI.Controls.BocListItemCommandClickEventArgs e)
+  private void ChildrenList_ListItemCommandClick(object sender, BocListItemCommandClickEventArgs e)
   {
     ChildrenListEventCheckBox.Checked = true;
     ChildrenListEventArgsLabel.Text += string.Format ("ColumnID: {0}<br>", e.Column.ItemID);
@@ -324,12 +321,12 @@ public class BocListUserControl : BaseUserControl
       ChildrenList.SwitchRowIntoEditMode (e.ListIndex);
   }
 
-  private void ChildrenList_MenuItemClick(object sender, Remotion.Web.UI.Controls.WebMenuItemClickEventArgs e)
+  private void ChildrenList_MenuItemClick(object sender, WebMenuItemClickEventArgs e)
   {
     ChildrenListEventArgsLabel.Text = e.Item.ItemID;
   }
 
-  private void ChildrenList_DataRowRender(object sender, Remotion.ObjectBinding.Web.UI.Controls.BocListDataRowRenderEventArgs e)
+  private void ChildrenList_DataRowRender(object sender, BocListDataRowRenderEventArgs e)
   {
     if (e.ListIndex == 3)
       e.IsEditableRow = false;
@@ -351,12 +348,12 @@ public class BocListUserControl : BaseUserControl
   {
   }
 
-  private void ChildrenList_SortingOrderChanging(object sender, Remotion.ObjectBinding.Web.UI.Controls.BocListSortingOrderChangeEventArgs e)
+  private void ChildrenList_SortingOrderChanging(object sender, BocListSortingOrderChangeEventArgs e)
   {
   
   }
 
-  private void ChildrenList_SortingOrderChanged(object sender, Remotion.ObjectBinding.Web.UI.Controls.BocListSortingOrderChangeEventArgs e)
+  private void ChildrenList_SortingOrderChanged(object sender, BocListSortingOrderChangeEventArgs e)
   {
   
   }

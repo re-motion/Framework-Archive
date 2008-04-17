@@ -1,19 +1,9 @@
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Web;
-using System.Web.SessionState;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 using Remotion.ObjectBinding;
-
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.UI;
-using ObjectBoundRepeater=Remotion.ObjectBinding.Sample.ObjectBoundRepeater;
+using Remotion.Web.UI.Controls;
 
 namespace OBWTest
 {
@@ -23,12 +13,12 @@ namespace OBWTest
 public class RepeaterTest : SmartPage
 {
   protected BindableObjectDataSourceControl CurrentObject;
-  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected HtmlHeadContents HtmlHeadContents;
   protected ObjectBoundRepeater Repeater2;
   protected ObjectBoundRepeater Repeater3;
-  protected Remotion.Web.UI.Controls.WebButton SaveButton;
+  protected WebButton SaveButton;
 
-	private void Page_Load(object sender, System.EventArgs e)
+	private void Page_Load(object sender, EventArgs e)
 	{
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
     Person person = Person.GetObject (personID);
@@ -59,7 +49,7 @@ public class RepeaterTest : SmartPage
   }
 	#endregion
 
-  private void SaveButton_Click(object sender, System.EventArgs e)
+  private void SaveButton_Click(object sender, EventArgs e)
   {
     PrepareValidation();
     bool isValid = CurrentObject.Validate();

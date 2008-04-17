@@ -1,7 +1,6 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.NullableValueTypes;
 using Remotion.Text.CommandLine;
 
 namespace Remotion.UnitTests.Text.CommandLine
@@ -80,7 +79,7 @@ public class CommandLineParserTest
 
     Assert.AreEqual ("source", argSourceDir.Value);
     Assert.AreEqual ("dest", argDestinationDir.Value);
-    Assert.AreEqual (NaBoolean.False, argCopyBinary.Value);
+    Assert.AreEqual (false, argCopyBinary.Value);
     Assert.AreEqual (true, argEnumOption.HasValue);
     Assert.AreEqual (TestOption.yes, argEnumOption.Value);
   }
@@ -98,7 +97,7 @@ public class CommandLineParserTest
 
     Assert.AreEqual ("source", argSourceDir.Value);
     Assert.AreEqual (null, argDestinationDir.Value);
-    Assert.AreEqual (NaBoolean.True, argCopyBinary.Value);
+    Assert.AreEqual (true, argCopyBinary.Value);
     Assert.AreEqual (false, argEnumOption.HasValue);
   }
 
@@ -158,7 +157,7 @@ public class CommandLineParserTest
 
     Assert.AreEqual ("source", argSourceDir.Value);
     Assert.AreEqual ("dest", argDestinationDir.Value);
-    Assert.AreEqual (NaBoolean.False, argCopyBinary.Value);
+    Assert.AreEqual (false, argCopyBinary.Value);
     Assert.AreEqual (TestOption.yes, argEnumOption.Value);
   }
 
@@ -217,11 +216,11 @@ public class CommandLineParserTest
 
     intArg = new CommandLineInt32Argument (true);
     PrivateInvoke.InvokeNonPublicMethod (intArg, "SetStringValue", "32");
-    Assert.AreEqual ((NaInt32)32, intArg.Value);
+    Assert.AreEqual (32, intArg.Value);
 
     intArg = new CommandLineInt32Argument (true);
     PrivateInvoke.InvokeNonPublicMethod (intArg, "SetStringValue", " ");
-    Assert.AreEqual (NaInt32.Null, intArg.Value);
+    Assert.AreEqual (null, intArg.Value);
   }
 
   [Test]

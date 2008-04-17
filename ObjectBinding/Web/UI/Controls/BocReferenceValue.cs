@@ -7,7 +7,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Logging;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -107,13 +106,13 @@ public class BocReferenceValue:
 
   private bool _enableIcon = true;
   private string _select = String.Empty;
-  private NaBooleanEnum _enableSelectStatement = NaBooleanEnum.Undefined;
+  private bool? _enableSelectStatement = null;
 
   private DropDownMenu _optionsMenu;
   private string _optionsTitle;
   private bool _showOptionsMenu = true;
   private Unit _optionsMenuWidth = Unit.Empty;
-  private NaBoolean _hasValueEmbeddedInsideOptionsMenu = NaBoolean.Null;
+  private bool? _hasValueEmbeddedInsideOptionsMenu = null;
   private string[] _hiddenMenuItems = null;
 
   /// <summary> The command rendered for this reference value. </summary>
@@ -477,7 +476,7 @@ public class BocReferenceValue:
       if (hasPostBackCommand)
         WcagHelper.Instance.HandleError (1, this, "Command");
 
-      if (DropDownListStyle.AutoPostBack)
+      if (DropDownListStyle.AutoPostBack == true)
         WcagHelper.Instance.HandleWarning (1, this, "DropDownListStyle.AutoPostBack");
 
       if (DropDownList.AutoPostBack)
@@ -612,8 +611,8 @@ public class BocReferenceValue:
   {
     EvaluateWaiConformity();
 
-    if (   _hasValueEmbeddedInsideOptionsMenu.IsTrue && HasOptionsMenu
-        || _hasValueEmbeddedInsideOptionsMenu.IsNull && IsReadOnly && HasOptionsMenu)
+    if (   _hasValueEmbeddedInsideOptionsMenu == true && HasOptionsMenu
+        || _hasValueEmbeddedInsideOptionsMenu == null && IsReadOnly && HasOptionsMenu)
     {
       RenderContentsWithIntegratedOptionsMenu (writer);
     }
@@ -1048,7 +1047,7 @@ public class BocReferenceValue:
   ///     Uses the <see cref="Select"/> statement to query the <see cref="Property"/>'s 
   ///     <see cref="IBusinessObjectReferenceProperty.SearchAvailableObjects"/> method for the list contents.
   ///   </para><para>
-  ///     Only populates the list if <see cref="EnableSelectStatement"/> is not <see cref="NaBooleanEnum.False"/>.
+  ///     Only populates the list if <see cref="EnableSelectStatement"/> is not <see langword="false"/>.
   ///     Otherwise the list will be left empty.
   ///   </para>  
   /// </remarks>
@@ -1789,16 +1788,16 @@ public class BocReferenceValue:
 
   /// <summary> Gets or sets the flag that determines whether to evaluate the <see cref="Select"/> statement. </summary>
   /// <value> 
-  ///   <see cref="NaBooleanEnum.True"/> to evaluate the select statement. 
-  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.True"/>.
+  ///   <see langword="true"/> to evaluate the select statement. 
+  ///   Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
   /// </value>
   /// <remarks>
   ///   Use <see cref="IsSelectStatementEnabled"/> to evaluate this property.
   /// </remarks>
   [Description("The flag that determines whether to evaluate the Select statement. Undefined is interpreted as true.")]
   [Category ("Behavior")]
-  [DefaultValue (NaBooleanEnum.Undefined)]
-  public NaBooleanEnum EnableSelectStatement
+  [DefaultValue (typeof (bool?), "")]
+  public bool? EnableSelectStatement
   {
     get { return _enableSelectStatement; }
     set { _enableSelectStatement = value; }
@@ -1806,11 +1805,11 @@ public class BocReferenceValue:
 
   /// <summary> Gets the evaluated value for the <see cref="EnableSelectStatement"/> property. </summary>
   /// <value>
-  ///   <see langowrd="false"/> if <see cref="EnableSelectStatement"/> is <see cref="NaBooleanEnum.False"/>. 
+  ///   <see langowrd="false"/> if <see cref="EnableSelectStatement"/> is <see langword="false"/>. 
   /// </value>
   protected bool IsSelectStatementEnabled
   {
-    get { return _enableSelectStatement != NaBooleanEnum.False;}
+    get { return _enableSelectStatement != false;}
   }
 
   /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="OptionsMenu"/>. </summary>
@@ -1867,8 +1866,8 @@ public class BocReferenceValue:
   /// </value>
   [Category ("Menu")]
   [Description ("Determines whether to use the value as the options menu's head.")]
-  [DefaultValue (typeof (NaBoolean), "null")]
-  public NaBoolean HasValueEmbeddedInsideOptionsMenu
+  [DefaultValue (typeof (bool?), "")]
+  public bool? HasValueEmbeddedInsideOptionsMenu
   {
     get { return _hasValueEmbeddedInsideOptionsMenu; }
     set { _hasValueEmbeddedInsideOptionsMenu = value; }

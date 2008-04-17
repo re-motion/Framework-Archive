@@ -1,24 +1,23 @@
 using System;
 using System.Reflection;
-using System.Web.UI.WebControls;
-
-using Remotion.ObjectBinding;
+using System.Web.UI;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
-
+using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.Configuration;
+using Remotion.Web.UI.Controls;
 
 namespace OBWTest.UI
 {
 	/// <summary>
 	///		Summary description for NavigationTabs.
 	/// </summary>
-	public class NavigationTabs : System.Web.UI.UserControl
+	public class NavigationTabs : UserControl
 	{
-    protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue WaiConformanceLevelField;
-    protected Remotion.Web.UI.Controls.TabbedMenu TabbedMenu;
+    protected BocEnumValue WaiConformanceLevelField;
+    protected TabbedMenu TabbedMenu;
 
-		private void Page_Load(object sender, System.EventArgs e)
+		private void Page_Load(object sender, EventArgs e)
 		{
       Type itemType = typeof (WcagConfiguration);
       PropertyInfo propertyInfo = itemType.GetProperty ("ConformanceLevel");
@@ -30,7 +29,7 @@ namespace OBWTest.UI
       WaiConformanceLevelField.LoadUnboundValue (WebConfiguration.Current.Wcag.ConformanceLevel, IsPostBack);
 		}
 
-    private void WaiConformanceLevelField_SelectionChanged(object sender, System.EventArgs e)
+    private void WaiConformanceLevelField_SelectionChanged(object sender, EventArgs e)
     {
       WebConfiguration.Current.Wcag.ConformanceLevel = (WaiConformanceLevel) WaiConformanceLevelField.Value;
       WaiConformanceLevelField.IsDirty = false;

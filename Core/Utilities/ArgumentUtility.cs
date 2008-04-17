@@ -147,17 +147,16 @@ namespace Remotion.Utilities
     {
       if (actualValue == null)
       {
-        if (expectedType.IsValueType && Nullable.GetUnderlyingType (expectedType) == null)
-          throw new ArgumentTypeException (argumentName, expectedType, null);
-        else
+        if (NullableTypeUtility.IsNullableType_NoArgumentCheck (expectedType))
           return null;
+        else
+          throw new ArgumentTypeException (argumentName, expectedType, null);
       }
 
       if (!expectedType.IsInstanceOfType (actualValue))
         throw new ArgumentTypeException (argumentName, expectedType, actualValue.GetType ());
       return actualValue;
     }
-
 
     [Obsolete("Use CheckType<ValueType?> (...) instead.", true)]
 		public static TExpected? CheckValueType<TExpected> (string argumentName, object actualValue)

@@ -1,66 +1,62 @@
 using System;
-using System.Web;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-
 using Remotion.ObjectBinding;
-
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
 
 public class BocTextValueUserControl : BaseUserControl
 {
-  protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected System.Web.UI.WebControls.Label FirstNameFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue ReadOnlyFirstNameField;
-  protected System.Web.UI.WebControls.Label ReadOnlyFirstNameFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue UnboundFirstNameField;
-  protected System.Web.UI.WebControls.Label UnboundFirstNameFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue UnboundReadOnlyFirstNameField;
-  protected System.Web.UI.WebControls.Label UnboundReadOnlyFirstNameFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue IncomeField;
-  protected System.Web.UI.WebControls.Label Label1;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue HeightField;
-  protected System.Web.UI.WebControls.Label Label4;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue DateOfBirthField;
-  protected System.Web.UI.WebControls.Label Label2;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue DateOfDeathField;
-  protected System.Web.UI.WebControls.Label Label3;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue DisabledFirstNameField;
-  protected System.Web.UI.WebControls.Label DisabledFirstNameFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue DisabledReadOnlyFirstNameField;
-  protected System.Web.UI.WebControls.Label DisabledReadOnlyFirstNameFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue DisabledUnboundFirstNameField;
-  protected System.Web.UI.WebControls.Label DisabledUnboundFirstNameFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue DisabledUnboundReadOnlyFirstNameField;
-  protected System.Web.UI.WebControls.Label DisabledUnboundReadOnlyFirstNameFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue2;
-  protected Remotion.Web.UI.Controls.WebButton FirstNameTestSetNullButton;
-  protected Remotion.Web.UI.Controls.WebButton FirstNameTestSetNewValueButton;
-  protected System.Web.UI.WebControls.Label FirstNameFieldTextChangedLabel;
-  protected Remotion.Web.UI.Controls.WebButton ReadOnlyFirstNameTestSetNullButton;
-  protected Remotion.Web.UI.Controls.WebButton ReadOnlyFirstNameTestSetNewValueButton;
-  protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected HtmlGenericControl NonVisualControls;
+  protected FormGridManager FormGridManager;
+  protected BocTextValue FirstNameField;
+  protected Label FirstNameFieldValueLabel;
+  protected BocTextValue ReadOnlyFirstNameField;
+  protected Label ReadOnlyFirstNameFieldValueLabel;
+  protected BocTextValue UnboundFirstNameField;
+  protected Label UnboundFirstNameFieldValueLabel;
+  protected BocTextValue UnboundReadOnlyFirstNameField;
+  protected Label UnboundReadOnlyFirstNameFieldValueLabel;
+  protected BocTextValue IncomeField;
+  protected Label Label1;
+  protected BocTextValue HeightField;
+  protected Label Label4;
+  protected BocTextValue DateOfBirthField;
+  protected Label Label2;
+  protected BocTextValue DateOfDeathField;
+  protected Label Label3;
+  protected BocTextValue DisabledFirstNameField;
+  protected Label DisabledFirstNameFieldValueLabel;
+  protected BocTextValue DisabledReadOnlyFirstNameField;
+  protected Label DisabledReadOnlyFirstNameFieldValueLabel;
+  protected BocTextValue DisabledUnboundFirstNameField;
+  protected Label DisabledUnboundFirstNameFieldValueLabel;
+  protected BocTextValue DisabledUnboundReadOnlyFirstNameField;
+  protected Label DisabledUnboundReadOnlyFirstNameFieldValueLabel;
+  protected BocTextValue BocTextValue1;
+  protected BocTextValue BocTextValue2;
+  protected WebButton FirstNameTestSetNullButton;
+  protected WebButton FirstNameTestSetNewValueButton;
+  protected Label FirstNameFieldTextChangedLabel;
+  protected WebButton ReadOnlyFirstNameTestSetNullButton;
+  protected WebButton ReadOnlyFirstNameTestSetNewValueButton;
+  protected HtmlTable FormGrid;
+  protected BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
     base.RegisterEventHandlers();
  
-    this.FirstNameField.TextChanged += new System.EventHandler(this.FirstNameField_TextChanged);
-    this.FirstNameTestSetNullButton.Click += new System.EventHandler(this.FirstNameTestSetNullButton_Click);
-    this.FirstNameTestSetNewValueButton.Click += new System.EventHandler(this.FirstNameTestSetNewValueButton_Click);
-    this.ReadOnlyFirstNameTestSetNullButton.Click += new System.EventHandler(this.ReadOnlyFirstNameTestSetNullButton_Click);
-    this.ReadOnlyFirstNameTestSetNewValueButton.Click += new System.EventHandler(this.ReadOnlyFirstNameTestSetNewValueButton_Click);
+    this.FirstNameField.TextChanged += new EventHandler(this.FirstNameField_TextChanged);
+    this.FirstNameTestSetNullButton.Click += new EventHandler(this.FirstNameTestSetNullButton_Click);
+    this.FirstNameTestSetNewValueButton.Click += new EventHandler(this.FirstNameTestSetNewValueButton_Click);
+    this.ReadOnlyFirstNameTestSetNullButton.Click += new EventHandler(this.ReadOnlyFirstNameTestSetNullButton_Click);
+    this.ReadOnlyFirstNameTestSetNewValueButton.Click += new EventHandler(this.ReadOnlyFirstNameTestSetNewValueButton_Click);
   }
 
   public override IBusinessObjectDataSourceControl DataSource
@@ -94,13 +90,13 @@ public class BocTextValueUserControl : BaseUserControl
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    UnboundFirstNameField.Property = (Remotion.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
+    UnboundFirstNameField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     //UnboundFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    UnboundReadOnlyFirstNameField.Property = (Remotion.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
+    UnboundReadOnlyFirstNameField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     UnboundReadOnlyFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    DisabledUnboundFirstNameField.Property = (Remotion.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
+    DisabledUnboundFirstNameField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     DisabledUnboundFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    DisabledUnboundReadOnlyFirstNameField.Property = (Remotion.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
+    DisabledUnboundReadOnlyFirstNameField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     DisabledUnboundReadOnlyFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
 
     if (!IsPostBack)
@@ -132,27 +128,27 @@ public class BocTextValueUserControl : BaseUserControl
       label.Text = "not set";
   }
 
-  private void FirstNameTestSetNullButton_Click(object sender, System.EventArgs e)
+  private void FirstNameTestSetNullButton_Click(object sender, EventArgs e)
   {
     FirstNameField.Value = null;
   }
 
-  private void FirstNameTestSetNewValueButton_Click(object sender, System.EventArgs e)
+  private void FirstNameTestSetNewValueButton_Click(object sender, EventArgs e)
   {
     FirstNameField.Value = "Foo Bar";
   }
 
-  private void ReadOnlyFirstNameTestSetNullButton_Click(object sender, System.EventArgs e)
+  private void ReadOnlyFirstNameTestSetNullButton_Click(object sender, EventArgs e)
   {
     ReadOnlyFirstNameField.Value = null;
   }
 
-  private void ReadOnlyFirstNameTestSetNewValueButton_Click(object sender, System.EventArgs e)
+  private void ReadOnlyFirstNameTestSetNewValueButton_Click(object sender, EventArgs e)
   {
     ReadOnlyFirstNameField.Value = "Foo Bar";
   }
 
-  private void FirstNameField_TextChanged(object sender, System.EventArgs e)
+  private void FirstNameField_TextChanged(object sender, EventArgs e)
   {
     if (FirstNameField.Value != null)
       FirstNameFieldTextChangedLabel.Text = FirstNameField.Value.ToString();

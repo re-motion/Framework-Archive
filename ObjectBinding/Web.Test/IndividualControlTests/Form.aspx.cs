@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Web.UI;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -50,7 +51,7 @@ namespace OBWTest.IndividualControlTests
     {
       base.OnPreRender (e);
 
-      System.Text.StringBuilder sb = new System.Text.StringBuilder();
+      StringBuilder sb = new StringBuilder();
       sb.Append ("<b>Stack:</b><br>");
       for (WxeStep step = CurrentStep; step != null; step = step.ParentStep)
         sb.AppendFormat ("{0}<br>", step.ToString());
@@ -72,7 +73,7 @@ namespace OBWTest.IndividualControlTests
       base.LoadViewState (savedState);
     }
 
-    private void PostBackButton_Click (object sender, System.EventArgs e)
+    private void PostBackButton_Click (object sender, EventArgs e)
     {
     }
 

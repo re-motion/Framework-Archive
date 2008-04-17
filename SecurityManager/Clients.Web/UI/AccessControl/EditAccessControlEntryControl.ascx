@@ -18,7 +18,7 @@
       <table cellpadding="0" cellspacing="0">
         <tr>
           <td><remotion:BocEnumValue ID="TenantField" runat="server" PropertyIdentifier="Tenant" DataSourceControl="CurrentObject" OnSelectionChanged="TenantField_SelectionChanged" Width="20em" >
-            <ListControlStyle AutoPostBack="True" RadioButtonListCellPadding="" RadioButtonListCellSpacing="" />
+            <ListControlStyle AutoPostBack="True"/>
           </remotion:BocEnumValue></td>
           <td>
             <remotion:BocReferenceValue ID="SpecificTenantField" runat="server" PropertyIdentifier="SpecificTenant" DataSourceControl="CurrentObject" Select="Remotion.SecurityManager.Domain.OrganizationalStructure.Tenant.FindAll" Required="True" >
@@ -55,7 +55,7 @@
           </td>
           <td>&nbsp;<asp:label id="SpecificPositionAndGroupLinkingLabel" runat="server" Text="###" />&nbsp;</td>
           <td><remotion:BocEnumValue ID="GroupField" runat="server" PropertyIdentifier="Group" DataSourceControl="CurrentObject" width="20em">
-            <ListControlStyle AutoPostBack="True" RadioButtonListCellPadding="" RadioButtonListCellSpacing="" />
+            <ListControlStyle AutoPostBack="True"/>
           </remotion:BocEnumValue></td>
         </tr>
       </table>

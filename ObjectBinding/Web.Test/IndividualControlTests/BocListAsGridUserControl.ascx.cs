@@ -1,42 +1,39 @@
 using System;
-using System.Web;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-
 using Remotion.ObjectBinding;
-
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
-using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
 
 public class BocListAsGridUserControl : BaseUserControl
 {
-  protected System.Web.UI.HtmlControls.HtmlTable Table3;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+  protected HtmlTable Table3;
+  protected BocTextValue FirstNameField;
+  protected BocTextValue LastNameField;
   protected TestBocList ChildrenList;
   protected TestBocList EmptyList;
-  protected System.Web.UI.WebControls.CheckBox ChildrenListEventCheckBox;
-  protected System.Web.UI.WebControls.Label ChildrenListEventArgsLabel;
-  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl EmptyDataSourceControl;
-  protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
+  protected CheckBox ChildrenListEventCheckBox;
+  protected Label ChildrenListEventArgsLabel;
+  protected FormGridManager FormGridManager;
+  protected BindableObjectDataSourceControl EmptyDataSourceControl;
+  protected HtmlTable FormGrid;
   protected TestBocListValidator EmptyListValidator;
   protected TestBocList Testboclist1;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocList AllColumnsList;
-  protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Remotion.Web.UI.Controls.WebButton SwitchToEditModeButton;
-  protected Remotion.Web.UI.Controls.WebButton EndEditModeButton;
-  protected Remotion.Web.UI.Controls.WebButton AddRowButton;
-  protected Remotion.Web.UI.Controls.WebButton AddRowsButton;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue NumberOfNewRowsField;
-  protected Remotion.Web.UI.Controls.WebButton RemoveRows;
-  protected Remotion.Web.UI.Controls.WebButton CancelEditModeButton;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected BocList AllColumnsList;
+  protected HtmlGenericControl NonVisualControls;
+  protected WebButton SwitchToEditModeButton;
+  protected WebButton EndEditModeButton;
+  protected WebButton AddRowButton;
+  protected WebButton AddRowsButton;
+  protected BocTextValue NumberOfNewRowsField;
+  protected WebButton RemoveRows;
+  protected WebButton CancelEditModeButton;
+  protected BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
@@ -50,10 +47,10 @@ public class BocListAsGridUserControl : BaseUserControl
     AddRowsButton.Click += new EventHandler (AddRowsButton_Click);
     RemoveRows.Click += new EventHandler (RemoveRows_Click);
     
-    ChildrenList.ListItemCommandClick += new Remotion.ObjectBinding.Web.UI.Controls.BocListItemCommandClickEventHandler(this.ChildrenList_ListItemCommandClick);
-    ChildrenList.MenuItemClick += new Remotion.Web.UI.Controls.WebMenuItemClickEventHandler(this.ChildrenList_MenuItemClick);
+    ChildrenList.ListItemCommandClick += new BocListItemCommandClickEventHandler(this.ChildrenList_ListItemCommandClick);
+    ChildrenList.MenuItemClick += new WebMenuItemClickEventHandler(this.ChildrenList_MenuItemClick);
     
-    ChildrenList.DataRowRender += new Remotion.ObjectBinding.Web.UI.Controls.BocListDataRowRenderEventHandler(this.ChildrenList_DataRowRender);
+    ChildrenList.DataRowRender += new BocListDataRowRenderEventHandler(this.ChildrenList_DataRowRender);
 
     ChildrenList.EditableRowChangesCanceling += new BocListEditableRowChangesEventHandler (ChildrenList_EditableRowChangesCanceling);
     ChildrenList.EditableRowChangesCanceled += new BocListItemEventHandler (ChildrenList_EditableRowChangesCanceled);
@@ -197,18 +194,18 @@ public class BocListAsGridUserControl : BaseUserControl
     ChildrenList.EndListEditMode (true);
   }
 
-  private void CancelEditModeButton_Click(object sender, System.EventArgs e)
+  private void CancelEditModeButton_Click(object sender, EventArgs e)
   {
     ChildrenList.EndListEditMode (false);
   }
 
-  private void AddRowButton_Click(object sender, System.EventArgs e)
+  private void AddRowButton_Click(object sender, EventArgs e)
   {
     Person person = Person.CreateObject (Guid.NewGuid());
     ChildrenList.AddRow ((IBusinessObject) person);
   }
 
-  private void AddRowsButton_Click(object sender, System.EventArgs e)
+  private void AddRowsButton_Click(object sender, EventArgs e)
   {
     int count = 0;
     
@@ -222,7 +219,7 @@ public class BocListAsGridUserControl : BaseUserControl
     ChildrenList.AddRows ((IBusinessObjectWithIdentity[]) ArrayUtility.Convert (persons, typeof (IBusinessObjectWithIdentity)));
   }
 
-  private void RemoveRows_Click(object sender, System.EventArgs e)
+  private void RemoveRows_Click(object sender, EventArgs e)
   {
     IBusinessObject[] selectedBusinessObjects = ChildrenList.GetSelectedBusinessObjects();
     ChildrenList.RemoveRows (selectedBusinessObjects);

@@ -1,22 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.IO;
 using System.Web;
-using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
-using System.Text;
-using Remotion.Web.Utilities;
-using Remotion.Utilities;
-using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding;
-
-using Remotion.Web.ExecutionEngine;
-using Remotion.Collections;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Text;
 using Remotion.Web.UI.Controls;
 
 namespace OBWTest
@@ -24,12 +14,12 @@ namespace OBWTest
 
 public class ClientForm : TestWxeBasePage
 {
-  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
-  protected Remotion.Web.UI.Controls.WebTabStrip PagesTabStrip;
-  protected Remotion.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
-  protected Remotion.Web.UI.Controls.TabbedMultiView MultiView;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue BocDateTimeValue1;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BocBooleanValue1;
+  protected HtmlHeadContents HtmlHeadContents;
+  protected WebTabStrip PagesTabStrip;
+  protected ValidationStateViewer ValidationStateViewer;
+  protected TabbedMultiView MultiView;
+  protected BocDateTimeValue BocDateTimeValue1;
+  protected BocBooleanValue BocBooleanValue1;
   private PlaceHolder _wxeControlsPlaceHolder;
   private IDataEditControl[] _dataEditControls;
   private DropDownMenu _ddm = new DropDownMenu();
@@ -39,7 +29,7 @@ public class ClientForm : TestWxeBasePage
     get { return (ClientFormWxeFunction) CurrentFunction; }
   }
 
-	private void Page_Load(object sender, System.EventArgs e)
+	private void Page_Load(object sender, EventArgs e)
 	{
     List<IDataEditControl> dataEditControls = new List<IDataEditControl>();
     // load editor pages
@@ -71,7 +61,7 @@ public class ClientForm : TestWxeBasePage
     MultiView.Views.Add (view);
 
     UserControl control = (UserControl) this.LoadControl (path);
-    control.ID = Remotion.Text.IdentifierGenerator.HtmlStyle.GetValidIdentifier (System.IO.Path.GetFileNameWithoutExtension (path));
+    control.ID = IdentifierGenerator.HtmlStyle.GetValidIdentifier (Path.GetFileNameWithoutExtension (path));
 
     //EgoFormPageUserControl formPageControl = control as EgoFormPageUserControl;
     //if (formPageControl != null)
@@ -139,16 +129,16 @@ public class ClientForm : TestWxeBasePage
   }
 	#endregion
 
-  private void Page_Unload (object sender, System.EventArgs e)
+  private void Page_Unload (object sender, EventArgs e)
   {
   }
 
-  private void CancelButton_Click(object sender, System.EventArgs e)
+  private void CancelButton_Click(object sender, EventArgs e)
   {
     ExecuteNextStep();
   }
 
-  private void SaveButton_Click(object sender, System.EventArgs e)
+  private void SaveButton_Click(object sender, EventArgs e)
   {
     ExecuteNextStep();
   }

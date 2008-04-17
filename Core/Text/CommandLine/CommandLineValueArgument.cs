@@ -1,7 +1,6 @@
 using System;
 using System.Globalization;
 using System.Text;
-using Remotion.NullableValueTypes;
 
 namespace Remotion.Text.CommandLine
 {
@@ -24,10 +23,10 @@ public abstract class CommandLineValueArgument: CommandLineArgument
     {
       sb.Append (Parser.ArgumentDeclarationPrefix);
       sb.Append (Name);
-      if (this.Placeholder != null)
+      if (Placeholder != null)
         sb.Append (Parser.Separator);
     }
-    sb.Append (this.Placeholder);
+    sb.Append (Placeholder);
   }
 }
 
@@ -56,7 +55,7 @@ public class CommandLineStringArgument: CommandLineValueArgument
 
 public class CommandLineInt32Argument: CommandLineValueArgument
 {
-  private NaInt32 _value;
+  private int? _value;
 
   public CommandLineInt32Argument (string name, bool isOptional)
     : base (name, isOptional)
@@ -73,7 +72,7 @@ public class CommandLineInt32Argument: CommandLineValueArgument
     get { return Value; }
   }
 
-  public NaInt32 Value
+  public int? Value
   {
     get { return _value; }
   }
@@ -84,7 +83,7 @@ public class CommandLineInt32Argument: CommandLineValueArgument
     string strValue = value.Trim();
     if (strValue.Length == 0)
     {
-      _value = NaInt32.Null;
+      _value = null;
     }
     else
     {

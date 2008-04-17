@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.Web.UI.Controls;
 
@@ -277,7 +276,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         // "search" needs edit mode
-        ReadOnly = (NaBoolean) (value == DataSourceMode.Read);
+        ReadOnly = value == DataSourceMode.Read;
       }
     }
 

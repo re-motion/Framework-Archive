@@ -1,25 +1,23 @@
 using System;
 using System.Collections.Specialized;
-using System.Web.UI.HtmlControls;
 using System.Web.UI;
-using Remotion.ObjectBinding.Web.UI.Controls;
-
-using Remotion.ObjectBinding;
-using Remotion.Web.UI.Controls;
-using Remotion.Web.UI;
+using System.Web.UI.HtmlControls;
 using Remotion.Collections;
+using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
 namespace OBWTest
 {
 public class TestTabbedPersonJobsUserControl : 
     DataEditUserControl, IControl, IFormGridRowProvider
 {
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocList ListField;
-  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
-  protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue MultilineTextField;
+  protected BocList ListField;
+  protected FormGridManager FormGridManager;
+  protected HtmlTable FormGrid;
+  protected BocMultilineTextValue MultilineTextField;
 
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected BindableObjectDataSourceControl CurrentObject;
   private AutoInitHashtable _listOfFormGridRowInfos =
       new AutoInitHashtable (typeof (FormGridRowInfoCollection));
   private AutoInitHashtable _listOfHiddenRows = 

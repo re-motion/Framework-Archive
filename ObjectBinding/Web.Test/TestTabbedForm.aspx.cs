@@ -1,23 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Web;
-using System.Web.SessionState;
+using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
-using System.Text;
-using Remotion.Web.Utilities;
-using Remotion.Utilities;
-using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding;
-
-using Remotion.Web.ExecutionEngine;
-using Remotion.Collections;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Text;
+using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
 namespace OBWTest
@@ -25,14 +15,14 @@ namespace OBWTest
 
 public class TestTabbedForm : TestWxeBasePage
 {
-  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected HtmlHeadContents HtmlHeadContents;
   private IDataEditControl[] _dataEditControls;
-  protected Remotion.Web.UI.Controls.WebTabStrip PagesTabStrip;
-  protected Remotion.Web.UI.Controls.TabbedMenu NavigationTabs;
-  protected Remotion.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
-  protected Remotion.Web.UI.Controls.TabbedMultiView MultiView;
+  protected WebTabStrip PagesTabStrip;
+  protected TabbedMenu NavigationTabs;
+  protected ValidationStateViewer ValidationStateViewer;
+  protected TabbedMultiView MultiView;
   private PlaceHolder _wxeControlsPlaceHolder;
-  protected Remotion.Web.UI.Controls.SmartHyperLink SmartHyperLink1;
+  protected SmartHyperLink SmartHyperLink1;
   private bool _currentObjectSaved = false;
 
   protected TestTabbedFormWxeFunction Function
@@ -108,7 +98,7 @@ public class TestTabbedForm : TestWxeBasePage
     view.Icon = icon;
 
     UserControl control = (UserControl) this.LoadControl (path);
-    control.ID = Remotion.Text.IdentifierGenerator.HtmlStyle.GetValidIdentifier (System.IO.Path.GetFileNameWithoutExtension (path));
+    control.ID = IdentifierGenerator.HtmlStyle.GetValidIdentifier (Path.GetFileNameWithoutExtension (path));
 
     //EgoFormPageUserControl formPageControl = control as EgoFormPageUserControl;
     //if (formPageControl != null)
@@ -193,7 +183,7 @@ public class TestTabbedForm : TestWxeBasePage
     base.OnInit(e);
 
     this.EnableAbort = true;
-    this.ShowAbortConfirmation = Remotion.Web.UI.ShowAbortConfirmation.OnlyIfDirty;
+    this.ShowAbortConfirmation = ShowAbortConfirmation.OnlyIfDirty;
 
 	  LoadUserControls();
 	}
@@ -224,12 +214,12 @@ public class TestTabbedForm : TestWxeBasePage
     }
   }
 
-  private void CancelButton_Click(object sender, System.EventArgs e)
+  private void CancelButton_Click(object sender, EventArgs e)
   {
     ExecuteNextStep();
   }
 
-  private void SaveButton_Click(object sender, System.EventArgs e)
+  private void SaveButton_Click(object sender, EventArgs e)
   {
     MultiView.EnsureAllLazyLoadedViews();
     PrepareValidation();
@@ -253,7 +243,7 @@ public class TestTabbedForm : TestWxeBasePage
     ExecuteNextStep();
   }
 
-  private void ValidateButton_Click(object sender, System.EventArgs e)
+  private void ValidateButton_Click(object sender, EventArgs e)
   {
     MultiView.EnsureAllLazyLoadedViews();
 
@@ -268,7 +258,7 @@ public class TestTabbedForm : TestWxeBasePage
     }
   }
 
-  private void MultiView_ActiveViewChanged(object sender, System.EventArgs e)
+  private void MultiView_ActiveViewChanged(object sender, EventArgs e)
   {
   
   }

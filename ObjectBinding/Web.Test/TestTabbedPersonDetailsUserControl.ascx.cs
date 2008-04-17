@@ -1,28 +1,25 @@
 using System;
 using System.Collections.Specialized;
 using System.Web.UI.HtmlControls;
-using Remotion.ObjectBinding.Web.UI.Controls;
-
-using Remotion.ObjectBinding;
-using Remotion.Web.UI.Controls;
-using Remotion.Web.UI;
 using Remotion.Collections;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
 namespace OBWTest
 {
 public class TestTabbedPersonDetailsUserControl : 
     DataEditUserControl, IControl, IFormGridRowProvider
 {
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfBirthField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue DeceasedField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfDeathField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField;
-  protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
+  protected BocTextValue FirstNameField;
+  protected BocTextValue LastNameField;
+  protected FormGridManager FormGridManager;
+  protected BindableObjectDataSourceControl CurrentObject;
+  protected BocDateTimeValue DateOfBirthField;
+  protected BocReferenceValue PartnerField;
+  protected BocBooleanValue DeceasedField;
+  protected BocDateTimeValue DateOfDeathField;
+  protected BocEnumValue MarriageStatusField;
+  protected HtmlTable FormGrid;
   private AutoInitHashtable _listOfFormGridRowInfos =
       new AutoInitHashtable (typeof (FormGridRowInfoCollection));
   private AutoInitHashtable _listOfHiddenRows = 

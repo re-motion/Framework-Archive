@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.NullableValueTypes;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 
@@ -16,8 +15,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <seealso cref="IBusinessObjectBoundEditableWebControl"/>
   public abstract class BusinessObjectBoundEditableWebControl : BusinessObjectBoundWebControl, IBusinessObjectBoundEditableWebControl
   {
-    private NaBooleanEnum _required = NaBooleanEnum.Undefined;
-    private NaBooleanEnum _readOnly = NaBooleanEnum.Undefined;
+    private bool? _required = null;
+    private bool? _readOnly = null;
     private List<BaseValidator> _validators;
     private bool _isDirty = false;
     private bool _hasBeenRenderedInPreviousLifecycle = false;
@@ -32,13 +31,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets a flag that specifies whether the value of the control is required. </summary>
     /// <remarks>
-    ///   Set this property to <see cref="NaBooleanEnum.Undefined"/> in order to use the default value 
+    ///   Set this property to <see langword="null"/> in order to use the default value 
     ///   (see <see cref="IsRequired"/>).
     /// </remarks>
     [Description ("Explicitly specifies whether the control is required.")]
     [Category ("Data")]
-    [DefaultValue (NaBooleanEnum.Undefined)]
-    public NaBooleanEnum Required
+    [DefaultValue (typeof (bool?), "")]
+    public bool? Required
     {
       get { return _required; }
       set { _required = value; }
@@ -46,14 +45,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets a flag that specifies whether the control should be displayed in read-only mode. </summary>
     /// <remarks>
-    ///   Set this property to <see cref="NaBooleanEnum.Undefined"/> in order to use the default value 
+    ///   Set this property to <see langword="null"/> in order to use the default value 
     ///   (see <see cref="IsReadOnly"/>). Note that if the data source is in read-only mode, the
     ///   control is read-only too, even if this property is set to <c>false</c>.
     /// </remarks>
     [Description ("Explicitly specifies whether the control should be displayed in read-only mode.")]
     [Category ("Data")]
-    [DefaultValue (NaBooleanEnum.Undefined)]
-    public NaBooleanEnum ReadOnly
+    [DefaultValue (typeof (bool?), "")]
+    public bool? ReadOnly
     {
       get { return _readOnly; }
       set { _readOnly = value; }
@@ -106,7 +105,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <list type="bullet">
     ///     <item>
     ///       Whether the control is bound or unbound, if the value of the <see cref="ReadOnly"/> property is 
-    ///       <see cref="NaBooleanEnum.True"/>, <see langword="true"/> is returned.
+    ///       <see langword="true"/>, <see langword="true"/> is returned.
     ///     </item>
     ///     <item>
     ///       If the control is bound to an <see cref="IBusinessObjectDataSourceControl"/> and 
@@ -116,7 +115,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///     <item>
     ///       If the control is unbound (<see cref="BusinessObjectBoundWebControl.DataSource"/> or 
     ///       <see cref="BusinessObjectBoundWebControl.Property"/> is <see langword="null"/>) and the
-    ///       <see cref="ReadOnly"/> property is not <see cref="NaBooleanEnum.True"/>, 
+    ///       <see cref="ReadOnly"/> property is not <see langword="true"/>, 
     ///       <see langword="false"/> is returned.
     ///     </item>
     ///     <item>
@@ -135,7 +134,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///           <see langword="true"/> is returned.
     ///         </item>
     ///         <item>
-    ///           If the control's <see cref="ReadOnly"/> property is <see cref="NaBooleanEnum.False"/>, 
+    ///           If the control's <see cref="ReadOnly"/> property is <see langword="false"/>, 
     ///           <see langword="false"/> is returned.
     ///         </item>
     ///         <item>
@@ -150,7 +149,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        if (_readOnly == NaBooleanEnum.True) // (Bound Control || Unbound Control) && ReadOnly==true
+        if (_readOnly == true) // (Bound Control || Unbound Control) && ReadOnly==true
           return true;
         if (DataSource != null && DataSource.Mode == DataSourceMode.Search) // Search DataSource 
           return false;
@@ -160,7 +159,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           return true;
         if (! IsDesignMode && DataSource.BusinessObject == null) // Bound Control but no BusinessObject
           return true;
-        if (_readOnly == NaBooleanEnum.False) // Bound Control && ReadOnly==false
+        if (_readOnly == false) // Bound Control && ReadOnly==false
           return false;
         return Property.IsReadOnly (DataSource.BusinessObject); // ReadOnly==undefined: ObjectModel pulls
       }
@@ -178,7 +177,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <list type="bullet">
     ///     <item>If the control is read-only, <see langword="false"/> is returned.</item>
     ///     <item>
-    ///       If the <see cref="Required"/> property is not <see cref="NaBooleanEnum.Undefined"/>, 
+    ///       If the <see cref="Required"/> property is not <see langword="null"/>, 
     ///       the value of <see cref="Required"/> is returned.
     ///     </item>
     ///     <item>
@@ -195,8 +194,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (IsReadOnly)
           return false;
-        if (_required != NaBooleanEnum.Undefined)
-          return _required == NaBooleanEnum.True;
+        if (_required != null)
+          return _required == true;
         if (Property != null)
           return (bool) Property.IsRequired;
         return false;

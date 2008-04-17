@@ -37,7 +37,7 @@
         <TR>
           <TD></TD>
           <TD><remotion:bocenumvalue id="EnumPropertyValue" runat="server" DataSourceControl="CurrentSearchObject" PropertyIdentifier="EnumProperty">
-              <ListControlStyle RadioButtonListCellSpacing="" RadioButtonListCellPadding=""></ListControlStyle>
+              <ListControlStyle></ListControlStyle>
             </remotion:bocenumvalue></TD>
         </TR>
         <TR>

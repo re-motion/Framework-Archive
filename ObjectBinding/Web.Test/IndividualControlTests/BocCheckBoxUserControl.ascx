@@ -10,7 +10,7 @@
     <td colSpan="4"><remotion:boctextvalue id="FirstNameField" runat="server" datasourcecontrol="CurrentObject" ReadOnly="True" PropertyIdentifier="FirstName"></remotion:boctextvalue>&nbsp;<remotion:boctextvalue id="LastNameField" runat="server" datasourcecontrol="CurrentObject" ReadOnly="True" PropertyIdentifier="LastName"></remotion:boctextvalue></td></tr>
   <tr>
     <td></td>
-    <td><remotion:boccheckbox id="DeceasedField" runat="server" datasourcecontrol="CurrentObject" truedescription="ja" falsedescription="nein" width="300px" propertyidentifier="Deceased" showdescription="True" AutoPostBack="True" ></remotion:boccheckbox></td>
+    <td><remotion:boccheckbox id="DeceasedField" runat="server" datasourcecontrol="CurrentObject" truedescription="ja" falsedescription="nein" width="300px" propertyidentifier="Deceased" ShowDescription="True" AutoPostBack="True" ></remotion:boccheckbox></td>
     <td>bound, description=true</td>
     <td style="WIDTH: 20%"><asp:label id="DeceasedFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>

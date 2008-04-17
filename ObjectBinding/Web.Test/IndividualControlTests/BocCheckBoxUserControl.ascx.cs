@@ -1,60 +1,56 @@
 using System;
-using System.Web;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-
 using Remotion.ObjectBinding;
-
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
 
 public class BocCheckBoxUserControl : BaseUserControl
 {
-  protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox DeceasedField;
-  protected System.Web.UI.WebControls.Label DeceasedFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox ReadOnlyDeceasedField;
-  protected System.Web.UI.WebControls.Label ReadOnlyDeceasedFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox UnboundDeceasedField;
-  protected System.Web.UI.WebControls.Label UnboundDeceasedFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox UnboundReadOnlyDeceasedField;
-  protected System.Web.UI.WebControls.Label UnboundReadOnlyDeceasedFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox DisabledDeceasedField;
-  protected System.Web.UI.WebControls.Label DisabledDeceasedFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox DisabledReadOnlyDeceasedField;
-  protected System.Web.UI.WebControls.Label DisabledReadOnlyDeceasedFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox DisabledUnboundDeceasedField;
-  protected System.Web.UI.WebControls.Label DisabledUnboundDeceasedFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox DisabledUnboundReadOnlyDeceasedField;
-  protected System.Web.UI.WebControls.Label DisabledUnboundReadOnlyDeceasedFieldValueLabel;
-  protected System.Web.UI.WebControls.Label DeceasedFieldCheckedChangedLabel;
-  protected System.Web.UI.WebControls.Label UnboundDeceasedFieldCheckedChangedLabel;
-  protected Remotion.Web.UI.Controls.WebButton DeceasedTestSetNullButton;
-  protected Remotion.Web.UI.Controls.WebButton DeceasedTestToggleValueButton;
-  protected Remotion.Web.UI.Controls.WebButton ReadOnlyDeceasedTestSetNullButton;
-  protected Remotion.Web.UI.Controls.WebButton ReadOnlyDeceasedTestToggleValueButton;
-  protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+  protected HtmlGenericControl NonVisualControls;
+  protected FormGridManager FormGridManager;
+  protected BocTextValue FirstNameField;
+  protected BocTextValue LastNameField;
+  protected BocCheckBox DeceasedField;
+  protected Label DeceasedFieldValueLabel;
+  protected BocCheckBox ReadOnlyDeceasedField;
+  protected Label ReadOnlyDeceasedFieldValueLabel;
+  protected BocCheckBox UnboundDeceasedField;
+  protected Label UnboundDeceasedFieldValueLabel;
+  protected BocCheckBox UnboundReadOnlyDeceasedField;
+  protected Label UnboundReadOnlyDeceasedFieldValueLabel;
+  protected BocCheckBox DisabledDeceasedField;
+  protected Label DisabledDeceasedFieldValueLabel;
+  protected BocCheckBox DisabledReadOnlyDeceasedField;
+  protected Label DisabledReadOnlyDeceasedFieldValueLabel;
+  protected BocCheckBox DisabledUnboundDeceasedField;
+  protected Label DisabledUnboundDeceasedFieldValueLabel;
+  protected BocCheckBox DisabledUnboundReadOnlyDeceasedField;
+  protected Label DisabledUnboundReadOnlyDeceasedFieldValueLabel;
+  protected Label DeceasedFieldCheckedChangedLabel;
+  protected Label UnboundDeceasedFieldCheckedChangedLabel;
+  protected WebButton DeceasedTestSetNullButton;
+  protected WebButton DeceasedTestToggleValueButton;
+  protected WebButton ReadOnlyDeceasedTestSetNullButton;
+  protected WebButton ReadOnlyDeceasedTestToggleValueButton;
+  protected HtmlTable FormGrid;
+  protected BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
     base.RegisterEventHandlers();
 
-    this.DeceasedField.CheckedChanged += new System.EventHandler(this.DeceasedField_CheckedChanged);
+    this.DeceasedField.CheckedChanged += new EventHandler(this.DeceasedField_CheckedChanged);
     this.UnboundDeceasedField.CheckedChanged += UnboundDeceasedField_CheckedChanged;
-    this.DeceasedTestSetNullButton.Click += new System.EventHandler(this.DeceasedTestSetNullButton_Click);
-    this.DeceasedTestToggleValueButton.Click += new System.EventHandler(this.DeceasedTestToggleValueButton_Click);
-    this.ReadOnlyDeceasedTestSetNullButton.Click += new System.EventHandler(this.ReadOnlyDeceasedTestSetNullButton_Click);
-    this.ReadOnlyDeceasedTestToggleValueButton.Click += new System.EventHandler(this.ReadOnlyDeceasedTestToggleValueButton_Click);
+    this.DeceasedTestSetNullButton.Click += new EventHandler(this.DeceasedTestSetNullButton_Click);
+    this.DeceasedTestToggleValueButton.Click += new EventHandler(this.DeceasedTestToggleValueButton_Click);
+    this.ReadOnlyDeceasedTestSetNullButton.Click += new EventHandler(this.ReadOnlyDeceasedTestSetNullButton_Click);
+    this.ReadOnlyDeceasedTestToggleValueButton.Click += new EventHandler(this.ReadOnlyDeceasedTestToggleValueButton_Click);
   }
 
   public override IBusinessObjectDataSourceControl DataSource
@@ -68,13 +64,13 @@ public class BocCheckBoxUserControl : BaseUserControl
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    UnboundDeceasedField.Property = (Remotion.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Deceased");
+    UnboundDeceasedField.Property = (IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Deceased");
     //UnboundDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    UnboundReadOnlyDeceasedField.Property = (Remotion.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Deceased");
+    UnboundReadOnlyDeceasedField.Property = (IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Deceased");
     UnboundReadOnlyDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    DisabledUnboundDeceasedField.Property = (Remotion.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Deceased");
+    DisabledUnboundDeceasedField.Property = (IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Deceased");
     DisabledUnboundDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    DisabledUnboundReadOnlyDeceasedField.Property = (Remotion.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Deceased");
+    DisabledUnboundReadOnlyDeceasedField.Property = (IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("Deceased");
     DisabledUnboundReadOnlyDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
 
     if (! IsPostBack)
@@ -106,12 +102,12 @@ public class BocCheckBoxUserControl : BaseUserControl
       label.Text = "not set";
   }
 
-  private void DeceasedTestSetNullButton_Click(object sender, System.EventArgs e)
+  private void DeceasedTestSetNullButton_Click(object sender, EventArgs e)
   {
     DeceasedField.Value = null;
   }
 
-  private void DeceasedTestToggleValueButton_Click(object sender, System.EventArgs e)
+  private void DeceasedTestToggleValueButton_Click(object sender, EventArgs e)
   {
     if (DeceasedField.Value != null)
       DeceasedField.Value = ! (bool) DeceasedField.Value;
@@ -119,12 +115,12 @@ public class BocCheckBoxUserControl : BaseUserControl
       DeceasedField.Value = false;
   }
 
-  private void ReadOnlyDeceasedTestSetNullButton_Click(object sender, System.EventArgs e)
+  private void ReadOnlyDeceasedTestSetNullButton_Click(object sender, EventArgs e)
   {
     ReadOnlyDeceasedField.Value = null;
   }
 
-  private void ReadOnlyDeceasedTestToggleValueButton_Click(object sender, System.EventArgs e)
+  private void ReadOnlyDeceasedTestToggleValueButton_Click(object sender, EventArgs e)
   {
     if (ReadOnlyDeceasedField.Value != null)
       ReadOnlyDeceasedField.Value = ! (bool) ReadOnlyDeceasedField.Value;
@@ -132,7 +128,7 @@ public class BocCheckBoxUserControl : BaseUserControl
       ReadOnlyDeceasedField.Value = false;
   }
 
-  private void DeceasedField_CheckedChanged(object sender, System.EventArgs e)
+  private void DeceasedField_CheckedChanged(object sender, EventArgs e)
   {
     if (DeceasedField.Value != null)
       DeceasedFieldCheckedChangedLabel.Text = DeceasedField.Value.ToString();
@@ -140,7 +136,7 @@ public class BocCheckBoxUserControl : BaseUserControl
       DeceasedFieldCheckedChangedLabel.Text = "not set";
   }
 
-  private void UnboundDeceasedField_CheckedChanged (object sender, System.EventArgs e)
+  private void UnboundDeceasedField_CheckedChanged (object sender, EventArgs e)
   {
     if (UnboundDeceasedField.Value != null)
       UnboundDeceasedFieldCheckedChangedLabel.Text = UnboundDeceasedField.Value.ToString ();

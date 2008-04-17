@@ -2,17 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
-using Remotion.NullableValueTypes;
 using Remotion.Utilities;
 
 namespace Remotion.Text.CommandLine
 {
   public class CommandLineClassParser: CommandLineParser
   {
-    private Type _argumentClass;
+    private readonly Type _argumentClass;
 
     /// <summary> IDictionary &lt;CommandLineArgument, MemberInfo&gt; </summary>
-    private IDictionary _arguments;
+    private readonly IDictionary _arguments;
     
     public CommandLineClassParser (Type argumentClass)
     {
@@ -28,7 +27,7 @@ namespace Remotion.Text.CommandLine
           if (argumentAttribute != null)
           {
             argumentAttribute.SetMember (member);
-            argumentAttribute.AddArgument (this.Arguments, _arguments, member);
+            argumentAttribute.AddArgument (Arguments, _arguments, member);
           }
         }
       }
@@ -53,12 +52,12 @@ namespace Remotion.Text.CommandLine
         if (argument is ICommandLinePartArgument)
           value = ((ICommandLinePartArgument)argument).Group.ValueObject;
 
-        if (value is NaBoolean && memberType == typeof (bool))
+        if (memberType == typeof (bool))
         {
-          NaBoolean naboolval = (NaBoolean) value;
-          if (naboolval.IsNull)
-            throw new ApplicationException (string.Format ("{0} {1}: Cannot convert Remotion.NaBoolean.Null to System.Boolean. Use NaBoolean type for optional attributes without default values.", fieldOrProperty.MemberType, fieldOrProperty.Name));
-          value = (bool) naboolval;
+          if (value == null)
+            throw new ApplicationException (string.Format ("{0} {1}: Cannot convert null to System.Boolean. Use Nullable<Boolean> type for optional attributes without default values.", fieldOrProperty.MemberType, fieldOrProperty.Name));
+          else if (value is bool?)
+            value = ((bool?) value).Value;
         }
 
         if (value != null)

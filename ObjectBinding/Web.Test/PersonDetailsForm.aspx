@@ -21,17 +21,17 @@
           <td></td>
           <td><remotion:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject" Width="100%" required="True">
 <textboxstyle textmode="SingleLine">
-</TextBoxStyle></remotion:boctextvalue></td></tr>
+</textBoxStyle></remotion:boctextvalue></td></tr>
         <tr>
           <td></td>
           <td><remotion:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="CurrentObject" Width="100%" required="True">
 <textboxstyle textmode="SingleLine">
-</TextBoxStyle></remotion:boctextvalue></td></tr>
+</textBoxStyle></remotion:boctextvalue></td></tr>
         <tr>
           <td></td>
           <td><remotion:bocenumvalue id="GenderField" runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Gender" width="100%">
-<listcontrolstyle radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
-</ListControlStyle></remotion:bocenumvalue></td></tr>
+<listcontrolstyle>
+</listControlStyle></remotion:bocenumvalue></td></tr>
         <tr>
           <td style="HEIGHT: 14px"></td>
           <td style="HEIGHT: 14px"><remotion:bocreferencevalue id="PartnerField" runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Partner" width="100%">

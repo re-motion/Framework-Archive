@@ -15,15 +15,15 @@
     <td></td>
     <td><remotion:BocMultilineTextValue id="MultilineTextField" runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject">
 <textboxstyle textmode="MultiLine">
-</TextBoxStyle></remotion:BocMultilineTextValue></td></tr>
+</textBoxStyle></remotion:BocMultilineTextValue></td></tr>
   <tr>
     <td></td>
     <td><remotion:BocDateTimeValue id="DateTimeField" runat="server" propertyidentifier="DateOfBirth" datasourcecontrol="CurrentObject"  incompleteerrormessage="Unvollständige Daten" invaliddateandtimeerrormessage="Ungültiges Datum oder Zeit" invaliddateerrormessage="Ungültiges Datum" invalidtimeerrormessage="Ungültige Zeit" ></remotion:BocDateTimeValue></td></tr>
   <tr>
     <td style="HEIGHT: 18px"></td>
     <td style="HEIGHT: 18px"><remotion:BocEnumValue id="EnumField" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="CurrentObject">
-<listcontrolstyle radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
-</ListControlStyle></remotion:BocEnumValue></td></tr>
+<listcontrolstyle>
+</listControlStyle></remotion:BocEnumValue></td></tr>
   <tr>
     <td></td>
     <td><remotion:BocReferenceValue id="ReferenceField" runat="server" propertyidentifier="Partner" datasourcecontrol="CurrentObject">

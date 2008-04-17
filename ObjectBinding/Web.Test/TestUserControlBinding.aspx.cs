@@ -1,30 +1,26 @@
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Web;
-using System.Web.SessionState;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
 namespace OBWTest
 {
 	/// <summary>
 	/// Summary description for TestUserControlBinding.
 	/// </summary>
-	public class TestUserControlBinding : System.Web.UI.Page
+	public class TestUserControlBinding : Page
 	{
-    protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl DataSource;
-    protected System.Web.UI.HtmlControls.HtmlTable NameFormGrid;
-    protected System.Web.UI.WebControls.Label Label1;
-    protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
-    protected Remotion.ObjectBinding.Web.UI.Controls.UserControlBinding UserControlBinding1;
-    protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+    protected FormGridManager FormGridManager;
+    protected BindableObjectDataSourceControl DataSource;
+    protected HtmlTable NameFormGrid;
+    protected Label Label1;
+    protected BocTextValue BocTextValue1;
+    protected UserControlBinding UserControlBinding1;
+    protected HtmlHeadContents HtmlHeadContents;
   
-		private void Page_Load(object sender, System.EventArgs e)
+		private void Page_Load(object sender, EventArgs e)
 		{
 			// Put user code to initialize the page here
 		}

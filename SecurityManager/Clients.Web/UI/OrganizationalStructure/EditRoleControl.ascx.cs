@@ -1,6 +1,5 @@
 using System;
 using System.Web.UI;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure;
@@ -61,13 +60,13 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
     private void InitializeUserField ()
     {
       if (CurrentFunction.User != null)
-        _userField.ReadOnly = NaBoolean.True;
+        _userField.ReadOnly = true;
     }
 
     private void InitializeGroupField ()
     {
       if (CurrentFunction.Group != null)
-        _groupField.ReadOnly = NaBoolean.True;
+        _groupField.ReadOnly = true;
     }
 
     private void InitializePositionField (bool interim)

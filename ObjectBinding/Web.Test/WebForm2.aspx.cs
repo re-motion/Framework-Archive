@@ -1,31 +1,23 @@
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Web;
-using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 using Remotion.ObjectBinding;
-using Remotion.ObjectBinding.BindableObject;
-
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.UI.Controls;
 
 namespace OBWTest
 {
 
-public class WebForm2: System.Web.UI.Page
+public class WebForm2: Page
 {
-  protected System.Web.UI.WebControls.Button SaveButton;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue DateOfBirthField;
-  protected Remotion.Web.UI.Controls.SmartLabel BocPropertyLabel3;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl reflectionBusinessObjectDataSource1;
+  protected Button SaveButton;
+  protected BocTextValue DateOfBirthField;
+  protected SmartLabel BocPropertyLabel3;
+  protected BocTextValueValidator BocTextValueValidator1;
+  protected BindableObjectDataSourceControl reflectionBusinessObjectDataSource1;
 
-	private void Page_Load (object sender, System.EventArgs e)
+	private void Page_Load (object sender, EventArgs e)
 	{
     Person p = Person.CreateObject();
     p.FirstName = "Hugo";
@@ -69,7 +61,7 @@ public class WebForm2: System.Web.UI.Page
   }
 	#endregion
 
-  private void SaveButton_Click (object sender, System.EventArgs e)
+  private void SaveButton_Click (object sender, EventArgs e)
   {
     reflectionBusinessObjectDataSource1.SaveValues (false);
     string s = ((Person)reflectionBusinessObjectDataSource1.BusinessObject).FirstName;

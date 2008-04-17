@@ -1,5 +1,9 @@
 using System;
+using System.ComponentModel;
 using System.IO;
+using System.Web;
+using log4net;
+using log4net.Config;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web;
@@ -7,19 +11,19 @@ using Remotion.Web.Configuration;
 
 namespace OBWTest
 {
-  public class Global : System.Web.HttpApplication // , IResourceUrlResolver
+  public class Global : HttpApplication // , IResourceUrlResolver
   {
     /// <summary>
     /// Required designer variable.
     /// </summary>
-    private System.ComponentModel.IContainer components = null;
+    private IContainer components = null;
 
     private WaiConformanceLevel _waiConformanceLevelBackup;
 
     public Global ()
     {
       //  Initialize Logger
-      log4net.LogManager.GetLogger (typeof (Global));
+      LogManager.GetLogger (typeof (Global));
       InitializeComponent();
     }
 
@@ -35,7 +39,7 @@ namespace OBWTest
 
     protected void Application_Start (Object sender, EventArgs e)
     {
-      log4net.Config.XmlConfigurator.Configure();
+      XmlConfigurator.Configure();
 
       string objectPath = Server.MapPath ("~/objects");
       if (!Directory.Exists (objectPath))

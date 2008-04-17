@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using Remotion.Collections;
-using Remotion.NullableValueTypes;
 
 namespace Remotion.Utilities
 {
@@ -36,7 +34,7 @@ namespace Remotion.Utilities
   /// </remarks>
   public class TypeConversionProvider
   {
-    private static Dictionary<Type, TypeConverter> s_typeConverters = new Dictionary<Type, TypeConverter>();
+    private static readonly Dictionary<Type, TypeConverter> s_typeConverters = new Dictionary<Type, TypeConverter>();
     private static TypeConversionProvider s_current;
 
     /// <summary> Creates a new instace of the <see cref="TypeConversionProvider"/> type. </summary>
@@ -75,8 +73,8 @@ namespace Remotion.Utilities
       }
     }
 
-    private Dictionary<Type, TypeConverter> _additionalTypeConverters = new Dictionary<Type, TypeConverter>();
-    private BidirectionalStringConverter _stringConverter = new BidirectionalStringConverter();
+    private readonly Dictionary<Type, TypeConverter> _additionalTypeConverters = new Dictionary<Type, TypeConverter>();
+    private readonly BidirectionalStringConverter _stringConverter = new BidirectionalStringConverter();
 
     protected TypeConversionProvider ()
     {
@@ -96,9 +94,9 @@ namespace Remotion.Utilities
     ///   A <see cref="TypeConverterResult"/> or or <see cref="TypeConverterResult.Empty"/>if no matching <see cref="TypeConverter"/> can be found.
     /// </returns>
     /// <remarks> 
-    ///   You can identify whether you must use the <see cref="TypeConverter.ConvertTo"/> or the 
-    ///   <see cref="TypeConverter.ConvertFrom"/> method by testing the returned <see cref="TypeConverter"/>'s
-    ///   <see cref="TypeConverter.CanConvertTo"/> and <see cref="TypeConverter.CanConvertFrom"/> methods.
+    ///   You can identify whether you must use the <see cref="TypeConverter.ConvertTo(object,Type)"/> or the 
+    ///   <see cref="TypeConverter.ConvertFrom(object)"/> method by testing the returned <see cref="TypeConverter"/>'s
+    ///   <see cref="TypeConverter.CanConvertTo(Type)"/> and <see cref="TypeConverter.CanConvertFrom(Type)"/> methods.
     /// </remarks>
     public virtual TypeConverterResult GetTypeConverter (Type sourceType, Type destinationType)
     {
@@ -179,7 +177,7 @@ namespace Remotion.Utilities
     /// <summary> 
     ///   Test whether the <see cref="TypeConversionProvider"/> object can convert an object of <see cref="Type"/> 
     ///   <paramref name="sourceType"/> into an object of <see cref="Type"/> <paramref name="destinationType"/>
-    ///   by using the <see cref="Convert"/> method.
+    ///   by using the <see cref="Convert(Type,Type,object)"/> method.
     /// </summary>
     /// <param name="sourceType"> 
     ///   The source <see cref="Type"/> of the value. Must not be <see langword="null"/>. 
@@ -193,6 +191,9 @@ namespace Remotion.Utilities
       ArgumentUtility.CheckNotNull ("sourceType", sourceType);
       ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 
+      if (sourceType == typeof (DBNull))
+        return NullableTypeUtility.IsNullableType (destinationType);
+      
       if (AreUnderlyingTypesEqual (destinationType, sourceType))
         return true;
 
@@ -207,7 +208,7 @@ namespace Remotion.Utilities
     /// <param name="destinationType"> 
     ///   The destination <see cref="Type"/> of the <paramref name="value"/>. Must not be <see langword="null"/>. 
     /// </param>
-    /// <param name="value"> The <see cref="NaInt16"/> to be converted. Must not be <see langword="null"/>. </param>
+    /// <param name="value"> The value to be converted. Must not be <see langword="null"/>. </param>
     /// <returns> An <see cref="Object"/> that represents the converted <paramref name="value"/>. </returns>
     public object Convert (Type sourceType, Type destinationType, object value)
     {
@@ -230,12 +231,17 @@ namespace Remotion.Utilities
       ArgumentUtility.CheckNotNull ("sourceType", sourceType);
       ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 
+      bool isNullableDestinationType = NullableTypeUtility.IsNullableType (destinationType);
+      if (value == DBNull.Value && isNullableDestinationType)
+        return GetValueOrEmptyString (destinationType, null);
+
+      if (value == null && !isNullableDestinationType)
+        throw new NotSupportedException (string.Format ("Cannot convert value 'null' to non-nullable type '{0}'.", destinationType));
+      else if (value != null && !sourceType.IsInstanceOfType (value))
+        throw new ArgumentTypeException ("value", sourceType, value.GetType());
+      
       if (AreUnderlyingTypesEqual (sourceType, destinationType))
-      {
-        if (destinationType == typeof (string) && value == null)
-          return string.Empty;
-        return value;
-      }
+        return GetValueOrEmptyString (destinationType, value);
 
       TypeConverterResult typeConverterResult = GetTypeConverter (sourceType, destinationType);
       if (!typeConverterResult.Equals (TypeConverterResult.Empty))
@@ -251,6 +257,13 @@ namespace Remotion.Utilities
       }
 
       throw new NotSupportedException (string.Format ("Cannot convert value '{0}' to type '{1}'.", value, destinationType));
+    }
+
+    private object GetValueOrEmptyString (Type destinationType, object value)
+    {
+      if (destinationType == typeof (string) && value == null)
+        return string.Empty;
+      return value;
     }
 
     protected TypeConverterResult GetAdditionalTypeConverter (Type sourceType, Type destinationType)

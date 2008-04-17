@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding.UnitTests.Web.Domain;
 using Remotion.Web.UnitTests.Configuration;
 
@@ -84,7 +83,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocTextValueTests
     [Test]
     public void GetTrackedClientIDsInReadOnlyMode ()
     {
-      _bocTextValue.ReadOnly = NaBoolean.True;
+      _bocTextValue.ReadOnly = true;
       string[] actual = _bocTextValue.GetTrackedClientIDs();
       Assert.IsNotNull (actual);
       Assert.AreEqual (0, actual.Length);
@@ -93,7 +92,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocTextValueTests
     [Test]
     public void GetTrackedClientIDsInEditMode ()
     {
-      _bocTextValue.ReadOnly = NaBoolean.False;
+      _bocTextValue.ReadOnly = false;
       string[] actual = _bocTextValue.GetTrackedClientIDs();
       Assert.IsNotNull (actual);
       Assert.AreEqual (1, actual.Length);

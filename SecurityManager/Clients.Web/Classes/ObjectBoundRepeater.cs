@@ -9,7 +9,6 @@ using System.Drawing.Design;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Design;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -271,8 +270,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
     /// <summary> Gets or sets a flag that specifies whether the value of the control is required. </summary>
     [Description ("Explicitly specifies whether the control is required.")]
     [Category ("Data")]
-    [DefaultValue (NaBooleanEnum.Undefined)]
-    public NaBooleanEnum Required
+    [DefaultValue (typeof (bool?), "")]
+    public bool? Required
     {
       get { return _repeaterInternal.Required; }
       set { _repeaterInternal.Required = value; }
@@ -281,8 +280,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
     /// <summary> Gets or sets a flag that specifies whether the control should be displayed in read-only mode. </summary>
     [Description ("Explicitly specifies whether the control should be displayed in read-only mode.")]
     [Category ("Data")]
-    [DefaultValue (NaBooleanEnum.Undefined)]
-    public NaBooleanEnum ReadOnly
+    [DefaultValue (typeof (bool?), "")]
+    public bool? ReadOnly
     {
       get { return _repeaterInternal.ReadOnly; }
       set { _repeaterInternal.ReadOnly = value; }

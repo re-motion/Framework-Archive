@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
-using Remotion.NullableValueTypes;
 using Remotion.Utilities;
 using Remotion.Web.Utilities;
 
@@ -26,7 +25,7 @@ public class EditModeController : PlaceHolder
   private Controls.BocList _ownerControl;
 
   private bool _isListEditModeActive;
-  private NaInt32 _editableRowIndex = NaInt32.Null;
+  private int? _editableRowIndex = null;
   private bool _isEditNewRow = false;
   
   private bool _isEditModeRestored = false;
@@ -182,7 +181,7 @@ public class EditModeController : PlaceHolder
     }
 
     RemoveEditModeControls();
-    _editableRowIndex = NaInt32.Null;
+    _editableRowIndex = null;
     _isEditNewRow = false;
     _rowIDProvider = null;
   }
@@ -438,7 +437,7 @@ public class EditModeController : PlaceHolder
 
   public bool IsRowEditModeActive
   {
-    get { return ! _editableRowIndex.IsNull; } 
+    get { return _editableRowIndex != null; } 
   }
 
   public bool IsListEditModeActive
@@ -446,7 +445,7 @@ public class EditModeController : PlaceHolder
     get { return _isListEditModeActive; } 
   }
 
-  public NaInt32 EditableRowIndex
+  public int? EditableRowIndex
   {
     get { return _editableRowIndex; }
   }
@@ -608,7 +607,7 @@ public class EditModeController : PlaceHolder
 
       base.LoadControlState (values[0]);
       _isListEditModeActive = (bool) values[1];
-      _editableRowIndex = (NaInt32) values[2];
+      _editableRowIndex = (int?) values[2];
       _isEditNewRow = (bool) values[3];
       _rowIDProvider = (EditableRowIDProvider) values[4];
     }

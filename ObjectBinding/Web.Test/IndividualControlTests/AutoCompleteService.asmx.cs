@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Web.Script.Services;
 using System.Web.Services;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
@@ -14,8 +15,8 @@ namespace OBWTest.IndividualControlTests
   [WebService (Namespace = "http://tempuri.org/")]
   [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
   [ToolboxItem (false)]
-  [System.Web.Script.Services.ScriptService]
-  public class AutoCompleteService : System.Web.Services.WebService
+  [ScriptService]
+  public class AutoCompleteService : WebService
   {
     #region Values
 

@@ -162,7 +162,7 @@ public class BocMultilineTextValue: BusinessObjectBoundEditableWebControl, IPost
   {
     if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
     {
-      if (TextBoxStyle.AutoPostBack)
+      if (TextBoxStyle.AutoPostBack == true)
         WcagHelper.Instance.HandleWarning (1, this, "TextBoxStyle.AutoPostBack");
 
       if (TextBox.AutoPostBack)
@@ -324,7 +324,7 @@ public class BocMultilineTextValue: BusinessObjectBoundEditableWebControl, IPost
       {
         if (isControlWidthEmpty)
         {
-          if (_textBoxStyle.Columns.IsNull)
+          if (_textBoxStyle.Columns == null)
             writer.AddStyleAttribute (HtmlTextWriterStyle.Width, c_defaultTextBoxWidth);
         }
         else
@@ -450,7 +450,7 @@ public class BocMultilineTextValue: BusinessObjectBoundEditableWebControl, IPost
     }      
     validators.Add (requiredValidator);
 
-    if (! _textBoxStyle.MaxLength.IsNull)
+    if ( _textBoxStyle.MaxLength != null)
     {
       LengthValidator lengthValidator = new LengthValidator();
       lengthValidator.ID = ID + "_ValidatorMaxLength";

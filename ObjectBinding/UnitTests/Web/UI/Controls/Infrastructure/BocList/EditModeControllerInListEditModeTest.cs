@@ -3,7 +3,6 @@ using System.Collections.Specialized;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
 using Remotion.Globalization;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
 
@@ -370,7 +369,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     provider.ExcludeID (string.Format (idFormat, 5));
 
     Assert.IsFalse (Controller.IsListEditModeActive);
-    ControllerInvoker.LoadControlState (CreateControlState (null, true, NaInt32.Null, false, provider));
+    ControllerInvoker.LoadControlState (CreateControlState (null, true, null, false, provider));
     Assert.IsTrue (Controller.IsListEditModeActive);
     
     Controller.EnsureEditModeRestored (Columns);
@@ -501,7 +500,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
   [Test]
   public void CreateValidators ()
   {
-    IResourceManager resourceManager = (IResourceManager) NullResourceManager.Instance;
+    IResourceManager resourceManager = NullResourceManager.Instance;
     
     Invoker.InitRecursive();
     Controller.SwitchListIntoEditMode (Columns, Columns);

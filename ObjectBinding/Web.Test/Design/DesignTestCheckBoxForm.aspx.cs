@@ -1,71 +1,53 @@
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
-using System.Text;
-using System.Reflection;
-using Remotion.ObjectBinding.Sample;
-using Remotion.Web.UI.Controls;
-using Remotion.Web.Utilities;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding;
-
+using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Globalization;
-using Remotion.Web.UI.Globalization;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-using System.Diagnostics;
+using Remotion.Web.UI.Controls;
 
 namespace OBWTest.Design
 {
 public class DesignTestCheckBoxForm : DesignTestWxeBasePage
 {
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-  protected Remotion.Web.UI.Controls.WebButton PostBackButton;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox1;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox2;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox3;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox4;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox17;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox18;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox5;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox6;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox7;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox8;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox19;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox9;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox10;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox11;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox12;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox22;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox23;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox13;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox14;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox15;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox16;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox20;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox21;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox24;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox25;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox26;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox27;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox28;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox29;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox30;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox31;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox32;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox33;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox34;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox BocCheckBox35;
-  protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected BindableObjectDataSourceControl CurrentObject;
+  protected WebButton PostBackButton;
+  protected BocCheckBox BocCheckBox1;
+  protected BocCheckBox BocCheckBox2;
+  protected BocCheckBox BocCheckBox3;
+  protected BocCheckBox BocCheckBox4;
+  protected BocCheckBox BocCheckBox17;
+  protected BocCheckBox BocCheckBox18;
+  protected BocCheckBox BocCheckBox5;
+  protected BocCheckBox BocCheckBox6;
+  protected BocCheckBox BocCheckBox7;
+  protected BocCheckBox BocCheckBox8;
+  protected BocCheckBox BocCheckBox19;
+  protected BocCheckBox BocCheckBox9;
+  protected BocCheckBox BocCheckBox10;
+  protected BocCheckBox BocCheckBox11;
+  protected BocCheckBox BocCheckBox12;
+  protected BocCheckBox BocCheckBox22;
+  protected BocCheckBox BocCheckBox23;
+  protected BocCheckBox BocCheckBox13;
+  protected BocCheckBox BocCheckBox14;
+  protected BocCheckBox BocCheckBox15;
+  protected BocCheckBox BocCheckBox16;
+  protected BocCheckBox BocCheckBox20;
+  protected BocCheckBox BocCheckBox21;
+  protected BocCheckBox BocCheckBox24;
+  protected BocCheckBox BocCheckBox25;
+  protected BocCheckBox BocCheckBox26;
+  protected BocCheckBox BocCheckBox27;
+  protected BocCheckBox BocCheckBox28;
+  protected BocCheckBox BocCheckBox29;
+  protected BocCheckBox BocCheckBox30;
+  protected BocCheckBox BocCheckBox31;
+  protected BocCheckBox BocCheckBox32;
+  protected BocCheckBox BocCheckBox33;
+  protected BocCheckBox BocCheckBox34;
+  protected BocCheckBox BocCheckBox35;
+  protected HtmlHeadContents HtmlHeadContents;
 
-  private void Page_Load(object sender, System.EventArgs e)
+  private void Page_Load(object sender, EventArgs e)
 	{
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
     Person person = Person.GetObject (personID);

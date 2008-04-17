@@ -76,7 +76,7 @@
     <td width="50%">common 150px</td></tr>
   <tr>
     <td width="50%"><remotion:bocenumvalue id=BocEnumValue43 runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="CurrentObject">
-<listcontrolstyle width="150px" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle width="150px">
 </ListControlStyle></remotion:bocenumvalue></td>
     <td width="50%">listcontrol 150px</td></tr>
   <tr>
@@ -87,7 +87,7 @@
     <td colSpan=2>Edit Mode: Radio Button List</td></tr>
   <tr>
     <td width="50%"><remotion:bocenumvalue id="Bocenumvalue53" runat="server" datasourcecontrol="CurrentObject" width="100%" propertyidentifier="MarriageStatus">
-<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
 </ListControlStyle></remotion:bocenumvalue></td>
     <td width="50%">width 100%</td></tr>
   <tr>
@@ -95,17 +95,17 @@
 <commonstyle width="100%">
 </CommonStyle>
 
-<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
 </ListControlStyle></remotion:bocenumvalue></td>
     <td width="50%">common 100%</td></tr>
   <tr>
     <td width="50%"><remotion:bocenumvalue id="Bocenumvalue55" runat="server" datasourcecontrol="CurrentObject" propertyidentifier="MarriageStatus">
-<listcontrolstyle width="100%" controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle width="100%" controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
 </ListControlStyle></remotion:bocenumvalue></td>
     <td width="50%">listcontrol 100%</td></tr>
   <tr>
     <td width="50%"><remotion:bocenumvalue id="Bocenumvalue56" runat="server" datasourcecontrol="CurrentObject" width="50%" propertyidentifier="MarriageStatus">
-<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
 </ListControlStyle></remotion:bocenumvalue></td>
     <td width="50%">width 50%</td></tr>
   <tr>
@@ -113,17 +113,17 @@
 <commonstyle width="50%">
 </CommonStyle>
 
-<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
 </ListControlStyle></remotion:bocenumvalue></td>
     <td width="50%">common 50%</td></tr>
   <tr>
     <td width="50%"><remotion:bocenumvalue id="Bocenumvalue6" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="CurrentObject">
-<listcontrolstyle width="50%" controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle width="50%" controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
 </ListControlStyle></remotion:bocenumvalue></td>
     <td width="50%">listcontrol 50%</td></tr>
   <tr>
     <td width="50%"><remotion:bocenumvalue id="Bocenumvalue7" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="CurrentObject" Width="300px">
-<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
 </ListControlStyle></remotion:bocenumvalue></td>
     <td width="50%">width 300px</td></tr>
   <tr>
@@ -131,17 +131,17 @@
 <commonstyle width="300px">
 </CommonStyle>
 
-<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
 </ListControlStyle></remotion:bocenumvalue></td>
     <td width="50%">common 300px</td></tr>
   <tr>
     <td width="50%"><remotion:bocenumvalue id="Bocenumvalue9" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="CurrentObject">
-<listcontrolstyle width="300px" controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle width="300px" controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
 </ListControlStyle></remotion:bocenumvalue></td>
     <td width="50%">listcontrol 300px</td></tr>
   <tr>
     <td width="50%"><remotion:bocenumvalue id="Bocenumvalue10" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="CurrentObject" Width="150px">
-<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
 </ListControlStyle></remotion:bocenumvalue></td>
     <td width="50%">width 150px</td></tr>
   <tr>
@@ -149,20 +149,20 @@
 <commonstyle width="150px">
 </CommonStyle>
 
-<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
 </ListControlStyle></remotion:bocenumvalue></td>
     <td width="50%">common 150px</td></tr>
   <tr>
     <td width="50%"><remotion:bocenumvalue id="Bocenumvalue12" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="CurrentObject">
-<listcontrolstyle width="150px" controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle width="150px" controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
 </ListControlStyle></remotion:bocenumvalue></td>
     <td width="50%">listcontrol 150px</td></tr>
   <tr>
     <td width="50%"><remotion:bocenumvalue id="Bocenumvalue13" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="CurrentObject" Width="33%">
-<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
 </ListControlStyle>
     </remotion:bocenumvalue><remotion:bocenumvalue id="Bocenumvalue14" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="CurrentObject" Width="33%">
-<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+<listcontrolstyle controltype="RadioButtonList" radiobuttonlistrepeatdirection="Horizontal">
 </ListControlStyle></remotion:bocenumvalue></td>
     <td width="50%">2x 33%</td></tr>
   <tr>

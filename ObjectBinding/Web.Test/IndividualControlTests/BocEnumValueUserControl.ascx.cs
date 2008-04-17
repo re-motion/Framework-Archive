@@ -1,57 +1,53 @@
 using System;
-using System.Web;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-
 using Remotion.ObjectBinding;
-
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
 
 public class BocEnumValueUserControl : BaseUserControl
 {
-  protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue GenderField;
-  protected System.Web.UI.WebControls.Label GenderFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue ReadOnlyGenderField;
-  protected System.Web.UI.WebControls.Label ReadOnlyGenderFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField;
-  protected System.Web.UI.WebControls.Label MarriageStatusFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue UnboundMarriageStatusField;
-  protected System.Web.UI.WebControls.Label UnboundMarriageStatusFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue UnboundReadOnlyMarriageStatusField;
-  protected System.Web.UI.WebControls.Label UnboundReadOnlyMarriageStatusFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DeceasedAsEnumField;
-  protected System.Web.UI.WebControls.Label DeceasedAsEnumFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledGenderField;
-  protected System.Web.UI.WebControls.Label DisabledGenderFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledReadOnlyGenderField;
-  protected System.Web.UI.WebControls.Label DisabledReadOnlyGenderFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledMarriageStatusField;
-  protected System.Web.UI.WebControls.Label DisabledMarriageStatusFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledUnboundMarriageStatusField;
-  protected System.Web.UI.WebControls.Label DisabledUnboundMarriageStatusFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledUnboundReadOnlyMarriageStatusField;
-  protected System.Web.UI.WebControls.Label DisabledUnboundReadOnlyMarriageStatusFieldValueLabel;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue InstanceEnumField;
-  protected System.Web.UI.WebControls.Label InstanceEnumFieldValueLabel;
-  protected System.Web.UI.WebControls.Label GenderFieldSelectionChangedLabel;
-  protected Remotion.Web.UI.Controls.WebButton GenderTestSetNullButton;
-  protected Remotion.Web.UI.Controls.WebButton GenderTestSetDisabledGenderButton;
-  protected Remotion.Web.UI.Controls.WebButton GenderTestSetMarriedButton;
-  protected Remotion.Web.UI.Controls.WebButton ReadOnlyGenderTestSetNullButton;
-  protected Remotion.Web.UI.Controls.WebButton ReadOnlyGenderTestSetNewItemButton;
-  protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
+  protected HtmlGenericControl NonVisualControls;
+  protected FormGridManager FormGridManager;
+  protected BindableObjectDataSourceControl CurrentObject;
+  protected BocTextValue FirstNameField;
+  protected BocTextValue LastNameField;
+  protected BocEnumValue GenderField;
+  protected Label GenderFieldValueLabel;
+  protected BocEnumValue ReadOnlyGenderField;
+  protected Label ReadOnlyGenderFieldValueLabel;
+  protected BocEnumValue MarriageStatusField;
+  protected Label MarriageStatusFieldValueLabel;
+  protected BocEnumValue UnboundMarriageStatusField;
+  protected Label UnboundMarriageStatusFieldValueLabel;
+  protected BocEnumValue UnboundReadOnlyMarriageStatusField;
+  protected Label UnboundReadOnlyMarriageStatusFieldValueLabel;
+  protected BocEnumValue DeceasedAsEnumField;
+  protected Label DeceasedAsEnumFieldValueLabel;
+  protected BocEnumValue DisabledGenderField;
+  protected Label DisabledGenderFieldValueLabel;
+  protected BocEnumValue DisabledReadOnlyGenderField;
+  protected Label DisabledReadOnlyGenderFieldValueLabel;
+  protected BocEnumValue DisabledMarriageStatusField;
+  protected Label DisabledMarriageStatusFieldValueLabel;
+  protected BocEnumValue DisabledUnboundMarriageStatusField;
+  protected Label DisabledUnboundMarriageStatusFieldValueLabel;
+  protected BocEnumValue DisabledUnboundReadOnlyMarriageStatusField;
+  protected Label DisabledUnboundReadOnlyMarriageStatusFieldValueLabel;
+  protected BocEnumValue InstanceEnumField;
+  protected Label InstanceEnumFieldValueLabel;
+  protected Label GenderFieldSelectionChangedLabel;
+  protected WebButton GenderTestSetNullButton;
+  protected WebButton GenderTestSetDisabledGenderButton;
+  protected WebButton GenderTestSetMarriedButton;
+  protected WebButton ReadOnlyGenderTestSetNullButton;
+  protected WebButton ReadOnlyGenderTestSetNewItemButton;
+  protected HtmlTable FormGrid;
   
   private string _instanceEnum;
 
@@ -65,12 +61,12 @@ public class BocEnumValueUserControl : BaseUserControl
   {
     base.RegisterEventHandlers();
 
-    this.GenderField.SelectionChanged += new System.EventHandler(this.GenderField_SelectionChanged);
-    this.GenderTestSetNullButton.Click += new System.EventHandler(this.GenderTestSetNullButton_Click);
-    this.GenderTestSetDisabledGenderButton.Click += new System.EventHandler(this.GenderTestSetDisabledGenderButton_Click);
-    this.GenderTestSetMarriedButton.Click += new System.EventHandler(this.GenderTestSetMarriedButton_Click);
-    this.ReadOnlyGenderTestSetNullButton.Click += new System.EventHandler(this.ReadOnlyGenderTestSetNullButton_Click);
-    this.ReadOnlyGenderTestSetNewItemButton.Click += new System.EventHandler(this.ReadOnlyGenderTestSetFemaleButton_Click);
+    this.GenderField.SelectionChanged += new EventHandler(this.GenderField_SelectionChanged);
+    this.GenderTestSetNullButton.Click += new EventHandler(this.GenderTestSetNullButton_Click);
+    this.GenderTestSetDisabledGenderButton.Click += new EventHandler(this.GenderTestSetDisabledGenderButton_Click);
+    this.GenderTestSetMarriedButton.Click += new EventHandler(this.GenderTestSetMarriedButton_Click);
+    this.ReadOnlyGenderTestSetNullButton.Click += new EventHandler(this.ReadOnlyGenderTestSetNullButton_Click);
+    this.ReadOnlyGenderTestSetNewItemButton.Click += new EventHandler(this.ReadOnlyGenderTestSetFemaleButton_Click);
   }
 
   public override IBusinessObjectDataSourceControl DataSource
@@ -86,13 +82,13 @@ public class BocEnumValueUserControl : BaseUserControl
 
     GenderField.LoadUnboundValue ((Gender?)null, IsPostBack);
 
-    UnboundMarriageStatusField.Property = (Remotion.ObjectBinding.IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
+    UnboundMarriageStatusField.Property = (IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
     //UnboundMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
-    UnboundReadOnlyMarriageStatusField.Property = (Remotion.ObjectBinding.IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
+    UnboundReadOnlyMarriageStatusField.Property = (IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
     UnboundReadOnlyMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
-    DisabledUnboundMarriageStatusField.Property = (Remotion.ObjectBinding.IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
+    DisabledUnboundMarriageStatusField.Property = (IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
     DisabledUnboundMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
-    DisabledUnboundReadOnlyMarriageStatusField.Property = (Remotion.ObjectBinding.IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
+    DisabledUnboundReadOnlyMarriageStatusField.Property = (IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
     DisabledUnboundReadOnlyMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
 
     if (!IsPostBack)
@@ -128,32 +124,32 @@ public class BocEnumValueUserControl : BaseUserControl
       label.Text = "not set";
   }
 
-  private void GenderTestSetNullButton_Click(object sender, System.EventArgs e)
+  private void GenderTestSetNullButton_Click(object sender, EventArgs e)
   {
     GenderField.Value = null;
   }
 
-  private void GenderTestSetDisabledGenderButton_Click(object sender, System.EventArgs e)
+  private void GenderTestSetDisabledGenderButton_Click(object sender, EventArgs e)
   {
     GenderField.Value = Gender.UnknownGender;
   }
 
-  private void GenderTestSetMarriedButton_Click(object sender, System.EventArgs e)
+  private void GenderTestSetMarriedButton_Click(object sender, EventArgs e)
   {
     GenderField.Value = MarriageStatus.Married;
   }
 
-  private void ReadOnlyGenderTestSetNullButton_Click(object sender, System.EventArgs e)
+  private void ReadOnlyGenderTestSetNullButton_Click(object sender, EventArgs e)
   {
     ReadOnlyGenderField.Value = null;
   }
 
-  private void ReadOnlyGenderTestSetFemaleButton_Click(object sender, System.EventArgs e)
+  private void ReadOnlyGenderTestSetFemaleButton_Click(object sender, EventArgs e)
   {
     ReadOnlyGenderField.Value = Gender.Female;
   }
 
-  private void GenderField_SelectionChanged(object sender, System.EventArgs e)
+  private void GenderField_SelectionChanged(object sender, EventArgs e)
   {
     if (GenderField.Value != null)
       GenderFieldSelectionChangedLabel.Text = GenderField.Value.ToString();

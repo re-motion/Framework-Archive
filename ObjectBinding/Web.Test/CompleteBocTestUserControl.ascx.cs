@@ -1,44 +1,42 @@
 using System;
-using System.Drawing;
-using System.Web;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 using System.Collections.Specialized;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 using Remotion.Collections;
+using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.UI.Controls;
-
-using Remotion.ObjectBinding;
 
 namespace OBWTest
 {
 public class CompleteBocUserControl : 
-    System.Web.UI.UserControl,
+    UserControl,
     IFormGridRowProvider //  Provides new rows and rows to hide to the FormGridManager
 {
 
   private AutoInitHashtable _listOfFormGridRowInfos = new AutoInitHashtable (typeof (FormGridRowInfoCollection));
   private AutoInitHashtable _listOfHiddenRows = new AutoInitHashtable (typeof (StringCollection));
 
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected System.Web.UI.WebControls.Button PostBackButton;
-  protected System.Web.UI.WebControls.Button SaveButton;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-  protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocTextValue TextField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateTimeField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue EnumField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue ReferenceField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocList ListField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BooleanField;
-  protected Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue MultilineTextField;
-  protected Remotion.Web.UI.Controls.TabbedMultiView MultiView;
-  protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
+  protected BocTextValue FirstNameField;
+  protected BocTextValue LastNameField;
+  protected Button PostBackButton;
+  protected Button SaveButton;
+  protected BindableObjectDataSourceControl CurrentObject;
+  protected FormGridManager FormGridManager;
+  protected BocTextValue TextField;
+  protected BocDateTimeValue DateTimeField;
+  protected BocEnumValue EnumField;
+  protected BocReferenceValue ReferenceField;
+  protected BocList ListField;
+  protected BocBooleanValue BooleanField;
+  protected BocMultilineTextValue MultilineTextField;
+  protected TabbedMultiView MultiView;
+  protected HtmlTable FormGrid;
 
-  private void Page_Load(object sender, System.EventArgs e)
+  private void Page_Load(object sender, EventArgs e)
 	{
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
     Person person = Person.GetObject (personID);
@@ -152,7 +150,7 @@ public class CompleteBocUserControl :
   }
 
 
-  private void SaveButton_Click(object sender, System.EventArgs e)
+  private void SaveButton_Click(object sender, EventArgs e)
   {
     bool isValid = FormGridManager.Validate();
     if (isValid)

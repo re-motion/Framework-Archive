@@ -1,4 +1,5 @@
-<%@ Page language="c#" Codebehind="Frameset.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.Frameset" %>
+<%@ Page language="c#" Codebehind="Frameset.aspx.cs" AutoEventWireup="false" Inherits="Frameset" %>
+<%@ Import namespace="OBWTest"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" > 
 
 <html>

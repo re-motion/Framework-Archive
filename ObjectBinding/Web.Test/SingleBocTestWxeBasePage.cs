@@ -1,19 +1,6 @@
 using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
-using System.Globalization;
-using System.Collections;
-using System.Threading;
-using Remotion.Web;
-using Remotion.Web.UI;
-using Remotion.Web.Utilities;
-using Remotion.Utilities;
 using Remotion.Globalization;
-using Remotion.Web.ExecutionEngine;
-using Remotion.Web.UI.Globalization;
-using Remotion.Web.UI.Controls;
-using System.Web;
+using Remotion.Web.UI;
 
 namespace OBWTest
 {
@@ -25,7 +12,7 @@ public class SingleBocTestWxeBasePage: TestWxeBasePage
   {
     base.OnInit (e);
     this.EnableAbort = true;
-    this.ShowAbortConfirmation = Remotion.Web.UI.ShowAbortConfirmation.OnlyIfDirty;
+    this.ShowAbortConfirmation = ShowAbortConfirmation.OnlyIfDirty;
   }
 
 }

@@ -107,12 +107,6 @@
     <Compile Include="ExtendedVBCodeProvider.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="NullableValueTypes\NullableTypeCreator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\TestEnum.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="Development.CodeDom.build" />
   </ItemGroup>

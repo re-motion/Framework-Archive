@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 using Remotion.Web.ExecutionEngine;
 
 namespace OBWTest.Design

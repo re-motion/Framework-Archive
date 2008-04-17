@@ -1,11 +1,6 @@
 using System;
-using System.Runtime.Serialization;
-
 using Remotion.ObjectBinding.Sample;
 using Remotion.Utilities;
-
-using Remotion.ObjectBinding;
-using Remotion.Web.Configuration;
 using Remotion.Web.ExecutionEngine;
 
 namespace OBWTest.IndividualControlTests

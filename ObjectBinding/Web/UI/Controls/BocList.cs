@@ -8,7 +8,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Logging;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
 using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.Security;
@@ -46,7 +45,7 @@ public class BocList:
   [Browsable (false)]
   [Obsolete ("Use EditableRowIndex instead.")]
   [EditorBrowsable (EditorBrowsableState.Never)]
-  public NaInt32 ModifiableRowIndex
+  public int? ModifiableRowIndex
   {
     get { return EditableRowIndex; }
   }
@@ -263,7 +262,7 @@ public class BocList:
   /// <summary> A list of control wide resources. </summary>
   /// <remarks> 
   ///   Resources will be accessed using 
-  ///   <see cref="M:IResourceManager.GetString (Enum)">IResourceManager.GetString (Enum)</see>. 
+  ///   <see cref="IResourceManager.GetString (Enum)"/>. 
   /// </remarks>
   [ResourceIdentifiers]
   [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocList")]
@@ -363,7 +362,7 @@ public class BocList:
   ///   The zero-based index of the <see cref="BocListView"/> selected from 
   ///   <see cref="AvailableViews"/>.
   /// </summary>
-  private NaInt32 _selectedViewIndex = NaInt32.Null;
+  private int? _selectedViewIndex = null;
   private string _availableViewsListSelectedValue = string.Empty;
   bool _isSelectedViewIndexSet = false;
 
@@ -426,9 +425,9 @@ public class BocList:
   /// <summary> Determines whether to show the sort buttons. </summary>
   private bool _enableSorting = true;
   /// <summary> Determines whether to show the sorting order after the sorting button. Undefined interpreted as True. </summary>
-  private NaBooleanEnum _showSortingOrder = NaBooleanEnum.Undefined;
+  private bool? _showSortingOrder = null;
   /// <summary> Undefined interpreted as True. </summary>
-  private NaBooleanEnum _enableMultipleSorting = NaBooleanEnum.Undefined;
+  private bool? _enableMultipleSorting = null;
   /// <summary> 
   ///   Contains <see cref="BocListSortingOrderEntry"/> objects in the order of the buttons pressed.
   /// </summary>
@@ -444,10 +443,10 @@ public class BocList:
   private Hashtable _selectorControlCheckedState = new Hashtable();
   private RowIndex _index = RowIndex.Undefined;
   private string _indexColumnTitle;
-  private NaInt32 _indexOffset = NaInt32.Null;
+  private int? _indexOffset = null;
 
   /// <summary> Null, 0: show all objects, > 0: show n objects per page. </summary>
-  private NaInt32 _pageSize = NaInt32.Null; 
+  private int? _pageSize = null; 
   /// <summary>
   ///   Show page info ("page 1 of n") and links always (true),
   ///   or only if there is more than 1 page (false)
@@ -1213,7 +1212,7 @@ public class BocList:
         WcagHelper.Instance.HandleError (1, this, "ShowListMenu");
       if (ShowAvailableViewsList)
         WcagHelper.Instance.HandleError (1, this, "ShowAvailableViewsList");
-      bool isPagingEnabled = !_pageSize.IsNull && _pageSize.Value != 0;
+      bool isPagingEnabled = _pageSize != null && _pageSize.Value != 0;
       if (isPagingEnabled)
         WcagHelper.Instance.HandleError (1, this, "PageSize");
       if (EnableSorting)
@@ -1816,7 +1815,7 @@ public class BocList:
 
         ListItem item = new ListItem (columnDefinitionCollection.Title, i.ToString());
         _availableViewsList.Items.Add (item);
-        if (   ! _selectedViewIndex.IsNull 
+        if (   _selectedViewIndex != null 
             && _selectedViewIndex == i)
         {
           item.Selected = true;
@@ -2861,7 +2860,7 @@ public class BocList:
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
     }
     int renderedIndex = index + 1;
-    if (! _indexOffset.IsNull)
+    if (_indexOffset != null)
       renderedIndex += _indexOffset.Value;
     writer.Write (renderedIndex);
     writer.RenderEndTag();
@@ -3269,7 +3268,7 @@ public class BocList:
     object[] values = (object[]) savedState;
 
     base.LoadControlState (values[0]);
-    _selectedViewIndex = (NaInt32) values[1];
+    _selectedViewIndex = (int?) values[1];
     _availableViewsListSelectedValue = (string) values[2];
     _currentRow = (int) values[3];
     _sortingOrder = (ArrayList) values[4];
@@ -3779,7 +3778,7 @@ public class BocList:
           int originalRowIndex = row.Index;
 
           if (   customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow
-              && (   EditableRowIndex.IsNull 
+              && (   EditableRowIndex == null 
                   || EditableRowIndex.Value != originalRowIndex))
           {
             continue;
@@ -3839,7 +3838,7 @@ public class BocList:
           {
             int originalRowIndex = (int) customColumnTriplet.Second;
             if (   customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow
-                && (   EditableRowIndex.IsNull 
+                && (   EditableRowIndex == null 
                     || EditableRowIndex.Value != originalRowIndex))
             {
               continue;
@@ -4665,7 +4664,7 @@ public class BocList:
       bool hasChanged = _selectedView != value; 
       _selectedView = value; 
       ArgumentUtility.CheckNotNullOrEmpty ("AvailableViews", _availableViews);
-      _selectedViewIndex = NaInt32.Null;
+      _selectedViewIndex = null;
 
       if (_selectedView != null)
       {
@@ -4678,7 +4677,7 @@ public class BocList:
           }
         }
 
-        if (_selectedViewIndex.IsNull) 
+        if (_selectedViewIndex == null) 
           throw new ArgumentOutOfRangeException ("value");
       }
 
@@ -4691,10 +4690,10 @@ public class BocList:
   {
     if (_isSelectedViewIndexSet)
       return;
-    if (_selectedViewIndex.IsNull)
+    if (_selectedViewIndex == null)
       SelectedViewIndex = _selectedViewIndex;
     else if (_availableViews.Count == 0)
-      SelectedViewIndex = NaInt32.Null;
+      SelectedViewIndex = null;
     else if (_selectedViewIndex.Value >= _availableViews.Count)
       SelectedViewIndex = _availableViews.Count - 1;
     else
@@ -4706,12 +4705,12 @@ public class BocList:
   ///   Gets or sets the index of the selected <see cref="BocListView"/> used to
   ///   supplement the <see cref="FixedColumns"/>.
   /// </summary>
-  private NaInt32 SelectedViewIndex
+  private int? SelectedViewIndex
   {
     get { return _selectedViewIndex; }
     set 
     {
-      if (   ! value.IsNull 
+      if (   value != null 
           && (value.Value < 0 || value.Value >= _availableViews.Count))
       {
         throw new ArgumentOutOfRangeException ("value");
@@ -4728,7 +4727,7 @@ public class BocList:
       _selectedViewIndex = value; 
 
       _selectedView = null;
-      if (! _selectedViewIndex.IsNull)
+      if (_selectedViewIndex != null)
       {
         int selectedIndex = _selectedViewIndex.Value;
         if (selectedIndex < _availableViews.Count)
@@ -4742,7 +4741,7 @@ public class BocList:
 
   private void AvailableViews_CollectionChanged (object sender, CollectionChangeEventArgs e)
   {
-    if (   _selectedViewIndex.IsNull
+    if (   _selectedViewIndex == null
         && _availableViews.Count > 0)
     {
       _selectedViewIndex = 0;
@@ -4752,7 +4751,7 @@ public class BocList:
       if (_availableViews.Count > 0)
         _selectedViewIndex = _availableViews.Count - 1;
       else
-        _selectedViewIndex = NaInt32.Null;
+        _selectedViewIndex = null;
     }
   }
 
@@ -5083,7 +5082,7 @@ public class BocList:
 
   /// <summary> Gets the index of the currently modified row. </summary>
   [Browsable (false)]
-  public NaInt32 EditableRowIndex
+  public int? EditableRowIndex
   {
     get { return _editModeController.EditableRowIndex; }
   }
@@ -5429,12 +5428,12 @@ public class BocList:
   /// </remarks>
   /// <value> 
   ///   <see langword="NaBooleanEnum.True"/> to show the sorting order index after the button. 
-  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see langword="true"/>.
+  ///   Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
   /// </value>
   [Category ("Appearance")]
   [Description ("Enables the sorting order display after each sorting button. Undefined is interpreted as true.")]
-  [DefaultValue (NaBooleanEnum.Undefined)]
-  public virtual NaBooleanEnum ShowSortingOrder
+  [DefaultValue (typeof (bool?), "")]
+  public virtual bool? ShowSortingOrder
   {
     get { return _showSortingOrder; }
     set { _showSortingOrder = value; }
@@ -5442,13 +5441,13 @@ public class BocList:
 
   protected virtual bool IsShowSortingOrderEnabled
   {
-    get { return ShowSortingOrder != NaBooleanEnum.False; }
+    get { return ShowSortingOrder != false; }
   }
 
   [Category ("Behavior")]
   [Description ("Enables sorting by multiple columns. Undefined is interpreted as true.")]
-  [DefaultValue (NaBooleanEnum.Undefined)]
-  public virtual NaBooleanEnum EnableMultipleSorting
+  [DefaultValue (typeof (bool?), "")]
+  public virtual bool? EnableMultipleSorting
   {
     get { return _enableMultipleSorting; }
     set 
@@ -5465,7 +5464,7 @@ public class BocList:
 
   protected virtual bool IsMultipleSortingEnabled
   {
-    get { return EnableMultipleSorting != NaBooleanEnum.False; }
+    get { return EnableMultipleSorting != false; }
   }
 
   /// <summary>
@@ -5548,11 +5547,11 @@ public class BocList:
   }
 
   /// <summary> Gets or sets the offset for the rendered index. </summary>
-  /// <value> Defaults to <see cref="NaInt32.Null"/>. </value>
+  /// <value> Defaults to <see langword="null"/>. </value>
   [Category ("Appearance")]
   [Description ("The offset for the rendered index.")]
-  [DefaultValue (typeof(NaInt32), "null")]
-  public NaInt32 IndexOffset
+  [DefaultValue (typeof(int?), "")]
+  public int? IndexOffset
   {
     get { return _indexOffset; }
     set { _indexOffset = value; }
@@ -5580,18 +5579,18 @@ public class BocList:
   /// <summary> The number of rows displayed per page. </summary>
   /// <value> 
   ///   An integer greater than zero to limit the number of rows per page to the specified value,
-  ///   or zero, less than zero or <see cref="NaInt32.Null"/> to show all rows.
+  ///   or zero, less than zero or <see langword="null"/> to show all rows.
   /// </value>
   [Category ("Appearance")]
   [Description ("The number of rows displayed per page. Set PageSize to 0 to show all rows.")]
-  [DefaultValue (typeof(NaInt32), "null")]
-  public virtual NaInt32 PageSize
+  [DefaultValue (typeof(int?), "")]
+  public virtual int? PageSize
   {
     get { return _pageSize; }
     set
     {
-      if (value.IsNull || value.Value < 0)
-        _pageSize = NaInt32.Null;
+      if (value == null || value.Value < 0)
+        _pageSize = null;
       else
         _pageSize = value; 
     }
@@ -5601,7 +5600,7 @@ public class BocList:
   {
     get 
     { 
-      return ! WcagHelper.Instance.IsWaiConformanceLevelARequired() && !_pageSize.IsNull && _pageSize.Value != 0; 
+      return ! WcagHelper.Instance.IsWaiConformanceLevelARequired() && _pageSize != null && _pageSize.Value != 0; 
     }
   }
 

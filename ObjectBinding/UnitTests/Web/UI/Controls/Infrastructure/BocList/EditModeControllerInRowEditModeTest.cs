@@ -414,7 +414,7 @@ public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
     CheckEvents (expectedEvents, ActualEvents);
     
     Assert.IsFalse (Controller.IsRowEditModeActive);
-    Assert.IsTrue (Controller.EditableRowIndex.IsNull);
+    Assert.IsNull (Controller.EditableRowIndex);
 
     CheckValues (Values[2], "New Value C", 300);
   }
@@ -438,7 +438,7 @@ public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
     CheckEvents (expectedEvents, ActualEvents);
     
     Assert.IsFalse (Controller.IsRowEditModeActive);
-    Assert.IsTrue (Controller.EditableRowIndex.IsNull);
+    Assert.IsNull (Controller.EditableRowIndex);
 
     CheckValues (Values[2], "C", 3);
   }
@@ -462,7 +462,7 @@ public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
     CheckEvents (expectedEvents, ActualEvents);
     
     Assert.IsFalse (Controller.IsRowEditModeActive);
-    Assert.IsTrue (Controller.EditableRowIndex.IsNull);
+    Assert.IsNull (Controller.EditableRowIndex);
 
     Assert.AreEqual (6, Controller.OwnerControl.Value.Count);
     CheckValues (NewValues[0], "New Value F", 600);
@@ -487,7 +487,7 @@ public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
     CheckEvents (expectedEvents, ActualEvents);
     
     Assert.IsFalse (Controller.IsRowEditModeActive);
-    Assert.IsTrue (Controller.EditableRowIndex.IsNull);
+    Assert.IsNull (Controller.EditableRowIndex);
 
     Assert.AreEqual (5, Controller.OwnerControl.Value.Count);
     CheckValues (NewValues[0], "F", 6);
@@ -535,7 +535,7 @@ public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
     CheckEvents (expectedEvents, ActualEvents);
     
     Assert.IsFalse (Controller.IsRowEditModeActive);
-    Assert.IsTrue (Controller.EditableRowIndex.IsNull);
+    Assert.IsNull (Controller.EditableRowIndex);
 
     CheckValues (Values[2], "C", 3);
   }
@@ -821,7 +821,7 @@ public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
 
     Controller.EndRowEditMode (false, Columns);
     Assert.IsFalse (Controller.IsRowEditModeActive);
-    Assert.IsTrue (Controller.EditableRowIndex.IsNull);
+    Assert.IsNull (Controller.EditableRowIndex);
 
     ControllerInvoker.LoadControlState (viewState);
     Assert.IsTrue (Controller.IsRowEditModeActive);

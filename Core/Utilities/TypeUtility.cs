@@ -231,6 +231,5 @@ namespace Remotion.Utilities
         sb.Append ("]");
       }
     }
-
   }
 }

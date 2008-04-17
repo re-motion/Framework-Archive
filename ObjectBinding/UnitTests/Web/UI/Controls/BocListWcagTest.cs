@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-using Remotion.NullableValueTypes;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UnitTests.Configuration;
@@ -22,7 +21,7 @@ public class BocListWcagTest: BocTest
     _bocList.ShowOptionsMenu = false;
     _bocList.ShowListMenu = false;
     _bocList.ShowAvailableViewsList = false;
-    _bocList.PageSize = NaInt32.Null;
+    _bocList.PageSize = null;
     _bocList.EnableSorting = false;
     _bocList.RowMenuDisplay = RowMenuDisplay.Disabled;
     _bocList.Selection = RowSelection.Disabled;

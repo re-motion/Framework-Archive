@@ -6,7 +6,6 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
-using Remotion.NullableValueTypes;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
@@ -63,7 +62,7 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
 	// member fields
 
   private bool _value = false;
-  private NaBooleanEnum _defaultValue = NaBooleanEnum.Undefined;
+  private bool? _defaultValue = null;
   private bool _isActive = true;
 
   private HtmlInputCheckBox _checkBox;
@@ -71,9 +70,9 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
   private Label _label;
   private Style _labelStyle;
 
-  private NaBooleanEnum _autoPostBack = NaBooleanEnum.Undefined;
+  private bool? _autoPostBack = null;
 
-  private NaBooleanEnum _showDescription = NaBooleanEnum.Undefined;
+  private bool? _showDescription = null;
   private string _trueDescription = string.Empty;
   private string _falseDescription = string.Empty;
   private string _nullDescription = string.Empty;
@@ -183,7 +182,7 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
   {
     if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
     {
-      if (_showDescription == NaBooleanEnum.True)
+      if (_showDescription == true)
         WcagHelper.Instance.HandleError (1, this, "ShowDescription");
 
       if (IsAutoPostBackEnabled)
@@ -545,15 +544,14 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
 
   /// <summary> The boolean value to which this control defaults if the assigned value is <see langword="null"/>. </summary>
   /// <value> 
-  ///   <see cref="NaBooleanEnum.True"/> or <see cref="NaBooleanEnum.False"/> to explicitly specify the default value 
-  ///   or <see cref="NaBooleanEnum.Undefined"/> to leave the decision to the object model. If the control is unbound 
-  ///   and no default value is specified, <see cref="NaBooleanEnum.False"/> is assumed as default value.
+  ///   <see langword="true"/> or <see langword="false"/> to explicitly specify the default value, or <see langword="null"/> to leave the decision 
+  ///   to the object model. If the control  is unbound and no default value is specified, <see langword="false"/> is assumed as default value.
   /// </value>
   [Category("Behavior")]
   [Description("The boolean value to which this control defaults if the assigned value is null.")]
   [NotifyParentProperty(true)]
-  [DefaultValue (NaBooleanEnum.Undefined)]
-  public NaBooleanEnum DefaultValue
+  [DefaultValue (typeof (bool?), "")]
+  public bool? DefaultValue
   {
     get { return _defaultValue; }
     set { _defaultValue = value; }
@@ -566,18 +564,18 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
   /// <returns>
   ///   <list type="bullet">
   ///     <item> 
-  ///       If <see cref="DefaultValue"/> is set to <see cref="NaBooleanEnum.True"/> or 
-  ///       <see cref="NaBooleanEnum.False"/>, <see langword="true"/> or <see langword="false"/> is returned 
+  ///       If <see cref="DefaultValue"/> is set to <see langword="true"/> or 
+  ///       <see langword="false"/>, <see langword="true"/> or <see langword="false"/> is returned 
   ///       respectivly.
   ///     </item>
   ///     <item>
-  ///       If <see cref="DefaultValue"/> is set to <see cref="NaBooleanEnum.Undefined"/>, the <see cref="Property"/>
+  ///       If <see cref="DefaultValue"/> is set to <see langword="null"/>, the <see cref="Property"/>
   ///       is queried for its default value using the <see cref="IBusinessObjectBooleanProperty.GetDefaultValue"/>
   ///       method.
   ///       <list type="bullet">
   ///         <item> 
   ///           If <see cref="IBusinessObjectBooleanProperty.GetDefaultValue"/> returns 
-  ///           <see cref="NaBooleanEnum.True"/> or <see cref="NaBooleanEnum.False"/>, <see langword="true"/> or 
+  ///           <see langword="true"/> or <see langword="false"/>, <see langword="true"/> or 
   ///           <see langword="false"/> is returned respectivly.
   ///         </item>
   ///         <item>
@@ -589,7 +587,7 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
   /// </returns>
   protected bool GetDefaultValue()
   {
-    if (_defaultValue == NaBooleanEnum.Undefined)
+    if (_defaultValue == null)
     {
       if (DataSource != null && DataSource.BusinessObjectClass != null && DataSource.BusinessObject != null && Property != null)
         return Property.GetDefaultValue (DataSource.BusinessObjectClass) ?? false;
@@ -598,7 +596,7 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
     }
     else
     {
-      return _defaultValue == NaBooleanEnum.True ? true : false;
+      return _defaultValue == true ? true : false;
     }
 
   }
@@ -726,7 +724,7 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
   /// <summary> Gets a flag that determines whether changing the checked state causes an automatic postback.</summary>
   /// <value> 
   ///   <see langword="NaBooleanEnum.True"/> to enable automatic postbacks. 
-  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as 
+  ///   Defaults to <see langword="null"/>, which is interpreted as 
   ///   <see langword="NaBooleanEnum.False"/>.
   /// </value>
   /// <remarks>
@@ -734,33 +732,33 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
   /// </remarks>
   [Description("Automatically postback to the server after the checked state is modified. Undefined is interpreted as false.")]
   [Category("Behavior")]
-  [DefaultValue (NaBooleanEnum.Undefined)]
+  [DefaultValue (typeof (bool?), "")]
   [NotifyParentProperty (true)]
-  public NaBooleanEnum AutoPostBack
+  public bool? AutoPostBack
   {
     get { return _autoPostBack; }
     set { _autoPostBack = value; }
   }
 
   /// <summary> Gets the evaluated value for the <see cref="AutoPostBack"/> property. </summary>
-  /// <value> <see langowrd="true"/> if <see cref="AutoPostBack"/> is <see cref="NaBooleanEnum.True"/>. </value>
+  /// <value> <see langowrd="true"/> if <see cref="AutoPostBack"/> is <see langword="true"/>. </value>
   protected bool IsAutoPostBackEnabled
   {
-    get { return _autoPostBack == NaBooleanEnum.True;}
+    get { return _autoPostBack == true;}
   }
 
   /// <summary> Gets or sets the flag that determines whether to show the description next to the checkbox. </summary>
   /// <value> 
-  ///   <see cref="NaBooleanEnum.True"/> to enable the description. 
-  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.False"/>.
+  ///   <see langword="true"/> to enable the description. 
+  ///   Defaults to <see langword="null"/>, which is interpreted as <see langword="false"/>.
   /// </value>
   /// <remarks>
   ///   Use <see cref="IsDescriptionEnabled"/> to evaluate this property.
   /// </remarks>
   [Description("The flag that determines whether to show the description next to the checkbox. Undefined is interpreted as false.")]
   [Category ("Appearance")]
-  [DefaultValue (NaBooleanEnum.Undefined)]
-  public NaBooleanEnum ShowDescription
+  [DefaultValue (typeof (bool?), "")]
+  public bool? ShowDescription
   {
     get { return _showDescription; }
     set { _showDescription = value; }
@@ -769,11 +767,11 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
   /// <summary> Gets the evaluated value for the <see cref="ShowDescription"/> property. </summary>
   /// <value>
   ///   <see langowrd="true"/> if WAI conformity is not required 
-  ///   and <see cref="ShowDescription"/> is <see cref="NaBooleanEnum.True"/>. 
+  ///   and <see cref="ShowDescription"/> is <see langword="true"/>. 
   /// </value>
   protected bool IsDescriptionEnabled
   {
-    get { return ! WcagHelper.Instance.IsWaiConformanceLevelARequired() && _showDescription == NaBooleanEnum.True;}
+    get { return ! WcagHelper.Instance.IsWaiConformanceLevelARequired() && _showDescription == true;}
   }
 
   /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="true"/>. </summary>

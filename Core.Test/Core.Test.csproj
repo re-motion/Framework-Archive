@@ -535,7 +535,6 @@
     <Compile Include="Mixins\ValidationTests\ValidationSampleTypes\PublicNester.cs" />
     <Compile Include="Mixins\ValidationTests\ValidationSampleTypes\ThrowingRuleSet.cs" />
     <Compile Include="Mixins\ValidationTests\ValidationTestBase.cs" />
-    <Compile Include="NullableValueTypes\NaBooleanTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -544,48 +543,6 @@
     <Compile Include="Collections\TupleAbcdTest.cs" />
     <Compile Include="Collections\TupleAbcTest.cs" />
     <Compile Include="Collections\TupleAbTest.cs" />
-    <Compile Include="NullableValueTypes\ArithmeticsTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\EqualityTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\FormattingTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaBooleanConverterTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaByteConverterTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaDateTimeConverterTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaDecimalConverterTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaDoubleConverterTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaGuidConverterTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaInt16ConverterTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaInt32ConverterTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaInt64ConverterTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\NaSingleConverterTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NullableValueTypes\SerializationTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Reflection\AssemblyFinderFilterTest.cs" />
     <Compile Include="Reflection\AssemblyFinderTest.cs" />
     <TestAssembly Include="Reflection\TestAssemblies\MarkedExeAssembly\AssemblyInfo.cs" />
@@ -681,6 +638,7 @@
     <Compile Include="Utilities\NameValueCollectionUtilityTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\NullableTypeUtilityTest.cs" />
     <Compile Include="Utilities\ReflectionEmitUtilityTests.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\CanAscribe_WithGenericClass.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\CanAscribe_WithGenericInterface.cs" />

@@ -6,7 +6,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
-using Remotion.NullableValueTypes;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
@@ -76,7 +75,7 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
   private HiddenField _hiddenField;
   private Style _labelStyle;
 
-  private NaBoolean _autoPostBack = NaBoolean.Null;
+  private bool? _autoPostBack = null;
 
   private bool _showDescription = true;
   private string _trueDescription = string.Empty;
@@ -288,7 +287,7 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
             + (StringUtility.IsNullOrEmpty (_falseDescription) ? "null" :"'" +  _falseDescription + "'") + ", "
             + (StringUtility.IsNullOrEmpty (_nullDescription) ? "null" : "'" + _nullDescription + "'") + ");";
 
-        if (_autoPostBack.IsTrue)
+        if (_autoPostBack == true)
           script += Page.ClientScript.GetPostBackEventReference (this, "") + ";";
         script += "return false;";
       }
@@ -681,13 +680,13 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
   /// <summary> Gets a flag that determines whether changing the checked state causes an automatic postback.</summary>
   /// <value> 
   ///   <see langword="NaBoolean.True"/> to enable automatic postbacks. 
-  ///   Defaults to <see cref="NaBoolean.Null"/>, which is interpreted as <see langword="false"/>.
+  ///   Defaults to <see langword="null"/>, which is interpreted as <see langword="false"/>.
   /// </value>
   [Description("Automatically postback to the server after the checked state is modified. Undefined is interpreted as false.")]
   [Category("Behavior")]
-  [DefaultValue (typeof(NaBoolean), "null")]
+  [DefaultValue (typeof(bool?), "")]
   [NotifyParentProperty (true)]
-  public NaBoolean AutoPostBack
+  public bool? AutoPostBack
   {
     get { return _autoPostBack; }
     set { _autoPostBack = value; }

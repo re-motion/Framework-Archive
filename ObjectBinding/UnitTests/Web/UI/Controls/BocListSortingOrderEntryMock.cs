@@ -6,7 +6,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 
 public class BocListSortingOrderEntryMock : BocListSortingOrderEntry
 {
-  public BocListSortingOrderEntryMock (BocColumnDefinition column, SortingDirection direction)
+  public BocListSortingOrderEntryMock (IBocSortableColumnDefinition column, SortingDirection direction)
     : base (column, direction)
   {
   }
