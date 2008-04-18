@@ -182,7 +182,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     private StateType GetStateFromDataContainer (DomainObject orderClass)
     {
-      return ((DataContainer) PrivateInvoke.InvokeNonPublicMethod (orderClass, typeof (DomainObject), "GetDataContainer")).State;
+      DataContainer dataContainer = (DataContainer) 
+          PrivateInvoke.InvokeNonPublicMethod (orderClass, typeof (DomainObject), "GetDataContainerForTransaction", orderClass.ClientTransaction);
+      return dataContainer.State;
     }
 
     [Test]

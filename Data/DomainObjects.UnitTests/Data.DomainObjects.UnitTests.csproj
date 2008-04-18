@@ -362,7 +362,6 @@
     <Compile Include="Serialization\SerializationCallbackTest.cs" />
     <Compile Include="StandardMappingTest.cs" />
     <Compile Include="Interception\InterceptedPropertyIntegrationTest.cs" />
-    <Compile Include="Configuration\StorageProviders\StorageProviderConfigurationTest.cs" />
     <Compile Include="Factories\TestDomainFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

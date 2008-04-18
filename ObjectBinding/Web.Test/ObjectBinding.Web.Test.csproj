@@ -371,10 +371,6 @@
       <DependentUpon>WebForm3.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WebUserControl1.ascx.cs">
-      <DependentUpon>WebUserControl1.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Content Include="ClientForm.aspx">
       <SubType>Form</SubType>
     </Content>
@@ -491,9 +487,6 @@
     </Content>
     <Content Include="WebForm3.aspx">
       <SubType>Form</SubType>
-    </Content>
-    <Content Include="WebUserControl1.ascx">
-      <SubType>UserControl</SubType>
     </Content>
     <None Include="WxeLauncher.ashx" />
   </ItemGroup>

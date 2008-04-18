@@ -357,12 +357,6 @@
     <Compile Include="Collections\TupleAb.cs" />
     <Compile Include="Collections\TupleAbc.cs" />
     <Compile Include="Collections\TupleAbcd.cs" />
-    <Compile Include="Collections\TypedArrayList.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Collections\TypedHashtable.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Configuration\TypeElement.cs" />
     <Compile Include="Context\ISafeContextProvider.cs" />
     <Compile Include="Context\SafeContext.cs" />
@@ -383,12 +377,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Globalization\ResourceIdentifiersAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Globalization\ResourceManagerCache.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Globalization\ResourceManagerPool.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Globalization\ResourceManagerSet.cs">

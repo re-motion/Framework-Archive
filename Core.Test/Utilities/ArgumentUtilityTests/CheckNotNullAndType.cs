@@ -110,5 +110,40 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       ArgumentUtility.CheckNotNullAndType<int> ("arg", "test");
     }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentNullException))]
+    public void Fail_Null_String_NonGeneric ()
+    {
+      ArgumentUtility.CheckNotNullAndType ("arg", (object) null, typeof (string));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException))]
+    public void Fail_Type_String_NonGeneric ()
+    {
+      ArgumentUtility.CheckNotNullAndType ("arg", 13, typeof (string));
+    }
+
+
+    [Test]
+    [ExpectedException (typeof (ArgumentNullException))]
+    public void Fail_Null_Int_NonGeneric ()
+    {
+      ArgumentUtility.CheckNotNullAndType ("arg", (object) null, typeof (int));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException))]
+    public void Fail_Type_Int_NonGeneric ()
+    {
+      ArgumentUtility.CheckNotNullAndType ("arg", 13.0, typeof (int));
+    }
+
+    [Test]
+    public void Succeed_Int_NonGeneric ()
+    {
+      ArgumentUtility.CheckNotNullAndType ("arg", 10, typeof (int));
+    }
   }
 }

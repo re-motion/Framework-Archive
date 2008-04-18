@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Interception.SampleTypes
 {
@@ -11,11 +12,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Interception.SampleTypes
     }
 
     public Throws ()
-        : base (ThrowException())
+      : base (ThrowException (), new StreamingContext())
     {
     }
 
-    private static DataContainer ThrowException ()
+    private static SerializationInfo ThrowException ()
     {
       throw new Exception ("Thrown in ThrowException()");
     }

@@ -15,7 +15,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
       return DomainObject.GetObject<ClientBoundBaseClass> (id);
     }
 
-    public static new ClientBoundBaseClass GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static ClientBoundBaseClass GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       using (clientTransaction.EnterNonDiscardingScope())
       {

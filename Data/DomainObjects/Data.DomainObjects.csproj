@@ -148,7 +148,6 @@
     <Compile Include="IDomainObjectMixin.cs" />
     <Compile Include="Infrastructure\ClientTransactionReadOnlyException.cs" />
     <Compile Include="Infrastructure\CompoundClientTransactionListener.cs" />
-    <Compile Include="Infrastructure\DataContainerIndirection.cs" />
     <Compile Include="Infrastructure\DomainObjectMixinCodeGenerationBridge.cs" />
     <Compile Include="Infrastructure\ExtensionClientTransactionListener.cs" />
     <Compile Include="Infrastructure\IClientTransactionListener.cs" />
@@ -395,16 +394,10 @@
     <Compile Include="Persistence\Configuration\IdentityTypeNotSupportedException.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Persistence\Configuration\StorageProviderConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Persistence\Configuration\StorageProviderConfigurationException.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Persistence\Configuration\StorageProviderDefinition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Persistence\Configuration\StorageProviderDefinitionCollection.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Persistence\ConverterException.cs">

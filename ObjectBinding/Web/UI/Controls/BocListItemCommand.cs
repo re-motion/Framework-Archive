@@ -172,24 +172,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    /// <summary>
-    ///   Executes the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommand"/> on a page
-    ///   not implementing <see cref="IWxePage"/>.
-    /// </summary>
-    /// <param name="page"> The <see cref="Page"/> where this command is rendered on. </param>
-    /// <param name="listIndex"> 
-    ///   The index of the <see cref="IBusinessObject"/> in the row where the command was clicked.
-    /// </param>
-    /// <param name="businessObject">
-    ///   The <see cref="IBusinessObject"/> in the row where the command was clicked.
-    /// </param>
-    [Obsolete ("Make public should this ever be needed.")]
-    private void ExecuteWxeFunction (Page page, int listIndex, IBusinessObject businessObject)
-    {
-      NameObjectCollection parameters = PrepareWxeFunctionParameters (listIndex, businessObject);
-      //ExecuteWxeFunction (page, parameters, new NameValueCollection (0));
-    }
-
     private NameObjectCollection PrepareWxeFunctionParameters (int listIndex, IBusinessObject businessObject)
     {
       NameObjectCollection parameters = new NameObjectCollection ();

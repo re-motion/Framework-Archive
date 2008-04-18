@@ -6,7 +6,7 @@ namespace Remotion.Security
 {
   public abstract class BaseDemandPermissionAttribute : Attribute
   {
-    private Enum[] _accessTypes;
+    private readonly Enum[] _accessTypes;
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     [Obsolete ("Do not use this constructor to initialize a new instance. It is required only for making the Attribute class CLS complient.", true)]

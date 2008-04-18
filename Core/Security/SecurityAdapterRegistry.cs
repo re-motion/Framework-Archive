@@ -4,21 +4,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Security
 {
-  [Obsolete ("Use SecurityAdapterRegistry instead. (Version: 1.7.41)", true)]
-  public abstract class SecurityProviderRegistry
-  {
-    public static SecurityProviderRegistry Instance
-    {
-      get { throw new NotImplementedException ("Use SecurityAdapterRegistry.Instance instead."); }
-    }
-
-    [Obsolete ("Use SetAdapter(...) instead. (Version: 1.7.41)", true)]
-    public abstract void SetProvider<T> (T value) where T : class, ISecurityProviderObsolete;
-
-    [Obsolete ("Use GetAdapter<T>() instead. (Version: 1.7.41)", true)]
-    public abstract T GetProvider<T>() where T : class, ISecurityProviderObsolete;
-  }
-
+  //TODO FS: Move to SecurityInterfaces as ISecurityAdapterRegistry and InstanceMember.Implementation in SecurityAssembly
   /// <summary>Used to register <see cref="ISecurityAdapter"/> instances.</summary>
   /// <remarks>Used by those modules of the framework that do not have binary depedencies to the security module to access security information.</remarks>
   public class SecurityAdapterRegistry

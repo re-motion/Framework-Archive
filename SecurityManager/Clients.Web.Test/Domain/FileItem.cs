@@ -18,7 +18,7 @@ namespace Remotion.SecurityManager.Clients.Web.Test.Domain
       }
     }
 
-    public static new FileItem GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static FileItem GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       using (clientTransaction.EnterNonDiscardingScope())
       {

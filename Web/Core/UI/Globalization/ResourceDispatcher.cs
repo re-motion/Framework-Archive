@@ -220,42 +220,6 @@ public sealed class ResourceDispatcher
     return elements;
   }
 
-  /// <summary>
-  ///   Dispatch a value to a single property. Will be replaced using the reflection utility
-  /// </summary>
-  /// <exception cref="InvalidOperationException">
-  ///   Thrown if propertyName is unknown in objectToSetPropertyFor
-  /// </exception>
-  // TODO: Replace using the reflection utility
-  [Obsolete ("Use ReflectionUtility.SetPropertyOrFieldValue.")]
-  public static void SetProperty (object objectToSetPropertyFor, string propertyName, string propertyValue)
-  {
-    ArgumentUtility.CheckNotNull ("objectToSetPropertyFor", objectToSetPropertyFor);
-    ArgumentUtility.CheckNotNull ("propertyName", propertyName);
-    ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
-
-    PropertyInfo property = objectToSetPropertyFor.GetType().GetProperty (propertyName, typeof (string));
-
-    if (property == null)
-      s_log.Warn ("Object of type '" + objectToSetPropertyFor.GetType().FullName + "' does not contain a public property '" + propertyName + "'.");
-
-    property.SetValue (objectToSetPropertyFor, propertyValue, new object[0]);  
-  }
-
-
-  /// <summary>
-  /// obsolete
-  /// </summary>
-  /// <param name="control"></param>
-  /// <param name="resourceManager"></param>
-  [Obsolete ("Use Dispatch (Control, IResourceManager) instead.")]
-  public static void Dispatch (Control control, ResourceManager resourceManager)
-  {
-    ArgumentUtility.CheckNotNull ("control", control);
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-
-    ResourceDispatcher.Dispatch (control, new ResourceManagerWrapper (resourceManager));
-  }
 
   //  construction and disposing
   

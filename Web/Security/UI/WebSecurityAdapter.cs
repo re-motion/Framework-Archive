@@ -11,11 +11,6 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.Security.UI
 {
-  [Obsolete ("Use WebSecurityAdapter instead. (Version: 1.7.41)", true)]
-  public class WebSecurityProvider : WebSecurityAdapter, IWebSecurityProvider
-  {
-  }
-  
   public class WebSecurityAdapter : IWebSecurityAdapter
   {
     // types

@@ -22,7 +22,7 @@ namespace Remotion.Security.UnitTests.Data.DomainObjects.TestDomain
 
     public DataContainer GetDataContainer ()
     {
-      return (DataContainer) PrivateInvoke.InvokeNonPublicMethod (this, typeof (DomainObject), "GetDataContainer");
+      return (DataContainer) PrivateInvoke.InvokeNonPublicMethod (this, typeof (DomainObject), "GetDataContainerForTransaction", ClientTransaction);
     }
 
     public abstract string StringProperty { get; set; }

@@ -1,75 +1,16 @@
 using System;
-using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Remotion.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.Xml
 {
-  [Serializable]
-  [Obsolete ("try to get to original exception")]
-  public class RemotionXmlSchemaValidationException: XmlException
-  {
-    private string _rawMessage;
-    private string _fileName;
-    //private int _lineNumber;
-    //private int _linePosition;
-
-    public RemotionXmlSchemaValidationException (string message, string fileName, int lineNumber, int linePosition, Exception innerException)
-        : base (message, innerException, lineNumber, linePosition)
-    {
-      _rawMessage = message;
-      _fileName = fileName;
-      //_lineNumber = lineNumber;
-      //_linePosition = linePosition;
-    }
-
-    protected RemotionXmlSchemaValidationException (SerializationInfo info, StreamingContext context)
-      : base (info, context)
-    {
-      _rawMessage = info.GetString ("_rawMessage");
-      _fileName = info.GetString ("_fileName");
-      //_lineNumber = info.GetInt32 ("_lineNumber");
-      //_linePosition = info.GetInt32 ("_linePosition");
-    }
-
-    public override void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      info.AddValue ("_rawMessage", _rawMessage);
-      info.AddValue ("_fileName", _fileName);
-      //info.AddValue ("_lineNumber", _lineNumber);
-      //info.AddValue ("_linePosition", _linePosition);
-    }
-
-    public string RawMessage
-    {
-      get { return _rawMessage; }
-    }
-
-    public string FileName
-    {
-      get { return _fileName; }
-    }
-
-    //public int LineNumber
-    //{
-    //  get { return _lineNumber; }
-    //}
-
-    //public int LinePosition
-    //{
-    //  get { return _linePosition; }
-    //}    
-  }
   /// <summary>
   /// Use this class to easily serialize and deserialize objects to or from XML.
   /// </summary>
   public static class XmlSerializationUtility
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (XmlSerializationUtility));
-
     public static object DeserializeUsingSchema (XmlReader reader, Type type, string defaultNamespace, XmlReaderSettings settings)
     {
       ArgumentUtility.CheckNotNull ("reader", reader);
@@ -143,32 +84,7 @@ namespace Remotion.Xml
       return DeserializeUsingSchema (reader, type, GetNamespace (type), schemas);
     }
 
-    #region obsolete overloads with context argument
-    [Obsolete ("Argument 'context' is no longer supported. Specify BaseURL for XmlReader instead.", true)]
-    public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, string defaultNamespace, XmlReaderSettings settings)
-    {
-      throw new NotSupportedException ();
-    }
-
-    [Obsolete ("Argument 'context' is no longer supported. Specify BaseURL for XmlReader instead.", true)]
-    public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, string defaultNamespace, XmlSchemaSet schemas)
-    {
-      throw new NotSupportedException ();
-    }
-
-    [Obsolete ("Argument 'context' is no longer supported. Specify BaseURL for XmlReader instead.", true)]
-    public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, XmlSchemaSet schemas)
-    {
-      throw new NotSupportedException ();
-    }
-
-    [Obsolete ("Argument 'context' is no longer supported. Specify BaseURL for XmlReader instead.", true)]
-    public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, string schemaUri, XmlReader schemaReader)
-    {
-      throw new NotSupportedException ();
-    }
-    #endregion
-    
+   
     /// <summary>
     /// Get the Namespace from a type's <see cref="XmlRootAttribute"/> (preferred) or <see cref="XmlTypeAttribute"/>.
     /// </summary>

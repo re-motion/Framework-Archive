@@ -3,12 +3,7 @@ using Remotion.Security;
 
 namespace Remotion.Web.ExecutionEngine
 {
-  [Obsolete ("Use IWxeSecurityAdapter instead. (Version: 1.7.41)", true)]
-  public interface IWxeSecurityProvider : IWxeSecurityAdapter, ISecurityProviderObsolete
-  {
-  }
-
-  //TODO: SD: definiert adapter für security layer. registiert in secadapterregistry, 
+  //TODO FS: Move to SecurityInterfaces
   //verwendet in wxe um security abfragen zu tun.
   public interface IWxeSecurityAdapter : ISecurityAdapter
   {

@@ -4,12 +4,7 @@ using System.Web.UI;
 
 namespace Remotion.Web.UI
 {
-  [Obsolete ("Use IWebSecurityAdapter instead. (Version: 1.7.41)", true)]
-  public interface IWebSecurityProvider : IWebSecurityAdapter, ISecurityProviderObsolete
-  {
-  }
-
-  //TODO: SD: definiert adapter für security layer. registiert in secadapterregistry, 
+  //TODO FS: Move to SecurityInterfaces
   //verwendet in web-controls um security abfragen zu tun.
   public interface IWebSecurityAdapter : ISecurityAdapter
   {

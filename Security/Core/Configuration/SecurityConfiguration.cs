@@ -92,13 +92,6 @@ namespace Remotion.Security.Configuration
       get { return _properties; }
     }
 
-    [Obsolete ("Use SecurityProvider instead. (Version: 1.7.41)")]
-    public ISecurityProvider SecurityService
-    {
-      get { return SecurityProvider; }
-      set { SecurityProvider = value; }
-    }
-
     public ISecurityProvider SecurityProvider
     {
       get { return _securityProviderHelper.Provider; }

@@ -125,12 +125,6 @@
     <Compile Include="ControlFactory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataSourcePage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DataSourceUserControl.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="IBusinessObjectWebUIService.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -289,13 +283,7 @@
     <Compile Include="UI\Design\BocReferenceValueDesigner.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Design\BusinessObjectBoundControlDesigner.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="UI\Design\BusinessObjectDataSourceControlConverter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UI\Design\ComponentBindingExpressionUtility.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\Design\BindableObjectDataSourceDesigner.cs" />

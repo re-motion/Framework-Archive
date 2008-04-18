@@ -199,9 +199,6 @@
     <Compile Include="BusinessObjectReferenceDataSource.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Design\BindingExpression.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Design\PropertyPathPickerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -211,9 +208,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Design\PropertyPickerEditor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Design\TypeConverters.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IBusinessObjectBoundControl.cs">

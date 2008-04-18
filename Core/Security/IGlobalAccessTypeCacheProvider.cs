@@ -3,6 +3,7 @@ using Remotion.Collections;
 
 namespace Remotion.Security
 {
+  //TODO FS: Move to SecurityAssembly
   /// <summary>
   /// Cache for the <see cref="AccessType"/> array, using the <see cref="SecurityContext"/> and the user name (<see cref="string"/>) as key.
   /// These are used as parameters for each call to the <see cref="ISecurityProvider.GetAccess"/> method of <see cref="ISecurityProvider"/>.

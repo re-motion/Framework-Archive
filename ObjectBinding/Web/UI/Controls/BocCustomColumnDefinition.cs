@@ -86,20 +86,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set { _customCellArgument = StringUtility.NullToEmpty (value); }
     }
 
-    /// <summary>
-    ///   Gets or sets the <see cref="BusinessObjectPropertyPath"/> used by to access the value of an 
-    ///   <see cref="IBusinessObject"/>. Must not be <see langword="null"/>.
-    /// </summary>
-    /// <value> A <see cref="BusinessObjectPropertyPath"/>. </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    [Obsolete ("Use GetPropertyPath() and SetPropertyPath (IBusinessObjectClass) instead. (Version 1.7.56)", true)]
-    public BusinessObjectPropertyPath PropertyPath
-    {
-      get { throw new NotImplementedException ("Obsolete. Use GetPropertyPath() instead."); }
-      set { throw new NotImplementedException ("Obsolete. Use SetPropertyPath (IBusinessObjectClass) instead."); }
-    }
-
     public BusinessObjectPropertyPath GetPropertyPath ()
     {
       return _propertyPathBinding.GetPropertyPath();

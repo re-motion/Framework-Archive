@@ -233,13 +233,6 @@ public sealed class HtmlHeadAppender
   }
 
   /// <summary> Registers a javascript file. </summary>
-  [Obsolete ("Use RegisterJavaScriptInclude (string, string) instead.")]
-  public void RegisterJavaScriptInclude (string key, string src, Priority priority)
-  {
-    RegisterJavaScriptInclude (key, src);
-  }
-
-  /// <summary> Registers a javascript file. </summary>
   /// <remarks>
   ///   <para>
   ///     All calls to <see cref="RegisterJavaScriptInclude"/> must be completed before

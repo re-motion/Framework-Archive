@@ -63,16 +63,6 @@ namespace Remotion.Web.UI.Controls
         Command.Click += _commandClick;
     }
 
-    [Obsolete ("Use WebMenuItem (string, string, string, IconInfo, IconInfo, WebMenuItemStyle, RequiredSelection, bool, Command")]
-    public WebMenuItem (string itemID, string category, string text,
-        string iconUrl, string disabledIconUrl,
-        WebMenuItemStyle style, RequiredSelection requiredSelection, bool isDisabled, Command command)
-      : this (itemID, category, text,
-            new IconInfo (iconUrl), new IconInfo (disabledIconUrl),
-            style, requiredSelection, isDisabled, command)
-    {
-    }
-
     public WebMenuItem ()
       : this (
           null, null, null, new IconInfo (), new IconInfo (),
@@ -396,13 +386,6 @@ namespace Remotion.Web.UI.Controls
       }
 
       return true;
-    }
-
-    [Obsolete ("Use EvaluateEnabled instead.", true)]
-    [EditorBrowsable (EditorBrowsableState.Never)]
-    public bool EvaluateDisabled ()
-    {
-      return !EvaluateEnabled ();
     }
 
     public virtual bool EvaluateEnabled ()

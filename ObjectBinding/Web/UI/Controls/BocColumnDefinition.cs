@@ -18,13 +18,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     bool IsSortable { get; }
   }
 
-  #region Obsolete
-  [Obsolete ("Use BocRowEditModeColumnDefinition instead", true)]
-  public abstract class BocEditDetailsColumnDefinition : BocRowEditModeColumnDefinition
-  {
-  }
-
-  #endregion
   /// <summary> A BocColumnDefinition defines how to display a column of a list. </summary>
   [Editor (typeof (ExpandableObjectConverter), typeof (UITypeEditor))]
   public abstract class BocColumnDefinition : BusinessObjectControlItem, IControlItem
@@ -287,21 +280,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _icon.Reset ();
     }
 
-    [Browsable (false)]
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [EditorBrowsable (EditorBrowsableState.Never)]
-    [DefaultValue ("")]
-    [Obsolete ("Use Icon.Url instead.", true)]
-    public string IconPath
-    {
-      get { return string.Empty; }
-      set
-      {
-        if (!StringUtility.IsNullOrEmpty (value) && StringUtility.IsNullOrEmpty (_icon.Url))
-          _icon.Url = value;
-      }
-    }
-
     /// <summary> Gets the human readable name of this type. </summary>
     protected override string DisplayedTypeName
     {
@@ -384,25 +362,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// </remarks>
   public class BocSimpleColumnDefinition : BocValueColumnDefinition, IBusinessObjectClassSource
   {
-    #region Obsolete
-    [Browsable (false)]
-    [EditorBrowsable (EditorBrowsableState.Never)]
-    [Obsolete ("Use EditModeControlType instead.", true)]
-    [DefaultValue ("")]
-    public string EditDetailsControlType
-    {
-      get
-      {
-        return string.Empty;
-      }
-      set
-      {
-        if (!StringUtility.IsNullOrEmpty (value) && StringUtility.IsNullOrEmpty (EditModeControlType))
-          EditModeControlType = value;
-      }
-    }
-    #endregion
-
     private const string c_notAccessible = "×";
 
     private string _formatString = string.Empty;
@@ -479,21 +438,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _formatString; }
       set { _formatString = StringUtility.NullToEmpty (value); }
-    }
-
-    /// <summary>
-    ///   Gets or sets the <see cref="BusinessObjectPropertyPath"/> used by 
-    ///   <see cref="GetStringValue"/> to access the value of an <see cref="IBusinessObject"/>. 
-    ///   Must not be <see langword="null"/>.
-    /// </summary>
-    /// <value> A <see cref="BusinessObjectPropertyPath"/>. </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    [Obsolete ("Use GetPropertyPath() and SetPropertyPath (IBusinessObjectClass) instead. (Version 1.7.56)", true)]
-    public BusinessObjectPropertyPath PropertyPath
-    {
-      get { throw new NotImplementedException ("Obsolete. Use GetPropertyPath() instead."); }
-      set { throw new NotImplementedException ("Obsolete. Use SetPropertyPath (IBusinessObjectClass) instead."); }
     }
 
     public BusinessObjectPropertyPath GetPropertyPath ()

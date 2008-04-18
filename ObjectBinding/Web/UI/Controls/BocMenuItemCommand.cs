@@ -138,25 +138,6 @@ public class BocMenuItemCommand: BocCommand
     }
   }
 
-  /// <summary>
-  ///   Executes the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommand"/> on a page
-  ///   not implementing <see cref="IWxePage"/>.
-  /// </summary>
-  /// <param name="page"> The <see cref="Page"/> where this command is rendered on. </param>
-  /// <param name="listIndices"> 
-  ///   The array of indices for the <see cref="IBusinessObject"/> instances on which the rendered 
-  ///   command is applied on.
-  /// </param>
-  /// <param name="businessObjects"> 
-  ///   The array of <see cref="IBusinessObject"/> instances on which the rendered command is applied on.
-  /// </param>
-  [Obsolete ("Make public should this ever be needed.")]
-  private void ExecuteWxeFunction (Page page, int[] listIndices, IBusinessObject[] businessObjects)
-  {
-    NameObjectCollection parameters = PrepareWxeFunctionParameters (listIndices, businessObjects);
-    //ExecuteWxeFunction (page, parameters, new NameValueCollection (0));
-  }
-
   private NameObjectCollection PrepareWxeFunctionParameters (int[] listIndices, IBusinessObject[] businessObjects)
   {
     NameObjectCollection parameters = new NameObjectCollection();

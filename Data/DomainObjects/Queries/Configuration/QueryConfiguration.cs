@@ -1,7 +1,6 @@
 using System;
 using System.Configuration;
 using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Remotion.Utilities;
 
@@ -13,12 +12,6 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
   public class QueryConfiguration : ExtendedConfigurationSection
   {
     public static readonly string DefaultConfigurationFile = QueryFileElement.GetRootedPath ("queries.xml");
-
-    [Obsolete ("This property is obsolete, use DomainObjectsConfiguration.Current.Query instead.")]
-    public static QueryConfiguration Current
-    {
-      get { return DomainObjectsConfiguration.Current.Query; }
-    }
 
     private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
     private readonly ConfigurationProperty _queryFilesProperty;

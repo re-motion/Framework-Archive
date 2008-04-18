@@ -103,57 +103,6 @@ namespace Remotion.Data.DomainObjects
 
     #endregion
 
-    #region Obsolete GetObject legacy methods
-
-    /// <summary>
-    /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
-    /// </summary>
-    /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that is loaded. Must not be <see langword="null"/>.</param>
-    /// <param name="clientTransaction">The <see cref="Remotion.Data.DomainObjects.ClientTransaction"/> that is used to load the <see cref="DomainObject"/>.</param>
-    /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
-    /// <exception cref="System.ArgumentNullException"><paramref name="id"/> or <paramref name="clientTransaction"/>is <see langword="null"/>.</exception>
-    /// <exception cref="Persistence.StorageProviderException">
-    ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
-    ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-    ///   An error occurred while accessing the datasource.
-    /// </exception>
-    /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
-    [Obsolete ("This method is obsolete, use the generic variant instead.", true)]
-    protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      using (clientTransaction.EnterNonDiscardingScope())
-      {
-        return GetObject<DomainObject> (id);
-      }
-    }
-
-    /// <summary>
-    /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
-    /// </summary>
-    /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that is loaded. Must not be <see langword="null"/>.</param>
-    /// <param name="clientTransaction">The <see cref="Remotion.Data.DomainObjects.ClientTransaction"/> that is used to load the <see cref="DomainObject"/>.</param>
-    /// <param name="includeDeleted">Indicates if the method should return <see cref="DomainObject"/>s that are already deleted.</param>
-    /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
-    /// <exception cref="System.ArgumentNullException"><paramref name="id"/> or <paramref name="clientTransaction"/>is <see langword="null"/>.</exception>
-    /// <exception cref="Persistence.StorageProviderException">
-    ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
-    ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-    ///   An error occurred while accessing the datasource.
-    /// </exception>
-    /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
-    [Obsolete ("This method is obsolete, use the generic variant instead.", true)]
-    protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      using (clientTransaction.EnterNonDiscardingScope())
-      {
-        return GetObject<DomainObject> (id, includeDeleted);
-      }
-    }
-
-    #endregion
-
     // Returns a strategy object for creating instances of the given domain object type.
 
     // member fields
@@ -233,9 +182,9 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Initializes a new <see cref="DomainObject"/> with the current <see cref="DomainObjects.ClientTransaction"/>.
     /// </summary>
-    /// <remarks>Any constructors implemented on concrete domain objects should delegate to this base constructor, apart from the infrastructure
-    /// constructor (see <see cref="DomainObject(DomainObjects.DataContainer)"/>). As domain objects generally should not be constructed via the
-    /// <c>new</c> operator, these constructors must therefor remain protected, and the concrete domain objects should have a static "NewObject" method,
+    /// <remarks>Any constructors implemented on concrete domain objects should delegate to this base constructor. As domain objects generally should 
+    /// not be constructed via the
+    /// <c>new</c> operator, these constructors must remain protected, and the concrete domain objects should have a static "NewObject" method,
     /// which delegates to <see cref="NewObject{T}"/>, passing it the required constructor arguments.</remarks>
     protected DomainObject ()
     {
@@ -274,52 +223,6 @@ namespace Remotion.Data.DomainObjects
         throw new SerializationException (message, ex);
       }
     }
-
-    #region Legacy constructors
-
-    /// <summary>
-    /// Initializes a new <see cref="DomainObject"/>.
-    /// </summary>
-    /// <param name="clientTransaction">The <see cref="Remotion.Data.DomainObjects.ClientTransaction"/> the <see cref="DomainObject"/> should be part of. Must not be <see langword="null"/>.</param>
-    /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> is <see langword="null"/>.</exception>
-    [Obsolete ("This constructor is obsolete, use the DomainObject() one in conjunction with ClientTransactionScope instead.", true)]
-    protected DomainObject (ClientTransaction clientTransaction)
-    {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-
-      Type publicDomainObjectType = GetPublicDomainObjectType();
-      clientTransaction.TransactionEventSink.NewObjectCreating (publicDomainObjectType, this);
-
-      DataContainer firstDataContainer = clientTransaction.CreateNewDataContainer (publicDomainObjectType);
-      firstDataContainer.SetDomainObject (this);
-
-      InitializeFromDataContainer (firstDataContainer);
-      _initialConstructionEventSignalled = true;
-    }
-
-    /// <summary>
-    /// Infrastructure constructor for loading a <see cref="DomainObject"/> from a data source when the legacy mapping is used.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// For the legacy mapping, all derived classes have to implement an (empty) constructor with this signature.
-    /// Do not implement any initialization logic in this constructor, but use <see cref="DomainObject.OnLoaded"/> instead.
-    /// </para>
-    /// <para>
-    /// This constructor should not be used when using the reflection-based mapping. The reflection-based mapping instantiates objects without
-    /// using any constructor.
-    /// </para>
-    /// </remarks>
-    /// <param name="dataContainer">The <see cref="DomainObjects.DataContainer"/> to be associated with the loaded domain object.</param>
-    /// <exception cref="ArgumentNullException">The <paramref name="dataContainer"/> parameter is null.</exception>
-    protected DomainObject (DataContainer dataContainer)
-    {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-
-      InitializeFromDataContainer (dataContainer);
-    }
-
-    #endregion
 
     // methods and properties
 
@@ -360,9 +263,8 @@ namespace Remotion.Data.DomainObjects
     /// the <see cref="Type"/> object for the generated class is explicitly required, this object can be cast to 'object' before calling GetType.
     /// </summary>
     [Obsolete ("GetType might return a Type object for a generated class., which is usually not what is expected. "
-        +
-        "DomainObject.GetPublicDomainObjectType can be used to get the Type object of the original underlying domain object type. If the Type object"
-            + "for the generated class is explicitly required, this object can be cast to 'object' before calling GetType.", true)]
+        + "DomainObject.GetPublicDomainObjectType can be used to get the Type object of the original underlying domain object type. If the Type object"
+        + "for the generated class is explicitly required, this object can be cast to 'object' before calling GetType.", true)]
     public new Type GetType ()
     {
       throw new InvalidOperationException ("DomainObject.GetType should not be used.");
@@ -535,30 +437,6 @@ namespace Remotion.Data.DomainObjects
         throw new ObjectDiscardedException (ID);
     }
 
-    /// <summary>
-    /// </summary>
-    /// <value></value>
-    [Obsolete ("Do not access the DataContainer of a DomainObject to retrieve field values, use its Properties member instead.")]
-    protected DataContainerIndirection DataContainer
-    {
-      get
-      {
-        ClientTransaction transaction = GetNonNullClientTransaction();
-        CheckIfObjectIsDiscarded (transaction);
-        CheckIfRightTransaction (transaction);
-        return new DataContainerIndirection (this, transaction);
-      }
-    }
-
-    /// <summary>
-    /// Gets the <see cref="DomainObjects.DataContainer"/> of the <see cref="DomainObject"/> in the <see cref="ClientTransaction"/>.
-    /// </summary>
-    /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-    private DataContainer GetDataContainer ()
-    {
-      return GetDataContainerForTransaction (GetNonNullClientTransaction ());
-    }
-
     internal DataContainer GetDataContainerForTransaction (ClientTransaction transaction)
     {
       CheckIfObjectIsDiscarded (transaction);
@@ -727,95 +605,6 @@ namespace Remotion.Data.DomainObjects
     protected internal DomainObjectGraphTraverser GetGraphTraverser (IGraphTraversalStrategy strategy)
     {
       return new DomainObjectGraphTraverser (this, strategy);
-    }
-
-    #endregion
-
-    #region Obsolete related objects
-
-    /// <summary>
-    /// Gets the related object of a given <paramref name="propertyName"/>.
-    /// </summary>
-    /// <param name="propertyName">The name of the property referring to the relation. <paramref name="propertyName"/> must refer to a one-to-one or many-to-one relation. Must not be <see langword="null"/>.</param>
-    /// <returns>The <see cref="DomainObject"/> that is the current related object.</returns>
-    /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
-    /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-    /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-one or many-to-one relation.</exception>
-    [Obsolete ("This method is obsolete, use 'Properties' instead.")]
-    protected internal virtual DomainObject GetRelatedObject (string propertyName)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-      return (DomainObject) Properties[propertyName].GetValueWithoutTypeCheck();
-    }
-
-    /// <summary>
-    /// Gets the original related object of a given <paramref name="propertyName"/> at the point of instantiation, loading, commit or rollback.
-    /// </summary>
-    /// <param name="propertyName">The name of the property referring to the relation. <paramref name="propertyName"/> must refer to a one-to-many relation. Must not be <see langword="null"/>.</param>
-    /// <returns>The <see cref="DomainObject"/> that is the current related object.</returns>
-    /// <remarks>There is no overload for this method that uses the current property initialized via <see cref="PreparePropertyAccess"/>. The reason
-    /// for this is that code accessing original related objects will not typically be called from within a property called like the internal property
-    /// name. Making an automatic mechanism for this method would thus only lead to confusion or subtle errors and is therefore not implemented.
-    /// </remarks>
-    /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
-    /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-    /// <exception cref="System.InvalidCastException"><paramref name="propertyName"/> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.</exception>
-    /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-one or many-to-one relation.</exception>
-    [Obsolete ("This method is obsolete, use 'Properties' instead.")]
-    protected internal virtual DomainObject GetOriginalRelatedObject (string propertyName)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-      return (DomainObject) Properties[propertyName].GetOriginalValueWithoutTypeCheck();
-    }
-
-    /// <summary>
-    /// Gets the related objects of a given <paramref name="propertyName"/>.
-    /// </summary>
-    /// <param name="propertyName">The name of the property referring to the relation. <paramref name="propertyName"/> must refer to a one-to-many relation. Must not be <see langword="null"/>.</param>
-    /// <returns>A <see cref="DomainObjectCollection"/> containing the current related objects.</returns>
-    /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
-    /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-    /// <exception cref="System.InvalidCastException"><paramref name="propertyName"/> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.</exception>
-    /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-many relation.</exception>
-    [Obsolete ("This method is obsolete, use 'Properties' instead.")]
-    protected internal virtual DomainObjectCollection GetRelatedObjects (string propertyName)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-      return (DomainObjectCollection) Properties[propertyName].GetValueWithoutTypeCheck();
-    }
-
-    /// <summary>
-    /// Gets the original related objects of a given <paramref name="propertyName"/> at the point of instantiation, loading, commit or rollback.
-    /// </summary>
-    /// <param name="propertyName">The name of the property referring to the relation. <paramref name="propertyName"/> must refer to a one-to-many relation. Must not be <see langword="null"/>.</param>
-    /// <returns>A <see cref="DomainObjectCollection"/> containing the original related objects.</returns>
-    /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
-    /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-    /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-many relation.</exception>
-    [Obsolete ("This method is obsolete, use 'Properties' instead.")]
-    protected internal virtual DomainObjectCollection GetOriginalRelatedObjects (string propertyName)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-      return (DomainObjectCollection) Properties[propertyName].GetOriginalValueWithoutTypeCheck();
-    }
-
-    /// <summary>
-    /// Sets a relation to another object.
-    /// </summary>
-    /// <param name="propertyName">The name of the property referring to the relation, that should relate to <paramref name="newRelatedObject"/>. Must not be <see langword="null"/>.</param>
-    /// <param name="newRelatedObject">The new <see cref="DomainObject"/> that should be related; <see langword="null"/> indicates that no object should be referenced.</param>
-    /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
-    /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-    [Obsolete ("This method is obsolete, use 'Properties' instead.")]
-    protected internal void SetRelatedObject (string propertyName, DomainObject newRelatedObject)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-      Properties[propertyName].SetValueWithoutTypeCheck (newRelatedObject);
     }
 
     #endregion

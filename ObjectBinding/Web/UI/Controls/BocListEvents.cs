@@ -4,28 +4,6 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
-
-#region Obsolete
-
-[Obsolete ("Use BocListEditableRowChangesEventHandler instead.", true)]
-public delegate void BocListRowEditModeEventHandler (object sender, BocListRowEditModeEventArgs e);
-
-[Obsolete ("Use BocListEditableRowChangesEventArgs instead.", true)]
-public class BocListRowEditModeEventArgs: BocListEditableRowChangesEventArgs
-{
-  public BocListRowEditModeEventArgs (
-      int listIndex, 
-      IBusinessObject businessObject,
-      IBusinessObjectDataSource dataSource,
-      IBusinessObjectBoundEditableWebControl[] controls)
-    : base (listIndex, businessObject, dataSource, controls)
-  {
-    throw new NotImplementedException ("Obsolete");
-  }
-}
-
-#endregion
-
 public delegate void BocListSortingOrderChangeEventHandler (object sender, BocListSortingOrderChangeEventArgs e);
 
 public class BocListSortingOrderChangeEventArgs: EventArgs
@@ -119,18 +97,6 @@ public delegate void BocListDataRowRenderEventHandler (object sender, BocListDat
 
 public class BocListDataRowRenderEventArgs: BocListItemEventArgs
 {
-  #region Obsolete
-  
-  [Obsolete ("Use IsEditableRow instead.")]
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public bool IsModifiableRow
-  {
-    get { return IsEditableRow; }
-    set { IsEditableRow = value; }
-  }
-
-  #endregion
-
   private bool _isEditableRow = true;
 
   public BocListDataRowRenderEventArgs (int listIndex, IBusinessObject businessObject)

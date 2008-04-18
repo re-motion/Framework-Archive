@@ -57,12 +57,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
         throw new IdentityTypeNotSupportedException (_storageProviderType, identityType);
     }
 
-    [Obsolete ("Use property Name instead. (Version: 1.7.42)")]
-    public string ID
-    {
-      get { return Name; }
-    }
-
     public Type StorageProviderType
     {
       get { return _storageProviderType; }

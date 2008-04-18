@@ -399,33 +399,6 @@ namespace Remotion.Web.ExecutionEngine
       return sb.ToString ();
     }
 
-    /// <summary> Initalizes parameters by position. </summary>
-    /// <remarks> Remove obsolete and make public if this method should be required. </remarks>
-    [Obsolete]
-    private void InitializeParameters (object[] parameters)
-    {
-      CheckParametersNotInitialized ();
-      WxeParameterDeclaration[] parameterDeclarations = ParameterDeclarations;
-      if (parameters.Length > parameterDeclarations.Length)
-        throw new ApplicationException (string.Format ("{0} parameters provided but only {1} were expected.", parameters.Length, parameterDeclarations.Length));
-
-      for (int i = 0; i < parameters.Length; i++)
-      {
-        WxeParameterDeclaration parameterDeclaration = parameterDeclarations[i];
-        object parameter = parameters[i];
-        _variables[parameterDeclaration.Name] = parameter;
-      }
-
-      for (int i = parameters.Length; i < parameterDeclarations.Length; i++)
-      {
-        WxeParameterDeclaration parameterDeclaration = parameterDeclarations[i];
-        if (parameterDeclaration.Required)
-          throw new ApplicationException ("Parameter '" + parameterDeclaration.Name + "' is missing.");
-      }
-
-      _parametersInitialized = true; // since parameterString may not contain variable references, initialization is done right away
-    }
-
     /// <summary> Initalizes parameters by name. </summary>
     /// <param name="parameters"> 
     ///   The list of parameter. Must contain an entry for each required parameter. Must not be <see langword="null"/>. 
@@ -631,12 +604,6 @@ namespace Remotion.Web.ExecutionEngine
       _index = index;
       _required = required;
       _direction = direction;
-    }
-
-    [Obsolete ("Use property \"Index\" instead")]
-    public int Number
-    {
-      get { return _index; }
     }
 
     public int Index

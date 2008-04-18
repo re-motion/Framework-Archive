@@ -295,23 +295,9 @@ public class WebTab: IControlItem, IControlStateManager
     }
   }
 
-  [Obsolete ("Use EvaluateVisible instead.", true)]
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public virtual bool EvaluateVisibile ()
-  {
-    return EvaluateVisible();
-  }
-
   public virtual bool EvaluateVisible ()
   {
     return IsVisible;
-  }
-
-  [Obsolete ("Use EvaluateEnabled instead.")]
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public bool EvaluateDisabled ()
-  {
-    return !EvaluateEnabled ();
   }
 
   public virtual bool EvaluateEnabled ()

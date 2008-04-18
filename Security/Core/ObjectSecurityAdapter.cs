@@ -1,16 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 using Remotion.Utilities;
 
 namespace Remotion.Security
 {
-  [Obsolete ("Use ObjectSecurityProvider instead. (Version: 1.7.41)", true)]
-  public class ObjectSecurityProvider : ObjectSecurityAdapter, IObjectSecurityProvider
-  {  
-  }
-  
   public class ObjectSecurityAdapter : IObjectSecurityAdapter
   {
     // types

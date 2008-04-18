@@ -9,6 +9,7 @@ namespace Remotion.Security.UnitTests.Core
   public class EnumWrapperTest
   {
     [Test]
+    [Obsolete ("Remove typename check, repalce with tostring.", true)]
     public void InitializeFromEnum ()
     {
       EnumWrapper wrapper = new EnumWrapper (TestAccessTypes.First);
@@ -18,6 +19,7 @@ namespace Remotion.Security.UnitTests.Core
     }
 
     [Test]
+    [Obsolete ("Remove typename check, repalce with tostring.", true)]
     public void InitializeFromString ()
     {
       EnumWrapper wrapper = new EnumWrapper ("First", "Remotion.Security.UnitTests::Core.SampleDomain.TestAccessTypes");
@@ -68,6 +70,7 @@ namespace Remotion.Security.UnitTests.Core
 
     [Test]
     [ExpectedException (typeof (TypeLoadException))]
+    [Obsolete ("Remove.", true)]
     public void GetEnum_FromInvalidTypeName ()
     {
       EnumWrapper wrapper = new EnumWrapper ("First", "Remotion.Security.UnitTests::Core.SampleDomain.Invalid");
@@ -77,6 +80,7 @@ namespace Remotion.Security.UnitTests.Core
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The type 'Remotion.Security.UnitTests.Core.SampleDomain.SimpleType, Remotion.Security.UnitTests' is not an enumerated type.")]
+    [Obsolete ("Remove.", true)]
     public void GetEnum_FromTypeNotEnum ()
     {
       EnumWrapper wrapper = new EnumWrapper ("First", "Remotion.Security.UnitTests::Core.SampleDomain.SimpleType");
@@ -86,6 +90,7 @@ namespace Remotion.Security.UnitTests.Core
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The enumerated type 'Remotion.Security.UnitTests.Core.SampleDomain.TestAccessTypes, Remotion.Security.UnitTests' does not define the value 'Invalid'.")]
+    [Obsolete ("Remove.", true)]
     public void GetEnum_FromInvalidName ()
     {
       EnumWrapper wrapper = new EnumWrapper ("Invalid", "Remotion.Security.UnitTests::Core.SampleDomain.TestAccessTypes");
@@ -102,6 +107,7 @@ namespace Remotion.Security.UnitTests.Core
     }
 
     [Test]
+    [Obsolete ("Remove typename check, repalce with tostring.", true)]
     public void Parse ()
     {
       EnumWrapper wrapper = EnumWrapper.Parse ("Name|Namespace.TypeName, Assembly");

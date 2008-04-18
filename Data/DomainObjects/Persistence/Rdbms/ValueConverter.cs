@@ -55,12 +55,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
-    [Obsolete ("Passing the columnOrdinal into GetValue is no longer supported. (Version 1.7.42)")]
-    public object GetValue (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, IDataReader dataReader, int columnOrdinal)
-    {
-      return GetValue (classDefinition, propertyDefinition, dataReader);
-    }
-
     public object GetValue (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, IDataReader dataReader)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);

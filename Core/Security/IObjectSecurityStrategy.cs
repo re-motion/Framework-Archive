@@ -3,6 +3,7 @@ using System.Security.Principal;
 
 namespace Remotion.Security
 {
+  //TODO FS: Move to SecurityInterfaces
   /// <summary>Encapsulates the security checks for the business object.</summary>
   /// <remarks>
   /// Typically the <see cref="IObjectSecurityStrategy"/> knows its business object (possibly indirectly) 

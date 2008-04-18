@@ -4,7 +4,8 @@ using Remotion.Utilities;
 
 namespace Remotion.Security
 {
-  //TODO: Hashcode basebase
+  //TODO: Hashcode base
+  //TODO FS: Introduce ISecurityContext and move to interfaces-assembly/securityassembly
   /// <summary>Collects all security-specific information for an instance or type, and is passed as parameter during the permission check.</summary>
   [Serializable]
   public sealed class SecurityContext : IEquatable<SecurityContext>

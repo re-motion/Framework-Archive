@@ -59,12 +59,6 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return _propertyName; }
     }
 
-    [Obsolete ("Use StorageSpecificName instead. (Version 1.7.42)")]
-    public string ColumnName
-    {
-      get { return StorageSpecificName; }
-    }
-
     public string StorageSpecificName
     {
       get

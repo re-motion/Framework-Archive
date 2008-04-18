@@ -1,10 +1,7 @@
 ﻿using System;
 namespace Remotion.Security
 {
-  [Obsolete ("Use IObjectSecurityAdapter instead. (Version: 1.7.41)", true)]
-  public interface IObjectSecurityProvider : IObjectSecurityAdapter, ISecurityProviderObsolete
-  {
-  }
+  //TODO FS: Move to SecurityInterfaces
   /// <summary>Defines an adapter between the security layer and the business object implementation.</summary>
   /// <remarks>
   /// It is registered in the <see cref="SecurityAdapterRegistry"/> and is used for security checks 

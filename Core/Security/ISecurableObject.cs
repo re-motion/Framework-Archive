@@ -2,6 +2,7 @@ using System;
 
 namespace Remotion.Security
 {
+  //TODO FS: Move to SecurityInterfaces
   /// <summary>The base interface for all business objects that need security features.</summary>
   public interface ISecurableObject
   {

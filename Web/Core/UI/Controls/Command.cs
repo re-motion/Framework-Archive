@@ -666,45 +666,6 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    /// <summary> 
-    ///   Executes the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommandInfo"/> on a page
-    ///   not implementing <see cref="IWxePage"/>.
-    /// </summary>
-    /// <param name="page"> 
-    ///   The <see cref="Page"/> where this command is rendered on. Must not be <see langword="null"/>.
-    /// </param>
-    /// <param name="additionalWxeParameters"> 
-    ///   The parameters passed to the <see cref="WxeFunction"/> in addition to the executing function's variables.
-    ///   Use <see langword="null"/> or an empty collection if all parameters are supplied by the 
-    ///   <see cref="WxeFunctionCommandInfo.Parameters"/> string and the function stack.
-    /// </param>
-    /// <param name="additionalUrlParameters">
-    ///   The <see cref="NameValueCollection"/> containing additional url parameters.
-    ///   Must not be <see langword="null"/>.
-    /// </param>
-    /// <exception cref="InvalidOperationException">
-    ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
-    /// </exception> 
-    [Obsolete ("Make public should this ever be needed.")]
-    private void ExecuteWxeFunction (
-        Page page, NameObjectCollection additionalWxeParameters, NameValueCollection additionalUrlParameters)
-    {
-      ArgumentUtility.CheckNotNull ("page", page);
-      ArgumentUtility.CheckNotNull ("additionalUrlParameters", additionalUrlParameters);
-
-      if (Type != CommandType.WxeFunction)
-        throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to CommandType.WxeFunction.");
-
-      string target = WxeFunctionCommand.Target;
-      bool hasTarget = !StringUtility.IsNullOrEmpty (target);
-      WxeFunction function = WxeFunctionCommand.InitializeFunction (additionalWxeParameters);
-
-      if (hasTarget)
-        WxeContext.ExecuteFunctionExternal (page, function, target, null, additionalUrlParameters);
-      else
-        WxeContext.ExecuteFunctionExternal (page, function, additionalUrlParameters, true);
-    }
-
     /// <summary> The <see cref="CommandType"/> represented by this instance of <see cref="Command"/>. </summary>
     /// <value> One of the <see cref="CommandType"/> enumeration values. The default is <see cref="CommandType.None"/>. </value>
     [PersistenceMode (PersistenceMode.Attribute)]

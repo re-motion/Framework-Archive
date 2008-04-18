@@ -3,11 +3,7 @@ using System.Security.Principal;
 
 namespace Remotion.Security
 {
-  [Obsolete ("Use ISecurityProvider instead. (Version: 1.7.41)")]
-  public interface ISecurityService : ISecurityProvider
-  {
-  }
-
+  //TODO FS: Move to SecurityInterfaces
   /// <summary>Provides access to the permission management functionality.</summary>
   /// <remarks>This service interface enables a plugable security system architecture, acting as single point of access to the permission management functionality.</remarks>
   public interface ISecurityProvider : INullObject

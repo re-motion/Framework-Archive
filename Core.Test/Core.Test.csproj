@@ -590,7 +590,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNull.cs" />
-    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullAndTypeObsolete.cs" />
     <Compile Include="Utilities\ArgumentUtilityTests\CheckType.cs" />
     <Compile Include="Utilities\ArgumentUtilityTests\CheckTypeObsolete.cs" />
     <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullAndTypeIsAssignableFrom.cs" />

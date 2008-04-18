@@ -11,7 +11,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain
     }
 
     protected ClassWithLegacyLoadConstructor (DataContainer dataContainer)
-      : base (dataContainer)
     {
     }
   }

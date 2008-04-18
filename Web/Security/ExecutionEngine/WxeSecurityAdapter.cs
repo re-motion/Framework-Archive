@@ -1,19 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Remotion.Security;
-using Remotion.Security.Metadata;
-using Remotion.Security.Configuration;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.Security.ExecutionEngine
 {
-  [Obsolete ("Use WxeSecurityAdapter instead. (Version: 1.7.41)", true)]
-  public class WxeSecurityProvider : WxeSecurityAdapter, IWxeSecurityProvider
-  {
-  }
-
   public class WxeSecurityAdapter : IWxeSecurityAdapter
   {
     // types

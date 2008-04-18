@@ -18,12 +18,6 @@ public class BocListSortingOrderEntry
   /// <summary> Represents a null <see cref="BocListSortingOrderEntry"/>. </summary>
   public static readonly BocListSortingOrderEntry Empty = new BocListSortingOrderEntry ();
 
-  [Obsolete ("Use overload BocListSortingOrderEntry (IBocSortableColumnDefinition, SortingDirection) instead. (Version 1.7.55)")]
-  public BocListSortingOrderEntry (BocColumnDefinition column, SortingDirection direction)
-    : this (ArgumentUtility.CheckNotNullAndType<IBocSortableColumnDefinition> ("column", column), direction)
-  {
-  }
-
   public BocListSortingOrderEntry (IBocSortableColumnDefinition column, SortingDirection direction)
   {
     _columnIndex = Int32.MinValue;

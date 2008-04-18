@@ -552,9 +552,6 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
       case BocTextValueType.Decimal:
       case BocTextValueType.Double:
       case BocTextValueType.Single:
-#pragma warning disable 618,612
-      case BocTextValueType.Integer:
-#pragma warning restore 618,612
       {
         NumericValidator typeValidator = new NumericValidator();
         typeValidator.ID = baseID + "Type";
@@ -589,9 +586,6 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
         return NumericValidationDataType.Int16;
 
       case BocTextValueType.Int32:
-#pragma warning disable 618,612
-      case BocTextValueType.Integer:
-#pragma warning restore 618,612
         return NumericValidationDataType.Int32;
 
       case BocTextValueType.Int64:
@@ -1126,10 +1120,6 @@ public enum BocTextValueType
   Double,
   /// <summary> Interpret the value as a <see cref="Single"/>. </summary>
   Single,
-  /// <summary> Obsolete. Interpret the value as a <see cref="Int32"/>. </summary>
-  [Obsolete ("Use Int32 instead. (Version 1.7.53)")]
-  [Browsable(false)]
-  Integer,
 }
 
 }

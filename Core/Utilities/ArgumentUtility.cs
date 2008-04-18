@@ -132,12 +132,6 @@ namespace Remotion.Utilities
       return (TExpected) actualValue;
     }
 
-    [Obsolete ("Use CheckNotNullAndType instead. (Version: 1.7.43)", true)]
-    public static TExpected CheckNotNullAndValueType<TExpected> (string argumentName, object actualValue)
-    {
-      throw new NotImplementedException(); 
-    }
-
     public static object CheckType (string argumentName, object actualValue, Type expectedType)
     {
       if (actualValue == null)
@@ -152,13 +146,6 @@ namespace Remotion.Utilities
         throw new ArgumentTypeException (argumentName, expectedType, actualValue.GetType ());
       return actualValue;
     }
-
-    [Obsolete("Use CheckType<ValueType?> (...) instead.", true)]
-		public static TExpected? CheckValueType<TExpected> (string argumentName, object actualValue)
-			where TExpected: struct
-		{
-		  throw new NotSupportedException();
-		}
 
     /// <summary>Returns the value itself if it is of the specified type.</summary>
     /// <typeparam name="TExpected"> The type that <paramref name="actualValue"/> must have. </typeparam>
@@ -318,13 +305,6 @@ namespace Remotion.Utilities
         throw new ArgumentOutOfRangeException (argumentName);
 
       return (TEnum) enumValue;
-    }
-
-    [System.ComponentModel.EditorBrowsable (System.ComponentModel.EditorBrowsableState.Never)]
-    [Obsolete ("Use CheckValidEnumValue (string argumentName, Enum enumValue) instead.")]
-    public static void CheckValidEnumValue (Enum enumValue, string argumentName)
-    {
-      CheckValidEnumValue (argumentName, enumValue);
     }
   }
 

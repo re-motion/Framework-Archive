@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
       return DomainObject.GetObject<ClassWithAllDataTypes> (id);
     }
 
-    public new static ClassWithAllDataTypes GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static ClassWithAllDataTypes GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       using (clientTransaction.EnterNonDiscardingScope())
       {

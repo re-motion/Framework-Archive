@@ -75,18 +75,6 @@ namespace Remotion.Data.DomainObjects.Mapping
     
     // construction and disposing
 
-    [Obsolete ("Use Remotion.Data.DomainObjects.Legacy.Mapping.XmlBasedMappingConfiguration.Create (string). (Version 1.7.42)", true)]
-    public MappingConfiguration (string configurationFile)
-    {
-      throw new InvalidOperationException ("Use Remotion.Data.DomainObjects.Legacy.Mapping.XmlBasedMappingConfiguration.Create (string).");
-    }
-
-    [Obsolete ("Use Remotion.Data.DomainObjects.Legacy.Mapping.XmlBasedMappingConfiguration.Create (string, bool). (Version 1.7.42)", true)]
-    public MappingConfiguration (string configurationFile, bool resolveTypes)
-    {
-      throw new InvalidOperationException ("Use Remotion.Data.DomainObjects.Legacy.Mapping.XmlBasedMappingConfiguration.Create (string, bool).");
-    }
-
     public MappingConfiguration (IMappingLoader loader)
     {
       ArgumentUtility.CheckNotNull ("loader", loader);
@@ -109,24 +97,6 @@ namespace Remotion.Data.DomainObjects.Mapping
     public void Validate()
     {
       _classDefinitions.Validate();
-    }
-
-    /// <summary>
-    /// Gets the application name that is specified in the XML configuration file. 
-    /// </summary>
-    [Obsolete ("Querying the ApplicationName after the loading has completed is no longer supported. (Version 1.7.42)", true)]
-    public string ApplicationName
-    {
-      get { throw new NotImplementedException ("Use Loader.GetApplicationName() instead."); }
-    }
-
-    /// <summary>
-    /// Gets the XML configuration file.
-    /// </summary>
-    [Obsolete ("Querying the ConfigurationFile after the loading has completed is no longer supported. (Version 1.7.42)", true)]
-    public string ConfigurationFile
-    {
-      get { throw new NotImplementedException ("Use Loader.ConfigurationFile instead."); }
     }
 
     /// <summary>

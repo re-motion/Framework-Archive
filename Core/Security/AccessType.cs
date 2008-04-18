@@ -5,7 +5,8 @@ using System.Runtime.Serialization;
 
 namespace Remotion.Security
 {
-  /// <summary>Represents an access type enum value.</summary>
+  //TODO FS: Move to SecurityInterfaces
+   /// <summary>Represents an access type enum value.</summary>
   /// <remarks>
   /// Use the static <see cref="O:Remotion.Security.AccessType.Get"/> methods to convert an enum to an access type.
   /// <note>For the set of basic access types see <see cref="T:Remotion.Security.GeneralAccessTypes"/>.</note>
@@ -25,6 +26,7 @@ namespace Remotion.Security
       return Get (new EnumWrapper (accessType));
     }
 
+    //TODO FS: Move cache implementation into CacheProvider, move to Securiy Assembly 
     public static AccessType Get (EnumWrapper accessType)
     {
       ArgumentUtility.CheckNotNull ("accessType", accessType);

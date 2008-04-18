@@ -12,29 +12,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    public new DomainObject GetRelatedObject (string propertyName)
+    public DomainObject GetRelatedObject (string propertyName)
     {
-      return base.GetRelatedObject (propertyName);
+      return (DomainObject) Properties[propertyName].GetValueWithoutTypeCheck ();
     }
 
-    public new DomainObjectCollection GetRelatedObjects (string propertyName)
+    public DomainObjectCollection GetRelatedObjects (string propertyName)
     {
-      return base.GetRelatedObjects (propertyName);
+      return (DomainObjectCollection) Properties[propertyName].GetValueWithoutTypeCheck ();
     }
 
-    public new DomainObject GetOriginalRelatedObject (string propertyName)
+    public DomainObject GetOriginalRelatedObject (string propertyName)
     {
-      return base.GetOriginalRelatedObject (propertyName);
+      return (DomainObject) Properties[propertyName].GetOriginalValueWithoutTypeCheck ();
     }
 
-    public new DomainObjectCollection GetOriginalRelatedObjects (string propertyName)
+    public DomainObjectCollection GetOriginalRelatedObjects (string propertyName)
     {
-      return base.GetOriginalRelatedObjects (propertyName);
+      return (DomainObjectCollection) Properties[propertyName].GetOriginalValueWithoutTypeCheck ();
     }
 
-    public new void SetRelatedObject (string propertyName, DomainObject newRelatedObject)
+    public void SetRelatedObject (string propertyName, DomainObject newRelatedObject)
     {
-      base.SetRelatedObject (propertyName, newRelatedObject);
+      Properties[propertyName].SetValueWithoutTypeCheck (newRelatedObject);
     }
 
     [StorageClassNone]

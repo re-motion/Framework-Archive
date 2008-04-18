@@ -3,6 +3,7 @@ using System.Security.Principal;
 
 namespace Remotion.Security
 {
+  //TODO FS: Move to SecurityInterfaces
   /// <summary>Encapsulates the security checks.</summary>
   /// <remarks><note type="implementnotes">Implementations are free to decide whether they provide caching.</note></remarks>
   public interface ISecurityStrategy

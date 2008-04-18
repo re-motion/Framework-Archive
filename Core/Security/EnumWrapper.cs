@@ -3,6 +3,12 @@ using Remotion.Utilities;
 
 namespace Remotion.Security
 {
+  //TODO FS: Move to SecurityInterfaces
+  /// <summary>Represents an access type enum value.</summary>
+  /// <remarks>
+  /// Use the static <see cref="O:Remotion.Security.AccessType.Get"/> methods to convert an enum to an access type.
+  /// <note>For the set of basic access types see <see cref="T:Remotion.Security.GeneralAccessTypes"/>.</note>
+  /// </remarks>
   /// <summary>Wraps an enum and exposes the enum information as string.</summary>
   /// <remarks>Used for example to cross web service boundaries, when the server is unaware of a given enum type.</remarks>
   [Serializable]
@@ -12,6 +18,7 @@ namespace Remotion.Security
     /// <param name="value"> A <see cref="String"/> in the format <c>Name|TypeName</c>. Must not be <see langword="null"/> or emtpy. </param>
     /// <returns> A new instance of the <see cref="EnumWrapper"/> type initalized with the specified <b>Name</b> and <b>TypeName</b>. </returns>
     /// <exception cref="ArgumentException">The <paramref name="value"/> is not in the format <c>Name|TypeName</c>.</exception>
+    [Obsolete ("Will be removed when moved into interfaces assembly.", false)]
     public static EnumWrapper Parse (string value)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("value", value);
@@ -33,6 +40,8 @@ namespace Remotion.Security
     }
 
     private readonly string _typeName;
+    //TODO FS: Use fullname of enum in current format "value|PartialAssemblyQualifiedName"
+    //TODO FS: StateEnumValues must be migrated (SecurityManager!!!)
     private readonly string _name;
     private Enum _enumValue;
 
@@ -65,6 +74,7 @@ namespace Remotion.Security
       _enumValue = null;
     }
 
+    [Obsolete ("Will be removed when moved into interfaces assembly.", true)]
     public string TypeName
     {
       get { return _typeName; }
@@ -83,6 +93,7 @@ namespace Remotion.Security
     ///   <br/>- or -<br/>
     ///   The <see cref="Name"/> does not designate a valid value of the enumerated type.
     /// </exception>
+    [Obsolete ("Will be removed when moved into interfaces assembly.", true)]
     public Enum GetEnum ()
     {
       if (_enumValue == null)
