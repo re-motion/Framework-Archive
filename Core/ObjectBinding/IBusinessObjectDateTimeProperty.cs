@@ -2,6 +2,7 @@ using System;
 
 namespace Remotion.ObjectBinding
 {
+  // TODO FS: Move to OB.Interfaces
   /// <summary> The <b>IBusinessObjectDateTimeProperty</b> interface is used for accessing <see cref="DateTime"/> values. </summary>
   /// <remarks>
   /// <note type="inotes">

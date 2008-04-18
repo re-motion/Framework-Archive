@@ -2,6 +2,7 @@ using System;
 
 namespace Remotion.ObjectBinding
 {
+  // TODO FS: Move to OB.Interfaces
   //TODO: Type property for concrete numeric type
   /// <summary>The <see cref="IBusinessObjectNumericProperty"/> interface provides additional meta data for numeric values.</summary>
   /// <remarks>

@@ -3,6 +3,7 @@ using Remotion.Utilities;
 
 namespace Remotion
 {
+  // TODO FS: Move to Remotion.Interfaces
   /// <summary>
   ///   Supplies an identifier that should remain constant even accross refactorings. Can be applied to reference types, properties and fields.
   /// </summary>

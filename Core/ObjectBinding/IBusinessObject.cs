@@ -2,6 +2,7 @@ using System;
 
 namespace Remotion.ObjectBinding
 {
+  // TODO FS: Move to OB.Interfaces
   /// <summary> 
   ///   The <see cref="IBusinessObject"/> interface provides functionality to get and set the state of a business object.
   /// </summary>
@@ -28,6 +29,7 @@ namespace Remotion.ObjectBinding
     /// </exception>
     object GetProperty (IBusinessObjectProperty property);
 
+    // TODO: Replace with extension method in 2.0
     /// <summary>
     ///   Gets the value accessed through the <see cref="IBusinessObjectProperty"/> identified by the passed 
     ///   <paramref name="propertyIdentifier"/>. 
@@ -53,6 +55,7 @@ namespace Remotion.ObjectBinding
     /// </exception>
     void SetProperty (IBusinessObjectProperty property, object value);
 
+    // TODO: Replace with extension method in 2.0
     /// <summary>
     ///   Sets the value accessed through the <see cref="IBusinessObjectProperty"/> identified by the passed 
     ///   <paramref name="propertyIdentifier"/>. 
@@ -84,6 +87,7 @@ namespace Remotion.ObjectBinding
     /// </exception>
     string GetPropertyString (IBusinessObjectProperty property, string format);
 
+    // TODO: Replace with extension method in 2.0
     /// <summary> 
     ///   Gets the string representation of the value accessed through the <see cref="IBusinessObjectProperty"/> 
     ///   identified by the passed <paramref name="propertyIdentifier"/>.

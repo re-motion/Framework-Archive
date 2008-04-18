@@ -76,6 +76,10 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\prereq\Assemblies\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.DynamicProxy, Version=2.0.0.1, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\prereq\Assemblies\Castle.DynamicProxy.dll</HintPath>
@@ -122,6 +126,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallContextSingletonTest.cs" />
+    <Compile Include="Collections\InterlockedDataStoreTest.cs" />
+    <Compile Include="Collections\MonitorCheckingInterceptor.cs" />
+    <Compile Include="Collections\SimpleDataStoreTest.cs" />
     <Compile Include="Reflection\CodeGeneration\AssemblySaverTest.cs" />
     <Compile Include="Reflection\CodeGeneration\AttributeReplicatorTest.cs" />
     <Compile Include="Reflection\CodeGeneration\PopStatementTest.cs" />

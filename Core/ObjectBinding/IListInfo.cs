@@ -4,6 +4,7 @@ using System.Collections;
 namespace Remotion.ObjectBinding
 {
   //TODO: doc
+  // TODO FS: Move to OB.Interfaces
   public interface IListInfo
   {
     Type ItemType { get; }

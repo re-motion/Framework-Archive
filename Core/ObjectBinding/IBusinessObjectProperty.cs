@@ -3,6 +3,7 @@ using System.Collections;
 
 namespace Remotion.ObjectBinding
 {
+  // TODO FS: Move to OB.Interfaces
   /// <summary>
   ///   The <b>IBusinessObjectProperty</b> interface provides functionality common to all business object property 
   ///   spezializations for the individual data types.

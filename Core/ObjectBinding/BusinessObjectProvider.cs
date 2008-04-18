@@ -4,6 +4,7 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding
 {
+  // TODO FS: Move to OB.dll
   /// <summary>The <see langword="abstract"/> default implementation of the <see cref="IBusinessObjectProvider"/> interface.</summary>
   public abstract class BusinessObjectProvider : IBusinessObjectProvider
   {

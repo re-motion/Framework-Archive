@@ -2,6 +2,7 @@ using System;
 
 namespace Remotion.Logging
 {
+  // TODO FS: Move to Remotion.Interfaces, split in implementation/interface
   /// <summary>
   /// Use this class to create a logger implementing <see cref="ILog"/> from the current <see cref="ILogManager"/>.
   /// </summary>

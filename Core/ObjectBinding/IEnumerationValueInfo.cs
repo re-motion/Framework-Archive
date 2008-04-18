@@ -2,6 +2,7 @@ using System;
 
 namespace Remotion.ObjectBinding
 {
+  // TODO FS: Move to OB.Interfaces
   /// <summary>
   ///   The <b>IEnumerationValueInfo"</b> interface provides fucntionality for encapsulating a native enumeration value 
   ///   for use with an <see cref="IBusinessObjectEnumerationProperty"/>.

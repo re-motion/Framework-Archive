@@ -2,6 +2,7 @@ using System;
 
 namespace Remotion.ObjectBinding
 {
+  // TODO FS: Move to OB.Interfaces
   /// <summary> Provides functionality for business object providers. </summary>
   /// <remarks>
   ///   A business object provider is able to retrieve services (e.g. the

@@ -2,6 +2,7 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding
 {
+  // TODO FS: Move to OB.dll
   /// <summary> Default implementation of the <see cref="IEnumerationValueInfo"/> interface. </summary>
   public class EnumerationValueInfo : IEnumerationValueInfo
   {

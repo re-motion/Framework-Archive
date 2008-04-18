@@ -2,6 +2,7 @@ using System;
 
 namespace Remotion.ObjectBinding
 {
+  // TODO FS: Move to OB.Interfaces
   /// <summary> 
   ///   The <b>IBusinessObjectReferenceProperty</b> interface is used for accessing references to other 
   ///   <see cref="IBusinessObject"/> instances.
@@ -14,6 +15,7 @@ namespace Remotion.ObjectBinding
     /// </value>
     IBusinessObjectClass ReferenceClass { get; }
 
+    // TODO: remove supportsIdentity, change to property (see previous version)
     /// <summary> 
     ///   Gets a flag indicating whether it is possible to get a list of the objects that can be assigned to this property.
     /// </summary>
@@ -28,6 +30,7 @@ namespace Remotion.ObjectBinding
     /// </remarks>
     bool SupportsSearchAvailableObjects (bool supportsIdentity);
 
+    // TODO: remove requiresIdentity, change to property (see previous version)
     /// <summary> 
     ///   Searches the object model for the <see cref="IBusinessObject"/> instances that can be assigned to this property.
     /// </summary>

@@ -5,7 +5,7 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding
 {
-
+  // TODO FS: Extract interface (OB.Interfaces), move rest to OB.dll
   /// <summary> A collection of business object properties that result in each other. </summary>
   /// <remarks>
   ///   <para>

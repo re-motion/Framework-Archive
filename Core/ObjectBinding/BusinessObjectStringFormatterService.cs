@@ -7,6 +7,7 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding
 {
+  // TODO FS: Move to OB.dll
   //TODO: doc
   public class BusinessObjectStringFormatterService : IBusinessObjectStringFormatterService
   {
