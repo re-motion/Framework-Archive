@@ -10,6 +10,7 @@ namespace Remotion.Collections
   /// </summary>
   /// <typeparam name="TKey">The type of the keys.</typeparam>
   /// <typeparam name="TValue">The type of the values.</typeparam>
+  [Serializable]
   public class SimpleDataStore<TKey, TValue> : IDataStore<TKey, TValue>
   {
     private readonly Dictionary<TKey, TValue> _innerDictionary = new Dictionary<TKey, TValue>();

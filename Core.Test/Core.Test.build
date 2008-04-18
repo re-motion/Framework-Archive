@@ -20,6 +20,7 @@
         <exclude name="Reflection/TestAssemblies/**/*.cs" />
       </sources>
       <references failonempty="true">
+        <include name="${build.test.outputdir}/Castle.Core.dll" />
         <include name="${build.test.outputdir}/Castle.DynamicProxy.dll" />
         <include name="${build.test.outputdir}/log4net.dll" />
         <include name="${build.test.outputdir}/Rhino.Mocks.dll" />

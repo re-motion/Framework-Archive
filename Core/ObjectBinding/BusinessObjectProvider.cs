@@ -15,18 +15,17 @@ namespace Remotion.ObjectBinding
     ///    If your object model does not support services, this property should return an instance of type <see cref="NullCache{TKey,TValue}"/>.
     ///   </note>
     /// </remarks>
-#warning Should use Dictionary instead of ICache! Caches are not reliable stores and might lose values over time.
-    protected abstract ICache<Type, IBusinessObjectService> ServiceCache { get; }
+    protected abstract IDataStore<Type, IBusinessObjectService> ServiceStore { get; }
 
     /// <summary> Retrieves the requested <see cref="IBusinessObjectService"/>. Must not be <see langword="null" />.</summary>
     public IBusinessObjectService GetService (Type serviceType)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("serviceType", serviceType, typeof (IBusinessObjectService));
 
-      ICache<Type, IBusinessObjectService> serviceCache = ServiceCache;
-      Assertion.IsNotNull (serviceCache, "The ServiceCache evaluated and returned null. It should return a null object instead.");
+      IDataStore<Type, IBusinessObjectService> serviceStore = ServiceStore;
+      Assertion.IsNotNull (serviceStore, "The ServiceStore evaluated and returned null. It should return a null object instead.");
       IBusinessObjectService service;
-      if (serviceCache.TryGetValue (serviceType, out service))
+      if (serviceStore.TryGetValue (serviceType, out service))
         return service;
       return null;
     }
@@ -45,9 +44,9 @@ namespace Remotion.ObjectBinding
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("serviceType", serviceType, typeof (IBusinessObjectService));
       ArgumentUtility.CheckNotNull ("service", service);
 
-      ICache<Type, IBusinessObjectService> serviceCache = ServiceCache;
-      Assertion.IsNotNull (serviceCache, "The ServiceCache evaluated and returned null. It should return a non-null object instead.");
-      serviceCache.Add (serviceType, service);
+      IDataStore<Type, IBusinessObjectService> serviceStore = ServiceStore;
+      Assertion.IsNotNull (serviceStore, "The ServiceStore evaluated and returned null. It should return a non-null object instead.");
+      serviceStore[serviceType] = service;
     }
 
     /// <summary>Returns the <see cref="Char"/> to be used as a serparator when formatting the property path's identifier.</summary>

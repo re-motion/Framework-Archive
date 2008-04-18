@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.BindableObject
     }
 
     private readonly InterlockedCache<Type, BindableObjectClass> _businessObjectClassCache = new InterlockedCache<Type, BindableObjectClass>();
-    private readonly InterlockedCache<Type, IBusinessObjectService> _serviceCache = new InterlockedCache<Type, IBusinessObjectService>();
+    private readonly InterlockedDataStore<Type, IBusinessObjectService> _serviceStore = new InterlockedDataStore<Type, IBusinessObjectService>();
 
     public BindableObjectProvider ()
     {
@@ -77,9 +77,9 @@ namespace Remotion.ObjectBinding.BindableObject
     }
 
     /// <summary> The <see cref="IDictionary"/> used to store the references to the registered servies. </summary>
-    protected override ICache<Type, IBusinessObjectService> ServiceCache
+    protected override IDataStore<Type, IBusinessObjectService> ServiceStore
     {
-      get { return _serviceCache; }
+      get { return _serviceStore; }
     }
   }
 }

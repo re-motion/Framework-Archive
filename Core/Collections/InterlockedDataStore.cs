@@ -13,6 +13,7 @@ namespace Remotion.Collections
   /// locking on a private synchronization object while the method is executed. This provides a convenient way to make an 
   /// <see cref="IDataStore{TKey,TValue}"/> thread-safe, as long as the store is only executed through this wrapper.
   /// </remarks>
+  [Serializable]
   public class InterlockedDataStore<TKey, TValue> : IDataStore<TKey, TValue>
   {
     private readonly IDataStore<TKey, TValue> _innerStore;
@@ -26,6 +27,15 @@ namespace Remotion.Collections
     {
       ArgumentUtility.CheckNotNull ("innerStore", innerStore);
       _innerStore = innerStore;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InterlockedDataStore&lt;TKey, TValue&gt;"/> class wrapping a 
+    /// <see cref="SimpleDataStore{TKey,TValue}"/>.
+    /// </summary>
+    public InterlockedDataStore ()
+        : this (new SimpleDataStore<TKey, TValue>())
+    {
     }
 
     bool INullObject.IsNull

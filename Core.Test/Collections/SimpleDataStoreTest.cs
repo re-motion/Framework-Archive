@@ -177,5 +177,11 @@ namespace Remotion.UnitTests.Collections
           Is.EqualTo (7));
       Assert.That (delegateCalled);
     }
+
+    [Test]
+    public void Serializable ()
+    {
+      Serializer.SerializeAndDeserialize (_store);
+    }
   }
 }

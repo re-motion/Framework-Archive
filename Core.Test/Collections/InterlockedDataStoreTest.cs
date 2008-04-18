@@ -4,12 +4,7 @@ using Castle.DynamicProxy;
 using NUnit.Framework;
 using Remotion.Collections;
 using NUnit.Framework.SyntaxHelpers;
-using Remotion.Utilities;
-using Rhino.Mocks;
-using System.Threading;
 using Remotion.Development.UnitTesting;
-using AssertionException=NUnit.Framework.AssertionException;
-using ReflectionUtility=Remotion.Mixins.Utilities.ReflectionUtility;
 
 namespace Remotion.UnitTests.Collections
 {
@@ -28,6 +23,13 @@ namespace Remotion.UnitTests.Collections
       _innerStore = generator.CreateInterfaceProxyWithoutTarget<IDataStore<string, int>> (_innerStoreInterceptor);
       _store = new InterlockedDataStore<string, int> (_innerStore);
       _innerStoreInterceptor.Monitor = PrivateInvoke.GetNonPublicField (_store, "_lock");
+    }
+
+    [Test]
+    public void DefaultConstructor ()
+    {
+      InterlockedDataStore<string, int> store = new InterlockedDataStore<string, int> ();
+      Assert.IsInstanceOfType (typeof (SimpleDataStore<string, int>), PrivateInvoke.GetNonPublicField (store, "_innerStore"));
     }
 
     [Test]
@@ -88,6 +90,12 @@ namespace Remotion.UnitTests.Collections
     public void GetOrCreateValue ()
     {
       ExpectSynchronizedDelegation (17, "GetOrCreateValue", "hugo", (Func<string, int>) delegate { return 3; });
+    }
+
+    [Test]
+    public void Serializable ()
+    {
+      Serializer.SerializeAndDeserialize (new InterlockedDataStore<string, int>());
     }
 
     private void ExpectSynchronizedDelegation (object result, string methodName, params object[] args)

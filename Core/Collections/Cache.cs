@@ -14,7 +14,7 @@ namespace Remotion.Collections
 
     // member fields
 
-    private Dictionary<TKey, TValue> _cache = new Dictionary<TKey,TValue>();
+    private readonly SimpleDataStore<TKey, TValue> _cache = new SimpleDataStore<TKey, TValue> ();
 
     // construction and disposing
 
@@ -48,14 +48,7 @@ namespace Remotion.Collections
       ArgumentUtility.CheckNotNull ("key", key);
       ArgumentUtility.CheckNotNull ("valueFactory", valueFactory);
 
-      TValue value;
-      if (!_cache.TryGetValue (key, out value))
-      {
-        value = valueFactory (key);
-        _cache[key] = value;
-      }
-
-      return value;
+      return _cache.GetOrCreateValue (key, valueFactory);
     }
 
     bool INullObject.IsNull

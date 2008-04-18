@@ -6,7 +6,7 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BusinessObjectPropertyPathTests
 {
   public class StubBusinessObjectProvider : BusinessObjectProvider
   {
-    protected override ICache<Type, IBusinessObjectService> ServiceCache
+    protected override IDataStore<Type, IBusinessObjectService> ServiceStore
     {
       get { throw new NotImplementedException(); }
     }
