@@ -1,8 +1,9 @@
 using System;
+using Remotion.Implementation;
+using Remotion.Logging.BridgeInterfaces;
 
 namespace Remotion.Logging
 {
-  // TODO FS: Move to Remotion.Interfaces, split in implementation/interface
   /// <summary>
   /// Use this class to create a logger implementing <see cref="ILog"/> from the current <see cref="ILogManager"/>.
   /// </summary>
@@ -11,9 +12,6 @@ namespace Remotion.Logging
   /// </remarks>
   public static class LogManager
   {
-    // TODO: Get from config section
-    private static ILogManager s_current = new Log4NetLogManager ();
-
     /// <summary>
     /// Gets or creates a logger.
     /// </summary>
@@ -21,7 +19,7 @@ namespace Remotion.Logging
     /// <returns>A logger for the <paramref name="name"/> specified.</returns>
     public static ILog GetLogger (string name)
     {
-      return s_current.GetLogger (name);
+      return VersionDependentImplementationBridge<ILogManagerImplementation>.Implementation.GetLogger (name);
     }
 
     /// <summary>
@@ -31,7 +29,7 @@ namespace Remotion.Logging
     /// <returns>A logger for the fully qualified name of the <paramref name="type"/> specified.</returns>
     public static ILog GetLogger (Type type)
     {
-      return s_current.GetLogger (type);
+      return VersionDependentImplementationBridge<ILogManagerImplementation>.Implementation.GetLogger (type);
     }
 
 
@@ -40,8 +38,7 @@ namespace Remotion.Logging
     /// </summary>
     public static void Initialize ()
     {
-      //TODO: Test once current ILogManager can be set through configuration.
-      s_current.Initialize ();
+      VersionDependentImplementationBridge<ILogManagerImplementation>.Implementation.Initialize ();
     }
 
     /// <summary>
@@ -49,7 +46,7 @@ namespace Remotion.Logging
     /// </summary>
     public static void InitializeConsole ()
     {
-      s_current.InitializeConsole ();
+      VersionDependentImplementationBridge<ILogManagerImplementation>.Implementation.InitializeConsole ();
     }
   }
 }

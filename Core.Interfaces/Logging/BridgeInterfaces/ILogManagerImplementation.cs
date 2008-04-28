@@ -1,13 +1,10 @@
 using System;
+using Remotion.Implementation;
 
-namespace Remotion.Logging
+namespace Remotion.Logging.BridgeInterfaces
 {
-  // TODO FS: Move to Remotion.Interfaces
-  /// <summary>
-  /// The <see cref="ILogManager"/> interface declares the methods available for retrieving a logger that implements
-  /// <see cref="ILog"/> and initializing the respective logging framework.
-  /// </summary>
-  public interface ILogManager
+  [ConcreteImplementation ("Remotion.Logging.BridgeImplementations.LogManagerImplementation, Remotion, Version = <version>")]
+  public interface ILogManagerImplementation
   {
     /// <summary>
     /// Gets or creates a logger.
@@ -24,12 +21,12 @@ namespace Remotion.Logging
     ILog GetLogger (Type type);
 
     /// <summary>
-    /// Initializes the logging framework abstracted through the <see cref="ILogManager"/> interface.
+    /// Initializes the current logging framework.
     /// </summary>
     void Initialize ();
 
     /// <summary>
-    /// Initializes the logging framework to log to the console.
+    /// Initializes the current logging framework to log to the console.
     /// </summary>
     void InitializeConsole ();
   }
