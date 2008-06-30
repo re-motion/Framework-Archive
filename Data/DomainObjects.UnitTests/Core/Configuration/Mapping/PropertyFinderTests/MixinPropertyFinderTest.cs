@@ -13,27 +13,26 @@ using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Core.Configuration.Mapping.MixinTestDomain;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Core.Configuration.Mapping.PropertyFinderTests
 {
   [TestFixture]
-  public class PropertyFinderBaseMixinsTest : PropertyFinderBaseTestBase
+  public class MixinPropertyFinderTest : PropertyFinderBaseTestBase
   {
     [Test]
-    public void FindPropertyInfos_ForInheritanceRoot ()
+    public void FindPropertyInfos_IncludeBasePropertiesTrue ()
     {
-      PropertyFinderBase propertyFinder = new StubPropertyFinderBase (typeof (TargetClassA), true);
+      MixinPropertyFinder propertyFinder = CreatePropertyFinder (typeof (TargetClassA), true);
 
-      Assert.That (
-          propertyFinder.FindPropertyInfos (CreateReflectionBasedClassDefinition (typeof (TargetClassA))),
+      Assert.That (EnumerableUtility.ToArray (
+          propertyFinder.FindPropertyInfosOnMixins (CreateReflectionBasedClassDefinition (typeof (TargetClassA)))),
           Is.EquivalentTo (
               new PropertyInfo[]
                   {
-                      GetProperty (typeof (TargetClassBase), "P0"),
                       GetProperty (typeof (MixinBase), "P0a"),
-                      GetProperty (typeof (TargetClassA), "P1"),
-                      GetProperty (typeof (TargetClassA), "P2"),
                       GetProperty (typeof (MixinA), "P5"),
                       GetProperty (typeof (MixinC), "P7"),
                       GetProperty (typeof (MixinD), "P8"),
@@ -41,17 +40,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Core.Configuration.Mapping.Prope
     }
 
     [Test]
-    public void FindPropertyInfos_ForNonInheritanceRoot ()
+    public void FindPropertyInfos_IncludeBasePropertiesFalse ()
     {
-      PropertyFinderBase propertyFinder = new StubPropertyFinderBase (typeof (TargetClassA), false);
+      MixinPropertyFinder propertyFinder = CreatePropertyFinder (typeof (TargetClassA), false);
 
-      Assert.That (
-          propertyFinder.FindPropertyInfos (CreateReflectionBasedClassDefinition (typeof (TargetClassA))),
+      Assert.That (EnumerableUtility.ToArray (
+          propertyFinder.FindPropertyInfosOnMixins (CreateReflectionBasedClassDefinition (typeof (TargetClassA)))),
           Is.EquivalentTo (
               new PropertyInfo[]
                   {
-                      GetProperty (typeof (TargetClassA), "P1"),
-                      GetProperty (typeof (TargetClassA), "P2"),
                       GetProperty (typeof (MixinA), "P5"),
                       GetProperty (typeof (MixinC), "P7"),
                       GetProperty (typeof (MixinD), "P8"),
@@ -61,15 +58,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Core.Configuration.Mapping.Prope
     [Test]
     public void FindPropertyInfos_ForDerived ()
     {
-      PropertyFinderBase propertyFinder = new StubPropertyFinderBase (typeof (TargetClassB), false);
+      MixinPropertyFinder propertyFinder = CreatePropertyFinder (typeof (TargetClassB), false);
 
-      Assert.That (
-          propertyFinder.FindPropertyInfos (CreateReflectionBasedClassDefinition (typeof (TargetClassB))),
+      Assert.That (EnumerableUtility.ToArray (
+          propertyFinder.FindPropertyInfosOnMixins (CreateReflectionBasedClassDefinition (typeof (TargetClassB)))),
           Is.EquivalentTo (
               new PropertyInfo[]
                   {
-                      GetProperty (typeof (TargetClassB), "P3"),
-                      GetProperty (typeof (TargetClassB), "P4"),
                       GetProperty (typeof (MixinB), "P6"),
                       GetProperty (typeof (MixinE), "P9"),
                   }));
@@ -78,16 +73,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.Core.Configuration.Mapping.Prope
     [Test]
     public void FindPropertyInfos_ForDerivedMixinNotOnBase ()
     {
-      PropertyFinderBase propertyFinder = new StubPropertyFinderBase (typeof (TargetClassC), false);
+      MixinPropertyFinder propertyFinder = CreatePropertyFinder (typeof (TargetClassC), false);
 
-      Assert.That (
-          propertyFinder.FindPropertyInfos (CreateReflectionBasedClassDefinition (typeof (TargetClassC))),
+      Assert.That (EnumerableUtility.ToArray (
+          propertyFinder.FindPropertyInfosOnMixins (CreateReflectionBasedClassDefinition (typeof (TargetClassC)))),
           Is.EquivalentTo (
               new PropertyInfo[]
                   {
                       GetProperty (typeof (DerivedMixinNotOnBase), "DerivedMixinProperty"),
                       GetProperty (typeof (MixinNotOnBase), "MixinProperty"),
                   }));
+    }
+
+    [Test]
+    public void FindPropertyInfos_WithDiamond ()
+    {
+      MixinPropertyFinder propertyFinder = CreatePropertyFinder (typeof (DiamondTarget), false);
+
+      Assert.That (EnumerableUtility.ToArray (
+          propertyFinder.FindPropertyInfosOnMixins (CreateReflectionBasedClassDefinition (typeof (DiamondTarget)))),
+          Is.EquivalentTo (
+              new PropertyInfo[]
+                  {
+                      GetProperty (typeof (DiamondBase), "PBase"),
+                  }));
+    }
+
+    private MixinPropertyFinder CreatePropertyFinder (Type type, bool includeBaseProperties)
+    {
+      return new MixinPropertyFinder (typeof (StubPropertyFinderBase), new PersistentMixinFinder (type), includeBaseProperties,
+          new ReflectionBasedNameResolver ());
     }
   }
 }
