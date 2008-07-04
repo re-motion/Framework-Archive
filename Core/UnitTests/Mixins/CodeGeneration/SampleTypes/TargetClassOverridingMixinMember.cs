@@ -12,7 +12,7 @@ using Remotion.Mixins;
 
 namespace Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes
 {
-  public class BaseOverridingMixinMember
+  public class TargetClassOverridingMixinMember
   {
     [OverrideMixin]
     protected void Foo ()
