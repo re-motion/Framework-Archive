@@ -8,11 +8,24 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. 
  */
 
-using System;
-
-namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
+namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.SampleTypes
 {
-  [AttributeUsage(AttributeTargets.All, Inherited = true, AllowMultiple = true)]
-  public class MultipleAttribute : Attribute, ICustomAttribute
-  { }
+  public class DerivedSampleClass : SampleClass
+  {
+    public override string PropertyWithSingleAttribute
+    {
+      get { return null; }
+    }
+
+    protected override string ProtectedPropertyWithAttribute
+    {
+      get { return null; }
+    }
+
+    [Multiple]
+    public override string PropertyWithMultipleAttribute
+    {
+      get { return null; }
+    }
+  }
 }

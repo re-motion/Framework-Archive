@@ -10,9 +10,11 @@
 
 using System;
 
-namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
+namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.SampleTypes
 {
-  [AttributeUsage (AttributeTargets.All, Inherited = false, AllowMultiple = false)]
-  public class NotInheritedNotMultipleAttribute : Attribute, ICustomAttribute
-  { }
+  [SuppressAttributes(typeof(BaseInheritedAttribute))]
+  public class DerivedDerivedDerivedSuppressed : DerivedDerivedWithAttributesForSuppressed
+  {
+    
+  }
 }

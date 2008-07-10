@@ -9,28 +9,11 @@
  */
 
 using System;
+using Remotion.UnitTests.Utilities.AttributeUtilityTests.SampleTypes;
 
-namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
+namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.SampleTypes
 {
-  [Inherited]
-  public class SampleClass
-  {
-    [Inherited]
-    public virtual string PropertyWithSingleAttribute
-    {
-      get { return null; }
-    }
-
-    [Inherited]
-    protected virtual string ProtectedPropertyWithAttribute
-    {
-      get { return null; }
-    }
-
-    [Multiple]
-    public virtual string PropertyWithMultipleAttribute
-    {
-      get { return null; }
-    }
-  }
+  [AttributeUsage (AttributeTargets.All, Inherited = true, AllowMultiple = true)]
+  public class InheritedAttribute : Attribute, ICustomAttribute
+  { }
 }

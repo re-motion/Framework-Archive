@@ -8,8 +8,16 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. 
  */
 
-namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
+using System;
+
+namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.SampleTypes
 {
-  public interface ICustomAttribute
-  { }
+  [BaseInheritedAttribute ("BaseClass")]
+  [DerivedInheritedAttribute ("BaseClass")]
+  [BaseNonInheritedAttribute ("BaseClass")]
+  [DerivedNonInheritedAttribute ("BaseClass")]
+  public class BaseClassWithAttribute
+  {
+    
+  }
 }

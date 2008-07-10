@@ -10,9 +10,27 @@
 
 using System;
 
-namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
+namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.SampleTypes
 {
-  public class ImplicitUsageAttribute : Attribute
+  [Inherited]
+  public class SampleClass
   {
+    [Inherited]
+    public virtual string PropertyWithSingleAttribute
+    {
+      get { return null; }
+    }
+
+    [Inherited]
+    protected virtual string ProtectedPropertyWithAttribute
+    {
+      get { return null; }
+    }
+
+    [Multiple]
+    public virtual string PropertyWithMultipleAttribute
+    {
+      get { return null; }
+    }
   }
 }
