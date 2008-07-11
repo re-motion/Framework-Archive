@@ -9,13 +9,16 @@
  */
 
 using System;
-using System.Collections.Generic;
+using Remotion.Mixins.Definitions;
+using Remotion.Utilities;
 
-namespace Remotion.Mixins.Definitions
+namespace Remotion.Mixins.Validation.Rules
 {
-  public interface IAttributeIntroductionTargetDefinition : IAttributableDefinition, IVisitableDefinition
+  public class DefaultSuppressedAttributeIntroductionRules : RuleSetBase
   {
-    MultiDefinitionCollection<Type, AttributeIntroductionDefinition> IntroducedAttributes { get; }
-    MultiDefinitionCollection<Type, SuppressedAttributeIntroductionDefinition> SuppressedIntroducedAttributes { get; }
+    public override void Install (ValidatingVisitor visitor)
+    {
+      // no rules available
+    }
   }
 }

@@ -9,6 +9,7 @@
  */
 
 using System;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
 namespace Remotion.UnitTests.Reflection.CodeGeneration.SampleTypes
 {

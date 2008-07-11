@@ -9,12 +9,14 @@
  */
 
 using System;
+using Remotion.Mixins;
 
-namespace Remotion.UnitTests.Reflection.CodeGeneration.SampleTypes
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
-  [AttributeUsage (AttributeTargets.All, AllowMultiple = true, Inherited = true)]
-  public class SimpleAttribute : Attribute
+  [SuppressAttributes(typeof (BT1Attribute))]
+  [Uses (typeof (MixinAddingBT1Attribute))]
+  public class TargetClassSuppressingBT1Attribute
   {
-    public string S;
+    
   }
 }

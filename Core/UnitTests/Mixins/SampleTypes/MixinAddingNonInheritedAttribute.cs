@@ -8,14 +8,10 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. 
  */
 
-using System;
-using System.Collections.Generic;
-
-namespace Remotion.Mixins.Definitions
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
-  public interface IAttributeIntroductionTargetDefinition : IAttributableDefinition, IVisitableDefinition
+  [NonInherited]
+  public class MixinAddingNonInheritedAttribute
   {
-    MultiDefinitionCollection<Type, AttributeIntroductionDefinition> IntroducedAttributes { get; }
-    MultiDefinitionCollection<Type, SuppressedAttributeIntroductionDefinition> SuppressedIntroducedAttributes { get; }
   }
 }

@@ -9,13 +9,12 @@
  */
 
 using System;
-using System.Collections.Generic;
 
-namespace Remotion.Mixins.Definitions
+namespace Remotion.UnitTests.Mixins.SampleTypes
 {
-  public interface IAttributeIntroductionTargetDefinition : IAttributableDefinition, IVisitableDefinition
+  [AttributeUsage (AttributeTargets.All, AllowMultiple = true, Inherited = true)]
+  public class SimpleAttribute : Attribute
   {
-    MultiDefinitionCollection<Type, AttributeIntroductionDefinition> IntroducedAttributes { get; }
-    MultiDefinitionCollection<Type, SuppressedAttributeIntroductionDefinition> SuppressedIntroducedAttributes { get; }
+    public string S;
   }
 }
