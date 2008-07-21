@@ -8,13 +8,15 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. 
  */
 
-using NUnit.Framework;
+using System;
 
-namespace Remotion.Data.DomainObjects.Linq.UnitTests
+namespace Remotion.Data.DomainObjects.UnitTests.Linq
 {
-  [SetUpFixture]
-  public class SetupFixture : Remotion.Data.DomainObjects.UnitTests.SetUpFixture
+  public static class MethodExtensions
   {
-    
+    public static string ExtendString (this string extension)
+    {
+      throw new NotImplementedException();
+    }
   }
 }
