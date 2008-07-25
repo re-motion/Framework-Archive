@@ -9,30 +9,27 @@
  */
 
 using System;
+using System.Diagnostics;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  public class NonIntroducedInterfaceDefinition : IVisitableDefinition
+  [DebuggerDisplay ("{FullName}, not introduced by {Attribute.DeclaringDefinition.FullName}")]
+  public class NonAttributeIntroductionDefinition : IVisitableDefinition
   {
-    public readonly Type Type;
-    public readonly MixinDefinition Implementer;
-
-    private readonly bool _explicitSuppression;
-
-    public NonIntroducedInterfaceDefinition (Type type, MixinDefinition implementer, bool explicitSuppression)
+    public NonAttributeIntroductionDefinition (AttributeDefinition attribute, bool explicitSuppression)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("implementer", implementer);
-
-      Type = type;
-      Implementer = implementer;
-      _explicitSuppression = explicitSuppression;
+      ArgumentUtility.CheckNotNull ("attribute", attribute);
+      Attribute = attribute;
+      IsExplicitlySuppressed = explicitSuppression;
     }
 
-    public bool IsExplicitlySuppressed
+    public AttributeDefinition Attribute { get; private set; }
+    public bool IsExplicitlySuppressed { get; private set; }
+
+    public Type AttributeType
     {
-      get { return _explicitSuppression; }
+      get { return Attribute.AttributeType; }
     }
 
     public bool IsShadowed
@@ -48,12 +45,12 @@ namespace Remotion.Mixins.Definitions
 
     public string FullName
     {
-      get { return Type.FullName; }
+      get { return Attribute.AttributeType.FullName; }
     }
 
     public IVisitableDefinition Parent
     {
-      get { return Implementer; }
+      get { return Attribute.Parent; }
     }
   }
 }

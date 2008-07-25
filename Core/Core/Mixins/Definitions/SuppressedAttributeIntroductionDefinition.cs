@@ -9,17 +9,19 @@
  */
 
 using System;
+using System.Diagnostics;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
+  [DebuggerDisplay ("{FullName}, suppressed on {Attribute.DeclaringDefinition.FullName} by {Suppressor.DeclaringDefinition.FullName}")]
   public class SuppressedAttributeIntroductionDefinition : IVisitableDefinition
   {
-    public readonly IAttributeIntroductionTargetDefinition Target;
+    public readonly IAttributeIntroductionTarget Target;
     public readonly AttributeDefinition Attribute;
     public readonly AttributeDefinition Suppressor;
 
-    public SuppressedAttributeIntroductionDefinition (IAttributeIntroductionTargetDefinition target, AttributeDefinition attribute,
+    public SuppressedAttributeIntroductionDefinition (IAttributeIntroductionTarget target, AttributeDefinition attribute,
         AttributeDefinition suppressor)
     {
       ArgumentUtility.CheckNotNull ("target", target);

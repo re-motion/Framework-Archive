@@ -13,10 +13,10 @@ using System.Reflection;
 
 namespace Remotion.Mixins.Definitions
 {
-  public interface IAttributableDefinition
+  public interface IAttributeIntroductionSource : IAttributableDefinition
   {
-    MultiDefinitionCollection<Type, AttributeDefinition> CustomAttributes { get; }
-    ICustomAttributeProvider CustomAttributeProvider { get; }
-    string FullName { get; }
+    MultiDefinitionCollection<Type, AttributeIntroductionDefinition> AttributeIntroductions { get; }
+    MultiDefinitionCollection<Type, NonAttributeIntroductionDefinition> NonAttributeIntroductions { get; }
+    MultiDefinitionCollection<Type, SuppressedAttributeIntroductionDefinition> SuppressedAttributeIntroductions { get; }
   }
 }
