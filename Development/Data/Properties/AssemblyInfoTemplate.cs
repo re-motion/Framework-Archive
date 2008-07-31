@@ -10,21 +10,22 @@
 
 using System;
 using System.Reflection;
-using Remotion.Development.Data.UnitTesting.DomainObjects.Linq;
 
 //
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle ("Remotion Security Manager Core Components Unittests")]
-[assembly: AssemblyConfiguration ("@buildinfo@")]
+[assembly: AssemblyTitle("Remotion Development Support Library for Remotion.Data")]
+[assembly: AssemblyDescription("Library for unit testing, building and other development-time activities.")]
+[assembly: AssemblyConfiguration("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]
-[assembly: AssemblyProduct ("Remotion Security Manager")]
-[assembly: AssemblyCopyright ("(c) 2006 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
-[assembly: AssemblyTrademark ("")]
-[assembly: AssemblyCulture("")]		
-[assembly: CLSCompliant(true)]
+[assembly: AssemblyProduct("@productname@")]
+[assembly: AssemblyCopyright("@copyright@")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+[assembly: CLSCompliant (true)]
+
 //
 // Version information for an assembly consists of the following four values:
 //
@@ -37,5 +38,3 @@ using Remotion.Development.Data.UnitTesting.DomainObjects.Linq;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("@versionnumber@")]
-
-[assembly: ApplyQueryExecutorMixin]
