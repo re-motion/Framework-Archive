@@ -8,11 +8,23 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. 
  */
 
-namespace Remotion.Data.DomainObjects.Infrastructure
+using System;
+using System.Collections.Generic;
+
+namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 {
-  public interface IFlattenedSerializable
+  public class FlattenedSerializationWriter<T>
   {
-    // .ctor (FlattenedDeserializationInfo info)
-    void SerializeIntoFlatStructure (FlattenedSerializationInfo info);
+    private readonly List<T> _data = new List<T> ();
+    
+    public T[] GetData ()
+    {
+      return _data.ToArray ();
+    }
+
+    public void AddSimpleValue (T value)
+    {
+      _data.Add (value);
+    }
   }
 }

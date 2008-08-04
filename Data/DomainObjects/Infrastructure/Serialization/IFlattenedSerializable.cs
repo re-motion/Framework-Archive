@@ -8,13 +8,13 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. 
  */
 
-using System;
+using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
-namespace Remotion.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 {
-  [Serializable]
-  internal class FlattenedSerializableMarker
+  public interface IFlattenedSerializable
   {
-    public static readonly FlattenedSerializableMarker Instance = new FlattenedSerializableMarker();
+    // .ctor (FlattenedDeserializationInfo info)
+    void SerializeIntoFlatStructure (FlattenedSerializationInfo info);
   }
 }
