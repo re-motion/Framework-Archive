@@ -23,25 +23,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
   [TestFixture]
   public class SearchGroup : DomainTest
   {
-    private DatabaseFixtures _dbFixtures;
     private OrganizationalStructureTestHelper _testHelper;
     private ISearchAvailableObjectsService _searchService;
     private IBusinessObjectReferenceProperty _groupProperty;
     private Group _group;
 
-    public override void TestFixtureSetUp ()
-    {
-      base.TestFixtureSetUp();
-
-      _dbFixtures = new DatabaseFixtures();
-      _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransaction.NewRootTransaction());
-    }
-
     public override void SetUp ()
     {
       base.SetUp();
-
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
 
       _testHelper = new OrganizationalStructureTestHelper();
       _testHelper.Transaction.EnterNonDiscardingScope();
@@ -53,12 +42,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
 
       _group = Group.FindByUnqiueIdentifier ("UID: group0");
       Assert.That (_group, Is.Not.Null);
-    }
-
-    public override void TearDown ()
-    {
-      base.TearDown ();
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
     }
 
     [Test]

@@ -106,9 +106,9 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.csproj">
+    <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.Core.csproj">
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
-      <Name>ObjectBinding %28ObjectBinding\ObjectBinding%29</Name>
+      <Name>ObjectBinding.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ObjectBinding\Interfaces\ObjectBinding.Interfaces.csproj">
       <Project>{A1FCDC69-E8E3-4DC0-8EE7-A8FEA772EF5B}</Project>
@@ -151,12 +151,12 @@
     <Compile Include="FullGraphTraversalStrategy.cs" />
     <Compile Include="Infrastructure\BindingClientTransaction.cs" />
     <Compile Include="Infrastructure\BindingClientTransactionListener.cs" />
-    <Compile Include="Infrastructure\FlattenedDeserializationInfo.cs" />
-    <Compile Include="Infrastructure\FlattenedSerializationReader.cs" />
-    <Compile Include="Infrastructure\FlattenedSerializableMarker.cs" />
-    <Compile Include="Infrastructure\FlattenedSerializationInfo.cs" />
-    <Compile Include="Infrastructure\FlattenedSerializationWriter.cs" />
-    <Compile Include="Infrastructure\IFlattenedSerializable.cs" />
+    <Compile Include="Infrastructure\Serialization\FlattenedDeserializationInfo.cs" />
+    <Compile Include="Infrastructure\Serialization\FlattenedSerializationReader.cs" />
+    <Compile Include="Infrastructure\Serialization\FlattenedSerializableMarker.cs" />
+    <Compile Include="Infrastructure\Serialization\FlattenedSerializationInfo.cs" />
+    <Compile Include="Infrastructure\Serialization\FlattenedSerializationWriter.cs" />
+    <Compile Include="Infrastructure\Serialization\IFlattenedSerializable.cs" />
     <Compile Include="Infrastructure\RepositoryAccessor.cs" />
     <Compile Include="IGraphTraversalStrategy.cs" />
     <Compile Include="Linq\ContainsObjectParser.cs" />

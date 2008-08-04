@@ -11,17 +11,25 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects;
+using NUnit.Framework.SyntaxHelpers;
 using Remotion.Data.DomainObjects.Linq;
+using Remotion.Development.Data.UnitTesting.DomainObjects.Linq;
 using Remotion.SecurityManager.Domain.Metadata;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 {
   [TestFixture]
-  [Ignore ("Reactivate once Linq2OPF supports casting.")]
   public class FindMetadataObjectQueryBuilderTest : DomainTest
   {
     private FindMetadataObjectQueryBuilder _queryBuilder;
+    private ExpressionTreeComparer _expressionTreeComparer;
+
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp();
+
+      _expressionTreeComparer = new ExpressionTreeComparer ((actual, exptected) => Assert.That (actual, Is.EqualTo (exptected)));
+    }
 
     [SetUp]
     public override void SetUp ()
@@ -41,7 +49,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       var actual = _queryBuilder.CreateQuery (metadataObjectID);
 
-      ExpressionTreeComparer.Compare (expected, actual);
+      _expressionTreeComparer.Compare (expected, actual);
     }
 
     [Test]
@@ -51,11 +59,30 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       var expected = from state in DataContext.Entity<StateDefinition>()
                      where state.StateProperty.MetadataItemID == new Guid ("9e689c4c-3758-436e-ac86-23171289fa5e") && state.Value == 2
-                     select (MetadataObject) state;
+                     select state;
 
       var actual = _queryBuilder.CreateQuery (metadataObjectID);
 
-      ExpressionTreeComparer.Compare (expected, actual);
+      _expressionTreeComparer.Compare (expected, actual.Cast<StateDefinition>());
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The metadata ID 'Hello|42' is invalid.\r\nParameter name: metadataID")]
+    public void Find_InvalidMetadataItemID ()
+    {
+      string metadataObjectID = "Hello|42";
+
+      _queryBuilder.CreateQuery (metadataObjectID);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException),
+        ExpectedMessage = "The metadata ID '9e689c4c-3758-436e-ac86-23171289fa5e|Hello' is invalid.\r\nParameter name: metadataID")]
+    public void Find_InvalidStateValue ()
+    {
+      string metadataObjectID = "9e689c4c-3758-436e-ac86-23171289fa5e|Hello";
+
+      _queryBuilder.CreateQuery (metadataObjectID);
     }
   }
 }

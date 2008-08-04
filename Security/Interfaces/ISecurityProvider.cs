@@ -22,10 +22,5 @@ namespace Remotion.Security
     /// <param name="user">The <see cref="IPrincipal"/> on whose behalf the permissions are evaluated.</param>
     /// <returns></returns>
     AccessType[] GetAccess (ISecurityContext context, IPrincipal user);
-
-    /// <summary>Gets the current revison number.</summary>
-    /// <returns>The current revison number.</returns>
-    /// <remarks>The revison number is incremented when any permission-related information becomes outdated; an incremented revision number indicates that the cache must be discared.</remarks>
-    int GetRevision ();
   }
 }

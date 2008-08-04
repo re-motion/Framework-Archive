@@ -1,3 +1,8 @@
+1.11.2
+======
+- ObjectBinding.Web.UI.Controls.BocAllPropertiesPlacehoderColumnDefinition renamed to BocAllPropertiesPlaceholderColumnDefinition
+- ObjectBinding.Web.IBusinessObjectWebUIService: Added GetHelpInfo method to return the HelpInfo for the business object control.
+
 1.11.1
 ======
 - ObjectBInding.Web.Preview: Removed dependency to ASP.NET Futures (July 2007)

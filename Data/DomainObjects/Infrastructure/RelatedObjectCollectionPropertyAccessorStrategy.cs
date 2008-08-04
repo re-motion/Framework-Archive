@@ -73,7 +73,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
-      throw new InvalidOperationException ("Related object collections cannot be set.");
+      RelationEndPointID id = CreateRelationEndPointID(propertyAccessor);
+      CollectionEndPoint endPoint = (CollectionEndPoint) transaction.DataManager.RelationEndPointMap.GetRelationEndPointWithLazyLoad (id);
+      endPoint.ReplaceOppositeCollection ((DomainObjectCollection) value);
     }
 
     public object GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)

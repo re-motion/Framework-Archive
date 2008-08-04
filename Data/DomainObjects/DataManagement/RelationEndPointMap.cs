@@ -10,6 +10,7 @@
 
 using System;
 using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 using System.Collections;
@@ -440,7 +441,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
         return RelationEndPoint.CreateNullRelationEndPoint (definition);
     }
 
-    private RelationEndPoint GetRelationEndPointWithLazyLoad (RelationEndPointID endPointID)
+    public RelationEndPoint GetRelationEndPointWithLazyLoad (RelationEndPointID endPointID)
     {
       if (_relationEndPoints.Contains (endPointID))
         return _relationEndPoints[endPointID];

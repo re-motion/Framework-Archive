@@ -12,7 +12,8 @@
     </AssemblyKeyContainerName>
     <AssemblyName>Remotion.ObjectBinding.Sample</AssemblyName>
     <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile><TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    </AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
@@ -27,7 +28,10 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <OldToolsVersion>2.0</OldToolsVersion><SignAssembly>true</SignAssembly><AssemblyOriginatorKeyFile>..\..\remotion.snk</AssemblyOriginatorKeyFile><TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -79,6 +83,9 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
@@ -103,13 +110,13 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\..\Web\Core\Web.csproj">
-      <Name>Web %28Web\Web%29</Name>
+    <ProjectReference Include="..\..\Web\Core\Web.Core.csproj">
+      <Name>Web.Core</Name>
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\Core\ObjectBinding.csproj">
-      <Name>ObjectBinding %28ObjectBinding\ObjectBinding%29</Name>
+    <ProjectReference Include="..\Core\ObjectBinding.Core.csproj">
+      <Name>ObjectBinding.Core</Name>
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
@@ -163,7 +170,9 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\remotion.snk"><Link>remotion.snk</Link></None>
+    <None Include="..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

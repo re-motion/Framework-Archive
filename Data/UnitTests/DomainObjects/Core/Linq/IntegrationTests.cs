@@ -324,7 +324,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
     }
 
     [Test]
-    [Ignore ("Allow Contains queries with collections")]
     public void QueryWithContainsInWhere_OnCollection ()
     {
       ObjectID[] possibleItems = new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 };
@@ -334,6 +333,18 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
           select o;
 
       CheckQueryResult (orders, DomainObjectIDs.Order1, DomainObjectIDs.Order2);
+    }
+
+    [Test]
+    public void QueryWithContainsInWhere_OnEmptyCollection ()
+    {
+      ObjectID[] possibleItems = new ObjectID[] {  };
+      var orders =
+          from o in DataContext.Entity<Order> ()
+          where possibleItems.Contains (o.ID)
+          select o;
+
+      CheckQueryResult (orders);
     }
 
     [Test]
@@ -553,8 +564,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "This query provider does not support selecting single columns ('o.ID'). The projection "
-      + "must select whole DomainObject instances.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage=
+      "This query provider does not support selecting single columns ('o.ID'). The projection must select whole DomainObject instances.")]
     public void Query_WithUnsupportedType_NonDomainObjectColumn ()
     {
       var query =
@@ -564,7 +575,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
 
       query.ToArray ();
     }
-
+    
     public static void CheckQueryResult<T> (IEnumerable<T> query, params ObjectID[] expectedObjectIDs)
         where T : TestDomainBase
     {
