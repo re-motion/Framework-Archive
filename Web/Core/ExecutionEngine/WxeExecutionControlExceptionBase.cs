@@ -9,17 +9,22 @@
  */
 
 using System;
-using Remotion.Collections;
-using Remotion.Web.UI.Controls;
+using System.Runtime.Serialization;
 
 namespace Remotion.Web.ExecutionEngine
 {
+  /// <summary> This exception is used by the execution engine to control the call stack. </summary>
+  [Serializable]
+  public abstract class WxeExecutionControlExceptionBase : WxeException
+  {
+    protected WxeExecutionControlExceptionBase (string message)
+        : base(message)
+    {
+    }
 
-public interface IWxeTemplateControl: ITemplateControl
-{
-  NameObjectCollection Variables { get; }
-  WxePageStep CurrentPageStep { get; }
-  WxeFunction CurrentFunction { get; }
-}
-
+    protected WxeExecutionControlExceptionBase (SerializationInfo info, StreamingContext context)
+        : base (info, context)
+    {
+    }
+  }
 }

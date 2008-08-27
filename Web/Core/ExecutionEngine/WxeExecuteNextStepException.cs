@@ -15,7 +15,7 @@ namespace Remotion.Web.ExecutionEngine
 {
   /// <summary> This exception is used by the execution engine to end the execution of a <see cref="WxePageStep"/>. </summary>
   [Serializable]
-  public class WxeExecuteNextStepException : WxeException
+  public class WxeExecuteNextStepException : WxeExecutionControlExceptionBase
   {
     public WxeExecuteNextStepException ()
         : base (
@@ -26,7 +26,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     protected WxeExecuteNextStepException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
     }
   }
