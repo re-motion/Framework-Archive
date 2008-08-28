@@ -8,36 +8,28 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. 
  */
 
+using System.Threading;
+using NUnit.Framework;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UnitTests.ExecutionEngine.TestFunctions;
 
-namespace Remotion.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine.TestFunctions
 {
-  public class TestFunctionWithSpecificTransaction : WxeTransactedFunctionBase<TestTransaction>
+  public class TestTransactedFunctionWithResetFailingSubclassValidation : WxeTransactedFunctionBase<TestTransaction>
   {
-    private readonly TestTransaction _transaction;
-    
-    public TestTransaction TransactionInFirstStep;
-    public TestWxeTransaction WxeTransaction;
-
-    public TestFunctionWithSpecificTransaction (TestTransaction transaction)
-    {
-      _transaction = transaction;
-    }
-
     protected override WxeTransactionBase<TestTransaction> CreateWxeTransaction ()
     {
-      WxeTransaction = new TestWxeTransaction ();
-      return WxeTransaction;
+      return new TestWxeTransactionFailingResetValidation ();
     }
 
     protected override TestTransaction CreateRootTransaction ()
     {
-      return _transaction;
+      return new TestTransaction ();
     }
 
     private void Step1 ()
     {
-      TransactionInFirstStep = TestTransaction.Current;
+      ResetTransaction ();
     }
   }
 }

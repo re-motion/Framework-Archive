@@ -11,10 +11,12 @@
 using System.Threading;
 using NUnit.Framework;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Development.UnitTesting;
+using Remotion.Web.UnitTests.ExecutionEngine.TestFunctions;
 
-namespace Remotion.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine.TestFunctions
 {
-  public class TestTransactedFunctionWithResetFailingSubclassValidation : WxeTransactedFunctionBase<TestTransaction>
+  public class TestTransactedFunctionWithResetFailingMyTransactionValidation : WxeTransactedFunctionBase<TestTransaction>
   {
     protected override WxeTransactionBase<TestTransaction> CreateWxeTransaction ()
     {
@@ -28,7 +30,9 @@ namespace Remotion.Web.UnitTests.ExecutionEngine
 
     private void Step1 ()
     {
-      ResetTransaction ();
+      WxeTransactedFunctionBase<TestTransaction> parent = ParentFunction as WxeTransactedFunctionBase<TestTransaction>;
+      Assert.IsNotNull (parent, "must be tested as a nested function");
+      parent.ResetTransaction ();
     }
   }
 }

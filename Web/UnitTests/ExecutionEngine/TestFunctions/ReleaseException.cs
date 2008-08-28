@@ -9,17 +9,10 @@
  */
 
 using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Web.UnitTests.ExecutionEngine
+namespace Remotion.Web.UnitTests.ExecutionEngine.TestFunctions
 {
-  public class TestWxeTransactionFailingResetValidation : TestWxeTransaction
+  public class ReleaseException : Exception
   {
-    protected override void CheckCurrentTransactionResettable()
-    {
-      throw new InvalidOperationException ("The current transaction cannot be reset.");
-    }
   }
 }
