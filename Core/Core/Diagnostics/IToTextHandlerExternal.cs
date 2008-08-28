@@ -8,11 +8,12 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. 
  */
 
-namespace Remotion.Diagnostic
+using System;
+
+namespace Remotion.Diagnostics
 {
-  internal interface IToTextInterfaceHandlerExternal
+  internal interface IToTextHandlerExternal
   {
-    void ToText (object obj, ToTextBuilder toTextBuilder);
-    int Priority { get; }
+    void ToText (Object obj, ToTextBuilder toTextBuilder);
   }
 }

@@ -10,26 +10,20 @@
 
 using System;
 
-namespace Remotion.Diagnostic
+namespace Remotion.Diagnostics
 {
-  internal class ToTextInterfaceHandlerExternal<T> : IToTextInterfaceHandlerExternal
+  internal class ToTextHandlerExternal<T> : IToTextHandlerExternal
   {
-    private readonly Action<T, ToTextBuilder> _interfaceHandler;
+    private readonly Action<T, ToTextBuilder> _handler;
 
-    public ToTextInterfaceHandlerExternal (Action<T, ToTextBuilder> interfaceHandler, int priority)
+    public ToTextHandlerExternal (Action<T, ToTextBuilder> handler)
     {
-      _interfaceHandler = interfaceHandler;
-      Priority = priority;
-    }
-
-    public int Priority
-    {
-      get; private set;
+      _handler = handler;
     }
 
     public void ToText (object obj, ToTextBuilder toTextBuilder)
     {
-      _interfaceHandler ((T) obj, toTextBuilder);
+      _handler ((T) obj, toTextBuilder);
     }
   }
 }
