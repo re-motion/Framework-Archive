@@ -9,14 +9,15 @@
  */
 
 using System;
+using Remotion.Diagnostics.ToText;
 
-namespace Remotion.Diagnostics
+namespace Remotion.Diagnostics.ToText
 {
-  internal class ToTextInterfaceHandlerExternal<T> : IToTextInterfaceHandlerExternal
+  internal class ToTextSpecificInterfaceHandler<T> : IToTextSpecificInterfaceHandler
   {
     private readonly Action<T, ToTextBuilder> _interfaceHandler;
 
-    public ToTextInterfaceHandlerExternal (Action<T, ToTextBuilder> interfaceHandler, int priority)
+    public ToTextSpecificInterfaceHandler (Action<T, ToTextBuilder> interfaceHandler, int priority)
     {
       _interfaceHandler = interfaceHandler;
       Priority = priority;

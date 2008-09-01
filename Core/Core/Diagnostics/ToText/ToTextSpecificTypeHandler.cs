@@ -10,13 +10,13 @@
 
 using System;
 
-namespace Remotion.Diagnostics
+namespace Remotion.Diagnostics.ToText
 {
-  internal class ToTextHandlerExternal<T> : IToTextHandlerExternal
+  internal class ToTextSpecificTypeHandler<T> : IToTextSpecificTypeHandler
   {
     private readonly Action<T, ToTextBuilder> _handler;
 
-    public ToTextHandlerExternal (Action<T, ToTextBuilder> handler)
+    public ToTextSpecificTypeHandler (Action<T, ToTextBuilder> handler)
     {
       _handler = handler;
     }
