@@ -10,9 +10,8 @@
 
 using System;
 using Remotion.Web.ExecutionEngine;
-using Remotion.Utilities;
 
-namespace Remotion.Development.Web.UnitTesting.ExecutionEngine
+namespace Remotion.Development.Web.UnitTesting.ExecutionEngine.TestFunctions
 {
   public class TestFunction : WxeFunction
   {
