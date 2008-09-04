@@ -11,11 +11,12 @@
 using System;
 using System.Threading;
 
-namespace Remotion.Web.ExecutionEngine.WxePageStepExecutionStates.ExecuteWithPermaUrlStates
+namespace Remotion.Web.ExecutionEngine.WxePageStepExecutionStates.ExecuteWithPermaUrl
 {
-  public class ReturningFromSubFunctionState : ExecutionStateBase<ReturningFromSubFunctionStateParameters>
+  [Serializable]
+  public class RedirectingToSubFunctionState : ExecutionStateBase<RedirectingToSubFunctionStateParameters>
   {
-    public ReturningFromSubFunctionState (IExecutionStateContext executionStateContext, ReturningFromSubFunctionStateParameters parameters)
+    public RedirectingToSubFunctionState (IExecutionStateContext executionStateContext, RedirectingToSubFunctionStateParameters parameters)
         : base (executionStateContext, parameters)
     {
     }
@@ -29,19 +30,22 @@ namespace Remotion.Web.ExecutionEngine.WxePageStepExecutionStates.ExecuteWithPer
     {
       try
       {
-        context.HttpContext.Response.Redirect (Parameters.ResumeUrl);
-        throw new InvalidOperationException (string.Format("Redirect to '{0}' failed.", Parameters.ResumeUrl));
+        context.HttpContext.Response.Redirect (Parameters.DestinationUrl);
+        throw new InvalidOperationException (string.Format ("Redirect to '{0}' failed.", Parameters.DestinationUrl));
       }
       catch (ThreadAbortException)
       {
-        ExecutionStateContext.SetExecutionState (new PostProcessingSubFunctionState (ExecutionStateContext, Parameters));
+        ExecutionStateContext.SetExecutionState (
+            new ExecutingSubFunctionState (
+                ExecutionStateContext,
+                new ReturningFromSubFunctionStateParameters (Parameters.SubFunction, Parameters.PostBackCollection, Parameters.ResumeUrl)));
         throw;
       }
     }
 
     public override void PostProcessSubFunction (WxeContext context)
     {
-      throw new NotSupportedException ();
+      throw new NotSupportedException();
     }
   }
 }

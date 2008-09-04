@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Remotion.Web.ExecutionEngine.WxePageStepExecutionStates.ExecuteExternalByRedirectStates
+namespace Remotion.Web.ExecutionEngine.WxePageStepExecutionStates.ExecuteExternalByRedirect
 {
   public class ExecutingSubFunctionState : ExecutionStateBase<ExecutionStateParameters>
   {

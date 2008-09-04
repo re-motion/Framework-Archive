@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Remotion.Web.ExecutionEngine.WxePageStepExecutionStates.ExecuteWithPermaUrlStates
+namespace Remotion.Web.ExecutionEngine.WxePageStepExecutionStates.ExecuteWithPermaUrl
 {
   [Serializable]
   public class PostProcessingSubFunctionState : ExecutionStateBase<ExecutionStateParameters>

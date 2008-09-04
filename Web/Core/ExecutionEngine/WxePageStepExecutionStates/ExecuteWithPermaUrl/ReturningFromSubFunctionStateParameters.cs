@@ -12,23 +12,23 @@ using System;
 using System.Collections.Specialized;
 using Remotion.Utilities;
 
-namespace Remotion.Web.ExecutionEngine.WxePageStepExecutionStates.ExecuteExternalByRedirectStates
+namespace Remotion.Web.ExecutionEngine.WxePageStepExecutionStates.ExecuteWithPermaUrl
 {
-  public class RedirectingToSubFunctionStateParameters : ExecutionStateParameters
+  public class ReturningFromSubFunctionStateParameters : ExecutionStateParameters
   {
-    private readonly string _destinationUrl;
+    private readonly string _resumeUrl;
 
-    public RedirectingToSubFunctionStateParameters (WxeFunction subFunction, NameValueCollection postBackCollection, string destinationUrl)
+    public ReturningFromSubFunctionStateParameters (WxeFunction subFunction, NameValueCollection postBackCollection, string resumeUrl)
         : base (subFunction, postBackCollection)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("destinationUrl", destinationUrl);
+      ArgumentUtility.CheckNotNullOrEmpty ("resumeUrl", resumeUrl);
 
-      _destinationUrl = destinationUrl;
+      _resumeUrl = resumeUrl;
     }
 
-    public string DestinationUrl
+    public string ResumeUrl
     {
-      get { return _destinationUrl; }
+      get { return _resumeUrl; }
     }
   }
 }

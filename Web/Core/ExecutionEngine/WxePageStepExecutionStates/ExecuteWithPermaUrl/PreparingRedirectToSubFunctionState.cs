@@ -11,8 +11,9 @@
 using System;
 using System.Collections.Specialized;
 using Remotion.Utilities;
+using Remotion.Web.ExecutionEngine.WxePageStepExecutionStates.ExecuteWithPermaUrl;
 
-namespace Remotion.Web.ExecutionEngine.WxePageStepExecutionStates.ExecuteWithPermaUrlStates
+namespace Remotion.Web.ExecutionEngine.WxePageStepExecutionStates.ExecuteWithPermaUrl
 {
   [Serializable]
   public class PreparingRedirectToSubFunctionState : ExecutionStateBase<PreparingSubFunctionStateParameters>
