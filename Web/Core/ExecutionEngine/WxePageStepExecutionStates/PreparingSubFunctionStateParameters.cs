@@ -12,32 +12,23 @@ using System;
 using System.Collections.Specialized;
 using Remotion.Utilities;
 
-namespace Remotion.Web.ExecutionEngine.WxePageStepExecutionStates.ExecuteExternalByRedirect
+namespace Remotion.Web.ExecutionEngine.WxePageStepExecutionStates
 {
   [Serializable]
   public class PreparingSubFunctionStateParameters : ExecutionStateParameters
   {
     private readonly WxePermaUrlOptions _permaUrlOptions;
-    private readonly WxeReturnOptions _returnOptions;
 
-    public PreparingSubFunctionStateParameters (WxeFunction subFunction, NameValueCollection postBackCollection, WxePermaUrlOptions permaUrlOptions, WxeReturnOptions returnOptions)
+    public PreparingSubFunctionStateParameters (WxeFunction subFunction, NameValueCollection postBackCollection, WxePermaUrlOptions permaUrlOptions)
         : base(subFunction, postBackCollection)
     {
       ArgumentUtility.CheckNotNull ("permaUrlOptions", permaUrlOptions);
-      ArgumentUtility.CheckNotNull ("returnOptions", returnOptions);
-    
       _permaUrlOptions = permaUrlOptions;
-      _returnOptions = returnOptions;
     }
 
     public WxePermaUrlOptions PermaUrlOptions
     {
       get { return _permaUrlOptions; }
-    }
-
-    public WxeReturnOptions ReturnOptions
-    {
-      get { return _returnOptions; }
     }
   }
 }
