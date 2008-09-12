@@ -8,13 +8,20 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. 
  */
 
+using System;
+
 namespace Remotion.Web.UI.Controls.ControlReplacing.StateModificationStates
 {
-  public class ViewStateCompletedState : IViewStateModificationState
+  public class ViewStateCompletedState : ViewStateModificationStateBase
   {
-    public void LoadViewState ()
+    public ViewStateCompletedState (ControlReplacer replacer)
+        : base(replacer)
     {
-      throw new System.NotImplementedException();
+    }
+
+    public override void LoadViewState ()
+    {
+      throw new NotSupportedException();
     }
   }
 }

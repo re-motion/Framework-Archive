@@ -8,24 +8,18 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. 
  */
 
-using System;
-
 namespace Remotion.Web.UI.Controls.ControlReplacing.StateModificationStates
 {
-  public class ViewStateClearingState : ViewStateModificationStateBase
+  public class ViewStateLoadingState:ViewStateModificationStateBase
   {
-    public ViewStateClearingState (ControlReplacer replacer)
-        : base (replacer)
+    public ViewStateLoadingState (ControlReplacer replacer)
+        : base(replacer)
     {
     }
 
     public override void LoadViewState ()
     {
-      bool enableViewStateBackup = Replacer.WrappedControl.EnableViewState;
-      Replacer.WrappedControl.EnableViewState = false;      
-      Replacer.WrappedControl.Load += delegate { Replacer.WrappedControl.EnableViewState = enableViewStateBackup; };
-
-      Replacer.State = new ViewStateCompletedState(Replacer);
+      Replacer.State = new ViewStateCompletedState (Replacer);
     }
   }
 }
