@@ -9,16 +9,14 @@
  */
 
 using System;
+using System.Collections;
 
 namespace Remotion.Diagnostics.ToText.Handlers
 {
   /// <summary>
-  /// Special type of handler which handles all instances in <see cref="ToTextProvider"/>'s <see cref="ToTextProvider.ToText"/> fallback cascade 
-  /// by calling their <see cref="Object.ToString"/> method.
-  /// Since it handles all incoming types, if it is used this should always the last handler in the fallback cascade.
-  /// 
+  /// Handles instances implementing the <see cref="IEnumerable"/> interface in <see cref="ToTextProvider"/>'s <see cref="ToTextProvider.ToText"/> fallback cascade.
   /// </summary>
-  public class ToTextProviderToStringHandler : ToTextProviderHandler
+  public class ToTextProviderDictionaryHandler : ToTextProviderHandler
   {
     public override void ToTextIfTypeMatches (ToTextParameters toTextParameters, ToTextProviderHandlerFeedback toTextProviderHandlerFeedback)
     {
@@ -28,11 +26,13 @@ namespace Remotion.Diagnostics.ToText.Handlers
       Type type = toTextParameters.Type;
       IToTextBuilderBase toTextBuilder = toTextParameters.ToTextBuilder;
 
-      toTextBuilder.WriteRawElementBegin();
-      toTextBuilder.WriteRawString (obj.ToString ());
-      toTextBuilder.WriteRawElementEnd ();
-
-      toTextProviderHandlerFeedback.Handled = true;
+      if (obj is System.Collections.IDictionary)
+      {
+        toTextBuilder.WriteDictionary ((IDictionary) obj);
+        toTextProviderHandlerFeedback.Handled = true;
+      }
     }
-  }
+  }  
 }
+
+
