@@ -8,15 +8,15 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. 
  */
 
-using System;
 using Remotion.Mixins;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes
+namespace Remotion.UnitTests.Mixins.CodeGeneration.TestDomain
 {
-  [CopyCustomAttributes (typeof (CopyTemplate))]
-  public class ClassWithCopyCustomAttributes
+  public class TargetClassOverridingMixinMember
   {
-    [SampleCopyTemplate]
-    public class CopyTemplate { }
+    [OverrideMixin]
+    protected void Foo ()
+    {
+    }
   }
 }

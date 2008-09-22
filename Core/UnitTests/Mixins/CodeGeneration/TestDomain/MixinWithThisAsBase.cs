@@ -9,16 +9,17 @@
  */
 
 using System;
+using Remotion.Mixins;
+using Remotion.UnitTests.Mixins.SampleTypes;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes
+namespace Remotion.UnitTests.Mixins.CodeGeneration.TestDomain
 {
-  public class TargetClassCallingIntroducedMethodFromCtor
+  public class MixinWithThisAsBase : Mixin<BaseType3, IBaseType31>
   {
-    public object Result;
-
-    public TargetClassCallingIntroducedMethodFromCtor ()
+    [OverrideTarget]
+    public string IfcMethod()
     {
-      Result = ((IIntroducedMethodCalledFromCtor) this).IfcMethod ();
+      return "MixinWithThisAsBase.IfcMethod-" + Base.IfcMethod();
     }
   }
 }

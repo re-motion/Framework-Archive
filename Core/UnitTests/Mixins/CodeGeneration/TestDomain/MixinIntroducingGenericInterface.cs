@@ -8,14 +8,24 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. 
  */
 
+using System;
 using Remotion.Mixins;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes
+#pragma warning disable 0693
+
+namespace Remotion.UnitTests.Mixins.CodeGeneration.TestDomain
 {
-  public class MixinWithOverridableMember : Mixin<object>
+  public interface IGeneric<T>
   {
-    protected virtual void Foo ()
+    string Generic<T> (T t);
+  }
+
+  public class MixinIntroducingGenericInterface<T> : Mixin<T>, IGeneric<T>
+    where T : class
+  {
+    public string Generic<T> (T t)
     {
+      return "Generic";
     }
   }
 }

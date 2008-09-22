@@ -10,10 +10,15 @@
 
 using System;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes
+namespace Remotion.UnitTests.Mixins.CodeGeneration.TestDomain
 {
-  [AttributeUsage (AttributeTargets.Class, Inherited = false)]
-  public class SampleCopyTemplateAttribute : Attribute
+  public class TargetClassCallingIntroducedMethodFromCtor
   {
+    public object Result;
+
+    public TargetClassCallingIntroducedMethodFromCtor ()
+    {
+      Result = ((IIntroducedMethodCalledFromCtor) this).IfcMethod ();
+    }
   }
 }

@@ -11,21 +11,24 @@
 using System;
 using Remotion.Mixins;
 
-#pragma warning disable 0693
-
-namespace Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes
+namespace Remotion.UnitTests.Mixins.CodeGeneration.TestDomain
 {
-  public interface IGeneric<T>
+  public interface IIntroducedMethodCalledFromCtor
   {
-    string Generic<T> (T t);
+    object IfcMethod ();
   }
 
-  public class MixinIntroducingGenericInterface<T> : Mixin<T>, IGeneric<T>
-    where T : class
+  public class MixinIntroducingMethodCalledFromCtor : Mixin<object, object>, IIntroducedMethodCalledFromCtor
   {
-    public string Generic<T> (T t)
+    public object MyThis;
+    public object MyBase;
+
+    public object IfcMethod ()
     {
-      return "Generic";
+      MyThis = This;
+      MyBase = Base;
+
+      return this;
     }
   }
 }

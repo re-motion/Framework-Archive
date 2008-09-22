@@ -12,7 +12,7 @@ using System;
 using System.Diagnostics;
 using Remotion.Mixins;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes
+namespace Remotion.UnitTests.Mixins.CodeGeneration.TestDomain
 {
   [CopyCustomAttributes(typeof (AttributeSource))]
   public class MixinAddingDebuggerDisplay

@@ -8,27 +8,14 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. 
  */
 
-using System;
 using Remotion.Mixins;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.SampleTypes
+namespace Remotion.UnitTests.Mixins.CodeGeneration.TestDomain
 {
-  public interface IIntroducedMethodCalledFromCtor
+  public class MixinWithOverridableMember : Mixin<object>
   {
-    object IfcMethod ();
-  }
-
-  public class MixinIntroducingMethodCalledFromCtor : Mixin<object, object>, IIntroducedMethodCalledFromCtor
-  {
-    public object MyThis;
-    public object MyBase;
-
-    public object IfcMethod ()
+    protected virtual void Foo ()
     {
-      MyThis = This;
-      MyBase = Base;
-
-      return this;
     }
   }
 }
