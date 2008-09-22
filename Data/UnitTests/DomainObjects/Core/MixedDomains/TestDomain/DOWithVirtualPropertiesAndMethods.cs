@@ -10,31 +10,21 @@
 
 using System;
 using Remotion.Data.DomainObjects;
-using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.SampleTypes
+namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
 {
-  public class MixinOverridingPropertiesAndMethods
-      : Mixin<MixinOverridingPropertiesAndMethods.IBaseRequirements, MixinOverridingPropertiesAndMethods.IBaseRequirements>
+  [DBTable]
+  public class DOWithVirtualPropertiesAndMethods : DomainObject
   {
-
-    [OverrideTarget]
     public virtual string Property
     {
-      get { return Base.Property + "-MixinGetter"; }
-      set { Base.Property = value + "-MixinSetter"; }
+      get { return CurrentProperty.GetValue<string>(); }
+      set { CurrentProperty.SetValue (value); }
     }
 
-    [OverrideTarget]
     public virtual string GetSomething ()
     {
-      return Base.GetSomething () + "-MixinMethod";
-    }
-
-    public interface IBaseRequirements
-    {
-      string Property { get; set; }
-      string GetSomething ();
+      return "Something";
     }
   }
 }

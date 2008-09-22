@@ -10,19 +10,16 @@
 
 using System;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
-using Remotion.Reflection;
+using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.SampleTypes
+namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
 {
-  [DBTable]
+  [Uses (typeof (MixinAddingUnidirectionalRelation1))]
+  [DBTable ("MixedDomains_TargetWithUnidirectionalMixin1")]
   [TestDomain]
-  public class InheritanceRootInheritingPersistentMixin : TargetClassAboveInheritanceRoot
+  public class TargetClassWithUnidirectionalMixin1 : SimpleDomainObject<TargetClassWithUnidirectionalMixin1>
   {
-    public static IFuncInvoker<InheritanceRootInheritingPersistentMixin> NewObject ()
-    {
-      return NewObject<InheritanceRootInheritingPersistentMixin> ();
-    }
+    
   }
 }

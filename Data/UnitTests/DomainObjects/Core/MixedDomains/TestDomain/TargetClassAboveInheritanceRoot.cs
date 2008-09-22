@@ -13,7 +13,7 @@ using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.SampleTypes
+namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
 {
   [Uses (typeof (MixinAddingPersistentPropertiesAboveInheritanceRoot))]
   public class TargetClassAboveInheritanceRoot : DomainObject

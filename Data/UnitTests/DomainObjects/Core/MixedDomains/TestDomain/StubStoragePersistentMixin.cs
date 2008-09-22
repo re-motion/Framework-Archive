@@ -10,16 +10,11 @@
 
 using System;
 using Remotion.Data.DomainObjects;
-using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.SampleTypes
+namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
 {
-  [Serializable]
-  public class MixinAddingInterface : Mixin<DomainObject>, IInterfaceAddedByMixin
+  public class StubStoragePersistentMixin : DomainObjectMixin<DomainObject>
   {
-    public string GetGreetings ()
-    {
-      return "Hello, my ID is " + This.ID;
-    }
+    
   }
 }

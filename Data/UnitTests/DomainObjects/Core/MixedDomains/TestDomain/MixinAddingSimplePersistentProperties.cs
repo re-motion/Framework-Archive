@@ -11,10 +11,14 @@
 using System;
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.SampleTypes
+namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
 {
-  public class StubStoragePersistentMixin : DomainObjectMixin<DomainObject>
+  public class MixinAddingSimplePersistentProperties : DomainObjectMixin<DomainObject>
   {
-    
+    public int PersistentProperty
+    {
+      get { return Properties[typeof (MixinAddingSimplePersistentProperties), "PersistentProperty"].GetValue<int> (); }
+      set { Properties[typeof (MixinAddingSimplePersistentProperties), "PersistentProperty"].SetValue (value); }
+    }
   }
 }

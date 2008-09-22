@@ -13,22 +13,22 @@ using Remotion.Data.DomainObjects;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.SampleTypes
+namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
 {
-  [Uses (typeof (MixinAddingPersistentProperties))]
+  [Uses (typeof (StubStoragePersistentMixin))]
   [Uses (typeof (NullMixin))]
-  [DBTable ("MixedDomains_Target")]
-  [TestDomain]
-  public class TargetClassForPersistentMixin : DomainObject
+  [DBTable]
+  [StorageProviderStub]
+  public class StubStorageTargetClassForPersistentMixin : DomainObject
   {
-    public static TargetClassForPersistentMixin NewObject ()
+    public static StubStorageTargetClassForPersistentMixin NewObject ()
     {
-      return NewObject<TargetClassForPersistentMixin> ().With ();
+      return NewObject<StubStorageTargetClassForPersistentMixin> ().With ();
     }
 
-    public static TargetClassForPersistentMixin GetObject (ObjectID id)
+    public static StubStorageTargetClassForPersistentMixin GetObject (ObjectID id)
     {
-      return GetObject<TargetClassForPersistentMixin> (id);
+      return GetObject<StubStorageTargetClassForPersistentMixin> (id);
     }
   }
 }

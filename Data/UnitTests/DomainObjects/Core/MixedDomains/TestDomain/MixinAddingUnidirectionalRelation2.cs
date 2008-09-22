@@ -10,21 +10,17 @@
 
 using System;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.SampleTypes
+namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
 {
-  [DBTable]
-  public class DOWithVirtualPropertiesAndMethods : DomainObject
+  public class MixinAddingUnidirectionalRelation2 : DomainObjectMixin<DomainObject>
   {
-    public virtual string Property
+    [DBColumn("Computer2ID")]
+    public Computer Computer
     {
-      get { return CurrentProperty.GetValue<string>(); }
-      set { CurrentProperty.SetValue (value); }
-    }
-
-    public virtual string GetSomething ()
-    {
-      return "Something";
+      get { return Properties[typeof (MixinAddingUnidirectionalRelation2), "Computer"].GetValue<Computer>(); }
+      set { Properties[typeof (MixinAddingUnidirectionalRelation2), "Computer"].SetValue (value); }
     }
   }
 }

@@ -10,10 +10,16 @@
 
 using System;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.UnitTests.DomainObjects.TestDomain;
+using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.SampleTypes
+namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
 {
-  public class NullMixin
+  [Uses (typeof (MixinAddingUnidirectionalRelation1))]
+  [DBTable ("MixedDomains_TargetWithUnidirectionalMixin2")]
+  [TestDomain]
+  public class TargetClassWithUnidirectionalMixin2 : SimpleDomainObject<TargetClassWithUnidirectionalMixin2>
   {
+    
   }
 }

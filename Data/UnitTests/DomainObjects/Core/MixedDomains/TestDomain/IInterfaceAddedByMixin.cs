@@ -11,11 +11,10 @@
 using System;
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.SampleTypes
+namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
 {
-  [Serializable]
-  public class MixinWithState
+  public interface IInterfaceAddedByMixin
   {
-    public string State;
+    string GetGreetings ();
   }
 }

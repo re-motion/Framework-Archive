@@ -11,7 +11,7 @@
 using System;
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.SampleTypes
+namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
 {
   [DBTable]
   public class RelationTargetForPersistentMixinAboveInheritanceRoot : SimpleDomainObject<RelationTargetForPersistentMixinAboveInheritanceRoot>
