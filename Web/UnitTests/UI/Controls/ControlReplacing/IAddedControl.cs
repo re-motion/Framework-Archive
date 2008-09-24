@@ -11,11 +11,10 @@
 using System;
 using System.Web.UI;
 
-namespace Remotion.Web.UI.Controls.ControlReplacing.ViewStateModificationStates
+namespace Remotion.Web.UnitTests.UI.Controls.ControlReplacing
 {
-  public interface IViewStateModificationState
+  public interface IAddedControl
   {
-    void LoadViewState (object savedState);
-    void AddedControl (Control control, int index, Action<Control, int> baseCall);
+    void AddedControl (Control control, int index);
   }
 }
