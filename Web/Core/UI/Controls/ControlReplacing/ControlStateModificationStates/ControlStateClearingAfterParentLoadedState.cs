@@ -13,16 +13,16 @@ using System.Web.UI;
 using Remotion.Utilities;
 using Remotion.Web.Utilities;
 
-namespace Remotion.Web.UI.Controls.ControlReplacing.ViewStateModificationStates
+namespace Remotion.Web.UI.Controls.ControlReplacing.ControlStateModificationStates
 {
-  public class ViewStateClearingAfterParentLoadedState : ViewStateClearingStateBase
+  public class ControlStateClearingAfterParentLoadedState : ControlStateClearingStateBase
   {
-    public ViewStateClearingAfterParentLoadedState (ControlReplacer replacer, IInternalControlMemberCaller memberCaller)
+    public ControlStateClearingAfterParentLoadedState (ControlReplacer replacer, IInternalControlMemberCaller memberCaller)
         : base (replacer, memberCaller)
     {
     }
 
-    public override void LoadViewState (object savedState)
+    public override void LoadControlState (object savedState)
     {
       throw new NotSupportedException();
     }
@@ -32,7 +32,7 @@ namespace Remotion.Web.UI.Controls.ControlReplacing.ViewStateModificationStates
       ArgumentUtility.CheckNotNull ("control", control);
       ArgumentUtility.CheckNotNull ("baseCall", baseCall);
 
-      ClearChildState ();
+      ClearChildState();
 
       baseCall (control, index);
     }
