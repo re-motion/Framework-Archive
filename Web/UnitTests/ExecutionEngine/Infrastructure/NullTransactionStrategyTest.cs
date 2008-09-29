@@ -27,5 +27,14 @@ namespace Remotion.Web.UnitTests.ExecutionEngine.Infrastructure
 
       Assert.That (strategy.InnerListener, Is.SameAs (executionListenerStub));
     }
+
+    [Test]
+    public void GetAutoCommit ()
+    {
+      var executionListenerStub = MockRepository.GenerateStub<IWxeFunctionExecutionListener> ();
+      ITransactionStrategy strategy = new NullTransactionStrategy(executionListenerStub);
+
+      Assert.That (strategy.AutoCommit, Is.False);
+    }
   }
 }

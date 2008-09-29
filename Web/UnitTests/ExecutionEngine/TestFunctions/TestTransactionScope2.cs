@@ -8,20 +8,20 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. 
  */
 
-using System;
 using Remotion.Data;
 
-namespace Remotion.Web.ExecutionEngine.Infrastructure
+namespace Remotion.Web.UnitTests.ExecutionEngine.TestFunctions
 {
-  //TODO: Doc
-  public class RootTransactionStrategy<TScopeManager> : TransactionStrategyBase
-    where TScopeManager : ITransactionScopeManager, new ()
+  public class TestTransactionScopeManager2:ITransactionScopeManager
   {
-    private TScopeManager _scopeManager;
-
-    public RootTransactionStrategy (bool autoCommit, IWxeFunctionExecutionListener innerListener)
-        : base (autoCommit, innerListener)
+    public ITransactionScope ActiveScope
     {
+      get { throw new System.NotImplementedException(); }
+    }
+
+    public ITransaction CreateRootTransaction ()
+    {
+      throw new System.NotImplementedException();
     }
   }
 }

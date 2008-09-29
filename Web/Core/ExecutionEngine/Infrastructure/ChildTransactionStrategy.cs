@@ -14,12 +14,12 @@ using Remotion.Data;
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
   //TODO: Doc
-  public class RootTransactionStrategy<TScopeManager> : TransactionStrategyBase
+  public class ChildTransactionStrategy<TScopeManager> : TransactionStrategyBase
     where TScopeManager : ITransactionScopeManager, new ()
   {
     private TScopeManager _scopeManager;
 
-    public RootTransactionStrategy (bool autoCommit, IWxeFunctionExecutionListener innerListener)
+    public ChildTransactionStrategy (bool autoCommit, IWxeFunctionExecutionListener innerListener)
         : base (autoCommit, innerListener)
     {
     }

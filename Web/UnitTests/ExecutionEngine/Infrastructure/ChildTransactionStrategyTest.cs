@@ -18,13 +18,13 @@ using Rhino.Mocks;
 namespace Remotion.Web.UnitTests.ExecutionEngine.Infrastructure
 {
   [TestFixture]
-  public class RootTransactionStrategyTest
+  public class ChildTransactionStrategyTest
   {
     [Test]
     public void GetInnerListener ()
     {
       var executionListenerStub = MockRepository.GenerateStub<IWxeFunctionExecutionListener>();
-      var strategy = new RootTransactionStrategy<TestTransactionScopeManager2> (false, executionListenerStub);
+      var strategy = new ChildTransactionStrategy<TestTransactionScopeManager2> (false, executionListenerStub);
 
       Assert.That (strategy.InnerListener, Is.SameAs (executionListenerStub));
     }
@@ -33,7 +33,7 @@ namespace Remotion.Web.UnitTests.ExecutionEngine.Infrastructure
     public void GetAutoCommit ()
     {
       var executionListenerStub = MockRepository.GenerateStub<IWxeFunctionExecutionListener> ();
-      ITransactionStrategy strategy = new RootTransactionStrategy<TestTransactionScopeManager2> (true, executionListenerStub);
+      ITransactionStrategy strategy = new ChildTransactionStrategy<TestTransactionScopeManager2> (true, executionListenerStub);
 
       Assert.That (strategy.AutoCommit, Is.True);
     }

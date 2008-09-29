@@ -16,7 +16,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   public class NullTransactionStrategy : TransactionStrategyBase
   {
     public NullTransactionStrategy (IWxeFunctionExecutionListener innerListener)
-        : base (innerListener)
+        : base (false, innerListener)
     {
     }
   }
