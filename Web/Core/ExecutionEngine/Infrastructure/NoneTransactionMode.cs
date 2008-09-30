@@ -9,20 +9,27 @@
  */
 
 using System;
+using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
   //TODO: Doc
-  public class NullTransactionStrategy : TransactionStrategyBase
+  [Serializable]
+  public class NoneTransactionMode : ITransactionMode
   {
-    public NullTransactionStrategy (IWxeFunctionExecutionListener innerListener)
-        : base (false, innerListener)
+    public NoneTransactionMode ()
     {
     }
 
-    public override bool IsNull
+    public virtual TransactionStrategyBase CreateTransactionStrategy (WxeFunction2 function, IWxeFunctionExecutionListener executionListener)
     {
-      get { return true; }
+      ArgumentUtility.CheckNotNull ("executionListener", executionListener);
+      return new NoneTransactionStrategy (executionListener);
+    }
+
+    public bool AutoCommit
+    {
+      get { return false; }
     }
   }
 }
