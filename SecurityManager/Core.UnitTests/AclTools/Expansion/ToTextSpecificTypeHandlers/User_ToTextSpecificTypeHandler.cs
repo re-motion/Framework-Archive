@@ -15,7 +15,7 @@ using Remotion.SecurityManager.Domain.OrganizationalStructure;
 namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 {
   [ToTextSpecificHandler]
-  public class UserToTextSpecificTypeHandler : ToTextSpecificTypeHandler<User>
+  public class User_ToTextSpecificTypeHandler : ToTextSpecificTypeHandler<User>
   {
     public override void ToText (User u, IToTextBuilder toTextBuilder)
     {
