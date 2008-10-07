@@ -9,29 +9,30 @@
  */
 
 using System;
+using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects;
-using Remotion.Mixins;
 
 namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding.TestDomain
 {
-  [Instantiable]
+  [DBTable]
   [Serializable]
-  public abstract class BindableDomainObjectWithOverriddenDisplayName : BindableSampleDomainObject
+  public class SampleBindableDomainObject_ImplementingISerializable 
+      : SimpleDomainObject<SampleBindableDomainObject_ImplementingISerializable>, ISerializable
   {
-    public new static BindableDomainObjectWithOverriddenDisplayName NewObject ()
+    protected SampleBindableDomainObject_ImplementingISerializable ()
     {
-      return NewObject<BindableDomainObjectWithOverriddenDisplayName> ().With ();
     }
 
-    public static new BindableDomainObjectWithOverriddenDisplayName GetObject (ObjectID id)
+    protected SampleBindableDomainObject_ImplementingISerializable (SerializationInfo info, StreamingContext context)
+        : base (info, context)
     {
-      return GetObject<BindableDomainObjectWithOverriddenDisplayName> (id);
     }
 
-    [OverrideMixin]
-    public string DisplayName
+    public virtual int IntProperty { get; set; }
+    
+    public void GetObjectData(SerializationInfo info, StreamingContext context)
     {
-      get { return "TheDisplayName"; }
+      BaseGetObjectData (info, context);
     }
   }
 }

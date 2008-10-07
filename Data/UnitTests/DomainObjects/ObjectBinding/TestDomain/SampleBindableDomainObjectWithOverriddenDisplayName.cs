@@ -10,27 +10,27 @@
 
 using System;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.Mixins;
 
 namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding.TestDomain
 {
-  [BindableDomainObject]
   [Instantiable]
   [Serializable]
-  [DBTable]
-  public abstract class BindableSampleDomainObject : DomainObject
+  public abstract class SampleBindableDomainObjectWithOverriddenDisplayName : SampleBindableDomainObject
   {
-    public static BindableSampleDomainObject NewObject ()
+    public new static SampleBindableDomainObjectWithOverriddenDisplayName NewObject ()
     {
-      return NewObject<BindableSampleDomainObject> ().With ();
+      return NewObject<SampleBindableDomainObjectWithOverriddenDisplayName> ().With ();
     }
 
-    public static BindableSampleDomainObject GetObject (ObjectID id)
+    public static new SampleBindableDomainObjectWithOverriddenDisplayName GetObject (ObjectID id)
     {
-      return GetObject<BindableSampleDomainObject> (id);
+      return GetObject<SampleBindableDomainObjectWithOverriddenDisplayName> (id);
     }
 
-    public abstract string Name { get; set; }
-    public abstract int Int32 { get; set; }
+    public override string DisplayName
+    {
+      get { return "TheDisplayName"; }
+    }
   }
 }
