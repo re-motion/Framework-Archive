@@ -8,18 +8,12 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. 
  */
 
-using System;
+using Remotion.Data.DomainObjects;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
+namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
 {
-  public class NestedPageStepTestTransactedFunction : WxeFunction
+  public abstract class WxeTransactionMode : WxeTransactionMode<ClientTransactionFactory>
   {
-    public NestedPageStepTestTransactedFunction ()
-      : base (WxeTransactionMode.CreateRootWithAutoCommit)
-    {
-    }
-
-    private WxePageStep Step1 = new WxePageStep ("ImmediatelyReturningPage.aspx");
   }
 }
