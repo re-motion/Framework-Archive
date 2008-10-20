@@ -20,13 +20,13 @@ using Rhino.Mocks;
 namespace Remotion.Web.UnitTests.UI.Controls.ControlReplacing
 {
   [TestFixture]
-  public class ClearingStateSelectionStrategyTest : TestBase
+  public class StateClearingStrategyTest : TestBase
   {
     [Test]
     public void LoadControlState ()
     {
       var testPageHolder = new TestPageHolder (false, RequestMode.PostBack);
-      IStateModificationStrategy stateModificationStrategy = new ClearingStateSelectionStrategy ();
+      IStateModificationStrategy stateModificationStrategy = new StateClearingStrategy ();
       var replacer = new ControlReplacer (MemberCallerMock);
       replacer.StateModificationStrategy = stateModificationStrategy;
       replacer.Controls.Add (testPageHolder.NamingContainer);
@@ -43,7 +43,7 @@ namespace Remotion.Web.UnitTests.UI.Controls.ControlReplacing
     public void LoadViewState ()
     {
       var testPageHolder = new TestPageHolder (false, RequestMode.PostBack);
-      IStateModificationStrategy stateModificationStrategy = new ClearingStateSelectionStrategy ();
+      IStateModificationStrategy stateModificationStrategy = new StateClearingStrategy ();
       var replacer = new ControlReplacer (MemberCallerMock);
       replacer.StateModificationStrategy = stateModificationStrategy;
       replacer.Controls.Add (testPageHolder.NamingContainer);
