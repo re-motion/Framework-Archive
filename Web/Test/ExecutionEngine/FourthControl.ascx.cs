@@ -10,23 +10,17 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.Test.ExecutionEngine
 {
-  public partial class FirstControl : WxeUserControl2
+  public partial class FourthControl : WxeUserControl2
   {
-    protected void ExecuteSecondUserControlButton_Click (object sender, EventArgs e)
+    protected void ExecuteNextStep_Click (object sender, EventArgs e)
     {
-      ControlLabel.Text = DateTime.Now.ToString ("HH:mm:ss") + ": Executed";
-      SecondControl.Call (WxePage, this, (Control) sender);
-      ControlLabel.Text = DateTime.Now.ToString ("HH:mm:ss") + ": Returned";
+      ControlLabel.Text = DateTime.Now.ToString ("HH:mm:ss");
+      ExecuteNextStep ();
+    }
 
-      //if (!WxePage.IsReturningPostBack)
-      //{
-      //  ControlLabel.Text = DateTime.Now.ToString ("HH:mm:ss") + ": Executed";
-      //  ExecuteFunction (new ShowSecondUserControlFormFunction(), (Control)sender, null);
-      //}
-      //else
-      //{
-      //  ControlLabel.Text = DateTime.Now.ToString ("HH:mm:ss") + ": Returned";
-      //}
+    protected void ExecuteThirdUserControlButton_Click (object sender, EventArgs e)
+    {
+      throw new InvalidOperationException ("This event handler should never be called.");
     }
 
     protected override void OnInitComplete (EventArgs e)
@@ -40,9 +34,9 @@ namespace Remotion.Web.Test.ExecutionEngine
     protected override void OnLoad (EventArgs e)
     {
       base.OnLoad (e);
-      
+
       ViewStateValue++;
-      ViewStateLabel.Text = ViewStateValue.ToString();
+      ViewStateLabel.Text = ViewStateValue.ToString ();
 
       ControlStateValue++;
       ControlStateLabel.Text = ControlStateValue.ToString ();
@@ -53,27 +47,27 @@ namespace Remotion.Web.Test.ExecutionEngine
       var controlState = (Tuple<object, int, Type>) savedState;
       base.LoadControlState (controlState.A);
       ControlStateValue = controlState.B;
-      Assertion.IsTrue (controlState.C == typeof (FirstControl), "Expected ControlState from 'FirstControl' but was '{0}'.", controlState.C.Name);
+      Assertion.IsTrue (controlState.C == typeof (FourthControl), "Expected ControlState from 'FourthControl' but was '{0}'.", controlState.C.Name);
     }
 
     protected override object SaveControlState ()
     {
-      return new Tuple<object, int, Type> (base.SaveControlState(), ControlStateValue, typeof (FirstControl));
+      return new Tuple<object, int, Type> (base.SaveControlState (), ControlStateValue, typeof (FourthControl));
     }
 
     protected override void LoadViewState (object savedState)
     {
       Assertion.IsNotNull (savedState, "Missing ViewState.");
 
-      var viewState = (Tuple<object, Type>) savedState;
-      base.LoadViewState (viewState.A);
+      var  statePair =  (Tuple<object, Type>) savedState;
+      base.LoadViewState (statePair.A);
 
-      Assertion.IsTrue (viewState.B == typeof (FirstControl), "Expected ViewState from 'FirstControl' but was '{0}'.", viewState.B.Name);
+      Assertion.IsTrue (statePair.B == typeof (FourthControl), "Expected ViewState from 'FourthControl' but was '{0}'.", statePair.B.Name);
     }
 
     protected override object SaveViewState ()
     {
-      return new Tuple<object, Type> (base.SaveViewState (), typeof (FirstControl));
+      return new Tuple<object, Type> (base.SaveViewState (), typeof (FourthControl));
     }
 
     private int ViewStateValue
@@ -83,6 +77,5 @@ namespace Remotion.Web.Test.ExecutionEngine
     }
 
     private int ControlStateValue { get; set; }
-
   }
 }

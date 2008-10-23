@@ -23,6 +23,18 @@ namespace Remotion.Web.Test.ExecutionEngine
       throw new InvalidOperationException ("This event handler should never be called.");
     }
 
+    protected void ExecuteFourthUserControlButton_Click (object sender, EventArgs e)
+    {
+      if (!WxePage.IsReturningPostBack)
+      {
+        ControlLabel.Text = DateTime.Now.ToString ("HH:mm:ss") + ": Executed";
+        ExecuteFunction (new ShowFourthUserControlFormFunction (), (Control) sender, null);
+      }
+      else
+      {
+        ControlLabel.Text = DateTime.Now.ToString ("HH:mm:ss") + ": Returned";
+      }
+    }
     protected override void OnInitComplete (EventArgs e)
     {
       base.OnInitComplete (e);
