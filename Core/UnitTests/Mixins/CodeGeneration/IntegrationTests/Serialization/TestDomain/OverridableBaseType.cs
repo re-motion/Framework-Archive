@@ -9,16 +9,15 @@
  */
 
 using System;
-using NUnit.Framework;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration
+namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.Serialization.TestDomain
 {
-  [TestFixture]
-  public class CheckPEVerify : CodeGenerationBaseTest
+  [Serializable]
+  public class OverridableBaseType
   {
-    [Test]
-    public void Foo ()
+    public virtual string OverridableMethod (int i)
     {
+      return "OverridableBaseType.OverridableMethod(" + i + ")";
     }
   }
 }
