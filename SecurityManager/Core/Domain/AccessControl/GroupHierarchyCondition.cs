@@ -9,28 +9,17 @@
  */
 
 using System;
-using Remotion.Utilities;
+using Remotion.ObjectBinding;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
-  [EnumDescriptionResource ("Remotion.SecurityManager.Globalization.Domain.AccessControl.GroupSelection")]
-  public enum GroupSelection
+  [UndefinedEnumValue (Undefined)]
+  public enum GroupHierarchyCondition
   {
-    All = 0,
-    OwningGroup = 1,
-    //SpecificGroup = 4,
-    //SpecificGroupType = 6,
+    Undefined = 0,
+    This = 1,
+    ThisAndParent = 1 | 2,
+    ThisAndChildren = 1 | 4,
+    ThisAndParentAndChildren = 1 | 2 | 4,
   }
-
-  // OwningGroup, SpecificGroup
-  //  OnlyThisGroup
-  //  ThisGroupAndParentGroups
-  //  OnlyParentGroups
-  //  ThisGroupAndChildGroups
-  //  OnlyChildGroups
-
-  //  SpecificGroupType
-  //   GroupTypeofGroup
-  //   GroupTypeOfParentGroups
-  //   GroupTypeOfChildGroups
 }

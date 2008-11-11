@@ -13,11 +13,13 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
-  [EnumDescriptionResource ("Remotion.SecurityManager.Globalization.Domain.AccessControl.TenantSelection")]
-  public enum TenantSelection
+  [EnumDescriptionResource ("Remotion.SecurityManager.Globalization.Domain.AccessControl.GroupCondition")]
+  public enum GroupCondition
   {
-    All = 0,
-    OwningTenant = 1,
-    SpecificTenant = 2
+    None = 0,
+    OwningGroup = 1,
+    SpecificGroup = 2,
+    BranchOfOwningGroup = 3,
+    SpecificGroupType = 4
   }
 }

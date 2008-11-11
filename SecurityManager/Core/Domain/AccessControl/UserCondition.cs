@@ -12,9 +12,9 @@ using System;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
-  public enum UserSelection
+  public enum UserCondition
   {
-    All = 0,
+    None = 0,
     Owner = 1,
     SpecificUser = 2,
     SpecificPosition = 3
