@@ -21,7 +21,7 @@ using Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure;
 namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEntryPropertiesSearchServiceTests
 {
   [TestFixture]
-  public class SearchPosition : DomainTest
+  public class SearchGroupType : DomainTest
   {
     private OrganizationalStructureTestHelper _testHelper;
     private ISearchAvailableObjectsService _searchService;
@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
 
       _searchService = new AccessControlEntryPropertiesSearchService();
       IBusinessObjectClass aceClass = BindableObjectProvider.GetBindableObjectClass (typeof (AccessControlEntry));
-      _property = (IBusinessObjectReferenceProperty) aceClass.GetPropertyDefinition ("SpecificPosition");
+      _property = (IBusinessObjectReferenceProperty) aceClass.GetPropertyDefinition ("SpecificGroupType");
       Assert.That (_property, Is.Not.Null);
     }
 
@@ -51,7 +51,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     {
       AccessControlEntry ace = AccessControlEntry.NewObject();
 
-      ObjectList<Position> expected = Position.FindAll();
+      ObjectList<GroupType> expected = GroupType.FindAll();
       Assert.That (expected, Is.Not.Empty);
 
       IBusinessObject[] actual = _searchService.Search (ace, _property, null);

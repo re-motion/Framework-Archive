@@ -21,7 +21,7 @@ using Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure;
 namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEntryPropertiesSearchServiceTests
 {
   [TestFixture]
-  public class SearchPosition : DomainTest
+  public class SearchGroup : DomainTest
   {
     private OrganizationalStructureTestHelper _testHelper;
     private ISearchAvailableObjectsService _searchService;
@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
 
       _searchService = new AccessControlEntryPropertiesSearchService();
       IBusinessObjectClass aceClass = BindableObjectProvider.GetBindableObjectClass (typeof (AccessControlEntry));
-      _property = (IBusinessObjectReferenceProperty) aceClass.GetPropertyDefinition ("SpecificPosition");
+      _property = (IBusinessObjectReferenceProperty) aceClass.GetPropertyDefinition ("SpecificGroup");
       Assert.That (_property, Is.Not.Null);
     }
 
@@ -50,11 +50,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     public void Search ()
     {
       AccessControlEntry ace = AccessControlEntry.NewObject();
+      var tenant = Tenant.FindByUnqiueIdentifier ("UID: testTenant");
+      Assert.That (tenant, Is.Not.Null);
 
-      ObjectList<Position> expected = Position.FindAll();
+      ObjectList<Group> expected = Group.FindByTenantID (tenant.ID);
       Assert.That (expected, Is.Not.Empty);
 
-      IBusinessObject[] actual = _searchService.Search (ace, _property, null);
+      IBusinessObject[] actual = _searchService.Search (ace, _property, tenant.ID.ToString());
 
       Assert.That (actual, Is.EqualTo (expected));
     }
