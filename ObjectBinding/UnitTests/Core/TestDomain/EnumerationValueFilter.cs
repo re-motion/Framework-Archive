@@ -8,35 +8,20 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. 
  */
 
-using System;
+using Remotion.ObjectBinding.BindableObject;
 using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.BindableObject
+namespace Remotion.ObjectBinding.UnitTests.Core.TestDomain
 {
-  //TODO: doc
-  public class ConstantEnumerationValueFilter : IEnumerationValueFilter
+  public class EnumerationValueFilter:IEnumerationValueFilter
   {
-    private readonly Enum[] _disabledEnumValues;
-
-    public ConstantEnumerationValueFilter (Enum[] disabledValues)
-    {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("disabledValues", disabledValues);
-      ArgumentUtility.CheckItemsType ("disabledValues", disabledValues, disabledValues[0].GetType());
-
-      _disabledEnumValues = disabledValues;
-    }
-
-    public Enum[] DisabledEnumValues
-    {
-      get { return _disabledEnumValues; }
-    }
-
     public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject businessObject, IBusinessObjectEnumerationProperty property)
     {
       ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
       ArgumentUtility.CheckNotNull ("property", property);
 
-      return !Array.Exists (_disabledEnumValues, disabledValue => disabledValue.Equals (value.Value));
+      return (int) value.Value % 2 == 1;
     }
   }
 }
