@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.SecurityTokenM
       User user = CreateUser (_companyHelper.CompanyTenant, null);
       TestHelper.CreateRole (user, _ace.SpecificGroup, _companyHelper.HeadPosition);
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, null);
+      SecurityToken token = TestHelper.CreateTokenWithOwningUser (user, null);
 
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
 
@@ -56,11 +56,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.SecurityTokenM
     {
       User user = CreateUser (_companyHelper.CompanyTenant, null);
       Group parentGroup = _ace.SpecificGroup.Parent;
-      Group owningGroup = parentGroup;
       Assert.That (parentGroup, Is.Not.Null);
       TestHelper.CreateRole (user, parentGroup, _companyHelper.HeadPosition);
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, owningGroup);
+      SecurityToken token = TestHelper.CreateTokenWithOwningUser (user, null);
 
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
 
@@ -72,11 +71,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.SecurityTokenM
     {
       User user = CreateUser (_companyHelper.CompanyTenant, null);
       Group childGroup = _ace.SpecificGroup.Children[0];
-      Group owningGroup = childGroup;
-      Assert.That (owningGroup, Is.Not.Null);
       TestHelper.CreateRole (user, childGroup, _companyHelper.HeadPosition);
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, owningGroup);
+      SecurityToken token = TestHelper.CreateTokenWithOwningUser(user, null);
 
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
 
@@ -84,9 +81,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.SecurityTokenM
     }
 
     [Test]
-    public void TokenWithoutRole_DoesNotMatch ()
+    public void EmptyToken_DoesNotMatch ()
     {
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (null, _ace.SpecificGroup);
+      SecurityToken token = TestHelper.CreateEmptyToken();
 
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
 

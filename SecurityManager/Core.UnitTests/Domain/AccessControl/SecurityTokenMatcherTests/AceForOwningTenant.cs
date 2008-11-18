@@ -17,22 +17,21 @@ using Remotion.SecurityManager.Domain.OrganizationalStructure;
 namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.SecurityTokenMatcherTests
 {
   [TestFixture]
-  public class AceForOwningGroup : SecurityTokenMatcherTestBase
+  public class AceForOwningTenant : SecurityTokenMatcherTestBase
   {
     private CompanyStructureHelper _companyHelper;
     private AccessControlEntry _ace;
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      
+      base.SetUp();
+
       _companyHelper = new CompanyStructureHelper (TestHelper.Transaction);
 
-      _ace = TestHelper.CreateAceWithOwningGroup ();
+      _ace = TestHelper.CreateAceWithOwningTenant();
 
-      Assert.That (_ace.TenantCondition, Is.EqualTo (TenantCondition.None));
-      Assert.That (_ace.GroupCondition, Is.EqualTo (GroupCondition.OwningGroup));
-      Assert.That (_ace.GroupHierarchyCondition, Is.EqualTo (GroupHierarchyCondition.This));
+      Assert.That (_ace.TenantCondition, Is.EqualTo (TenantCondition.OwningTenant));
+      Assert.That (_ace.GroupCondition, Is.EqualTo (GroupCondition.None));
       Assert.That (_ace.UserCondition, Is.EqualTo (UserCondition.None));
       Assert.That (_ace.SpecificAbstractRole, Is.Null);
     }
@@ -40,44 +39,30 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.SecurityTokenM
     [Test]
     public void TokenWithRole_Matches ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
-      Group owningGroup = _companyHelper.AustrianProjectsDepartment;
-      TestHelper.CreateRole (user, owningGroup, _companyHelper.HeadPosition);
-
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, owningGroup);
-
+      User principal = CreateUser (_companyHelper.CompanyTenant, null);
+      Tenant owningTenant = _companyHelper.CompanyTenant;
+      SecurityToken token = TestHelper.CreateTokenWithOwningTenant (principal, owningTenant);
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
 
       Assert.IsTrue (matcher.MatchesToken (token));
     }
 
     [Test]
-    public void TokenWithRoleInParent_DoesNotMatch ()
+    public void TokenWithRoleAndDifferentOwningTenant_DoesNotMatch ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
-      Group owningGroup = _companyHelper.AustrianProjectsDepartment;
-      Group parentGroup = owningGroup.Parent;
-      Assert.That (parentGroup, Is.Not.Null);
-      TestHelper.CreateRole (user, parentGroup, _companyHelper.HeadPosition);
-
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, owningGroup);
-
+      User principal = CreateUser (TestHelper.CreateTenant ("Tenant"), null);
+      Tenant owningTenant = _companyHelper.CompanyTenant;
+      SecurityToken token = TestHelper.CreateTokenWithOwningTenant (principal, owningTenant);
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
 
       Assert.IsFalse (matcher.MatchesToken (token));
     }
 
     [Test]
-    public void TokenWithRoleInChild_DoesNotMatch ()
+    public void TokenWithoutOwningTenant_DoesNotMatch ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
-      Group childGroup = _companyHelper.AustrianCarTeam;
-      Group owningGroup = childGroup.Parent;
-      Assert.That (owningGroup, Is.Not.Null);
-      TestHelper.CreateRole (user, childGroup, _companyHelper.HeadPosition);
-
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, owningGroup);
-
+      User principal = CreateUser (_companyHelper.CompanyTenant, null);
+      SecurityToken token = TestHelper.CreateTokenWithOwningTenant (principal, null);
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
 
       Assert.IsFalse (matcher.MatchesToken (token));
@@ -86,21 +71,18 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.SecurityTokenM
     [Test]
     public void TokenWithoutRole_DoesNotMatch ()
     {
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (null, _companyHelper.AustrianProjectsDepartment);
-
+      SecurityToken token = TestHelper.CreateTokenWithOwningTenant (null, _companyHelper.CompanyTenant);
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
 
       Assert.IsFalse (matcher.MatchesToken (token));
     }
 
     [Test]
-    public void TokenWithoutOwningGroup_DoesNotMatch ()
+    public void TokenWithRoleWithoutTenantAndOwningTenant_DoesNotMatch ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
-      TestHelper.CreateRole (user, _companyHelper.AustrianProjectsDepartment, _companyHelper.HeadPosition);
-
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, null);
-
+      User principal = CreateUser (null, null);
+      Tenant owningTenant = _companyHelper.CompanyTenant;
+      SecurityToken token = TestHelper.CreateTokenWithOwningTenant (principal, owningTenant);
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
 
       Assert.IsFalse (matcher.MatchesToken (token));
@@ -108,9 +90,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.SecurityTokenM
 
     [Test]
     public void EmptyToken_DoesNotMatch ()
-    {     
-      SecurityToken token = TestHelper.CreateEmptyToken();
-
+    {
+      SecurityToken token = TestHelper.CreateEmptyToken ();
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
 
       Assert.IsFalse (matcher.MatchesToken (token));

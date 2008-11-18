@@ -12,12 +12,13 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.SecurityTokenMatcherTests
 {
   [TestFixture]
-  public class AceForSpecificUser : SecurityTokenMatcherTestBase
+  public class AceForSpecificTenant : SecurityTokenMatcherTestBase
   {
     private CompanyStructureHelper _companyHelper;
     private AccessControlEntry _ace;
@@ -28,32 +29,30 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.SecurityTokenM
 
       _companyHelper = new CompanyStructureHelper (TestHelper.Transaction);
 
-      _ace = TestHelper.CreateAceWithSpecificUser (_companyHelper.CarTeamMember);
+      _ace = TestHelper.CreateAceWithSpecficTenant (_companyHelper.CompanyTenant);
 
-      Assert.That (_ace.TenantCondition, Is.EqualTo (TenantCondition.None));
+      Assert.That (_ace.TenantCondition, Is.EqualTo (TenantCondition.SpecificTenant));
+      Assert.That (_ace.SpecificTenant, Is.SameAs (_companyHelper.CompanyTenant));
       Assert.That (_ace.GroupCondition, Is.EqualTo (GroupCondition.None));
-      Assert.That (_ace.UserCondition, Is.EqualTo (UserCondition.SpecificUser));
-      Assert.That (_ace.SpecificUser, Is.SameAs (_companyHelper.CarTeamMember));
+      Assert.That (_ace.UserCondition, Is.EqualTo (UserCondition.None));
       Assert.That (_ace.SpecificAbstractRole, Is.Null);
     }
 
     [Test]
     public void TokenWithRole_Matches ()
     {
-      SecurityToken token = TestHelper.CreateTokenWithOwningUser (_ace.SpecificUser, null);
-
+      User principal = CreateUser (_companyHelper.CompanyTenant, null);
+      SecurityToken token = TestHelper.CreateTokenWithOwningUser (principal, null);
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
 
       Assert.IsTrue (matcher.MatchesToken (token));
     }
 
     [Test]
-    public void TokenWithRoleAndDifferentSpecificUser_DoesNotMatch ()
+    public void TokenWithRoleAndDifferentSpecificTenant_DoesNotMatch ()
     {
-      User principal = CreateUser (_companyHelper.CompanyTenant, null);
-
+      User principal = CreateUser (TestHelper.CreateTenant ("Tenant"), null);
       SecurityToken token = TestHelper.CreateTokenWithOwningUser (principal, null);
-
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
 
       Assert.IsFalse (matcher.MatchesToken (token));
@@ -63,7 +62,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.SecurityTokenM
     public void EmptyToken_DoesNotMatch ()
     {
       SecurityToken token = TestHelper.CreateEmptyToken();
-
       SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
 
       Assert.IsFalse (matcher.MatchesToken (token));
