@@ -9,17 +9,20 @@
 //  WITHOUT WARRANTY OF ANY KIND, either express or implied. 
 // 
 // 
+
 using System;
 using System.Collections.Generic;
 
-namespace Remotion.SecurityManager.AclTools.Expansion
+namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
 {
   /// <summary>
-  /// Interface for an enumeration that returns <see cref="UserRoleAclAceCombination"/>|s.
+  /// Supplies factories to create <see cref="AclExpansionTreeNode{T0,T1}"/> instances.
   /// </summary>
-  // TODO AE: Consider dropping this interface (it adds unnecessary constraints).
-  public interface IUserRoleAclAceCombinations : IEnumerable<UserRoleAclAceCombination>
+  public class AclExpansionTreeNode
   {
-    new IEnumerator<UserRoleAclAceCombination> GetEnumerator ();
+    public static AclExpansionTreeNode<TParent, TChildren> New<TParent, TChildren> (TParent parent, int numberLeafNodes, IList<TChildren> children)
+    {
+      return new AclExpansionTreeNode<TParent, TChildren> (parent, numberLeafNodes, children);
+    }
   }
 }
