@@ -9,17 +9,19 @@
 //  WITHOUT WARRANTY OF ANY KIND, either express or implied. 
 // 
 // 
-
 using System;
-using System.IO;
-using Remotion.SecurityManager.AclTools.Expansion.ConsoleApplication;
 
-namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.ConsoleApplication
+namespace Remotion.Utilities.ConsoleApplication
 {
-  public class ConsoleApplicationTestApplicationRunner : IApplicationRunner<ConsoleApplicationTestSettings>
+  /// <summary>
+  /// Class implementing <see cref="Wait"/> to wait for a keypress on the console.
+  /// The <see cref="IWaiter"/>-method returns after a console key has been pressed.
+  /// </summary>
+  public class ConsoleKeypressWaiter : IWaiter
   {
-    public void Run (ConsoleApplicationTestSettings settings, TextWriter errorWriter, TextWriter logWriter)
+    public void Wait ()
     {
+      Console.ReadKey ();
     }
   }
 }
