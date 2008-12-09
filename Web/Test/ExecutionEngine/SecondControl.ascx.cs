@@ -59,6 +59,11 @@ namespace Remotion.Web.Test.ExecutionEngine
       ExecuteNextStep ();
     }
 
+    protected void Cancel_Click (object sender, EventArgs e)
+    {
+      throw new WxeUserCancelException ();
+    }
+
     protected void ExecuteSecondUserControlButton_Click (object sender, EventArgs e)
     {
       throw new InvalidOperationException ("This event handler should never be called.");

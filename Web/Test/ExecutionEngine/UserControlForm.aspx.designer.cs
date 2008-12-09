@@ -95,13 +95,13 @@ namespace Remotion.Web.Test.ExecutionEngine {
         protected global::System.Web.UI.WebControls.PlaceHolder FirstControlPlaceHoder;
         
         /// <summary>
-        /// FirstControl control.
+        /// TheUserControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Remotion.Web.Test.ExecutionEngine.FirstControl FirstControl;
+        protected global::Remotion.Web.Test.ExecutionEngine.ZeroControl TheUserControl;
         
         /// <summary>
         /// StackLabel control.

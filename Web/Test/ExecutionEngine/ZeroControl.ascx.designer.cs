@@ -9,9 +9,10 @@
 //------------------------------------------------------------------------------
 
 namespace Remotion.Web.Test.ExecutionEngine {
-    
-    
-    public partial class FirstControl {
+
+
+  public partial class ZeroControl
+  {
         
         /// <summary>
         /// ControlLabel control.

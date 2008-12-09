@@ -26,7 +26,7 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.Test.ExecutionEngine
 {
-  public partial class FirstControl : WxeUserControl
+  public partial class ZeroControl : WxeUserControl
   {
     protected void ExecuteSecondUserControlButton_Click (object sender, EventArgs e)
     {
@@ -85,9 +85,10 @@ namespace Remotion.Web.Test.ExecutionEngine
         Assertion.IsTrue (IsPostBack);
         Assertion.IsTrue (IsUserControlPostBack);
       }
-      Assertion.IsTrue (CurrentFunction is ShowFirstUserControlFormFunction);
-      Assertion.IsTrue (WxePage.CurrentFunction is ShowUserControlFormFunction);
-      Assertion.IsTrue (WxePage.Variables != this.Variables);
+
+      Assertion.IsTrue (WxePage.CurrentFunction == this.CurrentFunction);
+      Assertion.IsTrue (CurrentFunction is ShowUserControlFormFunction);
+      Assertion.IsTrue (WxePage.Variables == this.Variables);
 
       ViewStateValue++;
       ViewStateLabel.Text = ViewStateValue.ToString();
@@ -135,14 +136,14 @@ namespace Remotion.Web.Test.ExecutionEngine
       var controlState = (object[]) savedState;
       base.LoadControlState (controlState[0]);
       ControlStateValue = (int) controlState[1];
-      Assertion.IsTrue ((Type) controlState[2] == typeof (FirstControl), "Expected ControlState from 'FirstControl' but was '{0}'.", ((Type)controlState[2]).Name);
+      Assertion.IsTrue ((Type) controlState[2] == typeof (ZeroControl), "Expected ControlState from 'ZeroControl' but was '{0}'.", ((Type)controlState[2]).Name);
       HasLoaded = (bool) controlState[3];
       Assertion.IsTrue (((NonSerializeableObject)controlState[4]).Value == "TheValue");
     }
 
     protected override object SaveControlState ()
     {
-      return new [] {base.SaveControlState(), ControlStateValue, typeof (FirstControl), HasLoaded, new NonSerializeableObject ("TheValue")};
+      return new [] {base.SaveControlState(), ControlStateValue, typeof (ZeroControl), HasLoaded, new NonSerializeableObject ("TheValue")};
     }
 
     protected override void LoadViewState (object savedState)
@@ -152,12 +153,12 @@ namespace Remotion.Web.Test.ExecutionEngine
       var viewState = (Tuple<object, Type>) savedState;
       base.LoadViewState (viewState.A);
 
-      Assertion.IsTrue (viewState.B == typeof (FirstControl), "Expected ViewState from 'FirstControl' but was '{0}'.", viewState.B.Name);
+      Assertion.IsTrue (viewState.B == typeof (ZeroControl), "Expected ViewState from 'ZeroControl' but was '{0}'.", viewState.B.Name);
     }
 
     protected override object SaveViewState ()
     {
-      return new Tuple<object, Type> (base.SaveViewState (), typeof (FirstControl));
+      return new Tuple<object, Type> (base.SaveViewState (), typeof (ZeroControl));
     }
 
     private int ViewStateValue
