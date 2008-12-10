@@ -19,18 +19,18 @@ using System.Collections.Generic;
 namespace Remotion.Development.UnitTesting.ObjectMother
 {
   /// <summary>
-  /// Supplies factories to easily create <see cref="List{T}"/> instances.
+  /// Supplies factories to easily create <see cref="Queue{T}"/> instances.
   /// </summary>
   /// <example><code>
   /// <![CDATA[  
-  /// var listList = List.New( List.New(1,2), List.New(3,4) );
+  /// var queue = QueueMother.New("process","emit0","wait");
   /// ]]>
   /// </code></example>
-  public class List
+  public class QueueMother
   {
-    public static System.Collections.Generic.List<T> New<T> (params T[] values)
+    public static System.Collections.Generic.Queue<T> New<T> (params T[] values)
     {
-      var container = new System.Collections.Generic.List<T> (values);
+      var container = new System.Collections.Generic.Queue<T> (values);
       return container;
     }
   }
