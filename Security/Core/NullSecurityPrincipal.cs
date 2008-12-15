@@ -14,29 +14,41 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Security.Principal;
 
 namespace Remotion.Security
 {
   /// <summary>
-  /// Represents a nullable <see cref="IPrincipal"/> according to the "Null Object Pattern".
+  /// Represents a nullable <see cref="ISecurityPrincipal"/> according to the "Null Object Pattern".
   /// </summary>
-  public class NullPrincipal : IPrincipal
+  public sealed class NullSecurityPrincipal : ISecurityPrincipal
   {
-    private NullIdentity _identity = new NullIdentity();
-
-    public NullPrincipal()
+    public NullSecurityPrincipal ()
     {
     }
 
-    public bool IsInRole (string role)
+    public string User
     {
-      return false;
+      get { return null; }
     }
 
-    public IIdentity Identity
+    public ISecurityPrincipalRole Role
     {
-      get { return _identity; }
+      get { return null; }
+    }
+
+    public string SubstitutedUser
+    {
+      get { return null; }
+    }
+
+    public ISecurityPrincipalRole SubstitutedRole
+    {
+      get { return null; }
+    }
+
+    public bool IsNull
+    {
+      get { return true; }
     }
   }
 }
