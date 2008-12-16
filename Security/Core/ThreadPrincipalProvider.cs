@@ -15,35 +15,36 @@
 // 
 using System;
 using System.Collections.Specialized;
+using System.Security.Principal;
+using System.Threading;
 using Remotion.Configuration;
 
 namespace Remotion.Security
 {
-  /// <summary>
-  /// Represents a nullable <see cref="IUserProvider"/> according to the "Null Object Pattern".
-  /// </summary>
-  public class NullUserProvider : ExtendedProviderBase, IUserProvider
+  public class ThreadPrincipalProvider : ExtendedProviderBase, IPrincipalProvider
   {
-    private readonly NullSecurityPrincipal _securityPrincipal = new NullSecurityPrincipal();
-
-    public NullUserProvider ()
-        : this ("Null", new NameValueCollection())
+    public ThreadPrincipalProvider ()
+        : this ("Thread", new NameValueCollection())
     {
     }
 
-    public NullUserProvider (string name, NameValueCollection config)
+    public ThreadPrincipalProvider (string name, NameValueCollection config)
         : base (name, config)
     {
     }
 
-    public ISecurityPrincipal GetUser ()
+    public ISecurityPrincipal GetPrincipal ()
     {
-      return _securityPrincipal;
+      IIdentity identity = Thread.CurrentPrincipal.Identity;
+      if (!identity.IsAuthenticated)
+        return new NullSecurityPrincipal();
+
+      return new SecurityPrincipal (identity.Name, null, null, null);
     }
 
     bool INullObject.IsNull
     {
-      get { return true; }
+      get { return false; }
     }
   }
 }

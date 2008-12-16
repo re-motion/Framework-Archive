@@ -14,37 +14,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Specialized;
-using System.Security.Principal;
-using System.Threading;
-using Remotion.Configuration;
 
 namespace Remotion.Security
 {
-  public class ThreadUserProvider : ExtendedProviderBase, IUserProvider
+  /// <summary>Defines an interface for retrieving the current principal.</summary>
+  public interface IPrincipalProvider : INullObject
   {
-    public ThreadUserProvider ()
-        : this ("Thread", new NameValueCollection())
-    {
-    }
-
-    public ThreadUserProvider (string name, NameValueCollection config)
-        : base (name, config)
-    {
-    }
-
-    public ISecurityPrincipal GetUser ()
-    {
-      IIdentity identity = Thread.CurrentPrincipal.Identity;
-      if (!identity.IsAuthenticated)
-        return new NullSecurityPrincipal();
-
-      return new SecurityPrincipal (identity.Name, null, null, null);
-    }
-
-    bool INullObject.IsNull
-    {
-      get { return false; }
-    }
+    /// <summary>Gets the current user.</summary>
+    /// <returns>The <see cref="ISecurityPrincipal"/> representing the current principal.</returns>
+    ISecurityPrincipal GetPrincipal ();
   }
 }

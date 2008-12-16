@@ -15,25 +15,44 @@
 // 
 using System;
 using System.Collections.Specialized;
+using NUnit.Framework;
 using Remotion.Configuration;
 
-namespace Remotion.Security.UnitTests.Core.Configuration
+namespace Remotion.Security.UnitTests.Core
 {
-  public class UserProviderMock : ExtendedProviderBase, IUserProvider
+  [TestFixture]
+  public class NullPrincipalProviderTest
   {
-    public UserProviderMock (string name, NameValueCollection config)
-        : base (name, config)
+    private IPrincipalProvider _provider;
+
+    [SetUp]
+    public void SetUp()
     {
+      _provider = new PrincipalUserProvider();
     }
 
-    public ISecurityPrincipal GetUser ()
+    [Test]
+    public void Initialize ()
     {
-      throw new NotImplementedException();
+      NameValueCollection config = new NameValueCollection ();
+      config.Add ("description", "The Description");
+
+      ExtendedProviderBase provider = new PrincipalUserProvider ("Provider", config);
+
+      Assert.AreEqual ("Provider", provider.Name);
+      Assert.AreEqual ("The Description", provider.Description);
+    }
+    
+    [Test]
+    public void GetUser()
+    {
+      Assert.IsInstanceOfType (typeof (NullSecurityPrincipal), _provider.GetPrincipal());
     }
 
-    public bool IsNull
+    [Test]
+    public void GetIsNull()
     {
-      get { return false; }
+      Assert.IsTrue (_provider.IsNull);
     }
   }
 }

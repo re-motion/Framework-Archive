@@ -14,14 +14,36 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Specialized;
+using Remotion.Configuration;
 
 namespace Remotion.Security
 {
-  /// <summary>Defines an interface for retrieving the current user.</summary>
-  public interface IUserProvider : INullObject
+  /// <summary>
+  /// Represents a nullable <see cref="IPrincipalProvider"/> according to the "Null Object Pattern".
+  /// </summary>
+  public class PrincipalUserProvider : ExtendedProviderBase, IPrincipalProvider
   {
-    /// <summary>Gets the current user.</summary>
-    /// <returns>The <see cref="ISecurityPrincipal"/> representing the current user.</returns>
-    ISecurityPrincipal GetUser ();
+    private readonly NullSecurityPrincipal _securityPrincipal = new NullSecurityPrincipal();
+
+    public PrincipalUserProvider ()
+        : this ("Null", new NameValueCollection())
+    {
+    }
+
+    public PrincipalUserProvider (string name, NameValueCollection config)
+        : base (name, config)
+    {
+    }
+
+    public ISecurityPrincipal GetPrincipal ()
+    {
+      return _securityPrincipal;
+    }
+
+    bool INullObject.IsNull
+    {
+      get { return true; }
+    }
   }
 }
