@@ -5,16 +5,17 @@
 // and/or modify it under the terms of the GNU Lesser General Public License 
 // version 3.0 as published by the Free Software Foundation.
 // 
-// re-motion is distributed in the hope that it will be useful, 
+// This framework is distributed in the hope that it will be useful, 
 // but WITHOUT ANY WARRANTY; without even the implied warranty of 
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
 // GNU Lesser General Public License for more details.
 // 
 // You should have received a copy of the GNU Lesser General Public License
-// along with re-motion; if not, see http://www.gnu.org/licenses.
+// along with this framework; if not, see http://www.gnu.org/licenses.
 // 
 using System;
 using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.ObjectBinding;
@@ -22,10 +23,8 @@ using Remotion.ObjectBinding.BindableObject;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding
 {
-  public class BindableDomainObjectSearchService : ISearchAvailableObjectsService
+  public class BindableDomainObjectQuerySearchService : ISearchAvailableObjectsService
   {
-    private readonly BindableDomainObjectSearchAllService _searchAllService = new BindableDomainObjectSearchAllService ();
-
     public bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
       return true;
@@ -35,13 +34,17 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     {
       var defaultSearchArguments = searchArguments as DefaultSearchArguments;
       if (defaultSearchArguments == null || string.IsNullOrEmpty (defaultSearchArguments.SearchStatement))
-        return _searchAllService.Search (referencingObject, property, searchArguments);
+        return new IBusinessObject[0];
 
       QueryDefinition definition = DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory (defaultSearchArguments.SearchStatement);
       if (definition.QueryType != QueryType.Collection)
         throw new ArgumentException (string.Format ("The query '{0}' is not a collection query.", defaultSearchArguments.SearchStatement));
 
-      ClientTransaction clientTransaction = ClientTransactionScope.CurrentTransaction;
+      var referencingDomainObject = referencingObject as DomainObject;
+
+      var clientTransaction = referencingDomainObject != null ? DomainObjectCheckUtility.GetNonNullClientTransaction (referencingDomainObject) : ClientTransaction.Current;
+      if (clientTransaction == null)
+        throw new InvalidOperationException ("No ClientTransaction has been associated with the current thread or the referencing object.");
 
       DomainObjectCollection result = clientTransaction.QueryManager.GetCollection (QueryFactory.CreateQuery (definition));
       var availableObjects = new IBusinessObjectWithIdentity[result.Count];
