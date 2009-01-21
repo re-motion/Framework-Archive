@@ -25,12 +25,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionDataManagement
   /// <see cref="IDomainObjectCollectionData"/> interface will check the type of the new item for a given required item <see cref="Type"/>.
   /// </summary>
   [Serializable]
-  public class TypeCheckingCollectionData : IDomainObjectCollectionData
+  public class TypeCheckingCollectionDataDecorator : IDomainObjectCollectionData
   {
     private readonly IDomainObjectCollectionData _wrappedData;
     private readonly Type _requiredItemType;
 
-    public TypeCheckingCollectionData (IDomainObjectCollectionData wrappedData, Type requiredItemType)
+    public TypeCheckingCollectionDataDecorator (IDomainObjectCollectionData wrappedData, Type requiredItemType)
     {
       ArgumentUtility.CheckNotNull ("wrappedData", wrappedData);
       ArgumentUtility.CheckNotNull ("requiredItemType", requiredItemType);
