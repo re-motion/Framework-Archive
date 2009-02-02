@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (C) 2005-2008 rubicon informationstechnologie gmbh, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -13,13 +13,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this framework; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
+using Remotion.Mixins;
+using Remotion.Mixins.Samples.Tutorial.T01_Configuration.MixSamples;
+
+[assembly: Mix (typeof (MyClass), typeof (MyMixin))]
+[assembly: Mix (typeof (File), typeof (IdentifiedObjectMixin))]
 
 namespace Remotion.Mixins.Samples.Tutorial.T01_Configuration
 {
-  namespace ExtendsSamples
+  namespace MixSamples
   {
-    [Extends (typeof (MyClass))]
     public class MyMixin
     {
     }
@@ -40,20 +45,19 @@ namespace Remotion.Mixins.Samples.Tutorial.T01_Configuration
     {
     }
 
-    [Extends (typeof (File))]
-    public class NumberedFileMixin : INumberedFile
+    public class IdentifiedObjectMixin : IIdentifiedObject
     {
-      private readonly string _id = Guid.NewGuid ().ToString();
-      
-      public string GetFileNumber ()
+      private readonly string _id = Guid.NewGuid ().ToString ();
+
+      public string GetObjectID ()
       {
         return _id;
       }
     }
 
-    public interface INumberedFile
+    public interface IIdentifiedObject
     {
-      string GetFileNumber ();
+      string GetObjectID ();
     }
   }
 }
