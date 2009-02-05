@@ -14,16 +14,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.DataManagement.EndPointModifications;
 
-namespace Remotion.Data.DomainObjects.DataManagement
+namespace Remotion.Data.DomainObjects.DataManagement.EndPointModifications
 {
-  public class CollectionEndPointModification : RelationEndPointModification
+  public class CollectionEndPointChangeAgentModification : RelationEndPointModification
   {
     private readonly CollectionEndPointChangeAgent _changeAgent;
     private readonly CollectionEndPoint _affectedEndPoint;
 
-    public CollectionEndPointModification (CollectionEndPoint affectedEndPoint, CollectionEndPointChangeAgent changeAgent)
-      : base (affectedEndPoint, changeAgent.OldEndPoint, changeAgent.NewEndPoint)
+    public CollectionEndPointChangeAgentModification (CollectionEndPoint affectedEndPoint, CollectionEndPointChangeAgent changeAgent)
+        : base (affectedEndPoint, changeAgent.OldEndPoint, changeAgent.NewEndPoint)
     {
       _affectedEndPoint = affectedEndPoint;
       _changeAgent = changeAgent;
