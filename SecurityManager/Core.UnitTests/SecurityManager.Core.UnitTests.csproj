@@ -1,0 +1,309 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{65B86B2E-D54D-425B-B681-82449E31BA01}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.SecurityManager.UnitTests</RootNamespace>
+    <AssemblyName>Remotion.SecurityManager.UnitTests</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.2.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks, Version=2.8.9.24225, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AclTools\AclToolsTestBase.cs" />
+    <Compile Include="AclTools\Expansion\AclExpanderAclFinderTest.cs" />
+    <Compile Include="AclTools\Expansion\AclExpansionHtmlWriterImplementationTest.cs" />
+    <Compile Include="AclTools\Expansion\AclExpansionHtmlWriterSettingsTest.cs" />
+    <Compile Include="AclTools\Expansion\HtmlTagWriter\HtmlTagWriterTest.cs" />
+    <Compile Include="AclTools\Expansion\Infrastructure\AclExpansionEntryCreatorTest.cs" />
+    <Compile Include="AclTools\Expansion\Xrays\AclExpanderXray.cs" />
+    <Compile Include="AclTools\Expansion\TextWriterFactory\TextWriterFactoryBaseTest.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesEnumerationValueFilterTests\AccessControlEntryPropertiesEnumerationValueFilterTestBase.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesEnumerationValueFilterTests\NotSupportedProperty.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesEnumerationValueFilterTests\TeantConditionStateful.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesEnumerationValueFilterTests\TenantConditionStateless.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesEnumerationValueFilterTests\GroupConditionStateless.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesEnumerationValueFilterTests\GroupConditionStateful.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesEnumerationValueFilterTests\UserConditionStateless.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesSearchServiceTests\SearchUser.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesSearchServiceTests\SearchGroupType.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesSearchServiceTests\SearchGroup.cs" />
+    <Compile Include="AclTools\Expansion\AclExpansionTreeNodeTest.cs" />
+    <Compile Include="AclTools\Expansion\AclExpansionTreeTest.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryTests\OnCommitTest.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryTests\EnumerationValueFilterTest.cs" />
+    <Compile Include="Domain\AccessControl\AccessTypeStatisticsTest.cs" />
+    <Compile Include="AclTools\Expansion\AclExpanderApplicationSettingsTest.cs" />
+    <Compile Include="AclTools\Expansion\AclExpanderApplicationTest.cs" />
+    <Compile Include="AclTools\Expansion\AclExpanderTest.cs" />
+    <Compile Include="AclTools\Expansion\AclExpanderUserFinderTest.cs" />
+    <Compile Include="AclTools\Expansion\AclExpansionAccessConditionsTest.cs" />
+    <Compile Include="AclTools\Expansion\AclExpansionEntryTest.cs" />
+    <Compile Include="AclTools\Expansion\AclExpansionHtmlWriterTest.cs" />
+    <Compile Include="AclTools\Expansion\AclExpansionMultiFileHtmlWriterTest.cs" />
+    <Compile Include="AclTools\Expansion\AclProbeTest.cs" />
+    <Compile Include="AclTools\Expansion\TextWriterFactory\StreamWriterFactoryTest.cs" />
+    <Compile Include="AclTools\Expansion\UserRoleAclAceCombinationsTest.cs" />
+    <Compile Include="AclTools\SetUpFixture.cs" />
+    <Compile Include="Configuration\SecurityConfigurationMock.cs" />
+    <Compile Include="Configuration\SecurityManagerConfigurationTest.cs" />
+    <Compile Include="Configuration\TestOrganizationalStructureFactory.cs" />
+    <Compile Include="Configuration\TestSecurityManagerConfiguration.cs" />
+    <Compile Include="DomainTest.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesSearchServiceTests\SearchPosition.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesSearchServiceTests\SearchAbstractRoleDefinition.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesSearchServiceTests\SearchOtherProperty.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesSearchServiceTests\SearchTenant.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesSearchServiceTests\SetUpFixture.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryTests\SearchServiceTest.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryTests\ValidationTest.cs" />
+    <Compile Include="Domain\AccessControl\PrincipalTest.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForOwningGroupAndParents.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForOwningGroup.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForOwningGroupAndChildren.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForOwningGroupAndParentsAndChildren.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForGroupAndPosition.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForSpecificGroup.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForBranchOfOwningGroup.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForAnyGroupWithSpecificGroupType.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForAnyGroupWithSpecificGroupTypeAndPosition.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForBranchOfOwningGroupAndPosition.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForOwningUser.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForSpecificUser.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForGroupAndUser.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceWithInvalidValues.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForSpecificTenant.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForOwningTenantAndParents.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\EmptyAce.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\MixedAces.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\CompanyStructureHelper.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\SecurityTokenMatcherTestBase.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryTests\Test.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryValidationResultTest.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlListFinderTests\Find_BySecurableClassDefinition.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlListFinderTests\Find_BySecurityContext.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlListTest.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlTestHelper.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\MixedTokens.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForAbstractRole.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForPosition.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenMatcherTests\AceForOwningTenant.cs" />
+    <Compile Include="Domain\AccessControl\StatefulAccessControlListTest.cs" />
+    <Compile Include="Domain\AccessControl\StatelessAccessControlListTest.cs" />
+    <Compile Include="Domain\AccessControl\StateUsageTest.cs" />
+    <Compile Include="Domain\AccessControl\PermissionTest.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenBuilderTest.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenTest.cs" />
+    <Compile Include="Domain\AccessControl\StateCombinationComparerTest.cs" />
+    <Compile Include="Domain\AccessControl\StateCombinationTest.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesEnumerationValueFilterTests\UserConditionStateful.cs" />
+    <Compile Include="Domain\DomainObjectDeleteHandlerTest.cs" />
+    <Compile Include="Domain\Metadata\FindMetadataObjectQueryBuilderTest.cs" />
+    <Compile Include="Domain\NullSecurityManagerPrincipalTest.cs" />
+    <Compile Include="Domain\OrganizationalStructure\RolePropertiesSearchServiceTests\RolePropertiesSearchServiceTestBase.cs" />
+    <Compile Include="Domain\OrganizationalStructure\RolePropertiesSearchServiceTests\SetUpFixture.cs" />
+    <Compile Include="Domain\OrganizationalStructure\RoleTests\BindableObjectImpelementation.cs" />
+    <Compile Include="Domain\OrganizationalStructure\RoleTests\GetPossibleGroups.cs" />
+    <Compile Include="Domain\OrganizationalStructure\RoleTests\GetPossiblePositions.cs" />
+    <Compile Include="Domain\OrganizationalStructure\RoleTests\DeleteRole.cs" />
+    <Compile Include="Domain\OrganizationalStructure\SecurityTestHelper.cs" />
+    <Compile Include="Domain\OrganizationalStructure\SubstitutionPropertiesSearchServiceTests\SearchSubstitutedRole.cs" />
+    <Compile Include="Domain\OrganizationalStructure\SubstitutionPropertiesSearchServiceTests\SubstitutionPropertiesSearchServiceTestBase.cs" />
+    <Compile Include="Domain\OrganizationalStructure\SubstitutionPropertiesSearchServiceTests\SearchSubstitutingUser.cs" />
+    <Compile Include="Domain\OrganizationalStructure\SubstitutionPropertiesSearchServiceTests\SetUpFixture.cs" />
+    <Compile Include="Domain\OrganizationalStructure\SubstitutionTests\BindableObjectImplementation.cs" />
+    <Compile Include="Domain\OrganizationalStructure\SubstitutionTests\Common.cs" />
+    <Compile Include="Domain\OrganizationalStructure\SubstitutionTests\IsActive.cs" />
+    <Compile Include="Domain\OrganizationalStructure\SubstitutionTests\SubstitutionTestBase.cs" />
+    <Compile Include="Domain\OrganizationalStructure\UserTests\BindableObjectImplementation.cs" />
+    <Compile Include="Domain\OrganizationalStructure\UserTests\AccessControl.cs" />
+    <Compile Include="Domain\OrganizationalStructure\UserTests\DeleteUser.cs" />
+    <Compile Include="Domain\OrganizationalStructure\UserTests\FindUser.cs" />
+    <Compile Include="Domain\OrganizationalStructure\UserTests\GetActiveSubstitutions.cs" />
+    <Compile Include="Domain\OrganizationalStructure\UserTests\MixedUser.cs" />
+    <Compile Include="Domain\OrganizationalStructure\UserTests\SecurableObjectImpelementation.cs" />
+    <Compile Include="Domain\OrganizationalStructure\UserTests\UserTestBase.cs" />
+    <Compile Include="Domain\SecurityManagerObjectServiceFactoryMixinTest.cs" />
+    <Compile Include="Domain\DatabaseFixtures.cs" />
+    <Compile Include="Domain\DatabaseHelper.cs" />
+    <Compile Include="Domain\Metadata\AbstractRoleDefinitionTests\TestWithEmptyDomain.cs" />
+    <Compile Include="Domain\Metadata\AbstractRoleDefinitionTests\TestWithTwoTenants.cs" />
+    <Compile Include="Domain\Metadata\AccessTypeReferenceTest.cs" />
+    <Compile Include="Domain\Metadata\CultureTest.cs" />
+    <Compile Include="Domain\Metadata\MetadataObjectTests\FindTest.cs" />
+    <Compile Include="Domain\Metadata\MetadataObjectTests\Test.cs" />
+    <Compile Include="Domain\Metadata\CultureImporterTest.cs" />
+    <Compile Include="Domain\Metadata\MetadataImporterTest.cs" />
+    <Compile Include="Domain\Metadata\MetadataObjectAssert.cs" />
+    <Compile Include="Domain\Metadata\MetadataTestHelper.cs" />
+    <Compile Include="Domain\Metadata\SecurableClassDefinitionTest.cs" />
+    <Compile Include="Domain\Metadata\StatePropertyDefinitionTest.cs" />
+    <Compile Include="Domain\Metadata\SecurableClassDefinitionWrapper.cs" />
+    <Compile Include="Domain\OrganizationalStructure\UserPropertiesSearchServiceTest.cs" />
+    <Compile Include="Domain\OrganizationalStructure\RolePropertiesSearchServiceTests\SearchOtherProperty.cs" />
+    <Compile Include="Domain\OrganizationalStructure\RolePropertiesSearchServiceTests\SearchUser.cs" />
+    <Compile Include="Domain\OrganizationalStructure\RolePropertiesSearchServiceTests\SearchGroup.cs" />
+    <Compile Include="Domain\OrganizationalStructure\GroupTypePositionTest.cs" />
+    <Compile Include="Domain\OrganizationalStructure\OrganizationalStructureFactoryTest.cs" />
+    <Compile Include="Domain\OrganizationalStructure\GroupPropertiesSearchServiceTest.cs" />
+    <Compile Include="Domain\OrganizationalStructure\TenantTest.cs" />
+    <Compile Include="Domain\OrganizationalStructure\GroupTest.cs" />
+    <Compile Include="Domain\OrganizationalStructure\GroupTypeTest.cs" />
+    <Compile Include="Domain\OrganizationalStructure\OrganizationalStructureTestHelper.cs" />
+    <Compile Include="Domain\OrganizationalStructure\PositionTest.cs" />
+    <Compile Include="Domain\OrganizationalStructure\RoleTests\RoleTestBase.cs" />
+    <Compile Include="Domain\OrganizationalStructure\UserTests\Common.cs" />
+    <Compile Include="Domain\Metadata\SecurableClassValidationResultTest.cs" />
+    <Compile Include="Domain\RevisionTest.cs" />
+    <Compile Include="Domain\SecurityManagerPrincipalProviderTest.cs" />
+    <Compile Include="Domain\SecurityManagerPrincipalTest.cs" />
+    <Compile Include="Domain\SerializationTest.cs" />
+    <Compile Include="Domain\ToTextSpecificTypeHandlers\ToTextSpecificTypeHandlerTests.cs" />
+    <Compile Include="Persistence\RevisionSqlProviderExtensionTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SecurityServiceTest.cs" />
+    <Compile Include="SetUpFixture.cs" />
+    <Compile Include="TestDomain\AbstractRoles.cs" />
+    <Compile Include="TestDomain\Order.cs" />
+    <Compile Include="TestDomain\PremiumOrder.cs" />
+    <Compile Include="TestDomain\SecurityStates.cs" />
+    <Compile Include="TestDomain\SpecialOrder.cs" />
+    <None Include="Properties\AssemblyInfoTemplate.cs" />
+    <None Include="..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+    <None Include="SecurityManager.Core.UnitTests.build" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Remotion\Core\Interfaces\Core.Interfaces.csproj">
+      <Project>{BD061F4A-A9E6-461E-A804-7999623A0060}</Project>
+      <Name>Core.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Core\Core\Core.Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Data\DomainObjects.Security\Data.DomainObjects.Security.csproj">
+      <Project>{2C87FB62-CC00-4297-A3EA-35F4FC6649F0}</Project>
+      <Name>Data.DomainObjects.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Data\DomainObjects\Data.DomainObjects.csproj">
+      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
+      <Name>Data.DomainObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Data\Interfaces\Data.Interfaces.csproj">
+      <Project>{70273934-12F1-49AF-975A-303BAEFE1CAE}</Project>
+      <Name>Data.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Data\Linq\Data.Linq.csproj">
+      <Project>{DD9AA076-BE37-4A42-BA9E-C35ECC6955C9}</Project>
+      <Name>Data.Linq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Development\Core\Development.Core.csproj">
+      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
+      <Name>Development.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Development\Data\Development.Data.csproj">
+      <Project>{EBBF3A56-5B7B-4CD7-9AA9-74AF17B0B7ED}</Project>
+      <Name>Development.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\ObjectBinding\Core\ObjectBinding.Core.csproj">
+      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
+      <Name>ObjectBinding.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\ObjectBinding\Interfaces\ObjectBinding.Interfaces.csproj">
+      <Project>{A1FCDC69-E8E3-4DC0-8EE7-A8FEA772EF5B}</Project>
+      <Name>ObjectBinding.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Security\Core\Security.Core.csproj">
+      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
+      <Name>Security.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Security\Interfaces\Security.Interfaces.csproj">
+      <Project>{6B243694-318E-4C20-A2EA-B910EFE5F2F6}</Project>
+      <Name>Security.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\SecurityManager.Core.csproj">
+      <Project>{990B8638-A08F-4A94-B01A-E7DAEF089F27}</Project>
+      <Name>SecurityManager.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AclTools\Code Repository.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <DatabaseFiles Include="..\Core\Database\SecurityManagerCreateDB.sql">
+    </DatabaseFiles>
+    <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupDB.sql">
+    </DatabaseFiles>
+    <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupConstraints.sql">
+    </DatabaseFiles>
+    <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupDBSpecialTables.sql">
+    </DatabaseFiles>
+    <MappingFiles Include="..\Core\Domain\SecurityManagerQueries.xml">
+    </MappingFiles>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  -->
+  <Target Name="AfterBuild">
+    <Delete Files="@(DatabaseFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+    <Delete Files="@(MappingFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+    <Copy SourceFiles="@(DatabaseFiles->'%(Fullpath)')" DestinationFiles="@(DatabaseFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+    <Copy SourceFiles="@(MappingFiles->'%(Fullpath)')" DestinationFiles="@(MappingFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+  </Target>
+</Project>
