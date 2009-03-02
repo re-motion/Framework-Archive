@@ -23,7 +23,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <NoWarn>1591;0419</NoWarn><WarningsAsErrors>1570;1571;1572;1573;1574;1580;1581;1584;1587;1589;1590;1592;3008</WarningsAsErrors>
+    <NoWarn>1591;0419</NoWarn>
+    <WarningsAsErrors>1570;1571;1572;1573;1574;1580;1581;1584;1587;1589;1590;1592;3008</WarningsAsErrors>
     <DocumentationFile>bin\Debug\Remotion.Development.Data.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -47,6 +48,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTesting\DomainObjects\Linq\ApplyQueryExecutorMixinAttribute.cs" />
     <Compile Include="UnitTesting\DomainObjects\Linq\ExpressionTreeComparer.cs" />
+    <Compile Include="UnitTesting\DomainObjects\Linq\NHibernate\HqlQueryExecutorMixin.cs" />
     <Compile Include="UnitTesting\DomainObjects\Linq\QueryExecutorMixin.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
   </ItemGroup>
