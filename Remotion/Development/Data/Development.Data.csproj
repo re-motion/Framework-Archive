@@ -48,7 +48,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTesting\DomainObjects\Linq\ApplyQueryExecutorMixinAttribute.cs" />
     <Compile Include="UnitTesting\DomainObjects\Linq\ExpressionTreeComparer.cs" />
-    <Compile Include="UnitTesting\DomainObjects\Linq\NHibernate\HqlQueryExecutorMixin.cs" />
     <Compile Include="UnitTesting\DomainObjects\Linq\QueryExecutorMixin.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
   </ItemGroup>

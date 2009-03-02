@@ -21,6 +21,7 @@ using Remotion.Collections;
 using Remotion.Diagnostics.ToText.Infrastructure;
 using Remotion.Utilities;
 using System.Reflection;
+using Remotion.Text.StringExtensions;
 
 namespace Remotion.Diagnostics.ToText.Infrastructure
 {
@@ -318,9 +319,22 @@ namespace Remotion.Diagnostics.ToText.Infrastructure
       }
       catch (InvalidCastException)
       {
-        throw new ArgumentException ("ToTextBuilder.WriteElement currently supports only expressions of the form () => varName. The expression: " + Environment.NewLine + expression.Body.ToString () + Environment.NewLine + " does not comply with this restriction.");
+        //throw new ArgumentException ("ToTextBuilder.WriteElement currently supports only expressions of the form () => varName. The expression: " + Environment.NewLine + expression.Body.ToString () + Environment.NewLine + " does not comply with this restriction.");
+        return WriteElementGeneralPurposeButSlow (expression);
       }
     }
+
+
+    // ToTextBuilderBase.WriteElement: Plain vanilla implementation; performance approx 10x slower than optimized versions  
+    public IToTextBuilder WriteElementGeneralPurposeButSlow<T> (Expression<Func<T>> expression)
+    {
+      ArgumentUtility.CheckNotNull ("expression", expression);
+      var variableName = expression.Body.ToString ().RightUntilChar('.');
+      var variableValue = expression.Compile () ();
+      return WriteElement (variableName, variableValue);
+    }
+
+
 
 
     public IToTextBuilder WriteElement (string name, Object obj)
