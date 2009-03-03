@@ -32,7 +32,11 @@ namespace Remotion.Data.DomainObjects.NHibernate
       //return relationDefinition.GetOppositeClassDefinition (classDefinition.ID, propertyIdentifier).GetEntityName ();
 
       // TODO RELINQUING NHIBERNATE: Make sure return value is correct in all cases
-      return relationMember.Name;
+      // TODO RELINQUING NHIBERNATE: Ask NHibernate whether relationMember is a relation
+      if (relationMember.DeclaringType == typeof (DomainObject))
+        return relationMember.Name;
+      else 
+        return null;
     }
 
     public string GetColumnName (MemberInfo member)
@@ -85,7 +89,7 @@ namespace Remotion.Data.DomainObjects.NHibernate
       //IRelationEndPointDefinition rightEndPoint = relationDefinition.GetOppositeEndPointDefinition (leftEndPoint);
       //string leftColumn = GetJoinColumn (leftEndPoint);
       //string rightColumn = GetJoinColumn (rightEndPoint);
-      return Tuple.NewTuple (relationMember.Name, "DONT_KNOW_WHAT_TO_GIVE_HERE");
+      return Tuple.NewTuple (relationMember.Name, "IRRELEVANT_NOT_USED");
     }
 
     public object ProcessWhereParameter (object parameter)
