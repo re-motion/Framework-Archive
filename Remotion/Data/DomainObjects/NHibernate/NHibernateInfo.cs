@@ -30,9 +30,9 @@ namespace Remotion.Data.DomainObjects.NHibernate
       //ClassDefinition classDefinition = relationData.B;
       //string propertyIdentifier = relationData.C;
       //return relationDefinition.GetOppositeClassDefinition (classDefinition.ID, propertyIdentifier).GetEntityName ();
-      
-      // TODO RELINQUING NHIBERNATE: Return related table if available
-      return null;
+
+      // TODO RELINQUING NHIBERNATE: Make sure return value is correct in all cases
+      return relationMember.Name;
     }
 
     public string GetColumnName (MemberInfo member)
@@ -74,7 +74,18 @@ namespace Remotion.Data.DomainObjects.NHibernate
 
     public Tuple<string, string> GetJoinColumnNames (MemberInfo relationMember)
     {
-      throw new System.NotImplementedException();
+      //ArgumentUtility.CheckNotNull ("relationMember", relationMember);
+      //Tuple<RelationDefinition, ClassDefinition, string> relationData = GetRelationData (relationMember);
+      //if (relationData == null)
+      //  return null;
+      //RelationDefinition relationDefinition = relationData.A;
+      //ClassDefinition classDefinition = relationData.B;
+      //string propertyIdentifier = relationData.C;
+      //IRelationEndPointDefinition leftEndPoint = relationDefinition.GetEndPointDefinition (classDefinition.ID, propertyIdentifier);
+      //IRelationEndPointDefinition rightEndPoint = relationDefinition.GetOppositeEndPointDefinition (leftEndPoint);
+      //string leftColumn = GetJoinColumn (leftEndPoint);
+      //string rightColumn = GetJoinColumn (rightEndPoint);
+      return Tuple.NewTuple (relationMember.Name, "DONT_KNOW_WHAT_TO_GIVE_HERE");
     }
 
     public object ProcessWhereParameter (object parameter)
