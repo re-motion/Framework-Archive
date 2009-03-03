@@ -33,10 +33,20 @@ namespace Remotion.Data.DomainObjects.NHibernate
 
       // TODO RELINQUING NHIBERNATE: Make sure return value is correct in all cases
       // TODO RELINQUING NHIBERNATE: Ask NHibernate whether relationMember is a relation
-      if (relationMember.DeclaringType == typeof (DomainObject))
+      //((RuntimePropertyInfo) relationMember).PropertyType
+      
+      //if (relationMember.DeclaringType == typeof (DomainObject))
+      //relationMember.ReflectedType.
+      //if ( ((System.Reflection.PropertyInfo) relationMember).PropertyType.IsAssignableFrom(typeof (DomainObject)))
+      if (Remotion.Utilities.ReflectionUtility.CanAscribe (
+        ((System.Reflection.PropertyInfo) relationMember).PropertyType, typeof (DomainObject)))
+      {
         return relationMember.Name;
-      else 
+      }
+      else
+      {
         return null;
+      }
     }
 
     public string GetColumnName (MemberInfo member)
