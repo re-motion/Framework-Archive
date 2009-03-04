@@ -101,7 +101,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
       if (oppositeDomainObjects.ChangeDelegate != null)
         throw new InvalidOperationException ("The new opposite collection is already associated with another relation property.");
 
-      if (_oppositeDomainObjects.GetType () != oppositeDomainObjects.GetType ())
+      if (!Definition.PropertyType.IsAssignableFrom (oppositeDomainObjects.GetType ())) // HIBERNATING_RESTORE
+      //if (_oppositeDomainObjects.GetType () != oppositeDomainObjects.GetType ())
       {
         string message = string.Format ("The new opposite collection must have the same type as the old collection ('{0}'), but its type is '{1}'.", 
             _oppositeDomainObjects.GetType ().FullName, oppositeDomainObjects.GetType ().FullName);
