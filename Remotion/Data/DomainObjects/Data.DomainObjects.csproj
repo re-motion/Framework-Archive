@@ -198,7 +198,6 @@
     <Compile Include="Mapping\ReflectionBasedNameResolver.cs" />
     <Compile Include="Mapping\RelationKindType.cs" />
     <Compile Include="Mapping\SerializableMappingObject.cs" />
-    <Compile Include="NHibernate\NHibernateInfo.cs" />
     <Compile Include="ObjectBinding\BindableDomainObject.cs" />
     <Compile Include="ObjectBinding\BindableDomainObjectAttribute.cs" />
     <Compile Include="ObjectBinding\BindableDomainObjectGetObjectService.cs" />
