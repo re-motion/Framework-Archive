@@ -33,14 +33,5 @@ namespace Remotion.Data.DomainObjects.Linq
         result.Add (item);
       return result;
     }
-
-    //public static QueryModel Fetch<T, TR> (this IEnumerable<T> source, Expression<Func<T, TR>> selector) where T : DomainObject
-    //{
-    //  var ex = ((IQueryable) source).Expression;
-    //  QueryParser parser = new QueryParser (ex);
-    //  FromExpressionData expressionData = new FromExpressionData (selector, selector.Parameters[0]);
-    //  QueryModel model = parser.GetParsedQueryFetch (expressionData);
-    //  return model;
-    //}
   }
 }
