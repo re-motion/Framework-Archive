@@ -14,22 +14,24 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.ObjectBinding.Web.UI.Controls;
+using System.Web.UI;
 
-namespace Remotion.ObjectBinding.Sample
+namespace Remotion.ObjectBinding.Web.UI.Controls.Infrastructure.BocList
 {
-  public class PersonListItemCommandState : IBocListItemCommandState
+  public class Triplet<TFirst, TSecond, TThird>
   {
-    public PersonListItemCommandState ()
-    {
-    }
+    public TFirst First { get; set; }
+    public TSecond Second { get; set; }
+    public TThird Third { get; set; }
+  }
 
-    public bool IsEnabled (
-        IBocList list,
-        IBusinessObject businessObject,
-        BocCommandEnabledColumnDefinition columnDefinition)
+  public class BocListCustomColumnTriplet : Triplet<IBusinessObject, int, Control>
+  {
+    public BocListCustomColumnTriplet (IBusinessObject businessObject, int originalRowIndex, Control control)
     {
-      return true;
+      First = businessObject;
+      Second = originalRowIndex;
+      Third = control;
     }
   }
 }
