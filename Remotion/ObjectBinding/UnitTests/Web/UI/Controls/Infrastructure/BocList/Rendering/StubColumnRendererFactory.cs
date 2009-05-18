@@ -15,12 +15,19 @@
 // 
 using System;
 using System.Web.UI;
-using Microsoft.Practices.ServiceLocation;
+using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Infrastructure.BocList.Rendering;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.Infrastructure.BocList.Rendering
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.Infrastructure.BocList.Rendering
 {
-  public interface IBocRowRendererFactory
+  public class StubColumnRendererFactory : IBocColumnRendererFactory<StubColumnDefinition>
   {
-    IBocRowRenderer CreateRenderer (HtmlTextWriter writer, IBocList list, IServiceLocator serviceLocator);
+    public IBocColumnRenderer<StubColumnDefinition> CreateRenderer (
+      HtmlTextWriter writer, 
+      IBocList list, 
+      StubColumnDefinition columnDefinition)
+    {
+      return new StubColumnRenderer (writer, list, columnDefinition);
+    }
   }
 }
