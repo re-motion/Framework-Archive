@@ -15,39 +15,33 @@
 // 
 using System;
 using System.Web.UI;
+using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.Infrastructure;
-using Remotion.Web.UI.Controls;
+using Rhino.Mocks;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.Rendering.BocTextValue
 {
-  public abstract class RendererBase<TControl>
+  public class MockMultilineTextValue : BocMultilineTextValue
   {
-    private readonly HtmlTextWriter _writer;
-    private readonly IHttpContext _context;
-    private readonly TControl _control;
-
-    protected RendererBase (IHttpContext context, HtmlTextWriter writer, TControl control)
+    public void OnPreRender ()
     {
-      _writer = writer;
-      _control = control;
-      _context = context;
+      OnPreRender (EventArgs.Empty);
     }
 
-    /// <summary>Gets the <see cref="HtmlTextWriter"/> object used to render the <see cref="BocList"/>.</summary>
-    public HtmlTextWriter Writer
+    public override bool IsReadOnly
     {
-      get { return _writer; }
+      get { return ReadOnly.HasValue ? ReadOnly.Value : base.IsReadOnly; }
     }
 
-    /// <summary>Gets the <see cref="IHttpContext"/> that contains the response for which this renderer generates output.</summary>
-    public IHttpContext Context
+    public new string CssClassBase
     {
-      get { return _context; }
+      get { return base.CssClassBase; }
     }
 
-    protected TControl Control
-    {
-      get { return _control; }
-    }
+    //protected override void Render (HtmlTextWriter writer)
+    //{
+    //  var renderer = GetRenderer (MockRepository.GenerateMock<IHttpContext> (), writer);
+    //  renderer.Render ();
+    //}
   }
 }
