@@ -28,11 +28,6 @@ public class BocEnumValueMock: BocEnumValue
   {
     base.EvaluateWaiConformity ();
   }
-
-  public new void RefreshEnumList()
-  {
-    base.RefreshEnumList();
-  }
 }
 
 }

@@ -19,25 +19,16 @@ using Remotion.ObjectBinding.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
-  public interface IBocDateTimeValue : IBusinessObjectBoundEditableWebControl, IBocRenderableControl
+  public interface IBocEnumValue : IBusinessObjectBoundEditableWebControl, IBocRenderableControl
   {
-    new DateTime? Value { get; }
-
-    BocDateTimeValueType ActualValueType { get; }
+    IEnumerationValueInfo EnumerationValueInfo { get; }
     Style CommonStyle { get; }
     Style LabelStyle { get; }
-    bool ProvideMaxLength { get; }
-    SingleRowTextBoxStyle DateTextBoxStyle { get; }
-    SingleRowTextBoxStyle TimeTextBoxStyle { get; }
-    BocDatePickerButton DatePickerButton { get; }
-    bool ShowSeconds { get; }
-    SingleRowTextBoxStyle DateTimeTextBoxStyle { get; }
-    string DateString { get; }
-    string TimeString { get; }
-    string GetDateTextboxID ();
-    string GetDatePickerText ();
-    string GetTimeTextboxID ();
-    string GetTimeTextboxClientID ();
-    string GetDateTextboxClientID ();
+    ListControlStyle ListControlStyle { get; }
+    string NullIdentifier { get; }
+    string GetListControlClientID ();
+    string GetLabelClientID ();
+    IEnumerationValueInfo[] GetEnabledValues();
+    string GetNullItemText ();
   }
 }
