@@ -14,45 +14,34 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web.UI;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering
+namespace Remotion.Web.UI.Controls.Rendering
 {
   /// <summary>
-  /// Base class for all renderers. Contains the essential properties used in rendering.
+  /// Base class for all prerenderers. Contains the essential properties used for preparing a control's rendering.
   /// </summary>
-  /// <remarks>
-  /// This class does <b>not</b> restrict the type of control - for <see cref="IBocRenderableControl"/> renderers,
-  /// use <see cref="RenderableControlRendererBase{TControl}"/> as base class.
-  /// </remarks>
   /// <typeparam name="TControl">The type of control that can be rendered.</typeparam>
-  public abstract class RendererBase<TControl>
+  public abstract class PreRendererBase<TControl> : IPreRenderer<TControl>
+      where TControl: IControl
   {
-    private readonly HtmlTextWriter _writer;
     private readonly IHttpContext _context;
     private readonly TControl _control;
 
     /// <summary>
-    /// Initializes the <see cref="Context"/>, <see cref="Writer"/> and <see cref="Control"/> properties from the arguments.
+    /// Initializes the <see cref="Context"/> and <see cref="Control"/> properties from the arguments.
     /// </summary>
-    protected RendererBase (IHttpContext context, HtmlTextWriter writer, TControl control)
+    protected PreRendererBase (IHttpContext context, TControl control)
     {
       ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("writer", writer);
       ArgumentUtility.CheckNotNull ("control", control);
 
-      _writer = writer;
       _control = control;
       _context = context;
     }
 
-    /// <summary>Gets the <see cref="HtmlTextWriter"/> object used to render the <see cref="BocList"/>.</summary>
-    public HtmlTextWriter Writer
-    {
-      get { return _writer; }
-    }
+    public abstract void PreRender ();
 
     /// <summary>Gets the <see cref="IHttpContext"/> that contains the response for which this renderer generates output.</summary>
     public IHttpContext Context

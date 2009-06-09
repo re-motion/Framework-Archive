@@ -17,7 +17,7 @@ using System;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocList
 {
-  public interface IBocListRenderer : IRenderer<IBocList>
+  public interface IBocListRenderer : IBocRenderableControlRenderer<IBocList>
   {
   }
 }

@@ -15,15 +15,21 @@
 // 
 using System;
 using System.Web.UI;
+using Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocDateTimeValue;
 using Remotion.Web.Infrastructure;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocDateTimeValue
+namespace Remotion.Web.UI.Controls.Rendering.DatePickerButton.QuirksMode.Factories
 {
-  /// <summary>
-  /// Interface for factories creating <see cref="IBocDatePickerButtonRenderer"/> renderers.
-  /// </summary>
-  public interface IBocDatePickerButtonRendererFactory
+  public class DatePickerButtonRendererFactory : IDatePickerButtonRendererFactory
   {
-    IBocDatePickerButtonRenderer CreateRenderer (IHttpContext context, HtmlTextWriter writer, IBocDatePickerButton control);
+    public IDatePickerButtonRenderer CreateRenderer (IHttpContext context, HtmlTextWriter writer, IDatePickerButton control)
+    {
+      return new DatePickerButtonRenderer (context, writer, control);
+    }
+
+    public IDatePickerButtonPreRenderer CreatePreRenderer (IHttpContext context, IDatePickerButton control)
+    {
+      return new DatePickerButtonPreRenderer (context, control);
+    }
   }
 }

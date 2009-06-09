@@ -14,25 +14,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web.UI.WebControls;
-using Remotion.ObjectBinding.Web.UI.Controls.Rendering;
-using Remotion.Web.UI.Controls;
+using System.Web.UI;
+using Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocDateTimeValue;
+using Remotion.Web.Infrastructure;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls
+namespace Remotion.Web.UI.Controls.Rendering.DatePickerButton
 {
-  public interface IBocDatePickerButton : IBocRenderableControl, IControl
+  /// <summary>
+  /// Interface for factories creating <see cref="IDatePickerButtonRenderer"/> renderers.
+  /// </summary>
+  public interface IDatePickerButtonRendererFactory
   {
-    new bool IsDesignMode { get; set; }
-    string ImageFileName { get; }
-    bool HasClientScript { get; }
-    string AlternateText { get; set; }
-    bool EnableClientScript { get; }
-    string TargetControlID { get; }
-    Unit DatePickerPopupWidth { get; }
-    Unit DatePickerPopupHeight { get; }
-    Style DatePickerButtonStyle { get; }
-    string ContainerControlID { get; }
-    string GetDatePickerUrl ();
-    string GetResolvedImageUrl ();
+    IDatePickerButtonRenderer CreateRenderer (IHttpContext context, HtmlTextWriter writer, IDatePickerButton control);
+    IDatePickerButtonPreRenderer CreatePreRenderer (IHttpContext context, IDatePickerButton control);
   }
 }

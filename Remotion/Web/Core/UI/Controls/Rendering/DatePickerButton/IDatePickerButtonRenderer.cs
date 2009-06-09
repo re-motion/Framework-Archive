@@ -14,13 +14,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Controls.Rendering;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocEnumValue
+namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocDateTimeValue
 {
   /// <summary>
-  /// Interface for classes able to render <see cref="IBocEnumValue"/> controls.
+  /// Interface for classes able to render <see cref="IDatePickerButton"/> controls.
   /// </summary>
-  public interface IBocEnumValueRenderer : IBocRenderableControlRenderer<IBocEnumValue>
+  public interface IDatePickerButtonRenderer : IRenderer<IDatePickerButton>
   {
+    string GetDatePickerUrl ();
+    string GetResolvedImageUrl ();
   }
 }

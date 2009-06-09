@@ -14,13 +14,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Web.UI;
+using Remotion.Web.Infrastructure;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocEnumValue
+namespace Remotion.Web.UI.Controls.Rendering
 {
   /// <summary>
-  /// Interface for classes able to render <see cref="IBocEnumValue"/> controls.
+  /// Base interface for all renderers able to render <see cref="IControl"/> objects.
   /// </summary>
-  public interface IBocEnumValueRenderer : IBocRenderableControlRenderer<IBocEnumValue>
+  public interface IRenderer<TControl>
+      where TControl : IControl
   {
+    /// <summary>Gets the control to render.</summary>
+    TControl Control { get; }
+
+    /// <summary>Gets the writer to use for rendering.</summary>
+    HtmlTextWriter Writer { get; }
+
+    /// <summary>Gets the context in which rendering occurs.</summary>
+    IHttpContext Context { get; }
+
+    /// <summary>Renders the <see cref="Control"/> using the <see cref="Writer"/> in the given <see cref="Context"/>.</summary>
+    void Render();
   }
 }

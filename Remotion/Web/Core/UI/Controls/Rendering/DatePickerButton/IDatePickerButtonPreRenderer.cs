@@ -15,12 +15,10 @@
 // 
 using System;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocEnumValue
+namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocDateTimeValue
 {
-  /// <summary>
-  /// Interface for classes able to render <see cref="IBocEnumValue"/> controls.
-  /// </summary>
-  public interface IBocEnumValueRenderer : IBocRenderableControlRenderer<IBocEnumValue>
+  public interface IDatePickerButtonPreRenderer
   {
+    void PreRender ();
   }
 }

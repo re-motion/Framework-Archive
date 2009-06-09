@@ -14,34 +14,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web.UI;
-using Remotion.Web.Infrastructure;
+using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering
 {
-  /// <summary>
-  /// Base interface for all renderers able to render <see cref="IBocRenderableControl"/> objects.
-  /// </summary>
-  public interface IRenderer<TControl>
-    where TControl : IBocRenderableControl
+  public interface IBocRenderableControlRenderer<TControl> : IRenderer<TControl>
+      where TControl: IBocRenderableControl, IBusinessObjectBoundEditableWebControl
   {
-    /// <summary>Gets the control to render.</summary>
-    TControl Control { get; }
-
-    /// <summary>Gets the writer to use for rendering.</summary>
-    HtmlTextWriter Writer { get; }
-
-    /// <summary>Gets the context in which rendering occurs.</summary>
-    IHttpContext Context { get; }
-
     /// <summary>Gets the default CSS class, which is applied if no CSS class is defined on the control.</summary>
     string CssClassBase { get; }
 
     string CssClassDisabled { get; }
 
     string CssClassReadOnly { get; }
-
-    /// <summary>Renders the <see cref="Control"/> using the <see cref="Writer"/> in the given <see cref="Context"/>.</summary>
-    void Render ();
   }
 }
