@@ -14,13 +14,22 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Web.UI.WebControls;
 
 namespace Remotion.Web.UI.Controls.Rendering.DatePickerButton
 {
   /// <summary>
-  /// Interface for classes able to render <see cref="IDatePickerButton"/> controls.
+  /// Exposes <see cref="DatePickerButton"/> properties relevant to rendering.
   /// </summary>
-  public interface IDatePickerButtonRenderer : IRenderer<IDatePickerButton>
+  public interface IDatePickerButton : IStyledControl
   {
+    new IControl Parent { get; }
+    bool IsDesignMode { get; set; }
+    string AlternateText { get; set; }
+    bool EnableClientScript { get; }
+    string TargetControlID { get; }
+    Style DatePickerButtonStyle { get; }
+    string ContainerControlID { get; }
+    bool Enabled { get; }
   }
 }

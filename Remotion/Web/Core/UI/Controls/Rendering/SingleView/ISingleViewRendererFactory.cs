@@ -14,20 +14,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web.UI.WebControls;
-using Remotion.Web.UI.Controls.Rendering;
+using System.Web.UI;
+using Remotion.Web.Infrastructure;
 
-namespace Remotion.Web.UI.Controls
+namespace Remotion.Web.UI.Controls.Rendering.SingleView
 {
-  public interface IDatePickerButton : IStyledControl
+  /// <summary>
+  /// Interface for factories that create renderers for <see cref="ISingleView"/>.
+  /// </summary>
+  public interface ISingleViewRendererFactory
   {
-    new IControl Parent { get; }
-    bool IsDesignMode { get; set; }
-    string AlternateText { get; set; }
-    bool EnableClientScript { get; }
-    string TargetControlID { get; }
-    Style DatePickerButtonStyle { get; }
-    string ContainerControlID { get; }
-    bool Enabled { get; }
+    ISingleViewRenderer CreateRenderer (IHttpContext context, HtmlTextWriter writer, ISingleView control);
   }
 }

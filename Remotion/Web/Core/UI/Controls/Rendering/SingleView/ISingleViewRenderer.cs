@@ -14,14 +14,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web.UI;
-using Remotion.Web.Infrastructure;
 
-namespace Remotion.Web.UI.Controls.Rendering
+namespace Remotion.Web.UI.Controls.Rendering.SingleView
 {
-  public interface IRendererFactory<TControl>
-      where TControl: IControl
+  /// <summary>
+  /// Interface for classes able to render <see cref="ISingleView"/> controls.
+  /// </summary>
+  public interface ISingleViewRenderer : IRenderer<ISingleView>
   {
-    IRenderer<TControl> CreateRenderer (IHttpContext context, HtmlTextWriter writer, TControl control);
   }
 }
