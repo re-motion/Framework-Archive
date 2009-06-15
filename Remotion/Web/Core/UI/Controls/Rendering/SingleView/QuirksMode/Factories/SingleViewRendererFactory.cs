@@ -28,5 +28,10 @@ namespace Remotion.Web.UI.Controls.Rendering.SingleView.QuirksMode.Factories
     {
       return new SingleViewRenderer (context, writer, control);
     }
+
+    public ISingleViewPreRenderer CreatePreRenderer (IHttpContext context, ISingleView control)
+    {
+      return new SingleViewPreRenderer (context, control);
+    }
   }
 }

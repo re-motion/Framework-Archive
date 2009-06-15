@@ -14,17 +14,21 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web.UI;
-using Remotion.Web.Infrastructure;
+using System.ComponentModel;
+using Remotion.Globalization;
 
-namespace Remotion.Web.UI.Controls.Rendering.TabbedMultiView
+namespace Remotion.Web.UI.Controls
 {
   /// <summary>
-  /// Interface for factories creating renderers for <see cref="TabbedMultiView"/> controls.
+  ///   Provides <see cref="IComponent"/>-like functionality for non-UI items of controls.
   /// </summary>
-  public interface ITabbedMultiViewRendererFactory
+  /// <remarks>
+  ///   <b>IComponent</b> is not used because it involves CodeDOM designer serialization.
+  /// </remarks>
+  public interface IControlItem
   {
-    ITabbedMultiViewRenderer CreateRenderer (IHttpContext context, HtmlTextWriter writer, ITabbedMultiView control);
-    ITabbedMultiViewPreRenderer CreatePreRenderer (IHttpContext context, ITabbedMultiView control);
+    IControl OwnerControl { get; set; }
+    string ItemID { get; }
+    void LoadResources (IResourceManager resourceManager);
   }
 }

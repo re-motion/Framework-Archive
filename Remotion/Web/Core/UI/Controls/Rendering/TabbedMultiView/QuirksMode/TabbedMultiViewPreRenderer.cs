@@ -14,17 +14,26 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web.UI;
 using Remotion.Web.Infrastructure;
 
-namespace Remotion.Web.UI.Controls.Rendering.TabbedMultiView
+namespace Remotion.Web.UI.Controls.Rendering.TabbedMultiView.QuirksMode
 {
-  /// <summary>
-  /// Interface for factories creating renderers for <see cref="TabbedMultiView"/> controls.
-  /// </summary>
-  public interface ITabbedMultiViewRendererFactory
+  public class TabbedMultiViewPreRenderer : PreRendererBase<ITabbedMultiView>, ITabbedMultiViewPreRenderer
   {
-    ITabbedMultiViewRenderer CreateRenderer (IHttpContext context, HtmlTextWriter writer, ITabbedMultiView control);
-    ITabbedMultiViewPreRenderer CreatePreRenderer (IHttpContext context, ITabbedMultiView control);
+    public TabbedMultiViewPreRenderer (IHttpContext context, ITabbedMultiView control)
+        : base(context, control)
+    {
+    }
+
+    public override void PreRender ()
+    {
+      string key = typeof (ITabbedMultiView).FullName + "_Style";
+      if (!HtmlHeadAppender.Current.IsRegistered (key))
+      {
+        string styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
+            Control, Context, typeof (ITabbedMultiView), ResourceType.Html, ResourceTheme.Legacy, "TabbedMultiView.css");
+        HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
+      }
+    }
   }
 }
