@@ -24,9 +24,9 @@ namespace Remotion.Data.DomainObjects.Linq
   /// <summary>
   /// The class extends <see cref="QueryProviderBase"/>.
   /// </summary>
-  public class QueryProvider : QueryProviderBase
+  public class DomainObjectQueryProvider : QueryProviderBase
   {
-    public QueryProvider (QueryExecutorBase executor)
+    public DomainObjectQueryProvider (DomainObjectQueryExecutor executor)
         : base (executor)
     {
     }
