@@ -17,7 +17,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Remotion.Scripting
+namespace Remotion.Collections
 {
   [Serializable]
   public class ReadOnlyDictionary<TKey, TValue> : IDictionary<TKey, TValue>
@@ -31,7 +31,7 @@ namespace Remotion.Scripting
 
     IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator ()
     {
-      return _dictionary.GetEnumerator ();
+      return _dictionary.GetEnumerator();
     }
 
     public IEnumerator GetEnumerator ()
@@ -52,7 +52,6 @@ namespace Remotion.Scripting
     }
 
 
-    
     void ICollection<KeyValuePair<TKey, TValue>>.Add (KeyValuePair<TKey, TValue> item)
     {
       throw new NotSupportedException ("Dictionary is read-only.");
@@ -89,25 +88,19 @@ namespace Remotion.Scripting
     }
 
 
-    public TValue this[TKey key]
+    public TValue this [TKey key]
     {
       get { return _dictionary[key]; }
     }
 
     public ICollection<TKey> Keys
     {
-      get
-      {
-        throw new NotSupportedException ("Dictionary is read-only (IDictionary.Keys does not guarantee immutability).");
-      }
+      get { throw new NotSupportedException ("Dictionary is read-only (IDictionary.Keys does not guarantee immutability)."); }
     }
 
     public ICollection<TValue> Values
     {
-      get
-      {
-        throw new NotSupportedException ("Dictionary is read-only (IDictionary.Values does not guarantee immutability).");
-      }
+      get { throw new NotSupportedException ("Dictionary is read-only (IDictionary.Values does not guarantee immutability)."); }
     }
 
 
@@ -116,9 +109,6 @@ namespace Remotion.Scripting
       return _dictionary.ToString();
     }
 
-
-
-    
 
     void IDictionary<TKey, TValue>.Add (TKey key, TValue value)
     {
@@ -131,14 +121,10 @@ namespace Remotion.Scripting
     }
 
 
-    TValue IDictionary<TKey, TValue>.this[TKey key]
+    TValue IDictionary<TKey, TValue>.this [TKey key]
     {
       get { return _dictionary[key]; }
-      set
-      {
-        throw new NotSupportedException ("Dictionary is read-only.");
-      }
+      set { throw new NotSupportedException ("Dictionary is read-only."); }
     }
-
   }
 }

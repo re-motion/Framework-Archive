@@ -17,7 +17,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Remotion.Scripting
+namespace Remotion.Collections
 {
   [Serializable]
   public class ReadOnlyDictionarySpecific<TKey, TValue> : IDictionary<TKey, TValue>
@@ -31,7 +31,7 @@ namespace Remotion.Scripting
 
     IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator ()
     {
-      return ((IEnumerable<KeyValuePair<TKey, TValue>>) _dictionary).GetEnumerator ();
+      return ((IEnumerable<KeyValuePair<TKey, TValue>>) _dictionary).GetEnumerator();
     }
 
     public IEnumerator GetEnumerator ()
@@ -56,7 +56,6 @@ namespace Remotion.Scripting
     }
 
 
-
     public IEqualityComparer<TKey> Comparer
     {
       get { return _dictionary.Comparer; }
@@ -74,7 +73,7 @@ namespace Remotion.Scripting
 
     bool ICollection<KeyValuePair<TKey, TValue>>.Contains (KeyValuePair<TKey, TValue> item)
     {
-      return ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).Contains (item);
+      return ((ICollection<KeyValuePair<TKey, TValue>>) _dictionary).Contains (item);
     }
 
     void ICollection<KeyValuePair<TKey, TValue>>.CopyTo (KeyValuePair<TKey, TValue>[] array, int arrayIndex)
@@ -98,7 +97,7 @@ namespace Remotion.Scripting
     }
 
 
-    public TValue this[TKey key]
+    public TValue this [TKey key]
     {
       get { return _dictionary[key]; }
     }
@@ -109,9 +108,6 @@ namespace Remotion.Scripting
       return _dictionary.ToString();
     }
 
-
-
-    
 
     void IDictionary<TKey, TValue>.Add (TKey key, TValue value)
     {
@@ -124,13 +120,10 @@ namespace Remotion.Scripting
     }
 
 
-    TValue IDictionary<TKey, TValue>.this[TKey key]
+    TValue IDictionary<TKey, TValue>.this [TKey key]
     {
       get { return _dictionary[key]; }
-      set
-      {
-        throw new NotSupportedException ("Dictionary is read-only.");
-      }
+      set { throw new NotSupportedException ("Dictionary is read-only."); }
     }
 
     // Note that System.Collections.Generic.Dictionary Keys is guranteed to be read-only, whereas IDictionary Keys makes no such gurantee.
