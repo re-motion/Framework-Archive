@@ -15,6 +15,8 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Remotion.Web.UI.Controls.Rendering.WebTabStrip
 {
@@ -28,5 +30,7 @@ namespace Remotion.Web.UI.Controls.Rendering.WebTabStrip
     bool EnableSelectedTab { get; }
 
     new IPage Page { get; }
+    Unit Width { get; set; }
+    CssStyleCollection Style { get; }
   }
 }

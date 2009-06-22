@@ -14,19 +14,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Drawing;
-using System.Web.UI.WebControls;
-using Remotion.Web.UI.Controls.Rendering.WebTabStrip;
 
 namespace Remotion.Web.UI.Controls.Rendering.TabbedMenu
 {
-  public interface ITabbedMenu : IStyledControl
+  public interface ITabbedMenuRenderer : IRenderer<ITabbedMenu>
   {
-    IWebTabStrip MainMenuTabStrip { get; }
-    IWebTabStrip SubMenuTabStrip { get; }
-    Color SubMenuBackgroundColor { get; }
-    Style StatusStyle { get; }
-    string StatusText { get; }
-    bool IsDesignMode { get; }
   }
 }
