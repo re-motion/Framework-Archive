@@ -13,17 +13,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
+using System.Runtime.CompilerServices;
+
 namespace Remotion.Scripting
 {
   /// <summary>
-  /// Represents a re-motion script context, which is used to isolate different re-motion modules from one another.
-  /// Static members give access to the currently actice script context.
+  /// Supplies functionality to implement a GetCustoMember method qualified with <see cref="SpecialNameAttribute"/> 
+  /// which passes member/property access on to <see cref="StableBindingProxyProvider"/>.
   /// </summary>
-  /// <remarks>
-  /// <seealso cref="Script"/>
-  /// </remarks>
-  public class ScriptContext
+  public class StableBindingGetCustomMemberImplementor
   {
-    
+    [SpecialName]
+    public void Test ()
+    {
+      
+    }
   }
 }
