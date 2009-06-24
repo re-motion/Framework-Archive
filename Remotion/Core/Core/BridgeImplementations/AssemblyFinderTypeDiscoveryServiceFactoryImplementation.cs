@@ -20,7 +20,12 @@ using Remotion.Reflection;
 
 namespace Remotion.BridgeImplementations
 {
-  public class AssemblyFinderTypeDiscoveryServiceImplementation : IAssemblyFinderTypeDiscoveryServiceImplementation
+  /// <summary>
+  /// The <see cref="AssemblyFinderTypeDiscoveryServiceFactoryImplementation"/> is a factory class that creates instances of type 
+  /// <see cref="AssemblyFinderTypeDiscoveryService"/>.
+  /// </summary>
+  /// <seealso cref="ContextAwareTypeDiscoveryUtility"/>
+  public class AssemblyFinderTypeDiscoveryServiceFactoryImplementation : IAssemblyFinderTypeDiscoveryServiceFactoryImplementation
   {
     public ITypeDiscoveryService CreateTypeDiscoveryService ()
     {

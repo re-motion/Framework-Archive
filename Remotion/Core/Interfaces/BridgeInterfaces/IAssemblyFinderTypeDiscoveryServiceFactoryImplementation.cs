@@ -18,8 +18,12 @@ using Remotion.Implementation;
 
 namespace Remotion.BridgeInterfaces
 {
-  [ConcreteImplementation ("Remotion.BridgeImplementations.AssemblyFinderTypeDiscoveryServiceImplementation, Remotion, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>")]
-  public interface IAssemblyFinderTypeDiscoveryServiceImplementation
+  /// <summary>
+  /// This interface is used to separate the <see cref="T:Remotion.BridgeImplementations.AssemblyFinderTypeDiscoveryServiceFactoryImplementation"/>
+  /// from it's instantiation in the <see cref="VersionDependentImplementationBridge{T}"/>.
+  /// </summary>
+  [ConcreteImplementation ("Remotion.BridgeImplementations.AssemblyFinderTypeDiscoveryServiceFactoryImplementation, Remotion, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>")]
+  public interface IAssemblyFinderTypeDiscoveryServiceFactoryImplementation
   {
     ITypeDiscoveryService CreateTypeDiscoveryService ();
   }
