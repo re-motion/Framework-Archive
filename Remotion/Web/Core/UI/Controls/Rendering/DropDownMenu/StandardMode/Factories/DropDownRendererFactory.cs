@@ -14,11 +14,21 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Web.UI;
+using Remotion.Web.Infrastructure;
 
-namespace Remotion.Web.UI.Controls.Rendering.DropDownMenu
+namespace Remotion.Web.UI.Controls.Rendering.DropDownMenu.StandardMode.Factories
 {
-  public interface IDropDownMenuPreRenderer : IPreRenderer<IDropDownMenu>
+  public class DropDownRendererFactory : IDropDownMenuRendererFactory
   {
-    bool CanRender ();
+    public IDropDownMenuPreRenderer CreatePreRenderer (IHttpContext context, IDropDownMenu control)
+    {
+      return new DropDownMenuPreRenderer (context, control);
+    }
+
+    public IDropDownMenuRenderer CreateRenderer (IHttpContext context, HtmlTextWriter writer, IDropDownMenu control)
+    {
+      return new DropDownMenuRenderer (context, writer, control);
+    }
   }
 }
