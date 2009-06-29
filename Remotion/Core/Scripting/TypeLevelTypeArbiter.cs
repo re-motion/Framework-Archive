@@ -14,22 +14,33 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
+using System.Reflection;
+using Remotion.Utilities;
 
 namespace Remotion.Scripting
 {
   /// <summary>
-  /// Supplies functionality to implement a GetCustoMember method qualified with <see cref="SpecialNameAttribute"/> 
-  /// which passes member/property access on to <see cref="StableBindingProxyProvider"/>.
+  /// Categorizes <see cref="Type"/>|s into "valid" and "invalid" types, 
+  /// based on whether the type is a member of the class's type collection.
   /// </summary>
-  public class StableBindingGetCustomMemberImplementor
+  public class TypeLevelTypeArbiter : ITypeArbiter
   {
-    //[SpecialName]
-    //public void Test ()
-    //{
-      
-    //}
+    private readonly Dictionary<Type, bool> _validTypes = new Dictionary<Type, bool> ();
 
-    // TODO: Implement GetCustomMember through forwarding of call to helper class instance. 
+    public TypeLevelTypeArbiter (IEnumerable<Type> validTypes)
+    {
+      ArgumentUtility.CheckNotNullOrItemsNull ("validTypes", validTypes);
+      foreach (var type in validTypes)
+      {
+        _validTypes.Add (type, true);
+      }
+    }
+
+    public bool IsTypeValid (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      return _validTypes.ContainsKey (type);
+    }
   }
 }

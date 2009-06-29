@@ -28,7 +28,7 @@ namespace Remotion.Scripting
   {
     private readonly Dictionary<Assembly,bool> _validAssemblies = new Dictionary<Assembly, bool>();
 
-    public AssemblyLevelTypeArbiter (Assembly[] validAssemblies)
+    public AssemblyLevelTypeArbiter (IEnumerable<Assembly> validAssemblies)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("validAssemblies", validAssemblies);
       foreach (var assembly in validAssemblies)
