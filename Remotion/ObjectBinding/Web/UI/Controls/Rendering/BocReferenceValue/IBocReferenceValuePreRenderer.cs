@@ -14,19 +14,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web.UI;
-using Microsoft.Practices.ServiceLocation;
-using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocList;
-using Remotion.Web.Infrastructure;
+using Remotion.Web.UI.Controls.Rendering;
 
-namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.Rendering.BocList
+namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocReferenceValue
 {
-  public class StubColumnDefinition : BocColumnDefinition
+  public interface IBocReferenceValuePreRenderer : IPreRenderer<IBocReferenceValue>
   {
-    protected override IBocColumnRenderer GetRendererInternal (IServiceLocator locator, IHttpContext context, HtmlTextWriter writer, IBocList list)
-    {
-      return new StubColumnRenderer (context, writer, list, this);
-    }
   }
 }
