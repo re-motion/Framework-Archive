@@ -18,13 +18,12 @@ using System.Runtime.Serialization;
 using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Context;
-using Remotion.Mixins.Definitions;
 using Remotion.UnitTests.Mixins.SampleTypes;
 
 namespace Remotion.UnitTests.Mixins.CodeGeneration.DynamicProxy
 {
   [IgnoreForMixinConfiguration]
-  public class FakeDeserializedConcreteType : BaseType1, IInitializableMixinTarget, ISerializable, IDeserializationCallback
+  public class FakeConcreteMixedType : BaseType1, IInitializableMixinTarget, ISerializable, IDeserializationCallback
   {
     public bool OnDeserializingCalled = false;
     public bool OnDeserializedCalled = false;
@@ -32,11 +31,11 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.DynamicProxy
     public bool CtorCalled = true;
     public bool SerializationCtorCalled = false;
 
-    public FakeDeserializedConcreteType ()
+    public FakeConcreteMixedType ()
     {
     }
 
-    protected FakeDeserializedConcreteType (SerializationInfo info, StreamingContext context)
+    protected FakeConcreteMixedType (SerializationInfo info, StreamingContext context)
     {
       SerializationCtorCalled = true;
     }
