@@ -14,16 +14,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Mixins;
+using System.Collections.Generic;
 
-namespace Remotion.UnitTests.Mixins.SampleTypes
+namespace Remotion.UnitTests.Mixins.Utilities.TestDomain
 {
-  public class GenericMixinWithVirtualMethod<[BindToTargetType]T> : Mixin<T>
-      where T : class
+// ReSharper disable UnusedTypeParameter
+  public class GenericClassWithConflictingConstraints<T>
+      where T : List<int>, IServiceProvider
   {
-    public virtual string VirtualMethod ()
-    {
-      return "GenericMixinWithVirtualMethod.VirtualMethod";
-    }
   }
+  // ReSharper restore UnusedTypeParameter
 }

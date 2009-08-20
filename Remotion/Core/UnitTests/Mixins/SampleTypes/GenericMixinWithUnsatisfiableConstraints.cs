@@ -14,16 +14,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Runtime.Serialization;
 using Remotion.Mixins;
 
 namespace Remotion.UnitTests.Mixins.SampleTypes
 {
-  public class GenericMixinWithVirtualMethod<[BindToTargetType]T> : Mixin<T>
-      where T : class
+  public class GenericMixinWithUnsatisfiableConstraints<[BindToConstraints]T>
+      where T : ICloneable, ISerializable
   {
-    public virtual string VirtualMethod ()
-    {
-      return "GenericMixinWithVirtualMethod.VirtualMethod";
-    }
   }
 }

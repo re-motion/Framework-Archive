@@ -25,7 +25,7 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.TestDomain
     string Generic<T> (T t);
   }
 
-  public class MixinIntroducingGenericInterface<T> : Mixin<T>, IGeneric<T>
+  public class MixinIntroducingGenericInterface<[BindToTargetType] T> : Mixin<T>, IGeneric<T>
     where T : class
   {
     public string Generic<T> (T t)

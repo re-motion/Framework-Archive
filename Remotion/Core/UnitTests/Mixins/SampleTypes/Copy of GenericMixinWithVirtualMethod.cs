@@ -18,12 +18,9 @@ using Remotion.Mixins;
 
 namespace Remotion.UnitTests.Mixins.SampleTypes
 {
-  public class GenericMixinWithVirtualMethod<[BindToTargetType]T> : Mixin<T>
-      where T : class
+// ReSharper disable UnusedTypeParameter
+  public class GenericMixin<[BindToTargetType]T>
   {
-    public virtual string VirtualMethod ()
-    {
-      return "GenericMixinWithVirtualMethod.VirtualMethod";
-    }
   }
+  // ReSharper restore UnusedTypeParameter
 }
