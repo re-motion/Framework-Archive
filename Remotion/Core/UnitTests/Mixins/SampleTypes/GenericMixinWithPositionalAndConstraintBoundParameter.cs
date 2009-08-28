@@ -13,13 +13,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using Remotion.Mixins;
 
 namespace Remotion.UnitTests.Mixins.SampleTypes
 {
 // ReSharper disable UnusedTypeParameter
-  public class GenericMixin<[BindToTargetType]T>
+  public class GenericMixinWithPositionalAndConstraintBoundParameter<[BindToConstraints, BindToGenericTargetParameter] T>
   {
   }
   // ReSharper restore UnusedTypeParameter
