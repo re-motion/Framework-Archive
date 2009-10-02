@@ -18,7 +18,7 @@ using Remotion.Development.UnitTesting;
 
 namespace Remotion.UnitTests.Mixins.Definitions.TestDomain.MemberFiltering
 {
-  public class DerivedDerivedDerivedWithOverrides : DerivedDerivedWithNewVirtualMembers
+  public class DerivedDerivedDerivedWithOverrides : DerivedDerivedWithOverrides
   {
     public override void Method (int t)
     {

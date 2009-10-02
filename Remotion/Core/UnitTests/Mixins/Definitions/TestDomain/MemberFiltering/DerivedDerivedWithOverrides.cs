@@ -18,18 +18,18 @@ using Remotion.Development.UnitTesting;
 
 namespace Remotion.UnitTests.Mixins.Definitions.TestDomain.MemberFiltering
 {
-  public class BaseWithVirtualMembers
+  public class DerivedDerivedWithOverrides : DerivedWithNewVirtualMembers
   {
-    public virtual void Method (int t)
+    public override void Method (int t)
     {
     }
 
-    public virtual int Property
+    public override int Property
     {
-      get { return 0; }
+      get { return default (int); }
       set { Dev.Null = value; }
     }
 
-    public virtual event Func<int> Event;
+    public override event Func<int> Event;
   }
 }
