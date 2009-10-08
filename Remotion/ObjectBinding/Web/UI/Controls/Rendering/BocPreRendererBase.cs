@@ -15,23 +15,19 @@
 // 
 using System;
 using Remotion.Web.Infrastructure;
-using Remotion.Web.UI;
+using Remotion.Web.UI.Controls.Rendering;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocTextValueBase.StandardMode
+namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering
 {
-  public class BocTextValuePreRenderer : BocPreRendererBase<IBocTextValue>, IBocTextValuePreRenderer
+  /// <summary>
+  /// The <see cref="BocPreRendererBase{TControl}"/> is a base class for all pre-renderers used by the business object controls.
+  /// </summary>
+  /// <typeparam name="TControl">The type of the control being rendered.</typeparam>
+  public abstract class BocPreRendererBase<TControl> : PreRendererBase<TControl>
+      where TControl: IBusinessObjectBoundWebControl
   {
-    public BocTextValuePreRenderer (IHttpContext context, IBocTextValue control)
+    protected BocPreRendererBase (IHttpContext context, TControl control)
         : base (context, control)
-    {
-    }
-
-    public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
-    {
-      Control.TextBoxStyle.RegisterJavaScriptInclude (Control, Context, htmlHeadAppender, false);
-    }
-
-    public override void PreRender ()
     {
     }
   }
