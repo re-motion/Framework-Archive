@@ -14,14 +14,26 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects;
+using System.Reflection;
+using Remotion.ExtensibleEnums;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Configuration.StorageProviders
+namespace Remotion.Data.UnitTests.DomainObjects.TestDomain
 {
-  public class StubStorageGroup1Attribute: StorageGroupAttribute
+  public static class ColorExtensions
   {
-    public StubStorageGroup1Attribute()
+    public static Color Red (this ExtensibleEnumDefinition<Color> definition)
     {
+      return new Color (MethodBase.GetCurrentMethod());
+    }
+
+    public static Color Green (this ExtensibleEnumDefinition<Color> definition)
+    {
+      return new Color (MethodBase.GetCurrentMethod ());
+    }
+
+    public static Color Blue (this ExtensibleEnumDefinition<Color> definition)
+    {
+      return new Color (MethodBase.GetCurrentMethod ());
     }
   }
 }

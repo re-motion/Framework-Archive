@@ -16,7 +16,7 @@
 using System;
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Configuration.StorageProviders
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Configuration
 {
   public class StubStorageGroup2Attribute: StorageGroupAttribute
   {
