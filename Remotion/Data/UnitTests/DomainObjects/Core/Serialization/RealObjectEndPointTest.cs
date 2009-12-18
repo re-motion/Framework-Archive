@@ -26,9 +26,9 @@ using NUnit.Framework.SyntaxHelpers;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
 {
   [TestFixture]
-  public class ObjectEndPointTest : ClientTransactionBaseTest
+  public class RealObjectEndPointTest : ClientTransactionBaseTest
   {
-    private ObjectEndPoint _endPoint;
+    private RealObjectEndPoint _endPoint;
 
     [SetUp]
     public override void SetUp ()
@@ -36,35 +36,35 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
       base.SetUp();
 
       Computer.GetObject (DomainObjectIDs.Computer1);
-      _endPoint = (ObjectEndPoint) ClientTransactionMock.DataManager.RelationEndPointMap[
+      _endPoint = (RealObjectEndPoint) ClientTransactionMock.DataManager.RelationEndPointMap[
           new RelationEndPointID (DomainObjectIDs.Computer1, MappingConfiguration.Current.NameResolver.GetPropertyName (typeof (Computer), "Employee"))];
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Type 'Remotion.Data.DomainObjects.DataManagement.ObjectEndPoint' in Assembly "
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "Type 'Remotion.Data.DomainObjects.DataManagement.RealObjectEndPoint' in Assembly "
         + ".* is not marked as serializable.", MatchType = MessageMatch.Regex)]
-    public void ObjectEndPointIsNotSerializable ()
+    public void RealObjectEndPoint_IsNotSerializable ()
     {
       Serializer.SerializeAndDeserialize (_endPoint);
     }
 
     [Test]
-    public void ObjectEndPointIsFlattenedSerializable ()
+    public void RealObjectEndPoint_IsFlattenedSerializable ()
     {
-      ObjectEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
+      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
       Assert.IsNotNull (deserializedEndPoint);
       Assert.AreNotSame (_endPoint, deserializedEndPoint);
     }
 
     [Test]
-    public void ObjectEndPoint_Untouched_Content ()
+    public void UntouchedContent ()
     {
-      ObjectEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
+      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
       Assert.IsFalse (deserializedEndPoint.HasBeenTouched);
     }
 
     [Test]
-    public void ObjectEndPoint_Touched_Content ()
+    public void TouchedContent ()
     {
       _endPoint.OppositeObjectID = DomainObjectIDs.Employee1;
       ObjectEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
@@ -75,20 +75,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
     }
 
     [Test]
-    public void ForeignKeyProperty_Null ()
-    {
-      Order.GetObject (DomainObjectIDs.Order1);
-      var id = new RelationEndPointID (DomainObjectIDs.Order1, typeof (Order) + ".OrderTicket");
-      var endPoint = (ObjectEndPoint) ClientTransactionMock.DataManager.RelationEndPointMap.GetRelationEndPointWithLazyLoad (id);
-      Assert.That (endPoint.ForeignKeyProperty, Is.Null);
-
-      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (endPoint);
-    
-      Assert.That (deserializedEndPoint.ForeignKeyProperty, Is.Null);
-    }
-
-    [Test]
-    public void ForeignKeyProperty_NotNull ()
+    public void ForeignKeyProperty ()
     {
       OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
       var id = new RelationEndPointID (DomainObjectIDs.OrderTicket1, typeof (OrderTicket) + ".Order");
