@@ -18,41 +18,26 @@ using System;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications
 {
-  public class NullEndPointModification : RelationEndPointModification
+  /// <summary>
+  /// Implementations of this class represents the operation of setting the object stored by an <see cref="ObjectEndPoint"/>.
+  /// </summary>
+  public abstract class ObjectEndPointSetCommand : RelationEndPointModificationCommand
   {
-    public NullEndPointModification (IEndPoint affectedEndPoint, DomainObject oldRelatedObject, DomainObject newRelatedObject)
-        : base (affectedEndPoint, oldRelatedObject, newRelatedObject)
-    {
-    }
+    private readonly IObjectEndPoint _modifiedEndPoint;
 
-    public override void Begin ()
+    protected ObjectEndPointSetCommand (IObjectEndPoint modifiedEndPoint, DomainObject newRelatedObject)
+      : base (modifiedEndPoint, modifiedEndPoint.GetOppositeObject(true), newRelatedObject)
     {
-      // do nothing
+      if (modifiedEndPoint.IsNull)
+        throw new ArgumentException ("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
+
+      _modifiedEndPoint = modifiedEndPoint;
     }
 
     public override void Perform ()
     {
-      // do nothing
-    }
-
-    public override void End ()
-    {
-      // do nothing
-    }
-
-    public override void NotifyClientTransactionOfBegin ()
-    {
-      // do nothing
-    }
-
-    public override void NotifyClientTransactionOfEnd ()
-    {
-      // do nothing
-    }
-
-    public override IDataManagementCommand ExtendToAllRelatedObjects ()
-    {
-      return this;
+      var id = NewRelatedObject == null ? null : NewRelatedObject.ID;
+      _modifiedEndPoint.OppositeObjectID = id;
     }
   }
 }

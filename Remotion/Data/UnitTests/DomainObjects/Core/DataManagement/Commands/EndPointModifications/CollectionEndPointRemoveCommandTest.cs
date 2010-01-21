@@ -26,35 +26,35 @@ using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.EndPointModifications
 {
   [TestFixture]
-  public class CollectionEndPointRemoveModificationTest : CollectionEndPointModificationTestBase
+  public class CollectionEndPointRemoveCommandTest : CollectionEndPointModificationCommandTestBase
   {
     private Order _removedRelatedObject;
-    private CollectionEndPointRemoveModification _modification;
+    private CollectionEndPointRemoveCommand _command;
 
     public override void SetUp ()
     {
       base.SetUp();
       _removedRelatedObject = Order.GetObject (DomainObjectIDs.Order1);
-      _modification = new CollectionEndPointRemoveModification (CollectionEndPoint, _removedRelatedObject, CollectionDataMock);
+      _command = new CollectionEndPointRemoveCommand (CollectionEndPoint, _removedRelatedObject, CollectionDataMock);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_modification.ModifiedEndPoint, Is.SameAs (CollectionEndPoint));
-      Assert.That (_modification.OldRelatedObject, Is.SameAs (_removedRelatedObject));
-      Assert.That (_modification.NewRelatedObject, Is.Null);
-      Assert.That (_modification.ModifiedCollection, Is.SameAs (CollectionEndPoint.OppositeDomainObjects));
-      Assert.That (_modification.ModifiedCollectionData, Is.SameAs (CollectionDataMock));
+      Assert.That (_command.ModifiedEndPoint, Is.SameAs (CollectionEndPoint));
+      Assert.That (_command.OldRelatedObject, Is.SameAs (_removedRelatedObject));
+      Assert.That (_command.NewRelatedObject, Is.Null);
+      Assert.That (_command.ModifiedCollection, Is.SameAs (CollectionEndPoint.OppositeDomainObjects));
+      Assert.That (_command.ModifiedCollectionData, Is.SameAs (CollectionDataMock));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Modified end point is null, a NullEndPointModification is needed.\r\n"
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Modified end point is null, a NullEndPointModificationCommand is needed.\r\n"
                                                                       + "Parameter name: modifiedEndPoint")]
     public void Initialization_FromNullEndPoint ()
     {
       var endPoint = new NullCollectionEndPoint (ClientTransactionMock, RelationEndPointID.Definition);
-      new CollectionEndPointRemoveModification (endPoint, _removedRelatedObject, CollectionDataMock);
+      new CollectionEndPointRemoveCommand (endPoint, _removedRelatedObject, CollectionDataMock);
     }
 
     [Test]
@@ -76,7 +76,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
       };
       DomainObject.RelationChanged += (sender, args) => relationChangedCalled = true;
 
-      _modification.Begin();
+      _command.Begin();
 
       Assert.That (relationChangingCalled, Is.True); // operation was started
       Assert.That (relationChangedCalled, Is.False); // operation was not finished
@@ -99,7 +99,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
         // collection got event first
       };
 
-      _modification.End();
+      _command.End();
 
       Assert.That (relationChangingCalled, Is.False); // operation was not started
       Assert.That (relationChangedCalled, Is.True); // operation was finished
@@ -119,7 +119,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
       CollectionDataMock.Expect (mock => mock.Remove (_removedRelatedObject)).Return (true);
       CollectionDataMock.Replay();
 
-      _modification.Perform();
+      _command.Perform();
 
       CollectionDataMock.VerifyAllExpectations();
 
@@ -133,22 +133,22 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
     [Test]
     public void ExtendToAllRelatedObjects ()
     {
-      var bidirectionalModification = _modification.ExtendToAllRelatedObjects ();
+      var bidirectionalModification = _command.ExtendToAllRelatedObjects ();
       Assert.That (bidirectionalModification, Is.InstanceOfType (typeof (CompositeDataManagementCommand)));
 
       // DomainObject.Orders.Remove (_removedRelatedObject)
-      var steps = GetModificationSteps (bidirectionalModification);
+      var steps = GetAllCommands (bidirectionalModification);
       Assert.That (steps.Count, Is.EqualTo (2));
 
       // _removedRelatedObject.Customer = null
-      Assert.That (steps[0], Is.InstanceOfType (typeof (ObjectEndPointSetModificationBase)));
+      Assert.That (steps[0], Is.InstanceOfType (typeof (ObjectEndPointSetCommand)));
       Assert.That (steps[0].ModifiedEndPoint.ID.Definition.PropertyName, Is.EqualTo (typeof (Order).FullName + ".Customer"));
       Assert.That (steps[0].ModifiedEndPoint.ID.ObjectID, Is.EqualTo (_removedRelatedObject.ID));
       Assert.That (steps[0].OldRelatedObject, Is.SameAs (DomainObject));
       Assert.That (steps[0].NewRelatedObject, Is.Null);
 
       // DomainObject.Orders.Remove (_removedRelatedObject)
-      Assert.That (steps[1], Is.SameAs (_modification));
+      Assert.That (steps[1], Is.SameAs (_command));
     }
   }
 }

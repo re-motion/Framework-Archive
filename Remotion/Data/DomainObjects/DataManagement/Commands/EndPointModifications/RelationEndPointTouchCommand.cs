@@ -19,41 +19,48 @@ using System;
 namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications
 {
   /// <summary>
-  /// Represents a modification that touches, but does not change the modified end point.
+  /// Represents a command that touches, but does not change the modified end point.
   /// </summary>
-  public class RelationEndPointTouchModification : RelationEndPointModification
+  public class RelationEndPointTouchCommand : IDataManagementCommand
   {
-    public RelationEndPointTouchModification (IEndPoint endPointBeingModified)
-        : base (endPointBeingModified, null, null)
+    private readonly IEndPoint _endPoint;
+
+    public RelationEndPointTouchCommand (IEndPoint endPoint)
     {
+      _endPoint = endPoint;
     }
 
-    public override void NotifyClientTransactionOfBegin ()
+    public IEndPoint EndPoint
     {
-      // do not issue any change notifications, a touch is not a change
+      get { return _endPoint; }
     }
 
-    public override void Begin ()
+    public void NotifyClientTransactionOfBegin ()
     {
-      // do not issue any change notifications, a touch is not a change
+      // do not issue any notifications
     }
 
-    public override void Perform ()
+    public void Begin ()
     {
-      ModifiedEndPoint.Touch ();
+      // do not issue any notifications
     }
 
-    public override void End ()
+    public void Perform ()
     {
-      // do not issue any change notifications, a touch is not a change
+      _endPoint.Touch ();
     }
 
-    public override void NotifyClientTransactionOfEnd ()
+    public void End ()
     {
-      // do not issue any change notifications, a touch is not a change
+      // do not issue any notifications
     }
 
-    public override IDataManagementCommand ExtendToAllRelatedObjects ()
+    public void NotifyClientTransactionOfEnd ()
+    {
+      // do not issue any notifications
+    }
+
+    public IDataManagementCommand ExtendToAllRelatedObjects ()
     {
       return this;
     }
