@@ -16,34 +16,35 @@
 // 
 using System;
 using System.Web;
+using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls.Rendering.WebTabStrip.QuirksMode
 {
   /// <summary>
-  /// Responsible for registering the style sheet for <see cref="WebTabStrip"/> controls in quirks mode.
+  /// Implements <see cref="IRenderer"/> for quirks mode rendering of <see cref="WebTabStrip"/> controls.
   /// <seealso cref="IWebTabStrip"/>
   /// </summary>
-  public class WebTabStripPreRenderer : PreRendererBase<IWebTabStrip>, IWebTabStripPreRenderer
+  public class WebTabStripRenderer : StandardMode.WebTabStripRenderer
   {
-    public WebTabStripPreRenderer (HttpContextBase context, IWebTabStrip control)
+    public WebTabStripRenderer (HttpContextBase context, IWebTabStrip control)
         : base (context, control)
     {
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      string key = typeof (IWebTabStrip).FullName + "_Style";
+      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+
+      // Do not call base implementation
+      //base.RegisterHtmlHeadContents
+
+      string key = typeof (WebTabStripRenderer).FullName + "_Style";
       if (!htmlHeadAppender.IsRegistered (key))
       {
         string styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
-            Control, Context, typeof (IWebTabStrip), ResourceType.Html, ResourceTheme.Legacy, "TabStrip.css");
+            Control, Context, typeof (WebTabStripRenderer), ResourceType.Html, ResourceTheme.Legacy, "TabStrip.css");
         htmlHeadAppender.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
       }
-    }
-
-    public override void PreRender ()
-    {
-
     }
   }
 }
