@@ -19,14 +19,14 @@ using System.Web;
 using System.Web.UI;
 using Remotion.Utilities;
 
-namespace Remotion.Web.UI.Controls.Rendering.WebButton.QuirksMode
+namespace Remotion.Web.UI.Controls.Rendering.WebButton.StandardMode
 {
   /// <summary>
-  /// Implements <see cref="IRenderer"/> for quirks mode rendering of <see cref="IWebButton"/> controls.
+  /// Implements <see cref="IRenderer"/> for standard mode rendering of <see cref="IWebButton"/> controls.
   /// </summary>
-  public class WebButtonPreRenderer : RendererBase<IWebButton>
+  public class WebButtonRenderer : RendererBase<IWebButton>
   {
-    public WebButtonPreRenderer (HttpContextBase context, IWebButton control)
+    public WebButtonRenderer (HttpContextBase context, IWebButton control)
         : base (context, control)
     {
     }
@@ -38,16 +38,14 @@ namespace Remotion.Web.UI.Controls.Rendering.WebButton.QuirksMode
       string scriptKey = typeof (IWebButton).FullName + "_Script";
       if (!htmlHeadAppender.IsRegistered (scriptKey))
       {
-        string url = ResourceUrlResolver.GetResourceUrl (
-            Control, Context, typeof (IWebButton), ResourceType.Html, ResourceTheme.Legacy, "WebButton.js");
+        string url = ResourceUrlResolver.GetResourceUrl (Control, Context, typeof (IWebButton), ResourceType.Html, "WebButton.js");
         htmlHeadAppender.RegisterJavaScriptInclude (scriptKey, url);
       }
 
       string styleKey = typeof (IWebButton).FullName + "_Style";
       if (!htmlHeadAppender.IsRegistered (styleKey))
       {
-        string url = ResourceUrlResolver.GetResourceUrl (
-            Control, Context, typeof (IWebButton), ResourceType.Html, ResourceTheme.Legacy, "WebButton.css");
+        string url = ResourceUrlResolver.GetResourceUrl (Control, Context, typeof (IWebButton), ResourceType.Html, ResourceTheme, "WebButton.css");
         htmlHeadAppender.RegisterStylesheetLink (styleKey, url, HtmlHeadAppender.Priority.Library);
       }
     }

@@ -16,35 +16,34 @@
 // 
 using System;
 using System.Web;
+using System.Web.UI;
 
-namespace Remotion.Web.UI.Controls.Rendering.WebButton.StandardMode
+namespace Remotion.Web.UI.Controls.Rendering.WebTreeView.StandardMode
 {
-  public class WebButtonPreRenderer : PreRendererBase<IWebButton>, IWebButtonPreRenderer
+  /// <summary>
+  /// Implements <see cref="IRenderer"/> for standard mode rendering of <see cref="IWebTreeView"/> controls.
+  /// </summary>
+  public class WebTreeViewRenderer : RendererBase<IWebTreeView>
   {
-    public WebButtonPreRenderer (HttpContextBase context, IWebButton control)
+    public WebTreeViewRenderer (HttpContextBase context, IWebTreeView control)
         : base (context, control)
     {
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      string scriptKey = typeof (IWebButton).FullName + "_Script";
-      if (!HtmlHeadAppender.Current.IsRegistered (scriptKey))
+      string styleKey = typeof (IWebTreeView).FullName + "_Style";
+      if (!htmlHeadAppender.IsRegistered (styleKey))
       {
-        string url = ResourceUrlResolver.GetResourceUrl (Control, Context, typeof (IWebButton), ResourceType.Html, "WebButton.js");
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (scriptKey, url);
-      }
-
-      string styleKey = typeof (IWebButton).FullName + "_Style";
-      if (!HtmlHeadAppender.Current.IsRegistered (styleKey))
-      {
-        string url = ResourceUrlResolver.GetResourceUrl (Control, Context, typeof (IWebButton), ResourceType.Html, ResourceTheme, "WebButton.css");
-        HtmlHeadAppender.Current.RegisterStylesheetLink (styleKey, url, HtmlHeadAppender.Priority.Library);
+        string styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
+            Control, Context, typeof (IWebTreeView), ResourceType.Html, ResourceTheme, "TreeView.css");
+        htmlHeadAppender.RegisterStylesheetLink (styleKey, styleSheetUrl, HtmlHeadAppender.Priority.Library);
       }
     }
 
-    public override void PreRender ()
+    public override void Render (HtmlTextWriter writer)
     {
+      throw new NotSupportedException ("The WebTreeView does not support customized rendering.");
     }
   }
 }
