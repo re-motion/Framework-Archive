@@ -15,11 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocList
 {
-  public interface IBocListPreRenderer : IPreRenderer
+  public interface IBocListCientScriptBahavior
   {
     bool IsBrowserCapableOfScripting { get; }
   }
