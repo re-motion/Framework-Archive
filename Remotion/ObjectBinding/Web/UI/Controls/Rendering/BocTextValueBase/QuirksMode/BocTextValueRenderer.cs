@@ -20,7 +20,7 @@ using System.Web.UI.WebControls;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocTextValueBase.StandardMode
+namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocTextValueBase.QuirksMode
 {
   /// <summary>
   /// Provides a label for rendering a <see cref="BocTextValue"/> control in read-only mode. 
@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocTextValueBase.Stan
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
       base.RegisterHtmlHeadContents (htmlHeadAppender);
-      Control.TextBoxStyle.RegisterJavaScriptInclude (Control, Context, htmlHeadAppender, false);
+      Control.TextBoxStyle.RegisterJavaScriptInclude (Control, Context, htmlHeadAppender, true);
     }
 
     protected override Label GetLabel ()

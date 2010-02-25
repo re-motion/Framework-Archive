@@ -18,6 +18,8 @@ using System;
 using System.Web;
 using System.Web.UI.WebControls;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.UI;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocTextValueBase.StandardMode
 {
@@ -30,6 +32,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocTextValueBase.Stan
     public BocMultilineTextValueRenderer (HttpContextBase context, IBocMultilineTextValue control)
         : base (context, control)
     {
+    }
+
+    public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
+    {
+      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+
+      base.RegisterHtmlHeadContents (htmlHeadAppender);
+
+      Control.TextBoxStyle.RegisterJavaScriptInclude (Control, Context, htmlHeadAppender, false);
+
+      string styleKey = typeof (IBocMultilineTextValue).FullName + "_Style";
+      string styleUrl = ResourceUrlResolver.GetResourceUrl (
+          Control, typeof (IBocMultilineTextValue), ResourceType.Html, ResourceTheme, "BocMultilineTextValue.css");
+      htmlHeadAppender.RegisterStylesheetLink (styleKey, styleUrl, HtmlHeadAppender.Priority.Library);
     }
 
     protected override Label GetLabel ()
