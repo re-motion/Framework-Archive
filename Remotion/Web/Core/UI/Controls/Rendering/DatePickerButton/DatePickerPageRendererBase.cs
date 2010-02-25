@@ -15,11 +15,37 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Practices.ServiceLocation;
+using System.Web;
 
 namespace Remotion.Web.UI.Controls.Rendering.DatePickerButton
 {
-  public interface IDatePickerPagePreRenderer
+  public abstract class DatePickerPageRendererBase : IDatePickerPageRenderer
   {
-    void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender);
+    private readonly HttpContextBase _context;
+    private readonly DatePickerPage _page;
+
+    protected DatePickerPageRendererBase (HttpContextBase context, DatePickerPage page)
+    {
+      _context = context;
+      _page = page;
+    }
+
+    public HttpContextBase Context
+    {
+      get { return _context; }
+    }
+
+    public DatePickerPage Page
+    {
+      get { return _page; }
+    }
+
+    protected ResourceTheme ResourceTheme
+    {
+      get { return ServiceLocator.Current.GetInstance<ResourceTheme>(); }
+    }
+
+    public abstract void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender);
   }
 }
