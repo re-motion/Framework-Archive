@@ -213,5 +213,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       foreach (var listener in _listeners)
         listener.DataContainerMapUnregistering (container);
     }
+
+    bool INullObject.IsNull
+    {
+      get { return false; }
+    }
   }
 }

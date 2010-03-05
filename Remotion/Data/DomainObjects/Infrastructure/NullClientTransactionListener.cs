@@ -21,162 +21,138 @@ using Remotion.Data.DomainObjects.Queries;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
-  [Serializable]
-  public class InvalidatedTransactionListener : IClientTransactionListener
+  /// <summary>
+  /// <see cref="INullObject"/> implementation of <see cref="IClientTransactionListener"/>.
+  /// </summary>
+  public sealed class NullClientTransactionListener : IClientTransactionListener
   {
-    private Exception CreateException ()
+    public static readonly IClientTransactionListener Instance = new NullClientTransactionListener();
+
+    private NullClientTransactionListener ()
     {
-      return new InvalidOperationException ("The transaction can no longer be used because it has been discarded.");
+    }
+
+    public bool IsNull
+    {
+      get { return true; }
     }
 
     public void SubTransactionCreating ()
     {
-      throw CreateException();
     }
 
     public void SubTransactionCreated (ClientTransaction subTransaction)
     {
-      throw CreateException();
     }
 
     public void NewObjectCreating (Type type, DomainObject instance)
     {
-      throw CreateException();
     }
 
     public void ObjectsLoading (ReadOnlyCollection<ObjectID> objectIDs)
     {
-      throw CreateException();
-    }
-
-    public void ObjectsUnloaded (ReadOnlyCollection<DomainObject> unloadedDomainObjects)
-    {
-      throw CreateException ();
     }
 
     public void ObjectsLoaded (ReadOnlyCollection<DomainObject> domainObjects)
     {
-      throw CreateException();
     }
 
     public void ObjectsUnloading (ReadOnlyCollection<DomainObject> unloadedDomainObjects)
     {
-      throw CreateException ();
+    }
+
+    public void ObjectsUnloaded (ReadOnlyCollection<DomainObject> unloadedDomainObjects)
+    {
     }
 
     public void ObjectDeleting (DomainObject domainObject)
     {
-      throw CreateException();
     }
 
     public void ObjectDeleted (DomainObject domainObject)
     {
-      throw CreateException();
     }
 
     public void PropertyValueReading (DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
     {
-      throw CreateException();
     }
 
     public void PropertyValueRead (DataContainer dataContainer, PropertyValue propertyValue, object value, ValueAccess valueAccess)
     {
-      throw CreateException();
     }
 
     public void PropertyValueChanging (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
-      throw CreateException();
     }
 
     public void PropertyValueChanged (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
-      throw CreateException();
     }
 
     public void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess)
     {
-      throw CreateException();
     }
 
     public void RelationRead (DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess)
     {
-      throw CreateException();
     }
 
-    public void RelationRead (DomainObject domainObject, string propertyName, ReadOnlyDomainObjectCollectionAdapter<DomainObject> relatedObjects, ValueAccess valueAccess)
+    public void RelationRead (
+        DomainObject domainObject, string propertyName, ReadOnlyDomainObjectCollectionAdapter<DomainObject> relatedObjects, ValueAccess valueAccess)
     {
-      throw CreateException();
     }
 
     public void RelationChanging (DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)
     {
-      throw CreateException();
     }
 
     public void RelationChanged (DomainObject domainObject, string propertyName)
     {
-      throw CreateException();
     }
 
-    public QueryResult<T> FilterQueryResult<T> (QueryResult<T> queryResult) where T : DomainObject
+    public QueryResult<T> FilterQueryResult<T> (QueryResult<T> queryResult) where T: DomainObject
     {
-      throw CreateException();
+      return queryResult;
     }
 
     public void TransactionCommitting (ReadOnlyCollection<DomainObject> domainObjects)
     {
-      throw CreateException();
     }
 
     public void TransactionCommitted (ReadOnlyCollection<DomainObject> domainObjects)
     {
-      throw CreateException();
     }
 
     public void TransactionRollingBack (ReadOnlyCollection<DomainObject> domainObjects)
     {
-      throw CreateException();
     }
 
     public void TransactionRolledBack (ReadOnlyCollection<DomainObject> domainObjects)
     {
-      throw CreateException();
     }
 
     public void RelationEndPointMapRegistering (RelationEndPoint endPoint)
     {
-      throw CreateException();
     }
 
     public void RelationEndPointMapUnregistering (RelationEndPointID endPointID)
     {
-      throw CreateException();
     }
 
     public void RelationEndPointUnloading (RelationEndPoint endPoint)
     {
-      throw CreateException();
     }
 
     public void DataManagerMarkingObjectDiscarded (ObjectID id)
     {
-      throw CreateException();
     }
 
     public void DataContainerMapRegistering (DataContainer container)
     {
-      throw CreateException();
     }
 
     public void DataContainerMapUnregistering (DataContainer container)
     {
-      throw CreateException();
-    }
-
-    bool INullObject.IsNull
-    {
-      get { return false; }
     }
   }
 }
