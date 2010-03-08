@@ -25,11 +25,11 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.Factories
   /// <summary>
   /// Responsible for creating quirks mode renderers for <see cref="IBocTextValue"/> controls.
   /// </summary>
-  public class BocTextValueRendererFactory : IBocTextValueRendererFactory
+  public class BocTextValueQuirksModeRendererFactory : IBocTextValueRendererFactory
   {
     public IRenderer CreateRenderer (HttpContextBase context, IBocTextValue control)
     {
-      return new BocTextValueRenderer (context, control);
+      return new BocTextValueQuirksModeRenderer (context, control);
     }
   }
 }
