@@ -16,18 +16,20 @@
 // 
 using System;
 using System.Web;
+using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
 using Remotion.Web.UI.Controls.Rendering;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocTextValueBase.QuirksMode.Factories
+namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.Factories
 {
   /// <summary>
-  /// Responsible for creating quirks mode renderers for <see cref="IBocMultilineTextValue"/> controls.
+  /// Responsible for creating quirks mode renderers for <see cref="IBocCheckBox"/> controls;
   /// </summary>
-  public class BocMultilineTextValueRendererFactory : IBocMultilineTextValueRendererFactory
+  public class BocCheckboxRendererFactory : IBocCheckboxRendererFactory
   {
-    public IRenderer CreateRenderer (HttpContextBase context, IBocMultilineTextValue control)
+    public IRenderer CreateRenderer (HttpContextBase context, IBocCheckBox control)
     {
-      return new BocMultilineTextValueRenderer (context, control);
+      return new BocCheckboxRenderer (context, control);
     }
   }
 }

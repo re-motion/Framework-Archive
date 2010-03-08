@@ -16,18 +16,20 @@
 // 
 using System;
 using System.Web;
+using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
 using Remotion.Web.UI.Controls.Rendering;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.Rendering.BocEnumValue.QuirksMode.Factories
+namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.Factories
 {
   /// <summary>
-  /// Responsible for creating quirks mode renderers for <see cref="IBocEnumValue"/> controls.
+  /// Responsible for creating quirks mode renderers for <see cref="IBocBooleanValue"/> controls;
   /// </summary>
-  public class BocEnumValueRendererFactory : IBocEnumValueRendererFactory
+  public class BocBooleanValueRendererFactory : IBocBooleanValueRendererFactory
   {
-    public IRenderer CreateRenderer (HttpContextBase context, IBocEnumValue control)
+    public IRenderer CreateRenderer (HttpContextBase context, IBocBooleanValue control)
     {
-      return new BocEnumValueRenderer (context, control);
+      return new BocBooleanValueRenderer (context, control);
     }
   }
 }
