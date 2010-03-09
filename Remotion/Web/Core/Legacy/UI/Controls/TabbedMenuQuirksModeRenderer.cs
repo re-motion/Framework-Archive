@@ -16,22 +16,21 @@
 // 
 using System;
 using System.Web;
-using System.Web.UI;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Remotion.Web.UI.Controls.WebButtonImplementation;
+using Remotion.Web.UI.Controls.TabbedMenuImplementation;
 
 namespace Remotion.Web.Legacy.UI.Controls
 {
   /// <summary>
-  /// Implements <see cref="IRenderer"/> for quirks mode rendering of <see cref="WebButton"/> controls.
-  /// <seealso cref="IWebButton"/>
+  /// Implements <see cref="IRenderer"/> for quirks mode rendering of <see cref="TabbedMenu"/> controls.
+  /// <seealso cref="ITabbedMenu"/>
   /// </summary>
-  public class WebButtonRenderer : RendererBase<IWebButton>
+  public class TabbedMenuQuirksModeRenderer : Web.UI.Controls.TabbedMenuImplementation.Rendering.TabbedMenuRenderer
   {
-    public WebButtonRenderer (HttpContextBase context, IWebButton control)
-        : base (context, control)
+    public TabbedMenuQuirksModeRenderer (HttpContextBase context, ITabbedMenu control)
+        : base(context, control)
     {
     }
 
@@ -39,26 +38,16 @@ namespace Remotion.Web.Legacy.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
 
-      string scriptKey = typeof (WebButtonRenderer).FullName + "_Script";
-      if (!htmlHeadAppender.IsRegistered (scriptKey))
+      // Do not call base implementation
+      //base.RegisterHtmlHeadContents
+
+      string key = typeof (TabbedMenuQuirksModeRenderer).FullName + "_Style";
+      if (!htmlHeadAppender.IsRegistered (key))
       {
         string url = ResourceUrlResolver.GetResourceUrl (
-            Control, Context, typeof (WebButtonRenderer), ResourceType.Html, ResourceTheme.Legacy, "WebButton.js");
-        htmlHeadAppender.RegisterJavaScriptInclude (scriptKey, url);
+            Control, Context, typeof (TabbedMenuQuirksModeRenderer), ResourceType.Html, ResourceTheme.Legacy, "TabbedMenu.css");
+        htmlHeadAppender.RegisterStylesheetLink (key, url, HtmlHeadAppender.Priority.Library);
       }
-
-      string styleKey = typeof (WebButtonRenderer).FullName + "_Style";
-      if (!htmlHeadAppender.IsRegistered (styleKey))
-      {
-        string url = ResourceUrlResolver.GetResourceUrl (
-            Control, Context, typeof (WebButtonRenderer), ResourceType.Html, ResourceTheme.Legacy, "WebButton.css");
-        htmlHeadAppender.RegisterStylesheetLink (styleKey, url, HtmlHeadAppender.Priority.Library);
-      }
-    }
-
-    public override void Render (HtmlTextWriter writer)
-    {
-      throw new NotSupportedException ("The WebButton does not support customized rendering.");
     }
   }
 }

@@ -16,38 +16,38 @@
 // 
 using System;
 using System.Web;
-using System.Web.UI;
+using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Remotion.Web.UI.Controls.WebTreeViewImplementation;
+using Remotion.Web.UI.Controls.WebTabStripImplementation;
 
 namespace Remotion.Web.Legacy.UI.Controls
 {
   /// <summary>
-  /// Implements <see cref="IRenderer"/> for quirks mode rendering of <see cref="WebTreeView"/> controls.
-  /// <seealso cref="IWebTreeView"/>
+  /// Implements <see cref="IRenderer"/> for quirks mode rendering of <see cref="WebTabStrip"/> controls.
+  /// <seealso cref="IWebTabStrip"/>
   /// </summary>
-  public class WebTreeViewRenderer : RendererBase<IWebTreeView>
+  public class WebTabStripQuirksModeRenderer : Web.UI.Controls.WebTabStripImplementation.Rendering.WebTabStripRenderer
   {
-    public WebTreeViewRenderer (HttpContextBase context, IWebTreeView control)
+    public WebTabStripQuirksModeRenderer (HttpContextBase context, IWebTabStrip control)
         : base (context, control)
     {
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      string styleKey = typeof (WebTreeViewRenderer).FullName + "_Style";
-      if (!htmlHeadAppender.IsRegistered (styleKey))
+      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+
+      // Do not call base implementation
+      //base.RegisterHtmlHeadContents
+
+      string key = typeof (WebTabStripQuirksModeRenderer).FullName + "_Style";
+      if (!htmlHeadAppender.IsRegistered (key))
       {
         string styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
-            Control, Context, typeof (WebTreeViewRenderer), ResourceType.Html, ResourceTheme.Legacy, "TreeView.css");
-        htmlHeadAppender.RegisterStylesheetLink (styleKey, styleSheetUrl, HtmlHeadAppender.Priority.Library);
+            Control, Context, typeof (WebTabStripQuirksModeRenderer), ResourceType.Html, ResourceTheme.Legacy, "TabStrip.css");
+        htmlHeadAppender.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
       }
-    }
-
-    public override void Render (HtmlTextWriter writer)
-    {
-      throw new NotSupportedException ("The WebTreeView does not support customized rendering.");
     }
   }
 }

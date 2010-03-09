@@ -25,11 +25,11 @@ namespace Remotion.Web.Legacy.UI.Controls.Factories
   /// <summary>
   /// Responsible for creating quirks mode renderers for <see cref="IWebButton"/> controls.
   /// </summary>
-  public class WebButtonRendererFactory : IWebButtonRendererFactory
+  public class WebButtonQuirksModeRendererFactory : IWebButtonRendererFactory
   {
     public IRenderer CreateRenderer (HttpContextBase context, IWebButton control)
     {
-      return new WebButtonRenderer (context, control);
+      return new WebButtonQuirksModeRenderer (context, control);
     }
   }
 }

@@ -17,24 +17,19 @@
 using System;
 using System.Web;
 using Remotion.Web.UI.Controls;
-using Remotion.Web.UI.Controls.DropDownMenuImplementation;
-using Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering;
+using Remotion.Web.UI.Controls.WebTreeViewImplementation;
+using Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering;
 
 namespace Remotion.Web.Legacy.UI.Controls.Factories
 {
   /// <summary>
-  /// Responsible for creating quirks mode renderers for <see cref="DropDownMenu"/> controls.
+  /// Responsible for creating quirks mode renderers for <see cref="IWebTreeView"/> controls.
   /// </summary>
-  public class DropDownMenuRendererFactory : IDropDownMenuRendererFactory
+  public class WebTreeViewQuirksModeRendererFactory : IWebTreeViewRendererFactory
   {
-    public IRenderer CreateRenderer (HttpContextBase context, IDropDownMenu control)
+    public IRenderer CreateRenderer (HttpContextBase context, IWebTreeView control)
     {
-      return new DropDownMenuRenderer (context, control);
-    }
-
-    public IClientScriptBahavior CreateClientScriptBehavior (HttpContextBase context, IDropDownMenu control)
-    {
-      return new DropDownMenuClientScriptBehavior (context, control);
+      return new WebTreeViewQuirksModeRenderer (context, control);
     }
   }
 }

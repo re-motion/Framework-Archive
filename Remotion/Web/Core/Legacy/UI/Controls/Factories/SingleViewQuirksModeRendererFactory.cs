@@ -17,19 +17,19 @@
 using System;
 using System.Web;
 using Remotion.Web.UI.Controls;
-using Remotion.Web.UI.Controls.TabbedMultiViewImplementation;
-using Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering;
+using Remotion.Web.UI.Controls.SingleViewImplementation;
+using Remotion.Web.UI.Controls.SingleViewImplementation.Rendering;
 
 namespace Remotion.Web.Legacy.UI.Controls.Factories
 {
   /// <summary>
-  /// Responsible for creating quirks mode renderers for <see cref="TabbedMultiView"/> controls.
+  /// Responsible for creating quirks mode renderers for <see cref="SingleView"/> controls.
   /// </summary>
-  public class TabbedMultiViewRendererFactory : ITabbedMultiViewRendererFactory
+  public class SingleViewQuirksModeRendererFactory : ISingleViewRendererFactory
   {
-    public IRenderer CreateRenderer (HttpContextBase context, ITabbedMultiView control)
+    public IRenderer CreateRenderer (HttpContextBase context, ISingleView control)
     {
-      return new TabbedMultiViewRenderer (context, control);
+      return new SingleViewQuirksModeRenderer (context, control);
     }
   }
 }

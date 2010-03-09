@@ -17,36 +17,37 @@
 using System;
 using System.Web;
 using Remotion.Utilities;
+using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Remotion.Web.UI.Controls.WebTabStripImplementation;
+using Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering;
 
 namespace Remotion.Web.Legacy.UI.Controls
 {
-  /// <summary>
-  /// Implements <see cref="IRenderer"/> for quirks mode rendering of <see cref="WebTabStrip"/> controls.
-  /// <seealso cref="IWebTabStrip"/>
-  /// </summary>
-  public class WebTabStripRenderer : Web.UI.Controls.WebTabStripImplementation.Rendering.WebTabStripRenderer
+  public class DatePickerPageQuirksModeRenderer : DatePickerPageRendererBase
   {
-    public WebTabStripRenderer (HttpContextBase context, IWebTabStrip control)
-        : base (context, control)
+    public DatePickerPageQuirksModeRenderer (HttpContextBase context, DatePickerPage page)
+        : base (context, page)
     {
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      var page = PageWrapper.CastOrCreate (Page);
+      htmlHeadAppender.RegisterUtilitiesJavaScriptInclude (page);
 
-      // Do not call base implementation
-      //base.RegisterHtmlHeadContents
-
-      string key = typeof (WebTabStripRenderer).FullName + "_Style";
+      string key = typeof (DatePickerPage).FullName + "_Script";
       if (!htmlHeadAppender.IsRegistered (key))
       {
-        string styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
-            Control, Context, typeof (WebTabStripRenderer), ResourceType.Html, ResourceTheme.Legacy, "TabStrip.css");
-        htmlHeadAppender.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
+        string scriptUrl = ResourceUrlResolver.GetResourceUrl (
+            page,
+            Context,
+            typeof (DatePickerPage),
+            ResourceType.Html,
+            ResourceTheme.Legacy,
+            "DatePicker.js");
+        htmlHeadAppender.RegisterJavaScriptInclude (key, scriptUrl);
       }
     }
   }

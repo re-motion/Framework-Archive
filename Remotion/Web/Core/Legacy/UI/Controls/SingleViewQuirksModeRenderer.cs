@@ -30,9 +30,9 @@ namespace Remotion.Web.Legacy.UI.Controls
   /// Implements <see cref="IRenderer"/> for quirks mode rendering of <see cref="SingleView"/> controls.
   /// <seealso cref="ISingleView"/>
   /// </summary>
-  public class SingleViewRenderer : RendererBase<ISingleView>
+  public class SingleViewQuirksModeRenderer : RendererBase<ISingleView>
   {
-    public SingleViewRenderer (HttpContextBase context, ISingleView control)
+    public SingleViewQuirksModeRenderer (HttpContextBase context, ISingleView control)
         : base(context, control)
     {
     }
@@ -41,11 +41,11 @@ namespace Remotion.Web.Legacy.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
 
-      string key = typeof (SingleViewRenderer).FullName + "_Style";
+      string key = typeof (SingleViewQuirksModeRenderer).FullName + "_Style";
       if (!htmlHeadAppender.IsRegistered (key))
       {
         string styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
-            Control, Context, typeof (SingleViewRenderer), ResourceType.Html, ResourceTheme.Legacy, "SingleView.css");
+            Control, Context, typeof (SingleViewQuirksModeRenderer), ResourceType.Html, ResourceTheme.Legacy, "SingleView.css");
         htmlHeadAppender.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
       }
 

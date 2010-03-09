@@ -17,24 +17,24 @@
 using System;
 using System.Web;
 using Remotion.Web.UI.Controls;
-using Remotion.Web.UI.Controls.DatePickerButtonImplementation;
-using Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering;
+using Remotion.Web.UI.Controls.DropDownMenuImplementation;
+using Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering;
 
 namespace Remotion.Web.Legacy.UI.Controls.Factories
 {
   /// <summary>
-  /// Responsible for creating quirks mode renderers and prerenderers for <see cref="DatePickerButton"/> controls.
+  /// Responsible for creating quirks mode renderers for <see cref="DropDownMenu"/> controls.
   /// </summary>
-  public class DatePickerButtonRendererFactory : IDatePickerButtonRendererFactory
+  public class DropDownMenuQuirksModeRendererFactory : IDropDownMenuRendererFactory
   {
-    public IRenderer CreateRenderer (HttpContextBase context, IDatePickerButton control)
+    public IRenderer CreateRenderer (HttpContextBase context, IDropDownMenu control)
     {
-      return new DatePickerButtonRenderer (context, control);
+      return new DropDownMenuQuirksModeRenderer (context, control);
     }
 
-    public IDatePickerPageRenderer CreateRenderer (HttpContextBase context, DatePickerPage page)
+    public IClientScriptBahavior CreateClientScriptBehavior (HttpContextBase context, IDropDownMenu control)
     {
-      return new DatePickerPageRenderer (context, page);
+      return new DropDownMenuQuirksModeClientScriptBehavior (context, control);
     }
   }
 }

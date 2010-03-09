@@ -30,9 +30,9 @@ namespace Remotion.Web.Legacy.UI.Controls
   /// Implements <see cref="IRenderer"/> for quirks mode rendering of <see cref="TabbedMultiView"/> controls.
   /// <seealso cref="ITabbedMultiView"/>
   /// </summary>
-  public class TabbedMultiViewRenderer : RendererBase<ITabbedMultiView>
+  public class TabbedMultiViewQuirksModeRenderer : RendererBase<ITabbedMultiView>
   {
-    public TabbedMultiViewRenderer (HttpContextBase context, ITabbedMultiView control)
+    public TabbedMultiViewQuirksModeRenderer (HttpContextBase context, ITabbedMultiView control)
         : base(context, control)
     {
     }
@@ -41,11 +41,11 @@ namespace Remotion.Web.Legacy.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
 
-      string key = typeof (TabbedMultiViewRenderer).FullName + "_Style";
+      string key = typeof (TabbedMultiViewQuirksModeRenderer).FullName + "_Style";
       if (!htmlHeadAppender.IsRegistered (key))
       {
         string styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
-            Control, Context, typeof (TabbedMultiViewRenderer), ResourceType.Html, ResourceTheme.Legacy, "TabbedMultiView.css");
+            Control, Context, typeof (TabbedMultiViewQuirksModeRenderer), ResourceType.Html, ResourceTheme.Legacy, "TabbedMultiView.css");
         htmlHeadAppender.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
       }
 
