@@ -15,13 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.Rendering.BocReferenceValue
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImplementation.Rendering
 {
   public class StubDropDownList : DropDownList
   {
-    protected override void Render (System.Web.UI.HtmlTextWriter writer)
+    protected override void Render (HtmlTextWriter writer)
     {
       writer.WriteLine ("DropDownList");
     }
