@@ -15,19 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Web.UI.Controls;
+using System.Web;
+using Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
+namespace Remotion.Web.UI.Controls.Factories
 {
-  public class BocListClientScriptBehavior : IClientScriptBahavior
+  /// <summary>
+  /// Responsible for creating standard mode <see cref="ClientScriptBehavior"/>.
+  /// </summary>
+  public class ClientScriptBehaviorFactory : IClientScriptBehaviorFactory
   {
-    public BocListClientScriptBehavior ()
+    public IClientScriptBahavior CreateClientScriptBehavior (HttpContextBase context, IControl control)
     {
-    }
-
-    public bool IsBrowserCapableOfScripting
-    {
-      get { return true; }
+      return new ClientScriptBehavior();
     }
   }
 }

@@ -22,11 +22,10 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
   /// <summary>
-  /// Interface for factory creating renderers and prerenderers for <see cref="IBocList"/> controls.
+  /// Interface for factory creating renderers for <see cref="IBocList"/> controls.
   /// </summary>
   public interface IBocListRendererFactory
   {
     IRenderer CreateRenderer (HttpContextBase context, IBocList list, IServiceLocator serviceLocator);
-    IClientScriptBahavior CreateClientScriptBehavior (HttpContextBase context, IBocList list);
   }
 }

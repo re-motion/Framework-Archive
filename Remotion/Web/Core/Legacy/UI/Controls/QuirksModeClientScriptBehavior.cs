@@ -16,18 +16,21 @@
 // 
 using System;
 using System.Web;
-using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls
+namespace Remotion.Web.Legacy.UI.Controls
 {
-  public class BocListQuirksModeClientScriptBehavior : IClientScriptBahavior
+  /// <summary>
+  /// Implements <see cref="IClientScriptBahavior"/> to determine if the browser supports advanced client scripting in quirks mode.
+  /// </summary>
+  public class QuirksModeClientScriptBehavior : IClientScriptBahavior
   {
     private readonly HttpContextBase _context;
-    private readonly IBocList _control;
+    private readonly IControl _control;
 
-    public BocListQuirksModeClientScriptBehavior (HttpContextBase context, IBocList control)
+    public QuirksModeClientScriptBehavior (HttpContextBase context, IControl control)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("control", control);
@@ -41,9 +44,9 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls
       get { return IsInternetExplorer55OrHigher(); }
     }
 
-    protected virtual bool IsInternetExplorer55OrHigher ()
+    private bool IsInternetExplorer55OrHigher ()
     {
-      if (_control.IsDesignMode)
+      if (ControlHelper.IsDesignMode (_control))
         return true;
 
       bool isVersionGreaterOrEqual55 =

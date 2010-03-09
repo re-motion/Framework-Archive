@@ -16,19 +16,19 @@
 // 
 using System;
 using System.Web;
-using Remotion.Web.UI.Controls.DropDownMenuImplementation;
+using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering;
 
-namespace Remotion.Web.UI.Controls.Factories
+namespace Remotion.Web.Legacy.UI.Controls.Factories
 {
   /// <summary>
-  /// Responsible for creating standard mode renderers for <see cref="DropDownMenu"/> controls.
+  /// Responsible for creating <see cref="QuirksModeClientScriptBehavior"/>.
   /// </summary>
-  public class DropDownMenuRendererFactory : IDropDownMenuRendererFactory
+  public class QuirksModeClientScriptBehaviorFactory : IClientScriptBehaviorFactory
   {
-    public IRenderer CreateRenderer (HttpContextBase context, IDropDownMenu control)
+    public IClientScriptBahavior CreateClientScriptBehavior (HttpContextBase context, IControl control)
     {
-      return new DropDownMenuRenderer (context, control);
+      return new QuirksModeClientScriptBehavior(context, control);
     }
   }
 }

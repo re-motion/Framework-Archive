@@ -16,15 +16,15 @@
 // 
 using System;
 
-namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
+namespace Remotion.Web.UI.Controls
 {
   /// <summary>
-  /// Implements <see cref="IClientScriptBahavior"/> to determine if the <see cref="DropDownMenu"/> can be rendered in standard mode.
-  /// <seealso cref="IDropDownMenu"/>
+  /// Implements <see cref="IClientScriptBahavior"/> for standard mode.
+  /// <see cref="IsBrowserCapableOfScripting"/> always returns <see langword="true" />.
   /// </summary>
-  public class DropDownMenuClientScriptBehavior : IClientScriptBahavior
+  public class ClientScriptBehavior : IClientScriptBahavior
   {
-    public DropDownMenuClientScriptBehavior ()
+    public ClientScriptBehavior ()
     {
     }
 

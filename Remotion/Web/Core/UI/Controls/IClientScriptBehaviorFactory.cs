@@ -16,19 +16,14 @@
 // 
 using System;
 using System.Web;
-using Remotion.Web.UI.Controls.DropDownMenuImplementation;
-using Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering;
 
-namespace Remotion.Web.UI.Controls.Factories
+namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 {
   /// <summary>
-  /// Responsible for creating standard mode renderers for <see cref="DropDownMenu"/> controls.
+  /// Defines a factory method for creating the client script behavior for an <see cref="IControl"/>.
   /// </summary>
-  public class DropDownMenuRendererFactory : IDropDownMenuRendererFactory
+  public interface IClientScriptBehaviorFactory
   {
-    public IRenderer CreateRenderer (HttpContextBase context, IDropDownMenu control)
-    {
-      return new DropDownMenuRenderer (context, control);
-    }
+    IClientScriptBahavior CreateClientScriptBehavior (HttpContextBase context, IControl control);
   }
 }
