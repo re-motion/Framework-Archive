@@ -16,23 +16,14 @@
 // 
 using System;
 using System.Web;
-using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
-using Remotion.ServiceLocation;
-using Remotion.Web.UI.Controls;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
+namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering
 {
   /// <summary>
-  /// Responsible for creating standard mode renderers for <see cref="IBocBooleanValue"/> controls.
+  /// Defines a factory method for creating the <see cref="BocBooleanValue"/> <see cref="BocBooleanValueResourceSet"/>.
   /// </summary>
-  public class BocBooleanValueRendererFactory : IBocBooleanValueRendererFactory
+  public interface IBocBooleanValueResourceSetFactory
   {
-    public IRenderer CreateRenderer (HttpContextBase context, IBocBooleanValue control)
-    {
-      var resourceSetFactory = SafeServiceLocator.Current.GetInstance<IBocBooleanValueResourceSetFactory>();
-
-      return new BocBooleanValueRenderer (context, control, resourceSetFactory.CreateResourceSet (context, control));
-    }
+    BocBooleanValueResourceSet CreateResourceSet (HttpContextBase context, IBocBooleanValue control);
   }
 }
