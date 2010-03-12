@@ -16,32 +16,20 @@
 // 
 using System;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.UnitTests.DomainObjects.TestDomain;
-using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.TestDomain
 {
-  [Uses (typeof (MixinAddingPersistentProperties))]
-  [Uses (typeof (NullMixin))]
-  [DBTable ("MixedDomains_Target")]
-  [TestDomain]
-  public class TargetClassForPersistentMixin : DomainObject
+  public class ClassWithInvalidRedirectedProperties
   {
-    public static TargetClassForPersistentMixin NewObject ()
-    {
-      return NewObject<TargetClassForPersistentMixin> ();
-    }
+    [LinqPropertyRedirection (typeof (ClassWithInvalidRedirectedProperties), "SelfRedirected")]
+    public int SelfRedirected { get; set; }
 
-    public static TargetClassForPersistentMixin GetObject (ObjectID id)
-    {
-      return GetObject<TargetClassForPersistentMixin> (id);
-    }
+    [LinqPropertyRedirection (typeof (ClassWithInvalidRedirectedProperties), "Nonexistent")]
+    public int RedirectedToNonexistent { get; set; }
 
-    [LinqPropertyRedirection(typeof (MixinAddingPersistentProperties), "PersistentProperty")]
-    [StorageClassNone]
-    public int RedirectedPersistentProperty
-    {
-      get { return ((IMixinAddingPeristentProperties) this).PersistentProperty; }
-    }
+    [LinqPropertyRedirection (typeof (ClassWithInvalidRedirectedProperties), "PropertyWithOtherType")]
+    public int RedirectedToPropertyWithOtherType { get; set; }
+
+    public string PropertyWithOtherType { get; set; }
   }
 }
