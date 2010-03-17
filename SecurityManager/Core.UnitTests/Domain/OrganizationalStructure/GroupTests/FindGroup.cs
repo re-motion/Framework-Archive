@@ -20,13 +20,12 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
-namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.TenantTests
+namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.GroupTests
 {
   [TestFixture]
-  public class Find : TenantTestBase
+  public class FindGroup : GroupTestBase
   {
     private DatabaseFixtures _dbFixtures;
-    private ObjectID _expectedTenantID;
 
     public override void TestFixtureSetUp ()
     {
@@ -38,28 +37,27 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
     }
 
     [Test]
-    public void FindAll ()
+    public void FindByUnqiueIdentifier_ValidGroup ()
     {
-      DomainObjectCollection tenants = Tenant.FindAll();
+      Group foundGroup = Group.FindByUnqiueIdentifier ("UID: testGroup");
 
-      Assert.AreEqual (2, tenants.Count);
-      Assert.AreEqual (_expectedTenantID, tenants[1].ID);
+      Assert.AreEqual ("UID: testGroup", foundGroup.UniqueIdentifier);
     }
 
     [Test]
-    public void FindByUnqiueIdentifier_ValidTenant ()
+    public void FindByUnqiueIdentifier_NotExistingGroup ()
     {
-      Tenant foundTenant = Tenant.FindByUnqiueIdentifier ("UID: testTenant");
+      Group foundGroup = Group.FindByUnqiueIdentifier ("UID: NotExistingGroup");
 
-      Assert.AreEqual ("UID: testTenant", foundTenant.UniqueIdentifier);
+      Assert.IsNull (foundGroup);
     }
 
     [Test]
-    public void FindByUnqiueIdentifier_NotExistingTenant ()
+    public void Find_GroupsByTenantID ()
     {
-      Tenant foundTenant = Tenant.FindByUnqiueIdentifier ("UID: NotExistingTenant");
+      DomainObjectCollection groups = Group.FindByTenantID (ExpectedTenantID);
 
-      Assert.IsNull (foundTenant);
+      Assert.AreEqual (9, groups.Count);
     }
   }
 }
