@@ -14,17 +14,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using Remotion.Collections;
-using Remotion.Security.BridgeInterfaces;
+using Remotion.Implementation;
 
-namespace Remotion.Security.BridgeImplementations
+namespace Remotion.BridgeInterfaces
 {
-  public class AccessTypeCacheImplementation : IAccessTypeCacheImplementation
+  /// <summary>
+  /// This interface is used to separate the <see cref="T:Remotion.BridgeImplementations.InterlockedCacheFactoryImplementation"/>
+  /// from it's instantiation in the <see cref="VersionDependentImplementationBridge{T}"/>.
+  /// </summary>
+  [ConcreteImplementation ("Remotion.BridgeImplementations.InterlockedCacheFactoryImplementation, Remotion, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>")]
+  public interface IInterlockedCacheFactoryImplementation
   {
-    public ICache<EnumWrapper, AccessType> CreateCache ()
-    {
-      return new InterlockedCache<EnumWrapper, AccessType> ();
-    }
+    ICache<TKey, TValue> CreateCache<TKey, TValue> ();
   }
 }
