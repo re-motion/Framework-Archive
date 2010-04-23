@@ -15,24 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Reflection;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
-using Remotion.Mixins.CodeGeneration.DynamicProxy;
-using Remotion.UnitTests.Mixins.SampleTypes;
+using Remotion.Reflection.CodeGeneration;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.UnitTests.Reflection.CodeGeneration
 {
-  [TestFixture]
-  public class OverrideInterfaceMappingAttributeTest
+  public class TestMethodReferencingAttribute : MethodReferencingAttribute
   {
-    [Test]
-    public void ResolveMethod ()
+    public TestMethodReferencingAttribute (Type declaringType, string methodName, string methodSignature)
+        : base (declaringType, methodName, methodSignature)
     {
-      var attribute = new OverrideInterfaceMappingAttribute (typeof (MixinWithAbstractMembers), "AbstractMethod", "Void AbstractMethod()");
-      var expected = typeof (MixinWithAbstractMembers).GetMethod ("AbstractMethod", BindingFlags.NonPublic | BindingFlags.Instance);
-
-      Assert.That (attribute.ResolveReferencedMethod (), Is.EqualTo (expected));
     }
   }
 }

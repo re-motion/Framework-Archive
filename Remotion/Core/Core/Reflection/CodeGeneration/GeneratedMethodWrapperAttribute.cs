@@ -25,41 +25,11 @@ namespace Remotion.Reflection.CodeGeneration
   /// Marks a generated method as a public wrapper for another method.
   /// </summary>
   [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-  public class GeneratedMethodWrapperAttribute : Attribute
+  public class GeneratedMethodWrapperAttribute : MethodReferencingAttribute
   {
-    private readonly Type _declaringType;
-    private readonly string _methodName;
-    private readonly string _methodSignature;
-
     public GeneratedMethodWrapperAttribute (Type declaringType, string methodName, string methodSignature)
+        : base (declaringType, methodName, methodSignature)
     {
-      ArgumentUtility.CheckNotNull ("declaringType", declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
-      ArgumentUtility.CheckNotNullOrEmpty ("methodSignature", methodSignature);
-
-      _declaringType = declaringType;
-      _methodName = methodName;
-      _methodSignature = methodSignature;
-    }
-
-    public Type DeclaringType
-    {
-      get { return _declaringType; }
-    }
-
-    public string MethodName
-    {
-      get { return _methodName; }
-    }
-
-    public string MethodSignature
-    {
-      get { return _methodSignature; }
-    }
-
-    public MethodInfo ResolveWrappedMethod ()
-    {
-      return MethodResolver.ResolveMethod (DeclaringType, MethodName, MethodSignature);
     }
   }
 }
