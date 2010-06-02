@@ -15,29 +15,46 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Security;
+using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 
-namespace Remotion.Development.UnitTesting.Sandboxing
+namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
 {
-  public static class SandboxUtility
+  [TestFixture]
+  public class DummyTest
   {
-    public static T CreateSandboxedInstance<T> (params IPermission[] permissions) where T : MarshalByRefObject, new ()
+    private int _value;
+
+    [SetUp]
+    public void SetUp ()
     {
-      var appDomain = CreateSandbox (permissions);
-      var instance = (T) appDomain.CreateInstanceAndUnwrap (typeof (T).Assembly.FullName, typeof (T).FullName);
-      return instance;
+      _value = 10;
     }
 
-    public static AppDomain CreateSandbox (params IPermission[] permissions)
+    [TearDown]
+    public void TearDown ()
     {
-      var appDomainSetup = AppDomain.CurrentDomain.SetupInformation;
-
-      var permissionSet = new PermissionSet (null);
-      foreach (var permission in permissions)
-        permissionSet.AddPermission (permission);
-
-      return AppDomain.CreateDomain ("Sandbox (" + DateTime.Now + ")", null, appDomainSetup, permissionSet);
+      _value = 0;
     }
 
+    [Test]
+    public void Test1 ()
+    {
+      Assert.That (_value, Is.EqualTo (10));
+      _value = 100;
+    }
+
+    [Test]
+    public void Test2 ()
+    {
+      Assert.That (_value, Is.EqualTo (10));
+      _value = 200;
+    }
+
+    //[Test]
+    //public void Test3 ()
+    //{
+    //  Assert.Fail ("Test");
+    //}
   }
 }

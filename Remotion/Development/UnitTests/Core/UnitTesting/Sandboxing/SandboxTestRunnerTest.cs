@@ -16,40 +16,21 @@
 // 
 using System;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 using Remotion.Development.UnitTesting.Sandboxing;
 
 namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
 {
   [TestFixture]
-  public class SandboxUtilityTest
+  public class SandboxTestRunnerTest
   {
 
     [Test]
-    public void CreateSandbox ()
+    public void Run ()
     {
-      var currentAppDomain = AppDomain.CurrentDomain;
-      var sandbox = SandboxUtility.CreateSandbox (
-          PermissionSets.GetMediumTrust (Environment.GetEnvironmentVariable ("TEMP"), Environment.MachineName));
+      var types = new[] { typeof (DummyTest) };
 
-      Assert.That (sandbox, Is.Not.Null);
-      Assert.That (sandbox, Is.Not.SameAs (currentAppDomain));
-      Assert.That(sandbox.FriendlyName.StartsWith ("Sandbox ("), Is.True);
-    }
-
-    [Test]
-    public void CreateSandboxInstance ()
-    {
-      var result = SandboxUtility.CreateSandboxedInstance<SampleTestRunner> (
-          PermissionSets.GetMediumTrust (Environment.GetEnvironmentVariable ("TEMP"), Environment.MachineName));
-
-      Assert.That (result, Is.TypeOf (typeof(SampleTestRunner)));
-    }
-
-
-    class SampleTestRunner : MarshalByRefObject
-    {
-      
+      var permissions = PermissionSets.GetMediumTrust (AppDomain.CurrentDomain.BaseDirectory, Environment.MachineName);
+      SandboxTestRunner.Run (types, permissions, new[] { typeof (SandboxTestRunnerTest).Assembly });
     }
 
   }
