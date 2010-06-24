@@ -14,24 +14,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Data.DomainObjects;
+using System;
+using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Remotion.Data.DomainObjects.Infrastructure;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Transaction
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
 {
-  public class ClientTransactionWithCustomITransaction : ClientTransaction
+  [TestFixture]
+  public class RootClientTransactionComponentFactoryTest
   {
-    private readonly ITransaction _wrapper;
-
-    public ClientTransactionWithCustomITransaction (ITransaction wrapper)
-      : base (new RootClientTransactionComponentFactory())
+    [Test]
+    public void CreateDataManager_CollectionEndPointChangeDetectionStrategy ()
     {
-      _wrapper = wrapper;
+      var factory = new RootClientTransactionComponentFactory ();
+      var dataManager = factory.CreateDataManager (new ClientTransactionMock());
+      
+      Assert.That (dataManager.RelationEndPointMap.CollectionEndPointChangeDetectionStrategy,
+          Is.InstanceOfType (typeof (RootCollectionEndPointChangeDetectionStrategy)));
     }
 
-    public override ITransaction ToITransation ()
-    {
-      return _wrapper;
-    }
   }
 }

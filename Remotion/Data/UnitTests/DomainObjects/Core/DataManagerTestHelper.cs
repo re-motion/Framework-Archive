@@ -21,17 +21,17 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
 {
   public static class DataManagerTestHelper
   {
-    public static DataContainerMap GetDataContainerMap (DataManager dataManager)
+    public static DataContainerMap GetDataContainerMap (IDataManager dataManager)
     {
       return (DataContainerMap) dataManager.DataContainerMap;
     }
 
-    public static RelationEndPointMap GetRelationEndPointMap (DataManager dataManager)
+    public static RelationEndPointMap GetRelationEndPointMap (IDataManager dataManager)
     {
       return (RelationEndPointMap) dataManager.RelationEndPointMap;
     }
 
-    public static void RemoveEndPoint (DataManager dataManager, RelationEndPointID endPointID)
+    public static void RemoveEndPoint (IDataManager dataManager, RelationEndPointID endPointID)
     {
       GetRelationEndPointMap (dataManager).RemoveEndPoint (endPointID);
     }
