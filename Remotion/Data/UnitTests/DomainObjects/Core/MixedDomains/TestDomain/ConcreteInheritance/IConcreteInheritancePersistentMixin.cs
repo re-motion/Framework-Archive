@@ -14,20 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Data.DomainObjects;
-
-namespace Remotion.Data.UnitTests.DomainObjects.TestDomain.SingleInheritance
+namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain.ConcreteInheritance
 {
-  [DBTable]
-  public abstract class SingleInheritanceBaseClass : DomainObject
+  public interface IConcreteInheritancePersistentMixin
   {
-    public virtual string BaseProperty { get; set; }
-
-    [DBBidirectionalRelation ("ScalarProperty")]
-    public virtual SingleInheritanceObjectWithRelations ScalarOpposingProperty { get; set; }
-
-    [DBBidirectionalRelation ("VectorProperty")]
-    public virtual SingleInheritanceObjectWithRelations VectorOpposingProperty { get; set; }
+    string PersistentProperty { get; set; }
   }
 }

@@ -17,17 +17,18 @@
 using Remotion.Data.DomainObjects;
 using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.TestDomain.SingleInheritance
+namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain.ConcreteInheritance
 {
   [Instantiable]
-  [Uses (typeof (SingleInheritancePersistentMixin))]
-  public abstract class SingleInheritanceSecondDerivedClass : SingleInheritanceBaseClass
+  [DBTable]
+  [Uses (typeof (ConcreteInheritancePersistentMixin))]
+  public abstract class ConcreteInheritanceFirstDerivedClass : ConcreteInheritanceBaseClass
   {
-    public static SingleInheritanceSecondDerivedClass NewObject ()
+    public static ConcreteInheritanceFirstDerivedClass NewObject ()
     {
-      return NewObject<SingleInheritanceSecondDerivedClass> ();
+      return NewObject<ConcreteInheritanceFirstDerivedClass>();
     }
 
-    public virtual string SecondDerivedProperty { get; set; }
+    public virtual string FirstDerivedProperty { get; set; }
   }
 }

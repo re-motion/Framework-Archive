@@ -16,14 +16,17 @@
 // 
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.TestDomain.SingleInheritance
+namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain.SingleInheritance
 {
-  public class SingleInheritancePersistentMixin : DomainObjectMixin<DomainObject>, ISingleInheritancePersistentMixin
+  [DBTable]
+  public abstract class SingleInheritanceBaseClass : DomainObject
   {
-    public string PersistentProperty
-    {
-      get { return Properties[typeof (SingleInheritancePersistentMixin), "PersistentProperty"].GetValue<string> (); }
-      set { Properties[typeof (SingleInheritancePersistentMixin), "PersistentProperty"].SetValue (value); }
-    }
+    public virtual string BaseProperty { get; set; }
+
+    [DBBidirectionalRelation ("ScalarProperty")]
+    public virtual SingleInheritanceObjectWithRelations ScalarOpposingProperty { get; set; }
+
+    [DBBidirectionalRelation ("VectorProperty")]
+    public virtual SingleInheritanceObjectWithRelations VectorOpposingProperty { get; set; }
   }
 }

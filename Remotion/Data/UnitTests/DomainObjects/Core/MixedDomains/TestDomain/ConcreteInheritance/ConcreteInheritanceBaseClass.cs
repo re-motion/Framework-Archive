@@ -14,17 +14,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.TestDomain.ConcreteInheritance
+namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain.ConcreteInheritance
 {
-  public class ConcreteInheritancePersistentMixin : DomainObjectMixin<DomainObject>, IConcreteInheritancePersistentMixin
+  public abstract class ConcreteInheritanceBaseClass : DomainObject
   {
-    public string PersistentProperty
-    {
-      get { return Properties[typeof (ConcreteInheritancePersistentMixin), "PersistentProperty"].GetValue<string> (); }
-      set { Properties[typeof (ConcreteInheritancePersistentMixin), "PersistentProperty"].SetValue (value); }
-    }
+    public virtual string BaseProperty { get; set; }
+
+    [DBBidirectionalRelation ("ScalarProperty")]
+    public virtual ConcreteInheritanceObjectWithRelations ScalarOpposingProperty { get; set; }
+
+    [DBBidirectionalRelation ("VectorProperty")]
+    public virtual ConcreteInheritanceObjectWithRelations VectorOpposingProperty { get; set; }
   }
 }
