@@ -16,22 +16,17 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Configuration.Mapping
 {
-  [TestFixture]
-  public class ReflectionBasedVirtualRelationEndPointDefinitionTest : MappingReflectionTestBase
+  [SetUpFixture]
+  public class SetUpFixture
   {
-    [Test]
-    public void PropertyInfo ()
+
+    [SetUp]
+    public void SetUp ()
     {
-      ClassDefinition employeeClassDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Employee));
-      ReflectionBasedVirtualRelationEndPointDefinition relationEndPointDefinition =
-          (ReflectionBasedVirtualRelationEndPointDefinition) employeeClassDefinition.GetRelationEndPointDefinition (typeof (Employee) + ".Computer");
-      Assert.AreEqual (typeof (Employee).GetProperty ("Computer"), relationEndPointDefinition.PropertyInfo);
+      TestMappingConfiguration.Initialize();
     }
   }
 }

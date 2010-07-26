@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Diagnostics;
-using Remotion.Data.DomainObjects;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Factories
 {
