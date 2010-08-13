@@ -15,15 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Implementation;
 
-namespace Remotion.Mixins.BridgeInterfaces
+namespace Remotion.Implementation
 {
-  [ConcreteImplementation ("Remotion.Mixins.BridgeImplementations.TypeFactoryImplementation, Remotion, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
-    LifeTime = LifetimeKind.Singleton)]
-  public interface ITypeFactoryImplementation
+  public enum LifetimeKind
   {
-    Type GetConcreteType (Type targetOrConcreteType, GenerationPolicy generationPolicy);
-    void InitializeUnconstructedInstance (object mixinTarget);
+    Singleton,
+    Instance
   }
 }
