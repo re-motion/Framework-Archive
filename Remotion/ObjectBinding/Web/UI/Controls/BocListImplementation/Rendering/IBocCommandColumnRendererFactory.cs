@@ -17,17 +17,17 @@
 using System;
 using System.Web;
 using Microsoft.Practices.ServiceLocation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.Implementation;
 
-namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImplementation.Rendering
+namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
-  public class StubColumnQuirksModeRendererFactory : IBocColumnRendererFactory<StubColumnDefinition>
+  /// <summary>
+  /// Interface for factory creating renderers for <see cref="IBocColumnRenderer"/> controls.
+  /// </summary>
+  [ConcreteImplementation ("Remotion.ObjectBinding.Web.UI.Controls.Factories.BocColumnRendererFactory, Remotion.ObjectBinding.Web, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+    LifeTime = LifetimeKind.Singleton)]
+  public interface IBocCommandColumnRendererFactory
   {
-    public IBocColumnRenderer CreateRenderer (
-        HttpContextBase context, IBocList list, StubColumnDefinition columnDefinition, IServiceLocator serviceLocator)
-    {
-      return new StubColumnQuirksModeRenderer (context, list, columnDefinition);
-    }
+    IBocColumnRenderer CreateRenderer (HttpContextBase context, IBocList list, BocCommandColumnDefinition columnDefinition, IServiceLocator serviceLocator);
   }
 }
