@@ -16,33 +16,33 @@
 // 
 using System;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.UnitTests.DomainObjects.TestDomain;
+using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
 {
-  [Instantiable]
-  [Serializable]
   [DBTable]
-  [BindableDomainObject]
-  public abstract class SampleBindableMixinDomainObject : DomainObject
+  [TestDomain]
+  [Uses (typeof (NullMixin))]
+  [Uses (typeof (MixinAddingInterface))]
+  [Uses (typeof (MixinOverridingPropertiesAndMethods))]
+  [Serializable]
+  public class TargetClassForBehavioralMixin : DomainObject
   {
-    public static SampleBindableMixinDomainObject NewObject ()
+    public static TargetClassForBehavioralMixin NewObject ()
     {
-      return NewObject<SampleBindableMixinDomainObject> ();
+      return NewObject<TargetClassForBehavioralMixin> ();
     }
 
-    public static SampleBindableMixinDomainObject GetObject (ObjectID id)
+    public virtual string Property
     {
-      return GetObject<SampleBindableMixinDomainObject> (id);
+      get { return CurrentProperty.GetValue<string> (); }
+      set { CurrentProperty.SetValue (value); }
     }
 
-    public abstract string Name { get; set; }
-    public abstract int Int32 { get; set; }
-
-    [DBBidirectionalRelation ("OppositeSampleObjectWithMixin1")]
-    public abstract ObjectList<OppositeBidirectionalBindableDomainObject> List { get; }
-
-    [DBBidirectionalRelation ("OppositeSampleObjectWithMixin2", ContainsForeignKey = true)]
-    public abstract OppositeBidirectionalBindableDomainObject Relation { get; }
+    public virtual string GetSomething ()
+    {
+      return "Something";
+    }
   }
 }

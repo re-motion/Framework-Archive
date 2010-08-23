@@ -16,33 +16,26 @@
 // 
 using System;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.UnitTests.DomainObjects.TestDomain;
+using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
 {
-  [Instantiable]
-  [Serializable]
+  [Uses (typeof (HookedDomainObjectMixin))]
   [DBTable]
-  [BindableDomainObject]
-  public abstract class SampleBindableMixinDomainObject : DomainObject
+  [TestDomain]
+  public class HookedTargetClass : DomainObject
   {
-    public static SampleBindableMixinDomainObject NewObject ()
+    public static HookedTargetClass NewObject ()
     {
-      return NewObject<SampleBindableMixinDomainObject> ();
+      return NewObject<HookedTargetClass> ();
     }
 
-    public static SampleBindableMixinDomainObject GetObject (ObjectID id)
+    public static HookedTargetClass GetObject (ObjectID objectID)
     {
-      return GetObject<SampleBindableMixinDomainObject> (id);
+      return GetObject<HookedTargetClass> (objectID);
     }
 
-    public abstract string Name { get; set; }
-    public abstract int Int32 { get; set; }
-
-    [DBBidirectionalRelation ("OppositeSampleObjectWithMixin1")]
-    public abstract ObjectList<OppositeBidirectionalBindableDomainObject> List { get; }
-
-    [DBBidirectionalRelation ("OppositeSampleObjectWithMixin2", ContainsForeignKey = true)]
-    public abstract OppositeBidirectionalBindableDomainObject Relation { get; }
+    public virtual int Property { get; set; }
   }
 }
