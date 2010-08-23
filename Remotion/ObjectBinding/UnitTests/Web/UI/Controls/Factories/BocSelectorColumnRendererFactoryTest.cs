@@ -16,40 +16,21 @@
 // 
 using System;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.Factories;
-using Remotion.ServiceLocation;
 
-namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation.Rendering
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.Factories
 {
-  [TestFixture]
-  public class IBocSelectorColumnRendererFactoryTest
+  public class BocSelectorColumnRendererFactoryTest : BocColumnRendererFactoryBase
   {
-    private DefaultServiceLocator _serviceLocator;
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _serviceLocator = new DefaultServiceLocator ();
-    }
-
     [Test]
-    public void GetInstance_Once ()
+    public void CreateBocSelectorColumnRenderer ()
     {
-      var factory = _serviceLocator.GetInstance<IBocSelectorColumnRendererFactory> ();
+      IBocSelectorColumnRendererFactory factory = new BocSelectorColumnRendererFactory ();
+      IBocSelectorColumnRenderer renderer = factory.CreateRenderer (HttpContext, List);
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (BocSelectorColumnRendererFactory)));
-    }
-
-    [Test]
-    public void GetInstance_Twice_ReturnsSameInstance ()
-    {
-      var factory1 = _serviceLocator.GetInstance<IBocSelectorColumnRendererFactory> ();
-      var factory2 = _serviceLocator.GetInstance<IBocSelectorColumnRendererFactory> ();
-
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.IsInstanceOfType (typeof (BocSelectorColumnRenderer), renderer);
+      Assert.AreSame (List, ((BocSelectorColumnRenderer) renderer).List);
     }
   }
 }

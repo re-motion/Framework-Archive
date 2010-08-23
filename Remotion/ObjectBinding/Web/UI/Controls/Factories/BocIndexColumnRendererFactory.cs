@@ -16,18 +16,20 @@
 // 
 using System;
 using System.Web;
-using Microsoft.Practices.ServiceLocation;
-using Remotion.Implementation;
-using Remotion.ObjectBinding.Web.UI.Controls.Factories;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
+namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
 {
-  /// <summary>
-  /// Interface for factory creating renderers for <see cref="IBocColumnRenderer"/> controls.
-  /// </summary>
-  [ConcreteImplementation (typeof(BocSimpleColumnRendererFactory), LifeTime = LifetimeKind.Singleton)]
-  public interface IBocSimpleColumnRendererFactory
+  public class BocIndexColumnRendererFactory : IBocIndexColumnRendererFactory
   {
-    IBocColumnRenderer CreateRenderer (HttpContextBase context, IBocList list, BocSimpleColumnDefinition columnDefinition, IServiceLocator serviceLocator);
+    public IBocIndexColumnRenderer CreateRenderer (HttpContextBase context, IBocList list)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("list", list);
+
+      return new BocIndexColumnRenderer (context, list, CssClassContainer.Instance);
+    }
   }
 }

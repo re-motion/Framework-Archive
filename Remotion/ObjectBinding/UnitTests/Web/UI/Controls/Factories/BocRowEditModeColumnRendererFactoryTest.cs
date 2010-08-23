@@ -16,40 +16,20 @@
 // 
 using System;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
+using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.Factories;
-using Remotion.ServiceLocation;
 
-namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation.Rendering
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.Factories
 {
-  [TestFixture]
-  public class IBocSelectorColumnRendererFactoryTest
+  public class BocRowEditModeColumnRendererFactoryTest : BocColumnRendererFactoryBase
   {
-    private DefaultServiceLocator _serviceLocator;
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _serviceLocator = new DefaultServiceLocator ();
-    }
-
     [Test]
-    public void GetInstance_Once ()
+    public void CreateBocRowEditModeColumnRenderer ()
     {
-      var factory = _serviceLocator.GetInstance<IBocSelectorColumnRendererFactory> ();
-
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (BocSelectorColumnRendererFactory)));
-    }
-
-    [Test]
-    public void GetInstance_Twice_ReturnsSameInstance ()
-    {
-      var factory1 = _serviceLocator.GetInstance<IBocSelectorColumnRendererFactory> ();
-      var factory2 = _serviceLocator.GetInstance<IBocSelectorColumnRendererFactory> ();
-
-      Assert.That (factory1, Is.SameAs (factory2));
+      BocRowEditModeColumnDefinition column = new BocRowEditModeColumnDefinition ();
+      IBocRowEditModeColumnRendererFactory factory = new BocRowEditModeColumnRendererFactory ();
+      CreateRenderer (column, (http, l, service) => factory.CreateRenderer (http, l, column, service));
     }
   }
 }
