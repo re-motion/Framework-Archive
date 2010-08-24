@@ -15,26 +15,35 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Reflection;
 using NUnit.Framework;
 using Remotion.Reflection;
+using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.Core.SampleDomain;
 using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.Core.SecurityClientTests
 {
   [TestFixture]
-  public class HasPropertyReadAccessTest_WithPropertyInfo
+  public class CheckPropertyReadAccessTest_WithMethodInformation
   {
     private SecurityClientTestHelper _testHelper;
     private SecurityClient _securityClient;
     private IMethodInformation _methodInformation;
-    
+    private PropertyInfo _propertyInfo;
+    private MethodInfo _getMethodInfo;
+    private IPropertyInformation _propertyInformation;
+
     [SetUp]
     public void SetUp ()
     {
       _testHelper = SecurityClientTestHelper.CreateForStatefulSecurity ();
       _securityClient = _testHelper.CreateSecurityClient ();
-      _methodInformation = MockRepository.GenerateMock<IMethodInformation>();
+      _methodInformation = MockRepository.GenerateMock<IMethodInformation> ();
+      _propertyInformation = MockRepository.GenerateMock<IPropertyInformation>();
+
+      _propertyInfo = typeof (SecurableObject).GetProperty ("IsVisible");
+      _getMethodInfo = _propertyInfo.GetGetMethod();
     }
 
     [Test]
@@ -44,23 +53,22 @@ namespace Remotion.Security.UnitTests.Core.SecurityClientTests
       _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.First, true);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+      _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
 
       _testHelper.VerifyAll ();
-      Assert.IsTrue (hasAccess);
     }
 
     [Test]
-    public void Test_AccessDenied ()
+    [ExpectedException (typeof (PermissionDeniedException))]
+    public void Test_AccessDenied_ShouldThrowPermissionDeniedException ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation, TestAccessTypes.First);
       _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.First, false);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+      _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
 
       _testHelper.VerifyAll ();
-      Assert.IsFalse (hasAccess);
     }
 
     [Test]
@@ -69,14 +77,12 @@ namespace Remotion.Security.UnitTests.Core.SecurityClientTests
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation, TestAccessTypes.First);
       _testHelper.ReplayAll ();
 
-      bool hasAccess;
       using (new SecurityFreeSection ())
       {
-        hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+        _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
       }
 
       _testHelper.VerifyAll ();
-      Assert.IsTrue (hasAccess);
     }
 
     [Test]
@@ -86,23 +92,22 @@ namespace Remotion.Security.UnitTests.Core.SecurityClientTests
       _testHelper.ExpectObjectSecurityStrategyHasAccess (GeneralAccessTypes.Read, true);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+      _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
 
       _testHelper.VerifyAll ();
-      Assert.IsTrue (hasAccess);
     }
 
     [Test]
-    public void Test_AccessDenied_WithDefaultAccessType ()
+    [ExpectedException (typeof (PermissionDeniedException))]
+    public void Test_AccessDenied_WithDefaultAccessType_ShouldThrowPermissionDeniedException ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation);
       _testHelper.ExpectObjectSecurityStrategyHasAccess (GeneralAccessTypes.Read, false);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+      _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
 
       _testHelper.VerifyAll ();
-      Assert.IsFalse (hasAccess);
     }
 
     [Test]
@@ -111,14 +116,12 @@ namespace Remotion.Security.UnitTests.Core.SecurityClientTests
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation);
       _testHelper.ReplayAll ();
 
-      bool hasAccess;
       using (new SecurityFreeSection ())
       {
-        hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+        _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
       }
 
       _testHelper.VerifyAll ();
-      Assert.IsTrue (hasAccess);
     }
 
     [Test]
@@ -126,10 +129,9 @@ namespace Remotion.Security.UnitTests.Core.SecurityClientTests
     public void Test_WithSecurityStrategyIsNull ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation, TestAccessTypes.First);
-
       _testHelper.ReplayAll ();
 
-      _securityClient.HasPropertyReadAccess (new SecurableObject (null), _methodInformation);
+      _securityClient.CheckPropertyReadAccess (new SecurableObject (null), _methodInformation);
 
       _testHelper.VerifyAll ();
     }
@@ -141,7 +143,7 @@ namespace Remotion.Security.UnitTests.Core.SecurityClientTests
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation, (Enum[]) null);
       _testHelper.ReplayAll ();
 
-      _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+      _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
 
       _testHelper.VerifyAll ();
     }
@@ -155,7 +157,7 @@ namespace Remotion.Security.UnitTests.Core.SecurityClientTests
 
       using (new SecurityFreeSection ())
       {
-        _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+        _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
       }
 
       _testHelper.VerifyAll ();
