@@ -15,30 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
-using JetBrains.Annotations;
 
-namespace Remotion.Utilities
+namespace JetBrains.Annotations
 {
   /// <summary>
-  /// This exception is thrown if an argument is empty although it must have a content.
+  /// Indicates that the marked method is assertion method, i.e. it halts control flow if one of the conditions is satisfied. 
+  /// To set the condition, mark one of the parameters with <see cref="AssertionConditionAttribute"/> attribute
   /// </summary>
-  [Serializable]
-  public class ArgumentEmptyException : ArgumentException
+  /// <seealso cref="AssertionConditionAttribute"/>
+  [AttributeUsage (AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+  internal sealed class AssertionMethodAttribute : Attribute
   {
-    public ArgumentEmptyException (string paramName)
-      : base (FormatMessage (paramName), paramName)
-    {
-    }
-
-    public ArgumentEmptyException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
-    {
-    }
-
-    private static string FormatMessage (string paramName)
-    {
-      return string.Format ("Parameter '{0}' cannot be empty.", paramName);
-    }
   }
 }

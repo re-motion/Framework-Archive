@@ -15,30 +15,33 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
-using JetBrains.Annotations;
 
-namespace Remotion.Utilities
+namespace JetBrains.Annotations
 {
   /// <summary>
-  /// This exception is thrown if an argument is empty although it must have a content.
+  /// Specifies assertion type. If the assertion method argument satisifes the condition, then the execution continues. 
+  /// Otherwise, execution is assumed to be halted
   /// </summary>
-  [Serializable]
-  public class ArgumentEmptyException : ArgumentException
+  internal enum AssertionConditionType
   {
-    public ArgumentEmptyException (string paramName)
-      : base (FormatMessage (paramName), paramName)
-    {
-    }
+    /// <summary>
+    /// Indicates that the marked parameter should be evaluated to true
+    /// </summary>
+    IS_TRUE = 0,
 
-    public ArgumentEmptyException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
-    {
-    }
+    /// <summary>
+    /// Indicates that the marked parameter should be evaluated to false
+    /// </summary>
+    IS_FALSE = 1,
 
-    private static string FormatMessage (string paramName)
-    {
-      return string.Format ("Parameter '{0}' cannot be empty.", paramName);
-    }
+    /// <summary>
+    /// Indicates that the marked parameter should be evaluated to null value
+    /// </summary>
+    IS_NULL = 2,
+
+    /// <summary>
+    /// Indicates that the marked parameter should be evaluated to not null value
+    /// </summary>
+    IS_NOT_NULL = 3,
   }
 }
