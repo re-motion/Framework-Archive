@@ -15,13 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Collections;
-using Remotion.ServiceLocation;
+using Remotion.Implementation;
 
-namespace Remotion.UnitTests.ServiceLocation
+namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
-  public class TestableDefaultServiceLocator : DefaultServiceLocator
+  [ConcreteImplementation (typeof(TestConcreteImplementationAttributeType))]
+  internal interface ITestConcreteImplementationAttributeTypeWithInvalidImplementation
   {
-    public new InterlockedCache<Type, Func<object>> Cache { get { return base.Cache; } }
   }
 }
