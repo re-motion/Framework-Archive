@@ -14,23 +14,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-
-namespace Remotion.UnitTests.Reflection.MemberInfoAdapterTestDomain
+namespace Remotion.UnitTests.Reflection.TestDomain.MemberInfoAdapter
 {
-  public interface IInterfaceWithReferenceType<T>
-      where T : class
+  public class ClassWithBaseMember
   {
-    T ExplicitInterfaceScalar { get; set; }
-    T ExplicitInterfaceReadOnlyScalar { get; }
-    T ExplicitInterfaceWriteOnlyScalar { set; }
-    T ImplicitInterfaceScalar { get; set; }
-    T ImplicitInterfaceReadOnlyScalar { get; }
-    T ImplicitInterfaceWriteOnlyScalar { set; }
-    T this[int i] { get; set; }
-    T this[int i, DateTime j] { get; set; }
-    T this[int i, DateTime j, string k] { get; set; }
-    T ExplicitInterfaceMethod (); 
-    T ImplicitInterfaceMethod ();
+    public virtual int BaseProperty { get { return 0; } }
+
+    public virtual void BaseMethod ()
+    {
+      //do nothing
+    }
   }
 }

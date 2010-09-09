@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.UnitTests.Reflection.MemberInfoAdapterTestDomain
+namespace Remotion.UnitTests.Reflection.TestDomain.MemberInfoAdapter
 {
   public class SampleAttribute : Attribute
   {
