@@ -19,16 +19,12 @@ using System.Web;
 using System.Web.UI;
 using Remotion.Web.UI.Controls;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rendering
+namespace Remotion.ObjectBinding.Web.UI.Controls
 {
-  /// <summary>
-  /// Groups all arguments required for rendering a <see cref="BocTextValue"/> or <see cref="BocMultilineTextValue"/>.
-  /// </summary>
-  /// <typeparam name="TControl">The concrete control or corresponding interface that will be rendered.</typeparam>
-  public class BocTextValueBaseRenderingContext<TControl> : BocRenderingContext<TControl>
-    where TControl : IBocTextValueBase
+  public class BocRenderingContext<TControl> : RenderingContext<TControl>
+    where TControl: IBocRenderableControl, IBusinessObjectBoundEditableWebControl
   {
-    public BocTextValueBaseRenderingContext (HttpContextBase httpContext, HtmlTextWriter writer, IBocTextValueBase control)
+    public BocRenderingContext (HttpContextBase httpContext, HtmlTextWriter writer, IBocRenderableControl control)
         : base(httpContext, writer, control)
     {
     }

@@ -17,13 +17,12 @@
 using System;
 using System.Web;
 using System.Web.UI;
-using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
-  public class BocListRenderingContext : RenderingContext<IBocList>
+  public class BocListRenderingContext : BocRenderingContext<IBocList>
   {
-    public BocListRenderingContext (HttpContextBase httpContext, HtmlTextWriter writer, IStyledControl control)
+    public BocListRenderingContext (HttpContextBase httpContext, HtmlTextWriter writer, IBocList control)
         : base(httpContext, writer, control)
     {
     }
