@@ -16,19 +16,19 @@
 // 
 using System;
 using System.Web;
-using Microsoft.Practices.ServiceLocation;
 using Remotion.Implementation;
+using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rendering
 {
   /// <summary>
-  /// Defines a factory method for creating renderers for <see cref="IBocMultilineTextValue"/> controls.
+  /// Defines the API for rendering a <see cref="BocMultilineTextValue"/>.
   /// </summary>
-  [ConcreteImplementation ("Remotion.ObjectBinding.Web.UI.Controls.Factories.BocMultilineTextValueRendererFactory, Remotion.ObjectBinding.Web, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
-    Lifetime = LifetimeKind.Singleton)]
-  public interface IBocMultilineTextValueRendererFactory
+  [ConcreteImplementation (typeof (BocMultilineTextValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  public interface IBocMultilineTextValueRenderer
   {
-    IRenderer CreateRenderer (HttpContextBase context, IBocMultilineTextValue control, IServiceLocator serviceLocator);
+    void Render (BocMultilineTextValueRenderingContext renderingContext);
+    void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control, HttpContextBase context);
   }
 }
