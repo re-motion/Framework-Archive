@@ -18,13 +18,12 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Rendering;
-using Remotion.ObjectBinding.Web.UI.Controls.Factories;
 using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImplementation.Rendering
 {
   [TestFixture]
-  public class IBocDateTimeValueRendererFactoryTest
+  public class IBocDateTimeValueRendererTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -37,17 +36,17 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IBocDateTimeValueRendererFactory>();
+      var factory = _serviceLocator.GetInstance<IBocDateTimeValueRenderer>();
 
       Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (BocDateTimeValueRendererFactory)));
+      Assert.That (factory, Is.TypeOf (typeof (BocDateTimeValueRenderer)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IBocDateTimeValueRendererFactory>();
-      var factory2 = _serviceLocator.GetInstance<IBocDateTimeValueRendererFactory>();
+      var factory1 = _serviceLocator.GetInstance<IBocDateTimeValueRenderer>();
+      var factory2 = _serviceLocator.GetInstance<IBocDateTimeValueRenderer>();
 
       Assert.That (factory1, Is.SameAs (factory2));
     }

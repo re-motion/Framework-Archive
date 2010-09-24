@@ -15,28 +15,22 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web;
-using Microsoft.Practices.ServiceLocation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
+using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Rendering;
-using Remotion.Utilities;
 using Remotion.Web;
-using Remotion.Web.UI.Controls;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImplementation.Rendering
 {
-  /// <summary>
-  /// Responsible for creating standard mode renderers for <see cref="IBocDateTimeValue"/> controls.
-  /// </summary>
-  public class BocDateTimeValueRendererFactory : IBocDateTimeValueRendererFactory
+  public class TestableBocDateTimeValueRenderer : BocDateTimeValueRenderer
   {
-    public IRenderer CreateRenderer (HttpContextBase context, IBocDateTimeValue control, IServiceLocator serviceLocator)
+    public TestableBocDateTimeValueRenderer (IResourceUrlFactory resourceUrlFactory)
+        : base(resourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNull ("serviceLocator", serviceLocator);
+    }
 
-      return new BocDateTimeValueRenderer (context, control, serviceLocator.GetInstance<IResourceUrlFactory>());
+    public TestableBocDateTimeValueRenderer (IResourceUrlFactory resourceUrlFactory, TextBox dateTextBox, TextBox timeTextBox)
+        : base(resourceUrlFactory, dateTextBox, timeTextBox)
+    {
     }
   }
 }

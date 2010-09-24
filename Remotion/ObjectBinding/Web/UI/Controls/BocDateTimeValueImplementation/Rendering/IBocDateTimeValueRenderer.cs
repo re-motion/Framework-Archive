@@ -16,19 +16,19 @@
 // 
 using System;
 using System.Web;
-using Microsoft.Practices.ServiceLocation;
 using Remotion.Implementation;
-using Remotion.ObjectBinding.Web.UI.Controls.Factories;
+using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Rendering
 {
   /// <summary>
-  /// Defines a factory method for creating renderers for <see cref="IBocDateTimeValue"/> controls.
+  /// Defines the API for rendering a <see cref="BocDateTimeValue"/>.
   /// </summary>
-  [ConcreteImplementation (typeof(BocDateTimeValueRendererFactory), Lifetime = LifetimeKind.Singleton)]
-  public interface IBocDateTimeValueRendererFactory
+  [ConcreteImplementation (typeof (BocDateTimeValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  public interface IBocDateTimeValueRenderer
   {
-    IRenderer CreateRenderer (HttpContextBase context, IBocDateTimeValue control, IServiceLocator serviceLocator);
+    void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control, HttpContextBase context);
+    void Render (BocDateTimeValueRenderingContext renderingContext);
   }
 }
