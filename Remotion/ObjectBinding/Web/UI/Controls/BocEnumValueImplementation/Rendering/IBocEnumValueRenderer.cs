@@ -16,27 +16,19 @@
 // 
 using System;
 using System.Web;
-using Microsoft.Practices.ServiceLocation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rendering;
-using Remotion.Utilities;
-using Remotion.Web;
+using Remotion.Implementation;
+using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
+namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rendering
 {
   /// <summary>
-  /// Responsible for creating standard mode renderers for <see cref="IBocEnumValue"/> controls.
+  /// Defines the API for rendering a <see cref="BocEnumValue"/>.
   /// </summary>
-  public class BocEnumValueRendererFactory : IBocEnumValueRendererFactory
+  [ConcreteImplementation (typeof (BocEnumValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  public interface IBocEnumValueRenderer
   {
-    public IRenderer CreateRenderer (HttpContextBase context, IBocEnumValue control, IServiceLocator serviceLocator)
-    {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNull ("serviceLocator", serviceLocator);
-
-      return new BocEnumValueRenderer (context, control, serviceLocator.GetInstance<IResourceUrlFactory>());
-    }
+    void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control, HttpContextBase context);
+    void Render (BocEnumValueRenderingContext renderingContext);
   }
 }

@@ -15,23 +15,40 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web;
-using Microsoft.Practices.ServiceLocation;
-using Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocEnumValueImplementation.Rendering;
-using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
+using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rendering;
-using Remotion.Web.UI.Controls;
+using Remotion.ServiceLocation;
 
-namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.Factories
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocEnumValueImplementation.Rendering
 {
-  /// <summary>
-  /// Responsible for creating quirks mode renderers for <see cref="IBocEnumValue"/> controls.
-  /// </summary>
-  public class BocEnumValueQuirksModeRendererFactory : IBocEnumValueRendererFactory
+  [TestFixture]
+  public class IBocEnumValueRendererTest
   {
-    public IRenderer CreateRenderer (HttpContextBase context, IBocEnumValue control, IServiceLocator serviceLocator)
+    private DefaultServiceLocator _serviceLocator;
+
+    [SetUp]
+    public void SetUp ()
     {
-      return new BocEnumValueQuirksModeRenderer (context, control);
+      _serviceLocator = new DefaultServiceLocator ();
+    }
+
+    [Test]
+    public void GetInstance_Once ()
+    {
+      var factory = _serviceLocator.GetInstance<IBocEnumValueRenderer> ();
+
+      Assert.That (factory, Is.Not.Null);
+      Assert.That (factory, Is.TypeOf (typeof (BocEnumValueRenderer)));
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var factory1 = _serviceLocator.GetInstance<IBocEnumValueRenderer> ();
+      var factory2 = _serviceLocator.GetInstance<IBocEnumValueRenderer> ();
+
+      Assert.That (factory1, Is.SameAs (factory2));
     }
   }
 }
