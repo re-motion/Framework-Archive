@@ -16,22 +16,19 @@
 // 
 using System;
 using System.Web;
-using Microsoft.Practices.ServiceLocation;
-using Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocBooleanValueImplementation.Rendering;
-using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
+using Remotion.Implementation;
+using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
-namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.Factories
+namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering
 {
   /// <summary>
-  /// Responsible for creating quirks mode renderers for <see cref="IBocCheckBox"/> controls;
+  /// Defines the API for rendering a <see cref="BocCheckBox"/>.
   /// </summary>
-  public class BocCheckboxQuirksModeRendererFactory : IBocCheckboxRendererFactory
+  [ConcreteImplementation (typeof (BocCheckboxRenderer), Lifetime = LifetimeKind.Singleton)]
+  public interface IBocCheckboxRenderer
   {
-    public IRenderer CreateRenderer (HttpContextBase context, IBocCheckBox control, IServiceLocator serviceLocator)
-    {
-      return new BocCheckboxQuirksModeRenderer (context, control);
-    }
+    void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control, HttpContextBase context);
+    void Render (BocCheckboxRenderingContext renderingContext);
   }
 }
