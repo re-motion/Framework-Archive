@@ -15,20 +15,22 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web;
-using Microsoft.Practices.ServiceLocation;
-using Remotion.Implementation;
-using Remotion.ObjectBinding.Web.UI.Controls.Factories;
-using Remotion.Web.UI.Controls;
+using System.Web.UI.WebControls;
+using Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImplementation.Rendering;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering
+namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceValueImplementation.Rendering
 {
-  /// <summary>
-  /// Defines a factory method for creating renderers for <see cref="IBocReferenceValue"/> controls.
-  /// </summary>
-  [ConcreteImplementation (typeof(BocReferenceValueRendererFactory), Lifetime = LifetimeKind.Singleton)]
-  public interface IBocReferenceValueRendererFactory
+  public class TestableBocReferenceValueQuirksModeRenderer : BocReferenceValueQuirksModeRenderer
   {
-    IRenderer CreateRenderer (HttpContextBase context, IBocReferenceValue control, IServiceLocator serviceLocator);
+    public TestableBocReferenceValueQuirksModeRenderer ()
+        : this (() => new DropDownList())
+    {
+    }
+
+    public TestableBocReferenceValueQuirksModeRenderer (Func<DropDownList> dropDownListFactoryMethod)
+        : base (dropDownListFactoryMethod)
+    {
+      
+    }
   }
 }

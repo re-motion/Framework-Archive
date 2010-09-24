@@ -16,27 +16,23 @@
 // 
 using System;
 using System.Web;
-using Microsoft.Practices.ServiceLocation;
+using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
-using Remotion.Utilities;
 using Remotion.Web;
-using Remotion.Web.UI.Controls;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImplementation.Rendering
 {
-  /// <summary>
-  /// Responsible for creating standard mode renderers for <see cref="IBocReferenceValue"/> controls.
-  /// </summary>
-  public class BocReferenceValueRendererFactory : IBocReferenceValueRendererFactory
+  public class TestableBocReferenceValueRenderer : BocReferenceValueRenderer
   {
-    public IRenderer CreateRenderer (HttpContextBase context, IBocReferenceValue control, IServiceLocator serviceLocator)
+    public TestableBocReferenceValueRenderer (IResourceUrlFactory resourceUrlFactory)
+        : base(resourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNull ("serviceLocator", serviceLocator);
+    }
 
-      return new BocReferenceValueRenderer (context, control, serviceLocator.GetInstance<IResourceUrlFactory>());
+    public TestableBocReferenceValueRenderer (IResourceUrlFactory resourceUrlFactory, Func<DropDownList> dropDownListFactoryMethod)
+        : base(resourceUrlFactory, dropDownListFactoryMethod)
+    {
     }
   }
 }
