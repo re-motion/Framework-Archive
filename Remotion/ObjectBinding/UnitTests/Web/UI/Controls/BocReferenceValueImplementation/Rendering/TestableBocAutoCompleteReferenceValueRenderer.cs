@@ -15,20 +15,22 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web;
-using Microsoft.Practices.ServiceLocation;
-using Remotion.Implementation;
-using Remotion.ObjectBinding.Web.UI.Controls.Factories;
-using Remotion.Web.UI.Controls;
+using System.Web.UI.WebControls;
+using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
+using Remotion.Web;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImplementation.Rendering
 {
-  /// <summary>
-  /// Defines a factory method for creating renderers for <see cref="IBocAutoCompleteReferenceValue"/> controls.
-  /// </summary>
-  [ConcreteImplementation (typeof(BocAutoCompleteReferenceValueRendereFactory), Lifetime = LifetimeKind.Singleton)]
-  public interface IBocAutoCompleteReferenceValueRendererFactory
+  public class TestableBocAutoCompleteReferenceValueRenderer : BocAutoCompleteReferenceValueRenderer
   {
-    IRenderer CreateRenderer (HttpContextBase context, IBocAutoCompleteReferenceValue control, IServiceLocator serviceLocator);
+    public TestableBocAutoCompleteReferenceValueRenderer (IResourceUrlFactory resourceUrlFactory)
+        : base(resourceUrlFactory)
+    {
+    }
+
+    public TestableBocAutoCompleteReferenceValueRenderer (IResourceUrlFactory resourceUrlFactory, Func<TextBox> textBoxFactory)
+        : base(resourceUrlFactory, textBoxFactory)
+    {
+    }
   }
 }
