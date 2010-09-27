@@ -16,25 +16,17 @@
 // 
 using System;
 using System.Web;
-using Microsoft.Practices.ServiceLocation;
-using Remotion.Utilities;
-using Remotion.Web.UI.Controls.TabbedMultiViewImplementation;
-using Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering;
+using Remotion.Implementation;
 
-namespace Remotion.Web.UI.Controls.Factories
+namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
 {
   /// <summary>
-  /// Responsible for creating standard mode renderers for <see cref="TabbedMultiView"/> controls.
+  /// Defines the API for rendering a <see cref="TabbedMultiView"/>.
   /// </summary>
-  public class TabbedMultiViewRendererFactory : ITabbedMultiViewRendererFactory
+  [ConcreteImplementation (typeof (TabbedMultiViewRenderer), Lifetime = LifetimeKind.Singleton)]
+  public interface ITabbedMultiViewRenderer
   {
-    public IRenderer CreateRenderer (HttpContextBase context, ITabbedMultiView control, IServiceLocator serviceLocator)
-    {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNull ("serviceLocator", serviceLocator);
-
-      return new TabbedMultiViewRenderer (context, control, serviceLocator.GetInstance<IResourceUrlFactory> ());
-    }
+    void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control, HttpContextBase context);
+    void Render (TabbedMultiViewRenderingContext renderingContext);
   }
 }
