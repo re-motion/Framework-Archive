@@ -18,13 +18,12 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Remotion.ServiceLocation;
-using Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering;
-using Remotion.Web.UI.Controls.Factories;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls
 {
   [TestFixture]
-  public class IClientScriptBehaviorFactoryTest
+  public class IClientScriptBehaviorTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -37,17 +36,17 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IClientScriptBehaviorFactory>();
+      var factory = _serviceLocator.GetInstance<IClientScriptBehavior>();
 
       Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (ClientScriptBehaviorFactory)));
+      Assert.That (factory, Is.TypeOf (typeof (ClientScriptBehavior)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IClientScriptBehaviorFactory> ();
-      var factory2 = _serviceLocator.GetInstance<IClientScriptBehaviorFactory>();
+      var factory1 = _serviceLocator.GetInstance<IClientScriptBehavior> ();
+      var factory2 = _serviceLocator.GetInstance<IClientScriptBehavior>();
 
       Assert.That (factory1, Is.SameAs (factory2));
     }
