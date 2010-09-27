@@ -18,13 +18,12 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Remotion.ServiceLocation;
-using Remotion.Web.UI.Controls.Factories;
-using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
+using Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering;
 
-namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rendering
+namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMenuImplementation.Rendering
 {
   [TestFixture]
-  public class IWebTabRendererFactoryTest
+  public class ITabbedMenuRendererTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -37,17 +36,17 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IWebTabRendererFactory> ();
+      var factory = _serviceLocator.GetInstance<ITabbedMenuRenderer> ();
 
       Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (WebTabStripRendererFactory)));
+      Assert.That (factory, Is.TypeOf (typeof (TabbedMenuRenderer)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IWebTabRendererFactory> ();
-      var factory2 = _serviceLocator.GetInstance<IWebTabRendererFactory> ();
+      var factory1 = _serviceLocator.GetInstance<ITabbedMenuRenderer> ();
+      var factory2 = _serviceLocator.GetInstance<ITabbedMenuRenderer> ();
 
       Assert.That (factory1, Is.SameAs (factory2));
     }

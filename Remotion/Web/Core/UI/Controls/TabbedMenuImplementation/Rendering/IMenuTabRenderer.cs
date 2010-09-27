@@ -15,19 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web;
-using Microsoft.Practices.ServiceLocation;
 using Remotion.Implementation;
-using Remotion.Web.UI.Controls.Factories;
+using Remotion.Web.UI.Controls.WebTabStripImplementation;
+using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
 
 namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
 {
   /// <summary>
-  /// Interface for factories creating renderers for <see cref="TabbedMenu"/> controls.
+  /// Defines the API for rendering a <see cref="MenuTab"/>.
   /// </summary>
-  [ConcreteImplementation (typeof(TabbedMenuRendererFactory), Lifetime = LifetimeKind.Singleton)]
-  public interface ITabbedMenuRendererFactory
+  [ConcreteImplementation (typeof (MenuTabRenderer), Lifetime = LifetimeKind.Singleton)]
+  public interface IMenuTabRenderer
   {
-    IRenderer CreateRenderer (HttpContextBase context, ITabbedMenu control, IServiceLocator serviceLocator);
+    void Render (WebTabStripRenderingContext renderingContext, IWebTab tab, bool isEnabled, bool isLast, WebTabStyle style);
   }
 }

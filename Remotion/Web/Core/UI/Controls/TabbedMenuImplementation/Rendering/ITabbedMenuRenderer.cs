@@ -16,26 +16,17 @@
 // 
 using System;
 using System.Web;
-using Microsoft.Practices.ServiceLocation;
-using Remotion.Web.UI.Controls;
-using Remotion.Web.UI.Controls.WebTabStripImplementation;
-using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
+using Remotion.Implementation;
 
-namespace Remotion.Web.Legacy.UI.Controls.Factories
+namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
 {
   /// <summary>
-  /// Responsible for creating quirks mode renderers for <see cref="WebTabStrip"/> controls and <see cref="WebTab"/> items.
+  /// Defines the API for rendering a <see cref="TabbedMenu"/>.
   /// </summary>
-  public class WebTabStripQuirksModeRendererFactory : IWebTabStripRendererFactory, IWebTabRendererFactory
+  [ConcreteImplementation (typeof (TabbedMenuRenderer), Lifetime = LifetimeKind.Singleton)]
+  public interface ITabbedMenuRenderer
   {
-    public IRenderer CreateRenderer (HttpContextBase context, IWebTabStrip control, IServiceLocator serviceLocator)
-    {
-      return new WebTabStripQuirksModeRenderer (context, control);
-    }
-
-    public IWebTabRenderer CreateRenderer (HttpContextBase context, IWebTabStrip control, IWebTab tab)
-    {
-      return new WebTabRenderer (context, control, tab);
-    }
+    void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control, HttpContextBase context);
+    void Render (TabbedMenuRenderingContext renderingContext);
   }
 }

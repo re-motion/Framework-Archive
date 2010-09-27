@@ -18,13 +18,12 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Remotion.ServiceLocation;
-using Remotion.Web.UI.Controls.Factories;
 using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rendering
 {
   [TestFixture]
-  public class IWebTabStripRendererFactoryTest
+  public class IWebTabStripRendererTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -37,17 +36,17 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IWebTabStripRendererFactory> ();
+      var factory = _serviceLocator.GetInstance<IWebTabStripRenderer> ();
 
       Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (WebTabStripRendererFactory)));
+      Assert.That (factory, Is.TypeOf (typeof (WebTabStripRenderer)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IWebTabStripRendererFactory> ();
-      var factory2 = _serviceLocator.GetInstance<IWebTabStripRendererFactory> ();
+      var factory1 = _serviceLocator.GetInstance<IWebTabStripRenderer> ();
+      var factory2 = _serviceLocator.GetInstance<IWebTabStripRenderer> ();
 
       Assert.That (factory1, Is.SameAs (factory2));
     }

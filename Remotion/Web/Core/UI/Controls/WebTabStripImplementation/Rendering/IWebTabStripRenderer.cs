@@ -17,18 +17,16 @@
 using System;
 using System.Web;
 using Remotion.Implementation;
-using Remotion.Web.UI.Controls.Factories;
-using Remotion.Web.UI.Controls.WebTabStripImplementation;
-using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
 
-namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
+namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 {
   /// <summary>
-  /// Interface for factories creating renderers for <see cref="MenuTab"/> items.
+  /// Defines the API for rendering a <see cref="WebTabStrip"/>.
   /// </summary>
-  [ConcreteImplementation (typeof(TabbedMenuRendererFactory), Lifetime = LifetimeKind.Singleton)]
-  public interface IMenuTabRendererFactory
+  [ConcreteImplementation (typeof (WebTabStripRenderer), Lifetime = LifetimeKind.Singleton)]
+  public interface IWebTabStripRenderer
   {
-    IWebTabRenderer CreateRenderer (HttpContextBase context, IWebTabStrip control, IMenuTab tab);
+    void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control, HttpContextBase context);
+    void Render (WebTabStripRenderingContext renderingContext);
   }
 }
