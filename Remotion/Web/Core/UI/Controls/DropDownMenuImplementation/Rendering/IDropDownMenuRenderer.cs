@@ -16,18 +16,17 @@
 // 
 using System;
 using System.Web;
-using Microsoft.Practices.ServiceLocation;
 using Remotion.Implementation;
-using Remotion.Web.UI.Controls.Factories;
 
 namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 {
   /// <summary>
-  /// Defines a factory method for creating renderers for <see cref="IDropDownMenu"/> controls.
+  /// Defines the API for rendering a <see cref="DropDownMenuRenderer"/>.
   /// </summary>
-  [ConcreteImplementation (typeof(DropDownMenuRendererFactory), Lifetime = LifetimeKind.Singleton)]
-  public interface IDropDownMenuRendererFactory
+  [ConcreteImplementation (typeof (DropDownMenuRenderer), Lifetime = LifetimeKind.Singleton)]
+  public interface IDropDownMenuRenderer
   {
-    IRenderer CreateRenderer (HttpContextBase context, IDropDownMenu control, IServiceLocator serviceLocator);
+    void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control, HttpContextBase context);
+    void Render (DropDownMenuRenderingContext renderingContext);
   }
 }
