@@ -18,13 +18,12 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Remotion.ServiceLocation;
-using Remotion.Web.UI.Controls.Factories;
 using Remotion.Web.UI.Controls.ListMenuImplementation.Rendering;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Rendering
 {
   [TestFixture]
-  public class IListMenuRendererFactoryTest
+  public class IListMenuRendererTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -37,17 +36,17 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IListMenuRendererFactory> ();
+      var factory = _serviceLocator.GetInstance<IListMenuRenderer> ();
 
       Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (ListMenuRendererFactory)));
+      Assert.That (factory, Is.TypeOf (typeof (ListMenuRenderer)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IListMenuRendererFactory> ();
-      var factory2 = _serviceLocator.GetInstance<IListMenuRendererFactory> ();
+      var factory1 = _serviceLocator.GetInstance<IListMenuRenderer> ();
+      var factory2 = _serviceLocator.GetInstance<IListMenuRenderer> ();
 
       Assert.That (factory1, Is.SameAs (factory2));
     }

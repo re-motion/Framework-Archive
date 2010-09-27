@@ -16,21 +16,17 @@
 // 
 using System;
 using System.Web;
-using Microsoft.Practices.ServiceLocation;
-using Remotion.Web.UI.Controls;
-using Remotion.Web.UI.Controls.ListMenuImplementation;
-using Remotion.Web.UI.Controls.ListMenuImplementation.Rendering;
+using Remotion.Implementation;
 
-namespace Remotion.Web.Legacy.UI.Controls.Factories
+namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 {
   /// <summary>
-  /// Responsible for creating quirks mode renderers for <see cref="ListMenu"/> controls.
+  /// Defines the API for rendering a <see cref="ListMenuRenderer"/>.
   /// </summary>
-  public class ListMenuQuirksModeRendererFactory : IListMenuRendererFactory
+  [ConcreteImplementation (typeof (ListMenuRenderer), Lifetime = LifetimeKind.Singleton)]
+  public interface IListMenuRenderer
   {
-    public IRenderer CreateRenderer (HttpContextBase context, IListMenu control, IServiceLocator serviceLocator)
-    {
-      return new ListMenuQuirksModeRenderer (context, control);
-    }
+    void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control, HttpContextBase context);
+    void Render (ListMenuRenderingContext renderingContext);
   }
 }
