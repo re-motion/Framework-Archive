@@ -14,32 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-
-namespace Remotion.UnitTests.Utilities.ReflectionUtilityTests.TestDomain
+namespace Remotion.UnitTests.Utilities.ReflectionUtilityTests.TestDomain.MemberInfoEquals
 {
-  public class MemberInfoEqualsTestClass<T>
+  public class ClassWithProperties
   {
-    public readonly string PublicField = "Test";
-
-    public string Property { get; set; }
-    public T GenericProperty { get { return default(T); } }
-
-    public void NonGenericMethod ()
-    {
-
-    }
-
-    public void GenericMethod<TP> (TP genericParameter)
-    {
-
-    }
-
-    public string Trim ()
-    {
-      return string.Empty;
-    }
-
-    
+    public int Property1 { get; set; }
+    public int Property2 { get; set; }
   }
 }
