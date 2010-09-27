@@ -16,18 +16,17 @@
 // 
 using System;
 using System.Web;
-using Microsoft.Practices.ServiceLocation;
 using Remotion.Implementation;
-using Remotion.Web.UI.Controls.Factories;
 
 namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
 {
   /// <summary>
-  /// Defines a factory method for creating renderers for <see cref="ISingleView"/> controls.
+  /// Defines the API for rendering a <see cref="SingleViewRenderer"/>.
   /// </summary>
-  [ConcreteImplementation (typeof(SingleViewRendererFactory), Lifetime = LifetimeKind.Singleton)]
-  public interface ISingleViewRendererFactory
+  [ConcreteImplementation (typeof (SingleViewRenderer), Lifetime = LifetimeKind.Singleton)]
+  public interface ISingleViewRenderer
   {
-    IRenderer CreateRenderer (HttpContextBase context, ISingleView control, IServiceLocator serviceLocator);
+    void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control, HttpContextBase context);
+    void Render (SingleViewRenderingContext renderingContext);
   }
 }
