@@ -14,15 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Data.DomainObjects;
 using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding.IntegrationTests.TestDomain
 {
-  [DBTable]
-  [Uses (typeof (DerivedMixinAddingSimplePersistentProperties))]
-  public class TargetClassForDerivedPersistentMixin : SimpleDomainObject<TargetClassForDerivedPersistentMixin>
+  [Uses (typeof (MixinAddingProperty))]
+  public class DerivedClassWithMixinWithDuplicateInterface : BaseClassWithMixinWithInterface
   {
+    public new static DerivedClassWithMixinWithDuplicateInterface NewObject ()
+    {
+      return NewObject<DerivedClassWithMixinWithDuplicateInterface> ();
+    }
   }
 }

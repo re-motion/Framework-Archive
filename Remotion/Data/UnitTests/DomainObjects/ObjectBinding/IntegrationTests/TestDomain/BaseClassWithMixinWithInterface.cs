@@ -16,13 +16,19 @@
 // 
 using System;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.ObjectBinding;
 using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding.IntegrationTests.TestDomain
 {
-  [DBTable]
-  [Uses (typeof (DerivedMixinAddingSimplePersistentProperties))]
-  public class TargetClassForDerivedPersistentMixin : SimpleDomainObject<TargetClassForDerivedPersistentMixin>
+  [Uses (typeof (MixinAddingPropertyBase))]
+  [DBTable ("BaseClassWithMixinWithInterface")]
+  [BindableDomainObject]
+  public class BaseClassWithMixinWithInterface : DomainObject
   {
+    public static BaseClassWithMixinWithInterface NewObject ()
+    {
+      return NewObject<BaseClassWithMixinWithInterface> ();
+    }
   }
 }

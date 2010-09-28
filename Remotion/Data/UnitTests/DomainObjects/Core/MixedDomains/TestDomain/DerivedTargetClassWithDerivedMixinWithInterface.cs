@@ -15,14 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects;
 using Remotion.Mixins;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
 {
-  [DBTable]
-  [Uses (typeof (DerivedMixinAddingSimplePersistentProperties))]
-  public class TargetClassForDerivedPersistentMixin : SimpleDomainObject<TargetClassForDerivedPersistentMixin>
+  /// <summary>
+  /// This class inherits a mixin from its base class that introduces an interface, and it itself has a mixin derived from that base class mixin.
+  /// The mixin implicitly introduces the same interface. This can create name clashes.
+  /// </summary>
+  [Uses (typeof (DerivedMixinAddingPersistentProperties))]
+  public class DerivedTargetClassWithDerivedMixinWithInterface : TargetClassForPersistentMixin
   {
   }
 }
