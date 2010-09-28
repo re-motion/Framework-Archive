@@ -17,16 +17,18 @@
 using System;
 using System.Web;
 using Remotion.Implementation;
-using Remotion.ObjectBinding.Web.UI.Controls.Factories;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
   /// <summary>
-  /// Interface for factories creating <see cref="IBocIndexColumnRenderer"/> renderers.
+  /// Defines the API for rendering a <see cref="BocList"/>.
   /// </summary>
-  [ConcreteImplementation (typeof(BocIndexColumnRendererFactory), Lifetime = LifetimeKind.Singleton)]
-  public interface IBocIndexColumnRendererFactory
+  [ConcreteImplementation (typeof (BocListRenderer), Lifetime = LifetimeKind.Singleton)]
+  public interface IBocListRenderer
   {
-    IBocIndexColumnRenderer CreateRenderer (HttpContextBase context, IBocList list);
+    void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control, HttpContextBase context);
+    void Render (BocListRenderingContext renderingContext);
   }
 }
