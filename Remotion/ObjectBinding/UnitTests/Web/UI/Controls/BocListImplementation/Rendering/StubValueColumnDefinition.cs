@@ -15,54 +15,26 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web.UI;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
+using System.Web;
+using Microsoft.Practices.ServiceLocation;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
-using Rhino.Mocks;
+using Remotion.Web;
+using Remotion.Web.Factories;
 
 namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation.Rendering
 {
-  [TestFixture]
-  public class NullColumnRendererTest
+  public class StubValueColumnDefinition : BocValueColumnDefinition
   {
-    private NullColumnRenderer _nullColumnRenderer;
-    private HtmlTextWriter _htmlTextWriterMock;
-
-    [SetUp]
-    public void SetUp ()
+    protected override IBocColumnRenderer GetRendererInternal (IServiceLocator locator, HttpContextBase context, IBocList list, int columnIndex)
     {
-      _nullColumnRenderer = new NullColumnRenderer();
-      _htmlTextWriterMock = MockRepository.GenerateStrictMock<HtmlTextWriter> ();
+      return new StubColumnRenderer (context, list, new StubColumnDefinition(), new ResourceUrlFactory (new ResourceTheme.ClassicBlue ()), columnIndex);
     }
 
-    [Test]
-    public void Initialization ()
+    public override string GetStringValue (IBusinessObject obj)
     {
-      Assert.That (_nullColumnRenderer.IsNull, Is.True);
-      Assert.That (_nullColumnRenderer.Column, Is.Null);
+      throw new NotImplementedException();
     }
-
-    [Test]
-    public void RenderTitleCell ()
-    {
-      _htmlTextWriterMock.Replay();
-
-      _nullColumnRenderer.RenderTitleCell (_htmlTextWriterMock, SortingDirection.None, 0);
-
-      _htmlTextWriterMock.VerifyAllExpectations();
-    }
-
-    [Test]
-    public void RenderDataCell ()
-    {
-      _htmlTextWriterMock.Replay ();
-
-      _nullColumnRenderer.RenderDataCell (_htmlTextWriterMock, 0, true, true, null);
-
-      _htmlTextWriterMock.VerifyAllExpectations ();
-    }
-
   }
 }
