@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Utilities;
@@ -24,7 +23,7 @@ using Remotion.Web.UI.Controls.SingleViewImplementation;
 using Remotion.Web.UI.Controls.SingleViewImplementation.Rendering;
 using Remotion.Web.Utilities;
 
-namespace Remotion.Web.Legacy.UI.Controls
+namespace Remotion.Web.Legacy.UI.Controls.Rendering
 {
   /// <summary>
   /// Implements <see cref="ISingleViewRenderer"/> for quirks mode rendering of <see cref="SingleView"/> controls.
