@@ -17,7 +17,7 @@
 using System;
 using Remotion.Data.DomainObjects.Mapping;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Configuration.Mapping.Validation.Persistence
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Configuration.Mapping.Validation
 {
   public class ReflectionBasedClassDefinitionWithUnresolvedClassType : ReflectionBasedClassDefinition
   {

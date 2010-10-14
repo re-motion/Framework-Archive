@@ -16,26 +16,24 @@
 // 
 using System;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.UnitTests.DomainObjects.Core.TableInheritance.TestDomain;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Configuration.Mapping.TestDomain.Validation.Persistence.
-    NonAbstractClassHasEntityNameValidationRule
+    EntityNameMatchesParentEntityNameValidationRule
 {
-  [DBTable ("NonAbstractClassHasEntityNameTestClass")]
   [Instantiable]
-  public abstract class NonAbstractClassHasEntityNameTestClass : DomainBase
+  public abstract class EntityNameMatchesParentEntityNameDomainObject : EntityNameMatchesParentEntityNameBaseDomainObject
   {
-    public static NonAbstractClassHasEntityNameTestClass NewObject ()
+    public new static EntityNameMatchesParentEntityNameDomainObject NewObject ()
     {
-      return NewObject<NonAbstractClassHasEntityNameTestClass>();
+      return NewObject<EntityNameMatchesParentEntityNameDomainObject>();
     }
 
-    public static NonAbstractClassHasEntityNameTestClass GetObject (ObjectID id)
+    public new static EntityNameMatchesParentEntityNameDomainObject GetObject (ObjectID id)
     {
-      return GetObject<NonAbstractClassHasEntityNameTestClass> (id);
+      return GetObject<EntityNameMatchesParentEntityNameDomainObject> (id);
     }
 
-    protected NonAbstractClassHasEntityNameTestClass ()
+    protected EntityNameMatchesParentEntityNameDomainObject ()
     {
     }
   }
