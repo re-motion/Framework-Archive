@@ -17,11 +17,9 @@
 using System;
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Configuration.Mapping.TestDomain.Validation.Reflection.
-    StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Configuration.Mapping.TestDomain.Validation.Reflection.DomainObjectTypeIsNotGenericValidationRule
 {
-  [DBStorageGroup]
-  public class BaseClassWithStorageGroupAttribute : DomainObject
+  public class GenericTypeDomainObject<T> : DomainObject
   {
   }
 }
