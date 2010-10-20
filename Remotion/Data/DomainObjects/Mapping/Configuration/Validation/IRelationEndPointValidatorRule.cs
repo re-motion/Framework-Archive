@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Data.DomainObjects.Mapping.Configuration.Validation
 {
   /// <summary>
-  /// Defines the API for the relation end point definition mapping validators.
+  /// Defines the API for the relation end point definition mapping validator rules.
   /// </summary>
   public interface IRelationEndPointValidatorRule
   {
