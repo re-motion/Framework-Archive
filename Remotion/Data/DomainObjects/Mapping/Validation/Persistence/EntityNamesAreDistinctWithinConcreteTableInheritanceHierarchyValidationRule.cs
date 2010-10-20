@@ -14,17 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
+using System.Collections.Generic;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Mapping.Configuration.Validation.Logical
+namespace Remotion.Data.DomainObjects.Mapping.Validation.Persistence
 {
   /// <summary>
-  /// Validates that each defined property definition in a class is not already defined in a base class.
+  /// Validates that a specified entity name within concrete table inheritance hierarchy classes in different inheritance brachnes is unique.
   /// </summary>
-  public class PropertyNamesAreUniqueWithinInheritanceTreeValidationRule : IClassDefinitionValidatorRule
+  public class EntityNamesAreDistinctWithinConcreteTableInheritanceHierarchyValidationRule : IClassDefinitionValidatorRule
   {
-    public PropertyNamesAreUniqueWithinInheritanceTreeValidationRule ()
+    public EntityNamesAreDistinctWithinConcreteTableInheritanceHierarchyValidationRule ()
     {
       
     }
@@ -33,20 +33,18 @@ namespace Remotion.Data.DomainObjects.Mapping.Configuration.Validation.Logical
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
-      if (classDefinition.BaseClass != null)
+      var allDistinctConcreteEntityNames = new Dictionary<string, object> ();
+      foreach (string entityName in classDefinition.GetAllConcreteEntityNames ())
       {
-        PropertyDefinitionCollection basePropertyDefinitions = classDefinition.BaseClass.GetPropertyDefinitions ();
-        foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
+        if (allDistinctConcreteEntityNames.ContainsKey (entityName))
         {
-          if (basePropertyDefinitions.Contains (propertyDefinition.PropertyName))
-          {
-            string message = string.Format("Class '{0}' must not define property '{1}', because base class '{2}' already defines a property with the same name.",
-                classDefinition.ID,
-                propertyDefinition.PropertyName,
-                basePropertyDefinitions[propertyDefinition.PropertyName].ClassDefinition.ID);
-            return new MappingValidationResult (false, message);
-          }
+          string message = string.Format("At least two classes in different inheritance branches derived from abstract class '{0}'"
+              + " specify the same entity name '{1}', which is not allowed.",
+              classDefinition.ID, entityName);
+          return new MappingValidationResult (false, message);
         }
+
+        allDistinctConcreteEntityNames.Add (entityName, null);
       }
       return new MappingValidationResult (true);
     }

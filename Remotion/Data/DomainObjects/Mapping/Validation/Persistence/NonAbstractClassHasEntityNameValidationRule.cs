@@ -14,17 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Mapping.Configuration.Validation.Persistence
+namespace Remotion.Data.DomainObjects.Mapping.Validation.Persistence
 {
   /// <summary>
-  /// Validates that the entity-name of a class is the same as the inherited entity-name.
+  /// Validates that each non-abstract class in the mapping can resolve it's entity-name.
   /// </summary>
-  public class EntityNameMatchesParentEntityNameValidationRule : IClassDefinitionValidatorRule
+  public class NonAbstractClassHasEntityNameValidationRule : IClassDefinitionValidatorRule
   {
-    public EntityNameMatchesParentEntityNameValidationRule ()
+    public NonAbstractClassHasEntityNameValidationRule ()
     {
       
     }
@@ -33,15 +32,16 @@ namespace Remotion.Data.DomainObjects.Mapping.Configuration.Validation.Persisten
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
-      if (classDefinition.BaseClass != null && classDefinition.MyEntityName != null && classDefinition.BaseClass.GetEntityName() != null
-          && classDefinition.MyEntityName != classDefinition.BaseClass.GetEntityName())
+      if (classDefinition.IsClassTypeResolved)
       {
-        string message = string.Format(
-            "Class '{0}' must not specify an entity name '{1}' which is different from inherited entity name '{2}'.",
-            classDefinition.ID,
-            classDefinition.MyEntityName,
-            classDefinition.BaseClass.GetEntityName());
-        return new MappingValidationResult (false, message);
+        if (classDefinition.GetEntityName () == null && !classDefinition.IsAbstract)
+        {
+          string message = string.Format("Neither class '{0}' nor its base classes specify an entity name. "
+            +"Make class '{1}' abstract or apply a DBTable attribute to it or one of its base classes.",
+              classDefinition.ID,
+              classDefinition.ClassType.AssemblyQualifiedName);
+          return new MappingValidationResult (false, message);
+        }
       }
       return new MappingValidationResult (true);
     }

@@ -14,35 +14,27 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Utilities;
-
-namespace Remotion.Data.DomainObjects.Mapping.Configuration.Validation.Persistence
+namespace Remotion.Data.DomainObjects.Mapping.Validation.Persistence
 {
   /// <summary>
-  /// Validates that each non-abstract class in the mapping can resolve it's entity-name.
+  /// Validates that the StorageProviderID of a class defintion is equal to the StorageProviderID of the base class definition.
   /// </summary>
-  public class NonAbstractClassHasEntityNameValidationRule : IClassDefinitionValidatorRule
+  public class StorageProviderIDMatchesParentStorageProviderIDValiadationRule : IClassDefinitionValidatorRule
   {
-    public NonAbstractClassHasEntityNameValidationRule ()
+    public StorageProviderIDMatchesParentStorageProviderIDValiadationRule ()
     {
       
     }
 
     public MappingValidationResult Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-
-      if (classDefinition.IsClassTypeResolved)
+      if (classDefinition.BaseClass!=null && classDefinition.BaseClass.StorageProviderID != classDefinition.StorageProviderID)
       {
-        if (classDefinition.GetEntityName () == null && !classDefinition.IsAbstract)
-        {
-          string message = string.Format("Neither class '{0}' nor its base classes specify an entity name. "
-            +"Make class '{1}' abstract or apply a DBTable attribute to it or one of its base classes.",
-              classDefinition.ID,
-              classDefinition.ClassType.AssemblyQualifiedName);
-          return new MappingValidationResult (false, message);
-        }
+        var message = string.Format(
+            "Cannot derive class '{0}' from base class '{1}' handled by different StorageProviders.",
+            classDefinition.ID,
+            classDefinition.BaseClass.ID);
+        return new MappingValidationResult (false, message);
       }
       return new MappingValidationResult (true);
     }

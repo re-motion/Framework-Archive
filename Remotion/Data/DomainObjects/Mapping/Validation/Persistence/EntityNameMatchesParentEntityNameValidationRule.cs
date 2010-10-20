@@ -14,30 +14,32 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
+using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Mapping.Configuration.Validation.Reflection
+namespace Remotion.Data.DomainObjects.Mapping.Validation.Persistence
 {
   /// <summary>
-  /// Validates that the type of a class defintion is derived from base type.
+  /// Validates that the entity-name of a class is the same as the inherited entity-name.
   /// </summary>
-  public class InheritanceHierarchyFollowsClassHierarchyValidationRule : IClassDefinitionValidatorRule
+  public class EntityNameMatchesParentEntityNameValidationRule : IClassDefinitionValidatorRule
   {
-    public InheritanceHierarchyFollowsClassHierarchyValidationRule ()
+    public EntityNameMatchesParentEntityNameValidationRule ()
     {
       
     }
 
     public MappingValidationResult Validate (ClassDefinition classDefinition)
     {
-      if (classDefinition.BaseClass !=null && !classDefinition.ClassType.IsSubclassOf (classDefinition.BaseClass.ClassType))
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+
+      if (classDefinition.BaseClass != null && classDefinition.MyEntityName != null && classDefinition.BaseClass.GetEntityName() != null
+          && classDefinition.MyEntityName != classDefinition.BaseClass.GetEntityName())
       {
-        var message = string.Format(
-            "Type '{0}' of class '{1}' is not derived from type '{2}' of base class '{3}'.",
-            classDefinition.ClassType.AssemblyQualifiedName,
+        string message = string.Format(
+            "Class '{0}' must not specify an entity name '{1}' which is different from inherited entity name '{2}'.",
             classDefinition.ID,
-            classDefinition.BaseClass.ClassType.AssemblyQualifiedName,
-            classDefinition.BaseClass.ID);
+            classDefinition.MyEntityName,
+            classDefinition.BaseClass.GetEntityName());
         return new MappingValidationResult (false, message);
       }
       return new MappingValidationResult (true);

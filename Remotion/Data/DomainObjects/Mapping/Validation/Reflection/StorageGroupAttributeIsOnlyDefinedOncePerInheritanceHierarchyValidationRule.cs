@@ -15,17 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Mapping.Configuration.Validation.Persistence
+namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 {
   /// <summary>
-  /// Validates that a specified entity name within concrete table inheritance hierarchy classes in different inheritance brachnes is unique.
+  /// Validates that the StorageGroupAttribute is not defined twice in the class hierarchy.
   /// </summary>
-  public class EntityNamesAreDistinctWithinConcreteTableInheritanceHierarchyValidationRule : IClassDefinitionValidatorRule
+  public class StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule : IClassDefinitionValidatorRule
   {
-    public EntityNamesAreDistinctWithinConcreteTableInheritanceHierarchyValidationRule ()
+    public StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule ()
     {
       
     }
@@ -34,20 +33,28 @@ namespace Remotion.Data.DomainObjects.Mapping.Configuration.Validation.Persisten
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
-      var allDistinctConcreteEntityNames = new Dictionary<string, object> ();
-      foreach (string entityName in classDefinition.GetAllConcreteEntityNames ())
-      {
-        if (allDistinctConcreteEntityNames.ContainsKey (entityName))
-        {
-          string message = string.Format("At least two classes in different inheritance branches derived from abstract class '{0}'"
-              + " specify the same entity name '{1}', which is not allowed.",
-              classDefinition.ID, entityName);
-          return new MappingValidationResult (false, message);
-        }
+      return Validate (classDefinition.ClassType);
+    }
 
-        allDistinctConcreteEntityNames.Add (entityName, null);
+    public MappingValidationResult Validate (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      if (ReflectionUtility.IsInheritanceRoot(type) && Attribute.IsDefined (type.BaseType, typeof (StorageGroupAttribute), true)) 
+      {
+        Type baseType = type.BaseType;
+        while (!AttributeUtility.IsDefined<StorageGroupAttribute> (baseType, false)) //get base type which has the attribute applied
+          baseType = baseType.BaseType;
+
+        var message = string.Format (
+            "The domain object type cannot redefine the '{0}' already defined on base type '{1}'.",
+            typeof (StorageGroupAttribute),
+            baseType);
+        return new MappingValidationResult (false, message);
       }
       return new MappingValidationResult (true);
     }
+
+    
   }
 }

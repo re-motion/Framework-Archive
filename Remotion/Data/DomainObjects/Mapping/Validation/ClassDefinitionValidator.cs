@@ -18,31 +18,35 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Remotion.Data.DomainObjects.Mapping.Configuration.Validation.Persistence;
+using Remotion.Data.DomainObjects.Mapping.Validation.Logical;
+using Remotion.Data.DomainObjects.Mapping.Validation.Reflection;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Mapping.Configuration.Validation
+namespace Remotion.Data.DomainObjects.Mapping.Validation
 {
   /// <summary>
   /// Holds a read-only collection of class definition validation rules and exposes a Validate-method, which gets a list of 
   /// class definitions to validate. Each validation rule is applied to each class definition and for every rule which is invalid a 
   /// mapping validation result with the respective error message is returned.
   /// </summary>
-  public class PersistenceMappingValidator : IPersistenceMappingValidator
+  public class ClassDefinitionValidator : IClassDefinitionValidator
   {
     private readonly ReadOnlyCollection<IClassDefinitionValidatorRule> _validationRules;
 
-    public static PersistenceMappingValidator Create ()
+    public static ClassDefinitionValidator Create ()
     {
-      return new PersistenceMappingValidator (
-          new EntityNameMatchesParentEntityNameValidationRule(),
-          new EntityNamesAreDistinctWithinConcreteTableInheritanceHierarchyValidationRule(),
-          new NonAbstractClassHasEntityNameValidationRule(),
-          new StorageProviderIDMatchesParentStorageProviderIDValiadationRule(),
-          new StorageSpecificPropertyNamesAreUniqueWithinInheritanceTreeValidationRule());
+      return new ClassDefinitionValidator (
+          new DomainObjectTypeDoesNotHaveLegacyInfrastructureConstructorValidationRule(),
+          new DomainObjectTypeIsNotGenericValidationRule(),
+          new InheritanceHierarchyFollowsClassHierarchyValidationRule(),
+          new MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule(),
+          new MappingAttributesAreSupportedForPropertyTypeValidationRule(),
+          new PropertyNamesAreUniqueWithinInheritanceTreeValidationRule(),
+          new StorageClassIsSupportedValidationRule(),
+          new StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule());
     }
 
-    public PersistenceMappingValidator (params IClassDefinitionValidatorRule[] classDefinitionValidatorRules)
+    public ClassDefinitionValidator (params IClassDefinitionValidatorRule[] classDefinitionValidatorRules)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("classDefinitionValidatorRules", classDefinitionValidatorRules);
 

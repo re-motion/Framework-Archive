@@ -14,17 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Mapping.Configuration.Validation.Reflection
+namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 {
   /// <summary>
-  /// Validates that a class definition type is not generic.
+  /// Validates that each defined property definition in a class is not already defined in a base class.
   /// </summary>
-  public class DomainObjectTypeIsNotGenericValidationRule : IClassDefinitionValidatorRule
+  public class PropertyNamesAreUniqueWithinInheritanceTreeValidationRule : IClassDefinitionValidatorRule
   {
-    public DomainObjectTypeIsNotGenericValidationRule ()
+    public PropertyNamesAreUniqueWithinInheritanceTreeValidationRule ()
     {
       
     }
@@ -33,17 +32,20 @@ namespace Remotion.Data.DomainObjects.Mapping.Configuration.Validation.Reflectio
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
-      return Validate (classDefinition.ClassType);
-    }
-
-    public MappingValidationResult Validate (Type type)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-
-      if (type.IsGenericType && !ReflectionUtility.IsDomainObjectBase(type))
+      if (classDefinition.BaseClass != null)
       {
-        var message = "Generic domain objects are not supported.";
-        return new MappingValidationResult (false, message);
+        PropertyDefinitionCollection basePropertyDefinitions = classDefinition.BaseClass.GetPropertyDefinitions ();
+        foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
+        {
+          if (basePropertyDefinitions.Contains (propertyDefinition.PropertyName))
+          {
+            string message = string.Format("Class '{0}' must not define property '{1}', because base class '{2}' already defines a property with the same name.",
+                classDefinition.ID,
+                propertyDefinition.PropertyName,
+                basePropertyDefinitions[propertyDefinition.PropertyName].ClassDefinition.ID);
+            return new MappingValidationResult (false, message);
+          }
+        }
       }
       return new MappingValidationResult (true);
     }
