@@ -23,12 +23,12 @@ using System.Collections.Generic;
 namespace Remotion.UnitTests.Utilities
 {
   [TestFixture]
-  public class CalculationBasedComparerTest
+  public class DelegateBasedComparerTest
   {
     [Test]
     public void Compare ()
     {
-      var comparer = new CalculationBasedComparer<List<int>, int> (l => l.Count, Comparer<int>.Default);
+      var comparer = new DelegateBasedComparer<List<int>>((x, y) => x.Count.CompareTo (y.Count));
 
       var l1 = new List<int> { 1 };
       var l2 = new List<int> { 1, 2 };
