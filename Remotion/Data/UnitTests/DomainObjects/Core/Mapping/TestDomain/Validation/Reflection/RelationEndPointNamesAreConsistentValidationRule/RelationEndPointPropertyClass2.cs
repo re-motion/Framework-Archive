@@ -14,20 +14,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Validation.Reflection.RelationEndPointDeclarationsDoNotMatchValidationRule
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Validation.Reflection.RelationEndPointNamesAreConsistentValidationRule
 {
-  public class RelationEndPointPropertyClass1 : DomainObject
+  public class RelationEndPointPropertyClass2 : DomainObject
   {
-    [DBBidirectionalRelation ("RelationPopertyWithoutBidirectionalRelationAttribute")]
-    public RelationEndPointPropertyClass2 RelationProperty1 { get; set; }
+    public RelationEndPointPropertyClass1 RelationPopertyWithoutBidirectionalRelationAttribute { get; set; }
 
     [DBBidirectionalRelation ("RelationProperty2")]
-    public RelationEndPointPropertyClass2 RelationProperty2 { get; set; }
+    public RelationEndPointPropertyClass1 RelationPopertyWithNonMatchingPropertyName { get; set; }
 
-    [DBBidirectionalRelation ("RelationPopertyWithNonMatchingPropertyName")]
-    public RelationEndPointPropertyClass2 RelationProperty3 { get; set; }
+    [DBBidirectionalRelation ("RelationProperty2")]
+    public RelationEndPointPropertyClass1 RelationProperty2 { get; set; }
   }
 }
