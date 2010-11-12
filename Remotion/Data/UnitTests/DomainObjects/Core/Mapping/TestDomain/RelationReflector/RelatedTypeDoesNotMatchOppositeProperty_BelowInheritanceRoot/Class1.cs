@@ -17,14 +17,12 @@
 using System;
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Errors.ValidationIntegration.NotSupportedRelations.
-    BidirectionalRelationWithInvalidPropertyReferences
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.RelationReflector.RelatedTypeDoesNotMatchOppositeProperty_BelowInheritanceRoot
 {
   [DBTable]
-  [ClassID ("BidirectionalRelationWithInvalidPropertyReferences_BaseRelationClass2")]
-  public class BaseRelationClass2 : DomainObject
+  public class Class1 : DomainObject
   {
-    [DBBidirectionalRelation("RelationProperty1")]
-    public InvalidRelationClass1 RelationProperty3 { get; set; }
+    [DBBidirectionalRelation("RelationPropertyOnBaseClass")]
+    public DerivedClass2 RelationProperty { get; set; }
   }
 }
