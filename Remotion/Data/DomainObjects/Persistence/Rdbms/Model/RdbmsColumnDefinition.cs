@@ -14,26 +14,35 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Data.DomainObjects.Mapping;
+using System.Reflection;
+using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Utilities;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Model
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
-  public class StorageModelTestHelper
+  public class RdbmsColumnDefinition : IStoragePropertyDefinition
   {
-    public static string GetEntityName (ClassDefinition classDefinition)
-    {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+    private readonly string _name;
+    private readonly PropertyInfo _propertyInfo;
 
-      return classDefinition.StorageEntityDefinition!=null ? classDefinition.StorageEntityDefinition.LegacyEntityName : null;
+    public RdbmsColumnDefinition (string name, PropertyInfo propertyInfo)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+
+      _name = name;
+      _propertyInfo = propertyInfo;
     }
 
-    public static string GetColumnName (PropertyDefinition propertyDefinition)
+    public string Name
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
-
-      return propertyDefinition.StoragePropertyDefinition.Name;
+      get { return _name; }
     }
+
+    public PropertyInfo PropertyInfo
+    {
+      get { return _propertyInfo; }
+    }
+   
   }
 }

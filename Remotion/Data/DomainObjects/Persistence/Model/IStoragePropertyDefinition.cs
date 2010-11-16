@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (C) 2005-2009 rubicon informationstechnologie gmbh, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,35 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using System.Reflection;
-using Remotion.Utilities;
-
-namespace Remotion.Data.DomainObjects.Mapping
+namespace Remotion.Data.DomainObjects.Persistence.Model
 {
-  public class ColumnDefinition : IStoragePropertyDefinition
+  public interface IStoragePropertyDefinition
   {
-    private readonly string _name;
-    private readonly PropertyInfo _propertyInfo;
-
-    public ColumnDefinition (string name, PropertyInfo propertyInfo)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-
-      _name = name;
-      _propertyInfo = propertyInfo;
-    }
-
-    public string Name
-    {
-      get { return _name; }
-    }
-
-    public PropertyInfo PropertyInfo
-    {
-      get { return _propertyInfo; }
-    }
-   
+    string Name { get; }
   }
 }
