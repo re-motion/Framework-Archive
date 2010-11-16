@@ -14,31 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using System;
+using System.Collections.ObjectModel;
+using Remotion.Data.DomainObjects.Persistence.Model;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
-  [TestFixture]
-  public class RdbmsColumnDefinitionTest
+  /// <summary>
+  /// <see cref="IEntityDefinition"/> defines the API for an entity definition for a relational database.
+  /// </summary>
+  public interface IEntityDefinition : IStorageEntityDefinition
   {
-    private RdbmsColumnDefinition _rdbmsColumnDefinition;
-    public string DummyProperty { get; set; }
-    public string OtherProperty { get; set; }
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _rdbmsColumnDefinition = new RdbmsColumnDefinition ("Name", GetType().GetProperty ("DummyProperty"));
-    }
-
-    [Test]
-    public void Initialization ()
-    {
-      Assert.That (_rdbmsColumnDefinition.Name, Is.EqualTo ("Name"));
-      Assert.That (_rdbmsColumnDefinition.PropertyInfo.Name, Is.EqualTo ("DummyProperty"));
-    }
-
+    ReadOnlyCollection<ColumnDefinition> GetColumns ();
   }
 }
