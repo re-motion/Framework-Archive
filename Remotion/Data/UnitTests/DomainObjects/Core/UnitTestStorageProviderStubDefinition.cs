@@ -16,8 +16,6 @@
 // 
 using System;
 using System.Xml;
-using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Utilities;
 
@@ -35,16 +33,18 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
 
     public UnitTestStorageProviderStubDefinition (
         string storageProviderID,
-        Type storageProviderType)
-        : base (storageProviderID, storageProviderType)
+        Type storageProviderType,
+        Type storageFactoryType)
+        : base (storageProviderID, storageProviderType, storageFactoryType)
     {
     }
 
     public UnitTestStorageProviderStubDefinition (
         string storageProviderID,
         Type storageProviderType,
+        Type storageFactoryType,
         XmlNode configurationNode)
-        : base (storageProviderID, storageProviderType)
+        : base (storageProviderID, storageProviderType, storageFactoryType)
     {
     }
 
