@@ -14,41 +14,41 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
-using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.Linq.Utilities;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
 {
-  [TestFixture]
-  public class SqlDialectTest
+  /// <summary>
+  /// Defines the <see cref="ISqlDialect"/> for MS SQL Server.
+  /// </summary>
+  public class SqlDialect : ISqlDialect
   {
-    private SqlDialect _dialect;
+    public static readonly SqlDialect Instance = new SqlDialect ();
 
-    [SetUp]
-    public void SetUp ()
+    protected SqlDialect ()
     {
-      _dialect = SqlDialect.Instance;
     }
 
-    [Test]
-    public void StatementDelimiter ()
+    public virtual string GetParameterName (string name)
     {
-      Assert.That (_dialect.StatementDelimiter, Is.EqualTo (";"));
+      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+
+      if (name.StartsWith ("@"))
+        return name;
+      else
+        return "@" + name;
     }
 
-    [Test]
-    public void DelimitIdentifier ()
+    public virtual string DelimitIdentifier (string identifier)
     {
-      Assert.That (_dialect.DelimitIdentifier ("x"), Is.EqualTo ("[x]"));
+      ArgumentUtility.CheckNotNullOrEmpty ("identifier", identifier);
+
+      return "[" + identifier + "]";
     }
 
-    [Test]
-    public void GetParameterName ()
+    public virtual string StatementDelimiter
     {
-      Assert.That (_dialect.GetParameterName ("parameter"), Is.EqualTo ("@parameter"));
-      Assert.That (_dialect.GetParameterName ("@parameter"), Is.EqualTo ("@parameter"));
+      get { return ";"; }
     }
   }
 }
