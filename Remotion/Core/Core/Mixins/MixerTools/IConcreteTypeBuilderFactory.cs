@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using System.Collections.Generic;
-using Remotion.Mixins.Context;
+using Remotion.Mixins.CodeGeneration;
 
-namespace Remotion.Mixins.MixerTool
+namespace Remotion.Mixins.MixerTools
 {
-  public interface IClassContextFinder
+  public interface IConcreteTypeBuilderFactory
   {
-    IEnumerable<ClassContext> FindClassContexts (MixinConfiguration configuration);
+    IConcreteTypeBuilder CreateTypeBuilder (string assemblyOutputDirectory);
+    string GetSignedModulePath (string assemblyOutputDirectory);
+    string GetUnsignedModulePath (string assemblyOutputDirectory);
   }
 }

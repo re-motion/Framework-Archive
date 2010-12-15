@@ -14,11 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using Remotion.Mixins;
 using Remotion.UnitTests.Mixins.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.MixerTool.TestDomain
+namespace Remotion.UnitTests.Mixins.MixerTools.TestDomain
 {
-  public interface IDerivedIBaseType2 : IBaseType2
+  [IgnoreForMixinConfiguration]
+  public class ClassWithIgnoreAttribute : NullTarget
   {
   }
 }

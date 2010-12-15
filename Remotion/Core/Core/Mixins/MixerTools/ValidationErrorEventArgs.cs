@@ -14,13 +14,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Mixins;
-using Remotion.UnitTests.Mixins.TestDomain;
+using System;
+using Remotion.Mixins.Validation;
+using Remotion.Utilities;
 
-namespace Remotion.UnitTests.Mixins.MixerTool.TestDomain
+namespace Remotion.Mixins.MixerTools
 {
-  [IgnoreForMixinConfiguration]
-  public class ClassWithIgnoreAttribute : NullTarget
+  public class ValidationErrorEventArgs : EventArgs
   {
+    public ValidationErrorEventArgs (ValidationException validationException)
+    {
+      ArgumentUtility.CheckNotNull ("validationException", validationException);
+      ValidationException = validationException;
+    }
+
+    public ValidationException ValidationException { get; private set; }
   }
 }
