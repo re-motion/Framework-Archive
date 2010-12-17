@@ -17,39 +17,40 @@
 using System;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
   /// <summary>
   /// Visits <see cref="IColumnDefinition"/> objects and generates a list of SQL declarations for the visited columns.
   /// </summary>
-  public class SqlDeclarationColumnDefinitionVisitor : IColumnDefinitionVisitor
+  public class SqlDeclarationListColumnDefinitionVisitor : IColumnDefinitionVisitor
   {
     private readonly StringBuilder _columnList = new StringBuilder();
 
-    public string GetColumnList ()
+    public string GetDeclarationList ()
     {
       return _columnList.ToString();
     }
 
     public void VisitSimpleColumnDefinition (SimpleColumnDefinition simpleColumnDefinition)
     {
-      _columnList.AppendLine (GetColumnString (simpleColumnDefinition));
+      ArgumentUtility.CheckNotNull ("simpleColumnDefinition", simpleColumnDefinition);
+
+      _columnList.AppendFormat (
+          "  [{0}] {1}{2},",
+          simpleColumnDefinition.Name,
+          simpleColumnDefinition.StorageType,
+          simpleColumnDefinition.IsNullable ? " NULL" : " NOT NULL");
+      _columnList.AppendLine ();
     }
 
     public void VisitObjectIDWithClassIDColumnDefinition (ObjectIDWithClassIDColumnDefinition objectIDWithClassIDColumnDefinition)
     {
+      ArgumentUtility.CheckNotNull ("objectIDWithClassIDColumnDefinition", objectIDWithClassIDColumnDefinition);
+
       objectIDWithClassIDColumnDefinition.ObjectIDColumn.Accept (this);
       objectIDWithClassIDColumnDefinition.ClassIDColumn.Accept (this);
-    }
-
-    private string GetColumnString (SimpleColumnDefinition columnDefinition)
-    {
-      return String.Format (
-          "  [{0}] {1}{2},",
-          columnDefinition.Name,
-          columnDefinition.StorageType,
-          columnDefinition.IsNullable ? " NULL" : " NOT NULL");
     }
   }
 }

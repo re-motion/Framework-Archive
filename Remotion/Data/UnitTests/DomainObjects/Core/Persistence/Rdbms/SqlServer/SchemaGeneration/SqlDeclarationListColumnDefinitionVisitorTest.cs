@@ -23,14 +23,14 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
   [TestFixture]
-  public class SqlDeclarationColumnDefinitionVisitorTest
+  public class SqlDeclarationListColumnDefinitionVisitorTest
   {
-    private SqlDeclarationColumnDefinitionVisitor _visitor;
+    private SqlDeclarationListColumnDefinitionVisitor _visitor;
 
     [SetUp]
     public void SetUp ()
     {
-      _visitor = new SqlDeclarationColumnDefinitionVisitor ();
+      _visitor = new SqlDeclarationListColumnDefinitionVisitor ();
     }
 
     [Test]
@@ -39,7 +39,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
       var column = new SimpleColumnDefinition ("C1", typeof (int), "integer", true);
 
       _visitor.VisitSimpleColumnDefinition (column);
-      var result = _visitor.GetColumnList ();
+      var result = _visitor.GetDeclarationList ();
 
       Assert.That (result, Is.EqualTo ("  [C1] integer NULL,\r\n"));
     }
@@ -50,7 +50,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
       var column = new SimpleColumnDefinition ("C1", typeof (int), "integer", false);
 
       _visitor.VisitSimpleColumnDefinition (column);
-      var result = _visitor.GetColumnList ();
+      var result = _visitor.GetDeclarationList ();
 
       Assert.That (result, Is.EqualTo ("  [C1] integer NOT NULL,\r\n"));
     }
@@ -63,7 +63,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
       var column = new ObjectIDWithClassIDColumnDefinition (objectIDColumn, classIDColumn);
 
       _visitor.VisitObjectIDWithClassIDColumnDefinition (column);
-      var result = _visitor.GetColumnList ();
+      var result = _visitor.GetDeclarationList ();
 
       Assert.That (result, Is.EqualTo ("  [C1ID] integer NOT NULL,\r\n  [C1ClassID] integer NOT NULL,\r\n"));
     }
