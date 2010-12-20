@@ -24,12 +24,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   /// <summary>
   /// Visits <see cref="IColumnDefinition"/> objects and generates a list of column names for the visited columns.
   /// </summary>
-  public class SqlNameListColumnDefinitionVisitor : IColumnDefinitionVisitor
+  public class NameListColumnDefinitionVisitor : IColumnDefinitionVisitor
   {
     private readonly bool _allowNullColumns;
     private readonly StringBuilder _nameList = new StringBuilder ();
 
-    public SqlNameListColumnDefinitionVisitor (bool allowNullColumns)
+    public NameListColumnDefinitionVisitor (bool allowNullColumns)
     {
       _allowNullColumns = allowNullColumns;
     }
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
       return _nameList.ToString ();
     }
 
-    public void VisitSimpleColumnDefinition (SimpleColumnDefinition simpleColumnDefinition)
+    public virtual void VisitSimpleColumnDefinition (SimpleColumnDefinition simpleColumnDefinition)
     {
       ArgumentUtility.CheckNotNull ("simpleColumnDefinition", simpleColumnDefinition);
       
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
       _nameList.Append ("[").Append (simpleColumnDefinition.Name).Append ("]");
     }
 
-    public void VisitObjectIDWithClassIDColumnDefinition (ObjectIDWithClassIDColumnDefinition objectIDWithClassIDColumnDefinition)
+    public virtual void VisitObjectIDWithClassIDColumnDefinition (ObjectIDWithClassIDColumnDefinition objectIDWithClassIDColumnDefinition)
     {
       ArgumentUtility.CheckNotNull ("objectIDWithClassIDColumnDefinition", objectIDWithClassIDColumnDefinition);
 
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
       objectIDWithClassIDColumnDefinition.ClassIDColumn.Accept (this);
     }
 
-    public void VisitNullColumnDefinition (NullColumnDefinition nullColumnDefinition)
+    public virtual void VisitNullColumnDefinition (NullColumnDefinition nullColumnDefinition)
     {
       ArgumentUtility.CheckNotNull ("nullColumnDefinition", nullColumnDefinition);
 

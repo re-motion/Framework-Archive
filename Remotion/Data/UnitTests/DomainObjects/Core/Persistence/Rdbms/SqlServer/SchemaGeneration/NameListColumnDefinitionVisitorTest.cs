@@ -17,52 +17,46 @@
 using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
-using Rhino.Mocks;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
   [TestFixture]
-  public class SqlDeclarationListColumnDefinitionVisitorTest
+  public class NameListColumnDefinitionVisitorTest
   {
-    private SqlDeclarationListColumnDefinitionVisitor _visitor;
-    private ISqlDialect _sqlDialectStub;
+    private NameListColumnDefinitionVisitor _visitorAllowingNulls;
 
     [SetUp]
     public void SetUp ()
     {
-      _sqlDialectStub = MockRepository.GenerateStub<ISqlDialect>();
-      _visitor = new SqlDeclarationListColumnDefinitionVisitor (_sqlDialectStub);
+      _visitorAllowingNulls = new NameListColumnDefinitionVisitor (true);
     }
 
     [Test]
-    public void VisitSimpleColumnDefinition_Nullable ()
+    public void VisitSimpleColumnDefinition ()
     {
       var column = new SimpleColumnDefinition ("C1", typeof (int), "integer", true);
 
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("C1")).Return ("[C1]");
+      _visitorAllowingNulls.VisitSimpleColumnDefinition (column);
+      var result = _visitorAllowingNulls.GetNameList ();
 
-      _visitor.VisitSimpleColumnDefinition (column);
-      var result = _visitor.GetDeclarationList ();
-
-      Assert.That (result, Is.EqualTo ("  [C1] integer NULL"));
+      Assert.That (result, Is.EqualTo ("[C1]"));
     }
 
     [Test]
-    public void VisitSimpleColumnDefinition_NotNullable ()
+    public void VisitSimpleColumnDefinition_SecondColumn ()
     {
-      var column = new SimpleColumnDefinition ("C1", typeof (int), "integer", false);
+      var column1 = new SimpleColumnDefinition ("C1", typeof (int), "integer", true);
+      var column2 = new SimpleColumnDefinition ("C2", typeof (int), "integer", true);
 
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("C1")).Return ("[C1]");
+      _visitorAllowingNulls.VisitSimpleColumnDefinition (column1);
+      _visitorAllowingNulls.VisitSimpleColumnDefinition (column2);
+      var result = _visitorAllowingNulls.GetNameList ();
 
-      _visitor.VisitSimpleColumnDefinition (column);
-      var result = _visitor.GetDeclarationList ();
-
-      Assert.That (result, Is.EqualTo ("  [C1] integer NOT NULL"));
+      Assert.That (result, Is.EqualTo ("[C1], [C2]"));
     }
-
+    
     [Test]
     public void VisitObjectIDWithClassIDColumnDefinition ()
     {
@@ -70,22 +64,31 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
       var classIDColumn = new SimpleColumnDefinition ("C1ClassID", typeof (int), "integer", false);
       var column = new ObjectIDWithClassIDColumnDefinition (objectIDColumn, classIDColumn);
 
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("C1ID")).Return ("[C1ID]");
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("C1ClassID")).Return ("[C1ClassID]");
-      
-      _visitor.VisitObjectIDWithClassIDColumnDefinition (column);
-      var result = _visitor.GetDeclarationList ();
+      _visitorAllowingNulls.VisitObjectIDWithClassIDColumnDefinition (column);
+      var result = _visitorAllowingNulls.GetNameList ();
 
-      Assert.That (result, Is.EqualTo ("  [C1ID] integer NOT NULL,\r\n  [C1ClassID] integer NOT NULL"));
+      Assert.That (result, Is.EqualTo ("[C1ID], [C1ClassID]"));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Cannot declare a non-existing column.")]
-    public void VisitNullColumnDefinition ()
+    public void VisitNullColumnDefinition_AllowNull ()
     {
       var column = new NullColumnDefinition ();
 
-      _visitor.VisitNullColumnDefinition (column);
+      _visitorAllowingNulls.VisitNullColumnDefinition (column);
+      var result = _visitorAllowingNulls.GetNameList ();
+
+      Assert.That (result, Is.EqualTo ("NULL"));
+    }
+
+    [Test]
+    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Null columns are not supported at this point.")]
+    public void VisitNullColumnDefinition_DisallowNull ()
+    {
+      var column = new NullColumnDefinition ();
+
+      var visitorNotAllowingNulls = new NameListColumnDefinitionVisitor (false);
+      visitorNotAllowingNulls.VisitNullColumnDefinition (column);
     }
   }
 }
