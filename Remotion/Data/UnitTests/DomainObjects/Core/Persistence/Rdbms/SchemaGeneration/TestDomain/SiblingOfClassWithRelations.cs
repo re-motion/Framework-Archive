@@ -14,16 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Data.DomainObjects.Persistence.Model;
+using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGeneration.TestDomain
 {
-  /// <summary>
-  /// <see cref="IColumnDefinition"/> defines the API for all column definitions.
-  /// </summary>
-  public interface IColumnDefinition : IStoragePropertyDefinition, IEquatable<IColumnDefinition>
+  [DBTable ("SiblingOfTableWithRelations")]
+  [Instantiable]
+  public class SiblingOfClassWithRelations : ClassWithRelationsBase
   {
-    void Accept (IColumnDefinitionVisitor visitor);
+    public virtual int IntProperty { get; set; }
   }
 }

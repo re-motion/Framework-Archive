@@ -19,9 +19,8 @@ using Remotion.Data.DomainObjects;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGeneration.TestDomain
 {
   [DBTable ("TableWithRelations")]
-  [FirstStorageGroupAttribute]
   [Instantiable]
-  public abstract class ClassWithRelations : DomainObject
+  public abstract class ClassWithRelations : ClassWithRelationsBase
   {
     public static ClassWithRelations NewObject()
     {
