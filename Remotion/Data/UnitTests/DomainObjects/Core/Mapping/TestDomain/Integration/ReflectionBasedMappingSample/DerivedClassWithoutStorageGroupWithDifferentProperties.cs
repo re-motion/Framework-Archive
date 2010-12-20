@@ -14,25 +14,41 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using Remotion.Data.DomainObjects;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integration.ReflectionBasedMappingSample
 {
-  public abstract class ClassWithMixedPropertiesNotInMapping : DomainObject
+  [Instantiable]
+  public abstract class DerivedClassWithoutStorageGroupWithDifferentProperties : ClassWithoutStorageGroupWithDifferentProperties
   {
-    protected ClassWithMixedPropertiesNotInMapping ()
+    protected DerivedClassWithoutStorageGroupWithDifferentProperties()
     {
     }
 
-    public abstract string BaseString { get; set; }
-
-    public abstract ClassWithVirtualRelationEndPoints BaseUnidirectionalOneToOne { get; set; }
-
-    private ClassWithVirtualRelationEndPoints BasePrivateUnidirectionalOneToOne
+    public override int Int32
     {
-      get { throw new NotImplementedException (); }
-      set { throw new NotImplementedException (); }
+      get { return 0; }
+      set { }
+    }
+
+    public abstract string OtherString { get; set; }
+
+    [DBColumn ("NewString")]
+    public new abstract string String { get; set; }
+
+    [DBColumn ("DerivedPrivateString")]
+    private string PrivateString
+    {
+      get
+      {
+        return Properties["Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.DerivedClassWithoutStorageGroupWithDifferentProperties.PrivateString"]
+            .GetValue<string>();
+      }
+      set
+      {
+        Properties["Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.DerivedClassWithoutStorageGroupWithDifferentProperties.PrivateString"]
+            .SetValue (value);
+      }
     }
   }
 }
