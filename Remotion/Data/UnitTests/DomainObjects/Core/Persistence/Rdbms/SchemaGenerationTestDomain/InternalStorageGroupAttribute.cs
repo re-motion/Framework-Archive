@@ -14,16 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
-{
-  public abstract class AbstractWithoutConcreteClass : Company
-  {
-    public new static AbstractWithoutConcreteClass NewObject()
-    {
-      return NewObject<AbstractWithoutConcreteClass> ();
-    }
+using Remotion.Data.DomainObjects;
 
-    protected AbstractWithoutConcreteClass()
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
+{
+  public class InternalStorageGroupAttribute : DBStorageGroupAttribute
+  {
+    public InternalStorageGroupAttribute ()
     {
     }
   }

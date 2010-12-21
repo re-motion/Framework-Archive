@@ -14,26 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System.Reflection;
-using Remotion.ExtensibleEnums;
-
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
-  public static class ColorExtensions
+  public enum CustomerType
   {
-    public static Color Red (this ExtensibleEnumDefinition<Color> definition)
-    {
-      return new Color (MethodBase.GetCurrentMethod());
-    }
-
-    public static Color Green (this ExtensibleEnumDefinition<Color> definition)
-    {
-      return new Color (MethodBase.GetCurrentMethod ());
-    }
-
-    public static Color Blue (this ExtensibleEnumDefinition<Color> definition)
-    {
-      return new Color (MethodBase.GetCurrentMethod ());
-    }
+    Standard = 0,
+    Premium = 1,
+    Gold = 2
   }
 }

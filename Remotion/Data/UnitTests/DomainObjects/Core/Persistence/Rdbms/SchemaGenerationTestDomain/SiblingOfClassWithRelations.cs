@@ -14,12 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+using Remotion.Data.DomainObjects;
+
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
-  public enum OrderPriority
+  [DBTable ("SiblingOfTableWithRelations")]
+  [Instantiable]
+  public class SiblingOfClassWithRelations : ClassWithRelationsBase
   {
-    Low = 0,
-    Normal = 1,
-    High = 2
+    public virtual int IntProperty { get; set; }
   }
 }

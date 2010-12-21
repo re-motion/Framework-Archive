@@ -16,12 +16,36 @@
 // 
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
-  public class FirstStorageGroupAttribute : DBStorageGroupAttribute
+  [DBTable]
+  [FirstStorageGroupAttribute]
+  [Instantiable]
+  public abstract class Address : DomainObject
   {
-    public FirstStorageGroupAttribute()
+    public static Address NewObject()
+    {
+      return DomainObject.NewObject<Address> ();
+    }
+
+    protected Address()
     {
     }
+
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    public abstract string Street { get; set; }
+
+    [StringProperty (IsNullable = false, MaximumLength = 10)]
+    public abstract string Zip { get; set; }
+
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    public abstract string City { get; set; }
+
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    public abstract string Country { get; set; }
+
+    [DBBidirectionalRelation ("Address")]
+    [Mandatory]
+    public abstract Company Company { get; set; }
   }
 }

@@ -15,27 +15,42 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using Remotion.Data.DomainObjects;
-using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
+  [DBTable]
+  [FirstStorageGroupAttribute]
   [Instantiable]
-  [Uses (typeof(PersistentMixin))]
-  public abstract class SecondDerivedClass : ConcreteClass
+  public abstract class Order : DomainObject
   {
-    public new static SecondDerivedClass NewObject()
+    public static Order NewObject()
     {
-      return DomainObject.NewObject<SecondDerivedClass> ();
+      return DomainObject.NewObject<Order> ();
     }
 
-    protected SecondDerivedClass()
+    protected Order()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
-    public abstract string PropertyInSecondDerivedClass { get; set; }
+    public abstract int Number { get; set; }
 
-    [DBColumn ("ClassWithRelationsInSecondDerivedClassID")]
-    public abstract ClassWithRelations ClassWithRelationsToSecondDerivedClass { get; set; }
+    public abstract OrderPriority Priority { get; set; }
+
+    [DBBidirectionalRelation ("Orders")]
+    [Mandatory]
+    public abstract Customer Customer { get; set; }
+
+    [DBBidirectionalRelation ("Orders")]
+    [Mandatory]
+    public abstract Official Official { get; set; }
+
+    [DBBidirectionalRelation ("Order")]
+    [Mandatory]
+    public abstract ObjectList<OrderItem> OrderItems { get; set; }
+
+    [DBBidirectionalRelation ("TransactionOrder")]
+    [StorageClassTransaction]
+    [Mandatory]
+    public abstract ObjectList<OrderItem> TransactionOrderItems { get; set; }
   }
 }

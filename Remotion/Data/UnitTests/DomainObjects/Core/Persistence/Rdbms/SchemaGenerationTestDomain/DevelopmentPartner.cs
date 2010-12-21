@@ -15,22 +15,25 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using Remotion.Data.DomainObjects;
+using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
+  [DBTable]
   [Instantiable]
-  public abstract class SpecialOfficial : Official
+  [Uses (typeof (ProductLicenseMixin))]
+  public abstract class DevelopmentPartner : Partner
   {
-    public static new SpecialOfficial NewObject ()
+    public new static DevelopmentPartner NewObject()
     {
-      return DomainObject.NewObject <SpecialOfficial>();
+      return DomainObject.NewObject<DevelopmentPartner> ();
     }
 
-    protected SpecialOfficial()
+    protected DevelopmentPartner()
     {
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 255)]
-    public abstract string Speciality { get; set;}
+    public abstract string Competences { get; set; }
   }
 }

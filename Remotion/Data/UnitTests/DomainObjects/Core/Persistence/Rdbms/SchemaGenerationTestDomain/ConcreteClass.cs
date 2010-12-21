@@ -15,27 +15,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using Remotion.Data.DomainObjects;
-using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
+  [DBTable]
+  [FirstStorageGroupAttribute]
   [Instantiable]
-  [Uses (typeof (PersistentMixin))]
-  public abstract class DerivedClass : ConcreteClass
+  public abstract class ConcreteClass : DomainObject
   {
-    public new static DerivedClass NewObject()
+    public static ConcreteClass NewObject()
     {
-      return DomainObject.NewObject<DerivedClass> ();
+      return DomainObject.NewObject<ConcreteClass> ();
     }
 
-    protected DerivedClass()
+    protected ConcreteClass()
     {
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]
-    public abstract string PropertyInDerivedClass { get; set; }
+    public abstract string PropertyInConcreteClass { get; set; }
 
     [StorageClassTransaction]
-    public abstract string TransactionalProperty2 { get; set; }
+    public abstract string TransactionalProperty { get; set; }
   }
 }

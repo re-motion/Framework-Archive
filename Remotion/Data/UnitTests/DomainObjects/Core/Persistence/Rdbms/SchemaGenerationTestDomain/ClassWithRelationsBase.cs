@@ -16,12 +16,10 @@
 // 
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
-  [Instantiable]
-  [DBTable ("TableWithoutProperties")]
   [FirstStorageGroupAttribute]
-  public abstract class ClassWithoutProperties : DomainObject
+  public abstract class ClassWithRelationsBase : DomainObject
   {
   }
 }

@@ -14,17 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using System.Reflection;
-using Remotion.ExtensibleEnums;
+using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
-  [Serializable]
-  public class Color : ExtensibleEnum<Color>
+  public class SecondStorageGroupAttribute : DBStorageGroupAttribute
   {
-    public Color (MethodBase currentMethod)
-        : base (currentMethod)
+    public SecondStorageGroupAttribute()
     {
     }
   }

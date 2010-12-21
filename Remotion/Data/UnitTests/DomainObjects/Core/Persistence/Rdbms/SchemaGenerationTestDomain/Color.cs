@@ -14,33 +14,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Data.DomainObjects;
+using System;
+using System.Reflection;
+using Remotion.ExtensibleEnums;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
-  [FirstStorageGroupAttribute]
-  public abstract class Company : DomainObject
+  [Serializable]
+  public class Color : ExtensibleEnum<Color>
   {
-    public static Company NewObject ()
-    {
-      return DomainObject.NewObject<Company> ();
-    }
-
-    protected Company ()
+    public Color (MethodBase currentMethod)
+        : base (currentMethod)
     {
     }
-
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
-    public abstract string Name { get; set; }
-
-    [StringProperty (MaximumLength = 100)]
-    public abstract string PhoneNumber { get; set; }
-
-    [DBBidirectionalRelation ("Company")]
-    [Mandatory]
-    public abstract Ceo Ceo { get; set; }
-
-    [DBBidirectionalRelation ("Company", ContainsForeignKey = true)]
-    public abstract Address Address { get; set; }
   }
 }

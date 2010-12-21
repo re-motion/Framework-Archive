@@ -17,23 +17,25 @@
 using Remotion.Data.DomainObjects;
 using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
-  [DBTable]
   [Instantiable]
-  [Uses (typeof (ProductLicenseMixin))]
-  public abstract class DevelopmentPartner : Partner
+  [Uses (typeof (PersistentMixin))]
+  public abstract class DerivedClass : ConcreteClass
   {
-    public new static DevelopmentPartner NewObject()
+    public new static DerivedClass NewObject()
     {
-      return DomainObject.NewObject<DevelopmentPartner> ();
+      return DomainObject.NewObject<DerivedClass> ();
     }
 
-    protected DevelopmentPartner()
+    protected DerivedClass()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 255)]
-    public abstract string Competences { get; set; }
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    public abstract string PropertyInDerivedClass { get; set; }
+
+    [StorageClassTransaction]
+    public abstract string TransactionalProperty2 { get; set; }
   }
 }

@@ -16,10 +16,12 @@
 // 
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
-  [FirstStorageGroupAttribute]
-  public abstract class ClassWithRelationsBase : DomainObject
+  public class FirstStorageGroupAttribute : DBStorageGroupAttribute
   {
+    public FirstStorageGroupAttribute()
+    {
+    }
   }
 }

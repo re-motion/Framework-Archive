@@ -16,41 +16,24 @@
 // 
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
-  [DBTable]
-  [FirstStorageGroupAttribute]
-  [Instantiable]
-  public abstract class Order : DomainObject
+  public abstract class Partner : Company
   {
-    public static Order NewObject()
+    public new static Partner NewObject()
     {
-      return DomainObject.NewObject<Order> ();
+      return DomainObject.NewObject<Partner> ();
     }
 
-    protected Order()
+    protected Partner()
     {
     }
 
-    public abstract int Number { get; set; }
+    [StringProperty (IsNullable = false, MaximumLength = 255)]
+    public abstract string Description { get; set; }
 
-    public abstract OrderPriority Priority { get; set; }
-
-    [DBBidirectionalRelation ("Orders")]
-    [Mandatory]
-    public abstract Customer Customer { get; set; }
-
-    [DBBidirectionalRelation ("Orders")]
-    [Mandatory]
-    public abstract Official Official { get; set; }
-
-    [DBBidirectionalRelation ("Order")]
-    [Mandatory]
-    public abstract ObjectList<OrderItem> OrderItems { get; set; }
-
-    [DBBidirectionalRelation ("TransactionOrder")]
-    [StorageClassTransaction]
-    [Mandatory]
-    public abstract ObjectList<OrderItem> TransactionOrderItems { get; set; }
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [DBColumn("PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches")]
+    public abstract string PropertyWithIdenticalNameInDifferentInheritanceBranches { get; set; }
   }
 }

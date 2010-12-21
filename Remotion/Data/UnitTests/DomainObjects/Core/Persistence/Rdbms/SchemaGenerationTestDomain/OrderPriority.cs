@@ -14,37 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Data.DomainObjects;
-
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
-  [DBTable]
-  [SecondStorageGroupAttribute]
-  [Instantiable]
-  public abstract class Official : DomainObject
+  public enum OrderPriority
   {
-    public static Official NewObject()
-    {
-      return DomainObject.NewObject<Official> ();
-    }
-
-    public static Official GetObject (ObjectID id)
-    {
-      return DomainObject.GetObject<Official> (id);
-    }
-
-    protected Official()
-    {
-    }
-
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
-    public abstract string Name { get; set; }
-
-    public abstract OrderPriority ResponsibleForOrderPriority { get; set; }
-
-    public abstract CustomerType ResponsibleForCustomerType { get; set; }
-
-    [DBBidirectionalRelation ("Official")]
-    public abstract ObjectList<Order> Orders { get; }
+    Low = 0,
+    Normal = 1,
+    High = 2
   }
 }

@@ -16,14 +16,24 @@
 // 
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
-  public class PersistentMixin : DomainObjectMixin<DomainObject>
+  [Instantiable]
+  public abstract class DerivedOfDerivedClass : DerivedClass
   {
-    public string PersistentProperty
+    public new static DerivedOfDerivedClass NewObject()
     {
-      get { return Properties[typeof (ProductLicenseMixin), "PersistentProperty"].GetValue<string> (); }
-      set { Properties[typeof (ProductLicenseMixin), "PersistentProperty"].SetValue (value); }
+      return DomainObject.NewObject<DerivedOfDerivedClass> ();
     }
+
+    protected DerivedOfDerivedClass()
+    {
+    }
+
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    public abstract string PropertyInDerivedOfDerivedClass { get; set; }
+
+    [DBColumn ("ClassWithRelationsInDerivedOfDerivedClassID")]
+    public abstract ClassWithRelations ClassWithRelationsToDerivedOfDerivedClass { get; set; }
   }
 }

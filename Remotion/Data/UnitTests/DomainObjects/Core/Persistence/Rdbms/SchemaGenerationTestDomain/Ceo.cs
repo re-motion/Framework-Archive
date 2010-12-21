@@ -16,24 +16,30 @@
 // 
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
+  [DBTable]
+  [FirstStorageGroupAttribute]
   [Instantiable]
-  public abstract class DerivedOfDerivedClass : DerivedClass
+  public abstract class Ceo : DomainObject
   {
-    public new static DerivedOfDerivedClass NewObject()
+    public static Ceo NewObject()
     {
-      return DomainObject.NewObject<DerivedOfDerivedClass> ();
+      return DomainObject.NewObject<Ceo> ();
     }
 
-    protected DerivedOfDerivedClass()
+    protected Ceo()
     {
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]
-    public abstract string PropertyInDerivedOfDerivedClass { get; set; }
+    public abstract string Name { get; set; }
 
-    [DBColumn ("ClassWithRelationsInDerivedOfDerivedClassID")]
-    public abstract ClassWithRelations ClassWithRelationsToDerivedOfDerivedClass { get; set; }
+    [DBBidirectionalRelation ("Ceo", ContainsForeignKey = true)]
+    [Mandatory]
+    public abstract Company Company { get; set; }
+
+    [StorageClassTransaction]
+    public abstract string TransactionalProperty { get; set; }
   }
 }

@@ -16,24 +16,12 @@
 // 
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
-  public abstract class Partner : Company
+  [Instantiable]
+  [DBTable ("TableWithoutProperties")]
+  [FirstStorageGroupAttribute]
+  public abstract class ClassWithoutProperties : DomainObject
   {
-    public new static Partner NewObject()
-    {
-      return DomainObject.NewObject<Partner> ();
-    }
-
-    protected Partner()
-    {
-    }
-
-    [StringProperty (IsNullable = false, MaximumLength = 255)]
-    public abstract string Description { get; set; }
-
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
-    [DBColumn("PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches")]
-    public abstract string PropertyWithIdenticalNameInDifferentInheritanceBranches { get; set; }
   }
 }

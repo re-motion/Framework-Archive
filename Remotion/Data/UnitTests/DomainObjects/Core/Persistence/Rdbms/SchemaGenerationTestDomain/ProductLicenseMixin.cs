@@ -14,37 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
-  [DBTable]
-  [FirstStorageGroupAttribute]
-  [Instantiable]
-  public abstract class OrderItem : DomainObject
+  public class ProductLicenseMixin : DomainObjectMixin<DomainObject>
   {
-    public static OrderItem NewObject ()
+    public string LicenseCode
     {
-      return DomainObject.NewObject<OrderItem> ();
+      get { return Properties[typeof (ProductLicenseMixin), "LicenseCode"].GetValue<string> (); }
+      set { Properties[typeof (ProductLicenseMixin), "LicenseCode"].SetValue (value); }
     }
-
-    protected OrderItem ()
-    {
-    }
-
-    public abstract int Position { get; set; }
-
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
-    public abstract string Product { get; set; }
-
-    [DBBidirectionalRelation ("OrderItems")]
-    [Mandatory]
-    public abstract Order Order { get; set; }
-
-    [DBBidirectionalRelation ("TransactionOrderItems")]
-    [StorageClassTransaction]
-    [Mandatory]
-    public abstract Order TransactionOrder { get; set; }
   }
 }

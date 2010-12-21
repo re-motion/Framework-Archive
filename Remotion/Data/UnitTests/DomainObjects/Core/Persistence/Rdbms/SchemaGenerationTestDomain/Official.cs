@@ -16,30 +16,35 @@
 // 
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain
 {
   [DBTable]
-  [FirstStorageGroupAttribute]
+  [SecondStorageGroupAttribute]
   [Instantiable]
-  public abstract class Ceo : DomainObject
+  public abstract class Official : DomainObject
   {
-    public static Ceo NewObject()
+    public static Official NewObject()
     {
-      return DomainObject.NewObject<Ceo> ();
+      return DomainObject.NewObject<Official> ();
     }
 
-    protected Ceo()
+    public static Official GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<Official> (id);
+    }
+
+    protected Official()
     {
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("Ceo", ContainsForeignKey = true)]
-    [Mandatory]
-    public abstract Company Company { get; set; }
+    public abstract OrderPriority ResponsibleForOrderPriority { get; set; }
 
-    [StorageClassTransaction]
-    public abstract string TransactionalProperty { get; set; }
+    public abstract CustomerType ResponsibleForCustomerType { get; set; }
+
+    [DBBidirectionalRelation ("Official")]
+    public abstract ObjectList<Order> Orders { get; }
   }
 }
