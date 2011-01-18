@@ -14,29 +14,26 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using System.Linq.Expressions;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
-using Remotion.Data.Linq.SqlBackend.SqlGeneration;
+using Remotion.Data.Linq;
+using Remotion.Data.Linq.Clauses.StreamedData;
+using Remotion.Data.Linq.SqlBackend.SqlPreparation;
 using Remotion.Data.Linq.SqlBackend.SqlStatementModel;
-using Remotion.Data.Linq.SqlBackend.SqlStatementModel.Resolved;
 using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Queries
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
 {
-  public class TestSqlGenerationStageMixin
+  public class TestSqlPreparationStageMixin
   {
     [OverrideTarget]
-    public virtual void GenerateTextForOuterSqlStatement (ISqlCommandBuilder commandBuilder, SqlStatement sqlStatement)
+    public virtual SqlStatement PrepareSqlStatement (QueryModel queryModel, ISqlPreparationContext context)
     {
-      Assert.That (sqlStatement.SelectProjection, Is.TypeOf (typeof (SqlEntityDefinitionExpression)));
-      Assert.That (sqlStatement.SelectProjection.Type, Is.EqualTo (typeof (int)));
-      Assert.That (((SqlEntityDefinitionExpression) sqlStatement.SelectProjection).TableAlias, Is.EqualTo ("c"));
-      Assert.That (((SqlEntityDefinitionExpression) sqlStatement.SelectProjection).Name, Is.EqualTo ("CookTable"));
-
-      commandBuilder.Append ("Value added by generation mixin");
-      commandBuilder.SetInMemoryProjectionBody (Expression.Constant (null));
+      var builder = new SqlStatementBuilder
+                    {
+                        DataInfo = new StreamedScalarValueInfo (typeof (string)),
+                        SelectProjection = Expression.Constant ("Value added by preparation mixin")
+                    };
+      return builder.GetSqlStatement();
     }
   }
 }

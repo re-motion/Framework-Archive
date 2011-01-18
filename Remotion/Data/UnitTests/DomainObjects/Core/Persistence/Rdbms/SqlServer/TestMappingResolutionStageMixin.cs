@@ -23,7 +23,7 @@ using Remotion.Data.Linq.SqlBackend.SqlStatementModel;
 using Remotion.Data.Linq.SqlBackend.SqlStatementModel.Resolved;
 using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Queries
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
 {
   public class TestMappingResolutionStageMixin
   {
