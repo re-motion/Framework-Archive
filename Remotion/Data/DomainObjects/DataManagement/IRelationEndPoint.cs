@@ -37,6 +37,9 @@ namespace Remotion.Data.DomainObjects.DataManagement
     bool HasChanged { get; }
     bool HasBeenTouched { get; }
 
+    DomainObject GetDomainObject ();
+    DomainObject GetDomainObjectReference ();
+
     void EnsureDataComplete ();
 
     void Touch ();

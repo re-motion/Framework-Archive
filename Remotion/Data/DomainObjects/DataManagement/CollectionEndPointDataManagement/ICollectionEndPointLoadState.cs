@@ -14,33 +14,29 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement.CollectionDataManagement;
-using Remotion.Data.DomainObjects.DataManagement.CollectionEndPointDataManagement;
 
-namespace Remotion.Data.DomainObjects.DataManagement
+namespace Remotion.Data.DomainObjects.DataManagement.CollectionEndPointDataManagement
 {
   /// <summary>
-  /// Represents an <see cref="IRelationEndPoint"/> holding a collection of <see cref="DomainObject"/> instances, i.e. the "many" side of a relation.
+  /// Represents a certain state of a <see cref="CollectionEndPoint"/> and implements accessor methods for that end-point.
   /// </summary>
-  public interface ICollectionEndPoint : IRelationEndPoint
+  public interface ICollectionEndPointLoadState
   {
-    DomainObjectCollection OppositeDomainObjects { get; set; }
-    DomainObjectCollection OriginalOppositeDomainObjectsContents { get; }
-    DomainObjectCollection OriginalCollectionReference { get; }
+    void EnsureDataComplete ();
 
-    void MarkDataComplete ();
+    DomainObjectCollection GetOriginalOppositeObjects ();
+    IEnumerable<IRelationEndPoint> GetOppositeRelationEndPoints (IDataManager dataManager);
 
-    void SetOppositeCollectionAndNotify (DomainObjectCollection oppositeDomainObjects);
-
+    IDataManagementCommand CreateSetOppositeCollectionCommand (IAssociatableDomainObjectCollection newOppositeCollection);
+    IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject);
+    IDataManagementCommand CreateDeleteCommand ();
     IDataManagementCommand CreateInsertCommand (DomainObject insertedRelatedObject, int index);
     IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject);
     IDataManagementCommand CreateReplaceCommand (int index, DomainObject replacementObject);
 
-    IDomainObjectCollectionData CreateDelegatingCollectionData ();
-    void MarkDataIncomplete ();
-    void RegisterOriginalObject (DomainObject domainObject);
-    void UnregisterOriginalObject (ObjectID objectID);
-    
-    ICollectionEndPointLoadState GetState ();
+    void SetValueFrom (ICollectionEndPoint sourceEndPoint);
+    void CheckMandatory ();
   }
 }
