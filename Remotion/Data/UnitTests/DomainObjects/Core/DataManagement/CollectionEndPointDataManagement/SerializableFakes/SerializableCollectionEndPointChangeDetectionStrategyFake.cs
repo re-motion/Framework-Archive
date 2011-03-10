@@ -15,32 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Collections;
-using System.Linq;
+using Remotion.Data.DomainObjects.DataManagement.CollectionDataManagement;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.CollectionEndPointDataManagement.SerializableFakes
 {
   [Serializable]
-  public class SerializableEndPointProvider : IRelationEndPointProvider
+  public class SerializableCollectionEndPointChangeDetectionStrategyFake : ICollectionEndPointChangeDetectionStrategy
   {
-    [NonSerialized]
-    private readonly Dictionary<RelationEndPointID, IRelationEndPoint> _endPoints;
-
-    public SerializableEndPointProvider ( params IRelationEndPoint[] endPoints)
+    public bool HasDataChanged (IDomainObjectCollectionData currentData, IDomainObjectCollectionData originalData)
     {
-      _endPoints = endPoints.ToDictionary(ep => ep.ID);
-    }
-
-    public IRelationEndPoint GetRelationEndPointWithLazyLoad (RelationEndPointID endPointID)
-    {
-      return _endPoints[endPointID];
-    }
-
-    public IRelationEndPoint GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
-    {
-      return _endPoints.GetValueOrDefault (endPointID);
+      return false;
     }
   }
 }
