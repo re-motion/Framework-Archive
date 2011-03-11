@@ -15,20 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
-using Remotion.UnitTests.Mixins.TestDomain;
-using Remotion.Mixins;
+using Remotion.Utilities;
 
-namespace Remotion.UnitTests.Mixins
+namespace Remotion.Mixins
 {
-  [TestFixture]
-  public class MixinTypeExtensionsTest
+  /// <summary>
+  /// The <see cref="TypeExtensions"/> class provides extension methods for <see cref="Type"/> instances related to mixin functionality.
+  /// </summary>
+  public static class TypeExtensions
   {
-    [Test]
-    public void GetUnderlyingTargetType ()
+    public static Type GetUnderlyingMixedType (this Type type)
     {
-      Assert.That (typeof (BaseType1).GetUnderlyingTargetType(), Is.SameAs (typeof (BaseType1)));
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      return MixinTypeUtility.GetUnderlyingTargetType (type);
     }
   }
 }
