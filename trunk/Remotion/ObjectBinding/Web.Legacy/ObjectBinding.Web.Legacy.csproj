@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{38BAE576-C67B-471D-82C6-91B0BB6F14DA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.ObjectBinding.Web.Legacy</RootNamespace>
+    <AssemblyName>Remotion.ObjectBinding.Web.Legacy</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1591;0419</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <DocumentationFile>bin\Debug\Remotion.ObjectBinding.Web.Legacy.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1591;1573</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <DocumentationFile>bin\Release\Remotion.ObjectBinding.Web.Legacy.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\prereq\Assemblies\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="BocLegacyServiceConfigurationService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\BocBooleanValueQuirksModeRendererBase.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocListQuirksModeCssClassDefinition.cs" />
+    <Compile Include="UI\Controls\BocQuirksModeRendererBase.cs" />
+    <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\BocTextValueQuirksModeRendererBase.cs" />
+    <Compile Include="UI\Controls\Factories\BocBooleanValueQuirksModeResourceSetFactory.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\BocAutocompleteReferenceValueQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\BocBooleanValueQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\BocCheckBoxQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocDateTimeValueImplementation\Rendering\BocDateTimeValueQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\BocEnumValueQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocColumnQuirksModeRendererBase.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocCommandColumnQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocCommandEnabledColumnQuirksModeRendererBase.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocCompoundColumnQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocCustomColumnQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocDropDownMenuColumnQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocIndexColumnQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocListMenuBlockQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocListNavigationBlockQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocListQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocListTableBlockQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocRowEditModeColumnQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocRowQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocSelectorColumnQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocSimpleColumnQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\Rendering\BocValueColumnQuirksModeRendererBase.cs" />
+    <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\BocMultilineTextValueQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\BocReferenceValueQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\BocTextValueQuirksModeRenderer.cs" />
+    <None Include="..\..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Interfaces\Core.Interfaces.csproj">
+      <Project>{BD061F4A-A9E6-461E-A804-7999623A0060}</Project>
+      <Name>Core.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Security\Interfaces\Security.Interfaces.csproj">
+      <Project>{6B243694-318E-4C20-A2EA-B910EFE5F2F6}</Project>
+      <Name>Security.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Core\Web.Core.csproj">
+      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
+      <Name>Web.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Legacy\Web.Legacy.csproj">
+      <Project>{DD30FC13-485F-425D-8FA0-0CE8998B925D}</Project>
+      <Name>Web.Legacy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\ObjectBinding.Core.csproj">
+      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
+      <Name>ObjectBinding.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Interfaces\ObjectBinding.Interfaces.csproj">
+      <Project>{A1FCDC69-E8E3-4DC0-8EE7-A8FEA772EF5B}</Project>
+      <Name>ObjectBinding.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web\ObjectBinding.Web.csproj">
+      <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>
+      <Name>ObjectBinding.Web</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Doc\include\UI\Controls\BocBooleanValueRenderer.xml" />
+    <Content Include="Doc\include\UI\Controls\BocCheckBoxRenderer.xml" />
+    <Content Include="Doc\include\UI\Controls\BocDateTimeValueRenderer.xml" />
+    <Content Include="Doc\include\UI\Controls\BocEnumValueRenderer.xml" />
+    <Content Include="Doc\include\UI\Controls\BocListRenderer.xml" />
+    <Content Include="Doc\include\UI\Controls\BocMultilineTextValueRenderer.xml" />
+    <Content Include="Doc\include\UI\Controls\BocTextValueRenderer.xml" />
+    <Content Include="Res\HTML\BocAutoCompleteReferenceValue.css" />
+    <Content Include="Res\HTML\BocAutoCompleteReferenceValue.jquery.css" />
+    <Content Include="Res\HTML\BocAutoCompleteReferenceValue.jquery.js" />
+    <Content Include="Res\HTML\BocAutoCompleteReferenceValue.js" />
+    <Content Include="Res\HTML\BocBooleanValue.css" />
+    <Content Include="Res\HTML\BocBooleanValue.js" />
+    <Content Include="Res\HTML\BocCheckBox.css" />
+    <Content Include="Res\HTML\BocCheckBox.js" />
+    <Content Include="Res\HTML\BocDateTimeValue.css" />
+    <Content Include="Res\HTML\BocEnumValue.css" />
+    <Content Include="Res\HTML\BocList.css" />
+    <Content Include="Res\HTML\BocList.js" />
+    <Content Include="Res\HTML\BocMultilineTextValue.css" />
+    <Content Include="Res\HTML\BocReferenceValue.css" />
+    <Content Include="Res\HTML\BocReferenceValue.js" />
+    <Content Include="Res\HTML\BocTextValue.css" />
+    <Content Include="Res\Image\CheckBoxFalse.gif" />
+    <Content Include="Res\Image\CheckBoxNull.gif" />
+    <Content Include="Res\Image\CheckBoxTrue.gif" />
+    <Content Include="Res\Image\DropDownMenuArrow.gif" />
+    <Content Include="Res\Image\MoveFirst.gif" />
+    <Content Include="Res\Image\MoveFirstInactive.gif" />
+    <Content Include="Res\Image\MoveLast.gif" />
+    <Content Include="Res\Image\MoveLastInactive.gif" />
+    <Content Include="Res\Image\MoveNext.gif" />
+    <Content Include="Res\Image\MoveNextInactive.gif" />
+    <Content Include="Res\Image\MovePrevious.gif" />
+    <Content Include="Res\Image\MovePreviousInactive.gif" />
+    <Content Include="Res\Image\RequestInProgressIndicator.gif" />
+    <Content Include="Res\Image\SortAscending.gif" />
+    <Content Include="Res\Image\SortDescending.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

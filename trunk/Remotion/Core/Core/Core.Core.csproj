@@ -1,0 +1,773 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Remotion</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG;NET_3_5</DefineConstants>
+    <DocumentationFile>bin\Debug\Remotion.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>1591;0419</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
+    <CodeAnalysisRuleSet>Migrated rules for Core.Core.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;NET_3_5</DefineConstants>
+    <DocumentationFile>bin\Release\Remotion.xml</DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>1591;0419</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.DynamicProxy2, Version=2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\prereq\Assemblies\Castle.DynamicProxy2.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <Name>log4net</Name>
+      <HintPath>..\..\..\prereq\Assemblies\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\prereq\Assemblies\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="BridgeImplementations\AdapterRegistryImplementation.cs" />
+    <Compile Include="BridgeImplementations\InterlockedCacheFactoryImplementation.cs" />
+    <Compile Include="BridgeImplementations\TypeDiscoveryServiceFactoryImplementation.cs" />
+    <Compile Include="BridgeImplementations\ParamListCreateImplementation.generated.cs" />
+    <Compile Include="BridgeImplementations\ParamListCreateImplementation.template.cs" />
+    <Compile Include="Logging\LogExtensions.cs" />
+    <Compile Include="Mixins\TypeExtensions.cs" />
+    <Compile Include="Utilities\CompoundComparer.cs" />
+    <Compile Include="Collections\CompoundValueEqualityComparer.cs" />
+    <Compile Include="Collections\ComponentwiseEqualsAndHashcodeWrapper.cs" />
+    <Compile Include="Collections\DictionaryExtensions.cs" />
+    <Compile Include="Collections\ListAdapter.cs" />
+    <Compile Include="FunctionalProgramming\EnumerableExtensions.cs" />
+    <Compile Include="Collections\ReadOnlyDictionary.cs" />
+    <Compile Include="Collections\ReadOnlyDictionarySpecific.cs" />
+    <Compile Include="Collections\SetBasedCacheKey.cs" />
+    <Compile Include="Configuration\TypeDiscovery\ByFileIncludeRootAssemblyElement.cs" />
+    <Compile Include="Configuration\TypeDiscovery\ByNameRootAssemblyElement.cs" />
+    <Compile Include="Configuration\TypeDiscovery\ByFileRootAssemblyElement.cs" />
+    <Compile Include="Configuration\TypeDiscovery\ByNameRootAssemblyElementCollection.cs" />
+    <Compile Include="Configuration\TypeDiscovery\ByFileRootAssemblyElementCollection.cs" />
+    <Compile Include="Configuration\TypeDiscovery\ByFileExcludeRootAssemblyElement.cs" />
+    <Compile Include="Configuration\TypeDiscovery\RootAssembliesElement.cs" />
+    <Compile Include="Configuration\TypeDiscovery\TypeDiscoveryConfiguration.cs" />
+    <Compile Include="Configuration\TypeDiscovery\TypeDiscoveryMode.cs" />
+    <Compile Include="Context\BootstrapStorageProvider.cs" />
+    <Compile Include="Diagnostics\ByteValue.cs" />
+    <Compile Include="Diagnostics\IOuterProductProcessor.cs" />
+    <Compile Include="Diagnostics\MemoryUsageInfo.cs" />
+    <Compile Include="Diagnostics\OuterProductProcessingState.cs" />
+    <Compile Include="Diagnostics\OuterProductProcessorBase.cs" />
+    <Compile Include="ExtensibleEnums\ExtensibleEnumConverter.cs" />
+    <Compile Include="ExtensibleEnums\ExtensibleEnumInfo.cs" />
+    <Compile Include="ExtensibleEnums\ExtensibleEnumPositionAttribute.cs" />
+    <Compile Include="ExtensibleEnums\ExtensibleEnumUtility.cs" />
+    <Compile Include="ExtensibleEnums\IExtensibleEnumInfo.cs" />
+    <Compile Include="ExtensibleEnums\Infrastructure\ExtensibleEnumInfoComparer.cs" />
+    <Compile Include="ExtensibleEnums\InvalidExtensibleEnumDefinitionException.cs" />
+    <Compile Include="ExtensibleEnums\ExtensibleEnum.cs" />
+    <Compile Include="ExtensibleEnums\Infrastructure\ExtensibleEnumValueDiscoveryService.cs" />
+    <Compile Include="ExtensibleEnums\ExtensibleEnumDefinition.cs" />
+    <Compile Include="ExtensibleEnums\Infrastructure\ExtensibleEnumDefinitionCache.cs" />
+    <Compile Include="ExtensibleEnums\IExtensibleEnum.cs" />
+    <Compile Include="ExtensibleEnums\IExtensibleEnumDefinition.cs" />
+    <Compile Include="ExtensibleEnums\Infrastructure\IExtensibleEnumValueDiscoveryService.cs" />
+    <Compile Include="FunctionalProgramming\Maybe.cs" />
+    <Compile Include="Globalization\ResourceManagerCacheEntry.cs" />
+    <Compile Include="Mixins\CodeGeneration\ConcreteMixinTypeIdentifier.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\OverrideInterfaceGenerator.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\OverrideInterfaceMappingAttribute.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\TypeGeneration\ImplementedInterfaceFinder.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\TypeGeneration\MixinTargetCodeGenerator.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\TypeGeneration\OverrideInterfaceImplementer.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\TypeGeneration\SerializationCodeGenerator.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\TypeGeneration\TypeInitializerCodeGenerator.cs" />
+    <Compile Include="Mixins\CodeGeneration\IConcreteTypeBuilder.cs" />
+    <Compile Include="Mixins\CodeGeneration\IConcreteMixinTypeNameProvider.cs" />
+    <Compile Include="Mixins\CodeGeneration\Serialization\AttributeConcreteMixinTypeIdentifierSerializer.cs" />
+    <Compile Include="Mixins\CodeGeneration\Serialization\AttributeConcreteMixinTypeIdentifierDeserializer.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\CodeGenerationConcreteMixinTypeIdentifierSerializer.cs" />
+    <Compile Include="Mixins\Context\Suppression\MixinTreeReplacementSuppressionRule.cs" />
+    <Compile Include="Mixins\Context\Suppression\IMixinSuppressionRule.cs" />
+    <Compile Include="Mixins\Context\Suppression\MixinTreeSuppressionRule.cs" />
+    <Compile Include="Mixins\Definitions\Building\RequiredMethodDefinitionBuilding\DuckTypingRequiredMethodDefinitionCollector.cs" />
+    <Compile Include="Mixins\Definitions\Building\RequiredMethodDefinitionBuilding\ImplementedInterfaceRequiredMethodDefinitionBuilder.cs" />
+    <Compile Include="Mixins\Definitions\Building\RequiredMethodDefinitionBuilding\IntroducedInterfaceRequiredMethodDefinitionCollector.cs" />
+    <Compile Include="Mixins\Definitions\Building\RequiredMethodDefinitionBuilding\IRequiredMethodDefinitionCollector.cs" />
+    <Compile Include="Reflection\BindableObjectMixinIntroducedPropertyInformation.cs" />
+    <Compile Include="Reflection\CodeGeneration\MethodWrapperEmitter.cs" />
+    <Compile Include="Reflection\CodeGeneration\MethodReferencingAttribute.cs" />
+    <Compile Include="Reflection\DynamicMethodBasedMethodCallerFactory.cs" />
+    <Compile Include="Reflection\InterfaceImplementationMethodInformation.cs" />
+    <Compile Include="Reflection\InterfaceImplementationPropertyInformation.cs" />
+    <Compile Include="Reflection\MethodInfoAdapter.cs" />
+    <Compile Include="Reflection\MethodResolver.cs" />
+    <Compile Include="Mixins\CodeGeneration\Serialization\SerializationInfoConcreteMixinTypeIdentifierSerializer.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\TypeGeneration\AttributeReplicator.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\TypeGeneration\DebuggerBrowsableAttributeGenerator.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\TypeGeneration\DebuggerDisplayAttributeGenerator.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\TypeGeneration\InitializationCodeGenerator.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\TypeGeneration\IntroducedMemberAttributeGenerator.cs" />
+    <Compile Include="Mixins\CodeGeneration\IntroducedMemberAttribute.cs" />
+    <Compile Include="Mixins\CodeGeneration\MixinArrayInitializer.cs" />
+    <Compile Include="Mixins\CodeGeneration\Serialization\SerializationInfoConcreteMixinTypeIdentifierDeserializer.cs" />
+    <Compile Include="Mixins\CodeGeneration\Serialization\IConcreteMixinTypeIdentifierDeserializer.cs" />
+    <Compile Include="Mixins\CodeGeneration\Serialization\IConcreteMixinTypeIdentifierSerializer.cs" />
+    <Compile Include="Mixins\CodeGeneration\TypeImportException.cs" />
+    <Compile Include="Mixins\Context\IMixinInheritancePolicy.cs" />
+    <Compile Include="Mixins\Definitions\Building\DependencySorting\IDependentMixinGrouper.cs" />
+    <Compile Include="Mixins\Definitions\Building\DependencySorting\MixinDefinitionSorter.cs" />
+    <Compile Include="Mixins\Definitions\Building\MemberOverridePair.cs" />
+    <Compile Include="Mixins\Definitions\Building\OverriddenMemberFilter.cs" />
+    <Compile Include="Mixins\MixerTools\ConcreteTypeBuilderFactory.cs" />
+    <Compile Include="Mixins\MixerTools\ErrorEventArgs.cs" />
+    <Compile Include="Mixins\MixerTools\ClassContextFinder.cs" />
+    <Compile Include="Mixins\MixerTools\IClassContextFinder.cs" />
+    <Compile Include="Mixins\MixerTools\IConcreteTypeBuilderFactory.cs" />
+    <Compile Include="Mixins\MixerTools\ValidationErrorEventArgs.cs" />
+    <Compile Include="Mixins\Utilities\DependencySort\IDependentObjectSorter.cs" />
+    <Compile Include="Mixins\Utilities\MixinGenericArgumentFinder.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\BlockStatement.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\CastClassExpression.cs" />
+    <Compile Include="Reflection\MemberSignatureEqualityComparer.cs" />
+    <Compile Include="Reflection\MixinIntroducedMethodInformation.cs" />
+    <Compile Include="Reflection\MixinIntroducedPropertyInformation.cs" />
+    <Compile Include="Reflection\NullMethodInformation.cs" />
+    <Compile Include="Reflection\NullPropertyInformation.cs" />
+    <Compile Include="Reflection\PropertyInfoAdapter.cs" />
+    <Compile Include="Reflection\SignatureStringBuilding\EventSignatureStringBuilder.cs" />
+    <Compile Include="Reflection\SignatureStringBuilding\IMemberSignatureStringBuilder.cs" />
+    <Compile Include="Reflection\SignatureStringBuilding\MemberSignatureStringBuilderHelper.cs" />
+    <Compile Include="Reflection\SignatureStringBuilding\MethodSignatureStringBuilder.cs" />
+    <Compile Include="Reflection\SignatureStringBuilding\PropertySignatureStringBuilder.cs" />
+    <Compile Include="Reflection\TestDomain\ClassImplementingInterface.cs" />
+    <Compile Include="Reflection\TestDomain\IInterfaceToImplement.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\AssemblyNameSpecification.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\CompositeRootAssemblyFinder.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\FilePatternRootAssemblyFinder.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\FilePatternSpecification.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\FilePatternSpecificationKind.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\FileSystemSearchService.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\FixedRootAssemblyFinder.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\IAssemblyFinder.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\IFileSearchService.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\NamedRootAssemblyFinder.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\RootAssembly.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\IAssemblyLoader.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\SearchPathRootAssemblyFinder.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\IRootAssemblyFinder.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\LoadAllAssemblyLoaderFilter.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceConfigurationDiscoveryService.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocator.cs" />
+    <Compile Include="ServiceLocation\ServiceConfigurationEntry.cs" />
+    <Compile Include="Utilities\DelegateBasedEqualityComparer.cs" />
+    <Compile Include="Utilities\FuncUtility.cs" />
+    <Compile Include="Mixins\CodeGeneration\AttributeBasedMetadataImporter.cs" />
+    <Compile Include="Mixins\CodeGeneration\CodeGenerationCache.cs" />
+    <Compile Include="Mixins\CodeGeneration\CodeGenerationTimer.cs" />
+    <Compile Include="Mixins\CodeGeneration\ConcreteMixinType.cs" />
+    <Compile Include="Mixins\Context\Serialization\AttributeClassContextDeserializer.cs" />
+    <Compile Include="Mixins\Context\Serialization\AttributeClassContextSerializer.cs" />
+    <Compile Include="Mixins\Context\Serialization\AttributeMixinContextDeserializer.cs" />
+    <Compile Include="Mixins\Context\Serialization\AttributeMixinContextSerializer.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\CodeGenerationMixinContextSerializer.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\CodeGenerationSerializerUtility.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\CodeGenerationClassContextSerializer.cs" />
+    <Compile Include="Mixins\Context\Serialization\IClassContextDeserializer.cs" />
+    <Compile Include="Mixins\Context\Serialization\IClassContextSerializer.cs" />
+    <Compile Include="Mixins\Context\Serialization\IMixinContextDeserializer.cs" />
+    <Compile Include="Mixins\Context\Serialization\IMixinContextSerializer.cs" />
+    <Compile Include="Mixins\Context\Serialization\SerializationInfoClassContextDeserializer.cs" />
+    <Compile Include="Mixins\Context\Serialization\SerializationInfoClassContextSerializer.cs" />
+    <Compile Include="Mixins\Context\Serialization\SerializationInfoMixinContextDeserializer.cs" />
+    <Compile Include="Mixins\Context\Serialization\SerializationInfoMixinContextSerializer.cs" />
+    <Compile Include="Mixins\Definitions\Building\DependencySorting\DependentMixinGrouperAlgorithm.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\AssemblyLoaderException.cs" />
+    <Compile Include="Reflection\CodeGeneration\GeneratedMethodWrapperAttribute.cs" />
+    <Compile Include="Mixins\CodeGeneration\ICodeGenerationModule.cs" />
+    <Compile Include="Mixins\CodeGeneration\IConcreteTypeMetadataImporter.cs" />
+    <Compile Include="Mixins\Definitions\IAttributeIntroductionSource.cs" />
+    <Compile Include="Mixins\Definitions\NonAttributeIntroductionDefinition.cs" />
+    <Compile Include="Mixins\Definitions\SuppressedAttributeIntroductionDefinition.cs" />
+    <Compile Include="Mixins\Definitions\IMemberIntroductionDefinition.cs" />
+    <Compile Include="Mixins\Utilities\CodeGenerationStatistics.cs" />
+    <Compile Include="Mixins\Validation\Rules\ContextStoreMemberLookupUtility.cs" />
+    <Compile Include="Mixins\Validation\Rules\ContextStoreMemberIntroductionLookupUtility.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultSuppressedAttributeIntroductionRules.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\FilteringAssemblyLoader.cs" />
+    <Compile Include="Reflection\CodeGeneration\IClassEmitter.cs" />
+    <Compile Include="Reflection\CodeGeneration\IMethodEmitter.cs" />
+    <Compile Include="Reflection\ConstructorLookupInfo.cs" />
+    <Compile Include="Reflection\DynamicParamList.cs" />
+    <Compile Include="Reflection\MemberLookupInfo.cs" />
+    <Compile Include="Reflection\MethodLookupInfo.cs" />
+    <Compile Include="Reflection\ParamListImplementation.generated.cs" />
+    <Compile Include="Reflection\ParamListImplementation.template.cs" />
+    <Compile Include="Reflection\Properties.cs" />
+    <Compile Include="Reflection\Property.cs" />
+    <Compile Include="SafeContextSingleton.cs" />
+    <Compile Include="Collections\InterlockedDataStore.cs" />
+    <Compile Include="Collections\NullDataStore.cs" />
+    <Compile Include="Collections\SimpleDataStore.cs" />
+    <Compile Include="Context\CallContextStorageProvider.cs" />
+    <Compile Include="Globalization\ResourceDefinition.cs" />
+    <Compile Include="Globalization\ResourceManagerFactory.cs" />
+    <Compile Include="Logging\BridgeImplementations\LogManagerImplementation.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\ConcreteMixedTypeAttributeUtility.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\ConcreteMixinTypeAttributeUtility.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\GeneralTypeAssignArrayStatement.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\IInitializableMixinTarget.cs" />
+    <Compile Include="Reflection\CodeGeneration\CustomClassEmitter.cs" />
+    <Compile Include="Reflection\CodeGeneration\CustomEventEmitter.cs" />
+    <Compile Include="Reflection\CodeGeneration\CustomMethodEmitter.cs" />
+    <Compile Include="Reflection\CodeGeneration\CustomPropertyEmitter.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\AssemblySaver.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\AttributeGenerator.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\ClassEmitterSupportingOpenGenericBaseType.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\ConditionExpression.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\AutomaticMethodInvocationExpression.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\CustomAttributeExpression.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\ExpressionReference.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\FieldInfoReference.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\IfStatement.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\ILStatement.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\InitObjectExpression.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\LoadCalculatedArrayElementExpression.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\PopStatement.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\PropertyReference.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\SameConditionExpression.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\TryFinallyStatement.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\TypedMethodInvocationExpression.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\TypeReferenceWrapper.cs" />
+    <Compile Include="Reflection\CodeGeneration\DPExtensions\VirtualMethodInvocationExpression.cs" />
+    <Compile Include="Reflection\CodeGeneration\IAttributableEmitter.cs" />
+    <Compile Include="Reflection\CodeGeneration\SerializationEventRaiser.cs" />
+    <Compile Include="Reflection\CodeGeneration\SerializationImplementer.cs" />
+    <Compile Include="Collections\AutoInitDictionary.cs" />
+    <Compile Include="Collections\MultiDictionary.cs" />
+    <Compile Include="Collections\InterlockedCache.cs" />
+    <Compile Include="Collections\Set.cs" />
+    <Compile Include="Collections\Tuple.cs" />
+    <Compile Include="Configuration\ConfigurationElementCollection.cs" />
+    <Compile Include="Configuration\ConfigurationWrapper.cs" />
+    <Compile Include="Configuration\ConfigurationWrapperFromConfigurationObject.cs" />
+    <Compile Include="Configuration\ConfigurationWrapperFromConfigurationManager.cs" />
+    <Compile Include="Configuration\ExtendedConfigurationSection.cs" />
+    <Compile Include="Configuration\ExtendedProviderBase.cs" />
+    <Compile Include="Configuration\ProviderDefinitionCollection.cs" />
+    <Compile Include="Configuration\ProviderHelperBase.cs" />
+    <Compile Include="Design\DesignModeHelperBase.cs" />
+    <Compile Include="Design\EnvDteDesignModeHelper.cs" />
+    <Compile Include="DoubleCheckedLockingContainer.cs" />
+    <Compile Include="Globalization\IResourceManagerResolverUtility.cs" />
+    <Compile Include="Globalization\IResourcesAttribute.cs" />
+    <Compile Include="Globalization\MultiLingualResources.cs" />
+    <Compile Include="Globalization\ResourceManagerResolver.cs" />
+    <Compile Include="Globalization\ResourceManagerResolverUtility.cs" />
+    <Compile Include="Collections\ArrayComparer.cs" />
+    <Compile Include="Collections\LazyInterlockedCache.cs" />
+    <Compile Include="Logging\Log4NetLog.cs" />
+    <Compile Include="Logging\Log4NetLogManager.cs" />
+    <Compile Include="Logging\Log4NetTraceListener.cs" />
+    <Compile Include="Mixins\CodeGeneration\ConcreteMixedTypeAttribute.cs" />
+    <Compile Include="Mixins\CodeGeneration\ConcreteMixinTypeAttribute.cs" />
+    <Compile Include="Mixins\CodeGeneration\ConcreteTypeBuilder.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\NextCallMethodGenerator.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\NextCallProxyGenerator.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\MixinSerializationHelper.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\MixinTypeGenerator.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\ModuleManager.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\SerializationHelper.cs" />
+    <Compile Include="Mixins\CodeGeneration\DynamicProxy\TypeGenerator.cs" />
+    <Compile Include="Mixins\CodeGeneration\ExtensionFieldAttribute.cs" />
+    <Compile Include="Mixins\CodeGeneration\GuidNameProvider.cs" />
+    <Compile Include="Mixins\CodeGeneration\IGeneratedNextCallProxyType.cs" />
+    <Compile Include="Mixins\CodeGeneration\IGeneratedMixinType.cs" />
+    <Compile Include="Mixins\CodeGeneration\IMixinTypeGenerator.cs" />
+    <Compile Include="Mixins\CodeGeneration\IModuleManager.cs" />
+    <Compile Include="Mixins\CodeGeneration\IGeneratedTypeNameProvider.cs" />
+    <Compile Include="Mixins\CodeGeneration\ITypeGenerator.cs" />
+    <Compile Include="Mixins\CodeGeneration\NamespaceChangingNameProvider.cs" />
+    <Compile Include="Mixins\BridgeImplementations\TypeFactoryImplementation.cs" />
+    <Compile Include="Mixins\ConfigurationException.cs" />
+    <Compile Include="Mixins\Context\ClassContext.cs" />
+    <Compile Include="Mixins\Context\ClassContextCollection.cs" />
+    <Compile Include="Mixins\Context\ClassContextCombiner.cs" />
+    <Compile Include="Mixins\Context\ClassContextDeriver.cs" />
+    <Compile Include="Mixins\Context\ClassContextEventArgs.cs" />
+    <Compile Include="Mixins\Context\DeclarativeAnalyzers\CompleteInterfaceAnalyzer.cs" />
+    <Compile Include="Mixins\Context\DeclarativeAnalyzers\DeclarativeConfigurationAnalyzer.cs" />
+    <Compile Include="Mixins\Context\DeclarativeAnalyzers\ExtendsAnalyzer.cs" />
+    <Compile Include="Mixins\Context\DeclarativeAnalyzers\IgnoresAnalyzer.cs" />
+    <Compile Include="Mixins\Context\DeclarativeAnalyzers\MixAnalyzer.cs" />
+    <Compile Include="Mixins\Context\DeclarativeAnalyzers\RelationAnalyzerBase.cs" />
+    <Compile Include="Mixins\Context\DeclarativeAnalyzers\UsesAnalyzer.cs" />
+    <Compile Include="Mixins\Context\DeclarativeConfigurationBuilder.cs" />
+    <Compile Include="Mixins\Context\FluentBuilders\ClassContextBuilder.cs" />
+    <Compile Include="Mixins\Context\FluentBuilders\InheritanceResolvingClassContextBuilder.cs" />
+    <Compile Include="Mixins\Context\FluentBuilders\MixinConfigurationBuilder.cs" />
+    <Compile Include="Mixins\Context\FluentBuilders\MixinContextBuilder.cs" />
+    <Compile Include="Mixins\Context\DefaultMixinInheritancePolicy.cs" />
+    <Compile Include="Mixins\Context\MixinContext.cs" />
+    <Compile Include="Mixins\Context\MixinContextCollection.cs" />
+    <Compile Include="Mixins\Context\ReadOnlyContextCollection.cs" />
+    <Compile Include="Mixins\Definitions\AttributeDefinition.cs" />
+    <Compile Include="Mixins\Definitions\AttributeIntroductionDefinition.cs" />
+    <Compile Include="Mixins\Definitions\NextDependencyDefinition.cs" />
+    <Compile Include="Mixins\Definitions\Building\AttributeDefinitionBuilder.cs" />
+    <Compile Include="Mixins\Definitions\Building\AttributeIntroductionDefinitionBuilder.cs" />
+    <Compile Include="Mixins\Definitions\Building\NextDependencyDefinitionBuilder.cs" />
+    <Compile Include="Mixins\Definitions\Building\DependencyDefinitionBuilderBase.cs" />
+    <Compile Include="Mixins\Definitions\Building\DependencySorting\DependentMixinGrouper.cs" />
+    <Compile Include="Mixins\Definitions\Building\DependencySorting\MixinDependencyAnalyzer.cs" />
+    <Compile Include="Mixins\Definitions\Building\InterfaceIntroductionDefinitionBuilder.cs" />
+    <Compile Include="Mixins\Definitions\Building\MemberDefinitionBuilder.cs" />
+    <Compile Include="Mixins\Definitions\Building\MemberImplementationFinder.cs" />
+    <Compile Include="Mixins\Definitions\Building\MixinDefinitionBuilder.cs" />
+    <Compile Include="Mixins\Definitions\Building\MixinDependencyDefinitionBuilder.cs" />
+    <Compile Include="Mixins\Definitions\Building\OverridesAnalyzer.cs" />
+    <Compile Include="Mixins\Definitions\Building\RequiredMethodDefinitionBuilder.cs" />
+    <Compile Include="Mixins\Definitions\Building\RequirementsAnalyzer.cs" />
+    <Compile Include="Mixins\Definitions\Building\TargetClassDefinitionBuilder.cs" />
+    <Compile Include="Mixins\Definitions\Building\TargetDependencyDefinitionBuilder.cs" />
+    <Compile Include="Mixins\Definitions\ClassDefinitionBase.cs" />
+    <Compile Include="Mixins\Definitions\CovariantDefinitionCollectionWrapper.cs" />
+    <Compile Include="Mixins\Definitions\DefinitionCollectionBase.cs" />
+    <Compile Include="Mixins\Definitions\DependencyDefinitionBase.cs" />
+    <Compile Include="Mixins\Definitions\EventDefinition.cs" />
+    <Compile Include="Mixins\Definitions\EventIntroductionDefinition.cs" />
+    <Compile Include="Mixins\Definitions\IAttributableDefinition.cs" />
+    <Compile Include="Mixins\Definitions\IAttributeIntroductionTarget.cs" />
+    <Compile Include="Mixins\Definitions\IDefinitionCollection.cs" />
+    <Compile Include="Mixins\Definitions\IDefinitionVisitor.cs" />
+    <Compile Include="Mixins\Definitions\InterfaceIntroductionDefinition.cs" />
+    <Compile Include="Mixins\Definitions\IVisitableDefinition.cs" />
+    <Compile Include="Mixins\Definitions\MemberDefinitionBase.cs" />
+    <Compile Include="Mixins\Definitions\MemberIntroductionDefinitionBase.cs" />
+    <Compile Include="Mixins\Definitions\MethodDefinition.cs" />
+    <Compile Include="Mixins\Definitions\MethodIntroductionDefinition.cs" />
+    <Compile Include="Mixins\Definitions\MixinDefinition.cs" />
+    <Compile Include="Mixins\Definitions\MixinDependencyDefinition.cs" />
+    <Compile Include="Mixins\Definitions\MultiDefinitionCollection.cs" />
+    <Compile Include="Mixins\Definitions\PropertyDefinition.cs" />
+    <Compile Include="Mixins\Definitions\PropertyIntroductionDefinition.cs" />
+    <Compile Include="Mixins\Definitions\RequiredNextCallTypeDefinition.cs" />
+    <Compile Include="Mixins\Definitions\RequiredTargetCallTypeDefinition.cs" />
+    <Compile Include="Mixins\Definitions\RequiredMethodDefinition.cs" />
+    <Compile Include="Mixins\Definitions\RequiredMixinTypeDefinition.cs" />
+    <Compile Include="Mixins\Definitions\RequirementDefinitionBase.cs" />
+    <Compile Include="Mixins\Definitions\NonInterfaceIntroductionDefinition.cs" />
+    <Compile Include="Mixins\Definitions\TargetClassDefinition.cs" />
+    <Compile Include="Mixins\Definitions\TargetClassDefinitionFactory.cs" />
+    <Compile Include="Mixins\Definitions\TargetDependencyDefinition.cs" />
+    <Compile Include="Mixins\Definitions\UniqueDefinitionCollection.cs" />
+    <Compile Include="Mixins\Globalization\MixedMultiLingualResources.cs" />
+    <Compile Include="Mixins\Globalization\MixedResourceManagerResolver.cs" />
+    <Compile Include="Mixins\IMixinTarget.cs" />
+    <Compile Include="Mixins\MixinTypeUtility.cs" />
+    <Compile Include="Mixins\Utilities\MixedObjectInstantiationScope.cs" />
+    <Compile Include="Mixins\MixerTools\Mixer.cs" />
+    <Compile Include="Mixins\MixinConfiguration.ActiveConfiguration.cs" />
+    <Compile Include="Mixins\MixinConfiguration.Build.cs" />
+    <Compile Include="Mixins\MixinConfiguration.cs" />
+    <Compile Include="Mixins\MixinConfiguration.MasterConfiguration.cs" />
+    <Compile Include="Mixins\MixinConfigurationScope.cs" />
+    <Compile Include="Mixins\MixinTargetMockUtility.cs" />
+    <Compile Include="Mixins\Utilities\DependencySort\CircularDependenciesException.cs" />
+    <Compile Include="Mixins\Utilities\DependencySort\DependencyKind.cs" />
+    <Compile Include="Mixins\Utilities\DependencySort\DependentObjectSorter.cs" />
+    <Compile Include="Mixins\Utilities\DependencySort\DependentObjectSorterAlgorithm.cs" />
+    <Compile Include="Mixins\Utilities\DependencySort\IDependencyAnalyzer.cs" />
+    <Compile Include="Mixins\Utilities\ConstraintBasedGenericParameterInstantiator.cs" />
+    <Compile Include="Mixins\BridgeImplementations\ObjectFactoryImplementation.cs" />
+    <Compile Include="Mixins\Utilities\MixedTypeConstructorLookupInfo.cs" />
+    <Compile Include="Mixins\BridgeImplementations\MixinImplementation.cs" />
+    <Compile Include="Mixins\Utilities\MixinReflector.cs" />
+    <Compile Include="Mixins\Utilities\MixinTypeCloser.cs" />
+    <Compile Include="Mixins\Utilities\MultiSet.cs" />
+    <Compile Include="Mixins\Utilities\ReflectionUtility.cs" />
+    <Compile Include="Mixins\Utilities\Singleton\DefaultInstanceCreator.cs" />
+    <Compile Include="Mixins\Utilities\Singleton\IInstanceCreator.cs" />
+    <Compile Include="Mixins\Utilities\Singleton\ThreadSafeSingleton.cs" />
+    <Compile Include="Mixins\Utilities\Singleton\ThreadSafeSingletonBase.cs" />
+    <Compile Include="Mixins\Utilities\UncastableEnumerableWrapper.cs" />
+    <Compile Include="Mixins\Validation\ConsoleDumper.cs" />
+    <Compile Include="Mixins\Validation\DefaultValidationLog.cs" />
+    <Compile Include="Mixins\Validation\DelegateRuleDescriptionAttribute.cs" />
+    <Compile Include="Mixins\Validation\DelegateValidationRule.cs" />
+    <Compile Include="Mixins\Validation\IValidationLog.cs" />
+    <Compile Include="Mixins\Validation\IValidationResultItem.cs" />
+    <Compile Include="Mixins\Validation\IValidationRule.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultAttributeIntroductionRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultAttributeRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultNextDependencyRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultEventIntroductionRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultEventRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultInterfaceIntroductionRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultMethodIntroductionRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultMethodRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultMixinDependencyRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultMixinRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultPropertyIntroductionRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultPropertyRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultRequiredNextCallTypeRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultRequiredTargetCallTypeRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultRequiredMethodRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultRequiredMixinTypeRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultSuppressedInterfaceIntroductionRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultTargetClassRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\DefaultTargetDependencyRules.cs" />
+    <Compile Include="Mixins\Validation\Rules\IRuleSet.cs" />
+    <Compile Include="Mixins\Validation\Rules\RuleSetBase.cs" />
+    <Compile Include="Mixins\Validation\ValidatingVisitor.cs" />
+    <Compile Include="Mixins\Validation\ValidationException.cs" />
+    <Compile Include="Mixins\Validation\ValidationExceptionResultItem.cs" />
+    <Compile Include="Mixins\Validation\ValidationResult.cs" />
+    <Compile Include="Mixins\Validation\ValidationResultItem.cs" />
+    <Compile Include="Mixins\Validation\Validator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Collections\Cache.cs" />
+    <Compile Include="Collections\AutoInitHashtable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Collections\NullCache.cs" />
+    <Compile Include="Collections\NameObjectCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Collections\TupleAb.cs" />
+    <Compile Include="Collections\TupleAbc.cs" />
+    <Compile Include="Collections\TupleAbcd.cs" />
+    <Compile Include="Configuration\TypeElement.cs" />
+    <Compile Include="DisposableBase.cs" />
+    <Compile Include="Globalization\IObjectWithResources.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\IResourceManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\MultiLingualResourcesAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\NullResourceManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\ResourceException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\ResourceIdentifiersAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\ResourceManagerSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\ResourceManagerWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\AssemblyFinder.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinderTypeDiscoveryService.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\AttributeAssemblyLoaderFilter.cs" />
+    <Compile Include="Reflection\FuncInvoker.generated.cs" />
+    <Compile Include="Reflection\FuncInvoker.template.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\IAssemblyLoaderFilter.cs" />
+    <Compile Include="Reflection\TypeDiscovery\NonApplicationAssemblyAttribute.cs" />
+    <Compile Include="Reflection\ActionInvoker.generated.cs" />
+    <Compile Include="Reflection\ActionInvoker.template.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\RegexAssemblyLoaderFilter.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\ApplicationAssemblyLoaderFilter.cs" />
+    <Compile Include="Reflection\DelegateSelector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Reflection\InvokerUtility.cs" />
+    <Compile Include="Reflection\MethodCaller.cs" />
+    <Compile Include="Reflection\InheritanceHierarchyFilter.cs" />
+    <Compile Include="Reflection\TypesafeActivator.cs" />
+    <Compile Include="Utilities\ActionUtility.cs" />
+    <Compile Include="Text\CommandLine\CommandLineArgument.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineArgumentCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineAttributes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineClassParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineEnumArgument.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineFlagArgument.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineModeArgument.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineValueArgument.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\Exceptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Diagnostics\OuterProductIndexGenerator.cs" />
+    <Compile Include="Text\IdentifierGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\MonospaceTextFormat.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\SeparatedStringBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\StringExtensions\StringExtensions.cs" />
+    <Compile Include="Utilities\AppDomainAssemblyResolver.cs" />
+    <Compile Include="Utilities\AppDomainRunnerBase.cs" />
+    <Compile Include="Utilities\AttributeUtility.cs" />
+    <Compile Include="Utilities\Assertion.cs" />
+    <Compile Include="Utilities\AttributeWithMetadata.cs" />
+    <Compile Include="Utilities\ConsoleApplication\ConsoleApplication.cs" />
+    <Compile Include="Utilities\ConsoleApplication\ConsoleApplicationSettings.cs" />
+    <Compile Include="Utilities\ConsoleApplication\IApplicationRunner.cs" />
+    <Compile Include="Utilities\ConsoleApplication\IWaiter.cs" />
+    <Compile Include="Utilities\ConsoleApplication\ConsoleKeypressWaiter.cs" />
+    <Compile Include="Utilities\ConsoleUtility.cs" />
+    <Compile Include="Utilities\CultureScope.cs" />
+    <Compile Include="Utilities\CustomAttributeArguments.cs" />
+    <Compile Include="Utilities\CustomAttributeDataUtility.cs" />
+    <Compile Include="Utilities\DefaultConsoleManager.cs" />
+    <Compile Include="FunctionalProgramming\EnumerableUtility.cs" />
+    <Compile Include="Utilities\EqualityUtility.cs" />
+    <Compile Include="Utilities\ExceptionUtility.cs" />
+    <Compile Include="Utilities\FileUtility.cs" />
+    <Compile Include="Utilities\IConsoleManager.cs" />
+    <Compile Include="Utilities\DelegateBasedComparer.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparer.cs" />
+    <Compile Include="Utilities\NullableTypeUtility.cs" />
+    <Compile Include="Utilities\PropertyRestorer\PropertyRestorer.cs" />
+    <Compile Include="Utilities\PropertyRestorer\PropertyRestorerMother.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\AssertionConditionAttribute.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\AssertionConditionType.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\AssertionMethodAttribute.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\CanBeNullAttribute.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\CannotApplyEqualityOperatorAttribute.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\BaseTypeRequiredAttribute.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\ImplicitUseKindFlags.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\ImplicitUseTargetFlags.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\InvokerParameterNameAttribute.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\LocalizationRequiredAttribute.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\MeansImplicitUseAttribute.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\NotNullAttribute.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\StringFormatMethodAttribute.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\TerminatesProgramAttribute.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\UsedImplicitlyAttribute.cs" />
+    <Compile Include="Utilities\StopwatchScope.cs" />
+    <Compile Include="Utilities\TypeConverterResult.cs" />
+    <Compile Include="Utilities\TypeConverterType.cs" />
+    <Compile Include="Utilities\TypeNameConverter.cs" />
+    <Compile Include="Utilities\AdvancedEnumConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\ArgumentUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\ArrayUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\BidirectionalStringConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\EnumDescription.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\EnumUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\ListUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\NameValueCollectionUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\ReflectionUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\StringUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\TypeConversionProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\TypeUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\WorkContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Xml\SchemaLoaderBase.cs" />
+    <Compile Include="Xml\XmlSchemaValidationErrorInfo.cs" />
+    <Compile Include="Xml\XmlSchemaValidationHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Xml\XmlSerializationUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="..\..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+    <EmbeddedResource Include="Configuration\TypeDiscovery\TypeDiscoveryConfiguration.xsd" />
+    <None Include="Mixins\Context\Context.cd" />
+    <None Include="Mixins\Validation\Validation.cd" />
+    <Content Include="doc\include\GettingStartedTemplate.html" />
+    <Content Include="doc\include\Globalization\MultiLingualResourcesAttribute.xml" />
+    <Content Include="doc\include\Globalization\ResourceManagerWrapper.xml" />
+    <Content Include="doc\include\Logging\Log4NetTraceListener.xml" />
+    <Content Include="doc\include\MSDN.css" />
+    <Content Include="doc\include\NamespaceDoc.xml" />
+    <Content Include="doc\include\Reflection\TypesafeInvoker.xml" />
+    <Content Include="doc\include\Text\CommandLine\CommandLineParser.xml" />
+    <Content Include="doc\include\Diagnostics\OuterProduct.xml" />
+    <Content Include="doc\include\Utilities\EqualityUtility.xml" />
+    <Content Include="doc\include\Utilities\WorkContext.xml" />
+    <Content Include="doc\WhatsNew_Remotion.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Interfaces\Core.Interfaces.csproj">
+      <Project>{BD061F4A-A9E6-461E-A804-7999623A0060}</Project>
+      <Name>Core.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Mixins\Utilities\Serialization\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>..\..\..\..\..\prereq\Tools\FuncGen\FuncGen.exe "$(ProjectDir)*.template.cs" *.generated.cs /rec</PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,600 @@
+// This file is part of the re-motion Core Framework (www.re-motion.org)
+// Copyright (C) 2005-2009 rubicon informationstechnologie gmbh, www.rubicon.eu
+// 
+// The re-motion Core Framework is free software; you can redistribute it 
+// and/or modify it under the terms of the GNU Lesser General Public License 
+// as published by the Free Software Foundation; either version 2.1 of the 
+// License, or (at your option) any later version.
+// 
+// re-motion is distributed in the hope that it will be useful, 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
+// 
+using System;
+using System.Collections.ObjectModel;
+using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.DataManagement.Commands;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.UnitTests.DomainObjects.TestDomain;
+using Rhino.Mocks;
+
+namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands
+{
+  [TestFixture]
+  public class UnloadCommandTest : StandardMappingTest
+  {
+    private ClientTransactionMock _transaction;
+    private IDataManager _dataManager;
+    private DataContainerMap _dataContainerMap;
+    private RelationEndPointMap _relationEndPointMap;
+
+    public override void SetUp ()
+    {
+      base.SetUp();
+
+      _transaction = new ClientTransactionMock ();
+      _dataManager = _transaction.DataManager;
+      _dataContainerMap = DataManagerTestHelper.GetDataContainerMap (_dataManager);
+      _relationEndPointMap = DataManagerTestHelper.GetRelationEndPointMap (_dataManager);
+    }
+
+    [Test]
+    public void CanUnload_True ()
+    {
+      EnsureDataAvailable (DomainObjectIDs.Order1);
+      var unloadCommand = CreateCommand (new[] { DomainObjectIDs.Order1 });
+      
+      Assert.That (unloadCommand.CanUnload, Is.True);
+    }
+
+    [Test]
+    public void CanUnload_False_ChangedDataContainers ()
+    {
+      EnsureDataAvailable (DomainObjectIDs.Order1);
+      _dataContainerMap[DomainObjectIDs.Order1].MarkAsChanged ();
+
+      var unloadCommand = CreateCommand (new[] { DomainObjectIDs.Order1 });
+      Assert.That (unloadCommand.CanUnload, Is.False);
+    }
+
+    [Test]
+    public void CanUnload_False_ChangedAssociatedEndPoint ()
+    {
+      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
+      var endPoint = (ICollectionEndPoint) _dataManager.RelationEndPointMap.GetRelationEndPointWithLazyLoad (endPointID);
+
+      _transaction.Execute (() => endPoint.Collection.Add (OrderItem.NewObject ()));
+
+      var unloadCommand = CreateCommand (DomainObjectIDs.Order1);
+      Assert.That (unloadCommand.CanUnload, Is.False);
+    }
+
+    [Test]
+    public void CanUnload_False_ChangedOppositeEndPoint ()
+    {
+      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
+      var endPoint = (ICollectionEndPoint) _dataManager.RelationEndPointMap.GetRelationEndPointWithLazyLoad (endPointID);
+
+      _transaction.Execute (() => endPoint.Collection.Add (OrderItem.NewObject ()));
+
+      var unloadCommand = CreateCommand (DomainObjectIDs.OrderItem1);
+      Assert.That (unloadCommand.CanUnload, Is.False); // OrderItem1.Order has not changed, but OrderItem1.Order.OrderItems has...
+    }
+
+    [Test]
+    public void EnsureCanUnload_WithoutProblems ()
+    {
+      EnsureDataAvailable (DomainObjectIDs.Order1);
+      CreateCommand (new[] { DomainObjectIDs.Order1 }).EnsureCanUnload ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
+        "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
+        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' (Changed).")]
+    public void EnsureCanUnload_ThrowsOnChangedDataContainers ()
+    {
+      EnsureDataAvailable (DomainObjectIDs.Order1);
+      _dataContainerMap[DomainObjectIDs.Order1].MarkAsChanged();
+
+      CreateCommand (new[] { DomainObjectIDs.Order1 }).EnsureCanUnload();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
+        "Object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded because one of its relations has been changed. "
+        + "Only unchanged objects that are not part of changed relations can be unloaded.\r\nChanged relation: "
+        + "'Remotion.Data.UnitTests.DomainObjects.TestDomain.OrderItem:Remotion.Data.UnitTests.DomainObjects.TestDomain.OrderItem.Order->"
+        + "Remotion.Data.UnitTests.DomainObjects.TestDomain.Order.OrderItems'.")]
+    public void EnsureCanUnload_ThrowsOnChangedAssociatedEndPoint ()
+    {
+      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
+      var endPoint = (ICollectionEndPoint) _dataManager.RelationEndPointMap.GetRelationEndPointWithLazyLoad (endPointID);
+
+      _transaction.Execute (() => endPoint.Collection.Add (OrderItem.NewObject()));
+
+      CreateCommand (DomainObjectIDs.Order1).EnsureCanUnload ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
+        "Object 'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid' cannot be unloaded because one of its relations has been changed. "
+        + "Only unchanged objects that are not part of changed relations can be unloaded.\r\nChanged relation: "
+        + "'Remotion.Data.UnitTests.DomainObjects.TestDomain.OrderItem:Remotion.Data.UnitTests.DomainObjects.TestDomain.OrderItem.Order->"
+        + "Remotion.Data.UnitTests.DomainObjects.TestDomain.Order.OrderItems'.")]
+    public void EnsureCanUnload_ThrowsOnChangedOppositeEndPoint ()
+    {
+      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
+      var endPoint = (ICollectionEndPoint) _dataManager.RelationEndPointMap.GetRelationEndPointWithLazyLoad (endPointID);
+
+      _transaction.Execute (() => endPoint.Collection.Add (OrderItem.NewObject()));
+
+      CreateCommand (DomainObjectIDs.OrderItem1).EnsureCanUnload (); // OrderItem1.Order has not changed, but OrderItem1.Order.OrderItems has...
+    }
+
+    [Test]
+    public void AffectedDataContainers ()
+    {
+      EnsureDataAvailable (DomainObjectIDs.Order1);
+      EnsureDataAvailable (DomainObjectIDs.Order2);
+
+      var command = CreateCommand (DomainObjectIDs.Order1, DomainObjectIDs.Order2);
+
+      Assert.That (
+          command.UnloadedDataContainers,
+          Is.EqualTo (
+              new[]
+              {
+                  _dataContainerMap[DomainObjectIDs.Order1],
+                  _dataContainerMap[DomainObjectIDs.Order2]
+              }));
+    }
+
+    [Test]
+    public void AffectedDataContainers_IgnoresUnloadedDataContainers ()
+    {
+      EnsureDataAvailable (DomainObjectIDs.Order1);
+
+      var command = CreateCommand (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 });
+
+      Assert.That (command.UnloadedDataContainers, Is.EqualTo (new[] { _dataContainerMap[DomainObjectIDs.Order1] }));
+    }
+
+    [Test]
+    public void NotifyClientTransactionOfBegin ()
+    {
+      var order1 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order1));
+      var order2 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order2));
+      var command = CreateCommand (order1.ID, order2.ID, DomainObjectIDs.Order3);
+
+      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
+      _transaction.AddListener (listenerMock);
+
+      command.NotifyClientTransactionOfBegin();
+
+      listenerMock.AssertWasCalled (mock => mock.ObjectsUnloading (
+          Arg.Is (_transaction), 
+          Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { order1, order2 })));
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException))]
+    public void NotifyClientTransactionOfBegin_EnsuresCanUnload ()
+    {
+      var order1 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order1));
+      _transaction.Execute (order1.MarkAsChanged);
+
+      var command = CreateCommand (order1.ID);
+      command.NotifyClientTransactionOfBegin ();
+    }
+
+    [Test]
+    public void NotifyClientTransactionOfBegin_SetsCurrentTransaction ()
+    {
+      var order1 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order1));
+      var order2 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order2));
+      var command = CreateCommand (order1.ID, order2.ID, DomainObjectIDs.Order3);
+
+      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener> ();
+      _transaction.AddListener (listenerMock);
+
+      listenerMock
+          .Expect (mock => mock.ObjectsUnloading (
+              Arg.Is (_transaction), 
+              Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { order1, order2 })))
+          .WhenCalled (mi => Assert.That (ClientTransaction.Current, Is.SameAs (_transaction)));
+      listenerMock.Replay ();
+
+      command.NotifyClientTransactionOfBegin ();
+
+      listenerMock.VerifyAllExpectations ();
+    }
+
+    [Test]
+    public void NotifyClientTransactionOfBegin_NoEventsIfNoAffectedObjects ()
+    {
+      ClientTransactionTestHelper.EnsureTransactionThrowsOnEvents (_transaction);
+
+      var command = CreateCommand (DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.Order3);
+      command.NotifyClientTransactionOfBegin();
+    }
+
+    [Test]
+    public void NotifyClientTransactionOfEnd ()
+    {
+      var order1 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order1));
+      var order2 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order2));
+      var command = CreateCommand (order1.ID, order2.ID, DomainObjectIDs.Order3);
+
+      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
+      _transaction.AddListener (listenerMock);
+
+      command.NotifyClientTransactionOfEnd();
+
+      listenerMock.AssertWasCalled (mock => mock.ObjectsUnloaded (
+          Arg.Is (_transaction), 
+          Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { order1, order2 })));
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException))]
+    public void NotifyClientTransactionOfEnd_EnsuresCanUnload ()
+    {
+      var order1 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order1));
+      _transaction.Execute (order1.MarkAsChanged);
+
+      var command = CreateCommand (order1.ID);
+      command.NotifyClientTransactionOfEnd ();
+    }
+
+    [Test]
+    public void NotifyClientTransactionOfEnd_SetsCurrentTransaction ()
+    {
+      var order1 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order1));
+      var order2 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order2));
+      var command = CreateCommand (order1.ID, order2.ID, DomainObjectIDs.Order3);
+
+      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener> ();
+      _transaction.AddListener (listenerMock);
+      
+      listenerMock
+          .Expect (mock => mock.ObjectsUnloaded (
+              Arg.Is (_transaction), 
+              Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { order1, order2 })))
+          .WhenCalled (mi => Assert.That (ClientTransaction.Current, Is.SameAs (_transaction)));
+      listenerMock.Replay ();
+
+      command.NotifyClientTransactionOfEnd ();
+
+      listenerMock.VerifyAllExpectations ();
+    }
+
+    [Test]
+    public void NotifyClientTransactionOfEnd_NoEventsIfNoAffectedObjects ()
+    {
+      ClientTransactionTestHelper.EnsureTransactionThrowsOnEvents (_transaction);
+
+      var command = CreateCommand (DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.Order3);
+      command.NotifyClientTransactionOfEnd();
+    }
+
+    [Test]
+    public void Begin ()
+    {
+      var loadedObject = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order1));
+      
+      var unloadedObject = DomainObjectMother.GetObjectInOtherTransaction<Order> (DomainObjectIDs.Order2);
+      _transaction.EnlistDomainObject (unloadedObject);
+      Assert.That (unloadedObject.TransactionContext[_transaction].State, Is.EqualTo (StateType.NotLoadedYet));
+
+      var command = CreateCommand (loadedObject.ID, unloadedObject.ID);
+      ClientTransactionTestHelper.EnsureTransactionThrowsOnEvents (_transaction);
+      
+      command.Begin ();
+
+      Assert.That (loadedObject.OnUnloadingCalled, Is.True);
+
+      Assert.That (loadedObject.OnUnloadedCalled, Is.False);
+
+      Assert.That (unloadedObject.OnUnloadingCalled, Is.False);
+      Assert.That (unloadedObject.OnUnloadedCalled, Is.False);
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException))]
+    public void Begin_EnsuresCanUnload ()
+    {
+      var order1 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order1));
+      _transaction.Execute (order1.MarkAsChanged);
+
+      var command = CreateCommand (order1.ID);
+      command.Begin();
+    }
+
+    [Test]
+    public void Begin_Transaction ()
+    {
+      var loadedObject = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order1));
+
+      var command = CreateCommand (loadedObject.ID);
+      ClientTransactionTestHelper.EnsureTransactionThrowsOnEvents (_transaction);
+
+      command.Begin();
+
+      Assert.That (loadedObject.OnUnloadingTx, Is.SameAs (_transaction));
+    }
+
+    [Test]
+    public void Begin_Sequence ()
+    {
+      var order1 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order1));
+      var order2 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order2));
+
+      var command = CreateCommand (order1.ID, order2.ID);
+      ClientTransactionTestHelper.EnsureTransactionThrowsOnEvents (_transaction);
+
+      command.Begin ();
+
+      Assert.That (order1.OnUnloadingCalled, Is.True);
+      Assert.That (order2.OnUnloadingCalled, Is.True);
+
+      Assert.That (order1.OnUnloadingDateTime, Is.LessThan (order2.OnUnloadingDateTime), "order1 was called first");
+    }
+
+    [Test]
+    public void End ()
+    {
+      var loadedObject = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order1));
+
+      var unloadedObject = DomainObjectMother.GetObjectInOtherTransaction<Order> (DomainObjectIDs.Order2);
+      _transaction.EnlistDomainObject (unloadedObject);
+      Assert.That (unloadedObject.TransactionContext[_transaction].State, Is.EqualTo (StateType.NotLoadedYet));
+
+      var command = CreateCommand (loadedObject.ID, unloadedObject.ID);
+      ClientTransactionTestHelper.EnsureTransactionThrowsOnEvents (_transaction);
+
+      command.End ();
+
+      Assert.That (loadedObject.OnUnloadedCalled, Is.True);
+
+      Assert.That (loadedObject.OnUnloadingCalled, Is.False);
+
+      Assert.That (unloadedObject.OnUnloadingCalled, Is.False);
+      Assert.That (unloadedObject.OnUnloadedCalled, Is.False);
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException))]
+    public void End_EnsuresCanUnload ()
+    {
+      var order1 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order1));
+      _transaction.Execute (order1.MarkAsChanged);
+
+      var command = CreateCommand (order1.ID);
+      command.End ();
+    }
+
+    [Test]
+    public void End_Transaction ()
+    {
+      var loadedObject = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order1));
+
+      var command = CreateCommand (loadedObject.ID);
+      ClientTransactionTestHelper.EnsureTransactionThrowsOnEvents (_transaction);
+      using (ClientTransactionScope.EnterNullScope ())
+      {
+        command.End();
+      }
+
+      Assert.That (loadedObject.OnUnloadedTx, Is.SameAs (_transaction));
+    }
+
+    [Test]
+    public void End_Sequence ()
+    {
+      var order1 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order1));
+      var order2 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order2));
+
+      var command = CreateCommand (order1.ID, order2.ID);
+      ClientTransactionTestHelper.EnsureTransactionThrowsOnEvents (_transaction);
+      
+      command.End ();
+
+      Assert.That (order1.OnUnloadedCalled, Is.True);
+      Assert.That (order2.OnUnloadedCalled, Is.True);
+
+      Assert.That (order1.OnUnloadedDateTime, Is.GreaterThan (order2.OnUnloadedDateTime), "order2 was called first");
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException))]
+    public void Perform_EnsuresCanUnload ()
+    {
+      var order1 = _transaction.Execute (() => Order.GetObject (DomainObjectIDs.Order1));
+      _transaction.Execute (order1.MarkAsChanged);
+
+      var command = CreateCommand (order1.ID);
+      try
+      {
+        command.Perform ();
+      }
+      catch (InvalidOperationException)
+      {
+        Assert.That (order1.TransactionContext[_transaction].State, Is.Not.EqualTo (StateType.NotLoadedYet));
+        throw;
+      }
+    }
+
+    [Test]
+    public void Perform_NotLoaded ()
+    {
+      ClientTransactionTestHelper.EnsureTransactionThrowsOnEvents (_transaction);
+
+      Assert.That (_dataContainerMap[DomainObjectIDs.Order1], Is.Null);
+
+      var command = CreateCommand (DomainObjectIDs.Order1);
+      command.Perform();
+
+      Assert.That (_dataContainerMap[DomainObjectIDs.Order1], Is.Null);
+    }
+
+    [Test]
+    public void Perform_RemovesDataContainer ()
+    {
+      EnsureDataAvailable (DomainObjectIDs.Order1);
+      Assert.That (_dataContainerMap[DomainObjectIDs.Order1], Is.Not.Null);
+
+      var command = CreateCommand (DomainObjectIDs.Order1);
+      command.Perform();
+
+      Assert.That (_dataContainerMap[DomainObjectIDs.Order1], Is.Null);
+    }
+
+    [Test]
+    public void Perform_RemovesRelationsWithForeignKeys ()
+    {
+      var realEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.OrderTicket1, "Order");
+      var oppositeVirtualEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderTicket");
+
+      EnsureDataAvailable (DomainObjectIDs.OrderTicket1);
+      Assert.That (_relationEndPointMap[realEndPointID], Is.Not.Null);
+      Assert.That (_relationEndPointMap[oppositeVirtualEndPointID], Is.Not.Null);
+
+      var command = CreateCommand (DomainObjectIDs.OrderTicket1);
+      command.Perform();
+
+      Assert.That (_relationEndPointMap[realEndPointID], Is.Null);
+      Assert.That (_relationEndPointMap[oppositeVirtualEndPointID], Is.Null);
+    }
+
+
+    [Test]
+    public void Perform_KeepsRelationsWithoutForeignKeys ()
+    {
+      var virtualEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderTicket");
+      var oppositeRealEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.OrderTicket1, "Order");
+
+      EnsureDataAvailable (DomainObjectIDs.OrderTicket1);
+      Assert.That (_relationEndPointMap[oppositeRealEndPointID], Is.Not.Null);
+      Assert.That (_relationEndPointMap[virtualEndPointID], Is.Not.Null);
+
+      var command = CreateCommand (DomainObjectIDs.Order1);
+      command.Perform();
+
+      Assert.That (_relationEndPointMap[oppositeRealEndPointID], Is.Not.Null);
+      Assert.That (_relationEndPointMap[virtualEndPointID], Is.Not.Null);
+    }
+
+    [Test]
+    public void Perform_KeepsCollectionRelations ()
+    {
+      var virtualEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
+      var oppositeRealEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.OrderItem1, "Order");
+      _relationEndPointMap.GetRelationEndPointWithLazyLoad (virtualEndPointID);
+
+      Assert.That (_relationEndPointMap[oppositeRealEndPointID], Is.Not.Null);
+      Assert.That (_relationEndPointMap[virtualEndPointID], Is.Not.Null);
+      Assert.That (_relationEndPointMap[virtualEndPointID].IsDataComplete, Is.True);
+
+      var command = CreateCommand (DomainObjectIDs.Order1);
+      command.Perform ();
+
+      Assert.That (_relationEndPointMap[oppositeRealEndPointID], Is.Not.Null);
+      Assert.That (_relationEndPointMap[virtualEndPointID], Is.Not.Null);
+      Assert.That (_relationEndPointMap[virtualEndPointID].IsDataComplete, Is.True);
+    }
+
+    [Test]
+    public void Perform_RemovesNullVirtualEndPoints ()
+    {
+      var virtualEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Employee1, "Computer");
+      EnsureDataAvailable (DomainObjectIDs.Employee1);
+
+      _relationEndPointMap.GetRelationEndPointWithLazyLoad (virtualEndPointID);
+
+      Assert.That (_relationEndPointMap[virtualEndPointID], Is.Not.Null);
+      Assert.That (((IObjectEndPoint) _relationEndPointMap[virtualEndPointID]).OppositeObjectID, Is.Null);
+
+      var command = CreateCommand (DomainObjectIDs.Employee1);
+      command.Perform();
+
+      Assert.That (_relationEndPointMap[virtualEndPointID], Is.Null);
+    }
+
+    [Test]
+    public void Perform_UnloadsOwningCollections ()
+    {
+      var collectionEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
+      var collectionEndPoint = (ICollectionEndPoint) _relationEndPointMap.GetRelationEndPointWithLazyLoad (collectionEndPointID);
+
+      Assert.That (collectionEndPoint.HasChanged, Is.False);
+      Assert.That (collectionEndPoint.IsDataComplete, Is.True);
+      Assert.That (_dataContainerMap[DomainObjectIDs.OrderItem1].State, Is.EqualTo (StateType.Unchanged));
+
+      var command = CreateCommand (DomainObjectIDs.OrderItem1);
+      command.Perform();
+
+      Assert.That (collectionEndPoint.IsDataComplete, Is.False);
+    }
+
+    [Test]
+    public void Perform_Many ()
+    {
+      EnsureDataAvailable (DomainObjectIDs.Order1);
+      EnsureDataAvailable (DomainObjectIDs.Order2);
+      Assert.That (_dataContainerMap[DomainObjectIDs.Order1], Is.Not.Null);
+      Assert.That (_dataContainerMap[DomainObjectIDs.Order2], Is.Not.Null);
+
+      var command = CreateCommand (DomainObjectIDs.Order1, DomainObjectIDs.Order2);
+      command.Perform();
+
+      Assert.That (_dataContainerMap[DomainObjectIDs.Order1], Is.Null);
+      Assert.That (_dataContainerMap[DomainObjectIDs.Order2], Is.Null);
+    }
+
+    [Test]
+    public void Perform_Many_Checks_BeforePerformingAnything ()
+    {
+      EnsureDataAvailable (DomainObjectIDs.Order1);
+      EnsureDataAvailable (DomainObjectIDs.Order2);
+
+      Assert.That (_dataContainerMap[DomainObjectIDs.Order1], Is.Not.Null);
+      Assert.That (_dataContainerMap[DomainObjectIDs.Order2], Is.Not.Null);
+
+      _dataContainerMap[DomainObjectIDs.Order2].MarkAsChanged();
+
+      var command = CreateCommand (DomainObjectIDs.Order1, DomainObjectIDs.Order2);
+
+      try
+      {
+        command.Perform();
+        Assert.Fail ("Expected InvalidOperationException");
+      }
+      catch (InvalidOperationException)
+      {
+        // ok
+      }
+
+      Assert.That (_dataContainerMap[DomainObjectIDs.Order1], Is.Not.Null);
+      Assert.That (_dataContainerMap[DomainObjectIDs.Order2], Is.Not.Null);
+    }
+
+    private void EnsureDataAvailable (ObjectID objectID)
+    {
+      _transaction.EnsureDataAvailable (objectID);
+    }
+
+    private UnloadCommand CreateCommand (params ObjectID[] objectIDs)
+    {
+      return new UnloadCommand (objectIDs, _transaction, _dataContainerMap, _relationEndPointMap);
+    }
+  }
+}

@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DD30FC13-485F-425D-8FA0-0CE8998B925D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.Web.Legacy</RootNamespace>
+    <AssemblyName>Remotion.Web.Legacy</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1591;0419</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <DocumentationFile>bin\Debug\Remotion.Web.Legacy.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1591;0419</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <DocumentationFile>bin\Release\Remotion.Web.Legacy.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\prereq\Assemblies\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="Factories\QuirksModeResourceUrlFactory.cs" />
+    <Compile Include="Infrastructure\Factories\QuirksModeResourceUrlResolverFactory.cs" />
+    <Compile Include="Infrastructure\QuirksModeResourceUrlResolver.cs" />
+    <Compile Include="LegacyServiceConfigurationService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Controls\Rendering\DatePickerButtonQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\Rendering\DatePickerPageQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\Rendering\DropDownMenuQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\Rendering\ListMenuQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\Rendering\QuirksModeClientScriptBehavior.cs" />
+    <Compile Include="UI\Controls\Rendering\QuirksModeRendererBase.cs" />
+    <Compile Include="UI\Controls\Rendering\SingleViewQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\Rendering\TabbedMenuQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\Rendering\TabbedMultiViewQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\Rendering\WebButtonQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\Rendering\WebTabStripQuirksModeRenderer.cs" />
+    <Compile Include="UI\Controls\Rendering\WebTreeViewQuirksModeRenderer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Interfaces\Core.Interfaces.csproj">
+      <Project>{BD061F4A-A9E6-461E-A804-7999623A0060}</Project>
+      <Name>Core.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Security\Interfaces\Security.Interfaces.csproj">
+      <Project>{6B243694-318E-4C20-A2EA-B910EFE5F2F6}</Project>
+      <Name>Security.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Web.Core.csproj">
+      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
+      <Name>Web.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Res\HTML\DatePicker.css" />
+    <Content Include="Res\HTML\DatePicker.js" />
+    <Content Include="Res\HTML\DropDownMenu.css" />
+    <Content Include="Res\HTML\DropDownMenu.js" />
+    <Content Include="Res\HTML\ExecutionEngine.css" />
+    <Content Include="Res\HTML\FontSize080.css" />
+    <Content Include="Res\HTML\FontSize100.css" />
+    <Content Include="Res\HTML\FormGrid.css" />
+    <Content Include="Res\HTML\ListMenu.css" />
+    <Content Include="Res\HTML\ListMenu.js" />
+    <Content Include="Res\HTML\SingleView.css" />
+    <Content Include="Res\HTML\SmartPage.css" />
+    <Content Include="Res\HTML\Style.css" />
+    <Content Include="Res\HTML\StyleUtility.js" />
+    <Content Include="Res\HTML\TabbedMenu.css" />
+    <Content Include="Res\HTML\TabbedMultiView.css" />
+    <Content Include="Res\HTML\TabStrip.css" />
+    <Content Include="Res\HTML\TreeView.css" />
+    <Content Include="Res\HTML\WebButton.css" />
+    <Content Include="Res\HTML\WebButton.js" />
+    <Content Include="Res\Image\DatePicker.gif" />
+    <Content Include="Res\Image\DropDownMenuArrow.gif" />
+    <Content Include="Res\Image\DropDownMenuArrow_disabled.gif" />
+    <Content Include="Res\Image\DropDownMenuItemIconPane.gif" />
+    <Content Include="Res\Image\DropDownMenuSeparator.gif" />
+    <Content Include="Res\Image\Help.gif" />
+    <Content Include="Res\Image\RequiredField.gif" />
+    <Content Include="Res\Image\Spacer.gif" />
+    <Content Include="Res\Image\TabbedMainMenuTabTopLeftCorner.gif" />
+    <Content Include="Res\Image\TabbedMainMenuTabTopRightCorner.gif" />
+    <Content Include="Res\Image\TreeViewF.gif" />
+    <Content Include="Res\Image\TreeViewFMinus.gif" />
+    <Content Include="Res\Image\TreeViewFPlus.gif" />
+    <Content Include="Res\Image\TreeViewI.gif" />
+    <Content Include="Res\Image\TreeViewL.gif" />
+    <Content Include="Res\Image\TreeViewLMinus.gif" />
+    <Content Include="Res\Image\TreeViewLPlus.gif" />
+    <Content Include="Res\Image\TreeViewMinus.gif" />
+    <Content Include="Res\Image\TreeViewPlus.gif" />
+    <Content Include="Res\Image\TreeViewR.gif" />
+    <Content Include="Res\Image\TreeViewRMinus.gif" />
+    <Content Include="Res\Image\TreeViewRPlus.gif" />
+    <Content Include="Res\Image\TreeViewT.gif" />
+    <Content Include="Res\Image\TreeViewTMinus.gif" />
+    <Content Include="Res\Image\TreeViewTPlus.gif" />
+    <Content Include="Res\Image\TreeViewWhite.gif" />
+    <Content Include="Res\Image\ValidationError.gif" />
+    <Content Include="Res\UI\DatePickerForm.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,89 @@
+// This file is part of the re-motion Core Framework (www.re-motion.org)
+// Copyright (C) 2005-2009 rubicon informationstechnologie gmbh, www.rubicon.eu
+// 
+// The re-motion Core Framework is free software; you can redistribute it 
+// and/or modify it under the terms of the GNU Lesser General Public License 
+// as published by the Free Software Foundation; either version 2.1 of the 
+// License, or (at your option) any later version.
+// 
+// re-motion is distributed in the hope that it will be useful, 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
+// 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Remotion.Collections;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Mixins;
+using Remotion.Utilities;
+
+namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
+{
+  public class MixinPropertyFinder
+  {
+    private readonly IPersistentMixinFinder _persistentMixinFinder;
+    private readonly bool _includeBaseMixins;
+    private readonly IMappingNameResolver _nameResolver;
+    private readonly Func<Type, bool, bool, IMappingNameResolver, IPersistentMixinFinder, PropertyFinderBase> _propertyFinderFactory;
+
+    public MixinPropertyFinder (
+        Func<Type, bool, bool, IMappingNameResolver, IPersistentMixinFinder, PropertyFinderBase> propertyFinderFactory,
+        IPersistentMixinFinder persistentMixinFinder,
+        bool includeBaseMixins,
+        IMappingNameResolver nameResolver)
+    {
+      ArgumentUtility.CheckNotNull ("propertyFinderFactory", propertyFinderFactory);
+      ArgumentUtility.CheckNotNull ("nameResolver", nameResolver);
+
+      _propertyFinderFactory = propertyFinderFactory;
+      _persistentMixinFinder = persistentMixinFinder;
+      _nameResolver = nameResolver;
+      _includeBaseMixins = includeBaseMixins;
+    }
+
+    public IEnumerable<PropertyInfo> FindPropertyInfosOnMixins ()
+    {
+      if (_persistentMixinFinder != null)
+      {
+        var processedMixins = new Set<Type>();
+        return from mixin in _persistentMixinFinder.GetPersistentMixins()
+               from propertyInfo in FindPropertyInfosOnMixin (mixin, processedMixins)
+               select propertyInfo;
+      }
+      else
+        return Enumerable.Empty<PropertyInfo>();
+    }
+
+    private IEnumerable<PropertyInfo> FindPropertyInfosOnMixin (Type mixin, Set<Type> processedMixins)
+    {
+      Type current = mixin;
+      while (current != null && !IsMixinBaseClass (current))
+      {
+        if (!processedMixins.Contains (current) && (_includeBaseMixins || !_persistentMixinFinder.IsInParentContext (current)))
+        {
+          // Note: mixins on mixins are not checked
+          var mixinPropertyFinder = _propertyFinderFactory (current, false, false, _nameResolver, _persistentMixinFinder);
+          foreach (PropertyInfo propertyInfo in mixinPropertyFinder.FindPropertyInfosDeclaredOnThisType ())
+            yield return propertyInfo;
+
+          processedMixins.Add (current);
+        }
+        current = current.BaseType;
+      }
+    }
+
+    private bool IsMixinBaseClass (Type type)
+    {
+      if (!type.IsGenericType)
+        return false;
+      Type genericTypeDefinition = type.GetGenericTypeDefinition();
+      return genericTypeDefinition == typeof (Mixin<>) || genericTypeDefinition == typeof (Mixin<,>);
+    }
+  }
+}

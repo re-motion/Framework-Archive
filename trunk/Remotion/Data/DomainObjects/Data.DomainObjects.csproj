@@ -1,0 +1,902 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Remotion.Data.DomainObjects</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Remotion.Data.DomainObjects</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\Remotion.Data.DomainObjects.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>1591;419</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\Remotion.Data.DomainObjects.XML</DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>1591;419</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\prereq\Assemblies\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.DynamicProxy2, Version=2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\prereq\Assemblies\Castle.DynamicProxy2.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\prereq\Assemblies\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\..\Relinq\Core\Linq.Core.csproj">
+      <Project>{028E7899-0D5F-49C8-9EB6-8B051E02F1E0}</Project>
+      <Name>Linq.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Relinq\SqlBackend\Linq.SqlBackend.csproj">
+      <Project>{EBA04D26-8D5B-4EF5-9898-C2D90373149C}</Project>
+      <Name>Linq.SqlBackend</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Interfaces\Core.Interfaces.csproj">
+      <Project>{BD061F4A-A9E6-461E-A804-7999623A0060}</Project>
+      <Name>Core.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
+      <Name>Core.Core</Name>
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.Core.csproj">
+      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
+      <Name>ObjectBinding.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ObjectBinding\Interfaces\ObjectBinding.Interfaces.csproj">
+      <Project>{A1FCDC69-E8E3-4DC0-8EE7-A8FEA772EF5B}</Project>
+      <Name>ObjectBinding.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Interfaces\Data.Interfaces.csproj">
+      <Project>{70273934-12F1-49AF-975A-303BAEFE1CAE}</Project>
+      <Name>Data.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="AutoRollbackBehavior.cs" />
+    <Compile Include="ClassIDAttribute.cs" />
+    <Compile Include="ClientTransactionEventArgs.cs" />
+    <Compile Include="ClientTransactionExtensions.cs" />
+    <Compile Include="ClientTransactionFactory.cs" />
+    <Compile Include="Cloning\CloneContext.cs" />
+    <Compile Include="Cloning\CompleteCloneStrategy.cs" />
+    <Compile Include="Cloning\DomainObjectCloner.cs" />
+    <Compile Include="Cloning\ICloneStrategy.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\AllMappingPropertiesFinder.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\IgnoreForMappingConfigurationAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\MixinPropertyFinder.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\NameBasedPropertyFinder.cs" />
+    <Compile Include="DataManagement\CollectionDataManagement\ObservableCollectionDataDecorator.cs" />
+    <Compile Include="DataManagement\CollectionDataManagement\ObservableCollectionDataDecoratorBase.cs" />
+    <Compile Include="DataManagement\CollectionDataManagement\CopyOnWriteDomainObjectCollectionData.cs" />
+    <Compile Include="DataManagement\CollectionEndPointDataManagement\CollectionDataStateUpdateListener.cs" />
+    <Compile Include="DataManagement\CollectionEndPointDataManagement\CollectionEndPointDataKeeperFactory.cs" />
+    <Compile Include="DataManagement\CollectionEndPointDataManagement\CompleteCollectionEndPointLoadState.cs" />
+    <Compile Include="DataManagement\CollectionEndPointDataManagement\ICollectionEndPointDataKeeperFactory.cs" />
+    <Compile Include="DataManagement\CollectionEndPointDataManagement\IncompleteCollectionEndPointLoadState.cs" />
+    <Compile Include="DataManagement\CollectionEndPointDataManagement\ICollectionEndPointLoadState.cs" />
+    <Compile Include="DataManagement\CollectionEndPointDataManagement\SortedPropertyComparer.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\CollectionEndPointDeleteCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\ObjectEndPointDeleteCommand.cs" />
+    <Compile Include="DataManagement\IRelationEndPointLazyLoader.cs" />
+    <Compile Include="DataManagement\IRelationEndPointProvider.cs" />
+    <Compile Include="DataManagement\ObjectEndPointDataManagement\IObjectEndPointSyncState.cs" />
+    <Compile Include="DataManagement\ObjectEndPointDataManagement\SynchronizedObjectEndPointSyncState.cs" />
+    <Compile Include="DataManagement\ObjectEndPointDataManagement\UnknownObjectEndPointSyncState.cs" />
+    <Compile Include="DataManagement\ObjectEndPointDataManagement\UnsynchronizedObjectEndPointSyncState.cs" />
+    <Compile Include="DomainImplementation\BidirectionalRelationSyncService.cs" />
+    <Compile Include="Infrastructure\InvalidObjects\SubInvalidDomainObjectManager.cs" />
+    <Compile Include="Infrastructure\InvalidObjects\IInvalidDomainObjectManager.cs" />
+    <Compile Include="Infrastructure\InvalidObjects\InvalidDomainObjectManagerBase.cs" />
+    <Compile Include="DataManagement\LoadConflictException.cs" />
+    <Compile Include="Infrastructure\InvalidObjects\RootInvalidDomainObjectManager.cs" />
+    <Compile Include="LinqCastMethodAttribute.cs" />
+    <Compile Include="Linq\FetchResultOperatorHandler.cs" />
+    <Compile Include="Linq\IStorageSpecificExpressionResolver.cs" />
+    <Compile Include="Mapping\InvalidRelationEndPointDefinitionBase.cs" />
+    <Compile Include="Mapping\PropertyDefinitionCollectionFactory.cs" />
+    <Compile Include="Mapping\RelationDefinitionCollectionFactory.cs" />
+    <Compile Include="Mapping\RelationEndPointDefinitionCollectionFactory.cs" />
+    <Compile Include="Mapping\TypeNotObjectIDRelationEndPointDefinition.cs" />
+    <Compile Include="Persistence\Rdbms\Model\ColumnDefinitionFinder.cs" />
+    <Compile Include="Persistence\Rdbms\Model\ColumnDefinitionResolver.cs" />
+    <Compile Include="Persistence\Rdbms\Model\ForeignKeyConstraintDefinitionFactory.cs" />
+    <Compile Include="Persistence\Rdbms\Model\IColumnDefinitionResolver.cs" />
+    <Compile Include="Persistence\Rdbms\Model\IForeignKeyConstraintDefinitionFactory.cs" />
+    <Compile Include="Persistence\Rdbms\Model\IStorageNameProvider.cs" />
+    <Compile Include="Persistence\Rdbms\Model\SqlColumnDefinitionFindingVisitor.cs" />
+    <Compile Include="Linq\StorageSpecificExpressionResolver.cs" />
+    <Compile Include="Mapping\ClassDefinitionCollectionFactory.cs" />
+    <Compile Include="Mapping\IMappingObjectFactory.cs" />
+    <Compile Include="Mapping\PersistenceModelLoader.cs" />
+    <Compile Include="Mapping\ReflectionBasedMappingObjectFactory.cs" />
+    <Compile Include="Mapping\RelationEndPointDefinitionCollection.cs" />
+    <Compile Include="Mapping\TypeNotFoundClassDefinition.cs" />
+    <Compile Include="Mapping\PropertyNotFoundRelationEndPointDefinition.cs" />
+    <Compile Include="Mapping\SortExpressions\SortedPropertySpecification.cs" />
+    <Compile Include="Mapping\SortExpressions\SortOrder.cs" />
+    <Compile Include="Mapping\Validation\ClassDefinitionValidator.cs" />
+    <Compile Include="Mapping\Validation\IClassDefinitionValidator.cs" />
+    <Compile Include="Mapping\Validation\IPersistenceMappingValidationRule.cs" />
+    <Compile Include="Mapping\Validation\IPersistenceMappingValidator.cs" />
+    <Compile Include="Mapping\Validation\IPropertyDefinitionValidationRule.cs" />
+    <Compile Include="Mapping\Validation\IPropertyDefinitionValidator.cs" />
+    <Compile Include="Mapping\Validation\IRelationDefinitionValidator.cs" />
+    <Compile Include="Mapping\Validation\ISortExpressionValidator.cs" />
+    <Compile Include="Mapping\Validation\Logical\CheckForInvalidRelationEndPointsValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Logical\CheckForTypeNotFoundClassDefinitionValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Logical\PropertyTypeIsSupportedValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Logical\RdbmsRelationEndPointCombinationIsSupportedValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Logical\SortExpressionIsValidValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Logical\StorageGroupTypesAreSameWithinInheritanceTreeRule.cs" />
+    <Compile Include="Persistence\Rdbms\IRdbmsStorageObjectFactory.cs" />
+    <Compile Include="Persistence\Rdbms\Model\EntityDefinitionFactory.cs" />
+    <Compile Include="Persistence\Rdbms\Model\ForeignKeyConstraintDefinition.cs" />
+    <Compile Include="Persistence\Rdbms\Model\IColumnDefinition.cs" />
+    <Compile Include="Persistence\Rdbms\Model\IColumnDefinitionVisitor.cs" />
+    <Compile Include="Persistence\Rdbms\Model\IEntityDefinitionFactory.cs" />
+    <Compile Include="Persistence\Rdbms\Model\ITableConstraintDefinition.cs" />
+    <Compile Include="Persistence\Rdbms\Model\ITableConstraintDefinitionVisitor.cs" />
+    <Compile Include="Persistence\Rdbms\Model\NullColumnDefinition.cs" />
+    <Compile Include="Persistence\Rdbms\Model\NullEntityDefinition.cs" />
+    <Compile Include="Persistence\Rdbms\Model\IDColumnDefinition.cs" />
+    <Compile Include="Persistence\Rdbms\Model\PrimaryKeyConstraintDefinition.cs" />
+    <Compile Include="Persistence\Rdbms\Model\ReflectionBasedStorageNameProvider.cs" />
+    <Compile Include="Persistence\Rdbms\Model\UnsupportedStorageTypeColumnDefinition.cs" />
+    <Compile Include="Persistence\Rdbms\Model\Validation\PropertyTypeIsSupportedByStorageProviderValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Reflection\ClassDefinitionTypeIsSubclassOfDomainObjectValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Reflection\RelationEndPointNamesAreConsistentValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Reflection\RelationEndPointPropertyTypeIsSupportedValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Reflection\ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule.cs" />
+    <Compile Include="Mapping\Validation\PersistenceMappingValidator.cs" />
+    <Compile Include="Mapping\Validation\PropertyDefinitionValidator.cs" />
+    <Compile Include="Mapping\Validation\Reflection\RelationEndPointTypesAreConsistentValidationRule.cs" />
+    <Compile Include="Mapping\Validation\RelationDefinitionValidator.cs" />
+    <Compile Include="Mapping\PropertyAccessorDataCache.cs" />
+    <Compile Include="Mapping\SortExpressions\SortExpressionParser.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RelationPropertyFinder.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\PropertyFinder.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\PropertyFinderBase.cs" />
+    <Compile Include="ClientTransactionScope.cs" />
+    <Compile Include="DataManagement\CollectionEndPointDataManagement\ChangeCachingCollectionDataDecorator.cs" />
+    <Compile Include="DataManagement\CollectionDataManagement\DomainObjectCollectionDataDecoratorBase.cs" />
+    <Compile Include="DataManagement\CollectionDataManagement\ICollectionDataStateUpdateListener.cs" />
+    <Compile Include="DataManagement\Commands\AdHocCommand.cs" />
+    <Compile Include="DataManagement\Commands\DeleteCommand.cs" />
+    <Compile Include="DataManagement\Commands\ExpandedCommand.cs" />
+    <Compile Include="DataManagement\Commands\NopCommand.cs" />
+    <Compile Include="DataManagement\Commands\UnloadCommand.cs" />
+    <Compile Include="DataManagement\DataManagementCommandExtensions.cs" />
+    <Compile Include="DataManagement\IDataContainerMapReadOnlyView.cs" />
+    <Compile Include="DataManagement\IDataManagementCommand.cs" />
+    <Compile Include="DataManagement\CollectionEndPointDataManagement\ICollectionEndPointDataKeeper.cs" />
+    <Compile Include="DataManagement\IDataManager.cs" />
+    <Compile Include="DataManagement\IRelationEndPointMapReadOnlyView.cs" />
+    <Compile Include="DataManagement\CollectionEndPointDataManagement\CollectionEndPointDataKeeper.cs" />
+    <Compile Include="DataManagement\IObjectEndPoint.cs" />
+    <Compile Include="DataManagement\RelationEndPointExtensions.cs" />
+    <Compile Include="DataManagement\ObjectEndPointDataManagement\RealObjectEndPoint.cs" />
+    <Compile Include="DataManagement\RelationEndPointValueChecker.cs" />
+    <Compile Include="DataManagement\StateValueSet.cs" />
+    <Compile Include="DataManagement\ObjectEndPointDataManagement\VirtualObjectEndPoint.cs" />
+    <Compile Include="DomainImplementation\RepositoryAccessor.cs" />
+    <Compile Include="DomainImplementation\UnloadTransactionMode.cs" />
+    <Compile Include="DomainObjectCollection.EventRaiser.cs" />
+    <Compile Include="DataManagement\ICollectionEndPointChangeDetectionStrategy.cs" />
+    <Compile Include="DomainObjectCollection.IList.cs" />
+    <Compile Include="DataManagement\CollectionDataManagement\DomainObjectCollectionDataExtensions.cs" />
+    <Compile Include="DataManagement\CollectionDataManagement\IndirectDomainObjectCollectionEventRaiser.cs" />
+    <Compile Include="DataManagement\CollectionDataManagement\ReadOnlyCollectionDataDecorator.cs" />
+    <Compile Include="DataManagement\DomainObjectCollectionFactory.cs" />
+    <Compile Include="DataManagement\CollectionDataManagement\ModificationCheckingCollectionDataDecorator.cs" />
+    <Compile Include="DataManagement\CollectionEndPointDataManagement\EndPointDelegatingCollectionData.cs" />
+    <Compile Include="DataManagement\CollectionDataManagement\DomainObjectCollectionData.cs" />
+    <Compile Include="DataManagement\CollectionDataManagement\EventRaisingCollectionDataDecorator.cs" />
+    <Compile Include="DataManagement\CollectionDataManagement\IDomainObjectCollectionData.cs" />
+    <Compile Include="DataManagement\CollectionDataManagement\IDomainObjectCollectionEventRaiser.cs" />
+    <Compile Include="DataManagement\CollectionDataManagement\IAssociatableDomainObjectCollection.cs" />
+    <Compile Include="Infrastructure\ClientTransactionListenerBase.cs" />
+    <Compile Include="Infrastructure\IClientTransactionComponentFactory.cs" />
+    <Compile Include="Infrastructure\InitializedEventDomainObjectTransactionContextDecorator.cs" />
+    <Compile Include="Infrastructure\IClientTransactionListenerFactory.cs" />
+    <Compile Include="Infrastructure\IPersistenceStrategy.cs" />
+    <Compile Include="Infrastructure\IObjectLoader.cs" />
+    <Compile Include="Infrastructure\NullClientTransactionListener.cs" />
+    <Compile Include="Infrastructure\ObjectLoader.cs" />
+    <Compile Include="Infrastructure\DomainObjectStateCache.cs" />
+    <Compile Include="Infrastructure\RootClientTransactionComponentFactory.cs" />
+    <Compile Include="Infrastructure\SubClientTransactionListener.cs" />
+    <Compile Include="Infrastructure\SubClientTransactionComponentFactory.cs" />
+    <Compile Include="LinqPropertyRedirectionAttribute.cs" />
+    <Compile Include="Linq\DomainObjectQueryable.cs" />
+    <Compile Include="Linq\DomainObjectQueryExecutor.cs" />
+    <Compile Include="Linq\MappingResolver.cs" />
+    <Compile Include="Persistence\IStorageProviderDefinitionFinder.cs" />
+    <Compile Include="Persistence\Rdbms\SchemaGeneration\ConstraintBuilderBase.cs" />
+    <Compile Include="Persistence\Rdbms\SchemaGeneration\FileBuilderBase.cs" />
+    <Compile Include="Persistence\Rdbms\SchemaGeneration\ForeignKeyDeclarationTableConstraintDefinitionVisitor.cs" />
+    <Compile Include="Persistence\Rdbms\SchemaGeneration\PrimaryKeyDeclarationTableConstraintDefinitionVisitor.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\SchemaGeneration\ConstraintBuilder.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\SchemaGeneration\FileBuilder.cs" />
+    <Compile Include="Persistence\Rdbms\SchemaGeneration\DeclarationListColumnDefinitionVisitor.cs" />
+    <Compile Include="Persistence\Rdbms\SchemaGeneration\NameListColumnDefinitionVisitor.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\SchemaGeneration\TableBuilder.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\SchemaGeneration\ViewBuilder.cs" />
+    <Compile Include="Persistence\Rdbms\SchemaGeneration\TableBuilderBase.cs" />
+    <Compile Include="Persistence\Rdbms\SchemaGeneration\ViewBuilderBase.cs" />
+    <Compile Include="Persistence\StorageProviderDefinitionFinder.cs" />
+    <Compile Include="Persistence\IStorageObjectFactory.cs" />
+    <Compile Include="Persistence\Model\IPersistenceModelLoader.cs" />
+    <Compile Include="Persistence\Rdbms\Model\IColumnDefinitionFactory.cs" />
+    <Compile Include="Persistence\Rdbms\Model\ColumnDefinitionFactory.cs" />
+    <Compile Include="Persistence\Rdbms\Model\FilterViewDefinition.cs" />
+    <Compile Include="Persistence\Rdbms\Model\IEntityDefinition.cs" />
+    <Compile Include="Persistence\Rdbms\Model\SimpleColumnDefinition.cs" />
+    <Compile Include="Mapping\Validation\IClassDefinitionValidationRule.cs" />
+    <Compile Include="Mapping\Validation\IRelationDefinitionValidatorRule.cs" />
+    <Compile Include="Mapping\Validation\Logical\RelationEndPointCombinationIsSupportedValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Logical\StorageClassIsSupportedValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Logical\VirtualRelationEndPointCardinalityMatchesPropertyTypeValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Logical\VirtualRelationEndPointPropertyTypeIsSupportedValidationRule.cs" />
+    <Compile Include="Mapping\Validation\MappingValidationResult.cs" />
+    <Compile Include="Persistence\Rdbms\Model\Validation\OnlyOneTablePerHierarchyValidationRule.cs" />
+    <Compile Include="Persistence\Rdbms\Model\Validation\TableNamesAreDistinctWithinConcreteTableInheritanceHierarchyValidationRule.cs" />
+    <Compile Include="Persistence\Rdbms\Model\Validation\ClassAboveTableIsAbstractValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Logical\SortExpressionIsSupportedForCardianlityOfRelationPropertyValidationRule.cs" />
+    <Compile Include="Persistence\Rdbms\Model\Validation\ColumnNamesAreUniqueWithinInheritanceTreeValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Reflection\DomainObjectTypeDoesNotHaveLegacyInfrastructureConstructorValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Reflection\DomainObjectTypeIsNotGenericValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Reflection\InheritanceHierarchyFollowsClassHierarchyValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Reflection\MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Reflection\MappingAttributesAreSupportedForPropertyTypeValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Reflection\StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule.cs" />
+    <Compile Include="Persistence\Model\IStoragePropertyDefinition.cs" />
+    <Compile Include="Mapping\ReflectionBasedPropertyResolver.cs" />
+    <Compile Include="Mapping\SortExpressions\SortExpressionDefinition.cs" />
+    <Compile Include="Mapping\Validation\SortExpressionValidator.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectDefaultValueStrategy.cs" />
+    <Compile Include="Persistence\Model\IStorageEntityDefinition.cs" />
+    <Compile Include="Persistence\Rdbms\ISqlDialect.cs" />
+    <Compile Include="Persistence\Rdbms\Model\IEntityDefinitionVisitor.cs" />
+    <Compile Include="Persistence\Rdbms\Model\StorageTypeCalculator.cs" />
+    <Compile Include="Persistence\Rdbms\Model\RdbmsPersistenceModelLoader.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\Model\SqlStorageTypeCalculator.cs" />
+    <Compile Include="Persistence\Rdbms\Model\TableDefinition.cs" />
+    <Compile Include="Persistence\Rdbms\Model\UnionViewDefinition.cs" />
+    <Compile Include="Persistence\Rdbms\MultiIDLookupCommandBuilder.cs" />
+    <Compile Include="Persistence\Rdbms\ICommandBuilder.cs" />
+    <Compile Include="Persistence\Rdbms\SortExpressionSqlGenerator.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\SqlDialect.cs" />
+    <Compile Include="Persistence\Rdbms\SqlServer\Sql2005\SqlStorageObjectFactory.cs" />
+    <Compile Include="PropertyChangeEventArgs.cs" />
+    <Compile Include="Queries\ILinqParserCustomizer.cs" />
+    <Compile Include="Queries\IEagerFetcher.cs" />
+    <Compile Include="ReadOnlyDomainObjectCollectionAdapter.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\CollectionEndPointRemoveCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\CollectionEndPointInsertCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\CollectionEndPointReplaceCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\CollectionEndPointSetCollectionCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\CollectionEndPointReplaceSameCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\ObjectEndPointSetOneManyCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\ObjectEndPointSetOneOneCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\ObjectEndPointSetSameCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\ObjectEndPointSetUnidirectionalCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\RelationEndPointTouchCommand.cs" />
+    <Compile Include="DataManagement\ICollectionEndPoint.cs" />
+    <Compile Include="DomainObjectCollectionExtensions.cs" />
+    <Compile Include="DomainObjectCollectionWrapper.cs" />
+    <Compile Include="ExtensibleEnumPropertyAttribute.cs" />
+    <Compile Include="DomainImplementation\UnloadService.cs" />
+    <Compile Include="Infrastructure\Enlistment\DelegatingEnlistedDomainObjectManager.cs" />
+    <Compile Include="Infrastructure\Enlistment\IEnlistedDomainObjectManager.cs" />
+    <Compile Include="Infrastructure\Enlistment\DictionaryBasedEnlistedDomainObjectManager.cs" />
+    <Compile Include="Infrastructure\SubCollectionEndPointChangeDetectionStrategy.cs" />
+    <Compile Include="Infrastructure\ObjectIDStringSerialization\ObjectIDStringSerializer.cs" />
+    <Compile Include="Infrastructure\ObjectIDStringSerialization\StringObjectIDValueParser.cs" />
+    <Compile Include="Infrastructure\ObjectIDStringSerialization\GuidObjectIDValueParser.cs" />
+    <Compile Include="Infrastructure\ObjectIDStringSerialization\Int32ObjectIDValueParser.cs" />
+    <Compile Include="Infrastructure\ObjectIDStringSerialization\IObjectIDValueParser.cs" />
+    <Compile Include="Infrastructure\RootCollectionEndPointChangeDetectionStrategy.cs" />
+    <Compile Include="Infrastructure\Serialization\FlattenedSerializationLogger.cs" />
+    <Compile Include="InvalidEnumValueException.cs" />
+    <Compile Include="DataManagement\Commands\CompositeCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\NullEndPointModificationCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\ObjectEndPointSetCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\RelationEndPointModificationCommand.cs" />
+    <Compile Include="DBStorageGroupAttribute.cs" />
+    <Compile Include="Design\DomainObjectsDesignModeHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjectGraphTraverser.cs" />
+    <Compile Include="DomainObjectMixin.cs" />
+    <Compile Include="Infrastructure\DomainObjectTransactionContext.cs" />
+    <Compile Include="FullGraphTraversalStrategy.cs" />
+    <Compile Include="IDomainObjectTransactionContext.cs" />
+    <Compile Include="Infrastructure\BindingClientTransaction.cs" />
+    <Compile Include="Infrastructure\ClientTransactionWrapper.cs" />
+    <Compile Include="Infrastructure\DomainObjectTransactionContextIndexer.cs" />
+    <Compile Include="Infrastructure\DomainObjectCheckUtility.cs" />
+    <Compile Include="Infrastructure\Interception\DomainObjectConstructorLookupInfo.cs" />
+    <Compile Include="Infrastructure\PropertyAccessorData.cs" />
+    <Compile Include="Infrastructure\PropertyKind.cs" />
+    <Compile Include="Infrastructure\Serialization\FlattenedDeserializationInfo.cs" />
+    <Compile Include="Infrastructure\Serialization\FlattenedSerializationReader.cs" />
+    <Compile Include="Infrastructure\Serialization\FlattenedSerializableMarker.cs" />
+    <Compile Include="Infrastructure\Serialization\FlattenedSerializationInfo.cs" />
+    <Compile Include="Infrastructure\Serialization\FlattenedSerializationWriter.cs" />
+    <Compile Include="Infrastructure\Serialization\IFlattenedSerializable.cs" />
+    <Compile Include="DomainImplementation\LifetimeService.cs" />
+    <Compile Include="IGraphTraversalStrategy.cs" />
+    <Compile Include="Linq\ContainsObjectExpressionNode.cs" />
+    <Compile Include="Linq\EagerFetchingExtensionMethods.cs" />
+    <Compile Include="Linq\ExtensionMethods.cs" />
+    <Compile Include="Mapping\IMappingNameResolver.cs" />
+    <Compile Include="Mapping\IPersistentMixinFinder.cs" />
+    <Compile Include="Mapping\ReflectionBasedClassDefinitionValidator.cs" />
+    <Compile Include="Mapping\ReflectionBasedNameResolver.cs" />
+    <Compile Include="Mapping\RelationEndPointDefinitionExtensions.cs" />
+    <Compile Include="Mapping\RelationKindType.cs" />
+    <Compile Include="Mapping\SerializableMappingObject.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObject.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectAttribute.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectGetObjectService.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectImplementation.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectMetadataFactory.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectMixin.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectPropertyFinder.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectPropertyReflector.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectProvider.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectProviderAttribute.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectQuerySearchService.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectSearchAllService.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectCompoundSearchService.cs" />
+    <Compile Include="ObjectBinding\BindableDomainObjectServiceFactoryMixin.cs" />
+    <Compile Include="ObjectBinding\IBindableDomainObjectImplementation.cs" />
+    <Compile Include="Persistence\BulkLoadException.cs" />
+    <Compile Include="RelationChangedEventArgs.cs" />
+    <Compile Include="RelationChangingEventArgs.cs" />
+    <Compile Include="SubTransactionCreatedEventArgs.cs" />
+    <Compile Include="Tracing\IPersistenceListener.cs" />
+    <Compile Include="Tracing\IPersistenceListenerFactory.cs" />
+    <Compile Include="Tracing\NullPersistenceListener.cs" />
+    <Compile Include="Tracing\CompoundPersistenceListener.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\DataContainerLoader.cs" />
+    <Compile Include="Persistence\Rdbms\DataContainerLoaderHelper.cs" />
+    <Compile Include="Persistence\Rdbms\IDataContainerLoaderHelper.cs" />
+    <Compile Include="Persistence\Rdbms\ObjectIDLoader.cs" />
+    <Compile Include="Persistence\Rdbms\OppositeClassDefinitionRetriever.cs" />
+    <Compile Include="Tracing\TracingDataReader.cs" />
+    <Compile Include="Tracing\TracingDbCommand.cs" />
+    <Compile Include="Queries\EagerFetcher.cs" />
+    <Compile Include="Queries\EagerFetchQueryCollection.cs" />
+    <Compile Include="Queries\UnexpectedQueryResultException.cs" />
+    <Compile Include="Queries\QueryResult.cs" />
+    <Compile Include="Queries\IQueryResult.cs" />
+    <Compile Include="Queries\QueryCache.cs" />
+    <Compile Include="Queries\QueryFactory.cs" />
+    <Compile Include="SimpleDomainObject.cs" />
+    <Compile Include="Tracing\TracingDbConnection.cs" />
+    <Compile Include="Tracing\TracingDbTransaction.cs" />
+    <Compile Include="Transport\BinaryExportStrategy.cs" />
+    <Compile Include="Transport\DomainObjectImporter.cs" />
+    <Compile Include="Transport\DomainObjectTransporter.cs" />
+    <Compile Include="IDomainObjectMixin.cs" />
+    <Compile Include="Infrastructure\ClientTransactionReadOnlyException.cs" />
+    <Compile Include="Infrastructure\CompoundClientTransactionListener.cs" />
+    <Compile Include="Infrastructure\DomainObjectMixinCodeGenerationBridge.cs" />
+    <Compile Include="Infrastructure\ExtensionClientTransactionListener.cs" />
+    <Compile Include="Infrastructure\IClientTransactionListener.cs" />
+    <Compile Include="Infrastructure\InterceptedDomainObjectTypeFactory.cs" />
+    <Compile Include="Infrastructure\Interception\IInterceptedDomainObject.cs" />
+    <Compile Include="Infrastructure\Interception\InterceptedPropertyCollector.cs" />
+    <Compile Include="Infrastructure\Interception\SerializationHelper.cs" />
+    <Compile Include="Infrastructure\Interception\TypeGenerator.cs" />
+    <Compile Include="Infrastructure\Interception\ModuleManager.cs" />
+    <Compile Include="Infrastructure\InvalidatedTransactionListener.cs" />
+    <Compile Include="Infrastructure\LoggingClientTransactionListener.cs" />
+    <Compile Include="Infrastructure\ReadOnlyClientTransactionListener.cs" />
+    <Compile Include="Infrastructure\RelatedObjectCollectionPropertyAccessorStrategy.cs" />
+    <Compile Include="Infrastructure\IPropertyAccessorStrategy.cs" />
+    <Compile Include="Infrastructure\PropertyIndexer.cs" />
+    <Compile Include="Infrastructure\RelatedObjectPropertyAccessorStrategy.cs" />
+    <Compile Include="Infrastructure\RootPersistenceStrategy.cs" />
+    <Compile Include="Infrastructure\TransactionUnlocker.cs" />
+    <Compile Include="Infrastructure\ValuePropertyAccessorStrategy.cs" />
+    <Compile Include="LoadMode.cs" />
+    <Compile Include="Mapping\PersistentMixinFinder.cs" />
+    <Compile Include="Mapping\ReflectionBasedClassDefinition.cs" />
+    <Compile Include="Mapping\ReflectionBasedPropertyDefinition.cs" />
+    <Compile Include="InstantiableAttribute.cs" />
+    <Compile Include="ConfigurationLoader\IMappingLoader.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\IMappingAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\MemberReflectorBase.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\BidirectionalRelationAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\ClassReflector.cs" />
+    <Compile Include="BinaryPropertyAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RelationReflector.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RelationReflectorBase.cs" />
+    <Compile Include="DBBidirectionalRelationAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RdbmsRelationEndPointReflector.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RelationEndPointReflector.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\NullableLengthConstrainedPropertyAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\ILengthConstrainedPropertyAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\INullablePropertyAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\NullablePropertyAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\PropertyReflector.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\MappingReflector.cs" />
+    <Compile Include="Mapping\StorageClass.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\StorageClassAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\IStorageSpecificIdentifierAttribute.cs" />
+    <Compile Include="MandatoryAttribute.cs" />
+    <Compile Include="DBColumnAttribute.cs" />
+    <Compile Include="DBTableAttribute.cs" />
+    <Compile Include="Mapping\ReflectionBasedVirtualRelationEndPointDefinition.cs" />
+    <Compile Include="Persistence\Configuration\StorageGroupElement.cs" />
+    <Compile Include="Persistence\Configuration\TypeProvider.cs" />
+    <Compile Include="Infrastructure\PropertyAccessor.cs" />
+    <Compile Include="Queries\Configuration\DuplicateQueryDefinitionException.cs" />
+    <Compile Include="Queries\Configuration\QueryFileElement.cs" />
+    <Compile Include="Queries\IQueryManager.cs" />
+    <Compile Include="StorageClassNoneAttribute.cs" />
+    <Compile Include="StorageClassTransactionAttribute.cs" />
+    <Compile Include="StorageGroupAttribute.cs" />
+    <Compile Include="StringPropertyAttribute.cs" />
+    <Compile Include="Configuration\IDomainObjectsConfiguration.cs" />
+    <Compile Include="Infrastructure\Interception\NonInterceptableTypeException.cs" />
+    <Compile Include="Infrastructure\CurrentPropertyManager.cs" />
+    <Compile Include="Development\FakeDomainObjectsConfiguration.cs" />
+    <Compile Include="Configuration\DomainObjectsConfiguration.cs" />
+    <Compile Include="ObjectList.cs" />
+    <Compile Include="Infrastructure\IDomainObjectCreator.cs" />
+    <Compile Include="Mapping\Configuration\MappingLoaderConfiguration.cs" />
+    <Compile Include="Infrastructure\InterceptedDomainObjectCreator.cs" />
+    <Compile Include="Persistence\Configuration\StorageConfiguration.cs" />
+    <Compile Include="Persistence\Configuration\StorageProviderDefinitionHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientTransaction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientTransactionExtensionCollection.cs" />
+    <Compile Include="CommonCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationLoader\XmlBasedConfigurationLoader\BaseFileLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationLoader\XmlBasedConfigurationLoader\ConfigurationNamespaceManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationLoader\XmlBasedConfigurationLoader\LoaderUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationLoader\XmlBasedConfigurationLoader\PrefixNamespace.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationLoader\XmlBasedConfigurationLoader\QueryConfigurationLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\DataContainer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\ClientTransactionsDifferException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\CollectionEndPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\DataContainerCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\DataContainerMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\DataManagementException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\DataManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\IRelationEndPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\MandatoryRelationNotSetException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\NullCollectionEndPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\NullObjectEndPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\ObjectDeletedException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\ObjectInvalidException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\ObjectEndPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\RelationEndPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\RelationEndPointID.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\RelationEndPointMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjectCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjectCollectionEvents.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjectException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IClientTransactionExtension.cs" />
+    <Compile Include="InvalidTypeException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\CardinalityType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\ClassDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\ClassDefinitionCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\IRelationEndPointDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\MappingConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\MappingException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\AnonymousRelationEndPointDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\PropertyDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\PropertyDefinitionCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\PropertyDefinitionCollectionEvents.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\RelationDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\RelationDefinitionCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\RelationEndPointDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\VirtualRelationEndPointDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjectID.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\ConcurrencyViolationException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Configuration\IdentityTypeNotSupportedException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Configuration\StorageProviderConfigurationException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Configuration\StorageProviderDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\ConverterException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\ObjectNotFoundException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\PersistenceException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\PersistenceManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\CommandBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\ConcreteTableInheritanceRelationLoader.cs" />
+    <Compile Include="Persistence\Rdbms\DataContainerFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\DeleteCommandBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\InsertCommandBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\QueryCommandBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\RdbmsProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\RdbmsProviderDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\RdbmsProviderException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\SingleIDLookupCommandBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\SqlServer\SqlProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\UnionSelectCommandBuilder.cs" />
+    <Compile Include="Persistence\Rdbms\UpdateCommandBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\ValueConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\WhereClauseBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\StorageProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\StorageProviderCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\StorageProviderException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\StorageProviderManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\ValueConverterBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\PropertyValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\PropertyValueCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\Configuration\QueryConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\Configuration\QueryConfigurationException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\Configuration\QueryDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\Configuration\QueryDefinitionCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\Configuration\QueryType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\IQuery.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\Query.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\QueryManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\QueryParameter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\QueryParameterCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\QueryParameterType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ReflectionUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Schemas\TypesSchemaLoader.cs" />
+    <Compile Include="Schemas\SchemaLoader.cs" />
+    <Compile Include="StateType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Infrastructure\SubPersistenceStrategy.cs" />
+    <Compile Include="Transport\BinaryImportStrategy.cs" />
+    <Compile Include="Transport\IExportStrategy.cs" />
+    <Compile Include="Transport\IImportStrategy.cs" />
+    <Compile Include="Transport\TransportationException.cs" />
+    <Compile Include="Transport\TransportedDomainObjects.cs" />
+    <Compile Include="Transport\XmlTransportItem.cs" />
+    <Compile Include="Transport\TransportTransactionListener.cs" />
+    <Compile Include="Transport\TransportFinishTransactionListener.cs" />
+    <Compile Include="Transport\TransportItem.cs" />
+    <Compile Include="Transport\XmlExportStrategy.cs" />
+    <Compile Include="Transport\XmlImportStrategy.cs" />
+    <Compile Include="DataManagement\ValueAccess.cs" />
+    <Compile Include="ValueChangeEventArgs.cs" />
+    <Compile Include="ValueTooLongException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="Configuration\DomainObjectsConfiguration.xsd">
+      <SubType>
+      </SubType>
+    </None>
+    <Compile Include="DomainObjectCollection.Obsolete.cs" />
+    <None Include="..\..\..\remotion.snk">
+      <Link>remotion.snk</Link>
+    </None>
+    <EmbeddedResource Include="ObjectBinding\Globalization\BooleanProperty.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ObjectBinding\Globalization\BooleanProperty.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\Queries.xsd">
+      <SubType>
+      </SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\Types.xsd">
+      <SubType>
+      </SubType>
+    </EmbeddedResource>
+    <Content Include="Doc\How to add a new property type.txt" />
+    <Content Include="Doc\include\NamespaceDoc.xml" />
+    <Content Include="Doc\WhatsNew_Remotion.Data.DomainObjects.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

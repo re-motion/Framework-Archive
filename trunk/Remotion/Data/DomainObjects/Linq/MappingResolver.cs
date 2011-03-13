@@ -1,0 +1,205 @@
+// This file is part of the re-motion Core Framework (www.re-motion.org)
+// Copyright (C) 2005-2009 rubicon informationstechnologie gmbh, www.rubicon.eu
+// 
+// The re-motion Core Framework is free software; you can redistribute it 
+// and/or modify it under the terms of the GNU Lesser General Public License 
+// as published by the Free Software Foundation; either version 2.1 of the 
+// License, or (at your option) any later version.
+// 
+// re-motion is distributed in the hope that it will be useful, 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
+// 
+using System;
+using System.Linq.Expressions;
+using System.Reflection;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Linq;
+using Remotion.Linq.Clauses.ExpressionTreeVisitors;
+using Remotion.Linq.SqlBackend.MappingResolution;
+using Remotion.Linq.SqlBackend.SqlStatementModel.Resolved;
+using Remotion.Linq.SqlBackend.SqlStatementModel.SqlSpecificExpressions;
+using Remotion.Linq.SqlBackend.SqlStatementModel.Unresolved;
+using Remotion.Linq.Utilities;
+using Remotion.Reflection;
+
+namespace Remotion.Data.DomainObjects.Linq
+{
+  /// <summary>
+  /// Implements <see cref="IMappingResolver"/> to supply information from re-store to the re-linq SQL backend.
+  /// </summary>
+  public class MappingResolver : IMappingResolver
+  {
+    private readonly IStorageSpecificExpressionResolver _storageSpecificExpressionResolver;
+    private readonly IStorageNameProvider _storageNameProvider;
+
+    public MappingResolver (IStorageSpecificExpressionResolver storageSpecificExpressionResolver, IStorageNameProvider storageNameProvider)
+    {
+      ArgumentUtility.CheckNotNull ("storageSpecificExpressionResolver", storageSpecificExpressionResolver);
+      ArgumentUtility.CheckNotNull ("storageNameProvider", storageNameProvider);
+
+      _storageSpecificExpressionResolver = storageSpecificExpressionResolver;
+      _storageNameProvider = storageNameProvider;
+    }
+
+    public IResolvedTableInfo ResolveTableInfo (UnresolvedTableInfo tableInfo, UniqueIdentifierGenerator generator)
+    {
+      ArgumentUtility.CheckNotNull ("tableInfo", tableInfo);
+      ArgumentUtility.CheckNotNull ("generator", generator);
+
+      var classDefinition = GetClassDefinition (tableInfo.ItemType);
+      if (classDefinition == null)
+      {
+        string message = string.Format ("The type '{0}' does not identify a queryable table.", tableInfo.ItemType.Name);
+        throw new UnmappedItemException (message);
+      }
+      return _storageSpecificExpressionResolver.ResolveTable (classDefinition, generator.GetUniqueIdentifier ("t"));
+    }
+
+    public ResolvedJoinInfo ResolveJoinInfo (UnresolvedJoinInfo joinInfo, UniqueIdentifierGenerator generator)
+    {
+      ArgumentUtility.CheckNotNull ("joinInfo", joinInfo);
+      ArgumentUtility.CheckNotNull ("generator", generator);
+
+      var classDefinition = GetClassDefinition (joinInfo.OriginatingEntity.Type);
+      if (classDefinition == null)
+      {
+        string message = string.Format (
+            "The type '{0}' does not identify a queryable table.", joinInfo.OriginatingEntity.Type);
+        throw new UnmappedItemException (message);
+      }
+
+      var property = joinInfo.MemberInfo as PropertyInfo;
+      var leftEndPointDefinition = property != null ? classDefinition.ResolveRelationEndPoint (new PropertyInfoAdapter (property)) : null;
+
+      if (leftEndPointDefinition == null)
+      {
+        string message =
+            string.Format ("The member '{0}.{1}' does not identify a relation.", joinInfo.MemberInfo.DeclaringType.Name, joinInfo.MemberInfo.Name);
+        throw new UnmappedItemException (message);
+      }
+
+      return _storageSpecificExpressionResolver.ResolveJoin (
+          joinInfo.OriginatingEntity,
+          leftEndPointDefinition,
+          leftEndPointDefinition.GetOppositeEndPointDefinition(),
+          generator.GetUniqueIdentifier ("t"));
+    }
+
+    public SqlEntityDefinitionExpression ResolveSimpleTableInfo (IResolvedTableInfo tableInfo, UniqueIdentifierGenerator generator)
+    {
+      ArgumentUtility.CheckNotNull ("tableInfo", tableInfo);
+      ArgumentUtility.CheckNotNull ("generator", generator);
+
+      return _storageSpecificExpressionResolver.ResolveEntity (GetClassDefinition (tableInfo.ItemType), tableInfo.TableAlias);
+    }
+
+    public Expression ResolveMemberExpression (SqlEntityExpression originatingEntity, MemberInfo memberInfo)
+    {
+      ArgumentUtility.CheckNotNull ("originatingEntity", originatingEntity);
+      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
+
+      var property = memberInfo as PropertyInfo;
+      if (property == null)
+      {
+        throw new UnmappedItemException (
+            string.Format (
+                "Field '{0}.{1}' cannot be used in a query because it is not a mapped member.",
+                originatingEntity.Type.Name,
+                memberInfo.Name));
+      }
+
+      var classDefinition = GetClassDefinition (originatingEntity.Type);
+      if (classDefinition == null)
+      {
+        string message = string.Format (
+            "The type '{0}' does not identify a queryable table.", originatingEntity.Type);
+        throw new UnmappedItemException (message);
+      }
+
+      if (property.Name == _storageNameProvider.IDColumnName && property.DeclaringType == typeof (DomainObject))
+        return _storageSpecificExpressionResolver.ResolveIDColumn (originatingEntity, classDefinition);
+
+      var propertyInfoAdapter = new PropertyInfoAdapter (property);
+      var endPointDefinition = classDefinition.ResolveRelationEndPoint (propertyInfoAdapter);
+      if (endPointDefinition != null)
+        return new SqlEntityRefMemberExpression (originatingEntity, property);
+
+      var propertyDefinition = classDefinition.ResolveProperty (propertyInfoAdapter);
+      if (propertyDefinition == null)
+      {
+        string message = string.Format (
+            "The member '{0}.{1}' does not have a queryable database mapping.", property.DeclaringType.Name, property.Name);
+        throw new UnmappedItemException (message);
+      }
+
+      return _storageSpecificExpressionResolver.ResolveColumn (originatingEntity, propertyDefinition, false);
+    }
+
+    public Expression ResolveMemberExpression (SqlColumnExpression sqlColumnExpression, MemberInfo memberInfo)
+    {
+      ArgumentUtility.CheckNotNull ("sqlColumnExpression", sqlColumnExpression);
+      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
+
+      if (memberInfo == typeof (ObjectID).GetProperty (_storageNameProvider.ClassIDColumnName))
+        return sqlColumnExpression.Update (typeof (string), sqlColumnExpression.OwningTableAlias, _storageNameProvider.ClassIDColumnName, false);
+
+      throw new UnmappedItemException (
+          string.Format ("The member '{0}.{1}' does not identify a mapped property.", memberInfo.ReflectedType.Name, memberInfo.Name));
+    }
+
+    public Expression ResolveConstantExpression (ConstantExpression constantExpression)
+    {
+      ArgumentUtility.CheckNotNull ("constantExpression", constantExpression);
+
+      if (constantExpression.Value is DomainObject)
+        return new SqlEntityConstantExpression (constantExpression.Type, constantExpression.Value, ((DomainObject) constantExpression.Value).ID);
+      else
+        return constantExpression;
+    }
+
+    public Expression ResolveTypeCheck (Expression checkedExpression, Type desiredType)
+    {
+      ArgumentUtility.CheckNotNull ("checkedExpression", checkedExpression);
+      ArgumentUtility.CheckNotNull ("desiredType", desiredType);
+
+      if (desiredType.IsAssignableFrom (checkedExpression.Type))
+        return Expression.Constant (true);
+      else if (checkedExpression.Type.IsAssignableFrom (desiredType))
+      {
+        if (!ReflectionUtility.IsDomainObject (checkedExpression.Type))
+        {
+          var message = string.Format (
+              "No database-level type check can be added for the expression '{0}'." +
+              "Only the types of DomainObjects can be checked in database queries.",
+              FormattingExpressionTreeVisitor.Format (checkedExpression));
+          throw new UnmappedItemException (message);
+        }
+
+        var classDefinition = GetClassDefinition (desiredType);
+        if (classDefinition == null)
+        {
+          string message = string.Format (
+              "The type '{0}' does not identify a queryable table.", desiredType.Name);
+          throw new UnmappedItemException (message);
+        }
+
+        var idExpression = Expression.MakeMemberAccess (checkedExpression, typeof (DomainObject).GetProperty ("ID"));
+        var classIDExpression = Expression.MakeMemberAccess (idExpression, typeof (ObjectID).GetProperty ("ClassID"));
+        return Expression.Equal (classIDExpression, new SqlLiteralExpression (classDefinition.ID));
+      }
+      else
+        return Expression.Constant (false);
+    }
+
+    private ClassDefinition GetClassDefinition (Type type)
+    {
+      return MappingConfiguration.Current.ClassDefinitions[type];
+    }
+  }
+}
