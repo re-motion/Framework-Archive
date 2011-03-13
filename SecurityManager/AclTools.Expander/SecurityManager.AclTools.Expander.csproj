@@ -79,6 +79,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="App.config" />
+    <None Include="SecurityManager.AclTools.Expander.build" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Core\Domain\SecurityManagerQueries.xml">

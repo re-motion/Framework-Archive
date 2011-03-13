@@ -278,6 +278,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UndefinedEnumValueAttribute.cs" />
+    <None Include="ObjectBinding.build">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>

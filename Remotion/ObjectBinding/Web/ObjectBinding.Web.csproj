@@ -436,6 +436,9 @@
     <Compile Include="UI\Design\PropertyPathBindingCollectionEditor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <None Include="ObjectBinding.Web.build">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
