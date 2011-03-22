@@ -15,12 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.CollectionDataManagement;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.CollectionDataManagement
 {
   [Serializable]
-  public class FakeCollectionDataStateUpdateListener : ICollectionDataStateUpdateListener
+  public class FakeVirtualEndPointStateUpdateListener : IVirtualEndPointStateUpdateListener
   {
     public void StateUpdated (bool? newChangedState)
     {

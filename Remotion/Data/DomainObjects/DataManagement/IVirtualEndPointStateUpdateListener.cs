@@ -16,12 +16,12 @@
 // 
 using Remotion.Data.DomainObjects.DataManagement.CollectionEndPointDataManagement;
 
-namespace Remotion.Data.DomainObjects.DataManagement.CollectionDataManagement
+namespace Remotion.Data.DomainObjects.DataManagement
 {
   /// <summary>
   /// Used by <see cref="ChangeCachingCollectionDataDecorator"/> to signal when the cached state value is updated.
   /// </summary>
-  public interface ICollectionDataStateUpdateListener
+  public interface IVirtualEndPointStateUpdateListener
   {
     void StateUpdated (bool? newChangedState);
   }
