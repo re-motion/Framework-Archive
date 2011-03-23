@@ -20,7 +20,7 @@ using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Logging;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.DataManagement.ObjectEndPointDataManagement
+namespace Remotion.Data.DomainObjects.DataManagement.RealObjectEndPointDataManagement
 {
   /// <summary>
   /// Represents the synchronization state of an <see cref="ObjectEndPoint"/> whose opposite end-point is not loaded/complete yet.
