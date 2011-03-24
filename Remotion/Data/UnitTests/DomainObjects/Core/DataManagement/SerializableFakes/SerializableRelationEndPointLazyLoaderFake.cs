@@ -16,16 +16,25 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Data.DomainObjects.DataManagement.VirtualEndPoints;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.VirtualEndPoints.CollectionEndPoints.SerializableFakes
+namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes
 {
   [Serializable]
-  public class SerializableVirtualEndPointDataKeeperFactoryFake : IVirtualEndPointDataKeeperFactory<IVirtualEndPointDataKeeper>
+  public class SerializableRelationEndPointLazyLoaderFake : IRelationEndPointLazyLoader
   {
-    public IVirtualEndPointDataKeeper Create (RelationEndPointID endPointID)
+    public void LoadLazyCollectionEndPoint (ICollectionEndPoint collectionEndPoint)
     {
-      return new SerializableVirtualEndPointDataKeeperFake ();
+      throw new NotImplementedException();
+    }
+
+    public void LoadLazyVirtualEndPoint (IVirtualEndPoint virtualEndPoint)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void LoadOppositeVirtualEndPoint (IRealObjectEndPoint objectEndPoint)
+    {
+      throw new NotImplementedException();
     }
   }
 }

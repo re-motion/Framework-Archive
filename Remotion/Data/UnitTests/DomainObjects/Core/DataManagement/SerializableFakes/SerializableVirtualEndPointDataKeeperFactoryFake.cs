@@ -16,16 +16,16 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Data.DomainObjects.DataManagement.CollectionData;
+using Remotion.Data.DomainObjects.DataManagement.VirtualEndPoints;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.VirtualEndPoints.CollectionEndPoints.SerializableFakes
+namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes
 {
   [Serializable]
-  public class SerializableCollectionEndPointChangeDetectionStrategyFake : ICollectionEndPointChangeDetectionStrategy
+  public class SerializableVirtualEndPointDataKeeperFactoryFake : IVirtualEndPointDataKeeperFactory<IVirtualEndPointDataKeeper>
   {
-    public bool HasDataChanged (IDomainObjectCollectionData currentData, IDomainObjectCollectionData originalData)
+    public IVirtualEndPointDataKeeper Create (RelationEndPointID endPointID)
     {
-      return false;
+      return new SerializableVirtualEndPointDataKeeperFake ();
     }
   }
 }

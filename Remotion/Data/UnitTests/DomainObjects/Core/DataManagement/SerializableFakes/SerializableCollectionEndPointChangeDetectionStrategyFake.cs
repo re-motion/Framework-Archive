@@ -16,25 +16,16 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.VirtualEndPoints.CollectionEndPoints.SerializableFakes
+namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes
 {
   [Serializable]
-  public class SerializableRelationEndPointLazyLoaderFake : IRelationEndPointLazyLoader
+  public class SerializableCollectionEndPointChangeDetectionStrategyFake : ICollectionEndPointChangeDetectionStrategy
   {
-    public void LoadLazyCollectionEndPoint (ICollectionEndPoint collectionEndPoint)
+    public bool HasDataChanged (IDomainObjectCollectionData currentData, IDomainObjectCollectionData originalData)
     {
-      throw new NotImplementedException();
-    }
-
-    public void LoadLazyVirtualEndPoint (IVirtualEndPoint virtualEndPoint)
-    {
-      throw new NotImplementedException();
-    }
-
-    public void LoadOppositeVirtualEndPoint (IRealObjectEndPoint objectEndPoint)
-    {
-      throw new NotImplementedException();
+      return false;
     }
   }
 }
