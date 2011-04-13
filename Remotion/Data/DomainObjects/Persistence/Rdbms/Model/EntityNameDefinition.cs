@@ -15,19 +15,32 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
-using Remotion.Data.DomainObjects.Persistence.Model;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
-  /// <summary>
-  /// <see cref="IEntityDefinition"/> defines the API for an entity definition for a relational database.
-  /// </summary>
-  public interface IEntityDefinition : IStorageEntityDefinition, INullObject
+  public class EntityNameDefinition
   {
-    EntityNameDefinition ViewName { get; }
-    ReadOnlyCollection<IColumnDefinition> GetColumns ();
+    private readonly string _schemaName;
+    private readonly string _entityName;
 
-    void Accept (IEntityDefinitionVisitor visitor);
+    public EntityNameDefinition (string schemaName, string entityName)
+    {
+      ArgumentUtility.CheckNotEmpty ("schemaName", schemaName);
+      ArgumentUtility.CheckNotNullOrEmpty ("entityName", entityName);
+
+      _schemaName = schemaName;
+      _entityName = entityName;
+    }
+
+    public string SchemaName
+    {
+      get { return _schemaName; }
+    }
+
+    public string EntityName
+    {
+      get { return _entityName; }
+    }
   }
 }

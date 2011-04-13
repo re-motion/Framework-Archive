@@ -31,12 +31,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGen
 
     public override void AddToCreateTableScript (TableDefinition tableDefinition, StringBuilder createTableStringBuilder)
     {
-      createTableStringBuilder.Append ("CREATE TABLE ["+tableDefinition.TableName+"]");
+      createTableStringBuilder.Append ("CREATE TABLE ["+tableDefinition.TableName.EntityName+"]");
     }
 
     public override void AddToDropTableScript (TableDefinition tableDefinition, StringBuilder dropTableStringBuilder)
     {
-      dropTableStringBuilder.Append ("DROP TABLE [" + tableDefinition.TableName + "]");
+      dropTableStringBuilder.Append ("DROP TABLE [" + tableDefinition.TableName.EntityName + "]");
     }
   }
 }
