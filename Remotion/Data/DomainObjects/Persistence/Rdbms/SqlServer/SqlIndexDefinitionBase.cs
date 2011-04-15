@@ -14,18 +14,38 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
 {
-  /// <summary>
-  /// <see cref="ISqlIndexDefinitionVisitor"/> defines the API for all index-definition visitor implementations.
-  /// </summary>
-  public interface ISqlIndexDefinitionVisitor : IIndexDefinitionVisitor
+  public abstract class SqlIndexDefinitionBase : IIndexDefinition
   {
-    void VisitIndexDefinition (IndexDefinition indexDefinition);
-    void VisitPrimaryXmlIndexDefinition (PrimaryXmlIndexDefinition primaryXmlIndexDefinition);
-    void VisitSecondaryXmlIndexDefinition (SecondaryXmlIndexDefinition secondaryXmlIndexDefinition);
+    //TODO RM-3882: constants or fields??
+    //bool PAD_INDEX
+    //int FILLFACTOR
+    //bool SORT_IN_TEMPDB
+    //bool STATISTICS_NORECOMPUTE
+    //bool DROP_EXISTING
+    //bool ALLOW_ROW_LOCKS
+    //bool ALLOW_PAGE_LOCKS
+    //int MAXDOP
+
+
+    protected SqlIndexDefinitionBase ()
+    {
+      
+    }
+
+    public abstract string IndexName { get; }
+    public abstract EntityNameDefinition ObjectName { get; }
+    
+    public void Accept (IIndexDefinitionVisitor visitor)
+    {
+      var specificVisitor = visitor as ISqlIndexDefinitionVisitor;
+      if (specificVisitor != null)
+        Accept (specificVisitor);
+    }
+
+    public abstract void Accept (ISqlIndexDefinitionVisitor visitor);
   }
 }
