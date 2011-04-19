@@ -22,18 +22,19 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
 {
   [TestFixture]
-  public class PrimaryXmlIndexDefinitionTest
+  public class SqlSecondaryXmlIndexDefinitionTest
   {
     private EntityNameDefinition _objectName;
     private SimpleColumnDefinition _xmlColumn;
-    private PrimaryXmlIndexDefinition _indexDefinition;
+    private SqlSecondaryXmlIndexDefinition _indexDefinition;
 
     [SetUp]
     public void SetUp ()
     {
-      _objectName = new EntityNameDefinition ("objectSchema", "objectName");
-      _xmlColumn = new SimpleColumnDefinition ("XmlColumn", typeof (string), "xml", true, false);
-      _indexDefinition = new PrimaryXmlIndexDefinition ("IndexName", _objectName, _xmlColumn);
+      _objectName = new EntityNameDefinition ("_objectSchema", "objectName");
+      _xmlColumn = new SimpleColumnDefinition ("xmlColumn", typeof (string), "xml", false, false);
+      
+      _indexDefinition = new SqlSecondaryXmlIndexDefinition ("IndexName", _objectName, _xmlColumn, "PrimaryIndexName", SqlSecondaryXmlIndexKind.Property);
     }
 
     [Test]
@@ -41,7 +42,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
     {
       Assert.That (_indexDefinition.IndexName, Is.EqualTo("IndexName"));
       Assert.That (_indexDefinition.ObjectName, Is.SameAs (_objectName));
+      Assert.That (_indexDefinition.PrimaryIndexName, Is.EqualTo("PrimaryIndexName"));
       Assert.That (_indexDefinition.XmlColumn, Is.SameAs (_xmlColumn));
+      Assert.That (_indexDefinition.Kind, Is.EqualTo (SqlSecondaryXmlIndexKind.Property));
     }
 
     [Test]
@@ -59,7 +62,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
     public void Accept_SqlIndexDefinitionVisitor ()
     {
       var visitorMock = MockRepository.GenerateStrictMock<ISqlIndexDefinitionVisitor> ();
-      visitorMock.Expect (mock => mock.VisitPrimaryXmlIndexDefinition (_indexDefinition));
+      visitorMock.Expect (mock => mock.VisitSecondaryXmlIndexDefinition (_indexDefinition));
       visitorMock.Replay ();
 
       _indexDefinition.Accept (visitorMock);

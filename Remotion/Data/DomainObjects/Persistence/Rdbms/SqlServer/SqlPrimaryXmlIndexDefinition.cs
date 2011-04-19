@@ -19,17 +19,16 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
 {
-  // TODO Review 3882: SqlPrimaryXmlIndexDefinition
-  public class PrimaryXmlIndexDefinition : SqlIndexDefinitionBase
+  public class SqlPrimaryXmlIndexDefinition : SqlIndexDefinitionBase
   {
     private readonly string _indexName;
     private readonly EntityNameDefinition _objectName;
     private readonly IColumnDefinition _xmlColumn;
 
     /// <summary>
-    /// <see cref="PrimaryXmlIndexDefinition"/> represents a priamry xml-column index in a relational database.
+    /// <see cref="SqlPrimaryXmlIndexDefinition"/> represents a priamry xml-column index in a relational database.
     /// </summary>
-    public PrimaryXmlIndexDefinition (string indexName, EntityNameDefinition objectName, IColumnDefinition xmlColumn)
+    public SqlPrimaryXmlIndexDefinition (string indexName, EntityNameDefinition objectName, IColumnDefinition xmlColumn)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("indexName", indexName);
       ArgumentUtility.CheckNotNull ("objectName", objectName);
@@ -55,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
       get { return _xmlColumn; }
     }
 
-    public override void Accept (ISqlIndexDefinitionVisitor visitor)
+    protected override void Accept (ISqlIndexDefinitionVisitor visitor)
     {
       ArgumentUtility.CheckNotNull ("visitor", visitor);
 
