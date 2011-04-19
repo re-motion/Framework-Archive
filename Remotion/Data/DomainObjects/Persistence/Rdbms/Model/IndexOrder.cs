@@ -14,17 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using System;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
-  /// <summary>
-  /// <see cref="ISqlIndexDefinitionVisitor"/> defines the API for all index-definition visitor implementations.
-  /// </summary>
-  public interface ISqlIndexDefinitionVisitor : IIndexDefinitionVisitor
+  public enum IndexOrder
   {
-    void VisitIndexDefinition (SqlIndexDefinition sqlIndexDefinition);
-    void VisitPrimaryXmlIndexDefinition (PrimaryXmlIndexDefinition primaryXmlIndexDefinition);
-    void VisitSecondaryXmlIndexDefinition (SecondaryXmlIndexDefinition secondaryXmlIndexDefinition);
+    Asc,
+    Desc
   }
 }
